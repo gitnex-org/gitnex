@@ -9,7 +9,6 @@ import org.mian.gitnex.R;
 /**
  * @author M M Arif
  */
-
 public class SnackBar {
 
 	public static void info(Context context, View view, String message) {
@@ -43,5 +42,4 @@ public class SnackBar {
 		textView.setTextColor(context.getColor(R.color.darkRed));
 		snackBar.show();
 	}
-
 }

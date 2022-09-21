@@ -19,7 +19,6 @@ import org.mian.gitnex.viewmodels.WikiViewModel;
 /**
  * @author M M Arif
  */
-
 public class WikiFragment extends Fragment {
 
 	public static boolean resumeWiki = false;
@@ -44,7 +43,8 @@ public class WikiFragment extends Fragment {
 	}
 
 	@Override
-	public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
+	public View onCreateView(
+			@NonNull LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
 
 		fragmentWikiBinding = FragmentWikiBinding.inflate(inflater, container, false);
 		setHasOptionsMenu(true);
@@ -56,13 +56,19 @@ public class WikiFragment extends Fragment {
 		fragmentWikiBinding.recyclerView.setHasFixedSize(true);
 		fragmentWikiBinding.recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
 
-		fragmentWikiBinding.pullToRefresh.setOnRefreshListener(() -> new Handler(Looper.getMainLooper()).postDelayed(() -> {
-
-			page = 1;
-			fragmentWikiBinding.pullToRefresh.setRefreshing(false);
-			fetchDataAsync(repository.getOwner(), repository.getName());
-			fragmentWikiBinding.progressBar.setVisibility(View.VISIBLE);
-		}, 50));
+		fragmentWikiBinding.pullToRefresh.setOnRefreshListener(
+				() ->
+						new Handler(Looper.getMainLooper())
+								.postDelayed(
+										() -> {
+											page = 1;
+											fragmentWikiBinding.pullToRefresh.setRefreshing(false);
+											fetchDataAsync(
+													repository.getOwner(), repository.getName());
+											fragmentWikiBinding.progressBar.setVisibility(
+													View.VISIBLE);
+										},
+										50));
 
 		fetchDataAsync(repository.getOwner(), repository.getName());
 
@@ -72,7 +78,7 @@ public class WikiFragment extends Fragment {
 	@Override
 	public void onResume() {
 		super.onResume();
-		if(resumeWiki) {
+		if (resumeWiki) {
 			page = 1;
 			fetchDataAsync(repository.getOwner(), repository.getName());
 			resumeWiki = false;
@@ -81,38 +87,55 @@ public class WikiFragment extends Fragment {
 
 	private void fetchDataAsync(String owner, String repo) {
 
-		wikiViewModel.getWiki(owner, repo, page, resultLimit, getContext(), fragmentWikiBinding).observe(getViewLifecycleOwner(), wikiListMain -> {
+		wikiViewModel
+				.getWiki(owner, repo, page, resultLimit, getContext(), fragmentWikiBinding)
+				.observe(
+						getViewLifecycleOwner(),
+						wikiListMain -> {
+							adapter =
+									new WikiListAdapter(
+											wikiListMain,
+											getContext(),
+											owner,
+											repo,
+											fragmentWikiBinding);
+							adapter.setLoadMoreListener(
+									new WikiListAdapter.OnLoadMoreListener() {
 
-			adapter = new WikiListAdapter(wikiListMain, getContext(), owner, repo, fragmentWikiBinding);
-			adapter.setLoadMoreListener(new WikiListAdapter.OnLoadMoreListener() {
+										@Override
+										public void onLoadMore() {
 
-				@Override
-				public void onLoadMore() {
+											page += 1;
+											wikiViewModel.loadMoreWiki(
+													repository.getOwner(),
+													repository.getName(),
+													page,
+													resultLimit,
+													getContext(),
+													fragmentWikiBinding,
+													adapter);
+											fragmentWikiBinding.progressBar.setVisibility(
+													View.VISIBLE);
+										}
 
-					page += 1;
-					wikiViewModel.loadMoreWiki(repository.getOwner(), repository.getName(), page, resultLimit, getContext(), fragmentWikiBinding, adapter);
-					fragmentWikiBinding.progressBar.setVisibility(View.VISIBLE);
-				}
+										@Override
+										public void onLoadFinished() {
 
-				@Override
-				public void onLoadFinished() {
+											fragmentWikiBinding.progressBar.setVisibility(
+													View.GONE);
+										}
+									});
 
-					fragmentWikiBinding.progressBar.setVisibility(View.GONE);
-				}
-			});
+							if (adapter.getItemCount() > 0) {
+								fragmentWikiBinding.recyclerView.setAdapter(adapter);
+								fragmentWikiBinding.noData.setVisibility(View.GONE);
+							} else {
+								adapter.notifyDataChanged();
+								fragmentWikiBinding.recyclerView.setAdapter(adapter);
+								fragmentWikiBinding.noData.setVisibility(View.VISIBLE);
+							}
 
-			if(adapter.getItemCount() > 0) {
-				fragmentWikiBinding.recyclerView.setAdapter(adapter);
-				fragmentWikiBinding.noData.setVisibility(View.GONE);
-			}
-			else {
-				adapter.notifyDataChanged();
-				fragmentWikiBinding.recyclerView.setAdapter(adapter);
-				fragmentWikiBinding.noData.setVisibility(View.VISIBLE);
-			}
-
-			fragmentWikiBinding.progressBar.setVisibility(View.GONE);
-		});
+							fragmentWikiBinding.progressBar.setVisibility(View.GONE);
+						});
 	}
-
 }

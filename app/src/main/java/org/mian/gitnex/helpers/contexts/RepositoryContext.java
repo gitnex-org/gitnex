@@ -4,6 +4,8 @@ import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import androidx.annotation.NonNull;
+import java.io.Serializable;
+import java.util.Objects;
 import org.gitnex.tea4j.v2.models.Permission;
 import org.mian.gitnex.activities.BaseActivity;
 import org.mian.gitnex.database.api.BaseApi;
@@ -11,8 +13,6 @@ import org.mian.gitnex.database.api.RepositoriesApi;
 import org.mian.gitnex.database.models.Repository;
 import org.mian.gitnex.helpers.AppUtil;
 import org.mian.gitnex.helpers.TinyDB;
-import java.io.Serializable;
-import java.util.Objects;
 
 /**
  * @author qwerty287
@@ -93,7 +93,7 @@ public class RepositoryContext implements Serializable {
 
 	public void setRepository(org.gitnex.tea4j.v2.models.Repository repository) {
 		this.repository = repository;
-		if(!repository.getFullName().equalsIgnoreCase(getFullName())) {
+		if (!repository.getFullName().equalsIgnoreCase(getFullName())) {
 			throw new IllegalArgumentException("repo does not match owner and name");
 		}
 	}
@@ -191,13 +191,17 @@ public class RepositoryContext implements Serializable {
 	}
 
 	public Repository loadRepositoryModel(Context context) {
-		repositoryModel = Objects.requireNonNull(BaseApi.getInstance(context, RepositoriesApi.class)).fetchRepositoryById(repositoryId);
+		repositoryModel =
+				Objects.requireNonNull(BaseApi.getInstance(context, RepositoriesApi.class))
+						.fetchRepositoryById(repositoryId);
 		return repositoryModel;
 	}
 
 	public void checkAccountSwitch(Context context) {
-		if(((BaseActivity) context).getAccount().getAccount().getAccountId() != account.getAccount().getAccountId() && account.getAccount().getAccountId() == TinyDB.getInstance(context)
-			.getInt("currentActiveAccountId")) {
+		if (((BaseActivity) context).getAccount().getAccount().getAccountId()
+						!= account.getAccount().getAccountId()
+				&& account.getAccount().getAccountId()
+						== TinyDB.getInstance(context).getInt("currentActiveAccountId")) {
 			// user changed account using a deep link or a submodule
 			AppUtil.switchToAccount(context, account.getAccount());
 		}
@@ -223,32 +227,35 @@ public class RepositoryContext implements Serializable {
 		RepositoriesApi repositoryData = BaseApi.getInstance(context, RepositoriesApi.class);
 
 		assert repositoryData != null;
-		Repository getMostVisitedValue = repositoryData.getRepository(currentActiveAccountId, getOwner(), getName());
+		Repository getMostVisitedValue =
+				repositoryData.getRepository(currentActiveAccountId, getOwner(), getName());
 
-		if(getMostVisitedValue == null) {
-			long id = repositoryData.insertRepository(currentActiveAccountId, getOwner(), getName(), 1);
+		if (getMostVisitedValue == null) {
+			long id =
+					repositoryData.insertRepository(
+							currentActiveAccountId, getOwner(), getName(), 1);
 			setRepositoryId((int) id);
 			return (int) id;
-		}
-		else {
-			Repository data = repositoryData.getRepository(currentActiveAccountId, getOwner(), getName());
+		} else {
+			Repository data =
+					repositoryData.getRepository(currentActiveAccountId, getOwner(), getName());
 			setRepositoryId(data.getRepositoryId());
-			repositoryData.updateRepositoryMostVisited(getMostVisitedValue.getMostVisited() + 1, data.getRepositoryId());
+			repositoryData.updateRepositoryMostVisited(
+					getMostVisitedValue.getMostVisited() + 1, data.getRepositoryId());
 			return data.getRepositoryId();
 		}
 	}
 
 	public enum State {
-		OPEN, CLOSED;
+		OPEN,
+		CLOSED;
 
-		@NonNull
-		@Override
+		@NonNull @Override
 		public String toString() {
-			if(this == OPEN) {
+			if (this == OPEN) {
 				return "open";
 			}
 			return "closed";
 		}
 	}
-
 }

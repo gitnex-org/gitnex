@@ -15,6 +15,10 @@ import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
+import java.util.Objects;
 import org.apache.commons.lang3.StringUtils;
 import org.gitnex.tea4j.v2.models.NotificationThread;
 import org.mian.gitnex.R;
@@ -29,17 +33,14 @@ import org.mian.gitnex.helpers.SimpleCallback;
 import org.mian.gitnex.helpers.Toasty;
 import org.mian.gitnex.helpers.contexts.IssueContext;
 import org.mian.gitnex.helpers.contexts.RepositoryContext;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
-import java.util.Objects;
 
 /**
  * @author opyale
  * @author M M Arif
  */
-
-public class NotificationsFragment extends Fragment implements NotificationsAdapter.OnNotificationClickedListener, NotificationsAdapter.OnMoreClickedListener {
+public class NotificationsFragment extends Fragment
+		implements NotificationsAdapter.OnNotificationClickedListener,
+				NotificationsAdapter.OnMoreClickedListener {
 
 	private final List<NotificationThread> notificationThreads = new ArrayList<>();
 	private FragmentNotificationsBinding viewBinding;
@@ -59,9 +60,11 @@ public class NotificationsFragment extends Fragment implements NotificationsAdap
 		super.onCreate(savedInstanceState);
 	}
 
-	@Nullable
-	@Override
-	public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
+	@Nullable @Override
+	public View onCreateView(
+			@NonNull LayoutInflater inflater,
+			@Nullable ViewGroup container,
+			@Nullable Bundle savedInstanceState) {
 
 		viewBinding = FragmentNotificationsBinding.inflate(inflater, container, false);
 		setHasOptionsMenu(true);
@@ -79,50 +82,67 @@ public class NotificationsFragment extends Fragment implements NotificationsAdap
 		viewBinding.notifications.setLayoutManager(linearLayoutManager);
 		viewBinding.notifications.setAdapter(notificationsAdapter);
 
-		viewBinding.notifications.addOnScrollListener(new RecyclerView.OnScrollListener() {
+		viewBinding.notifications.addOnScrollListener(
+				new RecyclerView.OnScrollListener() {
 
-			@Override
-			public void onScrolled(@NonNull RecyclerView recyclerView, int dx, int dy) {
+					@Override
+					public void onScrolled(@NonNull RecyclerView recyclerView, int dx, int dy) {
 
-				if(!recyclerView.canScrollVertically(1) && dy != 0) {
-					pageCurrentIndex++;
-					loadNotifications(true);
-				}
+						if (!recyclerView.canScrollVertically(1) && dy != 0) {
+							pageCurrentIndex++;
+							loadNotifications(true);
+						}
 
-				if(currentFilterMode.equalsIgnoreCase("unread")) {
-					if(dy > 0 && viewBinding.markAllAsRead.isShown()) {
-						viewBinding.markAllAsRead.setVisibility(View.GONE);
+						if (currentFilterMode.equalsIgnoreCase("unread")) {
+							if (dy > 0 && viewBinding.markAllAsRead.isShown()) {
+								viewBinding.markAllAsRead.setVisibility(View.GONE);
+							} else if (dy < 0) {
+								viewBinding.markAllAsRead.setVisibility(View.VISIBLE);
+							}
+						}
 					}
-					else if(dy < 0) {
-						viewBinding.markAllAsRead.setVisibility(View.VISIBLE);
-					}
-				}
-			}
 
-			@Override
-			public void onScrollStateChanged(@NonNull RecyclerView recyclerView, int newState) {
-				super.onScrollStateChanged(recyclerView, newState);
-			}
-		});
+					@Override
+					public void onScrollStateChanged(
+							@NonNull RecyclerView recyclerView, int newState) {
+						super.onScrollStateChanged(recyclerView, newState);
+					}
+				});
 
 		viewBinding.markAllAsRead.setOnClickListener(
-			v1 -> RetrofitClient.getApiInterface(context).notifyReadList(null, "false", Arrays.asList("unread", "pinned"), "read").enqueue((SimpleCallback<List<NotificationThread>>) (call, voidResponse) -> {
+				v1 ->
+						RetrofitClient.getApiInterface(context)
+								.notifyReadList(
+										null, "false", Arrays.asList("unread", "pinned"), "read")
+								.enqueue(
+										(SimpleCallback<List<NotificationThread>>)
+												(call, voidResponse) -> {
+													if (voidResponse.isPresent()
+															&& voidResponse.get().isSuccessful()) {
+														Toasty.success(
+																context,
+																getString(
+																		R.string
+																				.markedNotificationsAsRead));
+														pageCurrentIndex = 1;
+														loadNotifications(false);
+													} else {
+														activity.runOnUiThread(
+																() ->
+																		Toasty.error(
+																				context,
+																				getString(
+																						R.string
+																								.genericError)));
+													}
+												}));
 
-				if(voidResponse.isPresent() && voidResponse.get().isSuccessful()) {
-					Toasty.success(context, getString(R.string.markedNotificationsAsRead));
+		viewBinding.pullToRefresh.setOnRefreshListener(
+				() -> {
+					viewBinding.pullToRefresh.setRefreshing(false);
 					pageCurrentIndex = 1;
 					loadNotifications(false);
-				}
-				else {
-					activity.runOnUiThread(() -> Toasty.error(context, getString(R.string.genericError)));
-				}
-			}));
-
-		viewBinding.pullToRefresh.setOnRefreshListener(() -> {
-			viewBinding.pullToRefresh.setRefreshing(false);
-			pageCurrentIndex = 1;
-			loadNotifications(false);
-		});
+				});
 
 		loadNotifications(true);
 		return viewBinding.getRoot();
@@ -132,59 +152,76 @@ public class NotificationsFragment extends Fragment implements NotificationsAdap
 
 		viewBinding.noDataNotifications.setVisibility(View.GONE);
 		viewBinding.progressBar.setVisibility(View.VISIBLE);
-		String[] filter = currentFilterMode.equals("read") ? new String[]{"pinned", "read"} : new String[]{"pinned", "unread"};
+		String[] filter =
+				currentFilterMode.equals("read")
+						? new String[] {"pinned", "read"}
+						: new String[] {"pinned", "unread"};
 
-		RetrofitClient.getApiInterface(context).notifyGetList(false, Arrays.asList(filter), null, null, null, pageCurrentIndex, pageResultLimit)
-			.enqueue((SimpleCallback<List<NotificationThread>>) (call1, listResponse) -> {
+		RetrofitClient.getApiInterface(context)
+				.notifyGetList(
+						false,
+						Arrays.asList(filter),
+						null,
+						null,
+						null,
+						pageCurrentIndex,
+						pageResultLimit)
+				.enqueue(
+						(SimpleCallback<List<NotificationThread>>)
+								(call1, listResponse) -> {
+									if (listResponse.isPresent()
+											&& listResponse.get().isSuccessful()
+											&& listResponse.get().body() != null) {
+										if (!append) {
+											notificationThreads.clear();
+										}
 
-				if(listResponse.isPresent() && listResponse.get().isSuccessful() && listResponse.get().body() != null) {
-					if(!append) {
-						notificationThreads.clear();
-					}
+										if (listResponse.get().body() != null) {
+											notificationThreads.addAll(
+													Objects.requireNonNull(
+															listResponse.get().body()));
+										} else {
+											notificationsAdapter.setMoreDataAvailable(false);
+										}
 
+										if (!append
+												|| Objects.requireNonNull(listResponse.get().body())
+																.size()
+														> 0) {
+											notificationsAdapter.notifyDataChanged();
+										}
+									}
 
-					if(listResponse.get().body() != null) {
-						notificationThreads.addAll(Objects.requireNonNull(listResponse.get().body()));
-					}
-					else {
-						notificationsAdapter.setMoreDataAvailable(false);
-					}
+									AppUtil.setMultiVisibility(View.GONE, viewBinding.progressBar);
 
-					if(!append || Objects.requireNonNull(listResponse.get().body()).size() > 0) {
-						notificationsAdapter.notifyDataChanged();
-					}
-				}
+									if (notificationThreads.isEmpty()) {
+										viewBinding.noDataNotifications.setVisibility(View.VISIBLE);
+									} else {
+										viewBinding.noDataNotifications.setVisibility(View.GONE);
+									}
 
-				AppUtil.setMultiVisibility(View.GONE, viewBinding.progressBar);
-
-				if(notificationThreads.isEmpty()) {
-					viewBinding.noDataNotifications.setVisibility(View.VISIBLE);
-				}
-				else {
-					viewBinding.noDataNotifications.setVisibility(View.GONE);
-				}
-
-				if(currentFilterMode.equalsIgnoreCase("unread")) {
-					if(notificationThreads.isEmpty()) {
-						viewBinding.markAllAsRead.setVisibility(View.GONE);
-					}
-					else {
-						viewBinding.markAllAsRead.setVisibility(View.VISIBLE);
-					}
-				}
-			});
+									if (currentFilterMode.equalsIgnoreCase("unread")) {
+										if (notificationThreads.isEmpty()) {
+											viewBinding.markAllAsRead.setVisibility(View.GONE);
+										} else {
+											viewBinding.markAllAsRead.setVisibility(View.VISIBLE);
+										}
+									}
+								});
 	}
 
 	private void changeFilterMode() {
 
-		int filterIcon = currentFilterMode.equalsIgnoreCase("read") ? R.drawable.ic_filter_closed : R.drawable.ic_filter;
+		int filterIcon =
+				currentFilterMode.equalsIgnoreCase("read")
+						? R.drawable.ic_filter_closed
+						: R.drawable.ic_filter;
 
 		menu.getItem(0).setIcon(filterIcon);
 
-		if(currentFilterMode.equalsIgnoreCase("read")) {
+		if (currentFilterMode.equalsIgnoreCase("read")) {
 			viewBinding.markAllAsRead.setVisibility(View.GONE);
-		}
-		else {
+		} else {
 			viewBinding.markAllAsRead.setVisibility(View.VISIBLE);
 		}
 	}
@@ -202,17 +239,19 @@ public class NotificationsFragment extends Fragment implements NotificationsAdap
 	@Override
 	public boolean onOptionsItemSelected(@NonNull MenuItem item) {
 
-		if(item.getItemId() == R.id.filterNotifications) {
+		if (item.getItemId() == R.id.filterNotifications) {
 
-			BottomSheetNotificationsFilterFragment bottomSheetNotificationsFilterFragment = new BottomSheetNotificationsFilterFragment();
-			bottomSheetNotificationsFilterFragment.show(getChildFragmentManager(), "notificationsFilterBottomSheet");
-			bottomSheetNotificationsFilterFragment.setOnClickListener((text) -> {
-				currentFilterMode = text;
-				changeFilterMode();
-				pageCurrentIndex = 1;
-				loadNotifications(false);
-
-			});
+			BottomSheetNotificationsFilterFragment bottomSheetNotificationsFilterFragment =
+					new BottomSheetNotificationsFilterFragment();
+			bottomSheetNotificationsFilterFragment.show(
+					getChildFragmentManager(), "notificationsFilterBottomSheet");
+			bottomSheetNotificationsFilterFragment.setOnClickListener(
+					(text) -> {
+						currentFilterMode = text;
+						changeFilterMode();
+						pageCurrentIndex = 1;
+						loadNotifications(false);
+					});
 			return true;
 		}
 		return super.onOptionsItemSelected(item);
@@ -221,42 +260,65 @@ public class NotificationsFragment extends Fragment implements NotificationsAdap
 	@Override
 	public void onNotificationClicked(NotificationThread notificationThread) {
 
-		if(notificationThread.isUnread() && !notificationThread.isPinned()) {
-			RetrofitClient.getApiInterface(context).notifyReadThread(String.valueOf(notificationThread.getId()), "read").enqueue((SimpleCallback<NotificationThread>) (call, voidResponse) -> {
-				// reload without any checks, because Gitea returns a 205 and Java expects this to be empty
-				// but Gitea send a response -> results in a call of onFailure and no response is present
-				//if(voidResponse.isPresent() && voidResponse.get().isSuccessful()) {
-				pageCurrentIndex = 1;
-				loadNotifications(false);
-				//}
-			});
+		if (notificationThread.isUnread() && !notificationThread.isPinned()) {
+			RetrofitClient.getApiInterface(context)
+					.notifyReadThread(String.valueOf(notificationThread.getId()), "read")
+					.enqueue(
+							(SimpleCallback<NotificationThread>)
+									(call, voidResponse) -> {
+										// reload without any checks, because Gitea returns a 205
+										// and Java expects this to be empty
+										// but Gitea send a response -> results in a call of
+										// onFailure and no response is present
+										// if(voidResponse.isPresent() &&
+										// voidResponse.get().isSuccessful()) {
+										pageCurrentIndex = 1;
+										loadNotifications(false);
+										// }
+									});
 		}
 
-		if(StringUtils.containsAny(notificationThread.getSubject().getType().toLowerCase(), "pull", "issue")) {
+		if (StringUtils.containsAny(
+				notificationThread.getSubject().getType().toLowerCase(), "pull", "issue")) {
 
-			RepositoryContext repo = new RepositoryContext(notificationThread.getRepository().getOwner().getLogin(), notificationThread.getRepository().getName(),
-				context); // we can't use the repository object here directly because the permissions are missing
+			RepositoryContext repo =
+					new RepositoryContext(
+							notificationThread.getRepository().getOwner().getLogin(),
+							notificationThread.getRepository().getName(),
+							context); // we can't use the repository object here directly because
+			// the permissions are missing
 			String issueUrl = notificationThread.getSubject().getUrl();
 
 			repo.saveToDB(context);
 
-			Intent intent = new IssueContext(repo, Integer.parseInt(issueUrl.substring(issueUrl.lastIndexOf("/") + 1)), notificationThread.getSubject().getType()).getIntent(context, IssueDetailActivity.class);
+			Intent intent =
+					new IssueContext(
+									repo,
+									Integer.parseInt(
+											issueUrl.substring(issueUrl.lastIndexOf("/") + 1)),
+									notificationThread.getSubject().getType())
+							.getIntent(context, IssueDetailActivity.class);
 			intent.putExtra("openedFromLink", "true");
 			startActivity(intent);
-		}
-		else if(notificationThread.getSubject().getType().equalsIgnoreCase("repository")) {
-			startActivity(new RepositoryContext(notificationThread.getRepository(), context).getIntent(context, RepoDetailActivity.class));
+		} else if (notificationThread.getSubject().getType().equalsIgnoreCase("repository")) {
+			startActivity(
+					new RepositoryContext(notificationThread.getRepository(), context)
+							.getIntent(context, RepoDetailActivity.class));
 		}
 	}
 
 	@Override
 	public void onMoreClicked(NotificationThread notificationThread) {
-		BottomSheetNotificationsFragment bottomSheetNotificationsFragment = new BottomSheetNotificationsFragment();
-		bottomSheetNotificationsFragment.onAttach(context, notificationThread, () -> {
-			pageCurrentIndex = 1;
-			loadNotifications(false);
-		});
-		bottomSheetNotificationsFragment.show(getChildFragmentManager(), "notificationsBottomSheet");
+		BottomSheetNotificationsFragment bottomSheetNotificationsFragment =
+				new BottomSheetNotificationsFragment();
+		bottomSheetNotificationsFragment.onAttach(
+				context,
+				notificationThread,
+				() -> {
+					pageCurrentIndex = 1;
+					loadNotifications(false);
+				});
+		bottomSheetNotificationsFragment.show(
+				getChildFragmentManager(), "notificationsBottomSheet");
 	}
-
 }

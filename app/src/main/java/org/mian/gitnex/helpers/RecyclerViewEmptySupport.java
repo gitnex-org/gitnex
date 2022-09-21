@@ -8,29 +8,28 @@ import androidx.recyclerview.widget.RecyclerView;
 /**
  * @author com.github.abumoallim, modified by M M Arif
  */
-
 public class RecyclerViewEmptySupport extends RecyclerView {
 
 	private View emptyView;
 
-	final private AdapterDataObserver observer = new AdapterDataObserver() {
+	private final AdapterDataObserver observer =
+			new AdapterDataObserver() {
 
-		@Override
-		public void onChanged() {
-			checkIfEmpty();
-		}
+				@Override
+				public void onChanged() {
+					checkIfEmpty();
+				}
 
-		@Override
-		public void onItemRangeInserted(int positionStart, int itemCount) {
-			checkIfEmpty();
-		}
+				@Override
+				public void onItemRangeInserted(int positionStart, int itemCount) {
+					checkIfEmpty();
+				}
 
-		@Override
-		public void onItemRangeRemoved(int positionStart, int itemCount) {
-			checkIfEmpty();
-		}
-
-	};
+				@Override
+				public void onItemRangeRemoved(int positionStart, int itemCount) {
+					checkIfEmpty();
+				}
+			};
 
 	public RecyclerViewEmptySupport(Context context) {
 		super(context);
@@ -46,33 +45,30 @@ public class RecyclerViewEmptySupport extends RecyclerView {
 
 	void checkIfEmpty() {
 
-		if(emptyView != null && getAdapter() != null) {
+		if (emptyView != null && getAdapter() != null) {
 			final boolean emptyViewVisible = getAdapter().getItemCount() == 0;
 			emptyView.setVisibility(emptyViewVisible ? VISIBLE : GONE);
 			setVisibility(emptyViewVisible ? GONE : VISIBLE);
 		}
-
 	}
 
 	@Override
 	public void setAdapter(Adapter adapter) {
 
 		final Adapter<?> oldAdapter = getAdapter();
-		if(oldAdapter != null) {
+		if (oldAdapter != null) {
 			oldAdapter.unregisterAdapterDataObserver(observer);
 		}
 		super.setAdapter(adapter);
-		if(adapter != null) {
+		if (adapter != null) {
 			adapter.registerAdapterDataObserver(observer);
 		}
 
 		checkIfEmpty();
-
 	}
 
 	public void setEmptyView(View emptyView) {
 		this.emptyView = emptyView;
 		checkIfEmpty();
 	}
-
 }

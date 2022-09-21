@@ -27,7 +27,6 @@ import org.mian.gitnex.viewmodels.TeamsByOrgViewModel;
 /**
  * @author M M Arif
  */
-
 public class OrganizationTeamsFragment extends Fragment {
 
 	private TeamsByOrgViewModel teamsByOrgViewModel;
@@ -41,10 +40,10 @@ public class OrganizationTeamsFragment extends Fragment {
 	private OrganizationPermissions permissions;
 	private OrganizationTeamsAdapter adapter;
 
-	public OrganizationTeamsFragment() {
-	}
+	public OrganizationTeamsFragment() {}
 
-	public static OrganizationTeamsFragment newInstance(String param1, OrganizationPermissions permissions) {
+	public static OrganizationTeamsFragment newInstance(
+			String param1, OrganizationPermissions permissions) {
 		OrganizationTeamsFragment fragment = new OrganizationTeamsFragment();
 		Bundle args = new Bundle();
 		args.putString(orgNameF, param1);
@@ -56,16 +55,18 @@ public class OrganizationTeamsFragment extends Fragment {
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
-		if(getArguments() != null) {
+		if (getArguments() != null) {
 			orgName = getArguments().getString(orgNameF);
 			permissions = (OrganizationPermissions) getArguments().getSerializable("permissions");
 		}
 	}
 
 	@Override
-	public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
+	public View onCreateView(
+			@NonNull LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
 
-		FragmentOrganizationTeamsBinding fragmentTeamsByOrgBinding = FragmentOrganizationTeamsBinding.inflate(inflater, container, false);
+		FragmentOrganizationTeamsBinding fragmentTeamsByOrgBinding =
+				FragmentOrganizationTeamsBinding.inflate(inflater, container, false);
 		setHasOptionsMenu(true);
 		teamsByOrgViewModel = new ViewModelProvider(this).get(TeamsByOrgViewModel.class);
 
@@ -79,12 +80,19 @@ public class OrganizationTeamsFragment extends Fragment {
 
 		mProgressBar = fragmentTeamsByOrgBinding.progressBar;
 
-		swipeRefresh.setOnRefreshListener(() -> new Handler(Looper.getMainLooper()).postDelayed(() -> {
-
-			swipeRefresh.setRefreshing(false);
-			teamsByOrgViewModel.loadTeamsByOrgList(orgName, getContext(), noDataTeams, mProgressBar);
-
-		}, 200));
+		swipeRefresh.setOnRefreshListener(
+				() ->
+						new Handler(Looper.getMainLooper())
+								.postDelayed(
+										() -> {
+											swipeRefresh.setRefreshing(false);
+											teamsByOrgViewModel.loadTeamsByOrgList(
+													orgName,
+													getContext(),
+													noDataTeams,
+													mProgressBar);
+										},
+										200));
 
 		fetchDataAsync(orgName);
 
@@ -94,28 +102,33 @@ public class OrganizationTeamsFragment extends Fragment {
 	@Override
 	public void onResume() {
 		super.onResume();
-		if(resumeTeams) {
-			teamsByOrgViewModel.loadTeamsByOrgList(orgName, getContext(), noDataTeams, mProgressBar);
+		if (resumeTeams) {
+			teamsByOrgViewModel.loadTeamsByOrgList(
+					orgName, getContext(), noDataTeams, mProgressBar);
 			resumeTeams = false;
 		}
 	}
 
 	private void fetchDataAsync(String owner) {
 
-		teamsByOrgViewModel.getTeamsByOrg(owner, getContext(), noDataTeams, mProgressBar).observe(getViewLifecycleOwner(), orgTeamsListMain -> {
-			adapter = new OrganizationTeamsAdapter(getContext(), orgTeamsListMain, permissions, orgName);
-			if(adapter.getItemCount() > 0) {
-				mRecyclerView.setAdapter(adapter);
-				noDataTeams.setVisibility(View.GONE);
-			}
-			else {
-				adapter.notifyDataSetChanged();
-				mRecyclerView.setAdapter(adapter);
-				noDataTeams.setVisibility(View.VISIBLE);
-			}
-			mProgressBar.setVisibility(View.GONE);
-		});
-
+		teamsByOrgViewModel
+				.getTeamsByOrg(owner, getContext(), noDataTeams, mProgressBar)
+				.observe(
+						getViewLifecycleOwner(),
+						orgTeamsListMain -> {
+							adapter =
+									new OrganizationTeamsAdapter(
+											getContext(), orgTeamsListMain, permissions, orgName);
+							if (adapter.getItemCount() > 0) {
+								mRecyclerView.setAdapter(adapter);
+								noDataTeams.setVisibility(View.GONE);
+							} else {
+								adapter.notifyDataSetChanged();
+								mRecyclerView.setAdapter(adapter);
+								noDataTeams.setVisibility(View.VISIBLE);
+							}
+							mProgressBar.setVisibility(View.GONE);
+						});
 	}
 
 	@Override
@@ -125,24 +138,24 @@ public class OrganizationTeamsFragment extends Fragment {
 		super.onCreateOptionsMenu(menu, inflater);
 
 		MenuItem searchItem = menu.findItem(R.id.action_search);
-		androidx.appcompat.widget.SearchView searchView = (androidx.appcompat.widget.SearchView) searchItem.getActionView();
+		androidx.appcompat.widget.SearchView searchView =
+				(androidx.appcompat.widget.SearchView) searchItem.getActionView();
 		searchView.setImeOptions(EditorInfo.IME_ACTION_DONE);
 
-		searchView.setOnQueryTextListener(new androidx.appcompat.widget.SearchView.OnQueryTextListener() {
-			@Override
-			public boolean onQueryTextSubmit(String query) {
-				return false;
-			}
+		searchView.setOnQueryTextListener(
+				new androidx.appcompat.widget.SearchView.OnQueryTextListener() {
+					@Override
+					public boolean onQueryTextSubmit(String query) {
+						return false;
+					}
 
-			@Override
-			public boolean onQueryTextChange(String newText) {
-				if(mRecyclerView.getAdapter() != null) {
-					adapter.getFilter().filter(newText);
-				}
-				return false;
-			}
-		});
-
+					@Override
+					public boolean onQueryTextChange(String newText) {
+						if (mRecyclerView.getAdapter() != null) {
+							adapter.getFilter().filter(newText);
+						}
+						return false;
+					}
+				});
 	}
-
 }

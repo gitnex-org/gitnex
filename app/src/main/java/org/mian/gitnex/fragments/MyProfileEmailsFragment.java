@@ -21,7 +21,6 @@ import org.mian.gitnex.viewmodels.ProfileEmailsViewModel;
 /**
  * @author M M Arif
  */
-
 public class MyProfileEmailsFragment extends Fragment {
 
 	public static boolean refreshEmails = false;
@@ -31,13 +30,14 @@ public class MyProfileEmailsFragment extends Fragment {
 	private RecyclerView mRecyclerView;
 	private TextView noDataEmails;
 
-	public MyProfileEmailsFragment() {
-	}
+	public MyProfileEmailsFragment() {}
 
 	@Override
-	public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
+	public View onCreateView(
+			@NonNull LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
 
-		FragmentProfileEmailsBinding fragmentProfileEmailsBinding = FragmentProfileEmailsBinding.inflate(inflater, container, false);
+		FragmentProfileEmailsBinding fragmentProfileEmailsBinding =
+				FragmentProfileEmailsBinding.inflate(inflater, container, false);
 		profileEmailsViewModel = new ViewModelProvider(this).get(ProfileEmailsViewModel.class);
 
 		final SwipeRefreshLayout swipeRefresh = fragmentProfileEmailsBinding.pullToRefresh;
@@ -50,12 +50,15 @@ public class MyProfileEmailsFragment extends Fragment {
 
 		mProgressBar = fragmentProfileEmailsBinding.progressBar;
 
-		swipeRefresh.setOnRefreshListener(() -> new Handler(Looper.getMainLooper()).postDelayed(() -> {
-
-			swipeRefresh.setRefreshing(false);
-			profileEmailsViewModel.loadEmailsList(getContext());
-
-		}, 200));
+		swipeRefresh.setOnRefreshListener(
+				() ->
+						new Handler(Looper.getMainLooper())
+								.postDelayed(
+										() -> {
+											swipeRefresh.setRefreshing(false);
+											profileEmailsViewModel.loadEmailsList(getContext());
+										},
+										200));
 
 		fetchDataAsync();
 
@@ -64,30 +67,31 @@ public class MyProfileEmailsFragment extends Fragment {
 
 	private void fetchDataAsync() {
 
-		profileEmailsViewModel.getEmailsList(getContext()).observe(getViewLifecycleOwner(), emailsListMain -> {
-			adapter = new MyProfileEmailsAdapter(getContext(), emailsListMain);
-			if(adapter.getItemCount() > 0) {
-				mRecyclerView.setAdapter(adapter);
-				noDataEmails.setVisibility(View.GONE);
-			}
-			else {
-				adapter.notifyDataSetChanged();
-				mRecyclerView.setAdapter(adapter);
-				noDataEmails.setVisibility(View.VISIBLE);
-			}
-			mProgressBar.setVisibility(View.GONE);
-		});
-
+		profileEmailsViewModel
+				.getEmailsList(getContext())
+				.observe(
+						getViewLifecycleOwner(),
+						emailsListMain -> {
+							adapter = new MyProfileEmailsAdapter(getContext(), emailsListMain);
+							if (adapter.getItemCount() > 0) {
+								mRecyclerView.setAdapter(adapter);
+								noDataEmails.setVisibility(View.GONE);
+							} else {
+								adapter.notifyDataSetChanged();
+								mRecyclerView.setAdapter(adapter);
+								noDataEmails.setVisibility(View.VISIBLE);
+							}
+							mProgressBar.setVisibility(View.GONE);
+						});
 	}
 
 	@Override
 	public void onResume() {
 		super.onResume();
 
-		if(refreshEmails) {
+		if (refreshEmails) {
 			profileEmailsViewModel.loadEmailsList(getContext());
 			refreshEmails = false;
 		}
 	}
-
 }

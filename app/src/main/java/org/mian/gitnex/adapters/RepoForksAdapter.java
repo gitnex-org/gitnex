@@ -14,6 +14,10 @@ import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 import com.amulyakhare.textdrawable.TextDrawable;
 import com.amulyakhare.textdrawable.util.ColorGenerator;
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
+import java.util.List;
+import java.util.Locale;
 import org.mian.gitnex.R;
 import org.mian.gitnex.activities.RepoDetailActivity;
 import org.mian.gitnex.clients.PicassoService;
@@ -24,15 +28,10 @@ import org.mian.gitnex.helpers.TimeHelper;
 import org.mian.gitnex.helpers.TinyDB;
 import org.mian.gitnex.helpers.contexts.RepositoryContext;
 import org.ocpsoft.prettytime.PrettyTime;
-import java.text.DateFormat;
-import java.text.SimpleDateFormat;
-import java.util.List;
-import java.util.Locale;
 
 /**
  * @author M M Arif
  */
-
 public class RepoForksAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
 
 	private final Context context;
@@ -41,23 +40,27 @@ public class RepoForksAdapter extends RecyclerView.Adapter<RecyclerView.ViewHold
 	private boolean isLoading = false;
 	private boolean isMoreDataAvailable = true;
 
-	public RepoForksAdapter(Context ctx, List<org.gitnex.tea4j.v2.models.Repository> forksListMain) {
+	public RepoForksAdapter(
+			Context ctx, List<org.gitnex.tea4j.v2.models.Repository> forksListMain) {
 
 		this.context = ctx;
 		this.forksList = forksListMain;
 	}
 
-	@NonNull
-	@Override
+	@NonNull @Override
 	public RecyclerView.ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
 		LayoutInflater inflater = LayoutInflater.from(context);
-		return new RepoForksAdapter.ForksHolder(inflater.inflate(R.layout.list_repositories, parent, false));
+		return new RepoForksAdapter.ForksHolder(
+				inflater.inflate(R.layout.list_repositories, parent, false));
 	}
 
 	@Override
 	public void onBindViewHolder(@NonNull RecyclerView.ViewHolder holder, int position) {
 
-		if(position >= getItemCount() - 1 && isMoreDataAvailable && !isLoading && loadMoreListener != null) {
+		if (position >= getItemCount() - 1
+				&& isMoreDataAvailable
+				&& !isLoading
+				&& loadMoreListener != null) {
 			isLoading = true;
 			loadMoreListener.run();
 		}
@@ -133,74 +136,104 @@ public class RepoForksAdapter extends RecyclerView.Adapter<RecyclerView.ViewHold
 			int color = generator.getColor(forksModel.getName());
 			String firstCharacter = String.valueOf(forksModel.getFullName().charAt(0));
 
-			TextDrawable drawable = TextDrawable.builder().beginConfig().useFont(Typeface.DEFAULT).fontSize(18).toUpperCase().width(28).height(28).endConfig().buildRoundRect(firstCharacter, color, 3);
+			TextDrawable drawable =
+					TextDrawable.builder()
+							.beginConfig()
+							.useFont(Typeface.DEFAULT)
+							.fontSize(18)
+							.toUpperCase()
+							.width(28)
+							.height(28)
+							.endConfig()
+							.buildRoundRect(firstCharacter, color, 3);
 
-			if(forksModel.getAvatarUrl() != null) {
-				if(!forksModel.getAvatarUrl().equals("")) {
-					PicassoService.getInstance(context).get().load(forksModel.getAvatarUrl()).placeholder(R.drawable.loader_animated).transform(new RoundedTransformation(imgRadius, 0)).resize(120, 120).centerCrop()
-						.into(image);
-				}
-				else {
+			if (forksModel.getAvatarUrl() != null) {
+				if (!forksModel.getAvatarUrl().equals("")) {
+					PicassoService.getInstance(context)
+							.get()
+							.load(forksModel.getAvatarUrl())
+							.placeholder(R.drawable.loader_animated)
+							.transform(new RoundedTransformation(imgRadius, 0))
+							.resize(120, 120)
+							.centerCrop()
+							.into(image);
+				} else {
 					image.setImageDrawable(drawable);
 				}
-			}
-			else {
+			} else {
 				image.setImageDrawable(drawable);
 			}
 
-			if(forksModel.getUpdatedAt() != null) {
+			if (forksModel.getUpdatedAt() != null) {
 
-				switch(timeFormat) {
-					case "pretty": {
-						PrettyTime prettyTime = new PrettyTime(locale);
-						String createdTime = prettyTime.format(forksModel.getUpdatedAt());
-						repoLastUpdated.setText(context.getString(R.string.lastUpdatedAt, createdTime));
-						repoLastUpdated.setOnClickListener(new ClickListener(TimeHelper.customDateFormatForToastDateFormat(forksModel.getUpdatedAt()), context));
-						break;
-					}
-					case "normal": {
-						DateFormat formatter = new SimpleDateFormat("yyyy-MM-dd '" + context.getResources().getString(R.string.timeAtText) + "' HH:mm", locale);
-						String createdTime = formatter.format(forksModel.getUpdatedAt());
-						repoLastUpdated.setText(context.getString(R.string.lastUpdatedAt, createdTime));
-						break;
-					}
-					case "normal1": {
-						DateFormat formatter = new SimpleDateFormat("dd-MM-yyyy '" + context.getResources().getString(R.string.timeAtText) + "' HH:mm", locale);
-						String createdTime = formatter.format(forksModel.getUpdatedAt());
-						repoLastUpdated.setText(context.getString(R.string.lastUpdatedAt, createdTime));
-						break;
-					}
+				switch (timeFormat) {
+					case "pretty":
+						{
+							PrettyTime prettyTime = new PrettyTime(locale);
+							String createdTime = prettyTime.format(forksModel.getUpdatedAt());
+							repoLastUpdated.setText(
+									context.getString(R.string.lastUpdatedAt, createdTime));
+							repoLastUpdated.setOnClickListener(
+									new ClickListener(
+											TimeHelper.customDateFormatForToastDateFormat(
+													forksModel.getUpdatedAt()),
+											context));
+							break;
+						}
+					case "normal":
+						{
+							DateFormat formatter =
+									new SimpleDateFormat(
+											"yyyy-MM-dd '"
+													+ context.getResources()
+															.getString(R.string.timeAtText)
+													+ "' HH:mm",
+											locale);
+							String createdTime = formatter.format(forksModel.getUpdatedAt());
+							repoLastUpdated.setText(
+									context.getString(R.string.lastUpdatedAt, createdTime));
+							break;
+						}
+					case "normal1":
+						{
+							DateFormat formatter =
+									new SimpleDateFormat(
+											"dd-MM-yyyy '"
+													+ context.getResources()
+															.getString(R.string.timeAtText)
+													+ "' HH:mm",
+											locale);
+							String createdTime = formatter.format(forksModel.getUpdatedAt());
+							repoLastUpdated.setText(
+									context.getString(R.string.lastUpdatedAt, createdTime));
+							break;
+						}
 				}
-			}
-			else {
+			} else {
 				repoLastUpdated.setVisibility(View.GONE);
 			}
 
-			if(!forksModel.getDescription().equals("")) {
+			if (!forksModel.getDescription().equals("")) {
 				repoDescription.setText(forksModel.getDescription());
-			}
-			else {
+			} else {
 				repoDescription.setText(context.getString(R.string.noDataDescription));
 			}
 
-			if(isRepoAdmin == null) {
+			if (isRepoAdmin == null) {
 				isRepoAdmin = new CheckBox(context);
 			}
 			isRepoAdmin.setChecked(forksModel.getPermissions().isAdmin());
 
-			itemView.setOnClickListener(v -> {
+			itemView.setOnClickListener(
+					v -> {
+						Context context = v.getContext();
 
-				Context context = v.getContext();
+						RepositoryContext repo = new RepositoryContext(userRepositories, context);
+						repo.saveToDB(context);
+						Intent intent = repo.getIntent(context, RepoDetailActivity.class);
 
-				RepositoryContext repo = new RepositoryContext(userRepositories, context);
-				repo.saveToDB(context);
-				Intent intent = repo.getIntent(context, RepoDetailActivity.class);
-
-				context.startActivity(intent);
-
-			});
+						context.startActivity(intent);
+					});
 		}
-
 	}
-
 }

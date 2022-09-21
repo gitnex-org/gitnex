@@ -22,7 +22,6 @@ import org.mian.gitnex.helpers.Toasty;
 /**
  * @author M M Arif
  */
-
 public class SettingsAppearanceActivity extends BaseActivity {
 
 	private static String[] timeList;
@@ -38,7 +37,8 @@ public class SettingsAppearanceActivity extends BaseActivity {
 
 		super.onCreate(savedInstanceState);
 
-		ActivitySettingsAppearanceBinding activitySettingsAppearanceBinding = ActivitySettingsAppearanceBinding.inflate(getLayoutInflater());
+		ActivitySettingsAppearanceBinding activitySettingsAppearanceBinding =
+				ActivitySettingsAppearanceBinding.inflate(getLayoutInflater());
 		setContentView(activitySettingsAppearanceBinding.getRoot());
 
 		ImageView closeActivity = activitySettingsAppearanceBinding.close;
@@ -46,7 +46,8 @@ public class SettingsAppearanceActivity extends BaseActivity {
 		LinearLayout timeFrame = activitySettingsAppearanceBinding.timeFrame;
 		LinearLayout customFontFrame = activitySettingsAppearanceBinding.customFontFrame;
 		LinearLayout themeFrame = activitySettingsAppearanceBinding.themeSelectionFrame;
-		LinearLayout lightTimeFrame = activitySettingsAppearanceBinding.lightThemeTimeSelectionFrame;
+		LinearLayout lightTimeFrame =
+				activitySettingsAppearanceBinding.lightThemeTimeSelectionFrame;
 		LinearLayout darkTimeFrame = activitySettingsAppearanceBinding.darkThemeTimeSelectionFrame;
 
 		SwitchMaterial counterBadgesSwitch = activitySettingsAppearanceBinding.switchCounterBadge;
@@ -60,19 +61,19 @@ public class SettingsAppearanceActivity extends BaseActivity {
 
 		String lightMinute = String.valueOf(tinyDB.getInt("lightThemeTimeMinute"));
 		String lightHour = String.valueOf(tinyDB.getInt("lightThemeTimeHour"));
-		if(lightMinute.length() == 1) {
+		if (lightMinute.length() == 1) {
 			lightMinute = "0" + lightMinute;
 		}
-		if(lightHour.length() == 1) {
+		if (lightHour.length() == 1) {
 			lightHour = "0" + lightHour;
 		}
 
 		String darkMinute = String.valueOf(tinyDB.getInt("darkThemeTimeMinute"));
 		String darkHour = String.valueOf(tinyDB.getInt("darkThemeTimeHour"));
-		if(darkMinute.length() == 1) {
+		if (darkMinute.length() == 1) {
 			darkMinute = "0" + darkMinute;
 		}
-		if(darkHour.length() == 1) {
+		if (darkHour.length() == 1) {
 			darkHour = "0" + darkHour;
 		}
 
@@ -80,17 +81,21 @@ public class SettingsAppearanceActivity extends BaseActivity {
 		customFontSelectedChoice = tinyDB.getInt("customFontId", 1);
 		themeSelectedChoice = tinyDB.getInt("themeId", 6); // use system theme as default
 
-		activitySettingsAppearanceBinding.lightThemeSelectedTime.setText(ctx.getResources().getString(R.string.settingsThemeTimeSelectedHint, lightHour, lightMinute));
-		activitySettingsAppearanceBinding.darkThemeSelectedTime.setText(ctx.getResources().getString(R.string.settingsThemeTimeSelectedHint, darkHour, darkMinute));
+		activitySettingsAppearanceBinding.lightThemeSelectedTime.setText(
+				ctx.getResources()
+						.getString(R.string.settingsThemeTimeSelectedHint, lightHour, lightMinute));
+		activitySettingsAppearanceBinding.darkThemeSelectedTime.setText(
+				ctx.getResources()
+						.getString(R.string.settingsThemeTimeSelectedHint, darkHour, darkMinute));
 		activitySettingsAppearanceBinding.tvDateTimeSelected.setText(timeList[timeSelectedChoice]);
-		activitySettingsAppearanceBinding.customFontSelected.setText(customFontList[customFontSelectedChoice]);
+		activitySettingsAppearanceBinding.customFontSelected.setText(
+				customFontList[customFontSelectedChoice]);
 		activitySettingsAppearanceBinding.themeSelected.setText(themeList[themeSelectedChoice]);
 
-		if(themeList[themeSelectedChoice].startsWith("Auto")) {
+		if (themeList[themeSelectedChoice].startsWith("Auto")) {
 			darkTimeFrame.setVisibility(View.VISIBLE);
 			lightTimeFrame.setVisibility(View.VISIBLE);
-		}
-		else {
+		} else {
 			darkTimeFrame.setVisibility(View.GONE);
 			lightTimeFrame.setVisibility(View.GONE);
 		}
@@ -98,114 +103,146 @@ public class SettingsAppearanceActivity extends BaseActivity {
 		counterBadgesSwitch.setChecked(tinyDB.getBoolean("enableCounterBadges", true));
 
 		// counter badge switcher
-		counterBadgesSwitch.setOnCheckedChangeListener((buttonView, isChecked) -> {
-
-			tinyDB.putBoolean("enableCounterBadges", isChecked);
-			Toasty.success(appCtx, getResources().getString(R.string.settingsSave));
-		});
-		activitySettingsAppearanceBinding.counterBadgeFrame.setOnClickListener(v -> counterBadgesSwitch.setChecked(!counterBadgesSwitch.isChecked()));
+		counterBadgesSwitch.setOnCheckedChangeListener(
+				(buttonView, isChecked) -> {
+					tinyDB.putBoolean("enableCounterBadges", isChecked);
+					Toasty.success(appCtx, getResources().getString(R.string.settingsSave));
+				});
+		activitySettingsAppearanceBinding.counterBadgeFrame.setOnClickListener(
+				v -> counterBadgesSwitch.setChecked(!counterBadgesSwitch.isChecked()));
 
 		// show labels in lists(issues, pr) - default is color dots
-		activitySettingsAppearanceBinding.switchLabelsInListBadge.setChecked(tinyDB.getBoolean("showLabelsInList", false));
+		activitySettingsAppearanceBinding.switchLabelsInListBadge.setChecked(
+				tinyDB.getBoolean("showLabelsInList", false));
 
-		activitySettingsAppearanceBinding.switchLabelsInListBadge.setOnCheckedChangeListener((buttonView, isChecked) -> {
-
-			tinyDB.putBoolean("showLabelsInList", isChecked);
-			Toasty.success(appCtx, getResources().getString(R.string.settingsSave));
-		});
+		activitySettingsAppearanceBinding.switchLabelsInListBadge.setOnCheckedChangeListener(
+				(buttonView, isChecked) -> {
+					tinyDB.putBoolean("showLabelsInList", isChecked);
+					Toasty.success(appCtx, getResources().getString(R.string.settingsSave));
+				});
 		activitySettingsAppearanceBinding.labelsInListFrame.setOnClickListener(
-			v -> activitySettingsAppearanceBinding.switchLabelsInListBadge.setChecked(!activitySettingsAppearanceBinding.switchLabelsInListBadge.isChecked()));
+				v ->
+						activitySettingsAppearanceBinding.switchLabelsInListBadge.setChecked(
+								!activitySettingsAppearanceBinding.switchLabelsInListBadge
+										.isChecked()));
 
 		// theme selection dialog
-		themeFrame.setOnClickListener(view -> {
+		themeFrame.setOnClickListener(
+				view -> {
+					MaterialAlertDialogBuilder materialAlertDialogBuilder =
+							new MaterialAlertDialogBuilder(ctx)
+									.setTitle(R.string.themeSelectorDialogTitle)
+									.setSingleChoiceItems(
+											themeList,
+											themeSelectedChoice,
+											(dialogInterfaceTheme, i) -> {
+												themeSelectedChoice = i;
+												activitySettingsAppearanceBinding.themeSelected
+														.setText(themeList[i]);
+												tinyDB.putInt("themeId", i);
 
-			MaterialAlertDialogBuilder materialAlertDialogBuilder = new MaterialAlertDialogBuilder(ctx).setTitle(R.string.themeSelectorDialogTitle)
-				.setSingleChoiceItems(themeList, themeSelectedChoice, (dialogInterfaceTheme, i) -> {
+												SettingsFragment.refreshParent = true;
+												this.recreate();
+												this.overridePendingTransition(0, 0);
+												dialogInterfaceTheme.dismiss();
+												Toasty.success(
+														appCtx,
+														getResources()
+																.getString(R.string.settingsSave));
+											});
 
-					themeSelectedChoice = i;
-					activitySettingsAppearanceBinding.themeSelected.setText(themeList[i]);
-					tinyDB.putInt("themeId", i);
-
-					SettingsFragment.refreshParent = true;
-					this.recreate();
-					this.overridePendingTransition(0, 0);
-					dialogInterfaceTheme.dismiss();
-					Toasty.success(appCtx, getResources().getString(R.string.settingsSave));
+					materialAlertDialogBuilder.create().show();
 				});
 
-			materialAlertDialogBuilder.create().show();
-		});
+		lightTimeFrame.setOnClickListener(
+				view -> {
+					LightTimePicker timePicker = new LightTimePicker();
+					timePicker.show(getSupportFragmentManager(), "timePicker");
+				});
 
-		lightTimeFrame.setOnClickListener(view -> {
-			LightTimePicker timePicker = new LightTimePicker();
-			timePicker.show(getSupportFragmentManager(), "timePicker");
-		});
-
-		darkTimeFrame.setOnClickListener(view -> {
-			DarkTimePicker timePicker = new DarkTimePicker();
-			timePicker.show(getSupportFragmentManager(), "timePicker");
-		});
+		darkTimeFrame.setOnClickListener(
+				view -> {
+					DarkTimePicker timePicker = new DarkTimePicker();
+					timePicker.show(getSupportFragmentManager(), "timePicker");
+				});
 
 		// custom font dialog
-		customFontFrame.setOnClickListener(view -> {
+		customFontFrame.setOnClickListener(
+				view -> {
+					MaterialAlertDialogBuilder materialAlertDialogBuilder =
+							new MaterialAlertDialogBuilder(ctx)
+									.setTitle(R.string.settingsCustomFontSelectorDialogTitle)
+									.setCancelable(customFontSelectedChoice != -1)
+									.setSingleChoiceItems(
+											customFontList,
+											customFontSelectedChoice,
+											(dialogInterfaceCustomFont, i) -> {
+												customFontSelectedChoice = i;
+												activitySettingsAppearanceBinding.customFontSelected
+														.setText(customFontList[i]);
+												tinyDB.putInt("customFontId", i);
+												AppUtil.typeface = null; // reset typeface
+												FontsOverride.setDefaultFont(this);
 
-			MaterialAlertDialogBuilder materialAlertDialogBuilder = new MaterialAlertDialogBuilder(ctx).setTitle(R.string.settingsCustomFontSelectorDialogTitle).setCancelable(customFontSelectedChoice != -1)
-				.setSingleChoiceItems(customFontList, customFontSelectedChoice, (dialogInterfaceCustomFont, i) -> {
+												SettingsFragment.refreshParent = true;
+												this.recreate();
+												this.overridePendingTransition(0, 0);
+												dialogInterfaceCustomFont.dismiss();
+												Toasty.success(
+														appCtx,
+														appCtx.getResources()
+																.getString(R.string.settingsSave));
+											});
 
-					customFontSelectedChoice = i;
-					activitySettingsAppearanceBinding.customFontSelected.setText(customFontList[i]);
-					tinyDB.putInt("customFontId", i);
-					AppUtil.typeface = null; // reset typeface
-					FontsOverride.setDefaultFont(this);
-
-					SettingsFragment.refreshParent = true;
-					this.recreate();
-					this.overridePendingTransition(0, 0);
-					dialogInterfaceCustomFont.dismiss();
-					Toasty.success(appCtx, appCtx.getResources().getString(R.string.settingsSave));
+					materialAlertDialogBuilder.create().show();
 				});
-
-			materialAlertDialogBuilder.create().show();
-		});
 
 		// time and date dialog
-		timeFrame.setOnClickListener(view -> {
+		timeFrame.setOnClickListener(
+				view -> {
+					MaterialAlertDialogBuilder materialAlertDialogBuilder =
+							new MaterialAlertDialogBuilder(ctx)
+									.setTitle(R.string.settingsTimeSelectorDialogTitle)
+									.setCancelable(timeSelectedChoice != -1)
+									.setSingleChoiceItems(
+											timeList,
+											timeSelectedChoice,
+											(dialogInterfaceTime, i) -> {
+												timeSelectedChoice = i;
+												activitySettingsAppearanceBinding.tvDateTimeSelected
+														.setText(timeList[i]);
+												tinyDB.putInt("timeId", i);
 
-			MaterialAlertDialogBuilder materialAlertDialogBuilder = new MaterialAlertDialogBuilder(ctx).setTitle(R.string.settingsTimeSelectorDialogTitle).setCancelable(timeSelectedChoice != -1)
-				.setSingleChoiceItems(timeList, timeSelectedChoice, (dialogInterfaceTime, i) -> {
+												switch (i) {
+													case 0:
+														tinyDB.putString("dateFormat", "pretty");
+														break;
+													case 1:
+														tinyDB.putString("dateFormat", "normal");
+														break;
+												}
 
-					timeSelectedChoice = i;
-					activitySettingsAppearanceBinding.tvDateTimeSelected.setText(timeList[i]);
-					tinyDB.putInt("timeId", i);
+												dialogInterfaceTime.dismiss();
+												Toasty.success(
+														appCtx,
+														getResources()
+																.getString(R.string.settingsSave));
+											});
 
-					switch(i) {
-						case 0:
-							tinyDB.putString("dateFormat", "pretty");
-							break;
-						case 1:
-							tinyDB.putString("dateFormat", "normal");
-							break;
-					}
-
-					dialogInterfaceTime.dismiss();
-					Toasty.success(appCtx, getResources().getString(R.string.settingsSave));
+					materialAlertDialogBuilder.create().show();
 				});
-
-			materialAlertDialogBuilder.create().show();
-		});
-
 	}
 
 	private void initCloseListener() {
 		onClickListener = view -> finish();
 	}
 
-	public static class LightTimePicker extends DialogFragment implements TimePickerDialog.OnTimeSetListener {
+	public static class LightTimePicker extends DialogFragment
+			implements TimePickerDialog.OnTimeSetListener {
 
 		TinyDB db = TinyDB.getInstance(getContext());
 
-		@NonNull
-		@Override
+		@NonNull @Override
 		public Dialog onCreateDialog(Bundle savedInstanceState) {
 			int hour = db.getInt("lightThemeTimeHour");
 			int minute = db.getInt("lightThemeTimeMinute");
@@ -220,18 +257,19 @@ public class SettingsAppearanceActivity extends BaseActivity {
 			SettingsFragment.refreshParent = true;
 			requireActivity().overridePendingTransition(0, 0);
 			this.dismiss();
-			Toasty.success(requireActivity().getApplicationContext(), requireContext().getResources().getString(R.string.settingsSave));
+			Toasty.success(
+					requireActivity().getApplicationContext(),
+					requireContext().getResources().getString(R.string.settingsSave));
 			requireActivity().recreate();
 		}
-
 	}
 
-	public static class DarkTimePicker extends DialogFragment implements TimePickerDialog.OnTimeSetListener {
+	public static class DarkTimePicker extends DialogFragment
+			implements TimePickerDialog.OnTimeSetListener {
 
 		TinyDB db = TinyDB.getInstance(getContext());
 
-		@NonNull
-		@Override
+		@NonNull @Override
 		public Dialog onCreateDialog(Bundle savedInstanceState) {
 			int hour = db.getInt("darkThemeTimeHour");
 			int minute = db.getInt("darkThemeTimeMinute");
@@ -246,10 +284,10 @@ public class SettingsAppearanceActivity extends BaseActivity {
 			SettingsFragment.refreshParent = true;
 			requireActivity().overridePendingTransition(0, 0);
 			this.dismiss();
-			Toasty.success(requireActivity().getApplicationContext(), requireContext().getResources().getString(R.string.settingsSave));
+			Toasty.success(
+					requireActivity().getApplicationContext(),
+					requireContext().getResources().getString(R.string.settingsSave));
 			requireActivity().recreate();
 		}
-
 	}
-
 }

@@ -16,7 +16,6 @@ import org.mian.gitnex.viewmodels.RepoWatchersViewModel;
 /**
  * @author M M Arif
  */
-
 public class RepoWatchersActivity extends BaseActivity {
 
 	private TextView noDataWatchers;
@@ -32,7 +31,8 @@ public class RepoWatchersActivity extends BaseActivity {
 
 		super.onCreate(savedInstanceState);
 
-		ActivityRepoWatchersBinding activityRepoWatchersBinding = ActivityRepoWatchersBinding.inflate(getLayoutInflater());
+		ActivityRepoWatchersBinding activityRepoWatchersBinding =
+				ActivityRepoWatchersBinding.inflate(getLayoutInflater());
 		setContentView(activityRepoWatchersBinding.getRoot());
 
 		ImageView closeActivity = activityRepoWatchersBinding.close;
@@ -55,27 +55,29 @@ public class RepoWatchersActivity extends BaseActivity {
 
 	private void fetchDataAsync(String repoOwner, String repoName) {
 
-		RepoWatchersViewModel repoWatchersModel = new ViewModelProvider(this).get(RepoWatchersViewModel.class);
+		RepoWatchersViewModel repoWatchersModel =
+				new ViewModelProvider(this).get(RepoWatchersViewModel.class);
 
-		repoWatchersModel.getRepoWatchers(repoOwner, repoName, ctx).observe(this, watchersListMain -> {
+		repoWatchersModel
+				.getRepoWatchers(repoOwner, repoName, ctx)
+				.observe(
+						this,
+						watchersListMain -> {
+							adapter = new UserGridAdapter(ctx, watchersListMain);
 
-			adapter = new UserGridAdapter(ctx, watchersListMain);
+							if (adapter.getCount() > 0) {
 
-			if(adapter.getCount() > 0) {
+								mGridView.setAdapter(adapter);
+								noDataWatchers.setVisibility(View.GONE);
+							} else {
 
-				mGridView.setAdapter(adapter);
-				noDataWatchers.setVisibility(View.GONE);
-			}
-			else {
+								adapter.notifyDataSetChanged();
+								mGridView.setAdapter(adapter);
+								noDataWatchers.setVisibility(View.VISIBLE);
+							}
 
-				adapter.notifyDataSetChanged();
-				mGridView.setAdapter(adapter);
-				noDataWatchers.setVisibility(View.VISIBLE);
-			}
-
-			mProgressBar.setVisibility(View.GONE);
-		});
-
+							mProgressBar.setVisibility(View.GONE);
+						});
 	}
 
 	private void initCloseListener() {
@@ -88,5 +90,4 @@ public class RepoWatchersActivity extends BaseActivity {
 		super.onResume();
 		repository.checkAccountSwitch(this);
 	}
-
 }

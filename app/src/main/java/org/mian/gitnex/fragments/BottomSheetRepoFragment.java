@@ -19,7 +19,6 @@ import org.mian.gitnex.structs.BottomSheetListener;
 /**
  * @author M M Arif
  */
-
 public class BottomSheetRepoFragment extends BottomSheetDialogFragment {
 
 	private final RepositoryContext repository;
@@ -29,11 +28,14 @@ public class BottomSheetRepoFragment extends BottomSheetDialogFragment {
 		this.repository = repository;
 	}
 
-	@Nullable
-	@Override
-	public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
+	@Nullable @Override
+	public View onCreateView(
+			@NonNull LayoutInflater inflater,
+			@Nullable ViewGroup container,
+			@Nullable Bundle savedInstanceState) {
 
-		BottomSheetRepoBinding bottomSheetRepoBinding = BottomSheetRepoBinding.inflate(inflater, container, false);
+		BottomSheetRepoBinding bottomSheetRepoBinding =
+				BottomSheetRepoBinding.inflate(inflater, container, false);
 
 		AccountContext account = ((BaseActivity) requireActivity()).getAccount();
 
@@ -55,19 +57,19 @@ public class BottomSheetRepoFragment extends BottomSheetDialogFragment {
 		TextView createWiki = bottomSheetRepoBinding.createWiki;
 
 		boolean canPush = repository.getPermissions().isPush();
-		if(!canPush) {
+		if (!canPush) {
 			createMilestone.setVisibility(View.GONE);
 			createLabel.setVisibility(View.GONE);
 			createRelease.setVisibility(View.GONE);
 			newFile.setVisibility(View.GONE);
 		}
 
-		if(!account.requiresVersion("1.16")) {
+		if (!account.requiresVersion("1.16")) {
 			createWiki.setVisibility(View.GONE);
 		}
 
 		boolean archived = repository.getRepository().isArchived();
-		if(archived) {
+		if (archived) {
 			createIssue.setVisibility(View.GONE);
 			createPullRequest.setVisibility(View.GONE);
 			createMilestone.setVisibility(View.GONE);
@@ -77,151 +79,140 @@ public class BottomSheetRepoFragment extends BottomSheetDialogFragment {
 			createWiki.setVisibility(View.GONE);
 		}
 
-		createLabel.setOnClickListener(v112 -> {
+		createLabel.setOnClickListener(
+				v112 -> {
+					bmListener.onButtonClicked("label");
+					dismiss();
+				});
 
-			bmListener.onButtonClicked("label");
-			dismiss();
-		});
-
-		if(repository.getRepository().isHasIssues() && !archived) {
+		if (repository.getRepository().isHasIssues() && !archived) {
 
 			createIssue.setVisibility(View.VISIBLE);
-			createIssue.setOnClickListener(v12 -> {
-
-				bmListener.onButtonClicked("newIssue");
-				dismiss();
-			});
-		}
-		else {
+			createIssue.setOnClickListener(
+					v12 -> {
+						bmListener.onButtonClicked("newIssue");
+						dismiss();
+					});
+		} else {
 
 			createIssue.setVisibility(View.GONE);
 		}
 
-		if(repository.getRepository().isHasPullRequests() && !archived) {
+		if (repository.getRepository().isHasPullRequests() && !archived) {
 
 			createPullRequest.setVisibility(View.VISIBLE);
-			createPullRequest.setOnClickListener(vPr -> {
-
-				bmListener.onButtonClicked("newPullRequest");
-				dismiss();
-			});
-		}
-		else {
+			createPullRequest.setOnClickListener(
+					vPr -> {
+						bmListener.onButtonClicked("newPullRequest");
+						dismiss();
+					});
+		} else {
 
 			createPullRequest.setVisibility(View.GONE);
 		}
 
-		createMilestone.setOnClickListener(v13 -> {
+		createMilestone.setOnClickListener(
+				v13 -> {
+					bmListener.onButtonClicked("newMilestone");
+					dismiss();
+				});
 
-			bmListener.onButtonClicked("newMilestone");
-			dismiss();
-		});
+		if (repository.getPermissions().isAdmin()) {
 
-		if(repository.getPermissions().isAdmin()) {
+			repoSettings.setOnClickListener(
+					repoSettingsView -> {
+						bmListener.onButtonClicked("repoSettings");
+						dismiss();
+					});
 
-			repoSettings.setOnClickListener(repoSettingsView -> {
+			addCollaborator.setOnClickListener(
+					v1 -> {
+						bmListener.onButtonClicked("addCollaborator");
+						dismiss();
+					});
 
-				bmListener.onButtonClicked("repoSettings");
-				dismiss();
-			});
-
-			addCollaborator.setOnClickListener(v1 -> {
-
-				bmListener.onButtonClicked("addCollaborator");
-				dismiss();
-			});
-
-			createWiki.setOnClickListener(v1 -> {
-
-				bmListener.onButtonClicked("createWiki");
-				dismiss();
-			});
-		}
-		else {
+			createWiki.setOnClickListener(
+					v1 -> {
+						bmListener.onButtonClicked("createWiki");
+						dismiss();
+					});
+		} else {
 
 			addCollaborator.setVisibility(View.GONE);
 			repoSettings.setVisibility(View.GONE);
 			createWiki.setVisibility(View.GONE);
 		}
 
-		createRelease.setOnClickListener(v14 -> {
+		createRelease.setOnClickListener(
+				v14 -> {
+					bmListener.onButtonClicked("createRelease");
+					dismiss();
+				});
 
-			bmListener.onButtonClicked("createRelease");
-			dismiss();
-		});
+		shareRepository.setOnClickListener(
+				v15 -> {
+					bmListener.onButtonClicked("shareRepo");
+					dismiss();
+				});
 
-		shareRepository.setOnClickListener(v15 -> {
+		openWebRepo.setOnClickListener(
+				v16 -> {
+					bmListener.onButtonClicked("openWebRepo");
+					dismiss();
+				});
 
-			bmListener.onButtonClicked("shareRepo");
-			dismiss();
-		});
+		copyRepoUrl.setOnClickListener(
+				copyUrl -> {
+					bmListener.onButtonClicked("copyRepoUrl");
+					dismiss();
+				});
 
-		openWebRepo.setOnClickListener(v16 -> {
+		newFile.setOnClickListener(
+				v17 -> {
+					bmListener.onButtonClicked("newFile");
+					dismiss();
+				});
 
-			bmListener.onButtonClicked("openWebRepo");
-			dismiss();
-		});
-
-		copyRepoUrl.setOnClickListener(copyUrl -> {
-
-			bmListener.onButtonClicked("copyRepoUrl");
-			dismiss();
-		});
-
-		newFile.setOnClickListener(v17 -> {
-
-			bmListener.onButtonClicked("newFile");
-			dismiss();
-		});
-
-		if(repository.isStarred()) {
+		if (repository.isStarred()) {
 
 			starRepository.setVisibility(View.GONE);
-			unStarRepository.setOnClickListener(v18 -> {
+			unStarRepository.setOnClickListener(
+					v18 -> {
+						RepositoryActions.unStarRepository(getContext(), repository);
+						bmListener.onButtonClicked("unstar");
+						dismiss();
+					});
 
-				RepositoryActions.unStarRepository(getContext(), repository);
-				bmListener.onButtonClicked("unstar");
-				dismiss();
-
-			});
-
-		}
-		else {
+		} else {
 
 			unStarRepository.setVisibility(View.GONE);
-			starRepository.setOnClickListener(v19 -> {
-
-				RepositoryActions.starRepository(getContext(), repository);
-				bmListener.onButtonClicked("star");
-				dismiss();
-
-			});
-
+			starRepository.setOnClickListener(
+					v19 -> {
+						RepositoryActions.starRepository(getContext(), repository);
+						bmListener.onButtonClicked("star");
+						dismiss();
+					});
 		}
 
-		if(repository.isWatched()) {
+		if (repository.isWatched()) {
 
 			watchRepository.setVisibility(View.GONE);
-			unWatchRepository.setOnClickListener(v110 -> {
+			unWatchRepository.setOnClickListener(
+					v110 -> {
+						RepositoryActions.unWatchRepository(getContext(), repository);
+						bmListener.onButtonClicked("unwatch");
+						dismiss();
+					});
 
-				RepositoryActions.unWatchRepository(getContext(), repository);
-				bmListener.onButtonClicked("unwatch");
-				dismiss();
-
-			});
-
-		}
-		else {
+		} else {
 
 			unWatchRepository.setVisibility(View.GONE);
-			watchRepository.setOnClickListener(v111 -> {
-
-				RepositoryActions.watchRepository(getContext(), repository);
-				bmListener.onButtonClicked("watch");
-				dismiss();
-
-			});
-
+			watchRepository.setOnClickListener(
+					v111 -> {
+						RepositoryActions.watchRepository(getContext(), repository);
+						bmListener.onButtonClicked("watch");
+						dismiss();
+					});
 		}
 
 		return bottomSheetRepoBinding.getRoot();
@@ -233,10 +224,8 @@ public class BottomSheetRepoFragment extends BottomSheetDialogFragment {
 
 		try {
 			bmListener = (BottomSheetListener) context;
-		}
-		catch(ClassCastException e) {
+		} catch (ClassCastException e) {
 			throw new ClassCastException(context + " must implement BottomSheetListener");
 		}
 	}
-
 }

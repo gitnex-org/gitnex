@@ -15,6 +15,8 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
+import java.util.ArrayList;
+import java.util.List;
 import org.gitnex.tea4j.v2.models.Organization;
 import org.mian.gitnex.R;
 import org.mian.gitnex.adapters.OrganizationsListAdapter;
@@ -24,8 +26,6 @@ import org.mian.gitnex.helpers.AlertDialogs;
 import org.mian.gitnex.helpers.Constants;
 import org.mian.gitnex.helpers.SnackBar;
 import org.mian.gitnex.helpers.Toasty;
-import java.util.ArrayList;
-import java.util.List;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
@@ -33,7 +33,6 @@ import retrofit2.Response;
 /**
  * @author M M Arif
  */
-
 public class OrganizationsFragment extends Fragment {
 
 	private static final String usernameBundle = "";
@@ -45,8 +44,7 @@ public class OrganizationsFragment extends Fragment {
 	private int resultLimit;
 	private String username;
 
-	public OrganizationsFragment() {
-	}
+	public OrganizationsFragment() {}
 
 	public static OrganizationsFragment newInstance(String username) {
 		OrganizationsFragment fragment = new OrganizationsFragment();
@@ -59,16 +57,19 @@ public class OrganizationsFragment extends Fragment {
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
-		if(getArguments() != null) {
+		if (getArguments() != null) {
 			username = getArguments().getString(usernameBundle);
 		}
 	}
 
-	@Nullable
-	@Override
-	public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
+	@Nullable @Override
+	public View onCreateView(
+			@NonNull LayoutInflater inflater,
+			@Nullable ViewGroup container,
+			@Nullable Bundle savedInstanceState) {
 
-		fragmentOrganizationsBinding = FragmentOrganizationsBinding.inflate(inflater, container, false);
+		fragmentOrganizationsBinding =
+				FragmentOrganizationsBinding.inflate(inflater, container, false);
 		setHasOptionsMenu(true);
 		context = getContext();
 
@@ -77,28 +78,40 @@ public class OrganizationsFragment extends Fragment {
 
 		fragmentOrganizationsBinding.addNewOrganization.setVisibility(View.GONE);
 
-		fragmentOrganizationsBinding.pullToRefresh.setOnRefreshListener(() -> new Handler(Looper.getMainLooper()).postDelayed(() -> {
-			fragmentOrganizationsBinding.pullToRefresh.setRefreshing(false);
-			loadInitial(username, resultLimit);
-			adapter.notifyDataChanged();
-		}, 200));
+		fragmentOrganizationsBinding.pullToRefresh.setOnRefreshListener(
+				() ->
+						new Handler(Looper.getMainLooper())
+								.postDelayed(
+										() -> {
+											fragmentOrganizationsBinding.pullToRefresh
+													.setRefreshing(false);
+											loadInitial(username, resultLimit);
+											adapter.notifyDataChanged();
+										},
+										200));
 
 		adapter = new OrganizationsListAdapter(context, organizationsList);
-		adapter.setLoadMoreListener(new OrganizationsListAdapter.OnLoadMoreListener() {
+		adapter.setLoadMoreListener(
+				new OrganizationsListAdapter.OnLoadMoreListener() {
 
-			@Override
-			protected void onLoadMore() {
-				fragmentOrganizationsBinding.recyclerView.post(() -> {
-					if(organizationsList.size() == resultLimit || pageSize == resultLimit) {
-						int page = (organizationsList.size() + resultLimit) / resultLimit;
-						loadMore(username, page, resultLimit);
+					@Override
+					protected void onLoadMore() {
+						fragmentOrganizationsBinding.recyclerView.post(
+								() -> {
+									if (organizationsList.size() == resultLimit
+											|| pageSize == resultLimit) {
+										int page =
+												(organizationsList.size() + resultLimit)
+														/ resultLimit;
+										loadMore(username, page, resultLimit);
+									}
+								});
 					}
 				});
-			}
-		});
 
 		fragmentOrganizationsBinding.recyclerView.setHasFixedSize(true);
-		fragmentOrganizationsBinding.recyclerView.setLayoutManager(new LinearLayoutManager(context));
+		fragmentOrganizationsBinding.recyclerView.setLayoutManager(
+				new LinearLayoutManager(context));
 		fragmentOrganizationsBinding.recyclerView.setAdapter(adapter);
 
 		loadInitial(username, resultLimit);
@@ -108,113 +121,135 @@ public class OrganizationsFragment extends Fragment {
 
 	private void loadInitial(String username, int resultLimit) {
 
-		Call<List<Organization>> call = RetrofitClient.getApiInterface(context).orgListUserOrgs(username, 1, resultLimit);
+		Call<List<Organization>> call =
+				RetrofitClient.getApiInterface(context).orgListUserOrgs(username, 1, resultLimit);
 
-		call.enqueue(new Callback<List<Organization>>() {
+		call.enqueue(
+				new Callback<List<Organization>>() {
 
-			@Override
-			public void onResponse(@NonNull Call<List<Organization>> call, @NonNull Response<List<Organization>> response) {
+					@Override
+					public void onResponse(
+							@NonNull Call<List<Organization>> call,
+							@NonNull Response<List<Organization>> response) {
 
-				if(response.isSuccessful()) {
+						if (response.isSuccessful()) {
 
-					switch(response.code()) {
-						case 200:
-							assert response.body() != null;
-							if(response.body().size() > 0) {
-								organizationsList.clear();
-								organizationsList.addAll(response.body());
-								adapter.notifyDataChanged();
-								fragmentOrganizationsBinding.noDataOrg.setVisibility(View.GONE);
+							switch (response.code()) {
+								case 200:
+									assert response.body() != null;
+									if (response.body().size() > 0) {
+										organizationsList.clear();
+										organizationsList.addAll(response.body());
+										adapter.notifyDataChanged();
+										fragmentOrganizationsBinding.noDataOrg.setVisibility(
+												View.GONE);
+									} else {
+										organizationsList.clear();
+										adapter.notifyDataChanged();
+										fragmentOrganizationsBinding.noDataOrg.setVisibility(
+												View.VISIBLE);
+									}
+									fragmentOrganizationsBinding.progressBar.setVisibility(
+											View.GONE);
+									break;
+
+								case 401:
+									AlertDialogs.authorizationTokenRevokedDialog(context);
+									break;
+
+								case 403:
+									Toasty.error(
+											context, context.getString(R.string.authorizeError));
+									break;
+
+								case 404:
+									fragmentOrganizationsBinding.noDataOrg.setVisibility(
+											View.VISIBLE);
+									fragmentOrganizationsBinding.progressBar.setVisibility(
+											View.GONE);
+									break;
+
+								default:
+									Toasty.error(context, getString(R.string.genericError));
+									break;
 							}
-							else {
-								organizationsList.clear();
-								adapter.notifyDataChanged();
-								fragmentOrganizationsBinding.noDataOrg.setVisibility(View.VISIBLE);
-							}
-							fragmentOrganizationsBinding.progressBar.setVisibility(View.GONE);
-							break;
-
-						case 401:
-							AlertDialogs.authorizationTokenRevokedDialog(context);
-							break;
-
-						case 403:
-							Toasty.error(context, context.getString(R.string.authorizeError));
-							break;
-
-						case 404:
-							fragmentOrganizationsBinding.noDataOrg.setVisibility(View.VISIBLE);
-							fragmentOrganizationsBinding.progressBar.setVisibility(View.GONE);
-							break;
-
-						default:
-							Toasty.error(context, getString(R.string.genericError));
-							break;
+						}
 					}
-				}
-			}
 
-			@Override
-			public void onFailure(@NonNull Call<List<Organization>> call, @NonNull Throwable t) {
-				Toasty.error(context, getString(R.string.genericError));
-			}
-		});
+					@Override
+					public void onFailure(
+							@NonNull Call<List<Organization>> call, @NonNull Throwable t) {
+						Toasty.error(context, getString(R.string.genericError));
+					}
+				});
 	}
 
 	private void loadMore(String username, int page, int resultLimit) {
 
 		fragmentOrganizationsBinding.progressBar.setVisibility(View.VISIBLE);
 
-		Call<List<Organization>> call = RetrofitClient.getApiInterface(context).orgListUserOrgs(username, page, resultLimit);
+		Call<List<Organization>> call =
+				RetrofitClient.getApiInterface(context)
+						.orgListUserOrgs(username, page, resultLimit);
 
-		call.enqueue(new Callback<List<Organization>>() {
+		call.enqueue(
+				new Callback<List<Organization>>() {
 
-			@Override
-			public void onResponse(@NonNull Call<List<Organization>> call, @NonNull Response<List<Organization>> response) {
+					@Override
+					public void onResponse(
+							@NonNull Call<List<Organization>> call,
+							@NonNull Response<List<Organization>> response) {
 
-				if(response.isSuccessful()) {
+						if (response.isSuccessful()) {
 
-					switch(response.code()) {
-						case 200:
-							List<Organization> result = response.body();
-							assert result != null;
-							if(result.size() > 0) {
-								pageSize = result.size();
-								organizationsList.addAll(result);
+							switch (response.code()) {
+								case 200:
+									List<Organization> result = response.body();
+									assert result != null;
+									if (result.size() > 0) {
+										pageSize = result.size();
+										organizationsList.addAll(result);
+									} else {
+										SnackBar.info(
+												context,
+												fragmentOrganizationsBinding.getRoot(),
+												getString(R.string.noMoreData));
+										adapter.setMoreDataAvailable(false);
+									}
+									adapter.notifyDataChanged();
+									fragmentOrganizationsBinding.progressBar.setVisibility(
+											View.GONE);
+									break;
+
+								case 401:
+									AlertDialogs.authorizationTokenRevokedDialog(context);
+									break;
+
+								case 403:
+									Toasty.error(
+											context, context.getString(R.string.authorizeError));
+									break;
+
+								case 404:
+									fragmentOrganizationsBinding.noDataOrg.setVisibility(
+											View.VISIBLE);
+									fragmentOrganizationsBinding.progressBar.setVisibility(
+											View.GONE);
+									break;
+
+								default:
+									Toasty.error(context, getString(R.string.genericError));
+									break;
 							}
-							else {
-								SnackBar.info(context, fragmentOrganizationsBinding.getRoot(), getString(R.string.noMoreData));
-								adapter.setMoreDataAvailable(false);
-							}
-							adapter.notifyDataChanged();
-							fragmentOrganizationsBinding.progressBar.setVisibility(View.GONE);
-							break;
-
-						case 401:
-							AlertDialogs.authorizationTokenRevokedDialog(context);
-							break;
-
-						case 403:
-							Toasty.error(context, context.getString(R.string.authorizeError));
-							break;
-
-						case 404:
-							fragmentOrganizationsBinding.noDataOrg.setVisibility(View.VISIBLE);
-							fragmentOrganizationsBinding.progressBar.setVisibility(View.GONE);
-							break;
-
-						default:
-							Toasty.error(context, getString(R.string.genericError));
-							break;
+						}
 					}
-				}
-			}
 
-			@Override
-			public void onFailure(@NonNull Call<List<Organization>> call, @NonNull Throwable t) {
-				Toasty.error(context, getString(R.string.genericError));
-			}
-		});
+					@Override
+					public void onFailure(
+							@NonNull Call<List<Organization>> call, @NonNull Throwable t) {
+						Toasty.error(context, getString(R.string.genericError));
+					}
+				});
 	}
 
 	@Override
@@ -224,37 +259,39 @@ public class OrganizationsFragment extends Fragment {
 		super.onCreateOptionsMenu(menu, inflater);
 
 		MenuItem searchItem = menu.findItem(R.id.action_search);
-		androidx.appcompat.widget.SearchView searchView = (androidx.appcompat.widget.SearchView) searchItem.getActionView();
+		androidx.appcompat.widget.SearchView searchView =
+				(androidx.appcompat.widget.SearchView) searchItem.getActionView();
 		searchView.setImeOptions(EditorInfo.IME_ACTION_DONE);
 
-		searchView.setOnQueryTextListener(new androidx.appcompat.widget.SearchView.OnQueryTextListener() {
+		searchView.setOnQueryTextListener(
+				new androidx.appcompat.widget.SearchView.OnQueryTextListener() {
 
-			@Override
-			public boolean onQueryTextSubmit(String query) {
-				return false;
-			}
+					@Override
+					public boolean onQueryTextSubmit(String query) {
+						return false;
+					}
 
-			@Override
-			public boolean onQueryTextChange(String newText) {
-				filter(newText);
-				return false;
-			}
-		});
+					@Override
+					public boolean onQueryTextChange(String newText) {
+						filter(newText);
+						return false;
+					}
+				});
 	}
 
 	private void filter(String text) {
 
 		List<Organization> arr = new ArrayList<>();
 
-		for(Organization d : organizationsList) {
-			if(d == null || d.getUsername() == null || d.getDescription() == null) {
+		for (Organization d : organizationsList) {
+			if (d == null || d.getUsername() == null || d.getDescription() == null) {
 				continue;
 			}
-			if(d.getUsername().toLowerCase().contains(text) || d.getDescription().toLowerCase().contains(text)) {
+			if (d.getUsername().toLowerCase().contains(text)
+					|| d.getDescription().toLowerCase().contains(text)) {
 				arr.add(d);
 			}
 		}
 		adapter.updateList(arr);
 	}
-
 }

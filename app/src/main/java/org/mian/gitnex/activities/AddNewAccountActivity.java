@@ -8,6 +8,9 @@ import android.view.View;
 import android.widget.ArrayAdapter;
 import androidx.annotation.NonNull;
 import com.google.android.material.dialog.MaterialAlertDialogBuilder;
+import io.mikael.urlbuilder.UrlBuilder;
+import java.net.URI;
+import java.util.Objects;
 import org.gitnex.tea4j.v2.models.GeneralAPISettings;
 import org.gitnex.tea4j.v2.models.ServerVersion;
 import org.gitnex.tea4j.v2.models.User;
@@ -23,16 +26,12 @@ import org.mian.gitnex.helpers.Toasty;
 import org.mian.gitnex.helpers.UrlHelper;
 import org.mian.gitnex.helpers.Version;
 import org.mian.gitnex.structs.Protocol;
-import java.net.URI;
-import java.util.Objects;
-import io.mikael.urlbuilder.UrlBuilder;
 import retrofit2.Call;
 import retrofit2.Callback;
 
 /**
  * @author M M Arif
  */
-
 public class AddNewAccountActivity extends BaseActivity {
 
 	private View.OnClickListener onClickListener;
@@ -58,235 +57,292 @@ public class AddNewAccountActivity extends BaseActivity {
 		viewBinding.instanceUrl.setText(getIntent().getStringExtra("instanceUrl"));
 		viewBinding.loginToken.setText(getIntent().getStringExtra("token"));
 		String scheme = getIntent().getStringExtra("scheme");
-		if(scheme != null && scheme.equals("http")) {
+		if (scheme != null && scheme.equals("http")) {
 			viewBinding.protocolSpinner.setText(Protocol.HTTP.toString());
 			spinnerSelectedValue = Protocol.HTTP.toString();
-		}
-		else { // default is https
+		} else { // default is https
 			viewBinding.protocolSpinner.setText(Protocol.HTTPS.toString());
 			spinnerSelectedValue = Protocol.HTTPS.toString();
 		}
 
-		ArrayAdapter<Protocol> adapterProtocols = new ArrayAdapter<>(ctx, R.layout.list_spinner_items, Protocol.values());
+		ArrayAdapter<Protocol> adapterProtocols =
+				new ArrayAdapter<>(ctx, R.layout.list_spinner_items, Protocol.values());
 
 		viewBinding.protocolSpinner.setAdapter(adapterProtocols);
-		viewBinding.protocolSpinner.setOnItemClickListener((parent, view1, position, id) -> spinnerSelectedValue = String.valueOf(parent.getItemAtPosition(position)));
-		viewBinding.addNewAccount.setOnClickListener(login -> {
+		viewBinding.protocolSpinner.setOnItemClickListener(
+				(parent, view1, position, id) ->
+						spinnerSelectedValue = String.valueOf(parent.getItemAtPosition(position)));
+		viewBinding.addNewAccount.setOnClickListener(
+				login -> {
+					boolean connToInternet = AppUtil.hasNetworkConnection(appCtx);
 
-			boolean connToInternet = AppUtil.hasNetworkConnection(appCtx);
+					if (!connToInternet) {
 
-			if(!connToInternet) {
+						Toasty.error(ctx, getResources().getString(R.string.checkNetConnection));
+					} else {
 
-				Toasty.error(ctx, getResources().getString(R.string.checkNetConnection));
-			}
-			else {
-
-				processLogin();
-			}
-		});
-
+						processLogin();
+					}
+				});
 	}
 
 	private void processLogin() {
 
 		try {
 
-			String instanceUrlET = String.valueOf(viewBinding.instanceUrl.getText()).replaceAll("[\\uFEFF|#]", "").trim();
-			String loginToken = String.valueOf(viewBinding.loginToken.getText()).replaceAll("[\\uFEFF|#]", "").trim();
+			String instanceUrlET =
+					String.valueOf(viewBinding.instanceUrl.getText())
+							.replaceAll("[\\uFEFF|#]", "")
+							.trim();
+			String loginToken =
+					String.valueOf(viewBinding.loginToken.getText())
+							.replaceAll("[\\uFEFF|#]", "")
+							.trim();
 			String protocol = spinnerSelectedValue;
 
-			if(protocol == null) {
+			if (protocol == null) {
 
 				Toasty.error(ctx, getResources().getString(R.string.protocolEmptyError));
 				return;
 			}
 
-			if(instanceUrlET.equals("")) {
+			if (instanceUrlET.equals("")) {
 
 				Toasty.error(ctx, getResources().getString(R.string.emptyFieldURL));
 				return;
 			}
 
-			if(loginToken.equals("")) {
+			if (loginToken.equals("")) {
 
 				Toasty.error(ctx, getResources().getString(R.string.loginTokenError));
 				return;
 			}
 
-			URI rawInstanceUrl = UrlBuilder.fromString(UrlHelper.fixScheme(instanceUrlET, "http")).toUri();
+			URI rawInstanceUrl =
+					UrlBuilder.fromString(UrlHelper.fixScheme(instanceUrlET, "http")).toUri();
 
-			URI instanceUrl = UrlBuilder.fromUri(rawInstanceUrl).withScheme(protocol.toLowerCase()).withPath(PathsHelper.join(rawInstanceUrl.getPath(), "/api/v1/")).toUri();
+			URI instanceUrl =
+					UrlBuilder.fromUri(rawInstanceUrl)
+							.withScheme(protocol.toLowerCase())
+							.withPath(PathsHelper.join(rawInstanceUrl.getPath(), "/api/v1/"))
+							.toUri();
 
 			versionCheck(instanceUrl.toString(), loginToken);
 			serverPageLimitSettings();
 
-		}
-		catch(Exception e) {
+		} catch (Exception e) {
 
 			Toasty.error(ctx, getResources().getString(R.string.malformedUrl));
 		}
-
 	}
 
 	private void versionCheck(final String instanceUrl, final String loginToken) {
 
-		Call<ServerVersion> callVersion = RetrofitClient.getApiInterface(ctx, instanceUrl, "token " + loginToken, null).getVersion();
-		callVersion.enqueue(new Callback<>() {
+		Call<ServerVersion> callVersion =
+				RetrofitClient.getApiInterface(ctx, instanceUrl, "token " + loginToken, null)
+						.getVersion();
+		callVersion.enqueue(
+				new Callback<>() {
 
-			@Override
-			public void onResponse(@NonNull final Call<ServerVersion> callVersion, @NonNull retrofit2.Response<ServerVersion> responseVersion) {
+					@Override
+					public void onResponse(
+							@NonNull final Call<ServerVersion> callVersion,
+							@NonNull retrofit2.Response<ServerVersion> responseVersion) {
 
-				if(responseVersion.code() == 200) {
+						if (responseVersion.code() == 200) {
 
-					ServerVersion version = responseVersion.body();
+							ServerVersion version = responseVersion.body();
 
-					assert version != null;
+							assert version != null;
 
-					if(!Version.valid(version.getVersion())) {
+							if (!Version.valid(version.getVersion())) {
 
-						Toasty.error(ctx, getResources().getString(R.string.versionUnknown));
-						return;
-					}
+								Toasty.error(
+										ctx, getResources().getString(R.string.versionUnknown));
+								return;
+							}
 
-					giteaVersion = new Version(version.getVersion());
+							giteaVersion = new Version(version.getVersion());
 
-					if(giteaVersion.less(getString(R.string.versionLow))) {
+							if (giteaVersion.less(getString(R.string.versionLow))) {
 
-						MaterialAlertDialogBuilder materialAlertDialogBuilder = new MaterialAlertDialogBuilder(ctx).setTitle(getString(R.string.versionAlertDialogHeader))
-							.setMessage(getResources().getString(R.string.versionUnsupportedOld, version.getVersion())).setNeutralButton(getString(R.string.cancelButton), null)
-							.setPositiveButton(getString(R.string.textContinue), (dialog, which) -> {
+								MaterialAlertDialogBuilder materialAlertDialogBuilder =
+										new MaterialAlertDialogBuilder(ctx)
+												.setTitle(
+														getString(
+																R.string.versionAlertDialogHeader))
+												.setMessage(
+														getResources()
+																.getString(
+																		R.string
+																				.versionUnsupportedOld,
+																		version.getVersion()))
+												.setNeutralButton(
+														getString(R.string.cancelButton), null)
+												.setPositiveButton(
+														getString(R.string.textContinue),
+														(dialog, which) -> {
+															dialog.dismiss();
+															login(instanceUrl, loginToken);
+														});
 
-								dialog.dismiss();
+								materialAlertDialogBuilder.create().show();
+							} else if (giteaVersion.lessOrEqual(getString(R.string.versionHigh))) {
+
 								login(instanceUrl, loginToken);
-							});
+							} else {
 
-						materialAlertDialogBuilder.create().show();
+								Toasty.warning(
+										ctx,
+										getResources().getString(R.string.versionUnsupportedNew));
+								login(instanceUrl, loginToken);
+							}
+
+						} else if (responseVersion.code() == 403) {
+
+							login(instanceUrl, loginToken);
+						}
 					}
-					else if(giteaVersion.lessOrEqual(getString(R.string.versionHigh))) {
 
-						login(instanceUrl, loginToken);
-					}
-					else {
+					private void login(String instanceUrl, String loginToken) {
 
-						Toasty.warning(ctx, getResources().getString(R.string.versionUnsupportedNew));
-						login(instanceUrl, loginToken);
+						setupNewAccountWithToken(instanceUrl, loginToken);
 					}
 
-				}
-				else if(responseVersion.code() == 403) {
+					@Override
+					public void onFailure(
+							@NonNull Call<ServerVersion> callVersion, @NonNull Throwable t) {
 
-					login(instanceUrl, loginToken);
-				}
-			}
-
-			private void login(String instanceUrl, String loginToken) {
-
-				setupNewAccountWithToken(instanceUrl, loginToken);
-			}
-
-			@Override
-			public void onFailure(@NonNull Call<ServerVersion> callVersion, @NonNull Throwable t) {
-
-				Log.e("onFailure-versionCheck", t.toString());
-				Toasty.error(ctx, getResources().getString(R.string.genericServerResponseError));
-			}
-		});
+						Log.e("onFailure-versionCheck", t.toString());
+						Toasty.error(
+								ctx, getResources().getString(R.string.genericServerResponseError));
+					}
+				});
 	}
 
 	private void serverPageLimitSettings() {
 
-		Call<GeneralAPISettings> generalAPISettings = RetrofitClient.getApiInterface(ctx).getGeneralAPISettings();
-		generalAPISettings.enqueue(new Callback<>() {
+		Call<GeneralAPISettings> generalAPISettings =
+				RetrofitClient.getApiInterface(ctx).getGeneralAPISettings();
+		generalAPISettings.enqueue(
+				new Callback<>() {
 
-			@Override
-			public void onResponse(@NonNull final Call<GeneralAPISettings> generalAPISettings, @NonNull retrofit2.Response<GeneralAPISettings> response) {
+					@Override
+					public void onResponse(
+							@NonNull final Call<GeneralAPISettings> generalAPISettings,
+							@NonNull retrofit2.Response<GeneralAPISettings> response) {
 
-				if(response.code() == 200 && response.body() != null) {
+						if (response.code() == 200 && response.body() != null) {
 
-					if(response.body().getMaxResponseItems() != null) {
-						maxResponseItems = Math.toIntExact(response.body().getMaxResponseItems());
+							if (response.body().getMaxResponseItems() != null) {
+								maxResponseItems =
+										Math.toIntExact(response.body().getMaxResponseItems());
+							}
+							if (response.body().getDefaultPagingNum() != null) {
+								defaultPagingNumber =
+										Math.toIntExact(response.body().getDefaultPagingNum());
+							}
+						}
 					}
-					if(response.body().getDefaultPagingNum() != null) {
-						defaultPagingNumber = Math.toIntExact(response.body().getDefaultPagingNum());
-					}
-				}
-			}
 
-			@Override
-			public void onFailure(@NonNull Call<GeneralAPISettings> generalAPISettings, @NonNull Throwable t) {
-			}
-		});
+					@Override
+					public void onFailure(
+							@NonNull Call<GeneralAPISettings> generalAPISettings,
+							@NonNull Throwable t) {}
+				});
 	}
 
 	private void setupNewAccountWithToken(String instanceUrl, final String loginToken) {
 
-		Call<User> call = RetrofitClient.getApiInterface(ctx, instanceUrl, "token " + loginToken, null).userGetCurrent();
+		Call<User> call =
+				RetrofitClient.getApiInterface(ctx, instanceUrl, "token " + loginToken, null)
+						.userGetCurrent();
 
-		call.enqueue(new Callback<>() {
+		call.enqueue(
+				new Callback<>() {
 
-			@Override
-			public void onResponse(@NonNull Call<User> call, @NonNull retrofit2.Response<User> response) {
+					@Override
+					public void onResponse(
+							@NonNull Call<User> call, @NonNull retrofit2.Response<User> response) {
 
-				User userDetails = response.body();
+						User userDetails = response.body();
 
-				switch(response.code()) {
+						switch (response.code()) {
+							case 200:
+								assert userDetails != null;
+								// insert new account to db if does not exist
+								String accountName = userDetails.getLogin() + "@" + instanceUrl;
+								UserAccountsApi userAccountsApi =
+										BaseApi.getInstance(ctx, UserAccountsApi.class);
+								boolean userAccountExists =
+										Objects.requireNonNull(userAccountsApi)
+												.userAccountExists(accountName);
 
-					case 200:
+								if (!userAccountExists) {
 
-						assert userDetails != null;
-						// insert new account to db if does not exist
-						String accountName = userDetails.getLogin() + "@" + instanceUrl;
-						UserAccountsApi userAccountsApi = BaseApi.getInstance(ctx, UserAccountsApi.class);
-						boolean userAccountExists = Objects.requireNonNull(userAccountsApi).userAccountExists(accountName);
+									long id =
+											userAccountsApi.createNewAccount(
+													accountName,
+													instanceUrl,
+													userDetails.getLogin(),
+													loginToken,
+													giteaVersion.toString(),
+													maxResponseItems,
+													defaultPagingNumber);
+									UserAccount account = userAccountsApi.getAccountById((int) id);
+									AppUtil.switchToAccount(AddNewAccountActivity.this, account);
+									Toasty.success(
+											ctx,
+											getResources().getString(R.string.accountAddedMessage));
+									MainActivity.refActivity = true;
+									finish();
+								} else {
+									UserAccount account =
+											userAccountsApi.getAccountByName(accountName);
+									if (account.isLoggedIn()) {
+										Toasty.warning(
+												ctx,
+												getResources()
+														.getString(
+																R.string
+																		.accountAlreadyExistsError));
+										AppUtil.switchToAccount(ctx, account);
+									} else {
+										userAccountsApi.updateTokenByAccountName(
+												accountName, loginToken);
+										userAccountsApi.login(account.getAccountId());
+										AppUtil.switchToAccount(
+												AddNewAccountActivity.this, account);
+									}
+								}
+								finish();
+								break;
 
-						if(!userAccountExists) {
+							case 401:
+								Toasty.error(
+										ctx,
+										getResources().getString(R.string.unauthorizedApiError));
+								break;
 
-							long id = userAccountsApi.createNewAccount(accountName, instanceUrl, userDetails.getLogin(), loginToken, giteaVersion.toString(), maxResponseItems, defaultPagingNumber);
-							UserAccount account = userAccountsApi.getAccountById((int) id);
-							AppUtil.switchToAccount(AddNewAccountActivity.this, account);
-							Toasty.success(ctx, getResources().getString(R.string.accountAddedMessage));
-							MainActivity.refActivity = true;
-							finish();
+							default:
+								Toasty.error(
+										ctx,
+										getResources()
+												.getString(
+														R.string.genericApiError, response.code()));
 						}
-						else {
-							UserAccount account = userAccountsApi.getAccountByName(accountName);
-							if(account.isLoggedIn()) {
-								Toasty.warning(ctx, getResources().getString(R.string.accountAlreadyExistsError));
-								AppUtil.switchToAccount(ctx, account);
-							}
-							else {
-								userAccountsApi.updateTokenByAccountName(accountName, loginToken);
-								userAccountsApi.login(account.getAccountId());
-								AppUtil.switchToAccount(AddNewAccountActivity.this, account);
-							}
-						}
-						finish();
-						break;
+					}
 
-					case 401:
+					@Override
+					public void onFailure(@NonNull Call<User> call, @NonNull Throwable t) {
 
-						Toasty.error(ctx, getResources().getString(R.string.unauthorizedApiError));
-						break;
-
-					default:
-
-						Toasty.error(ctx, getResources().getString(R.string.genericApiError, response.code()));
-				}
-
-			}
-
-			@Override
-			public void onFailure(@NonNull Call<User> call, @NonNull Throwable t) {
-
-				Toasty.error(ctx, getResources().getString(R.string.genericError));
-			}
-		});
-
+						Toasty.error(ctx, getResources().getString(R.string.genericError));
+					}
+				});
 	}
 
 	private void initCloseListener() {
 
 		onClickListener = view -> finish();
 	}
-
 }

@@ -24,7 +24,6 @@ import retrofit2.Callback;
 /**
  * @author M M Arif
  */
-
 public class CreateNewUserActivity extends BaseActivity {
 
 	private View.OnClickListener onClickListener;
@@ -40,12 +39,14 @@ public class CreateNewUserActivity extends BaseActivity {
 
 		super.onCreate(savedInstanceState);
 
-		ActivityCreateNewUserBinding activityCreateNewUserBinding = ActivityCreateNewUserBinding.inflate(getLayoutInflater());
+		ActivityCreateNewUserBinding activityCreateNewUserBinding =
+				ActivityCreateNewUserBinding.inflate(getLayoutInflater());
 		setContentView(activityCreateNewUserBinding.getRoot());
 
 		boolean connToInternet = AppUtil.hasNetworkConnection(appCtx);
 
-		InputMethodManager imm = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
+		InputMethodManager imm =
+				(InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
 
 		ImageView closeActivity = activityCreateNewUserBinding.close;
 		createUserButton = activityCreateNewUserBinding.createUserButton;
@@ -61,11 +62,10 @@ public class CreateNewUserActivity extends BaseActivity {
 		initCloseListener();
 		closeActivity.setOnClickListener(onClickListener);
 
-		if(!connToInternet) {
+		if (!connToInternet) {
 
 			disableProcessButton();
-		}
-		else {
+		} else {
 
 			createUserButton.setOnClickListener(createNewUserListener);
 		}
@@ -80,31 +80,33 @@ public class CreateNewUserActivity extends BaseActivity {
 		String newUserEmail = userEmail.getText().toString().trim();
 		String newUserPassword = userPassword.getText().toString();
 
-		if(!connToInternet) {
+		if (!connToInternet) {
 
 			Toasty.error(ctx, getResources().getString(R.string.checkNetConnection));
 			return;
 		}
 
-		if(newFullName.equals("") || newUserName.equals("") | newUserEmail.equals("") || newUserPassword.equals("")) {
+		if (newFullName.equals("")
+				|| newUserName.equals("") | newUserEmail.equals("")
+				|| newUserPassword.equals("")) {
 
 			Toasty.error(ctx, getString(R.string.emptyFields));
 			return;
 		}
 
-		if(!AppUtil.checkStrings(newFullName)) {
+		if (!AppUtil.checkStrings(newFullName)) {
 
 			Toasty.error(ctx, getString(R.string.userInvalidFullName));
 			return;
 		}
 
-		if(!AppUtil.checkStringsWithAlphaNumeric(newUserName)) {
+		if (!AppUtil.checkStringsWithAlphaNumeric(newUserName)) {
 
 			Toasty.error(ctx, getString(R.string.userInvalidUserName));
 			return;
 		}
 
-		if(!Patterns.EMAIL_ADDRESS.matcher(newUserEmail).matches()) {
+		if (!Patterns.EMAIL_ADDRESS.matcher(newUserEmail).matches()) {
 
 			Toasty.error(ctx, getString(R.string.userInvalidEmail));
 			return;
@@ -114,7 +116,8 @@ public class CreateNewUserActivity extends BaseActivity {
 		createNewUser(newFullName, newUserName, newUserEmail, newUserPassword);
 	}
 
-	private void createNewUser(String newFullName, String newUserName, String newUserEmail, String newUserPassword) {
+	private void createNewUser(
+			String newFullName, String newUserName, String newUserEmail, String newUserPassword) {
 
 		CreateUserOption createUser = new CreateUserOption();
 		createUser.setEmail(newUserEmail);
@@ -125,52 +128,48 @@ public class CreateNewUserActivity extends BaseActivity {
 
 		Call<User> call = RetrofitClient.getApiInterface(ctx).adminCreateUser(createUser);
 
-		call.enqueue(new Callback<User>() {
+		call.enqueue(
+				new Callback<User>() {
 
-			@Override
-			public void onResponse(@NonNull Call<User> call, @NonNull retrofit2.Response<User> response) {
+					@Override
+					public void onResponse(
+							@NonNull Call<User> call, @NonNull retrofit2.Response<User> response) {
 
-				if(response.code() == 201) {
+						if (response.code() == 201) {
 
-					Toasty.success(ctx, getString(R.string.userCreatedText));
-					enableProcessButton();
-					finish();
-				}
-				else if(response.code() == 401) {
+							Toasty.success(ctx, getString(R.string.userCreatedText));
+							enableProcessButton();
+							finish();
+						} else if (response.code() == 401) {
 
-					enableProcessButton();
-					AlertDialogs.authorizationTokenRevokedDialog(ctx);
-				}
-				else if(response.code() == 403) {
+							enableProcessButton();
+							AlertDialogs.authorizationTokenRevokedDialog(ctx);
+						} else if (response.code() == 403) {
 
-					enableProcessButton();
-					Toasty.error(ctx, ctx.getString(R.string.authorizeError));
-				}
-				else if(response.code() == 404) {
+							enableProcessButton();
+							Toasty.error(ctx, ctx.getString(R.string.authorizeError));
+						} else if (response.code() == 404) {
 
-					enableProcessButton();
-					Toasty.warning(ctx, ctx.getString(R.string.apiNotFound));
-				}
-				else if(response.code() == 422) {
+							enableProcessButton();
+							Toasty.warning(ctx, ctx.getString(R.string.apiNotFound));
+						} else if (response.code() == 422) {
 
-					enableProcessButton();
-					Toasty.warning(ctx, ctx.getString(R.string.userExistsError));
-				}
-				else {
+							enableProcessButton();
+							Toasty.warning(ctx, ctx.getString(R.string.userExistsError));
+						} else {
 
-					enableProcessButton();
-					Toasty.error(ctx, getString(R.string.genericError));
-				}
-			}
+							enableProcessButton();
+							Toasty.error(ctx, getString(R.string.genericError));
+						}
+					}
 
-			@Override
-			public void onFailure(@NonNull Call<User> call, @NonNull Throwable t) {
+					@Override
+					public void onFailure(@NonNull Call<User> call, @NonNull Throwable t) {
 
-				Log.e("onFailure", t.toString());
-				enableProcessButton();
-			}
-		});
-
+						Log.e("onFailure", t.toString());
+						enableProcessButton();
+					}
+				});
 	}
 
 	private void initCloseListener() {
@@ -187,5 +186,4 @@ public class CreateNewUserActivity extends BaseActivity {
 
 		createUserButton.setEnabled(true);
 	}
-
 }

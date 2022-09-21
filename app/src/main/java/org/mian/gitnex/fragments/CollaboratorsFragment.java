@@ -15,7 +15,6 @@ import org.mian.gitnex.viewmodels.CollaboratorsViewModel;
 /**
  * @author M M Arif
  */
-
 public class CollaboratorsFragment extends Fragment {
 
 	public static boolean refreshCollaborators = false;
@@ -23,8 +22,7 @@ public class CollaboratorsFragment extends Fragment {
 	private CollaboratorsAdapter adapter;
 	private RepositoryContext repository;
 
-	public CollaboratorsFragment() {
-	}
+	public CollaboratorsFragment() {}
 
 	public static CollaboratorsFragment newInstance(RepositoryContext repository) {
 		CollaboratorsFragment fragment = new CollaboratorsFragment();
@@ -39,43 +37,48 @@ public class CollaboratorsFragment extends Fragment {
 	}
 
 	@Override
-	public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
+	public View onCreateView(
+			@NonNull LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
 
-		fragmentCollaboratorsBinding = FragmentCollaboratorsBinding.inflate(inflater, container, false);
+		fragmentCollaboratorsBinding =
+				FragmentCollaboratorsBinding.inflate(inflater, container, false);
 
 		fetchDataAsync(repository.getOwner(), repository.getName());
 		return fragmentCollaboratorsBinding.getRoot();
-
 	}
 
 	private void fetchDataAsync(String owner, String repo) {
 
-		CollaboratorsViewModel collaboratorsModel = new ViewModelProvider(this).get(CollaboratorsViewModel.class);
+		CollaboratorsViewModel collaboratorsModel =
+				new ViewModelProvider(this).get(CollaboratorsViewModel.class);
 
-		collaboratorsModel.getCollaboratorsList(owner, repo, getContext()).observe(getViewLifecycleOwner(), collaboratorsListMain -> {
-			adapter = new CollaboratorsAdapter(getContext(), collaboratorsListMain);
-			if(adapter.getCount() > 0) {
-				fragmentCollaboratorsBinding.gridView.setAdapter(adapter);
-				fragmentCollaboratorsBinding.noDataCollaborators.setVisibility(View.GONE);
-			}
-			else {
-				adapter.notifyDataSetChanged();
-				fragmentCollaboratorsBinding.gridView.setAdapter(adapter);
-				fragmentCollaboratorsBinding.noDataCollaborators.setVisibility(View.VISIBLE);
-			}
-			fragmentCollaboratorsBinding.progressBar.setVisibility(View.GONE);
-		});
-
+		collaboratorsModel
+				.getCollaboratorsList(owner, repo, getContext())
+				.observe(
+						getViewLifecycleOwner(),
+						collaboratorsListMain -> {
+							adapter = new CollaboratorsAdapter(getContext(), collaboratorsListMain);
+							if (adapter.getCount() > 0) {
+								fragmentCollaboratorsBinding.gridView.setAdapter(adapter);
+								fragmentCollaboratorsBinding.noDataCollaborators.setVisibility(
+										View.GONE);
+							} else {
+								adapter.notifyDataSetChanged();
+								fragmentCollaboratorsBinding.gridView.setAdapter(adapter);
+								fragmentCollaboratorsBinding.noDataCollaborators.setVisibility(
+										View.VISIBLE);
+							}
+							fragmentCollaboratorsBinding.progressBar.setVisibility(View.GONE);
+						});
 	}
 
 	@Override
 	public void onResume() {
 
 		super.onResume();
-		if(refreshCollaborators) {
+		if (refreshCollaborators) {
 			fetchDataAsync(repository.getOwner(), repository.getName());
 			refreshCollaborators = false;
 		}
 	}
-
 }

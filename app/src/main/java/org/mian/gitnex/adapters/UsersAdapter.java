@@ -12,18 +12,17 @@ import android.widget.ImageView;
 import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
+import java.util.List;
 import org.gitnex.tea4j.v2.models.User;
 import org.mian.gitnex.R;
 import org.mian.gitnex.activities.ProfileActivity;
 import org.mian.gitnex.clients.PicassoService;
 import org.mian.gitnex.helpers.AppUtil;
 import org.mian.gitnex.helpers.RoundedTransformation;
-import java.util.List;
 
 /**
  * @author M M Arif
  */
-
 public class UsersAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
 
 	private final Context context;
@@ -36,8 +35,7 @@ public class UsersAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> 
 		this.followersList = dataList;
 	}
 
-	@NonNull
-	@Override
+	@NonNull @Override
 	public RecyclerView.ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
 		LayoutInflater inflater = LayoutInflater.from(context);
 		return new UsersAdapter.UsersHolder(inflater.inflate(R.layout.list_users, parent, false));
@@ -45,7 +43,10 @@ public class UsersAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> 
 
 	@Override
 	public void onBindViewHolder(@NonNull RecyclerView.ViewHolder holder, int position) {
-		if(position >= getItemCount() - 1 && isMoreDataAvailable && !isLoading && loadMoreListener != null) {
+		if (position >= getItemCount() - 1
+				&& isMoreDataAvailable
+				&& !isLoading
+				&& loadMoreListener != null) {
 			isLoading = true;
 			loadMoreListener.run();
 		}
@@ -95,21 +96,32 @@ public class UsersAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> 
 			userFullName = itemView.findViewById(R.id.userFullName);
 			userName = itemView.findViewById(R.id.userName);
 
-			new Handler().postDelayed(() -> {
-				if(!AppUtil.checkGhostUsers(userInfo.getLogin())) {
+			new Handler()
+					.postDelayed(
+							() -> {
+								if (!AppUtil.checkGhostUsers(userInfo.getLogin())) {
 
-					itemView.setOnClickListener(loginId -> {
-						Intent intent = new Intent(context, ProfileActivity.class);
-						intent.putExtra("username", userInfo.getLogin());
-						context.startActivity(intent);
-					});
+									itemView.setOnClickListener(
+											loginId -> {
+												Intent intent =
+														new Intent(context, ProfileActivity.class);
+												intent.putExtra("username", userInfo.getLogin());
+												context.startActivity(intent);
+											});
 
-					itemView.setOnLongClickListener(loginId -> {
-						AppUtil.copyToClipboard(context, userInfo.getLogin(), context.getString(R.string.copyLoginIdToClipBoard, userInfo.getLogin()));
-						return true;
-					});
-				}
-			}, 500);
+									itemView.setOnLongClickListener(
+											loginId -> {
+												AppUtil.copyToClipboard(
+														context,
+														userInfo.getLogin(),
+														context.getString(
+																R.string.copyLoginIdToClipBoard,
+																userInfo.getLogin()));
+												return true;
+											});
+								}
+							},
+							500);
 		}
 
 		@SuppressLint("SetTextI18n")
@@ -117,21 +129,24 @@ public class UsersAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> 
 			this.userInfo = userInfo;
 			int imgRadius = AppUtil.getPixelsFromDensity(context, 3);
 
-			if(!userInfo.getFullName().equals("")) {
+			if (!userInfo.getFullName().equals("")) {
 				userFullName.setText(Html.fromHtml(userInfo.getFullName()));
-				userName.setText(context.getResources().getString(R.string.usernameWithAt, userInfo.getLogin()));
-			}
-			else {
+				userName.setText(
+						context.getResources()
+								.getString(R.string.usernameWithAt, userInfo.getLogin()));
+			} else {
 				userFullName.setText(userInfo.getLogin());
 				userName.setVisibility(View.GONE);
 			}
 
-			PicassoService.getInstance(context).get().load(userInfo.getAvatarUrl()).placeholder(R.drawable.loader_animated).transform(new RoundedTransformation(imgRadius, 0)).resize(120, 120).centerCrop()
-				.into(userAvatar);
+			PicassoService.getInstance(context)
+					.get()
+					.load(userInfo.getAvatarUrl())
+					.placeholder(R.drawable.loader_animated)
+					.transform(new RoundedTransformation(imgRadius, 0))
+					.resize(120, 120)
+					.centerCrop()
+					.into(userAvatar);
 		}
-
 	}
-
 }
-
-

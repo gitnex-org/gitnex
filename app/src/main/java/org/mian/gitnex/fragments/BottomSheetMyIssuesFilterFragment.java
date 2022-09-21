@@ -14,31 +14,36 @@ import org.mian.gitnex.structs.BottomSheetListener;
 /**
  * @author M M Arif
  */
-
 public class BottomSheetMyIssuesFilterFragment extends BottomSheetDialogFragment {
 
 	private BottomSheetListener bmListener;
 
-	@Nullable
-	@Override
-	public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
+	@Nullable @Override
+	public View onCreateView(
+			@NonNull LayoutInflater inflater,
+			@Nullable ViewGroup container,
+			@Nullable Bundle savedInstanceState) {
 
-		BottomSheetMyIssuesFilterBinding bottomSheetIssuesFilterBinding = BottomSheetMyIssuesFilterBinding.inflate(inflater, container, false);
+		BottomSheetMyIssuesFilterBinding bottomSheetIssuesFilterBinding =
+				BottomSheetMyIssuesFilterBinding.inflate(inflater, container, false);
 
-		bottomSheetIssuesFilterBinding.openMyIssues.setOnClickListener(v1 -> {
-			bmListener.onButtonClicked("openMyIssues");
-			dismiss();
-		});
+		bottomSheetIssuesFilterBinding.openMyIssues.setOnClickListener(
+				v1 -> {
+					bmListener.onButtonClicked("openMyIssues");
+					dismiss();
+				});
 
-		bottomSheetIssuesFilterBinding.closedMyIssues.setOnClickListener(v12 -> {
-			bmListener.onButtonClicked("closedMyIssues");
-			dismiss();
-		});
+		bottomSheetIssuesFilterBinding.closedMyIssues.setOnClickListener(
+				v12 -> {
+					bmListener.onButtonClicked("closedMyIssues");
+					dismiss();
+				});
 
-		bottomSheetIssuesFilterBinding.assignedToMe.setOnClickListener(v12 -> {
-			bmListener.onButtonClicked("assignedToMe");
-			dismiss();
-		});
+		bottomSheetIssuesFilterBinding.assignedToMe.setOnClickListener(
+				v12 -> {
+					bmListener.onButtonClicked("assignedToMe");
+					dismiss();
+				});
 
 		return bottomSheetIssuesFilterBinding.getRoot();
 	}
@@ -50,10 +55,8 @@ public class BottomSheetMyIssuesFilterFragment extends BottomSheetDialogFragment
 
 		try {
 			bmListener = (BottomSheetListener) context;
-		}
-		catch(ClassCastException e) {
+		} catch (ClassCastException e) {
 			throw new ClassCastException(context + " must implement BottomSheetListener");
 		}
 	}
-
 }

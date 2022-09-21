@@ -10,7 +10,6 @@ import org.mian.gitnex.helpers.Toasty;
 /**
  * @author M M Arif
  */
-
 public class SettingsDraftsActivity extends BaseActivity {
 
 	private View.OnClickListener onClickListener;
@@ -20,7 +19,8 @@ public class SettingsDraftsActivity extends BaseActivity {
 
 		super.onCreate(savedInstanceState);
 
-		ActivitySettingsDraftsBinding activitySettingsDraftsBinding = ActivitySettingsDraftsBinding.inflate(getLayoutInflater());
+		ActivitySettingsDraftsBinding activitySettingsDraftsBinding =
+				ActivitySettingsDraftsBinding.inflate(getLayoutInflater());
 		setContentView(activitySettingsDraftsBinding.getRoot());
 
 		ImageView closeActivity = activitySettingsDraftsBinding.close;
@@ -28,21 +28,22 @@ public class SettingsDraftsActivity extends BaseActivity {
 		initCloseListener();
 		closeActivity.setOnClickListener(onClickListener);
 
-		activitySettingsDraftsBinding.commentsDeletionSwitch.setChecked(tinyDB.getBoolean("draftsCommentsDeletionEnabled", true));
+		activitySettingsDraftsBinding.commentsDeletionSwitch.setChecked(
+				tinyDB.getBoolean("draftsCommentsDeletionEnabled", true));
 
 		// delete comments on submit switcher
-		activitySettingsDraftsBinding.commentsDeletionSwitch.setOnCheckedChangeListener((buttonView, isChecked) -> {
-
-			tinyDB.putBoolean("draftsCommentsDeletionEnabled", isChecked);
-			Toasty.success(appCtx, getResources().getString(R.string.settingsSave));
-		});
+		activitySettingsDraftsBinding.commentsDeletionSwitch.setOnCheckedChangeListener(
+				(buttonView, isChecked) -> {
+					tinyDB.putBoolean("draftsCommentsDeletionEnabled", isChecked);
+					Toasty.success(appCtx, getResources().getString(R.string.settingsSave));
+				});
 		activitySettingsDraftsBinding.enableDraftsCommentsDeletion.setOnClickListener(
-			v -> activitySettingsDraftsBinding.commentsDeletionSwitch.setChecked(!activitySettingsDraftsBinding.commentsDeletionSwitch.isChecked()));
-
+				v ->
+						activitySettingsDraftsBinding.commentsDeletionSwitch.setChecked(
+								!activitySettingsDraftsBinding.commentsDeletionSwitch.isChecked()));
 	}
 
 	private void initCloseListener() {
 		onClickListener = view -> finish();
 	}
-
 }

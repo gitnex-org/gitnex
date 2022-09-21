@@ -10,18 +10,17 @@ import android.view.ViewGroup;
 import android.widget.BaseAdapter;
 import android.widget.ImageView;
 import android.widget.TextView;
+import java.util.List;
 import org.gitnex.tea4j.v2.models.User;
 import org.mian.gitnex.R;
 import org.mian.gitnex.activities.ProfileActivity;
 import org.mian.gitnex.clients.PicassoService;
 import org.mian.gitnex.helpers.AppUtil;
 import org.mian.gitnex.helpers.RoundedTransformation;
-import java.util.List;
 
 /**
  * @author M M Arif
  */
-
 public class CollaboratorsAdapter extends BaseAdapter {
 
 	private final List<User> collaboratorsList;
@@ -54,13 +53,12 @@ public class CollaboratorsAdapter extends BaseAdapter {
 
 		ViewHolder viewHolder;
 
-		if(finalView == null) {
+		if (finalView == null) {
 
 			finalView = LayoutInflater.from(context).inflate(R.layout.list_collaborators, null);
 			viewHolder = new ViewHolder(finalView);
 			finalView.setTag(viewHolder);
-		}
-		else {
+		} else {
 
 			viewHolder = (ViewHolder) finalView.getTag();
 		}
@@ -74,22 +72,28 @@ public class CollaboratorsAdapter extends BaseAdapter {
 		int imgRadius = AppUtil.getPixelsFromDensity(context, 90);
 
 		User currentItem = collaboratorsList.get(position);
-		PicassoService.getInstance(context).get().load(currentItem.getAvatarUrl()).placeholder(R.drawable.loader_animated).transform(new RoundedTransformation(imgRadius, 0)).resize(180, 180).centerCrop()
-			.into(viewHolder.collaboratorAvatar);
+		PicassoService.getInstance(context)
+				.get()
+				.load(currentItem.getAvatarUrl())
+				.placeholder(R.drawable.loader_animated)
+				.transform(new RoundedTransformation(imgRadius, 0))
+				.resize(180, 180)
+				.centerCrop()
+				.into(viewHolder.collaboratorAvatar);
 
 		viewHolder.userLoginId = currentItem.getLogin();
 
-		if(!currentItem.getFullName().equals("")) {
+		if (!currentItem.getFullName().equals("")) {
 
 			viewHolder.collaboratorName.setText(Html.fromHtml(currentItem.getFullName()));
-			viewHolder.userName.setText(context.getResources().getString(R.string.usernameWithAt, currentItem.getLogin()));
-		}
-		else {
+			viewHolder.userName.setText(
+					context.getResources()
+							.getString(R.string.usernameWithAt, currentItem.getLogin()));
+		} else {
 
 			viewHolder.collaboratorName.setText(currentItem.getLogin());
 			viewHolder.userName.setVisibility(View.GONE);
 		}
-
 	}
 
 	private class ViewHolder {
@@ -105,18 +109,21 @@ public class CollaboratorsAdapter extends BaseAdapter {
 			collaboratorName = v.findViewById(R.id.collaboratorName);
 			userName = v.findViewById(R.id.userName);
 
-			v.setOnClickListener(loginId -> {
-				Intent intent = new Intent(context, ProfileActivity.class);
-				intent.putExtra("username", userLoginId);
-				context.startActivity(intent);
-			});
+			v.setOnClickListener(
+					loginId -> {
+						Intent intent = new Intent(context, ProfileActivity.class);
+						intent.putExtra("username", userLoginId);
+						context.startActivity(intent);
+					});
 
-			v.setOnLongClickListener(loginId -> {
-				AppUtil.copyToClipboard(context, userLoginId, context.getString(R.string.copyLoginIdToClipBoard, userLoginId));
-				return true;
-			});
+			v.setOnLongClickListener(
+					loginId -> {
+						AppUtil.copyToClipboard(
+								context,
+								userLoginId,
+								context.getString(R.string.copyLoginIdToClipBoard, userLoginId));
+						return true;
+					});
 		}
-
 	}
-
 }

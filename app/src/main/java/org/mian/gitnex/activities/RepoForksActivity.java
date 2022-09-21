@@ -14,6 +14,8 @@ import androidx.annotation.NonNull;
 import androidx.appcompat.widget.SearchView;
 import androidx.appcompat.widget.Toolbar;
 import androidx.recyclerview.widget.LinearLayoutManager;
+import java.util.ArrayList;
+import java.util.List;
 import org.gitnex.tea4j.v2.models.Repository;
 import org.mian.gitnex.R;
 import org.mian.gitnex.adapters.RepoForksAdapter;
@@ -21,8 +23,6 @@ import org.mian.gitnex.clients.RetrofitClient;
 import org.mian.gitnex.databinding.ActivityRepoForksBinding;
 import org.mian.gitnex.helpers.Constants;
 import org.mian.gitnex.helpers.contexts.RepositoryContext;
-import java.util.ArrayList;
-import java.util.List;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
@@ -30,7 +30,6 @@ import retrofit2.Response;
 /**
  * @author M M Arif
  */
-
 public class RepoForksActivity extends BaseActivity {
 
 	private ActivityRepoForksBinding activityRepoForksBinding;
@@ -59,30 +58,38 @@ public class RepoForksActivity extends BaseActivity {
 		final String repoOwner = repository.getOwner();
 		final String repoName = repository.getName();
 
-		activityRepoForksBinding.toolbarTitle.setText(ctx.getResources().getString(R.string.infoTabRepoForksCount));
+		activityRepoForksBinding.toolbarTitle.setText(
+				ctx.getResources().getString(R.string.infoTabRepoForksCount));
 
 		activityRepoForksBinding.close.setOnClickListener(v -> finish());
 		resultLimit = Constants.getCurrentResultLimit(ctx);
 		forksList = new ArrayList<>();
 
-		activityRepoForksBinding.pullToRefresh.setOnRefreshListener(() -> new Handler(Looper.getMainLooper()).postDelayed(() -> {
-
-			pageSize = 1;
-			activityRepoForksBinding.pullToRefresh.setRefreshing(false);
-			loadInitial(repoOwner, repoName, pageSize, resultLimit);
-			adapter.notifyDataChanged();
-
-		}, 200));
+		activityRepoForksBinding.pullToRefresh.setOnRefreshListener(
+				() ->
+						new Handler(Looper.getMainLooper())
+								.postDelayed(
+										() -> {
+											pageSize = 1;
+											activityRepoForksBinding.pullToRefresh.setRefreshing(
+													false);
+											loadInitial(repoOwner, repoName, pageSize, resultLimit);
+											adapter.notifyDataChanged();
+										},
+										200));
 
 		adapter = new RepoForksAdapter(ctx, forksList);
-		adapter.setLoadMoreListener(() -> activityRepoForksBinding.recyclerView.post(() -> {
+		adapter.setLoadMoreListener(
+				() ->
+						activityRepoForksBinding.recyclerView.post(
+								() -> {
+									if (forksList.size() == resultLimit
+											|| pageSize == resultLimit) {
 
-			if(forksList.size() == resultLimit || pageSize == resultLimit) {
-
-				int page = (forksList.size() + resultLimit) / resultLimit;
-				loadMore(repoOwner, repoName, page, resultLimit);
-			}
-		}));
+										int page = (forksList.size() + resultLimit) / resultLimit;
+										loadMore(repoOwner, repoName, page, resultLimit);
+									}
+								}));
 
 		activityRepoForksBinding.recyclerView.setHasFixedSize(true);
 		activityRepoForksBinding.recyclerView.setLayoutManager(new LinearLayoutManager(ctx));
@@ -93,85 +100,91 @@ public class RepoForksActivity extends BaseActivity {
 
 	private void loadInitial(String repoOwner, String repoName, int pageSize, int resultLimit) {
 
-		Call<List<Repository>> call = RetrofitClient.getApiInterface(ctx).listForks(repoOwner, repoName, pageSize, resultLimit);
+		Call<List<Repository>> call =
+				RetrofitClient.getApiInterface(ctx)
+						.listForks(repoOwner, repoName, pageSize, resultLimit);
 
-		call.enqueue(new Callback<>() {
+		call.enqueue(
+				new Callback<>() {
 
-			@Override
-			public void onResponse(@NonNull Call<List<Repository>> call, @NonNull Response<List<Repository>> response) {
+					@Override
+					public void onResponse(
+							@NonNull Call<List<Repository>> call,
+							@NonNull Response<List<Repository>> response) {
 
-				if(response.isSuccessful()) {
+						if (response.isSuccessful()) {
 
-					assert response.body() != null;
+							assert response.body() != null;
 
-					if(response.body().size() > 0) {
-						forksList.clear();
-						forksList.addAll(response.body());
-						adapter.notifyDataChanged();
-						activityRepoForksBinding.noData.setVisibility(View.GONE);
+							if (response.body().size() > 0) {
+								forksList.clear();
+								forksList.addAll(response.body());
+								adapter.notifyDataChanged();
+								activityRepoForksBinding.noData.setVisibility(View.GONE);
+							} else {
+								forksList.clear();
+								adapter.notifyDataChanged();
+								activityRepoForksBinding.noData.setVisibility(View.VISIBLE);
+							}
+
+							activityRepoForksBinding.progressBar.setVisibility(View.GONE);
+						} else {
+							Log.e(TAG, String.valueOf(response.code()));
+						}
 					}
-					else {
-						forksList.clear();
-						adapter.notifyDataChanged();
-						activityRepoForksBinding.noData.setVisibility(View.VISIBLE);
+
+					@Override
+					public void onFailure(
+							@NonNull Call<List<Repository>> call, @NonNull Throwable t) {
+						Log.e(TAG, t.toString());
 					}
-
-					activityRepoForksBinding.progressBar.setVisibility(View.GONE);
-				}
-				else {
-					Log.e(TAG, String.valueOf(response.code()));
-				}
-			}
-
-			@Override
-			public void onFailure(@NonNull Call<List<Repository>> call, @NonNull Throwable t) {
-				Log.e(TAG, t.toString());
-			}
-		});
+				});
 	}
 
 	private void loadMore(String repoOwner, String repoName, int page, int resultLimit) {
 
 		activityRepoForksBinding.progressLoadMore.setVisibility(View.VISIBLE);
 
-		Call<List<Repository>> call = RetrofitClient.getApiInterface(ctx).listForks(repoOwner, repoName, page, resultLimit);
+		Call<List<Repository>> call =
+				RetrofitClient.getApiInterface(ctx)
+						.listForks(repoOwner, repoName, page, resultLimit);
 
-		call.enqueue(new Callback<>() {
+		call.enqueue(
+				new Callback<>() {
 
-			@Override
-			public void onResponse(@NonNull Call<List<Repository>> call, @NonNull Response<List<Repository>> response) {
+					@Override
+					public void onResponse(
+							@NonNull Call<List<Repository>> call,
+							@NonNull Response<List<Repository>> response) {
 
-				if(response.isSuccessful()) {
+						if (response.isSuccessful()) {
 
-					//remove loading view
-					forksList.remove(forksList.size() - 1);
+							// remove loading view
+							forksList.remove(forksList.size() - 1);
 
-					List<Repository> result = response.body();
-					assert result != null;
+							List<Repository> result = response.body();
+							assert result != null;
 
-					if(result.size() > 0) {
-						pageSize = result.size();
-						forksList.addAll(result);
+							if (result.size() > 0) {
+								pageSize = result.size();
+								forksList.addAll(result);
+							} else {
+								adapter.setMoreDataAvailable(false);
+							}
+
+							adapter.notifyDataChanged();
+							activityRepoForksBinding.progressLoadMore.setVisibility(View.GONE);
+						} else {
+							Log.e(TAG, String.valueOf(response.code()));
+						}
 					}
-					else {
-						adapter.setMoreDataAvailable(false);
+
+					@Override
+					public void onFailure(
+							@NonNull Call<List<Repository>> call, @NonNull Throwable t) {
+						Log.e(TAG, t.toString());
 					}
-
-					adapter.notifyDataChanged();
-					activityRepoForksBinding.progressLoadMore.setVisibility(View.GONE);
-				}
-				else {
-					Log.e(TAG, String.valueOf(response.code()));
-				}
-			}
-
-			@Override
-			public void onFailure(@NonNull Call<List<Repository>> call, @NonNull Throwable t) {
-				Log.e(TAG, t.toString());
-			}
-
-		});
-
+				});
 	}
 
 	@Override
@@ -184,19 +197,20 @@ public class RepoForksActivity extends BaseActivity {
 		SearchView searchView = (SearchView) searchItem.getActionView();
 		searchView.setImeOptions(EditorInfo.IME_ACTION_DONE);
 
-		searchView.setOnQueryTextListener(new androidx.appcompat.widget.SearchView.OnQueryTextListener() {
+		searchView.setOnQueryTextListener(
+				new androidx.appcompat.widget.SearchView.OnQueryTextListener() {
 
-			@Override
-			public boolean onQueryTextSubmit(String query) {
-				return false;
-			}
+					@Override
+					public boolean onQueryTextSubmit(String query) {
+						return false;
+					}
 
-			@Override
-			public boolean onQueryTextChange(String newText) {
-				filter(newText);
-				return true;
-			}
-		});
+					@Override
+					public boolean onQueryTextChange(String newText) {
+						filter(newText);
+						return true;
+					}
+				});
 
 		return super.onCreateOptionsMenu(menu);
 	}
@@ -204,8 +218,10 @@ public class RepoForksActivity extends BaseActivity {
 	private void filter(String text) {
 		List<Repository> userRepositories = new ArrayList<>();
 
-		for(Repository d : forksList) {
-			if(d.getOwner().getLogin().contains(text) || d.getName().toLowerCase().contains(text) || d.getDescription().toLowerCase().contains(text)) {
+		for (Repository d : forksList) {
+			if (d.getOwner().getLogin().contains(text)
+					|| d.getName().toLowerCase().contains(text)
+					|| d.getDescription().toLowerCase().contains(text)) {
 
 				userRepositories.add(d);
 			}
@@ -219,5 +235,4 @@ public class RepoForksActivity extends BaseActivity {
 		super.onResume();
 		repository.checkAccountSwitch(this);
 	}
-
 }

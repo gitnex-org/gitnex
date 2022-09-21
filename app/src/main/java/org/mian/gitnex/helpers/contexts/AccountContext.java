@@ -1,14 +1,14 @@
 package org.mian.gitnex.helpers.contexts;
 
 import android.content.Context;
-import org.gitnex.tea4j.v2.models.User;
-import org.mian.gitnex.database.api.UserAccountsApi;
-import org.mian.gitnex.database.models.UserAccount;
-import org.mian.gitnex.helpers.Version;
 import java.io.File;
 import java.io.Serializable;
 import java.util.Objects;
 import okhttp3.Credentials;
+import org.gitnex.tea4j.v2.models.User;
+import org.mian.gitnex.database.api.UserAccountsApi;
+import org.mian.gitnex.database.models.UserAccount;
+import org.mian.gitnex.helpers.Version;
 
 /**
  * @author qwerty287
@@ -23,7 +23,9 @@ public class AccountContext implements Serializable {
 	}
 
 	public static AccountContext fromId(int id, Context context) {
-		return new AccountContext(Objects.requireNonNull(UserAccountsApi.getInstance(context, UserAccountsApi.class)).getAccountById(id));
+		return new AccountContext(
+				Objects.requireNonNull(UserAccountsApi.getInstance(context, UserAccountsApi.class))
+						.getAccountById(id));
 	}
 
 	public UserAccount getAccount() {
@@ -71,7 +73,9 @@ public class AccountContext implements Serializable {
 	}
 
 	public String getFullName() {
-		return userInfo != null ? !userInfo.getFullName().equals("") ? userInfo.getFullName() : userInfo.getLogin() : account.getUserName();
+		return userInfo != null
+				? !userInfo.getFullName().equals("") ? userInfo.getFullName() : userInfo.getLogin()
+				: account.getUserName();
 	}
 
 	public File getCacheDir(Context context) {
@@ -85,5 +89,4 @@ public class AccountContext implements Serializable {
 		assert account.getAccountName() != null;
 		return new File(context.getCacheDir() + "/picasso_cache/", account.getAccountName());
 	}
-
 }

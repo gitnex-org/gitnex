@@ -15,58 +15,60 @@ import retrofit2.Callback;
 /**
  * @author M M Arif
  */
-
 public class MilestoneActions {
 
-	static final private String TAG = "MilestoneActions : ";
+	private static final String TAG = "MilestoneActions : ";
 
-	public static void closeMilestone(final Context ctx, int milestoneId_, RepositoryContext repository) {
+	public static void closeMilestone(
+			final Context ctx, int milestoneId_, RepositoryContext repository) {
 		updateMilestoneState(ctx, milestoneId_, repository, "closed");
 	}
 
-	public static void openMilestone(final Context ctx, int milestoneId_, RepositoryContext repository) {
+	public static void openMilestone(
+			final Context ctx, int milestoneId_, RepositoryContext repository) {
 		updateMilestoneState(ctx, milestoneId_, repository, "open");
 	}
 
-	private static void updateMilestoneState(final Context ctx, int milestoneId_, RepositoryContext repository, String state) {
+	private static void updateMilestoneState(
+			final Context ctx, int milestoneId_, RepositoryContext repository, String state) {
 
 		EditMilestoneOption milestoneStateJson = new EditMilestoneOption();
 		milestoneStateJson.setState(state);
-		Call<Milestone> call = RetrofitClient.getApiInterface(ctx).issueEditMilestone(repository.getOwner(), repository.getName(), String.valueOf(milestoneId_), milestoneStateJson);
+		Call<Milestone> call =
+				RetrofitClient.getApiInterface(ctx)
+						.issueEditMilestone(
+								repository.getOwner(),
+								repository.getName(),
+								String.valueOf(milestoneId_),
+								milestoneStateJson);
 
-		call.enqueue(new Callback<>() {
+		call.enqueue(
+				new Callback<>() {
 
-			@Override
-			public void onResponse(@NonNull Call<Milestone> call, @NonNull retrofit2.Response<Milestone> response) {
+					@Override
+					public void onResponse(
+							@NonNull Call<Milestone> call,
+							@NonNull retrofit2.Response<Milestone> response) {
 
-				if(response.isSuccessful()) {
+						if (response.isSuccessful()) {
 
-					Toasty.success(ctx, ctx.getString(R.string.milestoneStatusUpdate));
+							Toasty.success(ctx, ctx.getString(R.string.milestoneStatusUpdate));
 
-				}
-				else if(response.code() == 401) {
+						} else if (response.code() == 401) {
 
-					AlertDialogs.authorizationTokenRevokedDialog(ctx);
+							AlertDialogs.authorizationTokenRevokedDialog(ctx);
 
-				}
-				else {
+						} else {
 
-					Toasty.error(ctx, ctx.getString(R.string.genericError));
+							Toasty.error(ctx, ctx.getString(R.string.genericError));
+						}
+					}
 
-				}
+					@Override
+					public void onFailure(@NonNull Call<Milestone> call, @NonNull Throwable t) {
 
-			}
-
-			@Override
-			public void onFailure(@NonNull Call<Milestone> call, @NonNull Throwable t) {
-
-				Toasty.error(ctx, ctx.getString(R.string.genericError));
-
-			}
-
-		});
-
-
+						Toasty.error(ctx, ctx.getString(R.string.genericError));
+					}
+				});
 	}
-
 }

@@ -4,6 +4,8 @@ import android.os.Bundle;
 import android.view.View;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.LinearLayoutManager;
+import java.util.ArrayList;
+import java.util.List;
 import org.gitnex.tea4j.v2.models.Repository;
 import org.mian.gitnex.R;
 import org.mian.gitnex.adapters.OrganizationTeamRepositoriesAdapter;
@@ -11,8 +13,6 @@ import org.mian.gitnex.clients.RetrofitClient;
 import org.mian.gitnex.databinding.AddNewTeamRepositoryBinding;
 import org.mian.gitnex.helpers.Constants;
 import org.mian.gitnex.helpers.Toasty;
-import java.util.ArrayList;
-import java.util.List;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
@@ -20,7 +20,6 @@ import retrofit2.Response;
 /**
  * @author M M Arif
  */
-
 public class AddNewTeamRepoActivity extends BaseActivity {
 
 	private AddNewTeamRepositoryBinding addNewTeamRepositoryBinding;
@@ -48,7 +47,8 @@ public class AddNewTeamRepoActivity extends BaseActivity {
 		teamName = getIntent().getStringExtra("teamName");
 
 		addNewTeamRepositoryBinding.recyclerViewTeamRepos.setHasFixedSize(true);
-		addNewTeamRepositoryBinding.recyclerViewTeamRepos.setLayoutManager(new LinearLayoutManager(ctx));
+		addNewTeamRepositoryBinding.recyclerViewTeamRepos.setLayoutManager(
+				new LinearLayoutManager(ctx));
 
 		dataList = new ArrayList<>();
 
@@ -57,49 +57,59 @@ public class AddNewTeamRepoActivity extends BaseActivity {
 
 	public void loadRepos() {
 
-		Call<List<Repository>> call = RetrofitClient.getApiInterface(ctx).orgListRepos(getIntent().getStringExtra("orgName"), 1, resultLimit);
+		Call<List<Repository>> call =
+				RetrofitClient.getApiInterface(ctx)
+						.orgListRepos(getIntent().getStringExtra("orgName"), 1, resultLimit);
 
 		addNewTeamRepositoryBinding.progressBar.setVisibility(View.VISIBLE);
 
-		call.enqueue(new Callback<>() {
+		call.enqueue(
+				new Callback<>() {
 
-			@Override
-			public void onResponse(@NonNull Call<List<Repository>> call, @NonNull Response<List<Repository>> response) {
+					@Override
+					public void onResponse(
+							@NonNull Call<List<Repository>> call,
+							@NonNull Response<List<Repository>> response) {
 
-				if(response.isSuccessful()) {
+						if (response.isSuccessful()) {
 
-					assert response.body() != null;
-					if(response.body().size() > 0) {
+							assert response.body() != null;
+							if (response.body().size() > 0) {
 
-						dataList.clear();
-						dataList.addAll(response.body());
+								dataList.clear();
+								dataList.addAll(response.body());
 
-						adapter = new OrganizationTeamRepositoriesAdapter(dataList, ctx, Math.toIntExact(teamId), getIntent().getStringExtra("orgName"), teamName);
+								adapter =
+										new OrganizationTeamRepositoriesAdapter(
+												dataList,
+												ctx,
+												Math.toIntExact(teamId),
+												getIntent().getStringExtra("orgName"),
+												teamName);
 
-						addNewTeamRepositoryBinding.recyclerViewTeamRepos.setAdapter(adapter);
-						addNewTeamRepositoryBinding.noData.setVisibility(View.GONE);
+								addNewTeamRepositoryBinding.recyclerViewTeamRepos.setAdapter(
+										adapter);
+								addNewTeamRepositoryBinding.noData.setVisibility(View.GONE);
+							} else {
+
+								addNewTeamRepositoryBinding.noData.setVisibility(View.VISIBLE);
+							}
+
+							addNewTeamRepositoryBinding.progressBar.setVisibility(View.GONE);
+						} else {
+							Toasty.error(ctx, getString(R.string.genericError));
+						}
 					}
-					else {
 
-						addNewTeamRepositoryBinding.noData.setVisibility(View.VISIBLE);
+					@Override
+					public void onFailure(
+							@NonNull Call<List<Repository>> call, @NonNull Throwable t) {
+						Toasty.error(ctx, ctx.getString(R.string.genericServerResponseError));
 					}
-
-					addNewTeamRepositoryBinding.progressBar.setVisibility(View.GONE);
-				}
-				else {
-					Toasty.error(ctx, getString(R.string.genericError));
-				}
-			}
-
-			@Override
-			public void onFailure(@NonNull Call<List<Repository>> call, @NonNull Throwable t) {
-				Toasty.error(ctx, ctx.getString(R.string.genericServerResponseError));
-			}
-		});
+				});
 	}
 
 	private void initCloseListener() {
 		onClickListener = view -> finish();
 	}
-
 }

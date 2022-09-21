@@ -7,6 +7,8 @@ import android.view.View;
 import android.view.ViewGroup;
 import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
+import java.util.ArrayList;
+import java.util.List;
 import org.gitnex.tea4j.v2.models.Team;
 import org.gitnex.tea4j.v2.models.User;
 import org.mian.gitnex.R;
@@ -14,8 +16,6 @@ import org.mian.gitnex.adapters.UserGridAdapter;
 import org.mian.gitnex.clients.RetrofitClient;
 import org.mian.gitnex.databinding.FragmentOrganizationTeamInfoMembersBinding;
 import org.mian.gitnex.helpers.Toasty;
-import java.util.ArrayList;
-import java.util.List;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
@@ -23,7 +23,6 @@ import retrofit2.Response;
 /**
  * @author opyale
  */
-
 public class OrganizationTeamInfoMembersFragment extends Fragment {
 
 	private final List<User> teamUserInfo = new ArrayList<>();
@@ -32,8 +31,7 @@ public class OrganizationTeamInfoMembersFragment extends Fragment {
 	private Team team;
 	private UserGridAdapter adapter;
 
-	public OrganizationTeamInfoMembersFragment() {
-	}
+	public OrganizationTeamInfoMembersFragment() {}
 
 	public static OrganizationTeamInfoMembersFragment newInstance(Team team) {
 		OrganizationTeamInfoMembersFragment fragment = new OrganizationTeamInfoMembersFragment();
@@ -46,7 +44,8 @@ public class OrganizationTeamInfoMembersFragment extends Fragment {
 	}
 
 	@Override
-	public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
+	public View onCreateView(
+			@NonNull LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
 		binding = FragmentOrganizationTeamInfoMembersBinding.inflate(inflater, container, false);
 		ctx = getContext();
 
@@ -61,37 +60,41 @@ public class OrganizationTeamInfoMembersFragment extends Fragment {
 
 	private void fetchMembersAsync() {
 
-		Call<List<User>> call = RetrofitClient.getApiInterface(ctx).orgListTeamMembers(team.getId(), null, null);
+		Call<List<User>> call =
+				RetrofitClient.getApiInterface(ctx).orgListTeamMembers(team.getId(), null, null);
 
 		binding.progressBar.setVisibility(View.VISIBLE);
 
-		call.enqueue(new Callback<>() {
+		call.enqueue(
+				new Callback<>() {
 
-			@Override
-			public void onResponse(@NonNull Call<List<User>> call, @NonNull Response<List<User>> response) {
-				if(response.isSuccessful() && response.body() != null && response.body().size() > 0) {
-					teamUserInfo.clear();
-					teamUserInfo.addAll(response.body());
+					@Override
+					public void onResponse(
+							@NonNull Call<List<User>> call,
+							@NonNull Response<List<User>> response) {
+						if (response.isSuccessful()
+								&& response.body() != null
+								&& response.body().size() > 0) {
+							teamUserInfo.clear();
+							teamUserInfo.addAll(response.body());
 
-					adapter.notifyDataSetChanged();
+							adapter.notifyDataSetChanged();
 
-					binding.noDataMembers.setVisibility(View.GONE);
-					binding.members.setVisibility(View.VISIBLE);
-				}
-				else {
-					binding.members.setVisibility(View.GONE);
-					binding.noDataMembers.setVisibility(View.VISIBLE);
-				}
+							binding.noDataMembers.setVisibility(View.GONE);
+							binding.members.setVisibility(View.VISIBLE);
+						} else {
+							binding.members.setVisibility(View.GONE);
+							binding.noDataMembers.setVisibility(View.VISIBLE);
+						}
 
-				binding.progressBar.setVisibility(View.GONE);
-			}
+						binding.progressBar.setVisibility(View.GONE);
+					}
 
-			@Override
-			public void onFailure(@NonNull Call<List<User>> call, @NonNull Throwable t) {
+					@Override
+					public void onFailure(@NonNull Call<List<User>> call, @NonNull Throwable t) {
 
-				Toasty.error(ctx, ctx.getString(R.string.genericServerResponseError));
-			}
-		});
+						Toasty.error(ctx, ctx.getString(R.string.genericServerResponseError));
+					}
+				});
 	}
-
 }

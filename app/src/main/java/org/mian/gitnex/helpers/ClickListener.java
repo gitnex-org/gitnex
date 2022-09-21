@@ -10,7 +10,6 @@ import org.mian.gitnex.R;
 /**
  * @author M M Arif
  */
-
 public class ClickListener implements View.OnClickListener {
 
 	private final String infoText;
@@ -26,7 +25,9 @@ public class ClickListener implements View.OnClickListener {
 	public void onClick(View v) {
 
 		LayoutInflater inflater1 = LayoutInflater.from(mCtx);
-		View layout = inflater1.inflate(R.layout.custom_toast_info, v.findViewById(R.id.custom_toast_container));
+		View layout =
+				inflater1.inflate(
+						R.layout.custom_toast_info, v.findViewById(R.id.custom_toast_container));
 
 		TextView text = layout.findViewById(R.id.toastText);
 		text.setText(infoText);
@@ -35,7 +36,5 @@ public class ClickListener implements View.OnClickListener {
 		toast.setDuration(Toast.LENGTH_LONG);
 		toast.setView(layout);
 		toast.show();
-
 	}
-
 }

@@ -13,25 +13,29 @@ import org.mian.gitnex.structs.BottomSheetListener;
 /**
  * @author opyale
  */
-
 public class BottomSheetNotificationsFilterFragment extends BottomSheetDialogFragment {
 
 	private BottomSheetListener listener;
 
-	@Nullable
-	@Override
-	public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-		BottomSheetNotificationsFilterBinding binding = BottomSheetNotificationsFilterBinding.inflate(inflater, container, false);
+	@Nullable @Override
+	public View onCreateView(
+			@NonNull LayoutInflater inflater,
+			@Nullable ViewGroup container,
+			@Nullable Bundle savedInstanceState) {
+		BottomSheetNotificationsFilterBinding binding =
+				BottomSheetNotificationsFilterBinding.inflate(inflater, container, false);
 
-		binding.readNotifications.setOnClickListener(v1 -> {
-			listener.onButtonClicked("read");
-			dismiss();
-		});
+		binding.readNotifications.setOnClickListener(
+				v1 -> {
+					listener.onButtonClicked("read");
+					dismiss();
+				});
 
-		binding.unreadNotifications.setOnClickListener(v12 -> {
-			listener.onButtonClicked("unread");
-			dismiss();
-		});
+		binding.unreadNotifications.setOnClickListener(
+				v12 -> {
+					listener.onButtonClicked("unread");
+					dismiss();
+				});
 
 		return binding.getRoot();
 	}
@@ -39,5 +43,4 @@ public class BottomSheetNotificationsFilterFragment extends BottomSheetDialogFra
 	public void setOnClickListener(BottomSheetListener listener) {
 		this.listener = listener;
 	}
-
 }

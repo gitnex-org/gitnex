@@ -11,20 +11,20 @@ import android.widget.ImageView;
 import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
+import java.util.ArrayList;
+import java.util.LinkedHashSet;
+import java.util.List;
 import org.gitnex.tea4j.v2.models.User;
 import org.mian.gitnex.R;
 import org.mian.gitnex.clients.PicassoService;
 import org.mian.gitnex.helpers.AppUtil;
 import org.mian.gitnex.helpers.RoundedTransformation;
-import java.util.ArrayList;
-import java.util.LinkedHashSet;
-import java.util.List;
 
 /**
  * @author M M Arif
  */
-
-public class AssigneesListAdapter extends RecyclerView.Adapter<AssigneesListAdapter.AssigneesViewHolder> {
+public class AssigneesListAdapter
+		extends RecyclerView.Adapter<AssigneesListAdapter.AssigneesViewHolder> {
 
 	private final Context context;
 	private final List<User> assigneesList;
@@ -32,7 +32,11 @@ public class AssigneesListAdapter extends RecyclerView.Adapter<AssigneesListAdap
 	private List<String> assigneesStrings = new ArrayList<>();
 	private List<String> currentAssignees;
 
-	public AssigneesListAdapter(Context ctx, List<User> dataMain, AssigneesListAdapterListener assigneesListener, List<String> currentAssignees) {
+	public AssigneesListAdapter(
+			Context ctx,
+			List<User> dataMain,
+			AssigneesListAdapterListener assigneesListener,
+			List<String> currentAssignees) {
 
 		this.context = ctx;
 		this.assigneesList = dataMain;
@@ -40,34 +44,42 @@ public class AssigneesListAdapter extends RecyclerView.Adapter<AssigneesListAdap
 		this.currentAssignees = currentAssignees;
 	}
 
-	@NonNull
-	@Override
-	public AssigneesListAdapter.AssigneesViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
+	@NonNull @Override
+	public AssigneesListAdapter.AssigneesViewHolder onCreateViewHolder(
+			@NonNull ViewGroup parent, int viewType) {
 
-		View v = LayoutInflater.from(parent.getContext()).inflate(R.layout.custom_assignees_list, parent, false);
+		View v =
+				LayoutInflater.from(parent.getContext())
+						.inflate(R.layout.custom_assignees_list, parent, false);
 		return new AssigneesListAdapter.AssigneesViewHolder(v);
 	}
 
 	@Override
-	public void onBindViewHolder(@NonNull AssigneesListAdapter.AssigneesViewHolder holder, int position) {
+	public void onBindViewHolder(
+			@NonNull AssigneesListAdapter.AssigneesViewHolder holder, int position) {
 
 		User currentItem = assigneesList.get(position);
 		int imgRadius = AppUtil.getPixelsFromDensity(context, 90);
 
-		if(currentItem.getFullName().equals("")) {
+		if (currentItem.getFullName().equals("")) {
 
 			holder.assigneesName.setText(currentItem.getLogin());
-		}
-		else {
+		} else {
 
 			holder.assigneesName.setText(Html.fromHtml(currentItem.getFullName()));
 		}
-		PicassoService.getInstance(context).get().load(currentItem.getAvatarUrl()).placeholder(R.drawable.loader_animated).transform(new RoundedTransformation(imgRadius, 0)).resize(180, 180).centerCrop()
-			.into(holder.assigneesAvatar);
+		PicassoService.getInstance(context)
+				.get()
+				.load(currentItem.getAvatarUrl())
+				.placeholder(R.drawable.loader_animated)
+				.transform(new RoundedTransformation(imgRadius, 0))
+				.resize(180, 180)
+				.centerCrop()
+				.into(holder.assigneesAvatar);
 
-		for(int i = 0; i < assigneesList.size(); i++) {
+		for (int i = 0; i < assigneesList.size(); i++) {
 
-			if(assigneesStrings.contains(currentItem.getLogin())) {
+			if (assigneesStrings.contains(currentItem.getLogin())) {
 
 				holder.assigneesSelection.setChecked(true);
 			}
@@ -75,9 +87,9 @@ public class AssigneesListAdapter extends RecyclerView.Adapter<AssigneesListAdap
 
 		currentAssignees = new ArrayList<>(new LinkedHashSet<>(currentAssignees));
 
-		for(int i = 0; i < currentAssignees.size(); i++) {
+		for (int i = 0; i < currentAssignees.size(); i++) {
 
-			if(currentAssignees.contains(currentItem.getLogin())) {
+			if (currentAssignees.contains(currentItem.getLogin())) {
 
 				holder.assigneesSelection.setChecked(true);
 				assigneesStrings.add(currentAssignees.get(i));
@@ -86,19 +98,18 @@ public class AssigneesListAdapter extends RecyclerView.Adapter<AssigneesListAdap
 
 		assigneesListener.assigneesInterface(assigneesStrings);
 
-		holder.assigneesSelection.setOnCheckedChangeListener((buttonView, isChecked) -> {
+		holder.assigneesSelection.setOnCheckedChangeListener(
+				(buttonView, isChecked) -> {
+					if (isChecked) {
 
-			if(isChecked) {
+						assigneesStrings.add(currentItem.getLogin());
+					} else {
 
-				assigneesStrings.add(currentItem.getLogin());
-			}
-			else {
+						assigneesStrings.remove(currentItem.getLogin());
+					}
 
-				assigneesStrings.remove(currentItem.getLogin());
-			}
-
-			assigneesListener.assigneesInterface(assigneesStrings);
-		});
+					assigneesListener.assigneesInterface(assigneesStrings);
+				});
 
 		assigneesStrings = new ArrayList<>(new LinkedHashSet<>(assigneesStrings));
 	}
@@ -119,7 +130,6 @@ public class AssigneesListAdapter extends RecyclerView.Adapter<AssigneesListAdap
 	public interface AssigneesListAdapterListener {
 
 		void assigneesInterface(List<String> data);
-
 	}
 
 	static class AssigneesViewHolder extends RecyclerView.ViewHolder {
@@ -137,7 +147,5 @@ public class AssigneesListAdapter extends RecyclerView.Adapter<AssigneesListAdap
 			assigneesName = itemView.findViewById(R.id.assigneesName);
 			assigneesAvatar = itemView.findViewById(R.id.assigneesAvatar);
 		}
-
 	}
-
 }

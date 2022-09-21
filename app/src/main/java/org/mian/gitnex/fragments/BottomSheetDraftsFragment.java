@@ -15,24 +15,25 @@ import org.mian.gitnex.structs.BottomSheetListener;
 /**
  * @author M M Arif
  */
-
 public class BottomSheetDraftsFragment extends BottomSheetDialogFragment {
 
 	private final String TAG = "BottomSheetDraftsFragment";
 	private BottomSheetListener bmListener;
 
-	@Nullable
-	@Override
-	public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
+	@Nullable @Override
+	public View onCreateView(
+			@NonNull LayoutInflater inflater,
+			@Nullable ViewGroup container,
+			@Nullable Bundle savedInstanceState) {
 
-		BottomSheetDraftsBinding bottomSheetDraftsBinding = BottomSheetDraftsBinding.inflate(inflater, container, false);
+		BottomSheetDraftsBinding bottomSheetDraftsBinding =
+				BottomSheetDraftsBinding.inflate(inflater, container, false);
 
-		bottomSheetDraftsBinding.deleteAllDrafts.setOnClickListener(v1 -> {
-
-			dismiss();
-			bmListener.onButtonClicked("deleteDrafts");
-
-		});
+		bottomSheetDraftsBinding.deleteAllDrafts.setOnClickListener(
+				v1 -> {
+					dismiss();
+					bmListener.onButtonClicked("deleteDrafts");
+				});
 
 		return bottomSheetDraftsBinding.getRoot();
 	}
@@ -43,10 +44,8 @@ public class BottomSheetDraftsFragment extends BottomSheetDialogFragment {
 
 		try {
 			bmListener = (BottomSheetListener) context;
-		}
-		catch(ClassCastException e) {
+		} catch (ClassCastException e) {
 			Log.e(TAG, e.toString());
 		}
 	}
-
 }

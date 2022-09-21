@@ -7,10 +7,10 @@ import android.graphics.Typeface;
 /**
  * @author M M Arif
  */
-
 public class LabelWidthCalculator {
 
-	public static int calculateLabelWidth(String text, Typeface typeface, int textSize, int paddingLeftRight) {
+	public static int calculateLabelWidth(
+			String text, Typeface typeface, int textSize, int paddingLeftRight) {
 
 		Paint paint = new Paint();
 		Rect rect = new Rect();
@@ -20,7 +20,5 @@ public class LabelWidthCalculator {
 		paint.getTextBounds(text, 0, text.length(), rect);
 
 		return rect.width() + (paddingLeftRight * 2);
-
 	}
-
 }

@@ -11,7 +11,6 @@ import java.util.StringJoiner;
 /**
  * @author opyale
  */
-
 public class Path {
 
 	private final List<String> segments;
@@ -21,57 +20,54 @@ public class Path {
 
 		this.segments = new ArrayList<>(Arrays.asList(segments));
 		this.onChangedListeners = new ArrayList<>();
-
 	}
 
 	public static Path of(String path) {
 
 		String[] parsed_segments = path.split("/");
 
-		return new Path(Arrays.stream(parsed_segments).filter(s -> !s.trim().isEmpty()).toArray(String[]::new));
-
+		return new Path(
+				Arrays.stream(parsed_segments)
+						.filter(s -> !s.trim().isEmpty())
+						.toArray(String[]::new));
 	}
 
 	public Path addListener(Runnable onChangedListener) {
 
 		onChangedListeners.add(onChangedListener);
 		return this;
-
 	}
 
 	public Path removeListener(Runnable onChangedListener) {
 
 		onChangedListeners.remove(onChangedListener);
 		return this;
-
 	}
 
 	private void pathChanged() {
 
-		for(Runnable onChangedListener : onChangedListeners) {
+		for (Runnable onChangedListener : onChangedListeners) {
 			onChangedListener.run();
 		}
 	}
 
 	public Path add(String segment) {
 
-		if(segment != null && !segment.trim().isEmpty()) {
+		if (segment != null && !segment.trim().isEmpty()) {
 
 			try {
 				segments.add(URLEncoder.encode(segment, "UTF-8"));
-			}
-			catch(UnsupportedEncodingException ignored) {
+			} catch (UnsupportedEncodingException ignored) {
 			}
 		}
 
 		pathChanged();
 		return this;
-
 	}
 
 	public Path addWithoutEncoding(String segment) {
 
-		if(segment != null && !segment.trim().isEmpty()) {
+		if (segment != null && !segment.trim().isEmpty()) {
 			segments.add(segment);
 		}
 
@@ -90,17 +86,14 @@ public class Path {
 
 		pathChanged();
 		return this;
-
 	}
 
 	public Path pop(int count) {
 
-		for(int i = 0; i < count; i++)
-			segments.remove(segments.size() - 1);
+		for (int i = 0; i < count; i++) segments.remove(segments.size() - 1);
 
 		pathChanged();
 		return this;
-
 	}
 
 	public Path remove(int index) {
@@ -109,7 +102,6 @@ public class Path {
 		pathChanged();
 
 		return this;
-
 	}
 
 	public Path clear() {
@@ -118,25 +110,20 @@ public class Path {
 		pathChanged();
 
 		return this;
-
 	}
 
 	public String[] segments() {
 
-		return segments.toArray(new String[]{});
+		return segments.toArray(new String[] {});
 	}
 
-	@NonNull
-	@Override
+	@NonNull @Override
 	public String toString() {
 
 		StringJoiner stringJoiner = new StringJoiner("/");
 
-		for(String segment : segments)
-			stringJoiner.add(segment);
+		for (String segment : segments) stringJoiner.add(segment);
 
 		return stringJoiner.toString();
-
 	}
-
 }

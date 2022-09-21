@@ -2,15 +2,14 @@ package org.mian.gitnex.database.api;
 
 import android.content.Context;
 import androidx.lifecycle.LiveData;
+import java.util.List;
 import org.mian.gitnex.database.dao.DraftsDao;
 import org.mian.gitnex.database.models.Draft;
 import org.mian.gitnex.database.models.DraftWithRepository;
-import java.util.List;
 
 /**
  * @author M M Arif
  */
-
 public class DraftsApi extends BaseApi {
 
 	private final DraftsDao draftsDao;
@@ -20,7 +19,14 @@ public class DraftsApi extends BaseApi {
 		draftsDao = gitnexDatabase.draftsDao();
 	}
 
-	public long insertDraft(int repositoryId, int draftAccountId, int issueId, String draftText, String draftType, String commentId, String issueType) {
+	public long insertDraft(
+			int repositoryId,
+			int draftAccountId,
+			int issueId,
+			String draftText,
+			String draftType,
+			String commentId,
+			String issueType) {
 
 		Draft draft = new Draft();
 		draft.setDraftRepositoryId(repositoryId);
@@ -57,7 +63,7 @@ public class DraftsApi extends BaseApi {
 	public void deleteSingleDraft(final int draftId) {
 		final LiveData<Draft> draft = draftsDao.fetchDraftById(draftId);
 
-		if(draft != null) {
+		if (draft != null) {
 			executorService.execute(() -> draftsDao.deleteByDraftId(draftId));
 		}
 	}
@@ -70,8 +76,14 @@ public class DraftsApi extends BaseApi {
 		executorService.execute(() -> draftsDao.updateDraft(draftText, draftId, commentId));
 	}
 
-	public void updateDraftByIssueIdAsyncTask(final String draftText, final int issueId, final int draftRepositoryId, final String commentId) {
-		executorService.execute(() -> draftsDao.updateDraftByIssueId(draftText, issueId, draftRepositoryId, commentId));
+	public void updateDraftByIssueIdAsyncTask(
+			final String draftText,
+			final int issueId,
+			final int draftRepositoryId,
+			final String commentId) {
+		executorService.execute(
+				() ->
+						draftsDao.updateDraftByIssueId(
+								draftText, issueId, draftRepositoryId, commentId));
 	}
-
 }

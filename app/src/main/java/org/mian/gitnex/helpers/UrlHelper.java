@@ -6,7 +6,6 @@ import java.net.URISyntaxException;
 /**
  * @author M M Arif
  */
-
 public class UrlHelper {
 
 	public static String cleanUrl(String url) {
@@ -14,8 +13,7 @@ public class UrlHelper {
 		URI uri = null;
 		try {
 			uri = new URI(url);
-		}
-		catch(URISyntaxException e) {
+		} catch (URISyntaxException e) {
 			e.printStackTrace();
 		}
 
@@ -25,23 +23,19 @@ public class UrlHelper {
 		int urlPort = uri.getPort();
 
 		String urlFinal = null;
-		if(urlPort > 0) {
+		if (urlPort > 0) {
 			urlFinal = urlProtocol + "://" + urlHost + ":" + urlPort;
-		}
-		else if(urlProtocol != null) {
+		} else if (urlProtocol != null) {
 			urlFinal = urlProtocol + "://" + urlHost;
-		}
-		else {
+		} else {
 			urlFinal = urlHost;
 		}
 
 		return urlFinal;
-
 	}
 
 	public static String fixScheme(String url, String scheme) {
 
 		return !url.matches("^(http|https)://.+$") ? scheme + "://" + url : url;
 	}
-
 }

@@ -1,17 +1,25 @@
 package org.mian.gitnex.database.models;
 
+import static androidx.room.ForeignKey.CASCADE;
+
 import androidx.room.Entity;
 import androidx.room.ForeignKey;
 import androidx.room.Index;
 import androidx.room.PrimaryKey;
 import java.io.Serializable;
-import static androidx.room.ForeignKey.CASCADE;
 
 /**
  * @author M M Arif
  */
-
-@Entity(tableName = "Repositories", foreignKeys = @ForeignKey(entity = UserAccount.class, parentColumns = "accountId", childColumns = "repoAccountId", onDelete = CASCADE), indices = {@Index("repoAccountId")})
+@Entity(
+		tableName = "Repositories",
+		foreignKeys =
+				@ForeignKey(
+						entity = UserAccount.class,
+						parentColumns = "accountId",
+						childColumns = "repoAccountId",
+						onDelete = CASCADE),
+		indices = {@Index("repoAccountId")})
 public class Repository implements Serializable {
 
 	@PrimaryKey(autoGenerate = true)
@@ -61,5 +69,4 @@ public class Repository implements Serializable {
 	public void setMostVisited(int mostVisited) {
 		this.mostVisited = mostVisited;
 	}
-
 }

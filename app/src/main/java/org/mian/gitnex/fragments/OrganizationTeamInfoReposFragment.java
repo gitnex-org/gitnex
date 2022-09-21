@@ -25,7 +25,6 @@ import org.mian.gitnex.viewmodels.RepositoriesViewModel;
 /**
  * @author M M Arif
  */
-
 public class OrganizationTeamInfoReposFragment extends Fragment {
 
 	public static boolean repoAdded = false;
@@ -48,9 +47,11 @@ public class OrganizationTeamInfoReposFragment extends Fragment {
 	}
 
 	@Override
-	public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
+	public View onCreateView(
+			@NonNull LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
 
-		fragmentRepositoriesBinding = FragmentRepositoriesBinding.inflate(inflater, container, false);
+		fragmentRepositoriesBinding =
+				FragmentRepositoriesBinding.inflate(inflater, container, false);
 
 		resultLimit = Constants.getCurrentResultLimit(getContext());
 		setHasOptionsMenu(true);
@@ -61,15 +62,22 @@ public class OrganizationTeamInfoReposFragment extends Fragment {
 		fragmentRepositoriesBinding.addNewRepo.setVisibility(View.GONE);
 
 		fragmentRepositoriesBinding.recyclerView.setHasFixedSize(true);
-		fragmentRepositoriesBinding.recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
+		fragmentRepositoriesBinding.recyclerView.setLayoutManager(
+				new LinearLayoutManager(getContext()));
 
-		fragmentRepositoriesBinding.pullToRefresh.setOnRefreshListener(() -> new Handler(Looper.getMainLooper()).postDelayed(() -> {
-
-			page = 1;
-			fragmentRepositoriesBinding.pullToRefresh.setRefreshing(false);
-			fetchDataAsync();
-			fragmentRepositoriesBinding.progressBar.setVisibility(View.VISIBLE);
-		}, 50));
+		fragmentRepositoriesBinding.pullToRefresh.setOnRefreshListener(
+				() ->
+						new Handler(Looper.getMainLooper())
+								.postDelayed(
+										() -> {
+											page = 1;
+											fragmentRepositoriesBinding.pullToRefresh.setRefreshing(
+													false);
+											fetchDataAsync();
+											fragmentRepositoriesBinding.progressBar.setVisibility(
+													View.VISIBLE);
+										},
+										50));
 
 		fetchDataAsync();
 
@@ -78,45 +86,58 @@ public class OrganizationTeamInfoReposFragment extends Fragment {
 
 	private void fetchDataAsync() {
 
-		repositoriesViewModel.getRepositories(page, resultLimit, String.valueOf(team.getId()), "team", null, getContext()).observe(getViewLifecycleOwner(), reposListMain -> {
+		repositoriesViewModel
+				.getRepositories(
+						page, resultLimit, String.valueOf(team.getId()), "team", null, getContext())
+				.observe(
+						getViewLifecycleOwner(),
+						reposListMain -> {
+							adapter = new ReposListAdapter(reposListMain, getContext());
+							adapter.setLoadMoreListener(
+									new ReposListAdapter.OnLoadMoreListener() {
 
-			adapter = new ReposListAdapter(reposListMain, getContext());
-			adapter.setLoadMoreListener(new ReposListAdapter.OnLoadMoreListener() {
+										@Override
+										public void onLoadMore() {
 
-				@Override
-				public void onLoadMore() {
+											page += 1;
+											repositoriesViewModel.loadMoreRepos(
+													page,
+													resultLimit,
+													String.valueOf(team.getId()),
+													"team",
+													null,
+													getContext(),
+													adapter);
+											fragmentRepositoriesBinding.progressBar.setVisibility(
+													View.VISIBLE);
+										}
 
-					page += 1;
-					repositoriesViewModel.loadMoreRepos(page, resultLimit, String.valueOf(team.getId()), "team", null, getContext(), adapter);
-					fragmentRepositoriesBinding.progressBar.setVisibility(View.VISIBLE);
-				}
+										@Override
+										public void onLoadFinished() {
 
-				@Override
-				public void onLoadFinished() {
+											fragmentRepositoriesBinding.progressBar.setVisibility(
+													View.GONE);
+										}
+									});
 
-					fragmentRepositoriesBinding.progressBar.setVisibility(View.GONE);
-				}
-			});
+							if (adapter.getItemCount() > 0) {
+								fragmentRepositoriesBinding.recyclerView.setAdapter(adapter);
+								fragmentRepositoriesBinding.noData.setVisibility(View.GONE);
+							} else {
+								adapter.notifyDataChanged();
+								fragmentRepositoriesBinding.recyclerView.setAdapter(adapter);
+								fragmentRepositoriesBinding.noData.setVisibility(View.VISIBLE);
+							}
 
-			if(adapter.getItemCount() > 0) {
-				fragmentRepositoriesBinding.recyclerView.setAdapter(adapter);
-				fragmentRepositoriesBinding.noData.setVisibility(View.GONE);
-			}
-			else {
-				adapter.notifyDataChanged();
-				fragmentRepositoriesBinding.recyclerView.setAdapter(adapter);
-				fragmentRepositoriesBinding.noData.setVisibility(View.VISIBLE);
-			}
-
-			fragmentRepositoriesBinding.progressBar.setVisibility(View.GONE);
-		});
+							fragmentRepositoriesBinding.progressBar.setVisibility(View.GONE);
+						});
 	}
 
 	@Override
 	public void onResume() {
 		super.onResume();
 
-		if(repoAdded) {
+		if (repoAdded) {
 			page = 1;
 			fetchDataAsync();
 			MainActivity.reloadRepos = false;
@@ -130,25 +151,25 @@ public class OrganizationTeamInfoReposFragment extends Fragment {
 		super.onCreateOptionsMenu(menu, inflater);
 
 		MenuItem searchItem = menu.findItem(R.id.action_search);
-		androidx.appcompat.widget.SearchView searchView = (androidx.appcompat.widget.SearchView) searchItem.getActionView();
+		androidx.appcompat.widget.SearchView searchView =
+				(androidx.appcompat.widget.SearchView) searchItem.getActionView();
 		searchView.setImeOptions(EditorInfo.IME_ACTION_DONE);
 
-		searchView.setOnQueryTextListener(new androidx.appcompat.widget.SearchView.OnQueryTextListener() {
+		searchView.setOnQueryTextListener(
+				new androidx.appcompat.widget.SearchView.OnQueryTextListener() {
 
-			@Override
-			public boolean onQueryTextSubmit(String query) {
-				return false;
-			}
+					@Override
+					public boolean onQueryTextSubmit(String query) {
+						return false;
+					}
 
-			@Override
-			public boolean onQueryTextChange(String newText) {
-				if(fragmentRepositoriesBinding.recyclerView.getAdapter() != null) {
-					adapter.getFilter().filter(newText);
-				}
-				return false;
-			}
-		});
+					@Override
+					public boolean onQueryTextChange(String newText) {
+						if (fragmentRepositoriesBinding.recyclerView.getAdapter() != null) {
+							adapter.getFilter().filter(newText);
+						}
+						return false;
+					}
+				});
 	}
-
 }
-

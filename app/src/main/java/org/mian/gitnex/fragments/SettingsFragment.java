@@ -29,7 +29,6 @@ import org.mian.gitnex.helpers.AppUtil;
 /**
  * @author M M Arif
  */
-
 public class SettingsFragment extends Fragment {
 
 	public static boolean refreshParent = false;
@@ -37,35 +36,47 @@ public class SettingsFragment extends Fragment {
 	private Context ctx;
 	private MaterialAlertDialogBuilder materialAlertDialogBuilder;
 
-	@Nullable
-	@Override
-	public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
+	@Nullable @Override
+	public View onCreateView(
+			@NonNull LayoutInflater inflater,
+			@Nullable ViewGroup container,
+			@Nullable Bundle savedInstanceState) {
 
-		FragmentSettingsBinding fragmentSettingsBinding = FragmentSettingsBinding.inflate(inflater, container, false);
+		FragmentSettingsBinding fragmentSettingsBinding =
+				FragmentSettingsBinding.inflate(inflater, container, false);
 
 		ctx = getContext();
-		materialAlertDialogBuilder = new MaterialAlertDialogBuilder(ctx, R.style.ThemeOverlay_Material3_Dialog_Alert);
+		materialAlertDialogBuilder =
+				new MaterialAlertDialogBuilder(ctx, R.style.ThemeOverlay_Material3_Dialog_Alert);
 
-		((MainActivity) requireActivity()).setActionBarTitle(getResources().getString(R.string.navSettings));
+		((MainActivity) requireActivity())
+				.setActionBarTitle(getResources().getString(R.string.navSettings));
 
-		if(((BaseActivity) requireActivity()).getAccount().requiresVersion("1.12.3")) {
+		if (((BaseActivity) requireActivity()).getAccount().requiresVersion("1.12.3")) {
 
 			fragmentSettingsBinding.notificationsFrame.setVisibility(View.VISIBLE);
 		}
 
-		fragmentSettingsBinding.generalFrame.setOnClickListener(generalFrameCall -> startActivity(new Intent(ctx, SettingsGeneralActivity.class)));
+		fragmentSettingsBinding.generalFrame.setOnClickListener(
+				generalFrameCall -> startActivity(new Intent(ctx, SettingsGeneralActivity.class)));
 
-		fragmentSettingsBinding.appearanceFrame.setOnClickListener(v1 -> startActivity(new Intent(ctx, SettingsAppearanceActivity.class)));
+		fragmentSettingsBinding.appearanceFrame.setOnClickListener(
+				v1 -> startActivity(new Intent(ctx, SettingsAppearanceActivity.class)));
 
-		fragmentSettingsBinding.draftsFrame.setOnClickListener(v1 -> startActivity(new Intent(ctx, SettingsDraftsActivity.class)));
+		fragmentSettingsBinding.draftsFrame.setOnClickListener(
+				v1 -> startActivity(new Intent(ctx, SettingsDraftsActivity.class)));
 
-		fragmentSettingsBinding.securityFrame.setOnClickListener(v1 -> startActivity(new Intent(ctx, SettingsSecurityActivity.class)));
+		fragmentSettingsBinding.securityFrame.setOnClickListener(
+				v1 -> startActivity(new Intent(ctx, SettingsSecurityActivity.class)));
 
-		fragmentSettingsBinding.notificationsFrame.setOnClickListener(v1 -> startActivity(new Intent(ctx, SettingsNotificationsActivity.class)));
+		fragmentSettingsBinding.notificationsFrame.setOnClickListener(
+				v1 -> startActivity(new Intent(ctx, SettingsNotificationsActivity.class)));
 
-		fragmentSettingsBinding.languagesFrame.setOnClickListener(v1 -> startActivity(new Intent(ctx, SettingsTranslationActivity.class)));
+		fragmentSettingsBinding.languagesFrame.setOnClickListener(
+				v1 -> startActivity(new Intent(ctx, SettingsTranslationActivity.class)));
 
-		fragmentSettingsBinding.reportsFrame.setOnClickListener(v1 -> startActivity(new Intent(ctx, SettingsReportsActivity.class)));
+		fragmentSettingsBinding.reportsFrame.setOnClickListener(
+				v1 -> startActivity(new Intent(ctx, SettingsReportsActivity.class)));
 
 		fragmentSettingsBinding.rateAppFrame.setOnClickListener(rateApp -> rateThisApp());
 
@@ -76,31 +87,47 @@ public class SettingsFragment extends Fragment {
 
 	public void showAboutAppDialog() {
 
-		CustomAboutDialogBinding aboutAppDialogBinding = CustomAboutDialogBinding.inflate(LayoutInflater.from(ctx));
+		CustomAboutDialogBinding aboutAppDialogBinding =
+				CustomAboutDialogBinding.inflate(LayoutInflater.from(ctx));
 		View view = aboutAppDialogBinding.getRoot();
 
 		materialAlertDialogBuilder.setView(view);
 
-		aboutAppDialogBinding.appVersionBuild.setText(getString(R.string.appVersionBuild, AppUtil.getAppVersion(ctx), AppUtil.getAppBuildNo(ctx)));
-		aboutAppDialogBinding.userServerVersion.setText(((BaseActivity) requireActivity()).getAccount().getServerVersion().toString());
+		aboutAppDialogBinding.appVersionBuild.setText(
+				getString(
+						R.string.appVersionBuild,
+						AppUtil.getAppVersion(ctx),
+						AppUtil.getAppBuildNo(ctx)));
+		aboutAppDialogBinding.userServerVersion.setText(
+				((BaseActivity) requireActivity()).getAccount().getServerVersion().toString());
 
-		aboutAppDialogBinding.donationLinkPatreon.setOnClickListener(v12 -> {
-			AppUtil.openUrlInBrowser(requireContext(), getResources().getString(R.string.supportLinkPatreon));
-		});
+		aboutAppDialogBinding.donationLinkPatreon.setOnClickListener(
+				v12 -> {
+					AppUtil.openUrlInBrowser(
+							requireContext(),
+							getResources().getString(R.string.supportLinkPatreon));
+				});
 
-		aboutAppDialogBinding.donationLinkBuyMeaCoffee.setOnClickListener(v11 -> {
-			AppUtil.openUrlInBrowser(requireContext(), getResources().getString(R.string.supportLinkBuyMeaCoffee));
-		});
+		aboutAppDialogBinding.donationLinkBuyMeaCoffee.setOnClickListener(
+				v11 -> {
+					AppUtil.openUrlInBrowser(
+							requireContext(),
+							getResources().getString(R.string.supportLinkBuyMeaCoffee));
+				});
 
-		aboutAppDialogBinding.translateLink.setOnClickListener(v13 -> {
-			AppUtil.openUrlInBrowser(requireContext(), getResources().getString(R.string.crowdInLink));
-		});
+		aboutAppDialogBinding.translateLink.setOnClickListener(
+				v13 -> {
+					AppUtil.openUrlInBrowser(
+							requireContext(), getResources().getString(R.string.crowdInLink));
+				});
 
-		aboutAppDialogBinding.appWebsite.setOnClickListener(v14 -> {
-			AppUtil.openUrlInBrowser(requireContext(), getResources().getString(R.string.appWebsiteLink));
-		});
+		aboutAppDialogBinding.appWebsite.setOnClickListener(
+				v14 -> {
+					AppUtil.openUrlInBrowser(
+							requireContext(), getResources().getString(R.string.appWebsiteLink));
+				});
 
-		if(AppUtil.isPro(requireContext())) {
+		if (AppUtil.isPro(requireContext())) {
 			aboutAppDialogBinding.supportHeader.setVisibility(View.GONE);
 			aboutAppDialogBinding.donationLinkPatreon.setVisibility(View.GONE);
 			aboutAppDialogBinding.donationLinkBuyMeaCoffee.setVisibility(View.GONE);
@@ -112,10 +139,18 @@ public class SettingsFragment extends Fragment {
 	public void rateThisApp() {
 
 		try {
-			startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse("market://details?id=" + requireActivity().getPackageName())));
-		}
-		catch(ActivityNotFoundException e) {
-			startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse("https://play.google.com/store/apps/details?id=" + requireActivity().getPackageName())));
+			startActivity(
+					new Intent(
+							Intent.ACTION_VIEW,
+							Uri.parse(
+									"market://details?id=" + requireActivity().getPackageName())));
+		} catch (ActivityNotFoundException e) {
+			startActivity(
+					new Intent(
+							Intent.ACTION_VIEW,
+							Uri.parse(
+									"https://play.google.com/store/apps/details?id="
+											+ requireActivity().getPackageName())));
 		}
 	}
 
@@ -123,11 +158,10 @@ public class SettingsFragment extends Fragment {
 	public void onResume() {
 		super.onResume();
 
-		if(refreshParent) {
+		if (refreshParent) {
 			requireActivity().recreate();
 			requireActivity().overridePendingTransition(0, 0);
 			refreshParent = false;
 		}
 	}
-
 }

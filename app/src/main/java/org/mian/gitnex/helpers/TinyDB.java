@@ -20,21 +20,22 @@ public class TinyDB {
 	private final SharedPreferences preferences;
 
 	private TinyDB(Context appContext) {
-		preferences = appContext.getSharedPreferences(appContext.getPackageName() + "_preferences", Context.MODE_PRIVATE);
+		preferences =
+				appContext.getSharedPreferences(
+						appContext.getPackageName() + "_preferences", Context.MODE_PRIVATE);
 	}
 
 	public static synchronized TinyDB getInstance(Context context) {
 
-		if(tinyDB == null) {
-			synchronized(TinyDB.class) {
-				if(tinyDB == null) {
+		if (tinyDB == null) {
+			synchronized (TinyDB.class) {
+				if (tinyDB == null) {
 					tinyDB = new TinyDB(context);
 				}
 			}
 		}
 
 		return tinyDB;
-
 	}
 
 	/**
@@ -54,7 +55,8 @@ public class TinyDB {
 	public static boolean isExternalStorageReadable() {
 		String state = Environment.getExternalStorageState();
 
-		return Environment.MEDIA_MOUNTED.equals(state) || Environment.MEDIA_MOUNTED_READ_ONLY.equals(state);
+		return Environment.MEDIA_MOUNTED.equals(state)
+				|| Environment.MEDIA_MOUNTED_READ_ONLY.equals(state);
 	}
 
 	// Getters
@@ -62,7 +64,7 @@ public class TinyDB {
 	/**
 	 * Saves 'theBitmap' into 'fullPath'
 	 *
-	 * @param fullPath  full path of the image file e.g. "Images/MeAtLunch.png"
+	 * @param fullPath full path of the image file e.g. "Images/MeAtLunch.png"
 	 * @param theBitmap the image you want to save as a Bitmap
 	 * @return true if image was saved, false otherwise
 	 */
@@ -74,11 +76,11 @@ public class TinyDB {
 	 * Saves the Bitmap as a PNG file at path 'fullPath'
 	 *
 	 * @param fullPath path of the image file
-	 * @param bitmap   the image as a Bitmap
+	 * @param bitmap the image as a Bitmap
 	 * @return true if it successfully saved, false otherwise
 	 */
 	private boolean saveBitmap(String fullPath, Bitmap bitmap) {
-		if(fullPath == null || bitmap == null) {
+		if (fullPath == null || bitmap == null) {
 			return false;
 		}
 
@@ -88,16 +90,15 @@ public class TinyDB {
 
 		File imageFile = new File(fullPath);
 
-		if(imageFile.exists()) {
-			if(!imageFile.delete()) {
+		if (imageFile.exists()) {
+			if (!imageFile.delete()) {
 				return false;
 			}
 		}
 
 		try {
 			fileCreated = imageFile.createNewFile();
-		}
-		catch(IOException e) {
+		} catch (IOException e) {
 			e.printStackTrace();
 		}
 
@@ -106,18 +107,15 @@ public class TinyDB {
 			out = new FileOutputStream(imageFile);
 			bitmapCompressed = bitmap.compress(CompressFormat.PNG, 100, out);
 
-		}
-		catch(Exception e) {
+		} catch (Exception e) {
 			e.printStackTrace();
-		}
-		finally {
-			if(out != null) {
+		} finally {
+			if (out != null) {
 				try {
 					out.flush();
 					out.close();
 					streamClosed = true;
-				}
-				catch(IOException e) {
+				} catch (IOException e) {
 					e.printStackTrace();
 				}
 			}
@@ -143,7 +141,7 @@ public class TinyDB {
 	/**
 	 * Get long value from SharedPreferences at 'key'. If key not found, return 'defaultValue'
 	 *
-	 * @param key          SharedPreferences key
+	 * @param key SharedPreferences key
 	 * @param defaultValue long value returned if key was not found
 	 * @return long value at 'key' or 'defaultValue' if key not found
 	 */
@@ -198,7 +196,7 @@ public class TinyDB {
 	/**
 	 * Put int value into SharedPreferences with 'key' and save
 	 *
-	 * @param key   SharedPreferences key
+	 * @param key SharedPreferences key
 	 * @param value int value to be added
 	 */
 	public void putInt(String key, int value) {
@@ -209,7 +207,7 @@ public class TinyDB {
 	/**
 	 * Put long value into SharedPreferences with 'key' and save
 	 *
-	 * @param key   SharedPreferences key
+	 * @param key SharedPreferences key
 	 * @param value long value to be added
 	 */
 	public void putLong(String key, long value) {
@@ -220,7 +218,7 @@ public class TinyDB {
 	/**
 	 * Put float value into SharedPreferences with 'key' and save
 	 *
-	 * @param key   SharedPreferences key
+	 * @param key SharedPreferences key
 	 * @param value float value to be added
 	 */
 	public void putFloat(String key, float value) {
@@ -231,7 +229,7 @@ public class TinyDB {
 	/**
 	 * Put String value into SharedPreferences with 'key' and save
 	 *
-	 * @param key   SharedPreferences key
+	 * @param key SharedPreferences key
 	 * @param value String value to be added
 	 */
 	public void putString(String key, String value) {
@@ -243,7 +241,7 @@ public class TinyDB {
 	/**
 	 * Put boolean value into SharedPreferences with 'key' and save
 	 *
-	 * @param key   SharedPreferences key
+	 * @param key SharedPreferences key
 	 * @param value boolean value to be added
 	 */
 	public void putBoolean(String key, boolean value) {
@@ -270,9 +268,7 @@ public class TinyDB {
 		return new File(path).delete();
 	}
 
-	/**
-	 * Clear SharedPreferences (remove everything)
-	 */
+	/** Clear SharedPreferences (remove everything) */
 	public void clear() {
 		preferences.edit().clear().apply();
 	}
@@ -291,7 +287,8 @@ public class TinyDB {
 	 *
 	 * @param listener listener object of OnSharedPreferenceChangeListener
 	 */
-	public void registerOnSharedPreferenceChangeListener(SharedPreferences.OnSharedPreferenceChangeListener listener) {
+	public void registerOnSharedPreferenceChangeListener(
+			SharedPreferences.OnSharedPreferenceChangeListener listener) {
 
 		preferences.registerOnSharedPreferenceChangeListener(listener);
 	}
@@ -301,31 +298,33 @@ public class TinyDB {
 	 *
 	 * @param listener listener object of OnSharedPreferenceChangeListener to be unregistered
 	 */
-	public void unregisterOnSharedPreferenceChangeListener(SharedPreferences.OnSharedPreferenceChangeListener listener) {
+	public void unregisterOnSharedPreferenceChangeListener(
+			SharedPreferences.OnSharedPreferenceChangeListener listener) {
 
 		preferences.unregisterOnSharedPreferenceChangeListener(listener);
 	}
 
 	/**
-	 * null keys would corrupt the shared pref file and make them unreadable this is a preventive measure
+	 * null keys would corrupt the shared pref file and make them unreadable this is a preventive
+	 * measure
 	 *
 	 * @param key the pref key
 	 */
 	public void checkForNullKey(String key) {
-		if(key == null) {
+		if (key == null) {
 			throw new NullPointerException();
 		}
 	}
 
 	/**
-	 * null keys would corrupt the shared pref file and make them unreadable this is a preventive measure
+	 * null keys would corrupt the shared pref file and make them unreadable this is a preventive
+	 * measure
 	 *
 	 * @param value the pref key
 	 */
 	public void checkForNullValue(String value) {
-		if(value == null) {
+		if (value == null) {
 			throw new NullPointerException();
 		}
 	}
-
 }

@@ -5,6 +5,7 @@ import androidx.annotation.NonNull;
 import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MutableLiveData;
 import androidx.lifecycle.ViewModel;
+import java.util.List;
 import org.gitnex.tea4j.v2.models.Release;
 import org.gitnex.tea4j.v2.models.Tag;
 import org.mian.gitnex.R;
@@ -13,7 +14,6 @@ import org.mian.gitnex.adapters.TagsAdapter;
 import org.mian.gitnex.clients.RetrofitClient;
 import org.mian.gitnex.helpers.Constants;
 import org.mian.gitnex.helpers.Toasty;
-import java.util.List;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
@@ -21,7 +21,6 @@ import retrofit2.Response;
 /**
  * @author M M Arif
  */
-
 public class ReleasesViewModel extends ViewModel {
 
 	private MutableLiveData<List<Release>> releasesList;
@@ -38,62 +37,70 @@ public class ReleasesViewModel extends ViewModel {
 
 	public void loadReleasesList(String owner, String repo, Context ctx) {
 
-		Call<List<Release>> call = RetrofitClient.getApiInterface(ctx).repoListReleases(owner, repo, null, null, null, 1, resultLimit);
+		Call<List<Release>> call =
+				RetrofitClient.getApiInterface(ctx)
+						.repoListReleases(owner, repo, null, null, null, 1, resultLimit);
 
-		call.enqueue(new Callback<>() {
+		call.enqueue(
+				new Callback<>() {
 
-			@Override
-			public void onResponse(@NonNull Call<List<Release>> call, @NonNull Response<List<Release>> response) {
+					@Override
+					public void onResponse(
+							@NonNull Call<List<Release>> call,
+							@NonNull Response<List<Release>> response) {
 
-				if(response.isSuccessful()) {
-					releasesList.postValue(response.body());
-				}
-				else {
-					Toasty.error(ctx, ctx.getString(R.string.genericError));
-				}
-			}
+						if (response.isSuccessful()) {
+							releasesList.postValue(response.body());
+						} else {
+							Toasty.error(ctx, ctx.getString(R.string.genericError));
+						}
+					}
 
-			@Override
-			public void onFailure(@NonNull Call<List<Release>> call, @NonNull Throwable t) {
+					@Override
+					public void onFailure(@NonNull Call<List<Release>> call, @NonNull Throwable t) {
 
-				Toasty.error(ctx, ctx.getString(R.string.genericServerResponseError));
-			}
-		});
+						Toasty.error(ctx, ctx.getString(R.string.genericServerResponseError));
+					}
+				});
 	}
 
-	public void loadMoreReleases(String owner, String repo, int page, Context ctx, ReleasesAdapter adapter) {
+	public void loadMoreReleases(
+			String owner, String repo, int page, Context ctx, ReleasesAdapter adapter) {
 
-		Call<List<Release>> call = RetrofitClient.getApiInterface(ctx).repoListReleases(owner, repo, null, null, null, page, resultLimit);
+		Call<List<Release>> call =
+				RetrofitClient.getApiInterface(ctx)
+						.repoListReleases(owner, repo, null, null, null, page, resultLimit);
 
-		call.enqueue(new Callback<>() {
+		call.enqueue(
+				new Callback<>() {
 
-			@Override
-			public void onResponse(@NonNull Call<List<Release>> call, @NonNull Response<List<Release>> response) {
+					@Override
+					public void onResponse(
+							@NonNull Call<List<Release>> call,
+							@NonNull Response<List<Release>> response) {
 
-				if(response.isSuccessful()) {
-					List<Release> list = releasesList.getValue();
-					assert list != null;
-					assert response.body() != null;
+						if (response.isSuccessful()) {
+							List<Release> list = releasesList.getValue();
+							assert list != null;
+							assert response.body() != null;
 
-					if(response.body().size() != 0) {
-						list.addAll(response.body());
-						adapter.updateList(list);
+							if (response.body().size() != 0) {
+								list.addAll(response.body());
+								adapter.updateList(list);
+							} else {
+								adapter.setMoreDataAvailable(false);
+							}
+						} else {
+							Toasty.error(ctx, ctx.getString(R.string.genericError));
+						}
 					}
-					else {
-						adapter.setMoreDataAvailable(false);
+
+					@Override
+					public void onFailure(@NonNull Call<List<Release>> call, @NonNull Throwable t) {
+
+						Toasty.error(ctx, ctx.getString(R.string.genericServerResponseError));
 					}
-				}
-				else {
-					Toasty.error(ctx, ctx.getString(R.string.genericError));
-				}
-			}
-
-			@Override
-			public void onFailure(@NonNull Call<List<Release>> call, @NonNull Throwable t) {
-
-				Toasty.error(ctx, ctx.getString(R.string.genericServerResponseError));
-			}
-		});
+				});
 	}
 
 	public LiveData<List<Tag>> getTagsList(String owner, String repo, Context ctx) {
@@ -106,63 +113,66 @@ public class ReleasesViewModel extends ViewModel {
 
 	public void loadTagsList(String owner, String repo, Context ctx) {
 
-		Call<List<Tag>> call = RetrofitClient.getApiInterface(ctx).repoListTags(owner, repo, 1, resultLimit);
+		Call<List<Tag>> call =
+				RetrofitClient.getApiInterface(ctx).repoListTags(owner, repo, 1, resultLimit);
 
-		call.enqueue(new Callback<>() {
+		call.enqueue(
+				new Callback<>() {
 
-			@Override
-			public void onResponse(@NonNull Call<List<Tag>> call, @NonNull Response<List<Tag>> response) {
+					@Override
+					public void onResponse(
+							@NonNull Call<List<Tag>> call, @NonNull Response<List<Tag>> response) {
 
-				if(response.isSuccessful()) {
-					tagsList.postValue(response.body());
-				}
-				else {
-					Toasty.error(ctx, ctx.getString(R.string.genericError));
-				}
-			}
+						if (response.isSuccessful()) {
+							tagsList.postValue(response.body());
+						} else {
+							Toasty.error(ctx, ctx.getString(R.string.genericError));
+						}
+					}
 
-			@Override
-			public void onFailure(@NonNull Call<List<Tag>> call, @NonNull Throwable t) {
+					@Override
+					public void onFailure(@NonNull Call<List<Tag>> call, @NonNull Throwable t) {
 
-				Toasty.error(ctx, ctx.getString(R.string.genericServerResponseError));
-			}
-		});
+						Toasty.error(ctx, ctx.getString(R.string.genericServerResponseError));
+					}
+				});
 	}
 
-	public void loadMoreTags(String owner, String repo, int page, Context ctx, TagsAdapter adapter) {
+	public void loadMoreTags(
+			String owner, String repo, int page, Context ctx, TagsAdapter adapter) {
 
-		Call<List<Tag>> call = RetrofitClient.getApiInterface(ctx).repoListTags(owner, repo, page, resultLimit);
+		Call<List<Tag>> call =
+				RetrofitClient.getApiInterface(ctx).repoListTags(owner, repo, page, resultLimit);
 
-		call.enqueue(new Callback<>() {
+		call.enqueue(
+				new Callback<>() {
 
-			@Override
-			public void onResponse(@NonNull Call<List<Tag>> call, @NonNull Response<List<Tag>> response) {
+					@Override
+					public void onResponse(
+							@NonNull Call<List<Tag>> call, @NonNull Response<List<Tag>> response) {
 
-				if(response.isSuccessful()) {
+						if (response.isSuccessful()) {
 
-					List<Tag> list = tagsList.getValue();
-					assert list != null;
-					assert response.body() != null;
+							List<Tag> list = tagsList.getValue();
+							assert list != null;
+							assert response.body() != null;
 
-					if(response.body().size() != 0) {
-						list.addAll(response.body());
-						adapter.updateList(list);
+							if (response.body().size() != 0) {
+								list.addAll(response.body());
+								adapter.updateList(list);
+							} else {
+								adapter.setMoreDataAvailable(false);
+							}
+						} else {
+							Toasty.error(ctx, ctx.getString(R.string.genericError));
+						}
 					}
-					else {
-						adapter.setMoreDataAvailable(false);
+
+					@Override
+					public void onFailure(@NonNull Call<List<Tag>> call, @NonNull Throwable t) {
+
+						Toasty.error(ctx, ctx.getString(R.string.genericServerResponseError));
 					}
-				}
-				else {
-					Toasty.error(ctx, ctx.getString(R.string.genericError));
-				}
-			}
-
-			@Override
-			public void onFailure(@NonNull Call<List<Tag>> call, @NonNull Throwable t) {
-
-				Toasty.error(ctx, ctx.getString(R.string.genericServerResponseError));
-			}
-		});
+				});
 	}
-
 }

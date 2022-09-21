@@ -15,43 +15,47 @@ import androidx.annotation.NonNull;
 import androidx.drawerlayout.widget.DrawerLayout;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
+import io.mikael.urlbuilder.UrlBuilder;
+import java.util.List;
 import org.mian.gitnex.R;
 import org.mian.gitnex.activities.AddNewAccountActivity;
 import org.mian.gitnex.clients.PicassoService;
 import org.mian.gitnex.database.models.UserAccount;
 import org.mian.gitnex.helpers.AppUtil;
 import org.mian.gitnex.helpers.RoundedTransformation;
-import java.util.List;
-import io.mikael.urlbuilder.UrlBuilder;
 
 /**
  * @author M M Arif
  */
-
-public class UserAccountsNavAdapter extends RecyclerView.Adapter<UserAccountsNavAdapter.UserAccountsViewHolder> {
+public class UserAccountsNavAdapter
+		extends RecyclerView.Adapter<UserAccountsNavAdapter.UserAccountsViewHolder> {
 
 	private final DrawerLayout drawer;
 	private final List<UserAccount> userAccountsList;
 	private final Context context;
 
-	public UserAccountsNavAdapter(Context ctx, List<UserAccount> userAccountsListMain, DrawerLayout drawerLayout) {
+	public UserAccountsNavAdapter(
+			Context ctx, List<UserAccount> userAccountsListMain, DrawerLayout drawerLayout) {
 
 		this.context = ctx;
 		this.userAccountsList = userAccountsListMain;
 		this.drawer = drawerLayout;
 	}
 
-	@NonNull
-	@Override
-	public UserAccountsNavAdapter.UserAccountsViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
+	@NonNull @Override
+	public UserAccountsNavAdapter.UserAccountsViewHolder onCreateViewHolder(
+			@NonNull ViewGroup parent, int viewType) {
 
-		View v = LayoutInflater.from(parent.getContext()).inflate(R.layout.nav_user_accounts, parent, false);
+		View v =
+				LayoutInflater.from(parent.getContext())
+						.inflate(R.layout.nav_user_accounts, parent, false);
 		return new UserAccountsViewHolder(v);
 	}
 
 	@SuppressLint("DefaultLocale")
 	@Override
-	public void onBindViewHolder(@NonNull UserAccountsNavAdapter.UserAccountsViewHolder holder, int position) {
+	public void onBindViewHolder(
+			@NonNull UserAccountsNavAdapter.UserAccountsViewHolder holder, int position) {
 
 		UserAccount currentItem = userAccountsList.get(position);
 
@@ -59,8 +63,14 @@ public class UserAccountsNavAdapter extends RecyclerView.Adapter<UserAccountsNav
 
 		int imageSize = AppUtil.getPixelsFromDensity(context, 36);
 
-		PicassoService.getInstance(context).get().load(url + "assets/img/favicon.png").placeholder(R.drawable.loader_animated).transform(new RoundedTransformation(18, 0)).resize(imageSize, imageSize).centerCrop()
-			.into(holder.userAccountAvatar);
+		PicassoService.getInstance(context)
+				.get()
+				.load(url + "assets/img/favicon.png")
+				.placeholder(R.drawable.loader_animated)
+				.transform(new RoundedTransformation(18, 0))
+				.resize(imageSize, imageSize)
+				.centerCrop()
+				.into(holder.userAccountAvatar);
 	}
 
 	@Override
@@ -77,15 +87,15 @@ public class UserAccountsNavAdapter extends RecyclerView.Adapter<UserAccountsNav
 		RecyclerView listView = dialog.findViewById(R.id.accountsList);
 		Button newAccount = dialog.findViewById(R.id.newAccount);
 
-		if(dialog.getWindow() != null) {
+		if (dialog.getWindow() != null) {
 			dialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
 		}
 
-		newAccount.setOnClickListener(item -> {
-			context.startActivity(new Intent(context, AddNewAccountActivity.class));
-			dialog.dismiss();
-
-		});
+		newAccount.setOnClickListener(
+				item -> {
+					context.startActivity(new Intent(context, AddNewAccountActivity.class));
+					dialog.dismiss();
+				});
 
 		UserAccountsAdapter arrayAdapter = new UserAccountsAdapter(context, dialog);
 		listView.setLayoutManager(new LinearLayoutManager(context));
@@ -103,12 +113,11 @@ public class UserAccountsNavAdapter extends RecyclerView.Adapter<UserAccountsNav
 
 			userAccountAvatar = itemView.findViewById(R.id.userAccountAvatar);
 
-			itemView.setOnClickListener(item -> {
-				customDialogUserAccountsList();
-				drawer.closeDrawers();
-			});
+			itemView.setOnClickListener(
+					item -> {
+						customDialogUserAccountsList();
+						drawer.closeDrawers();
+					});
 		}
-
 	}
-
 }

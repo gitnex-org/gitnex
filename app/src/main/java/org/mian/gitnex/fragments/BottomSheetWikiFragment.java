@@ -14,26 +14,30 @@ import org.mian.gitnex.structs.BottomSheetListener;
 /**
  * @author M M Arif
  */
-
 public class BottomSheetWikiFragment extends BottomSheetDialogFragment {
 
 	private BottomSheetListener bmListener;
 
-	@Nullable
-	@Override
-	public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
+	@Nullable @Override
+	public View onCreateView(
+			@NonNull LayoutInflater inflater,
+			@Nullable ViewGroup container,
+			@Nullable Bundle savedInstanceState) {
 
-		BottomSheetWikiInListBinding bottomSheetWikiInListBinding = BottomSheetWikiInListBinding.inflate(inflater, container, false);
+		BottomSheetWikiInListBinding bottomSheetWikiInListBinding =
+				BottomSheetWikiInListBinding.inflate(inflater, container, false);
 
-		bottomSheetWikiInListBinding.editWiki.setOnClickListener(v1 -> {
-			bmListener.onButtonClicked("editWiki");
-			dismiss();
-		});
+		bottomSheetWikiInListBinding.editWiki.setOnClickListener(
+				v1 -> {
+					bmListener.onButtonClicked("editWiki");
+					dismiss();
+				});
 
-		bottomSheetWikiInListBinding.deleteWiki.setOnClickListener(v12 -> {
-			bmListener.onButtonClicked("delWiki");
-			dismiss();
-		});
+		bottomSheetWikiInListBinding.deleteWiki.setOnClickListener(
+				v12 -> {
+					bmListener.onButtonClicked("delWiki");
+					dismiss();
+				});
 
 		return bottomSheetWikiInListBinding.getRoot();
 	}
@@ -45,10 +49,8 @@ public class BottomSheetWikiFragment extends BottomSheetDialogFragment {
 
 		try {
 			bmListener = (BottomSheetListener) context;
-		}
-		catch(ClassCastException e) {
+		} catch (ClassCastException e) {
 			throw new ClassCastException(context + " must implement BottomSheetListener");
 		}
 	}
-
 }

@@ -20,6 +20,10 @@ import androidx.core.content.res.ResourcesCompat;
 import androidx.core.text.HtmlCompat;
 import androidx.recyclerview.widget.RecyclerView;
 import com.amulyakhare.textdrawable.TextDrawable;
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
+import java.util.List;
+import java.util.Locale;
 import org.gitnex.tea4j.v2.models.Issue;
 import org.mian.gitnex.R;
 import org.mian.gitnex.activities.IssueDetailActivity;
@@ -35,15 +39,10 @@ import org.mian.gitnex.helpers.TinyDB;
 import org.mian.gitnex.helpers.contexts.IssueContext;
 import org.mian.gitnex.helpers.contexts.RepositoryContext;
 import org.ocpsoft.prettytime.PrettyTime;
-import java.text.DateFormat;
-import java.text.SimpleDateFormat;
-import java.util.List;
-import java.util.Locale;
 
 /**
  * @author M M Arif
  */
-
 public class ExploreIssuesAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
 
 	private final Context context;
@@ -58,16 +57,19 @@ public class ExploreIssuesAdapter extends RecyclerView.Adapter<RecyclerView.View
 		this.tinyDb = TinyDB.getInstance(context);
 	}
 
-	@NonNull
-	@Override
+	@NonNull @Override
 	public RecyclerView.ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
 		LayoutInflater inflater = LayoutInflater.from(context);
-		return new ExploreIssuesAdapter.IssuesHolder(inflater.inflate(R.layout.list_issues, parent, false));
+		return new ExploreIssuesAdapter.IssuesHolder(
+				inflater.inflate(R.layout.list_issues, parent, false));
 	}
 
 	@Override
 	public void onBindViewHolder(@NonNull RecyclerView.ViewHolder holder, int position) {
-		if(position >= getItemCount() - 1 && isMoreDataAvailable && !isLoading && loadMoreListener != null) {
+		if (position >= getItemCount() - 1
+				&& isMoreDataAvailable
+				&& !isLoading
+				&& loadMoreListener != null) {
 			isLoading = true;
 			loadMoreListener.onLoadMore();
 		}
@@ -87,7 +89,7 @@ public class ExploreIssuesAdapter extends RecyclerView.Adapter<RecyclerView.View
 
 	public void setMoreDataAvailable(boolean moreDataAvailable) {
 		isMoreDataAvailable = moreDataAvailable;
-		if(!isMoreDataAvailable) {
+		if (!isMoreDataAvailable) {
 			loadMoreListener.onLoadFinished();
 		}
 	}
@@ -113,7 +115,6 @@ public class ExploreIssuesAdapter extends RecyclerView.Adapter<RecyclerView.View
 		void onLoadMore();
 
 		void onLoadFinished();
-
 	}
 
 	class IssuesHolder extends RecyclerView.ViewHolder {
@@ -142,41 +143,56 @@ public class ExploreIssuesAdapter extends RecyclerView.Adapter<RecyclerView.View
 			frameLabelsDots = itemView.findViewById(R.id.frameLabelsDots);
 			commentIcon = itemView.findViewById(R.id.comment_icon);
 
-			new Handler().postDelayed(() -> {
+			new Handler()
+					.postDelayed(
+							() -> {
+								String[] parts = issue.getRepository().getFullName().split("/");
+								final String repoOwner = parts[0];
+								final String repoName = parts[1];
 
-				String[] parts = issue.getRepository().getFullName().split("/");
-				final String repoOwner = parts[0];
-				final String repoName = parts[1];
+								RepositoryContext repo =
+										new RepositoryContext(repoOwner, repoName, context);
 
-				RepositoryContext repo = new RepositoryContext(repoOwner, repoName, context);
+								Intent intentIssueDetail =
+										new IssueContext(issue, repo)
+												.getIntent(context, IssueDetailActivity.class);
+								intentIssueDetail.putExtra("openedFromLink", "true");
 
-				Intent intentIssueDetail = new IssueContext(issue, repo).getIntent(context, IssueDetailActivity.class);
-				intentIssueDetail.putExtra("openedFromLink", "true");
+								itemView.setOnClickListener(
+										v -> {
+											repo.saveToDB(context);
+											context.startActivity(intentIssueDetail);
+										});
+								frameLabels.setOnClickListener(
+										v -> {
+											repo.saveToDB(context);
+											context.startActivity(intentIssueDetail);
+										});
+								frameLabelsDots.setOnClickListener(
+										v -> {
+											repo.saveToDB(context);
+											context.startActivity(intentIssueDetail);
+										});
+							},
+							200);
 
-				itemView.setOnClickListener(v -> {
-					repo.saveToDB(context);
-					context.startActivity(intentIssueDetail);
-				});
-				frameLabels.setOnClickListener(v -> {
-					repo.saveToDB(context);
-					context.startActivity(intentIssueDetail);
-				});
-				frameLabelsDots.setOnClickListener(v -> {
-					repo.saveToDB(context);
-					context.startActivity(intentIssueDetail);
-				});
-			}, 200);
+			issueAssigneeAvatar.setOnClickListener(
+					v -> {
+						Intent intent = new Intent(context, ProfileActivity.class);
+						intent.putExtra("username", issue.getUser().getLogin());
+						context.startActivity(intent);
+					});
 
-			issueAssigneeAvatar.setOnClickListener(v -> {
-				Intent intent = new Intent(context, ProfileActivity.class);
-				intent.putExtra("username", issue.getUser().getLogin());
-				context.startActivity(intent);
-			});
-
-			issueAssigneeAvatar.setOnLongClickListener(loginId -> {
-				AppUtil.copyToClipboard(context, issue.getUser().getLogin(), context.getString(R.string.copyLoginIdToClipBoard, issue.getUser().getLogin()));
-				return true;
-			});
+			issueAssigneeAvatar.setOnLongClickListener(
+					loginId -> {
+						AppUtil.copyToClipboard(
+								context,
+								issue.getUser().getLogin(),
+								context.getString(
+										R.string.copyLoginIdToClipBoard,
+										issue.getUser().getLogin()));
+						return true;
+					});
 		}
 
 		void bindData(Issue issue) {
@@ -187,27 +203,46 @@ public class ExploreIssuesAdapter extends RecyclerView.Adapter<RecyclerView.View
 			Locale locale = context.getResources().getConfiguration().locale;
 			String timeFormat = tinyDb.getString("dateFormat", "pretty");
 
-			PicassoService.getInstance(context).get().load(issue.getUser().getAvatarUrl()).placeholder(R.drawable.loader_animated).transform(new RoundedTransformation(imgRadius, 0)).resize(120, 120).centerCrop()
-				.into(issueAssigneeAvatar);
+			PicassoService.getInstance(context)
+					.get()
+					.load(issue.getUser().getAvatarUrl())
+					.placeholder(R.drawable.loader_animated)
+					.transform(new RoundedTransformation(imgRadius, 0))
+					.resize(120, 120)
+					.centerCrop()
+					.into(issueAssigneeAvatar);
 
-			String issueNumber_ = "<font color='" + ResourcesCompat.getColor(context.getResources(), R.color.lightGray, null) + "'>" + issue.getRepository().getFullName() + context.getResources()
-				.getString(R.string.hash) + issue.getNumber() + "</font>";
+			String issueNumber_ =
+					"<font color='"
+							+ ResourcesCompat.getColor(
+									context.getResources(), R.color.lightGray, null)
+							+ "'>"
+							+ issue.getRepository().getFullName()
+							+ context.getResources().getString(R.string.hash)
+							+ issue.getNumber()
+							+ "</font>";
 
-			issueTitle.setText(HtmlCompat.fromHtml(issueNumber_ + " " + issue.getTitle(), HtmlCompat.FROM_HTML_MODE_LEGACY));
+			issueTitle.setText(
+					HtmlCompat.fromHtml(
+							issueNumber_ + " " + issue.getTitle(),
+							HtmlCompat.FROM_HTML_MODE_LEGACY));
 			issueCommentsCount.setText(String.valueOf(issue.getComments()));
 
-			LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(LinearLayout.LayoutParams.WRAP_CONTENT, LinearLayout.LayoutParams.WRAP_CONTENT);
+			LinearLayout.LayoutParams params =
+					new LinearLayout.LayoutParams(
+							LinearLayout.LayoutParams.WRAP_CONTENT,
+							LinearLayout.LayoutParams.WRAP_CONTENT);
 			params.setMargins(0, 0, 15, 0);
 
-			if(issue.getLabels() != null) {
+			if (issue.getLabels() != null) {
 
-				if(!tinyDb.getBoolean("showLabelsInList", false)) { // default
+				if (!tinyDb.getBoolean("showLabelsInList", false)) { // default
 
 					labelsScrollViewWithText.setVisibility(View.GONE);
 					labelsScrollViewDots.setVisibility(View.VISIBLE);
 					frameLabelsDots.removeAllViews();
 
-					for(int i = 0; i < issue.getLabels().size(); i++) {
+					for (int i = 0; i < issue.getLabels().size(); i++) {
 
 						String labelColor = issue.getLabels().get(i).getColor();
 						int color = Color.parseColor("#" + labelColor);
@@ -217,19 +252,25 @@ public class ExploreIssuesAdapter extends RecyclerView.Adapter<RecyclerView.View
 						frameLabelsDots.setGravity(Gravity.START | Gravity.TOP);
 						labelsView.setLayoutParams(params);
 
-						TextDrawable drawable = TextDrawable.builder().beginConfig().useFont(Typeface.DEFAULT).width(54).height(54).endConfig().buildRound("", color);
+						TextDrawable drawable =
+								TextDrawable.builder()
+										.beginConfig()
+										.useFont(Typeface.DEFAULT)
+										.width(54)
+										.height(54)
+										.endConfig()
+										.buildRound("", color);
 
 						labelsView.setImageDrawable(drawable);
 						frameLabelsDots.addView(labelsView);
 					}
-				}
-				else {
+				} else {
 
 					labelsScrollViewDots.setVisibility(View.GONE);
 					labelsScrollViewWithText.setVisibility(View.VISIBLE);
 					frameLabels.removeAllViews();
 
-					for(int i = 0; i < issue.getLabels().size(); i++) {
+					for (int i = 0; i < issue.getLabels().size(); i++) {
 
 						String labelColor = issue.getLabels().get(i).getColor();
 						String labelName = issue.getLabels().get(i).getName();
@@ -243,49 +284,81 @@ public class ExploreIssuesAdapter extends RecyclerView.Adapter<RecyclerView.View
 						int height = AppUtil.getPixelsFromDensity(context, 20);
 						int textSize = AppUtil.getPixelsFromScaledDensity(context, 12);
 
-						TextDrawable drawable = TextDrawable.builder().beginConfig().useFont(Typeface.DEFAULT).textColor(new ColorInverter().getContrastColor(color)).fontSize(textSize)
-							.width(LabelWidthCalculator.calculateLabelWidth(labelName, Typeface.DEFAULT, textSize, AppUtil.getPixelsFromDensity(context, 8))).height(height).endConfig()
-							.buildRoundRect(labelName, color, AppUtil.getPixelsFromDensity(context, 18));
+						TextDrawable drawable =
+								TextDrawable.builder()
+										.beginConfig()
+										.useFont(Typeface.DEFAULT)
+										.textColor(new ColorInverter().getContrastColor(color))
+										.fontSize(textSize)
+										.width(
+												LabelWidthCalculator.calculateLabelWidth(
+														labelName,
+														Typeface.DEFAULT,
+														textSize,
+														AppUtil.getPixelsFromDensity(context, 8)))
+										.height(height)
+										.endConfig()
+										.buildRoundRect(
+												labelName,
+												color,
+												AppUtil.getPixelsFromDensity(context, 18));
 
 						labelsView.setImageDrawable(drawable);
 						frameLabels.addView(labelsView);
 					}
 				}
-			}
-			else {
+			} else {
 				labelsScrollViewDots.setVisibility(View.GONE);
 				labelsScrollViewWithText.setVisibility(View.GONE);
 			}
 
-			if(issue.getComments() > 15) {
-				commentIcon.setImageDrawable(ContextCompat.getDrawable(context, R.drawable.ic_flame));
-				commentIcon.setColorFilter(context.getResources().getColor(R.color.releasePre, null));
+			if (issue.getComments() > 15) {
+				commentIcon.setImageDrawable(
+						ContextCompat.getDrawable(context, R.drawable.ic_flame));
+				commentIcon.setColorFilter(
+						context.getResources().getColor(R.color.releasePre, null));
 			}
 
-			switch(timeFormat) {
-				case "pretty": {
-					PrettyTime prettyTime = new PrettyTime(locale);
-					String createdTime = prettyTime.format(issue.getCreatedAt());
-					issueCreatedTime.setText(createdTime);
-					issueCreatedTime.setOnClickListener(new ClickListener(TimeHelper.customDateFormatForToastDateFormat(issue.getCreatedAt()), context));
-					break;
-				}
-				case "normal": {
-					DateFormat formatter = new SimpleDateFormat("yyyy-MM-dd '" + context.getResources().getString(R.string.timeAtText) + "' HH:mm", locale);
-					String createdTime = formatter.format(issue.getCreatedAt());
-					issueCreatedTime.setText(createdTime);
-					break;
-				}
-				case "normal1": {
-					DateFormat formatter = new SimpleDateFormat("dd-MM-yyyy '" + context.getResources().getString(R.string.timeAtText) + "' HH:mm", locale);
-					String createdTime = formatter.format(issue.getCreatedAt());
-					issueCreatedTime.setText(createdTime);
-					break;
-				}
+			switch (timeFormat) {
+				case "pretty":
+					{
+						PrettyTime prettyTime = new PrettyTime(locale);
+						String createdTime = prettyTime.format(issue.getCreatedAt());
+						issueCreatedTime.setText(createdTime);
+						issueCreatedTime.setOnClickListener(
+								new ClickListener(
+										TimeHelper.customDateFormatForToastDateFormat(
+												issue.getCreatedAt()),
+										context));
+						break;
+					}
+				case "normal":
+					{
+						DateFormat formatter =
+								new SimpleDateFormat(
+										"yyyy-MM-dd '"
+												+ context.getResources()
+														.getString(R.string.timeAtText)
+												+ "' HH:mm",
+										locale);
+						String createdTime = formatter.format(issue.getCreatedAt());
+						issueCreatedTime.setText(createdTime);
+						break;
+					}
+				case "normal1":
+					{
+						DateFormat formatter =
+								new SimpleDateFormat(
+										"dd-MM-yyyy '"
+												+ context.getResources()
+														.getString(R.string.timeAtText)
+												+ "' HH:mm",
+										locale);
+						String createdTime = formatter.format(issue.getCreatedAt());
+						issueCreatedTime.setText(createdTime);
+						break;
+					}
 			}
-
 		}
-
 	}
-
 }

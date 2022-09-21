@@ -11,6 +11,7 @@ import android.widget.ImageView;
 import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
+import java.util.List;
 import org.gitnex.tea4j.v2.models.User;
 import org.mian.gitnex.R;
 import org.mian.gitnex.activities.BaseActivity;
@@ -21,7 +22,6 @@ import org.mian.gitnex.helpers.AlertDialogs;
 import org.mian.gitnex.helpers.AppUtil;
 import org.mian.gitnex.helpers.RoundedTransformation;
 import org.mian.gitnex.helpers.Toasty;
-import java.util.List;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
@@ -29,99 +29,112 @@ import retrofit2.Response;
 /**
  * @author M M Arif
  */
-
-public class OrganizationAddUserToTeamMemberAdapter extends RecyclerView.Adapter<OrganizationAddUserToTeamMemberAdapter.UserSearchViewHolder> {
+public class OrganizationAddUserToTeamMemberAdapter
+		extends RecyclerView.Adapter<OrganizationAddUserToTeamMemberAdapter.UserSearchViewHolder> {
 
 	private final List<User> usersSearchList;
 	private final Context context;
 	private final int teamId;
 	private final String orgName;
 
-	public OrganizationAddUserToTeamMemberAdapter(List<User> dataList, Context ctx, int teamId, String orgName) {
+	public OrganizationAddUserToTeamMemberAdapter(
+			List<User> dataList, Context ctx, int teamId, String orgName) {
 		this.context = ctx;
 		this.usersSearchList = dataList;
 		this.teamId = teamId;
 		this.orgName = orgName;
 	}
 
-	@NonNull
-	@Override
-	public OrganizationAddUserToTeamMemberAdapter.UserSearchViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-		View v = LayoutInflater.from(parent.getContext()).inflate(R.layout.list_collaborators_search, parent, false);
+	@NonNull @Override
+	public OrganizationAddUserToTeamMemberAdapter.UserSearchViewHolder onCreateViewHolder(
+			@NonNull ViewGroup parent, int viewType) {
+		View v =
+				LayoutInflater.from(parent.getContext())
+						.inflate(R.layout.list_collaborators_search, parent, false);
 		return new OrganizationAddUserToTeamMemberAdapter.UserSearchViewHolder(v);
 	}
 
 	@Override
-	public void onBindViewHolder(@NonNull final OrganizationAddUserToTeamMemberAdapter.UserSearchViewHolder holder, int position) {
+	public void onBindViewHolder(
+			@NonNull final OrganizationAddUserToTeamMemberAdapter.UserSearchViewHolder holder,
+			int position) {
 
 		User currentItem = usersSearchList.get(position);
 		holder.userInfo = currentItem;
 		int imgRadius = AppUtil.getPixelsFromDensity(context, 3);
 
-		if(!currentItem.getFullName().equals("")) {
+		if (!currentItem.getFullName().equals("")) {
 
 			holder.userFullName.setText(Html.fromHtml(currentItem.getFullName()));
-		}
-		else {
+		} else {
 
-			holder.userFullName.setText(context.getResources().getString(R.string.usernameWithAt, currentItem.getLogin()));
-		}
-
-		holder.userName.setText(context.getResources().getString(R.string.usernameWithAt, currentItem.getLogin()));
-
-		if(!currentItem.getAvatarUrl().equals("")) {
-			PicassoService.getInstance(context).get().load(currentItem.getAvatarUrl()).placeholder(R.drawable.loader_animated).transform(new RoundedTransformation(imgRadius, 0)).resize(120, 120).centerCrop()
-				.into(holder.userAvatar);
+			holder.userFullName.setText(
+					context.getResources()
+							.getString(R.string.usernameWithAt, currentItem.getLogin()));
 		}
 
-		if(getItemCount() > 0) {
+		holder.userName.setText(
+				context.getResources().getString(R.string.usernameWithAt, currentItem.getLogin()));
 
-			final String loginUid = ((BaseActivity) context).getAccount().getAccount().getUserName();
-
-			Call<User> call = RetrofitClient.getApiInterface(context).orgListTeamMember((long) teamId, currentItem.getLogin());
-
-			call.enqueue(new Callback<>() {
-
-				@Override
-				public void onResponse(@NonNull Call<User> call, @NonNull Response<User> response) {
-
-					if(response.code() == 200) {
-
-						if(!currentItem.getLogin().equals(loginUid)) {
-							holder.addMemberButtonRemove.setVisibility(View.VISIBLE);
-						}
-						else {
-							holder.addMemberButtonRemove.setVisibility(View.GONE);
-						}
-
-					}
-					else if(response.code() == 404) {
-
-						if(!currentItem.getLogin().equals(loginUid)) {
-							holder.addMemberButtonAdd.setVisibility(View.VISIBLE);
-						}
-						else {
-							holder.addMemberButtonAdd.setVisibility(View.GONE);
-						}
-
-					}
-					else {
-						holder.addMemberButtonRemove.setVisibility(View.GONE);
-						holder.addMemberButtonAdd.setVisibility(View.GONE);
-					}
-
-				}
-
-				@Override
-				public void onFailure(@NonNull Call<User> call, @NonNull Throwable t) {
-
-					Toasty.error(context, context.getResources().getString(R.string.genericServerResponseError));
-				}
-
-			});
-
+		if (!currentItem.getAvatarUrl().equals("")) {
+			PicassoService.getInstance(context)
+					.get()
+					.load(currentItem.getAvatarUrl())
+					.placeholder(R.drawable.loader_animated)
+					.transform(new RoundedTransformation(imgRadius, 0))
+					.resize(120, 120)
+					.centerCrop()
+					.into(holder.userAvatar);
 		}
 
+		if (getItemCount() > 0) {
+
+			final String loginUid =
+					((BaseActivity) context).getAccount().getAccount().getUserName();
+
+			Call<User> call =
+					RetrofitClient.getApiInterface(context)
+							.orgListTeamMember((long) teamId, currentItem.getLogin());
+
+			call.enqueue(
+					new Callback<>() {
+
+						@Override
+						public void onResponse(
+								@NonNull Call<User> call, @NonNull Response<User> response) {
+
+							if (response.code() == 200) {
+
+								if (!currentItem.getLogin().equals(loginUid)) {
+									holder.addMemberButtonRemove.setVisibility(View.VISIBLE);
+								} else {
+									holder.addMemberButtonRemove.setVisibility(View.GONE);
+								}
+
+							} else if (response.code() == 404) {
+
+								if (!currentItem.getLogin().equals(loginUid)) {
+									holder.addMemberButtonAdd.setVisibility(View.VISIBLE);
+								} else {
+									holder.addMemberButtonAdd.setVisibility(View.GONE);
+								}
+
+							} else {
+								holder.addMemberButtonRemove.setVisibility(View.GONE);
+								holder.addMemberButtonAdd.setVisibility(View.GONE);
+							}
+						}
+
+						@Override
+						public void onFailure(@NonNull Call<User> call, @NonNull Throwable t) {
+
+							Toasty.error(
+									context,
+									context.getResources()
+											.getString(R.string.genericServerResponseError));
+						}
+					});
+		}
 	}
 
 	@Override
@@ -147,26 +160,45 @@ public class OrganizationAddUserToTeamMemberAdapter extends RecyclerView.Adapter
 			addMemberButtonAdd = itemView.findViewById(R.id.addCollaboratorButtonAdd);
 			addMemberButtonRemove = itemView.findViewById(R.id.addCollaboratorButtonRemove);
 
-			addMemberButtonAdd.setOnClickListener(v -> AlertDialogs.addMemberDialog(context, userInfo.getLogin(), Integer.parseInt(String.valueOf(teamId))));
-			addMemberButtonRemove.setOnClickListener(v -> AlertDialogs.removeMemberDialog(context, userInfo.getLogin(), Integer.parseInt(String.valueOf(teamId))));
+			addMemberButtonAdd.setOnClickListener(
+					v ->
+							AlertDialogs.addMemberDialog(
+									context,
+									userInfo.getLogin(),
+									Integer.parseInt(String.valueOf(teamId))));
+			addMemberButtonRemove.setOnClickListener(
+					v ->
+							AlertDialogs.removeMemberDialog(
+									context,
+									userInfo.getLogin(),
+									Integer.parseInt(String.valueOf(teamId))));
 
-			new Handler().postDelayed(() -> {
-				if(!AppUtil.checkGhostUsers(userInfo.getLogin())) {
+			new Handler()
+					.postDelayed(
+							() -> {
+								if (!AppUtil.checkGhostUsers(userInfo.getLogin())) {
 
-					userAvatar.setOnClickListener(loginId -> {
-						Intent intent = new Intent(context, ProfileActivity.class);
-						intent.putExtra("username", userInfo.getLogin());
-						context.startActivity(intent);
-					});
+									userAvatar.setOnClickListener(
+											loginId -> {
+												Intent intent =
+														new Intent(context, ProfileActivity.class);
+												intent.putExtra("username", userInfo.getLogin());
+												context.startActivity(intent);
+											});
 
-					userAvatar.setOnLongClickListener(loginId -> {
-						AppUtil.copyToClipboard(context, userInfo.getLogin(), context.getString(R.string.copyLoginIdToClipBoard, userInfo.getLogin()));
-						return true;
-					});
-				}
-			}, 500);
+									userAvatar.setOnLongClickListener(
+											loginId -> {
+												AppUtil.copyToClipboard(
+														context,
+														userInfo.getLogin(),
+														context.getString(
+																R.string.copyLoginIdToClipBoard,
+																userInfo.getLogin()));
+												return true;
+											});
+								}
+							},
+							500);
 		}
-
 	}
-
 }

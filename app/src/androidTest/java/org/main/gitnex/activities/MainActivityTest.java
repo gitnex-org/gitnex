@@ -18,5 +18,4 @@ public class MainActivityTest {
 		ActivityScenario<MainActivity> a = ActivityScenario.launch(MainActivity.class);
 		a.close();
 	}
-
 }

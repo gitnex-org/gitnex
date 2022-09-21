@@ -14,23 +14,24 @@ import org.mian.gitnex.structs.BottomSheetListener;
 /**
  * @author M M Arif
  */
-
 public class BottomSheetAdminUsersFragment extends BottomSheetDialogFragment {
 
 	private BottomSheetListener bmListener;
 
-	@Nullable
-	@Override
-	public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
+	@Nullable @Override
+	public View onCreateView(
+			@NonNull LayoutInflater inflater,
+			@Nullable ViewGroup container,
+			@Nullable Bundle savedInstanceState) {
 
-		BottomSheetAdminUsersBinding bottomSheetAdminUsersBinding = BottomSheetAdminUsersBinding.inflate(inflater, container, false);
+		BottomSheetAdminUsersBinding bottomSheetAdminUsersBinding =
+				BottomSheetAdminUsersBinding.inflate(inflater, container, false);
 
-		bottomSheetAdminUsersBinding.createNewUser.setOnClickListener(v1 -> {
-
-			bmListener.onButtonClicked("newUser");
-			dismiss();
-
-		});
+		bottomSheetAdminUsersBinding.createNewUser.setOnClickListener(
+				v1 -> {
+					bmListener.onButtonClicked("newUser");
+					dismiss();
+				});
 
 		return bottomSheetAdminUsersBinding.getRoot();
 	}
@@ -41,10 +42,8 @@ public class BottomSheetAdminUsersFragment extends BottomSheetDialogFragment {
 
 		try {
 			bmListener = (BottomSheetListener) context;
-		}
-		catch(ClassCastException e) {
+		} catch (ClassCastException e) {
 			throw new ClassCastException(context + " must implement BottomSheetListener");
 		}
 	}
-
 }

@@ -21,7 +21,6 @@ import org.mian.gitnex.notifications.Notifications;
 /**
  * @author opyale
  */
-
 public class MainApplication extends Application {
 
 	public AccountContext currentAccount;
@@ -51,26 +50,44 @@ public class MainApplication extends Application {
 
 		tinyDB = TinyDB.getInstance(context);
 
-		if(tinyDB.getBoolean("crashReportingEnabled", true)) {
+		if (tinyDB.getBoolean("crashReportingEnabled", true)) {
 
 			CoreConfigurationBuilder ACRABuilder = new CoreConfigurationBuilder(this);
 
-			ACRABuilder.withBuildConfigClass(BuildConfig.class).withReportContent(ReportField.ANDROID_VERSION, ReportField.PHONE_MODEL, ReportField.STACK_TRACE, ReportField.AVAILABLE_MEM_SIZE, ReportField.BRAND)
-				.setReportFormat(StringFormat.KEY_VALUE_LIST);
-			ACRABuilder.getPluginConfigurationBuilder(NotificationConfigurationBuilder.class).withResTitle(R.string.crashTitle).withResIcon(R.drawable.gitnex_transparent).withResChannelName(R.string.setCrashReports)
-				.withResText(R.string.crashMessage).withEnabled(true);
-			ACRABuilder.getPluginConfigurationBuilder(MailSenderConfigurationBuilder.class).withMailTo(getResources().getString(R.string.appEmail))
-				.withSubject(getResources().getString(R.string.crashReportEmailSubject, AppUtil.getAppBuildNo(context))).withReportAsFile(true).withEnabled(true);
-			ACRABuilder.getPluginConfigurationBuilder(LimiterConfigurationBuilder.class).setEnabled(true);
+			ACRABuilder.withBuildConfigClass(BuildConfig.class)
+					.withReportContent(
+							ReportField.ANDROID_VERSION,
+							ReportField.PHONE_MODEL,
+							ReportField.STACK_TRACE,
+							ReportField.AVAILABLE_MEM_SIZE,
+							ReportField.BRAND)
+					.setReportFormat(StringFormat.KEY_VALUE_LIST);
+			ACRABuilder.getPluginConfigurationBuilder(NotificationConfigurationBuilder.class)
+					.withResTitle(R.string.crashTitle)
+					.withResIcon(R.drawable.gitnex_transparent)
+					.withResChannelName(R.string.setCrashReports)
+					.withResText(R.string.crashMessage)
+					.withEnabled(true);
+			ACRABuilder.getPluginConfigurationBuilder(MailSenderConfigurationBuilder.class)
+					.withMailTo(getResources().getString(R.string.appEmail))
+					.withSubject(
+							getResources()
+									.getString(
+											R.string.crashReportEmailSubject,
+											AppUtil.getAppBuildNo(context)))
+					.withReportAsFile(true)
+					.withEnabled(true);
+			ACRABuilder.getPluginConfigurationBuilder(LimiterConfigurationBuilder.class)
+					.setEnabled(true);
 
 			ACRA.init(this, ACRABuilder);
 		}
 	}
 
 	public boolean switchToAccount(UserAccount userAccount, boolean tmp) {
-		if(!tmp || tinyDB.getInt("currentActiveAccountId") != userAccount.getAccountId()) {
+		if (!tmp || tinyDB.getInt("currentActiveAccountId") != userAccount.getAccountId()) {
 			currentAccount = new AccountContext(userAccount);
-			if(!tmp) {
+			if (!tmp) {
 				tinyDB.putInt("currentActiveAccountId", userAccount.getAccountId());
 			}
 			return true;
@@ -78,5 +95,4 @@ public class MainApplication extends Application {
 
 		return false;
 	}
-
 }

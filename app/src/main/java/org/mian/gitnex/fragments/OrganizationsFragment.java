@@ -26,7 +26,6 @@ import org.mian.gitnex.viewmodels.OrganizationsViewModel;
 /**
  * @author M M Arif
  */
-
 public class OrganizationsFragment extends Fragment {
 
 	public static boolean orgCreated = false;
@@ -37,34 +36,45 @@ public class OrganizationsFragment extends Fragment {
 	private int resultLimit;
 
 	@Override
-	public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
+	public View onCreateView(
+			@NonNull LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
 
-		fragmentOrganizationsBinding = FragmentOrganizationsBinding.inflate(inflater, container, false);
+		fragmentOrganizationsBinding =
+				FragmentOrganizationsBinding.inflate(inflater, container, false);
 
 		setHasOptionsMenu(true);
-		((MainActivity) requireActivity()).setActionBarTitle(getResources().getString(R.string.navOrg));
+		((MainActivity) requireActivity())
+				.setActionBarTitle(getResources().getString(R.string.navOrg));
 		organizationsViewModel = new ViewModelProvider(this).get(OrganizationsViewModel.class);
 
 		resultLimit = Constants.getCurrentResultLimit(getContext());
 
-		fragmentOrganizationsBinding.addNewOrganization.setOnClickListener(view -> {
-			Intent intent = new Intent(view.getContext(), CreateOrganizationActivity.class);
-			startActivity(intent);
-		});
+		fragmentOrganizationsBinding.addNewOrganization.setOnClickListener(
+				view -> {
+					Intent intent = new Intent(view.getContext(), CreateOrganizationActivity.class);
+					startActivity(intent);
+				});
 
 		fragmentOrganizationsBinding.recyclerView.setHasFixedSize(true);
-		fragmentOrganizationsBinding.recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
+		fragmentOrganizationsBinding.recyclerView.setLayoutManager(
+				new LinearLayoutManager(getContext()));
 
 		fragmentOrganizationsBinding.recyclerView.setPadding(0, 0, 0, 220);
 		fragmentOrganizationsBinding.recyclerView.setClipToPadding(false);
 
-		fragmentOrganizationsBinding.pullToRefresh.setOnRefreshListener(() -> new Handler(Looper.getMainLooper()).postDelayed(() -> {
-
-			page = 1;
-			fragmentOrganizationsBinding.pullToRefresh.setRefreshing(false);
-			fetchDataAsync();
-			fragmentOrganizationsBinding.progressBar.setVisibility(View.VISIBLE);
-		}, 50));
+		fragmentOrganizationsBinding.pullToRefresh.setOnRefreshListener(
+				() ->
+						new Handler(Looper.getMainLooper())
+								.postDelayed(
+										() -> {
+											page = 1;
+											fragmentOrganizationsBinding.pullToRefresh
+													.setRefreshing(false);
+											fetchDataAsync();
+											fragmentOrganizationsBinding.progressBar.setVisibility(
+													View.VISIBLE);
+										},
+										50));
 
 		fetchDataAsync();
 
@@ -73,45 +83,51 @@ public class OrganizationsFragment extends Fragment {
 
 	private void fetchDataAsync() {
 
-		organizationsViewModel.getUserOrg(page, resultLimit, getContext()).observe(getViewLifecycleOwner(), orgListMain -> {
+		organizationsViewModel
+				.getUserOrg(page, resultLimit, getContext())
+				.observe(
+						getViewLifecycleOwner(),
+						orgListMain -> {
+							adapter = new OrganizationsListAdapter(requireContext(), orgListMain);
+							adapter.setLoadMoreListener(
+									new OrganizationsListAdapter.OnLoadMoreListener() {
 
-			adapter = new OrganizationsListAdapter(requireContext(), orgListMain);
-			adapter.setLoadMoreListener(new OrganizationsListAdapter.OnLoadMoreListener() {
+										@Override
+										public void onLoadMore() {
 
-				@Override
-				public void onLoadMore() {
+											page += 1;
+											organizationsViewModel.loadMoreOrgList(
+													page, resultLimit, getContext(), adapter);
+											fragmentOrganizationsBinding.progressBar.setVisibility(
+													View.VISIBLE);
+										}
 
-					page += 1;
-					organizationsViewModel.loadMoreOrgList(page, resultLimit, getContext(), adapter);
-					fragmentOrganizationsBinding.progressBar.setVisibility(View.VISIBLE);
-				}
+										@Override
+										public void onLoadFinished() {
 
-				@Override
-				public void onLoadFinished() {
+											fragmentOrganizationsBinding.progressBar.setVisibility(
+													View.GONE);
+										}
+									});
 
-					fragmentOrganizationsBinding.progressBar.setVisibility(View.GONE);
-				}
-			});
+							if (adapter.getItemCount() > 0) {
+								fragmentOrganizationsBinding.recyclerView.setAdapter(adapter);
+								fragmentOrganizationsBinding.noDataOrg.setVisibility(View.GONE);
+							} else {
+								adapter.notifyDataChanged();
+								fragmentOrganizationsBinding.recyclerView.setAdapter(adapter);
+								fragmentOrganizationsBinding.noDataOrg.setVisibility(View.VISIBLE);
+							}
 
-			if(adapter.getItemCount() > 0) {
-				fragmentOrganizationsBinding.recyclerView.setAdapter(adapter);
-				fragmentOrganizationsBinding.noDataOrg.setVisibility(View.GONE);
-			}
-			else {
-				adapter.notifyDataChanged();
-				fragmentOrganizationsBinding.recyclerView.setAdapter(adapter);
-				fragmentOrganizationsBinding.noDataOrg.setVisibility(View.VISIBLE);
-			}
-
-			fragmentOrganizationsBinding.progressBar.setVisibility(View.GONE);
-		});
+							fragmentOrganizationsBinding.progressBar.setVisibility(View.GONE);
+						});
 	}
 
 	@Override
 	public void onResume() {
 		super.onResume();
 
-		if(orgCreated) {
+		if (orgCreated) {
 			organizationsViewModel.loadOrgList(page, resultLimit, getContext());
 			orgCreated = false;
 		}
@@ -124,24 +140,25 @@ public class OrganizationsFragment extends Fragment {
 		super.onCreateOptionsMenu(menu, inflater);
 
 		MenuItem searchItem = menu.findItem(R.id.action_search);
-		androidx.appcompat.widget.SearchView searchView = (androidx.appcompat.widget.SearchView) searchItem.getActionView();
+		androidx.appcompat.widget.SearchView searchView =
+				(androidx.appcompat.widget.SearchView) searchItem.getActionView();
 		searchView.setImeOptions(EditorInfo.IME_ACTION_DONE);
 
-		searchView.setOnQueryTextListener(new androidx.appcompat.widget.SearchView.OnQueryTextListener() {
+		searchView.setOnQueryTextListener(
+				new androidx.appcompat.widget.SearchView.OnQueryTextListener() {
 
-			@Override
-			public boolean onQueryTextSubmit(String query) {
-				return false;
-			}
+					@Override
+					public boolean onQueryTextSubmit(String query) {
+						return false;
+					}
 
-			@Override
-			public boolean onQueryTextChange(String newText) {
-				if(fragmentOrganizationsBinding.recyclerView.getAdapter() != null) {
-					adapter.getFilter().filter(newText);
-				}
-				return false;
-			}
-		});
+					@Override
+					public boolean onQueryTextChange(String newText) {
+						if (fragmentOrganizationsBinding.recyclerView.getAdapter() != null) {
+							adapter.getFilter().filter(newText);
+						}
+						return false;
+					}
+				});
 	}
-
 }

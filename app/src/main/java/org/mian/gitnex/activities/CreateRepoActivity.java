@@ -14,6 +14,10 @@ import android.widget.CheckBox;
 import android.widget.EditText;
 import android.widget.ImageView;
 import androidx.annotation.NonNull;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
+import java.util.regex.Pattern;
 import org.gitnex.tea4j.v2.models.CreateRepoOption;
 import org.gitnex.tea4j.v2.models.Organization;
 import org.gitnex.tea4j.v2.models.Repository;
@@ -23,20 +27,15 @@ import org.mian.gitnex.databinding.ActivityCreateRepoBinding;
 import org.mian.gitnex.helpers.AlertDialogs;
 import org.mian.gitnex.helpers.AppUtil;
 import org.mian.gitnex.helpers.Toasty;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
-import java.util.regex.Pattern;
 import retrofit2.Call;
 import retrofit2.Callback;
 
 /**
  * @author M M Arif
  */
-
 public class CreateRepoActivity extends BaseActivity {
 
-	//https://github.com/go-gitea/gitea/blob/52cfd2743c0e85b36081cf80a850e6a5901f1865/models/repo.go#L964-L967
+	// https://github.com/go-gitea/gitea/blob/52cfd2743c0e85b36081cf80a850e6a5901f1865/models/repo.go#L964-L967
 	final List<String> reservedRepoNames = Arrays.asList(".", "..");
 	final Pattern reservedRepoPatterns = Pattern.compile("\\.(git|wiki)$");
 	public ImageView closeActivity;
@@ -56,14 +55,16 @@ public class CreateRepoActivity extends BaseActivity {
 
 		super.onCreate(savedInstanceState);
 
-		ActivityCreateRepoBinding activityCreateRepoBinding = ActivityCreateRepoBinding.inflate(getLayoutInflater());
+		ActivityCreateRepoBinding activityCreateRepoBinding =
+				ActivityCreateRepoBinding.inflate(getLayoutInflater());
 		setContentView(activityCreateRepoBinding.getRoot());
 
 		boolean connToInternet = AppUtil.hasNetworkConnection(ctx);
 
 		loginUid = getAccount().getAccount().getUserName();
 
-		InputMethodManager imm = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
+		InputMethodManager imm =
+				(InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
 
 		closeActivity = activityCreateRepoBinding.close;
 		repoName = activityCreateRepoBinding.newRepoName;
@@ -83,11 +84,10 @@ public class CreateRepoActivity extends BaseActivity {
 		createRepo = activityCreateRepoBinding.createNewRepoButton;
 		disableProcessButton();
 
-		if(!connToInternet) {
+		if (!connToInternet) {
 
 			disableProcessButton();
-		}
-		else {
+		} else {
 
 			createRepo.setOnClickListener(createRepoListener);
 		}
@@ -101,49 +101,49 @@ public class CreateRepoActivity extends BaseActivity {
 		String newRepoDesc = repoDesc.getText().toString();
 		boolean newRepoAccess = repoAccess.isChecked();
 
-		if(!connToInternet) {
+		if (!connToInternet) {
 
 			Toasty.error(ctx, getResources().getString(R.string.checkNetConnection));
 			return;
 		}
 
-		if(!newRepoDesc.equals("")) {
+		if (!newRepoDesc.equals("")) {
 
-			if(newRepoDesc.length() > 255) {
+			if (newRepoDesc.length() > 255) {
 
 				Toasty.warning(ctx, getString(R.string.repoDescError));
 				return;
 			}
 		}
 
-		if(newRepoName.equals("")) {
+		if (newRepoName.equals("")) {
 
 			Toasty.error(ctx, getString(R.string.repoNameErrorEmpty));
-		}
-		else if(!AppUtil.checkStrings(newRepoName)) {
+		} else if (!AppUtil.checkStrings(newRepoName)) {
 
 			Toasty.warning(ctx, getString(R.string.repoNameErrorInvalid));
-		}
-		else if(reservedRepoNames.contains(newRepoName)) {
+		} else if (reservedRepoNames.contains(newRepoName)) {
 
 			Toasty.warning(ctx, getString(R.string.repoNameErrorReservedName));
-		}
-		else if(reservedRepoPatterns.matcher(newRepoName).find()) {
+		} else if (reservedRepoPatterns.matcher(newRepoName).find()) {
 
 			Toasty.warning(ctx, getString(R.string.repoNameErrorReservedPatterns));
-		}
-		else if(selectedOwner == null) {
+		} else if (selectedOwner == null) {
 
 			Toasty.error(ctx, getString(R.string.repoOwnerError));
-		}
-		else {
+		} else {
 
 			disableProcessButton();
 			createNewRepository(loginUid, newRepoName, newRepoDesc, selectedOwner, newRepoAccess);
 		}
 	}
 
-	private void createNewRepository(String loginUid, String repoName, String repoDesc, String selectedOwner, boolean isPrivate) {
+	private void createNewRepository(
+			String loginUid,
+			String repoName,
+			String repoDesc,
+			String selectedOwner,
+			boolean isPrivate) {
 
 		CreateRepoOption createRepository = new CreateRepoOption();
 		createRepository.setAutoInit(true);
@@ -153,119 +153,138 @@ public class CreateRepoActivity extends BaseActivity {
 		createRepository.setName(repoName);
 
 		Call<Repository> call;
-		if(selectedOwner.equals(loginUid)) {
+		if (selectedOwner.equals(loginUid)) {
 
 			call = RetrofitClient.getApiInterface(ctx).createCurrentUserRepo(createRepository);
+		} else {
+
+			call =
+					RetrofitClient.getApiInterface(ctx)
+							.createOrgRepo(selectedOwner, createRepository);
 		}
-		else {
 
-			call = RetrofitClient.getApiInterface(ctx).createOrgRepo(selectedOwner, createRepository);
-		}
+		call.enqueue(
+				new Callback<Repository>() {
 
-		call.enqueue(new Callback<Repository>() {
+					@Override
+					public void onResponse(
+							@NonNull Call<Repository> call,
+							@NonNull retrofit2.Response<Repository> response) {
 
-			@Override
-			public void onResponse(@NonNull Call<Repository> call, @NonNull retrofit2.Response<Repository> response) {
+						if (response.code() == 201) {
 
-				if(response.code() == 201) {
+							MainActivity.reloadRepos = true;
+							Toasty.success(ctx, getString(R.string.repoCreated));
+							enableProcessButton();
+							finish();
+						} else if (response.code() == 401) {
 
-					MainActivity.reloadRepos = true;
-					Toasty.success(ctx, getString(R.string.repoCreated));
-					enableProcessButton();
-					finish();
-				}
-				else if(response.code() == 401) {
+							enableProcessButton();
+							AlertDialogs.authorizationTokenRevokedDialog(ctx);
+						} else if (response.code() == 409) {
 
-					enableProcessButton();
-					AlertDialogs.authorizationTokenRevokedDialog(ctx);
-				}
-				else if(response.code() == 409) {
+							enableProcessButton();
+							Toasty.warning(ctx, getString(R.string.repoExistsError));
+						} else {
 
-					enableProcessButton();
-					Toasty.warning(ctx, getString(R.string.repoExistsError));
-				}
-				else {
+							enableProcessButton();
+							Toasty.error(ctx, getString(R.string.genericError));
+						}
+					}
 
-					enableProcessButton();
-					Toasty.error(ctx, getString(R.string.genericError));
-				}
-			}
+					@Override
+					public void onFailure(@NonNull Call<Repository> call, @NonNull Throwable t) {
 
-			@Override
-			public void onFailure(@NonNull Call<Repository> call, @NonNull Throwable t) {
-
-				Log.e("onFailure", t.toString());
-				enableProcessButton();
-			}
-		});
+						Log.e("onFailure", t.toString());
+						enableProcessButton();
+					}
+				});
 	}
 
 	private void getOrganizations(final String userLogin) {
 
-		Call<List<Organization>> call = RetrofitClient.getApiInterface(ctx).orgListCurrentUserOrgs(1, 50);
+		Call<List<Organization>> call =
+				RetrofitClient.getApiInterface(ctx).orgListCurrentUserOrgs(1, 50);
 
-		call.enqueue(new Callback<List<Organization>>() {
+		call.enqueue(
+				new Callback<List<Organization>>() {
 
-			@Override
-			public void onResponse(@NonNull Call<List<Organization>> call, @NonNull retrofit2.Response<List<Organization>> response) {
+					@Override
+					public void onResponse(
+							@NonNull Call<List<Organization>> call,
+							@NonNull retrofit2.Response<List<Organization>> response) {
 
-				if(response.code() == 200) {
+						if (response.code() == 200) {
 
-					int organizationId = 0;
+							int organizationId = 0;
 
-					List<Organization> organizationsList_ = response.body();
+							List<Organization> organizationsList_ = response.body();
 
-					organizationsList.add(userLogin);
-					assert organizationsList_ != null;
+							organizationsList.add(userLogin);
+							assert organizationsList_ != null;
 
-					if(organizationsList_.size() > 0) {
+							if (organizationsList_.size() > 0) {
 
-						for(int i = 0; i < organizationsList_.size(); i++) {
+								for (int i = 0; i < organizationsList_.size(); i++) {
 
-							if(getIntent().getStringExtra("orgName") != null && !"".equals(getIntent().getStringExtra("orgName"))) {
-								if(getIntent().getStringExtra("orgName").equals(organizationsList_.get(i).getUsername())) {
-									organizationId = i + 1;
+									if (getIntent().getStringExtra("orgName") != null
+											&& !"".equals(getIntent().getStringExtra("orgName"))) {
+										if (getIntent()
+												.getStringExtra("orgName")
+												.equals(organizationsList_.get(i).getUsername())) {
+											organizationId = i + 1;
+										}
+									}
+
+									organizationsList.add(organizationsList_.get(i).getUsername());
 								}
 							}
 
-							organizationsList.add(organizationsList_.get(i).getUsername());
+							ArrayAdapter<String> adapter =
+									new ArrayAdapter<>(
+											CreateRepoActivity.this,
+											R.layout.list_spinner_items,
+											organizationsList);
+
+							spinner.setAdapter(adapter);
+
+							spinner.setOnItemClickListener(
+									(parent, view, position, id) ->
+											selectedOwner = organizationsList.get(position));
+
+							if (getIntent().getBooleanExtra("organizationAction", false)
+									&& organizationId != 0) {
+
+								int selectOwnerById = organizationId;
+								new Handler(Looper.getMainLooper())
+										.postDelayed(
+												() -> {
+													spinner.setText(
+															organizationsList.get(selectOwnerById),
+															false);
+													selectedOwner =
+															organizationsList.get(selectOwnerById);
+												},
+												500);
+								getIntent().removeExtra("organizationAction");
+							}
+
+							enableProcessButton();
+						} else if (response.code() == 401) {
+
+							enableProcessButton();
+							AlertDialogs.authorizationTokenRevokedDialog(ctx);
 						}
 					}
 
-					ArrayAdapter<String> adapter = new ArrayAdapter<>(CreateRepoActivity.this, R.layout.list_spinner_items, organizationsList);
+					@Override
+					public void onFailure(
+							@NonNull Call<List<Organization>> call, @NonNull Throwable t) {
 
-					spinner.setAdapter(adapter);
-
-					spinner.setOnItemClickListener((parent, view, position, id) -> selectedOwner = organizationsList.get(position));
-
-					if(getIntent().getBooleanExtra("organizationAction", false) && organizationId != 0) {
-
-						int selectOwnerById = organizationId;
-						new Handler(Looper.getMainLooper()).postDelayed(() -> {
-
-							spinner.setText(organizationsList.get(selectOwnerById), false);
-							selectedOwner = organizationsList.get(selectOwnerById);
-						}, 500);
-						getIntent().removeExtra("organizationAction");
+						Log.e("onFailure", t.toString());
+						enableProcessButton();
 					}
-
-					enableProcessButton();
-				}
-
-				else if(response.code() == 401) {
-
-					enableProcessButton();
-					AlertDialogs.authorizationTokenRevokedDialog(ctx);
-				}
-			}
-
-			@Override
-			public void onFailure(@NonNull Call<List<Organization>> call, @NonNull Throwable t) {
-
-				Log.e("onFailure", t.toString());
-				enableProcessButton();
-			}
-		});
+				});
 	}
 
 	private void initCloseListener() {
@@ -282,5 +301,4 @@ public class CreateRepoActivity extends BaseActivity {
 
 		createRepo.setEnabled(true);
 	}
-
 }

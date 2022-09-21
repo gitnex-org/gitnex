@@ -7,12 +7,11 @@ pipeline:
       regex: " \\\\* \\\\@author [\\\\S\\\\s]+"
       must_contain: true
 
-  #style:
-    #image: qwerty287/woodpecker-intellij-formatter
-    #group: check
-   # settings:
-      #file_pattern: "*.java"
-      #path: "app/"
+  style:
+    image: alvrme/alpine-android:android-31-jdk11
+    group: check
+    commands:
+      - ./gradlew :app:spotlessCheck
 
   test:
     image: alvrme/alpine-android:android-31-jdk11

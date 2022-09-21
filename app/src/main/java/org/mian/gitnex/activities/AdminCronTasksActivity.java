@@ -16,7 +16,6 @@ import org.mian.gitnex.viewmodels.AdminCronTasksViewModel;
 /**
  * @author M M Arif
  */
-
 public class AdminCronTasksActivity extends BaseActivity {
 
 	private AdminCronTasksViewModel adminCronTasksViewModel;
@@ -47,36 +46,43 @@ public class AdminCronTasksActivity extends BaseActivity {
 		activityAdminCronTasksBinding.recyclerView.setHasFixedSize(true);
 		activityAdminCronTasksBinding.recyclerView.setLayoutManager(new LinearLayoutManager(ctx));
 
-		activityAdminCronTasksBinding.pullToRefresh.setOnRefreshListener(() -> new Handler(Looper.getMainLooper()).postDelayed(() -> {
-
-			activityAdminCronTasksBinding.progressBar.setVisibility(View.VISIBLE);
-			activityAdminCronTasksBinding.pullToRefresh.setRefreshing(false);
-			adminCronTasksViewModel.loadCronTasksList(ctx, PAGE, resultLimit);
-
-		}, 500));
+		activityAdminCronTasksBinding.pullToRefresh.setOnRefreshListener(
+				() ->
+						new Handler(Looper.getMainLooper())
+								.postDelayed(
+										() -> {
+											activityAdminCronTasksBinding.progressBar.setVisibility(
+													View.VISIBLE);
+											activityAdminCronTasksBinding.pullToRefresh
+													.setRefreshing(false);
+											adminCronTasksViewModel.loadCronTasksList(
+													ctx, PAGE, resultLimit);
+										},
+										500));
 
 		fetchDataAsync(ctx);
 	}
 
 	private void fetchDataAsync(Context ctx) {
 
-		adminCronTasksViewModel.getCronTasksList(ctx, PAGE, resultLimit).observe(this, cronTasksListMain -> {
+		adminCronTasksViewModel
+				.getCronTasksList(ctx, PAGE, resultLimit)
+				.observe(
+						this,
+						cronTasksListMain -> {
+							adapter = new AdminCronTasksAdapter(cronTasksListMain);
 
-			adapter = new AdminCronTasksAdapter(cronTasksListMain);
-
-			if(adapter.getItemCount() > 0) {
-				activityAdminCronTasksBinding.recyclerView.setAdapter(adapter);
-				activityAdminCronTasksBinding.noData.setVisibility(View.GONE);
-				activityAdminCronTasksBinding.progressBar.setVisibility(View.GONE);
-			}
-			else {
-				activityAdminCronTasksBinding.noData.setVisibility(View.VISIBLE);
-			}
-		});
+							if (adapter.getItemCount() > 0) {
+								activityAdminCronTasksBinding.recyclerView.setAdapter(adapter);
+								activityAdminCronTasksBinding.noData.setVisibility(View.GONE);
+								activityAdminCronTasksBinding.progressBar.setVisibility(View.GONE);
+							} else {
+								activityAdminCronTasksBinding.noData.setVisibility(View.VISIBLE);
+							}
+						});
 	}
 
 	private void initCloseListener() {
 		onClickListener = view -> finish();
 	}
-
 }

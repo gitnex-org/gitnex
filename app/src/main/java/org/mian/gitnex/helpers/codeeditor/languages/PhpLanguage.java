@@ -5,35 +5,43 @@ import android.content.res.Resources;
 import com.amrdeveloper.codeview.Code;
 import com.amrdeveloper.codeview.CodeView;
 import com.amrdeveloper.codeview.Keyword;
-import org.mian.gitnex.R;
 import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 import java.util.regex.Pattern;
+import org.mian.gitnex.R;
 
 /**
  * @author M M Arif
  */
-
 public class PhpLanguage {
 
-	//Language Keywords
-	private static final Pattern PATTERN_KEYWORDS = Pattern.compile(
-		"\\b(<?php|__construct|var_dump|define|echo|var|float|" + "int|bool|false|true|function|private|public|protected|interface|return|copy|struct|abstract|extends|" + "trait|static|namespace|implements|__set|__get|unlink|this|try|catch|Throwable|Exception|pdo|" + "str_replace|form|date|abs|min|max|strtotime|mktime|" + "foreach|require_once|include_once|hash|array|range|break|continue|preg_match|preg_match_all|preg_replace|" + "throw|new|and|or|if|else|elseif|switch|case|default|match|require|include|goto|do|while|for|map|)\\b");
+	// Language Keywords
+	private static final Pattern PATTERN_KEYWORDS =
+			Pattern.compile(
+					"\\b(<?php|__construct|var_dump|define|echo|var|float|"
+							+ "int|bool|false|true|function|private|public|protected|interface|return|copy|struct|abstract|extends|"
+							+ "trait|static|namespace|implements|__set|__get|unlink|this|try|catch|Throwable|Exception|pdo|"
+							+ "str_replace|form|date|abs|min|max|strtotime|mktime|"
+							+ "foreach|require_once|include_once|hash|array|range|break|continue|preg_match|preg_match_all|preg_replace|"
+							+ "throw|new|and|or|if|else|elseif|switch|case|default|match|require|include|goto|do|while|for|map|)\\b");
 
-	//Brackets and Colons
+	// Brackets and Colons
 	private static final Pattern PATTERN_BUILTINS = Pattern.compile("[,:;[->]{}()]");
 
-	//Data
+	// Data
 	private static final Pattern PATTERN_NUMBERS = Pattern.compile("\\b(\\d*[.]?\\d+)\\b");
 	private static final Pattern PATTERN_CHAR = Pattern.compile("['](.*?)[']");
 	private static final Pattern PATTERN_STRING = Pattern.compile("[\"](.*?)[\"]");
 	private static final Pattern PATTERN_HEX = Pattern.compile("0x[0-9a-fA-F]+");
 	private static final Pattern PATTERN_SINGLE_LINE_COMMENT = Pattern.compile("//[^\\n]*");
-	private static final Pattern PATTERN_MULTI_LINE_COMMENT = Pattern.compile("/\\*[^*]*\\*+(?:[^/*][^*]*\\*+)*/");
+	private static final Pattern PATTERN_MULTI_LINE_COMMENT =
+			Pattern.compile("/\\*[^*]*\\*+(?:[^/*][^*]*\\*+)*/");
 	private static final Pattern PATTERN_ATTRIBUTE = Pattern.compile("\\.[a-zA-Z0-9_]+");
-	private static final Pattern PATTERN_OPERATION = Pattern.compile(":|==|>|<|!=|>=|<=|->|=|>|<|%|-|-=|%=|\\+|\\-|\\-=|\\+=|\\^|\\&|\\|::|\\?|\\*");
+	private static final Pattern PATTERN_OPERATION =
+			Pattern.compile(
+					":|==|>|<|!=|>=|<=|->|=|>|<|%|-|-=|%=|\\+|\\-|\\-=|\\+=|\\^|\\&|\\|::|\\?|\\*");
 
 	public static void applyFiveColorsDarkTheme(Context context, CodeView codeView) {
 		codeView.resetSyntaxPatternList();
@@ -41,22 +49,30 @@ public class PhpLanguage {
 
 		Resources resources = context.getResources();
 
-		//View Background
+		// View Background
 		codeView.setBackgroundColor(resources.getColor(R.color.five_dark_black, null));
 
-		//Syntax Colors
+		// Syntax Colors
 		codeView.addSyntaxPattern(PATTERN_HEX, resources.getColor(R.color.five_dark_purple, null));
 		codeView.addSyntaxPattern(PATTERN_CHAR, resources.getColor(R.color.five_dark_yellow, null));
-		codeView.addSyntaxPattern(PATTERN_STRING, resources.getColor(R.color.five_dark_yellow, null));
-		codeView.addSyntaxPattern(PATTERN_NUMBERS, resources.getColor(R.color.five_dark_purple, null));
-		codeView.addSyntaxPattern(PATTERN_KEYWORDS, resources.getColor(R.color.five_dark_purple, null));
-		codeView.addSyntaxPattern(PATTERN_BUILTINS, resources.getColor(R.color.five_dark_white, null));
-		codeView.addSyntaxPattern(PATTERN_SINGLE_LINE_COMMENT, resources.getColor(R.color.five_dark_grey, null));
-		codeView.addSyntaxPattern(PATTERN_MULTI_LINE_COMMENT, resources.getColor(R.color.five_dark_grey, null));
-		codeView.addSyntaxPattern(PATTERN_ATTRIBUTE, resources.getColor(R.color.five_dark_blue, null));
-		codeView.addSyntaxPattern(PATTERN_OPERATION, resources.getColor(R.color.five_dark_purple, null));
+		codeView.addSyntaxPattern(
+				PATTERN_STRING, resources.getColor(R.color.five_dark_yellow, null));
+		codeView.addSyntaxPattern(
+				PATTERN_NUMBERS, resources.getColor(R.color.five_dark_purple, null));
+		codeView.addSyntaxPattern(
+				PATTERN_KEYWORDS, resources.getColor(R.color.five_dark_purple, null));
+		codeView.addSyntaxPattern(
+				PATTERN_BUILTINS, resources.getColor(R.color.five_dark_white, null));
+		codeView.addSyntaxPattern(
+				PATTERN_SINGLE_LINE_COMMENT, resources.getColor(R.color.five_dark_grey, null));
+		codeView.addSyntaxPattern(
+				PATTERN_MULTI_LINE_COMMENT, resources.getColor(R.color.five_dark_grey, null));
+		codeView.addSyntaxPattern(
+				PATTERN_ATTRIBUTE, resources.getColor(R.color.five_dark_blue, null));
+		codeView.addSyntaxPattern(
+				PATTERN_OPERATION, resources.getColor(R.color.five_dark_purple, null));
 
-		//Default Color
+		// Default Color
 		codeView.setTextColor(resources.getColor(R.color.five_dark_white, null));
 
 		codeView.reHighlightSyntax();
@@ -69,7 +85,7 @@ public class PhpLanguage {
 	public static List<Code> getCodeList(Context context) {
 		List<Code> codeList = new ArrayList<>();
 		String[] keywords = getKeywords(context);
-		for(String keyword : keywords) {
+		for (String keyword : keywords) {
 			codeList.add(new Keyword(keyword));
 		}
 		return codeList;
@@ -94,5 +110,4 @@ public class PhpLanguage {
 	public static String getCommentEnd() {
 		return "";
 	}
-
 }

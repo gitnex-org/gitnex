@@ -23,7 +23,6 @@ import org.mian.gitnex.viewmodels.MembersByOrgViewModel;
 /**
  * @author M M Arif
  */
-
 public class OrganizationMembersFragment extends Fragment {
 
 	private TextView noDataMembers;
@@ -33,8 +32,7 @@ public class OrganizationMembersFragment extends Fragment {
 	private GridView mGridView;
 	private ProgressBar progressBar;
 
-	public OrganizationMembersFragment() {
-	}
+	public OrganizationMembersFragment() {}
 
 	public static OrganizationMembersFragment newInstance(String param1) {
 		OrganizationMembersFragment fragment = new OrganizationMembersFragment();
@@ -47,15 +45,17 @@ public class OrganizationMembersFragment extends Fragment {
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
-		if(getArguments() != null) {
+		if (getArguments() != null) {
 			orgName = getArguments().getString(orgNameF);
 		}
 	}
 
 	@Override
-	public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
+	public View onCreateView(
+			@NonNull LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
 
-		FragmentOrganizationMembersBinding fragmentMembersByOrgBinding = FragmentOrganizationMembersBinding.inflate(inflater, container, false);
+		FragmentOrganizationMembersBinding fragmentMembersByOrgBinding =
+				FragmentOrganizationMembersBinding.inflate(inflater, container, false);
 		setHasOptionsMenu(true);
 
 		noDataMembers = fragmentMembersByOrgBinding.noDataMembers;
@@ -70,23 +70,26 @@ public class OrganizationMembersFragment extends Fragment {
 
 	private void fetchDataAsync(String owner) {
 
-		MembersByOrgViewModel membersModel = new ViewModelProvider(this).get(MembersByOrgViewModel.class);
+		MembersByOrgViewModel membersModel =
+				new ViewModelProvider(this).get(MembersByOrgViewModel.class);
 
-		membersModel.getMembersList(owner, getContext()).observe(getViewLifecycleOwner(), membersListMain -> {
-			adapter = new UserGridAdapter(getContext(), membersListMain);
-			if(adapter.getCount() > 0) {
-				mGridView.setAdapter(adapter);
-				noDataMembers.setVisibility(View.GONE);
-			}
-			else {
-				adapter.notifyDataSetChanged();
-				mGridView.setAdapter(adapter);
-				noDataMembers.setVisibility(View.VISIBLE);
-			}
+		membersModel
+				.getMembersList(owner, getContext())
+				.observe(
+						getViewLifecycleOwner(),
+						membersListMain -> {
+							adapter = new UserGridAdapter(getContext(), membersListMain);
+							if (adapter.getCount() > 0) {
+								mGridView.setAdapter(adapter);
+								noDataMembers.setVisibility(View.GONE);
+							} else {
+								adapter.notifyDataSetChanged();
+								mGridView.setAdapter(adapter);
+								noDataMembers.setVisibility(View.VISIBLE);
+							}
 
-			progressBar.setVisibility(View.GONE);
-		});
-
+							progressBar.setVisibility(View.GONE);
+						});
 	}
 
 	@Override
@@ -98,29 +101,29 @@ public class OrganizationMembersFragment extends Fragment {
 		super.onCreateOptionsMenu(menu, inflater);
 
 		MenuItem searchItem = menu.findItem(R.id.action_search);
-		androidx.appcompat.widget.SearchView searchView = (androidx.appcompat.widget.SearchView) searchItem.getActionView();
+		androidx.appcompat.widget.SearchView searchView =
+				(androidx.appcompat.widget.SearchView) searchItem.getActionView();
 		searchView.setImeOptions(EditorInfo.IME_ACTION_DONE);
-		//searchView.setQueryHint(getContext().getString(R.string.strFilter));
+		// searchView.setQueryHint(getContext().getString(R.string.strFilter));
 
-		if(!connToInternet) {
+		if (!connToInternet) {
 			return;
 		}
 
-		searchView.setOnQueryTextListener(new androidx.appcompat.widget.SearchView.OnQueryTextListener() {
-			@Override
-			public boolean onQueryTextSubmit(String query) {
-				return false;
-			}
+		searchView.setOnQueryTextListener(
+				new androidx.appcompat.widget.SearchView.OnQueryTextListener() {
+					@Override
+					public boolean onQueryTextSubmit(String query) {
+						return false;
+					}
 
-			@Override
-			public boolean onQueryTextChange(String newText) {
-				if(mGridView.getAdapter() != null) {
-					adapter.getFilter().filter(newText);
-				}
-				return false;
-			}
-		});
-
+					@Override
+					public boolean onQueryTextChange(String newText) {
+						if (mGridView.getAdapter() != null) {
+							adapter.getFilter().filter(newText);
+						}
+						return false;
+					}
+				});
 	}
-
 }

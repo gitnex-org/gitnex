@@ -3,22 +3,21 @@ package org.mian.gitnex.helpers.codeeditor;
 import android.content.Context;
 import com.amrdeveloper.codeview.Code;
 import com.amrdeveloper.codeview.CodeView;
+import java.util.ArrayList;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Set;
 import org.mian.gitnex.helpers.codeeditor.languages.GoLanguage;
 import org.mian.gitnex.helpers.codeeditor.languages.HtmlLanguage;
 import org.mian.gitnex.helpers.codeeditor.languages.JavaLanguage;
 import org.mian.gitnex.helpers.codeeditor.languages.PhpLanguage;
 import org.mian.gitnex.helpers.codeeditor.languages.PythonLanguage;
 import org.mian.gitnex.helpers.codeeditor.languages.XmlLanguage;
-import java.util.ArrayList;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Set;
 
 /**
  * @author AmrDeveloper
  * @author M M Arif
  */
-
 public class LanguageManager {
 
 	private final Context context;
@@ -31,13 +30,13 @@ public class LanguageManager {
 
 	public void applyTheme(LanguageName language, ThemeName theme) {
 
-		if(theme == ThemeName.FIVE_COLOR) {
+		if (theme == ThemeName.FIVE_COLOR) {
 			applyFiveColorsDarkTheme(language);
 		}
 	}
 
 	public String[] getLanguageKeywords(LanguageName language) {
-		switch(language) {
+		switch (language) {
 			case JAVA:
 				return JavaLanguage.getKeywords(context);
 			case PY:
@@ -51,12 +50,12 @@ public class LanguageManager {
 			case HTML:
 				return HtmlLanguage.getKeywords(context);
 			default:
-				return new String[]{};
+				return new String[] {};
 		}
 	}
 
 	public List<Code> getLanguageCodeList(LanguageName language) {
-		switch(language) {
+		switch (language) {
 			case JAVA:
 				return JavaLanguage.getCodeList(context);
 			case PY:
@@ -75,7 +74,7 @@ public class LanguageManager {
 	}
 
 	public Set<Character> getLanguageIndentationStarts(LanguageName language) {
-		switch(language) {
+		switch (language) {
 			case JAVA:
 				return JavaLanguage.getIndentationStarts();
 			case PY:
@@ -94,7 +93,7 @@ public class LanguageManager {
 	}
 
 	public Set<Character> getLanguageIndentationEnds(LanguageName language) {
-		switch(language) {
+		switch (language) {
 			case JAVA:
 				return JavaLanguage.getIndentationEnds();
 			case PY:
@@ -113,7 +112,7 @@ public class LanguageManager {
 	}
 
 	private void applyFiveColorsDarkTheme(LanguageName language) {
-		switch(language) {
+		switch (language) {
 			case JAVA:
 				JavaLanguage.applyFiveColorsDarkTheme(context, codeView);
 				break;
@@ -134,5 +133,4 @@ public class LanguageManager {
 				break;
 		}
 	}
-
 }

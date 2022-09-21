@@ -16,6 +16,9 @@ import androidx.appcompat.widget.SearchView;
 import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import com.google.android.material.dialog.MaterialAlertDialogBuilder;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Objects;
 import org.mian.gitnex.R;
 import org.mian.gitnex.activities.MainActivity;
 import org.mian.gitnex.adapters.MostVisitedReposAdapter;
@@ -25,14 +28,10 @@ import org.mian.gitnex.database.models.Repository;
 import org.mian.gitnex.databinding.FragmentDraftsBinding;
 import org.mian.gitnex.helpers.TinyDB;
 import org.mian.gitnex.helpers.Toasty;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Objects;
 
 /**
  * @author M M Arif
  */
-
 public class MostVisitedReposFragment extends Fragment {
 
 	private FragmentDraftsBinding fragmentDraftsBinding;
@@ -43,14 +42,16 @@ public class MostVisitedReposFragment extends Fragment {
 	private int currentActiveAccountId;
 
 	@Override
-	public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
+	public View onCreateView(
+			@NonNull LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
 
 		fragmentDraftsBinding = FragmentDraftsBinding.inflate(inflater, container, false);
 
 		ctx = getContext();
 		setHasOptionsMenu(true);
 
-		((MainActivity) requireActivity()).setActionBarTitle(getResources().getString(R.string.navMostVisited));
+		((MainActivity) requireActivity())
+				.setActionBarTitle(getResources().getString(R.string.navMostVisited));
 
 		TinyDB tinyDb = TinyDB.getInstance(ctx);
 
@@ -62,11 +63,15 @@ public class MostVisitedReposFragment extends Fragment {
 
 		adapter = new MostVisitedReposAdapter(ctx, mostVisitedReposList);
 		currentActiveAccountId = tinyDb.getInt("currentActiveAccountId");
-		fragmentDraftsBinding.pullToRefresh.setOnRefreshListener(() -> new Handler(Looper.getMainLooper()).postDelayed(() -> {
-
-			mostVisitedReposList.clear();
-			fetchDataAsync(currentActiveAccountId);
-		}, 250));
+		fragmentDraftsBinding.pullToRefresh.setOnRefreshListener(
+				() ->
+						new Handler(Looper.getMainLooper())
+								.postDelayed(
+										() -> {
+											mostVisitedReposList.clear();
+											fetchDataAsync(currentActiveAccountId);
+										},
+										250));
 
 		fetchDataAsync(currentActiveAccountId);
 
@@ -75,35 +80,37 @@ public class MostVisitedReposFragment extends Fragment {
 
 	private void fetchDataAsync(int accountId) {
 
-		repositoriesApi.fetchAllMostVisited(accountId).observe(getViewLifecycleOwner(), mostVisitedRepos -> {
+		repositoriesApi
+				.fetchAllMostVisited(accountId)
+				.observe(
+						getViewLifecycleOwner(),
+						mostVisitedRepos -> {
+							fragmentDraftsBinding.pullToRefresh.setRefreshing(false);
+							assert mostVisitedRepos != null;
+							if (mostVisitedRepos.size() > 0) {
 
-			fragmentDraftsBinding.pullToRefresh.setRefreshing(false);
-			assert mostVisitedRepos != null;
-			if(mostVisitedRepos.size() > 0) {
+								mostVisitedReposList.clear();
+								fragmentDraftsBinding.noData.setVisibility(View.GONE);
+								mostVisitedReposList.addAll(mostVisitedRepos);
+								adapter.notifyDataChanged();
+								fragmentDraftsBinding.recyclerView.setAdapter(adapter);
+							} else {
 
-				mostVisitedReposList.clear();
-				fragmentDraftsBinding.noData.setVisibility(View.GONE);
-				mostVisitedReposList.addAll(mostVisitedRepos);
-				adapter.notifyDataChanged();
-				fragmentDraftsBinding.recyclerView.setAdapter(adapter);
-			}
-			else {
-
-				fragmentDraftsBinding.noData.setVisibility(View.VISIBLE);
-			}
-		});
+								fragmentDraftsBinding.noData.setVisibility(View.VISIBLE);
+							}
+						});
 	}
 
 	public void resetAllRepositoryCounter(int accountId) {
 
-		if(mostVisitedReposList.size() > 0) {
+		if (mostVisitedReposList.size() > 0) {
 
-			Objects.requireNonNull(BaseApi.getInstance(ctx, RepositoriesApi.class)).resetAllRepositoryMostVisited(accountId);
+			Objects.requireNonNull(BaseApi.getInstance(ctx, RepositoriesApi.class))
+					.resetAllRepositoryMostVisited(accountId);
 			mostVisitedReposList.clear();
 			adapter.notifyDataChanged();
 			Toasty.success(ctx, getResources().getString(R.string.resetMostReposCounter));
-		}
-		else {
+		} else {
 			Toasty.warning(ctx, getResources().getString(R.string.noDataFound));
 		}
 	}
@@ -119,37 +126,43 @@ public class MostVisitedReposFragment extends Fragment {
 		SearchView searchView = (SearchView) searchItem.getActionView();
 		searchView.setImeOptions(EditorInfo.IME_ACTION_DONE);
 
-		searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
+		searchView.setOnQueryTextListener(
+				new SearchView.OnQueryTextListener() {
 
-			@Override
-			public boolean onQueryTextSubmit(String query) {
+					@Override
+					public boolean onQueryTextSubmit(String query) {
 
-				return false;
-			}
+						return false;
+					}
 
-			@Override
-			public boolean onQueryTextChange(String newText) {
+					@Override
+					public boolean onQueryTextChange(String newText) {
 
-				filter(newText);
-				return false;
-			}
-		});
+						filter(newText);
+						return false;
+					}
+				});
 	}
 
 	@Override
 	public boolean onOptionsItemSelected(MenuItem item) {
 
-		if(item.getItemId() == R.id.reset_menu_item) {
+		if (item.getItemId() == R.id.reset_menu_item) {
 
-			if(mostVisitedReposList.size() == 0) {
+			if (mostVisitedReposList.size() == 0) {
 				Toasty.warning(ctx, getResources().getString(R.string.noDataFound));
-			}
-			else {
-				new MaterialAlertDialogBuilder(ctx).setTitle(R.string.reset).setMessage(R.string.resetCounterAllDialogMessage).setPositiveButton(R.string.reset, (dialog, which) -> {
-
-					resetAllRepositoryCounter(currentActiveAccountId);
-					dialog.dismiss();
-				}).setNeutralButton(R.string.cancelButton, null).show();
+			} else {
+				new MaterialAlertDialogBuilder(ctx)
+						.setTitle(R.string.reset)
+						.setMessage(R.string.resetCounterAllDialogMessage)
+						.setPositiveButton(
+								R.string.reset,
+								(dialog, which) -> {
+									resetAllRepositoryCounter(currentActiveAccountId);
+									dialog.dismiss();
+								})
+						.setNeutralButton(R.string.cancelButton, null)
+						.show();
 			}
 		}
 
@@ -160,18 +173,18 @@ public class MostVisitedReposFragment extends Fragment {
 
 		List<Repository> arr = new ArrayList<>();
 
-		for(Repository d : mostVisitedReposList) {
+		for (Repository d : mostVisitedReposList) {
 
-			if(d == null || d.getRepositoryOwner() == null || d.getRepositoryName() == null) {
+			if (d == null || d.getRepositoryOwner() == null || d.getRepositoryName() == null) {
 				continue;
 			}
 
-			if(d.getRepositoryOwner().toLowerCase().contains(text) || d.getRepositoryName().toLowerCase().contains(text)) {
+			if (d.getRepositoryOwner().toLowerCase().contains(text)
+					|| d.getRepositoryName().toLowerCase().contains(text)) {
 				arr.add(d);
 			}
 		}
 
 		adapter.updateList(arr);
 	}
-
 }

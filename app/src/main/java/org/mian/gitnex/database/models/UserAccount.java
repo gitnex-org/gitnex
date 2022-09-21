@@ -8,20 +8,17 @@ import java.io.Serializable;
 /**
  * @author M M Arif
  */
-
 @Entity(tableName = "userAccounts")
 public class UserAccount implements Serializable {
 
 	@PrimaryKey(autoGenerate = true)
 	private int accountId;
 
-	@Nullable
-	private String accountName;
+	@Nullable private String accountName;
 	private String instanceUrl;
 	private String userName;
 	private String token;
-	@Nullable
-	private String serverVersion;
+	@Nullable private String serverVersion;
 	private boolean isLoggedIn;
 	private int maxResponseItems;
 	private int defaultPagingNumber;
@@ -34,8 +31,7 @@ public class UserAccount implements Serializable {
 		this.accountId = accountId;
 	}
 
-	@Nullable
-	public String getAccountName() {
+	@Nullable public String getAccountName() {
 		return accountName;
 	}
 
@@ -67,8 +63,7 @@ public class UserAccount implements Serializable {
 		this.token = token;
 	}
 
-	@Nullable
-	public String getServerVersion() {
+	@Nullable public String getServerVersion() {
 		return serverVersion;
 	}
 
@@ -99,5 +94,4 @@ public class UserAccount implements Serializable {
 	public void setDefaultPagingNumber(int defaultPagingNumber) {
 		this.defaultPagingNumber = defaultPagingNumber;
 	}
-
 }

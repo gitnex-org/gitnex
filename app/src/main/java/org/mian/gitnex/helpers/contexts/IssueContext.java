@@ -3,11 +3,11 @@ package org.mian.gitnex.helpers.contexts;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
+import java.io.Serializable;
 import org.gitnex.tea4j.v2.models.Issue;
 import org.gitnex.tea4j.v2.models.PullRequest;
 import org.gitnex.tea4j.v2.models.Repository;
 import org.mian.gitnex.activities.BaseActivity;
-import java.io.Serializable;
 
 /**
  * @author qwerty287
@@ -48,7 +48,8 @@ public class IssueContext implements Serializable {
 		this.repository = repository;
 	}
 
-	public IssueContext(Issue issue, PullRequest pullRequest, Repository repository, Context context) {
+	public IssueContext(
+			Issue issue, PullRequest pullRequest, Repository repository, Context context) {
 		this.issue = issue;
 		this.issueType = issue.getPullRequest() == null ? "Issue" : "Pull";
 		this.pullRequest = pullRequest;
@@ -87,7 +88,7 @@ public class IssueContext implements Serializable {
 
 	public void setIssue(Issue issue) {
 		this.issue = issue;
-		if(issue != null) {
+		if (issue != null) {
 			this.issueType = issue.getPullRequest() == null ? "Issue" : "Pull";
 		}
 	}
@@ -116,7 +117,10 @@ public class IssueContext implements Serializable {
 
 	public int getIssueIndex() {
 
-		return Math.toIntExact(issueIndex != 0 ? issueIndex : issue != null ? issue.getNumber() : pullRequest.getNumber());
+		return Math.toIntExact(
+				issueIndex != 0
+						? issueIndex
+						: issue != null ? issue.getNumber() : pullRequest.getNumber());
 	}
 
 	public boolean isSubscribed() {
@@ -135,13 +139,15 @@ public class IssueContext implements Serializable {
 	}
 
 	public boolean prIsFork() {
-		if(pullRequest.getHead().getRepo() != null) {
-			return !pullRequest.getHead().getRepo().getFullName().equals(getRepository().getFullName());
-		}
-		else {
+		if (pullRequest.getHead().getRepo() != null) {
+			return !pullRequest
+					.getHead()
+					.getRepo()
+					.getFullName()
+					.equals(getRepository().getFullName());
+		} else {
 			// PR was done from a deleted fork
 			return true;
 		}
 	}
-
 }

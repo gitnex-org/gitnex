@@ -9,18 +9,17 @@ import android.view.ViewGroup;
 import android.widget.BaseAdapter;
 import android.widget.TextView;
 import androidx.fragment.app.FragmentManager;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.stream.Collectors;
 import org.mian.gitnex.R;
 import org.mian.gitnex.fragments.BottomSheetReplyFragment;
 import org.mian.gitnex.helpers.AppUtil;
 import org.mian.gitnex.helpers.contexts.IssueContext;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.stream.Collectors;
 
 /**
  * @author opyale
  */
-
 public class DiffAdapter extends BaseAdapter {
 
 	private static int COLOR_ADDED;
@@ -36,7 +35,12 @@ public class DiffAdapter extends BaseAdapter {
 	private final Typeface typeface;
 	private final String type;
 
-	public DiffAdapter(Context context, FragmentManager fragmentManager, List<String> lines, IssueContext issue, String type) {
+	public DiffAdapter(
+			Context context,
+			FragmentManager fragmentManager,
+			List<String> lines,
+			IssueContext issue,
+			String type) {
 
 		this.context = context;
 		this.fragmentManager = fragmentManager;
@@ -52,7 +56,6 @@ public class DiffAdapter extends BaseAdapter {
 		COLOR_NORMAL = AppUtil.getColorFromAttribute(context, R.attr.primaryBackgroundColor);
 		COLOR_SELECTED = AppUtil.getColorFromAttribute(context, R.attr.diffSelectedColor);
 		COLOR_FONT = AppUtil.getColorFromAttribute(context, R.attr.inputTextColor);
-
 	}
 
 	@Override
@@ -73,80 +76,82 @@ public class DiffAdapter extends BaseAdapter {
 	@Override
 	public View getView(int position, View convertView, ViewGroup parent) {
 
-		if(convertView == null) {
+		if (convertView == null) {
 
 			TextView textView = new TextView(context);
 
-			textView.setLayoutParams(new ViewGroup.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT));
+			textView.setLayoutParams(
+					new ViewGroup.LayoutParams(
+							ViewGroup.LayoutParams.MATCH_PARENT,
+							ViewGroup.LayoutParams.WRAP_CONTENT));
 			textView.setTextColor(COLOR_FONT);
 			textView.setTextSize(TypedValue.COMPLEX_UNIT_SP, 14);
 			textView.setPadding(32, 0, 32, 0);
 			textView.setTypeface(typeface);
 
 			convertView = textView;
-
 		}
 
-		if(type.equalsIgnoreCase("pull")) {
-			convertView.setOnClickListener(v -> {
+		if (type.equalsIgnoreCase("pull")) {
+			convertView.setOnClickListener(
+					v -> {
+						if (selectedLines.contains(position)) {
 
-				if(selectedLines.contains(position)) {
+							selectedLines.remove((Object) position);
+							v.setBackgroundColor(getLineColor(lines.get(position)));
+						} else {
 
-					selectedLines.remove((Object) position);
-					v.setBackgroundColor(getLineColor(lines.get(position)));
-				}
-				else {
+							selectedLines.add(position);
+							v.setBackgroundColor(COLOR_SELECTED);
+						}
+					});
 
-					selectedLines.add(position);
-					v.setBackgroundColor(COLOR_SELECTED);
-				}
-			});
+			convertView.setOnLongClickListener(
+					v -> {
+						if (selectedLines.contains(position)) {
 
-			convertView.setOnLongClickListener(v -> {
+							StringBuilder stringBuilder = new StringBuilder();
+							stringBuilder.append("```\n");
 
-				if(selectedLines.contains(position)) {
+							for (Integer selectedLine :
+									selectedLines.stream().sorted().collect(Collectors.toList())) {
+								stringBuilder.append(lines.get(selectedLine));
+								stringBuilder.append("\n");
+							}
 
-					StringBuilder stringBuilder = new StringBuilder();
-					stringBuilder.append("```\n");
+							stringBuilder.append("```\n\n");
+							selectedLines.clear();
 
-					for(Integer selectedLine : selectedLines.stream().sorted().collect(Collectors.toList())) {
-						stringBuilder.append(lines.get(selectedLine));
-						stringBuilder.append("\n");
-					}
+							Bundle bundle = new Bundle();
+							bundle.putString("commentBody", stringBuilder.toString());
+							bundle.putBoolean("cursorToEnd", true);
 
-					stringBuilder.append("```\n\n");
-					selectedLines.clear();
+							BottomSheetReplyFragment.newInstance(bundle, issue)
+									.show(fragmentManager, "replyBottomSheet");
+						}
 
-					Bundle bundle = new Bundle();
-					bundle.putString("commentBody", stringBuilder.toString());
-					bundle.putBoolean("cursorToEnd", true);
-
-					BottomSheetReplyFragment.newInstance(bundle, issue).show(fragmentManager, "replyBottomSheet");
-				}
-
-				return true;
-
-			});
+						return true;
+					});
 		}
 
 		String line = lines.get(position);
 
-		int backgroundColor = selectedLines.contains(position) ? COLOR_SELECTED : getLineColor(line);
+		int backgroundColor =
+				selectedLines.contains(position) ? COLOR_SELECTED : getLineColor(line);
 
 		convertView.setBackgroundColor(backgroundColor);
 		((TextView) convertView).setText(line);
 
 		return convertView;
-
 	}
 
 	private int getLineColor(String line) {
 
-		if(line.length() == 0) {
+		if (line.length() == 0) {
 			return COLOR_NORMAL;
 		}
 
-		switch(line.charAt(0)) {
+		switch (line.charAt(0)) {
 			case '+':
 				return COLOR_ADDED;
 			case '-':
@@ -156,5 +161,4 @@ public class DiffAdapter extends BaseAdapter {
 				return COLOR_NORMAL;
 		}
 	}
-
 }

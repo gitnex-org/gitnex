@@ -28,6 +28,14 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import com.amulyakhare.textdrawable.TextDrawable;
 import com.google.android.material.dialog.MaterialAlertDialogBuilder;
 import com.vdurmont.emoji.EmojiParser;
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.LinkedHashSet;
+import java.util.List;
+import java.util.Locale;
+import java.util.Objects;
 import org.gitnex.tea4j.v2.models.EditIssueOption;
 import org.gitnex.tea4j.v2.models.Issue;
 import org.gitnex.tea4j.v2.models.IssueLabelsOption;
@@ -65,14 +73,6 @@ import org.mian.gitnex.helpers.contexts.IssueContext;
 import org.mian.gitnex.structs.BottomSheetListener;
 import org.mian.gitnex.viewmodels.IssueCommentsViewModel;
 import org.mian.gitnex.views.ReactionList;
-import java.text.DateFormat;
-import java.text.SimpleDateFormat;
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.LinkedHashSet;
-import java.util.List;
-import java.util.Locale;
-import java.util.Objects;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
@@ -80,8 +80,10 @@ import retrofit2.Response;
 /**
  * @author M M Arif
  */
-
-public class IssueDetailActivity extends BaseActivity implements LabelsListAdapter.LabelsListAdapterListener, AssigneesListAdapter.AssigneesListAdapterListener, BottomSheetListener {
+public class IssueDetailActivity extends BaseActivity
+		implements LabelsListAdapter.LabelsListAdapterListener,
+				AssigneesListAdapter.AssigneesListAdapterListener,
+				BottomSheetListener {
 
 	public static boolean singleIssueUpdate = false;
 	public static boolean commentPosted = false;
@@ -103,26 +105,29 @@ public class IssueDetailActivity extends BaseActivity implements LabelsListAdapt
 	private ActivityIssueDetailBinding viewBinding;
 	private MaterialAlertDialogBuilder materialAlertDialogBuilder;
 	private IssueCommentsViewModel issueCommentsModel;
-	private Runnable showMenu = () -> {
-	};
+	private Runnable showMenu = () -> {};
 	private boolean loadingFinishedIssue = false;
 	private boolean loadingFinishedPr = false;
 	private boolean loadingFinishedRepo = false;
-	public ActivityResultLauncher<Intent> editIssueLauncher = registerForActivityResult(new ActivityResultContracts.StartActivityForResult(), result -> {
-		if(result.getResultCode() == 200) {
-			assert result.getData() != null;
-			if(result.getData().getBooleanExtra("issueEdited", false)) {
-				new Handler(Looper.getMainLooper()).postDelayed(() -> {
-
-					viewBinding.frameAssignees.removeAllViews();
-					viewBinding.frameLabels.removeAllViews();
-					issue.setIssue(null);
-					getSingleIssue(repoOwner, repoName, issueIndex);
-
-				}, 500);
-			}
-		}
-	});
+	public ActivityResultLauncher<Intent> editIssueLauncher =
+			registerForActivityResult(
+					new ActivityResultContracts.StartActivityForResult(),
+					result -> {
+						if (result.getResultCode() == 200) {
+							assert result.getData() != null;
+							if (result.getData().getBooleanExtra("issueEdited", false)) {
+								new Handler(Looper.getMainLooper())
+										.postDelayed(
+												() -> {
+													viewBinding.frameAssignees.removeAllViews();
+													viewBinding.frameLabels.removeAllViews();
+													issue.setIssue(null);
+													getSingleIssue(repoOwner, repoName, issueIndex);
+												},
+												500);
+							}
+						}
+					});
 	private int page = 1;
 
 	@Override
@@ -142,7 +147,8 @@ public class IssueDetailActivity extends BaseActivity implements LabelsListAdapt
 		Objects.requireNonNull(getSupportActionBar()).setTitle(repoName);
 		getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
-		materialAlertDialogBuilder = new MaterialAlertDialogBuilder(ctx, R.style.ThemeOverlay_Material3_Dialog_Alert);
+		materialAlertDialogBuilder =
+				new MaterialAlertDialogBuilder(ctx, R.style.ThemeOverlay_Material3_Dialog_Alert);
 
 		issueCommentsModel = new ViewModelProvider(this).get(IssueCommentsViewModel.class);
 
@@ -150,25 +156,34 @@ public class IssueDetailActivity extends BaseActivity implements LabelsListAdapt
 		viewBinding.recyclerView.setNestedScrollingEnabled(false);
 		viewBinding.recyclerView.setLayoutManager(new LinearLayoutManager(ctx));
 
-		viewBinding.addNewComment.setOnClickListener(v -> {
+		viewBinding.addNewComment.setOnClickListener(
+				v -> {
+					BottomSheetReplyFragment bottomSheetReplyFragment =
+							BottomSheetReplyFragment.newInstance(new Bundle(), issue);
+					bottomSheetReplyFragment.setOnInteractedListener(this::onResume);
+					bottomSheetReplyFragment.show(getSupportFragmentManager(), "replyBottomSheet");
+				});
 
-			BottomSheetReplyFragment bottomSheetReplyFragment = BottomSheetReplyFragment.newInstance(new Bundle(), issue);
-			bottomSheetReplyFragment.setOnInteractedListener(this::onResume);
-			bottomSheetReplyFragment.show(getSupportFragmentManager(), "replyBottomSheet");
-		});
-
-		labelsAdapter = new LabelsListAdapter(labelsList, IssueDetailActivity.this, currentLabelsIds);
-		assigneesAdapter = new AssigneesListAdapter(ctx, assigneesList, IssueDetailActivity.this, currentAssignees);
+		labelsAdapter =
+				new LabelsListAdapter(labelsList, IssueDetailActivity.this, currentLabelsIds);
+		assigneesAdapter =
+				new AssigneesListAdapter(
+						ctx, assigneesList, IssueDetailActivity.this, currentAssignees);
 		LabelsActions.getCurrentIssueLabels(ctx, repoOwner, repoName, issueIndex, currentLabelsIds);
-		AssigneesActions.getCurrentIssueAssignees(ctx, repoOwner, repoName, issueIndex, currentAssignees);
+		AssigneesActions.getCurrentIssueAssignees(
+				ctx, repoOwner, repoName, issueIndex, currentAssignees);
 
-		viewBinding.pullToRefresh.setOnRefreshListener(() -> new Handler(Looper.getMainLooper()).postDelayed(() -> {
-
-			page = 1;
-			viewBinding.pullToRefresh.setRefreshing(false);
-			issueCommentsModel.loadIssueComments(repoOwner, repoName, issueIndex, ctx, null);
-
-		}, 50));
+		viewBinding.pullToRefresh.setOnRefreshListener(
+				() ->
+						new Handler(Looper.getMainLooper())
+								.postDelayed(
+										() -> {
+											page = 1;
+											viewBinding.pullToRefresh.setRefreshing(false);
+											issueCommentsModel.loadIssueComments(
+													repoOwner, repoName, issueIndex, ctx, null);
+										},
+										50));
 
 		Typeface myTypeface = AppUtil.getTypeface(this);
 		viewBinding.toolbarTitle.setTypeface(myTypeface);
@@ -177,7 +192,8 @@ public class IssueDetailActivity extends BaseActivity implements LabelsListAdapt
 		getSingleIssue(repoOwner, repoName, issueIndex);
 		fetchDataAsync(repoOwner, repoName, issueIndex);
 
-		if(getIntent().getStringExtra("openPrDiff") != null && getIntent().getStringExtra("openPrDiff").equals("true")) {
+		if (getIntent().getStringExtra("openPrDiff") != null
+				&& getIntent().getStringExtra("openPrDiff").equals("true")) {
 			startActivity(issue.getIntent(ctx, DiffActivity.class));
 		}
 	}
@@ -185,8 +201,7 @@ public class IssueDetailActivity extends BaseActivity implements LabelsListAdapt
 	@Override
 	public void onButtonClicked(String text) {
 
-		switch(text) {
-
+		switch (text) {
 			case "onResume":
 				onResume();
 				break;
@@ -202,8 +217,7 @@ public class IssueDetailActivity extends BaseActivity implements LabelsListAdapt
 	}
 
 	@Override
-	public void labelsInterface(List<String> data) {
-	}
+	public void labelsInterface(List<String> data) {}
 
 	@Override
 	public void labelsIdsInterface(List<Integer> data) {
@@ -221,156 +235,195 @@ public class IssueDetailActivity extends BaseActivity implements LabelsListAdapt
 
 		assigneesAdapter.updateList(currentAssignees);
 		viewBinding.progressBar.setVisibility(View.VISIBLE);
-		CustomAssigneesSelectionDialogBinding assigneesBinding = CustomAssigneesSelectionDialogBinding.inflate(LayoutInflater.from(ctx));
+		CustomAssigneesSelectionDialogBinding assigneesBinding =
+				CustomAssigneesSelectionDialogBinding.inflate(LayoutInflater.from(ctx));
 		View view = assigneesBinding.getRoot();
 		materialAlertDialogBuilder.setView(view);
 
-		materialAlertDialogBuilder.setPositiveButton(R.string.saveButton, (dialog, whichButton) -> {
+		materialAlertDialogBuilder.setPositiveButton(
+				R.string.saveButton,
+				(dialog, whichButton) -> {
+					currentAssignees = new ArrayList<>(new LinkedHashSet<>(currentAssignees));
+					assigneesListData = new ArrayList<>(new LinkedHashSet<>(assigneesListData));
+					Collections.sort(assigneesListData);
+					Collections.sort(currentAssignees);
 
-			currentAssignees = new ArrayList<>(new LinkedHashSet<>(currentAssignees));
-			assigneesListData = new ArrayList<>(new LinkedHashSet<>(assigneesListData));
-			Collections.sort(assigneesListData);
-			Collections.sort(currentAssignees);
+					if (!assigneesListData.equals(currentAssignees)) {
 
-			if(!assigneesListData.equals(currentAssignees)) {
+						updateIssueAssignees();
+					}
+				});
 
-				updateIssueAssignees();
-			}
-		});
-
-		AssigneesActions.getRepositoryAssignees(ctx, repoOwner, repoName, assigneesList, materialAlertDialogBuilder, assigneesAdapter, assigneesBinding, viewBinding.progressBar);
+		AssigneesActions.getRepositoryAssignees(
+				ctx,
+				repoOwner,
+				repoName,
+				assigneesList,
+				materialAlertDialogBuilder,
+				assigneesAdapter,
+				assigneesBinding,
+				viewBinding.progressBar);
 	}
 
 	public void showLabels() {
 
 		labelsAdapter.updateList(currentLabelsIds);
 		viewBinding.progressBar.setVisibility(View.VISIBLE);
-		CustomLabelsSelectionDialogBinding labelsBinding = CustomLabelsSelectionDialogBinding.inflate(LayoutInflater.from(ctx));
+		CustomLabelsSelectionDialogBinding labelsBinding =
+				CustomLabelsSelectionDialogBinding.inflate(LayoutInflater.from(ctx));
 		View view = labelsBinding.getRoot();
 		materialAlertDialogBuilder.setView(view);
 
-		materialAlertDialogBuilder.setPositiveButton(R.string.saveButton, (dialog, whichButton) -> {
+		materialAlertDialogBuilder.setPositiveButton(
+				R.string.saveButton,
+				(dialog, whichButton) -> {
+					currentLabelsIds = new ArrayList<>(new LinkedHashSet<>(currentLabelsIds));
+					labelsIds = new ArrayList<>(new LinkedHashSet<>(labelsIds));
+					Collections.sort(labelsIds);
+					Collections.sort(currentLabelsIds);
 
-			currentLabelsIds = new ArrayList<>(new LinkedHashSet<>(currentLabelsIds));
-			labelsIds = new ArrayList<>(new LinkedHashSet<>(labelsIds));
-			Collections.sort(labelsIds);
-			Collections.sort(currentLabelsIds);
+					if (!labelsIds.equals(currentLabelsIds)) {
 
-			if(!labelsIds.equals(currentLabelsIds)) {
+						updateIssueLabels();
+					}
+				});
 
-				updateIssueLabels();
-			}
-		});
-
-		LabelsActions.getRepositoryLabels(ctx, repoOwner, repoName, labelsList, materialAlertDialogBuilder, labelsAdapter, labelsBinding, viewBinding.progressBar);
+		LabelsActions.getRepositoryLabels(
+				ctx,
+				repoOwner,
+				repoName,
+				labelsList,
+				materialAlertDialogBuilder,
+				labelsAdapter,
+				labelsBinding,
+				viewBinding.progressBar);
 	}
 
 	private void updateIssueAssignees() {
 
 		EditIssueOption updateAssigneeJson = new EditIssueOption().assignees(assigneesListData);
 
-		Call<Issue> call3 = RetrofitClient.getApiInterface(ctx).issueEditIssue(repoOwner, repoName, (long) issueIndex, updateAssigneeJson);
+		Call<Issue> call3 =
+				RetrofitClient.getApiInterface(ctx)
+						.issueEditIssue(repoOwner, repoName, (long) issueIndex, updateAssigneeJson);
 
-		call3.enqueue(new Callback<>() {
+		call3.enqueue(
+				new Callback<>() {
 
-			@Override
-			public void onResponse(@NonNull Call<Issue> call, @NonNull retrofit2.Response<Issue> response2) {
+					@Override
+					public void onResponse(
+							@NonNull Call<Issue> call,
+							@NonNull retrofit2.Response<Issue> response2) {
 
-				if(response2.code() == 201) {
+						if (response2.code() == 201) {
 
-					Toasty.success(ctx, ctx.getString(R.string.assigneesUpdated));
+							Toasty.success(ctx, ctx.getString(R.string.assigneesUpdated));
 
-					viewBinding.frameAssignees.removeAllViews();
-					viewBinding.frameLabels.removeAllViews();
-					issue.setIssue(response2.body());
-					getSingleIssue(repoOwner, repoName, issueIndex);
-					currentAssignees.clear();
-					new Handler(Looper.getMainLooper()).postDelayed(() -> AssigneesActions.getCurrentIssueAssignees(ctx, repoOwner, repoName, issueIndex, currentAssignees), 1000);
-				}
-				else if(response2.code() == 401) {
+							viewBinding.frameAssignees.removeAllViews();
+							viewBinding.frameLabels.removeAllViews();
+							issue.setIssue(response2.body());
+							getSingleIssue(repoOwner, repoName, issueIndex);
+							currentAssignees.clear();
+							new Handler(Looper.getMainLooper())
+									.postDelayed(
+											() ->
+													AssigneesActions.getCurrentIssueAssignees(
+															ctx,
+															repoOwner,
+															repoName,
+															issueIndex,
+															currentAssignees),
+											1000);
+						} else if (response2.code() == 401) {
 
-					AlertDialogs.authorizationTokenRevokedDialog(ctx);
-				}
-				else if(response2.code() == 403) {
+							AlertDialogs.authorizationTokenRevokedDialog(ctx);
+						} else if (response2.code() == 403) {
 
-					Toasty.error(ctx, ctx.getString(R.string.authorizeError));
-				}
-				else if(response2.code() == 404) {
+							Toasty.error(ctx, ctx.getString(R.string.authorizeError));
+						} else if (response2.code() == 404) {
 
-					Toasty.warning(ctx, ctx.getString(R.string.apiNotFound));
-				}
-				else {
+							Toasty.warning(ctx, ctx.getString(R.string.apiNotFound));
+						} else {
 
-					Toasty.error(ctx, getString(R.string.genericError));
-				}
+							Toasty.error(ctx, getString(R.string.genericError));
+						}
+					}
 
-			}
-
-			@Override
-			public void onFailure(@NonNull Call<Issue> call, @NonNull Throwable t) {
-				Log.e("onFailure", t.toString());
-			}
-		});
+					@Override
+					public void onFailure(@NonNull Call<Issue> call, @NonNull Throwable t) {
+						Log.e("onFailure", t.toString());
+					}
+				});
 	}
 
 	private void updateIssueLabels() {
 
 		ArrayList<Long> labelIds = new ArrayList<>();
-		for(Integer i : labelsIds) {
+		for (Integer i : labelsIds) {
 			labelIds.add((long) i);
 		}
 
 		IssueLabelsOption patchIssueLabels = new IssueLabelsOption();
 		patchIssueLabels.setLabels(labelIds);
 
-		Call<List<Label>> call = RetrofitClient.getApiInterface(ctx).issueReplaceLabels(repoOwner, repoName, (long) issueIndex, patchIssueLabels);
+		Call<List<Label>> call =
+				RetrofitClient.getApiInterface(ctx)
+						.issueReplaceLabels(
+								repoOwner, repoName, (long) issueIndex, patchIssueLabels);
 
-		call.enqueue(new Callback<>() {
+		call.enqueue(
+				new Callback<>() {
 
-			@Override
-			public void onResponse(@NonNull Call<List<Label>> call, @NonNull retrofit2.Response<List<Label>> response) {
+					@Override
+					public void onResponse(
+							@NonNull Call<List<Label>> call,
+							@NonNull retrofit2.Response<List<Label>> response) {
 
-				if(response.code() == 200) {
+						if (response.code() == 200) {
 
-					Toasty.success(ctx, ctx.getString(R.string.labelsUpdated));
+							Toasty.success(ctx, ctx.getString(R.string.labelsUpdated));
 
-					viewBinding.frameAssignees.removeAllViews();
-					viewBinding.frameLabels.removeAllViews();
-					issue.setIssue(null);
-					getSingleIssue(repoOwner, repoName, issueIndex);
-					currentLabelsIds.clear();
-					new Handler(Looper.getMainLooper()).postDelayed(() -> LabelsActions.getCurrentIssueLabels(ctx, repoOwner, repoName, issueIndex, currentLabelsIds), 1000);
-					IssuesFragment.resumeIssues = true;
-				}
-				else if(response.code() == 401) {
+							viewBinding.frameAssignees.removeAllViews();
+							viewBinding.frameLabels.removeAllViews();
+							issue.setIssue(null);
+							getSingleIssue(repoOwner, repoName, issueIndex);
+							currentLabelsIds.clear();
+							new Handler(Looper.getMainLooper())
+									.postDelayed(
+											() ->
+													LabelsActions.getCurrentIssueLabels(
+															ctx,
+															repoOwner,
+															repoName,
+															issueIndex,
+															currentLabelsIds),
+											1000);
+							IssuesFragment.resumeIssues = true;
+						} else if (response.code() == 401) {
 
-					AlertDialogs.authorizationTokenRevokedDialog(ctx);
-				}
-				else if(response.code() == 403) {
+							AlertDialogs.authorizationTokenRevokedDialog(ctx);
+						} else if (response.code() == 403) {
 
-					Toasty.error(ctx, ctx.getString(R.string.authorizeError));
-				}
-				else if(response.code() == 404) {
+							Toasty.error(ctx, ctx.getString(R.string.authorizeError));
+						} else if (response.code() == 404) {
 
-					Toasty.warning(ctx, ctx.getString(R.string.apiNotFound));
-				}
-				else {
+							Toasty.warning(ctx, ctx.getString(R.string.apiNotFound));
+						} else {
 
-					Toasty.error(ctx, getString(R.string.genericError));
-				}
+							Toasty.error(ctx, getString(R.string.genericError));
+						}
+					}
 
-			}
+					@Override
+					public void onFailure(@NonNull Call<List<Label>> call, @NonNull Throwable t) {
 
-			@Override
-			public void onFailure(@NonNull Call<List<Label>> call, @NonNull Throwable t) {
-
-				Log.e("onFailure", t.toString());
-			}
-		});
+						Log.e("onFailure", t.toString());
+					}
+				});
 	}
 
 	private void updateMenuState() {
-		if(loadingFinishedIssue && loadingFinishedPr && loadingFinishedRepo) {
+		if (loadingFinishedIssue && loadingFinishedPr && loadingFinishedRepo) {
 			showMenu.run();
 		}
 	}
@@ -379,16 +432,16 @@ public class IssueDetailActivity extends BaseActivity implements LabelsListAdapt
 	public boolean onCreateOptionsMenu(@NonNull Menu menu) {
 
 		MenuInflater inflater = getMenuInflater();
-		showMenu = () -> {
-			inflater.inflate(R.menu.generic_nav_dotted_menu, menu);
-			if(issue.getIssueType() != null) {
-				if(issue.getIssueType().equalsIgnoreCase("pull")) {
-					inflater.inflate(R.menu.pr_info_menu, menu);
-				}
-			}
-			showMenu = () -> {
-			}; // reset Runnable
-		};
+		showMenu =
+				() -> {
+					inflater.inflate(R.menu.generic_nav_dotted_menu, menu);
+					if (issue.getIssueType() != null) {
+						if (issue.getIssueType().equalsIgnoreCase("pull")) {
+							inflater.inflate(R.menu.pr_info_menu, menu);
+						}
+					}
+					showMenu = () -> {}; // reset Runnable
+				};
 		updateMenuState();
 		return true;
 	}
@@ -398,43 +451,48 @@ public class IssueDetailActivity extends BaseActivity implements LabelsListAdapt
 
 		int id = item.getItemId();
 
-		if(id == android.R.id.home) {
+		if (id == android.R.id.home) {
 
-			if(issue.hasIssue() && getIntent().getStringExtra("openedFromLink") != null && getIntent().getStringExtra("openedFromLink").equals("true")) {
+			if (issue.hasIssue()
+					&& getIntent().getStringExtra("openedFromLink") != null
+					&& getIntent().getStringExtra("openedFromLink").equals("true")) {
 				Intent intent = issue.getRepository().getIntent(ctx, RepoDetailActivity.class);
 				intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
 				startActivity(intent);
 			}
 			finish();
 			return true;
-		}
-		else if(id == R.id.genericMenu) {
+		} else if (id == R.id.genericMenu) {
 
-			if(issue.hasIssue()) {
-				BottomSheetSingleIssueFragment bottomSheet = new BottomSheetSingleIssueFragment(issue, issueCreator);
+			if (issue.hasIssue()) {
+				BottomSheetSingleIssueFragment bottomSheet =
+						new BottomSheetSingleIssueFragment(issue, issueCreator);
 				bottomSheet.show(getSupportFragmentManager(), "singleIssueBottomSheet");
 			}
 			return true;
-		}
-		else if(id == R.id.prInfo) {
+		} else if (id == R.id.prInfo) {
 
-			if(issue.getPullRequest() != null) {
+			if (issue.getPullRequest() != null) {
 
-				MaterialAlertDialogBuilder materialAlertDialogBuilderPrInfo = new MaterialAlertDialogBuilder(ctx);
-				CustomPrInfoDialogBinding customPrInfoDialogBinding = CustomPrInfoDialogBinding.inflate(LayoutInflater.from(ctx));
+				MaterialAlertDialogBuilder materialAlertDialogBuilderPrInfo =
+						new MaterialAlertDialogBuilder(ctx);
+				CustomPrInfoDialogBinding customPrInfoDialogBinding =
+						CustomPrInfoDialogBinding.inflate(LayoutInflater.from(ctx));
 				View view = customPrInfoDialogBinding.getRoot();
 				materialAlertDialogBuilderPrInfo.setView(view);
 
-				customPrInfoDialogBinding.baseBranch.setText(issue.getPullRequest().getBase().getRef());
-				customPrInfoDialogBinding.headBranch.setText(issue.getPullRequest().getHead().getRef());
+				customPrInfoDialogBinding.baseBranch.setText(
+						issue.getPullRequest().getBase().getRef());
+				customPrInfoDialogBinding.headBranch.setText(
+						issue.getPullRequest().getHead().getRef());
 
-				materialAlertDialogBuilderPrInfo.setTitle(getResources().getString(R.string.prMergeInfo));
+				materialAlertDialogBuilderPrInfo.setTitle(
+						getResources().getString(R.string.prMergeInfo));
 				materialAlertDialogBuilderPrInfo.setNeutralButton(getString(R.string.close), null);
 				materialAlertDialogBuilderPrInfo.create().show();
 			}
 			return true;
-		}
-		else {
+		} else {
 
 			return super.onOptionsItemSelected(item);
 		}
@@ -446,152 +504,177 @@ public class IssueDetailActivity extends BaseActivity implements LabelsListAdapt
 		super.onResume();
 		issue.getRepository().checkAccountSwitch(this);
 
-		if(commentPosted) {
+		if (commentPosted) {
 
-			viewBinding.scrollViewComments.post(() -> {
+			viewBinding.scrollViewComments.post(
+					() -> {
+						issueCommentsModel.loadIssueComments(
+								repoOwner,
+								repoName,
+								issueIndex,
+								ctx,
+								() ->
+										viewBinding.scrollViewComments.fullScroll(
+												ScrollView.FOCUS_DOWN));
 
-				issueCommentsModel.loadIssueComments(repoOwner, repoName, issueIndex, ctx, () -> viewBinding.scrollViewComments.fullScroll(ScrollView.FOCUS_DOWN));
-
-				commentPosted = false;
-			});
+						commentPosted = false;
+					});
 		}
 
-		if(commentEdited) {
+		if (commentEdited) {
 
-			viewBinding.scrollViewComments.post(() -> {
-
-				issueCommentsModel.loadIssueComments(repoOwner, repoName, issueIndex, ctx, null);
-				commentEdited = false;
-			});
+			viewBinding.scrollViewComments.post(
+					() -> {
+						issueCommentsModel.loadIssueComments(
+								repoOwner, repoName, issueIndex, ctx, null);
+						commentEdited = false;
+					});
 		}
 
-		if(singleIssueUpdate) {
+		if (singleIssueUpdate) {
 
-			new Handler(Looper.getMainLooper()).postDelayed(() -> {
-
-				viewBinding.frameAssignees.removeAllViews();
-				viewBinding.frameLabels.removeAllViews();
-				issue.setIssue(null);
-				getSingleIssue(repoOwner, repoName, issueIndex);
-				singleIssueUpdate = false;
-
-			}, 500);
+			new Handler(Looper.getMainLooper())
+					.postDelayed(
+							() -> {
+								viewBinding.frameAssignees.removeAllViews();
+								viewBinding.frameLabels.removeAllViews();
+								issue.setIssue(null);
+								getSingleIssue(repoOwner, repoName, issueIndex);
+								singleIssueUpdate = false;
+							},
+							500);
 		}
 	}
 
 	private void fetchDataAsync(String owner, String repo, int index) {
 
-		issueCommentsModel.getIssueCommentList(owner, repo, index, ctx).observe(this, issueCommentsMain -> {
+		issueCommentsModel
+				.getIssueCommentList(owner, repo, index, ctx)
+				.observe(
+						this,
+						issueCommentsMain -> {
+							Bundle bundle = new Bundle();
+							bundle.putString("repoOwner", repoOwner);
+							bundle.putString("repoName", repoName);
+							bundle.putInt("issueNumber", issueIndex);
 
-			Bundle bundle = new Bundle();
-			bundle.putString("repoOwner", repoOwner);
-			bundle.putString("repoName", repoName);
-			bundle.putInt("issueNumber", issueIndex);
+							adapter =
+									new IssueCommentsAdapter(
+											ctx,
+											bundle,
+											issueCommentsMain,
+											getSupportFragmentManager(),
+											this::onResume,
+											issue);
+							adapter.setLoadMoreListener(
+									new IssueCommentsAdapter.OnLoadMoreListener() {
 
-			adapter = new IssueCommentsAdapter(ctx, bundle, issueCommentsMain, getSupportFragmentManager(), this::onResume, issue);
-			adapter.setLoadMoreListener(new IssueCommentsAdapter.OnLoadMoreListener() {
+										@Override
+										public void onLoadMore() {
 
-				@Override
-				public void onLoadMore() {
+											page += 1;
+											issueCommentsModel.loadMoreIssueComments(
+													owner, repo, index, ctx, page, adapter);
+											viewBinding.progressBar.setVisibility(View.VISIBLE);
+										}
 
-					page += 1;
-					issueCommentsModel.loadMoreIssueComments(owner, repo, index, ctx, page, adapter);
-					viewBinding.progressBar.setVisibility(View.VISIBLE);
-				}
+										@Override
+										public void onLoadFinished() {
 
-				@Override
-				public void onLoadFinished() {
+											viewBinding.progressBar.setVisibility(View.GONE);
+										}
+									});
 
-					viewBinding.progressBar.setVisibility(View.GONE);
-				}
-			});
-
-			adapter.notifyDataChanged();
-			viewBinding.recyclerView.setAdapter(adapter);
-			viewBinding.progressBar.setVisibility(View.GONE);
-		});
+							adapter.notifyDataChanged();
+							viewBinding.recyclerView.setAdapter(adapter);
+							viewBinding.progressBar.setVisibility(View.GONE);
+						});
 	}
 
 	private void getSingleIssue(String repoOwner, String repoName, int issueIndex) {
 
-		if(issue.hasIssue()) {
+		if (issue.hasIssue()) {
 			viewBinding.progressBar.setVisibility(View.GONE);
 			getSubscribed();
 			initWithIssue();
 			return;
 		}
 
-		Call<Issue> call = RetrofitClient.getApiInterface(ctx).issueGetIssue(repoOwner, repoName, (long) issueIndex);
+		Call<Issue> call =
+				RetrofitClient.getApiInterface(ctx)
+						.issueGetIssue(repoOwner, repoName, (long) issueIndex);
 
-		call.enqueue(new Callback<>() {
+		call.enqueue(
+				new Callback<>() {
 
-			@Override
-			public void onResponse(@NonNull Call<Issue> call, @NonNull Response<Issue> response) {
+					@Override
+					public void onResponse(
+							@NonNull Call<Issue> call, @NonNull Response<Issue> response) {
 
-				viewBinding.progressBar.setVisibility(View.GONE);
+						viewBinding.progressBar.setVisibility(View.GONE);
 
-				if(response.code() == 200) {
+						if (response.code() == 200) {
 
-					Issue singleIssue = response.body();
-					assert singleIssue != null;
+							Issue singleIssue = response.body();
+							assert singleIssue != null;
 
-					issue.setIssue(singleIssue);
-					initWithIssue();
-				}
-				else if(response.code() == 401) {
+							issue.setIssue(singleIssue);
+							initWithIssue();
+						} else if (response.code() == 401) {
 
-					AlertDialogs.authorizationTokenRevokedDialog(ctx);
+							AlertDialogs.authorizationTokenRevokedDialog(ctx);
 
-				}
-				else if(response.code() == 404) {
+						} else if (response.code() == 404) {
 
-					Toasty.warning(ctx, getResources().getString(R.string.noDataFound));
-					finish();
-				}
-			}
+							Toasty.warning(ctx, getResources().getString(R.string.noDataFound));
+							finish();
+						}
+					}
 
-			@Override
-			public void onFailure(@NonNull Call<Issue> call, @NonNull Throwable t) {
+					@Override
+					public void onFailure(@NonNull Call<Issue> call, @NonNull Throwable t) {
 
-				viewBinding.progressBar.setVisibility(View.GONE);
-				Log.e("onFailure", t.toString());
-			}
-
-		});
+						viewBinding.progressBar.setVisibility(View.GONE);
+						Log.e("onFailure", t.toString());
+					}
+				});
 
 		getSubscribed();
-
 	}
 
 	private void getSubscribed() {
-		RetrofitClient.getApiInterface(ctx).issueCheckSubscription(repoOwner, repoName, (long) issueIndex).enqueue(new Callback<>() {
+		RetrofitClient.getApiInterface(ctx)
+				.issueCheckSubscription(repoOwner, repoName, (long) issueIndex)
+				.enqueue(
+						new Callback<>() {
 
-			@Override
-			public void onResponse(@NonNull Call<WatchInfo> call, @NonNull Response<WatchInfo> response) {
+							@Override
+							public void onResponse(
+									@NonNull Call<WatchInfo> call,
+									@NonNull Response<WatchInfo> response) {
 
-				if(response.isSuccessful()) {
-					assert response.body() != null;
-					issue.setSubscribed(response.body().isSubscribed());
-				}
-				else {
-					issue.setSubscribed(false);
-				}
-			}
+								if (response.isSuccessful()) {
+									assert response.body() != null;
+									issue.setSubscribed(response.body().isSubscribed());
+								} else {
+									issue.setSubscribed(false);
+								}
+							}
 
-			@Override
-			public void onFailure(@NonNull Call<WatchInfo> call, @NonNull Throwable t) {
+							@Override
+							public void onFailure(
+									@NonNull Call<WatchInfo> call, @NonNull Throwable t) {
 
-				issue.setSubscribed(false);
-			}
-		});
+								issue.setSubscribed(false);
+							}
+						});
 	}
 
 	private void initWithIssue() {
 
-		if(!issue.getRepository().hasRepository()) {
+		if (!issue.getRepository().hasRepository()) {
 			getRepoInfo();
-		}
-		else {
+		} else {
 			loadingFinishedRepo = true;
 		}
 		loadingFinishedIssue = true;
@@ -599,60 +682,95 @@ public class IssueDetailActivity extends BaseActivity implements LabelsListAdapt
 
 		viewBinding.issuePrState.setVisibility(View.VISIBLE);
 
-		if(issue.getIssue().getPullRequest() != null) {
+		if (issue.getIssue().getPullRequest() != null) {
 			getPullRequest();
-			if(issue.getIssue().getPullRequest().isMerged()) { // merged
+			if (issue.getIssue().getPullRequest().isMerged()) { // merged
 
 				viewBinding.issuePrState.setImageResource(R.drawable.ic_pull_request);
-				ImageViewCompat.setImageTintList(viewBinding.issuePrState, ColorStateList.valueOf(ctx.getResources().getColor(R.color.iconPrMergedColor, null)));
-			}
-			else if(!issue.getIssue().getPullRequest().isMerged() && issue.getIssue().getState().equals("closed")) { // closed
+				ImageViewCompat.setImageTintList(
+						viewBinding.issuePrState,
+						ColorStateList.valueOf(
+								ctx.getResources().getColor(R.color.iconPrMergedColor, null)));
+			} else if (!issue.getIssue().getPullRequest().isMerged()
+					&& issue.getIssue().getState().equals("closed")) { // closed
 
 				viewBinding.issuePrState.setImageResource(R.drawable.ic_pull_request);
-				ImageViewCompat.setImageTintList(viewBinding.issuePrState, ColorStateList.valueOf(ctx.getResources().getColor(R.color.iconIssuePrClosedColor, null)));
-			}
-			else { // open
+				ImageViewCompat.setImageTintList(
+						viewBinding.issuePrState,
+						ColorStateList.valueOf(
+								ctx.getResources().getColor(R.color.iconIssuePrClosedColor, null)));
+			} else { // open
 
 				viewBinding.issuePrState.setImageResource(R.drawable.ic_pull_request);
-				if(tinyDB.getInt("themeId") == 3) {
-					ImageViewCompat.setImageTintList(viewBinding.issuePrState, ColorStateList.valueOf(ctx.getResources().getColor(R.color.retroThemeColorPrimary, null)));
-				}
-				else if(tinyDB.getInt("themeId") == 4) {
-					if(TimeHelper.timeBetweenHours(tinyDB.getInt("darkThemeTimeHour", 18), tinyDB.getInt("lightThemeTimeHour", 6), tinyDB.getInt("darkThemeTimeMinute", 0), tinyDB.getInt("lightThemeTimeMinute", 0))) {
-						ImageViewCompat.setImageTintList(viewBinding.issuePrState, ColorStateList.valueOf(ctx.getResources().getColor(R.color.darkGreen, null)));
+				if (tinyDB.getInt("themeId") == 3) {
+					ImageViewCompat.setImageTintList(
+							viewBinding.issuePrState,
+							ColorStateList.valueOf(
+									ctx.getResources()
+											.getColor(R.color.retroThemeColorPrimary, null)));
+				} else if (tinyDB.getInt("themeId") == 4) {
+					if (TimeHelper.timeBetweenHours(
+							tinyDB.getInt("darkThemeTimeHour", 18),
+							tinyDB.getInt("lightThemeTimeHour", 6),
+							tinyDB.getInt("darkThemeTimeMinute", 0),
+							tinyDB.getInt("lightThemeTimeMinute", 0))) {
+						ImageViewCompat.setImageTintList(
+								viewBinding.issuePrState,
+								ColorStateList.valueOf(
+										ctx.getResources().getColor(R.color.darkGreen, null)));
+					} else {
+						ImageViewCompat.setImageTintList(
+								viewBinding.issuePrState,
+								ColorStateList.valueOf(
+										ctx.getResources()
+												.getColor(R.color.retroThemeColorPrimary, null)));
 					}
-					else {
-						ImageViewCompat.setImageTintList(viewBinding.issuePrState, ColorStateList.valueOf(ctx.getResources().getColor(R.color.retroThemeColorPrimary, null)));
-					}
-				}
-				else {
-					ImageViewCompat.setImageTintList(viewBinding.issuePrState, ColorStateList.valueOf(ctx.getResources().getColor(R.color.darkGreen, null)));
+				} else {
+					ImageViewCompat.setImageTintList(
+							viewBinding.issuePrState,
+							ColorStateList.valueOf(
+									ctx.getResources().getColor(R.color.darkGreen, null)));
 				}
 			}
-		}
-		else if(issue.getIssue().getState().equals("closed")) { // issue closed
+		} else if (issue.getIssue().getState().equals("closed")) { // issue closed
 			loadingFinishedPr = true;
 			updateMenuState();
 			viewBinding.issuePrState.setImageResource(R.drawable.ic_issue);
-			ImageViewCompat.setImageTintList(viewBinding.issuePrState, ColorStateList.valueOf(ctx.getResources().getColor(R.color.iconIssuePrClosedColor, null)));
-		}
-		else {
+			ImageViewCompat.setImageTintList(
+					viewBinding.issuePrState,
+					ColorStateList.valueOf(
+							ctx.getResources().getColor(R.color.iconIssuePrClosedColor, null)));
+		} else {
 			loadingFinishedPr = true;
 			updateMenuState();
 			viewBinding.issuePrState.setImageResource(R.drawable.ic_issue);
-			if(tinyDB.getInt("themeId") == 3) {
-				ImageViewCompat.setImageTintList(viewBinding.issuePrState, ColorStateList.valueOf(ctx.getResources().getColor(R.color.retroThemeColorPrimary, null)));
-			}
-			else if(tinyDB.getInt("themeId") == 4) {
-				if(TimeHelper.timeBetweenHours(tinyDB.getInt("darkThemeTimeHour", 18), tinyDB.getInt("lightThemeTimeHour", 6), tinyDB.getInt("darkThemeTimeMinute", 0), tinyDB.getInt("lightThemeTimeMinute", 0))) {
-					ImageViewCompat.setImageTintList(viewBinding.issuePrState, ColorStateList.valueOf(ctx.getResources().getColor(R.color.darkGreen, null)));
+			if (tinyDB.getInt("themeId") == 3) {
+				ImageViewCompat.setImageTintList(
+						viewBinding.issuePrState,
+						ColorStateList.valueOf(
+								ctx.getResources().getColor(R.color.retroThemeColorPrimary, null)));
+			} else if (tinyDB.getInt("themeId") == 4) {
+				if (TimeHelper.timeBetweenHours(
+						tinyDB.getInt("darkThemeTimeHour", 18),
+						tinyDB.getInt("lightThemeTimeHour", 6),
+						tinyDB.getInt("darkThemeTimeMinute", 0),
+						tinyDB.getInt("lightThemeTimeMinute", 0))) {
+					ImageViewCompat.setImageTintList(
+							viewBinding.issuePrState,
+							ColorStateList.valueOf(
+									ctx.getResources().getColor(R.color.darkGreen, null)));
+				} else {
+					ImageViewCompat.setImageTintList(
+							viewBinding.issuePrState,
+							ColorStateList.valueOf(
+									ctx.getResources()
+											.getColor(R.color.retroThemeColorPrimary, null)));
 				}
-				else {
-					ImageViewCompat.setImageTintList(viewBinding.issuePrState, ColorStateList.valueOf(ctx.getResources().getColor(R.color.retroThemeColorPrimary, null)));
-				}
-			}
-			else {
-				ImageViewCompat.setImageTintList(viewBinding.issuePrState, ColorStateList.valueOf(ctx.getResources().getColor(R.color.darkGreen, null)));
+			} else {
+				ImageViewCompat.setImageTintList(
+						viewBinding.issuePrState,
+						ColorStateList.valueOf(
+								ctx.getResources().getColor(R.color.darkGreen, null)));
 			}
 		}
 
@@ -661,83 +779,131 @@ public class IssueDetailActivity extends BaseActivity implements LabelsListAdapt
 		final String timeFormat = tinyDb.getString("dateFormat", "pretty");
 		issueCreator = issue.getIssue().getUser().getLogin();
 
-		PicassoService.getInstance(ctx).get().load(issue.getIssue().getUser().getAvatarUrl()).placeholder(R.drawable.loader_animated).transform(new RoundedTransformation(8, 0)).resize(120, 120).centerCrop()
-			.into(viewBinding.assigneeAvatar);
-		String issueNumber_ = "<font color='" + ResourcesCompat.getColor(getResources(), R.color.lightGray, null) + "'>" + appCtx.getResources().getString(R.string.hash) + issue.getIssue().getNumber() + "</font>";
-		viewBinding.issueTitle.setText(HtmlCompat.fromHtml(issueNumber_ + " " + EmojiParser.parseToUnicode(issue.getIssue().getTitle()), HtmlCompat.FROM_HTML_MODE_LEGACY));
+		PicassoService.getInstance(ctx)
+				.get()
+				.load(issue.getIssue().getUser().getAvatarUrl())
+				.placeholder(R.drawable.loader_animated)
+				.transform(new RoundedTransformation(8, 0))
+				.resize(120, 120)
+				.centerCrop()
+				.into(viewBinding.assigneeAvatar);
+		String issueNumber_ =
+				"<font color='"
+						+ ResourcesCompat.getColor(getResources(), R.color.lightGray, null)
+						+ "'>"
+						+ appCtx.getResources().getString(R.string.hash)
+						+ issue.getIssue().getNumber()
+						+ "</font>";
+		viewBinding.issueTitle.setText(
+				HtmlCompat.fromHtml(
+						issueNumber_
+								+ " "
+								+ EmojiParser.parseToUnicode(issue.getIssue().getTitle()),
+						HtmlCompat.FROM_HTML_MODE_LEGACY));
 		String cleanIssueDescription = issue.getIssue().getBody().trim();
 
-		if(!AppUtil.checkGhostUsers(issue.getIssue().getUser().getLogin())) {
+		if (!AppUtil.checkGhostUsers(issue.getIssue().getUser().getLogin())) {
 
-			viewBinding.assigneeAvatar.setOnClickListener(loginId -> {
-				Intent intent = new Intent(ctx, ProfileActivity.class);
-				intent.putExtra("username", issue.getIssue().getUser().getLogin());
-				ctx.startActivity(intent);
-			});
+			viewBinding.assigneeAvatar.setOnClickListener(
+					loginId -> {
+						Intent intent = new Intent(ctx, ProfileActivity.class);
+						intent.putExtra("username", issue.getIssue().getUser().getLogin());
+						ctx.startActivity(intent);
+					});
 
-			viewBinding.assigneeAvatar.setOnLongClickListener(loginId -> {
-				AppUtil.copyToClipboard(ctx, issue.getIssue().getUser().getLogin(), ctx.getString(R.string.copyLoginIdToClipBoard, issue.getIssue().getUser().getLogin()));
-				return true;
-			});
+			viewBinding.assigneeAvatar.setOnLongClickListener(
+					loginId -> {
+						AppUtil.copyToClipboard(
+								ctx,
+								issue.getIssue().getUser().getLogin(),
+								ctx.getString(
+										R.string.copyLoginIdToClipBoard,
+										issue.getIssue().getUser().getLogin()));
+						return true;
+					});
 		}
 
 		viewBinding.author.setText(issue.getIssue().getUser().getLogin());
 
-		if(!cleanIssueDescription.equals("")) {
+		if (!cleanIssueDescription.equals("")) {
 			viewBinding.issueDescription.setVisibility(View.VISIBLE);
-			Markdown.render(ctx, EmojiParser.parseToUnicode(cleanIssueDescription), viewBinding.issueDescription, issue.getRepository());
-		}
-		else {
+			Markdown.render(
+					ctx,
+					EmojiParser.parseToUnicode(cleanIssueDescription),
+					viewBinding.issueDescription,
+					issue.getRepository());
+		} else {
 			viewBinding.issueDescription.setVisibility(View.GONE);
 		}
 
 		LinearLayout.LayoutParams paramsAssignees = new LinearLayout.LayoutParams(64, 64);
 		paramsAssignees.setMargins(15, 0, 0, 0);
 
-		if(issue.getIssue().getAssignees() != null) {
+		if (issue.getIssue().getAssignees() != null) {
 
 			viewBinding.assigneesScrollView.setVisibility(View.VISIBLE);
 
-			for(int i = 0; i < issue.getIssue().getAssignees().size(); i++) {
+			for (int i = 0; i < issue.getIssue().getAssignees().size(); i++) {
 
 				ImageView assigneesView = new ImageView(ctx);
 
-				PicassoService.getInstance(ctx).get().load(issue.getIssue().getAssignees().get(i).getAvatarUrl()).placeholder(R.drawable.loader_animated).transform(new RoundedTransformation(36, 0)).resize(72, 72)
-					.centerCrop().into(assigneesView);
+				PicassoService.getInstance(ctx)
+						.get()
+						.load(issue.getIssue().getAssignees().get(i).getAvatarUrl())
+						.placeholder(R.drawable.loader_animated)
+						.transform(new RoundedTransformation(36, 0))
+						.resize(72, 72)
+						.centerCrop()
+						.into(assigneesView);
 
 				viewBinding.frameAssignees.addView(assigneesView);
 				assigneesView.setLayoutParams(paramsAssignees);
 
 				int finalI = i;
 
-				if(!AppUtil.checkGhostUsers(issue.getIssue().getAssignees().get(finalI).getLogin())) {
+				if (!AppUtil.checkGhostUsers(
+						issue.getIssue().getAssignees().get(finalI).getLogin())) {
 
-					assigneesView.setOnClickListener(loginId -> {
-						Intent intent = new Intent(ctx, ProfileActivity.class);
-						intent.putExtra("username", issue.getIssue().getAssignees().get(finalI).getLogin());
-						ctx.startActivity(intent);
-					});
+					assigneesView.setOnClickListener(
+							loginId -> {
+								Intent intent = new Intent(ctx, ProfileActivity.class);
+								intent.putExtra(
+										"username",
+										issue.getIssue().getAssignees().get(finalI).getLogin());
+								ctx.startActivity(intent);
+							});
 
-					assigneesView.setOnLongClickListener(loginId -> {
-						AppUtil.copyToClipboard(ctx, issue.getIssue().getAssignees().get(finalI).getLogin(), ctx.getString(R.string.copyLoginIdToClipBoard, issue.getIssue().getAssignees().get(finalI).getLogin()));
-						return true;
-					});
+					assigneesView.setOnLongClickListener(
+							loginId -> {
+								AppUtil.copyToClipboard(
+										ctx,
+										issue.getIssue().getAssignees().get(finalI).getLogin(),
+										ctx.getString(
+												R.string.copyLoginIdToClipBoard,
+												issue.getIssue()
+														.getAssignees()
+														.get(finalI)
+														.getLogin()));
+								return true;
+							});
 				}
 			}
-		}
-		else {
+		} else {
 
 			viewBinding.assigneesScrollView.setVisibility(View.GONE);
 		}
 
-		LinearLayout.LayoutParams paramsLabels = new LinearLayout.LayoutParams(LinearLayout.LayoutParams.WRAP_CONTENT, LinearLayout.LayoutParams.WRAP_CONTENT);
+		LinearLayout.LayoutParams paramsLabels =
+				new LinearLayout.LayoutParams(
+						LinearLayout.LayoutParams.WRAP_CONTENT,
+						LinearLayout.LayoutParams.WRAP_CONTENT);
 		paramsLabels.setMargins(0, 0, 15, 0);
 
-		if(issue.getIssue().getLabels().size() > 0) {
+		if (issue.getIssue().getLabels().size() > 0) {
 
 			viewBinding.labelsScrollView.setVisibility(View.VISIBLE);
 
-			for(int i = 0; i < issue.getIssue().getLabels().size(); i++) {
+			for (int i = 0; i < issue.getIssue().getLabels().size(); i++) {
 
 				String labelColor = issue.getIssue().getLabels().get(i).getColor();
 				String labelName = issue.getIssue().getLabels().get(i).getName();
@@ -751,61 +917,83 @@ public class IssueDetailActivity extends BaseActivity implements LabelsListAdapt
 				int height = AppUtil.getPixelsFromDensity(ctx, 20);
 				int textSize = AppUtil.getPixelsFromScaledDensity(ctx, 12);
 
-				TextDrawable drawable = TextDrawable.builder().beginConfig().useFont(Typeface.DEFAULT).textColor(new ColorInverter().getContrastColor(color)).fontSize(textSize)
-					.width(LabelWidthCalculator.calculateLabelWidth(labelName, Typeface.DEFAULT, textSize, AppUtil.getPixelsFromDensity(ctx, 10))).height(height).endConfig()
-					.buildRoundRect(labelName, color, AppUtil.getPixelsFromDensity(ctx, 18));
+				TextDrawable drawable =
+						TextDrawable.builder()
+								.beginConfig()
+								.useFont(Typeface.DEFAULT)
+								.textColor(new ColorInverter().getContrastColor(color))
+								.fontSize(textSize)
+								.width(
+										LabelWidthCalculator.calculateLabelWidth(
+												labelName,
+												Typeface.DEFAULT,
+												textSize,
+												AppUtil.getPixelsFromDensity(ctx, 10)))
+								.height(height)
+								.endConfig()
+								.buildRoundRect(
+										labelName, color, AppUtil.getPixelsFromDensity(ctx, 18));
 
 				labelsView.setImageDrawable(drawable);
 				viewBinding.frameLabels.addView(labelsView);
 			}
-		}
-		else {
+		} else {
 
 			viewBinding.labelsScrollView.setVisibility(View.GONE);
 		}
 
-		if(issue.getIssue().getDueDate() != null) {
+		if (issue.getIssue().getDueDate() != null) {
 
 			viewBinding.dueDateFrame.setVisibility(View.VISIBLE);
-			if(timeFormat.equals("normal") || timeFormat.equals("pretty")) {
+			if (timeFormat.equals("normal") || timeFormat.equals("pretty")) {
 
 				DateFormat formatter = new SimpleDateFormat("yyyy-MM-dd", locale);
 				String dueDate = formatter.format(issue.getIssue().getDueDate());
 				viewBinding.issueDueDate.setText(dueDate);
-				viewBinding.issueDueDate.setOnClickListener(new ClickListener(TimeHelper.customDateFormatForToastDateFormat(issue.getIssue().getDueDate()), ctx));
-			}
-			else if(timeFormat.equals("normal1")) {
+				viewBinding.issueDueDate.setOnClickListener(
+						new ClickListener(
+								TimeHelper.customDateFormatForToastDateFormat(
+										issue.getIssue().getDueDate()),
+								ctx));
+			} else if (timeFormat.equals("normal1")) {
 
 				DateFormat formatter = new SimpleDateFormat("dd-MM-yyyy", locale);
 				String dueDate = formatter.format(issue.getIssue().getDueDate());
 				viewBinding.issueDueDate.setText(dueDate);
 			}
-		}
-		else {
+		} else {
 
 			viewBinding.dueDateFrame.setVisibility(View.GONE);
 		}
 
 		String edited;
 
-		if(!issue.getIssue().getUpdatedAt().equals(issue.getIssue().getUpdatedAt())) {
+		if (!issue.getIssue().getUpdatedAt().equals(issue.getIssue().getUpdatedAt())) {
 
 			edited = getString(R.string.colorfulBulletSpan) + getString(R.string.modifiedText);
 			viewBinding.issueModified.setVisibility(View.VISIBLE);
 			viewBinding.issueModified.setText(edited);
-			viewBinding.issueModified.setOnClickListener(new ClickListener(TimeHelper.customDateFormatForToastDateFormat(issue.getIssue().getUpdatedAt()), ctx));
-		}
-		else {
+			viewBinding.issueModified.setOnClickListener(
+					new ClickListener(
+							TimeHelper.customDateFormatForToastDateFormat(
+									issue.getIssue().getUpdatedAt()),
+							ctx));
+		} else {
 
 			viewBinding.issueModified.setVisibility(View.INVISIBLE);
 		}
 
-		viewBinding.issueCreatedTime.setText(TimeHelper.formatTime(issue.getIssue().getCreatedAt(), locale, timeFormat, ctx));
+		viewBinding.issueCreatedTime.setText(
+				TimeHelper.formatTime(issue.getIssue().getCreatedAt(), locale, timeFormat, ctx));
 		viewBinding.issueCreatedTime.setVisibility(View.VISIBLE);
 
-		if(timeFormat.equals("pretty")) {
+		if (timeFormat.equals("pretty")) {
 
-			viewBinding.issueCreatedTime.setOnClickListener(new ClickListener(TimeHelper.customDateFormatForToastDateFormat(issue.getIssue().getCreatedAt()), ctx));
+			viewBinding.issueCreatedTime.setOnClickListener(
+					new ClickListener(
+							TimeHelper.customDateFormatForToastDateFormat(
+									issue.getIssue().getCreatedAt()),
+							ctx));
 		}
 
 		Bundle bundle = new Bundle();
@@ -818,68 +1006,78 @@ public class IssueDetailActivity extends BaseActivity implements LabelsListAdapt
 		viewBinding.commentReactionBadges.removeAllViews();
 		viewBinding.commentReactionBadges.addView(reactionList);
 
-		reactionList.setOnReactionAddedListener(() -> {
+		reactionList.setOnReactionAddedListener(
+				() -> {
+					if (viewBinding.commentReactionBadges.getVisibility() != View.VISIBLE) {
+						viewBinding.commentReactionBadges.post(
+								() ->
+										viewBinding.commentReactionBadges.setVisibility(
+												View.VISIBLE));
+					}
+				});
 
-			if(viewBinding.commentReactionBadges.getVisibility() != View.VISIBLE) {
-				viewBinding.commentReactionBadges.post(() -> viewBinding.commentReactionBadges.setVisibility(View.VISIBLE));
-			}
-		});
-
-		if(issue.getIssue().getMilestone() != null) {
+		if (issue.getIssue().getMilestone() != null) {
 
 			viewBinding.milestoneFrame.setVisibility(View.VISIBLE);
 			viewBinding.issueMilestone.setText(issue.getIssue().getMilestone().getTitle());
-		}
-		else {
+		} else {
 
 			viewBinding.milestoneFrame.setVisibility(View.GONE);
 		}
 	}
 
 	private void getPullRequest() {
-		RetrofitClient.getApiInterface(this).repoGetPullRequest(repoOwner, repoName, (long) issueIndex).enqueue(new Callback<PullRequest>() {
+		RetrofitClient.getApiInterface(this)
+				.repoGetPullRequest(repoOwner, repoName, (long) issueIndex)
+				.enqueue(
+						new Callback<PullRequest>() {
 
-			@Override
-			public void onResponse(@NonNull Call<PullRequest> call, @NonNull Response<PullRequest> response) {
-				if(response.isSuccessful() && response.body() != null) {
-					issue.setPullRequest(response.body());
-					loadingFinishedPr = true;
-					updateMenuState();
-				}
-			}
+							@Override
+							public void onResponse(
+									@NonNull Call<PullRequest> call,
+									@NonNull Response<PullRequest> response) {
+								if (response.isSuccessful() && response.body() != null) {
+									issue.setPullRequest(response.body());
+									loadingFinishedPr = true;
+									updateMenuState();
+								}
+							}
 
-			@Override
-			public void onFailure(@NonNull Call<PullRequest> call, @NonNull Throwable t) {
-			}
-		});
+							@Override
+							public void onFailure(
+									@NonNull Call<PullRequest> call, @NonNull Throwable t) {}
+						});
 	}
 
 	private void getRepoInfo() {
-		Call<Repository> call = RetrofitClient.getApiInterface(ctx).repoGet(issue.getRepository().getOwner(), issue.getRepository().getName());
-		call.enqueue(new Callback<>() {
+		Call<Repository> call =
+				RetrofitClient.getApiInterface(ctx)
+						.repoGet(issue.getRepository().getOwner(), issue.getRepository().getName());
+		call.enqueue(
+				new Callback<>() {
 
-			@Override
-			public void onResponse(@NonNull Call<Repository> call, @NonNull retrofit2.Response<Repository> response) {
+					@Override
+					public void onResponse(
+							@NonNull Call<Repository> call,
+							@NonNull retrofit2.Response<Repository> response) {
 
-				Repository repoInfo = response.body();
+						Repository repoInfo = response.body();
 
-				if(response.code() == 200) {
-					assert repoInfo != null;
-					issue.getRepository().setRepository(repoInfo);
-					loadingFinishedRepo = true;
-					updateMenuState();
-				}
-				else {
-					Toasty.error(ctx, getString(R.string.genericError));
-				}
-			}
+						if (response.code() == 200) {
+							assert repoInfo != null;
+							issue.getRepository().setRepository(repoInfo);
+							loadingFinishedRepo = true;
+							updateMenuState();
+						} else {
+							Toasty.error(ctx, getString(R.string.genericError));
+						}
+					}
 
-			@Override
-			public void onFailure(@NonNull Call<Repository> call, @NonNull Throwable t) {
+					@Override
+					public void onFailure(@NonNull Call<Repository> call, @NonNull Throwable t) {
 
-				Toasty.error(ctx, getString(R.string.genericError));
-			}
-		});
+						Toasty.error(ctx, getString(R.string.genericError));
+					}
+				});
 	}
-
 }

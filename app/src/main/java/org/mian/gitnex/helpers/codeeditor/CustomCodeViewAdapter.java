@@ -8,14 +8,13 @@ import android.widget.TextView;
 import androidx.annotation.NonNull;
 import com.amrdeveloper.codeview.Code;
 import com.amrdeveloper.codeview.CodeViewAdapter;
-import org.mian.gitnex.R;
 import java.util.List;
+import org.mian.gitnex.R;
 
 /**
  * @author AmrDeveloper
  * @author M M Arif
  */
-
 public class CustomCodeViewAdapter extends CodeViewAdapter {
 
 	private final LayoutInflater layoutInflater;
@@ -27,14 +26,14 @@ public class CustomCodeViewAdapter extends CodeViewAdapter {
 
 	@Override
 	public View getView(int position, View convertView, ViewGroup parent) {
-		if(convertView == null) {
+		if (convertView == null) {
 			convertView = layoutInflater.inflate(R.layout.list_items_autocomplete, parent, false);
 		}
 
-		//ImageView codeType = convertView.findViewById(R.id.code_type);
+		// ImageView codeType = convertView.findViewById(R.id.code_type);
 		TextView codeTitle = convertView.findViewById(R.id.code_title);
 		Code currentCode = (Code) getItem(position);
-		if(currentCode != null) {
+		if (currentCode != null) {
 			codeTitle.setText(currentCode.getCodeTitle());
 			/*if (currentCode instanceof Snippet) {
 				//codeType.setImageResource(R.drawable.ic_snippet);
@@ -45,5 +44,4 @@ public class CustomCodeViewAdapter extends CodeViewAdapter {
 
 		return convertView;
 	}
-
 }

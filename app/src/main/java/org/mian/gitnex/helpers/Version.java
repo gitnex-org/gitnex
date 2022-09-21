@@ -10,7 +10,6 @@ import java.util.regex.Pattern;
 /**
  * @author 6543
  */
-
 public class Version {
 
 	// the raw String
@@ -23,7 +22,6 @@ public class Version {
 
 		raw = value;
 		this.init();
-
 	}
 
 	/**
@@ -34,16 +32,17 @@ public class Version {
 	 */
 	public static boolean valid(String value) {
 
-		if(value == null) {
+		if (value == null) {
 			return false;
 		}
-		final Pattern patternValid = Pattern.compile("^[v,V]?(\\d+)+(\\.(\\d+))*([_,\\-,+][\\w,\\d,_,\\-,+]*)?$");
+		final Pattern patternValid =
+				Pattern.compile("^[v,V]?(\\d+)+(\\.(\\d+))*([_,\\-,+][\\w,\\d,_,\\-,+]*)?$");
 		return value.equals("main") || patternValid.matcher(value).find();
 	}
 
 	/**
-	 * init parse and store values for other functions of an Version instance
-	 * it use the raw variable as base
+	 * init parse and store values for other functions of an Version instance it use the raw
+	 * variable as base
 	 *
 	 * @return if parse was successfully
 	 */
@@ -51,34 +50,33 @@ public class Version {
 
 		final Pattern patternNumberDotNumber = Pattern.compile("^\\d+(\\.(\\d)+)*");
 
-		if(raw.isEmpty()) {
+		if (raw.isEmpty()) {
 			raw = "0";
 		}
 
-		if(!valid(raw)) {
+		if (!valid(raw)) {
 			throw new IllegalArgumentException("Invalid version format: " + raw);
 		}
-		if(raw.equals("main")) {
+		if (raw.equals("main")) {
 			dev = true;
 			values = new ArrayList<>();
 			return;
 		}
 
-		if(raw.charAt(0) == 'v' || raw.charAt(0) == 'V') {
+		if (raw.charAt(0) == 'v' || raw.charAt(0) == 'V') {
 			raw = raw.substring(1);
 		}
 
 		values = new ArrayList<>();
 		Matcher match = patternNumberDotNumber.matcher(raw);
-		if(!match.find()) {
+		if (!match.find()) {
 			dev = true;
 			values = new ArrayList<>();
 			return;
 		}
-		for(String i : match.group().split("\\.")) {
+		for (String i : match.group().split("\\.")) {
 			values.add(Integer.parseInt(i));
 		}
-
 	}
 
 	/**
@@ -90,7 +88,6 @@ public class Version {
 	public boolean equal(String value) {
 
 		return this.equal(new Version(value));
-
 	}
 
 	/**
@@ -101,20 +98,18 @@ public class Version {
 	 */
 	public boolean equal(@NonNull Version v) {
 
-		if(dev || v.dev) { // equal if raw is equal
+		if (dev || v.dev) { // equal if raw is equal
 			return Objects.equals(raw, v.raw);
 		}
 
 		int rounds = Math.min(this.values.size(), v.values.size());
-		for(int i = 0; i < rounds; i++) {
-			if(!Objects.equals(this.values.get(i), v.values.get(i))) {
+		for (int i = 0; i < rounds; i++) {
+			if (!Objects.equals(this.values.get(i), v.values.get(i))) {
 				return false;
 			}
 		}
 		return true;
-
 	}
-
 
 	/**
 	 * less return true if version is less
@@ -125,7 +120,6 @@ public class Version {
 	public boolean less(String value) {
 
 		return this.less(new Version(value));
-
 	}
 
 	/**
@@ -137,9 +131,7 @@ public class Version {
 	public boolean less(@NonNull Version v) {
 
 		return v.higher(this);
-
 	}
-
 
 	/**
 	 * higher return true if version is higher
@@ -150,7 +142,6 @@ public class Version {
 	public boolean higher(String value) {
 
 		return this.higher(new Version(value));
-
 	}
 
 	/**
@@ -161,31 +152,27 @@ public class Version {
 	 */
 	public boolean higher(@NonNull Version v) {
 
-		if(dev) {
+		if (dev) {
 			return !v.dev;
-		}
-		else if(v.dev) {
+		} else if (v.dev) {
 			return false;
 		}
 
 		int rounds = Math.min(this.values.size(), v.values.size());
-		for(int i = 0; i < rounds; i++) {
-			if(i + 1 == rounds) {
-				if(this.values.get(i) <= v.values.get(i)) {
+		for (int i = 0; i < rounds; i++) {
+			if (i + 1 == rounds) {
+				if (this.values.get(i) <= v.values.get(i)) {
 					return false;
 				}
-			}
-			else {
-				if(this.values.get(i) < v.values.get(i)) {
+			} else {
+				if (this.values.get(i) < v.values.get(i)) {
 					return false;
-				}
-				else if(this.values.get(i) > v.values.get(i)) {
+				} else if (this.values.get(i) > v.values.get(i)) {
 					return true;
 				}
 			}
 		}
 		return true;
-
 	}
 
 	/**
@@ -197,7 +184,6 @@ public class Version {
 	public boolean lessOrEqual(String value) {
 
 		return this.lessOrEqual(new Version(value));
-
 	}
 
 	/**
@@ -209,9 +195,7 @@ public class Version {
 	public boolean lessOrEqual(@NonNull Version v) {
 
 		return v.higherOrEqual(this);
-
 	}
-
 
 	/**
 	 * higherOrEqual return true if version is higher or equal
@@ -222,7 +206,6 @@ public class Version {
 	public boolean higherOrEqual(String value) {
 
 		return this.higherOrEqual(new Version(value));
-
 	}
 
 	/**
@@ -233,29 +216,24 @@ public class Version {
 	 */
 	public boolean higherOrEqual(@NonNull Version v) {
 
-		if(dev || v.dev) { // if one is a dev version, only true if both are dev
+		if (dev || v.dev) { // if one is a dev version, only true if both are dev
 			return v.dev && dev;
 		}
 
 		int rounds = Math.min(this.values.size(), v.values.size());
-		for(int i = 0; i < rounds; i++) {
-			if(this.values.get(i) > v.values.get(i)) {
+		for (int i = 0; i < rounds; i++) {
+			if (this.values.get(i) > v.values.get(i)) {
 				return true;
-			}
-			else if(this.values.get(i) < v.values.get(i)) {
+			} else if (this.values.get(i) < v.values.get(i)) {
 				return false;
 			}
-
 		}
 		return true;
-
 	}
 
-	@NonNull
-	@Override
+	@NonNull @Override
 	public String toString() {
 
 		return raw;
 	}
-
 }

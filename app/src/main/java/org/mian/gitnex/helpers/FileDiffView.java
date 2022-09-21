@@ -1,15 +1,14 @@
 package org.mian.gitnex.helpers;
 
 import androidx.annotation.NonNull;
-import org.jetbrains.annotations.NotNull;
 import java.io.Serializable;
 import java.util.List;
+import org.jetbrains.annotations.NotNull;
 
 /**
  * @author M M Arif
  * @author 6543
  */
-
 public class FileDiffView implements Serializable {
 
 	private final String fileNewName;
@@ -19,7 +18,12 @@ public class FileDiffView implements Serializable {
 	private final Stats stats;
 	private final List<Content> contents;
 
-	public FileDiffView(String oldName, String newName, String diffType, String fileInfo, List<Content> fileContents) {
+	public FileDiffView(
+			String oldName,
+			String newName,
+			String diffType,
+			String fileInfo,
+			List<Content> fileContents) {
 
 		this.fileNewName = newName.trim();
 		this.fileOldName = oldName.trim();
@@ -27,18 +31,17 @@ public class FileDiffView implements Serializable {
 		this.fileInfo = fileInfo;
 		this.contents = fileContents;
 		this.stats = new Stats(0, 0);
-		if(fileContents != null) {
-			for(Content content : this.contents) {
+		if (fileContents != null) {
+			for (Content content : this.contents) {
 				stats.lineAdded += content.lineAdded;
 				stats.lineRemoved += content.lineRemoved;
 			}
 		}
-
 	}
 
 	public String getFileName() {
 
-		if(fileOldName.length() != 0 && !fileOldName.equals(fileNewName)) {
+		if (fileOldName.length() != 0 && !fileOldName.equals(fileNewName)) {
 			return fileOldName + " -> " + fileNewName;
 		}
 		return fileNewName;
@@ -51,26 +54,25 @@ public class FileDiffView implements Serializable {
 
 	public String getFileInfo() {
 
-		if(diffType.equals("binary")) {
+		if (diffType.equals("binary")) {
 			return diffType + " " + fileInfo;
 		}
 
-		if(fileInfo.equals("change") && this.stats != null) {
+		if (fileInfo.equals("change") && this.stats != null) {
 			return this.stats.toString();
 		}
 
 		return fileInfo;
 	}
 
-	@NonNull
-	@Override
+	@NonNull @Override
 	public String toString() {
 
 		StringBuilder raw = new StringBuilder();
-		if(this.contents != null) {
-			for(Content c : this.contents) {
+		if (this.contents != null) {
+			for (Content c : this.contents) {
 				raw.append(c.getRaw());
-				if(!c.getRaw().endsWith("\n")) {
+				if (!c.getRaw().endsWith("\n")) {
 					raw.append("\n");
 				}
 			}
@@ -104,13 +106,11 @@ public class FileDiffView implements Serializable {
 			return lineRemoved;
 		}
 
-		@NotNull
-		@Override
+		@NotNull @Override
 		public String toString() {
 
 			return "+" + this.lineAdded + ", -" + this.lineRemoved;
 		}
-
 	}
 
 	public static class Content implements Serializable {
@@ -159,7 +159,5 @@ public class FileDiffView implements Serializable {
 
 			return this.newLineStart;
 		}
-
 	}
-
 }

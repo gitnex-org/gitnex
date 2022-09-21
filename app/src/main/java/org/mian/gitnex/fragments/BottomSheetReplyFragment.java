@@ -21,6 +21,7 @@ import androidx.fragment.app.FragmentActivity;
 import com.google.android.material.bottomsheet.BottomSheetBehavior;
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment;
 import com.vdurmont.emoji.EmojiParser;
+import java.util.Objects;
 import org.mian.gitnex.R;
 import org.mian.gitnex.actions.ActionResult;
 import org.mian.gitnex.actions.IssueActions;
@@ -34,12 +35,10 @@ import org.mian.gitnex.helpers.Constants;
 import org.mian.gitnex.helpers.TinyDB;
 import org.mian.gitnex.helpers.Toasty;
 import org.mian.gitnex.helpers.contexts.IssueContext;
-import java.util.Objects;
 
 /**
  * @author opyale
  */
-
 public class BottomSheetReplyFragment extends BottomSheetDialogFragment {
 
 	private Mode mode = Mode.SEND;
@@ -68,16 +67,20 @@ public class BottomSheetReplyFragment extends BottomSheetDialogFragment {
 		tinyDB = TinyDB.getInstance(context);
 		draftsApi = BaseApi.getInstance(context, DraftsApi.class);
 
-		currentActiveAccountId = ((BaseActivity) requireActivity()).getAccount().getAccount().getAccountId();
+		currentActiveAccountId =
+				((BaseActivity) requireActivity()).getAccount().getAccount().getAccountId();
 		issue = IssueContext.fromBundle(requireArguments());
 	}
 
 	@SuppressLint("ClickableViewAccessibility")
-	@Nullable
-	@Override
-	public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
+	@Nullable @Override
+	public View onCreateView(
+			@NonNull LayoutInflater inflater,
+			@Nullable ViewGroup container,
+			@Nullable Bundle savedInstanceState) {
 
-		BottomSheetReplyLayoutBinding bottomSheetReplyLayoutBinding = BottomSheetReplyLayoutBinding.inflate(inflater, container, false);
+		BottomSheetReplyLayoutBinding bottomSheetReplyLayoutBinding =
+				BottomSheetReplyLayoutBinding.inflate(inflater, container, false);
 		Bundle arguments = requireArguments();
 
 		draftsHint = bottomSheetReplyLayoutBinding.draftsHint;
@@ -90,159 +93,171 @@ public class BottomSheetReplyFragment extends BottomSheetDialogFragment {
 
 		send.setEnabled(false);
 
-		if(Objects.equals(arguments.getString("commentAction"), "edit") && arguments.getString("draftId") == null) {
+		if (Objects.equals(arguments.getString("commentAction"), "edit")
+				&& arguments.getString("draftId") == null) {
 
 			send.setImageDrawable(ContextCompat.getDrawable(requireContext(), R.drawable.ic_save));
 			mode = Mode.EDIT;
 		}
 
-		if(arguments.getString("draftId") != null) {
+		if (arguments.getString("draftId") != null) {
 
 			draftId = Long.parseLong(arguments.getString("draftId"));
 		}
 
-		if(issue.getIssue() != null && !issue.getIssue().getTitle().isEmpty()) {
+		if (issue.getIssue() != null && !issue.getIssue().getTitle().isEmpty()) {
 
 			toolbarTitle.setText(EmojiParser.parseToUnicode(issue.getIssue().getTitle()));
-		}
-		else if(arguments.getString("draftTitle") != null) {
+		} else if (arguments.getString("draftTitle") != null) {
 
 			toolbarTitle.setText(arguments.getString("draftTitle"));
 		}
 
-		if(arguments.getString("commentBody") != null) {
+		if (arguments.getString("commentBody") != null) {
 
 			send.setEnabled(true);
 			send.setAlpha(1f);
 
 			comment.setText(arguments.getString("commentBody"));
 
-			if(arguments.getBoolean("cursorToEnd", false)) {
+			if (arguments.getBoolean("cursorToEnd", false)) {
 
 				comment.setSelection(comment.length());
 			}
 		}
 
 		comment.requestFocus();
-		comment.setOnTouchListener((v, event) -> {
+		comment.setOnTouchListener(
+				(v, event) -> {
+					BottomSheetBehavior<View> bottomSheetBehavior =
+							BottomSheetBehavior.from(
+									(View) bottomSheetReplyLayoutBinding.getRoot().getParent());
 
-			BottomSheetBehavior<View> bottomSheetBehavior = BottomSheetBehavior.from((View) bottomSheetReplyLayoutBinding.getRoot().getParent());
+					switch (event.getAction()) {
+						case MotionEvent.ACTION_DOWN:
+						case MotionEvent.ACTION_SCROLL:
+							bottomSheetBehavior.setDraggable(false);
+							break;
 
-			switch(event.getAction()) {
+						default:
+							bottomSheetBehavior.setDraggable(true);
+					}
 
-				case MotionEvent.ACTION_DOWN:
-				case MotionEvent.ACTION_SCROLL:
-					bottomSheetBehavior.setDraggable(false);
-					break;
+					return false;
+				});
 
-				default:
-					bottomSheetBehavior.setDraggable(true);
-			}
+		comment.addTextChangedListener(
+				new TextWatcher() {
 
-			return false;
-		});
+					@Override
+					public void afterTextChanged(Editable s) {
 
-		comment.addTextChangedListener(new TextWatcher() {
+						String text = comment.getText().toString();
 
-			@Override
-			public void afterTextChanged(Editable s) {
+						if (text.isEmpty()) {
 
-				String text = comment.getText().toString();
+							send.setEnabled(false);
+							send.setAlpha(0.5f);
+							saveDraft(null, true);
+						} else {
 
-				if(text.isEmpty()) {
+							send.setEnabled(true);
+							send.setAlpha(1f);
+							saveDraft(text, false);
+						}
+					}
 
-					send.setEnabled(false);
-					send.setAlpha(0.5f);
-					saveDraft(null, true);
-				}
-				else {
+					@Override
+					public void beforeTextChanged(
+							CharSequence s, int start, int count, int after) {}
 
-					send.setEnabled(true);
-					send.setAlpha(1f);
-					saveDraft(text, false);
-				}
-			}
-
-			@Override
-			public void beforeTextChanged(CharSequence s, int start, int count, int after) {
-			}
-
-			@Override
-			public void onTextChanged(CharSequence s, int start, int before, int count) {
-			}
-
-		});
+					@Override
+					public void onTextChanged(CharSequence s, int start, int before, int count) {}
+				});
 
 		close.setOnClickListener(v -> dismiss());
 
-		drafts.setOnClickListener(v -> {
-
-			Intent intent = new Intent(getContext(), MainActivity.class);
-			intent.putExtra("launchFragment", "drafts");
-			startActivity(intent);
-
-			dismiss();
-
-		});
-
-		send.setOnClickListener(v -> {
-
-			if(mode == Mode.SEND) {
-
-				IssueActions.reply(getContext(), comment.getText().toString(), issue).accept((status, result) -> {
-
-					if(status == ActionResult.Status.SUCCESS) {
-
-						IssueDetailActivity.commentPosted = true;
-
-						Toasty.success(getContext(), getString(R.string.commentSuccess));
-
-						if(draftId != 0 && tinyDB.getBoolean("draftsCommentsDeletionEnabled", true)) {
-							draftsApi.deleteSingleDraft((int) draftId);
-						}
-
-						if(onInteractedListener != null) {
-							onInteractedListener.run();
-						}
-					}
-					else {
-
-						Toasty.error(getContext(), getString(R.string.genericError));
-					}
+		drafts.setOnClickListener(
+				v -> {
+					Intent intent = new Intent(getContext(), MainActivity.class);
+					intent.putExtra("launchFragment", "drafts");
+					startActivity(intent);
 
 					dismiss();
-
 				});
-			}
-			else {
 
-				IssueActions.edit(getContext(), comment.getText().toString(), arguments.getInt("commentId"), issue).accept((status, result) -> {
+		send.setOnClickListener(
+				v -> {
+					if (mode == Mode.SEND) {
 
-					FragmentActivity activity = requireActivity();
-					if(activity instanceof IssueDetailActivity) {
-						((IssueDetailActivity) activity).commentEdited = true;
+						IssueActions.reply(getContext(), comment.getText().toString(), issue)
+								.accept(
+										(status, result) -> {
+											if (status == ActionResult.Status.SUCCESS) {
+
+												IssueDetailActivity.commentPosted = true;
+
+												Toasty.success(
+														getContext(),
+														getString(R.string.commentSuccess));
+
+												if (draftId != 0
+														&& tinyDB.getBoolean(
+																"draftsCommentsDeletionEnabled",
+																true)) {
+													draftsApi.deleteSingleDraft((int) draftId);
+												}
+
+												if (onInteractedListener != null) {
+													onInteractedListener.run();
+												}
+											} else {
+
+												Toasty.error(
+														getContext(),
+														getString(R.string.genericError));
+											}
+
+											dismiss();
+										});
+					} else {
+
+						IssueActions.edit(
+										getContext(),
+										comment.getText().toString(),
+										arguments.getInt("commentId"),
+										issue)
+								.accept(
+										(status, result) -> {
+											FragmentActivity activity = requireActivity();
+											if (activity instanceof IssueDetailActivity) {
+												((IssueDetailActivity) activity).commentEdited =
+														true;
+											}
+
+											if (status == ActionResult.Status.SUCCESS) {
+
+												if (draftId != 0
+														&& tinyDB.getBoolean(
+																"draftsCommentsDeletionEnabled",
+																true)) {
+													draftsApi.deleteSingleDraft((int) draftId);
+												}
+
+												if (onInteractedListener != null) {
+													onInteractedListener.run();
+												}
+											} else {
+
+												Toasty.error(
+														getContext(),
+														getString(R.string.genericError));
+											}
+
+											dismiss();
+										});
 					}
-
-					if(status == ActionResult.Status.SUCCESS) {
-
-						if(draftId != 0 && tinyDB.getBoolean("draftsCommentsDeletionEnabled", true)) {
-							draftsApi.deleteSingleDraft((int) draftId);
-						}
-
-						if(onInteractedListener != null) {
-							onInteractedListener.run();
-						}
-					}
-					else {
-
-						Toasty.error(getContext(), getString(R.string.genericError));
-					}
-
-					dismiss();
-
 				});
-			}
-		});
 
 		return bottomSheetReplyLayoutBinding.getRoot();
 	}
@@ -251,45 +266,49 @@ public class BottomSheetReplyFragment extends BottomSheetDialogFragment {
 
 		ValueAnimator valueAnimator = ValueAnimator.ofFloat(0f, 1f);
 		valueAnimator.setDuration(500);
-		valueAnimator.addUpdateListener(animation -> {
+		valueAnimator.addUpdateListener(
+				animation -> {
+					float value = (Float) animation.getAnimatedValue();
 
-			float value = (Float) animation.getAnimatedValue();
+					if (value == 0f) {
+						draftsHint.setVisibility((remove) ? View.GONE : View.VISIBLE);
+					}
 
-			if(value == 0f) {
-				draftsHint.setVisibility((remove) ? View.GONE : View.VISIBLE);
-			}
+					draftsHint.setAlpha(value);
+				});
 
-			draftsHint.setAlpha(value);
-		});
-
-		if(remove) {
+		if (remove) {
 
 			draftsApi.deleteSingleDraft((int) draftId);
 			draftId = 0;
 
 			valueAnimator.reverse();
-		}
-		else {
+		} else {
 
 			String draftType;
-			if(issue.getIssueType().equalsIgnoreCase("Issue")) {
+			if (issue.getIssueType().equalsIgnoreCase("Issue")) {
 
 				draftType = Constants.draftTypeIssue;
-			}
-			else if(issue.getIssueType().equalsIgnoreCase("Pull")) {
+			} else if (issue.getIssueType().equalsIgnoreCase("Pull")) {
 
 				draftType = Constants.draftTypePull;
-			}
-			else {
+			} else {
 
 				draftType = "";
 			}
 
-			if(draftId == 0) {
+			if (draftId == 0) {
 
-				draftId = draftsApi.insertDraft(issue.getRepository().saveToDB(requireContext()), currentActiveAccountId, issue.getIssueIndex(), text, draftType, "TODO", issue.getIssueType());
-			}
-			else {
+				draftId =
+						draftsApi.insertDraft(
+								issue.getRepository().saveToDB(requireContext()),
+								currentActiveAccountId,
+								issue.getIssueIndex(),
+								text,
+								draftType,
+								"TODO",
+								issue.getIssueType());
+			} else {
 
 				draftsApi.updateDraft(text, (int) draftId, "TODO");
 			}
@@ -304,6 +323,8 @@ public class BottomSheetReplyFragment extends BottomSheetDialogFragment {
 		this.onInteractedListener = onInteractedListener;
 	}
 
-	private enum Mode {EDIT, SEND}
-
+	private enum Mode {
+		EDIT,
+		SEND
+	}
 }

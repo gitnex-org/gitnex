@@ -10,8 +10,6 @@ import android.util.Base64;
 import android.util.SparseArray;
 import androidx.core.app.NotificationCompat;
 import com.google.android.material.dialog.MaterialAlertDialogBuilder;
-import org.mian.gitnex.R;
-import org.mian.gitnex.activities.BaseActivity;
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
@@ -38,16 +36,17 @@ import javax.net.ssl.SSLSession;
 import javax.net.ssl.TrustManager;
 import javax.net.ssl.TrustManagerFactory;
 import javax.net.ssl.X509TrustManager;
+import org.mian.gitnex.R;
+import org.mian.gitnex.activities.BaseActivity;
 
 /**
  * @author Georg Lukas, modified by opyale
  */
-
 public class MemorizingTrustManager implements X509TrustManager {
 
-	public final static String KEYSTORE_NAME = "keystore";
-	public final static String KEYSTORE_KEY = "keystore";
-	private final static int NOTIFICATION_ID = 100509;
+	public static final String KEYSTORE_NAME = "keystore";
+	public static final String KEYSTORE_KEY = "keystore";
+	private static final int NOTIFICATION_ID = 100509;
 	private final SparseArray<MTMDecision> openDecisions = new SparseArray<>();
 	private final X509TrustManager defaultTrustManager;
 	private Context context;
@@ -58,18 +57,18 @@ public class MemorizingTrustManager implements X509TrustManager {
 	private X509TrustManager appTrustManager;
 
 	/**
-	 * Creates an instance of the MemorizingTrustManager class that falls back to a custom TrustManager.
-	 * <p>
-	 * You need to supply the application context. This has to be one of:
-	 * - Application
-	 * - Activity
-	 * - Service
-	 * <p>
-	 * The context is used for file management, to display the dialog /
-	 * notification and for obtaining translated strings.
+	 * Creates an instance of the MemorizingTrustManager class that falls back to a custom
+	 * TrustManager.
 	 *
-	 * @param m                   Context for the application.
-	 * @param defaultTrustManager Delegate trust management to this TM. If null, the user must accept every certificate.
+	 * <p>You need to supply the application context. This has to be one of: - Application -
+	 * Activity - Service
+	 *
+	 * <p>The context is used for file management, to display the dialog / notification and for
+	 * obtaining translated strings.
+	 *
+	 * @param m Context for the application.
+	 * @param defaultTrustManager Delegate trust management to this TM. If null, the user must
+	 *     accept every certificate.
 	 */
 	public MemorizingTrustManager(Context m, X509TrustManager defaultTrustManager) {
 
@@ -80,14 +79,12 @@ public class MemorizingTrustManager implements X509TrustManager {
 
 	/**
 	 * Creates an instance of the MemorizingTrustManager class using the system X509TrustManager.
-	 * <p>
-	 * You need to supply the application context. This has to be one of:
-	 * - Application
-	 * - Activity
-	 * - Service
-	 * <p>
-	 * The context is used for file management, to display the dialog /
-	 * notification and for obtaining translated strings.
+	 *
+	 * <p>You need to supply the application context. This has to be one of: - Application -
+	 * Activity - Service
+	 *
+	 * <p>The context is used for file management, to display the dialog / notification and for
+	 * obtaining translated strings.
 	 *
 	 * @param m Context for the application.
 	 */
@@ -99,11 +96,10 @@ public class MemorizingTrustManager implements X509TrustManager {
 	}
 
 	/**
-	 * Returns a X509TrustManager list containing a new instance of
-	 * TrustManagerFactory.
-	 * <p>
-	 * This function is meant for convenience only. You can use it
-	 * as follows to integrate TrustManagerFactory for HTTPS sockets:
+	 * Returns a X509TrustManager list containing a new instance of TrustManagerFactory.
+	 *
+	 * <p>This function is meant for convenience only. You can use it as follows to integrate
+	 * TrustManagerFactory for HTTPS sockets:
 	 *
 	 * <pre>
 	 *     SSLContext sc = SSLContext.getInstance("TLS");
@@ -116,17 +112,17 @@ public class MemorizingTrustManager implements X509TrustManager {
 	 */
 	public static X509TrustManager[] getInstanceList(Context c) {
 
-		return new X509TrustManager[]{new MemorizingTrustManager(c)};
+		return new X509TrustManager[] {new MemorizingTrustManager(c)};
 	}
 
 	private static boolean isExpiredException(Throwable e) {
 
 		do {
-			if(e instanceof CertificateExpiredException) {
+			if (e instanceof CertificateExpiredException) {
 				return true;
 			}
 			e = e.getCause();
-		} while(e != null);
+		} while (e != null);
 
 		return false;
 	}
@@ -134,12 +130,12 @@ public class MemorizingTrustManager implements X509TrustManager {
 	private static boolean isPathException(Throwable e) {
 
 		do {
-			if(e instanceof CertPathValidatorException) {
+			if (e instanceof CertPathValidatorException) {
 				return true;
 			}
 
 			e = e.getCause();
-		} while(e != null);
+		} while (e != null);
 
 		return false;
 	}
@@ -148,9 +144,9 @@ public class MemorizingTrustManager implements X509TrustManager {
 
 		StringBuilder si = new StringBuilder();
 
-		for(int i = 0; i < data.length; i++) {
+		for (int i = 0; i < data.length; i++) {
 			si.append(String.format("%02x", data[i]));
-			if(i < data.length - 1) {
+			if (i < data.length - 1) {
 				si.append(":");
 			}
 		}
@@ -164,32 +160,41 @@ public class MemorizingTrustManager implements X509TrustManager {
 			MessageDigest md = MessageDigest.getInstance(digest);
 			md.update(cert.getEncoded());
 			return hexString(md.digest());
-		}
-		catch(CertificateEncodingException | NoSuchAlgorithmException e) {
+		} catch (CertificateEncodingException | NoSuchAlgorithmException e) {
 			return e.getMessage();
 		}
 	}
 
 	/**
-	 * Reflectively call
-	 * {@code Notification.setLatestEventInfo(Context, CharSequence, CharSequence, PendingIntent)}
-	 * since it was remove in Android API level 23.
+	 * Reflectively call {@code Notification.setLatestEventInfo(Context, CharSequence, CharSequence,
+	 * PendingIntent)} since it was remove in Android API level 23.
 	 */
-	private static void setLatestEventInfoReflective(Notification notification, Context context, CharSequence mtmNotification, CharSequence certName, PendingIntent call) {
+	private static void setLatestEventInfoReflective(
+			Notification notification,
+			Context context,
+			CharSequence mtmNotification,
+			CharSequence certName,
+			PendingIntent call) {
 
 		Method setLatestEventInfo;
 
 		try {
-			setLatestEventInfo = notification.getClass().getMethod("setLatestEventInfo", Context.class, CharSequence.class, CharSequence.class, PendingIntent.class);
-		}
-		catch(NoSuchMethodException e) {
+			setLatestEventInfo =
+					notification
+							.getClass()
+							.getMethod(
+									"setLatestEventInfo",
+									Context.class,
+									CharSequence.class,
+									CharSequence.class,
+									PendingIntent.class);
+		} catch (NoSuchMethodException e) {
 			throw new IllegalStateException(e);
 		}
 
 		try {
 			setLatestEventInfo.invoke(notification, context, mtmNotification, certName, call);
-		}
-		catch(IllegalAccessException | IllegalArgumentException | InvocationTargetException e) {
+		} catch (IllegalAccessException | IllegalArgumentException | InvocationTargetException e) {
 			throw new IllegalStateException(e);
 		}
 	}
@@ -197,7 +202,8 @@ public class MemorizingTrustManager implements X509TrustManager {
 	private void init(Context m) {
 
 		context = m;
-		notificationManager = (NotificationManager) context.getSystemService(Context.NOTIFICATION_SERVICE);
+		notificationManager =
+				(NotificationManager) context.getSystemService(Context.NOTIFICATION_SERVICE);
 
 		keyStoreStorage = m.getSharedPreferences(KEYSTORE_NAME, Context.MODE_PRIVATE);
 		appKeyStore = loadAppKeyStore();
@@ -212,8 +218,7 @@ public class MemorizingTrustManager implements X509TrustManager {
 
 		try {
 			return appKeyStore.aliases();
-		}
-		catch(KeyStoreException e) {
+		} catch (KeyStoreException e) {
 			// this should never happen, however...
 			throw new RuntimeException(e);
 		}
@@ -229,8 +234,7 @@ public class MemorizingTrustManager implements X509TrustManager {
 
 		try {
 			return appKeyStore.getCertificate(alias);
-		}
-		catch(KeyStoreException e) {
+		} catch (KeyStoreException e) {
 			// this should never happen, however...
 			throw new RuntimeException(e);
 		}
@@ -239,12 +243,9 @@ public class MemorizingTrustManager implements X509TrustManager {
 	/**
 	 * Removes the given certificate from MTMs key store.
 	 *
-	 * <p>
-	 * <b>WARNING</b>: this does not immediately invalidate the certificate. It is
-	 * well possible that (a) data is transmitted over still existing connections or
-	 * (b) new connections are created using TLS renegotiation, without a new cert
-	 * check.
-	 * </p>
+	 * <p><b>WARNING</b>: this does not immediately invalidate the certificate. It is well possible
+	 * that (a) data is transmitted over still existing connections or (b) new connections are
+	 * created using TLS renegotiation, without a new cert check.
 	 *
 	 * @param alias the certificate's alias as returned by {@link #getCertificates()}.
 	 * @throws KeyStoreException if the certificate could not be deleted.
@@ -258,16 +259,16 @@ public class MemorizingTrustManager implements X509TrustManager {
 	/**
 	 * Creates a new hostname verifier supporting user interaction.
 	 *
-	 * <p>This method creates a new {@link HostnameVerifier} that is bound to
-	 * the given instance of {@link MemorizingTrustManager}, and leverages an
-	 * existing {@link HostnameVerifier}. The returned verifier performs the
-	 * following steps, returning as soon as one of them succeeds:
+	 * <p>This method creates a new {@link HostnameVerifier} that is bound to the given instance of
+	 * {@link MemorizingTrustManager}, and leverages an existing {@link HostnameVerifier}. The
+	 * returned verifier performs the following steps, returning as soon as one of them succeeds:
 	 * /p>
+	 *
 	 * <ol>
-	 * <li>Success, if the wrapped defaultVerifier accepts the certificate.</li>
-	 * <li>Success, if the server certificate is stored in the keystore under the given hostname.</li>
-	 * <li>Ask the user and return accordingly.</li>
-	 * <li>Failure on exception.</li>
+	 *   <li>Success, if the wrapped defaultVerifier accepts the certificate.
+	 *   <li>Success, if the server certificate is stored in the keystore under the given hostname.
+	 *   <li>Ask the user and return accordingly.
+	 *   <li>Failure on exception.
 	 * </ol>
 	 *
 	 * @param defaultVerifier the {@link HostnameVerifier} that should perform the actual check
@@ -276,7 +277,7 @@ public class MemorizingTrustManager implements X509TrustManager {
 	 */
 	public HostnameVerifier wrapHostnameVerifier(final HostnameVerifier defaultVerifier) {
 
-		if(defaultVerifier == null) {
+		if (defaultVerifier == null) {
 			throw new IllegalArgumentException("The default verifier may not be null");
 		}
 
@@ -288,13 +289,12 @@ public class MemorizingTrustManager implements X509TrustManager {
 		try {
 			TrustManagerFactory tmf = TrustManagerFactory.getInstance("X509");
 			tmf.init(ks);
-			for(TrustManager t : tmf.getTrustManagers()) {
-				if(t instanceof X509TrustManager) {
+			for (TrustManager t : tmf.getTrustManagers()) {
+				if (t instanceof X509TrustManager) {
 					return (X509TrustManager) t;
 				}
 			}
-		}
-		catch(Exception e) {
+		} catch (Exception e) {
 			e.printStackTrace();
 		}
 
@@ -307,29 +307,27 @@ public class MemorizingTrustManager implements X509TrustManager {
 
 		try {
 			keyStore = KeyStore.getInstance(KeyStore.getDefaultType());
-		}
-		catch(KeyStoreException e) {
+		} catch (KeyStoreException e) {
 			e.printStackTrace();
 			return null;
 		}
 
 		try {
 			keyStore.load(null, null);
-		}
-		catch(NoSuchAlgorithmException | CertificateException | IOException e) {
+		} catch (NoSuchAlgorithmException | CertificateException | IOException e) {
 			e.printStackTrace();
 		}
 
 		String keystore = keyStoreStorage.getString(KEYSTORE_KEY, null);
 
-		if(keystore != null) {
-			ByteArrayInputStream inputStream = new ByteArrayInputStream(Base64.decode(keystore, Base64.DEFAULT));
+		if (keystore != null) {
+			ByteArrayInputStream inputStream =
+					new ByteArrayInputStream(Base64.decode(keystore, Base64.DEFAULT));
 
 			try {
 				keyStore.load(inputStream, "MTM".toCharArray());
 				inputStream.close();
-			}
-			catch(Exception e) {
+			} catch (Exception e) {
 				e.printStackTrace();
 			}
 		}
@@ -341,8 +339,7 @@ public class MemorizingTrustManager implements X509TrustManager {
 
 		try {
 			appKeyStore.setCertificateEntry(alias, cert);
-		}
-		catch(KeyStoreException e) {
+		} catch (KeyStoreException e) {
 			e.printStackTrace();
 			return;
 		}
@@ -367,9 +364,14 @@ public class MemorizingTrustManager implements X509TrustManager {
 			byteArrayOutputStream.flush();
 			byteArrayOutputStream.close();
 
-			keyStoreStorage.edit().putString(KEYSTORE_KEY, Base64.encodeToString(byteArrayOutputStream.toByteArray(), Base64.DEFAULT)).apply();
-		}
-		catch(Exception e) {
+			keyStoreStorage
+					.edit()
+					.putString(
+							KEYSTORE_KEY,
+							Base64.encodeToString(
+									byteArrayOutputStream.toByteArray(), Base64.DEFAULT))
+					.apply();
+		} catch (Exception e) {
 			e.printStackTrace();
 		}
 	}
@@ -379,51 +381,49 @@ public class MemorizingTrustManager implements X509TrustManager {
 
 		try {
 			return appKeyStore.getCertificateAlias(cert) != null;
-		}
-		catch(KeyStoreException e) {
+		} catch (KeyStoreException e) {
 			return false;
 		}
 	}
 
-	private void checkCertTrusted(X509Certificate[] chain, String authType, boolean isServer) throws CertificateException {
+	private void checkCertTrusted(X509Certificate[] chain, String authType, boolean isServer)
+			throws CertificateException {
 		try {
 
-			if(isServer) {
+			if (isServer) {
 				appTrustManager.checkServerTrusted(chain, authType);
-			}
-			else {
+			} else {
 				appTrustManager.checkClientTrusted(chain, authType);
 			}
-		}
-		catch(CertificateException ae) {
+		} catch (CertificateException ae) {
 			// if the cert is stored in our appTrustManager, we ignore expiredness
-			if(isExpiredException(ae) || isCertKnown(chain[0])) {
+			if (isExpiredException(ae) || isCertKnown(chain[0])) {
 				return;
 			}
 
 			try {
-				if(defaultTrustManager == null) {
+				if (defaultTrustManager == null) {
 					throw ae;
 				}
-				if(isServer) {
+				if (isServer) {
 					defaultTrustManager.checkServerTrusted(chain, authType);
-				}
-				else {
+				} else {
 					defaultTrustManager.checkClientTrusted(chain, authType);
 				}
-			}
-			catch(CertificateException e) {
+			} catch (CertificateException e) {
 				interactCert(chain, authType, e);
 			}
 		}
 	}
 
-	public void checkClientTrusted(X509Certificate[] chain, String authType) throws CertificateException {
+	public void checkClientTrusted(X509Certificate[] chain, String authType)
+			throws CertificateException {
 
 		checkCertTrusted(chain, authType, false);
 	}
 
-	public void checkServerTrusted(X509Certificate[] chain, String authType) throws CertificateException {
+	public void checkServerTrusted(X509Certificate[] chain, String authType)
+			throws CertificateException {
 
 		checkCertTrusted(chain, authType, true);
 	}
@@ -436,7 +436,7 @@ public class MemorizingTrustManager implements X509TrustManager {
 	private int createDecisionId(MTMDecision d) {
 
 		int myId;
-		synchronized(openDecisions) {
+		synchronized (openDecisions) {
 			myId = decisionId;
 			openDecisions.put(myId, d);
 			decisionId += 1;
@@ -446,10 +446,24 @@ public class MemorizingTrustManager implements X509TrustManager {
 
 	private void certDetails(StringBuilder stringBuilder, X509Certificate c) {
 
-		SimpleDateFormat validityDateFormatter = new SimpleDateFormat("yyyy-MM-dd", context.getResources().getConfiguration().locale);
+		SimpleDateFormat validityDateFormatter =
+				new SimpleDateFormat(
+						"yyyy-MM-dd", context.getResources().getConfiguration().locale);
 
-		stringBuilder.append("\n").append(c.getSubjectDN().toString()).append("\n").append(validityDateFormatter.format(c.getNotBefore())).append(" - ").append(validityDateFormatter.format(c.getNotAfter()))
-			.append("\nSHA-256: ").append(certHash(c, "SHA-256")).append("\nSHA-1: ").append(certHash(c, "SHA-1")).append("\nSigned by: ").append(c.getIssuerDN().toString()).append("\n");
+		stringBuilder
+				.append("\n")
+				.append(c.getSubjectDN().toString())
+				.append("\n")
+				.append(validityDateFormatter.format(c.getNotBefore()))
+				.append(" - ")
+				.append(validityDateFormatter.format(c.getNotAfter()))
+				.append("\nSHA-256: ")
+				.append(certHash(c, "SHA-256"))
+				.append("\nSHA-1: ")
+				.append(certHash(c, "SHA-1"))
+				.append("\nSigned by: ")
+				.append(c.getIssuerDN().toString())
+				.append("\n");
 	}
 
 	private String certChainMessage(final X509Certificate[] chain, CertificateException cause) {
@@ -457,15 +471,13 @@ public class MemorizingTrustManager implements X509TrustManager {
 		Throwable e = cause;
 		StringBuilder stringBuilder = new StringBuilder();
 
-		if(isPathException(e)) {
+		if (isPathException(e)) {
 			stringBuilder.append(context.getString(R.string.mtmTrustAnchor));
-		}
-		else if(isExpiredException(e)) {
+		} else if (isExpiredException(e)) {
 			stringBuilder.append(context.getString(R.string.mtmCertExpired));
-		}
-		else {
+		} else {
 			// get to the cause
-			while(e.getCause() != null) {
+			while (e.getCause() != null) {
 				e = e.getCause();
 			}
 
@@ -477,7 +489,7 @@ public class MemorizingTrustManager implements X509TrustManager {
 		stringBuilder.append("\n\n");
 		stringBuilder.append(context.getString(R.string.mtmCertDetails));
 
-		for(X509Certificate c : chain) {
+		for (X509Certificate c : chain) {
 			certDetails(stringBuilder, c);
 		}
 
@@ -494,14 +506,13 @@ public class MemorizingTrustManager implements X509TrustManager {
 		try {
 			Collection<List<?>> sans = cert.getSubjectAlternativeNames();
 
-			if(sans == null) {
+			if (sans == null) {
 				stringBuilder.append(cert.getSubjectDN());
 				stringBuilder.append("\n");
-			}
-			else {
-				for(List<?> altName : sans) {
+			} else {
+				for (List<?> altName : sans) {
 					Object name = altName.get(1);
-					if(name instanceof String) {
+					if (name instanceof String) {
 						stringBuilder.append("[");
 						stringBuilder.append(altName.get(0));
 						stringBuilder.append("] ");
@@ -510,8 +521,7 @@ public class MemorizingTrustManager implements X509TrustManager {
 					}
 				}
 			}
-		}
-		catch(CertificateParsingException e) {
+		} catch (CertificateParsingException e) {
 			e.printStackTrace();
 			stringBuilder.append("<Parsing error: ");
 			stringBuilder.append(e.getLocalizedMessage());
@@ -531,8 +541,15 @@ public class MemorizingTrustManager implements X509TrustManager {
 		final PendingIntent call = PendingIntent.getActivity(context, 0, intent, 0);
 		final String mtmNotification = context.getString(R.string.mtmNotification);
 
-		NotificationCompat.Builder builder = new NotificationCompat.Builder(context, "ssl").setSmallIcon(android.R.drawable.ic_lock_lock).setContentTitle(mtmNotification).setContentText(certName).setTicker(certName)
-			.setContentIntent(call).setAutoCancel(true).setPriority(NotificationCompat.PRIORITY_HIGH);
+		NotificationCompat.Builder builder =
+				new NotificationCompat.Builder(context, "ssl")
+						.setSmallIcon(android.R.drawable.ic_lock_lock)
+						.setContentTitle(mtmNotification)
+						.setContentText(certName)
+						.setTicker(certName)
+						.setContentIntent(call)
+						.setAutoCancel(true)
+						.setPriority(NotificationCompat.PRIORITY_HIGH);
 
 		notificationManager.notify(NOTIFICATION_ID + decisionId, builder.build());
 	}
@@ -541,40 +558,61 @@ public class MemorizingTrustManager implements X509TrustManager {
 		MTMDecision choice = new MTMDecision();
 		final int myId = createDecisionId(choice);
 
-		((BaseActivity) context).runOnUiThread(() -> {
+		((BaseActivity) context)
+				.runOnUiThread(
+						() -> {
+							MaterialAlertDialogBuilder materialAlertDialogBuilder =
+									new MaterialAlertDialogBuilder(context)
+											.setTitle(titleId)
+											.setMessage(message)
+											.setPositiveButton(
+													R.string.mtmDecisionAlways,
+													(dialog, which) ->
+															interactResult(
+																	myId,
+																	MTMDecision.DECISION_ALWAYS))
+											.setNeutralButton(
+													R.string.mtmDecisionAbort,
+													(dialog, which) ->
+															interactResult(
+																	myId,
+																	MTMDecision.DECISION_ABORT))
+											.setOnCancelListener(
+													dialog ->
+															interactResult(
+																	myId,
+																	MTMDecision.DECISION_ABORT));
 
-			MaterialAlertDialogBuilder materialAlertDialogBuilder = new MaterialAlertDialogBuilder(context).setTitle(titleId).setMessage(message)
-				.setPositiveButton(R.string.mtmDecisionAlways, (dialog, which) -> interactResult(myId, MTMDecision.DECISION_ALWAYS))
-				.setNeutralButton(R.string.mtmDecisionAbort, (dialog, which) -> interactResult(myId, MTMDecision.DECISION_ABORT)).setOnCancelListener(dialog -> interactResult(myId, MTMDecision.DECISION_ABORT));
-
-			materialAlertDialogBuilder.create().show();
-		});
+							materialAlertDialogBuilder.create().show();
+						});
 
 		try {
-			synchronized(choice) {
+			synchronized (choice) {
 				choice.wait();
 			}
-		}
-		catch(InterruptedException e) {
+		} catch (InterruptedException e) {
 			e.printStackTrace();
 		}
 
 		return choice.state;
 	}
 
-	private void interactCert(final X509Certificate[] chain, String authType, CertificateException cause) throws CertificateException {
+	private void interactCert(
+			final X509Certificate[] chain, String authType, CertificateException cause)
+			throws CertificateException {
 
-		if(interact(certChainMessage(chain, cause), R.string.mtmAcceptCert) == MTMDecision.DECISION_ALWAYS) {
+		if (interact(certChainMessage(chain, cause), R.string.mtmAcceptCert)
+				== MTMDecision.DECISION_ALWAYS) {
 			storeCert(chain[0]); // only store the server cert, not the whole chain
-		}
-		else {
+		} else {
 			throw (cause);
 		}
 	}
 
 	private boolean interactHostname(X509Certificate cert, String hostname) {
 
-		if(interact(hostNameMessage(cert, hostname), R.string.mtmAcceptServerName) == MTMDecision.DECISION_ALWAYS) {
+		if (interact(hostNameMessage(cert, hostname), R.string.mtmAcceptServerName)
+				== MTMDecision.DECISION_ALWAYS) {
 			storeCert(hostname, cert);
 			return true;
 		}
@@ -586,16 +624,16 @@ public class MemorizingTrustManager implements X509TrustManager {
 
 		MTMDecision d;
 
-		synchronized(openDecisions) {
+		synchronized (openDecisions) {
 			d = openDecisions.get(decisionId);
 			openDecisions.remove(decisionId);
 		}
 
-		if(d == null) {
+		if (d == null) {
 			return;
 		}
 
-		synchronized(d) {
+		synchronized (d) {
 			d.state = choice;
 			d.notify();
 		}
@@ -613,7 +651,7 @@ public class MemorizingTrustManager implements X509TrustManager {
 		@Override
 		public boolean verify(String hostname, SSLSession session) {
 			// if the default verifier accepts the hostname, we are done
-			if(defaultVerifier.verify(hostname, session)) {
+			if (defaultVerifier.verify(hostname, session)) {
 				return true;
 			}
 
@@ -621,19 +659,15 @@ public class MemorizingTrustManager implements X509TrustManager {
 			try {
 				X509Certificate cert = (X509Certificate) session.getPeerCertificates()[0];
 
-				if(cert.equals(appKeyStore.getCertificate(hostname.toLowerCase(Locale.US)))) {
+				if (cert.equals(appKeyStore.getCertificate(hostname.toLowerCase(Locale.US)))) {
 					return true;
-				}
-				else {
+				} else {
 					return interactHostname(cert, hostname);
 				}
-			}
-			catch(Exception e) {
+			} catch (Exception e) {
 				e.printStackTrace();
 				return false;
 			}
 		}
-
 	}
-
 }

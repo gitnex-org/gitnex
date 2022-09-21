@@ -9,13 +9,12 @@ import java.util.Objects;
 /**
  * @author M M Arif
  */
-
 public class FontsOverride {
 
 	public static void setDefaultFont(Context context) {
 		final Typeface regular = AppUtil.getTypeface(context);
 
-		for(String field : new String[]{"DEFAULT", "MONOSPACE", "SERIF", "SANS_SERIF"}) {
+		for (String field : new String[] {"DEFAULT", "MONOSPACE", "SERIF", "SANS_SERIF"}) {
 			replaceFont(field, regular);
 		}
 	}
@@ -28,13 +27,9 @@ public class FontsOverride {
 			staticField.setAccessible(true);
 			staticField.set(null, newTypeface);
 
-		}
-		catch(NoSuchFieldException | IllegalAccessException e) {
+		} catch (NoSuchFieldException | IllegalAccessException e) {
 
 			Log.e("replaceFont", Objects.requireNonNull(e.getMessage()));
-
 		}
-
 	}
-
 }

@@ -15,35 +15,35 @@ import org.mian.gitnex.structs.BottomSheetListener;
 /**
  * @author M M Arif
  */
-
 public class BottomSheetOrganizationTeamsFragment extends BottomSheetDialogFragment {
 
 	private BottomSheetListener bmListener;
 
-	@Nullable
-	@Override
-	public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
+	@Nullable @Override
+	public View onCreateView(
+			@NonNull LayoutInflater inflater,
+			@Nullable ViewGroup container,
+			@Nullable Bundle savedInstanceState) {
 
-		BottomSheetOrganizationTeamsBinding bottomSheetOrganizationTeamsBinding = BottomSheetOrganizationTeamsBinding.inflate(inflater, container, false);
+		BottomSheetOrganizationTeamsBinding bottomSheetOrganizationTeamsBinding =
+				BottomSheetOrganizationTeamsBinding.inflate(inflater, container, false);
 
-		bottomSheetOrganizationTeamsBinding.addNewMember.setOnClickListener(v1 -> {
+		bottomSheetOrganizationTeamsBinding.addNewMember.setOnClickListener(
+				v1 -> {
+					bmListener.onButtonClicked("newMember");
+					dismiss();
+				});
 
-			bmListener.onButtonClicked("newMember");
-			dismiss();
-
-		});
-
-		if(!requireArguments().getBoolean("showRepo")) {
+		if (!requireArguments().getBoolean("showRepo")) {
 			bottomSheetOrganizationTeamsBinding.addRepo.setVisibility(View.GONE);
 		}
-		bottomSheetOrganizationTeamsBinding.addRepo.setOnClickListener(v1 -> {
-			bmListener.onButtonClicked("newRepo");
-			dismiss();
-
-		});
+		bottomSheetOrganizationTeamsBinding.addRepo.setOnClickListener(
+				v1 -> {
+					bmListener.onButtonClicked("newRepo");
+					dismiss();
+				});
 
 		return bottomSheetOrganizationTeamsBinding.getRoot();
-
 	}
 
 	@Override
@@ -52,10 +52,8 @@ public class BottomSheetOrganizationTeamsFragment extends BottomSheetDialogFragm
 
 		try {
 			bmListener = (BottomSheetListener) context;
-		}
-		catch(ClassCastException e) {
+		} catch (ClassCastException e) {
 			Log.e("BsOrganizationTeams", e.toString());
 		}
 	}
-
 }

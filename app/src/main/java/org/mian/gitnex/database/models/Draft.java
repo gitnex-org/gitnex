@@ -1,18 +1,26 @@
 package org.mian.gitnex.database.models;
 
+import static androidx.room.ForeignKey.CASCADE;
+
 import androidx.annotation.Nullable;
 import androidx.room.Entity;
 import androidx.room.ForeignKey;
 import androidx.room.Index;
 import androidx.room.PrimaryKey;
 import java.io.Serializable;
-import static androidx.room.ForeignKey.CASCADE;
 
 /**
  * @author M M Arif
  */
-
-@Entity(tableName = "Drafts", foreignKeys = @ForeignKey(entity = Repository.class, parentColumns = "repositoryId", childColumns = "draftRepositoryId", onDelete = CASCADE), indices = {@Index("draftRepositoryId")})
+@Entity(
+		tableName = "Drafts",
+		foreignKeys =
+				@ForeignKey(
+						entity = Repository.class,
+						parentColumns = "repositoryId",
+						childColumns = "draftRepositoryId",
+						onDelete = CASCADE),
+		indices = {@Index("draftRepositoryId")})
 public class Draft implements Serializable {
 
 	@PrimaryKey(autoGenerate = true)
@@ -22,12 +30,9 @@ public class Draft implements Serializable {
 	private int draftAccountId;
 	private int issueId;
 	private String draftText;
-	@Nullable
-	private String draftType;
-	@Nullable
-	private String commentId;
-	@Nullable
-	private String issueType;
+	@Nullable private String draftType;
+	@Nullable private String commentId;
+	@Nullable private String issueType;
 
 	public int getDraftId() {
 
@@ -79,8 +84,7 @@ public class Draft implements Serializable {
 		this.draftText = draftText;
 	}
 
-	@Nullable
-	public String getDraftType() {
+	@Nullable public String getDraftType() {
 
 		return draftType;
 	}
@@ -90,8 +94,7 @@ public class Draft implements Serializable {
 		this.draftType = draftType;
 	}
 
-	@Nullable
-	public String getCommentId() {
+	@Nullable public String getCommentId() {
 
 		return commentId;
 	}
@@ -101,8 +104,7 @@ public class Draft implements Serializable {
 		this.commentId = commentId;
 	}
 
-	@Nullable
-	public String getIssueType() {
+	@Nullable public String getIssueType() {
 
 		return issueType;
 	}
@@ -111,5 +113,4 @@ public class Draft implements Serializable {
 
 		this.issueType = issueType;
 	}
-
 }
