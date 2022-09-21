@@ -660,4 +660,45 @@
     <string name="wikiCreated">Wiki-Seite erfolgreich erstellt</string>
     <!-- code editor -->
     <string name="openInCodeEditor">Im Code-Editor öffnen</string>
+    <!-- timeline -->
+    <string name="commitText">Commit</string>
+    <string name="timelineAddedCommit">%1$s hat %2$s %3$s hinzugefügt</string>
+    <!-- the | is replaced by the label -->
+    <string name="timelineAddedLabel">%1$s hat das Label | %2$s hinzugefügt</string>
+    <!-- the | is replaced by the label -->
+    <string name="timelineRemovedLabel">%1$s hat das Label | %2$s entfernt</string>
+    <string name="timelineAssigneesRemoved">%1$s hat seine Zuweisung %2$s entfernt</string>
+    <string name="timelineAssigneesUnassigned">%1$s hat die Zuweisung von %2$s %3$s entfernt</string>
+    <string name="timelineAssigneesSelfAssigned">%1$s hat sich selbst zugewiesen %2$s</string>
+    <string name="timelineAssigneesAssigned">%1$s wurde von %2$s %3$s hinzugefügt</string>
+    <string name="timelineMilestoneAdded">%1$s hat dies zum Meilenstein %2$s %3$s hinzugefügt</string>
+    <string name="timelineMilestoneRemoved">%1$s hat dies vom Meilenstein %2$s %3$s hinzugefügt</string>
+    <string name="timelineStatusClosedIssue">%1$s hat diesen Issue %2$s geschlossen</string>
+    <string name="timelineStatusReopenedIssue">%1$s hat diesen Issue wieder %2$s geöffnet</string>
+    <string name="timelineStatusReopenedPr">%1$s hat diesen Pull-Request wieder %2$s geöffnet</string>
+    <string name="timelineStatusClosedPr">%1$s hat diesen Pull-Request %2$s geschlossen</string>
+    <string name="timelineStatusMergedPr">%1$s hat diesen Pull-Request %2$s zusammengeführt</string>
+    <string name="timelineStatusRefPr"><![CDATA[%1$s hat diesen Pull-Request von einem <font color=\'%2$d\'>%3$s</font> %4$s referenziert]]></string>
+    <string name="timelineReviewRequest">%1$s hat ein Review von %2$s %3$s angefragt</string>
+    <string name="timelineChangeTitle">%1$s hat den Titel von %2$s zu %3$s %4$s geändert</string>
+    <string name="timelineLocked">%1$s hat die Konversation %3$s als %2$s gespert und die Konversation auf Mitarbeiter beschränkt</string>
+    <string name="timelineUnlocked">%1$s hat die Konversation %2$s entsperrt</string>
+    <string name="timelineDependencyAdded">%1$s hat eine neue Abhängigkeit #%2$d %3$s hinzugefügt</string>
+    <string name="timelineDependencyRemoved">%1$s hat eine Abhängigkeit #%2$d %3$s entfernt</string>
+    <string name="timelineProjectAdded">%1$s hat das %2$s zu einem Projekt hinzugefügt</string>
+    <string name="timelineProjectRemoved">%1$s hat das %2$s von einem Projekt entfernt</string>
+    <string name="timelineDueDateAdded">%1$s hat das Fälligkeitsdatum %2$s %3$s hinzugefügt</string>
+    <string name="timelineDueDateModified">%1$s hat das Fälligkeitsdatum %4$s von %2$s zu %3$s geändert</string>
+    <string name="timelineDueDateRemoved">%1$s hat das Fälligkeitsdatum %2$s %3$s entfernt</string>
+    <string name="timelineBranchChanged">%1$s hat den Ziel-Branch von %2$s zu %3$s %4$s geändert</string>
+    <string name="timelineBranchDeleted">%1$s hat den Branch %2$s %3$s entfernt</string>
+    <string name="timelineTimeTrackingStart">%1$s hat %2$s mit der Arbeit begonnen</string>
+    <string name="timelineTimeTrackingStop">%1$s hat die Zeiterfassung %2$s beendet</string>
+    <string name="timelineTimeTrackingCancel">%1$s hat die Zeiterfassung %2$s abgebrochen</string>
+    <string name="timelineTimeTrackingAddManualTime">%1$s hat benötigte Zeit %2$s %3$s hinzugefügt</string>
+    <string name="timelineTimeTrackingDeleteManualTime">%1$s hat benötigte Zeit %2$s %3$s entfernt</string>
+    <string name="timelineChangeIssueRef">%1$s hat die Referenz %2$s %3$s hinzugefügt</string>
+    <string name="timelineRefIssue">%1$s hat diesen Issue %3$s in #%2$d erwähnt</string>
+    <string name="timelineRefPr">%1$s hat diesen Pull-Request %3$s in #%2$d erwähnt</string>
+    <string name="timelineStatusRefIssue"><![CDATA[%1$s hat diesen Issue von einem <font color=\'%2$d\'>%3$s</font> %4$s referenziert]]></string>
 </resources>
