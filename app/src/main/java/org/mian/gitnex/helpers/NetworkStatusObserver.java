@@ -25,73 +25,77 @@ public class NetworkStatusObserver {
 
 	private NetworkStatusObserver(Context context) {
 
-		ConnectivityManager cm = (ConnectivityManager) context.getSystemService(Context.CONNECTIVITY_SERVICE);
+		ConnectivityManager cm =
+				(ConnectivityManager) context.getSystemService(Context.CONNECTIVITY_SERVICE);
 
-		NetworkRequest networkRequest = new NetworkRequest.Builder().addCapability(NetworkCapabilities.NET_CAPABILITY_INTERNET).addCapability(NetworkCapabilities.NET_CAPABILITY_NOT_RESTRICTED).build();
+		NetworkRequest networkRequest =
+				new NetworkRequest.Builder()
+						.addCapability(NetworkCapabilities.NET_CAPABILITY_INTERNET)
+						.addCapability(NetworkCapabilities.NET_CAPABILITY_NOT_RESTRICTED)
+						.build();
 
-		cm.requestNetwork(networkRequest, new ConnectivityManager.NetworkCallback() {
+		cm.requestNetwork(
+				networkRequest,
+				new ConnectivityManager.NetworkCallback() {
 
-			@Override
-			public void onAvailable(@NonNull Network network) {
-				hasNetworkConnection.set(true);
-				networkStatusChanged();
-				checkInitialized();
-			}
-
-			@Override
-			public void onLost(@NonNull Network network) {
-				hasNetworkConnection.set(false);
-				networkStatusChanged();
-				checkInitialized();
-			}
-
-			private void checkInitialized() {
-
-				if(!hasInitialized) {
-					hasInitialized = true;
-					synchronized(mutex) {
-						mutex.notify();
+					@Override
+					public void onAvailable(@NonNull Network network) {
+						hasNetworkConnection.set(true);
+						networkStatusChanged();
+						checkInitialized();
 					}
-				}
-			}
 
-		});
+					@Override
+					public void onLost(@NonNull Network network) {
+						hasNetworkConnection.set(false);
+						networkStatusChanged();
+						checkInitialized();
+					}
 
-		synchronized(mutex) {
+					private void checkInitialized() {
+
+						if (!hasInitialized) {
+							hasInitialized = true;
+							synchronized (mutex) {
+								mutex.notify();
+							}
+						}
+					}
+				});
+
+		synchronized (mutex) {
 			try {
 				// This is actually not the recommended way to do this, but there
 				// is no other option besides upgrading to API level 26
 				// in order to use the built-in timeout functionality of {@code requestNetwork()}
 				// which in turn gives us access to {@code onUnavailable()} .
 				mutex.wait(5);
-			}
-			catch(InterruptedException ignored) {
+			} catch (InterruptedException ignored) {
 			}
 		}
 
-		if(!hasInitialized) {
+		if (!hasInitialized) {
 			hasInitialized = true;
 		}
 	}
 
 	public static NetworkStatusObserver getInstance(Context context) {
 
-		if(networkStatusObserver == null) {
-			synchronized(NetworkStatusObserver.class) {
-				if(networkStatusObserver == null) {
+		if (networkStatusObserver == null) {
+			synchronized (NetworkStatusObserver.class) {
+				if (networkStatusObserver == null) {
 					networkStatusObserver = new NetworkStatusObserver(context);
 				}
 			}
 		}
 
 		return networkStatusObserver;
-
 	}
 
 	private void networkStatusChanged() {
 		boolean hasNetworkConnection = hasNetworkConnection();
 
-		for(NetworkStatusListener networkStatusListener : networkStatusListeners) {
+		for (NetworkStatusListener networkStatusListener : networkStatusListeners) {
 			networkStatusListener.onNetworkStatusChanged(hasNetworkConnection);
 		}
 	}
@@ -112,7 +116,5 @@ public class NetworkStatusObserver {
 	public interface NetworkStatusListener {
 
 		void onNetworkStatusChanged(boolean hasNetworkConnection);
-
 	}
-
 }

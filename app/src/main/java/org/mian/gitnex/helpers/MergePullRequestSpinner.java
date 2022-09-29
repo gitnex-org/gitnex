@@ -5,7 +5,6 @@ import java.io.Serializable;
 /**
  * @author M M Arif
  */
-
 public class MergePullRequestSpinner implements Serializable {
 
 	private String id;
@@ -15,7 +14,6 @@ public class MergePullRequestSpinner implements Serializable {
 		this.id = id;
 		this.mergerMethod = mergerMethod;
 	}
-
 
 	public String getId() {
 		return id;
@@ -41,14 +39,12 @@ public class MergePullRequestSpinner implements Serializable {
 	@Override
 	public boolean equals(Object obj) {
 
-		if(obj instanceof MergePullRequestSpinner) {
+		if (obj instanceof MergePullRequestSpinner) {
 
 			MergePullRequestSpinner spinner = (MergePullRequestSpinner) obj;
 			return spinner.getMergerMethod().equals(mergerMethod) && spinner.getId().equals(id);
-
 		}
 
 		return false;
 	}
-
 }

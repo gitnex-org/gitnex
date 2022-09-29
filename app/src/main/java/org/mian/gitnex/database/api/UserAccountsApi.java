@@ -2,14 +2,13 @@ package org.mian.gitnex.database.api;
 
 import android.content.Context;
 import androidx.lifecycle.LiveData;
+import java.util.List;
 import org.mian.gitnex.database.dao.UserAccountsDao;
 import org.mian.gitnex.database.models.UserAccount;
-import java.util.List;
 
 /**
  * @author M M Arif
  */
-
 public class UserAccountsApi extends BaseApi {
 
 	private final UserAccountsDao userAccountsDao;
@@ -19,7 +18,14 @@ public class UserAccountsApi extends BaseApi {
 		userAccountsDao = gitnexDatabase.userAccountsDao();
 	}
 
-	public long createNewAccount(String accountName, String instanceUrl, String userName, String token, String serverVersion, int maxResponseItems, int defaultPagingNumber) {
+	public long createNewAccount(
+			String accountName,
+			String instanceUrl,
+			String userName,
+			String token,
+			String serverVersion,
+			int maxResponseItems,
+			int defaultPagingNumber) {
 
 		UserAccount userAccount = new UserAccount();
 		userAccount.setAccountName(accountName);
@@ -32,15 +38,19 @@ public class UserAccountsApi extends BaseApi {
 		userAccount.setDefaultPagingNumber(defaultPagingNumber);
 
 		return userAccountsDao.createAccount(userAccount);
-
 	}
 
 	public void updateServerVersion(final String serverVersion, final int accountId) {
-		executorService.execute(() -> userAccountsDao.updateServerVersion(serverVersion, accountId));
+		executorService.execute(
+				() -> userAccountsDao.updateServerVersion(serverVersion, accountId));
 	}
 
-	public void updateServerPagingLimit(final int maxResponseItems, final int defaultPagingNumber, final int accountId) {
-		executorService.execute(() -> userAccountsDao.updateServerPagingLimit(maxResponseItems, defaultPagingNumber, accountId));
+	public void updateServerPagingLimit(
+			final int maxResponseItems, final int defaultPagingNumber, final int accountId) {
+		executorService.execute(
+				() ->
+						userAccountsDao.updateServerPagingLimit(
+								maxResponseItems, defaultPagingNumber, accountId));
 	}
 
 	public void updateToken(final int accountId, final String token) {
@@ -48,7 +58,8 @@ public class UserAccountsApi extends BaseApi {
 	}
 
 	public void updateTokenByAccountName(final String accountName, final String token) {
-		executorService.execute(() -> userAccountsDao.updateAccountTokenByAccountName(accountName, token));
+		executorService.execute(
+				() -> userAccountsDao.updateAccountTokenByAccountName(accountName, token));
 	}
 
 	public void updateUsername(final int accountId, final String newName) {
@@ -98,5 +109,4 @@ public class UserAccountsApi extends BaseApi {
 	public void login(int accountId) {
 		executorService.execute(() -> userAccountsDao.login(accountId));
 	}
-
 }

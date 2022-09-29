@@ -9,12 +9,12 @@ import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 import com.google.android.material.dialog.MaterialAlertDialogBuilder;
+import java.util.List;
 import org.mian.gitnex.R;
 import org.mian.gitnex.clients.RetrofitClient;
 import org.mian.gitnex.databinding.ActivityAdminCronTasksBinding;
 import org.mian.gitnex.helpers.AlertDialogs;
 import org.mian.gitnex.helpers.Toasty;
-import java.util.List;
 import retrofit2.Call;
 import retrofit2.Callback;
 
@@ -22,8 +22,8 @@ import retrofit2.Callback;
  * @author M M Arif
  * @author qwerty287
  */
-
-public class AdminUnadoptedReposAdapter extends RecyclerView.Adapter<AdminUnadoptedReposAdapter.UnadoptedViewHolder> {
+public class AdminUnadoptedReposAdapter
+		extends RecyclerView.Adapter<AdminUnadoptedReposAdapter.UnadoptedViewHolder> {
 
 	private final Runnable updateList;
 	private final Runnable loadMoreListener;
@@ -31,24 +31,29 @@ public class AdminUnadoptedReposAdapter extends RecyclerView.Adapter<AdminUnadop
 	private List<String> repos;
 	private boolean isLoading = false, hasMore = true;
 
-	public AdminUnadoptedReposAdapter(List<String> list, Runnable updateList, Runnable loadMore, ActivityAdminCronTasksBinding activityAdminCronTasksBinding) {
+	public AdminUnadoptedReposAdapter(
+			List<String> list,
+			Runnable updateList,
+			Runnable loadMore,
+			ActivityAdminCronTasksBinding activityAdminCronTasksBinding) {
 		this.repos = list;
 		this.updateList = updateList;
 		this.loadMoreListener = loadMore;
 		this.activityAdminCronTasksBinding = activityAdminCronTasksBinding;
 	}
 
-	@NonNull
-	@Override
+	@NonNull @Override
 	public UnadoptedViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
 
-		View v = LayoutInflater.from(parent.getContext()).inflate(R.layout.list_admin_unadopted_repos, parent, false);
+		View v =
+				LayoutInflater.from(parent.getContext())
+						.inflate(R.layout.list_admin_unadopted_repos, parent, false);
 		return new UnadoptedViewHolder(v);
 	}
 
 	@Override
 	public void onBindViewHolder(@NonNull UnadoptedViewHolder holder, int position) {
-		if(position >= getItemCount() - 1 && hasMore && !isLoading && loadMoreListener != null) {
+		if (position >= getItemCount() - 1 && hasMore && !isLoading && loadMoreListener != null) {
 			isLoading = true;
 			loadMoreListener.run();
 		}
@@ -69,91 +74,96 @@ public class AdminUnadoptedReposAdapter extends RecyclerView.Adapter<AdminUnadop
 
 		String[] repoSplit = name.split("/");
 
-		Call<Void> call = RetrofitClient.getApiInterface(ctx).adminDeleteUnadoptedRepository(repoSplit[0], repoSplit[1]);
+		Call<Void> call =
+				RetrofitClient.getApiInterface(ctx)
+						.adminDeleteUnadoptedRepository(repoSplit[0], repoSplit[1]);
 
-		call.enqueue(new Callback<>() {
+		call.enqueue(
+				new Callback<>() {
 
-			@Override
-			public void onResponse(@NonNull Call<Void> call, @NonNull retrofit2.Response<Void> response) {
+					@Override
+					public void onResponse(
+							@NonNull Call<Void> call, @NonNull retrofit2.Response<Void> response) {
 
-				switch(response.code()) {
+						switch (response.code()) {
+							case 204:
+								updateList.run();
+								Toasty.success(ctx, ctx.getString(R.string.repoDeletionSuccess));
+								break;
 
-					case 204:
-						updateList.run();
-						Toasty.success(ctx, ctx.getString(R.string.repoDeletionSuccess));
-						break;
+							case 401:
+								AlertDialogs.authorizationTokenRevokedDialog(ctx);
+								break;
 
-					case 401:
-						AlertDialogs.authorizationTokenRevokedDialog(ctx);
-						break;
+							case 403:
+								Toasty.error(ctx, ctx.getString(R.string.authorizeError));
+								break;
 
-					case 403:
-						Toasty.error(ctx, ctx.getString(R.string.authorizeError));
-						break;
+							case 404:
+								Toasty.warning(ctx, ctx.getString(R.string.apiNotFound));
+								break;
 
-					case 404:
-						Toasty.warning(ctx, ctx.getString(R.string.apiNotFound));
-						break;
+							default:
+								Toasty.error(ctx, ctx.getString(R.string.genericError));
+						}
+					}
 
-					default:
-						Toasty.error(ctx, ctx.getString(R.string.genericError));
+					@Override
+					public void onFailure(@NonNull Call<Void> call, @NonNull Throwable t) {
 
-				}
-			}
-
-			@Override
-			public void onFailure(@NonNull Call<Void> call, @NonNull Throwable t) {
-
-				Toasty.error(ctx, ctx.getString(R.string.genericServerResponseError));
-			}
-		});
+						Toasty.error(ctx, ctx.getString(R.string.genericServerResponseError));
+					}
+				});
 	}
 
 	private void adopt(final Context ctx, final String name, int position) {
 
 		String[] repoSplit = name.split("/");
 
-		Call<Void> call = RetrofitClient.getApiInterface(ctx).adminAdoptRepository(repoSplit[0], repoSplit[1]);
+		Call<Void> call =
+				RetrofitClient.getApiInterface(ctx)
+						.adminAdoptRepository(repoSplit[0], repoSplit[1]);
 
-		call.enqueue(new Callback<>() {
+		call.enqueue(
+				new Callback<>() {
 
-			@Override
-			public void onResponse(@NonNull Call<Void> call, @NonNull retrofit2.Response<Void> response) {
+					@Override
+					public void onResponse(
+							@NonNull Call<Void> call, @NonNull retrofit2.Response<Void> response) {
 
-				switch(response.code()) {
+						switch (response.code()) {
+							case 204:
+								updateAdapter(position);
+								if (getItemCount() == 0) {
+									activityAdminCronTasksBinding.noData.setVisibility(
+											View.VISIBLE);
+								}
+								Toasty.success(ctx, ctx.getString(R.string.repoAdopted, name));
+								break;
 
-					case 204:
-						updateAdapter(position);
-						if(getItemCount() == 0) {
-							activityAdminCronTasksBinding.noData.setVisibility(View.VISIBLE);
+							case 401:
+								AlertDialogs.authorizationTokenRevokedDialog(ctx);
+								break;
+
+							case 403:
+								Toasty.error(ctx, ctx.getString(R.string.authorizeError));
+								break;
+
+							case 404:
+								Toasty.warning(ctx, ctx.getString(R.string.apiNotFound));
+								break;
+
+							default:
+								Toasty.error(ctx, ctx.getString(R.string.genericError));
 						}
-						Toasty.success(ctx, ctx.getString(R.string.repoAdopted, name));
-						break;
+					}
 
-					case 401:
-						AlertDialogs.authorizationTokenRevokedDialog(ctx);
-						break;
+					@Override
+					public void onFailure(@NonNull Call<Void> call, @NonNull Throwable t) {
 
-					case 403:
-						Toasty.error(ctx, ctx.getString(R.string.authorizeError));
-						break;
-
-					case 404:
-						Toasty.warning(ctx, ctx.getString(R.string.apiNotFound));
-						break;
-
-					default:
-						Toasty.error(ctx, ctx.getString(R.string.genericError));
-
-				}
-			}
-
-			@Override
-			public void onFailure(@NonNull Call<Void> call, @NonNull Throwable t) {
-
-				Toasty.error(ctx, ctx.getString(R.string.genericServerResponseError));
-			}
-		});
+						Toasty.error(ctx, ctx.getString(R.string.genericServerResponseError));
+					}
+				});
 	}
 
 	@Override
@@ -184,17 +194,32 @@ public class AdminUnadoptedReposAdapter extends RecyclerView.Adapter<AdminUnadop
 
 			name = itemView.findViewById(R.id.repo_name);
 
-			itemView.setOnClickListener(taskInfo -> {
-				String[] repoSplit = repoName.split("/");
+			itemView.setOnClickListener(
+					taskInfo -> {
+						String[] repoSplit = repoName.split("/");
 
-				MaterialAlertDialogBuilder materialAlertDialogBuilder = new MaterialAlertDialogBuilder(ctx).setTitle(repoName).setMessage(ctx.getString(R.string.unadoptedReposMessage, repoSplit[1], repoSplit[0]))
-					.setNeutralButton(R.string.close, null).setPositiveButton(R.string.menuDeleteText, ((dialog, which) -> delete(ctx, repoName)))
-					.setNegativeButton(R.string.adoptRepo, ((dialog, which) -> adopt(ctx, repoName, getBindingAdapterPosition())));
+						MaterialAlertDialogBuilder materialAlertDialogBuilder =
+								new MaterialAlertDialogBuilder(ctx)
+										.setTitle(repoName)
+										.setMessage(
+												ctx.getString(
+														R.string.unadoptedReposMessage,
+														repoSplit[1],
+														repoSplit[0]))
+										.setNeutralButton(R.string.close, null)
+										.setPositiveButton(
+												R.string.menuDeleteText,
+												((dialog, which) -> delete(ctx, repoName)))
+										.setNegativeButton(
+												R.string.adoptRepo,
+												((dialog, which) ->
+														adopt(
+																ctx,
+																repoName,
+																getBindingAdapterPosition())));
 
-				materialAlertDialogBuilder.create().show();
-			});
+						materialAlertDialogBuilder.create().show();
+					});
 		}
-
 	}
-
 }

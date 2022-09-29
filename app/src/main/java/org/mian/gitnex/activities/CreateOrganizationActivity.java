@@ -26,7 +26,6 @@ import retrofit2.Callback;
 /**
  * @author M M Arif
  */
-
 public class CreateOrganizationActivity extends BaseActivity {
 
 	public ImageView closeActivity;
@@ -43,12 +42,14 @@ public class CreateOrganizationActivity extends BaseActivity {
 
 		super.onCreate(savedInstanceState);
 
-		ActivityCreateOrganizationBinding activityCreateOrganizationBinding = ActivityCreateOrganizationBinding.inflate(getLayoutInflater());
+		ActivityCreateOrganizationBinding activityCreateOrganizationBinding =
+				ActivityCreateOrganizationBinding.inflate(getLayoutInflater());
 		setContentView(activityCreateOrganizationBinding.getRoot());
 
 		boolean connToInternet = AppUtil.hasNetworkConnection(appCtx);
 
-		InputMethodManager imm = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
+		InputMethodManager imm =
+				(InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
 
 		closeActivity = activityCreateOrganizationBinding.close;
 		orgName = activityCreateOrganizationBinding.newOrganizationName;
@@ -58,31 +59,30 @@ public class CreateOrganizationActivity extends BaseActivity {
 		assert imm != null;
 		imm.showSoftInput(orgName, InputMethodManager.SHOW_IMPLICIT);
 
-		orgDesc.setOnTouchListener((touchView, motionEvent) -> {
+		orgDesc.setOnTouchListener(
+				(touchView, motionEvent) -> {
+					touchView.getParent().requestDisallowInterceptTouchEvent(true);
 
-			touchView.getParent().requestDisallowInterceptTouchEvent(true);
+					if ((motionEvent.getAction() & MotionEvent.ACTION_UP) != 0
+							&& (motionEvent.getActionMasked() & MotionEvent.ACTION_UP) != 0) {
 
-			if((motionEvent.getAction() & MotionEvent.ACTION_UP) != 0 && (motionEvent.getActionMasked() & MotionEvent.ACTION_UP) != 0) {
-
-				touchView.getParent().requestDisallowInterceptTouchEvent(false);
-			}
-			return false;
-		});
+						touchView.getParent().requestDisallowInterceptTouchEvent(false);
+					}
+					return false;
+				});
 
 		initCloseListener();
 		closeActivity.setOnClickListener(onClickListener);
 
 		createOrganizationButton = activityCreateOrganizationBinding.createNewOrganizationButton;
 
-		if(!connToInternet) {
+		if (!connToInternet) {
 
 			createOrganizationButton.setEnabled(false);
-		}
-		else {
+		} else {
 
 			createOrganizationButton.setOnClickListener(createOrgListener);
 		}
-
 	}
 
 	private void initCloseListener() {
@@ -97,35 +97,32 @@ public class CreateOrganizationActivity extends BaseActivity {
 		String newOrgName = orgName.getText().toString();
 		String newOrgDesc = orgDesc.getText().toString();
 
-		if(!connToInternet) {
+		if (!connToInternet) {
 
 			Toasty.error(ctx, getResources().getString(R.string.checkNetConnection));
 			return;
 		}
 
-		if(!newOrgDesc.equals("")) {
+		if (!newOrgDesc.equals("")) {
 
-			if(newOrgDesc.length() > 255) {
+			if (newOrgDesc.length() > 255) {
 
 				Toasty.warning(ctx, getString(R.string.orgDescError));
 				return;
 			}
 		}
 
-		if(newOrgName.equals("")) {
+		if (newOrgName.equals("")) {
 
 			Toasty.error(ctx, getString(R.string.orgNameErrorEmpty));
-		}
-		else if(!AppUtil.checkStrings(newOrgName)) {
+		} else if (!AppUtil.checkStrings(newOrgName)) {
 
 			Toasty.warning(ctx, getString(R.string.orgNameErrorInvalid));
-		}
-		else {
+		} else {
 
 			disableProcessButton();
 			createNewOrganization(newOrgName, newOrgDesc);
 		}
-
 	}
 
 	private void createNewOrganization(String orgName, String orgDesc) {
@@ -136,55 +133,52 @@ public class CreateOrganizationActivity extends BaseActivity {
 
 		Call<Organization> call = RetrofitClient.getApiInterface(ctx).orgCreate(createOrganization);
 
-		call.enqueue(new Callback<Organization>() {
+		call.enqueue(
+				new Callback<Organization>() {
 
-			@Override
-			public void onResponse(@NonNull Call<Organization> call, @NonNull retrofit2.Response<Organization> response) {
+					@Override
+					public void onResponse(
+							@NonNull Call<Organization> call,
+							@NonNull retrofit2.Response<Organization> response) {
 
-				if(response.code() == 201) {
-					OrganizationsFragment.orgCreated = true;
-					enableProcessButton();
-					Toasty.success(ctx, getString(R.string.orgCreated));
-					finish();
-				}
-				else if(response.code() == 401) {
+						if (response.code() == 201) {
+							OrganizationsFragment.orgCreated = true;
+							enableProcessButton();
+							Toasty.success(ctx, getString(R.string.orgCreated));
+							finish();
+						} else if (response.code() == 401) {
 
-					enableProcessButton();
-					AlertDialogs.authorizationTokenRevokedDialog(ctx);
-				}
-				else if(response.code() == 409) {
+							enableProcessButton();
+							AlertDialogs.authorizationTokenRevokedDialog(ctx);
+						} else if (response.code() == 409) {
 
-					enableProcessButton();
-					Toasty.warning(ctx, getString(R.string.orgExistsError));
-				}
-				else if(response.code() == 422) {
+							enableProcessButton();
+							Toasty.warning(ctx, getString(R.string.orgExistsError));
+						} else if (response.code() == 422) {
 
-					enableProcessButton();
-					Toasty.warning(ctx, getString(R.string.orgExistsError));
-				}
-				else {
+							enableProcessButton();
+							Toasty.warning(ctx, getString(R.string.orgExistsError));
+						} else {
 
-					if(response.code() == 404) {
+							if (response.code() == 404) {
 
-						enableProcessButton();
-						Toasty.warning(ctx, getString(R.string.apiNotFound));
+								enableProcessButton();
+								Toasty.warning(ctx, getString(R.string.apiNotFound));
+							} else {
+
+								enableProcessButton();
+								Toasty.error(ctx, getString(R.string.genericError));
+							}
+						}
 					}
-					else {
 
+					@Override
+					public void onFailure(@NonNull Call<Organization> call, @NonNull Throwable t) {
+
+						Log.e("onFailure", t.toString());
 						enableProcessButton();
-						Toasty.error(ctx, getString(R.string.genericError));
 					}
-				}
-			}
-
-			@Override
-			public void onFailure(@NonNull Call<Organization> call, @NonNull Throwable t) {
-
-				Log.e("onFailure", t.toString());
-				enableProcessButton();
-			}
-		});
-
+				});
 	}
 
 	private void disableProcessButton() {
@@ -196,5 +190,4 @@ public class CreateOrganizationActivity extends BaseActivity {
 
 		createOrganizationButton.setEnabled(true);
 	}
-
 }

@@ -2,14 +2,13 @@ package org.mian.gitnex.database.api;
 
 import android.content.Context;
 import androidx.lifecycle.LiveData;
+import java.util.List;
 import org.mian.gitnex.database.dao.RepositoriesDao;
 import org.mian.gitnex.database.models.Repository;
-import java.util.List;
 
 /**
  * @author M M Arif
  */
-
 public class RepositoriesApi extends BaseApi {
 
 	private final RepositoriesDao repositoriesDao;
@@ -19,7 +18,8 @@ public class RepositoriesApi extends BaseApi {
 		repositoriesDao = gitnexDatabase.repositoriesDao();
 	}
 
-	public long insertRepository(int repoAccountId, String repositoryOwner, String repositoryName, int mostVisited) {
+	public long insertRepository(
+			int repoAccountId, String repositoryOwner, String repositoryName, int mostVisited) {
 
 		Repository repository = new Repository();
 		repository.setRepoAccountId(repoAccountId);
@@ -34,8 +34,10 @@ public class RepositoriesApi extends BaseApi {
 		return repositoriesDao.newRepository(repository);
 	}
 
-	public Repository getRepository(int repoAccountId, String repositoryOwner, String repositoryName) {
-		return repositoriesDao.getSingleRepositoryDao(repoAccountId, repositoryOwner, repositoryName);
+	public Repository getRepository(
+			int repoAccountId, String repositoryOwner, String repositoryName) {
+		return repositoriesDao.getSingleRepositoryDao(
+				repoAccountId, repositoryOwner, repositoryName);
 	}
 
 	public LiveData<List<Repository>> getAllRepositories() {
@@ -46,7 +48,8 @@ public class RepositoriesApi extends BaseApi {
 		return repositoriesDao.getAllRepositoriesByAccountDao(repoAccountId);
 	}
 
-	public Integer checkRepository(int repoAccountId, String repositoryOwner, String repositoryName) {
+	public Integer checkRepository(
+			int repoAccountId, String repositoryOwner, String repositoryName) {
 		return repositoriesDao.checkRepositoryDao(repoAccountId, repositoryOwner, repositoryName);
 	}
 
@@ -54,12 +57,18 @@ public class RepositoriesApi extends BaseApi {
 		return repositoriesDao.fetchRepositoryByIdDao(repositoryId);
 	}
 
-	public Repository fetchRepositoryByAccountIdByRepositoryId(int repositoryId, int repoAccountId) {
-		return repositoriesDao.fetchRepositoryByAccountIdByRepositoryIdDao(repositoryId, repoAccountId);
+	public Repository fetchRepositoryByAccountIdByRepositoryId(
+			int repositoryId, int repoAccountId) {
+		return repositoriesDao.fetchRepositoryByAccountIdByRepositoryIdDao(
+				repositoryId, repoAccountId);
 	}
 
-	public void updateRepositoryOwnerAndName(String repositoryOwner, String repositoryName, int repositoryId) {
-		executorService.execute(() -> repositoriesDao.updateRepositoryOwnerAndName(repositoryOwner, repositoryName, repositoryId));
+	public void updateRepositoryOwnerAndName(
+			String repositoryOwner, String repositoryName, int repositoryId) {
+		executorService.execute(
+				() ->
+						repositoriesDao.updateRepositoryOwnerAndName(
+								repositoryOwner, repositoryName, repositoryId));
 	}
 
 	public void deleteRepositoriesByAccount(final int repoAccountId) {
@@ -71,7 +80,8 @@ public class RepositoriesApi extends BaseApi {
 	}
 
 	public void updateRepositoryMostVisited(int mostVisited, int repositoryId) {
-		executorService.execute(() -> repositoriesDao.updateRepositoryMostVisited(mostVisited, repositoryId));
+		executorService.execute(
+				() -> repositoriesDao.updateRepositoryMostVisited(mostVisited, repositoryId));
 	}
 
 	public void resetAllRepositoryMostVisited(int repoAccountId) {
@@ -81,5 +91,4 @@ public class RepositoriesApi extends BaseApi {
 	public LiveData<List<Repository>> fetchAllMostVisited(int repoAccountId) {
 		return repositoriesDao.fetchAllMostVisited(repoAccountId);
 	}
-
 }

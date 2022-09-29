@@ -15,26 +15,30 @@ import org.mian.gitnex.structs.BottomSheetListener;
 /**
  * @author M M Arif
  */
-
 public class BottomSheetMilestonesFilterFragment extends BottomSheetDialogFragment {
 
 	private BottomSheetListener bmListener;
 
-	@Nullable
-	@Override
-	public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
+	@Nullable @Override
+	public View onCreateView(
+			@NonNull LayoutInflater inflater,
+			@Nullable ViewGroup container,
+			@Nullable Bundle savedInstanceState) {
 
-		BottomSheetMilestonesFilterBinding bottomSheetMilestonesFilterBinding = BottomSheetMilestonesFilterBinding.inflate(inflater, container, false);
+		BottomSheetMilestonesFilterBinding bottomSheetMilestonesFilterBinding =
+				BottomSheetMilestonesFilterBinding.inflate(inflater, container, false);
 
-		bottomSheetMilestonesFilterBinding.openMilestone.setOnClickListener(v1 -> {
-			bmListener.onButtonClicked("openMilestone");
-			dismiss();
-		});
+		bottomSheetMilestonesFilterBinding.openMilestone.setOnClickListener(
+				v1 -> {
+					bmListener.onButtonClicked("openMilestone");
+					dismiss();
+				});
 
-		bottomSheetMilestonesFilterBinding.closedMilestone.setOnClickListener(v12 -> {
-			bmListener.onButtonClicked("closedMilestone");
-			dismiss();
-		});
+		bottomSheetMilestonesFilterBinding.closedMilestone.setOnClickListener(
+				v12 -> {
+					bmListener.onButtonClicked("closedMilestone");
+					dismiss();
+				});
 
 		return bottomSheetMilestonesFilterBinding.getRoot();
 	}
@@ -46,10 +50,8 @@ public class BottomSheetMilestonesFilterFragment extends BottomSheetDialogFragme
 
 		try {
 			bmListener = (BottomSheetListener) context;
-		}
-		catch(ClassCastException e) {
+		} catch (ClassCastException e) {
 			Log.e("MilestonesFilterBs", e.toString());
 		}
 	}
-
 }

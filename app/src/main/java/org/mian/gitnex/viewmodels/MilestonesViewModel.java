@@ -5,13 +5,13 @@ import androidx.annotation.NonNull;
 import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MutableLiveData;
 import androidx.lifecycle.ViewModel;
+import java.util.List;
 import org.gitnex.tea4j.v2.models.Milestone;
 import org.mian.gitnex.R;
 import org.mian.gitnex.adapters.MilestonesAdapter;
 import org.mian.gitnex.clients.RetrofitClient;
 import org.mian.gitnex.helpers.Constants;
 import org.mian.gitnex.helpers.Toasty;
-import java.util.List;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
@@ -19,13 +19,13 @@ import retrofit2.Response;
 /**
  * @author M M Arif
  */
-
 public class MilestonesViewModel extends ViewModel {
 
 	private MutableLiveData<List<Milestone>> milestonesList;
 	private int resultLimit;
 
-	public LiveData<List<Milestone>> getMilestonesList(String repoOwner, String repoName, String milestoneState, Context ctx) {
+	public LiveData<List<Milestone>> getMilestonesList(
+			String repoOwner, String repoName, String milestoneState, Context ctx) {
 
 		milestonesList = new MutableLiveData<>();
 		loadMilestonesList(repoOwner, repoName, milestoneState, ctx);
@@ -33,65 +33,82 @@ public class MilestonesViewModel extends ViewModel {
 		return milestonesList;
 	}
 
-	public void loadMilestonesList(String repoOwner, String repoName, String milestoneState, Context ctx) {
+	public void loadMilestonesList(
+			String repoOwner, String repoName, String milestoneState, Context ctx) {
 
-		Call<List<Milestone>> call = RetrofitClient.getApiInterface(ctx).issueGetMilestonesList(repoOwner, repoName, milestoneState, null, 1, resultLimit);
+		Call<List<Milestone>> call =
+				RetrofitClient.getApiInterface(ctx)
+						.issueGetMilestonesList(
+								repoOwner, repoName, milestoneState, null, 1, resultLimit);
 
-		call.enqueue(new Callback<>() {
+		call.enqueue(
+				new Callback<>() {
 
-			@Override
-			public void onResponse(@NonNull Call<List<Milestone>> call, @NonNull Response<List<Milestone>> response) {
+					@Override
+					public void onResponse(
+							@NonNull Call<List<Milestone>> call,
+							@NonNull Response<List<Milestone>> response) {
 
-				if(response.isSuccessful()) {
-					milestonesList.postValue(response.body());
-				}
-				else {
-					Toasty.error(ctx, ctx.getString(R.string.genericError));
-				}
-			}
+						if (response.isSuccessful()) {
+							milestonesList.postValue(response.body());
+						} else {
+							Toasty.error(ctx, ctx.getString(R.string.genericError));
+						}
+					}
 
-			@Override
-			public void onFailure(@NonNull Call<List<Milestone>> call, @NonNull Throwable t) {
+					@Override
+					public void onFailure(
+							@NonNull Call<List<Milestone>> call, @NonNull Throwable t) {
 
-				Toasty.error(ctx, ctx.getString(R.string.genericServerResponseError));
-			}
-		});
+						Toasty.error(ctx, ctx.getString(R.string.genericServerResponseError));
+					}
+				});
 	}
 
-	public void loadMoreMilestones(String repoOwner, String repoName, int page, String milestoneState, Context ctx, MilestonesAdapter adapter) {
+	public void loadMoreMilestones(
+			String repoOwner,
+			String repoName,
+			int page,
+			String milestoneState,
+			Context ctx,
+			MilestonesAdapter adapter) {
 
-		Call<List<Milestone>> call = RetrofitClient.getApiInterface(ctx).issueGetMilestonesList(repoOwner, repoName, milestoneState, null, page, resultLimit);
+		Call<List<Milestone>> call =
+				RetrofitClient.getApiInterface(ctx)
+						.issueGetMilestonesList(
+								repoOwner, repoName, milestoneState, null, page, resultLimit);
 
-		call.enqueue(new Callback<>() {
+		call.enqueue(
+				new Callback<>() {
 
-			@Override
-			public void onResponse(@NonNull Call<List<Milestone>> call, @NonNull Response<List<Milestone>> response) {
+					@Override
+					public void onResponse(
+							@NonNull Call<List<Milestone>> call,
+							@NonNull Response<List<Milestone>> response) {
 
-				if(response.isSuccessful()) {
+						if (response.isSuccessful()) {
 
-					List<Milestone> list = milestonesList.getValue();
-					assert list != null;
-					assert response.body() != null;
+							List<Milestone> list = milestonesList.getValue();
+							assert list != null;
+							assert response.body() != null;
 
-					if(response.body().size() != 0) {
-						list.addAll(response.body());
-						adapter.updateList(list);
+							if (response.body().size() != 0) {
+								list.addAll(response.body());
+								adapter.updateList(list);
+							} else {
+								adapter.setMoreDataAvailable(false);
+							}
+						} else {
+							Toasty.error(ctx, ctx.getString(R.string.genericError));
+						}
 					}
-					else {
-						adapter.setMoreDataAvailable(false);
+
+					@Override
+					public void onFailure(
+							@NonNull Call<List<Milestone>> call, @NonNull Throwable t) {
+
+						Toasty.error(ctx, ctx.getString(R.string.genericServerResponseError));
 					}
-				}
-				else {
-					Toasty.error(ctx, ctx.getString(R.string.genericError));
-				}
-			}
-
-			@Override
-			public void onFailure(@NonNull Call<List<Milestone>> call, @NonNull Throwable t) {
-
-				Toasty.error(ctx, ctx.getString(R.string.genericServerResponseError));
-			}
-		});
+				});
 	}
-
 }

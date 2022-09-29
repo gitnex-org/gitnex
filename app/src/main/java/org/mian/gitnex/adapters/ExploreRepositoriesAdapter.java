@@ -14,6 +14,10 @@ import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 import com.amulyakhare.textdrawable.TextDrawable;
 import com.amulyakhare.textdrawable.util.ColorGenerator;
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
+import java.util.List;
+import java.util.Locale;
 import org.mian.gitnex.R;
 import org.mian.gitnex.activities.RepoDetailActivity;
 import org.mian.gitnex.clients.PicassoService;
@@ -29,7 +33,6 @@ import java.util.Locale;
 /**
  * @author M M Arif
  */
-
 public class ExploreRepositoriesAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
 
 	private final Context context;
@@ -38,22 +41,26 @@ public class ExploreRepositoriesAdapter extends RecyclerView.Adapter<RecyclerVie
 	private Runnable loadMoreListener;
 	private boolean isLoading = false, isMoreDataAvailable = true;
 
-	public ExploreRepositoriesAdapter(List<org.gitnex.tea4j.v2.models.Repository> dataList, Context ctx) {
+	public ExploreRepositoriesAdapter(
+			List<org.gitnex.tea4j.v2.models.Repository> dataList, Context ctx) {
 		this.context = ctx;
 		this.reposList = dataList;
 		this.tinyDb = TinyDB.getInstance(context);
 	}
 
-	@NonNull
-	@Override
+	@NonNull @Override
 	public RecyclerView.ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
 		LayoutInflater inflater = LayoutInflater.from(context);
-		return new ExploreRepositoriesAdapter.RepositoriesHolder(inflater.inflate(R.layout.list_repositories, parent, false));
+		return new ExploreRepositoriesAdapter.RepositoriesHolder(
+				inflater.inflate(R.layout.list_repositories, parent, false));
 	}
 
 	@Override
 	public void onBindViewHolder(@NonNull RecyclerView.ViewHolder holder, int position) {
-		if(position >= getItemCount() - 1 && isMoreDataAvailable && !isLoading && loadMoreListener != null) {
+		if (position >= getItemCount() - 1
+				&& isMoreDataAvailable
+				&& !isLoading
+				&& loadMoreListener != null) {
 			isLoading = true;
 			loadMoreListener.run();
 		}
@@ -112,14 +119,15 @@ public class ExploreRepositoriesAdapter extends RecyclerView.Adapter<RecyclerVie
 			repoLastUpdated = itemView.findViewById(R.id.repoLastUpdated);
 			spacerView = itemView.findViewById(R.id.spacerView);
 
-			itemView.setOnClickListener(v -> {
-				Context context = v.getContext();
-				RepositoryContext repo = new RepositoryContext(userRepositories, context);
-				repo.saveToDB(context);
-				Intent intent = repo.getIntent(context, RepoDetailActivity.class);
+			itemView.setOnClickListener(
+					v -> {
+						Context context = v.getContext();
+						RepositoryContext repo = new RepositoryContext(userRepositories, context);
+						repo.saveToDB(context);
+						Intent intent = repo.getIntent(context, RepoDetailActivity.class);
 
-				context.startActivity(intent);
-			});
+						context.startActivity(intent);
+					});
 		}
 
 		void bindData(org.gitnex.tea4j.v2.models.Repository userRepositories) {
@@ -136,18 +144,31 @@ public class ExploreRepositoriesAdapter extends RecyclerView.Adapter<RecyclerVie
 			int color = generator.getColor(userRepositories.getName());
 			String firstCharacter = String.valueOf(userRepositories.getFullName().charAt(0));
 
-			TextDrawable drawable = TextDrawable.builder().beginConfig().useFont(Typeface.DEFAULT).fontSize(18).toUpperCase().width(28).height(28).endConfig().buildRoundRect(firstCharacter, color, 14);
+			TextDrawable drawable =
+					TextDrawable.builder()
+							.beginConfig()
+							.useFont(Typeface.DEFAULT)
+							.fontSize(18)
+							.toUpperCase()
+							.width(28)
+							.height(28)
+							.endConfig()
+							.buildRoundRect(firstCharacter, color, 14);
 
-			if(userRepositories.getAvatarUrl() != null) {
-				if(!userRepositories.getAvatarUrl().equals("")) {
-					PicassoService.getInstance(context).get().load(userRepositories.getAvatarUrl()).placeholder(R.drawable.loader_animated).transform(new RoundedTransformation(imgRadius, 0)).resize(120, 120).centerCrop()
-						.into(image);
-				}
-				else {
+			if (userRepositories.getAvatarUrl() != null) {
+				if (!userRepositories.getAvatarUrl().equals("")) {
+					PicassoService.getInstance(context)
+							.get()
+							.load(userRepositories.getAvatarUrl())
+							.placeholder(R.drawable.loader_animated)
+							.transform(new RoundedTransformation(imgRadius, 0))
+							.resize(120, 120)
+							.centerCrop()
+							.into(image);
+				} else {
 					image.setImageDrawable(drawable);
 				}
-			}
-			else {
+			} else {
 				image.setImageDrawable(drawable);
 			}
 
@@ -159,17 +180,16 @@ public class ExploreRepositoriesAdapter extends RecyclerView.Adapter<RecyclerVie
 				repoLastUpdated.setVisibility(View.GONE);
 			}
 
-			if(!userRepositories.getDescription().equals("")) {
+			if (!userRepositories.getDescription().equals("")) {
 				repoDescription.setVisibility(View.VISIBLE);
 				repoDescription.setText(userRepositories.getDescription());
 				spacerView.setVisibility(View.GONE);
-			}
-			else {
+			} else {
 				repoDescription.setVisibility(View.GONE);
 				spacerView.setVisibility(View.VISIBLE);
 			}
 
-			if(isRepoAdmin == null) {
+			if (isRepoAdmin == null) {
 				isRepoAdmin = new CheckBox(context);
 			}
 			isRepoAdmin.setChecked(userRepositories.getPermissions().isAdmin());

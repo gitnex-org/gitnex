@@ -10,7 +10,6 @@ import org.mian.gitnex.helpers.Toasty;
 /**
  * @author M M Arif
  */
-
 public class SettingsReportsActivity extends BaseActivity {
 
 	private View.OnClickListener onClickListener;
@@ -20,7 +19,8 @@ public class SettingsReportsActivity extends BaseActivity {
 
 		super.onCreate(savedInstanceState);
 
-		ActivitySettingsReportsBinding activitySettingsReportsBinding = ActivitySettingsReportsBinding.inflate(getLayoutInflater());
+		ActivitySettingsReportsBinding activitySettingsReportsBinding =
+				ActivitySettingsReportsBinding.inflate(getLayoutInflater());
 		setContentView(activitySettingsReportsBinding.getRoot());
 
 		ImageView closeActivity = activitySettingsReportsBinding.close;
@@ -28,19 +28,22 @@ public class SettingsReportsActivity extends BaseActivity {
 		initCloseListener();
 		closeActivity.setOnClickListener(onClickListener);
 
-		activitySettingsReportsBinding.crashReportsSwitch.setChecked(tinyDB.getBoolean("crashReportingEnabled", true));
+		activitySettingsReportsBinding.crashReportsSwitch.setChecked(
+				tinyDB.getBoolean("crashReportingEnabled", true));
 
 		// crash reports switcher
-		activitySettingsReportsBinding.crashReportsSwitch.setOnCheckedChangeListener((buttonView, isChecked) -> {
-
-			tinyDB.putBoolean("crashReportingEnabled", isChecked);
-			Toasty.success(appCtx, getResources().getString(R.string.settingsSave));
-		});
-		activitySettingsReportsBinding.enableSendReports.setOnClickListener(v -> activitySettingsReportsBinding.crashReportsSwitch.setChecked(!activitySettingsReportsBinding.crashReportsSwitch.isChecked()));
+		activitySettingsReportsBinding.crashReportsSwitch.setOnCheckedChangeListener(
+				(buttonView, isChecked) -> {
+					tinyDB.putBoolean("crashReportingEnabled", isChecked);
+					Toasty.success(appCtx, getResources().getString(R.string.settingsSave));
+				});
+		activitySettingsReportsBinding.enableSendReports.setOnClickListener(
+				v ->
+						activitySettingsReportsBinding.crashReportsSwitch.setChecked(
+								!activitySettingsReportsBinding.crashReportsSwitch.isChecked()));
 	}
 
 	private void initCloseListener() {
 		onClickListener = view -> finish();
 	}
-
 }

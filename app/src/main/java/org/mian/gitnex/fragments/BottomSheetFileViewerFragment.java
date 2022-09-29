@@ -15,61 +15,62 @@ import org.mian.gitnex.structs.BottomSheetListener;
 /**
  * @author M M Arif
  */
-
 public class BottomSheetFileViewerFragment extends BottomSheetDialogFragment {
 
 	private BottomSheetListener bmListener;
 
-	@Nullable
-	@Override
-	public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
+	@Nullable @Override
+	public View onCreateView(
+			@NonNull LayoutInflater inflater,
+			@Nullable ViewGroup container,
+			@Nullable Bundle savedInstanceState) {
 
 		RepositoryContext repository = RepositoryContext.fromBundle(requireArguments());
-		BottomSheetFileViewerBinding bottomSheetFileViewerBinding = BottomSheetFileViewerBinding.inflate(inflater, container, false);
+		BottomSheetFileViewerBinding bottomSheetFileViewerBinding =
+				BottomSheetFileViewerBinding.inflate(inflater, container, false);
 
-		if(!repository.getPermissions().isPush()) {
+		if (!repository.getPermissions().isPush()) {
 			bottomSheetFileViewerBinding.deleteFile.setVisibility(View.GONE);
 			bottomSheetFileViewerBinding.editFile.setVisibility(View.GONE);
-		}
-		else if(!requireArguments().getBoolean("editable")) {
+		} else if (!requireArguments().getBoolean("editable")) {
 			bottomSheetFileViewerBinding.editFile.setVisibility(View.GONE);
 		}
 
-		bottomSheetFileViewerBinding.downloadFile.setOnClickListener(v1 -> {
+		bottomSheetFileViewerBinding.downloadFile.setOnClickListener(
+				v1 -> {
+					bmListener.onButtonClicked("downloadFile");
+					dismiss();
+				});
 
-			bmListener.onButtonClicked("downloadFile");
-			dismiss();
-		});
+		bottomSheetFileViewerBinding.deleteFile.setOnClickListener(
+				v1 -> {
+					bmListener.onButtonClicked("deleteFile");
+					dismiss();
+				});
 
-		bottomSheetFileViewerBinding.deleteFile.setOnClickListener(v1 -> {
+		bottomSheetFileViewerBinding.editFile.setOnClickListener(
+				v1 -> {
+					bmListener.onButtonClicked("editFile");
+					dismiss();
+				});
 
-			bmListener.onButtonClicked("deleteFile");
-			dismiss();
-		});
+		bottomSheetFileViewerBinding.copyUrl.setOnClickListener(
+				v1 -> {
+					bmListener.onButtonClicked("copyUrl");
+					dismiss();
+				});
 
-		bottomSheetFileViewerBinding.editFile.setOnClickListener(v1 -> {
+		bottomSheetFileViewerBinding.share.setOnClickListener(
+				v1 -> {
+					bmListener.onButtonClicked("share");
+					dismiss();
+				});
 
-			bmListener.onButtonClicked("editFile");
-			dismiss();
-		});
-
-		bottomSheetFileViewerBinding.copyUrl.setOnClickListener(v1 -> {
-
-			bmListener.onButtonClicked("copyUrl");
-			dismiss();
-		});
-
-		bottomSheetFileViewerBinding.share.setOnClickListener(v1 -> {
-
-			bmListener.onButtonClicked("share");
-			dismiss();
-		});
-
-		bottomSheetFileViewerBinding.open.setOnClickListener(v1 -> {
-
-			bmListener.onButtonClicked("open");
-			dismiss();
-		});
+		bottomSheetFileViewerBinding.open.setOnClickListener(
+				v1 -> {
+					bmListener.onButtonClicked("open");
+					dismiss();
+				});
 
 		return bottomSheetFileViewerBinding.getRoot();
 	}
@@ -80,10 +81,8 @@ public class BottomSheetFileViewerFragment extends BottomSheetDialogFragment {
 
 		try {
 			bmListener = (BottomSheetListener) context;
-		}
-		catch(ClassCastException e) {
+		} catch (ClassCastException e) {
 			throw new ClassCastException(context + " must implement BottomSheetListener");
 		}
 	}
-
 }

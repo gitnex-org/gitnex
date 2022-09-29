@@ -14,16 +14,15 @@ import androidx.core.content.res.ResourcesCompat;
 import androidx.core.text.HtmlCompat;
 import androidx.core.widget.ImageViewCompat;
 import androidx.recyclerview.widget.RecyclerView;
+import java.util.List;
 import org.apache.commons.lang3.StringUtils;
 import org.gitnex.tea4j.v2.models.NotificationThread;
 import org.mian.gitnex.R;
 import org.mian.gitnex.helpers.AppUtil;
-import java.util.List;
 
 /**
  * @author opyale
  */
-
 public class NotificationsAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
 
 	private final Context context;
@@ -32,7 +31,11 @@ public class NotificationsAdapter extends RecyclerView.Adapter<RecyclerView.View
 	private List<NotificationThread> notificationThreads;
 	private boolean isLoading = false, isMoreDataAvailable = true;
 
-	public NotificationsAdapter(Context context, List<NotificationThread> notificationThreads, OnMoreClickedListener onMoreClickedListener, OnNotificationClickedListener onNotificationClickedListener) {
+	public NotificationsAdapter(
+			Context context,
+			List<NotificationThread> notificationThreads,
+			OnMoreClickedListener onMoreClickedListener,
+			OnNotificationClickedListener onNotificationClickedListener) {
 
 		this.context = context;
 		this.notificationThreads = notificationThreads;
@@ -40,19 +43,20 @@ public class NotificationsAdapter extends RecyclerView.Adapter<RecyclerView.View
 		this.onNotificationClickedListener = onNotificationClickedListener;
 	}
 
-	@NonNull
-	@Override
+	@NonNull @Override
 	public RecyclerView.ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
 		LayoutInflater inflater = LayoutInflater.from(context);
-		return new NotificationsAdapter.NotificationsHolder(inflater.inflate(R.layout.list_notifications, parent, false));
+		return new NotificationsAdapter.NotificationsHolder(
+				inflater.inflate(R.layout.list_notifications, parent, false));
 	}
 
 	@Override
 	public void onBindViewHolder(@NonNull RecyclerView.ViewHolder holder, int position) {
-		if(position >= getItemCount() - 1 && isMoreDataAvailable && !isLoading) {
+		if (position >= getItemCount() - 1 && isMoreDataAvailable && !isLoading) {
 			isLoading = true;
 		}
-		((NotificationsAdapter.NotificationsHolder) holder).bindData(notificationThreads.get(position));
+		((NotificationsAdapter.NotificationsHolder) holder)
+				.bindData(notificationThreads.get(position));
 	}
 
 	@Override
@@ -83,13 +87,11 @@ public class NotificationsAdapter extends RecyclerView.Adapter<RecyclerView.View
 	public interface OnNotificationClickedListener {
 
 		void onNotificationClicked(NotificationThread notificationThread);
-
 	}
 
 	public interface OnMoreClickedListener {
 
 		void onMoreClicked(NotificationThread notificationThread);
-
 	}
 
 	class NotificationsHolder extends RecyclerView.ViewHolder {
@@ -118,30 +120,37 @@ public class NotificationsAdapter extends RecyclerView.Adapter<RecyclerView.View
 			String url = notificationThread.getSubject().getUrl();
 			String subjectId = "";
 
-			if(StringUtils.containsAny(notificationThread.getSubject().getType().toLowerCase(), "pull", "issue")) {
-				subjectId = "<font color='" + ResourcesCompat.getColor(context.getResources(), R.color.lightGray, null) + "'>" + context.getResources().getString(R.string.hash) + url.substring(
-					url.lastIndexOf("/") + 1) + "</font>";
+			if (StringUtils.containsAny(
+					notificationThread.getSubject().getType().toLowerCase(), "pull", "issue")) {
+				subjectId =
+						"<font color='"
+								+ ResourcesCompat.getColor(
+										context.getResources(), R.color.lightGray, null)
+								+ "'>"
+								+ context.getResources().getString(R.string.hash)
+								+ url.substring(url.lastIndexOf("/") + 1)
+								+ "</font>";
 			}
 
-			subject.setText(HtmlCompat.fromHtml(subjectId + " " + notificationThread.getSubject().getTitle(), HtmlCompat.FROM_HTML_MODE_LEGACY));
-			if(!notificationThread.getSubject().getType().equalsIgnoreCase("repository")) {
+			subject.setText(
+					HtmlCompat.fromHtml(
+							subjectId + " " + notificationThread.getSubject().getTitle(),
+							HtmlCompat.FROM_HTML_MODE_LEGACY));
+			if (!notificationThread.getSubject().getType().equalsIgnoreCase("repository")) {
 				repository.setText(notificationThread.getRepository().getFullName());
-			}
-			else {
+			} else {
 				repository.setVisibility(View.GONE);
 				pinned.setVisibility(View.GONE);
 				pinned = itemView.findViewById(R.id.pinnedVertical);
 			}
 
-			if(notificationThread.isPinned()) {
+			if (notificationThread.isPinned()) {
 				pinned.setVisibility(View.VISIBLE);
-			}
-			else {
+			} else {
 				pinned.setVisibility(View.GONE);
 			}
 
-			switch(notificationThread.getSubject().getType().toLowerCase()) {
-
+			switch (notificationThread.getSubject().getType().toLowerCase()) {
 				case "pull":
 					type.setImageResource(R.drawable.ic_pull_request);
 					break;
@@ -158,29 +167,36 @@ public class NotificationsAdapter extends RecyclerView.Adapter<RecyclerView.View
 				default:
 					type.setImageResource(R.drawable.ic_question);
 					break;
-
 			}
 
-			switch(notificationThread.getSubject().getState().toLowerCase()) {
-
+			switch (notificationThread.getSubject().getState().toLowerCase()) {
 				case "closed":
-					ImageViewCompat.setImageTintList(type, ColorStateList.valueOf(context.getResources().getColor(R.color.iconIssuePrClosedColor)));
+					ImageViewCompat.setImageTintList(
+							type,
+							ColorStateList.valueOf(
+									context.getResources()
+											.getColor(R.color.iconIssuePrClosedColor)));
 					break;
 				case "merged":
-					ImageViewCompat.setImageTintList(type, ColorStateList.valueOf(context.getResources().getColor(R.color.iconPrMergedColor)));
+					ImageViewCompat.setImageTintList(
+							type,
+							ColorStateList.valueOf(
+									context.getResources().getColor(R.color.iconPrMergedColor)));
 					break;
 
 				default:
 				case "open":
-					ImageViewCompat.setImageTintList(type, ColorStateList.valueOf(AppUtil.getColorFromAttribute(context, R.attr.iconsColor)));
+					ImageViewCompat.setImageTintList(
+							type,
+							ColorStateList.valueOf(
+									AppUtil.getColorFromAttribute(context, R.attr.iconsColor)));
 					break;
 			}
 
-			frame.setOnClickListener(v -> onNotificationClickedListener.onNotificationClicked(notificationThread));
+			frame.setOnClickListener(
+					v -> onNotificationClickedListener.onNotificationClicked(notificationThread));
 
 			more.setOnClickListener(v -> onMoreClickedListener.onMoreClicked(notificationThread));
 		}
-
 	}
-
 }

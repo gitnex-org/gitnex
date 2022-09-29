@@ -25,7 +25,6 @@ import retrofit2.Callback;
 /**
  * @author M M Arif
  */
-
 public class OrganizationInfoFragment extends Fragment {
 
 	private static final String orgNameF = "param1";
@@ -38,8 +37,7 @@ public class OrganizationInfoFragment extends Fragment {
 	private TextView orgLocationInfo;
 	private LinearLayout orgInfoLayout;
 
-	public OrganizationInfoFragment() {
-	}
+	public OrganizationInfoFragment() {}
 
 	public static OrganizationInfoFragment newInstance(String param1) {
 		OrganizationInfoFragment fragment = new OrganizationInfoFragment();
@@ -52,15 +50,17 @@ public class OrganizationInfoFragment extends Fragment {
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
-		if(getArguments() != null) {
+		if (getArguments() != null) {
 			orgName = getArguments().getString(orgNameF);
 		}
 	}
 
 	@Override
-	public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
+	public View onCreateView(
+			@NonNull LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
 
-		FragmentOrganizationInfoBinding fragmentOrganizationInfoBinding = FragmentOrganizationInfoBinding.inflate(inflater, container, false);
+		FragmentOrganizationInfoBinding fragmentOrganizationInfoBinding =
+				FragmentOrganizationInfoBinding.inflate(inflater, container, false);
 
 		ctx = getContext();
 
@@ -77,69 +77,70 @@ public class OrganizationInfoFragment extends Fragment {
 		getOrgInfo(orgName);
 
 		return fragmentOrganizationInfoBinding.getRoot();
-
 	}
 
 	private void getOrgInfo(final String owner) {
 
 		Call<Organization> call = RetrofitClient.getApiInterface(getContext()).orgGet(owner);
 
-		call.enqueue(new Callback<Organization>() {
+		call.enqueue(
+				new Callback<Organization>() {
 
-			@Override
-			public void onResponse(@NonNull Call<Organization> call, @NonNull retrofit2.Response<Organization> response) {
+					@Override
+					public void onResponse(
+							@NonNull Call<Organization> call,
+							@NonNull retrofit2.Response<Organization> response) {
 
-				Organization orgInfo = response.body();
+						Organization orgInfo = response.body();
 
-				if(response.code() == 200) {
+						if (response.code() == 200) {
 
-					orgInfoLayout.setVisibility(View.VISIBLE);
+							orgInfoLayout.setVisibility(View.VISIBLE);
 
-					assert orgInfo != null;
+							assert orgInfo != null;
 
-					PicassoService.getInstance(ctx).get().load(orgInfo.getAvatarUrl()).placeholder(R.drawable.loader_animated).transform(new RoundedTransformation(8, 0)).resize(230, 230).centerCrop().into(orgAvatar);
+							PicassoService.getInstance(ctx)
+									.get()
+									.load(orgInfo.getAvatarUrl())
+									.placeholder(R.drawable.loader_animated)
+									.transform(new RoundedTransformation(8, 0))
+									.resize(230, 230)
+									.centerCrop()
+									.into(orgAvatar);
 
-					if(!orgInfo.getDescription().isEmpty()) {
-						Markdown.render(ctx, orgInfo.getDescription(), orgDescInfo);
+							if (!orgInfo.getDescription().isEmpty()) {
+								Markdown.render(ctx, orgInfo.getDescription(), orgDescInfo);
+							} else {
+								orgDescInfo.setText(getString(R.string.noDataDescription));
+							}
+
+							if (!orgInfo.getWebsite().isEmpty()) {
+								orgWebsiteInfo.setText(orgInfo.getWebsite());
+							} else {
+								orgWebsiteInfo.setText(getString(R.string.noDataWebsite));
+							}
+
+							if (!orgInfo.getLocation().isEmpty()) {
+								orgLocationInfo.setText(orgInfo.getLocation());
+							} else {
+								orgLocationInfo.setText(getString(R.string.noDataLocation));
+							}
+
+							mProgressBar.setVisibility(View.GONE);
+
+						} else if (response.code() == 404) {
+
+							mProgressBar.setVisibility(View.GONE);
+
+						} else {
+							Log.e("onFailure", String.valueOf(response.code()));
+						}
 					}
-					else {
-						orgDescInfo.setText(getString(R.string.noDataDescription));
+
+					@Override
+					public void onFailure(@NonNull Call<Organization> call, @NonNull Throwable t) {
+						Log.e("onFailure", t.toString());
 					}
-
-					if(!orgInfo.getWebsite().isEmpty()) {
-						orgWebsiteInfo.setText(orgInfo.getWebsite());
-					}
-					else {
-						orgWebsiteInfo.setText(getString(R.string.noDataWebsite));
-					}
-
-					if(!orgInfo.getLocation().isEmpty()) {
-						orgLocationInfo.setText(orgInfo.getLocation());
-					}
-					else {
-						orgLocationInfo.setText(getString(R.string.noDataLocation));
-					}
-
-					mProgressBar.setVisibility(View.GONE);
-
-				}
-				else if(response.code() == 404) {
-
-					mProgressBar.setVisibility(View.GONE);
-
-				}
-				else {
-					Log.e("onFailure", String.valueOf(response.code()));
-				}
-
-			}
-
-			@Override
-			public void onFailure(@NonNull Call<Organization> call, @NonNull Throwable t) {
-				Log.e("onFailure", t.toString());
-			}
-		});
-
+				});
 	}
-
 }

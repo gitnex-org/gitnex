@@ -5,7 +5,6 @@ import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.util.Log;
 import com.squareup.picasso.Cache;
-import org.mian.gitnex.R;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
@@ -16,15 +15,16 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.Objects;
 import java.util.UUID;
+import org.mian.gitnex.R;
 
 /**
  * @author opyale
  */
-
 public class PicassoCache implements Cache {
 
 	private static final Bitmap.CompressFormat COMPRESS_FORMAT = Bitmap.CompressFormat.PNG;
-	private static final int COMPRESSION_QUALITY = 50; // 0 = high compression (low file size) | 100 = no compression
+	private static final int COMPRESSION_QUALITY =
+			50; // 0 = high compression (low file size) | 100 = no compression
 	private static final String CACHE_MAP_FILE = "cacheMap";
 	private final String TAG = "PicassoCache";
 	private final int CACHE_SIZE;
@@ -36,12 +36,19 @@ public class PicassoCache implements Cache {
 
 		TinyDB tinyDb = TinyDB.getInstance(ctx);
 
-		CACHE_SIZE = FilesData.returnOnlyNumberFileSize(tinyDb.getString("cacheSizeImagesStr", ctx.getString(R.string.cacheSizeImagesSelectionSelectedText))) * 1024 * 1024;
+		CACHE_SIZE =
+				FilesData.returnOnlyNumberFileSize(
+								tinyDb.getString(
+										"cacheSizeImagesStr",
+										ctx.getString(
+												R.string.cacheSizeImagesSelectionSelectedText)))
+						* 1024
+						* 1024;
 		this.cachePath = cachePath;
 		cacheMap = new HashMap<>();
 		this.ctx = ctx;
 
-		if(cacheMapExists(cachePath)) {
+		if (cacheMapExists(cachePath)) {
 
 			cacheMap.putAll(loadCacheMap());
 		}
@@ -52,9 +59,11 @@ public class PicassoCache implements Cache {
 
 		try {
 
-			if(cacheMap.containsKey(key)) {
+			if (cacheMap.containsKey(key)) {
 
-				FileInputStream fileInputStream = new FileInputStream(new File(cachePath, Objects.requireNonNull(cacheMap.get(key))));
+				FileInputStream fileInputStream =
+						new FileInputStream(
+								new File(cachePath, Objects.requireNonNull(cacheMap.get(key))));
 
 				Bitmap bitmap = BitmapFactory.decodeStream(fileInputStream);
 				fileInputStream.close();
@@ -62,8 +71,7 @@ public class PicassoCache implements Cache {
 				return bitmap;
 			}
 
-		}
-		catch(IOException e) {
+		} catch (IOException e) {
 
 			Log.e(TAG, e.toString());
 		}
@@ -88,13 +96,10 @@ public class PicassoCache implements Cache {
 			cacheMap.put(key, uuid);
 			saveCacheMap(cacheMap);
 
-		}
-		catch(IOException e) {
+		} catch (IOException e) {
 
 			Log.e(TAG, e.toString());
-
 		}
-
 	}
 
 	@Override
@@ -102,21 +107,18 @@ public class PicassoCache implements Cache {
 
 		int currentSize = 0;
 
-		for(String key : cacheMap.keySet()) {
+		for (String key : cacheMap.keySet()) {
 
 			currentSize += new File(cachePath, Objects.requireNonNull(cacheMap.get(key))).length();
-
 		}
 
 		return currentSize;
-
 	}
 
 	@Override
 	public int maxSize() {
 
 		return CACHE_SIZE;
-
 	}
 
 	@Override
@@ -124,80 +126,71 @@ public class PicassoCache implements Cache {
 
 		File[] files = cachePath.listFiles();
 
-		if(files != null) {
+		if (files != null) {
 
-			for(File file : files) {
+			for (File file : files) {
 
 				//noinspection ResultOfMethodCallIgnored
 				file.delete();
-
 			}
-
 		}
-
 	}
 
 	@Override
 	public void clearKeyUri(String keyPrefix) {
 
-		for(String key : cacheMap.keySet()) {
+		for (String key : cacheMap.keySet()) {
 
 			int len = Math.min(keyPrefix.length(), key.length());
 			boolean match = true;
 
-			for(int i = 0; i < len; i++) {
+			for (int i = 0; i < len; i++) {
 
-				if(key.charAt(i) != keyPrefix.charAt(i)) {
+				if (key.charAt(i) != keyPrefix.charAt(i)) {
 
 					match = false;
 					break;
 				}
-
 			}
 
-			if(match) {
+			if (match) {
 
 				//noinspection ResultOfMethodCallIgnored
 				new File(cachePath, Objects.requireNonNull(cacheMap.get(key))).delete();
 				cacheMap.remove(key);
-
 			}
-
 		}
-
 	}
 
 	private String generateRandomFilename() {
 
 		return UUID.randomUUID().toString();
-
 	}
 
 	private void saveCacheMap(Map<String, String> cacheMap) throws IOException {
 
-		ObjectOutputStream objectOutputStream = new ObjectOutputStream(new FileOutputStream(new File(cachePath, CACHE_MAP_FILE), false));
+		ObjectOutputStream objectOutputStream =
+				new ObjectOutputStream(
+						new FileOutputStream(new File(cachePath, CACHE_MAP_FILE), false));
 
 		objectOutputStream.writeObject(cacheMap);
 		objectOutputStream.flush();
 		objectOutputStream.close();
-
 	}
 
 	private Map<String, String> loadCacheMap() throws IOException, ClassNotFoundException {
 
-		ObjectInputStream objectInputStream = new ObjectInputStream(new FileInputStream(new File(cachePath, CACHE_MAP_FILE)));
+		ObjectInputStream objectInputStream =
+				new ObjectInputStream(new FileInputStream(new File(cachePath, CACHE_MAP_FILE)));
 
 		Map<String, String> map = (HashMap<String, String>) objectInputStream.readObject();
 		objectInputStream.close();
 
 		return map;
-
 	}
 
 	private boolean cacheMapExists(File cachePath) {
 
 		return new File(cachePath, CACHE_MAP_FILE).exists();
-
 	}
-
 }

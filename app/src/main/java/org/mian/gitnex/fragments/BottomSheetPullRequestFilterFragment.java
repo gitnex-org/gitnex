@@ -14,26 +14,30 @@ import org.mian.gitnex.structs.BottomSheetListener;
 /**
  * @author M M Arif
  */
-
 public class BottomSheetPullRequestFilterFragment extends BottomSheetDialogFragment {
 
 	private BottomSheetListener bmListener;
 
-	@Nullable
-	@Override
-	public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
+	@Nullable @Override
+	public View onCreateView(
+			@NonNull LayoutInflater inflater,
+			@Nullable ViewGroup container,
+			@Nullable Bundle savedInstanceState) {
 
-		BottomSheetPullRequestFilterBinding bottomSheetPullRequestFilterBinding = BottomSheetPullRequestFilterBinding.inflate(inflater, container, false);
+		BottomSheetPullRequestFilterBinding bottomSheetPullRequestFilterBinding =
+				BottomSheetPullRequestFilterBinding.inflate(inflater, container, false);
 
-		bottomSheetPullRequestFilterBinding.openPr.setOnClickListener(v1 -> {
-			bmListener.onButtonClicked("openPr");
-			dismiss();
-		});
+		bottomSheetPullRequestFilterBinding.openPr.setOnClickListener(
+				v1 -> {
+					bmListener.onButtonClicked("openPr");
+					dismiss();
+				});
 
-		bottomSheetPullRequestFilterBinding.closedPr.setOnClickListener(v12 -> {
-			bmListener.onButtonClicked("closedPr");
-			dismiss();
-		});
+		bottomSheetPullRequestFilterBinding.closedPr.setOnClickListener(
+				v12 -> {
+					bmListener.onButtonClicked("closedPr");
+					dismiss();
+				});
 
 		return bottomSheetPullRequestFilterBinding.getRoot();
 	}
@@ -45,10 +49,8 @@ public class BottomSheetPullRequestFilterFragment extends BottomSheetDialogFragm
 
 		try {
 			bmListener = (BottomSheetListener) context;
-		}
-		catch(ClassCastException e) {
+		} catch (ClassCastException e) {
 			throw new ClassCastException(context + " must implement BottomSheetListener");
 		}
 	}
-
 }

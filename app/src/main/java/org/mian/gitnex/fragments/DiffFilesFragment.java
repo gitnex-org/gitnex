@@ -8,6 +8,9 @@ import android.view.ViewGroup;
 import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
+import java.io.IOException;
+import java.util.ArrayList;
+import java.util.List;
 import org.mian.gitnex.R;
 import org.mian.gitnex.adapters.DiffFilesAdapter;
 import org.mian.gitnex.clients.RetrofitClient;
@@ -17,16 +20,12 @@ import org.mian.gitnex.helpers.FileDiffView;
 import org.mian.gitnex.helpers.ParseDiff;
 import org.mian.gitnex.helpers.Toasty;
 import org.mian.gitnex.helpers.contexts.IssueContext;
-import java.io.IOException;
-import java.util.ArrayList;
-import java.util.List;
 import retrofit2.Call;
 import retrofit2.Response;
 
 /**
  * @author opyale
  */
-
 public class DiffFilesFragment extends Fragment {
 
 	private FragmentDiffFilesBinding binding;
@@ -34,17 +33,17 @@ public class DiffFilesFragment extends Fragment {
 	private List<FileDiffView> fileDiffViews = new ArrayList<>();
 	private DiffFilesAdapter adapter;
 
-	public DiffFilesFragment() {
-	}
+	public DiffFilesFragment() {}
 
 	public static DiffFilesFragment newInstance() {
 		return new DiffFilesFragment();
 	}
 
 	@Override
-	public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
+	public View onCreateView(
+			@NonNull LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
 
-		if(binding != null) {
+		if (binding != null) {
 			ctx = requireContext();
 			return binding.getRoot();
 		}
@@ -61,68 +60,118 @@ public class DiffFilesFragment extends Fragment {
 		binding.diffFiles.setLayoutManager(new LinearLayoutManager(ctx));
 		binding.diffFiles.setAdapter(adapter);
 
-		getPullDiffFiles(issue.getRepository().getOwner(), issue.getRepository().getName(), String.valueOf(issue.getIssueIndex()));
+		getPullDiffFiles(
+				issue.getRepository().getOwner(),
+				issue.getRepository().getName(),
+				String.valueOf(issue.getIssueIndex()));
 
 		return binding.getRoot();
 	}
 
 	private void getPullDiffFiles(String owner, String repo, String pullIndex) {
 
-		Thread thread = new Thread(() -> {
+		Thread thread =
+				new Thread(
+						() -> {
+							Call<String> call =
+									RetrofitClient.getApiInterface(ctx)
+											.repoDownloadPullDiffOrPatch(
+													owner,
+													repo,
+													Long.valueOf(pullIndex),
+													"diff",
+													null);
 
-			Call<String> call = RetrofitClient.getApiInterface(ctx).repoDownloadPullDiffOrPatch(owner, repo, Long.valueOf(pullIndex), "diff", null);
+							try {
 
-			try {
+								Response<String> response = call.execute();
+								if (response.body() == null) {
+									Toasty.error(
+											requireContext(), getString(R.string.genericError));
+									requireActivity().finish();
+									return;
+								}
 
-				Response<String> response = call.execute();
-				if(response.body() == null) {
-					Toasty.error(requireContext(), getString(R.string.genericError));
-					requireActivity().finish();
-					return;
-				}
+								switch (response.code()) {
+									case 200:
+										fileDiffViews =
+												ParseDiff.getFileDiffViewArray(response.body());
 
-				switch(response.code()) {
+										int filesCount = fileDiffViews.size();
 
-					case 200:
-						fileDiffViews = ParseDiff.getFileDiffViewArray(response.body());
+										String toolbarTitleText =
+												(filesCount > 1)
+														? getResources()
+																.getString(
+																		R.string.fileDiffViewHeader,
+																		Integer.toString(
+																				filesCount))
+														: getResources()
+																.getString(
+																		R.string
+																				.fileDiffViewHeaderSingle,
+																		Integer.toString(
+																				filesCount));
 
-						int filesCount = fileDiffViews.size();
+										requireActivity()
+												.runOnUiThread(
+														() -> {
+															binding.toolbarTitle.setVisibility(
+																	View.VISIBLE);
+															binding.progressBar.setVisibility(
+																	View.GONE);
+															binding.toolbarTitle.setText(
+																	toolbarTitleText);
+															adapter.updateList(fileDiffViews);
+															adapter.notifyDataChanged();
+														});
+										break;
 
-						String toolbarTitleText = (filesCount > 1) ? getResources().getString(R.string.fileDiffViewHeader, Integer.toString(filesCount)) :
-							getResources().getString(R.string.fileDiffViewHeaderSingle, Integer.toString(filesCount));
+									case 401:
+										requireActivity()
+												.runOnUiThread(
+														() ->
+																AlertDialogs
+																		.authorizationTokenRevokedDialog(
+																				ctx));
+										break;
 
-						requireActivity().runOnUiThread(() -> {
-							binding.toolbarTitle.setVisibility(View.VISIBLE);
-							binding.progressBar.setVisibility(View.GONE);
-							binding.toolbarTitle.setText(toolbarTitleText);
-							adapter.updateList(fileDiffViews);
-							adapter.notifyDataChanged();
+									case 403:
+										requireActivity()
+												.runOnUiThread(
+														() ->
+																Toasty.error(
+																		ctx,
+																		ctx.getString(
+																				R.string
+																						.authorizeError)));
+										break;
+
+									case 404:
+										requireActivity()
+												.runOnUiThread(
+														() ->
+																Toasty.warning(
+																		ctx,
+																		ctx.getString(
+																				R.string
+																						.apiNotFound)));
+										break;
+
+									default:
+										requireActivity()
+												.runOnUiThread(
+														() ->
+																Toasty.error(
+																		ctx,
+																		getString(
+																				R.string
+																						.genericError)));
+								}
+							} catch (IOException ignored) {
+							}
 						});
-						break;
-
-					case 401:
-						requireActivity().runOnUiThread(() -> AlertDialogs.authorizationTokenRevokedDialog(ctx));
-						break;
-
-					case 403:
-						requireActivity().runOnUiThread(() -> Toasty.error(ctx, ctx.getString(R.string.authorizeError)));
-						break;
-
-					case 404:
-						requireActivity().runOnUiThread(() -> Toasty.warning(ctx, ctx.getString(R.string.apiNotFound)));
-						break;
-
-					default:
-						requireActivity().runOnUiThread(() -> Toasty.error(ctx, getString(R.string.genericError)));
-
-				}
-			}
-			catch(IOException ignored) {
-			}
-
-		});
 
 		thread.start();
 	}
-
 }

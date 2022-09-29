@@ -27,7 +27,6 @@ import org.mian.gitnex.viewmodels.RepositoriesViewModel;
 /**
  * @author M M Arif
  */
-
 public class MyRepositoriesFragment extends Fragment {
 
 	private RepositoriesViewModel repositoriesViewModel;
@@ -37,35 +36,47 @@ public class MyRepositoriesFragment extends Fragment {
 	private int resultLimit;
 
 	@Override
-	public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
+	public View onCreateView(
+			@NonNull LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
 
-		fragmentRepositoriesBinding = FragmentRepositoriesBinding.inflate(inflater, container, false);
+		fragmentRepositoriesBinding =
+				FragmentRepositoriesBinding.inflate(inflater, container, false);
 		setHasOptionsMenu(true);
-		((MainActivity) requireActivity()).setActionBarTitle(getResources().getString(R.string.navMyRepos));
+		((MainActivity) requireActivity())
+				.setActionBarTitle(getResources().getString(R.string.navMyRepos));
 		repositoriesViewModel = new ViewModelProvider(this).get(RepositoriesViewModel.class);
 
-		final String userLogin = ((BaseActivity) requireActivity()).getAccount().getAccount().getUserName();
+		final String userLogin =
+				((BaseActivity) requireActivity()).getAccount().getAccount().getUserName();
 
 		resultLimit = Constants.getCurrentResultLimit(getContext());
 
-		fragmentRepositoriesBinding.addNewRepo.setOnClickListener(view -> {
-			Intent intent = new Intent(view.getContext(), CreateRepoActivity.class);
-			startActivity(intent);
-		});
+		fragmentRepositoriesBinding.addNewRepo.setOnClickListener(
+				view -> {
+					Intent intent = new Intent(view.getContext(), CreateRepoActivity.class);
+					startActivity(intent);
+				});
 
 		fragmentRepositoriesBinding.recyclerView.setHasFixedSize(true);
-		fragmentRepositoriesBinding.recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
+		fragmentRepositoriesBinding.recyclerView.setLayoutManager(
+				new LinearLayoutManager(getContext()));
 
 		fragmentRepositoriesBinding.recyclerView.setPadding(0, 0, 0, 220);
 		fragmentRepositoriesBinding.recyclerView.setClipToPadding(false);
 
-		fragmentRepositoriesBinding.pullToRefresh.setOnRefreshListener(() -> new Handler(Looper.getMainLooper()).postDelayed(() -> {
-
-			page = 1;
-			fragmentRepositoriesBinding.pullToRefresh.setRefreshing(false);
-			fetchDataAsync(userLogin);
-			fragmentRepositoriesBinding.progressBar.setVisibility(View.VISIBLE);
-		}, 50));
+		fragmentRepositoriesBinding.pullToRefresh.setOnRefreshListener(
+				() ->
+						new Handler(Looper.getMainLooper())
+								.postDelayed(
+										() -> {
+											page = 1;
+											fragmentRepositoriesBinding.pullToRefresh.setRefreshing(
+													false);
+											fetchDataAsync(userLogin);
+											fragmentRepositoriesBinding.progressBar.setVisibility(
+													View.VISIBLE);
+										},
+										50));
 
 		fetchDataAsync(userLogin);
 
@@ -74,51 +85,63 @@ public class MyRepositoriesFragment extends Fragment {
 
 	private void fetchDataAsync(String userLogin) {
 
-		repositoriesViewModel.getRepositories(page, resultLimit, userLogin, "myRepos", null, getContext()).observe(getViewLifecycleOwner(), reposListMain -> {
+		repositoriesViewModel
+				.getRepositories(page, resultLimit, userLogin, "myRepos", null, getContext())
+				.observe(
+						getViewLifecycleOwner(),
+						reposListMain -> {
+							adapter = new ReposListAdapter(reposListMain, getContext());
+							adapter.setLoadMoreListener(
+									new ReposListAdapter.OnLoadMoreListener() {
 
-			adapter = new ReposListAdapter(reposListMain, getContext());
-			adapter.setLoadMoreListener(new ReposListAdapter.OnLoadMoreListener() {
+										@Override
+										public void onLoadMore() {
 
-				@Override
-				public void onLoadMore() {
+											page += 1;
+											repositoriesViewModel.loadMoreRepos(
+													page,
+													resultLimit,
+													userLogin,
+													"myRepos",
+													null,
+													getContext(),
+													adapter);
+											fragmentRepositoriesBinding.progressBar.setVisibility(
+													View.VISIBLE);
+										}
 
-					page += 1;
-					repositoriesViewModel.loadMoreRepos(page, resultLimit, userLogin, "myRepos", null, getContext(), adapter);
-					fragmentRepositoriesBinding.progressBar.setVisibility(View.VISIBLE);
-				}
+										@Override
+										public void onLoadFinished() {
 
-				@Override
-				public void onLoadFinished() {
+											fragmentRepositoriesBinding.progressBar.setVisibility(
+													View.GONE);
+										}
+									});
 
-					fragmentRepositoriesBinding.progressBar.setVisibility(View.GONE);
-				}
-			});
+							if (adapter.getItemCount() > 0) {
+								fragmentRepositoriesBinding.recyclerView.setAdapter(adapter);
+								fragmentRepositoriesBinding.noData.setVisibility(View.GONE);
+							} else {
+								adapter.notifyDataChanged();
+								fragmentRepositoriesBinding.recyclerView.setAdapter(adapter);
+								fragmentRepositoriesBinding.noData.setVisibility(View.VISIBLE);
+							}
 
-			if(adapter.getItemCount() > 0) {
-				fragmentRepositoriesBinding.recyclerView.setAdapter(adapter);
-				fragmentRepositoriesBinding.noData.setVisibility(View.GONE);
-			}
-			else {
-				adapter.notifyDataChanged();
-				fragmentRepositoriesBinding.recyclerView.setAdapter(adapter);
-				fragmentRepositoriesBinding.noData.setVisibility(View.VISIBLE);
-			}
-
-			fragmentRepositoriesBinding.progressBar.setVisibility(View.GONE);
-		});
+							fragmentRepositoriesBinding.progressBar.setVisibility(View.GONE);
+						});
 	}
 
 	@Override
 	public void onResume() {
 		super.onResume();
-		final String userLogin = ((BaseActivity) requireActivity()).getAccount().getAccount().getUserName();
+		final String userLogin =
+				((BaseActivity) requireActivity()).getAccount().getAccount().getUserName();
 
-		if(MainActivity.reloadRepos) {
+		if (MainActivity.reloadRepos) {
 			page = 1;
 			fetchDataAsync(userLogin);
 			MainActivity.reloadRepos = false;
 		}
-
 	}
 
 	@Override
@@ -128,25 +151,25 @@ public class MyRepositoriesFragment extends Fragment {
 		super.onCreateOptionsMenu(menu, inflater);
 
 		MenuItem searchItem = menu.findItem(R.id.action_search);
-		androidx.appcompat.widget.SearchView searchView = (androidx.appcompat.widget.SearchView) searchItem.getActionView();
+		androidx.appcompat.widget.SearchView searchView =
+				(androidx.appcompat.widget.SearchView) searchItem.getActionView();
 		searchView.setImeOptions(EditorInfo.IME_ACTION_DONE);
 
-		searchView.setOnQueryTextListener(new androidx.appcompat.widget.SearchView.OnQueryTextListener() {
+		searchView.setOnQueryTextListener(
+				new androidx.appcompat.widget.SearchView.OnQueryTextListener() {
 
-			@Override
-			public boolean onQueryTextSubmit(String query) {
-				return false;
-			}
+					@Override
+					public boolean onQueryTextSubmit(String query) {
+						return false;
+					}
 
-			@Override
-			public boolean onQueryTextChange(String newText) {
-				if(fragmentRepositoriesBinding.recyclerView.getAdapter() != null) {
-					adapter.getFilter().filter(newText);
-				}
-				return false;
-			}
-		});
-
+					@Override
+					public boolean onQueryTextChange(String newText) {
+						if (fragmentRepositoriesBinding.recyclerView.getAdapter() != null) {
+							adapter.getFilter().filter(newText);
+						}
+						return false;
+					}
+				});
 	}
-
 }

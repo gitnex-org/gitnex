@@ -10,7 +10,6 @@ import android.graphics.Shader;
 /**
  * @author M M Arif
  */
-
 public class RoundedTransformation implements com.squareup.picasso.Transformation {
 
 	private final int radius;
@@ -29,11 +28,16 @@ public class RoundedTransformation implements com.squareup.picasso.Transformatio
 		paint.setAntiAlias(true);
 		paint.setShader(new BitmapShader(source, Shader.TileMode.CLAMP, Shader.TileMode.CLAMP));
 
-		Bitmap output = Bitmap.createBitmap(source.getWidth(), source.getHeight(), Bitmap.Config.ARGB_8888);
+		Bitmap output =
+				Bitmap.createBitmap(source.getWidth(), source.getHeight(), Bitmap.Config.ARGB_8888);
 		Canvas canvas = new Canvas(output);
-		canvas.drawRoundRect(new RectF(margin, margin, source.getWidth() - margin, source.getHeight() - margin), radius, radius, paint);
+		canvas.drawRoundRect(
+				new RectF(margin, margin, source.getWidth() - margin, source.getHeight() - margin),
+				radius,
+				radius,
+				paint);
 
-		if(source != output) {
+		if (source != output) {
 			source.recycle();
 		}
 
@@ -44,5 +48,4 @@ public class RoundedTransformation implements com.squareup.picasso.Transformatio
 	public String key() {
 		return "rounded";
 	}
-
 }

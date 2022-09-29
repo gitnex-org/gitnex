@@ -25,7 +25,6 @@ import org.mian.gitnex.viewmodels.AdminGetUsersViewModel;
 /**
  * @author M M Arif
  */
-
 public class AdminGetUsersActivity extends BaseActivity implements BottomSheetListener {
 
 	private AdminGetUsersViewModel adminGetUsersViewModel;
@@ -55,56 +54,69 @@ public class AdminGetUsersActivity extends BaseActivity implements BottomSheetLi
 		activityAdminGetUsersBinding.recyclerView.setHasFixedSize(true);
 		activityAdminGetUsersBinding.recyclerView.setLayoutManager(new LinearLayoutManager(ctx));
 
-		activityAdminGetUsersBinding.pullToRefresh.setOnRefreshListener(() -> new Handler(Looper.getMainLooper()).postDelayed(() -> {
-
-			page = 1;
-			activityAdminGetUsersBinding.pullToRefresh.setRefreshing(false);
-			fetchDataAsync();
-			activityAdminGetUsersBinding.progressBar.setVisibility(View.VISIBLE);
-		}, 50));
+		activityAdminGetUsersBinding.pullToRefresh.setOnRefreshListener(
+				() ->
+						new Handler(Looper.getMainLooper())
+								.postDelayed(
+										() -> {
+											page = 1;
+											activityAdminGetUsersBinding.pullToRefresh
+													.setRefreshing(false);
+											fetchDataAsync();
+											activityAdminGetUsersBinding.progressBar.setVisibility(
+													View.VISIBLE);
+										},
+										50));
 
 		fetchDataAsync();
 	}
-
 	;
 
 	private void fetchDataAsync() {
 
-		AdminGetUsersViewModel adminUsersModel = new ViewModelProvider(this).get(AdminGetUsersViewModel.class);
+		AdminGetUsersViewModel adminUsersModel =
+				new ViewModelProvider(this).get(AdminGetUsersViewModel.class);
 
-		adminUsersModel.getUsersList(page, resultLimit, ctx).observe(this, adminUsersListMain -> {
+		adminUsersModel
+				.getUsersList(page, resultLimit, ctx)
+				.observe(
+						this,
+						adminUsersListMain -> {
+							adapter = new AdminGetUsersAdapter(adminUsersListMain, ctx);
+							adapter.setLoadMoreListener(
+									new AdminGetUsersAdapter.OnLoadMoreListener() {
 
-			adapter = new AdminGetUsersAdapter(adminUsersListMain, ctx);
-			adapter.setLoadMoreListener(new AdminGetUsersAdapter.OnLoadMoreListener() {
+										@Override
+										public void onLoadMore() {
 
-				@Override
-				public void onLoadMore() {
+											page += 1;
+											adminGetUsersViewModel.loadMoreUsersList(
+													page, resultLimit, ctx, adapter);
+											activityAdminGetUsersBinding.progressBar.setVisibility(
+													View.VISIBLE);
+										}
 
-					page += 1;
-					adminGetUsersViewModel.loadMoreUsersList(page, resultLimit, ctx, adapter);
-					activityAdminGetUsersBinding.progressBar.setVisibility(View.VISIBLE);
-				}
+										@Override
+										public void onLoadFinished() {
 
-				@Override
-				public void onLoadFinished() {
+											activityAdminGetUsersBinding.progressBar.setVisibility(
+													View.GONE);
+										}
+									});
 
-					activityAdminGetUsersBinding.progressBar.setVisibility(View.GONE);
-				}
-			});
+							if (adapter.getItemCount() > 0) {
+								activityAdminGetUsersBinding.recyclerView.setAdapter(adapter);
+								activityAdminGetUsersBinding.noDataUsers.setVisibility(View.GONE);
+								searchFilter = true;
+							} else {
+								adapter.notifyDataChanged();
+								activityAdminGetUsersBinding.recyclerView.setAdapter(adapter);
+								activityAdminGetUsersBinding.noDataUsers.setVisibility(
+										View.VISIBLE);
+							}
 
-			if(adapter.getItemCount() > 0) {
-				activityAdminGetUsersBinding.recyclerView.setAdapter(adapter);
-				activityAdminGetUsersBinding.noDataUsers.setVisibility(View.GONE);
-				searchFilter = true;
-			}
-			else {
-				adapter.notifyDataChanged();
-				activityAdminGetUsersBinding.recyclerView.setAdapter(adapter);
-				activityAdminGetUsersBinding.noDataUsers.setVisibility(View.VISIBLE);
-			}
-
-			activityAdminGetUsersBinding.progressBar.setVisibility(View.GONE);
-		});
+							activityAdminGetUsersBinding.progressBar.setVisibility(View.GONE);
+						});
 	}
 
 	@Override
@@ -113,38 +125,42 @@ public class AdminGetUsersActivity extends BaseActivity implements BottomSheetLi
 		final MenuInflater inflater = getMenuInflater();
 		inflater.inflate(R.menu.generic_nav_dotted_menu, menu);
 
-		new Handler(Looper.getMainLooper()).postDelayed(() -> {
+		new Handler(Looper.getMainLooper())
+				.postDelayed(
+						() -> {
+							if (searchFilter) {
 
-			if(searchFilter) {
+								boolean connToInternet = AppUtil.hasNetworkConnection(appCtx);
 
-				boolean connToInternet = AppUtil.hasNetworkConnection(appCtx);
+								inflater.inflate(R.menu.search_menu, menu);
 
-				inflater.inflate(R.menu.search_menu, menu);
+								MenuItem searchItem = menu.findItem(R.id.action_search);
+								SearchView searchView = (SearchView) searchItem.getActionView();
+								searchView.setImeOptions(EditorInfo.IME_ACTION_DONE);
 
-				MenuItem searchItem = menu.findItem(R.id.action_search);
-				SearchView searchView = (SearchView) searchItem.getActionView();
-				searchView.setImeOptions(EditorInfo.IME_ACTION_DONE);
+								if (!connToInternet) {
+									return;
+								}
 
-				if(!connToInternet) {
-					return;
-				}
+								searchView.setOnQueryTextListener(
+										new androidx.appcompat.widget.SearchView
+												.OnQueryTextListener() {
 
-				searchView.setOnQueryTextListener(new androidx.appcompat.widget.SearchView.OnQueryTextListener() {
+											@Override
+											public boolean onQueryTextSubmit(String query) {
+												return true;
+											}
 
-					@Override
-					public boolean onQueryTextSubmit(String query) {
-						return true;
-					}
+											@Override
+											public boolean onQueryTextChange(String newText) {
 
-					@Override
-					public boolean onQueryTextChange(String newText) {
-
-						adapter.getFilter().filter(newText);
-						return false;
-					}
-				});
-			}
-		}, 500);
+												adapter.getFilter().filter(newText);
+												return false;
+											}
+										});
+							}
+						},
+						500);
 
 		return true;
 	}
@@ -154,18 +170,16 @@ public class AdminGetUsersActivity extends BaseActivity implements BottomSheetLi
 
 		int id = item.getItemId();
 
-		if(id == android.R.id.home) {
+		if (id == android.R.id.home) {
 
 			finish();
 			return true;
-		}
-		else if(id == R.id.genericMenu) {
+		} else if (id == R.id.genericMenu) {
 
 			BottomSheetAdminUsersFragment bottomSheet = new BottomSheetAdminUsersFragment();
 			bottomSheet.show(getSupportFragmentManager(), "usersBottomSheet");
 			return true;
-		}
-		else {
+		} else {
 
 			return super.onOptionsItemSelected(item);
 		}
@@ -174,7 +188,7 @@ public class AdminGetUsersActivity extends BaseActivity implements BottomSheetLi
 	@Override
 	public void onButtonClicked(String text) {
 
-		if("newUser".equals(text)) {
+		if ("newUser".equals(text)) {
 			startActivity(new Intent(AdminGetUsersActivity.this, CreateNewUserActivity.class));
 		}
 	}
@@ -182,5 +196,4 @@ public class AdminGetUsersActivity extends BaseActivity implements BottomSheetLi
 	private void initCloseListener() {
 		onClickListener = view -> finish();
 	}
-
 }

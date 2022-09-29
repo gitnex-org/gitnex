@@ -8,11 +8,11 @@ import androidx.annotation.NonNull;
 import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MutableLiveData;
 import androidx.lifecycle.ViewModel;
+import java.util.List;
 import org.gitnex.tea4j.v2.models.Label;
 import org.mian.gitnex.R;
 import org.mian.gitnex.clients.RetrofitClient;
 import org.mian.gitnex.helpers.Toasty;
-import java.util.List;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
@@ -20,46 +20,49 @@ import retrofit2.Response;
 /**
  * @author M M Arif
  */
-
 public class OrganizationLabelsViewModel extends ViewModel {
 
 	private static MutableLiveData<List<Label>> orgLabelsList;
 
-	public static void loadOrgLabelsList(String owner, Context ctx, ProgressBar progressBar, TextView noData) {
+	public static void loadOrgLabelsList(
+			String owner, Context ctx, ProgressBar progressBar, TextView noData) {
 
-		Call<List<Label>> call = RetrofitClient.getApiInterface(ctx).orgListLabels(owner, null, null);
+		Call<List<Label>> call =
+				RetrofitClient.getApiInterface(ctx).orgListLabels(owner, null, null);
 
-		call.enqueue(new Callback<>() {
+		call.enqueue(
+				new Callback<>() {
 
-			@Override
-			public void onResponse(@NonNull Call<List<Label>> call, @NonNull Response<List<Label>> response) {
+					@Override
+					public void onResponse(
+							@NonNull Call<List<Label>> call,
+							@NonNull Response<List<Label>> response) {
 
-				if(response.isSuccessful()) {
+						if (response.isSuccessful()) {
 
-					orgLabelsList.postValue(response.body());
-				}
-				else {
+							orgLabelsList.postValue(response.body());
+						} else {
 
-					progressBar.setVisibility(View.GONE);
-					noData.setVisibility(View.VISIBLE);
-					Toasty.error(ctx, ctx.getString(R.string.genericError));
-				}
-			}
+							progressBar.setVisibility(View.GONE);
+							noData.setVisibility(View.VISIBLE);
+							Toasty.error(ctx, ctx.getString(R.string.genericError));
+						}
+					}
 
-			@Override
-			public void onFailure(@NonNull Call<List<Label>> call, @NonNull Throwable t) {
+					@Override
+					public void onFailure(@NonNull Call<List<Label>> call, @NonNull Throwable t) {
 
-				Toasty.error(ctx, ctx.getString(R.string.genericServerResponseError));
-			}
-		});
+						Toasty.error(ctx, ctx.getString(R.string.genericServerResponseError));
+					}
+				});
 	}
 
-	public LiveData<List<Label>> getOrgLabelsList(String owner, Context ctx, ProgressBar progressBar, TextView noData) {
+	public LiveData<List<Label>> getOrgLabelsList(
+			String owner, Context ctx, ProgressBar progressBar, TextView noData) {
 
 		orgLabelsList = new MutableLiveData<>();
 		loadOrgLabelsList(owner, ctx, progressBar, noData);
 
 		return orgLabelsList;
 	}
-
 }

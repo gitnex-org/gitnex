@@ -6,25 +6,24 @@ import android.view.View;
 import android.view.ViewGroup;
 import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
+import java.util.Collections;
 import org.gitnex.tea4j.v2.models.Team;
 import org.mian.gitnex.R;
 import org.mian.gitnex.databinding.FragmentOrganizationTeamInfoPermissionsBinding;
-import java.util.Collections;
 
 /**
  * @author opyale
  */
-
 public class OrganizationTeamInfoPermissionsFragment extends Fragment {
 
 	private FragmentOrganizationTeamInfoPermissionsBinding binding;
 	private Team team;
 
-	public OrganizationTeamInfoPermissionsFragment() {
-	}
+	public OrganizationTeamInfoPermissionsFragment() {}
 
 	public static OrganizationTeamInfoPermissionsFragment newInstance(Team team) {
-		OrganizationTeamInfoPermissionsFragment fragment = new OrganizationTeamInfoPermissionsFragment();
+		OrganizationTeamInfoPermissionsFragment fragment =
+				new OrganizationTeamInfoPermissionsFragment();
 
 		Bundle bundle = new Bundle();
 		bundle.putSerializable("team", team);
@@ -34,17 +33,19 @@ public class OrganizationTeamInfoPermissionsFragment extends Fragment {
 	}
 
 	@Override
-	public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-		binding = FragmentOrganizationTeamInfoPermissionsBinding.inflate(inflater, container, false);
+	public View onCreateView(
+			@NonNull LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
+		binding =
+				FragmentOrganizationTeamInfoPermissionsBinding.inflate(inflater, container, false);
 
 		team = (Team) requireArguments().getSerializable("team");
 
 		StringBuilder permissions = new StringBuilder();
 
 		// Future proofing in case of gitea becoming able to assign multiple permissions per team
-		for(String permission : Collections.singletonList(team.getPermission().getValue())) {
+		for (String permission : Collections.singletonList(team.getPermission().getValue())) {
 
-			switch(permission) {
+			switch (permission) {
 				case "none":
 					permissions.append(getString(R.string.teamPermissionNone)).append("\n");
 					break;
@@ -68,5 +69,4 @@ public class OrganizationTeamInfoPermissionsFragment extends Fragment {
 
 		return binding.getRoot();
 	}
-
 }

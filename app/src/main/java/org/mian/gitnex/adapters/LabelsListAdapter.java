@@ -9,16 +9,15 @@ import android.widget.ImageView;
 import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
-import org.gitnex.tea4j.v2.models.Label;
-import org.mian.gitnex.R;
 import java.util.ArrayList;
 import java.util.LinkedHashSet;
 import java.util.List;
+import org.gitnex.tea4j.v2.models.Label;
+import org.mian.gitnex.R;
 
 /**
  * @author M M Arif
  */
-
 public class LabelsListAdapter extends RecyclerView.Adapter<LabelsListAdapter.LabelsViewHolder> {
 
 	private final List<Label> labels;
@@ -27,18 +26,23 @@ public class LabelsListAdapter extends RecyclerView.Adapter<LabelsListAdapter.La
 	private List<Integer> currentLabelsIds;
 	private List<Integer> labelsIds = new ArrayList<>();
 
-	public LabelsListAdapter(List<Label> labelsMain, LabelsListAdapterListener labelsListener, List<Integer> currentLabelsIds) {
+	public LabelsListAdapter(
+			List<Label> labelsMain,
+			LabelsListAdapterListener labelsListener,
+			List<Integer> currentLabelsIds) {
 
 		this.labels = labelsMain;
 		this.labelsListener = labelsListener;
 		this.currentLabelsIds = currentLabelsIds;
 	}
 
-	@NonNull
-	@Override
-	public LabelsListAdapter.LabelsViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
+	@NonNull @Override
+	public LabelsListAdapter.LabelsViewHolder onCreateViewHolder(
+			@NonNull ViewGroup parent, int viewType) {
 
-		View v = LayoutInflater.from(parent.getContext()).inflate(R.layout.custom_labels_list, parent, false);
+		View v =
+				LayoutInflater.from(parent.getContext())
+						.inflate(R.layout.custom_labels_list, parent, false);
 		return new LabelsListAdapter.LabelsViewHolder(v);
 	}
 
@@ -53,9 +57,9 @@ public class LabelsListAdapter extends RecyclerView.Adapter<LabelsListAdapter.La
 		holder.labelText.setText(currentItem.getName());
 		holder.labelColor.setBackgroundColor(color);
 
-		for(int i = 0; i < labelsIds.size(); i++) {
+		for (int i = 0; i < labelsIds.size(); i++) {
 
-			if(labelsStrings.contains(currentItem.getName())) {
+			if (labelsStrings.contains(currentItem.getName())) {
 
 				holder.labelSelection.setChecked(true);
 			}
@@ -63,9 +67,9 @@ public class LabelsListAdapter extends RecyclerView.Adapter<LabelsListAdapter.La
 
 		currentLabelsIds = new ArrayList<>(new LinkedHashSet<>(currentLabelsIds));
 
-		for(int i = 0; i < currentLabelsIds.size(); i++) {
+		for (int i = 0; i < currentLabelsIds.size(); i++) {
 
-			if(currentLabelsIds.contains(currentItem.getId().intValue())) {
+			if (currentLabelsIds.contains(currentItem.getId().intValue())) {
 
 				holder.labelSelection.setChecked(true);
 				labelsIds.add(currentLabelsIds.get(i));
@@ -74,22 +78,21 @@ public class LabelsListAdapter extends RecyclerView.Adapter<LabelsListAdapter.La
 
 		labelsListener.labelsIdsInterface(labelsIds);
 
-		holder.labelSelection.setOnCheckedChangeListener((buttonView, isChecked) -> {
+		holder.labelSelection.setOnCheckedChangeListener(
+				(buttonView, isChecked) -> {
+					if (isChecked) {
 
-			if(isChecked) {
+						labelsStrings.add(currentItem.getName());
+						labelsIds.add(currentItem.getId().intValue());
+					} else {
 
-				labelsStrings.add(currentItem.getName());
-				labelsIds.add(currentItem.getId().intValue());
-			}
-			else {
+						labelsStrings.remove(currentItem.getName());
+						labelsIds.remove(Integer.valueOf(currentItem.getId().intValue()));
+					}
 
-				labelsStrings.remove(currentItem.getName());
-				labelsIds.remove(Integer.valueOf(currentItem.getId().intValue()));
-			}
-
-			labelsListener.labelsInterface(labelsStrings);
-			labelsListener.labelsIdsInterface(labelsIds);
-		});
+					labelsListener.labelsInterface(labelsStrings);
+					labelsListener.labelsIdsInterface(labelsIds);
+				});
 
 		labelsIds = new ArrayList<>(new LinkedHashSet<>(labelsIds));
 	}
@@ -111,7 +114,6 @@ public class LabelsListAdapter extends RecyclerView.Adapter<LabelsListAdapter.La
 		void labelsInterface(List<String> data);
 
 		void labelsIdsInterface(List<Integer> data);
-
 	}
 
 	static class LabelsViewHolder extends RecyclerView.ViewHolder {
@@ -129,7 +131,5 @@ public class LabelsListAdapter extends RecyclerView.Adapter<LabelsListAdapter.La
 			labelText = itemView.findViewById(R.id.labelText);
 			labelColor = itemView.findViewById(R.id.labelColor);
 		}
-
 	}
-
 }

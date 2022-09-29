@@ -22,19 +22,21 @@ import org.mian.gitnex.helpers.TinyDB;
 /**
  * @author M M Arif
  */
-
 public class ExploreFragment extends Fragment {
 
-	@Nullable
-	@Override
-	public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
+	@Nullable @Override
+	public View onCreateView(
+			@NonNull LayoutInflater inflater,
+			@Nullable ViewGroup container,
+			@Nullable Bundle savedInstanceState) {
 
 		View view = inflater.inflate(R.layout.fragment_explore, container, false);
 
 		Context ctx = getContext();
 		TinyDB tinyDB = TinyDB.getInstance(ctx);
 
-		((MainActivity) requireActivity()).setActionBarTitle(getResources().getString(R.string.pageTitleExplore));
+		((MainActivity) requireActivity())
+				.setActionBarTitle(getResources().getString(R.string.pageTitleExplore));
 
 		ViewPager2 viewPager = view.findViewById(R.id.containerExplore);
 		viewPager.setOffscreenPageLimit(1);
@@ -45,18 +47,24 @@ public class ExploreFragment extends Fragment {
 		Typeface myTypeface = AppUtil.getTypeface(requireContext());
 		viewPager.setAdapter(new ViewPagerAdapter(this));
 
-		String[] tabTitles = {getResources().getString(R.string.navRepos), getResources().getString(R.string.pageTitleIssues), getResources().getString(R.string.navOrg),
-			getResources().getString(R.string.pageTitleUsers)};
-		new TabLayoutMediator(tabLayout, viewPager, (tab, position) -> tab.setText(tabTitles[position])).attach();
+		String[] tabTitles = {
+			getResources().getString(R.string.navRepos),
+			getResources().getString(R.string.pageTitleIssues),
+			getResources().getString(R.string.navOrg),
+			getResources().getString(R.string.pageTitleUsers)
+		};
+		new TabLayoutMediator(
+						tabLayout, viewPager, (tab, position) -> tab.setText(tabTitles[position]))
+				.attach();
 
-		for(int j = 0; j < tabTitles.length; j++) {
+		for (int j = 0; j < tabTitles.length; j++) {
 
 			ViewGroup vgTab = (ViewGroup) vg.getChildAt(j);
 			int tabChildCount = vgTab.getChildCount();
 
-			for(int i = 0; i < tabChildCount; i++) {
+			for (int i = 0; i < tabChildCount; i++) {
 				View tabViewChild = vgTab.getChildAt(i);
-				if(tabViewChild instanceof TextView) {
+				if (tabViewChild instanceof TextView) {
 					((TextView) tabViewChild).setTypeface(myTypeface);
 				}
 			}
@@ -71,11 +79,10 @@ public class ExploreFragment extends Fragment {
 			super(fa);
 		}
 
-		@NonNull
-		@Override
+		@NonNull @Override
 		public Fragment createFragment(int position) {
 			Fragment fragment = null;
-			switch(position) {
+			switch (position) {
 				case 0: // Repositories
 					fragment = new ExploreRepositoriesFragment();
 					break;
@@ -97,7 +104,5 @@ public class ExploreFragment extends Fragment {
 		public int getItemCount() {
 			return 4;
 		}
-
 	}
-
 }

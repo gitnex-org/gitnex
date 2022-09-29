@@ -10,6 +10,7 @@ import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.core.content.ContextCompat;
 import com.pes.androidmaterialcolorpickerdialog.ColorPicker;
+import java.util.Objects;
 import org.gitnex.tea4j.v2.models.CreateLabelOption;
 import org.gitnex.tea4j.v2.models.EditLabelOption;
 import org.gitnex.tea4j.v2.models.Label;
@@ -22,14 +23,12 @@ import org.mian.gitnex.helpers.Toasty;
 import org.mian.gitnex.helpers.contexts.RepositoryContext;
 import org.mian.gitnex.viewmodels.LabelsViewModel;
 import org.mian.gitnex.viewmodels.OrganizationLabelsViewModel;
-import java.util.Objects;
 import retrofit2.Call;
 import retrofit2.Callback;
 
 /**
  * @author M M Arif
  */
-
 public class CreateLabelActivity extends BaseActivity {
 
 	public static boolean refreshLabels = false;
@@ -51,13 +50,18 @@ public class CreateLabelActivity extends BaseActivity {
 		activityCreateLabelBinding = ActivityCreateLabelBinding.inflate(getLayoutInflater());
 		setContentView(activityCreateLabelBinding.getRoot());
 
-		InputMethodManager imm = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
+		InputMethodManager imm =
+				(InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
 
 		repository = RepositoryContext.fromIntent(getIntent());
 
-		if(getIntent().getStringExtra("labelAction") != null && Objects.requireNonNull(getIntent().getStringExtra("labelAction")).equals("delete")) {
+		if (getIntent().getStringExtra("labelAction") != null
+				&& Objects.requireNonNull(getIntent().getStringExtra("labelAction"))
+						.equals("delete")) {
 
-			deleteLabel(Integer.parseInt(Objects.requireNonNull(getIntent().getStringExtra("labelId"))));
+			deleteLabel(
+					Integer.parseInt(
+							Objects.requireNonNull(getIntent().getStringExtra("labelId"))));
 			finish();
 			return;
 		}
@@ -74,15 +78,18 @@ public class CreateLabelActivity extends BaseActivity {
 		activityCreateLabelBinding.close.setOnClickListener(onClickListener);
 		activityCreateLabelBinding.colorPicker.setOnClickListener(v -> cp.show());
 
-		cp.setCallback(color -> {
+		cp.setCallback(
+				color -> {
 
-			//Log.i("#Hex no alpha", String.format("#%06X", (0xFFFFFF & color)));
-			activityCreateLabelBinding.colorPicker.setBackgroundColor(color);
-			labelColor = String.format("#%06X", (0xFFFFFF & color));
-			cp.dismiss();
-		});
+					// Log.i("#Hex no alpha", String.format("#%06X", (0xFFFFFF & color)));
+					activityCreateLabelBinding.colorPicker.setBackgroundColor(color);
+					labelColor = String.format("#%06X", (0xFFFFFF & color));
+					cp.dismiss();
+				});
 
-		if(getIntent().getStringExtra("labelAction") != null && Objects.requireNonNull(getIntent().getStringExtra("labelAction")).equals("edit")) {
+		if (getIntent().getStringExtra("labelAction") != null
+				&& Objects.requireNonNull(getIntent().getStringExtra("labelAction"))
+						.equals("edit")) {
 
 			activityCreateLabelBinding.labelName.setText(getIntent().getStringExtra("labelTitle"));
 			int labelColor_ = Color.parseColor("#" + getIntent().getStringExtra("labelColor"));
@@ -91,17 +98,17 @@ public class CreateLabelActivity extends BaseActivity {
 
 			TextView toolbar_title = activityCreateLabelBinding.toolbarTitle;
 			toolbar_title.setText(getResources().getString(R.string.pageTitleLabelUpdate));
-			activityCreateLabelBinding.createLabelButton.setText(getResources().getString(R.string.newUpdateButtonCopy));
+			activityCreateLabelBinding.createLabelButton.setText(
+					getResources().getString(R.string.newUpdateButtonCopy));
 
 			activityCreateLabelBinding.createLabelButton.setOnClickListener(updateLabelListener);
 			return;
 		}
 
-		if(!connToInternet) {
+		if (!connToInternet) {
 
 			activityCreateLabelBinding.createLabelButton.setEnabled(false);
-		}
-		else {
+		} else {
 
 			activityCreateLabelBinding.createLabelButton.setOnClickListener(createLabelListener);
 		}
@@ -111,69 +118,75 @@ public class CreateLabelActivity extends BaseActivity {
 
 		boolean connToInternet = AppUtil.hasNetworkConnection(appCtx);
 
-		String updateLabelName = Objects.requireNonNull(activityCreateLabelBinding.labelName.getText()).toString();
+		String updateLabelName =
+				Objects.requireNonNull(activityCreateLabelBinding.labelName.getText()).toString();
 
 		String updateLabelColor;
-		if(labelColor.isEmpty()) {
+		if (labelColor.isEmpty()) {
 
 			updateLabelColor = labelColorDefault;
-		}
-		else {
+		} else {
 
 			updateLabelColor = labelColor;
 		}
 
-		if(!connToInternet) {
+		if (!connToInternet) {
 
 			Toasty.error(ctx, getResources().getString(R.string.checkNetConnection));
 			return;
 		}
 
-		if(updateLabelName.equals("")) {
+		if (updateLabelName.equals("")) {
 
 			Toasty.error(ctx, getString(R.string.labelEmptyError));
 			return;
 		}
 
-		if(!AppUtil.checkStrings(updateLabelName)) {
+		if (!AppUtil.checkStrings(updateLabelName)) {
 
 			Toasty.error(ctx, getString(R.string.labelNameError));
 			return;
 		}
 
 		disableProcessButton();
-		patchLabel(repository, updateLabelName, updateLabelColor, Integer.parseInt(Objects.requireNonNull(getIntent().getStringExtra("labelId"))));
+		patchLabel(
+				repository,
+				updateLabelName,
+				updateLabelColor,
+				Integer.parseInt(Objects.requireNonNull(getIntent().getStringExtra("labelId"))));
 	}
 
 	private void processCreateLabel() {
 
 		boolean connToInternet = AppUtil.hasNetworkConnection(appCtx);
 
-		String newLabelName = Objects.requireNonNull(activityCreateLabelBinding.labelName.getText()).toString();
+		String newLabelName =
+				Objects.requireNonNull(activityCreateLabelBinding.labelName.getText()).toString();
 		String newLabelColor;
 
-		if(labelColor.isEmpty()) {
+		if (labelColor.isEmpty()) {
 
-			newLabelColor = String.format("#%06X", (0xFFFFFF & ContextCompat.getColor(ctx, R.color.releasePre)));
-		}
-		else {
+			newLabelColor =
+					String.format(
+							"#%06X", (0xFFFFFF & ContextCompat.getColor(ctx, R.color.releasePre)));
+		} else {
 
 			newLabelColor = labelColor;
 		}
 
-		if(!connToInternet) {
+		if (!connToInternet) {
 
 			Toasty.error(ctx, getResources().getString(R.string.checkNetConnection));
 			return;
 		}
 
-		if(newLabelName.equals("")) {
+		if (newLabelName.equals("")) {
 
 			Toasty.error(ctx, getString(R.string.labelEmptyError));
 			return;
 		}
 
-		if(!AppUtil.checkStrings(newLabelName)) {
+		if (!AppUtil.checkStrings(newLabelName)) {
 
 			Toasty.error(ctx, getString(R.string.labelNameError));
 			return;
@@ -191,52 +204,61 @@ public class CreateLabelActivity extends BaseActivity {
 
 		Call<Label> call;
 
-		if(getIntent().getStringExtra("type") != null && Objects.requireNonNull(getIntent().getStringExtra("type")).equals("org")) {
+		if (getIntent().getStringExtra("type") != null
+				&& Objects.requireNonNull(getIntent().getStringExtra("type")).equals("org")) {
 
-			call = RetrofitClient.getApiInterface(ctx).orgCreateLabel(getIntent().getStringExtra("orgName"), createLabelFunc);
-		}
-		else if(repository != null) {
+			call =
+					RetrofitClient.getApiInterface(ctx)
+							.orgCreateLabel(getIntent().getStringExtra("orgName"), createLabelFunc);
+		} else if (repository != null) {
 
-			call = RetrofitClient.getApiInterface(ctx).issueCreateLabel(repository.getOwner(), repository.getName(), createLabelFunc);
-		}
-		else {
+			call =
+					RetrofitClient.getApiInterface(ctx)
+							.issueCreateLabel(
+									repository.getOwner(), repository.getName(), createLabelFunc);
+		} else {
 			return;
 		}
 
-		call.enqueue(new Callback<>() {
+		call.enqueue(
+				new Callback<>() {
 
-			@Override
-			public void onResponse(@NonNull Call<Label> call, @NonNull retrofit2.Response<Label> response) {
+					@Override
+					public void onResponse(
+							@NonNull Call<Label> call,
+							@NonNull retrofit2.Response<Label> response) {
 
-				if(response.code() == 201) {
+						if (response.code() == 201) {
 
-					Toasty.success(ctx, getString(R.string.labelCreated));
-					refreshLabels = true;
-					finish();
-				}
-				else if(response.code() == 401) {
+							Toasty.success(ctx, getString(R.string.labelCreated));
+							refreshLabels = true;
+							finish();
+						} else if (response.code() == 401) {
 
-					enableProcessButton();
-					AlertDialogs.authorizationTokenRevokedDialog(ctx);
-				}
-				else {
+							enableProcessButton();
+							AlertDialogs.authorizationTokenRevokedDialog(ctx);
+						} else {
 
-					enableProcessButton();
-					Toasty.error(ctx, getString(R.string.genericError));
-				}
-			}
+							enableProcessButton();
+							Toasty.error(ctx, getString(R.string.genericError));
+						}
+					}
 
-			@Override
-			public void onFailure(@NonNull Call<Label> call, @NonNull Throwable t) {
+					@Override
+					public void onFailure(@NonNull Call<Label> call, @NonNull Throwable t) {
 
-				labelColor = "";
-				Log.e("onFailure", t.toString());
-				enableProcessButton();
-			}
-		});
+						labelColor = "";
+						Log.e("onFailure", t.toString());
+						enableProcessButton();
+					}
+				});
 	}
 
-	private void patchLabel(RepositoryContext repository, String updateLabelName, String updateLabelColor, int labelId) {
+	private void patchLabel(
+			RepositoryContext repository,
+			String updateLabelName,
+			String updateLabelColor,
+			int labelId) {
 
 		EditLabelOption createLabelFunc = new EditLabelOption();
 		createLabelFunc.setColor(updateLabelColor);
@@ -244,50 +266,62 @@ public class CreateLabelActivity extends BaseActivity {
 
 		Call<Label> call;
 
-		if(getIntent().getStringExtra("type") != null && Objects.requireNonNull(getIntent().getStringExtra("type")).equals("org")) {
+		if (getIntent().getStringExtra("type") != null
+				&& Objects.requireNonNull(getIntent().getStringExtra("type")).equals("org")) {
 
-			call = RetrofitClient.getApiInterface(ctx).orgEditLabel(getIntent().getStringExtra("orgName"), (long) labelId, createLabelFunc);
+			call =
+					RetrofitClient.getApiInterface(ctx)
+							.orgEditLabel(
+									getIntent().getStringExtra("orgName"),
+									(long) labelId,
+									createLabelFunc);
+		} else {
+
+			call =
+					RetrofitClient.getApiInterface(ctx)
+							.issueEditLabel(
+									repository.getOwner(),
+									repository.getName(),
+									(long) labelId,
+									createLabelFunc);
 		}
-		else {
 
-			call = RetrofitClient.getApiInterface(ctx).issueEditLabel(repository.getOwner(), repository.getName(), (long) labelId, createLabelFunc);
-		}
+		call.enqueue(
+				new Callback<>() {
 
-		call.enqueue(new Callback<>() {
+					@Override
+					public void onResponse(
+							@NonNull Call<Label> call,
+							@NonNull retrofit2.Response<Label> response) {
 
-			@Override
-			public void onResponse(@NonNull Call<Label> call, @NonNull retrofit2.Response<Label> response) {
+						if (response.isSuccessful()) {
 
-				if(response.isSuccessful()) {
+							if (response.code() == 200) {
 
-					if(response.code() == 200) {
+								Toasty.success(ctx, getString(R.string.labelUpdated));
+								refreshLabels = true;
+								finish();
+							}
+						} else if (response.code() == 401) {
 
-						Toasty.success(ctx, getString(R.string.labelUpdated));
-						refreshLabels = true;
-						finish();
+							enableProcessButton();
+							AlertDialogs.authorizationTokenRevokedDialog(ctx);
+						} else {
+
+							enableProcessButton();
+							Toasty.error(ctx, getString(R.string.genericError));
+						}
 					}
-				}
-				else if(response.code() == 401) {
 
-					enableProcessButton();
-					AlertDialogs.authorizationTokenRevokedDialog(ctx);
-				}
-				else {
+					@Override
+					public void onFailure(@NonNull Call<Label> call, @NonNull Throwable t) {
 
-					enableProcessButton();
-					Toasty.error(ctx, getString(R.string.genericError));
-				}
-			}
-
-			@Override
-			public void onFailure(@NonNull Call<Label> call, @NonNull Throwable t) {
-
-				labelColor = "";
-				labelColorDefault = "";
-				Log.e("onFailure", t.toString());
-				enableProcessButton();
-			}
-		});
+						labelColor = "";
+						labelColorDefault = "";
+						Log.e("onFailure", t.toString());
+						enableProcessButton();
+					}
+				});
 	}
 
 	private void initCloseListener() {
@@ -299,51 +333,59 @@ public class CreateLabelActivity extends BaseActivity {
 
 		Call<Void> call;
 
-		if(getIntent().getStringExtra("type") != null && Objects.requireNonNull(getIntent().getStringExtra("type")).equals("org")) {
+		if (getIntent().getStringExtra("type") != null
+				&& Objects.requireNonNull(getIntent().getStringExtra("type")).equals("org")) {
 
-			call = RetrofitClient.getApiInterface(ctx).orgDeleteLabel(getIntent().getStringExtra("orgName"), (long) labelId);
+			call =
+					RetrofitClient.getApiInterface(ctx)
+							.orgDeleteLabel(getIntent().getStringExtra("orgName"), (long) labelId);
+		} else {
+
+			call =
+					RetrofitClient.getApiInterface(ctx)
+							.issueDeleteLabel(
+									repository.getOwner(), repository.getName(), (long) labelId);
 		}
-		else {
 
-			call = RetrofitClient.getApiInterface(ctx).issueDeleteLabel(repository.getOwner(), repository.getName(), (long) labelId);
-		}
+		call.enqueue(
+				new Callback<>() {
 
-		call.enqueue(new Callback<>() {
+					@Override
+					public void onResponse(
+							@NonNull Call<Void> call, @NonNull retrofit2.Response<Void> response) {
 
-			@Override
-			public void onResponse(@NonNull Call<Void> call, @NonNull retrofit2.Response<Void> response) {
+						if (response.isSuccessful()) {
 
-				if(response.isSuccessful()) {
+							if (response.code() == 204) {
 
-					if(response.code() == 204) {
+								Toasty.success(ctx, getString(R.string.labelDeleteText));
+								if (getIntent().getStringExtra("type") != null
+										&& Objects.requireNonNull(
+														getIntent().getStringExtra("type"))
+												.equals("org")) {
 
-						Toasty.success(ctx, getString(R.string.labelDeleteText));
-						if(getIntent().getStringExtra("type") != null && Objects.requireNonNull(getIntent().getStringExtra("type")).equals("org")) {
+									OrganizationLabelsViewModel.loadOrgLabelsList(
+											getIntent().getStringExtra("orgName"), ctx, null, null);
+								} else {
 
-							OrganizationLabelsViewModel.loadOrgLabelsList(getIntent().getStringExtra("orgName"), ctx, null, null);
-						}
-						else {
+									LabelsViewModel.loadLabelsList(
+											repository.getOwner(), repository.getName(), ctx);
+								}
+							}
+						} else if (response.code() == 401) {
 
-							LabelsViewModel.loadLabelsList(repository.getOwner(), repository.getName(), ctx);
+							AlertDialogs.authorizationTokenRevokedDialog(ctx);
+						} else {
+
+							Toasty.error(ctx, getString(R.string.genericError));
 						}
 					}
-				}
-				else if(response.code() == 401) {
 
-					AlertDialogs.authorizationTokenRevokedDialog(ctx);
-				}
-				else {
-
-					Toasty.error(ctx, getString(R.string.genericError));
-				}
-			}
-
-			@Override
-			public void onFailure(@NonNull Call<Void> call, @NonNull Throwable t) {
-				Log.e("onFailure", t.toString());
-			}
-		});
-
+					@Override
+					public void onFailure(@NonNull Call<Void> call, @NonNull Throwable t) {
+						Log.e("onFailure", t.toString());
+					}
+				});
 	}
 
 	private void disableProcessButton() {
@@ -359,10 +401,9 @@ public class CreateLabelActivity extends BaseActivity {
 	@Override
 	public void onResume() {
 		super.onResume();
-		if(repository == null) {
+		if (repository == null) {
 			return;
 		}
 		repository.checkAccountSwitch(this);
 	}
-
 }

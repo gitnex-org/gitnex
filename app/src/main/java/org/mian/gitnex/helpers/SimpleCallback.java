@@ -12,7 +12,6 @@ import retrofit2.Response;
 /**
  * @author opyale
  */
-
 public interface SimpleCallback<T> extends Callback<T> {
 
 	void onFinished(@NonNull Call<T> call, @NonNull Optional<Response<T>> optionalResponse);
@@ -24,7 +23,9 @@ public interface SimpleCallback<T> extends Callback<T> {
 	default void onFailure(@NonNull Call<T> call, @NonNull Throwable throwable) {
 		onFinished(call, Optional.empty());
 
-		Log.e(call.request().url().pathSegments().stream().collect(Collectors.joining(File.pathSeparator)), throwable.toString());
+		Log.e(
+				call.request().url().pathSegments().stream()
+						.collect(Collectors.joining(File.pathSeparator)),
+				throwable.toString());
 	}
-
 }

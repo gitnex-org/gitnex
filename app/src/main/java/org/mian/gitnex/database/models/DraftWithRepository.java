@@ -3,7 +3,6 @@ package org.mian.gitnex.database.models;
 /**
  * @author M M Arif
  */
-
 public class DraftWithRepository {
 
 	private int repositoryId;
@@ -149,5 +148,4 @@ public class DraftWithRepository {
 	public void setMostVisited(int mostVisited) {
 		this.mostVisited = mostVisited;
 	}
-
 }

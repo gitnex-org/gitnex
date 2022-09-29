@@ -13,6 +13,11 @@ import androidx.core.content.res.ResourcesCompat;
 import androidx.recyclerview.widget.RecyclerView;
 import com.google.android.material.bottomsheet.BottomSheetDialog;
 import com.vdurmont.emoji.EmojiParser;
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
+import java.util.Date;
+import java.util.List;
+import java.util.Locale;
 import org.gitnex.tea4j.v2.models.Milestone;
 import org.mian.gitnex.R;
 import org.mian.gitnex.actions.MilestoneActions;
@@ -21,16 +26,10 @@ import org.mian.gitnex.helpers.ClickListener;
 import org.mian.gitnex.helpers.Markdown;
 import org.mian.gitnex.helpers.TimeHelper;
 import org.mian.gitnex.helpers.contexts.RepositoryContext;
-import java.text.DateFormat;
-import java.text.SimpleDateFormat;
-import java.util.Date;
-import java.util.List;
-import java.util.Locale;
 
 /**
  * @author M M Arif
  */
-
 public class MilestonesAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
 
 	private final Context context;
@@ -39,23 +38,27 @@ public class MilestonesAdapter extends RecyclerView.Adapter<RecyclerView.ViewHol
 	private OnLoadMoreListener loadMoreListener;
 	private boolean isLoading = false, isMoreDataAvailable = true;
 
-	public MilestonesAdapter(Context ctx, List<Milestone> dataListMain, RepositoryContext repository) {
+	public MilestonesAdapter(
+			Context ctx, List<Milestone> dataListMain, RepositoryContext repository) {
 		this.repository = repository;
 		this.context = ctx;
 		this.dataList = dataListMain;
 	}
 
-	@NonNull
-	@Override
+	@NonNull @Override
 	public RecyclerView.ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
 		LayoutInflater inflater = LayoutInflater.from(context);
-		return new MilestonesAdapter.DataHolder(inflater.inflate(R.layout.list_milestones, parent, false));
+		return new MilestonesAdapter.DataHolder(
+				inflater.inflate(R.layout.list_milestones, parent, false));
 	}
 
 	@Override
 	public void onBindViewHolder(@NonNull RecyclerView.ViewHolder holder, int position) {
 
-		if(position >= getItemCount() - 1 && isMoreDataAvailable && !isLoading && loadMoreListener != null) {
+		if (position >= getItemCount() - 1
+				&& isMoreDataAvailable
+				&& !isLoading
+				&& loadMoreListener != null) {
 
 			isLoading = true;
 			loadMoreListener.onLoadMore();
@@ -81,7 +84,7 @@ public class MilestonesAdapter extends RecyclerView.Adapter<RecyclerView.ViewHol
 
 	public void setMoreDataAvailable(boolean moreDataAvailable) {
 		isMoreDataAvailable = moreDataAvailable;
-		if(!isMoreDataAvailable) {
+		if (!isMoreDataAvailable) {
 			loadMoreListener.onLoadFinished();
 		}
 	}
@@ -107,7 +110,6 @@ public class MilestonesAdapter extends RecyclerView.Adapter<RecyclerView.ViewHol
 		void onLoadMore();
 
 		void onLoadFinished();
-
 	}
 
 	class DataHolder extends RecyclerView.ViewHolder {
@@ -132,50 +134,53 @@ public class MilestonesAdapter extends RecyclerView.Adapter<RecyclerView.ViewHol
 			msProgress = itemView.findViewById(R.id.milestoneProgress);
 			ImageView milestonesMenu = itemView.findViewById(R.id.milestonesMenu);
 
-			if(!((RepoDetailActivity) itemView.getContext()).repository.getPermissions().isPush()) {
+			if (!((RepoDetailActivity) itemView.getContext())
+					.repository
+					.getPermissions()
+					.isPush()) {
 				milestonesMenu.setVisibility(View.GONE);
 			}
-			milestonesMenu.setOnClickListener(v -> {
+			milestonesMenu.setOnClickListener(
+					v -> {
+						Context ctx = v.getContext();
+						int milestoneId_ = Integer.parseInt(String.valueOf(milestones.getId()));
 
-				Context ctx = v.getContext();
-				int milestoneId_ = Integer.parseInt(String.valueOf(milestones.getId()));
+						@SuppressLint("InflateParams")
+						View view =
+								LayoutInflater.from(ctx)
+										.inflate(R.layout.bottom_sheet_milestones_in_list, null);
 
-				@SuppressLint("InflateParams") View view = LayoutInflater.from(ctx).inflate(R.layout.bottom_sheet_milestones_in_list, null);
+						TextView closeMilestone = view.findViewById(R.id.closeMilestone);
+						TextView openMilestone = view.findViewById(R.id.openMilestone);
 
-				TextView closeMilestone = view.findViewById(R.id.closeMilestone);
-				TextView openMilestone = view.findViewById(R.id.openMilestone);
+						BottomSheetDialog dialog = new BottomSheetDialog(ctx);
+						dialog.setContentView(view);
+						dialog.show();
 
-				BottomSheetDialog dialog = new BottomSheetDialog(ctx);
-				dialog.setContentView(view);
-				dialog.show();
+						if (milestones.getState().equals("open")) {
 
-				if(milestones.getState().equals("open")) {
+							closeMilestone.setVisibility(View.VISIBLE);
+							openMilestone.setVisibility(View.GONE);
+						} else {
 
-					closeMilestone.setVisibility(View.VISIBLE);
-					openMilestone.setVisibility(View.GONE);
-				}
-				else {
+							closeMilestone.setVisibility(View.GONE);
+							openMilestone.setVisibility(View.VISIBLE);
+						}
 
-					closeMilestone.setVisibility(View.GONE);
-					openMilestone.setVisibility(View.VISIBLE);
-				}
+						closeMilestone.setOnClickListener(
+								v12 -> {
+									MilestoneActions.closeMilestone(ctx, milestoneId_, repository);
+									dialog.dismiss();
+									updateAdapter(getBindingAdapterPosition());
+								});
 
-				closeMilestone.setOnClickListener(v12 -> {
-
-					MilestoneActions.closeMilestone(ctx, milestoneId_, repository);
-					dialog.dismiss();
-					updateAdapter(getBindingAdapterPosition());
-				});
-
-				openMilestone.setOnClickListener(v12 -> {
-
-					MilestoneActions.openMilestone(ctx, milestoneId_, repository);
-					dialog.dismiss();
-					updateAdapter(getBindingAdapterPosition());
-				});
-
-			});
-
+						openMilestone.setOnClickListener(
+								v12 -> {
+									MilestoneActions.openMilestone(ctx, milestoneId_, repository);
+									dialog.dismiss();
+									updateAdapter(getBindingAdapterPosition());
+								});
+					});
 		}
 
 		@SuppressLint("SetTextI18n")
@@ -186,40 +191,60 @@ public class MilestonesAdapter extends RecyclerView.Adapter<RecyclerView.ViewHol
 
 			Markdown.render(context, dataModel.getTitle(), msTitle);
 
-			if(!dataModel.getDescription().equals("")) {
+			if (!dataModel.getDescription().equals("")) {
 
-				Markdown.render(context, EmojiParser.parseToUnicode(dataModel.getDescription()), msDescription);
-			}
-			else {
+				Markdown.render(
+						context,
+						EmojiParser.parseToUnicode(dataModel.getDescription()),
+						msDescription);
+			} else {
 
 				msDescription.setText(context.getString(R.string.milestoneNoDescription));
 			}
 
-			msOpenIssues.setText(context.getString(R.string.milestoneIssueStatusOpen, dataModel.getOpenIssues()));
-			msClosedIssues.setText(context.getString(R.string.milestoneIssueStatusClosed, dataModel.getClosedIssues()));
+			msOpenIssues.setText(
+					context.getString(
+							R.string.milestoneIssueStatusOpen, dataModel.getOpenIssues()));
+			msClosedIssues.setText(
+					context.getString(
+							R.string.milestoneIssueStatusClosed, dataModel.getClosedIssues()));
 
-			if((dataModel.getOpenIssues() + dataModel.getClosedIssues()) > 0) {
+			if ((dataModel.getOpenIssues() + dataModel.getClosedIssues()) > 0) {
 
-				if(dataModel.getOpenIssues() == 0) {
+				if (dataModel.getOpenIssues() == 0) {
 
 					msProgress.setProgress(100);
-					msProgress.setOnClickListener(new ClickListener(context.getResources().getString(R.string.milestoneCompletion, 100), context));
-				}
-				else {
+					msProgress.setOnClickListener(
+							new ClickListener(
+									context.getResources()
+											.getString(R.string.milestoneCompletion, 100),
+									context));
+				} else {
 
-					int msCompletion = (int) (100 * dataModel.getClosedIssues() / (dataModel.getOpenIssues() + dataModel.getClosedIssues()));
-					msProgress.setOnClickListener(new ClickListener(context.getResources().getString(R.string.milestoneCompletion, msCompletion), context));
+					int msCompletion =
+							(int)
+									(100
+											* dataModel.getClosedIssues()
+											/ (dataModel.getOpenIssues()
+													+ dataModel.getClosedIssues()));
+					msProgress.setOnClickListener(
+							new ClickListener(
+									context.getResources()
+											.getString(R.string.milestoneCompletion, msCompletion),
+									context));
 					msProgress.setProgress(msCompletion);
 				}
 
-			}
-			else {
+			} else {
 
 				msProgress.setProgress(0);
-				msProgress.setOnClickListener(new ClickListener(context.getResources().getString(R.string.milestoneCompletion, 0), context));
+				msProgress.setOnClickListener(
+						new ClickListener(
+								context.getResources().getString(R.string.milestoneCompletion, 0),
+								context));
 			}
 
-			if(dataModel.getDueOn() != null) {
+			if (dataModel.getDueOn() != null) {
 
 				DateFormat formatter = new SimpleDateFormat("yyyy-MM-dd", new Locale(locale));
 				Date date = dataModel.getDueOn();
@@ -239,7 +264,5 @@ public class MilestonesAdapter extends RecyclerView.Adapter<RecyclerView.ViewHol
 				msDueDate.setText(context.getString(R.string.milestoneNoDueDate));
 			}
 		}
-
 	}
-
 }

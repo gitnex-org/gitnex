@@ -10,7 +10,6 @@ import org.mian.gitnex.fragments.PullRequestChangesFragment;
 /**
  * @author opyale
  */
-
 public class DiffActivity extends BaseActivity {
 
 	public PullRequestChangesFragment fragment = PullRequestChangesFragment.newInstance();
@@ -24,21 +23,28 @@ public class DiffActivity extends BaseActivity {
 
 		setContentView(binding.getRoot());
 
-		getOnBackPressedDispatcher().addCallback(new OnBackPressedCallback(true) {
+		getOnBackPressedDispatcher()
+				.addCallback(
+						new OnBackPressedCallback(true) {
 
-			@Override
-			public void handleOnBackPressed() {
-				if(getSupportFragmentManager().findFragmentById(R.id.fragment_container) instanceof DiffFragment) {
-					getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container, fragment).commit();
-				}
-				else {
-					finish();
-				}
-			}
-		});
+							@Override
+							public void handleOnBackPressed() {
+								if (getSupportFragmentManager()
+												.findFragmentById(R.id.fragment_container)
+										instanceof DiffFragment) {
+									getSupportFragmentManager()
+											.beginTransaction()
+											.replace(R.id.fragment_container, fragment)
+											.commit();
+								} else {
+									finish();
+								}
+							}
+						});
 
-		getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container, fragment).commit();
-
+		getSupportFragmentManager()
+				.beginTransaction()
+				.replace(R.id.fragment_container, fragment)
+				.commit();
 	}
-
 }

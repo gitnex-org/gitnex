@@ -1,16 +1,15 @@
 package org.mian.gitnex.core;
 
 import androidx.annotation.NonNull;
-import java.util.Set;
 import io.noties.prism4j.DefaultGrammarLocator;
 import io.noties.prism4j.Grammar;
 import io.noties.prism4j.GrammarLocator;
 import io.noties.prism4j.Prism4j;
+import java.util.Set;
 
 /**
  * @author opyale
  */
-
 public class MainGrammarLocator implements GrammarLocator {
 
 	public static final String DEFAULT_FALLBACK_LANGUAGE = "clike";
@@ -18,27 +17,24 @@ public class MainGrammarLocator implements GrammarLocator {
 	private static final DefaultGrammarLocator defaultGrammarLocator = new DefaultGrammarLocator();
 	private static volatile MainGrammarLocator instance;
 
-	private MainGrammarLocator() {
-	}
+	private MainGrammarLocator() {}
 
 	public static MainGrammarLocator getInstance() {
 
-		if(instance == null) {
-			synchronized(MainGrammarLocator.class) {
-				if(instance == null) {
+		if (instance == null) {
+			synchronized (MainGrammarLocator.class) {
+				if (instance == null) {
 					instance = new MainGrammarLocator();
 				}
 			}
 		}
 
 		return instance;
-
 	}
 
 	public String fromExtension(String extension) {
 
-		switch(extension.toLowerCase()) {
-
+		switch (extension.toLowerCase()) {
 			case "b":
 			case "bf":
 				return "brainfuck";
@@ -110,13 +106,12 @@ public class MainGrammarLocator implements GrammarLocator {
 
 			case "yaml":
 			case "yml":
-			case "properties": // This extension doesn't correspond to YAML, but it's the next best option
+			case "properties": // This extension doesn't correspond to YAML, but it's the next best
+				// option
 				return "yaml";
-
 		}
 
 		return extension;
-
 	}
 
 	@Override
@@ -125,11 +120,9 @@ public class MainGrammarLocator implements GrammarLocator {
 		return defaultGrammarLocator.grammar(prism4j, language);
 	}
 
-	@NonNull
-	@Override
+	@NonNull @Override
 	public Set<String> languages() {
 
 		return defaultGrammarLocator.languages();
 	}
-
 }

@@ -10,6 +10,8 @@ import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 import com.google.android.material.dialog.MaterialAlertDialogBuilder;
+import java.util.List;
+import java.util.Locale;
 import org.apache.commons.lang3.StringUtils;
 import org.gitnex.tea4j.v2.models.Cron;
 import org.mian.gitnex.R;
@@ -17,16 +19,14 @@ import org.mian.gitnex.clients.RetrofitClient;
 import org.mian.gitnex.helpers.AlertDialogs;
 import org.mian.gitnex.helpers.TimeHelper;
 import org.mian.gitnex.helpers.Toasty;
-import java.util.List;
-import java.util.Locale;
 import retrofit2.Call;
 import retrofit2.Callback;
 
 /**
  * @author M M Arif
  */
-
-public class AdminCronTasksAdapter extends RecyclerView.Adapter<AdminCronTasksAdapter.CronTasksViewHolder> {
+public class AdminCronTasksAdapter
+		extends RecyclerView.Adapter<AdminCronTasksAdapter.CronTasksViewHolder> {
 
 	private final List<Cron> tasksList;
 
@@ -48,10 +48,10 @@ public class AdminCronTasksAdapter extends RecyclerView.Adapter<AdminCronTasksAd
 			LinearLayout cronTasksInfo = itemView.findViewById(R.id.cronTasksInfo);
 			LinearLayout cronTasksRun = itemView.findViewById(R.id.cronTasksRun);
 
-			cronTasksInfo.setOnClickListener(taskInfo -> {
-
-				String nextRun = "";
-				String lastRun = "";
+			cronTasksInfo.setOnClickListener(
+					taskInfo -> {
+						String nextRun = "";
+						String lastRun = "";
 
 				if(cronTasks.getNext() != null) {
 					nextRun = TimeHelper.formatTime(cronTasks.getNext(), locale);
@@ -60,46 +60,55 @@ public class AdminCronTasksAdapter extends RecyclerView.Adapter<AdminCronTasksAd
 					lastRun = TimeHelper.formatTime(cronTasks.getPrev(), locale);
 				}
 
-				View view = LayoutInflater.from(ctx).inflate(R.layout.layout_cron_task_info, null);
+						View view =
+								LayoutInflater.from(ctx)
+										.inflate(R.layout.layout_cron_task_info, null);
 
-				TextView taskScheduleContent = view.findViewById(R.id.taskScheduleContent);
-				TextView nextRunContent = view.findViewById(R.id.nextRunContent);
-				TextView lastRunContent = view.findViewById(R.id.lastRunContent);
-				TextView execTimeContent = view.findViewById(R.id.execTimeContent);
+						TextView taskScheduleContent = view.findViewById(R.id.taskScheduleContent);
+						TextView nextRunContent = view.findViewById(R.id.nextRunContent);
+						TextView lastRunContent = view.findViewById(R.id.lastRunContent);
+						TextView execTimeContent = view.findViewById(R.id.execTimeContent);
 
-				taskScheduleContent.setText(cronTasks.getSchedule());
-				nextRunContent.setText(nextRun);
-				lastRunContent.setText(lastRun);
-				execTimeContent.setText(String.valueOf(cronTasks.getExecTimes()));
+						taskScheduleContent.setText(cronTasks.getSchedule());
+						nextRunContent.setText(nextRun);
+						lastRunContent.setText(lastRun);
+						execTimeContent.setText(String.valueOf(cronTasks.getExecTimes()));
 
-				MaterialAlertDialogBuilder materialAlertDialogBuilder = new MaterialAlertDialogBuilder(ctx).setTitle(StringUtils.capitalize(cronTasks.getName().replace("_", " "))).setView(view)
-					.setNeutralButton(ctx.getString(R.string.close), null);
+						MaterialAlertDialogBuilder materialAlertDialogBuilder =
+								new MaterialAlertDialogBuilder(ctx)
+										.setTitle(
+												StringUtils.capitalize(
+														cronTasks.getName().replace("_", " ")))
+										.setView(view)
+										.setNeutralButton(ctx.getString(R.string.close), null);
 
-				materialAlertDialogBuilder.create().show();
-			});
+						materialAlertDialogBuilder.create().show();
+					});
 
-			cronTasksRun.setOnClickListener(taskInfo -> {
-
-				runCronTask(ctx, cronTasks.getName());
-			});
+			cronTasksRun.setOnClickListener(
+					taskInfo -> {
+						runCronTask(ctx, cronTasks.getName());
+					});
 		}
-
 	}
 
 	public AdminCronTasksAdapter(List<Cron> tasksListMain) {
 		this.tasksList = tasksListMain;
 	}
 
-	@NonNull
-	@Override
-	public AdminCronTasksAdapter.CronTasksViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
+	@NonNull @Override
+	public AdminCronTasksAdapter.CronTasksViewHolder onCreateViewHolder(
+			@NonNull ViewGroup parent, int viewType) {
 
-		View v = LayoutInflater.from(parent.getContext()).inflate(R.layout.list_admin_cron_tasks, parent, false);
+		View v =
+				LayoutInflater.from(parent.getContext())
+						.inflate(R.layout.list_admin_cron_tasks, parent, false);
 		return new AdminCronTasksAdapter.CronTasksViewHolder(v);
 	}
 
 	@Override
-	public void onBindViewHolder(@NonNull AdminCronTasksAdapter.CronTasksViewHolder holder, int position) {
+	public void onBindViewHolder(
+			@NonNull AdminCronTasksAdapter.CronTasksViewHolder holder, int position) {
 
 		Cron currentItem = tasksList.get(position);
 
@@ -113,44 +122,44 @@ public class AdminCronTasksAdapter extends RecyclerView.Adapter<AdminCronTasksAd
 
 		call.enqueue(new Callback<>() {
 
-			@Override
-			public void onResponse(@NonNull Call<Void> call, @NonNull retrofit2.Response<Void> response) {
+					@Override
+					public void onResponse(
+							@NonNull Call<Void> call, @NonNull retrofit2.Response<Void> response) {
 
-				switch(response.code()) {
+						switch (response.code()) {
+							case 204:
+								Toasty.success(
+										ctx,
+										ctx.getString(R.string.adminCronTaskSuccessMsg, taskName));
+								break;
 
-					case 204:
-						Toasty.success(ctx, ctx.getString(R.string.adminCronTaskSuccessMsg, taskName));
-						break;
+							case 401:
+								AlertDialogs.authorizationTokenRevokedDialog(ctx);
+								break;
 
-					case 401:
-						AlertDialogs.authorizationTokenRevokedDialog(ctx);
-						break;
+							case 403:
+								Toasty.error(ctx, ctx.getString(R.string.authorizeError));
+								break;
 
-					case 403:
-						Toasty.error(ctx, ctx.getString(R.string.authorizeError));
-						break;
+							case 404:
+								Toasty.warning(ctx, ctx.getString(R.string.apiNotFound));
+								break;
 
-					case 404:
-						Toasty.warning(ctx, ctx.getString(R.string.apiNotFound));
-						break;
+							default:
+								Toasty.error(ctx, ctx.getString(R.string.genericError));
+						}
+					}
 
-					default:
-						Toasty.error(ctx, ctx.getString(R.string.genericError));
+					@Override
+					public void onFailure(@NonNull Call<Void> call, @NonNull Throwable t) {
 
-				}
-			}
-
-			@Override
-			public void onFailure(@NonNull Call<Void> call, @NonNull Throwable t) {
-
-				Toasty.error(ctx, ctx.getString(R.string.genericServerResponseError));
-			}
-		});
+						Toasty.error(ctx, ctx.getString(R.string.genericServerResponseError));
+					}
+				});
 	}
 
 	@Override
 	public int getItemCount() {
 		return tasksList.size();
 	}
-
 }

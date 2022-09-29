@@ -13,13 +13,13 @@ import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
+import java.util.ArrayList;
+import java.util.List;
 import org.gitnex.tea4j.v2.models.InlineResponse2001;
 import org.gitnex.tea4j.v2.models.User;
 import org.mian.gitnex.adapters.OrganizationAddUserToTeamMemberAdapter;
 import org.mian.gitnex.clients.RetrofitClient;
 import org.mian.gitnex.databinding.ActivityAddNewTeamMemberBinding;
-import java.util.ArrayList;
-import java.util.List;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
@@ -27,7 +27,6 @@ import retrofit2.Response;
 /**
  * @author M M Arif
  */
-
 public class AddNewTeamMemberActivity extends BaseActivity {
 
 	private View.OnClickListener onClickListener;
@@ -46,10 +45,12 @@ public class AddNewTeamMemberActivity extends BaseActivity {
 
 		super.onCreate(savedInstanceState);
 
-		ActivityAddNewTeamMemberBinding activityAddNewTeamMemberBinding = ActivityAddNewTeamMemberBinding.inflate(getLayoutInflater());
+		ActivityAddNewTeamMemberBinding activityAddNewTeamMemberBinding =
+				ActivityAddNewTeamMemberBinding.inflate(getLayoutInflater());
 		setContentView(activityAddNewTeamMemberBinding.getRoot());
 
-		InputMethodManager imm = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
+		InputMethodManager imm =
+				(InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
 
 		ImageView closeActivity = activityAddNewTeamMemberBinding.close;
 		addNewTeamMember = activityAddNewTeamMemberBinding.addNewTeamMember;
@@ -71,72 +72,77 @@ public class AddNewTeamMemberActivity extends BaseActivity {
 
 		dataList = new ArrayList<>();
 
-		addNewTeamMember.addTextChangedListener(new TextWatcher() {
+		addNewTeamMember.addTextChangedListener(
+				new TextWatcher() {
 
-			@Override
-			public void onTextChanged(CharSequence s, int start, int before, int count) {
+					@Override
+					public void onTextChanged(CharSequence s, int start, int before, int count) {
 
-				if(!addNewTeamMember.getText().toString().equals("") && addNewTeamMember.getText().toString().length() > 1) {
+						if (!addNewTeamMember.getText().toString().equals("")
+								&& addNewTeamMember.getText().toString().length() > 1) {
 
-					adapter = new OrganizationAddUserToTeamMemberAdapter(dataList, ctx, Math.toIntExact(teamId), getIntent().getStringExtra("orgName"));
-					loadUserSearchList(addNewTeamMember.getText().toString());
-				}
-			}
+							adapter =
+									new OrganizationAddUserToTeamMemberAdapter(
+											dataList,
+											ctx,
+											Math.toIntExact(teamId),
+											getIntent().getStringExtra("orgName"));
+							loadUserSearchList(addNewTeamMember.getText().toString());
+						}
+					}
 
-			@Override
-			public void beforeTextChanged(CharSequence s, int start, int count, int after) {
-			}
+					@Override
+					public void beforeTextChanged(
+							CharSequence s, int start, int count, int after) {}
 
-			@Override
-			public void afterTextChanged(Editable s) {
-			}
-
-		});
-
+					@Override
+					public void afterTextChanged(Editable s) {}
+				});
 	}
 
 	public void loadUserSearchList(String searchKeyword) {
 
-		Call<InlineResponse2001> call = RetrofitClient.getApiInterface(ctx).userSearch(searchKeyword, null, 1, 10);
+		Call<InlineResponse2001> call =
+				RetrofitClient.getApiInterface(ctx).userSearch(searchKeyword, null, 1, 10);
 
 		mProgressBar.setVisibility(View.VISIBLE);
 
-		call.enqueue(new Callback<>() {
+		call.enqueue(
+				new Callback<>() {
 
-			@Override
-			public void onResponse(@NonNull Call<InlineResponse2001> call, @NonNull Response<InlineResponse2001> response) {
+					@Override
+					public void onResponse(
+							@NonNull Call<InlineResponse2001> call,
+							@NonNull Response<InlineResponse2001> response) {
 
-				if(response.isSuccessful()) {
+						if (response.isSuccessful()) {
 
-					assert response.body() != null;
-					if(response.body().getData().size() > 0) {
+							assert response.body() != null;
+							if (response.body().getData().size() > 0) {
 
-						dataList.clear();
-						dataList.addAll(response.body().getData());
-						mRecyclerView.setAdapter(adapter);
-						noData.setVisibility(View.GONE);
+								dataList.clear();
+								dataList.addAll(response.body().getData());
+								mRecyclerView.setAdapter(adapter);
+								noData.setVisibility(View.GONE);
+							} else {
+
+								noData.setVisibility(View.VISIBLE);
+							}
+
+							mProgressBar.setVisibility(View.GONE);
+						}
 					}
-					else {
 
-						noData.setVisibility(View.VISIBLE);
+					@Override
+					public void onFailure(
+							@NonNull Call<InlineResponse2001> call, @NonNull Throwable t) {
+
+						Log.e("onFailure", t.toString());
 					}
-
-					mProgressBar.setVisibility(View.GONE);
-				}
-
-			}
-
-			@Override
-			public void onFailure(@NonNull Call<InlineResponse2001> call, @NonNull Throwable t) {
-
-				Log.e("onFailure", t.toString());
-			}
-
-		});
+				});
 	}
 
 	private void initCloseListener() {
 		onClickListener = view -> finish();
 	}
-
 }

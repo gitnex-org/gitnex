@@ -660,4 +660,45 @@
     <string name="wikiCreated">Página de la Wiki creada correctamente</string>
     <!-- code editor -->
     <string name="openInCodeEditor">Abrir en el editor</string>
+    <!-- timeline -->
+    <string name="commitText">commit</string>
+    <string name="timelineAddedCommit">%1$s ha añadido %2$s %3$s</string>
+    <!-- the | is replaced by the label -->
+    <string name="timelineAddedLabel">%1$s ha añadido la etiqueta %2$s</string>
+    <!-- the | is replaced by the label -->
+    <string name="timelineRemovedLabel">%1$s ha eliminado la etiqueta %2$s</string>
+    <string name="timelineAssigneesRemoved">%1$s ha eliminado su asignación %2$s</string>
+    <string name="timelineAssigneesUnassigned">%1$s ha sido desasignado por %2$s %3$s</string>
+    <string name="timelineAssigneesSelfAssigned">%1$s se ha autoasignado %2$s</string>
+    <string name="timelineAssigneesAssigned">%1$s ha sido asignado por %2$s %3$s</string>
+    <string name="timelineMilestoneAdded">%1$s ha añadido %2$s al hito %3$s</string>
+    <string name="timelineMilestoneRemoved">%1$s ha eliminado %2$s del hito %3$s</string>
+    <string name="timelineStatusClosedIssue">%1$s ha cerrado la incidencia %2$s</string>
+    <string name="timelineStatusReopenedIssue">%1$s ha reabierto la incidencia %2$s</string>
+    <string name="timelineStatusReopenedPr">%1$s ha reabierto este Pull Request %2$s</string>
+    <string name="timelineStatusClosedPr">%1$s ha cerrado el Pull Request %2$s</string>
+    <string name="timelineStatusMergedPr">%1$s ha fusionado el Pull Request %2$s</string>
+    <string name="timelineStatusRefPr"><![CDATA[%1$s ha hecho referencia a este Pull Request desde <font color=\'%2$d\'>%3$s</font> %4$s]]></string>
+    <string name="timelineReviewRequest">%1$s ha pedido revisión de %2$s %3$s</string>
+    <string name="timelineChangeTitle">%1$s ha cambiado el título %2$s a %3$s %4$s</string>
+    <string name="timelineLocked">%1$s ha bloqueado %2$s y limitado la conversación a los colaboradores %3$s</string>
+    <string name="timelineUnlocked">%1$s ha desbloqueado la conversación %2$s</string>
+    <string name="timelineDependencyAdded">%1$s ha añadido una nueva dependencia #%2$d %3$s</string>
+    <string name="timelineDependencyRemoved">%1$s ha eliminado una dependencia #%2$d %3$s</string>
+    <string name="timelineProjectAdded">%1$s ha añadido esto al proyecto %2$s</string>
+    <string name="timelineProjectRemoved">%1$s ha eliminado esto del proyecto %2$s</string>
+    <string name="timelineDueDateAdded">%1$s ha añadido la fecha de vencimiento %2$s %3$s</string>
+    <string name="timelineDueDateModified">%1$s ha modificado la fecha de vencimiento de %2$s a %3$s %4$s</string>
+    <string name="timelineDueDateRemoved">%1$s ha eliminado la fecha de vencimiento %2$s %3$s</string>
+    <string name="timelineBranchChanged">%1$s ha cambiado la rama por defecto de %2$s a %3$s %4$s</string>
+    <string name="timelineBranchDeleted">%1$s ha eliminado la rama %2$s %3$s</string>
+    <string name="timelineTimeTrackingStart">%1$s ha empezado a trabajar %2$s</string>
+    <string name="timelineTimeTrackingStop">%1$s ha parado el seguimiento de tiempo %2$s</string>
+    <string name="timelineTimeTrackingCancel">%1$s ha cancelado el seguimiento de tiempo %2$s</string>
+    <string name="timelineTimeTrackingAddManualTime">%1$s ha añadido tiempo invertido %2$s %3$s</string>
+    <string name="timelineTimeTrackingDeleteManualTime">%1$s ha elimnado tiempo invertido %2$s %3$s</string>
+    <string name="timelineChangeIssueRef">%1$s ha añadido una referencia %2$s %3$s</string>
+    <string name="timelineRefIssue">%1$s ha hecho referencia a esta incidencia en #%2$d %3$s</string>
+    <string name="timelineRefPr">%1$s ha hecho referencia a este Pull Request en #%2$d %3$s</string>
+    <string name="timelineStatusRefIssue"><![CDATA[%1$s ha hecho referencia a esta incidencia desde <font color=\'%2$d\'>%3$s</font> %4$s]]></string>
 </resources>

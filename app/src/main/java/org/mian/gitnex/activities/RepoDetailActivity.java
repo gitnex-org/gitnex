@@ -26,6 +26,9 @@ import com.google.android.material.dialog.MaterialAlertDialogBuilder;
 import com.google.android.material.progressindicator.LinearProgressIndicator;
 import com.google.android.material.tabs.TabLayout;
 import com.google.android.material.tabs.TabLayoutMediator;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Objects;
 import org.gitnex.tea4j.v2.models.Branch;
 import org.gitnex.tea4j.v2.models.Milestone;
 import org.gitnex.tea4j.v2.models.Organization;
@@ -52,9 +55,6 @@ import org.mian.gitnex.helpers.Toasty;
 import org.mian.gitnex.helpers.contexts.RepositoryContext;
 import org.mian.gitnex.structs.BottomSheetListener;
 import org.mian.gitnex.structs.FragmentRefreshListener;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Objects;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
@@ -62,18 +62,20 @@ import retrofit2.Response;
 /**
  * @author M M Arif
  */
-
 public class RepoDetailActivity extends BaseActivity implements BottomSheetListener {
 
 	public static boolean updateRepo = false;
-	private final ActivityResultLauncher<Intent> settingsLauncher = registerForActivityResult(new ActivityResultContracts.StartActivityForResult(), result -> {
-		if(result.getResultCode() == 200) {
-			assert result.getData() != null;
-			if(result.getData().getBooleanExtra("nameChanged", false)) {
-				recreate();
-			}
-		}
-	});
+	private final ActivityResultLauncher<Intent> settingsLauncher =
+			registerForActivityResult(
+					new ActivityResultContracts.StartActivityForResult(),
+					result -> {
+						if (result.getResultCode() == 200) {
+							assert result.getData() != null;
+							if (result.getData().getBooleanExtra("nameChanged", false)) {
+								recreate();
+							}
+						}
+					});
 	public ViewPager2 viewPager;
 	public RepositoryContext repository;
 	private TextView textViewBadgeIssue;
@@ -83,44 +85,55 @@ public class RepoDetailActivity extends BaseActivity implements BottomSheetListe
 	private FragmentRefreshListener fragmentRefreshListener;
 	private FragmentRefreshListener fragmentRefreshListenerPr;
 	private FragmentRefreshListener fragmentRefreshListenerMilestone;
-	private final ActivityResultLauncher<Intent> createMilestoneLauncher = registerForActivityResult(new ActivityResultContracts.StartActivityForResult(), result -> {
-		if(result.getResultCode() == 201) {
-			assert result.getData() != null;
-			if(result.getData().getBooleanExtra("milestoneCreated", false)) {
-				if(fragmentRefreshListenerMilestone != null) {
-					fragmentRefreshListenerMilestone.onRefresh(repository.getMilestoneState().toString());
-				}
-			}
-		}
-	});
+	private final ActivityResultLauncher<Intent> createMilestoneLauncher =
+			registerForActivityResult(
+					new ActivityResultContracts.StartActivityForResult(),
+					result -> {
+						if (result.getResultCode() == 201) {
+							assert result.getData() != null;
+							if (result.getData().getBooleanExtra("milestoneCreated", false)) {
+								if (fragmentRefreshListenerMilestone != null) {
+									fragmentRefreshListenerMilestone.onRefresh(
+											repository.getMilestoneState().toString());
+								}
+							}
+						}
+					});
 	private FragmentRefreshListener fragmentRefreshListenerFiles;
-	private final ActivityResultLauncher<Intent> editFileLauncher = registerForActivityResult(new ActivityResultContracts.StartActivityForResult(), result -> {
-		if(result.getResultCode() == 200) {
-			assert result.getData() != null;
-			if(result.getData().getBooleanExtra("fileModified", false)) {
-				if(fragmentRefreshListenerFiles != null) {
-					fragmentRefreshListenerFiles.onRefresh(repository.getBranchRef());
-				}
-			}
-		}
-	});
+	private final ActivityResultLauncher<Intent> editFileLauncher =
+			registerForActivityResult(
+					new ActivityResultContracts.StartActivityForResult(),
+					result -> {
+						if (result.getResultCode() == 200) {
+							assert result.getData() != null;
+							if (result.getData().getBooleanExtra("fileModified", false)) {
+								if (fragmentRefreshListenerFiles != null) {
+									fragmentRefreshListenerFiles.onRefresh(
+											repository.getBranchRef());
+								}
+							}
+						}
+					});
 	private FragmentRefreshListener fragmentRefreshListenerFilterIssuesByMilestone;
 	private FragmentRefreshListener fragmentRefreshListenerReleases;
 	private Dialog progressDialog;
 	private MaterialAlertDialogBuilder materialAlertDialogBuilder;
 	private Intent intentWiki;
-	private final ActivityResultLauncher<Intent> createReleaseLauncher = registerForActivityResult(new ActivityResultContracts.StartActivityForResult(), result -> {
-		if(result.getResultCode() == 201) {
-			assert result.getData() != null;
-			if(result.getData().getBooleanExtra("updateReleases", false)) {
-				if(fragmentRefreshListenerReleases != null) {
-					fragmentRefreshListenerReleases.onRefresh(null);
-				}
-				repository.removeRepository();
-				getRepoInfo(repository.getOwner(), repository.getName());
-			}
-		}
-	});
+	private final ActivityResultLauncher<Intent> createReleaseLauncher =
+			registerForActivityResult(
+					new ActivityResultContracts.StartActivityForResult(),
+					result -> {
+						if (result.getResultCode() == 201) {
+							assert result.getData() != null;
+							if (result.getData().getBooleanExtra("updateReleases", false)) {
+								if (fragmentRefreshListenerReleases != null) {
+									fragmentRefreshListenerReleases.onRefresh(null);
+								}
+								repository.removeRepository();
+								getRepoInfo(repository.getOwner(), repository.getName());
+							}
+						}
+					});
 
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
@@ -133,7 +146,8 @@ public class RepoDetailActivity extends BaseActivity implements BottomSheetListe
 
 		Toolbar toolbar = findViewById(R.id.toolbar);
 
-		materialAlertDialogBuilder = new MaterialAlertDialogBuilder(ctx, R.style.ThemeOverlay_Material3_Dialog_Alert);
+		materialAlertDialogBuilder =
+				new MaterialAlertDialogBuilder(ctx, R.style.ThemeOverlay_Material3_Dialog_Alert);
 
 		intentWiki = new Intent(ctx, WikiActivity.class);
 
@@ -157,7 +171,7 @@ public class RepoDetailActivity extends BaseActivity implements BottomSheetListe
 	public void onResume() {
 		super.onResume();
 		repository.checkAccountSwitch(this);
-		if(updateRepo) {
+		if (updateRepo) {
 			updateRepo = false;
 			repository.removeRepository();
 			getRepoInfo(repository.getOwner(), repository.getName());
@@ -177,107 +191,113 @@ public class RepoDetailActivity extends BaseActivity implements BottomSheetListe
 
 		int id = item.getItemId();
 
-		if(id == android.R.id.home) {
+		if (id == android.R.id.home) {
 
-			if(!getIntent().getBooleanExtra("openedFromUserOrg", false)) {
-				RetrofitClient.getApiInterface(ctx).orgGet(repository.getOwner()).enqueue(new Callback<>() {
+			if (!getIntent().getBooleanExtra("openedFromUserOrg", false)) {
+				RetrofitClient.getApiInterface(ctx)
+						.orgGet(repository.getOwner())
+						.enqueue(
+								new Callback<>() {
 
-					@Override
-					public void onResponse(@NonNull Call<Organization> call, @NonNull Response<Organization> response) {
-						Intent intent = new Intent(ctx, response.isSuccessful() ? OrganizationDetailActivity.class : ProfileActivity.class);
-						intent.putExtra(response.isSuccessful() ? "orgName" : "username", repository.getOwner());
-						intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
-						startActivity(intent);
-						finish();
-					}
+									@Override
+									public void onResponse(
+											@NonNull Call<Organization> call,
+											@NonNull Response<Organization> response) {
+										Intent intent =
+												new Intent(
+														ctx,
+														response.isSuccessful()
+																? OrganizationDetailActivity.class
+																: ProfileActivity.class);
+										intent.putExtra(
+												response.isSuccessful() ? "orgName" : "username",
+												repository.getOwner());
+										intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+										startActivity(intent);
+										finish();
+									}
 
-					@Override
-					public void onFailure(@NonNull Call<Organization> call, @NonNull Throwable t) {
-						finish();
-					}
-				});
-			}
-			else {
+									@Override
+									public void onFailure(
+											@NonNull Call<Organization> call,
+											@NonNull Throwable t) {
+										finish();
+									}
+								});
+			} else {
 				finish();
 			}
 			return true;
-		}
-		else if(id == R.id.repoMenu) {
+		} else if (id == R.id.repoMenu) {
 
-			if(repository.hasRepository()) {
+			if (repository.hasRepository()) {
 				BottomSheetRepoFragment bottomSheet = new BottomSheetRepoFragment(repository);
 				bottomSheet.show(getSupportFragmentManager(), "repoBottomSheet");
 			}
 			return true;
-		}
-		else if(id == R.id.filter) {
+		} else if (id == R.id.filter) {
 
-			BottomSheetIssuesFilterFragment filterBottomSheet = new BottomSheetIssuesFilterFragment();
+			BottomSheetIssuesFilterFragment filterBottomSheet =
+					new BottomSheetIssuesFilterFragment();
 			filterBottomSheet.show(getSupportFragmentManager(), "repoFilterMenuBottomSheet");
 			return true;
-		}
-		else if(id == R.id.filterPr) {
+		} else if (id == R.id.filterPr) {
 
-			BottomSheetPullRequestFilterFragment filterPrBottomSheet = new BottomSheetPullRequestFilterFragment();
+			BottomSheetPullRequestFilterFragment filterPrBottomSheet =
+					new BottomSheetPullRequestFilterFragment();
 			filterPrBottomSheet.show(getSupportFragmentManager(), "repoFilterMenuPrBottomSheet");
 			return true;
-		}
-		else if(id == R.id.filterMilestone) {
+		} else if (id == R.id.filterMilestone) {
 
-			BottomSheetMilestonesFilterFragment filterMilestoneBottomSheet = new BottomSheetMilestonesFilterFragment();
-			filterMilestoneBottomSheet.show(getSupportFragmentManager(), "repoFilterMenuMilestoneBottomSheet");
+			BottomSheetMilestonesFilterFragment filterMilestoneBottomSheet =
+					new BottomSheetMilestonesFilterFragment();
+			filterMilestoneBottomSheet.show(
+					getSupportFragmentManager(), "repoFilterMenuMilestoneBottomSheet");
 			return true;
-		}
-		else if(id == R.id.switchBranches) {
+		} else if (id == R.id.switchBranches) {
 
 			chooseBranch();
 			return true;
-		}
-		else if(id == R.id.branchCommits) {
+		} else if (id == R.id.branchCommits) {
 
 			Intent intent = repository.getIntent(ctx, CommitsActivity.class);
 
 			ctx.startActivity(intent);
 			return true;
-		}
-		else if(id == R.id.filterReleases && getAccount().requiresVersion("1.15.0")) {
-			BottomSheetReleasesTagsFragment bottomSheetReleasesTagsFragment = new BottomSheetReleasesTagsFragment();
-			bottomSheetReleasesTagsFragment.show(getSupportFragmentManager(), "repoFilterReleasesMenuBottomSheet");
+		} else if (id == R.id.filterReleases && getAccount().requiresVersion("1.15.0")) {
+			BottomSheetReleasesTagsFragment bottomSheetReleasesTagsFragment =
+					new BottomSheetReleasesTagsFragment();
+			bottomSheetReleasesTagsFragment.show(
+					getSupportFragmentManager(), "repoFilterReleasesMenuBottomSheet");
 			return true;
 		}
 
 		return super.onOptionsItemSelected(item);
-
 	}
 
 	@Override
 	public void onButtonClicked(String text) {
 
-		switch(text) {
-
+		switch (text) {
 			case "label":
-
 				startActivity(repository.getIntent(ctx, CreateLabelActivity.class));
 				break;
 			case "newIssue":
-
 				startActivity(repository.getIntent(ctx, CreateIssueActivity.class));
 				break;
 			case "newMilestone":
-
-				createMilestoneLauncher.launch(repository.getIntent(ctx, CreateMilestoneActivity.class));
+				createMilestoneLauncher.launch(
+						repository.getIntent(ctx, CreateMilestoneActivity.class));
 				break;
 			case "addCollaborator":
-
 				startActivity(repository.getIntent(ctx, AddCollaboratorToRepositoryActivity.class));
 				break;
 			case "chooseBranch":
-
 				chooseBranch();
 				break;
 			case "createRelease":
-
-				createReleaseLauncher.launch(repository.getIntent(ctx, CreateReleaseActivity.class));
+				createReleaseLauncher.launch(
+						repository.getIntent(ctx, CreateReleaseActivity.class));
 				break;
 			case "openWebRepo":
 				AppUtil.openUrlInBrowser(this, repository.getRepository().getHtmlUrl());
@@ -286,10 +306,12 @@ public class RepoDetailActivity extends BaseActivity implements BottomSheetListe
 				AppUtil.sharingIntent(this, repository.getRepository().getHtmlUrl());
 				break;
 			case "copyRepoUrl":
-				AppUtil.copyToClipboard(this, repository.getRepository().getHtmlUrl(), ctx.getString(R.string.copyIssueUrlToastMsg));
+				AppUtil.copyToClipboard(
+						this,
+						repository.getRepository().getHtmlUrl(),
+						ctx.getString(R.string.copyIssueUrlToastMsg));
 				break;
 			case "newFile":
-
 				editFileLauncher.launch(repository.getIntent(ctx, CreateFileActivity.class));
 				break;
 			case "filterByMilestone":
@@ -297,60 +319,59 @@ public class RepoDetailActivity extends BaseActivity implements BottomSheetListe
 				break;
 			case "openIssues":
 				repository.setIssueState(RepositoryContext.State.OPEN);
-				if(getFragmentRefreshListener() != null) {
+				if (getFragmentRefreshListener() != null) {
 
 					getFragmentRefreshListener().onRefresh("open");
 				}
 				break;
 			case "closedIssues":
 				repository.setIssueState(RepositoryContext.State.CLOSED);
-				if(getFragmentRefreshListener() != null) {
+				if (getFragmentRefreshListener() != null) {
 
 					getFragmentRefreshListener().onRefresh("closed");
 				}
 				break;
 			case "openPr":
 				repository.setPrState(RepositoryContext.State.OPEN);
-				if(getFragmentRefreshListenerPr() != null) {
+				if (getFragmentRefreshListenerPr() != null) {
 					getFragmentRefreshListenerPr().onRefresh("open");
 				}
 				break;
 			case "closedPr":
 				repository.setPrState(RepositoryContext.State.CLOSED);
-				if(getFragmentRefreshListenerPr() != null) {
+				if (getFragmentRefreshListenerPr() != null) {
 
 					getFragmentRefreshListenerPr().onRefresh("closed");
 				}
 				break;
 			case "openMilestone":
 				repository.setMilestoneState(RepositoryContext.State.OPEN);
-				if(getFragmentRefreshListenerMilestone() != null) {
+				if (getFragmentRefreshListenerMilestone() != null) {
 
 					getFragmentRefreshListenerMilestone().onRefresh("open");
 				}
 				break;
 			case "closedMilestone":
 				repository.setMilestoneState(RepositoryContext.State.CLOSED);
-				if(getFragmentRefreshListenerMilestone() != null) {
+				if (getFragmentRefreshListenerMilestone() != null) {
 
 					getFragmentRefreshListenerMilestone().onRefresh("closed");
 				}
 				break;
 			case "repoSettings":
-
-				settingsLauncher.launch(repository.getIntent(ctx, RepositorySettingsActivity.class));
+				settingsLauncher.launch(
+						repository.getIntent(ctx, RepositorySettingsActivity.class));
 				break;
 			case "newPullRequest":
-
 				startActivity(repository.getIntent(ctx, CreatePullRequestActivity.class));
 				break;
 			case "tags":
-				if(getFragmentRefreshListenerReleases() != null) {
+				if (getFragmentRefreshListenerReleases() != null) {
 					getFragmentRefreshListenerReleases().onRefresh("tags");
 				}
 				break;
 			case "releases":
-				if(getFragmentRefreshListenerReleases() != null) {
+				if (getFragmentRefreshListenerReleases() != null) {
 					getFragmentRefreshListenerReleases().onRefresh("releases");
 				}
 				break;
@@ -367,10 +388,10 @@ public class RepoDetailActivity extends BaseActivity implements BottomSheetListe
 				repository.setStarred(true);
 				break;
 			case "createWiki":
-
 				Intent intent = new Intent(ctx, WikiActivity.class);
 				intent.putExtra("action", "add");
-				intent.putExtra(RepositoryContext.INTENT_EXTRA, ((RepoDetailActivity) ctx).repository);
+				intent.putExtra(
+						RepositoryContext.INTENT_EXTRA, ((RepoDetailActivity) ctx).repository);
 				ctx.startActivity(intent);
 				break;
 		}
@@ -382,59 +403,76 @@ public class RepoDetailActivity extends BaseActivity implements BottomSheetListe
 		progressDialog.setContentView(R.layout.custom_progress_loader);
 		progressDialog.show();
 
-		Call<List<Milestone>> call = RetrofitClient.getApiInterface(ctx).issueGetMilestonesList(repository.getOwner(), repository.getName(), "open", null, 1, 50);
+		Call<List<Milestone>> call =
+				RetrofitClient.getApiInterface(ctx)
+						.issueGetMilestonesList(
+								repository.getOwner(), repository.getName(), "open", null, 1, 50);
 
-		call.enqueue(new Callback<>() {
+		call.enqueue(
+				new Callback<>() {
 
-			@Override
-			public void onResponse(@NonNull Call<List<Milestone>> call, @NonNull Response<List<Milestone>> response) {
+					@Override
+					public void onResponse(
+							@NonNull Call<List<Milestone>> call,
+							@NonNull Response<List<Milestone>> response) {
 
-				progressDialog.hide();
-				if(response.code() == 200) {
+						progressDialog.hide();
+						if (response.code() == 200) {
 
-					List<String> milestonesList = new ArrayList<>();
-					int selectedMilestone = 0;
-					assert response.body() != null;
+							List<String> milestonesList = new ArrayList<>();
+							int selectedMilestone = 0;
+							assert response.body() != null;
 
-					milestonesList.add("All");
-					for(int i = 0; i < response.body().size(); i++) {
-						Milestone milestones = response.body().get(i);
-						milestonesList.add(milestones.getTitle());
-					}
-
-					for(int j = 0; j < milestonesList.size(); j++) {
-						if(repository.getIssueMilestoneFilterName() != null) {
-							if(repository.getIssueMilestoneFilterName().equals(milestonesList.get(j))) {
-								selectedMilestone = j;
+							milestonesList.add("All");
+							for (int i = 0; i < response.body().size(); i++) {
+								Milestone milestones = response.body().get(i);
+								milestonesList.add(milestones.getTitle());
 							}
+
+							for (int j = 0; j < milestonesList.size(); j++) {
+								if (repository.getIssueMilestoneFilterName() != null) {
+									if (repository
+											.getIssueMilestoneFilterName()
+											.equals(milestonesList.get(j))) {
+										selectedMilestone = j;
+									}
+								}
+							}
+
+							materialAlertDialogBuilder
+									.setTitle(R.string.selectMilestone)
+									.setSingleChoiceItems(
+											milestonesList.toArray(new String[0]),
+											selectedMilestone,
+											(dialogInterface, i) -> {
+												repository.setIssueMilestoneFilterName(
+														milestonesList.get(i));
+
+												if (getFragmentRefreshListenerFilterIssuesByMilestone()
+														!= null) {
+													getFragmentRefreshListenerFilterIssuesByMilestone()
+															.onRefresh(milestonesList.get(i));
+												}
+												dialogInterface.dismiss();
+											})
+									.setNeutralButton(R.string.cancelButton, null);
+							materialAlertDialogBuilder.create().show();
 						}
 					}
 
-					materialAlertDialogBuilder.setTitle(R.string.selectMilestone).setSingleChoiceItems(milestonesList.toArray(new String[0]), selectedMilestone, (dialogInterface, i) -> {
-
-						repository.setIssueMilestoneFilterName(milestonesList.get(i));
-
-						if(getFragmentRefreshListenerFilterIssuesByMilestone() != null) {
-							getFragmentRefreshListenerFilterIssuesByMilestone().onRefresh(milestonesList.get(i));
-						}
-						dialogInterface.dismiss();
-					}).setNeutralButton(R.string.cancelButton, null);
-					materialAlertDialogBuilder.create().show();
-				}
-			}
-
-			@Override
-			public void onFailure(@NonNull Call<List<Milestone>> call, @NonNull Throwable t) {
-				progressDialog.hide();
-			}
-		});
+					@Override
+					public void onFailure(
+							@NonNull Call<List<Milestone>> call, @NonNull Throwable t) {
+						progressDialog.hide();
+					}
+				});
 	}
 
 	@Override
 	public void onDestroy() {
 		super.onDestroy();
 
-		if(progressDialog != null) {
+		if (progressDialog != null) {
 			progressDialog.dismiss();
 		}
 	}
@@ -446,126 +484,150 @@ public class RepoDetailActivity extends BaseActivity implements BottomSheetListe
 		progressDialog.setContentView(R.layout.custom_progress_loader);
 		progressDialog.show();
 
-		Call<List<Branch>> call = RetrofitClient.getApiInterface(ctx).repoListBranches(repository.getOwner(), repository.getName(), null, null);
+		Call<List<Branch>> call =
+				RetrofitClient.getApiInterface(ctx)
+						.repoListBranches(repository.getOwner(), repository.getName(), null, null);
 
-		call.enqueue(new Callback<>() {
+		call.enqueue(
+				new Callback<>() {
 
-			@Override
-			public void onResponse(@NonNull Call<List<Branch>> call, @NonNull Response<List<Branch>> response) {
+					@Override
+					public void onResponse(
+							@NonNull Call<List<Branch>> call,
+							@NonNull Response<List<Branch>> response) {
 
-				progressDialog.hide();
-				if(response.code() == 200) {
+						progressDialog.hide();
+						if (response.code() == 200) {
 
-					List<String> branchesList = new ArrayList<>();
-					int selectedBranch = 0;
-					assert response.body() != null;
+							List<String> branchesList = new ArrayList<>();
+							int selectedBranch = 0;
+							assert response.body() != null;
 
-					for(int i = 0; i < response.body().size(); i++) {
+							for (int i = 0; i < response.body().size(); i++) {
 
-						Branch branches = response.body().get(i);
-						branchesList.add(branches.getName());
+								Branch branches = response.body().get(i);
+								branchesList.add(branches.getName());
 
-						if(repository.getBranchRef().equals(branches.getName())) {
-							selectedBranch = i;
+								if (repository.getBranchRef().equals(branches.getName())) {
+									selectedBranch = i;
+								}
+							}
+
+							materialAlertDialogBuilder
+									.setTitle(R.string.pageTitleChooseBranch)
+									.setSingleChoiceItems(
+											branchesList.toArray(new String[0]),
+											selectedBranch,
+											(dialogInterface, i) -> {
+												repository.setBranchRef(branchesList.get(i));
+
+												if (getFragmentRefreshListenerFiles() != null) {
+													getFragmentRefreshListenerFiles()
+															.onRefresh(branchesList.get(i));
+												}
+												dialogInterface.dismiss();
+											})
+									.setNeutralButton(R.string.cancelButton, null);
+							materialAlertDialogBuilder.create().show();
 						}
 					}
 
-					materialAlertDialogBuilder.setTitle(R.string.pageTitleChooseBranch).setSingleChoiceItems(branchesList.toArray(new String[0]), selectedBranch, (dialogInterface, i) -> {
-
-						repository.setBranchRef(branchesList.get(i));
-
-						if(getFragmentRefreshListenerFiles() != null) {
-							getFragmentRefreshListenerFiles().onRefresh(branchesList.get(i));
-						}
-						dialogInterface.dismiss();
-					}).setNeutralButton(R.string.cancelButton, null);
-					materialAlertDialogBuilder.create().show();
-				}
-			}
-
-			@Override
-			public void onFailure(@NonNull Call<List<Branch>> call, @NonNull Throwable t) {
-				progressDialog.hide();
-			}
-		});
+					@Override
+					public void onFailure(@NonNull Call<List<Branch>> call, @NonNull Throwable t) {
+						progressDialog.hide();
+					}
+				});
 	}
 
 	private void getRepoInfo(final String owner, String repo) {
 
 		LinearProgressIndicator loading = findViewById(R.id.loadingIndicator);
-		if(repository.hasRepository()) {
+		if (repository.hasRepository()) {
 			loading.setVisibility(View.GONE);
 			initWithRepo();
 			return;
 		}
 
 		Call<Repository> call = RetrofitClient.getApiInterface(ctx).repoGet(owner, repo);
-		call.enqueue(new Callback<>() {
+		call.enqueue(
+				new Callback<>() {
 
-			@Override
-			public void onResponse(@NonNull Call<Repository> call, @NonNull retrofit2.Response<Repository> response) {
+					@Override
+					public void onResponse(
+							@NonNull Call<Repository> call,
+							@NonNull retrofit2.Response<Repository> response) {
 
-				Repository repoInfo = response.body();
-				loading.setVisibility(View.GONE);
+						Repository repoInfo = response.body();
+						loading.setVisibility(View.GONE);
 
-				if(response.code() == 200) {
-					assert repoInfo != null;
-					repository.setRepository(repoInfo);
-					initWithRepo();
-				}
-				else {
-					Toasty.error(ctx, getString(R.string.genericError));
-					finish();
-				}
-			}
+						if (response.code() == 200) {
+							assert repoInfo != null;
+							repository.setRepository(repoInfo);
+							initWithRepo();
+						} else {
+							Toasty.error(ctx, getString(R.string.genericError));
+							finish();
+						}
+					}
 
-			@Override
-			public void onFailure(@NonNull Call<Repository> call, @NonNull Throwable t) {
+					@Override
+					public void onFailure(@NonNull Call<Repository> call, @NonNull Throwable t) {
 
-				Toasty.error(ctx, getString(R.string.genericError));
-				finish();
-			}
-		});
+						Toasty.error(ctx, getString(R.string.genericError));
+						finish();
+					}
+				});
 	}
 
 	private void initWithRepo() {
 		repository.setBranchRef(repository.getRepository().getDefaultBranch());
 
 		ImageView repoTypeToolbar = findViewById(R.id.repoTypeToolbar);
-		if(repository.getRepository().isPrivate()) {
+		if (repository.getRepository().isPrivate()) {
 			repoTypeToolbar.setVisibility(View.VISIBLE);
-		}
-		else {
+		} else {
 			repoTypeToolbar.setVisibility(View.GONE);
 		}
 
 		TabLayout tabLayout = findViewById(R.id.tabs);
 
-		if(viewPager == null) {
+		if (viewPager == null) {
 
 			viewPager = findViewById(R.id.repositoryContainer);
 			viewPager.setOffscreenPageLimit(1);
 
 			viewPager.setAdapter(new ViewPagerAdapter(this));
 
-			String[] tabTitles = {ctx.getResources().getString(R.string.tabTextInfo), ctx.getResources().getString(R.string.tabTextFiles), ctx.getResources().getString(R.string.pageTitleIssues),
-				ctx.getResources().getString(R.string.tabPullRequests), ctx.getResources().getString(R.string.tabTextReleases), ctx.getResources().getString(R.string.wiki),
-				ctx.getResources().getString(R.string.tabTextMl), ctx.getResources().getString(R.string.newIssueLabelsTitle), ctx.getResources().getString(R.string.tabTextCollaborators)};
-			new TabLayoutMediator(tabLayout, viewPager, (tab, position) -> tab.setText(tabTitles[position])).attach();
+			String[] tabTitles = {
+				ctx.getResources().getString(R.string.tabTextInfo),
+				ctx.getResources().getString(R.string.tabTextFiles),
+				ctx.getResources().getString(R.string.pageTitleIssues),
+				ctx.getResources().getString(R.string.tabPullRequests),
+				ctx.getResources().getString(R.string.tabTextReleases),
+				ctx.getResources().getString(R.string.wiki),
+				ctx.getResources().getString(R.string.tabTextMl),
+				ctx.getResources().getString(R.string.newIssueLabelsTitle),
+				ctx.getResources().getString(R.string.tabTextCollaborators)
+			};
+			new TabLayoutMediator(
+							tabLayout,
+							viewPager,
+							(tab, position) -> tab.setText(tabTitles[position]))
+					.attach();
 
 			ViewGroup viewGroup = (ViewGroup) tabLayout.getChildAt(0);
 			int tabsCount = viewGroup.getChildCount();
 
-			for(int j = 0; j < tabsCount; j++) {
+			for (int j = 0; j < tabsCount; j++) {
 
 				ViewGroup vgTab = (ViewGroup) viewGroup.getChildAt(j);
 				int tabChildCount = vgTab.getChildCount();
 
-				for(int i = 0; i < tabChildCount; i++) {
+				for (int i = 0; i < tabChildCount; i++) {
 
 					View tabViewChild = vgTab.getChildAt(i);
 
-					if(tabViewChild instanceof TextView) {
+					if (tabViewChild instanceof TextView) {
 
 						((TextView) tabViewChild).setTypeface(myTypeface);
 					}
@@ -573,72 +635,80 @@ public class RepoDetailActivity extends BaseActivity implements BottomSheetListe
 			}
 		}
 
-		if(tinyDB.getBoolean("enableCounterBadges", true)) {
-			@SuppressLint("InflateParams") View tabHeader2 = LayoutInflater.from(ctx).inflate(R.layout.badge_issue, null);
-			if(textViewBadgeIssue == null) {
+		if (tinyDB.getBoolean("enableCounterBadges", true)) {
+			@SuppressLint("InflateParams")
+			View tabHeader2 = LayoutInflater.from(ctx).inflate(R.layout.badge_issue, null);
+			if (textViewBadgeIssue == null) {
 				textViewBadgeIssue = tabHeader2.findViewById(R.id.counterBadgeIssue);
 			}
 
-			@SuppressLint("InflateParams") View tabHeader4 = LayoutInflater.from(ctx).inflate(R.layout.badge_pull, null);
-			if(textViewBadgePull == null) {
+			@SuppressLint("InflateParams")
+			View tabHeader4 = LayoutInflater.from(ctx).inflate(R.layout.badge_pull, null);
+			if (textViewBadgePull == null) {
 				textViewBadgePull = tabHeader4.findViewById(R.id.counterBadgePull);
 			}
 
-			@SuppressLint("InflateParams") View tabHeader6 = LayoutInflater.from(ctx).inflate(R.layout.badge_release, null);
-			if(textViewBadgeRelease == null) {
+			@SuppressLint("InflateParams")
+			View tabHeader6 = LayoutInflater.from(ctx).inflate(R.layout.badge_release, null);
+			if (textViewBadgeRelease == null) {
 				textViewBadgeRelease = tabHeader6.findViewById(R.id.counterBadgeRelease);
 			}
 
 			ColorStateList textColor = tabLayout.getTabTextColors();
 
-			if(repository.getRepository().getOpenIssuesCount() != null) {
+			if (repository.getRepository().getOpenIssuesCount() != null) {
 				textViewBadgeIssue.setVisibility(View.VISIBLE);
-				textViewBadgeIssue.setText(String.valueOf(repository.getRepository().getOpenIssuesCount()));
+				textViewBadgeIssue.setText(
+						String.valueOf(repository.getRepository().getOpenIssuesCount()));
 
 				TabLayout.Tab tabOpenIssues = tabLayout.getTabAt(2);
 				assert tabOpenIssues != null;
 
-				if(tabOpenIssues.getCustomView() == null) {
+				if (tabOpenIssues.getCustomView() == null) {
 					tabOpenIssues.setCustomView(tabHeader2);
 				}
-				TextView openIssueTabView = Objects.requireNonNull(tabOpenIssues.getCustomView()).findViewById(R.id.counterBadgeIssueText);
+				TextView openIssueTabView =
+						Objects.requireNonNull(tabOpenIssues.getCustomView())
+								.findViewById(R.id.counterBadgeIssueText);
 				openIssueTabView.setTextColor(textColor);
-			}
-			else {
+			} else {
 				textViewBadgeIssue.setVisibility(View.GONE);
 			}
 
-			if(repository.getRepository().getOpenPrCounter() != null) {
+			if (repository.getRepository().getOpenPrCounter() != null) {
 				textViewBadgePull.setVisibility(View.VISIBLE);
-				textViewBadgePull.setText(String.valueOf(repository.getRepository().getOpenPrCounter()));
+				textViewBadgePull.setText(
+						String.valueOf(repository.getRepository().getOpenPrCounter()));
 
 				TabLayout.Tab tabOpenPulls = tabLayout.getTabAt(3);
 				assert tabOpenPulls != null;
 
-				if(tabOpenPulls.getCustomView() == null) {
+				if (tabOpenPulls.getCustomView() == null) {
 					tabOpenPulls.setCustomView(tabHeader4);
 				}
-				TextView openPullTabView = Objects.requireNonNull(tabOpenPulls.getCustomView()).findViewById(R.id.counterBadgePullText);
+				TextView openPullTabView =
+						Objects.requireNonNull(tabOpenPulls.getCustomView())
+								.findViewById(R.id.counterBadgePullText);
 				openPullTabView.setTextColor(textColor);
-			}
-			else {
+			} else {
 				textViewBadgePull.setVisibility(View.GONE);
 			}
 
-			if(repository.getRepository().getReleaseCounter() != null) {
+			if (repository.getRepository().getReleaseCounter() != null) {
 				textViewBadgeRelease.setVisibility(View.VISIBLE);
-				textViewBadgeRelease.setText(String.valueOf(repository.getRepository().getReleaseCounter()));
-
+				textViewBadgeRelease.setText(
+						String.valueOf(repository.getRepository().getReleaseCounter()));
 
 				TabLayout.Tab tabOpenRelease = tabLayout.getTabAt(4);
 				assert tabOpenRelease != null;
-				if(tabOpenRelease.getCustomView() == null) {
+				if (tabOpenRelease.getCustomView() == null) {
 					tabOpenRelease.setCustomView(tabHeader6);
 				}
-				TextView openReleaseTabView = Objects.requireNonNull(tabOpenRelease.getCustomView()).findViewById(R.id.counterBadgeReleaseText);
+				TextView openReleaseTabView =
+						Objects.requireNonNull(tabOpenRelease.getCustomView())
+								.findViewById(R.id.counterBadgeReleaseText);
 				openReleaseTabView.setTextColor(textColor);
-			}
-			else {
+			} else {
 				textViewBadgeRelease.setVisibility(View.GONE);
 			}
 		}
@@ -647,11 +717,11 @@ public class RepoDetailActivity extends BaseActivity implements BottomSheetListe
 		String goToSection = mainIntent.getStringExtra("goToSection");
 		String goToSectionType = mainIntent.getStringExtra("goToSectionType");
 
-		if(goToSection != null) {
+		if (goToSection != null) {
 			mainIntent.removeExtra("goToSection");
 			mainIntent.removeExtra("goToSectionType");
 
-			switch(goToSectionType) {
+			switch (goToSectionType) {
 				case "branchesList":
 					viewPager.setCurrentItem(1);
 					chooseBranch();
@@ -660,7 +730,7 @@ public class RepoDetailActivity extends BaseActivity implements BottomSheetListe
 					viewPager.setCurrentItem(1);
 					String selectedBranch = mainIntent.getStringExtra("selectedBranch");
 					repository.setBranchRef(selectedBranch);
-					if(getFragmentRefreshListenerFiles() != null) {
+					if (getFragmentRefreshListenerFiles() != null) {
 						getFragmentRefreshListenerFiles().onRefresh(selectedBranch);
 					}
 					break;
@@ -668,7 +738,7 @@ public class RepoDetailActivity extends BaseActivity implements BottomSheetListe
 					viewPager.setCurrentItem(1);
 					String branch1 = mainIntent.getStringExtra("branch");
 					repository.setBranchRef(branch1);
-					if(getFragmentRefreshListenerFiles() != null) {
+					if (getFragmentRefreshListenerFiles() != null) {
 						getFragmentRefreshListenerFiles().onRefresh(branch1);
 					}
 					Intent intent = repository.getIntent(ctx, FileViewActivity.class);
@@ -679,7 +749,7 @@ public class RepoDetailActivity extends BaseActivity implements BottomSheetListe
 					viewPager.setCurrentItem(1);
 					String branch2 = mainIntent.getStringExtra("branch");
 					repository.setBranchRef(branch2);
-					if(getFragmentRefreshListenerFiles() != null) {
+					if (getFragmentRefreshListenerFiles() != null) {
 						getFragmentRefreshListenerFiles().onRefresh(branch2);
 					}
 					break;
@@ -687,7 +757,7 @@ public class RepoDetailActivity extends BaseActivity implements BottomSheetListe
 					viewPager.setCurrentItem(1);
 					String branch = mainIntent.getStringExtra("branchName");
 					repository.setBranchRef(branch);
-					if(getFragmentRefreshListenerFiles() != null) {
+					if (getFragmentRefreshListenerFiles() != null) {
 						getFragmentRefreshListenerFiles().onRefresh(branch);
 					}
 					Intent intent1 = repository.getIntent(ctx, CommitsActivity.class);
@@ -712,7 +782,8 @@ public class RepoDetailActivity extends BaseActivity implements BottomSheetListe
 					break;
 				case "newRelease":
 					viewPager.setCurrentItem(4);
-					createReleaseLauncher.launch(repository.getIntent(ctx, CreateReleaseActivity.class));
+					createReleaseLauncher.launch(
+							repository.getIntent(ctx, CreateReleaseActivity.class));
 					break;
 				case "wiki":
 					viewPager.setCurrentItem(5);
@@ -720,7 +791,8 @@ public class RepoDetailActivity extends BaseActivity implements BottomSheetListe
 				case "wikiNew":
 					viewPager.setCurrentItem(5);
 					intentWiki.putExtra("action", "add");
-					intentWiki.putExtra(RepositoryContext.INTENT_EXTRA, ((RepoDetailActivity) ctx).repository);
+					intentWiki.putExtra(
+							RepositoryContext.INTENT_EXTRA, ((RepoDetailActivity) ctx).repository);
 					ctx.startActivity(intentWiki);
 					break;
 				case "milestones":
@@ -728,13 +800,15 @@ public class RepoDetailActivity extends BaseActivity implements BottomSheetListe
 					break;
 				case "milestonesNew":
 					viewPager.setCurrentItem(6);
-					createMilestoneLauncher.launch(repository.getIntent(ctx, CreateMilestoneActivity.class));
+					createMilestoneLauncher.launch(
+							repository.getIntent(ctx, CreateMilestoneActivity.class));
 					break;
 				case "labels":
 					viewPager.setCurrentItem(7);
 					break;
 				case "settings":
-					settingsLauncher.launch(repository.getIntent(ctx, RepositorySettingsActivity.class));
+					settingsLauncher.launch(
+							repository.getIntent(ctx, RepositorySettingsActivity.class));
 					break;
 			}
 		}
@@ -743,41 +817,44 @@ public class RepoDetailActivity extends BaseActivity implements BottomSheetListe
 	private void checkRepositoryStarStatus(final String owner, String repo) {
 
 		Call<Void> call = RetrofitClient.getApiInterface(ctx).userCurrentCheckStarring(owner, repo);
-		call.enqueue(new Callback<>() {
+		call.enqueue(
+				new Callback<>() {
 
-			@Override
-			public void onResponse(@NonNull Call<Void> call, @NonNull retrofit2.Response<Void> response) {
+					@Override
+					public void onResponse(
+							@NonNull Call<Void> call, @NonNull retrofit2.Response<Void> response) {
 
-				repository.setStarred(response.code() == 204);
-			}
+						repository.setStarred(response.code() == 204);
+					}
 
-			@Override
-			public void onFailure(@NonNull Call<Void> call, @NonNull Throwable t) {
-			}
-		});
+					@Override
+					public void onFailure(@NonNull Call<Void> call, @NonNull Throwable t) {}
+				});
 	}
 
 	private void checkRepositoryWatchStatus(final String owner, String repo) {
 
-		Call<WatchInfo> call = RetrofitClient.getApiInterface(ctx).userCurrentCheckSubscription(owner, repo);
-		call.enqueue(new Callback<>() {
+		Call<WatchInfo> call =
+				RetrofitClient.getApiInterface(ctx).userCurrentCheckSubscription(owner, repo);
+		call.enqueue(
+				new Callback<>() {
 
-			@Override
-			public void onResponse(@NonNull Call<WatchInfo> call, @NonNull retrofit2.Response<WatchInfo> response) {
+					@Override
+					public void onResponse(
+							@NonNull Call<WatchInfo> call,
+							@NonNull retrofit2.Response<WatchInfo> response) {
 
-				if(response.code() == 200) {
-					assert response.body() != null;
-					repository.setWatched(response.body().isSubscribed());
-				}
-				else {
-					repository.setWatched(false);
-				}
-			}
+						if (response.code() == 200) {
+							assert response.body() != null;
+							repository.setWatched(response.body().isSubscribed());
+						} else {
+							repository.setWatched(false);
+						}
+					}
 
-			@Override
-			public void onFailure(@NonNull Call<WatchInfo> call, @NonNull Throwable t) {
-			}
-		});
+					@Override
+					public void onFailure(@NonNull Call<WatchInfo> call, @NonNull Throwable t) {}
+				});
 	}
 
 	// Issues milestone filter interface
@@ -785,7 +862,8 @@ public class RepoDetailActivity extends BaseActivity implements BottomSheetListe
 		return fragmentRefreshListenerFilterIssuesByMilestone;
 	}
 
-	public void setFragmentRefreshListenerFilterIssuesByMilestone(FragmentRefreshListener fragmentRefreshListener) {
+	public void setFragmentRefreshListenerFilterIssuesByMilestone(
+			FragmentRefreshListener fragmentRefreshListener) {
 		this.fragmentRefreshListenerFilterIssuesByMilestone = fragmentRefreshListener;
 	}
 
@@ -812,7 +890,8 @@ public class RepoDetailActivity extends BaseActivity implements BottomSheetListe
 		return fragmentRefreshListenerMilestone;
 	}
 
-	public void setFragmentRefreshListenerMilestone(FragmentRefreshListener fragmentRefreshListenerMilestone) {
+	public void setFragmentRefreshListenerMilestone(
+			FragmentRefreshListener fragmentRefreshListenerMilestone) {
 		this.fragmentRefreshListenerMilestone = fragmentRefreshListenerMilestone;
 	}
 
@@ -821,16 +900,18 @@ public class RepoDetailActivity extends BaseActivity implements BottomSheetListe
 		return fragmentRefreshListenerFiles;
 	}
 
-	public void setFragmentRefreshListenerFiles(FragmentRefreshListener fragmentRefreshListenerFiles) {
+	public void setFragmentRefreshListenerFiles(
+			FragmentRefreshListener fragmentRefreshListenerFiles) {
 		this.fragmentRefreshListenerFiles = fragmentRefreshListenerFiles;
 	}
 
-	//Releases interface
+	// Releases interface
 	public FragmentRefreshListener getFragmentRefreshListenerReleases() {
 		return fragmentRefreshListenerReleases;
 	}
 
-	public void setFragmentRefreshListenerReleases(FragmentRefreshListener fragmentRefreshListener) {
+	public void setFragmentRefreshListenerReleases(
+			FragmentRefreshListener fragmentRefreshListener) {
 		this.fragmentRefreshListenerReleases = fragmentRefreshListener;
 	}
 
@@ -840,13 +921,12 @@ public class RepoDetailActivity extends BaseActivity implements BottomSheetListe
 			super(fa);
 		}
 
-		@NonNull
-		@Override
+		@NonNull @Override
 		public Fragment createFragment(int position) {
 
 			Fragment fragment = null;
 
-			switch(position) {
+			switch (position) {
 				case 0: // Repository details
 					return RepoInfoFragment.newInstance(repository);
 				case 1: // Files
@@ -877,6 +957,5 @@ public class RepoDetailActivity extends BaseActivity implements BottomSheetListe
 		public int getItemCount() {
 			return 9;
 		}
-
 	}
 }

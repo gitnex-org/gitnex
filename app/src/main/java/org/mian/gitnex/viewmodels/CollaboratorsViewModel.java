@@ -5,11 +5,11 @@ import androidx.annotation.NonNull;
 import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MutableLiveData;
 import androidx.lifecycle.ViewModel;
+import java.util.List;
 import org.gitnex.tea4j.v2.models.User;
 import org.mian.gitnex.R;
 import org.mian.gitnex.clients.RetrofitClient;
 import org.mian.gitnex.helpers.Toasty;
-import java.util.List;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
@@ -17,7 +17,6 @@ import retrofit2.Response;
 /**
  * @author M M Arif
  */
-
 public class CollaboratorsViewModel extends ViewModel {
 
 	private MutableLiveData<List<User>> collaboratorsList;
@@ -32,27 +31,29 @@ public class CollaboratorsViewModel extends ViewModel {
 
 	private void loadCollaboratorsListList(String owner, String repo, Context ctx) {
 
-		Call<List<User>> call = RetrofitClient.getApiInterface(ctx).repoListCollaborators(owner, repo, null, null);
+		Call<List<User>> call =
+				RetrofitClient.getApiInterface(ctx).repoListCollaborators(owner, repo, null, null);
 
-		call.enqueue(new Callback<>() {
+		call.enqueue(
+				new Callback<>() {
 
-			@Override
-			public void onResponse(@NonNull Call<List<User>> call, @NonNull Response<List<User>> response) {
+					@Override
+					public void onResponse(
+							@NonNull Call<List<User>> call,
+							@NonNull Response<List<User>> response) {
 
-				if(response.isSuccessful()) {
-					collaboratorsList.postValue(response.body());
-				}
-				else {
-					Toasty.error(ctx, ctx.getString(R.string.genericError));
-				}
-			}
+						if (response.isSuccessful()) {
+							collaboratorsList.postValue(response.body());
+						} else {
+							Toasty.error(ctx, ctx.getString(R.string.genericError));
+						}
+					}
 
-			@Override
-			public void onFailure(@NonNull Call<List<User>> call, @NonNull Throwable t) {
+					@Override
+					public void onFailure(@NonNull Call<List<User>> call, @NonNull Throwable t) {
 
-				Toasty.error(ctx, ctx.getString(R.string.genericServerResponseError));
-			}
-		});
+						Toasty.error(ctx, ctx.getString(R.string.genericServerResponseError));
+					}
+				});
 	}
-
 }

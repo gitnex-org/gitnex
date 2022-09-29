@@ -15,7 +15,6 @@ import org.mian.gitnex.structs.BottomSheetListener;
 /**
  * @author M M Arif
  */
-
 public class BottomSheetOrganizationFragment extends BottomSheetDialogFragment {
 
 	private final OrganizationPermissions permissions;
@@ -25,62 +24,65 @@ public class BottomSheetOrganizationFragment extends BottomSheetDialogFragment {
 		permissions = org;
 	}
 
-	@Nullable
-	@Override
-	public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
+	@Nullable @Override
+	public View onCreateView(
+			@NonNull LayoutInflater inflater,
+			@Nullable ViewGroup container,
+			@Nullable Bundle savedInstanceState) {
 
-		BottomSheetOrganizationBinding bottomSheetOrganizationBinding = BottomSheetOrganizationBinding.inflate(inflater, container, false);
+		BottomSheetOrganizationBinding bottomSheetOrganizationBinding =
+				BottomSheetOrganizationBinding.inflate(inflater, container, false);
 
-		if(permissions != null) {
-			if(!permissions.isCanCreateRepository()) {
+		if (permissions != null) {
+			if (!permissions.isCanCreateRepository()) {
 				bottomSheetOrganizationBinding.createRepository.setVisibility(View.GONE);
 			}
-			if(!permissions.isIsOwner()) {
+			if (!permissions.isIsOwner()) {
 				bottomSheetOrganizationBinding.createLabel.setVisibility(View.GONE);
 				bottomSheetOrganizationBinding.createTeam.setVisibility(View.GONE);
 			}
-			if(!permissions.isCanCreateRepository() || !permissions.isIsOwner()) {
+			if (!permissions.isCanCreateRepository() || !permissions.isIsOwner()) {
 				bottomSheetOrganizationBinding.organizationHeadFrame.setVisibility(View.GONE);
 				bottomSheetOrganizationBinding.orgCreateSection.setVisibility(View.GONE);
 				bottomSheetOrganizationBinding.orgDivider.setVisibility(View.GONE);
 			}
 		}
 
-		bottomSheetOrganizationBinding.createTeam.setOnClickListener(v1 -> {
+		bottomSheetOrganizationBinding.createTeam.setOnClickListener(
+				v1 -> {
+					bmListener.onButtonClicked("team");
+					dismiss();
+				});
 
-			bmListener.onButtonClicked("team");
-			dismiss();
-		});
+		bottomSheetOrganizationBinding.createLabel.setOnClickListener(
+				v1 -> {
+					bmListener.onButtonClicked("label");
+					dismiss();
+				});
 
-		bottomSheetOrganizationBinding.createLabel.setOnClickListener(v1 -> {
+		bottomSheetOrganizationBinding.createRepository.setOnClickListener(
+				v12 -> {
+					bmListener.onButtonClicked("repository");
+					dismiss();
+				});
 
-			bmListener.onButtonClicked("label");
-			dismiss();
-		});
+		bottomSheetOrganizationBinding.copyOrgUrl.setOnClickListener(
+				v1 -> {
+					bmListener.onButtonClicked("copyOrgUrl");
+					dismiss();
+				});
 
-		bottomSheetOrganizationBinding.createRepository.setOnClickListener(v12 -> {
+		bottomSheetOrganizationBinding.share.setOnClickListener(
+				v1 -> {
+					bmListener.onButtonClicked("share");
+					dismiss();
+				});
 
-			bmListener.onButtonClicked("repository");
-			dismiss();
-		});
-
-		bottomSheetOrganizationBinding.copyOrgUrl.setOnClickListener(v1 -> {
-
-			bmListener.onButtonClicked("copyOrgUrl");
-			dismiss();
-		});
-
-		bottomSheetOrganizationBinding.share.setOnClickListener(v1 -> {
-
-			bmListener.onButtonClicked("share");
-			dismiss();
-		});
-
-		bottomSheetOrganizationBinding.open.setOnClickListener(v1 -> {
-
-			bmListener.onButtonClicked("open");
-			dismiss();
-		});
+		bottomSheetOrganizationBinding.open.setOnClickListener(
+				v1 -> {
+					bmListener.onButtonClicked("open");
+					dismiss();
+				});
 
 		return bottomSheetOrganizationBinding.getRoot();
 	}
@@ -92,10 +94,8 @@ public class BottomSheetOrganizationFragment extends BottomSheetDialogFragment {
 
 		try {
 			bmListener = (BottomSheetListener) context;
-		}
-		catch(ClassCastException e) {
+		} catch (ClassCastException e) {
 			throw new ClassCastException(context + " must implement BottomSheetListener");
 		}
 	}
-
 }

@@ -21,7 +21,6 @@ import org.mian.gitnex.notifications.Notifications;
 /**
  * @author opyale
  */
-
 public class MainApplication extends Application {
 
 	public AccountContext currentAccount;
@@ -51,7 +50,7 @@ public class MainApplication extends Application {
 
 		tinyDB = TinyDB.getInstance(context);
 
-		if(tinyDB.getBoolean("crashReportingEnabled", true)) {
+		if (tinyDB.getBoolean("crashReportingEnabled", true)) {
 
 			CoreConfigurationBuilder ACRABuilder = new CoreConfigurationBuilder();
 
@@ -71,9 +70,9 @@ public class MainApplication extends Application {
 	}
 
 	public boolean switchToAccount(UserAccount userAccount, boolean tmp) {
-		if(!tmp || tinyDB.getInt("currentActiveAccountId") != userAccount.getAccountId()) {
+		if (!tmp || tinyDB.getInt("currentActiveAccountId") != userAccount.getAccountId()) {
 			currentAccount = new AccountContext(userAccount);
-			if(!tmp) {
+			if (!tmp) {
 				tinyDB.putInt("currentActiveAccountId", userAccount.getAccountId());
 			}
 			return true;
@@ -81,5 +80,4 @@ public class MainApplication extends Application {
 
 		return false;
 	}
-
 }

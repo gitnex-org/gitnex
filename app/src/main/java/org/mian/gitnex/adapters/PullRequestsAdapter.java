@@ -21,6 +21,8 @@ import androidx.core.text.HtmlCompat;
 import androidx.recyclerview.widget.RecyclerView;
 import com.amulyakhare.textdrawable.TextDrawable;
 import com.vdurmont.emoji.EmojiParser;
+import java.util.List;
+import java.util.Locale;
 import org.gitnex.tea4j.v2.models.PullRequest;
 import org.mian.gitnex.R;
 import org.mian.gitnex.activities.IssueDetailActivity;
@@ -35,13 +37,10 @@ import org.mian.gitnex.helpers.RoundedTransformation;
 import org.mian.gitnex.helpers.TimeHelper;
 import org.mian.gitnex.helpers.TinyDB;
 import org.mian.gitnex.helpers.contexts.IssueContext;
-import java.util.List;
-import java.util.Locale;
 
 /**
  * @author M M Arif
  */
-
 public class PullRequestsAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
 
 	private final Context context;
@@ -54,17 +53,20 @@ public class PullRequestsAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
 		this.prList = prListMain;
 	}
 
-	@NonNull
-	@Override
+	@NonNull @Override
 	public RecyclerView.ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
 		LayoutInflater inflater = LayoutInflater.from(context);
-		return new PullRequestsAdapter.PullRequestsHolder(inflater.inflate(R.layout.list_pr, parent, false));
+		return new PullRequestsAdapter.PullRequestsHolder(
+				inflater.inflate(R.layout.list_pr, parent, false));
 	}
 
 	@Override
 	public void onBindViewHolder(@NonNull RecyclerView.ViewHolder holder, int position) {
 
-		if(position >= getItemCount() - 1 && isMoreDataAvailable && !isLoading && loadMoreListener != null) {
+		if (position >= getItemCount() - 1
+				&& isMoreDataAvailable
+				&& !isLoading
+				&& loadMoreListener != null) {
 			isLoading = true;
 			loadMoreListener.run();
 		}
@@ -126,30 +128,51 @@ public class PullRequestsAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
 			frameLabelsDots = itemView.findViewById(R.id.frameLabelsDots);
 			commentIcon = itemView.findViewById(R.id.comment_icon);
 
-			View.OnClickListener openPr = v -> {
-				Intent intentPrDetail = new IssueContext(pullRequestObject, ((RepoDetailActivity) context).repository).getIntent(context, IssueDetailActivity.class);
-				context.startActivity(intentPrDetail);
-			};
+			View.OnClickListener openPr =
+					v -> {
+						Intent intentPrDetail =
+								new IssueContext(
+												pullRequestObject,
+												((RepoDetailActivity) context).repository)
+										.getIntent(context, IssueDetailActivity.class);
+						context.startActivity(intentPrDetail);
+					};
 
 			itemView.setOnClickListener(openPr);
 			frameLabels.setOnClickListener(openPr);
 			frameLabelsDots.setOnClickListener(openPr);
 
-			new Handler().postDelayed(() -> {
-				if(!AppUtil.checkGhostUsers(pullRequestObject.getUser().getLogin())) {
+			new Handler()
+					.postDelayed(
+							() -> {
+								if (!AppUtil.checkGhostUsers(
+										pullRequestObject.getUser().getLogin())) {
 
-					assigneeAvatar.setOnClickListener(v -> {
-						Intent intent = new Intent(context, ProfileActivity.class);
-						intent.putExtra("username", pullRequestObject.getUser().getLogin());
-						context.startActivity(intent);
-					});
+									assigneeAvatar.setOnClickListener(
+											v -> {
+												Intent intent =
+														new Intent(context, ProfileActivity.class);
+												intent.putExtra(
+														"username",
+														pullRequestObject.getUser().getLogin());
+												context.startActivity(intent);
+											});
 
-					assigneeAvatar.setOnLongClickListener(loginId -> {
-						AppUtil.copyToClipboard(context, pullRequestObject.getUser().getLogin(), context.getString(R.string.copyLoginIdToClipBoard, pullRequestObject.getUser().getLogin()));
-						return true;
-					});
-				}
-			}, 500);
+									assigneeAvatar.setOnLongClickListener(
+											loginId -> {
+												AppUtil.copyToClipboard(
+														context,
+														pullRequestObject.getUser().getLogin(),
+														context.getString(
+																R.string.copyLoginIdToClipBoard,
+																pullRequestObject
+																		.getUser()
+																		.getLogin()));
+												return true;
+											});
+								}
+							},
+							500);
 		}
 
 		void bindData(PullRequest pullRequest) {
@@ -158,23 +181,32 @@ public class PullRequestsAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
 			Locale locale = context.getResources().getConfiguration().locale;
 			int imgRadius = AppUtil.getPixelsFromDensity(context, 3);
 
-			PicassoService.getInstance(context).get().load(pullRequest.getUser().getAvatarUrl()).placeholder(R.drawable.loader_animated).transform(new RoundedTransformation(imgRadius, 0)).resize(120, 120).centerCrop()
-				.into(this.assigneeAvatar);
+			PicassoService.getInstance(context)
+					.get()
+					.load(pullRequest.getUser().getAvatarUrl())
+					.placeholder(R.drawable.loader_animated)
+					.transform(new RoundedTransformation(imgRadius, 0))
+					.resize(120, 120)
+					.centerCrop()
+					.into(this.assigneeAvatar);
 
 			this.pullRequestObject = pullRequest;
 
-			LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(LinearLayout.LayoutParams.WRAP_CONTENT, LinearLayout.LayoutParams.WRAP_CONTENT);
+			LinearLayout.LayoutParams params =
+					new LinearLayout.LayoutParams(
+							LinearLayout.LayoutParams.WRAP_CONTENT,
+							LinearLayout.LayoutParams.WRAP_CONTENT);
 			params.setMargins(0, 0, 15, 0);
 
-			if(pullRequest.getLabels() != null) {
+			if (pullRequest.getLabels() != null) {
 
-				if(!tinyDb.getBoolean("showLabelsInList", false)) { // default
+				if (!tinyDb.getBoolean("showLabelsInList", false)) { // default
 
 					labelsScrollViewWithText.setVisibility(View.GONE);
 					labelsScrollViewDots.setVisibility(View.VISIBLE);
 					frameLabelsDots.removeAllViews();
 
-					for(int i = 0; i < pullRequest.getLabels().size(); i++) {
+					for (int i = 0; i < pullRequest.getLabels().size(); i++) {
 
 						String labelColor = pullRequest.getLabels().get(i).getColor();
 						int color = Color.parseColor("#" + labelColor);
@@ -184,19 +216,25 @@ public class PullRequestsAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
 						frameLabelsDots.setGravity(Gravity.START | Gravity.TOP);
 						labelsView.setLayoutParams(params);
 
-						TextDrawable drawable = TextDrawable.builder().beginConfig().useFont(Typeface.DEFAULT).width(54).height(54).endConfig().buildRound("", color);
+						TextDrawable drawable =
+								TextDrawable.builder()
+										.beginConfig()
+										.useFont(Typeface.DEFAULT)
+										.width(54)
+										.height(54)
+										.endConfig()
+										.buildRound("", color);
 
 						labelsView.setImageDrawable(drawable);
 						frameLabelsDots.addView(labelsView);
 					}
-				}
-				else {
+				} else {
 
 					labelsScrollViewDots.setVisibility(View.GONE);
 					labelsScrollViewWithText.setVisibility(View.VISIBLE);
 					frameLabels.removeAllViews();
 
-					for(int i = 0; i < pullRequest.getLabels().size(); i++) {
+					for (int i = 0; i < pullRequest.getLabels().size(); i++) {
 
 						String labelColor = pullRequest.getLabels().get(i).getColor();
 						String labelName = pullRequest.getLabels().get(i).getName();
@@ -210,9 +248,24 @@ public class PullRequestsAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
 						int height = AppUtil.getPixelsFromDensity(context, 20);
 						int textSize = AppUtil.getPixelsFromScaledDensity(context, 12);
 
-						TextDrawable drawable = TextDrawable.builder().beginConfig().useFont(Typeface.DEFAULT).textColor(new ColorInverter().getContrastColor(color)).fontSize(textSize)
-							.width(LabelWidthCalculator.calculateLabelWidth(labelName, Typeface.DEFAULT, textSize, AppUtil.getPixelsFromDensity(context, 8))).height(height).endConfig()
-							.buildRoundRect(labelName, color, AppUtil.getPixelsFromDensity(context, 18));
+						TextDrawable drawable =
+								TextDrawable.builder()
+										.beginConfig()
+										.useFont(Typeface.DEFAULT)
+										.textColor(new ColorInverter().getContrastColor(color))
+										.fontSize(textSize)
+										.width(
+												LabelWidthCalculator.calculateLabelWidth(
+														labelName,
+														Typeface.DEFAULT,
+														textSize,
+														AppUtil.getPixelsFromDensity(context, 8)))
+										.height(height)
+										.endConfig()
+										.buildRoundRect(
+												labelName,
+												color,
+												AppUtil.getPixelsFromDensity(context, 18));
 
 						labelsView.setImageDrawable(drawable);
 						frameLabels.addView(labelsView);
@@ -220,20 +273,30 @@ public class PullRequestsAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
 				}
 			}
 
-			String prNumber_ = "<font color='" + ResourcesCompat.getColor(context.getResources(), R.color.lightGray, null) + "'>" + context.getResources().getString(R.string.hash) + pullRequest.getNumber() + "</font>";
+			String prNumber_ =
+					"<font color='"
+							+ ResourcesCompat.getColor(
+									context.getResources(), R.color.lightGray, null)
+							+ "'>"
+							+ context.getResources().getString(R.string.hash)
+							+ pullRequest.getNumber()
+							+ "</font>";
 
-			this.prTitle.setText(HtmlCompat.fromHtml(prNumber_ + " " + EmojiParser.parseToUnicode(pullRequest.getTitle()), HtmlCompat.FROM_HTML_MODE_LEGACY));
+			this.prTitle.setText(
+					HtmlCompat.fromHtml(
+							prNumber_ + " " + EmojiParser.parseToUnicode(pullRequest.getTitle()),
+							HtmlCompat.FROM_HTML_MODE_LEGACY));
 			this.prCommentsCount.setText(String.valueOf(pullRequest.getComments()));
 			this.prCreatedTime.setText(TimeHelper.formatTime(pullRequest.getCreatedAt(), locale));
 
-			if(pullRequest.getComments() > 15) {
-				commentIcon.setImageDrawable(ContextCompat.getDrawable(context, R.drawable.ic_flame));
-				commentIcon.setColorFilter(context.getResources().getColor(R.color.releasePre, null));
+			if (pullRequest.getComments() > 15) {
+				commentIcon.setImageDrawable(
+						ContextCompat.getDrawable(context, R.drawable.ic_flame));
+				commentIcon.setColorFilter(
+						context.getResources().getColor(R.color.releasePre, null));
 			}
 
 			this.prCreatedTime.setOnClickListener(new ClickListener(TimeHelper.customDateFormatForToastDateFormat(pullRequest.getCreatedAt()), context));
 		}
-
 	}
-
 }

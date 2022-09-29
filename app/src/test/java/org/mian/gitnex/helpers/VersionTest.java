@@ -1,13 +1,12 @@
 package org.mian.gitnex.helpers;
 
-import org.junit.Test;
-import org.junit.function.ThrowingRunnable;
 import static org.junit.Assert.*;
+
+import org.junit.Test;
 
 /**
  * @author 6543
  */
-
 public class VersionTest {
 
 	@Test
@@ -37,7 +36,6 @@ public class VersionTest {
 		assertFalse(new Version("2.2").equal("2.1.120"));
 		assertFalse(new Version("1.12.3").equal("1.13.0+dev-307-g633f52c22"));
 		assertFalse(new Version("main").equal("1.17.1"));
-
 	}
 
 	@Test
@@ -60,7 +58,6 @@ public class VersionTest {
 		assertFalse(new Version("2.12.0").less("v1.12"));
 		assertFalse(new Version("2").less("1"));
 		assertFalse(new Version("2.2").less("2.1.120"));
-
 	}
 
 	@Test
@@ -81,9 +78,7 @@ public class VersionTest {
 		assertFalse(new Version("2").lessOrEqual("1"));
 		assertFalse(new Version("2.1").lessOrEqual("1.2"));
 		assertFalse(new Version("2.2").lessOrEqual("2.1.120"));
-
 	}
-
 
 	@Test
 	public void higher() {
@@ -107,7 +102,6 @@ public class VersionTest {
 		assertFalse(new Version("2.1.120").higher("2.2"));
 		assertFalse(new Version("main").higher("main"));
 		assertFalse(new Version("1.17.0").higher("main"));
-
 	}
 
 	@Test
@@ -128,7 +122,6 @@ public class VersionTest {
 		assertFalse(new Version("1").higherOrEqual("2"));
 		assertFalse(new Version("1.2").higherOrEqual("2.1"));
 		assertFalse(new Version("2.1.120").higherOrEqual("2.2"));
-
 	}
 
 	@Test
@@ -151,5 +144,4 @@ public class VersionTest {
 		assertFalse(Version.valid("version1"));
 		assertFalse(Version.valid(null));
 	}
-
 }

@@ -11,6 +11,12 @@ import android.widget.ImageView;
 import android.widget.TextView;
 import androidx.annotation.NonNull;
 import com.google.android.material.dialog.MaterialAlertDialogBuilder;
+import java.util.ArrayList;
+import java.util.Calendar;
+import java.util.Date;
+import java.util.LinkedHashMap;
+import java.util.List;
+import java.util.Objects;
 import org.gitnex.tea4j.v2.models.Branch;
 import org.gitnex.tea4j.v2.models.CreatePullRequestOption;
 import org.gitnex.tea4j.v2.models.Label;
@@ -26,20 +32,14 @@ import org.mian.gitnex.fragments.PullRequestsFragment;
 import org.mian.gitnex.helpers.Constants;
 import org.mian.gitnex.helpers.Toasty;
 import org.mian.gitnex.helpers.contexts.RepositoryContext;
-import java.util.ArrayList;
-import java.util.Calendar;
-import java.util.Date;
-import java.util.LinkedHashMap;
-import java.util.List;
-import java.util.Objects;
 import retrofit2.Call;
 import retrofit2.Callback;
 
 /**
  * @author M M Arif
  */
-
-public class CreatePullRequestActivity extends BaseActivity implements LabelsListAdapter.LabelsListAdapterListener {
+public class CreatePullRequestActivity extends BaseActivity
+		implements LabelsListAdapter.LabelsListAdapterListener {
 
 	private final List<String> assignees = new ArrayList<>();
 	LinkedHashMap<String, Milestone> milestonesList = new LinkedHashMap<>();
@@ -63,24 +63,27 @@ public class CreatePullRequestActivity extends BaseActivity implements LabelsLis
 		viewBinding = ActivityCreatePrBinding.inflate(getLayoutInflater());
 		setContentView(viewBinding.getRoot());
 
-		materialAlertDialogBuilder = new MaterialAlertDialogBuilder(ctx, R.style.ThemeOverlay_Material3_Dialog_Alert);
+		materialAlertDialogBuilder =
+				new MaterialAlertDialogBuilder(ctx, R.style.ThemeOverlay_Material3_Dialog_Alert);
 
 		repository = RepositoryContext.fromIntent(getIntent());
 
 		int resultLimit = Constants.getCurrentResultLimit(ctx);
 
-		viewBinding.prBody.setOnTouchListener((touchView, motionEvent) -> {
+		viewBinding.prBody.setOnTouchListener(
+				(touchView, motionEvent) -> {
+					touchView.getParent().requestDisallowInterceptTouchEvent(true);
 
-			touchView.getParent().requestDisallowInterceptTouchEvent(true);
+					if ((motionEvent.getAction() & MotionEvent.ACTION_UP) != 0
+							&& (motionEvent.getActionMasked() & MotionEvent.ACTION_UP) != 0) {
 
-			if((motionEvent.getAction() & MotionEvent.ACTION_UP) != 0 && (motionEvent.getActionMasked() & MotionEvent.ACTION_UP) != 0) {
+						touchView.getParent().requestDisallowInterceptTouchEvent(false);
+					}
+					return false;
+				});
 
-				touchView.getParent().requestDisallowInterceptTouchEvent(false);
-			}
-			return false;
-		});
-
-		labelsAdapter = new LabelsListAdapter(labelsList, CreatePullRequestActivity.this, labelsIds);
+		labelsAdapter =
+				new LabelsListAdapter(labelsList, CreatePullRequestActivity.this, labelsIds);
 
 		ImageView closeActivity = findViewById(R.id.close);
 
@@ -98,7 +101,7 @@ public class CreatePullRequestActivity extends BaseActivity implements LabelsLis
 
 		viewBinding.createPr.setOnClickListener(createPr -> processPullRequest());
 
-		if(!repository.getPermissions().isPush()) {
+		if (!repository.getPermissions().isPush()) {
 			viewBinding.prDueDateLayout.setVisibility(View.GONE);
 			viewBinding.prLabelsLayout.setVisibility(View.GONE);
 			viewBinding.milestonesSpinnerLayout.setVisibility(View.GONE);
@@ -114,37 +117,39 @@ public class CreatePullRequestActivity extends BaseActivity implements LabelsLis
 
 		assignees.add("");
 
-		if(labelsIds.size() == 0) {
+		if (labelsIds.size() == 0) {
 
 			labelsIds.add(0);
 		}
 
-		if(prTitle.matches("")) {
+		if (prTitle.matches("")) {
 
 			Toasty.error(ctx, getString(R.string.titleError));
-		}
-		else if(mergeInto.matches("")) {
+		} else if (mergeInto.matches("")) {
 
 			Toasty.error(ctx, getString(R.string.mergeIntoError));
-		}
-		else if(pullFrom.matches("")) {
+		} else if (pullFrom.matches("")) {
 
 			Toasty.error(ctx, getString(R.string.pullFromError));
-		}
-		else if(pullFrom.equals(mergeInto)) {
+		} else if (pullFrom.equals(mergeInto)) {
 
 			Toasty.error(ctx, getString(R.string.sameBranchesError));
-		}
-		else {
+		} else {
 
 			createPullRequest(prTitle, prDescription, mergeInto, pullFrom, milestoneId, assignees);
 		}
 	}
 
-	private void createPullRequest(String prTitle, String prDescription, String mergeInto, String pullFrom, int milestoneId, List<String> assignees) {
+	private void createPullRequest(
+			String prTitle,
+			String prDescription,
+			String mergeInto,
+			String pullFrom,
+			int milestoneId,
+			List<String> assignees) {
 
 		ArrayList<Long> labelIds = new ArrayList<>();
-		for(Integer i : labelsIds) {
+		for (Integer i : labelsIds) {
 			labelIds.add((long) i);
 		}
 
@@ -158,47 +163,51 @@ public class CreatePullRequestActivity extends BaseActivity implements LabelsLis
 		createPullRequest.setLabels(labelIds);
 		createPullRequest.setDueDate(currentDate);
 
-		Call<PullRequest> transferCall = RetrofitClient.getApiInterface(ctx).repoCreatePullRequest(repository.getOwner(), repository.getName(), createPullRequest);
+		Call<PullRequest> transferCall =
+				RetrofitClient.getApiInterface(ctx)
+						.repoCreatePullRequest(
+								repository.getOwner(), repository.getName(), createPullRequest);
 
-		transferCall.enqueue(new Callback<>() {
+		transferCall.enqueue(
+				new Callback<>() {
 
-			@Override
-			public void onResponse(@NonNull Call<PullRequest> call, @NonNull retrofit2.Response<PullRequest> response) {
+					@Override
+					public void onResponse(
+							@NonNull Call<PullRequest> call,
+							@NonNull retrofit2.Response<PullRequest> response) {
 
-				disableProcessButton();
+						disableProcessButton();
 
-				if(response.code() == 201) {
+						if (response.code() == 201) {
 
-					Toasty.success(ctx, getString(R.string.prCreateSuccess));
-					RepoDetailActivity.updateRepo = true;
-					PullRequestsFragment.resumePullRequests = true;
-					MainActivity.reloadRepos = true;
-					finish();
-				}
-				else if(response.code() == 409 || response.message().equals("Conflict")) {
+							Toasty.success(ctx, getString(R.string.prCreateSuccess));
+							RepoDetailActivity.updateRepo = true;
+							PullRequestsFragment.resumePullRequests = true;
+							MainActivity.reloadRepos = true;
+							finish();
+						} else if (response.code() == 409
+								|| response.message().equals("Conflict")) {
 
-					enableProcessButton();
-					Toasty.error(ctx, getString(R.string.prAlreadyExists));
-				}
-				else if(response.code() == 404) {
+							enableProcessButton();
+							Toasty.error(ctx, getString(R.string.prAlreadyExists));
+						} else if (response.code() == 404) {
 
-					enableProcessButton();
-					Toasty.error(ctx, getString(R.string.apiNotFound));
-				}
-				else {
+							enableProcessButton();
+							Toasty.error(ctx, getString(R.string.apiNotFound));
+						} else {
 
-					enableProcessButton();
-					Toasty.error(ctx, getString(R.string.genericError));
-				}
-			}
+							enableProcessButton();
+							Toasty.error(ctx, getString(R.string.genericError));
+						}
+					}
 
-			@Override
-			public void onFailure(@NonNull Call<PullRequest> call, @NonNull Throwable t) {
+					@Override
+					public void onFailure(@NonNull Call<PullRequest> call, @NonNull Throwable t) {
 
-				enableProcessButton();
-				Toasty.error(ctx, getString(R.string.genericServerResponseError));
-			}
-		});
+						enableProcessButton();
+						Toasty.error(ctx, getString(R.string.genericServerResponseError));
+					}
+				});
 	}
 
 	@Override
@@ -217,104 +226,141 @@ public class CreatePullRequestActivity extends BaseActivity implements LabelsLis
 	private void showLabels() {
 
 		viewBinding.progressBar.setVisibility(View.VISIBLE);
-		CustomLabelsSelectionDialogBinding labelsBinding = CustomLabelsSelectionDialogBinding.inflate(LayoutInflater.from(ctx));
+		CustomLabelsSelectionDialogBinding labelsBinding =
+				CustomLabelsSelectionDialogBinding.inflate(LayoutInflater.from(ctx));
 		View view = labelsBinding.getRoot();
 		materialAlertDialogBuilder.setView(view);
 
 		materialAlertDialogBuilder.setNeutralButton(R.string.close, null);
-		LabelsActions.getRepositoryLabels(ctx, repository.getOwner(), repository.getName(), labelsList, materialAlertDialogBuilder, labelsAdapter, labelsBinding, viewBinding.progressBar);
+		LabelsActions.getRepositoryLabels(
+				ctx,
+				repository.getOwner(),
+				repository.getName(),
+				labelsList,
+				materialAlertDialogBuilder,
+				labelsAdapter,
+				labelsBinding,
+				viewBinding.progressBar);
 	}
 
 	private void getBranches(String repoOwner, String repoName) {
 
-		Call<List<Branch>> call = RetrofitClient.getApiInterface(ctx).repoListBranches(repoOwner, repoName, null, null);
+		Call<List<Branch>> call =
+				RetrofitClient.getApiInterface(ctx)
+						.repoListBranches(repoOwner, repoName, null, null);
 
-		call.enqueue(new Callback<>() {
+		call.enqueue(
+				new Callback<>() {
 
-			@Override
-			public void onResponse(@NonNull Call<List<Branch>> call, @NonNull retrofit2.Response<List<Branch>> response) {
+					@Override
+					public void onResponse(
+							@NonNull Call<List<Branch>> call,
+							@NonNull retrofit2.Response<List<Branch>> response) {
 
-				if(response.isSuccessful()) {
+						if (response.isSuccessful()) {
 
-					if(response.code() == 200) {
+							if (response.code() == 200) {
 
-						List<Branch> branchesList_ = response.body();
-						assert branchesList_ != null;
+								List<Branch> branchesList_ = response.body();
+								assert branchesList_ != null;
 
-						for(Branch i : branchesList_) {
-							branchesList.add(i.getName());
+								for (Branch i : branchesList_) {
+									branchesList.add(i.getName());
+								}
+
+								ArrayAdapter<String> adapter =
+										new ArrayAdapter<>(
+												CreatePullRequestActivity.this,
+												R.layout.list_spinner_items,
+												branchesList);
+
+								viewBinding.mergeIntoBranchSpinner.setAdapter(adapter);
+								viewBinding.pullFromBranchSpinner.setAdapter(adapter);
+								enableProcessButton();
+							}
 						}
-
-						ArrayAdapter<String> adapter = new ArrayAdapter<>(CreatePullRequestActivity.this, R.layout.list_spinner_items, branchesList);
-
-						viewBinding.mergeIntoBranchSpinner.setAdapter(adapter);
-						viewBinding.pullFromBranchSpinner.setAdapter(adapter);
-						enableProcessButton();
-
 					}
-				}
 
-			}
+					@Override
+					public void onFailure(@NonNull Call<List<Branch>> call, @NonNull Throwable t) {
 
-			@Override
-			public void onFailure(@NonNull Call<List<Branch>> call, @NonNull Throwable t) {
-
-				Toasty.error(ctx, getString(R.string.genericServerResponseError));
-			}
-		});
+						Toasty.error(ctx, getString(R.string.genericServerResponseError));
+					}
+				});
 	}
 
 	private void getMilestones(String repoOwner, String repoName, int resultLimit) {
 
 		String msState = "open";
-		Call<List<Milestone>> call = RetrofitClient.getApiInterface(ctx).issueGetMilestonesList(repoOwner, repoName, msState, null, 1, resultLimit);
+		Call<List<Milestone>> call =
+				RetrofitClient.getApiInterface(ctx)
+						.issueGetMilestonesList(repoOwner, repoName, msState, null, 1, resultLimit);
 
-		call.enqueue(new Callback<>() {
+		call.enqueue(
+				new Callback<>() {
 
-			@Override
-			public void onResponse(@NonNull Call<List<Milestone>> call, @NonNull retrofit2.Response<List<Milestone>> response) {
+					@Override
+					public void onResponse(
+							@NonNull Call<List<Milestone>> call,
+							@NonNull retrofit2.Response<List<Milestone>> response) {
 
-				if(response.code() == 200) {
+						if (response.code() == 200) {
 
-					List<Milestone> milestonesList_ = response.body();
+							List<Milestone> milestonesList_ = response.body();
 
-					milestonesList.put(getString(R.string.issueCreatedNoMilestone), new Milestone().id(0L).title(getString(R.string.issueCreatedNoMilestone)));
-					assert milestonesList_ != null;
+							milestonesList.put(
+									getString(R.string.issueCreatedNoMilestone),
+									new Milestone()
+											.id(0L)
+											.title(getString(R.string.issueCreatedNoMilestone)));
+							assert milestonesList_ != null;
 
-					if(milestonesList_.size() > 0) {
+							if (milestonesList_.size() > 0) {
 
-						for(Milestone milestone : milestonesList_) {
+								for (Milestone milestone : milestonesList_) {
 
-							//Don't translate "open" is a enum
-							if(milestone.getState().equals("open")) {
-								milestonesList.put(milestone.getTitle(), milestone);
+									// Don't translate "open" is a enum
+									if (milestone.getState().equals("open")) {
+										milestonesList.put(milestone.getTitle(), milestone);
+									}
+								}
 							}
+
+							ArrayAdapter<String> adapter =
+									new ArrayAdapter<>(
+											CreatePullRequestActivity.this,
+											R.layout.list_spinner_items,
+											new ArrayList<>(milestonesList.keySet()));
+
+							viewBinding.milestonesSpinner.setAdapter(adapter);
+							enableProcessButton();
+
+							viewBinding.milestonesSpinner.setOnItemClickListener(
+									(parent, view, position, id) -> {
+										if (position == 0) {
+											milestoneId = 0;
+										} else if (view instanceof TextView) {
+											milestoneId =
+													Math.toIntExact(
+															Objects.requireNonNull(
+																			milestonesList.get(
+																					((TextView)
+																									view)
+																							.getText()
+																							.toString()))
+																	.getId());
+										}
+									});
 						}
 					}
 
-					ArrayAdapter<String> adapter = new ArrayAdapter<>(CreatePullRequestActivity.this, R.layout.list_spinner_items, new ArrayList<>(milestonesList.keySet()));
+					@Override
+					public void onFailure(
+							@NonNull Call<List<Milestone>> call, @NonNull Throwable t) {
 
-					viewBinding.milestonesSpinner.setAdapter(adapter);
-					enableProcessButton();
-
-					viewBinding.milestonesSpinner.setOnItemClickListener((parent, view, position, id) -> {
-						if(position == 0) {
-							milestoneId = 0;
-						}
-						else if(view instanceof TextView) {
-							milestoneId = Math.toIntExact(Objects.requireNonNull(milestonesList.get(((TextView) view).getText().toString())).getId());
-						}
-					});
-
-				}
-			}
-
-			@Override
-			public void onFailure(@NonNull Call<List<Milestone>> call, @NonNull Throwable t) {
-
-				Toasty.error(ctx, getString(R.string.genericServerResponseError));
-			}
-		});
+						Toasty.error(ctx, getString(R.string.genericServerResponseError));
+					}
+				});
 	}
 
 	private void setDueDate() {
@@ -324,10 +370,21 @@ public class CreatePullRequestActivity extends BaseActivity implements LabelsLis
 		final int mMonth = c.get(Calendar.MONTH);
 		final int mDay = c.get(Calendar.DAY_OF_MONTH);
 
-		DatePickerDialog datePickerDialog = new DatePickerDialog(this, (view, year, monthOfYear, dayOfMonth) -> {
-			viewBinding.prDueDate.setText(getString(R.string.setDueDate, year, (monthOfYear + 1), dayOfMonth));
-			currentDate = new Date(year - 1900, monthOfYear, dayOfMonth);
-		}, mYear, mMonth, mDay);
+		DatePickerDialog datePickerDialog =
+				new DatePickerDialog(
+						this,
+						(view, year, monthOfYear, dayOfMonth) -> {
+							viewBinding.prDueDate.setText(
+									getString(
+											R.string.setDueDate,
+											year,
+											(monthOfYear + 1),
+											dayOfMonth));
+							currentDate = new Date(year - 1900, monthOfYear, dayOfMonth);
+						},
+						mYear,
+						mMonth,
+						mDay);
 		datePickerDialog.show();
 	}
 
@@ -351,5 +408,4 @@ public class CreatePullRequestActivity extends BaseActivity implements LabelsLis
 		super.onResume();
 		repository.checkAccountSwitch(this);
 	}
-
 }

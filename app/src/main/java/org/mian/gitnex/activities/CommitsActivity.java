@@ -18,6 +18,8 @@ import androidx.appcompat.widget.Toolbar;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
+import java.util.ArrayList;
+import java.util.List;
 import org.gitnex.tea4j.v2.models.Commit;
 import org.mian.gitnex.R;
 import org.mian.gitnex.adapters.CommitsAdapter;
@@ -26,8 +28,6 @@ import org.mian.gitnex.databinding.ActivityCommitsBinding;
 import org.mian.gitnex.helpers.Constants;
 import org.mian.gitnex.helpers.Toasty;
 import org.mian.gitnex.helpers.contexts.RepositoryContext;
-import java.util.ArrayList;
-import java.util.List;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
@@ -35,7 +35,6 @@ import retrofit2.Response;
 /**
  * @author M M Arif
  */
-
 public class CommitsActivity extends BaseActivity {
 
 	private final String TAG = "CommitsActivity";
@@ -55,7 +54,8 @@ public class CommitsActivity extends BaseActivity {
 		super.onCreate(savedInstanceState);
 		this.getClass().getName();
 
-		ActivityCommitsBinding activityCommitsBinding = ActivityCommitsBinding.inflate(getLayoutInflater());
+		ActivityCommitsBinding activityCommitsBinding =
+				ActivityCommitsBinding.inflate(getLayoutInflater());
 		setContentView(activityCommitsBinding.getRoot());
 
 		Toolbar toolbar = activityCommitsBinding.toolbar;
@@ -81,22 +81,38 @@ public class CommitsActivity extends BaseActivity {
 		recyclerView = activityCommitsBinding.recyclerView;
 		commitsList = new ArrayList<>();
 
-		swipeRefresh.setOnRefreshListener(() -> new Handler(Looper.getMainLooper()).postDelayed(() -> {
-
-			swipeRefresh.setRefreshing(false);
-			loadInitial(repository.getOwner(), repository.getName(), branchName, resultLimit);
-			adapter.notifyDataChanged();
-		}, 200));
+		swipeRefresh.setOnRefreshListener(
+				() ->
+						new Handler(Looper.getMainLooper())
+								.postDelayed(
+										() -> {
+											swipeRefresh.setRefreshing(false);
+											loadInitial(
+													repository.getOwner(),
+													repository.getName(),
+													branchName,
+													resultLimit);
+											adapter.notifyDataChanged();
+										},
+										200));
 
 		adapter = new CommitsAdapter(ctx, commitsList);
-		adapter.setLoadMoreListener(() -> recyclerView.post(() -> {
+		adapter.setLoadMoreListener(
+				() ->
+						recyclerView.post(
+								() -> {
+									if (commitsList.size() == resultLimit
+											|| pageSize == resultLimit) {
 
-			if(commitsList.size() == resultLimit || pageSize == resultLimit) {
-
-				int page = (commitsList.size() + resultLimit) / resultLimit;
-				loadMore(repository.getOwner(), repository.getName(), page, branchName, resultLimit);
-			}
-		}));
+										int page = (commitsList.size() + resultLimit) / resultLimit;
+										loadMore(
+												repository.getOwner(),
+												repository.getName(),
+												page,
+												branchName,
+												resultLimit);
+									}
+								}));
 
 		recyclerView.setHasFixedSize(true);
 		recyclerView.setLayoutManager(new LinearLayoutManager(ctx));
@@ -105,98 +121,105 @@ public class CommitsActivity extends BaseActivity {
 		loadInitial(repository.getOwner(), repository.getName(), branchName, resultLimit);
 	}
 
-	private void loadInitial(String repoOwner, String repoName, String branchName, int resultLimit) {
+	private void loadInitial(
+			String repoOwner, String repoName, String branchName, int resultLimit) {
 
-		Call<List<Commit>> call = RetrofitClient.getApiInterface(ctx).repoGetAllCommits(repoOwner, repoName, branchName, null, 1, resultLimit);
+		Call<List<Commit>> call =
+				RetrofitClient.getApiInterface(ctx)
+						.repoGetAllCommits(repoOwner, repoName, branchName, null, 1, resultLimit);
 
-		call.enqueue(new Callback<>() {
+		call.enqueue(
+				new Callback<>() {
 
-			@Override
-			public void onResponse(@NonNull Call<List<Commit>> call, @NonNull Response<List<Commit>> response) {
+					@Override
+					public void onResponse(
+							@NonNull Call<List<Commit>> call,
+							@NonNull Response<List<Commit>> response) {
 
-				if(response.code() == 200) {
+						if (response.code() == 200) {
 
-					assert response.body() != null;
-					if(response.body().size() > 0) {
+							assert response.body() != null;
+							if (response.body().size() > 0) {
 
-						commitsList.clear();
-						commitsList.addAll(response.body());
-						adapter.notifyDataChanged();
-						noData.setVisibility(View.GONE);
+								commitsList.clear();
+								commitsList.addAll(response.body());
+								adapter.notifyDataChanged();
+								noData.setVisibility(View.GONE);
+							} else {
+
+								commitsList.clear();
+								adapter.notifyDataChanged();
+								noData.setVisibility(View.VISIBLE);
+							}
+						}
+						if (response.code() == 409) {
+
+							noData.setVisibility(View.VISIBLE);
+						} else {
+
+							Log.e(TAG, String.valueOf(response.code()));
+						}
+
+						progressBar.setVisibility(View.GONE);
 					}
-					else {
 
-						commitsList.clear();
-						adapter.notifyDataChanged();
-						noData.setVisibility(View.VISIBLE);
+					@Override
+					public void onFailure(@NonNull Call<List<Commit>> call, @NonNull Throwable t) {
+
+						Toasty.error(
+								ctx, getResources().getString(R.string.genericServerResponseError));
 					}
-				}
-				if(response.code() == 409) {
-
-					noData.setVisibility(View.VISIBLE);
-				}
-				else {
-
-					Log.e(TAG, String.valueOf(response.code()));
-				}
-
-				progressBar.setVisibility(View.GONE);
-			}
-
-			@Override
-			public void onFailure(@NonNull Call<List<Commit>> call, @NonNull Throwable t) {
-
-				Toasty.error(ctx, getResources().getString(R.string.genericServerResponseError));
-			}
-
-		});
-
+				});
 	}
 
-	private void loadMore(String repoOwner, String repoName, final int page, String branchName, int resultLimit) {
+	private void loadMore(
+			String repoOwner, String repoName, final int page, String branchName, int resultLimit) {
 
 		progressBar.setVisibility(View.VISIBLE);
 
-		Call<List<Commit>> call = RetrofitClient.getApiInterface(ctx).repoGetAllCommits(repoOwner, repoName, branchName, null, page, resultLimit);
+		Call<List<Commit>> call =
+				RetrofitClient.getApiInterface(ctx)
+						.repoGetAllCommits(
+								repoOwner, repoName, branchName, null, page, resultLimit);
 
-		call.enqueue(new Callback<>() {
+		call.enqueue(
+				new Callback<>() {
 
-			@Override
-			public void onResponse(@NonNull Call<List<Commit>> call, @NonNull Response<List<Commit>> response) {
+					@Override
+					public void onResponse(
+							@NonNull Call<List<Commit>> call,
+							@NonNull Response<List<Commit>> response) {
 
-				if(response.isSuccessful()) {
+						if (response.isSuccessful()) {
 
-					List<Commit> result = response.body();
-					assert result != null;
+							List<Commit> result = response.body();
+							assert result != null;
 
-					if(result.size() > 0) {
+							if (result.size() > 0) {
 
-						pageSize = result.size();
-						commitsList.addAll(result);
+								pageSize = result.size();
+								commitsList.addAll(result);
+							} else {
+
+								adapter.setMoreDataAvailable(false);
+							}
+
+							adapter.notifyDataChanged();
+						} else {
+
+							Log.e(TAG, String.valueOf(response.code()));
+						}
+
+						progressBar.setVisibility(View.GONE);
 					}
-					else {
 
-						adapter.setMoreDataAvailable(false);
+					@Override
+					public void onFailure(@NonNull Call<List<Commit>> call, @NonNull Throwable t) {
+
+						Toasty.error(
+								ctx, getResources().getString(R.string.genericServerResponseError));
 					}
-
-					adapter.notifyDataChanged();
-				}
-				else {
-
-					Log.e(TAG, String.valueOf(response.code()));
-				}
-
-				progressBar.setVisibility(View.GONE);
-			}
-
-			@Override
-			public void onFailure(@NonNull Call<List<Commit>> call, @NonNull Throwable t) {
-
-				Toasty.error(ctx, getResources().getString(R.string.genericServerResponseError));
-			}
-
-		});
-
+				});
 	}
 
 	@Override
@@ -206,25 +229,26 @@ public class CommitsActivity extends BaseActivity {
 		inflater.inflate(R.menu.search_menu, menu);
 
 		MenuItem searchItem = menu.findItem(R.id.action_search);
-		androidx.appcompat.widget.SearchView searchView = (androidx.appcompat.widget.SearchView) searchItem.getActionView();
+		androidx.appcompat.widget.SearchView searchView =
+				(androidx.appcompat.widget.SearchView) searchItem.getActionView();
 		searchView.setImeOptions(EditorInfo.IME_ACTION_DONE);
 
-		searchView.setOnQueryTextListener(new androidx.appcompat.widget.SearchView.OnQueryTextListener() {
+		searchView.setOnQueryTextListener(
+				new androidx.appcompat.widget.SearchView.OnQueryTextListener() {
 
-			@Override
-			public boolean onQueryTextSubmit(String query) {
+					@Override
+					public boolean onQueryTextSubmit(String query) {
 
-				return false;
-			}
+						return false;
+					}
 
-			@Override
-			public boolean onQueryTextChange(String newText) {
+					@Override
+					public boolean onQueryTextChange(String newText) {
 
-				filter(newText);
-				return true;
-			}
-
-		});
+						filter(newText);
+						return true;
+					}
+				});
 
 		return super.onCreateOptionsMenu(menu);
 	}
@@ -233,9 +257,10 @@ public class CommitsActivity extends BaseActivity {
 
 		List<Commit> arr = new ArrayList<>();
 
-		for(Commit d : commitsList) {
+		for (Commit d : commitsList) {
 
-			if(d.getCommit().getMessage().toLowerCase().contains(text) || d.getSha().toLowerCase().contains(text)) {
+			if (d.getCommit().getMessage().toLowerCase().contains(text)
+					|| d.getSha().toLowerCase().contains(text)) {
 
 				arr.add(d);
 			}
@@ -254,7 +279,4 @@ public class CommitsActivity extends BaseActivity {
 		super.onResume();
 		repository.checkAccountSwitch(this);
 	}
-
 }
-
-

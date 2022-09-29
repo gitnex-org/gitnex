@@ -8,19 +8,18 @@ import android.view.View;
 import androidx.appcompat.widget.Toolbar;
 import androidx.lifecycle.ViewModelProvider;
 import androidx.recyclerview.widget.LinearLayoutManager;
+import java.util.ArrayList;
+import java.util.concurrent.atomic.AtomicInteger;
 import org.mian.gitnex.R;
 import org.mian.gitnex.adapters.AdminUnadoptedReposAdapter;
 import org.mian.gitnex.databinding.ActivityAdminCronTasksBinding;
 import org.mian.gitnex.helpers.Constants;
 import org.mian.gitnex.viewmodels.AdminUnadoptedReposViewModel;
-import java.util.ArrayList;
-import java.util.concurrent.atomic.AtomicInteger;
 
 /**
  * @author M M Arif
  * @author qwerty287
  */
-
 public class AdminUnadoptedReposActivity extends BaseActivity {
 
 	private AdminUnadoptedReposViewModel viewModel;
@@ -54,26 +53,34 @@ public class AdminUnadoptedReposActivity extends BaseActivity {
 		binding.recyclerView.setHasFixedSize(true);
 		binding.recyclerView.setLayoutManager(new LinearLayoutManager(ctx));
 
-		binding.pullToRefresh.setOnRefreshListener(() -> new Handler(Looper.getMainLooper()).postDelayed(() -> {
+		binding.pullToRefresh.setOnRefreshListener(
+				() ->
+						new Handler(Looper.getMainLooper())
+								.postDelayed(
+										() -> {
+											binding.pullToRefresh.setRefreshing(false);
+											PAGE = 1;
+											binding.progressBar.setVisibility(View.VISIBLE);
+											reload = true;
+											viewModel.loadRepos(ctx, PAGE, resultLimit, null);
+										},
+										500));
 
-			binding.pullToRefresh.setRefreshing(false);
-			PAGE = 1;
-			binding.progressBar.setVisibility(View.VISIBLE);
-			reload = true;
-			viewModel.loadRepos(ctx, PAGE, resultLimit, null);
-
-		}, 500));
-
-		adapter = new AdminUnadoptedReposAdapter(new ArrayList<>(), () -> {
-			PAGE = 1;
-			binding.progressBar.setVisibility(View.VISIBLE);
-			reload = true;
-			viewModel.loadRepos(ctx, PAGE, resultLimit, null);
-		}, () -> {
-			PAGE += 1;
-			binding.progressBar.setVisibility(View.VISIBLE);
-			viewModel.loadRepos(ctx, PAGE, resultLimit, null);
-		}, binding);
+		adapter =
+				new AdminUnadoptedReposAdapter(
+						new ArrayList<>(),
+						() -> {
+							PAGE = 1;
+							binding.progressBar.setVisibility(View.VISIBLE);
+							reload = true;
+							viewModel.loadRepos(ctx, PAGE, resultLimit, null);
+						},
+						() -> {
+							PAGE += 1;
+							binding.progressBar.setVisibility(View.VISIBLE);
+							viewModel.loadRepos(ctx, PAGE, resultLimit, null);
+						},
+						binding);
 
 		binding.recyclerView.setAdapter(adapter);
 
@@ -84,28 +91,29 @@ public class AdminUnadoptedReposActivity extends BaseActivity {
 
 		AtomicInteger prevSize = new AtomicInteger();
 
-		viewModel.getUnadoptedRepos(ctx, PAGE, resultLimit, null).observe(this, list -> {
+		viewModel
+				.getUnadoptedRepos(ctx, PAGE, resultLimit, null)
+				.observe(
+						this,
+						list -> {
+							binding.progressBar.setVisibility(View.GONE);
 
-			binding.progressBar.setVisibility(View.GONE);
+							boolean hasMore = reload || list.size() > prevSize.get();
+							reload = false;
 
-			boolean hasMore = reload || list.size() > prevSize.get();
-			reload = false;
+							prevSize.set(list.size());
 
-			prevSize.set(list.size());
-
-			if(list.size() > 0) {
-				adapter.updateList(list);
-				adapter.setHasMore(hasMore);
-				binding.noData.setVisibility(View.GONE);
-			}
-			else {
-				binding.noData.setVisibility(View.VISIBLE);
-			}
-		});
+							if (list.size() > 0) {
+								adapter.updateList(list);
+								adapter.setHasMore(hasMore);
+								binding.noData.setVisibility(View.GONE);
+							} else {
+								binding.noData.setVisibility(View.VISIBLE);
+							}
+						});
 	}
 
 	private void initCloseListener() {
 		onClickListener = view -> finish();
 	}
-
 }

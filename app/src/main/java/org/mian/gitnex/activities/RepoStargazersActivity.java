@@ -16,7 +16,6 @@ import org.mian.gitnex.viewmodels.RepoStargazersViewModel;
 /**
  * @author M M Arif
  */
-
 public class RepoStargazersActivity extends BaseActivity {
 
 	private TextView noDataStargazers;
@@ -32,7 +31,8 @@ public class RepoStargazersActivity extends BaseActivity {
 
 		super.onCreate(savedInstanceState);
 
-		ActivityRepoStargazersBinding activityRepoStargazersBinding = ActivityRepoStargazersBinding.inflate(getLayoutInflater());
+		ActivityRepoStargazersBinding activityRepoStargazersBinding =
+				ActivityRepoStargazersBinding.inflate(getLayoutInflater());
 		setContentView(activityRepoStargazersBinding.getRoot());
 
 		ImageView closeActivity = activityRepoStargazersBinding.close;
@@ -55,27 +55,29 @@ public class RepoStargazersActivity extends BaseActivity {
 
 	private void fetchDataAsync(String repoOwner, String repoName) {
 
-		RepoStargazersViewModel repoStargazersModel = new ViewModelProvider(this).get(RepoStargazersViewModel.class);
+		RepoStargazersViewModel repoStargazersModel =
+				new ViewModelProvider(this).get(RepoStargazersViewModel.class);
 
-		repoStargazersModel.getRepoStargazers(repoOwner, repoName, ctx).observe(this, stargazersListMain -> {
+		repoStargazersModel
+				.getRepoStargazers(repoOwner, repoName, ctx)
+				.observe(
+						this,
+						stargazersListMain -> {
+							adapter = new UserGridAdapter(ctx, stargazersListMain);
 
-			adapter = new UserGridAdapter(ctx, stargazersListMain);
+							if (adapter.getCount() > 0) {
 
-			if(adapter.getCount() > 0) {
+								mGridView.setAdapter(adapter);
+								noDataStargazers.setVisibility(View.GONE);
+							} else {
 
-				mGridView.setAdapter(adapter);
-				noDataStargazers.setVisibility(View.GONE);
-			}
-			else {
+								adapter.notifyDataSetChanged();
+								mGridView.setAdapter(adapter);
+								noDataStargazers.setVisibility(View.VISIBLE);
+							}
 
-				adapter.notifyDataSetChanged();
-				mGridView.setAdapter(adapter);
-				noDataStargazers.setVisibility(View.VISIBLE);
-			}
-
-			mProgressBar.setVisibility(View.GONE);
-		});
-
+							mProgressBar.setVisibility(View.GONE);
+						});
 	}
 
 	private void initCloseListener() {
@@ -88,5 +90,4 @@ public class RepoStargazersActivity extends BaseActivity {
 		super.onResume();
 		repository.checkAccountSwitch(this);
 	}
-
 }

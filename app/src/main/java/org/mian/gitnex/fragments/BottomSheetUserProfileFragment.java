@@ -15,7 +15,6 @@ import org.mian.gitnex.structs.BottomSheetListener;
  * @author M M Arif
  * @author qwerty287
  */
-
 public class BottomSheetUserProfileFragment extends BottomSheetDialogFragment {
 
 	private final boolean following;
@@ -25,28 +24,31 @@ public class BottomSheetUserProfileFragment extends BottomSheetDialogFragment {
 		this.following = following;
 	}
 
-	@Nullable
-	@Override
-	public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
+	@Nullable @Override
+	public View onCreateView(
+			@NonNull LayoutInflater inflater,
+			@Nullable ViewGroup container,
+			@Nullable Bundle savedInstanceState) {
 
-		BottomSheetUserProfileBinding bottomSheetUserProfileBinding = BottomSheetUserProfileBinding.inflate(inflater, container, false);
+		BottomSheetUserProfileBinding bottomSheetUserProfileBinding =
+				BottomSheetUserProfileBinding.inflate(inflater, container, false);
 
-		if(following) {
+		if (following) {
 			bottomSheetUserProfileBinding.unfollowUser.setVisibility(View.VISIBLE);
 			bottomSheetUserProfileBinding.followUser.setVisibility(View.GONE);
 		}
 
-		bottomSheetUserProfileBinding.followUser.setOnClickListener(v1 -> {
+		bottomSheetUserProfileBinding.followUser.setOnClickListener(
+				v1 -> {
+					bmListener.onButtonClicked("follow");
+					dismiss();
+				});
 
-			bmListener.onButtonClicked("follow");
-			dismiss();
-		});
-
-		bottomSheetUserProfileBinding.unfollowUser.setOnClickListener(v1 -> {
-
-			bmListener.onButtonClicked("follow");
-			dismiss();
-		});
+		bottomSheetUserProfileBinding.unfollowUser.setOnClickListener(
+				v1 -> {
+					bmListener.onButtonClicked("follow");
+					dismiss();
+				});
 
 		return bottomSheetUserProfileBinding.getRoot();
 	}
@@ -57,10 +59,8 @@ public class BottomSheetUserProfileFragment extends BottomSheetDialogFragment {
 
 		try {
 			bmListener = (BottomSheetListener) context;
-		}
-		catch(ClassCastException e) {
+		} catch (ClassCastException e) {
 			throw new ClassCastException(context + " must implement BottomSheetListener");
 		}
 	}
-
 }

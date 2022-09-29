@@ -5,124 +5,160 @@ import android.view.View;
 import android.widget.ProgressBar;
 import androidx.annotation.NonNull;
 import com.google.android.material.dialog.MaterialAlertDialogBuilder;
+import java.util.List;
 import org.gitnex.tea4j.v2.models.Label;
 import org.mian.gitnex.R;
 import org.mian.gitnex.adapters.LabelsListAdapter;
 import org.mian.gitnex.clients.RetrofitClient;
 import org.mian.gitnex.databinding.CustomLabelsSelectionDialogBinding;
 import org.mian.gitnex.helpers.Toasty;
-import java.util.List;
 import retrofit2.Call;
 import retrofit2.Callback;
 
 /**
  * @author M M Arif
  */
-
 public class LabelsActions {
 
-	public static void getCurrentIssueLabels(Context ctx, String repoOwner, String repoName, int issueIndex, List<Integer> currentLabelsIds) {
+	public static void getCurrentIssueLabels(
+			Context ctx,
+			String repoOwner,
+			String repoName,
+			int issueIndex,
+			List<Integer> currentLabelsIds) {
 
-		Call<List<Label>> callSingleIssueLabels = RetrofitClient.getApiInterface(ctx).issueGetLabels(repoOwner, repoName, (long) issueIndex);
+		Call<List<Label>> callSingleIssueLabels =
+				RetrofitClient.getApiInterface(ctx)
+						.issueGetLabels(repoOwner, repoName, (long) issueIndex);
 
-		callSingleIssueLabels.enqueue(new Callback<>() {
+		callSingleIssueLabels.enqueue(
+				new Callback<>() {
 
-			@Override
-			public void onResponse(@NonNull Call<List<Label>> call, @NonNull retrofit2.Response<List<Label>> response) {
+					@Override
+					public void onResponse(
+							@NonNull Call<List<Label>> call,
+							@NonNull retrofit2.Response<List<Label>> response) {
 
-				if(response.isSuccessful()) {
+						if (response.isSuccessful()) {
 
-					List<Label> issueLabelsList = response.body();
+							List<Label> issueLabelsList = response.body();
 
-					assert issueLabelsList != null;
+							assert issueLabelsList != null;
 
-					if(issueLabelsList.size() > 0) {
+							if (issueLabelsList.size() > 0) {
 
-						for(int i = 0; i < issueLabelsList.size(); i++) {
+								for (int i = 0; i < issueLabelsList.size(); i++) {
 
-							currentLabelsIds.add(Math.toIntExact(issueLabelsList.get(i).getId()));
+									currentLabelsIds.add(
+											Math.toIntExact(issueLabelsList.get(i).getId()));
+								}
+							}
+						} else {
+							Toasty.error(ctx, ctx.getString(R.string.genericError));
 						}
 					}
-				}
-				else {
-					Toasty.error(ctx, ctx.getString(R.string.genericError));
-				}
-			}
 
-			@Override
-			public void onFailure(@NonNull Call<List<Label>> call, @NonNull Throwable t) {
+					@Override
+					public void onFailure(@NonNull Call<List<Label>> call, @NonNull Throwable t) {
 
-				Toasty.error(ctx, ctx.getString(R.string.genericServerResponseError));
-			}
-		});
+						Toasty.error(ctx, ctx.getString(R.string.genericServerResponseError));
+					}
+				});
 	}
 
-	public static void getRepositoryLabels(Context ctx, String repoOwner, String repoName, List<Label> labelsList, MaterialAlertDialogBuilder materialAlertDialogBuilder, LabelsListAdapter labelsAdapter,
-		CustomLabelsSelectionDialogBinding labelsBinding, ProgressBar progressBar) {
+	public static void getRepositoryLabels(
+			Context ctx,
+			String repoOwner,
+			String repoName,
+			List<Label> labelsList,
+			MaterialAlertDialogBuilder materialAlertDialogBuilder,
+			LabelsListAdapter labelsAdapter,
+			CustomLabelsSelectionDialogBinding labelsBinding,
+			ProgressBar progressBar) {
 
-		Call<List<Label>> call = RetrofitClient.getApiInterface(ctx).issueListLabels(repoOwner, repoName, null, null);
+		Call<List<Label>> call =
+				RetrofitClient.getApiInterface(ctx)
+						.issueListLabels(repoOwner, repoName, null, null);
 
-		call.enqueue(new Callback<>() {
+		call.enqueue(
+				new Callback<>() {
 
-			@Override
-			public void onResponse(@NonNull Call<List<Label>> call, @NonNull retrofit2.Response<List<Label>> response) {
+					@Override
+					public void onResponse(
+							@NonNull Call<List<Label>> call,
+							@NonNull retrofit2.Response<List<Label>> response) {
 
-				labelsList.clear();
+						labelsList.clear();
 
-				if(response.isSuccessful()) {
+						if (response.isSuccessful()) {
 
-					if(response.body() != null) {
+							if (response.body() != null) {
 
-						labelsList.addAll(response.body());
+								labelsList.addAll(response.body());
+							}
+
+							// Load organization labels
+							Call<List<Label>> callOrgLabels =
+									RetrofitClient.getApiInterface(ctx)
+											.orgListLabels(repoOwner, null, null);
+
+							callOrgLabels.enqueue(
+									new Callback<>() {
+
+										@Override
+										public void onResponse(
+												@NonNull Call<List<Label>> call,
+												@NonNull retrofit2.Response<List<Label>>
+																responseOrg) {
+
+											if (responseOrg.body() != null) {
+
+												labelsList.addAll(responseOrg.body());
+												materialAlertDialogBuilder.show();
+											}
+
+											if (labelsList.isEmpty()) {
+
+												Toasty.warning(
+														ctx,
+														ctx.getResources()
+																.getString(R.string.noDataFound));
+											}
+
+											labelsBinding.labelsRecyclerView.setAdapter(
+													labelsAdapter);
+										}
+
+										@Override
+										public void onFailure(
+												@NonNull Call<List<Label>> call,
+												@NonNull Throwable t) {
+
+											Toasty.error(
+													ctx,
+													ctx.getString(
+															R.string.genericServerResponseError));
+										}
+									});
+						} else {
+
+							Toasty.error(ctx, ctx.getResources().getString(R.string.genericError));
+						}
+						if (progressBar != null) {
+							progressBar.setVisibility(View.GONE);
+						}
 					}
 
-					// Load organization labels
-					Call<List<Label>> callOrgLabels = RetrofitClient.getApiInterface(ctx).orgListLabels(repoOwner, null, null);
+					@Override
+					public void onFailure(@NonNull Call<List<Label>> call, @NonNull Throwable t) {
 
-					callOrgLabels.enqueue(new Callback<>() {
-
-						@Override
-						public void onResponse(@NonNull Call<List<Label>> call, @NonNull retrofit2.Response<List<Label>> responseOrg) {
-
-							if(responseOrg.body() != null) {
-
-								labelsList.addAll(responseOrg.body());
-								materialAlertDialogBuilder.show();
-							}
-
-							if(labelsList.isEmpty()) {
-
-								Toasty.warning(ctx, ctx.getResources().getString(R.string.noDataFound));
-							}
-
-							labelsBinding.labelsRecyclerView.setAdapter(labelsAdapter);
+						if (progressBar != null) {
+							progressBar.setVisibility(View.GONE);
 						}
-
-						@Override
-						public void onFailure(@NonNull Call<List<Label>> call, @NonNull Throwable t) {
-
-							Toasty.error(ctx, ctx.getString(R.string.genericServerResponseError));
-						}
-					});
-				}
-				else {
-
-					Toasty.error(ctx, ctx.getResources().getString(R.string.genericError));
-				}
-				if(progressBar != null) {
-					progressBar.setVisibility(View.GONE);
-				}
-			}
-
-			@Override
-			public void onFailure(@NonNull Call<List<Label>> call, @NonNull Throwable t) {
-
-				if(progressBar != null) {
-					progressBar.setVisibility(View.GONE);
-				}
-				Toasty.error(ctx, ctx.getResources().getString(R.string.genericServerResponseError));
-			}
-		});
+						Toasty.error(
+								ctx,
+								ctx.getResources().getString(R.string.genericServerResponseError));
+					}
+				});
 	}
-
 }

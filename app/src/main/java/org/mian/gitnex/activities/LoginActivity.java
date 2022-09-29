@@ -10,6 +10,12 @@ import android.widget.EditText;
 import android.widget.RadioGroup;
 import androidx.annotation.NonNull;
 import com.google.android.material.dialog.MaterialAlertDialogBuilder;
+import io.mikael.urlbuilder.UrlBuilder;
+import java.net.URI;
+import java.nio.charset.StandardCharsets;
+import java.util.List;
+import java.util.UUID;
+import okhttp3.Credentials;
 import org.gitnex.tea4j.v2.models.AccessToken;
 import org.gitnex.tea4j.v2.models.CreateAccessTokenOption;
 import org.gitnex.tea4j.v2.models.GeneralAPISettings;
@@ -28,19 +34,12 @@ import org.mian.gitnex.helpers.Toasty;
 import org.mian.gitnex.helpers.UrlHelper;
 import org.mian.gitnex.helpers.Version;
 import org.mian.gitnex.structs.Protocol;
-import java.net.URI;
-import java.nio.charset.StandardCharsets;
-import java.util.List;
-import java.util.UUID;
-import io.mikael.urlbuilder.UrlBuilder;
-import okhttp3.Credentials;
 import retrofit2.Call;
 import retrofit2.Callback;
 
 /**
  * @author M M Arif
  */
-
 public class LoginActivity extends BaseActivity {
 
 	private Button loginButton;
@@ -59,7 +58,8 @@ public class LoginActivity extends BaseActivity {
 
 		super.onCreate(savedInstanceState);
 
-		ActivityLoginBinding activityLoginBinding = ActivityLoginBinding.inflate(getLayoutInflater());
+		ActivityLoginBinding activityLoginBinding =
+				ActivityLoginBinding.inflate(getLayoutInflater());
 		setContentView(activityLoginBinding.getRoot());
 
 		NetworkStatusObserver networkStatusObserver = NetworkStatusObserver.getInstance(ctx);
@@ -75,65 +75,89 @@ public class LoginActivity extends BaseActivity {
 
 		activityLoginBinding.appVersion.setText(AppUtil.getAppVersion(appCtx));
 
-		ArrayAdapter<Protocol> adapterProtocols = new ArrayAdapter<>(LoginActivity.this, R.layout.list_spinner_items, Protocol.values());
+		ArrayAdapter<Protocol> adapterProtocols =
+				new ArrayAdapter<>(
+						LoginActivity.this, R.layout.list_spinner_items, Protocol.values());
 
 		instanceUrlET.setText(getIntent().getStringExtra("instanceUrl"));
 
 		protocolSpinner.setAdapter(adapterProtocols);
 		protocolSpinner.setSelection(0);
-		protocolSpinner.setOnItemClickListener((parent, view, position, id) -> {
+		protocolSpinner.setOnItemClickListener(
+				(parent, view, position, id) -> {
+					selectedProtocol = String.valueOf(parent.getItemAtPosition(position));
 
-			selectedProtocol = String.valueOf(parent.getItemAtPosition(position));
+					if (selectedProtocol.equals(String.valueOf(Protocol.HTTP))) {
+						Toasty.warning(ctx, getResources().getString(R.string.protocolError));
+					}
+				});
 
-			if(selectedProtocol.equals(String.valueOf(Protocol.HTTP))) {
-				Toasty.warning(ctx, getResources().getString(R.string.protocolError));
-			}
-		});
-
-		if(R.id.loginToken == loginMethod.getCheckedRadioButtonId()) {
-			AppUtil.setMultiVisibility(View.GONE, findViewById(R.id.login_uidLayout), findViewById(R.id.login_passwdLayout), findViewById(R.id.otpCodeLayout));
+		if (R.id.loginToken == loginMethod.getCheckedRadioButtonId()) {
+			AppUtil.setMultiVisibility(
+					View.GONE,
+					findViewById(R.id.login_uidLayout),
+					findViewById(R.id.login_passwdLayout),
+					findViewById(R.id.otpCodeLayout));
 			findViewById(R.id.loginTokenCodeLayout).setVisibility(View.VISIBLE);
-		}
-		else {
-			AppUtil.setMultiVisibility(View.VISIBLE, findViewById(R.id.login_uidLayout), findViewById(R.id.login_passwdLayout), findViewById(R.id.otpCodeLayout));
+		} else {
+			AppUtil.setMultiVisibility(
+					View.VISIBLE,
+					findViewById(R.id.login_uidLayout),
+					findViewById(R.id.login_passwdLayout),
+					findViewById(R.id.otpCodeLayout));
 			findViewById(R.id.loginTokenCodeLayout).setVisibility(View.GONE);
 		}
 
-		loginMethod.setOnCheckedChangeListener((group, checkedId) -> {
-			if(checkedId == R.id.loginToken) {
-				AppUtil.setMultiVisibility(View.GONE, findViewById(R.id.login_uidLayout), findViewById(R.id.login_passwdLayout), findViewById(R.id.otpCodeLayout));
-				findViewById(R.id.loginTokenCodeLayout).setVisibility(View.VISIBLE);
-			}
-			else {
-				AppUtil.setMultiVisibility(View.VISIBLE, findViewById(R.id.login_uidLayout), findViewById(R.id.login_passwdLayout), findViewById(R.id.otpCodeLayout));
-				findViewById(R.id.loginTokenCodeLayout).setVisibility(View.GONE);
-			}
-		});
+		loginMethod.setOnCheckedChangeListener(
+				(group, checkedId) -> {
+					if (checkedId == R.id.loginToken) {
+						AppUtil.setMultiVisibility(
+								View.GONE,
+								findViewById(R.id.login_uidLayout),
+								findViewById(R.id.login_passwdLayout),
+								findViewById(R.id.otpCodeLayout));
+						findViewById(R.id.loginTokenCodeLayout).setVisibility(View.VISIBLE);
+					} else {
+						AppUtil.setMultiVisibility(
+								View.VISIBLE,
+								findViewById(R.id.login_uidLayout),
+								findViewById(R.id.login_passwdLayout),
+								findViewById(R.id.otpCodeLayout));
+						findViewById(R.id.loginTokenCodeLayout).setVisibility(View.GONE);
+					}
+				});
 
-		networkStatusObserver.registerNetworkStatusListener(hasNetworkConnection -> runOnUiThread(() -> {
-			if(hasNetworkConnection) {
-				enableProcessButton();
-			}
-			else {
-				disableProcessButton();
-				loginButton.setText(getResources().getString(R.string.btnLogin));
-				Toasty.error(ctx, getResources().getString(R.string.checkNetConnection));
-			}
-		}));
+		networkStatusObserver.registerNetworkStatusListener(
+				hasNetworkConnection ->
+						runOnUiThread(
+								() -> {
+									if (hasNetworkConnection) {
+										enableProcessButton();
+									} else {
+										disableProcessButton();
+										loginButton.setText(
+												getResources().getString(R.string.btnLogin));
+										Toasty.error(
+												ctx,
+												getResources()
+														.getString(R.string.checkNetConnection));
+									}
+								}));
 
 		loadDefaults();
 
-		loginButton.setOnClickListener(view -> {
-			disableProcessButton();
-			login();
-		});
+		loginButton.setOnClickListener(
+				view -> {
+					disableProcessButton();
+					login();
+				});
 	}
 
 	private void login() {
 
 		try {
 
-			if(selectedProtocol == null) {
+			if (selectedProtocol == null) {
 
 				Toasty.error(ctx, getResources().getString(R.string.protocolEmptyError));
 				enableProcessButton();
@@ -142,54 +166,73 @@ public class LoginActivity extends BaseActivity {
 
 			String loginUid = loginUidET.getText().toString().replaceAll("[\\uFEFF]", "").trim();
 			String loginPass = loginPassword.getText().toString().trim();
-			String loginToken = loginTokenCode.getText().toString().replaceAll("[\\uFEFF|#]", "").trim();
+			String loginToken =
+					loginTokenCode.getText().toString().replaceAll("[\\uFEFF|#]", "").trim();
 
-			LoginType loginType = (loginMethod.getCheckedRadioButtonId() == R.id.loginUsernamePassword) ? LoginType.BASIC : LoginType.TOKEN;
+			LoginType loginType =
+					(loginMethod.getCheckedRadioButtonId() == R.id.loginUsernamePassword)
+							? LoginType.BASIC
+							: LoginType.TOKEN;
 
-			URI rawInstanceUrl = UrlBuilder.fromString(UrlHelper.fixScheme(instanceUrlET.getText().toString().replaceAll("[\\uFEFF|#]", "").trim(), "http")).toUri();
+			URI rawInstanceUrl =
+					UrlBuilder.fromString(
+									UrlHelper.fixScheme(
+											instanceUrlET
+													.getText()
+													.toString()
+													.replaceAll("[\\uFEFF|#]", "")
+													.trim(),
+											"http"))
+							.toUri();
 
-			instanceUrl = UrlBuilder.fromUri(rawInstanceUrl).withScheme(selectedProtocol.toLowerCase()).withPath(PathsHelper.join(rawInstanceUrl.getPath(), "/api/v1/")).toUri();
+			instanceUrl =
+					UrlBuilder.fromUri(rawInstanceUrl)
+							.withScheme(selectedProtocol.toLowerCase())
+							.withPath(PathsHelper.join(rawInstanceUrl.getPath(), "/api/v1/"))
+							.toUri();
 
 			// cache values to make them available the next time the user wants to log in
 			tinyDB.putString("loginType", loginType.name().toLowerCase());
 			tinyDB.putString("instanceUrlRaw", instanceUrlET.getText().toString());
 
-			if(instanceUrlET.getText().toString().equals("")) {
+			if (instanceUrlET.getText().toString().equals("")) {
 
 				Toasty.error(ctx, getResources().getString(R.string.emptyFieldURL));
 				enableProcessButton();
 				return;
 			}
 
-			if(loginType == LoginType.BASIC) {
+			if (loginType == LoginType.BASIC) {
 
-				if(otpCode.length() != 0 && otpCode.length() != 6) {
+				if (otpCode.length() != 0 && otpCode.length() != 6) {
 
 					Toasty.warning(ctx, getResources().getString(R.string.loginOTPTypeError));
 					enableProcessButton();
 					return;
 				}
 
-				if(loginUid.equals("")) {
+				if (loginUid.equals("")) {
 					Toasty.error(ctx, getResources().getString(R.string.emptyFieldUsername));
 					enableProcessButton();
 					return;
 				}
 
-				if(loginPass.equals("")) {
+				if (loginPass.equals("")) {
 					Toasty.error(ctx, getResources().getString(R.string.emptyFieldPassword));
 					enableProcessButton();
 					return;
 				}
 
-				int loginOTP = (otpCode.length() > 0) ? Integer.parseInt(otpCode.getText().toString().trim()) : 0;
+				int loginOTP =
+						(otpCode.length() > 0)
+								? Integer.parseInt(otpCode.getText().toString().trim())
+								: 0;
 
 				versionCheck(loginUid, loginPass, loginOTP, loginToken, loginType);
 
-			}
-			else {
+			} else {
 
-				if(loginToken.equals("")) {
+				if (loginToken.equals("")) {
 
 					Toasty.error(ctx, getResources().getString(R.string.loginTokenError));
 					enableProcessButton();
@@ -200,8 +243,7 @@ public class LoginActivity extends BaseActivity {
 				serverPageLimitSettings();
 			}
 
-		}
-		catch(Exception e) {
+		} catch (Exception e) {
 
 			Toasty.error(ctx, getResources().getString(R.string.malformedUrl));
 			enableProcessButton();
@@ -210,186 +252,251 @@ public class LoginActivity extends BaseActivity {
 
 	private void serverPageLimitSettings() {
 
-		Call<GeneralAPISettings> generalAPISettings = RetrofitClient.getApiInterface(ctx).getGeneralAPISettings();
-		generalAPISettings.enqueue(new Callback<>() {
+		Call<GeneralAPISettings> generalAPISettings =
+				RetrofitClient.getApiInterface(ctx).getGeneralAPISettings();
+		generalAPISettings.enqueue(
+				new Callback<>() {
 
-			@Override
-			public void onResponse(@NonNull final Call<GeneralAPISettings> generalAPISettings, @NonNull retrofit2.Response<GeneralAPISettings> response) {
+					@Override
+					public void onResponse(
+							@NonNull final Call<GeneralAPISettings> generalAPISettings,
+							@NonNull retrofit2.Response<GeneralAPISettings> response) {
 
-				if(response.code() == 200 && response.body() != null) {
+						if (response.code() == 200 && response.body() != null) {
 
-					if(response.body().getMaxResponseItems() != null) {
-						maxResponseItems = Math.toIntExact(response.body().getMaxResponseItems());
+							if (response.body().getMaxResponseItems() != null) {
+								maxResponseItems =
+										Math.toIntExact(response.body().getMaxResponseItems());
+							}
+							if (response.body().getDefaultPagingNum() != null) {
+								defaultPagingNumber =
+										Math.toIntExact(response.body().getDefaultPagingNum());
+							}
+						}
 					}
-					if(response.body().getDefaultPagingNum() != null) {
-						defaultPagingNumber = Math.toIntExact(response.body().getDefaultPagingNum());
-					}
-				}
-			}
 
-			@Override
-			public void onFailure(@NonNull Call<GeneralAPISettings> generalAPISettings, @NonNull Throwable t) {
-			}
-		});
+					@Override
+					public void onFailure(
+							@NonNull Call<GeneralAPISettings> generalAPISettings,
+							@NonNull Throwable t) {}
+				});
 	}
 
-	private void versionCheck(final String loginUid, final String loginPass, final int loginOTP, final String loginToken, final LoginType loginType) {
+	private void versionCheck(
+			final String loginUid,
+			final String loginPass,
+			final int loginOTP,
+			final String loginToken,
+			final LoginType loginType) {
 
 		Call<ServerVersion> callVersion;
 
-		if(!loginToken.equals("")) {
+		if (!loginToken.equals("")) {
 
-			callVersion = RetrofitClient.getApiInterface(ctx, instanceUrl.toString(), "token " + loginToken, null).getVersion();
-		}
-		else {
+			callVersion =
+					RetrofitClient.getApiInterface(
+									ctx, instanceUrl.toString(), "token " + loginToken, null)
+							.getVersion();
+		} else {
 
 			String credential = Credentials.basic(loginUid, loginPass, StandardCharsets.UTF_8);
 
-			if(loginOTP != 0) {
+			if (loginOTP != 0) {
 
-				callVersion = RetrofitClient.getApiInterface(ctx, instanceUrl.toString(), credential, null).getVersion(loginOTP);
-			}
-			else {
+				callVersion =
+						RetrofitClient.getApiInterface(
+										ctx, instanceUrl.toString(), credential, null)
+								.getVersion(loginOTP);
+			} else {
 
-				callVersion = RetrofitClient.getApiInterface(ctx, instanceUrl.toString(), credential, null).getVersion();
+				callVersion =
+						RetrofitClient.getApiInterface(
+										ctx, instanceUrl.toString(), credential, null)
+								.getVersion();
 			}
 		}
 
-		callVersion.enqueue(new Callback<>() {
+		callVersion.enqueue(
+				new Callback<>() {
 
-			@Override
-			public void onResponse(@NonNull final Call<ServerVersion> callVersion, @NonNull retrofit2.Response<ServerVersion> responseVersion) {
+					@Override
+					public void onResponse(
+							@NonNull final Call<ServerVersion> callVersion,
+							@NonNull retrofit2.Response<ServerVersion> responseVersion) {
 
-				if(responseVersion.code() == 200) {
+						if (responseVersion.code() == 200) {
 
-					ServerVersion version = responseVersion.body();
-					assert version != null;
+							ServerVersion version = responseVersion.body();
+							assert version != null;
 
-					if(!Version.valid(version.getVersion())) {
+							if (!Version.valid(version.getVersion())) {
 
-						Toasty.error(ctx, getResources().getString(R.string.versionUnknown));
-						enableProcessButton();
-						return;
-					}
-
-					giteaVersion = new Version(version.getVersion());
-
-					if(giteaVersion.less(getString(R.string.versionLow))) {
-
-						MaterialAlertDialogBuilder materialAlertDialogBuilder = new MaterialAlertDialogBuilder(ctx).setTitle(getString(R.string.versionAlertDialogHeader))
-							.setMessage(getResources().getString(R.string.versionUnsupportedOld, version.getVersion())).setNeutralButton(getString(R.string.cancelButton), (dialog, which) -> {
-
-								dialog.dismiss();
+								Toasty.error(
+										ctx, getResources().getString(R.string.versionUnknown));
 								enableProcessButton();
-							}).setPositiveButton(getString(R.string.textContinue), (dialog, which) -> {
+								return;
+							}
 
-								dialog.dismiss();
+							giteaVersion = new Version(version.getVersion());
+
+							if (giteaVersion.less(getString(R.string.versionLow))) {
+
+								MaterialAlertDialogBuilder materialAlertDialogBuilder =
+										new MaterialAlertDialogBuilder(ctx)
+												.setTitle(
+														getString(
+																R.string.versionAlertDialogHeader))
+												.setMessage(
+														getResources()
+																.getString(
+																		R.string
+																				.versionUnsupportedOld,
+																		version.getVersion()))
+												.setNeutralButton(
+														getString(R.string.cancelButton),
+														(dialog, which) -> {
+															dialog.dismiss();
+															enableProcessButton();
+														})
+												.setPositiveButton(
+														getString(R.string.textContinue),
+														(dialog, which) -> {
+															dialog.dismiss();
+															login(
+																	loginType,
+																	loginUid,
+																	loginPass,
+																	loginOTP,
+																	loginToken);
+														});
+
+								materialAlertDialogBuilder.create().show();
+							} else if (giteaVersion.lessOrEqual(getString(R.string.versionHigh))) {
+
 								login(loginType, loginUid, loginPass, loginOTP, loginToken);
-							});
+							} else {
 
-						materialAlertDialogBuilder.create().show();
+								Toasty.warning(
+										ctx,
+										getResources().getString(R.string.versionUnsupportedNew));
+								login(loginType, loginUid, loginPass, loginOTP, loginToken);
+							}
+
+						} else if (responseVersion.code() == 403) {
+
+							login(loginType, loginUid, loginPass, loginOTP, loginToken);
+						}
 					}
-					else if(giteaVersion.lessOrEqual(getString(R.string.versionHigh))) {
 
-						login(loginType, loginUid, loginPass, loginOTP, loginToken);
+					private void login(
+							LoginType loginType,
+							String loginUid,
+							String loginPass,
+							int loginOTP,
+							String loginToken) {
+
+						// ToDo: before store/create token: get UserInfo to check DB/AccountManager
+						// if there already exist a token
+						// the setup methods then can better handle all different cases
+
+						if (loginType == LoginType.BASIC) {
+
+							setup(loginUid, loginPass, loginOTP);
+						} else if (loginType == LoginType.TOKEN) { // Token
+
+							setupUsingExistingToken(loginToken);
+						}
 					}
-					else {
 
-						Toasty.warning(ctx, getResources().getString(R.string.versionUnsupportedNew));
-						login(loginType, loginUid, loginPass, loginOTP, loginToken);
+					@Override
+					public void onFailure(
+							@NonNull Call<ServerVersion> callVersion, @NonNull Throwable t) {
 
+						Toasty.error(
+								ctx, getResources().getString(R.string.genericServerResponseError));
+						enableProcessButton();
 					}
-
-				}
-				else if(responseVersion.code() == 403) {
-
-					login(loginType, loginUid, loginPass, loginOTP, loginToken);
-				}
-			}
-
-			private void login(LoginType loginType, String loginUid, String loginPass, int loginOTP, String loginToken) {
-
-				// ToDo: before store/create token: get UserInfo to check DB/AccountManager if there already exist a token
-				// the setup methods then can better handle all different cases
-
-				if(loginType == LoginType.BASIC) {
-
-					setup(loginUid, loginPass, loginOTP);
-				}
-				else if(loginType == LoginType.TOKEN) { // Token
-
-					setupUsingExistingToken(loginToken);
-				}
-			}
-
-			@Override
-			public void onFailure(@NonNull Call<ServerVersion> callVersion, @NonNull Throwable t) {
-
-				Toasty.error(ctx, getResources().getString(R.string.genericServerResponseError));
-				enableProcessButton();
-			}
-		});
+				});
 	}
 
 	private void setupUsingExistingToken(final String loginToken) {
 
-		Call<User> call = RetrofitClient.getApiInterface(ctx, instanceUrl.toString(), "token " + loginToken, null).userGetCurrent();
+		Call<User> call =
+				RetrofitClient.getApiInterface(
+								ctx, instanceUrl.toString(), "token " + loginToken, null)
+						.userGetCurrent();
 
-		call.enqueue(new Callback<>() {
+		call.enqueue(
+				new Callback<>() {
 
-			@Override
-			public void onResponse(@NonNull Call<User> call, @NonNull retrofit2.Response<User> response) {
+					@Override
+					public void onResponse(
+							@NonNull Call<User> call, @NonNull retrofit2.Response<User> response) {
 
-				User userDetails = response.body();
+						User userDetails = response.body();
 
-				switch(response.code()) {
+						switch (response.code()) {
+							case 200:
+								assert userDetails != null;
 
-					case 200:
+								// insert new account to db if does not exist
+								String accountName = userDetails.getLogin() + "@" + instanceUrl;
+								UserAccountsApi userAccountsApi =
+										BaseApi.getInstance(ctx, UserAccountsApi.class);
+								assert userAccountsApi != null;
+								boolean userAccountExists =
+										userAccountsApi.userAccountExists(accountName);
+								UserAccount account;
+								if (!userAccountExists) {
+									long accountId =
+											userAccountsApi.createNewAccount(
+													accountName,
+													instanceUrl.toString(),
+													userDetails.getLogin(),
+													loginToken,
+													giteaVersion.toString(),
+													maxResponseItems,
+													defaultPagingNumber);
+									account = userAccountsApi.getAccountById((int) accountId);
+								} else {
+									userAccountsApi.updateTokenByAccountName(
+											accountName, loginToken);
+									userAccountsApi.login(
+											userAccountsApi
+													.getAccountByName(accountName)
+													.getAccountId());
+									account = userAccountsApi.getAccountByName(accountName);
+								}
 
-						assert userDetails != null;
+								AppUtil.switchToAccount(LoginActivity.this, account);
 
-						// insert new account to db if does not exist
-						String accountName = userDetails.getLogin() + "@" + instanceUrl;
-						UserAccountsApi userAccountsApi = BaseApi.getInstance(ctx, UserAccountsApi.class);
-						assert userAccountsApi != null;
-						boolean userAccountExists = userAccountsApi.userAccountExists(accountName);
-						UserAccount account;
-						if(!userAccountExists) {
-							long accountId = userAccountsApi.createNewAccount(accountName, instanceUrl.toString(), userDetails.getLogin(), loginToken, giteaVersion.toString(), maxResponseItems, defaultPagingNumber);
-							account = userAccountsApi.getAccountById((int) accountId);
+								enableProcessButton();
+								startActivity(new Intent(LoginActivity.this, MainActivity.class));
+								finish();
+								break;
+							case 401:
+								Toasty.error(
+										ctx,
+										getResources().getString(R.string.unauthorizedApiError));
+								enableProcessButton();
+								break;
+							default:
+								Toasty.error(
+										ctx,
+										getResources()
+												.getString(
+														R.string.genericApiError, response.code()));
+								enableProcessButton();
 						}
-						else {
-							userAccountsApi.updateTokenByAccountName(accountName, loginToken);
-							userAccountsApi.login(userAccountsApi.getAccountByName(accountName).getAccountId());
-							account = userAccountsApi.getAccountByName(accountName);
-						}
+					}
 
-						AppUtil.switchToAccount(LoginActivity.this, account);
+					@Override
+					public void onFailure(@NonNull Call<User> call, @NonNull Throwable t) {
 
+						Toasty.error(ctx, ctx.getString(R.string.genericServerResponseError));
 						enableProcessButton();
-						startActivity(new Intent(LoginActivity.this, MainActivity.class));
-						finish();
-						break;
-					case 401:
-
-						Toasty.error(ctx, getResources().getString(R.string.unauthorizedApiError));
-						enableProcessButton();
-						break;
-					default:
-
-						Toasty.error(ctx, getResources().getString(R.string.genericApiError, response.code()));
-						enableProcessButton();
-				}
-			}
-
-			@Override
-			public void onFailure(@NonNull Call<User> call, @NonNull Throwable t) {
-
-				Toasty.error(ctx, ctx.getString(R.string.genericServerResponseError));
-				enableProcessButton();
-			}
-		});
-
+					}
+				});
 	}
 
 	private void setup(final String loginUid, final String loginPass, final int loginOTP) {
@@ -398,215 +505,322 @@ public class LoginActivity extends BaseActivity {
 		final String tokenName = "gitnex-app-" + device_id;
 
 		Call<List<AccessToken>> call;
-		if(loginOTP != 0) {
+		if (loginOTP != 0) {
 
-			call = RetrofitClient.getApiInterface(ctx, instanceUrl.toString(), credential, null).userGetTokens(loginOTP, loginUid, null, null);
+			call =
+					RetrofitClient.getApiInterface(ctx, instanceUrl.toString(), credential, null)
+							.userGetTokens(loginOTP, loginUid, null, null);
+		} else {
+
+			call =
+					RetrofitClient.getApiInterface(ctx, instanceUrl.toString(), credential, null)
+							.userGetTokens(loginUid, null, null);
 		}
-		else {
 
-			call = RetrofitClient.getApiInterface(ctx, instanceUrl.toString(), credential, null).userGetTokens(loginUid, null, null);
-		}
+		call.enqueue(
+				new Callback<>() {
 
-		call.enqueue(new Callback<>() {
+					@Override
+					public void onResponse(
+							@NonNull Call<List<AccessToken>> call,
+							@NonNull retrofit2.Response<List<AccessToken>> response) {
 
-			@Override
-			public void onResponse(@NonNull Call<List<AccessToken>> call, @NonNull retrofit2.Response<List<AccessToken>> response) {
+						List<AccessToken> userTokens = response.body();
 
-				List<AccessToken> userTokens = response.body();
+						if (response.code() == 200) {
 
-				if(response.code() == 200) {
+							assert userTokens != null;
 
-					assert userTokens != null;
+							for (AccessToken t : userTokens) {
 
-					for(AccessToken t : userTokens) {
+								if (t.getName().equals(tokenName)) {
 
-						if(t.getName().equals(tokenName)) {
+									// this app had created an token on this instance before
+									// -> since it looks like GitNex forgot the secret we have to
+									// delete it first
 
-							// this app had created an token on this instance before
-							// -> since it looks like GitNex forgot the secret we have to delete it first
+									Call<Void> delToken;
+									if (loginOTP != 0) {
 
-							Call<Void> delToken;
-							if(loginOTP != 0) {
+										delToken =
+												RetrofitClient.getApiInterface(
+																ctx,
+																instanceUrl.toString(),
+																credential,
+																null)
+														.userDeleteAccessToken(
+																loginOTP,
+																loginUid,
+																String.valueOf(t.getId()));
+									} else {
 
-								delToken = RetrofitClient.getApiInterface(ctx, instanceUrl.toString(), credential, null).userDeleteAccessToken(loginOTP, loginUid, String.valueOf(t.getId()));
-							}
-							else {
-
-								delToken = RetrofitClient.getApiInterface(ctx, instanceUrl.toString(), credential, null).userDeleteAccessToken(loginUid, String.valueOf(t.getId()));
-							}
-
-							delToken.enqueue(new Callback<>() {
-
-								@Override
-								public void onResponse(@NonNull Call<Void> delToken, @NonNull retrofit2.Response<Void> response) {
-
-									if(response.code() == 204) {
-
-										setupToken(loginUid, loginPass, loginOTP, tokenName);
+										delToken =
+												RetrofitClient.getApiInterface(
+																ctx,
+																instanceUrl.toString(),
+																credential,
+																null)
+														.userDeleteAccessToken(
+																loginUid,
+																String.valueOf(t.getId()));
 									}
-									else {
 
-										Toasty.error(ctx, getResources().getString(R.string.genericApiError, response.code()));
-										enableProcessButton();
-									}
+									delToken.enqueue(
+											new Callback<>() {
+
+												@Override
+												public void onResponse(
+														@NonNull Call<Void> delToken,
+														@NonNull retrofit2.Response<Void> response) {
+
+													if (response.code() == 204) {
+
+														setupToken(
+																loginUid, loginPass, loginOTP,
+																tokenName);
+													} else {
+
+														Toasty.error(
+																ctx,
+																getResources()
+																		.getString(
+																				R.string
+																						.genericApiError,
+																				response.code()));
+														enableProcessButton();
+													}
+												}
+
+												@Override
+												public void onFailure(
+														@NonNull Call<Void> delToken,
+														@NonNull Throwable t) {
+
+													Toasty.error(
+															ctx,
+															getResources()
+																	.getString(
+																			R.string
+																					.malformedJson));
+													enableProcessButton();
+												}
+											});
+									return;
 								}
+							}
 
-								@Override
-								public void onFailure(@NonNull Call<Void> delToken, @NonNull Throwable t) {
+							setupToken(loginUid, loginPass, loginOTP, tokenName);
+						} else {
 
-									Toasty.error(ctx, getResources().getString(R.string.malformedJson));
-									enableProcessButton();
-								}
-							});
-							return;
+							Toasty.error(
+									ctx,
+									getResources()
+											.getString(R.string.genericApiError, response.code()));
+							enableProcessButton();
 						}
 					}
 
-					setupToken(loginUid, loginPass, loginOTP, tokenName);
-				}
-				else {
+					@Override
+					public void onFailure(
+							@NonNull Call<List<AccessToken>> call, @NonNull Throwable t) {
 
-					Toasty.error(ctx, getResources().getString(R.string.genericApiError, response.code()));
-					enableProcessButton();
-				}
-			}
-
-			@Override
-			public void onFailure(@NonNull Call<List<AccessToken>> call, @NonNull Throwable t) {
-
-				Toasty.error(ctx, getResources().getString(R.string.malformedJson));
-				enableProcessButton();
-			}
-		});
-
+						Toasty.error(ctx, getResources().getString(R.string.malformedJson));
+						enableProcessButton();
+					}
+				});
 	}
 
-	private void setupToken(final String loginUid, final String loginPass, final int loginOTP, final String tokenName) {
+	private void setupToken(
+			final String loginUid,
+			final String loginPass,
+			final int loginOTP,
+			final String tokenName) {
 
 		final String credential = Credentials.basic(loginUid, loginPass, StandardCharsets.UTF_8);
 
 		CreateAccessTokenOption createUserToken = new CreateAccessTokenOption().name(tokenName);
 		Call<AccessToken> callCreateToken;
 
-		if(loginOTP != 0) {
+		if (loginOTP != 0) {
 
-			callCreateToken = RetrofitClient.getApiInterface(ctx, instanceUrl.toString(), credential, null).userCreateToken(loginOTP, loginUid, createUserToken);
+			callCreateToken =
+					RetrofitClient.getApiInterface(ctx, instanceUrl.toString(), credential, null)
+							.userCreateToken(loginOTP, loginUid, createUserToken);
+		} else {
+
+			callCreateToken =
+					RetrofitClient.getApiInterface(ctx, instanceUrl.toString(), credential, null)
+							.userCreateToken(loginUid, createUserToken);
 		}
-		else {
 
-			callCreateToken = RetrofitClient.getApiInterface(ctx, instanceUrl.toString(), credential, null).userCreateToken(loginUid, createUserToken);
-		}
+		callCreateToken.enqueue(
+				new Callback<>() {
 
-		callCreateToken.enqueue(new Callback<>() {
+					@Override
+					public void onResponse(
+							@NonNull Call<AccessToken> callCreateToken,
+							@NonNull retrofit2.Response<AccessToken> responseCreate) {
 
-			@Override
-			public void onResponse(@NonNull Call<AccessToken> callCreateToken, @NonNull retrofit2.Response<AccessToken> responseCreate) {
+						if (responseCreate.code() == 201) {
 
-				if(responseCreate.code() == 201) {
+							AccessToken newToken = responseCreate.body();
+							assert newToken != null;
 
-					AccessToken newToken = responseCreate.body();
-					assert newToken != null;
+							if (!newToken.getSha1().equals("")) {
 
-					if(!newToken.getSha1().equals("")) {
+								Call<User> call =
+										RetrofitClient.getApiInterface(
+														ctx,
+														instanceUrl.toString(),
+														"token " + newToken.getSha1(),
+														null)
+												.userGetCurrent();
 
-						Call<User> call = RetrofitClient.getApiInterface(ctx, instanceUrl.toString(), "token " + newToken.getSha1(), null).userGetCurrent();
+								call.enqueue(
+										new Callback<>() {
 
-						call.enqueue(new Callback<>() {
+											@Override
+											public void onResponse(
+													@NonNull Call<User> call,
+													@NonNull retrofit2.Response<User> response) {
 
-							@Override
-							public void onResponse(@NonNull Call<User> call, @NonNull retrofit2.Response<User> response) {
+												User userDetails = response.body();
 
-								User userDetails = response.body();
+												switch (response.code()) {
+													case 200:
+														assert userDetails != null;
 
-								switch(response.code()) {
+														// insert new account to db if does not
+														// exist
+														String accountName =
+																userDetails.getLogin()
+																		+ "@"
+																		+ instanceUrl;
+														UserAccountsApi userAccountsApi =
+																BaseApi.getInstance(
+																		ctx, UserAccountsApi.class);
+														assert userAccountsApi != null;
+														boolean userAccountExists =
+																userAccountsApi.userAccountExists(
+																		accountName);
 
-									case 200:
+														UserAccount account;
+														if (!userAccountExists) {
+															long accountId =
+																	userAccountsApi
+																			.createNewAccount(
+																					accountName,
+																					instanceUrl
+																							.toString(),
+																					userDetails
+																							.getLogin(),
+																					newToken
+																							.getSha1(),
+																					giteaVersion
+																							.toString(),
+																					maxResponseItems,
+																					defaultPagingNumber);
+															account =
+																	userAccountsApi.getAccountById(
+																			(int) accountId);
+														} else {
+															userAccountsApi
+																	.updateTokenByAccountName(
+																			accountName,
+																			newToken.getSha1());
+															account =
+																	userAccountsApi
+																			.getAccountByName(
+																					accountName);
+														}
 
-										assert userDetails != null;
+														AppUtil.switchToAccount(
+																LoginActivity.this, account);
 
-										// insert new account to db if does not exist
-										String accountName = userDetails.getLogin() + "@" + instanceUrl;
-										UserAccountsApi userAccountsApi = BaseApi.getInstance(ctx, UserAccountsApi.class);
-										assert userAccountsApi != null;
-										boolean userAccountExists = userAccountsApi.userAccountExists(accountName);
+														startActivity(
+																new Intent(
+																		LoginActivity.this,
+																		MainActivity.class));
+														finish();
+														break;
+													case 401:
+														Toasty.error(
+																ctx,
+																getResources()
+																		.getString(
+																				R.string
+																						.unauthorizedApiError));
+														enableProcessButton();
+														break;
+													default:
+														Toasty.error(
+																ctx,
+																getResources()
+																		.getString(
+																				R.string
+																						.genericApiError,
+																				response.code()));
+														enableProcessButton();
+												}
+											}
 
-										UserAccount account;
-										if(!userAccountExists) {
-											long accountId = userAccountsApi.createNewAccount(accountName, instanceUrl.toString(), userDetails.getLogin(), newToken.getSha1(), giteaVersion.toString(), maxResponseItems,
-												defaultPagingNumber);
-											account = userAccountsApi.getAccountById((int) accountId);
-										}
-										else {
-											userAccountsApi.updateTokenByAccountName(accountName, newToken.getSha1());
-											account = userAccountsApi.getAccountByName(accountName);
-										}
+											@Override
+											public void onFailure(
+													@NonNull Call<User> call,
+													@NonNull Throwable t) {
 
-										AppUtil.switchToAccount(LoginActivity.this, account);
-
-										startActivity(new Intent(LoginActivity.this, MainActivity.class));
-										finish();
-										break;
-									case 401:
-
-										Toasty.error(ctx, getResources().getString(R.string.unauthorizedApiError));
-										enableProcessButton();
-										break;
-									default:
-
-										Toasty.error(ctx, getResources().getString(R.string.genericApiError, response.code()));
-										enableProcessButton();
-								}
+												Toasty.error(
+														ctx,
+														getResources()
+																.getString(R.string.genericError));
+												enableProcessButton();
+											}
+										});
 							}
+						} else if (responseCreate.code() == 500) {
 
-							@Override
-							public void onFailure(@NonNull Call<User> call, @NonNull Throwable t) {
-
-								Toasty.error(ctx, getResources().getString(R.string.genericError));
-								enableProcessButton();
-							}
-						});
+							Toasty.error(
+									ctx,
+									getResources()
+											.getString(
+													R.string.genericApiError,
+													responseCreate.code()));
+							enableProcessButton();
+						}
 					}
-				}
-				else if(responseCreate.code() == 500) {
 
-					Toasty.error(ctx, getResources().getString(R.string.genericApiError, responseCreate.code()));
-					enableProcessButton();
-				}
-			}
+					@Override
+					public void onFailure(
+							@NonNull Call<AccessToken> createUserToken, @NonNull Throwable t) {
 
-			@Override
-			public void onFailure(@NonNull Call<AccessToken> createUserToken, @NonNull Throwable t) {
-
-				Toasty.error(ctx, ctx.getString(R.string.genericServerResponseError));
-			}
-		});
+						Toasty.error(ctx, ctx.getString(R.string.genericServerResponseError));
+					}
+				});
 	}
 
 	private void loadDefaults() {
 
-		if(tinyDB.getString("loginType").equals(LoginType.BASIC.name().toLowerCase())) {
+		if (tinyDB.getString("loginType").equals(LoginType.BASIC.name().toLowerCase())) {
 
 			loginMethod.check(R.id.loginUsernamePassword);
-		}
-		else {
+		} else {
 
 			loginMethod.check(R.id.loginToken);
 		}
 
-		if(!tinyDB.getString("instanceUrlRaw").equals("")) {
+		if (!tinyDB.getString("instanceUrlRaw").equals("")) {
 
 			instanceUrlET.setText(tinyDB.getString("instanceUrlRaw"));
 		}
 
-		if(getAccount() != null && getAccount().getAccount() != null) {
+		if (getAccount() != null && getAccount().getAccount() != null) {
 
 			loginUidET.setText(getAccount().getAccount().getUserName());
 		}
 
-		if(!tinyDB.getString("uniqueAppId").isEmpty()) {
+		if (!tinyDB.getString("uniqueAppId").isEmpty()) {
 			device_id = tinyDB.getString("uniqueAppId");
-		}
-		else {
+		} else {
 
 			device_id = UUID.randomUUID().toString();
 			tinyDB.putString("uniqueAppId", device_id);
@@ -625,6 +839,8 @@ public class LoginActivity extends BaseActivity {
 		loginButton.setEnabled(true);
 	}
 
-	private enum LoginType {BASIC, TOKEN}
-
+	private enum LoginType {
+		BASIC,
+		TOKEN
+	}
 }

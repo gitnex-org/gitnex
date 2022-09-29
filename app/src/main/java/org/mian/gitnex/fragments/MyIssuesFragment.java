@@ -23,7 +23,6 @@ import org.mian.gitnex.viewmodels.IssuesViewModel;
 /**
  * @author M M Arif
  */
-
 public class MyIssuesFragment extends Fragment {
 
 	public String state = "open";
@@ -35,7 +34,8 @@ public class MyIssuesFragment extends Fragment {
 	private Menu menu;
 
 	@Override
-	public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
+	public View onCreateView(
+			@NonNull LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
 
 		fragmentIssuesBinding = FragmentIssuesBinding.inflate(inflater, container, false);
 		setHasOptionsMenu(true);
@@ -44,31 +44,43 @@ public class MyIssuesFragment extends Fragment {
 		fragmentIssuesBinding.recyclerView.setHasFixedSize(true);
 		fragmentIssuesBinding.recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
 
-		((MainActivity) requireActivity()).setFragmentRefreshListenerMyIssues(myIssues -> {
+		((MainActivity) requireActivity())
+				.setFragmentRefreshListenerMyIssues(
+						myIssues -> {
+							state = myIssues;
+							if (state.equals("closed")) {
+								menu.getItem(1).setIcon(R.drawable.ic_filter_closed);
+							} else {
+								menu.getItem(1).setIcon(R.drawable.ic_filter);
+							}
 
-			state = myIssues;
-			if(state.equals("closed")) {
-				menu.getItem(1).setIcon(R.drawable.ic_filter_closed);
-			}
-			else {
-				menu.getItem(1).setIcon(R.drawable.ic_filter);
-			}
+							assignedToMe = state.equals("assignedToMe");
 
-			assignedToMe = state.equals("assignedToMe");
+							fragmentIssuesBinding.progressBar.setVisibility(View.VISIBLE);
+							fragmentIssuesBinding.noDataIssues.setVisibility(View.GONE);
 
-			fragmentIssuesBinding.progressBar.setVisibility(View.VISIBLE);
-			fragmentIssuesBinding.noDataIssues.setVisibility(View.GONE);
+							fetchDataAsync(null, state, assignedToMe);
+						});
 
-			fetchDataAsync(null, state, assignedToMe);
-		});
-
-		fragmentIssuesBinding.pullToRefresh.setOnRefreshListener(() -> new Handler(Looper.getMainLooper()).postDelayed(() -> {
-
-			page = 1;
-			fragmentIssuesBinding.pullToRefresh.setRefreshing(false);
-			issuesViewModel.loadIssuesList(null, "issues", true, state, assignedToMe, getContext());
-			fragmentIssuesBinding.progressBar.setVisibility(View.VISIBLE);
-		}, 50));
+		fragmentIssuesBinding.pullToRefresh.setOnRefreshListener(
+				() ->
+						new Handler(Looper.getMainLooper())
+								.postDelayed(
+										() -> {
+											page = 1;
+											fragmentIssuesBinding.pullToRefresh.setRefreshing(
+													false);
+											issuesViewModel.loadIssuesList(
+													null,
+													"issues",
+													true,
+													state,
+													assignedToMe,
+													getContext());
+											fragmentIssuesBinding.progressBar.setVisibility(
+													View.VISIBLE);
+										},
+										50));
 
 		fetchDataAsync(null, state, assignedToMe);
 
@@ -77,38 +89,51 @@ public class MyIssuesFragment extends Fragment {
 
 	private void fetchDataAsync(String query, String state, boolean assignedToMe) {
 
-		issuesViewModel.getIssuesList(query, "issues", true, state, assignedToMe, getContext()).observe(getViewLifecycleOwner(), issuesListMain -> {
+		issuesViewModel
+				.getIssuesList(query, "issues", true, state, assignedToMe, getContext())
+				.observe(
+						getViewLifecycleOwner(),
+						issuesListMain -> {
+							adapter = new ExploreIssuesAdapter(issuesListMain, getContext());
+							adapter.setLoadMoreListener(
+									new ExploreIssuesAdapter.OnLoadMoreListener() {
 
-			adapter = new ExploreIssuesAdapter(issuesListMain, getContext());
-			adapter.setLoadMoreListener(new ExploreIssuesAdapter.OnLoadMoreListener() {
+										@Override
+										public void onLoadMore() {
 
-				@Override
-				public void onLoadMore() {
+											page += 1;
+											issuesViewModel.loadMoreIssues(
+													query,
+													"issues",
+													true,
+													state,
+													page,
+													assignedToMe,
+													getContext(),
+													adapter);
+											fragmentIssuesBinding.progressBar.setVisibility(
+													View.VISIBLE);
+										}
 
-					page += 1;
-					issuesViewModel.loadMoreIssues(query, "issues", true, state, page, assignedToMe, getContext(), adapter);
-					fragmentIssuesBinding.progressBar.setVisibility(View.VISIBLE);
-				}
+										@Override
+										public void onLoadFinished() {
 
-				@Override
-				public void onLoadFinished() {
+											fragmentIssuesBinding.progressBar.setVisibility(
+													View.GONE);
+										}
+									});
 
-					fragmentIssuesBinding.progressBar.setVisibility(View.GONE);
-				}
-			});
+							if (adapter.getItemCount() > 0) {
+								fragmentIssuesBinding.recyclerView.setAdapter(adapter);
+								fragmentIssuesBinding.noDataIssues.setVisibility(View.GONE);
+							} else {
+								adapter.notifyDataChanged();
+								fragmentIssuesBinding.recyclerView.setAdapter(adapter);
+								fragmentIssuesBinding.noDataIssues.setVisibility(View.VISIBLE);
+							}
 
-			if(adapter.getItemCount() > 0) {
-				fragmentIssuesBinding.recyclerView.setAdapter(adapter);
-				fragmentIssuesBinding.noDataIssues.setVisibility(View.GONE);
-			}
-			else {
-				adapter.notifyDataChanged();
-				fragmentIssuesBinding.recyclerView.setAdapter(adapter);
-				fragmentIssuesBinding.noDataIssues.setVisibility(View.VISIBLE);
-			}
-
-			fragmentIssuesBinding.progressBar.setVisibility(View.GONE);
-		});
+							fragmentIssuesBinding.progressBar.setVisibility(View.GONE);
+						});
 	}
 
 	@Override
@@ -120,24 +145,25 @@ public class MyIssuesFragment extends Fragment {
 		super.onCreateOptionsMenu(menu, inflater);
 
 		MenuItem searchItem = menu.findItem(R.id.action_search);
-		androidx.appcompat.widget.SearchView searchView = (androidx.appcompat.widget.SearchView) searchItem.getActionView();
+		androidx.appcompat.widget.SearchView searchView =
+				(androidx.appcompat.widget.SearchView) searchItem.getActionView();
 		searchView.setImeOptions(EditorInfo.IME_ACTION_DONE);
 
-		searchView.setOnQueryTextListener(new androidx.appcompat.widget.SearchView.OnQueryTextListener() {
+		searchView.setOnQueryTextListener(
+				new androidx.appcompat.widget.SearchView.OnQueryTextListener() {
 
-			@Override
-			public boolean onQueryTextSubmit(String query) {
-				fetchDataAsync(query, state, assignedToMe);
-				searchView.setQuery(null, false);
-				searchItem.collapseActionView();
-				return false;
-			}
+					@Override
+					public boolean onQueryTextSubmit(String query) {
+						fetchDataAsync(query, state, assignedToMe);
+						searchView.setQuery(null, false);
+						searchItem.collapseActionView();
+						return false;
+					}
 
-			@Override
-			public boolean onQueryTextChange(String newText) {
-				return false;
-			}
-		});
+					@Override
+					public boolean onQueryTextChange(String newText) {
+						return false;
+					}
+				});
 	}
-
 }

@@ -10,7 +10,6 @@ import org.mian.gitnex.fragments.DiffFragment;
 /**
  * @author qwerty287
  */
-
 public class CommitDetailActivity extends BaseActivity {
 
 	@Override
@@ -18,27 +17,35 @@ public class CommitDetailActivity extends BaseActivity {
 
 		super.onCreate(savedInstanceState);
 
-		ActivityCommitDetailsBinding binding = ActivityCommitDetailsBinding.inflate(getLayoutInflater());
+		ActivityCommitDetailsBinding binding =
+				ActivityCommitDetailsBinding.inflate(getLayoutInflater());
 
 		setContentView(binding.getRoot());
 
 		CommitDetailFragment fragment = CommitDetailFragment.newInstance();
 
-		getOnBackPressedDispatcher().addCallback(new OnBackPressedCallback(true) {
+		getOnBackPressedDispatcher()
+				.addCallback(
+						new OnBackPressedCallback(true) {
 
-			@Override
-			public void handleOnBackPressed() {
-				if(getSupportFragmentManager().findFragmentById(R.id.fragment_container) instanceof DiffFragment) {
-					getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container, fragment).commit();
-				}
-				else {
-					finish();
-				}
-			}
-		});
+							@Override
+							public void handleOnBackPressed() {
+								if (getSupportFragmentManager()
+												.findFragmentById(R.id.fragment_container)
+										instanceof DiffFragment) {
+									getSupportFragmentManager()
+											.beginTransaction()
+											.replace(R.id.fragment_container, fragment)
+											.commit();
+								} else {
+									finish();
+								}
+							}
+						});
 
-		getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container, fragment).commit();
-
+		getSupportFragmentManager()
+				.beginTransaction()
+				.replace(R.id.fragment_container, fragment)
+				.commit();
 	}
-
 }

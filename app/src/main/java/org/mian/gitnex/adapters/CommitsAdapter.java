@@ -13,6 +13,8 @@ import androidx.core.text.HtmlCompat;
 import androidx.recyclerview.widget.RecyclerView;
 import com.google.android.material.card.MaterialCardView;
 import com.vdurmont.emoji.EmojiParser;
+import java.util.List;
+import java.util.Objects;
 import org.gitnex.tea4j.v2.models.Commit;
 import org.mian.gitnex.R;
 import org.mian.gitnex.activities.CommitDetailActivity;
@@ -23,13 +25,10 @@ import org.mian.gitnex.helpers.AppUtil;
 import org.mian.gitnex.helpers.RoundedTransformation;
 import org.mian.gitnex.helpers.TimeHelper;
 import org.mian.gitnex.helpers.contexts.IssueContext;
-import java.util.List;
-import java.util.Objects;
 
 /**
  * @author M M Arif
  */
-
 public class CommitsAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
 
 	private final Context context;
@@ -44,8 +43,7 @@ public class CommitsAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder
 		this.commitsList = commitsListMain;
 	}
 
-	@NonNull
-	@Override
+	@NonNull @Override
 	public RecyclerView.ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
 		LayoutInflater inflater = LayoutInflater.from(context);
 		return new CommitsHolder(inflater.inflate(R.layout.list_commits, parent, false));
@@ -54,7 +52,10 @@ public class CommitsAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder
 	@Override
 	public void onBindViewHolder(@NonNull RecyclerView.ViewHolder holder, int position) {
 
-		if(position >= getItemCount() - 1 && isMoreDataAvailable && !isLoading && loadMoreListener != null) {
+		if (position >= getItemCount() - 1
+				&& isMoreDataAvailable
+				&& !isLoading
+				&& loadMoreListener != null) {
 			isLoading = true;
 			loadMoreListener.run();
 		}
@@ -120,7 +121,8 @@ public class CommitsAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder
 
 		void bindData(Commit commitsModel) {
 
-			String[] commitMessageParts = commitsModel.getCommit().getMessage().split("(\r\n|\n)", 2);
+			String[] commitMessageParts =
+					commitsModel.getCommit().getMessage().split("(\r\n|\n)", 2);
 
 			commitSubject.setText(EmojiParser.parseToUnicode(commitMessageParts[0].trim()));
 
@@ -136,7 +138,9 @@ public class CommitsAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder
 					HtmlCompat.FROM_HTML_MODE_COMPACT));
 			}
 
-			if(commitsModel.getAuthor() != null && commitsModel.getAuthor().getAvatarUrl() != null && !commitsModel.getAuthor().getAvatarUrl().isEmpty()) {
+			if (commitsModel.getAuthor() != null
+					&& commitsModel.getAuthor().getAvatarUrl() != null
+					&& !commitsModel.getAuthor().getAvatarUrl().isEmpty()) {
 
 				commitAuthorAvatarFrame.setVisibility(View.VISIBLE);
 
@@ -150,8 +154,14 @@ public class CommitsAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder
 				commitAuthorAvatarFrame.setVisibility(View.GONE);
 			}
 
-			if(commitsModel.getCommitter() != null && (commitsModel.getAuthor() == null || !commitsModel.getAuthor().getLogin().equals(commitsModel.getCommitter().getLogin())) && commitsModel.getCommitter()
-				.getAvatarUrl() != null && !commitsModel.getCommitter().getAvatarUrl().isEmpty()) {
+			if (commitsModel.getCommitter() != null
+					&& (commitsModel.getAuthor() == null
+							|| !commitsModel
+									.getAuthor()
+									.getLogin()
+									.equals(commitsModel.getCommitter().getLogin()))
+					&& commitsModel.getCommitter().getAvatarUrl() != null
+					&& !commitsModel.getCommitter().getAvatarUrl().isEmpty()) {
 
 				commitCommitterAvatarFrame.setVisibility(View.VISIBLE);
 
@@ -165,21 +175,27 @@ public class CommitsAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder
 				commitCommitterAvatarFrame.setVisibility(View.GONE);
 			}
 
-			commitSha.setText(commitsModel.getSha().substring(0, Math.min(commitsModel.getSha().length(), 10)));
-			rootView.setOnClickListener(v -> {
-				Intent intent;
-				if(context instanceof CommitsActivity) {
-					intent = ((CommitsActivity) context).repository.getIntent(context, CommitDetailActivity.class);
-				}
-				else {
-					intent = IssueContext.fromIntent(((DiffActivity) context).getIntent()).getRepository().getIntent(context, CommitDetailActivity.class);
-				}
-				intent.putExtra("sha", commitsModel.getSha());
-				context.startActivity(intent);
-			});
-
+			commitSha.setText(
+					commitsModel
+							.getSha()
+							.substring(0, Math.min(commitsModel.getSha().length(), 10)));
+			rootView.setOnClickListener(
+					v -> {
+						Intent intent;
+						if (context instanceof CommitsActivity) {
+							intent =
+									((CommitsActivity) context)
+											.repository.getIntent(
+													context, CommitDetailActivity.class);
+						} else {
+							intent =
+									IssueContext.fromIntent(((DiffActivity) context).getIntent())
+											.getRepository()
+											.getIntent(context, CommitDetailActivity.class);
+						}
+						intent.putExtra("sha", commitsModel.getSha());
+						context.startActivity(intent);
+					});
 		}
-
 	}
-
 }

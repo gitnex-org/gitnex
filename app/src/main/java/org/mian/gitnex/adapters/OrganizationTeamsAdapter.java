@@ -12,15 +12,15 @@ import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.stream.Collectors;
 import org.gitnex.tea4j.v2.models.OrganizationPermissions;
 import org.gitnex.tea4j.v2.models.Team;
 import org.gitnex.tea4j.v2.models.User;
 import org.mian.gitnex.R;
 import org.mian.gitnex.activities.OrganizationTeamInfoActivity;
 import org.mian.gitnex.clients.RetrofitClient;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.stream.Collectors;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
@@ -28,8 +28,9 @@ import retrofit2.Response;
 /**
  * @author M M Arif
  */
-
-public class OrganizationTeamsAdapter extends RecyclerView.Adapter<OrganizationTeamsAdapter.OrgTeamsViewHolder> implements Filterable {
+public class OrganizationTeamsAdapter
+		extends RecyclerView.Adapter<OrganizationTeamsAdapter.OrgTeamsViewHolder>
+		implements Filterable {
 
 	private final List<Team> teamList;
 	private final Context context;
@@ -62,23 +63,28 @@ public class OrganizationTeamsAdapter extends RecyclerView.Adapter<OrganizationT
 			userInfos = new ArrayList<>();
 			adapter = new OrganizationTeamMembersPreviewAdapter(itemView.getContext(), userInfos);
 
-			membersPreview.setLayoutManager(new LinearLayoutManager(itemView.getContext(), RecyclerView.HORIZONTAL, false));
+			membersPreview.setLayoutManager(
+					new LinearLayoutManager(itemView.getContext(), RecyclerView.HORIZONTAL, false));
 			membersPreview.setAdapter(adapter);
 
-			itemView.setOnClickListener(v -> {
-				Context context = v.getContext();
+			itemView.setOnClickListener(
+					v -> {
+						Context context = v.getContext();
 
-				Intent intent = new Intent(context, OrganizationTeamInfoActivity.class);
-				intent.putExtra("team", team);
-				intent.putExtra("permissions", permissions);
-				intent.putExtra("orgName", orgName);
-				context.startActivity(intent);
-			});
+						Intent intent = new Intent(context, OrganizationTeamInfoActivity.class);
+						intent.putExtra("team", team);
+						intent.putExtra("permissions", permissions);
+						intent.putExtra("orgName", orgName);
+						context.startActivity(intent);
+					});
 		}
-
 	}
 
-	public OrganizationTeamsAdapter(Context ctx, List<Team> teamListMain, OrganizationPermissions permissions, String orgName) {
+	public OrganizationTeamsAdapter(
+			Context ctx,
+			List<Team> teamListMain,
+			OrganizationPermissions permissions,
+			String orgName) {
 		this.context = ctx;
 		this.teamList = teamListMain;
 		this.permissions = permissions;
@@ -86,15 +92,18 @@ public class OrganizationTeamsAdapter extends RecyclerView.Adapter<OrganizationT
 		this.orgName = orgName;
 	}
 
-	@NonNull
-	@Override
-	public OrganizationTeamsAdapter.OrgTeamsViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-		View v = LayoutInflater.from(parent.getContext()).inflate(R.layout.list_organization_teams, parent, false);
+	@NonNull @Override
+	public OrganizationTeamsAdapter.OrgTeamsViewHolder onCreateViewHolder(
+			@NonNull ViewGroup parent, int viewType) {
+		View v =
+				LayoutInflater.from(parent.getContext())
+						.inflate(R.layout.list_organization_teams, parent, false);
 		return new OrganizationTeamsAdapter.OrgTeamsViewHolder(v);
 	}
 
 	@Override
-	public void onBindViewHolder(@NonNull OrganizationTeamsAdapter.OrgTeamsViewHolder holder, int position) {
+	public void onBindViewHolder(
+			@NonNull OrganizationTeamsAdapter.OrgTeamsViewHolder holder, int position) {
 
 		Team currentItem = teamList.get(position);
 
@@ -107,28 +116,37 @@ public class OrganizationTeamsAdapter extends RecyclerView.Adapter<OrganizationT
 		holder.userInfos.clear();
 		holder.adapter.notifyDataSetChanged();
 
-		RetrofitClient.getApiInterface(context).orgListTeamMembers(currentItem.getId(), null, null).enqueue(new Callback<List<User>>() {
-			@Override
-			public void onResponse(@NonNull Call<List<User>> call, @NonNull Response<List<User>> response) {
-				if(response.isSuccessful() && response.body() != null && response.body().size() > 0) {
+		RetrofitClient.getApiInterface(context)
+				.orgListTeamMembers(currentItem.getId(), null, null)
+				.enqueue(
+						new Callback<List<User>>() {
+							@Override
+							public void onResponse(
+									@NonNull Call<List<User>> call,
+									@NonNull Response<List<User>> response) {
+								if (response.isSuccessful()
+										&& response.body() != null
+										&& response.body().size() > 0) {
 
-					holder.membersPreviewFrame.setVisibility(View.VISIBLE);
-					holder.userInfos.addAll(response.body().stream().limit(Math.min(response.body().size(), 6)).collect(Collectors.toList()));
+									holder.membersPreviewFrame.setVisibility(View.VISIBLE);
+									holder.userInfos.addAll(
+											response.body().stream()
+													.limit(Math.min(response.body().size(), 6))
+													.collect(Collectors.toList()));
 
-					holder.adapter.notifyDataSetChanged();
-				}
-			}
+									holder.adapter.notifyDataSetChanged();
+								}
+							}
 
-			@Override
-			public void onFailure(@NonNull Call<List<User>> call, @NonNull Throwable t) {
-			}
-		});
+							@Override
+							public void onFailure(
+									@NonNull Call<List<User>> call, @NonNull Throwable t) {}
+						});
 
-		if(currentItem.getDescription() != null && !currentItem.getDescription().isEmpty()) {
+		if (currentItem.getDescription() != null && !currentItem.getDescription().isEmpty()) {
 			holder.teamDescription.setVisibility(View.VISIBLE);
 			holder.teamDescription.setText(currentItem.getDescription());
-		}
-		else {
+		} else {
 			holder.teamDescription.setVisibility(View.GONE);
 			holder.teamDescription.setText("");
 		}
@@ -144,36 +162,38 @@ public class OrganizationTeamsAdapter extends RecyclerView.Adapter<OrganizationT
 		return orgTeamsFilter;
 	}
 
-	private final Filter orgTeamsFilter = new Filter() {
-		@Override
-		protected FilterResults performFiltering(CharSequence constraint) {
-			List<Team> filteredList = new ArrayList<>();
+	private final Filter orgTeamsFilter =
+			new Filter() {
+				@Override
+				protected FilterResults performFiltering(CharSequence constraint) {
+					List<Team> filteredList = new ArrayList<>();
 
-			if(constraint == null || constraint.length() == 0) {
-				filteredList.addAll(teamListFull);
-			}
-			else {
-				String filterPattern = constraint.toString().toLowerCase().trim();
+					if (constraint == null || constraint.length() == 0) {
+						filteredList.addAll(teamListFull);
+					} else {
+						String filterPattern = constraint.toString().toLowerCase().trim();
 
-				for(Team item : teamListFull) {
-					if(item.getName().toLowerCase().contains(filterPattern) || item.getDescription().toLowerCase().contains(filterPattern)) {
-						filteredList.add(item);
+						for (Team item : teamListFull) {
+							if (item.getName().toLowerCase().contains(filterPattern)
+									|| item.getDescription()
+											.toLowerCase()
+											.contains(filterPattern)) {
+								filteredList.add(item);
+							}
+						}
 					}
+
+					FilterResults results = new FilterResults();
+					results.values = filteredList;
+
+					return results;
 				}
-			}
 
-			FilterResults results = new FilterResults();
-			results.values = filteredList;
-
-			return results;
-		}
-
-		@Override
-		protected void publishResults(CharSequence constraint, FilterResults results) {
-			teamList.clear();
-			teamList.addAll((List<Team>) results.values);
-			notifyDataSetChanged();
-		}
-	};
-
+				@Override
+				protected void publishResults(CharSequence constraint, FilterResults results) {
+					teamList.clear();
+					teamList.addAll((List<Team>) results.values);
+					notifyDataSetChanged();
+				}
+			};
 }

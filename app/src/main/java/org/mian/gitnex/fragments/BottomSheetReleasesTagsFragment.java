@@ -14,7 +14,6 @@ import org.mian.gitnex.structs.BottomSheetListener;
 /**
  * @author opyale
  */
-
 public class BottomSheetReleasesTagsFragment extends BottomSheetDialogFragment {
 
 	private BottomSheetListener bmListener;
@@ -26,31 +25,32 @@ public class BottomSheetReleasesTagsFragment extends BottomSheetDialogFragment {
 
 		try {
 			bmListener = (BottomSheetListener) context;
-		}
-		catch(ClassCastException e) {
+		} catch (ClassCastException e) {
 			throw new ClassCastException(context + " must implement BottomSheetListener");
 		}
 	}
 
-	@Nullable
-	@Override
-	public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
+	@Nullable @Override
+	public View onCreateView(
+			@NonNull LayoutInflater inflater,
+			@Nullable ViewGroup container,
+			@Nullable Bundle savedInstanceState) {
 
-		BottomSheetReleasesTagsBinding binding = BottomSheetReleasesTagsBinding.inflate(inflater, container, false);
+		BottomSheetReleasesTagsBinding binding =
+				BottomSheetReleasesTagsBinding.inflate(inflater, container, false);
 
-		binding.tags.setOnClickListener(v1 -> {
+		binding.tags.setOnClickListener(
+				v1 -> {
+					bmListener.onButtonClicked("tags");
+					dismiss();
+				});
 
-			bmListener.onButtonClicked("tags");
-			dismiss();
-		});
-
-		binding.releases.setOnClickListener(v12 -> {
-
-			bmListener.onButtonClicked("releases");
-			dismiss();
-		});
+		binding.releases.setOnClickListener(
+				v12 -> {
+					bmListener.onButtonClicked("releases");
+					dismiss();
+				});
 
 		return binding.getRoot();
 	}
-
 }

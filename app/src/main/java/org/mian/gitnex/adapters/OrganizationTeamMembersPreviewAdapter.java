@@ -7,18 +7,18 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
+import java.util.List;
 import org.gitnex.tea4j.v2.models.User;
 import org.mian.gitnex.R;
 import org.mian.gitnex.clients.PicassoService;
 import org.mian.gitnex.helpers.AppUtil;
 import org.mian.gitnex.helpers.RoundedTransformation;
-import java.util.List;
 
 /**
  * @author opyale
  */
-
-public class OrganizationTeamMembersPreviewAdapter extends RecyclerView.Adapter<OrganizationTeamMembersPreviewAdapter.ViewHolder> {
+public class OrganizationTeamMembersPreviewAdapter
+		extends RecyclerView.Adapter<OrganizationTeamMembersPreviewAdapter.ViewHolder> {
 
 	private final Context context;
 	private final List<User> userData;
@@ -28,10 +28,11 @@ public class OrganizationTeamMembersPreviewAdapter extends RecyclerView.Adapter<
 		this.userData = userInfo;
 	}
 
-	@NonNull
-	@Override
+	@NonNull @Override
 	public ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-		View v = LayoutInflater.from(context).inflate(R.layout.list_organization_members_preview, parent, false);
+		View v =
+				LayoutInflater.from(context)
+						.inflate(R.layout.list_organization_members_preview, parent, false);
 		return new ViewHolder(v);
 	}
 
@@ -39,8 +40,14 @@ public class OrganizationTeamMembersPreviewAdapter extends RecyclerView.Adapter<
 	public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
 		User userInfo = userData.get(position);
 
-		PicassoService.getInstance(context).get().load(userInfo.getAvatarUrl()).placeholder(R.drawable.loader_animated).transform(new RoundedTransformation(AppUtil.getPixelsFromDensity(context, 3), 0)).resize(120, 120)
-			.centerCrop().into(holder.avatar);
+		PicassoService.getInstance(context)
+				.get()
+				.load(userInfo.getAvatarUrl())
+				.placeholder(R.drawable.loader_animated)
+				.transform(new RoundedTransformation(AppUtil.getPixelsFromDensity(context, 3), 0))
+				.resize(120, 120)
+				.centerCrop()
+				.into(holder.avatar);
 	}
 
 	@Override
@@ -56,7 +63,5 @@ public class OrganizationTeamMembersPreviewAdapter extends RecyclerView.Adapter<
 			super(itemView);
 			avatar = itemView.findViewById(R.id.avatar);
 		}
-
 	}
-
 }

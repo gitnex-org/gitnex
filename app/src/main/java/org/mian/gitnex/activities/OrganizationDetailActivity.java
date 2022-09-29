@@ -16,6 +16,8 @@ import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentPagerAdapter;
 import androidx.viewpager.widget.ViewPager;
 import com.google.android.material.tabs.TabLayout;
+import io.mikael.urlbuilder.UrlBuilder;
+import java.util.Objects;
 import org.gitnex.tea4j.v2.models.OrganizationPermissions;
 import org.mian.gitnex.R;
 import org.mian.gitnex.clients.RetrofitClient;
@@ -27,8 +29,6 @@ import org.mian.gitnex.fragments.OrganizationRepositoriesFragment;
 import org.mian.gitnex.fragments.OrganizationTeamsFragment;
 import org.mian.gitnex.helpers.AppUtil;
 import org.mian.gitnex.structs.BottomSheetListener;
-import java.util.Objects;
-import io.mikael.urlbuilder.UrlBuilder;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
@@ -36,7 +36,6 @@ import retrofit2.Response;
 /**
  * @author M M Arif
  */
-
 public class OrganizationDetailActivity extends BaseActivity implements BottomSheetListener {
 
 	public OrganizationPermissions permissions;
@@ -60,51 +59,61 @@ public class OrganizationDetailActivity extends BaseActivity implements BottomSh
 
 		checkIsMember();
 
-		if(getAccount().requiresVersion("1.16.0")) {
-			RetrofitClient.getApiInterface(this).orgGetUserPermissions(getAccount().getAccount().getUserName(), orgName).enqueue(new Callback<>() {
+		if (getAccount().requiresVersion("1.16.0")) {
+			RetrofitClient.getApiInterface(this)
+					.orgGetUserPermissions(getAccount().getAccount().getUserName(), orgName)
+					.enqueue(
+							new Callback<>() {
 
-				@Override
-				public void onResponse(@NonNull Call<OrganizationPermissions> call, @NonNull Response<OrganizationPermissions> response) {
+								@Override
+								public void onResponse(
+										@NonNull Call<OrganizationPermissions> call,
+										@NonNull Response<OrganizationPermissions> response) {
 
-					if(response.isSuccessful()) {
-						permissions = response.body();
-					}
-					else {
-						permissions = null;
-					}
-				}
+									if (response.isSuccessful()) {
+										permissions = response.body();
+									} else {
+										permissions = null;
+									}
+								}
 
-				@Override
-				public void onFailure(@NonNull Call<OrganizationPermissions> call, @NonNull Throwable t) {
+								@Override
+								public void onFailure(
+										@NonNull Call<OrganizationPermissions> call,
+										@NonNull Throwable t) {
 
-					permissions = null;
-				}
-			});
-		}
-		else {
+									permissions = null;
+								}
+							});
+		} else {
 			permissions = null;
 		}
 	}
 
 	public void checkIsMember() {
-		RetrofitClient.getApiInterface(this).orgIsMember(orgName, getAccount().getAccount().getUserName()).enqueue(new Callback<>() {
+		RetrofitClient.getApiInterface(this)
+				.orgIsMember(orgName, getAccount().getAccount().getUserName())
+				.enqueue(
+						new Callback<>() {
 
-			@Override
-			public void onResponse(@NonNull Call<Void> call, @NonNull Response<Void> response) {
-				isMember = response.code() != 404;
-				init();
-			}
+							@Override
+							public void onResponse(
+									@NonNull Call<Void> call, @NonNull Response<Void> response) {
+								isMember = response.code() != 404;
+								init();
+							}
 
-			@Override
-			public void onFailure(@NonNull Call<Void> call, @NonNull Throwable t) {
-				isMember = false;
-				init();
-			}
-		});
+							@Override
+							public void onFailure(@NonNull Call<Void> call, @NonNull Throwable t) {
+								isMember = false;
+								init();
+							}
+						});
 	}
 
 	public void init() {
-		OrganizationDetailActivity.SectionsPagerAdapter mSectionsPagerAdapter = new OrganizationDetailActivity.SectionsPagerAdapter(getSupportFragmentManager());
+		OrganizationDetailActivity.SectionsPagerAdapter mSectionsPagerAdapter =
+				new OrganizationDetailActivity.SectionsPagerAdapter(getSupportFragmentManager());
 
 		ViewPager mViewPager = findViewById(R.id.container);
 		mViewPager.setVisibility(View.VISIBLE);
@@ -113,7 +122,7 @@ public class OrganizationDetailActivity extends BaseActivity implements BottomSh
 		TabLayout tabLayout = findViewById(R.id.tabs);
 		tabLayout.setVisibility(View.VISIBLE);
 
-		if(!isMember) {
+		if (!isMember) {
 			tabLayout.removeTabAt(3);
 		}
 
@@ -126,16 +135,16 @@ public class OrganizationDetailActivity extends BaseActivity implements BottomSh
 		ViewGroup vg = (ViewGroup) tabLayout.getChildAt(0);
 		int tabsCount = vg.getChildCount();
 
-		for(int j = 0; j < tabsCount; j++) {
+		for (int j = 0; j < tabsCount; j++) {
 
 			ViewGroup vgTab = (ViewGroup) vg.getChildAt(j);
 			int tabChildCount = vgTab.getChildCount();
 
-			for(int i = 0; i < tabChildCount; i++) {
+			for (int i = 0; i < tabChildCount; i++) {
 
 				View tabViewChild = vgTab.getChildAt(i);
 
-				if(tabViewChild instanceof TextView) {
+				if (tabViewChild instanceof TextView) {
 
 					((TextView) tabViewChild).setTypeface(myTypeface);
 				}
@@ -143,7 +152,8 @@ public class OrganizationDetailActivity extends BaseActivity implements BottomSh
 		}
 
 		mViewPager.addOnPageChangeListener(new TabLayout.TabLayoutOnPageChangeListener(tabLayout));
-		tabLayout.addOnTabSelectedListener(new TabLayout.ViewPagerOnTabSelectedListener(mViewPager));
+		tabLayout.addOnTabSelectedListener(
+				new TabLayout.ViewPagerOnTabSelectedListener(mViewPager));
 	}
 
 	@Override
@@ -159,18 +169,17 @@ public class OrganizationDetailActivity extends BaseActivity implements BottomSh
 
 		int id = item.getItemId();
 
-		if(id == android.R.id.home) {
+		if (id == android.R.id.home) {
 
 			finish();
 			return true;
-		}
-		else if(id == R.id.repoMenu) {
+		} else if (id == R.id.repoMenu) {
 
-			BottomSheetOrganizationFragment bottomSheet = new BottomSheetOrganizationFragment(permissions);
+			BottomSheetOrganizationFragment bottomSheet =
+					new BottomSheetOrganizationFragment(permissions);
 			bottomSheet.show(getSupportFragmentManager(), "orgBottomSheet");
 			return true;
-		}
-		else {
+		} else {
 
 			return super.onOptionsItemSelected(item);
 		}
@@ -179,10 +188,13 @@ public class OrganizationDetailActivity extends BaseActivity implements BottomSh
 	@Override
 	public void onButtonClicked(String text) {
 
-		String url = UrlBuilder.fromString(getAccount().getAccount().getInstanceUrl()).withPath("/").toString();
+		String url =
+				UrlBuilder.fromString(getAccount().getAccount().getInstanceUrl())
+						.withPath("/")
+						.toString();
 		url = url + getIntent().getStringExtra("orgName");
 
-		switch(text) {
+		switch (text) {
 			case "repository":
 				Intent intentRepo = new Intent(this, CreateRepoActivity.class);
 				intentRepo.putExtra("organizationAction", true);
@@ -191,14 +203,14 @@ public class OrganizationDetailActivity extends BaseActivity implements BottomSh
 				startActivity(intentRepo);
 				break;
 			case "label":
-
 				Intent intent = new Intent(ctx, CreateLabelActivity.class);
 				intent.putExtra("orgName", getIntent().getStringExtra("orgName"));
 				intent.putExtra("type", "org");
 				ctx.startActivity(intent);
 				break;
 			case "team":
-				Intent intentTeam = new Intent(OrganizationDetailActivity.this, CreateTeamByOrgActivity.class);
+				Intent intentTeam =
+						new Intent(OrganizationDetailActivity.this, CreateTeamByOrgActivity.class);
 				intentTeam.putExtras(getIntent().getExtras());
 				startActivity(intentTeam);
 				break;
@@ -220,35 +232,27 @@ public class OrganizationDetailActivity extends BaseActivity implements BottomSh
 			super(fm, BEHAVIOR_RESUME_ONLY_CURRENT_FRAGMENT);
 		}
 
-		@NonNull
-		@Override
+		@NonNull @Override
 		public Fragment getItem(int position) {
 
 			String orgName = getIntent().getStringExtra("orgName");
 
 			Fragment fragment = null;
-			switch(position) {
-
+			switch (position) {
 				case 0: // info
-
 					return OrganizationInfoFragment.newInstance(orgName);
 				case 1: // repos
-
 					return OrganizationRepositoriesFragment.newInstance(orgName);
 				case 2: // labels
-
 					return OrganizationLabelsFragment.newInstance(orgName);
 				case 3: // teams / members
-
-					if(isMember) {
+					if (isMember) {
 						return OrganizationTeamsFragment.newInstance(orgName, permissions);
-					}
-					else {
+					} else {
 						return OrganizationMembersFragment.newInstance(orgName);
 					}
 				case 4: // members
-
-					if(isMember) {
+					if (isMember) {
 						return OrganizationMembersFragment.newInstance(orgName);
 					}
 			}
@@ -257,14 +261,11 @@ public class OrganizationDetailActivity extends BaseActivity implements BottomSh
 
 		@Override
 		public int getCount() {
-			if(isMember) {
+			if (isMember) {
 				return 5;
-			}
-			else {
+			} else {
 				return 4;
 			}
 		}
-
 	}
-
 }

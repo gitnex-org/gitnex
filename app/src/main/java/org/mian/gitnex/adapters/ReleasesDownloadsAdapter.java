@@ -6,43 +6,47 @@ import android.view.ViewGroup;
 import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
+import java.util.List;
 import org.gitnex.tea4j.v2.models.Attachment;
 import org.mian.gitnex.R;
 import org.mian.gitnex.structs.FragmentRefreshListener;
-import java.util.List;
 
 /**
  * @author M M Arif
- **/
-
-public class ReleasesDownloadsAdapter extends RecyclerView.Adapter<ReleasesDownloadsAdapter.ReleasesDownloadsViewHolder> {
+ */
+public class ReleasesDownloadsAdapter
+		extends RecyclerView.Adapter<ReleasesDownloadsAdapter.ReleasesDownloadsViewHolder> {
 
 	private final List<Attachment> releasesDownloadsList;
 	private final FragmentRefreshListener startDownload;
 
-	ReleasesDownloadsAdapter(List<Attachment> releasesDownloadsMain, FragmentRefreshListener startDownload) {
+	ReleasesDownloadsAdapter(
+			List<Attachment> releasesDownloadsMain, FragmentRefreshListener startDownload) {
 
 		this.releasesDownloadsList = releasesDownloadsMain;
 		this.startDownload = startDownload;
 	}
 
-	@NonNull
-	@Override
-	public ReleasesDownloadsAdapter.ReleasesDownloadsViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-		View v = LayoutInflater.from(parent.getContext()).inflate(R.layout.list_releases_downloads, parent, false);
+	@NonNull @Override
+	public ReleasesDownloadsAdapter.ReleasesDownloadsViewHolder onCreateViewHolder(
+			@NonNull ViewGroup parent, int viewType) {
+		View v =
+				LayoutInflater.from(parent.getContext())
+						.inflate(R.layout.list_releases_downloads, parent, false);
 		return new ReleasesDownloadsAdapter.ReleasesDownloadsViewHolder(v);
 	}
 
 	@Override
-	public void onBindViewHolder(@NonNull ReleasesDownloadsAdapter.ReleasesDownloadsViewHolder holder, int position) {
+	public void onBindViewHolder(
+			@NonNull ReleasesDownloadsAdapter.ReleasesDownloadsViewHolder holder, int position) {
 
 		Attachment currentItem = releasesDownloadsList.get(position);
 
-		if(currentItem.getName() != null) {
+		if (currentItem.getName() != null) {
 
 			holder.downloadName.setText(currentItem.getName());
-			holder.downloadName.setOnClickListener(v -> startDownload.onRefresh(currentItem.getBrowserDownloadUrl()));
-
+			holder.downloadName.setOnClickListener(
+					v -> startDownload.onRefresh(currentItem.getBrowserDownloadUrl()));
 		}
 	}
 
@@ -60,7 +64,5 @@ public class ReleasesDownloadsAdapter extends RecyclerView.Adapter<ReleasesDownl
 			super(itemView);
 			downloadName = itemView.findViewById(R.id.downloadName);
 		}
-
 	}
-
 }

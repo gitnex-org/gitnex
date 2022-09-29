@@ -11,7 +11,6 @@ import java.util.concurrent.TimeUnit;
 /**
  * @author opyale
  */
-
 public class ActionResult<R> {
 
 	private final BlockingQueue<Boolean> blockingQueue;
@@ -22,7 +21,6 @@ public class ActionResult<R> {
 
 		blockingQueue = new ArrayBlockingQueue<>(1);
 		onFinishedListeners = new ArrayList<>();
-
 	}
 
 	public void finish(@NonNull Status status) {
@@ -33,54 +31,48 @@ public class ActionResult<R> {
 	public void finish(@NonNull Status status, R result) {
 
 		try {
-			if(blockingQueue.poll(5, TimeUnit.SECONDS)) {
+			if (blockingQueue.poll(5, TimeUnit.SECONDS)) {
 
-				for(OnFinishedListener<R> onFinishedListener : onFinishedListeners)
+				for (OnFinishedListener<R> onFinishedListener : onFinishedListeners)
 					onFinishedListener.onFinished(status, result);
 			}
 
+		} catch (InterruptedException ignored) {
 		}
-		catch(InterruptedException ignored) {
-		}
-
 	}
 
 	public void invalidate() {
 
-		if(invalidated) {
+		if (invalidated) {
 			throw new IllegalStateException("Already invalidated");
 		}
 		this.invalidated = true;
-
 	}
 
 	@SafeVarargs
-	public synchronized final void accept(@NonNull OnFinishedListener<R>... onFinishedListeners) {
+	public final synchronized void accept(@NonNull OnFinishedListener<R>... onFinishedListeners) {
 
 		invalidate();
 
 		this.blockingQueue.add(true);
 		this.onFinishedListeners.addAll(Arrays.asList(onFinishedListeners));
-
 	}
 
-	public synchronized final void discard() {
+	public final synchronized void discard() {
 
 		invalidate();
 		this.blockingQueue.add(false);
-
 	}
 
-	public enum Status {SUCCESS, FAILED}
+	public enum Status {
+		SUCCESS,
+		FAILED
+	}
 
 	public interface OnFinishedListener<R> {
 
 		void onFinished(Status status, R result);
-
 	}
 
-	public static class None {
-
-	}
-
+	public static class None {}
 }

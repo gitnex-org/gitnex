@@ -45,5 +45,4 @@ public class ToastyTest {
 		Context context = InstrumentationRegistry.getInstrumentation().getTargetContext();
 		Toasty.success(context, "GitNex success test");
 	}
-
 }

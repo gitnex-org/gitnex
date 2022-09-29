@@ -1,5 +1,7 @@
 package org.main.gitnex.helpers;
 
+import static org.junit.Assert.*;
+
 import android.content.Context;
 import android.net.Uri;
 import android.view.View;
@@ -8,7 +10,6 @@ import androidx.test.platform.app.InstrumentationRegistry;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mian.gitnex.helpers.AppUtil;
-import static org.junit.Assert.*;
 
 /**
  * @author qwerty287
@@ -91,22 +92,43 @@ public class AppUtilTest {
 
 	@Test
 	public void getUriFromGitUrlTest() {
-		assertEquals("https://git@codeberg.org/gitnex/GitNex", AppUtil.getUriFromGitUrl("ssh://git@codeberg.org:gitnex/GitNex").toString());
-		assertEquals("https://codeberg.org/gitnex/GitNex", AppUtil.getUriFromGitUrl("codeberg.org:gitnex/GitNex").toString());
-		assertEquals("ssh://git@codeberg.org/gitnex/GitNex", AppUtil.getUriFromGitUrl("ssh://git@codeberg.org/gitnex/GitNex").toString());
-		assertEquals("https://git@codeberg.org/gitnex/GitNex.git", AppUtil.getUriFromGitUrl("ssh://git@codeberg.org:gitnex/GitNex.git").toString());
-		assertEquals("https://codeberg.org/gitnex/GitNex.git", AppUtil.getUriFromGitUrl("codeberg.org:gitnex/GitNex.git").toString());
-		assertEquals("https://codeberg.org/gitnex/GitNex.git", AppUtil.getUriFromGitUrl("https://codeberg.org/gitnex/GitNex.git").toString());
-		assertEquals("https://gitnex.com", AppUtil.getUriFromGitUrl("https://gitnex.com").toString());
-		assertEquals("https://gitnex.com:3000", AppUtil.getUriFromGitUrl("https://gitnex.com:3000").toString());
+		assertEquals(
+				"https://git@codeberg.org/gitnex/GitNex",
+				AppUtil.getUriFromGitUrl("ssh://git@codeberg.org:gitnex/GitNex").toString());
+		assertEquals(
+				"https://codeberg.org/gitnex/GitNex",
+				AppUtil.getUriFromGitUrl("codeberg.org:gitnex/GitNex").toString());
+		assertEquals(
+				"ssh://git@codeberg.org/gitnex/GitNex",
+				AppUtil.getUriFromGitUrl("ssh://git@codeberg.org/gitnex/GitNex").toString());
+		assertEquals(
+				"https://git@codeberg.org/gitnex/GitNex.git",
+				AppUtil.getUriFromGitUrl("ssh://git@codeberg.org:gitnex/GitNex.git").toString());
+		assertEquals(
+				"https://codeberg.org/gitnex/GitNex.git",
+				AppUtil.getUriFromGitUrl("codeberg.org:gitnex/GitNex.git").toString());
+		assertEquals(
+				"https://codeberg.org/gitnex/GitNex.git",
+				AppUtil.getUriFromGitUrl("https://codeberg.org/gitnex/GitNex.git").toString());
+		assertEquals(
+				"https://gitnex.com", AppUtil.getUriFromGitUrl("https://gitnex.com").toString());
+		assertEquals(
+				"https://gitnex.com:3000",
+				AppUtil.getUriFromGitUrl("https://gitnex.com:3000").toString());
 	}
 
 	@Test
 	public void changeSchemeTest() {
-		assertEquals("https://codeberg.org/gitnex/GitNex", AppUtil.changeScheme(Uri.parse("ssh://codeberg.org/gitnex/GitNex"), "https").toString());
-		assertEquals("https://gitnex.com", AppUtil.changeScheme(Uri.parse("http://gitnex.com"), "https").toString());
-		assertEquals("ssh://codeberg.org/gitnex/GitNex", AppUtil.changeScheme(Uri.parse("http://codeberg.org/gitnex/GitNex"), "ssh").toString());
+		assertEquals(
+				"https://codeberg.org/gitnex/GitNex",
+				AppUtil.changeScheme(Uri.parse("ssh://codeberg.org/gitnex/GitNex"), "https")
+						.toString());
+		assertEquals(
+				"https://gitnex.com",
+				AppUtil.changeScheme(Uri.parse("http://gitnex.com"), "https").toString());
+		assertEquals(
+				"ssh://codeberg.org/gitnex/GitNex",
+				AppUtil.changeScheme(Uri.parse("http://codeberg.org/gitnex/GitNex"), "ssh")
+						.toString());
 	}
-
 }
-

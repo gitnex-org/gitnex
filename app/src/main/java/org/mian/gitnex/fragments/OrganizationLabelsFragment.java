@@ -22,7 +22,6 @@ import org.mian.gitnex.viewmodels.OrganizationLabelsViewModel;
 /**
  * @author M M Arif
  */
-
 public class OrganizationLabelsFragment extends Fragment {
 
 	private OrganizationLabelsViewModel organizationLabelsViewModel;
@@ -49,18 +48,21 @@ public class OrganizationLabelsFragment extends Fragment {
 
 		super.onCreate(savedInstanceState);
 
-		if(getArguments() != null) {
+		if (getArguments() != null) {
 
 			repoOwner = getArguments().getString(repoOwnerF);
 		}
 	}
 
 	@Override
-	public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
+	public View onCreateView(
+			@NonNull LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
 
-		FragmentLabelsBinding fragmentLabelsBinding = FragmentLabelsBinding.inflate(inflater, container, false);
+		FragmentLabelsBinding fragmentLabelsBinding =
+				FragmentLabelsBinding.inflate(inflater, container, false);
 		setHasOptionsMenu(true);
-		organizationLabelsViewModel = new ViewModelProvider(this).get(OrganizationLabelsViewModel.class);
+		organizationLabelsViewModel =
+				new ViewModelProvider(this).get(OrganizationLabelsViewModel.class);
 
 		final SwipeRefreshLayout swipeRefresh = fragmentLabelsBinding.pullToRefresh;
 		noData = fragmentLabelsBinding.noData;
@@ -71,17 +73,20 @@ public class OrganizationLabelsFragment extends Fragment {
 
 		mProgressBar = fragmentLabelsBinding.progressBar;
 
-		swipeRefresh.setOnRefreshListener(() -> new Handler(Looper.getMainLooper()).postDelayed(() -> {
-
-			swipeRefresh.setRefreshing(false);
-			OrganizationLabelsViewModel.loadOrgLabelsList(repoOwner, getContext(), mProgressBar, noData);
-
-		}, 200));
+		swipeRefresh.setOnRefreshListener(
+				() ->
+						new Handler(Looper.getMainLooper())
+								.postDelayed(
+										() -> {
+											swipeRefresh.setRefreshing(false);
+											OrganizationLabelsViewModel.loadOrgLabelsList(
+													repoOwner, getContext(), mProgressBar, noData);
+										},
+										200));
 
 		fetchDataAsync(repoOwner);
 
 		return fragmentLabelsBinding.getRoot();
-
 	}
 
 	@Override
@@ -89,34 +94,35 @@ public class OrganizationLabelsFragment extends Fragment {
 
 		super.onResume();
 
-		if(CreateLabelActivity.refreshLabels) {
+		if (CreateLabelActivity.refreshLabels) {
 
-			OrganizationLabelsViewModel.loadOrgLabelsList(repoOwner, getContext(), mProgressBar, noData);
+			OrganizationLabelsViewModel.loadOrgLabelsList(
+					repoOwner, getContext(), mProgressBar, noData);
 			CreateLabelActivity.refreshLabels = false;
 		}
 	}
 
 	private void fetchDataAsync(String owner) {
 
-		organizationLabelsViewModel.getOrgLabelsList(owner, getContext(), mProgressBar, noData).observe(getViewLifecycleOwner(), labelsListMain -> {
+		organizationLabelsViewModel
+				.getOrgLabelsList(owner, getContext(), mProgressBar, noData)
+				.observe(
+						getViewLifecycleOwner(),
+						labelsListMain -> {
+							adapter = new LabelsAdapter(getContext(), labelsListMain, type, owner);
 
-			adapter = new LabelsAdapter(getContext(), labelsListMain, type, owner);
+							if (adapter.getItemCount() > 0) {
 
-			if(adapter.getItemCount() > 0) {
+								mRecyclerView.setAdapter(adapter);
+								noData.setVisibility(View.GONE);
+							} else {
 
-				mRecyclerView.setAdapter(adapter);
-				noData.setVisibility(View.GONE);
-			}
-			else {
+								adapter.notifyDataChanged();
+								mRecyclerView.setAdapter(adapter);
+								noData.setVisibility(View.VISIBLE);
+							}
 
-				adapter.notifyDataChanged();
-				mRecyclerView.setAdapter(adapter);
-				noData.setVisibility(View.VISIBLE);
-			}
-
-			mProgressBar.setVisibility(View.GONE);
-		});
-
+							mProgressBar.setVisibility(View.GONE);
+						});
 	}
-
 }
