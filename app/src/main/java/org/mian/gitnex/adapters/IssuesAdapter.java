@@ -21,8 +21,6 @@ import androidx.core.text.HtmlCompat;
 import androidx.recyclerview.widget.RecyclerView;
 import com.amulyakhare.textdrawable.TextDrawable;
 import com.vdurmont.emoji.EmojiParser;
-import java.text.DateFormat;
-import java.text.SimpleDateFormat;
 import java.util.List;
 import java.util.Locale;
 import org.gitnex.tea4j.v2.models.Issue;
@@ -39,8 +37,6 @@ import org.mian.gitnex.helpers.RoundedTransformation;
 import org.mian.gitnex.helpers.TimeHelper;
 import org.mian.gitnex.helpers.TinyDB;
 import org.mian.gitnex.helpers.contexts.IssueContext;
-import java.util.List;
-import java.util.Locale;
 
 /**
  * @author M M Arif
@@ -295,7 +291,10 @@ public class IssuesAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder>
 			}
 
 			this.issueCreatedTime.setText(TimeHelper.formatTime(issue.getCreatedAt(), locale));
-			this.issueCreatedTime.setOnClickListener(new ClickListener(TimeHelper.customDateFormatForToastDateFormat(issue.getCreatedAt()), context));
+			this.issueCreatedTime.setOnClickListener(
+					new ClickListener(
+							TimeHelper.customDateFormatForToastDateFormat(issue.getCreatedAt()),
+							context));
 		}
 	}
 }

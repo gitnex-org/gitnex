@@ -296,7 +296,11 @@ public class PullRequestsAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
 						context.getResources().getColor(R.color.releasePre, null));
 			}
 
-			this.prCreatedTime.setOnClickListener(new ClickListener(TimeHelper.customDateFormatForToastDateFormat(pullRequest.getCreatedAt()), context));
+			this.prCreatedTime.setOnClickListener(
+					new ClickListener(
+							TimeHelper.customDateFormatForToastDateFormat(
+									pullRequest.getCreatedAt()),
+							context));
 		}
 	}
 }

@@ -945,9 +945,12 @@ public class IssueDetailActivity extends BaseActivity
 			DateFormat formatter = new SimpleDateFormat("yyyy-MM-dd", locale);
 			String dueDate = formatter.format(issue.getIssue().getDueDate());
 			viewBinding.issueDueDate.setText(dueDate);
-			viewBinding.issueDueDate.setOnClickListener(new ClickListener(TimeHelper.customDateFormatForToastDateFormat(issue.getIssue().getDueDate()), ctx));
-		}
-		else {
+			viewBinding.issueDueDate.setOnClickListener(
+					new ClickListener(
+							TimeHelper.customDateFormatForToastDateFormat(
+									issue.getIssue().getDueDate()),
+							ctx));
+		} else {
 
 			viewBinding.dueDateFrame.setVisibility(View.GONE);
 		}
@@ -970,8 +973,13 @@ public class IssueDetailActivity extends BaseActivity
 		}
 
 		viewBinding.issueCreatedTime.setVisibility(View.VISIBLE);
-		viewBinding.issueCreatedTime.setText(TimeHelper.formatTime(issue.getIssue().getCreatedAt(), locale));
-		viewBinding.issueCreatedTime.setOnClickListener(new ClickListener(TimeHelper.customDateFormatForToastDateFormat(issue.getIssue().getCreatedAt()), ctx));
+		viewBinding.issueCreatedTime.setText(
+				TimeHelper.formatTime(issue.getIssue().getCreatedAt(), locale));
+		viewBinding.issueCreatedTime.setOnClickListener(
+				new ClickListener(
+						TimeHelper.customDateFormatForToastDateFormat(
+								issue.getIssue().getCreatedAt()),
+						ctx));
 
 		Bundle bundle = new Bundle();
 		bundle.putString("repoOwner", repoOwner);

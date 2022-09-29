@@ -53,12 +53,12 @@ public class AdminCronTasksAdapter
 						String nextRun = "";
 						String lastRun = "";
 
-				if(cronTasks.getNext() != null) {
-					nextRun = TimeHelper.formatTime(cronTasks.getNext(), locale);
-				}
-				if(cronTasks.getPrev() != null) {
-					lastRun = TimeHelper.formatTime(cronTasks.getPrev(), locale);
-				}
+						if (cronTasks.getNext() != null) {
+							nextRun = TimeHelper.formatTime(cronTasks.getNext(), locale);
+						}
+						if (cronTasks.getPrev() != null) {
+							lastRun = TimeHelper.formatTime(cronTasks.getPrev(), locale);
+						}
 
 						View view =
 								LayoutInflater.from(ctx)
@@ -120,7 +120,8 @@ public class AdminCronTasksAdapter
 
 		Call<Void> call = RetrofitClient.getApiInterface(ctx).adminCronRun(taskName);
 
-		call.enqueue(new Callback<>() {
+		call.enqueue(
+				new Callback<>() {
 
 					@Override
 					public void onResponse(

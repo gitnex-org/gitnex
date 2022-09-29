@@ -469,12 +469,20 @@ public class IssueCommentsAdapter extends RecyclerView.Adapter<RecyclerView.View
 			StringBuilder infoBuilder = null;
 			if (issueComment.getCreatedAt() != null) {
 
-				infoBuilder = new StringBuilder(TimeHelper.formatTime(issueComment.getCreatedAt(), locale));
+				infoBuilder =
+						new StringBuilder(
+								TimeHelper.formatTime(issueComment.getCreatedAt(), locale));
 
-				information.setOnClickListener(new ClickListener(TimeHelper.customDateFormatForToastDateFormat(issueComment.getCreatedAt()), context));
+				information.setOnClickListener(
+						new ClickListener(
+								TimeHelper.customDateFormatForToastDateFormat(
+										issueComment.getCreatedAt()),
+								context));
 
-				if(!issueComment.getCreatedAt().equals(issueComment.getUpdatedAt())) {
-					infoBuilder.append(context.getString(R.string.colorfulBulletSpan)).append(context.getString(R.string.modifiedText));
+				if (!issueComment.getCreatedAt().equals(issueComment.getUpdatedAt())) {
+					infoBuilder
+							.append(context.getString(R.string.colorfulBulletSpan))
+							.append(context.getString(R.string.modifiedText));
 				}
 			}
 			String info = infoBuilder.toString();

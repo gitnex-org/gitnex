@@ -144,11 +144,9 @@ public class MainActivity extends BaseActivity
 			toolbarTitle.setText(getResources().getString(R.string.navProfile));
 		} else if (fragmentById instanceof MostVisitedReposFragment) {
 			toolbarTitle.setText(getResources().getString(R.string.navMostVisited));
-		}
-		else if(fragmentById instanceof NotesFragment) {
+		} else if (fragmentById instanceof NotesFragment) {
 			toolbarTitle.setText(getResources().getString(R.string.navNotes));
-		}
-		else if(fragmentById instanceof DraftsFragment) {
+		} else if (fragmentById instanceof DraftsFragment) {
 			toolbarTitle.setText(getResources().getString(R.string.titleDrafts));
 		} else if (fragmentById instanceof AdministrationFragment) {
 			toolbarTitle.setText(getResources().getString(R.string.pageTitleAdministration));
@@ -497,7 +495,10 @@ public class MainActivity extends BaseActivity
 					break;
 				case 10:
 					toolbarTitle.setText(getResources().getString(R.string.navNotes));
-					getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container, new NotesFragment()).commit();
+					getSupportFragmentManager()
+							.beginTransaction()
+							.replace(R.id.fragment_container, new NotesFragment())
+							.commit();
 					navigationView.setCheckedItem(R.id.nav_notes);
 					break;
 
@@ -718,11 +719,13 @@ public class MainActivity extends BaseActivity
 					.beginTransaction()
 					.replace(R.id.fragment_container, new MostVisitedReposFragment())
 					.commit();
-		}
-		else if(id == R.id.nav_notes) {
+		} else if (id == R.id.nav_notes) {
 
 			toolbarTitle.setText(getResources().getString(R.string.navNotes));
-			getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container, new NotesFragment()).commit();
+			getSupportFragmentManager()
+					.beginTransaction()
+					.replace(R.id.fragment_container, new NotesFragment())
+					.commit();
 		}
 
 		drawer.closeDrawer(GravityCompat.START);
@@ -877,10 +880,9 @@ public class MainActivity extends BaseActivity
 						}
 					}
 
-			@Override
-			public void onFailure(@NonNull Call<User> call, @NonNull Throwable t) {
-			}
-		});
+					@Override
+					public void onFailure(@NonNull Call<User> call, @NonNull Throwable t) {}
+				});
 	}
 
 	private void getNotificationsCount() {

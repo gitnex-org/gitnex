@@ -15,6 +15,8 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 import com.google.android.material.bottomsheet.BottomSheetDialog;
 import com.google.android.material.dialog.MaterialAlertDialogBuilder;
+import java.util.List;
+import java.util.Locale;
 import org.gitnex.tea4j.v2.models.Release;
 import org.mian.gitnex.R;
 import org.mian.gitnex.activities.MainActivity;
@@ -30,8 +32,6 @@ import org.mian.gitnex.helpers.RoundedTransformation;
 import org.mian.gitnex.helpers.TimeHelper;
 import org.mian.gitnex.helpers.Toasty;
 import org.mian.gitnex.structs.FragmentRefreshListener;
-import java.util.List;
-import java.util.Locale;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
@@ -39,7 +39,6 @@ import retrofit2.Response;
 /**
  * @author M M Arif
  */
-
 public class ReleasesAdapter extends RecyclerView.Adapter<ReleasesAdapter.ReleasesViewHolder> {
 
 	private final Context context;
@@ -51,7 +50,13 @@ public class ReleasesAdapter extends RecyclerView.Adapter<ReleasesAdapter.Releas
 	private OnLoadMoreListener loadMoreListener;
 	private boolean isLoading = false, isMoreDataAvailable = true;
 
-	public ReleasesAdapter(Context ctx, List<Release> releasesMain, FragmentRefreshListener startDownload, String repoOwner, String repoName, FragmentReleasesBinding fragmentReleasesBinding) {
+	public ReleasesAdapter(
+			Context ctx,
+			List<Release> releasesMain,
+			FragmentRefreshListener startDownload,
+			String repoOwner,
+			String repoName,
+			FragmentReleasesBinding fragmentReleasesBinding) {
 		this.context = ctx;
 		this.releasesList = releasesMain;
 		this.startDownload = startDownload;
@@ -60,10 +65,12 @@ public class ReleasesAdapter extends RecyclerView.Adapter<ReleasesAdapter.Releas
 		this.fragmentReleasesBinding = fragmentReleasesBinding;
 	}
 
-	@NonNull
-	@Override
-	public ReleasesAdapter.ReleasesViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-		View v = LayoutInflater.from(parent.getContext()).inflate(R.layout.list_releases, parent, false);
+	@NonNull @Override
+	public ReleasesAdapter.ReleasesViewHolder onCreateViewHolder(
+			@NonNull ViewGroup parent, int viewType) {
+		View v =
+				LayoutInflater.from(parent.getContext())
+						.inflate(R.layout.list_releases, parent, false);
 		return new ReleasesAdapter.ReleasesViewHolder(v);
 	}
 
@@ -78,70 +85,83 @@ public class ReleasesAdapter extends RecyclerView.Adapter<ReleasesAdapter.Releas
 
 		holder.releaseName.setText(currentItem.getName());
 
-		if(currentItem.isPrerelease()) {
+		if (currentItem.isPrerelease()) {
 			holder.releaseType.setBackgroundResource(R.drawable.shape_pre_release);
 			holder.releaseType.setText(R.string.releaseTypePre);
-		}
-		else if(currentItem.isDraft()) {
+		} else if (currentItem.isDraft()) {
 			holder.releaseType.setBackgroundResource(R.drawable.shape_draft_release);
 			holder.releaseType.setText(R.string.releaseDraftText);
-		}
-		else {
+		} else {
 			holder.releaseType.setBackgroundResource(R.drawable.shape_stable_release);
 			holder.releaseType.setText(R.string.releaseTypeStable);
 		}
 
-		if(currentItem.getAuthor().getAvatarUrl() != null) {
-			PicassoService.getInstance(context).get().load(currentItem.getAuthor().getAvatarUrl()).placeholder(R.drawable.loader_animated).transform(new RoundedTransformation(imgRadius, 0)).resize(120, 120).centerCrop()
-				.into(holder.authorAvatar);
+		if (currentItem.getAuthor().getAvatarUrl() != null) {
+			PicassoService.getInstance(context)
+					.get()
+					.load(currentItem.getAuthor().getAvatarUrl())
+					.placeholder(R.drawable.loader_animated)
+					.transform(new RoundedTransformation(imgRadius, 0))
+					.resize(120, 120)
+					.centerCrop()
+					.into(holder.authorAvatar);
 		}
 
-		holder.authorName.setText(context.getResources().getString(R.string.releasePublishedBy, currentItem.getAuthor().getLogin()));
+		holder.authorName.setText(
+				context.getResources()
+						.getString(
+								R.string.releasePublishedBy, currentItem.getAuthor().getLogin()));
 
-		if(currentItem.getTagName() != null) {
+		if (currentItem.getTagName() != null) {
 			holder.releaseTag.setText(currentItem.getTagName());
 		}
 
-		if(currentItem.getPublishedAt() != null) {
+		if (currentItem.getPublishedAt() != null) {
 			holder.releaseDate.setText(TimeHelper.formatTime(currentItem.getPublishedAt(), locale));
 		}
 
-		holder.releaseDate.setOnClickListener(new ClickListener(TimeHelper.customDateFormatForToastDateFormat(currentItem.getPublishedAt()), context));
+		holder.releaseDate.setOnClickListener(
+				new ClickListener(
+						TimeHelper.customDateFormatForToastDateFormat(currentItem.getPublishedAt()),
+						context));
 
-		if(!currentItem.getBody().equals("")) {
+		if (!currentItem.getBody().equals("")) {
 			Markdown.render(context, currentItem.getBody(), holder.releaseBodyContent);
-		}
-		else {
+		} else {
 			holder.releaseBodyContent.setText(R.string.noReleaseBodyContent);
 		}
 
-		holder.downloadCopyFrame.setOnClickListener(v -> {
+		holder.downloadCopyFrame.setOnClickListener(
+				v -> {
+					if (holder.downloads.getVisibility() == View.GONE) {
 
-			if(holder.downloads.getVisibility() == View.GONE) {
+						holder.downloadDropdownIcon.setImageResource(R.drawable.ic_chevron_down);
+						holder.downloads.setVisibility(View.VISIBLE);
+					} else {
 
-				holder.downloadDropdownIcon.setImageResource(R.drawable.ic_chevron_down);
-				holder.downloads.setVisibility(View.VISIBLE);
-			}
-			else {
+						holder.downloadDropdownIcon.setImageResource(R.drawable.ic_chevron_right);
+						holder.downloads.setVisibility(View.GONE);
+					}
+				});
 
-				holder.downloadDropdownIcon.setImageResource(R.drawable.ic_chevron_right);
-				holder.downloads.setVisibility(View.GONE);
-			}
+		holder.releaseZipDownloadFrame.setOnClickListener(
+				v -> startDownload.onRefresh(currentItem.getZipballUrl()));
+		holder.releaseTarDownloadFrame.setOnClickListener(
+				v -> startDownload.onRefresh(currentItem.getTarballUrl()));
 
-		});
-
-		holder.releaseZipDownloadFrame.setOnClickListener(v -> startDownload.onRefresh(currentItem.getZipballUrl()));
-		holder.releaseTarDownloadFrame.setOnClickListener(v -> startDownload.onRefresh(currentItem.getTarballUrl()));
-
-		ReleasesDownloadsAdapter adapter = new ReleasesDownloadsAdapter(currentItem.getAssets(), startDownload);
+		ReleasesDownloadsAdapter adapter =
+				new ReleasesDownloadsAdapter(currentItem.getAssets(), startDownload);
 		holder.downloadList.setAdapter(adapter);
 
-		if(position >= getItemCount() - 1 && isMoreDataAvailable && !isLoading && loadMoreListener != null) {
+		if (position >= getItemCount() - 1
+				&& isMoreDataAvailable
+				&& !isLoading
+				&& loadMoreListener != null) {
 			isLoading = true;
 			loadMoreListener.onLoadMore();
 		}
 
-		if(!((RepoDetailActivity) context).repository.getPermissions().isPush()) {
+		if (!((RepoDetailActivity) context).repository.getPermissions().isPush()) {
 			holder.optionsMenu.setVisibility(View.GONE);
 		}
 	}
@@ -153,7 +173,7 @@ public class ReleasesAdapter extends RecyclerView.Adapter<ReleasesAdapter.Releas
 
 	public void setMoreDataAvailable(boolean moreDataAvailable) {
 		isMoreDataAvailable = moreDataAvailable;
-		if(!isMoreDataAvailable) {
+		if (!isMoreDataAvailable) {
 			loadMoreListener.onLoadFinished();
 		}
 	}
@@ -180,38 +200,76 @@ public class ReleasesAdapter extends RecyclerView.Adapter<ReleasesAdapter.Releas
 		notifyItemRangeChanged(position, releasesList.size());
 	}
 
-	private void deleteRelease(final Context context, final String releaseName, final Long releaseId, final String owner, final String repo, int position) {
+	private void deleteRelease(
+			final Context context,
+			final String releaseName,
+			final Long releaseId,
+			final String owner,
+			final String repo,
+			int position) {
 
-		MaterialAlertDialogBuilder materialAlertDialogBuilder = new MaterialAlertDialogBuilder(context, R.style.ThemeOverlay_Material3_Dialog_Alert);
+		MaterialAlertDialogBuilder materialAlertDialogBuilder =
+				new MaterialAlertDialogBuilder(
+						context, R.style.ThemeOverlay_Material3_Dialog_Alert);
 
-		materialAlertDialogBuilder.setTitle(String.format(context.getString(R.string.deleteGenericTitle), releaseName)).setMessage(R.string.deleteReleaseConfirmation)
-			.setPositiveButton(R.string.menuDeleteText, (dialog, whichButton) -> RetrofitClient.getApiInterface(context).repoDeleteRelease(owner, repo, releaseId).enqueue(new Callback<>() {
+		materialAlertDialogBuilder
+				.setTitle(
+						String.format(context.getString(R.string.deleteGenericTitle), releaseName))
+				.setMessage(R.string.deleteReleaseConfirmation)
+				.setPositiveButton(
+						R.string.menuDeleteText,
+						(dialog, whichButton) ->
+								RetrofitClient.getApiInterface(context)
+										.repoDeleteRelease(owner, repo, releaseId)
+										.enqueue(
+												new Callback<>() {
 
-				@Override
-				public void onResponse(@NonNull Call<Void> call, @NonNull Response<Void> response) {
+													@Override
+													public void onResponse(
+															@NonNull Call<Void> call,
+															@NonNull Response<Void> response) {
 
-					if(response.isSuccessful()) {
-						updateAdapter(position);
-						Toasty.success(context, context.getString(R.string.releaseDeleted));
-						MainActivity.reloadRepos = true;
-						if(getItemCount() == 0) {
-							fragmentReleasesBinding.noDataReleases.setVisibility(View.VISIBLE);
-						}
-					}
-					else if(response.code() == 403) {
-						Toasty.error(context, context.getString(R.string.authorizeError));
-					}
-					else {
-						Toasty.error(context, context.getString(R.string.genericError));
-					}
-				}
+														if (response.isSuccessful()) {
+															updateAdapter(position);
+															Toasty.success(
+																	context,
+																	context.getString(
+																			R.string
+																					.releaseDeleted));
+															MainActivity.reloadRepos = true;
+															if (getItemCount() == 0) {
+																fragmentReleasesBinding
+																		.noDataReleases
+																		.setVisibility(
+																				View.VISIBLE);
+															}
+														} else if (response.code() == 403) {
+															Toasty.error(
+																	context,
+																	context.getString(
+																			R.string
+																					.authorizeError));
+														} else {
+															Toasty.error(
+																	context,
+																	context.getString(
+																			R.string.genericError));
+														}
+													}
 
-				@Override
-				public void onFailure(@NonNull Call<Void> call, @NonNull Throwable t) {
+													@Override
+													public void onFailure(
+															@NonNull Call<Void> call,
+															@NonNull Throwable t) {
 
-					Toasty.error(context, context.getString(R.string.genericError));
-				}
-			})).setNeutralButton(R.string.cancelButton, null).show();
+														Toasty.error(
+																context,
+																context.getString(
+																		R.string.genericError));
+													}
+												}))
+				.setNeutralButton(R.string.cancelButton, null)
+				.show();
 	}
 
 	public interface OnLoadMoreListener {
@@ -219,7 +277,6 @@ public class ReleasesAdapter extends RecyclerView.Adapter<ReleasesAdapter.Releas
 		void onLoadMore();
 
 		void onLoadFinished();
-
 	}
 
 	protected class ReleasesViewHolder extends RecyclerView.ViewHolder {
@@ -263,37 +320,55 @@ public class ReleasesAdapter extends RecyclerView.Adapter<ReleasesAdapter.Releas
 			downloadList.setHasFixedSize(true);
 			downloadList.setLayoutManager(new LinearLayoutManager(itemView.getContext()));
 
-			new Handler().postDelayed(() -> {
-				if(!AppUtil.checkGhostUsers(releases.getAuthor().getLogin())) {
+			new Handler()
+					.postDelayed(
+							() -> {
+								if (!AppUtil.checkGhostUsers(releases.getAuthor().getLogin())) {
 
-					authorAvatar.setOnClickListener(loginId -> {
-						Context context = loginId.getContext();
+									authorAvatar.setOnClickListener(
+											loginId -> {
+												Context context = loginId.getContext();
 
-						Intent intent = new Intent(context, ProfileActivity.class);
-						intent.putExtra("username", releases.getAuthor().getLogin());
-						context.startActivity(intent);
+												Intent intent =
+														new Intent(context, ProfileActivity.class);
+												intent.putExtra(
+														"username",
+														releases.getAuthor().getLogin());
+												context.startActivity(intent);
+											});
+								}
+							},
+							500);
+
+			optionsMenu.setOnClickListener(
+					v -> {
+						final Context context = v.getContext();
+
+						View view =
+								LayoutInflater.from(context)
+										.inflate(
+												R.layout.bottom_sheet_release_in_list,
+												itemView.findViewById(android.R.id.content),
+												false);
+
+						TextView deleteRelease = view.findViewById(R.id.deleteRelease);
+
+						BottomSheetDialog dialog = new BottomSheetDialog(context);
+						dialog.setContentView(view);
+						dialog.show();
+
+						deleteRelease.setOnClickListener(
+								v1 -> {
+									deleteRelease(
+											context,
+											releases.getName(),
+											releases.getId(),
+											repoOwner,
+											repoName,
+											getBindingAdapterPosition());
+									dialog.dismiss();
+								});
 					});
-				}
-			}, 500);
-
-			optionsMenu.setOnClickListener(v -> {
-				final Context context = v.getContext();
-
-				View view = LayoutInflater.from(context).inflate(R.layout.bottom_sheet_release_in_list, itemView.findViewById(android.R.id.content), false);
-
-				TextView deleteRelease = view.findViewById(R.id.deleteRelease);
-
-				BottomSheetDialog dialog = new BottomSheetDialog(context);
-				dialog.setContentView(view);
-				dialog.show();
-
-				deleteRelease.setOnClickListener(v1 -> {
-					deleteRelease(context, releases.getName(), releases.getId(), repoOwner, repoName, getBindingAdapterPosition());
-					dialog.dismiss();
-				});
-			});
 		}
-
 	}
-
 }

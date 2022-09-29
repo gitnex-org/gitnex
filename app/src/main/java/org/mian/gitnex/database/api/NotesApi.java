@@ -2,14 +2,13 @@ package org.mian.gitnex.database.api;
 
 import android.content.Context;
 import androidx.lifecycle.LiveData;
+import java.util.List;
 import org.mian.gitnex.database.dao.NotesDao;
 import org.mian.gitnex.database.models.Notes;
-import java.util.List;
 
 /**
  * @author M M Arif
  */
-
 public class NotesApi extends BaseApi {
 
 	private final NotesDao notesDao;
@@ -55,7 +54,7 @@ public class NotesApi extends BaseApi {
 	public void deleteNote(final int noteId) {
 		final Notes note = notesDao.fetchNoteById(noteId);
 
-		if(note != null) {
+		if (note != null) {
 			executorService.execute(() -> notesDao.deleteNote(noteId));
 		}
 	}

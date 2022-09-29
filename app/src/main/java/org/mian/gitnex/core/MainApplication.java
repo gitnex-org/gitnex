@@ -54,16 +54,36 @@ public class MainApplication extends Application {
 
 			CoreConfigurationBuilder ACRABuilder = new CoreConfigurationBuilder();
 
-			ACRABuilder.withBuildConfigClass(BuildConfig.class).withReportContent(ReportField.ANDROID_VERSION, ReportField.PHONE_MODEL, ReportField.STACK_TRACE, ReportField.AVAILABLE_MEM_SIZE, ReportField.BRAND)
-				.setReportFormat(StringFormat.KEY_VALUE_LIST);
+			ACRABuilder.withBuildConfigClass(BuildConfig.class)
+					.withReportContent(
+							ReportField.ANDROID_VERSION,
+							ReportField.PHONE_MODEL,
+							ReportField.STACK_TRACE,
+							ReportField.AVAILABLE_MEM_SIZE,
+							ReportField.BRAND)
+					.setReportFormat(StringFormat.KEY_VALUE_LIST);
 
-			ACRABuilder.withPluginConfigurations(new NotificationConfigurationBuilder().withTitle(getString(R.string.crashTitle)).withResIcon(R.drawable.gitnex_transparent).withChannelName(getString(R.string.setCrashReports))
-				.withText(getString(R.string.crashMessage)).build());
+			ACRABuilder.withPluginConfigurations(
+					new NotificationConfigurationBuilder()
+							.withTitle(getString(R.string.crashTitle))
+							.withResIcon(R.drawable.gitnex_transparent)
+							.withChannelName(getString(R.string.setCrashReports))
+							.withText(getString(R.string.crashMessage))
+							.build());
 
-			ACRABuilder.withPluginConfigurations(new MailSenderConfigurationBuilder().withMailTo(getResources().getString(R.string.appEmail))
-				.withSubject(getResources().getString(R.string.crashReportEmailSubject, AppUtil.getAppBuildNo(context))).withReportAsFile(true).build());
+			ACRABuilder.withPluginConfigurations(
+					new MailSenderConfigurationBuilder()
+							.withMailTo(getResources().getString(R.string.appEmail))
+							.withSubject(
+									getResources()
+											.getString(
+													R.string.crashReportEmailSubject,
+													AppUtil.getAppBuildNo(context)))
+							.withReportAsFile(true)
+							.build());
 
-			ACRABuilder.withPluginConfigurations(new LimiterConfigurationBuilder().withEnabled(true).build());
+			ACRABuilder.withPluginConfigurations(
+					new LimiterConfigurationBuilder().withEnabled(true).build());
 
 			ACRA.init(this, ACRABuilder);
 		}

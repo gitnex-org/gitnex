@@ -8,15 +8,13 @@ import java.io.Serializable;
 /**
  * @author M M Arif
  */
-
 @Entity(tableName = "Notes")
 public class Notes implements Serializable {
 
 	@PrimaryKey(autoGenerate = true)
 	private int noteId;
 
-	@Nullable
-	private String content;
+	@Nullable private String content;
 	private Integer datetime;
 	private Integer modified;
 
@@ -28,8 +26,7 @@ public class Notes implements Serializable {
 		this.noteId = noteId;
 	}
 
-	@Nullable
-	public String getContent() {
+	@Nullable public String getContent() {
 		return content;
 	}
 

@@ -252,14 +252,18 @@ public class MilestonesAdapter extends RecyclerView.Adapter<RecyclerView.ViewHol
 				assert date != null;
 				String dueDate = formatter.format(date);
 
-				if(date.before(new Date())) {
-					msDueDate.setTextColor(ResourcesCompat.getColor(context.getResources(), R.color.darkRed, null));
+				if (date.before(new Date())) {
+					msDueDate.setTextColor(
+							ResourcesCompat.getColor(
+									context.getResources(), R.color.darkRed, null));
 				}
 
 				msDueDate.setText(dueDate);
-				msDueDate.setOnClickListener(new ClickListener(TimeHelper.customDateFormatForToastDateFormat(dataModel.getDueOn()), context));
-			}
-			else {
+				msDueDate.setOnClickListener(
+						new ClickListener(
+								TimeHelper.customDateFormatForToastDateFormat(dataModel.getDueOn()),
+								context));
+			} else {
 
 				msDueDate.setText(context.getString(R.string.milestoneNoDueDate));
 			}

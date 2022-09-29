@@ -14,8 +14,6 @@ import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 import com.amulyakhare.textdrawable.TextDrawable;
 import com.amulyakhare.textdrawable.util.ColorGenerator;
-import java.text.DateFormat;
-import java.text.SimpleDateFormat;
 import java.util.List;
 import java.util.Locale;
 import org.mian.gitnex.R;
@@ -27,8 +25,6 @@ import org.mian.gitnex.helpers.RoundedTransformation;
 import org.mian.gitnex.helpers.TimeHelper;
 import org.mian.gitnex.helpers.TinyDB;
 import org.mian.gitnex.helpers.contexts.RepositoryContext;
-import java.util.List;
-import java.util.Locale;
 
 /**
  * @author M M Arif
@@ -172,11 +168,17 @@ public class ExploreRepositoriesAdapter extends RecyclerView.Adapter<RecyclerVie
 				image.setImageDrawable(drawable);
 			}
 
-			if(userRepositories.getUpdatedAt() != null) {
-				repoLastUpdated.setText(context.getString(R.string.lastUpdatedAt, TimeHelper.formatTime(userRepositories.getUpdatedAt(), locale)));
-				repoLastUpdated.setOnClickListener(new ClickListener(TimeHelper.customDateFormatForToastDateFormat(userRepositories.getUpdatedAt()), context));
-			}
-			else {
+			if (userRepositories.getUpdatedAt() != null) {
+				repoLastUpdated.setText(
+						context.getString(
+								R.string.lastUpdatedAt,
+								TimeHelper.formatTime(userRepositories.getUpdatedAt(), locale)));
+				repoLastUpdated.setOnClickListener(
+						new ClickListener(
+								TimeHelper.customDateFormatForToastDateFormat(
+										userRepositories.getUpdatedAt()),
+								context));
+			} else {
 				repoLastUpdated.setVisibility(View.GONE);
 			}
 

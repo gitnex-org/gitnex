@@ -126,16 +126,37 @@ public class CommitsAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder
 
 			commitSubject.setText(EmojiParser.parseToUnicode(commitMessageParts[0].trim()));
 
-			if(!Objects.equals(commitsModel.getCommit().getCommitter().getEmail(), commitsModel.getCommit().getAuthor().getEmail())) {
-				commitAuthorAndCommitter.setText(HtmlCompat.fromHtml(
-					context.getString(R.string.commitAuthoredByAndCommittedByWhen, commitsModel.getCommit().getAuthor().getName(), commitsModel.getCommit().getCommitter().getName(),
-						TimeHelper.formatTime(TimeHelper.parseIso8601(commitsModel.getCommit().getCommitter().getDate()), context.getResources().getConfiguration().locale)),
-					HtmlCompat.FROM_HTML_MODE_COMPACT));
-			}
-			else {
-				commitAuthorAndCommitter.setText(HtmlCompat.fromHtml(context.getString(R.string.commitCommittedByWhen, commitsModel.getCommit().getCommitter().getName(),
-						TimeHelper.formatTime(TimeHelper.parseIso8601(commitsModel.getCommit().getCommitter().getDate()), context.getResources().getConfiguration().locale)),
-					HtmlCompat.FROM_HTML_MODE_COMPACT));
+			if (!Objects.equals(
+					commitsModel.getCommit().getCommitter().getEmail(),
+					commitsModel.getCommit().getAuthor().getEmail())) {
+				commitAuthorAndCommitter.setText(
+						HtmlCompat.fromHtml(
+								context.getString(
+										R.string.commitAuthoredByAndCommittedByWhen,
+										commitsModel.getCommit().getAuthor().getName(),
+										commitsModel.getCommit().getCommitter().getName(),
+										TimeHelper.formatTime(
+												TimeHelper.parseIso8601(
+														commitsModel
+																.getCommit()
+																.getCommitter()
+																.getDate()),
+												context.getResources().getConfiguration().locale)),
+								HtmlCompat.FROM_HTML_MODE_COMPACT));
+			} else {
+				commitAuthorAndCommitter.setText(
+						HtmlCompat.fromHtml(
+								context.getString(
+										R.string.commitCommittedByWhen,
+										commitsModel.getCommit().getCommitter().getName(),
+										TimeHelper.formatTime(
+												TimeHelper.parseIso8601(
+														commitsModel
+																.getCommit()
+																.getCommitter()
+																.getDate()),
+												context.getResources().getConfiguration().locale)),
+								HtmlCompat.FROM_HTML_MODE_COMPACT));
 			}
 
 			if (commitsModel.getAuthor() != null
@@ -146,10 +167,15 @@ public class CommitsAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder
 
 				int imgRadius = AppUtil.getPixelsFromDensity(context, 60);
 
-				PicassoService.getInstance(context).get().load(commitsModel.getAuthor().getAvatarUrl()).placeholder(R.drawable.loader_animated).transform(new RoundedTransformation(imgRadius, 0)).resize(120, 120)
-					.centerCrop().into(commitAuthorAvatar);
-			}
-			else {
+				PicassoService.getInstance(context)
+						.get()
+						.load(commitsModel.getAuthor().getAvatarUrl())
+						.placeholder(R.drawable.loader_animated)
+						.transform(new RoundedTransformation(imgRadius, 0))
+						.resize(120, 120)
+						.centerCrop()
+						.into(commitAuthorAvatar);
+			} else {
 				commitAuthorAvatar.setImageDrawable(null);
 				commitAuthorAvatarFrame.setVisibility(View.GONE);
 			}
@@ -167,10 +193,15 @@ public class CommitsAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder
 
 				int imgRadius = AppUtil.getPixelsFromDensity(context, 60);
 
-				PicassoService.getInstance(context).get().load(commitsModel.getCommitter().getAvatarUrl()).placeholder(R.drawable.loader_animated).transform(new RoundedTransformation(imgRadius, 0)).resize(120, 120)
-					.centerCrop().into(commitCommitterAvatar);
-			}
-			else {
+				PicassoService.getInstance(context)
+						.get()
+						.load(commitsModel.getCommitter().getAvatarUrl())
+						.placeholder(R.drawable.loader_animated)
+						.transform(new RoundedTransformation(imgRadius, 0))
+						.resize(120, 120)
+						.centerCrop()
+						.into(commitCommitterAvatar);
+			} else {
 				commitCommitterAvatar.setImageDrawable(null);
 				commitCommitterAvatarFrame.setVisibility(View.GONE);
 			}

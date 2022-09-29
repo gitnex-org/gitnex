@@ -73,7 +73,8 @@ public class DetailFragment extends Fragment {
 
 		Call<User> call = RetrofitClient.getApiInterface(context).userGet(username);
 
-		call.enqueue(new Callback<>() {
+		call.enqueue(
+				new Callback<>() {
 
 					@Override
 					public void onResponse(
@@ -92,7 +93,7 @@ public class DetailFragment extends Fragment {
 													? response.body().getEmail()
 													: "";
 
-							int imgRadius = AppUtil.getPixelsFromDensity(context, 3);
+									int imgRadius = AppUtil.getPixelsFromDensity(context, 3);
 
 									binding.userFullName.setText(username);
 									binding.userLogin.setText(
@@ -147,9 +148,15 @@ public class DetailFragment extends Fragment {
 														public void onError(Exception e) {}
 													});
 
-							binding.userJoinedOn.setText(TimeHelper.formatTime(response.body().getCreated(), locale));
-							binding.userJoinedOn.setOnClickListener(new ClickListener(TimeHelper.customDateFormatForToastDateFormat(response.body().getCreated()), context));
-							break;
+									binding.userJoinedOn.setText(
+											TimeHelper.formatTime(
+													response.body().getCreated(), locale));
+									binding.userJoinedOn.setOnClickListener(
+											new ClickListener(
+													TimeHelper.customDateFormatForToastDateFormat(
+															response.body().getCreated()),
+													context));
+									break;
 
 								case 401:
 									AlertDialogs.authorizationTokenRevokedDialog(context);

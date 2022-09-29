@@ -1,6 +1,5 @@
 package org.mian.gitnex.helpers;
 
-import org.ocpsoft.prettytime.PrettyTime;
 import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
@@ -9,7 +8,6 @@ import java.time.format.DateTimeFormatter;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.Locale;
-import org.mian.gitnex.R;
 import org.ocpsoft.prettytime.PrettyTime;
 
 /**
@@ -37,7 +35,7 @@ public class TimeHelper {
 
 	public static String formatTime(Date date, Locale locale) {
 
-		if(date != null) {
+		if (date != null) {
 			PrettyTime prettyTime = new PrettyTime(locale);
 			return prettyTime.format(date);
 		}

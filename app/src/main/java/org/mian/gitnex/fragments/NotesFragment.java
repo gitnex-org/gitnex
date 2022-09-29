@@ -17,6 +17,8 @@ import androidx.appcompat.widget.SearchView;
 import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import com.google.android.material.dialog.MaterialAlertDialogBuilder;
+import java.util.ArrayList;
+import java.util.List;
 import org.mian.gitnex.R;
 import org.mian.gitnex.activities.CreateNoteActivity;
 import org.mian.gitnex.activities.MainActivity;
@@ -26,13 +28,10 @@ import org.mian.gitnex.database.api.NotesApi;
 import org.mian.gitnex.database.models.Notes;
 import org.mian.gitnex.databinding.FragmentNotesBinding;
 import org.mian.gitnex.helpers.Toasty;
-import java.util.ArrayList;
-import java.util.List;
 
 /**
  * @author M M Arif
  */
-
 public class NotesFragment extends Fragment {
 
 	private FragmentNotesBinding fragmentNotesBinding;
@@ -43,21 +42,24 @@ public class NotesFragment extends Fragment {
 	private Intent noteIntent;
 
 	@Override
-	public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
+	public View onCreateView(
+			@NonNull LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
 
 		fragmentNotesBinding = FragmentNotesBinding.inflate(inflater, container, false);
 
 		ctx = getContext();
 		setHasOptionsMenu(true);
 
-		((MainActivity) requireActivity()).setActionBarTitle(getResources().getString(R.string.navNotes));
+		((MainActivity) requireActivity())
+				.setActionBarTitle(getResources().getString(R.string.navNotes));
 
 		noteIntent = new Intent(ctx, CreateNoteActivity.class);
 
-		fragmentNotesBinding.newNote.setOnClickListener(view -> {
-			noteIntent.putExtra("action", "add");
-			ctx.startActivity(noteIntent);
-		});
+		fragmentNotesBinding.newNote.setOnClickListener(
+				view -> {
+					noteIntent.putExtra("action", "add");
+					ctx.startActivity(noteIntent);
+				});
 
 		notesList = new ArrayList<>();
 		notesApi = BaseApi.getInstance(ctx, NotesApi.class);
@@ -70,13 +72,18 @@ public class NotesFragment extends Fragment {
 
 		adapter = new NotesAdapter(ctx, notesList);
 
-		fragmentNotesBinding.pullToRefresh.setOnRefreshListener(() -> new Handler(Looper.getMainLooper()).postDelayed(() -> {
-
-			notesList.clear();
-			fragmentNotesBinding.pullToRefresh.setRefreshing(false);
-			fragmentNotesBinding.progressBar.setVisibility(View.VISIBLE);
-			fetchDataAsync();
-		}, 250));
+		fragmentNotesBinding.pullToRefresh.setOnRefreshListener(
+				() ->
+						new Handler(Looper.getMainLooper())
+								.postDelayed(
+										() -> {
+											notesList.clear();
+											fragmentNotesBinding.pullToRefresh.setRefreshing(false);
+											fragmentNotesBinding.progressBar.setVisibility(
+													View.VISIBLE);
+											fetchDataAsync();
+										},
+										250));
 
 		fetchDataAsync();
 
@@ -91,37 +98,38 @@ public class NotesFragment extends Fragment {
 
 	private void fetchDataAsync() {
 
-		notesApi.fetchAllNotes().observe(getViewLifecycleOwner(), allNotes -> {
+		notesApi.fetchAllNotes()
+				.observe(
+						getViewLifecycleOwner(),
+						allNotes -> {
+							fragmentNotesBinding.pullToRefresh.setRefreshing(false);
+							assert allNotes != null;
+							if (allNotes.size() > 0) {
 
-			fragmentNotesBinding.pullToRefresh.setRefreshing(false);
-			assert allNotes != null;
-			if(allNotes.size() > 0) {
+								notesList.clear();
+								fragmentNotesBinding.noData.setVisibility(View.GONE);
+								notesList.addAll(allNotes);
+								adapter.notifyDataChanged();
+								fragmentNotesBinding.recyclerView.setAdapter(adapter);
+							} else {
 
-				notesList.clear();
-				fragmentNotesBinding.noData.setVisibility(View.GONE);
-				notesList.addAll(allNotes);
-				adapter.notifyDataChanged();
-				fragmentNotesBinding.recyclerView.setAdapter(adapter);
-			}
-			else {
-
-				fragmentNotesBinding.noData.setVisibility(View.VISIBLE);
-			}
-			fragmentNotesBinding.progressBar.setVisibility(View.GONE);
-		});
+								fragmentNotesBinding.noData.setVisibility(View.VISIBLE);
+							}
+							fragmentNotesBinding.progressBar.setVisibility(View.GONE);
+						});
 	}
 
 	private void filter(String text) {
 
 		List<Notes> arr = new ArrayList<>();
 
-		for(Notes d : notesList) {
+		for (Notes d : notesList) {
 
-			if(d == null || d.getContent() == null) {
+			if (d == null || d.getContent() == null) {
 				continue;
 			}
 
-			if(d.getContent().toLowerCase().contains(text)) {
+			if (d.getContent().toLowerCase().contains(text)) {
 				arr.add(d);
 			}
 		}
@@ -131,14 +139,14 @@ public class NotesFragment extends Fragment {
 
 	public void deleteAllNotes() {
 
-		if(notesList.size() > 0) {
+		if (notesList.size() > 0) {
 
 			notesApi.deleteAllNotes();
 			notesList.clear();
 			adapter.notifyDataChanged();
-			Toasty.success(ctx, ctx.getResources().getQuantityString(R.plurals.noteDeleteMessage, 2));
-		}
-		else {
+			Toasty.success(
+					ctx, ctx.getResources().getQuantityString(R.plurals.noteDeleteMessage, 2));
+		} else {
 			Toasty.warning(ctx, getResources().getString(R.string.noDataFound));
 		}
 	}
@@ -154,39 +162,43 @@ public class NotesFragment extends Fragment {
 		SearchView searchView = (SearchView) searchItem.getActionView();
 		searchView.setImeOptions(EditorInfo.IME_ACTION_DONE);
 
-		searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
+		searchView.setOnQueryTextListener(
+				new SearchView.OnQueryTextListener() {
 
-			@Override
-			public boolean onQueryTextSubmit(String query) {
+					@Override
+					public boolean onQueryTextSubmit(String query) {
 
-				return false;
-			}
+						return false;
+					}
 
-			@Override
-			public boolean onQueryTextChange(String newText) {
+					@Override
+					public boolean onQueryTextChange(String newText) {
 
-				filter(newText);
-				return false;
-			}
-		});
+						filter(newText);
+						return false;
+					}
+				});
 	}
 
 	@Override
 	public boolean onOptionsItemSelected(MenuItem item) {
 
-		if(item.getItemId() == R.id.reset_menu_item) {
+		if (item.getItemId() == R.id.reset_menu_item) {
 
-			if(notesList.size() == 0) {
+			if (notesList.size() == 0) {
 				Toasty.warning(ctx, getResources().getString(R.string.noDataFound));
-			}
-			else {
-				new MaterialAlertDialogBuilder(ctx).setTitle(R.string.menuDeleteText)
-					.setMessage(R.string.notesAllDeletionMessage)
-					.setPositiveButton(R.string.menuDeleteText, (dialog, which) -> {
-
-					deleteAllNotes();
-					dialog.dismiss();
-				}).setNeutralButton(R.string.cancelButton, null).show();
+			} else {
+				new MaterialAlertDialogBuilder(ctx)
+						.setTitle(R.string.menuDeleteText)
+						.setMessage(R.string.notesAllDeletionMessage)
+						.setPositiveButton(
+								R.string.menuDeleteText,
+								(dialog, which) -> {
+									deleteAllNotes();
+									dialog.dismiss();
+								})
+						.setNeutralButton(R.string.cancelButton, null)
+						.show();
 			}
 		}
 

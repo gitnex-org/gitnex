@@ -205,17 +205,52 @@ public class CommitDetailFragment extends Fragment {
 									binding.commitBody.setVisibility(View.GONE);
 								}
 
-				if(!Objects.equals(commitsModel.getCommit().getCommitter().getEmail(), commitsModel.getCommit().getCommitter().getEmail())) {
-					binding.commitAuthorAndCommitter.setText(HtmlCompat.fromHtml(
-						CommitDetailFragment.this.getString(R.string.commitAuthoredByAndCommittedByWhen, commitsModel.getCommit().getAuthor().getName(), commitsModel.getCommit().getCommitter().getName(),
-							TimeHelper.formatTime(TimeHelper.parseIso8601(commitsModel.getCommit().getCommitter().getDate()), getResources().getConfiguration().locale)),
-						HtmlCompat.FROM_HTML_MODE_COMPACT));
-				}
-				else {
-					binding.commitAuthorAndCommitter.setText(HtmlCompat.fromHtml(CommitDetailFragment.this.getString(R.string.commitCommittedByWhen, commitsModel.getCommit().getCommitter().getName(),
-							TimeHelper.formatTime(TimeHelper.parseIso8601(commitsModel.getCommit().getCommitter().getDate()), getResources().getConfiguration().locale)),
-						HtmlCompat.FROM_HTML_MODE_COMPACT));
-				}
+								if (!Objects.equals(
+										commitsModel.getCommit().getCommitter().getEmail(),
+										commitsModel.getCommit().getCommitter().getEmail())) {
+									binding.commitAuthorAndCommitter.setText(
+											HtmlCompat.fromHtml(
+													CommitDetailFragment.this.getString(
+															R.string
+																	.commitAuthoredByAndCommittedByWhen,
+															commitsModel
+																	.getCommit()
+																	.getAuthor()
+																	.getName(),
+															commitsModel
+																	.getCommit()
+																	.getCommitter()
+																	.getName(),
+															TimeHelper.formatTime(
+																	TimeHelper.parseIso8601(
+																			commitsModel
+																					.getCommit()
+																					.getCommitter()
+																					.getDate()),
+																	getResources()
+																			.getConfiguration()
+																			.locale)),
+													HtmlCompat.FROM_HTML_MODE_COMPACT));
+								} else {
+									binding.commitAuthorAndCommitter.setText(
+											HtmlCompat.fromHtml(
+													CommitDetailFragment.this.getString(
+															R.string.commitCommittedByWhen,
+															commitsModel
+																	.getCommit()
+																	.getCommitter()
+																	.getName(),
+															TimeHelper.formatTime(
+																	TimeHelper.parseIso8601(
+																			commitsModel
+																					.getCommit()
+																					.getCommitter()
+																					.getDate()),
+																	getResources()
+																			.getConfiguration()
+																			.locale)),
+													HtmlCompat.FROM_HTML_MODE_COMPACT));
+								}
 
 								if (commitsModel.getAuthor() != null
 										&& commitsModel.getAuthor().getAvatarUrl() != null

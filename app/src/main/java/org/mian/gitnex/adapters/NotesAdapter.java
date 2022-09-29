@@ -12,6 +12,11 @@ import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 import com.google.android.material.dialog.MaterialAlertDialogBuilder;
 import com.vdurmont.emoji.EmojiParser;
+import java.time.Instant;
+import java.util.Date;
+import java.util.List;
+import java.util.Locale;
+import java.util.Objects;
 import org.apache.commons.lang3.StringUtils;
 import org.mian.gitnex.R;
 import org.mian.gitnex.activities.CreateNoteActivity;
@@ -21,16 +26,10 @@ import org.mian.gitnex.database.models.Notes;
 import org.mian.gitnex.helpers.Markdown;
 import org.mian.gitnex.helpers.TimeHelper;
 import org.mian.gitnex.helpers.Toasty;
-import java.time.Instant;
-import java.util.Date;
-import java.util.List;
-import java.util.Locale;
-import java.util.Objects;
 
 /**
  * @author M M Arif
  */
-
 public class NotesAdapter extends RecyclerView.Adapter<NotesAdapter.NotesViewHolder> {
 
 	private List<Notes> notesList;
@@ -58,20 +57,31 @@ public class NotesAdapter extends RecyclerView.Adapter<NotesAdapter.NotesViewHol
 			datetime = itemView.findViewById(R.id.datetime);
 			ImageView deleteNote = itemView.findViewById(R.id.delete_note);
 
-			itemView.setOnClickListener(view -> {
-				noteIntent.putExtra("action", "edit");
-				noteIntent.putExtra("noteId", notes.getNoteId());
-				ctx.startActivity(noteIntent);
-			});
+			itemView.setOnClickListener(
+					view -> {
+						noteIntent.putExtra("action", "edit");
+						noteIntent.putExtra("noteId", notes.getNoteId());
+						ctx.startActivity(noteIntent);
+					});
 
-			deleteNote.setOnClickListener(itemDelete -> {
+			deleteNote.setOnClickListener(
+					itemDelete -> {
+						MaterialAlertDialogBuilder materialAlertDialogBuilder =
+								new MaterialAlertDialogBuilder(
+										ctx, R.style.ThemeOverlay_Material3_Dialog_Alert);
 
-				MaterialAlertDialogBuilder materialAlertDialogBuilder = new MaterialAlertDialogBuilder(ctx, R.style.ThemeOverlay_Material3_Dialog_Alert);
-
-				materialAlertDialogBuilder.setTitle(ctx.getString(R.string.menuDeleteText))
-					.setMessage(ctx.getString(R.string.noteDeleteDialoMessage))
-					.setPositiveButton(R.string.menuDeleteText, (dialog, whichButton) -> deleteNote(getBindingAdapterPosition(), notes.getNoteId())).setNeutralButton(R.string.cancelButton, null).show();
-			});
+						materialAlertDialogBuilder
+								.setTitle(ctx.getString(R.string.menuDeleteText))
+								.setMessage(ctx.getString(R.string.noteDeleteDialoMessage))
+								.setPositiveButton(
+										R.string.menuDeleteText,
+										(dialog, whichButton) ->
+												deleteNote(
+														getBindingAdapterPosition(),
+														notes.getNoteId()))
+								.setNeutralButton(R.string.cancelButton, null)
+								.show();
+					});
 		}
 	}
 
@@ -86,10 +96,12 @@ public class NotesAdapter extends RecyclerView.Adapter<NotesAdapter.NotesViewHol
 		Toasty.success(ctx, ctx.getResources().getQuantityString(R.plurals.noteDeleteMessage, 1));
 	}
 
-	@NonNull
-	@Override
-	public NotesAdapter.NotesViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-		View v = LayoutInflater.from(parent.getContext()).inflate(R.layout.list_notes, parent, false);
+	@NonNull @Override
+	public NotesAdapter.NotesViewHolder onCreateViewHolder(
+			@NonNull ViewGroup parent, int viewType) {
+		View v =
+				LayoutInflater.from(parent.getContext())
+						.inflate(R.layout.list_notes, parent, false);
 		return new NotesViewHolder(v);
 	}
 
@@ -100,15 +112,25 @@ public class NotesAdapter extends RecyclerView.Adapter<NotesAdapter.NotesViewHol
 		Notes currentItem = notesList.get(position);
 		holder.notes = currentItem;
 
-		Markdown.render(ctx, EmojiParser.parseToUnicode(Objects.requireNonNull(StringUtils.substring(currentItem.getContent(), 0, 140))), holder.content);
+		Markdown.render(
+				ctx,
+				EmojiParser.parseToUnicode(
+						Objects.requireNonNull(
+								StringUtils.substring(currentItem.getContent(), 0, 140))),
+				holder.content);
 
-		if(currentItem.getModified() != null) {
-			String modifiedTime = TimeHelper.formatTime(Date.from(Instant.ofEpochSecond(currentItem.getModified())), locale);
-			holder.datetime.setText(ctx.getResources().getString(R.string.noteTimeModified, modifiedTime));
-		}
-		else {
-			String createdTime = TimeHelper.formatTime(Date.from(Instant.ofEpochSecond(currentItem.getDatetime())), locale);
-			holder.datetime.setText(ctx.getResources().getString(R.string.noteDateTime, createdTime));
+		if (currentItem.getModified() != null) {
+			String modifiedTime =
+					TimeHelper.formatTime(
+							Date.from(Instant.ofEpochSecond(currentItem.getModified())), locale);
+			holder.datetime.setText(
+					ctx.getResources().getString(R.string.noteTimeModified, modifiedTime));
+		} else {
+			String createdTime =
+					TimeHelper.formatTime(
+							Date.from(Instant.ofEpochSecond(currentItem.getDatetime())), locale);
+			holder.datetime.setText(
+					ctx.getResources().getString(R.string.noteDateTime, createdTime));
 		}
 	}
 
