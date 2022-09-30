@@ -94,8 +94,6 @@ dependencies {
     implementation "io.noties.markwon:recycler:$markwon_version"
     implementation "io.noties.markwon:recycler-table:$markwon_version"
     implementation "io.noties.markwon:simple-ext:$markwon_version"
-    implementation 'org.codeberg.qwerty287:markwonprism4j:9d3ef078cd'
-    implementation 'org.codeberg.qwerty287:Prism4j:3.0.0'
     implementation 'com.google.guava:guava:31.1-android'
     implementation "io.noties.markwon:image-picasso:$markwon_version"
     implementation "com.github.HamidrezaAmz:BreadcrumbsView:0.2.9"

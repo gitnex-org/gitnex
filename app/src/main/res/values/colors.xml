@@ -74,4 +74,6 @@
     <color name="five_dark_grey">#a9b1ae</color>
     <color name="five_dark_white">#ffffff</color>
     <color name="gold">#e6b121</color>
+    <color name="five_yellow">#fdc92f</color>
+    <color name="five_background_grey">#f5f2f0</color>
 </resources>
