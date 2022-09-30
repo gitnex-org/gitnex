@@ -87,7 +87,6 @@ Thanks to all the open source libraries, contributors and donators.
 - [wasabeef/picasso-transformations](https://github.com/wasabeef/picasso-transformations)
 - [cats-oss/android-gpuimage](https://github.com/cats-oss/android-gpuimage)
 - [noties/Markwon](https://github.com/noties/Markwon)
-- [noties/Prism4j](https://github.com/noties/Prism4j)
 - [ocpsoft/prettytime](https://github.com/ocpsoft/prettytime)
 - [ramseth001/TextDrawable](https://github.com/ramseth001/TextDrawable)
 - [vdurmont/emoji-java](https://github.com/vdurmont/emoji-java)

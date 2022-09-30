@@ -9,23 +9,19 @@ import java.util.Set;
 import java.util.regex.Pattern;
 
 /**
- * @author M M Arif
+ * @author qwerty287
  */
-public class HtmlLanguage extends Language {
+public class JsonLanguage extends Language {
 
-	// Brackets and Colons
-	private static final Pattern PATTERN_BUILTINS = Pattern.compile("[,:;[->]{}()]");
-
-	// Data
+	private static final Pattern PATTERN_SINGLE_LINE_COMMENT = Pattern.compile("//[^\\n]*");
+	private static final Pattern PATTERN_MULTI_LINE_COMMENT =
+			Pattern.compile("/\\*[^*]*\\*+(?:[^/*][^*]*\\*+)*/");
+	private static final Pattern PATTERN_ATTRIBUTE = Pattern.compile("\\.[a-zA-Z0-9_]+");
+	private static final Pattern PATTERN_TODO_COMMENT =
+			Pattern.compile("//\\s?(TODO|todo)\\s[^\n]*");
 	private static final Pattern PATTERN_NUMBERS = Pattern.compile("\\b(\\d*[.]?\\d+)\\b");
 	private static final Pattern PATTERN_CHAR = Pattern.compile("['](.*?)[']");
 	private static final Pattern PATTERN_STRING = Pattern.compile("[\"](.*?)[\"]");
-	private static final Pattern PATTERN_HEX = Pattern.compile("0x[0-9a-fA-F]+");
-	private static final Pattern PATTERN_SINGLE_LINE_COMMENT = Pattern.compile("<!--.*-->");
-	private static final Pattern PATTERN_ATTRIBUTE = Pattern.compile("\\.[a-zA-Z0-9_]+");
-	private static final Pattern PATTERN_OPERATION =
-			Pattern.compile(
-					":|==|>|<|!=|>=|<=|->|=|>|<|%|-|-=|%=|\\+|\\-|\\-=|\\+=|\\^|\\&|\\|::|\\?|\\*");
 
 	public static String getCommentStart() {
 		return "//";
@@ -40,26 +36,25 @@ public class HtmlLanguage extends Language {
 		switch (element) {
 			case KEYWORD:
 				return Pattern.compile("\\b(" + String.join("|", getKeywords()) + ")\\b");
-			case BUILTIN:
-				return PATTERN_BUILTINS;
 			case NUMBER:
 				return PATTERN_NUMBERS;
 			case CHAR:
 				return PATTERN_CHAR;
 			case STRING:
 				return PATTERN_STRING;
-			case HEX:
-				return PATTERN_HEX;
 			case SINGLE_LINE_COMMENT:
-			case MULTI_LINE_COMMENT:
 				return PATTERN_SINGLE_LINE_COMMENT;
+			case MULTI_LINE_COMMENT:
+				return PATTERN_MULTI_LINE_COMMENT;
 			case ATTRIBUTE:
 				return PATTERN_ATTRIBUTE;
-			case OPERATION:
-				return PATTERN_OPERATION;
-			case GENERIC:
 			case TODO_COMMENT:
+				return PATTERN_TODO_COMMENT;
+			case BUILTIN:
+			case OPERATION:
 			case ANNOTATION:
+			case HEX:
+			case GENERIC:
 			default:
 				return null;
 		}
@@ -67,80 +62,7 @@ public class HtmlLanguage extends Language {
 
 	@Override
 	public String[] getKeywords() {
-		return new String[] {
-			"<html",
-			"<DOCTYPE",
-			"<head",
-			"<title",
-			"<body",
-			"<h1",
-			"<h2",
-			"<h3",
-			"<h4",
-			"<h5",
-			"<h6",
-			"<br",
-			"<hr",
-			"<section",
-			"<header",
-			"<footer",
-			"<select",
-			"<img",
-			"<embed",
-			"<iframe",
-			"<style",
-			"<script",
-			"<div",
-			"<p",
-			"code",
-			"strong",
-			"small",
-			"template",
-			"form",
-			"input",
-			"textarea",
-			"button",
-			"option",
-			"label",
-			"fieldset",
-			"legend",
-			"datalist",
-			"frame",
-			"map",
-			"area",
-			"canvas",
-			"picture",
-			"svg",
-			"audio",
-			"source",
-			"track",
-			"video",
-			"link",
-			"nav",
-			"ul",
-			"ol",
-			"li",
-			"table",
-			"caption",
-			"th",
-			"tr",
-			"td",
-			"thead",
-			"tbody",
-			"tfooter",
-			"col",
-			"span",
-			"main",
-			"article",
-			"aside",
-			"meta",
-			"base",
-			"noscript",
-			"object",
-			"param",
-			"src",
-			"href"
-		};
+		return new String[] {"false", "true", "null"};
 	}
 
 	@Override
@@ -155,13 +77,14 @@ public class HtmlLanguage extends Language {
 
 	@Override
 	public String getName() {
-		return "HTML";
+		return "JSON";
 	}
 
 	@Override
 	public Set<Character> getIndentationStarts() {
 		Set<Character> characterSet = new HashSet<>();
 		characterSet.add('{');
+		characterSet.add('[');
 		return characterSet;
 	}
 
@@ -169,6 +92,7 @@ public class HtmlLanguage extends Language {
 	public Set<Character> getIndentationEnds() {
 		Set<Character> characterSet = new HashSet<>();
 		characterSet.add('}');
+		characterSet.add(']');
 		return characterSet;
 	}
 }

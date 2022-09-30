@@ -16,21 +16,17 @@ import android.widget.TextView;
 import androidx.annotation.ColorInt;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
-import de.qwerty287.markwonprism4j.Prism4jSyntaxHighlight;
-import de.qwerty287.markwonprism4j.Prism4jTheme;
-import de.qwerty287.markwonprism4j.Prism4jThemeDarkula;
-import de.qwerty287.markwonprism4j.Prism4jThemeDefault;
-import io.noties.prism4j.Prism4j;
-import org.mian.gitnex.R;
 import org.mian.gitnex.core.MainGrammarLocator;
 import org.mian.gitnex.helpers.AppUtil;
+import org.mian.gitnex.helpers.codeeditor.markwon.SyntaxHighlighter;
+import org.mian.gitnex.helpers.codeeditor.theme.Theme;
 
 /**
  * @author opyale
  */
 public class SyntaxHighlightedArea extends LinearLayout {
 
-	private Prism4jTheme prism4jTheme;
+	private Theme theme;
 
 	private TextView sourceView;
 	private LinesView linesView;
@@ -53,10 +49,7 @@ public class SyntaxHighlightedArea extends LinearLayout {
 
 	public void setup() {
 
-		prism4jTheme =
-				AppUtil.getColorFromAttribute(getContext(), R.attr.isDark) == 1
-						? Prism4jThemeDarkula.create()
-						: Prism4jThemeDefault.create();
+		theme = Theme.getDefaultTheme(getContext());
 
 		sourceView = new TextView(getContext());
 
@@ -67,7 +60,8 @@ public class SyntaxHighlightedArea extends LinearLayout {
 				Typeface.createFromAsset(
 						getContext().getAssets(), "fonts/sourcecodeproregular.ttf"));
 		sourceView.setTextSize(TypedValue.COMPLEX_UNIT_SP, 14);
-		sourceView.setTextColor(prism4jTheme.textColor());
+		sourceView.setTextColor(
+				getContext().getResources().getColor(theme.getDefaultColor(), null));
 		sourceView.setTextIsSelectable(true);
 
 		int padding = AppUtil.getPixelsFromDensity(getContext(), 5);
@@ -93,12 +87,13 @@ public class SyntaxHighlightedArea extends LinearLayout {
 		linesView.getPaint().setTypeface(sourceView.getTypeface());
 		linesView.getPaint().setTextSize(sourceView.getTextSize());
 
-		linesView.setBackgroundColor(prism4jTheme.background());
-		linesView.setTextColor(prism4jTheme.textColor());
-		linesView.setLineColor(prism4jTheme.textColor());
+		linesView.setBackgroundColor(
+				getContext().getResources().getColor(theme.getBackgroundColor(), null));
+		linesView.setTextColor(getContext().getResources().getColor(theme.getDefaultColor(), null));
+		linesView.setLineColor(getContext().getResources().getColor(theme.getDefaultColor(), null));
 
 		setOrientation(HORIZONTAL);
-		setBackgroundColor(prism4jTheme.background());
+		setBackgroundColor(getContext().getResources().getColor(theme.getBackgroundColor(), null));
 		addView(linesView);
 		addView(horizontalScrollView);
 	}
@@ -112,18 +107,16 @@ public class SyntaxHighlightedArea extends LinearLayout {
 							() -> {
 								try {
 
-									MainGrammarLocator mainGrammarLocator =
-											MainGrammarLocator.getInstance();
-
 									CharSequence highlightedSource =
-											Prism4jSyntaxHighlight.create(
-															new Prism4j(mainGrammarLocator),
-															prism4jTheme,
+											SyntaxHighlighter.create(
+															getContext(),
+															theme,
 															MainGrammarLocator
 																	.DEFAULT_FALLBACK_LANGUAGE)
 													.highlight(
-															mainGrammarLocator.fromExtension(
-																	extension),
+															MainGrammarLocator.fromExtension(
+																			extension)
+																	.toUpperCase(),
 															source);
 
 									getActivity()

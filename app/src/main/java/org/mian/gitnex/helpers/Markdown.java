@@ -9,10 +9,6 @@ import androidx.annotation.NonNull;
 import androidx.core.content.res.ResourcesCompat;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
-import de.qwerty287.markwonprism4j.Prism4jTheme;
-import de.qwerty287.markwonprism4j.Prism4jThemeDarkula;
-import de.qwerty287.markwonprism4j.Prism4jThemeDefault;
-import de.qwerty287.markwonprism4j.SyntaxHighlightPlugin;
 import io.noties.markwon.AbstractMarkwonPlugin;
 import io.noties.markwon.Markwon;
 import io.noties.markwon.MarkwonConfiguration;
@@ -33,7 +29,6 @@ import io.noties.markwon.recycler.MarkwonAdapter;
 import io.noties.markwon.recycler.SimpleEntry;
 import io.noties.markwon.recycler.table.TableEntry;
 import io.noties.markwon.recycler.table.TableEntryPlugin;
-import io.noties.prism4j.Prism4j;
 import java.util.Objects;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.LinkedBlockingQueue;
@@ -58,6 +53,8 @@ import org.mian.gitnex.activities.IssueDetailActivity;
 import org.mian.gitnex.activities.ProfileActivity;
 import org.mian.gitnex.clients.PicassoService;
 import org.mian.gitnex.core.MainGrammarLocator;
+import org.mian.gitnex.helpers.codeeditor.markwon.MarkwonHighlighter;
+import org.mian.gitnex.helpers.codeeditor.theme.Theme;
 import org.mian.gitnex.helpers.contexts.IssueContext;
 import org.mian.gitnex.helpers.contexts.RepositoryContext;
 import stormpot.Allocator;
@@ -177,11 +174,6 @@ public class Markdown {
 
 		private void setup() {
 
-			Prism4jTheme prism4jTheme =
-					AppUtil.getColorFromAttribute(context, R.attr.isDark) == 1
-							? Prism4jThemeDarkula.create()
-							: Prism4jThemeDefault.create();
-
 			Markwon.Builder builder =
 					Markwon.builder(context)
 							.usePlugin(CorePlugin.create())
@@ -197,9 +189,9 @@ public class Markdown {
 									PicassoImagesPlugin.create(
 											PicassoService.getInstance(context).get()))
 							.usePlugin(
-									SyntaxHighlightPlugin.create(
-											new Prism4j(MainGrammarLocator.getInstance()),
-											prism4jTheme,
+									MarkwonHighlighter.create(
+											context,
+											Theme.getDefaultTheme(context),
 											MainGrammarLocator.DEFAULT_FALLBACK_LANGUAGE))
 							.usePlugin(
 									new AbstractMarkwonPlugin() {
@@ -333,11 +325,6 @@ public class Markdown {
 				linkPostProcessor.repository = repository;
 			}
 
-			Prism4jTheme prism4jTheme =
-					AppUtil.getColorFromAttribute(context, R.attr.isDark) == 1
-							? Prism4jThemeDarkula.create()
-							: Prism4jThemeDefault.create();
-
 			final InlineParserFactory inlineParserFactory =
 					MarkwonInlineParser.factoryBuilder()
 							.addInlineProcessor(new IssueInlineProcessor())
@@ -359,9 +346,9 @@ public class Markdown {
 									PicassoImagesPlugin.create(
 											PicassoService.getInstance(context).get()))
 							.usePlugin(
-									SyntaxHighlightPlugin.create(
-											new Prism4j(MainGrammarLocator.getInstance()),
-											prism4jTheme,
+									MarkwonHighlighter.create(
+											context,
+											Theme.getDefaultTheme(context),
 											MainGrammarLocator.DEFAULT_FALLBACK_LANGUAGE))
 							.usePlugin(
 									new AbstractMarkwonPlugin() {

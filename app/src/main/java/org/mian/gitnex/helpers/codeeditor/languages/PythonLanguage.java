@@ -1,30 +1,18 @@
 package org.mian.gitnex.helpers.codeeditor.languages;
 
-import android.content.Context;
-import android.content.res.Resources;
 import com.amrdeveloper.codeview.Code;
-import com.amrdeveloper.codeview.CodeView;
 import com.amrdeveloper.codeview.Keyword;
 import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 import java.util.regex.Pattern;
-import org.mian.gitnex.R;
 
 /**
  * @author AmrDeveloper
  * @author M M Arif
  */
-public class PythonLanguage {
-
-	// Language Keywords
-	private static final Pattern PATTERN_KEYWORDS =
-			Pattern.compile(
-					"\\b(False|await|else|import|pass|None|break|except|in|raise"
-							+ "|True|class|finally|is|return|and|continue|for|lambda"
-							+ "|try|as|def|from|nonlocal|while|assert|del|global|not"
-							+ "|with|async|elif|if|or|yield)\\b");
+public class PythonLanguage extends Language {
 
 	// Brackets and Colons
 	private static final Pattern PATTERN_BUILTINS = Pattern.compile("[,:;[->]{}()]");
@@ -34,70 +22,14 @@ public class PythonLanguage {
 	private static final Pattern PATTERN_CHAR = Pattern.compile("['](.*?)[']");
 	private static final Pattern PATTERN_STRING = Pattern.compile("[\"](.*?)[\"]");
 	private static final Pattern PATTERN_HEX = Pattern.compile("0x[0-9a-fA-F]+");
-	private static final Pattern PATTERN_TODO_COMMENT = Pattern.compile("#TODO[^\n]*");
+	private static final Pattern PATTERN_TODO_COMMENT =
+			Pattern.compile("#\\s?(TODO|todo)\\s[^\n]*");
 	private static final Pattern PATTERN_ATTRIBUTE = Pattern.compile("\\.[a-zA-Z0-9_]+");
 	private static final Pattern PATTERN_OPERATION =
 			Pattern.compile(
 					":|==|>|<|!=|>=|<=|->|=|>|<|%|-|-=|%=|\\+|\\-|\\-=|\\+=|\\^|\\&|\\|::|\\?|\\*");
 	private static final Pattern PATTERN_HASH_COMMENT = Pattern.compile("#(?!TODO )[^\\n]*");
-
-	public static void applyFiveColorsDarkTheme(Context context, CodeView codeView) {
-		codeView.resetSyntaxPatternList();
-		codeView.resetHighlighter();
-
-		Resources resources = context.getResources();
-
-		// View Background
-		codeView.setBackgroundColor(resources.getColor(R.color.five_dark_black, null));
-
-		// Syntax Colors
-		codeView.addSyntaxPattern(PATTERN_HEX, resources.getColor(R.color.five_dark_purple, null));
-		codeView.addSyntaxPattern(PATTERN_CHAR, resources.getColor(R.color.five_dark_yellow, null));
-		codeView.addSyntaxPattern(
-				PATTERN_STRING, resources.getColor(R.color.five_dark_yellow, null));
-		codeView.addSyntaxPattern(
-				PATTERN_NUMBERS, resources.getColor(R.color.five_dark_purple, null));
-		codeView.addSyntaxPattern(
-				PATTERN_KEYWORDS, resources.getColor(R.color.five_dark_purple, null));
-		codeView.addSyntaxPattern(
-				PATTERN_BUILTINS, resources.getColor(R.color.five_dark_white, null));
-		codeView.addSyntaxPattern(
-				PATTERN_HASH_COMMENT, resources.getColor(R.color.five_dark_grey, null));
-		codeView.addSyntaxPattern(
-				PATTERN_ATTRIBUTE, resources.getColor(R.color.five_dark_blue, null));
-		codeView.addSyntaxPattern(
-				PATTERN_OPERATION, resources.getColor(R.color.five_dark_purple, null));
-
-		// Default Color
-		codeView.setTextColor(resources.getColor(R.color.five_dark_white, null));
-
-		codeView.addSyntaxPattern(PATTERN_TODO_COMMENT, resources.getColor(R.color.gold, null));
-
-		codeView.reHighlightSyntax();
-	}
-
-	public static String[] getKeywords(Context context) {
-		return context.getResources().getStringArray(R.array.python_keywords);
-	}
-
-	public static List<Code> getCodeList(Context context) {
-		List<Code> codeList = new ArrayList<>();
-		String[] keywords = getKeywords(context);
-		for (String keyword : keywords) {
-			codeList.add(new Keyword(keyword));
-		}
-		return codeList;
-	}
-
-	public static Set<Character> getIndentationStarts() {
-		Set<Character> characterSet = new HashSet<>();
-		characterSet.add(':');
-		return characterSet;
-	}
-
-	public static Set<Character> getIndentationEnds() {
-		return new HashSet<>();
-	}
+	private static final Pattern PATTERN_ANNOTATION = Pattern.compile("@.[a-zA-Z0-9_]+");
 
 	public static String getCommentStart() {
 		return "#";
@@ -105,5 +37,106 @@ public class PythonLanguage {
 
 	public static String getCommentEnd() {
 		return "";
+	}
+
+	@Override
+	public Pattern getPattern(LanguageElement element) {
+		switch (element) {
+			case KEYWORD:
+				return Pattern.compile("\\b(" + String.join("|", getKeywords()) + ")\\b");
+			case BUILTIN:
+				return PATTERN_BUILTINS;
+			case NUMBER:
+				return PATTERN_NUMBERS;
+			case CHAR:
+				return PATTERN_CHAR;
+			case STRING:
+				return PATTERN_STRING;
+			case HEX:
+				return PATTERN_HEX;
+			case SINGLE_LINE_COMMENT:
+				return PATTERN_HASH_COMMENT;
+			case ATTRIBUTE:
+				return PATTERN_ATTRIBUTE;
+			case OPERATION:
+				return PATTERN_OPERATION;
+			case TODO_COMMENT:
+				return PATTERN_TODO_COMMENT;
+			case ANNOTATION:
+				return PATTERN_ANNOTATION;
+
+			case GENERIC:
+			case MULTI_LINE_COMMENT:
+			default:
+				return null;
+		}
+	}
+
+	@Override
+	public String[] getKeywords() {
+		return new String[] {
+			"False",
+			"await",
+			"else",
+			"import",
+			"pass",
+			"None",
+			"break",
+			"except",
+			"in",
+			"raise",
+			"True",
+			"class",
+			"finally",
+			"is",
+			"return",
+			"and",
+			"continue",
+			"for",
+			"lambda",
+			"try",
+			"as",
+			"def",
+			"from",
+			"nonlocal",
+			"while",
+			"assert",
+			"del",
+			"global",
+			"not",
+			"with",
+			"async",
+			"elif",
+			"if",
+			"or",
+			"yield",
+		};
+	}
+
+	@Override
+	public List<Code> getCodeList() {
+		List<Code> codeList = new ArrayList<>();
+		String[] keywords = getKeywords();
+		for (String keyword : keywords) {
+			codeList.add(new Keyword(keyword));
+		}
+		return codeList;
+	}
+
+	@Override
+	public String getName() {
+		return "Python";
+	}
+
+	@Override
+	public Set<Character> getIndentationStarts() {
+		Set<Character> characterSet = new HashSet<>();
+		characterSet.add(':');
+		return characterSet;
+	}
+
+	@Override
+	public Set<Character> getIndentationEnds() {
+		return new HashSet<>();
 	}
 }
