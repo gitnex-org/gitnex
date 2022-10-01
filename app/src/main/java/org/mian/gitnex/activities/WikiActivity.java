@@ -395,7 +395,7 @@ public class WikiActivity extends BaseActivity implements BottomSheetListener {
 	}
 
 	@Override
-	public boolean onCreateOptionsMenu(Menu menu) {
+	public boolean onCreateOptionsMenu(@NonNull Menu menu) {
 
 		MenuInflater inflater = getMenuInflater();
 		inflater.inflate(R.menu.markdown_switcher, menu);

@@ -74,7 +74,7 @@ public class DetailFragment extends Fragment {
 		Call<User> call = RetrofitClient.getApiInterface(context).userGet(username);
 
 		call.enqueue(
-				new Callback<User>() {
+				new Callback<>() {
 
 					@Override
 					public void onResponse(
@@ -94,7 +94,6 @@ public class DetailFragment extends Fragment {
 													: "";
 
 									int imgRadius = AppUtil.getPixelsFromDensity(context, 3);
-									String timeFormat = tinyDb.getString("dateFormat", "pretty");
 
 									binding.userFullName.setText(username);
 									binding.userLogin.setText(
@@ -151,19 +150,12 @@ public class DetailFragment extends Fragment {
 
 									binding.userJoinedOn.setText(
 											TimeHelper.formatTime(
-													response.body().getCreated(),
-													locale,
-													timeFormat,
+													response.body().getCreated(), locale));
+									binding.userJoinedOn.setOnClickListener(
+											new ClickListener(
+													TimeHelper.customDateFormatForToastDateFormat(
+															response.body().getCreated()),
 													context));
-									if (timeFormat.equals("pretty")) {
-										binding.userJoinedOn.setOnClickListener(
-												new ClickListener(
-														TimeHelper
-																.customDateFormatForToastDateFormat(
-																		response.body()
-																				.getCreated()),
-														context));
-									}
 									break;
 
 								case 401:

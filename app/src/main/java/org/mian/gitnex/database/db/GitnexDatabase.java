@@ -8,9 +8,11 @@ import androidx.room.RoomDatabase;
 import androidx.room.migration.Migration;
 import androidx.sqlite.db.SupportSQLiteDatabase;
 import org.mian.gitnex.database.dao.DraftsDao;
+import org.mian.gitnex.database.dao.NotesDao;
 import org.mian.gitnex.database.dao.RepositoriesDao;
 import org.mian.gitnex.database.dao.UserAccountsDao;
 import org.mian.gitnex.database.models.Draft;
+import org.mian.gitnex.database.models.Notes;
 import org.mian.gitnex.database.models.Repository;
 import org.mian.gitnex.database.models.UserAccount;
 
@@ -18,8 +20,8 @@ import org.mian.gitnex.database.models.UserAccount;
  * @author M M Arif
  */
 @Database(
-		entities = {Draft.class, Repository.class, UserAccount.class},
-		version = 6,
+		entities = {Draft.class, Repository.class, UserAccount.class, Notes.class},
+		version = 7,
 		exportSchema = false)
 public abstract class GitnexDatabase extends RoomDatabase {
 
@@ -68,6 +70,15 @@ public abstract class GitnexDatabase extends RoomDatabase {
 							"ALTER TABLE 'Repositories' ADD COLUMN 'mostVisited' INTEGER NOT NULL DEFAULT 0");
 				}
 			};
+	private static final Migration MIGRATION_6_7 =
+			new Migration(6, 7) {
+
+				@Override
+				public void migrate(@NonNull SupportSQLiteDatabase database) {
+					database.execSQL(
+							"CREATE TABLE IF NOT EXISTS 'Notes' ('noteId' INTEGER NOT NULL, 'content' TEXT, 'datetime' INTEGER, 'modified' INTEGER, PRIMARY KEY('noteid'))");
+				}
+			};
 	private static volatile GitnexDatabase gitnexDatabase;
 
 	public static GitnexDatabase getDatabaseInstance(Context context) {
@@ -85,7 +96,8 @@ public abstract class GitnexDatabase extends RoomDatabase {
 											MIGRATION_2_3,
 											MIGRATION_3_4,
 											MIGRATION_4_5,
-											MIGRATION_5_6)
+											MIGRATION_5_6,
+											MIGRATION_6_7)
 									.build();
 				}
 			}
@@ -99,4 +111,6 @@ public abstract class GitnexDatabase extends RoomDatabase {
 	public abstract RepositoriesDao repositoriesDao();
 
 	public abstract UserAccountsDao userAccountsDao();
+
+	public abstract NotesDao notesDao();
 }

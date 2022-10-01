@@ -42,6 +42,10 @@
             android:icon="@drawable/ic_trending"
             android:title="@string/navMostVisited"/>
 
+        <item android:id="@+id/nav_notes"
+            android:icon="@drawable/ic_notes"
+            android:title="@string/navNotes" />
+
         <item android:id="@+id/nav_comments_draft"
             android:icon="@drawable/ic_drafts"
             android:title="@string/titleDrafts"/>

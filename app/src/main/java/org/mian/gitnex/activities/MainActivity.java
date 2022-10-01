@@ -46,6 +46,7 @@ import org.mian.gitnex.fragments.MostVisitedReposFragment;
 import org.mian.gitnex.fragments.MyIssuesFragment;
 import org.mian.gitnex.fragments.MyProfileFragment;
 import org.mian.gitnex.fragments.MyRepositoriesFragment;
+import org.mian.gitnex.fragments.NotesFragment;
 import org.mian.gitnex.fragments.NotificationsFragment;
 import org.mian.gitnex.fragments.OrganizationsFragment;
 import org.mian.gitnex.fragments.RepositoriesFragment;
@@ -143,6 +144,8 @@ public class MainActivity extends BaseActivity
 			toolbarTitle.setText(getResources().getString(R.string.navProfile));
 		} else if (fragmentById instanceof MostVisitedReposFragment) {
 			toolbarTitle.setText(getResources().getString(R.string.navMostVisited));
+		} else if (fragmentById instanceof NotesFragment) {
+			toolbarTitle.setText(getResources().getString(R.string.navNotes));
 		} else if (fragmentById instanceof DraftsFragment) {
 			toolbarTitle.setText(getResources().getString(R.string.titleDrafts));
 		} else if (fragmentById instanceof AdministrationFragment) {
@@ -490,6 +493,14 @@ public class MainActivity extends BaseActivity
 							.commit();
 					navigationView.setCheckedItem(R.id.nav_most_visited);
 					break;
+				case 10:
+					toolbarTitle.setText(getResources().getString(R.string.navNotes));
+					getSupportFragmentManager()
+							.beginTransaction()
+							.replace(R.id.fragment_container, new NotesFragment())
+							.commit();
+					navigationView.setCheckedItem(R.id.nav_notes);
+					break;
 
 				default:
 					toolbarTitle.setText(getResources().getString(R.string.navMyRepos));
@@ -707,6 +718,13 @@ public class MainActivity extends BaseActivity
 			getSupportFragmentManager()
 					.beginTransaction()
 					.replace(R.id.fragment_container, new MostVisitedReposFragment())
+					.commit();
+		} else if (id == R.id.nav_notes) {
+
+			toolbarTitle.setText(getResources().getString(R.string.navNotes));
+			getSupportFragmentManager()
+					.beginTransaction()
+					.replace(R.id.fragment_container, new NotesFragment())
 					.commit();
 		}
 

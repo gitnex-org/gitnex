@@ -14,8 +14,6 @@ import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 import com.amulyakhare.textdrawable.TextDrawable;
 import com.amulyakhare.textdrawable.util.ColorGenerator;
-import java.text.DateFormat;
-import java.text.SimpleDateFormat;
 import java.util.List;
 import java.util.Locale;
 import org.mian.gitnex.R;
@@ -27,7 +25,6 @@ import org.mian.gitnex.helpers.RoundedTransformation;
 import org.mian.gitnex.helpers.TimeHelper;
 import org.mian.gitnex.helpers.TinyDB;
 import org.mian.gitnex.helpers.contexts.RepositoryContext;
-import org.ocpsoft.prettytime.PrettyTime;
 
 /**
  * @author M M Arif
@@ -129,13 +126,11 @@ public class ExploreRepositoriesAdapter extends RecyclerView.Adapter<RecyclerVie
 					});
 		}
 
-		@SuppressLint("SetTextI18n")
 		void bindData(org.gitnex.tea4j.v2.models.Repository userRepositories) {
 			this.userRepositories = userRepositories;
 
 			int imgRadius = AppUtil.getPixelsFromDensity(context, 60);
 			Locale locale = context.getResources().getConfiguration().locale;
-			String timeFormat = tinyDb.getString("dateFormat", "pretty");
 
 			orgName.setText(userRepositories.getFullName().split("/")[0]);
 			repoName.setText(userRepositories.getFullName().split("/")[1]);
@@ -174,50 +169,15 @@ public class ExploreRepositoriesAdapter extends RecyclerView.Adapter<RecyclerVie
 			}
 
 			if (userRepositories.getUpdatedAt() != null) {
-
-				switch (timeFormat) {
-					case "pretty":
-						{
-							PrettyTime prettyTime = new PrettyTime(locale);
-							String createdTime = prettyTime.format(userRepositories.getUpdatedAt());
-							repoLastUpdated.setText(
-									context.getString(R.string.lastUpdatedAt, createdTime));
-							repoLastUpdated.setOnClickListener(
-									new ClickListener(
-											TimeHelper.customDateFormatForToastDateFormat(
-													userRepositories.getUpdatedAt()),
-											context));
-							break;
-						}
-					case "normal":
-						{
-							DateFormat formatter =
-									new SimpleDateFormat(
-											"yyyy-MM-dd '"
-													+ context.getResources()
-															.getString(R.string.timeAtText)
-													+ "' HH:mm",
-											locale);
-							String createdTime = formatter.format(userRepositories.getUpdatedAt());
-							repoLastUpdated.setText(
-									context.getString(R.string.lastUpdatedAt, createdTime));
-							break;
-						}
-					case "normal1":
-						{
-							DateFormat formatter =
-									new SimpleDateFormat(
-											"dd-MM-yyyy '"
-													+ context.getResources()
-															.getString(R.string.timeAtText)
-													+ "' HH:mm",
-											locale);
-							String createdTime = formatter.format(userRepositories.getUpdatedAt());
-							repoLastUpdated.setText(
-									context.getString(R.string.lastUpdatedAt, createdTime));
-							break;
-						}
-				}
+				repoLastUpdated.setText(
+						context.getString(
+								R.string.lastUpdatedAt,
+								TimeHelper.formatTime(userRepositories.getUpdatedAt(), locale)));
+				repoLastUpdated.setOnClickListener(
+						new ClickListener(
+								TimeHelper.customDateFormatForToastDateFormat(
+										userRepositories.getUpdatedAt()),
+								context));
 			} else {
 				repoLastUpdated.setVisibility(View.GONE);
 			}

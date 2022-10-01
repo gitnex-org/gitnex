@@ -20,11 +20,6 @@
         <item>uk</item>
     </string-array>
 
-    <string-array name="timeFormats">
-        <item>@string/settingsDateTimeHeaderDefault</item>
-        <item>@string/settingsDateTimeNormal</item>
-    </string-array>
-
     <string-array name="fonts">
         <item>Roboto</item>
         <item>Manrope</item>
@@ -63,6 +58,7 @@
         <item>@string/pageTitleNotifications</item>
         <item>@string/navMyIssues</item>
         <item>@string/navMostVisited</item>
+        <item>@string/navNotes</item>
     </string-array>
 
     <string-array name="linkHandlerDefaultScreen">

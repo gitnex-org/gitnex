@@ -30,7 +30,6 @@ import org.mian.gitnex.helpers.ClickListener;
 import org.mian.gitnex.helpers.Markdown;
 import org.mian.gitnex.helpers.RoundedTransformation;
 import org.mian.gitnex.helpers.TimeHelper;
-import org.mian.gitnex.helpers.TinyDB;
 import org.mian.gitnex.helpers.Toasty;
 import org.mian.gitnex.structs.FragmentRefreshListener;
 import retrofit2.Call;
@@ -78,9 +77,7 @@ public class ReleasesAdapter extends RecyclerView.Adapter<ReleasesAdapter.Releas
 	@Override
 	public void onBindViewHolder(@NonNull ReleasesAdapter.ReleasesViewHolder holder, int position) {
 
-		final TinyDB tinyDb = TinyDB.getInstance(context);
 		final Locale locale = context.getResources().getConfiguration().locale;
-		final String timeFormat = tinyDb.getString("dateFormat", "pretty");
 		int imgRadius = AppUtil.getPixelsFromDensity(context, 3);
 
 		Release currentItem = releasesList.get(position);
@@ -120,18 +117,13 @@ public class ReleasesAdapter extends RecyclerView.Adapter<ReleasesAdapter.Releas
 		}
 
 		if (currentItem.getPublishedAt() != null) {
-			holder.releaseDate.setText(
-					TimeHelper.formatTime(
-							currentItem.getPublishedAt(), locale, timeFormat, context));
+			holder.releaseDate.setText(TimeHelper.formatTime(currentItem.getPublishedAt(), locale));
 		}
 
-		if (timeFormat.equals("pretty")) {
-			holder.releaseDate.setOnClickListener(
-					new ClickListener(
-							TimeHelper.customDateFormatForToastDateFormat(
-									currentItem.getPublishedAt()),
-							context));
-		}
+		holder.releaseDate.setOnClickListener(
+				new ClickListener(
+						TimeHelper.customDateFormatForToastDateFormat(currentItem.getPublishedAt()),
+						context));
 
 		if (!currentItem.getBody().equals("")) {
 			Markdown.render(context, currentItem.getBody(), holder.releaseBodyContent);

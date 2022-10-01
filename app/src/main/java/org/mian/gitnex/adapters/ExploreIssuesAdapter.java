@@ -20,8 +20,6 @@ import androidx.core.content.res.ResourcesCompat;
 import androidx.core.text.HtmlCompat;
 import androidx.recyclerview.widget.RecyclerView;
 import com.amulyakhare.textdrawable.TextDrawable;
-import java.text.DateFormat;
-import java.text.SimpleDateFormat;
 import java.util.List;
 import java.util.Locale;
 import org.gitnex.tea4j.v2.models.Issue;
@@ -38,7 +36,6 @@ import org.mian.gitnex.helpers.TimeHelper;
 import org.mian.gitnex.helpers.TinyDB;
 import org.mian.gitnex.helpers.contexts.IssueContext;
 import org.mian.gitnex.helpers.contexts.RepositoryContext;
-import org.ocpsoft.prettytime.PrettyTime;
 
 /**
  * @author M M Arif
@@ -201,7 +198,6 @@ public class ExploreIssuesAdapter extends RecyclerView.Adapter<RecyclerView.View
 			int imgRadius = AppUtil.getPixelsFromDensity(context, 60);
 
 			Locale locale = context.getResources().getConfiguration().locale;
-			String timeFormat = tinyDb.getString("dateFormat", "pretty");
 
 			PicassoService.getInstance(context)
 					.get()
@@ -319,46 +315,11 @@ public class ExploreIssuesAdapter extends RecyclerView.Adapter<RecyclerView.View
 						context.getResources().getColor(R.color.releasePre, null));
 			}
 
-			switch (timeFormat) {
-				case "pretty":
-					{
-						PrettyTime prettyTime = new PrettyTime(locale);
-						String createdTime = prettyTime.format(issue.getCreatedAt());
-						issueCreatedTime.setText(createdTime);
-						issueCreatedTime.setOnClickListener(
-								new ClickListener(
-										TimeHelper.customDateFormatForToastDateFormat(
-												issue.getCreatedAt()),
-										context));
-						break;
-					}
-				case "normal":
-					{
-						DateFormat formatter =
-								new SimpleDateFormat(
-										"yyyy-MM-dd '"
-												+ context.getResources()
-														.getString(R.string.timeAtText)
-												+ "' HH:mm",
-										locale);
-						String createdTime = formatter.format(issue.getCreatedAt());
-						issueCreatedTime.setText(createdTime);
-						break;
-					}
-				case "normal1":
-					{
-						DateFormat formatter =
-								new SimpleDateFormat(
-										"dd-MM-yyyy '"
-												+ context.getResources()
-														.getString(R.string.timeAtText)
-												+ "' HH:mm",
-										locale);
-						String createdTime = formatter.format(issue.getCreatedAt());
-						issueCreatedTime.setText(createdTime);
-						break;
-					}
-			}
+			issueCreatedTime.setText(TimeHelper.formatTime(issue.getCreatedAt(), locale));
+			issueCreatedTime.setOnClickListener(
+					new ClickListener(
+							TimeHelper.customDateFormatForToastDateFormat(issue.getCreatedAt()),
+							context));
 		}
 	}
 }

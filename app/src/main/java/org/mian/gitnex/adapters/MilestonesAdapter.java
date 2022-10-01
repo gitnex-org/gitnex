@@ -25,7 +25,6 @@ import org.mian.gitnex.activities.RepoDetailActivity;
 import org.mian.gitnex.helpers.ClickListener;
 import org.mian.gitnex.helpers.Markdown;
 import org.mian.gitnex.helpers.TimeHelper;
-import org.mian.gitnex.helpers.TinyDB;
 import org.mian.gitnex.helpers.contexts.RepositoryContext;
 
 /**
@@ -188,9 +187,7 @@ public class MilestonesAdapter extends RecyclerView.Adapter<RecyclerView.ViewHol
 		void bindData(Milestone dataModel) {
 
 			this.milestones = dataModel;
-			final TinyDB tinyDb = TinyDB.getInstance(context);
 			final String locale = context.getResources().getConfiguration().locale.getLanguage();
-			final String timeFormat = tinyDb.getString("dateFormat", "pretty");
 
 			Markdown.render(context, dataModel.getTitle(), msTitle);
 
@@ -249,39 +246,23 @@ public class MilestonesAdapter extends RecyclerView.Adapter<RecyclerView.ViewHol
 
 			if (dataModel.getDueOn() != null) {
 
-				String TAG = "MilestonesAdapter";
-				if (timeFormat.equals("normal") || timeFormat.equals("pretty")) {
+				DateFormat formatter = new SimpleDateFormat("yyyy-MM-dd", new Locale(locale));
+				Date date = dataModel.getDueOn();
 
-					DateFormat formatter = new SimpleDateFormat("yyyy-MM-dd", new Locale(locale));
-					Date date = dataModel.getDueOn();
+				assert date != null;
+				String dueDate = formatter.format(date);
 
-					assert date != null;
-					String dueDate = formatter.format(date);
-
-					if (date.before(new Date())) {
-						msDueDate.setTextColor(
-								ResourcesCompat.getColor(
-										context.getResources(), R.color.darkRed, null));
-					}
-
-					msDueDate.setText(dueDate);
-					msDueDate.setOnClickListener(
-							new ClickListener(
-									TimeHelper.customDateFormatForToastDateFormat(
-											dataModel.getDueOn()),
-									context));
-				} else if (timeFormat.equals("normal1")) {
-
-					SimpleDateFormat formatter =
-							new SimpleDateFormat("dd-MM-yyyy", new Locale(locale));
-
-					Date date1 = dataModel.getDueOn();
-
-					assert date1 != null;
-					String dueDate = formatter.format(date1);
-					msDueDate.setText(dueDate);
+				if (date.before(new Date())) {
+					msDueDate.setTextColor(
+							ResourcesCompat.getColor(
+									context.getResources(), R.color.darkRed, null));
 				}
 
+				msDueDate.setText(dueDate);
+				msDueDate.setOnClickListener(
+						new ClickListener(
+								TimeHelper.customDateFormatForToastDateFormat(dataModel.getDueOn()),
+								context));
 			} else {
 
 				msDueDate.setText(context.getString(R.string.milestoneNoDueDate));

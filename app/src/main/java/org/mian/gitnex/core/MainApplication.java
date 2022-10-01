@@ -52,7 +52,7 @@ public class MainApplication extends Application {
 
 		if (tinyDB.getBoolean("crashReportingEnabled", true)) {
 
-			CoreConfigurationBuilder ACRABuilder = new CoreConfigurationBuilder(this);
+			CoreConfigurationBuilder ACRABuilder = new CoreConfigurationBuilder();
 
 			ACRABuilder.withBuildConfigClass(BuildConfig.class)
 					.withReportContent(
@@ -62,23 +62,28 @@ public class MainApplication extends Application {
 							ReportField.AVAILABLE_MEM_SIZE,
 							ReportField.BRAND)
 					.setReportFormat(StringFormat.KEY_VALUE_LIST);
-			ACRABuilder.getPluginConfigurationBuilder(NotificationConfigurationBuilder.class)
-					.withResTitle(R.string.crashTitle)
-					.withResIcon(R.drawable.gitnex_transparent)
-					.withResChannelName(R.string.setCrashReports)
-					.withResText(R.string.crashMessage)
-					.withEnabled(true);
-			ACRABuilder.getPluginConfigurationBuilder(MailSenderConfigurationBuilder.class)
-					.withMailTo(getResources().getString(R.string.appEmail))
-					.withSubject(
-							getResources()
-									.getString(
-											R.string.crashReportEmailSubject,
-											AppUtil.getAppBuildNo(context)))
-					.withReportAsFile(true)
-					.withEnabled(true);
-			ACRABuilder.getPluginConfigurationBuilder(LimiterConfigurationBuilder.class)
-					.setEnabled(true);
+
+			ACRABuilder.withPluginConfigurations(
+					new NotificationConfigurationBuilder()
+							.withTitle(getString(R.string.crashTitle))
+							.withResIcon(R.drawable.gitnex_transparent)
+							.withChannelName(getString(R.string.setCrashReports))
+							.withText(getString(R.string.crashMessage))
+							.build());
+
+			ACRABuilder.withPluginConfigurations(
+					new MailSenderConfigurationBuilder()
+							.withMailTo(getResources().getString(R.string.appEmail))
+							.withSubject(
+									getResources()
+											.getString(
+													R.string.crashReportEmailSubject,
+													AppUtil.getAppBuildNo(context)))
+							.withReportAsFile(true)
+							.build());
+
+			ACRABuilder.withPluginConfigurations(
+					new LimiterConfigurationBuilder().withEnabled(true).build());
 
 			ACRA.init(this, ACRABuilder);
 		}

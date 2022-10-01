@@ -32,7 +32,6 @@ import org.mian.gitnex.helpers.AppUtil;
 import org.mian.gitnex.helpers.ClickListener;
 import org.mian.gitnex.helpers.Markdown;
 import org.mian.gitnex.helpers.TimeHelper;
-import org.mian.gitnex.helpers.TinyDB;
 import org.mian.gitnex.helpers.Toasty;
 import org.mian.gitnex.helpers.contexts.RepositoryContext;
 import retrofit2.Call;
@@ -70,7 +69,6 @@ public class RepoInfoFragment extends Fragment {
 			@NonNull LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
 
 		binding = FragmentRepoInfoBinding.inflate(inflater, container, false);
-		TinyDB tinyDb = TinyDB.getInstance(getContext());
 		ctx = getContext();
 		Locale locale = getResources().getConfiguration().locale;
 
@@ -79,7 +77,7 @@ public class RepoInfoFragment extends Fragment {
 
 		binding.repoMetaFrame.setVisibility(View.GONE);
 
-		setRepoInfo(locale, tinyDb.getString("dateFormat", "pretty"));
+		setRepoInfo(locale);
 
 		if (isExpandViewVisible()) {
 			toggleExpandView();
@@ -147,7 +145,7 @@ public class RepoInfoFragment extends Fragment {
 		return binding.repoMetaFrame.getVisibility() == View.VISIBLE;
 	}
 
-	private void setRepoInfo(Locale locale, final String timeFormat) {
+	private void setRepoInfo(Locale locale) {
 		Repository repoInfo = repository.getRepository();
 
 		if (isAdded()) {
@@ -208,17 +206,13 @@ public class RepoInfoFragment extends Fragment {
 					FileUtils.byteCountToDisplaySize(repoInfo.getSize() * 1024));
 
 			binding.repoMetaCreatedAt.setText(
-					TimeHelper.formatTime(repoInfo.getCreatedAt(), locale, timeFormat, ctx));
-			if (timeFormat.equals("pretty")) {
-				binding.repoMetaCreatedAt.setOnClickListener(
-						new ClickListener(
-								TimeHelper.customDateFormatForToastDateFormat(
-										repoInfo.getCreatedAt()),
-								ctx));
-			}
+					TimeHelper.formatTime(repoInfo.getCreatedAt(), locale));
+			binding.repoMetaCreatedAt.setOnClickListener(
+					new ClickListener(
+							TimeHelper.customDateFormatForToastDateFormat(repoInfo.getCreatedAt()),
+							ctx));
 
-			String repoMetaUpdatedAt =
-					TimeHelper.formatTime(repoInfo.getUpdatedAt(), locale, timeFormat, ctx);
+			String repoMetaUpdatedAt = TimeHelper.formatTime(repoInfo.getUpdatedAt(), locale);
 
 			String website =
 					(repoInfo.getWebsite().isEmpty())

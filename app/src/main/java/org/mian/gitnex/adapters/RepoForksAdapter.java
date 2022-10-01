@@ -14,8 +14,6 @@ import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 import com.amulyakhare.textdrawable.TextDrawable;
 import com.amulyakhare.textdrawable.util.ColorGenerator;
-import java.text.DateFormat;
-import java.text.SimpleDateFormat;
 import java.util.List;
 import java.util.Locale;
 import org.mian.gitnex.R;
@@ -27,7 +25,6 @@ import org.mian.gitnex.helpers.RoundedTransformation;
 import org.mian.gitnex.helpers.TimeHelper;
 import org.mian.gitnex.helpers.TinyDB;
 import org.mian.gitnex.helpers.contexts.RepositoryContext;
-import org.ocpsoft.prettytime.PrettyTime;
 
 /**
  * @author M M Arif
@@ -126,7 +123,6 @@ public class RepoForksAdapter extends RecyclerView.Adapter<RecyclerView.ViewHold
 			int imgRadius = AppUtil.getPixelsFromDensity(context, 3);
 
 			Locale locale = context.getResources().getConfiguration().locale;
-			String timeFormat = tinyDb.getString("dateFormat", "pretty");
 			this.userRepositories = forksModel;
 			orgName.setText(forksModel.getFullName().split("/")[0]);
 			repoName.setText(forksModel.getFullName().split("/")[1]);
@@ -165,50 +161,15 @@ public class RepoForksAdapter extends RecyclerView.Adapter<RecyclerView.ViewHold
 			}
 
 			if (forksModel.getUpdatedAt() != null) {
-
-				switch (timeFormat) {
-					case "pretty":
-						{
-							PrettyTime prettyTime = new PrettyTime(locale);
-							String createdTime = prettyTime.format(forksModel.getUpdatedAt());
-							repoLastUpdated.setText(
-									context.getString(R.string.lastUpdatedAt, createdTime));
-							repoLastUpdated.setOnClickListener(
-									new ClickListener(
-											TimeHelper.customDateFormatForToastDateFormat(
-													forksModel.getUpdatedAt()),
-											context));
-							break;
-						}
-					case "normal":
-						{
-							DateFormat formatter =
-									new SimpleDateFormat(
-											"yyyy-MM-dd '"
-													+ context.getResources()
-															.getString(R.string.timeAtText)
-													+ "' HH:mm",
-											locale);
-							String createdTime = formatter.format(forksModel.getUpdatedAt());
-							repoLastUpdated.setText(
-									context.getString(R.string.lastUpdatedAt, createdTime));
-							break;
-						}
-					case "normal1":
-						{
-							DateFormat formatter =
-									new SimpleDateFormat(
-											"dd-MM-yyyy '"
-													+ context.getResources()
-															.getString(R.string.timeAtText)
-													+ "' HH:mm",
-											locale);
-							String createdTime = formatter.format(forksModel.getUpdatedAt());
-							repoLastUpdated.setText(
-									context.getString(R.string.lastUpdatedAt, createdTime));
-							break;
-						}
-				}
+				repoLastUpdated.setText(
+						context.getString(
+								R.string.lastUpdatedAt,
+								TimeHelper.formatTime(forksModel.getUpdatedAt(), locale)));
+				repoLastUpdated.setOnClickListener(
+						new ClickListener(
+								TimeHelper.customDateFormatForToastDateFormat(
+										forksModel.getUpdatedAt()),
+								context));
 			} else {
 				repoLastUpdated.setVisibility(View.GONE);
 			}

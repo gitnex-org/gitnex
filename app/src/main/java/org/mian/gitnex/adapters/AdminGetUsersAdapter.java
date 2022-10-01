@@ -135,7 +135,6 @@ public class AdminGetUsersAdapter extends RecyclerView.Adapter<RecyclerView.View
 	}
 
 	public interface OnLoadMoreListener {
-
 		void onLoadMore();
 
 		void onLoadFinished();

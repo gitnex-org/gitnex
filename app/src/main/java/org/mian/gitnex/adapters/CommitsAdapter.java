@@ -141,9 +141,7 @@ public class CommitsAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder
 																.getCommit()
 																.getCommitter()
 																.getDate()),
-												context.getResources().getConfiguration().locale,
-												"pretty",
-												context)),
+												context.getResources().getConfiguration().locale)),
 								HtmlCompat.FROM_HTML_MODE_COMPACT));
 			} else {
 				commitAuthorAndCommitter.setText(
@@ -157,9 +155,7 @@ public class CommitsAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder
 																.getCommit()
 																.getCommitter()
 																.getDate()),
-												context.getResources().getConfiguration().locale,
-												"pretty",
-												context)),
+												context.getResources().getConfiguration().locale)),
 								HtmlCompat.FROM_HTML_MODE_COMPACT));
 			}
 
@@ -179,7 +175,6 @@ public class CommitsAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder
 						.resize(120, 120)
 						.centerCrop()
 						.into(commitAuthorAvatar);
-
 			} else {
 				commitAuthorAvatar.setImageDrawable(null);
 				commitAuthorAvatarFrame.setVisibility(View.GONE);
@@ -206,7 +201,6 @@ public class CommitsAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder
 						.resize(120, 120)
 						.centerCrop()
 						.into(commitCommitterAvatar);
-
 			} else {
 				commitCommitterAvatar.setImageDrawable(null);
 				commitCommitterAvatarFrame.setVisibility(View.GONE);

@@ -281,9 +281,7 @@ public class WikiListAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
 																	.getLastCommit()
 																	.getAuthor()
 																	.getDate()),
-													ctx.getResources().getConfiguration().locale,
-													"pretty",
-													ctx)),
+													ctx.getResources().getConfiguration().locale)),
 							HtmlCompat.FROM_HTML_MODE_COMPACT));
 			this.wikiLastUpdatedBy.setOnClickListener(
 					new ClickListener(
@@ -297,23 +295,19 @@ public class WikiListAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
 
 			ColorGenerator generator = ColorGenerator.Companion.getMATERIAL();
 			int color = generator.getColor(wikiPageMetaData.getTitle());
-			if (wikiPageMetaData.getTitle() != null && wikiPageMetaData.getTitle().length() > 0) {
-				String firstCharacter = String.valueOf(wikiPageMetaData.getTitle().charAt(0));
+			String firstCharacter = String.valueOf(wikiPageMetaData.getTitle().charAt(0));
 
-				TextDrawable drawable =
-						TextDrawable.builder()
-								.beginConfig()
-								.useFont(Typeface.DEFAULT)
-								.fontSize(18)
-								.toUpperCase()
-								.width(28)
-								.height(28)
-								.endConfig()
-								.buildRoundRect(firstCharacter, color, 14);
-				avatar.setImageDrawable(drawable);
-			} else {
-				avatar.setVisibility(View.GONE);
-			}
+			TextDrawable drawable =
+					TextDrawable.builder()
+							.beginConfig()
+							.useFont(Typeface.DEFAULT)
+							.fontSize(18)
+							.toUpperCase()
+							.width(28)
+							.height(28)
+							.endConfig()
+							.buildRoundRect(firstCharacter, color, 14);
+			avatar.setImageDrawable(drawable);
 
 			if (!((RepoDetailActivity) ctx).repository.getPermissions().isPush()) {
 				wikiMenu.setVisibility(View.GONE);

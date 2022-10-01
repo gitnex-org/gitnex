@@ -1,6 +1,5 @@
 package org.mian.gitnex.helpers;
 
-import android.content.Context;
 import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
@@ -9,7 +8,6 @@ import java.time.format.DateTimeFormatter;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.Locale;
-import org.mian.gitnex.R;
 import org.ocpsoft.prettytime.PrettyTime;
 
 /**
@@ -35,38 +33,11 @@ public class TimeHelper {
 		return customDateFormatForToastDateFormat(createdTime);
 	}
 
-	public static String formatTime(Date date, Locale locale, String timeFormat, Context context) {
+	public static String formatTime(Date date, Locale locale) {
 
 		if (date != null) {
-			switch (timeFormat) {
-				case "pretty":
-					{
-						PrettyTime prettyTime = new PrettyTime(locale);
-						return prettyTime.format(date);
-					}
-				case "normal":
-					{
-						DateFormat formatter =
-								new SimpleDateFormat(
-										"yyyy-MM-dd '"
-												+ context.getResources()
-														.getString(R.string.timeAtText)
-												+ "' HH:mm",
-										locale);
-						return formatter.format(date);
-					}
-				case "normal1":
-					{
-						DateFormat formatter =
-								new SimpleDateFormat(
-										"dd-MM-yyyy '"
-												+ context.getResources()
-														.getString(R.string.timeAtText)
-												+ "' HH:mm",
-										locale);
-						return formatter.format(date);
-					}
-			}
+			PrettyTime prettyTime = new PrettyTime(locale);
+			return prettyTime.format(date);
 		}
 
 		return "";

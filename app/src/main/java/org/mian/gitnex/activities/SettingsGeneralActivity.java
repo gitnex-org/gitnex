@@ -90,6 +90,9 @@ public class SettingsGeneralActivity extends BaseActivity {
 
 			viewBinding.homeScreenSelected.setText(
 					getResources().getString(R.string.navMostVisited));
+		} else if (homeScreenSelectedChoice == 10) {
+
+			viewBinding.homeScreenSelected.setText(getResources().getString(R.string.navNotes));
 		}
 
 		viewBinding.homeScreenFrame.setOnClickListener(
