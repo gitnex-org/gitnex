@@ -99,7 +99,7 @@
 
                 </com.google.android.material.textfield.TextInputLayout>
 
-                <com.google.android.material.switchmaterial.SwitchMaterial
+                <com.google.android.material.materialswitch.MaterialSwitch
                     android:id="@+id/repoPrivate"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
@@ -107,7 +107,7 @@
                     android:text="@string/newRepoPrivateCopy"
                     android:textColor="?attr/primaryTextColor"/>
 
-                <com.google.android.material.switchmaterial.SwitchMaterial
+                <com.google.android.material.materialswitch.MaterialSwitch
                     android:id="@+id/repoAsTemplate"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
@@ -115,7 +115,7 @@
                     android:text="@string/repoPropertiesTemplate"
                     android:textColor="?attr/primaryTextColor"/>
 
-                <com.google.android.material.switchmaterial.SwitchMaterial
+                <com.google.android.material.materialswitch.MaterialSwitch
                     android:id="@+id/repoEnableIssues"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
@@ -123,7 +123,7 @@
                     android:text="@string/repoPropertiesEnableIssues"
                     android:textColor="?attr/primaryTextColor"/>
 
-                <com.google.android.material.switchmaterial.SwitchMaterial
+                <com.google.android.material.materialswitch.MaterialSwitch
                     android:id="@+id/repoEnableWiki"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
@@ -131,7 +131,7 @@
                     android:text="@string/repoPropertiesEnableWiki"
                     android:textColor="?attr/primaryTextColor"/>
 
-                <com.google.android.material.switchmaterial.SwitchMaterial
+                <com.google.android.material.materialswitch.MaterialSwitch
                     android:id="@+id/repoEnablePr"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
@@ -139,7 +139,7 @@
                     android:text="@string/repoPropertiesEnablePr"
                     android:textColor="?attr/primaryTextColor"/>
 
-                <com.google.android.material.switchmaterial.SwitchMaterial
+                <com.google.android.material.materialswitch.MaterialSwitch
                     android:id="@+id/repoEnableTimer"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
@@ -147,7 +147,7 @@
                     android:text="@string/repoPropertiesEnableTimeTracker"
                     android:textColor="?attr/primaryTextColor"/>
 
-                <com.google.android.material.switchmaterial.SwitchMaterial
+                <com.google.android.material.materialswitch.MaterialSwitch
                     android:id="@+id/repoEnableMerge"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
@@ -155,7 +155,7 @@
                     android:text="@string/repoPropertiesEnableMergeCommits"
                     android:textColor="?attr/primaryTextColor"/>
 
-                <com.google.android.material.switchmaterial.SwitchMaterial
+                <com.google.android.material.materialswitch.MaterialSwitch
                     android:id="@+id/repoEnableRebase"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
@@ -163,7 +163,7 @@
                     android:text="@string/repoPropertiesEnableRebase"
                     android:textColor="?attr/primaryTextColor"/>
 
-                <com.google.android.material.switchmaterial.SwitchMaterial
+                <com.google.android.material.materialswitch.MaterialSwitch
                     android:id="@+id/repoEnableSquash"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
@@ -171,7 +171,7 @@
                     android:text="@string/repoPropertiesEnableSquash"
                     android:textColor="?attr/primaryTextColor"/>
 
-                <com.google.android.material.switchmaterial.SwitchMaterial
+                <com.google.android.material.materialswitch.MaterialSwitch
                     android:id="@+id/repoEnableForceMerge"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"

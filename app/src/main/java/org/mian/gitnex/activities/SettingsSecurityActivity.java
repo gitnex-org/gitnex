@@ -13,7 +13,6 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 import androidx.biometric.BiometricManager;
 import com.google.android.material.dialog.MaterialAlertDialogBuilder;
-import com.google.android.material.switchmaterial.SwitchMaterial;
 import java.io.File;
 import java.io.IOException;
 import org.apache.commons.io.FileUtils;
@@ -63,8 +62,6 @@ public class SettingsSecurityActivity extends BaseActivity {
 				activitySettingsSecurityBinding.cacheSizeImagesSelectionFrame;
 		LinearLayout clearCacheFrame = activitySettingsSecurityBinding.clearCacheSelectionFrame;
 
-		SwitchMaterial switchBiometric = activitySettingsSecurityBinding.switchBiometric;
-
 		cacheSizeDataList = getResources().getStringArray(R.array.cacheSizeList);
 		cacheSizeImagesList = getResources().getStringArray(R.array.cacheSizeList);
 
@@ -86,10 +83,11 @@ public class SettingsSecurityActivity extends BaseActivity {
 			cacheSizeImagesSelectedChoice = tinyDB.getInt("cacheSizeImagesId");
 		}
 
-		switchBiometric.setChecked(tinyDB.getBoolean("biometricStatus", false));
+		activitySettingsSecurityBinding.switchBiometric.setChecked(
+				tinyDB.getBoolean("biometricStatus", false));
 
 		// biometric switcher
-		switchBiometric.setOnCheckedChangeListener(
+		activitySettingsSecurityBinding.switchBiometric.setOnCheckedChangeListener(
 				(buttonView, isChecked) -> {
 					if (isChecked) {
 
@@ -112,7 +110,8 @@ public class SettingsSecurityActivity extends BaseActivity {
 								case BiometricManager.BIOMETRIC_ERROR_UNSUPPORTED:
 								case BiometricManager.BIOMETRIC_STATUS_UNKNOWN:
 									tinyDB.putBoolean("biometricStatus", false);
-									switchBiometric.setChecked(false);
+									activitySettingsSecurityBinding.switchBiometric.setChecked(
+											false);
 									Toasty.error(
 											appCtx,
 											getResources()
@@ -120,7 +119,8 @@ public class SettingsSecurityActivity extends BaseActivity {
 									break;
 								case BiometricManager.BIOMETRIC_ERROR_HW_UNAVAILABLE:
 									tinyDB.putBoolean("biometricStatus", false);
-									switchBiometric.setChecked(false);
+									activitySettingsSecurityBinding.switchBiometric.setChecked(
+											false);
 									Toasty.error(
 											appCtx,
 											getResources()
@@ -128,7 +128,8 @@ public class SettingsSecurityActivity extends BaseActivity {
 									break;
 								case BiometricManager.BIOMETRIC_ERROR_NONE_ENROLLED:
 									tinyDB.putBoolean("biometricStatus", false);
-									switchBiometric.setChecked(false);
+									activitySettingsSecurityBinding.switchBiometric.setChecked(
+											false);
 									Toasty.info(
 											appCtx,
 											getResources().getString(R.string.enrollBiometric));
@@ -147,7 +148,9 @@ public class SettingsSecurityActivity extends BaseActivity {
 				});
 
 		activitySettingsSecurityBinding.biometricFrame.setOnClickListener(
-				v -> switchBiometric.setChecked(!switchBiometric.isChecked()));
+				v ->
+						activitySettingsSecurityBinding.switchBiometric.setChecked(
+								!activitySettingsSecurityBinding.switchBiometric.isChecked()));
 
 		// clear cache setter
 		File cacheDir = appCtx.getCacheDir();

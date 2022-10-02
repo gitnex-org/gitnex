@@ -4,11 +4,11 @@ plugins {
 apply plugin: 'com.android.application'
 
 android {
-    compileSdkVersion 32
+    compileSdkVersion 33
     defaultConfig {
         applicationId "org.mian.gitnex"
         minSdkVersion 23
-        targetSdkVersion 32
+        targetSdkVersion 33
         versionCode 495
         versionName "5.0.0-dev"
         multiDexEnabled true
@@ -42,6 +42,7 @@ android {
     lint {
         abortOnError false
     }
+    namespace 'org.mian.gitnex'
     defaultConfig {
         vectorDrawables.useSupportLibrary = true
     }
@@ -60,9 +61,9 @@ dependencies {
 
     implementation fileTree(include: ['*.jar'], dir: 'libs')
     implementation 'androidx.appcompat:appcompat:1.5.1'
-    implementation 'com.google.android.material:material:1.6.1'
-    implementation 'androidx.compose.material3:material3:1.0.0-alpha15'
-    implementation 'androidx.compose.material3:material3-window-size-class:1.0.0-alpha15'
+    implementation 'com.google.android.material:material:1.8.0-alpha01'
+    implementation 'androidx.compose.material3:material3:1.0.0-beta03'
+    implementation 'androidx.compose.material3:material3-window-size-class:1.0.0-beta03'
     implementation 'androidx.viewpager2:viewpager2:1.1.0-beta01'
     implementation 'androidx.constraintlayout:constraintlayout:2.1.4'
     implementation "androidx.legacy:legacy-support-v4:1.0.0"
@@ -80,7 +81,7 @@ dependencies {
     implementation 'com.squareup.retrofit2:converter-gson:2.9.0'
     implementation 'com.squareup.retrofit2:converter-scalars:2.9.0'
     implementation 'com.squareup.okhttp3:logging-interceptor:5.0.0-alpha.2'
-    implementation 'org.ocpsoft.prettytime:prettytime:5.0.2.Final'
+    implementation 'org.ocpsoft.prettytime:prettytime:5.0.4.Final'
     implementation 'com.github.Pes8:android-material-color-picker-dialog:master'
     implementation "io.noties.markwon:core:$markwon_version"
     implementation "io.noties.markwon:ext-latex:$markwon_version"

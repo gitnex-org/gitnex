@@ -199,7 +199,7 @@
             android:textColor="?attr/primaryTextColor"
             android:textSize="@dimen/dimen18sp"/>
 
-        <com.google.android.material.switchmaterial.SwitchMaterial
+        <com.google.android.material.materialswitch.MaterialSwitch
             android:id="@+id/switchCounterBadge"
             android:layout_width="wrap_content"
             android:layout_height="@dimen/dimen24dp"
@@ -208,8 +208,7 @@
             android:layout_toEndOf="@+id/tvCounterBadgeHeader"
             android:gravity="end"
             android:paddingStart="@dimen/dimen0dp"
-            android:paddingEnd="@dimen/dimen24dp"
-            android:switchMinWidth="@dimen/dimen56dp"/>
+            android:paddingEnd="@dimen/dimen24dp" />
 
     </RelativeLayout>
 
@@ -246,13 +245,12 @@
                 android:gravity="center_vertical|end"
                 android:orientation="horizontal">
 
-                <com.google.android.material.switchmaterial.SwitchMaterial
+                <com.google.android.material.materialswitch.MaterialSwitch
                     android:id="@+id/switchLabelsInListBadge"
                     android:layout_width="wrap_content"
                     android:layout_height="@dimen/dimen32dp"
                     android:paddingStart="@dimen/dimen24dp"
-                    android:paddingEnd="@dimen/dimen24dp"
-                    android:switchMinWidth="@dimen/dimen56dp" />
+                    android:paddingEnd="@dimen/dimen24dp" />
 
             </LinearLayout>
 
