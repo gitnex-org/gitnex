@@ -13,6 +13,7 @@
     <string name="navAdministration">Administration</string>
     <string name="navMyIssues">Meine Issues</string>
     <string name="navMostVisited">Meistbesuchte Repositories</string>
+    <string name="navNotes">Notizen</string>
     <!-- menu items -->
     <!-- page titles -->
     <string name="pageTitleNewRepo">Repository erstellen</string>
@@ -148,13 +149,10 @@
     <string name="settingsCertsSelectorHeader">Vertrauenswürdige Zertifikate löschen</string>
     <string name="settingsCertsPopupTitle">Vertrauenswürdige Zertifikate löschen?</string>
     <string name="settingsCertsPopupMessage">Bist du sicher, dass du jedes manuell vertrauenswürdige Zertifikat oder Hostname löschen möchtest?\n\nDu wirst ebenfalls abgemeldet werden.</string>
-    <string name="settingsDateTimeHeaderText">Datum &amp; Uhrzeit</string>
     <string name="settingsSave">Einstellungen gespeichert</string>
     <string name="settingsLanguageSelectorHeader">Sprache</string>
     <string name="settingsLanguageSelectedHeaderDefault">Englisch</string>
     <string name="settingsAppearanceHeader">Aussehen</string>
-    <string name="settingsDateTimeHeaderDefault">Schön</string>
-    <string name="settingsDateTimeNormal">Normal</string>
     <string name="settingsLanguageSelectorDialogTitle">Sprache auswählen</string>
     <string name="settingsLightThemeTimeSelectorHeader">Zeit für Wechsel zum hellen Design</string>
     <string name="settingsDarkThemeTimeSelectorHeader">Zeit für Wechsel zu dunklem Design</string>
@@ -660,6 +658,18 @@
     <string name="wikiCreated">Wiki-Seite erfolgreich erstellt</string>
     <!-- code editor -->
     <string name="openInCodeEditor">Im Code-Editor öffnen</string>
+    <!-- notes -->
+    <string name="newNote">Neue Notiz</string>
+    <string name="editNote">Notiz bearbeiten</string>
+    <string name="newNoteContentHint">Schreibe hier deine Notizen</string>
+    <string name="noteDateTime">%s erstellt</string>
+    <string name="noteTimeModified">%s aktualisiert</string>
+    <string name="noteDeleteDialoMessage">Möchten Sie diese Notiz wirklich löschen?</string>
+    <plurals name="noteDeleteMessage">
+        <item quantity="one">Notiz erfolgreich gelöscht</item>
+        <item quantity="other">Notizen erfolgreich gelöscht</item>
+    </plurals>
+    <string name="notesAllDeletionMessage">Das wird alle deine Notizen entfernen. Dieser Vorgang kann nicht rückgängig gemacht werden.</string>
     <!-- timeline -->
     <string name="commitText">Commit</string>
     <string name="timelineAddedCommit">%1$s hat %2$s %3$s hinzugefügt</string>
