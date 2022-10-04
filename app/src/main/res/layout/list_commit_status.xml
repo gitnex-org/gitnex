@@ -1,0 +1,61 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
+
+    <com.google.android.material.card.MaterialCardView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        style="?attr/materialCardViewFilledStyle"
+        android:background="?android:attr/selectableItemBackground"
+        app:cardElevation="@dimen/dimen0dp">
+
+        <LinearLayout
+            android:id="@+id/mainLayout"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:foreground="?android:attr/selectableItemBackground"
+            android:background="?attr/materialCardBackgroundColor"
+            android:padding="@dimen/dimen6dp"
+            android:orientation="horizontal">
+
+            <ImageView
+                android:id="@+id/statusIcon"
+                android:layout_width="@dimen/dimen24dp"
+                android:layout_height="match_parent"
+                android:contentDescription="@string/commitStatuses"
+                android:scaleType="fitCenter"
+                android:layout_marginEnd="@dimen/dimen16dp"
+                tools:src="@drawable/ic_dot_fill"
+                tools:tint="@color/lightYellow"/>
+
+            <LinearLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:orientation="vertical">
+
+                <TextView
+                    android:id="@+id/name"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginBottom="@dimen/dimen6dp"
+                    android:textColor="?attr/primaryTextColor"
+                    android:textSize="@dimen/dimen16sp"/>
+
+                <TextView
+                    android:id="@+id/description"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginBottom="@dimen/dimen6dp"
+                    android:textColor="?attr/primaryTextColor"
+                    android:textSize="@dimen/dimen12sp"/>
+
+            </LinearLayout>
+
+        </LinearLayout>
+
+    </com.google.android.material.card.MaterialCardView>
+
+</RelativeLayout>
