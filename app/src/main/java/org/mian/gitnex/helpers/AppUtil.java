@@ -19,6 +19,7 @@ import android.util.Base64;
 import android.util.DisplayMetrics;
 import android.util.TypedValue;
 import android.view.View;
+import androidx.annotation.AttrRes;
 import androidx.annotation.ColorInt;
 import androidx.browser.customtabs.CustomTabColorSchemeParams;
 import androidx.browser.customtabs.CustomTabsIntent;
@@ -330,7 +331,7 @@ public class AppUtil {
 	}
 
 	@ColorInt
-	public static int getColorFromAttribute(Context context, int resid) {
+	public static int getColorFromAttribute(Context context, @AttrRes int resid) {
 
 		TypedValue typedValue = new TypedValue();
 		context.getTheme().resolveAttribute(resid, typedValue, true);
