@@ -134,7 +134,7 @@
                 android:layout_marginBottom="@dimen/dimen8dp"
                 android:textColor="?attr/primaryTextColor"
                 android:textIsSelectable="true"
-                android:textSize="@dimen/dimen16sp"
+                android:textSize="@dimen/dimen14sp"
                 android:visibility="gone" />
 
             <com.google.android.material.textfield.TextInputLayout

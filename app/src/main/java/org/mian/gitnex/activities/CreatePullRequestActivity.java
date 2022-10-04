@@ -133,13 +133,12 @@ public class CreatePullRequestActivity extends BaseActivity
 
 			if (!renderMd) {
 				Markdown.render(
-					ctx,
-					EmojiParser.parseToUnicode(
-						Objects.requireNonNull(
-							Objects.requireNonNull(
-									viewBinding.prBody.getText())
-								.toString())),
-					viewBinding.markdownPreview);
+						ctx,
+						EmojiParser.parseToUnicode(
+								Objects.requireNonNull(
+										Objects.requireNonNull(viewBinding.prBody.getText())
+												.toString())),
+						viewBinding.markdownPreview);
 
 				viewBinding.markdownPreview.setVisibility(View.VISIBLE);
 				viewBinding.prBodyLayout.setVisibility(View.GONE);

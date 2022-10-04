@@ -113,6 +113,18 @@
 
             </com.google.android.material.textfield.TextInputLayout>
 
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/markdown_preview"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:minHeight="@dimen/dimen180dp"
+                android:layout_marginTop="@dimen/dimen8dp"
+                android:layout_marginBottom="@dimen/dimen8dp"
+                android:textColor="?attr/primaryTextColor"
+                android:textIsSelectable="true"
+                android:textSize="@dimen/dimen14sp"
+                android:visibility="gone" />
+
             <com.google.android.material.textfield.TextInputLayout
                 android:id="@+id/editIssueMilestoneSpinnerLayout"
                 style="@style/Widget.Material3.TextInputLayout.OutlinedBox.ExposedDropdownMenu"
