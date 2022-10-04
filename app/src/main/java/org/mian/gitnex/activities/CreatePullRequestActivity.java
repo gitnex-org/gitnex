@@ -4,6 +4,9 @@ import android.annotation.SuppressLint;
 import android.app.DatePickerDialog;
 import android.os.Bundle;
 import android.view.LayoutInflater;
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.view.MotionEvent;
 import android.view.View;
 import android.widget.ArrayAdapter;
@@ -11,6 +14,7 @@ import android.widget.ImageView;
 import android.widget.TextView;
 import androidx.annotation.NonNull;
 import com.google.android.material.dialog.MaterialAlertDialogBuilder;
+import com.vdurmont.emoji.EmojiParser;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
@@ -30,6 +34,7 @@ import org.mian.gitnex.databinding.ActivityCreatePrBinding;
 import org.mian.gitnex.databinding.CustomLabelsSelectionDialogBinding;
 import org.mian.gitnex.fragments.PullRequestsFragment;
 import org.mian.gitnex.helpers.Constants;
+import org.mian.gitnex.helpers.Markdown;
 import org.mian.gitnex.helpers.Toasty;
 import org.mian.gitnex.helpers.contexts.RepositoryContext;
 import retrofit2.Call;
@@ -53,6 +58,7 @@ public class CreatePullRequestActivity extends BaseActivity
 	private RepositoryContext repository;
 	private LabelsListAdapter labelsAdapter;
 	private MaterialAlertDialogBuilder materialAlertDialogBuilder;
+	private boolean renderMd = false;
 
 	@SuppressLint("ClickableViewAccessibility")
 	@Override
@@ -62,6 +68,7 @@ public class CreatePullRequestActivity extends BaseActivity
 
 		viewBinding = ActivityCreatePrBinding.inflate(getLayoutInflater());
 		setContentView(viewBinding.getRoot());
+		setSupportActionBar(viewBinding.toolbar);
 
 		materialAlertDialogBuilder =
 				new MaterialAlertDialogBuilder(ctx, R.style.ThemeOverlay_Material3_Dialog_Alert);
@@ -105,6 +112,47 @@ public class CreatePullRequestActivity extends BaseActivity
 			viewBinding.prDueDateLayout.setVisibility(View.GONE);
 			viewBinding.prLabelsLayout.setVisibility(View.GONE);
 			viewBinding.milestonesSpinnerLayout.setVisibility(View.GONE);
+		}
+	}
+
+	@Override
+	public boolean onCreateOptionsMenu(@NonNull Menu menu) {
+
+		MenuInflater inflater = getMenuInflater();
+		inflater.inflate(R.menu.markdown_switcher, menu);
+
+		return true;
+	}
+
+	@Override
+	public boolean onOptionsItemSelected(MenuItem item) {
+
+		int id = item.getItemId();
+
+		if (id == R.id.markdown) {
+
+			if (!renderMd) {
+				Markdown.render(
+					ctx,
+					EmojiParser.parseToUnicode(
+						Objects.requireNonNull(
+							Objects.requireNonNull(
+									viewBinding.prBody.getText())
+								.toString())),
+					viewBinding.markdownPreview);
+
+				viewBinding.markdownPreview.setVisibility(View.VISIBLE);
+				viewBinding.prBodyLayout.setVisibility(View.GONE);
+				renderMd = true;
+			} else {
+				viewBinding.markdownPreview.setVisibility(View.GONE);
+				viewBinding.prBodyLayout.setVisibility(View.VISIBLE);
+				renderMd = false;
+			}
+
+			return true;
+		} else {
+			return super.onOptionsItemSelected(item);
 		}
 	}
 
