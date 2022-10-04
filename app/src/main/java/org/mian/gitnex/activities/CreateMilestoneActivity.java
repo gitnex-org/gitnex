@@ -6,15 +6,17 @@ import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.inputmethod.InputMethodManager;
-import android.widget.Button;
-import android.widget.EditText;
-import android.widget.ImageView;
 import androidx.annotation.NonNull;
+import com.vdurmont.emoji.EmojiParser;
 import java.util.Calendar;
 import java.util.Date;
+import java.util.Objects;
 import org.gitnex.tea4j.v2.models.CreateMilestoneOption;
 import org.gitnex.tea4j.v2.models.Milestone;
 import org.mian.gitnex.R;
@@ -22,6 +24,7 @@ import org.mian.gitnex.clients.RetrofitClient;
 import org.mian.gitnex.databinding.ActivityCreateMilestoneBinding;
 import org.mian.gitnex.helpers.AlertDialogs;
 import org.mian.gitnex.helpers.AppUtil;
+import org.mian.gitnex.helpers.Markdown;
 import org.mian.gitnex.helpers.Toasty;
 import org.mian.gitnex.helpers.contexts.RepositoryContext;
 import retrofit2.Call;
@@ -32,15 +35,12 @@ import retrofit2.Callback;
  */
 public class CreateMilestoneActivity extends BaseActivity implements View.OnClickListener {
 
-	private EditText milestoneDueDate;
+	private ActivityCreateMilestoneBinding binding;
 	private View.OnClickListener onClickListener;
-	private EditText milestoneTitle;
-	private EditText milestoneDescription;
-	private Button createNewMilestoneButton;
 	private RepositoryContext repository;
-
 	private Date currentDate = null;
 	private final View.OnClickListener createMilestoneListener = v -> processNewMilestone();
+	private boolean renderMd = false;
 
 	@SuppressLint("ClickableViewAccessibility")
 	@Override
@@ -48,27 +48,22 @@ public class CreateMilestoneActivity extends BaseActivity implements View.OnClic
 
 		super.onCreate(savedInstanceState);
 
-		ActivityCreateMilestoneBinding activityCreateMilestoneBinding =
-				ActivityCreateMilestoneBinding.inflate(getLayoutInflater());
-		setContentView(activityCreateMilestoneBinding.getRoot());
+		binding = ActivityCreateMilestoneBinding.inflate(getLayoutInflater());
+		setContentView(binding.getRoot());
+		setSupportActionBar(binding.toolbar);
 
 		boolean connToInternet = AppUtil.hasNetworkConnection(appCtx);
 
 		InputMethodManager imm =
 				(InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
 
-		milestoneDueDate = activityCreateMilestoneBinding.milestoneDueDate;
-		ImageView closeActivity = activityCreateMilestoneBinding.close;
-		createNewMilestoneButton = activityCreateMilestoneBinding.createNewMilestoneButton;
-		milestoneTitle = activityCreateMilestoneBinding.milestoneTitle;
-		milestoneDescription = activityCreateMilestoneBinding.milestoneDescription;
 		repository = RepositoryContext.fromIntent(getIntent());
 
-		milestoneTitle.requestFocus();
+		binding.milestoneTitle.requestFocus();
 		assert imm != null;
-		imm.showSoftInput(milestoneTitle, InputMethodManager.SHOW_IMPLICIT);
+		imm.showSoftInput(binding.milestoneTitle, InputMethodManager.SHOW_IMPLICIT);
 
-		milestoneDescription.setOnTouchListener(
+		binding.milestoneDescription.setOnTouchListener(
 				(touchView, motionEvent) -> {
 					touchView.getParent().requestDisallowInterceptTouchEvent(true);
 
@@ -81,15 +76,56 @@ public class CreateMilestoneActivity extends BaseActivity implements View.OnClic
 				});
 
 		initCloseListener();
-		closeActivity.setOnClickListener(onClickListener);
-		milestoneDueDate.setOnClickListener(this);
+		binding.close.setOnClickListener(onClickListener);
+		binding.milestoneDueDate.setOnClickListener(this);
 
 		if (!connToInternet) {
 
-			createNewMilestoneButton.setEnabled(false);
+			binding.createNewMilestoneButton.setEnabled(false);
 		} else {
 
-			createNewMilestoneButton.setOnClickListener(createMilestoneListener);
+			binding.createNewMilestoneButton.setOnClickListener(createMilestoneListener);
+		}
+	}
+
+	@Override
+	public boolean onCreateOptionsMenu(@NonNull Menu menu) {
+
+		MenuInflater inflater = getMenuInflater();
+		inflater.inflate(R.menu.markdown_switcher, menu);
+
+		return true;
+	}
+
+	@Override
+	public boolean onOptionsItemSelected(MenuItem item) {
+
+		int id = item.getItemId();
+
+		if (id == R.id.markdown) {
+
+			if (!renderMd) {
+				Markdown.render(
+						ctx,
+						EmojiParser.parseToUnicode(
+								Objects.requireNonNull(
+										Objects.requireNonNull(
+														binding.milestoneDescription.getText())
+												.toString())),
+						binding.markdownPreview);
+
+				binding.markdownPreview.setVisibility(View.VISIBLE);
+				binding.milestoneDescriptionLayout.setVisibility(View.GONE);
+				renderMd = true;
+			} else {
+				binding.markdownPreview.setVisibility(View.GONE);
+				binding.milestoneDescriptionLayout.setVisibility(View.VISIBLE);
+				renderMd = false;
+			}
+
+			return true;
+		} else {
+			return super.onOptionsItemSelected(item);
 		}
 	}
 
@@ -97,8 +133,10 @@ public class CreateMilestoneActivity extends BaseActivity implements View.OnClic
 
 		boolean connToInternet = AppUtil.hasNetworkConnection(appCtx);
 
-		String newMilestoneTitle = milestoneTitle.getText().toString();
-		String newMilestoneDescription = milestoneDescription.getText().toString();
+		String newMilestoneTitle =
+				Objects.requireNonNull(binding.milestoneTitle.getText()).toString();
+		String newMilestoneDescription =
+				Objects.requireNonNull(binding.milestoneDescription.getText()).toString();
 
 		if (!connToInternet) {
 
@@ -188,7 +226,7 @@ public class CreateMilestoneActivity extends BaseActivity implements View.OnClic
 	@Override
 	public void onClick(View v) {
 
-		if (v == milestoneDueDate) {
+		if (v == binding.milestoneDueDate) {
 
 			final Calendar c = Calendar.getInstance();
 			int mYear = c.get(Calendar.YEAR);
@@ -199,7 +237,7 @@ public class CreateMilestoneActivity extends BaseActivity implements View.OnClic
 					new DatePickerDialog(
 							this,
 							(view, year, monthOfYear, dayOfMonth) -> {
-								milestoneDueDate.setText(
+								binding.milestoneDueDate.setText(
 										getString(
 												R.string.setDueDate,
 												year,
@@ -221,12 +259,12 @@ public class CreateMilestoneActivity extends BaseActivity implements View.OnClic
 
 	private void disableProcessButton() {
 
-		createNewMilestoneButton.setEnabled(false);
+		binding.createNewMilestoneButton.setEnabled(false);
 	}
 
 	private void enableProcessButton() {
 
-		createNewMilestoneButton.setEnabled(true);
+		binding.createNewMilestoneButton.setEnabled(true);
 	}
 
 	@Override

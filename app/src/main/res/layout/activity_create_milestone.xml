@@ -105,7 +105,7 @@
                 <com.google.android.material.textfield.TextInputEditText
                     android:id="@+id/milestoneDescription"
                     android:layout_width="match_parent"
-                    android:layout_height="@dimen/dimen140dp"
+                    android:layout_height="@dimen/dimen180dp"
                     android:gravity="top|start"
                     android:inputType="textCapSentences|textMultiLine"
                     android:scrollbars="vertical"
@@ -115,6 +115,18 @@
                     android:textSize="@dimen/dimen16sp"/>
 
             </com.google.android.material.textfield.TextInputLayout>
+
+            <TextView
+                android:id="@+id/markdown_preview"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:minHeight="@dimen/dimen206dp"
+                android:layout_marginTop="@dimen/dimen8dp"
+                android:layout_marginBottom="@dimen/dimen8dp"
+                android:textColor="?attr/primaryTextColor"
+                android:textIsSelectable="true"
+                android:textSize="@dimen/dimen14sp"
+                android:visibility="gone" />
 
             <com.google.android.material.textfield.TextInputLayout
                 android:id="@+id/milestoneDueDateLayout"
