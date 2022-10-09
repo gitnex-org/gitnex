@@ -84,8 +84,6 @@ Thanks to all the open source libraries, contributors and donators.
 - [google/gson](https://github.com/google/gson)
 - [square/okhttp](https://github.com/square/okhttp)
 - [square/picasso](https://github.com/square/picasso)
-- [wasabeef/picasso-transformations](https://github.com/wasabeef/picasso-transformations)
-- [cats-oss/android-gpuimage](https://github.com/cats-oss/android-gpuimage)
 - [noties/Markwon](https://github.com/noties/Markwon)
 - [ocpsoft/prettytime](https://github.com/ocpsoft/prettytime)
 - [ramseth001/TextDrawable](https://github.com/ramseth001/TextDrawable)

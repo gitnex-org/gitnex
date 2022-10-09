@@ -1,7 +1,6 @@
 package org.mian.gitnex.fragments;
 
 import android.content.Context;
-import android.content.res.ColorStateList;
 import android.graphics.Typeface;
 import android.os.Bundle;
 import android.text.Html;
@@ -15,24 +14,19 @@ import android.widget.ImageView;
 import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
-import androidx.core.widget.ImageViewCompat;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentStatePagerAdapter;
 import androidx.viewpager.widget.ViewPager;
 import com.google.android.material.progressindicator.LinearProgressIndicator;
 import com.google.android.material.tabs.TabLayout;
-import com.squareup.picasso.Callback;
 import java.util.Locale;
-import jp.wasabeef.picasso.transformations.BlurTransformation;
 import org.mian.gitnex.R;
 import org.mian.gitnex.activities.BaseActivity;
 import org.mian.gitnex.activities.MainActivity;
 import org.mian.gitnex.clients.PicassoService;
 import org.mian.gitnex.helpers.AppUtil;
-import org.mian.gitnex.helpers.ColorInverter;
 import org.mian.gitnex.helpers.RoundedTransformation;
-import org.mian.gitnex.helpers.TinyDB;
 import org.mian.gitnex.helpers.contexts.AccountContext;
 
 /**
@@ -100,15 +94,14 @@ public class MyProfileFragment extends Fragment {
 	}
 
 	public void viewData(View v, AccountContext account) {
-		TinyDB tinyDb = TinyDB.getInstance(getContext());
 
 		TextView userFullName = v.findViewById(R.id.userFullName);
-		ImageView userAvatarBackground = v.findViewById(R.id.userAvatarBackground);
 		ImageView userAvatar = v.findViewById(R.id.userAvatar);
 		TextView userLogin = v.findViewById(R.id.userLogin);
-		View divider = v.findViewById(R.id.divider);
 		TextView userLanguage = v.findViewById(R.id.userLanguage);
-		ImageView userLanguageIcon = v.findViewById(R.id.userLanguageIcon);
+		TextView userFollowersCount = v.findViewById(R.id.user_followers_count);
+		TextView userFollowingCount = v.findViewById(R.id.user_following_count);
+		TextView userStarredReposCount = v.findViewById(R.id.user_starred_repos_count);
 
 		String[] userLanguageCodes =
 				account.getUserInfo().getLanguage() != null
@@ -145,33 +138,9 @@ public class MyProfileFragment extends Fragment {
 				.centerCrop()
 				.into(userAvatar);
 
-		PicassoService.getInstance(ctx)
-				.get()
-				.load(account.getUserInfo().getAvatarUrl())
-				.transform(new BlurTransformation(ctx))
-				.into(
-						userAvatarBackground,
-						new Callback() {
-
-							@Override
-							public void onSuccess() {
-
-								int invertedColor =
-										new ColorInverter()
-												.getImageViewContrastColor(userAvatarBackground);
-
-								userFullName.setTextColor(invertedColor);
-								divider.setBackgroundColor(invertedColor);
-								userLogin.setTextColor(invertedColor);
-								userLanguage.setTextColor(invertedColor);
-
-								ImageViewCompat.setImageTintList(
-										userLanguageIcon, ColorStateList.valueOf(invertedColor));
-							}
-
-							@Override
-							public void onError(Exception e) {}
-						});
+		userFollowersCount.setText(String.valueOf(account.getUserInfo().getFollowersCount()));
+		userFollowingCount.setText(String.valueOf(account.getUserInfo().getFollowingCount()));
+		userStarredReposCount.setText(String.valueOf(account.getUserInfo().getStarredReposCount()));
 
 		MyProfileFragment.SectionsPagerAdapter mSectionsPagerAdapter =
 				new SectionsPagerAdapter(getChildFragmentManager());
