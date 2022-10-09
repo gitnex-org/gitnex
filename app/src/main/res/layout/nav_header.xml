@@ -56,7 +56,7 @@
                     android:layout_height="@dimen/dimen40dp"
                     android:layout_gravity="end"
                     android:visibility="gone"
-                    app:cardBackgroundColor="?attr/primaryBackgroundColor"
+                    app:cardBackgroundColor="?attr/materialCardBackgroundColor"
                     app:cardCornerRadius="@dimen/dimen20dp"
                     app:cardElevation="@dimen/dimen0dp"
                     app:contentPaddingLeft="@dimen/dimen8dp"
