@@ -13,6 +13,7 @@
     <string name="navAdministration">Administración</string>
     <string name="navMyIssues">Mis incidencias</string>
     <string name="navMostVisited">Repositorios más visitados</string>
+    <string name="navNotes">Notas</string>
     <!-- menu items -->
     <!-- page titles -->
     <string name="pageTitleNewRepo">Nuevo repositorio</string>
@@ -148,13 +149,10 @@
     <string name="settingsCertsSelectorHeader">Eliminar certificados de confianza</string>
     <string name="settingsCertsPopupTitle">¿Eliminar certificados de confianza?</string>
     <string name="settingsCertsPopupMessage">¿Está seguro de eliminar cualquier certificado o nombre de host de confianza añadido manualmente? \n\nTambién se cerrará la sesión.</string>
-    <string name="settingsDateTimeHeaderText">Fecha &amp; hora</string>
     <string name="settingsSave">Ajustes guardados</string>
     <string name="settingsLanguageSelectorHeader">Idioma</string>
     <string name="settingsLanguageSelectedHeaderDefault">Inglés</string>
     <string name="settingsAppearanceHeader">Apariencia</string>
-    <string name="settingsDateTimeHeaderDefault">Bonito</string>
-    <string name="settingsDateTimeNormal">Normal</string>
     <string name="settingsLanguageSelectorDialogTitle">Selecciona idioma</string>
     <string name="settingsLightThemeTimeSelectorHeader">Tema claro, cambiar tema</string>
     <string name="settingsDarkThemeTimeSelectorHeader">Tema oscuro, cambiar tema</string>
@@ -660,6 +658,18 @@
     <string name="wikiCreated">Página de la Wiki creada correctamente</string>
     <!-- code editor -->
     <string name="openInCodeEditor">Abrir en el editor</string>
+    <!-- notes -->
+    <string name="newNote">Nueva nota</string>
+    <string name="editNote">Editar nota</string>
+    <string name="newNoteContentHint">Empieza a tomar tus notas aquí</string>
+    <string name="noteDateTime">Creado %s</string>
+    <string name="noteTimeModified">Actualizado %s</string>
+    <string name="noteDeleteDialoMessage">¿Realmente quieres eliminar esta nota?</string>
+    <plurals name="noteDeleteMessage">
+        <item quantity="one">Nota eliminada correctamente</item>
+        <item quantity="other">Notas eliminadas correctamente</item>
+    </plurals>
+    <string name="notesAllDeletionMessage">Esto eliminará todas tus notas. Esta acción no puede deshacerse.</string>
     <!-- timeline -->
     <string name="commitText">commit</string>
     <string name="timelineAddedCommit">%1$s ha añadido %2$s %3$s</string>
@@ -701,4 +711,6 @@
     <string name="timelineRefIssue">%1$s ha hecho referencia a esta incidencia en #%2$d %3$s</string>
     <string name="timelineRefPr">%1$s ha hecho referencia a este Pull Request en #%2$d %3$s</string>
     <string name="timelineStatusRefIssue"><![CDATA[%1$s ha hecho referencia a esta incidencia desde <font color=\'%2$d\'>%3$s</font> %4$s]]></string>
+    <string name="commitStatuses">Estados</string>
+    <string name="statusNoUrl">Este estado no tiene una URL de destino asociada.</string>
 </resources>

@@ -15,137 +15,205 @@
         android:indeterminate="true"
         android:visibility="gone"
         style="@style/Widget.Material3.LinearProgressIndicator"
-        app:indicatorColor="?attr/progressIndicatorColor"/>
+        app:indicatorColor="?attr/progressIndicatorColor" />
 
-    <FrameLayout
+    <com.google.android.material.card.MaterialCardView
         android:layout_width="match_parent"
-        android:layout_height="match_parent">
+        android:layout_height="wrap_content"
+        style="?attr/materialCardViewFilledStyle"
+        android:layout_margin="@dimen/dimen8dp"
+        app:cardElevation="@dimen/dimen0dp">
 
-        <RelativeLayout
-            android:id="@+id/profileFrame"
+        <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="@dimen/dimen320dp"
-            android:gravity="top"
+            android:layout_height="wrap_content"
+            android:foreground="?android:attr/selectableItemBackground"
+            android:background="?attr/materialCardBackgroundColor"
+            android:padding="@dimen/dimen24dp"
             android:orientation="vertical">
 
-            <ImageView
-                android:id="@+id/userAvatarBackground"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:contentDescription="@string/generalImgContentText"
-                android:scaleType="centerCrop"/>
-
             <LinearLayout
-                android:id="@+id/layoutFrameAccount"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:gravity="center"
-                android:orientation="vertical"
-                android:padding="@dimen/dimen16dp"
+                android:orientation="horizontal"
                 tools:ignore="UseCompoundDrawables">
 
-                <com.google.android.material.card.MaterialCardView
-                    android:layout_width="@dimen/dimen60dp"
-                    android:layout_height="@dimen/dimen60dp"
-                    style="?attr/materialCardViewFilledStyle"
-                    android:layout_marginBottom="@dimen/dimen8dp"
-                    android:layout_marginTop="@dimen/dimen16dp"
-                    app:cardElevation="@dimen/dimen0dp"
-                    app:cardCornerRadius="@dimen/dimen32dp">
+                 <com.google.android.material.card.MaterialCardView
+                     android:layout_width="@dimen/dimen80dp"
+                     android:layout_height="@dimen/dimen80dp"
+                     style="?attr/materialCardViewFilledStyle"
+                     android:layout_marginBottom="@dimen/dimen8dp"
+                     app:cardElevation="@dimen/dimen0dp"
+                     app:cardCornerRadius="@dimen/dimen40dp">
 
                     <ImageView
                         android:id="@+id/userAvatar"
                         android:layout_width="match_parent"
                         android:layout_height="match_parent"
                         android:contentDescription="@string/generalImgContentText"
-                        tools:src="@mipmap/app_logo_round"/>
+                        android:src="@mipmap/app_logo_round" />
 
                 </com.google.android.material.card.MaterialCardView>
-
-                <TextView
-                    android:id="@+id/userFullName"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="@dimen/dimen8dp"
-                    android:textColor="@color/colorWhite"
-                    android:textIsSelectable="true"
-                    android:textSize="@dimen/dimen18sp"/>
-
-                <TextView
-                    android:id="@+id/userLogin"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:textColor="@color/colorWhite"
-                    android:textIsSelectable="true"
-                    android:textSize="@dimen/dimen14sp"/>
-
-            </LinearLayout>
-
-        </RelativeLayout>
-
-        <com.google.android.material.card.MaterialCardView
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:layout_marginTop="@dimen/dimen200dp"
-            style="@style/CustomMaterCardViewStyle"
-            app:cardBackgroundColor="?attr/primaryBackgroundColor"
-            app:strokeWidth="@dimen/dimen0dp"
-            android:elevation="@dimen/dimen0dp"
-            app:strokeColor="?attr/colorPrimary">
-
-            <LinearLayout
-                android:orientation="vertical"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:padding="@dimen/dimen16dp">
 
                 <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_marginTop="32dp"
-                    android:orientation="horizontal"
-                    android:paddingStart="@dimen/dimen16dp"
-                    android:paddingEnd="@dimen/dimen16dp">
+                    android:paddingStart="@dimen/dimen24dp"
+                    android:paddingEnd="@dimen/dimen10dp"
+                    android:orientation="vertical">
 
-                    <ImageView
-                        android:layout_gravity="center"
+                    <TextView
+                        android:id="@+id/userFullName"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:contentDescription="@string/generalImgContentText"
-                        app:srcCompat="@drawable/ic_email"/>
+                        android:textColor="?attr/primaryTextColor"
+                        android:textIsSelectable="true"
+                        android:textSize="@dimen/dimen18sp" />
 
-                    <LinearLayout
-                        android:layout_width="match_parent"
+                    <TextView
+                        android:id="@+id/userLogin"
+                        android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:layout_marginStart="@dimen/dimen16dp"
-                        android:gravity="center_vertical"
-                        android:orientation="vertical">
+                        android:layout_marginBottom="@dimen/dimen10dp"
+                        android:textColor="?attr/primaryTextColor"
+                        android:textIsSelectable="true"
+                        android:textSize="@dimen/dimen14sp" />
 
-                        <TextView
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:text="@string/userEmail"
-                            android:textColor="?attr/primaryTextColor"
-                            android:textSize="@dimen/dimen16sp"/>
+                </LinearLayout>
 
-                        <TextView
-                            android:id="@+id/userEmail"
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            android:alpha="0.9"
-                            android:textColor="?attr/primaryTextColor"
-                            android:textSize="@dimen/dimen14sp"/>
-                    </LinearLayout>
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/dimen20dp"
+                android:layout_marginBottom="@dimen/dimen0dp"
+                android:orientation="horizontal"
+                android:baselineAligned="false">
+
+                <LinearLayout
+                    android:id="@+id/followers_section"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:gravity="center"
+                    android:orientation="vertical">
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:textColor="?attr/primaryTextColor"
+                        android:text="@string/profileTabFollowers"
+                        android:textSize="@dimen/dimen14sp" />
+
+                    <TextView
+                        android:id="@+id/user_followers_count"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:textColor="?attr/primaryTextColor"
+                        android:paddingTop="@dimen/dimen6dp"
+                        android:textStyle="bold"
+                        android:textSize="@dimen/dimen14sp" />
 
                 </LinearLayout>
 
                 <LinearLayout
+                    android:id="@+id/following_section"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:gravity="center"
+                    android:orientation="vertical">
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:textColor="?attr/primaryTextColor"
+                        android:text="@string/profileTabFollowing"
+                        android:textSize="@dimen/dimen14sp" />
+
+                    <TextView
+                        android:id="@+id/user_following_count"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:textColor="?attr/primaryTextColor"
+                        android:paddingTop="@dimen/dimen6dp"
+                        android:textStyle="bold"
+                        android:textSize="@dimen/dimen14sp" />
+
+                </LinearLayout>
+
+                <LinearLayout
+                    android:id="@+id/starred_repos_section"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:gravity="center"
+                    android:orientation="vertical">
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:textColor="?attr/primaryTextColor"
+                        android:text="@string/starredRepos"
+                        android:textSize="@dimen/dimen14sp" />
+
+                    <TextView
+                        android:id="@+id/user_starred_repos_count"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:textColor="?attr/primaryTextColor"
+                        android:paddingTop="@dimen/dimen6dp"
+                        android:textStyle="bold"
+                        android:textSize="@dimen/dimen14sp" />
+
+                </LinearLayout>
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/dimen32dp"
+                android:orientation="horizontal">
+
+                <ImageView
+                    android:layout_gravity="center"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:contentDescription="@string/generalImgContentText"
+                    app:srcCompat="@drawable/ic_email" />
+
+                <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_marginTop="@dimen/dimen32dp"
-                    android:orientation="horizontal"
-                    android:paddingStart="@dimen/dimen16dp"
-                    android:paddingEnd="@dimen/dimen16dp">
+                    android:layout_marginStart="@dimen/dimen16dp"
+                    android:gravity="center_vertical"
+                    android:orientation="vertical">
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="@string/userEmail"
+                        android:textColor="?attr/primaryTextColor"
+                        android:textSize="@dimen/dimen16sp" />
+
+                    <TextView
+                        android:id="@+id/userEmail"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:alpha="0.9"
+                        android:textColor="?attr/primaryTextColor"
+                        android:textSize="@dimen/dimen14sp" />
+                </LinearLayout>
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/dimen32dp"
+                android:orientation="horizontal">
 
                     <ImageView
                         android:layout_gravity="center"
@@ -166,7 +234,7 @@
                             android:layout_height="wrap_content"
                             android:text="@string/settingsLanguageSelectorHeader"
                             android:textColor="?attr/primaryTextColor"
-                            android:textSize="@dimen/dimen16sp"/>
+                            android:textSize="@dimen/dimen16sp" />
 
                         <TextView
                             android:id="@+id/userLang"
@@ -174,7 +242,7 @@
                             android:layout_height="wrap_content"
                             android:alpha="0.9"
                             android:textColor="?attr/primaryTextColor"
-                            android:textSize="@dimen/dimen14sp"/>
+                            android:textSize="@dimen/dimen14sp" />
                     </LinearLayout>
 
                 </LinearLayout>
@@ -183,9 +251,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="@dimen/dimen32dp"
-                    android:orientation="horizontal"
-                    android:paddingStart="@dimen/dimen16dp"
-                    android:paddingEnd="@dimen/dimen16dp">
+                    android:orientation="horizontal">
 
                     <ImageView
                         android:layout_gravity="center"
@@ -197,7 +263,7 @@
                     <LinearLayout
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:layout_marginStart="15dp"
+                        android:layout_marginStart="@dimen/dimen16dp"
                         android:gravity="center_vertical"
                         android:orientation="vertical">
 
@@ -206,7 +272,7 @@
                             android:layout_height="wrap_content"
                             android:text="@string/joined"
                             android:textColor="?attr/primaryTextColor"
-                            android:textSize="@dimen/dimen16sp"/>
+                            android:textSize="@dimen/dimen16sp" />
 
                         <TextView
                             android:id="@+id/userJoinedOn"
@@ -214,15 +280,13 @@
                             android:layout_height="wrap_content"
                             android:alpha="0.9"
                             android:textColor="?attr/primaryTextColor"
-                            android:textSize="@dimen/dimen14sp"/>
+                            android:textSize="@dimen/dimen14sp" />
                     </LinearLayout>
 
                 </LinearLayout>
 
-            </LinearLayout>
+        </LinearLayout>
 
-        </com.google.android.material.card.MaterialCardView>
-
-    </FrameLayout>
+    </com.google.android.material.card.MaterialCardView>
 
 </LinearLayout>

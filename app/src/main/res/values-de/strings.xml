@@ -711,4 +711,6 @@
     <string name="timelineRefIssue">%1$s hat diesen Issue %3$s in #%2$d erwähnt</string>
     <string name="timelineRefPr">%1$s hat diesen Pull-Request %3$s in #%2$d erwähnt</string>
     <string name="timelineStatusRefIssue"><![CDATA[%1$s hat diesen Issue von einem <font color=\'%2$d\'>%3$s</font> %4$s referenziert]]></string>
+    <string name="commitStatuses">Status</string>
+    <string name="statusNoUrl">Dieser Status hat keine Ziel-URL.</string>
 </resources>

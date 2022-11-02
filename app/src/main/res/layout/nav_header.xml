@@ -4,7 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/navHeaderFrame"
     android:layout_width="match_parent"
-    android:layout_height="180dp">
+    android:layout_height="@dimen/dimen180dp">
 
     <ImageView
         android:id="@+id/userAvatarBackground"
@@ -19,7 +19,7 @@
         android:layout_height="match_parent"
         android:gravity="bottom"
         android:orientation="vertical"
-        android:padding="20dp">
+        android:padding="@dimen/dimen20dp">
 
         <LinearLayout
             android:layout_width="match_parent"
@@ -45,8 +45,8 @@
             <FrameLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginStart="20dp"
-                android:layout_marginTop="10dp"
+                android:layout_marginStart="@dimen/dimen20dp"
+                android:layout_marginTop="@dimen/dimen10dp"
                 android:orientation="horizontal">
 
                 <com.google.android.material.card.MaterialCardView
@@ -56,7 +56,7 @@
                     android:layout_height="@dimen/dimen40dp"
                     android:layout_gravity="end"
                     android:visibility="gone"
-                    app:cardBackgroundColor="?attr/primaryBackgroundColor"
+                    app:cardBackgroundColor="?attr/materialCardBackgroundColor"
                     app:cardCornerRadius="@dimen/dimen20dp"
                     app:cardElevation="@dimen/dimen0dp"
                     app:contentPaddingLeft="@dimen/dimen8dp"
@@ -69,9 +69,10 @@
                         android:layout_height="wrap_content"
                         android:layout_gravity="center_vertical"
                         android:orientation="horizontal"
-                        app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"/>
+                        app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager" />
 
                 </com.google.android.material.card.MaterialCardView>
+
             </FrameLayout>
 
         </LinearLayout>
@@ -79,17 +80,19 @@
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginTop="20dp"
+            android:layout_marginTop="@dimen/dimen20dp"
+            android:paddingStart="@dimen/dimen8dp"
+            android:paddingEnd="@dimen/dimen4dp"
             android:orientation="vertical">
 
             <TextView
                 android:id="@+id/userFullname"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:textColor="@color/colorWhite"
+                android:textColor="?attr/primaryTextColor"
                 android:textIsSelectable="true"
-                android:textSize="18sp"
-                tools:text="Test user"/>
+                android:textSize="@dimen/dimen18sp"
+                tools:text="Test user" />
 
             <TextView
                 android:id="@+id/userEmail"
@@ -97,10 +100,10 @@
                 android:layout_height="wrap_content"
                 android:layout_gravity="center_vertical"
                 android:gravity="start"
-                android:textColor="@color/colorWhite"
+                android:textColor="?attr/primaryTextColor"
                 android:textIsSelectable="true"
-                android:textSize="14sp"
-                tools:text="example@example.com"/>
+                android:textSize="@dimen/dimen14sp"
+                tools:text="example@example.com" />
 
         </LinearLayout>
 

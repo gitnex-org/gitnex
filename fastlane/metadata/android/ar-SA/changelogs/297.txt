@@ -1,5 +1,5 @@
 3.0.0-rc3
 
-This release focuses to enhance the UI through out the app with few new features and fix the bugs you guys reported so far.
+يركز هذا الإصدار على تحسين واجهة المستخدم في التطبيق ببعض الميزات الجديدة وإصلاح الأخطاء التي أبلغتم عنها حتى الآن.
 
-Detailed release notes will be published with the stable release.
+ملاحظات الإصدار المفصلة ستنشر مع الإصدار المستقر.

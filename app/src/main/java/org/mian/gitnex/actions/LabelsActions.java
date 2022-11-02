@@ -47,10 +47,9 @@ public class LabelsActions {
 
 							if (issueLabelsList.size() > 0) {
 
-								for (int i = 0; i < issueLabelsList.size(); i++) {
+								for (Label label : issueLabelsList) {
 
-									currentLabelsIds.add(
-											Math.toIntExact(issueLabelsList.get(i).getId()));
+									currentLabelsIds.add(Math.toIntExact(label.getId()));
 								}
 							}
 						} else {
@@ -111,10 +110,10 @@ public class LabelsActions {
 												@NonNull retrofit2.Response<List<Label>>
 																responseOrg) {
 
-											if (responseOrg.body() != null) {
+											if (responseOrg.isSuccessful()
+													&& responseOrg.body() != null) {
 
 												labelsList.addAll(responseOrg.body());
-												materialAlertDialogBuilder.show();
 											}
 
 											if (labelsList.isEmpty()) {
@@ -123,6 +122,8 @@ public class LabelsActions {
 														ctx,
 														ctx.getResources()
 																.getString(R.string.noDataFound));
+											} else {
+												materialAlertDialogBuilder.show();
 											}
 
 											labelsBinding.labelsRecyclerView.setAdapter(

@@ -12,6 +12,8 @@
     <string name="navLogout">පිටවීම</string>
     <string name="navAdministration">පරිපාලනය</string>
     <string name="navMyIssues">මගේ ගැටළු</string>
+    <string name="navMostVisited">Most Visited Repos</string>
+    <string name="navNotes">Notes</string>
     <!-- menu items -->
     <!-- page titles -->
     <string name="pageTitleNewRepo">නව කෝ ඇතිය</string>
@@ -51,7 +53,7 @@
     <string name="navigationDrawerClose">සංචාලන ලාච්චුව වසන්න</string>
     <string name="logo">Gitea වෙත පිවිසෙන්න</string>
     <string name="protocol">කෙටුම්පත</string>
-    <string name="urlInfoTooltip">1- නිවැරදි ප්‍රොටෝකෝලය තෝරන්න (https හෝ http). \n2- Gitea url ඇතුළු කරන්න උදා: try.gitea.io. \n3- ඔබ ඔබේ ගිණුම සඳහා 2FA සක්‍රීය කර ඇත්නම්, OTP කේත ක්ෂේත්‍රය තුළ කේතය ඇතුළත් කරන්න. \n4- HTTP මූලික සත්‍යාපනය සඳහා URL ක්ෂේත්‍රයේ USERNAME@DOMAIN.COM භාවිතා කරන්න.</string>
+    <string name="urlInfoTooltip">1- Choose the correct protocol(https or http). \n2- Enter Gitea url e.g: try.gitea.io. \n3- If you have enabled 2FA for your account, enter the code in the OTP Code field. \n4- For HTTP basic auth use USERNAME@DOMAIN.COM in the URL field.</string>
     <string name="malformedUrl">සත්කාරක වෙත සම්බන්ධ වීමට නොහැකි විය. කිසියම් දෝෂයක් සඳහා කරුණාකර ඔබගේ URL හෝ තොට පරීක්ෂා කරන්න</string>
     <string name="protocolError">ඔබ දේශීය ජාලයේ පරීක්‍ෂා කරන්නේ නම් මිස HTTP ප්‍රොටෝකෝලය භාවිතා කිරීම නිර්දේශ නොකරයි</string>
     <string name="malformedJson">Malformed JSON ලැබුණි. සේවාදායක ප්‍රතිචාරය සාර්ථක නොවීය</string>
@@ -146,14 +148,11 @@
     <string name="settingsSecurityHeader">ආරක්ෂාව</string>
     <string name="settingsCertsSelectorHeader">විශ්වාසනීය සහතික මකන්න</string>
     <string name="settingsCertsPopupTitle">විශ්වාසනීය සහතික මකන්නද?</string>
-    <string name="settingsCertsPopupMessage">අතින් විශ්වාස කළ හැකි සහතිකයක් හෝ සත්කාරක නාමයක් මකා දැමීමට ඔබට විශ්වාසද? \n\nඔබ ද ලොග් අවුට් වනු ඇත.</string>
-    <string name="settingsDateTimeHeaderText">දිනය &amp; වේලාව</string>
+    <string name="settingsCertsPopupMessage">Are you sure to delete any manually trusted certificate or hostname? \n\nYou will also be logged out.</string>
     <string name="settingsSave">සැකසුම් සුරැකිණි</string>
     <string name="settingsLanguageSelectorHeader">භාෂාව</string>
     <string name="settingsLanguageSelectedHeaderDefault">සිංහල</string>
     <string name="settingsAppearanceHeader">පෙනුම</string>
-    <string name="settingsDateTimeHeaderDefault">ලස්සනයි</string>
-    <string name="settingsDateTimeNormal">සාමාන්‍ය</string>
     <string name="settingsLanguageSelectorDialogTitle">භාෂාව තෝරන්න</string>
     <string name="settingsLightThemeTimeSelectorHeader">සැහැල්ලු තේමා මාරු කාලය</string>
     <string name="settingsDarkThemeTimeSelectorHeader">අඳුරු තේමා මාරු කාලය</string>
@@ -184,7 +183,7 @@
     <string name="settingsGeneralHeader">ජනරාල්</string>
     <string name="generalHintText">මුල් තිරය, පෙරනිමි සබැඳි හසුරුව</string>
     <string name="generalDeepLinkDefaultScreen">පෙරනිමි සබැඳි හසුරුවන්නා</string>
-    <string name="generalDeepLinkDefaultScreenHintText">යෙදුමට බාහිර සබැඳි හැසිරවිය නොහැකි නම් කුමන තිරය පූරණය කළ යුතුද යන්න තෝරන්න. එය ඔබව ස්වයංක්‍රීයව හරවා යවනු ඇත.</string>
+    <string name="generalDeepLinkDefaultScreenHintText">Choose what screen should be loaded if the app cannot handle external links. It will redirect you automatically.</string>
     <string name="generalDeepLinkSelectedText">අ/නොවේ</string>
     <string name="linkSelectorDialogTitle">Default Link Handler Screen තෝරන්න</string>
     <string name="settingsBiometricHeader">ජෛවමිතික සහාය</string>
@@ -204,7 +203,7 @@
     <string name="labelDeleteText">ලේබලය මකා ඇත</string>
     <string name="selectBranchError">මුදා හැරීම සඳහා ශාඛාවක් තෝරන්න</string>
     <string name="alertDialogTokenRevokedTitle">අවසර දීමේ දෝෂය</string>
-    <string name="alertDialogTokenRevokedMessage">ප්‍රවේශ ටෝකනය අවලංගු කර ඇති බව පෙනේ, නැතහොත් ඔබට මෙම අන්තර්ගතය බැලීමට අවසර නැත.\n\nඅවලංගු කරන ලද ටෝකනයකදී, කරුණාකර ලොග් අවුට් වී නැවත පුරනය වන්න</string>
+    <string name="alertDialogTokenRevokedMessage">It seems that the Access Token is revoked OR your are not allowed to see these contents.\n\nIn case of revoked Token, please logout and login again</string>
     <string name="labelDeleteMessage">ඔබට ඇත්තටම මෙම ලේබලය මැකීමට අවශ්‍යද?</string>
     <!-- org tabbed layout str -->
     <string name="orgTabTeams">කණ්ඩායම්</string>
@@ -371,7 +370,7 @@
     <string name="doneButton">කළා</string>
     <string name="cancelButton">අවලංගු කරන්න</string>
     <string name="genericError">යම් දෙයක් වැරදී ඇත, කරුණාකර නැවත උත්සාහ කරන්න</string>
-    <string name="apiNotFound">මෙම ඉල්ලීම ස්ථාපනය කර ඇති එකට වඩා ඉහළ Gitea අනුවාදයක් අවශ්‍යයි. කරුණාකර ඔබගේ නිදර්ශනය Gitea හි නවතම අනුවාදයට උත්ශ්‍රේණි කරන්න.</string>
+    <string name="apiNotFound">This request needs higher Gitea version than the one installed. Please upgrade your instance to the latest version of Gitea.</string>
     <string name="noDataFound">🌟 මෙතන මොකුත් නෑ 🌟</string>
     <string name="addButton">එකතු කරන්න</string>
     <string name="removeButton">ඉවත් කරන්න</string>
@@ -397,7 +396,7 @@
     <string name="genericWaitFor">ඉන්න ☕</string>
     <string name="file">ගොනුව</string>
     <string name="issue">නිකුත් කිරීම</string>
-    <string name="label">ලේබලය</string>
+    <string name="labelTxt">Label</string>
     <string name="release">නිදහස් කරන්න</string>
     <string name="pr">අදින්න ඉල්ලීම</string>
     <string name="collaborator">සහයෝගිතාකරු</string>
@@ -413,6 +412,7 @@
     <string name="reopen">නැවත විවෘත කරන්න</string>
     <string name="openInBrowser">බ්‍රව්සරයේ විවෘත කරන්න</string>
     <string name="deleteGenericTitle">%sමකන්න</string>
+    <string name="reset">Reset</string>
     <!-- generic copy -->
     <string name="exploreUsers">පරිශීලකයන් ගවේෂණය කරන්න</string>
     <string name="exploreIssues">ගැටළු ගවේෂණය කරන්න</string>
@@ -422,7 +422,7 @@
     <string name="watchRepositorySuccess">ගබඩාව නැරඹුම් ලැයිස්තුවට එක් කරන ලදී</string>
     <string name="unWatchRepositorySuccess">ගබඩාව නිරීක්ෂණ ලැයිස්තුවෙන් ඉවත් කරන ලදී</string>
     <string name="titleDrafts">කෙටුම්පත්</string>
-    <string name="versionUnsupportedOld">Gitea හි සහාය නොදක්වන පැරණි අනුවාදය(%1$s) අනාවරණය විය. කරුණාකර නවතම ස්ථාවර අනුවාදයට යාවත්කාලීන කරන්න. ඔබ දිගටම කරගෙන ගියහොත්, සමහර විශේෂාංග ක්‍රියා නොකරනු ඇත.</string>
+    <string name="versionUnsupportedOld">Unsupported old version(%1$s) of Gitea detected. Please update to latest stable version. If you continue, some features may not work.</string>
     <string name="versionUnsupportedNew">නව Gitea අනුවාදය අනාවරණය විය! කරුණාකර GitNex යාවත්කාලීන කරන්න!</string>
     <string name="versionUnknown">Gitea අනාවරණය කර ගත්තේ නැත!</string>
     <string name="versionAlertDialogHeader">Gitea හි සහාය නොදක්වන අනුවාදය</string>
@@ -497,15 +497,18 @@
     <string name="settingsEnableReportsText">බිඳ වැටීම් වාර්තා සබල කරන්න</string>
     <string name="crashTitle">GitNex නැවතිලා :(</string>
     <string name="setCrashReports">බිඳ වැටීම් වාර්තා</string>
-    <string name="crashMessage">මෙම දෝෂය ප්‍රතිනිෂ්පාදනය කරන්නේ කෙසේද යන්න පිළිබඳ ගැටලුවක් ව්‍යාපෘති ගබඩාවේ විවෘත කිරීමට දිරිගන්වනු ලැබේ. ඒ ආකාරයෙන් දෝශ නිරාකරණය කර ගැටළුව විසඳා ගැනීම පහසුය.\n\nඒ වෙනුවට බිඳ වැටීම් වාර්තාව විද්‍යුත් තැපෑලෙන් යැවීමට OK බොත්තම තට්ටු කරන්න. විද්‍යුත් තැපෑලෙහි අමතර අන්තර්ගතයක් එක් කළ හැක.\nස්තූතියි!</string>
+    <string name="crashMessage">It is encouraged to open an issue at the project repository with how to reproduce this bug. It is easier to debug and fix the problem that way.\n\nTap the OK button to send the crash report by email instead. Additional content could be added in the email.\nThank you!</string>
     <string name="forceLogoutDialogHeader">කරුණාකර නැවත පුරනය වන්න</string>
-    <string name="forceLogoutDialogDescription">යෙදුමේ අභ්‍යන්තර ක්‍රියාකාරිත්වය සම්බන්ධයෙන් යම් යම් ප්‍රධාන වෙනස්කම් හේතුවෙන්, අපට ඔබ නැවත පුරනය වීමට අවශ්‍ය වේ. මෙම වෙනස්කම් අනාගතයේදී යෙදුම වඩාත් නම්‍යශීලී කිරීමට අපට ඉඩ සලසයි.\n\nඔබගේ ඉවසීමට ස්තූතියි සහ අපහසුතාවයට සමාවන්න.</string>
+    <string name="forceLogoutDialogDescription">Due to some major changes regarding the internal functioning of the app, we require you to login again. These changes allow us to make the app more flexible in the future.\n\nThank you for your patience and sorry for the inconvenience.</string>
     <string name="deleteAllDrafts">සියලුම කෙටුම්පත් මකන්න</string>
     <string name="draftsListEmpty">කෙටුම්පත් හමු නොවිණි</string>
     <string name="draftsDeleteSuccess">කෙටුම්පත් සාර්ථකව මකන ලදී</string>
     <string name="draftsSingleDeleteSuccess">කෙටුම්පත සාර්ථකව මකා ඇත</string>
     <string name="deleteAllDraftsDialogMessage">මෙය මෙම ගිණුම සඳහා සියලු කෙටුම්පත් මකා දමයි. \n\nමකාදැමීම කරගෙන යන්නද?</string>
     <string name="draftSaved">කෙටුම්පත ස්වයංක්‍රීයව සුරැකිණි.</string>
+    <string name="resetMostReposCounter">Counter is reset successfully</string>
+    <string name="resetCounterDialogMessage">Do you want to reset counter for repository %s?</string>
+    <string name="resetCounterAllDialogMessage">This will reset all the counters for this account repositories.</string>
     <string name="appearanceHintText">තේමා, අකුරු, ලාංඡන</string>
     <string name="securityHintText">ජෛවමිතික සත්‍යාපනය, SSL සහතික, හැඹිලිය</string>
     <string name="languagesHintText">භාෂා</string>
@@ -516,7 +519,7 @@
     <string name="archivedRepositoryMessage">මෙම රෙපෝව සංරක්ෂණය කර ඇත. ඔබට ගොනු බැලිය හැක, නමුත් ගැටළු/අදින්න-ඉල්ලීම් තල්ලු කිරීමට හෝ විවෘත කිරීමට නොහැක.</string>
     <string name="accountDeletedMessage">ගිණුම සාර්ථකව මකා ඇත</string>
     <string name="removeAccountPopupTitle">ගිණුම ඉවත් කරන්න</string>
-    <string name="removeAccountPopupMessage">ඔබට මෙම ගිණුම යෙදුමෙන් ඉවත් කිරීමට අවශ්‍ය බව විශ්වාසද?\n\nමෙය යෙදුමේ පමණක් මෙම ගිණුමට අදාළ සියලුම දත්ත ඉවත් කරයි.</string>
+    <string name="removeAccountPopupMessage">Are you sure you want to remove this account from the app?\n\nThis will remove all the data related to this account on the app only.</string>
     <string name="addNewAccount">නව ගිණුම</string>
     <string name="addNewAccountText">නව ගිණුමක් එක් කරන්න</string>
     <string name="accountAlreadyExistsError">ගිණුම දැනටමත් යෙදුම තුළ පවතී</string>
@@ -564,12 +567,12 @@
     <string name="repoPropertiesEnableSquash">Squash සහ Merge සබල කරන්න</string>
     <string name="repoPropertiesEnableForceMerge">Merge Commits සමඟ Rebase සබල කරන්න (&#8212;&#8212;no-ff)</string>
     <string name="repoPropertiesSaveSuccess">ගබඩා ගුණාංග සාර්ථකව යාවත්කාලීන කරන ලදී</string>
-    <string name="repoSettingsDeleteDescription">මකා දැමීමට පෙර දැනගත යුතු දේ:\n\n- මෙම මෙහෙයුම පසුගමනය කළ නොහැක.\n- මෙම මෙහෙයුම කේතය, ගැටළු, අදහස්, විකි දත්ත සහ සහකාරක සැකසුම් ඇතුළුව ගබඩාව ස්ථිරවම මකනු ඇත.\n\nතහවුරු කිරීමක් ලෙස ගබඩා නාමය ඇතුලත් කරන්න</string>
+    <string name="repoSettingsDeleteDescription">Things to know before deletion:\n\n- This operation CANNOT be undone.\n- This operation will permanently delete the repository including code, issues, comments, wiki data and collaborator settings.\n\nEnter the repository name as confirmation</string>
     <string name="repoSettingsDeleteError">ගබඩා නාමය නොගැලපේ</string>
     <string name="repoDeletionSuccess">ගබඩාව සාර්ථකව මකා ඇත</string>
     <string name="repoSettingsTransferOwnership">අයිතිය පැවරීම</string>
-    <string name="repoSettingsTransferOwnershipHint">මෙම ගබඩාව පරිශීලකයෙකුට හෝ ඔබට පරිපාලක අයිතිවාසිකම් ඇති සංවිධානයකට මාරු කරන්න</string>
-    <string name="repoSettingsTransferOwnershipDescription">මාරු කිරීමට පෙර දැනගත යුතු දේ:\n\n- ඔබ එය තනි පරිශීලකයෙකුට මාරු කළහොත් ඔබට ගබඩාවට ප්‍රවේශය අහිමි වනු ඇත.\n- ඔබ ගබඩාව ඔබ සතු (සම) ආයතනයකට මාරු කළහොත් ඔබ එයට ප්‍රවේශය තබා ගනු ඇත.\n\nතහවුරු කිරීමක් ලෙස ගබඩා නාමය ඇතුලත් කරන්න</string>
+    <string name="repoSettingsTransferOwnershipHint">Transfer this repository to a user or to an organization for which you have administrator rights</string>
+    <string name="repoSettingsTransferOwnershipDescription">Things to know before transfer:\n\n- You will lose access to the repository if you transfer it to an individual user.\n- You will keep access to the repository if you transfer it to an organization that you (co-)own.\n\nEnter the repository name as confirmation</string>
     <string name="repoTransferText">මාරු කිරීම සිදු කරන්න</string>
     <string name="repoTransferOwnerText">නව හිමිකරු</string>
     <string name="repoTransferSuccess">ගබඩාව සාර්ථකව මාරු කරන ලදී</string>
@@ -592,9 +595,9 @@
     <string name="prClosed">ඇදීමේ ඉල්ලීම වසා ඇත</string>
     <string name="prReopened">ඇදීමේ ඉල්ලීම නැවත විවෘත කරන ලදී</string>
     <string name="prMergeInfo">ඉල්ලීම් තොරතුරු අදින්න</string>
-    <string name="accountDoesNotExist">URI %1$s සඳහා ගිණුම යෙදුම තුළ නොමැති බව පෙනේ. නව ගිණුමක් එක් කරන්න බොත්තම තට්ටු කිරීමෙන් ඔබට එකක් එක් කළ හැක.</string>
+    <string name="accountDoesNotExist">It seems that account for URI %1$s does not exists in the app. You can add one by tapping on the Add New Account button.</string>
     <string name="launchApp">යෙදුම වෙත යන්න</string>
-    <string name="noActionText">GitNex හට ඉල්ලූ සම්පත හැසිරවිය නොහැක, ඔබට කාර්යයේ විස්තර සැපයීම සමඟ වැඩිදියුණු කිරීමක් ලෙස ව්‍යාපෘති ගබඩාවේ ගැටලුවක් විවෘත කළ හැක. පහත බොත්තම් වලින් දැන් පෙරනිමි තිරයක් දියත් කරන්න, එය සැකසුම් වලින් වෙනස් කළ හැක.</string>
+    <string name="noActionText">GitNex cannot handle the requested resource, you can open an issue at the project repository as an improvement with providing details of the work. Just launch a default screen for now from the buttons below, it can be changed from settings.</string>
     <string name="biometricAuthTitle">ජෛවමිතික සත්‍යාපනය</string>
     <string name="biometricAuthSubTitle">ඔබගේ ජෛවමිතික අක්තපත්‍ර භාවිතයෙන් අගුලු හරින්න</string>
     <string name="biometricNotSupported">මෙම උපාංගයේ ජෛවමිතික විශේෂාංග නොමැත</string>
@@ -633,7 +636,7 @@
     <string name="tagDeleted">ටැගය මකා ඇත</string>
     <string name="tagDeleteError">නිකුතුවකට අමුණා ඇති ටැගයක් කෙලින්ම මකා දැමිය නොහැක</string>
     <string name="useCustomTabs">අභිරුචි ටැබ් භාවිතා කරන්න</string>
-    <string name="browserOpenFailed">මෙම සබැඳිය විවෘත කිරීමට යෙදුමක් හමු නොවීය. SSH URLs සහ URLs වෙනත් උපසර්ගයක් සහිත http:// හෝ https:// බොහෝ බ්‍රවුසරයකින් සහාය නොදක්වයි</string>
+    <string name="browserOpenFailed">No application found to open this link. SSH URLs and URLs with another prefix the http:// or https:// are not supported by most browser</string>
     <string name="logInAgain">නැවත ලොග් වන්න</string>
     <string name="notLoggedIn">\u25CF %s වී නැත</string>
     <string name="followSystem">පද්ධතිය අනුගමනය කරන්න (ආලෝකය/අඳුරු)</string>
@@ -654,4 +657,60 @@
     <string name="wikiUpdated">විකි පිටුව සාර්ථකව යාවත්කාලීන කරන ලදී</string>
     <string name="wikiCreated">විකි පිටුව සාර්ථකව නිර්මාණය කරන ලදී</string>
     <!-- code editor -->
+    <string name="openInCodeEditor">Open in Code Editor</string>
+    <!-- notes -->
+    <string name="newNote">New Note</string>
+    <string name="editNote">Edit Note</string>
+    <string name="newNoteContentHint">Start taking your notes here</string>
+    <string name="noteDateTime">Created %s</string>
+    <string name="noteTimeModified">Updated %s</string>
+    <string name="noteDeleteDialoMessage">Do you really want to delete this note?</string>
+    <plurals name="noteDeleteMessage">
+        <item quantity="one">Note deleted successfully</item>
+        <item quantity="other">Notes deleted successfully</item>
+    </plurals>
+    <string name="notesAllDeletionMessage">This will delete all of your notes. This action cannot be undone.</string>
+    <!-- timeline -->
+    <string name="commitText">commit</string>
+    <string name="timelineAddedCommit">%1$s added %2$s %3$s</string>
+    <!-- the | is replaced by the label -->
+    <string name="timelineAddedLabel">%1$s added the | label %2$s</string>
+    <!-- the | is replaced by the label -->
+    <string name="timelineRemovedLabel">%1$s removed the | label %2$s</string>
+    <string name="timelineAssigneesRemoved">%1$s removed their assignment %2$s</string>
+    <string name="timelineAssigneesUnassigned">%1$s was unassigned by %2$s %3$s</string>
+    <string name="timelineAssigneesSelfAssigned">%1$s self-assigned this %2$s</string>
+    <string name="timelineAssigneesAssigned">%1$s was assigned by %2$s %3$s</string>
+    <string name="timelineMilestoneAdded">%1$s added this to the %2$s milestone %3$s</string>
+    <string name="timelineMilestoneRemoved">%1$s removed this from the %2$s milestone %3$s</string>
+    <string name="timelineStatusClosedIssue">%1$s closed this issue %2$s</string>
+    <string name="timelineStatusReopenedIssue">%1$s reopened this issue %2$s</string>
+    <string name="timelineStatusReopenedPr">%1$s reopened this pull request %2$s</string>
+    <string name="timelineStatusClosedPr">%1$s closed this pull request %2$s</string>
+    <string name="timelineStatusMergedPr">%1$s merged this pull request %2$s</string>
+    <string name="timelineStatusRefPr"><![CDATA[%1$s referenced this pull request from a <font color=\'%2$d\'>%3$s</font> %4$s]]></string>
+    <string name="timelineReviewRequest">%1$s requested review from %2$s %3$s</string>
+    <string name="timelineChangeTitle">%1$s changed title from %2$s to %3$s %4$s</string>
+    <string name="timelineLocked">%1$s locked as %2$s and limited conversation to collaborators %3$s</string>
+    <string name="timelineUnlocked">%1$s unlocked this conversation %2$s</string>
+    <string name="timelineDependencyAdded">%1$s added a new dependency #%2$d %3$s</string>
+    <string name="timelineDependencyRemoved">%1$s removed a dependency #%2$d %3$s</string>
+    <string name="timelineProjectAdded">%1$s added this to a project %2$s</string>
+    <string name="timelineProjectRemoved">%1$s removed this from a project %2$s</string>
+    <string name="timelineDueDateAdded">%1$s added the due date %2$s %3$s</string>
+    <string name="timelineDueDateModified">%1$s modified the due date to %2$s from %3$s %4$s</string>
+    <string name="timelineDueDateRemoved">%1$s removed the due date %2$s %3$s</string>
+    <string name="timelineBranchChanged">%1$s changed target branch from %2$s to %3$s %4$s</string>
+    <string name="timelineBranchDeleted">%1$s deleted branch %2$s %3$s</string>
+    <string name="timelineTimeTrackingStart">%1$s started working %2$s</string>
+    <string name="timelineTimeTrackingStop">%1$s stopped time tracking %2$s</string>
+    <string name="timelineTimeTrackingCancel">%1$s cancelled time tracking %2$s</string>
+    <string name="timelineTimeTrackingAddManualTime">%1$s added spent time %2$s %3$s</string>
+    <string name="timelineTimeTrackingDeleteManualTime">%1$s deleted spent time %2$s %3$s</string>
+    <string name="timelineChangeIssueRef">%1$s added reference %2$s %3$s</string>
+    <string name="timelineRefIssue">%1$s referenced this issue in #%2$d %3$s</string>
+    <string name="timelineRefPr">%1$s referenced this pull request in #%2$d %3$s</string>
+    <string name="timelineStatusRefIssue"><![CDATA[%1$s referenced this issue from a <font color=\'%2$d\'>%3$s</font> %4$s]]></string>
+    <string name="commitStatuses">Statuses</string>
+    <string name="statusNoUrl">This status has no linked target URL.</string>
 </resources>
