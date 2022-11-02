@@ -12,181 +12,262 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:indeterminate="true"
-        android:visibility="gone"/>
+        android:visibility="gone" />
 
     <com.google.android.material.appbar.AppBarLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:theme="@style/AppTheme.AppBarOverlay"
+        android:background="?attr/primaryBackgroundColor"
         app:elevation="@dimen/dimen0dp">
 
-        <FrameLayout
+        <com.google.android.material.card.MaterialCardView
             android:layout_width="match_parent"
-            android:layout_height="@dimen/dimen320dp">
-
-            <ImageView
-                android:id="@+id/userAvatarBackground"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:contentDescription="@string/generalImgContentText"
-                android:scaleType="centerCrop"/>
+            android:layout_height="wrap_content"
+            style="?attr/materialCardViewFilledStyle"
+            android:layout_marginStart="@dimen/dimen8dp"
+            android:layout_marginEnd="@dimen/dimen8dp"
+            android:layout_marginBottom="@dimen/dimen12dp"
+            app:cardElevation="@dimen/dimen0dp">
 
             <LinearLayout
-                android:id="@+id/layoutFrameAccount"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:gravity="center"
-                android:orientation="vertical"
-                android:layout_marginTop="@dimen/dimen8dp"
-                android:padding="@dimen/dimen16dp">
-
-                <com.google.android.material.card.MaterialCardView
-                    android:layout_width="@dimen/dimen60dp"
-                    android:layout_height="@dimen/dimen60dp"
-                    style="?attr/materialCardViewFilledStyle"
-                    android:layout_marginBottom="@dimen/dimen8dp"
-                    app:cardElevation="@dimen/dimen0dp"
-                    app:cardCornerRadius="@dimen/dimen32dp">
-
-                    <ImageView
-                        android:id="@+id/userAvatar"
-                        android:layout_width="match_parent"
-                        android:layout_height="match_parent"
-                        android:contentDescription="@string/generalImgContentText"
-                        android:src="@mipmap/app_logo_round"/>
-
-                </com.google.android.material.card.MaterialCardView>
-
-                <TextView
-                    android:id="@+id/userFullName"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:textColor="@color/colorWhite"
-                    android:textIsSelectable="true"
-                    android:textSize="@dimen/dimen18sp"/>
-
-                <TextView
-                    android:id="@+id/userLogin"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginBottom="@dimen/dimen10dp"
-                    android:textColor="@color/colorWhite"
-                    android:textIsSelectable="true"
-                    android:textSize="@dimen/dimen14sp"/>
-
-                <View
-                    android:id="@+id/divider"
-                    android:layout_width="@dimen/dimen50dp"
-                    android:layout_height="@dimen/dimen1dp"
-                    android:layout_marginBottom="@dimen/dimen10dp"
-                    android:background="@color/colorWhite"/>
+                android:foreground="?android:attr/selectableItemBackground"
+                android:background="?attr/materialCardBackgroundColor"
+                android:padding="@dimen/dimen24dp"
+                android:orientation="vertical">
 
                 <LinearLayout
-                    android:layout_width="wrap_content"
+                    android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:gravity="center_vertical"
+                    android:orientation="horizontal"
                     tools:ignore="UseCompoundDrawables">
 
-                    <ImageView
-                        android:id="@+id/userLanguageIcon"
-                        android:layout_width="wrap_content"
-                        android:layout_height="@dimen/dimen18dp"
-                        android:layout_marginEnd="@dimen/dimen2dp"
-                        android:contentDescription="@string/generalImgContentText"
-                        android:src="@drawable/ic_language"
-                        app:tint="@color/colorWhite"/>
+                     <com.google.android.material.card.MaterialCardView
+                         android:layout_width="@dimen/dimen80dp"
+                         android:layout_height="@dimen/dimen80dp"
+                         style="?attr/materialCardViewFilledStyle"
+                         android:layout_marginBottom="@dimen/dimen8dp"
+                         app:cardElevation="@dimen/dimen0dp"
+                         app:cardCornerRadius="@dimen/dimen40dp">
 
-                    <TextView
-                        android:id="@+id/userLanguage"
+                        <ImageView
+                            android:id="@+id/userAvatar"
+                            android:layout_width="match_parent"
+                            android:layout_height="match_parent"
+                            android:contentDescription="@string/generalImgContentText"
+                            android:src="@mipmap/app_logo_round" />
+
+                    </com.google.android.material.card.MaterialCardView>
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:paddingStart="@dimen/dimen24dp"
+                        android:paddingEnd="@dimen/dimen10dp"
+                        android:orientation="vertical">
+
+                        <TextView
+                            android:id="@+id/userFullName"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:textColor="?attr/primaryTextColor"
+                            android:textIsSelectable="true"
+                            android:textSize="@dimen/dimen18sp" />
+
+                        <TextView
+                            android:id="@+id/userLogin"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginBottom="@dimen/dimen10dp"
+                            android:textColor="?attr/primaryTextColor"
+                            android:textIsSelectable="true"
+                            android:textSize="@dimen/dimen14sp" />
+
+                        <LinearLayout
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:gravity="center_vertical"
+                            tools:ignore="UseCompoundDrawables">
+
+                            <ImageView
+                                android:id="@+id/userLanguageIcon"
+                                android:layout_width="@dimen/dimen16dp"
+                                android:layout_height="@dimen/dimen16dp"
+                                android:layout_marginEnd="@dimen/dimen4dp"
+                                android:contentDescription="@string/generalImgContentText"
+                                android:src="@drawable/ic_language"
+                                app:tint="?attr/iconsColor" />
+
+                            <TextView
+                                android:id="@+id/userLanguage"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:textColor="?attr/primaryTextColor"
+                                android:textIsSelectable="true"
+                                android:textSize="@dimen/dimen14sp" />
+
+                        </LinearLayout>
+
+                    </LinearLayout>
+
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="@dimen/dimen20dp"
+                    android:layout_marginBottom="@dimen/dimen0dp"
+                    android:orientation="horizontal"
+                    android:baselineAligned="false">
+
+                    <LinearLayout
+                        android:id="@+id/followers_section"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:textColor="@color/colorWhite"
-                        android:textIsSelectable="true"
-                        android:textSize="@dimen/dimen14sp"/>
+                        android:layout_weight="1"
+                        android:gravity="center"
+                        android:orientation="vertical">
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:textColor="?attr/primaryTextColor"
+                            android:text="@string/profileTabFollowers"
+                            android:textSize="@dimen/dimen14sp" />
+
+                        <TextView
+                            android:id="@+id/user_followers_count"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:textColor="?attr/primaryTextColor"
+                            android:paddingTop="@dimen/dimen6dp"
+                            android:textStyle="bold"
+                            android:textSize="@dimen/dimen14sp" />
+
+                    </LinearLayout>
+
+                    <LinearLayout
+                        android:id="@+id/following_section"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:gravity="center"
+                        android:orientation="vertical">
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:textColor="?attr/primaryTextColor"
+                            android:text="@string/profileTabFollowing"
+                            android:textSize="@dimen/dimen14sp" />
+
+                        <TextView
+                            android:id="@+id/user_following_count"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:textColor="?attr/primaryTextColor"
+                            android:paddingTop="@dimen/dimen6dp"
+                            android:textStyle="bold"
+                            android:textSize="@dimen/dimen14sp" />
+
+                    </LinearLayout>
+
+                    <LinearLayout
+                        android:id="@+id/starred_repos_section"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:gravity="center"
+                        android:orientation="vertical">
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:textColor="?attr/primaryTextColor"
+                            android:text="@string/starredRepos"
+                            android:textSize="@dimen/dimen14sp" />
+
+                        <TextView
+                            android:id="@+id/user_starred_repos_count"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:textColor="?attr/primaryTextColor"
+                            android:paddingTop="@dimen/dimen6dp"
+                            android:textStyle="bold"
+                            android:textSize="@dimen/dimen14sp" />
+
+                    </LinearLayout>
 
                 </LinearLayout>
 
             </LinearLayout>
 
-        </FrameLayout>
+        </com.google.android.material.card.MaterialCardView>
 
     </com.google.android.material.appbar.AppBarLayout>
 
-    <FrameLayout
+    <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginTop="@dimen/dimen200dp">
+        android:background="?attr/primaryBackgroundColor"
+        android:layout_marginTop="@dimen/dimen200dp"
+        android:orientation="vertical">
 
         <com.google.android.material.card.MaterialCardView
+            android:id="@+id/fragmentProfileCard"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            style="@style/CustomMaterCardViewStyle"
-            app:cardBackgroundColor="?attr/primaryBackgroundColor"
-            app:strokeWidth="@dimen/dimen0dp"
-            app:strokeColor="?attr/colorPrimary">
+            android:layout_margin="@dimen/dimen8dp"
+            app:strokeWidth="@dimen/dimen2dp"
+            app:cardCornerRadius="@dimen/dimen10dp"
+            app:strokeColor="?attr/colorPrimary"
+            style="?attr/materialCardViewFilledStyle">
 
-            <LinearLayout
+            <com.google.android.material.tabs.TabLayout
+                android:id="@+id/tabs"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                app:tabTextAppearance="@android:style/TextAppearance.Material.Widget.TabWidget"
+                app:tabIndicatorGravity="stretch"
+                app:tabMode="fixed"
+                app:tabIndicatorColor="?attr/colorPrimary"
+                app:tabIndicatorFullWidth="true"
                 android:background="?attr/primaryBackgroundColor"
-                android:orientation="vertical">
+                app:tabSelectedTextColor="@android:color/white"
+                app:tabTextColor="?attr/colorPrimary">
 
-                <com.google.android.material.card.MaterialCardView
-                    android:id="@+id/fragmentProfileCard"
-                    android:layout_width="match_parent"
+                <com.google.android.material.tabs.TabItem
+                    android:id="@+id/profileTabFollowers"
+                    android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_margin="@dimen/dimen12dp"
-                    app:strokeWidth="@dimen/dimen2dp"
-                    app:cardCornerRadius="@dimen/dimen32dp"
-                    app:strokeColor="?attr/colorPrimary"
-                    style="?attr/materialCardViewFilledStyle">
+                    android:text="@string/profileTabFollowers" />
 
-                    <com.google.android.material.tabs.TabLayout
-                        android:id="@+id/tabs"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        app:tabTextAppearance="@android:style/TextAppearance.Material.Widget.TabWidget"
-                        app:tabIndicatorGravity="stretch"
-                        app:tabMode="fixed"
-                        app:tabIndicatorColor="?attr/colorPrimary"
-                        app:tabIndicatorFullWidth="true"
-                        android:background="?attr/primaryBackgroundColor"
-                        app:tabSelectedTextColor="@android:color/white"
-                        app:tabTextColor="?attr/colorPrimary">
+                <com.google.android.material.tabs.TabItem
+                    android:id="@+id/profileTabFollowing"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/profileTabFollowing" />
 
-                        <com.google.android.material.tabs.TabItem
-                            android:id="@+id/profileTabFollowers"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:text="@string/profileTabFollowers"/>
+                <com.google.android.material.tabs.TabItem
+                    android:id="@+id/profileTabEmails"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/profileTabEmails" />
 
-                        <com.google.android.material.tabs.TabItem
-                            android:id="@+id/profileTabFollowing"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:text="@string/profileTabFollowing"/>
-
-                        <com.google.android.material.tabs.TabItem
-                            android:id="@+id/profileTabEmails"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:text="@string/profileTabEmails"/>
-
-                    </com.google.android.material.tabs.TabLayout>
-
-                </com.google.android.material.card.MaterialCardView>
-
-            </LinearLayout>
-
-            <androidx.viewpager.widget.ViewPager
-                android:id="@+id/container"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="@dimen/dimen72dp"
-                app:layout_behavior="@string/appbar_scrolling_view_behavior"/>
+            </com.google.android.material.tabs.TabLayout>
 
         </com.google.android.material.card.MaterialCardView>
 
-    </FrameLayout>
+    </LinearLayout>
+
+    <androidx.viewpager.widget.ViewPager
+        android:id="@+id/container"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/dimen48dp"
+        android:background="?attr/primaryBackgroundColor"
+        app:layout_behavior="@string/appbar_scrolling_view_behavior" />
 
 </androidx.coordinatorlayout.widget.CoordinatorLayout>

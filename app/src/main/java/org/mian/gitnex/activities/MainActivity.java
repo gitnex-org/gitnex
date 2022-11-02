@@ -24,7 +24,6 @@ import com.google.android.material.dialog.MaterialAlertDialogBuilder;
 import com.google.android.material.navigation.NavigationView;
 import java.util.ArrayList;
 import java.util.List;
-import jp.wasabeef.picasso.transformations.BlurTransformation;
 import org.gitnex.tea4j.v2.models.GeneralAPISettings;
 import org.gitnex.tea4j.v2.models.NotificationCount;
 import org.gitnex.tea4j.v2.models.ServerVersion;
@@ -55,7 +54,6 @@ import org.mian.gitnex.fragments.StarredRepositoriesFragment;
 import org.mian.gitnex.helpers.AlertDialogs;
 import org.mian.gitnex.helpers.AppUtil;
 import org.mian.gitnex.helpers.ChangeLog;
-import org.mian.gitnex.helpers.ColorInverter;
 import org.mian.gitnex.helpers.RoundedTransformation;
 import org.mian.gitnex.helpers.Toasty;
 import org.mian.gitnex.structs.BottomSheetListener;
@@ -189,8 +187,6 @@ public class MainActivity extends BaseActivity
 						TextView userEmail = hView.findViewById(R.id.userEmail);
 						TextView userFullName = hView.findViewById(R.id.userFullname);
 						ImageView userAvatar = hView.findViewById(R.id.userAvatar);
-						ImageView userAvatarBackground =
-								hView.findViewById(R.id.userAvatarBackground);
 						MaterialCardView navRecyclerViewFrame =
 								hView.findViewById(R.id.userAccountsFrame);
 
@@ -245,30 +241,6 @@ public class MainActivity extends BaseActivity
 										.resize(160, 160)
 										.centerCrop()
 										.into(userAvatar);
-
-								PicassoService.getInstance(ctx)
-										.get()
-										.load(userAvatarNav)
-										.transform(new BlurTransformation(ctx))
-										.into(
-												userAvatarBackground,
-												new com.squareup.picasso.Callback() {
-
-													@Override
-													public void onSuccess() {
-
-														int textColor =
-																new ColorInverter()
-																		.getImageViewContrastColor(
-																				userAvatarBackground);
-
-														userFullName.setTextColor(textColor);
-														userEmail.setTextColor(textColor);
-													}
-
-													@Override
-													public void onError(Exception e) {}
-												});
 							}
 						}
 

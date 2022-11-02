@@ -8,7 +8,6 @@ import android.view.ViewGroup;
 import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
 import java.util.Locale;
-import jp.wasabeef.picasso.transformations.BlurTransformation;
 import org.gitnex.tea4j.v2.models.User;
 import org.mian.gitnex.R;
 import org.mian.gitnex.clients.PicassoService;
@@ -17,7 +16,6 @@ import org.mian.gitnex.databinding.FragmentProfileDetailBinding;
 import org.mian.gitnex.helpers.AlertDialogs;
 import org.mian.gitnex.helpers.AppUtil;
 import org.mian.gitnex.helpers.ClickListener;
-import org.mian.gitnex.helpers.ColorInverter;
 import org.mian.gitnex.helpers.RoundedTransformation;
 import org.mian.gitnex.helpers.TimeHelper;
 import org.mian.gitnex.helpers.TinyDB;
@@ -102,6 +100,13 @@ public class DetailFragment extends Fragment {
 													response.body().getLogin()));
 									binding.userEmail.setText(email);
 
+									binding.userFollowersCount.setText(
+											String.valueOf(response.body().getFollowersCount()));
+									binding.userFollowingCount.setText(
+											String.valueOf(response.body().getFollowingCount()));
+									binding.userStarredReposCount.setText(
+											String.valueOf(response.body().getStarredReposCount()));
+
 									String[] userLanguageCodes =
 											response.body().getLanguage().split("-");
 
@@ -122,31 +127,6 @@ public class DetailFragment extends Fragment {
 											.resize(120, 120)
 											.centerCrop()
 											.into(binding.userAvatar);
-
-									PicassoService.getInstance(context)
-											.get()
-											.load(response.body().getAvatarUrl())
-											.transform(new BlurTransformation(context))
-											.into(
-													binding.userAvatarBackground,
-													new com.squareup.picasso.Callback() {
-
-														@Override
-														public void onSuccess() {
-															int invertedColor =
-																	new ColorInverter()
-																			.getImageViewContrastColor(
-																					binding.userAvatarBackground);
-
-															binding.userFullName.setTextColor(
-																	invertedColor);
-															binding.userLogin.setTextColor(
-																	invertedColor);
-														}
-
-														@Override
-														public void onError(Exception e) {}
-													});
 
 									binding.userJoinedOn.setText(
 											TimeHelper.formatTime(
