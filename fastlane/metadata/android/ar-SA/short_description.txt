@@ -1,1 +1,1 @@
-Native client for Gitea
+عميل محلي ل Gitea
