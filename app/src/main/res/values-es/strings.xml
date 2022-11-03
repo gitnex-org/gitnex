@@ -713,4 +713,5 @@
     <string name="timelineStatusRefIssue"><![CDATA[%1$s ha hecho referencia a esta incidencia desde <font color=\'%2$d\'>%3$s</font> %4$s]]></string>
     <string name="commitStatuses">Estados</string>
     <string name="statusNoUrl">Este estado no tiene una URL de destino asociada.</string>
+    <string name="starredRepos">Repositorios favoritos</string>
 </resources>
