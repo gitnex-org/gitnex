@@ -15,7 +15,6 @@ import androidx.annotation.NonNull;
 import androidx.drawerlayout.widget.DrawerLayout;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
-import io.mikael.urlbuilder.UrlBuilder;
 import java.util.List;
 import org.mian.gitnex.R;
 import org.mian.gitnex.activities.AddNewAccountActivity;
@@ -23,6 +22,7 @@ import org.mian.gitnex.clients.PicassoService;
 import org.mian.gitnex.database.models.UserAccount;
 import org.mian.gitnex.helpers.AppUtil;
 import org.mian.gitnex.helpers.RoundedTransformation;
+import org.mian.gitnex.helpers.UrlHelper;
 
 /**
  * @author M M Arif
@@ -59,13 +59,11 @@ public class UserAccountsNavAdapter
 
 		UserAccount currentItem = userAccountsList.get(position);
 
-		String url = UrlBuilder.fromString(currentItem.getInstanceUrl()).withPath("/").toString();
-
 		int imageSize = AppUtil.getPixelsFromDensity(context, 36);
 
 		PicassoService.getInstance(context)
 				.get()
-				.load(url + "assets/img/favicon.png")
+				.load(UrlHelper.appendPath(currentItem.getInstanceUrl(), "assets/img/favicon.png"))
 				.placeholder(R.drawable.loader_animated)
 				.transform(new RoundedTransformation(18, 0))
 				.resize(imageSize, imageSize)

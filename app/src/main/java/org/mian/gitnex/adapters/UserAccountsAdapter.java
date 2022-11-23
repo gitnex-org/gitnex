@@ -29,6 +29,7 @@ import org.mian.gitnex.helpers.AppUtil;
 import org.mian.gitnex.helpers.RoundedTransformation;
 import org.mian.gitnex.helpers.TinyDB;
 import org.mian.gitnex.helpers.Toasty;
+import org.mian.gitnex.helpers.UrlHelper;
 import retrofit2.Call;
 import retrofit2.Callback;
 
@@ -130,7 +131,7 @@ public class UserAccountsAdapter
 
 		PicassoService.getInstance(context)
 				.get()
-				.load(url + "assets/img/favicon.png")
+				.load(UrlHelper.appendPath(currentItem.getInstanceUrl(), "assets/img/favicon.png"))
 				.placeholder(R.drawable.loader_animated)
 				.transform(new RoundedTransformation(imgRadius, 0))
 				.resize(120, 120)

@@ -38,4 +38,17 @@ public class UrlHelper {
 
 		return !url.matches("^(http|https)://.+$") ? scheme + "://" + url : url;
 	}
+
+	public static String appendPath(String url, String path) {
+		if (url.endsWith("/")) {
+			// remove it
+			url = url.substring(0, url.length() - 1);
+		}
+		if (!path.startsWith("/")) {
+			// add it
+			path = "/" + path;
+		}
+
+		return url + path;
+	}
 }
