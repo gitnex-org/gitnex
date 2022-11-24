@@ -645,7 +645,7 @@
     <string name="adoptRepo">Adoptar</string>
     <string name="repoAdopted">Repositorio adoptado %s</string>
     <string name="unadoptedRepos">Repositorios no adoptados</string>
-    <string name="unadoptedReposMessage">- Adoptar el repositorio %s lo añadirá a la organización o usuario %s.\n - Eliminar lo borrará del sistema.</string>
+    <string name="unadoptedReposMessage">- Adoptar el repositorio %1$s lo añadirá a la organización o usuario %2$s.\n - Eliminar lo borrará del sistema.</string>
     <string name="commits">Commits</string>
     <!-- wiki -->
     <string name="wiki">Wiki</string>

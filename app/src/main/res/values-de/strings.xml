@@ -645,7 +645,7 @@
     <string name="adoptRepo">Übernehmen</string>
     <string name="repoAdopted">Repository %s wurde übernommen</string>
     <string name="unadoptedRepos">Nicht übernommene Repositories</string>
-    <string name="unadoptedReposMessage">- Übernehmen wird das Repository %s zur Organisation / zum Benutzer %s hinzufügen.\n - Löschen entfernt es aus dem System.</string>
+    <string name="unadoptedReposMessage">- Übernehmen wird das Repository %1$s zur Organisation / zum Benutzer %2$s hinzufügen.\n - Löschen entfernt es aus dem System.</string>
     <string name="commits">Commits</string>
     <!-- wiki -->
     <string name="wiki">Wiki</string>
