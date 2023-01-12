@@ -68,6 +68,7 @@ public class CreateIssueActivity extends BaseActivity
 	private List<Integer> labelsIds = new ArrayList<>();
 	private List<String> assigneesListData = new ArrayList<>();
 	private boolean renderMd = false;
+	private RepositoryContext repositoryContext;
 
 	@SuppressLint("ClickableViewAccessibility")
 	@Override
@@ -78,6 +79,8 @@ public class CreateIssueActivity extends BaseActivity
 		viewBinding = ActivityCreateIssueBinding.inflate(getLayoutInflater());
 		setContentView(viewBinding.getRoot());
 		setSupportActionBar(viewBinding.toolbar);
+
+		repositoryContext = RepositoryContext.fromIntent(getIntent());
 
 		boolean connToInternet = AppUtil.hasNetworkConnection(appCtx);
 
@@ -164,11 +167,10 @@ public class CreateIssueActivity extends BaseActivity
 				Markdown.render(
 						ctx,
 						EmojiParser.parseToUnicode(
-								Objects.requireNonNull(
-										Objects.requireNonNull(
-														viewBinding.newIssueDescription.getText())
-												.toString())),
-						viewBinding.markdownPreview);
+								Objects.requireNonNull(viewBinding.newIssueDescription.getText())
+										.toString()),
+						viewBinding.markdownPreview,
+						repositoryContext);
 
 				viewBinding.markdownPreview.setVisibility(View.VISIBLE);
 				viewBinding.newIssueDescriptionLayout.setVisibility(View.GONE);

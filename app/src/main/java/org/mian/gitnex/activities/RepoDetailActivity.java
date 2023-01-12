@@ -135,6 +135,14 @@ public class RepoDetailActivity extends BaseActivity implements BottomSheetListe
 						}
 					});
 
+	public ActivityResultLauncher<Intent> createIssueLauncher =
+			registerForActivityResult(
+					new ActivityResultContracts.StartActivityForResult(), result -> {});
+
+	public ActivityResultLauncher<Intent> createPrLauncher =
+			registerForActivityResult(
+					new ActivityResultContracts.StartActivityForResult(), result -> {});
+
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
 

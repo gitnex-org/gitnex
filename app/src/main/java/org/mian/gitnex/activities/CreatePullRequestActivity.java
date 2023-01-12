@@ -59,6 +59,7 @@ public class CreatePullRequestActivity extends BaseActivity
 	private LabelsListAdapter labelsAdapter;
 	private MaterialAlertDialogBuilder materialAlertDialogBuilder;
 	private boolean renderMd = false;
+	private RepositoryContext repositoryContext;
 
 	@SuppressLint("ClickableViewAccessibility")
 	@Override
@@ -69,6 +70,8 @@ public class CreatePullRequestActivity extends BaseActivity
 		viewBinding = ActivityCreatePrBinding.inflate(getLayoutInflater());
 		setContentView(viewBinding.getRoot());
 		setSupportActionBar(viewBinding.toolbar);
+
+		repositoryContext = RepositoryContext.fromIntent(getIntent());
 
 		materialAlertDialogBuilder =
 				new MaterialAlertDialogBuilder(ctx, R.style.ThemeOverlay_Material3_Dialog_Alert);
@@ -135,10 +138,9 @@ public class CreatePullRequestActivity extends BaseActivity
 				Markdown.render(
 						ctx,
 						EmojiParser.parseToUnicode(
-								Objects.requireNonNull(
-										Objects.requireNonNull(viewBinding.prBody.getText())
-												.toString())),
-						viewBinding.markdownPreview);
+								Objects.requireNonNull(viewBinding.prBody.getText()).toString()),
+						viewBinding.markdownPreview,
+						repositoryContext);
 
 				viewBinding.markdownPreview.setVisibility(View.VISIBLE);
 				viewBinding.prBodyLayout.setVisibility(View.GONE);

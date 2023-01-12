@@ -11,6 +11,9 @@ import androidx.annotation.Nullable;
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment;
 import org.mian.gitnex.actions.RepositoryActions;
 import org.mian.gitnex.activities.BaseActivity;
+import org.mian.gitnex.activities.CreateIssueActivity;
+import org.mian.gitnex.activities.CreatePullRequestActivity;
+import org.mian.gitnex.activities.RepoDetailActivity;
 import org.mian.gitnex.databinding.BottomSheetRepoBinding;
 import org.mian.gitnex.helpers.contexts.AccountContext;
 import org.mian.gitnex.helpers.contexts.RepositoryContext;
@@ -36,6 +39,8 @@ public class BottomSheetRepoFragment extends BottomSheetDialogFragment {
 
 		BottomSheetRepoBinding bottomSheetRepoBinding =
 				BottomSheetRepoBinding.inflate(inflater, container, false);
+
+		final Context ctx = getContext();
 
 		AccountContext account = ((BaseActivity) requireActivity()).getAccount();
 
@@ -90,7 +95,9 @@ public class BottomSheetRepoFragment extends BottomSheetDialogFragment {
 			createIssue.setVisibility(View.VISIBLE);
 			createIssue.setOnClickListener(
 					v12 -> {
-						bmListener.onButtonClicked("newIssue");
+						((RepoDetailActivity) requireActivity())
+								.createIssueLauncher.launch(
+										repository.getIntent(ctx, CreateIssueActivity.class));
 						dismiss();
 					});
 		} else {
@@ -102,8 +109,10 @@ public class BottomSheetRepoFragment extends BottomSheetDialogFragment {
 
 			createPullRequest.setVisibility(View.VISIBLE);
 			createPullRequest.setOnClickListener(
-					vPr -> {
-						bmListener.onButtonClicked("newPullRequest");
+					v12 -> {
+						((RepoDetailActivity) requireActivity())
+								.createPrLauncher.launch(
+										repository.getIntent(ctx, CreatePullRequestActivity.class));
 						dismiss();
 					});
 		} else {
