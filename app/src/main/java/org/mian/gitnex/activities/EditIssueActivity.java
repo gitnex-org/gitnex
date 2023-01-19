@@ -8,16 +8,16 @@ import android.os.Bundle;
 import android.os.Handler;
 import android.os.Looper;
 import android.util.Log;
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.ArrayAdapter;
-import android.widget.AutoCompleteTextView;
-import android.widget.Button;
-import android.widget.EditText;
-import android.widget.ImageView;
 import android.widget.TextView;
 import androidx.annotation.NonNull;
+import com.vdurmont.emoji.EmojiParser;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -37,6 +37,7 @@ import org.mian.gitnex.fragments.PullRequestsFragment;
 import org.mian.gitnex.helpers.AlertDialogs;
 import org.mian.gitnex.helpers.AppUtil;
 import org.mian.gitnex.helpers.Constants;
+import org.mian.gitnex.helpers.Markdown;
 import org.mian.gitnex.helpers.Toasty;
 import org.mian.gitnex.helpers.contexts.IssueContext;
 import retrofit2.Call;
@@ -47,18 +48,15 @@ import retrofit2.Callback;
  */
 public class EditIssueActivity extends BaseActivity implements View.OnClickListener {
 
+	private ActivityEditIssueBinding binding;
 	private final String msState = "open";
 	private final LinkedHashMap<String, Milestone> milestonesList = new LinkedHashMap<>();
 	private View.OnClickListener onClickListener;
 	private int resultLimit;
-	private EditText editIssueTitle;
-	private EditText editIssueDescription;
-	private TextView editIssueDueDate;
-	private Button editIssueButton;
-	private AutoCompleteTextView editIssueMilestoneSpinner;
 	private int milestoneId = 0;
 	private Date currentDate = null;
 	private IssueContext issue;
+	private boolean renderMd = false;
 
 	@SuppressLint("ClickableViewAccessibility")
 	@Override
@@ -66,9 +64,9 @@ public class EditIssueActivity extends BaseActivity implements View.OnClickListe
 
 		super.onCreate(savedInstanceState);
 
-		ActivityEditIssueBinding activityEditIssueBinding =
-				ActivityEditIssueBinding.inflate(getLayoutInflater());
-		setContentView(activityEditIssueBinding.getRoot());
+		binding = ActivityEditIssueBinding.inflate(getLayoutInflater());
+		setContentView(binding.getRoot());
+		setSupportActionBar(binding.toolbar);
 
 		InputMethodManager imm =
 				(InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
@@ -76,18 +74,11 @@ public class EditIssueActivity extends BaseActivity implements View.OnClickListe
 		resultLimit = Constants.getCurrentResultLimit(ctx);
 		issue = IssueContext.fromIntent(getIntent());
 
-		ImageView closeActivity = activityEditIssueBinding.close;
-		editIssueButton = activityEditIssueBinding.editIssueButton;
-		TextView toolbar_title = activityEditIssueBinding.toolbarTitle;
-		editIssueTitle = activityEditIssueBinding.editIssueTitle;
-		editIssueDescription = activityEditIssueBinding.editIssueDescription;
-		editIssueDueDate = activityEditIssueBinding.editIssueDueDate;
-
-		editIssueTitle.requestFocus();
+		binding.editIssueTitle.requestFocus();
 		assert imm != null;
-		imm.showSoftInput(editIssueTitle, InputMethodManager.SHOW_IMPLICIT);
+		imm.showSoftInput(binding.editIssueTitle, InputMethodManager.SHOW_IMPLICIT);
 
-		editIssueDescription.setOnTouchListener(
+		binding.editIssueDescription.setOnTouchListener(
 				(touchView, motionEvent) -> {
 					touchView.getParent().requestDisallowInterceptTouchEvent(true);
 
@@ -99,21 +90,19 @@ public class EditIssueActivity extends BaseActivity implements View.OnClickListe
 					return false;
 				});
 
-		editIssueMilestoneSpinner = findViewById(R.id.editIssueMilestoneSpinner);
-
 		initCloseListener();
-		closeActivity.setOnClickListener(onClickListener);
+		binding.close.setOnClickListener(onClickListener);
 
-		editIssueDueDate.setOnClickListener(this);
-		editIssueButton.setOnClickListener(this);
+		binding.editIssueDueDate.setOnClickListener(this);
+		binding.editIssueButton.setOnClickListener(this);
 
 		if (issue.getIssueType().equalsIgnoreCase("Pull")) {
 
-			toolbar_title.setText(
+			binding.toolbarTitle.setText(
 					getString(R.string.editPrNavHeader, String.valueOf(issue.getIssueIndex())));
 		} else {
 
-			toolbar_title.setText(
+			binding.toolbarTitle.setText(
 					getString(R.string.editIssueNavHeader, String.valueOf(issue.getIssueIndex())));
 		}
 
@@ -135,12 +124,55 @@ public class EditIssueActivity extends BaseActivity implements View.OnClickListe
 		onClickListener = view -> finish();
 	}
 
+	@Override
+	public boolean onCreateOptionsMenu(@NonNull Menu menu) {
+
+		MenuInflater inflater = getMenuInflater();
+		inflater.inflate(R.menu.markdown_switcher, menu);
+
+		return true;
+	}
+
+	@Override
+	public boolean onOptionsItemSelected(MenuItem item) {
+
+		int id = item.getItemId();
+
+		if (id == R.id.markdown) {
+
+			if (!renderMd) {
+
+				Markdown.render(
+						ctx,
+						EmojiParser.parseToUnicode(
+								Objects.requireNonNull(binding.editIssueDescription.getText())
+										.toString()),
+						binding.markdownPreview,
+						issue.getRepository());
+
+				binding.markdownPreview.setVisibility(View.VISIBLE);
+				binding.editIssueDescriptionLayout.setVisibility(View.GONE);
+				renderMd = true;
+			} else {
+				binding.markdownPreview.setVisibility(View.GONE);
+				binding.editIssueDescriptionLayout.setVisibility(View.VISIBLE);
+				renderMd = false;
+			}
+
+			return true;
+		} else {
+			return super.onOptionsItemSelected(item);
+		}
+	}
+
 	private void processEditIssue() {
 
 		boolean connToInternet = AppUtil.hasNetworkConnection(appCtx);
 
-		String editIssueTitleForm = editIssueTitle.getText().toString();
-		String editIssueDescriptionForm = editIssueDescription.getText().toString();
+		String editIssueTitleForm =
+				Objects.requireNonNull(binding.editIssueTitle.getText()).toString();
+		String editIssueDescriptionForm =
+				Objects.requireNonNull(binding.editIssueDescription.getText()).toString();
 
 		if (!connToInternet) {
 
@@ -230,7 +262,7 @@ public class EditIssueActivity extends BaseActivity implements View.OnClickListe
 	@Override
 	public void onClick(View v) {
 
-		if (v == editIssueDueDate) {
+		if (v == binding.editIssueDueDate) {
 
 			final Calendar c = Calendar.getInstance();
 			int mYear = c.get(Calendar.YEAR);
@@ -241,7 +273,7 @@ public class EditIssueActivity extends BaseActivity implements View.OnClickListe
 					new DatePickerDialog(
 							this,
 							(view, year, monthOfYear, dayOfMonth) -> {
-								editIssueDueDate.setText(
+								binding.editIssueDueDate.setText(
 										getString(
 												R.string.setDueDate,
 												year,
@@ -253,7 +285,7 @@ public class EditIssueActivity extends BaseActivity implements View.OnClickListe
 							mMonth,
 							mDay);
 			datePickerDialog.show();
-		} else if (v == editIssueButton) {
+		} else if (v == binding.editIssueButton) {
 
 			processEditIssue();
 		}
@@ -277,8 +309,8 @@ public class EditIssueActivity extends BaseActivity implements View.OnClickListe
 						if (response.code() == 200) {
 
 							assert response.body() != null;
-							editIssueTitle.setText(response.body().getTitle());
-							editIssueDescription.setText(response.body().getBody());
+							binding.editIssueTitle.setText(response.body().getTitle());
+							binding.editIssueDescription.setText(response.body().getBody());
 
 							Milestone currentMilestone = response.body().getMilestone();
 
@@ -343,9 +375,10 @@ public class EditIssueActivity extends BaseActivity implements View.OnClickListe
 																			milestonesList
 																					.keySet()));
 
-													editIssueMilestoneSpinner.setAdapter(adapter);
+													binding.editIssueMilestoneSpinner.setAdapter(
+															adapter);
 
-													editIssueMilestoneSpinner
+													binding.editIssueMilestoneSpinner
 															.setOnItemClickListener(
 																	(parent,
 																			view,
@@ -379,14 +412,16 @@ public class EditIssueActivity extends BaseActivity implements View.OnClickListe
 																					Math.toIntExact(
 																							currentMilestone
 																									.getId());
-																			editIssueMilestoneSpinner
+																			binding
+																					.editIssueMilestoneSpinner
 																					.setText(
 																							currentMilestone
 																									.getTitle(),
 																							false);
 																		} else {
 																			milestoneId = 0;
-																			editIssueMilestoneSpinner
+																			binding
+																					.editIssueMilestoneSpinner
 																					.setText(
 																							getString(
 																									R
@@ -417,7 +452,7 @@ public class EditIssueActivity extends BaseActivity implements View.OnClickListe
 								@SuppressLint("SimpleDateFormat")
 								DateFormat formatter = new SimpleDateFormat("yyyy-M-dd");
 								String dueDate = formatter.format(response.body().getDueDate());
-								editIssueDueDate.setText(dueDate);
+								binding.editIssueDueDate.setText(dueDate);
 							}
 							// enableProcessButton();
 
@@ -440,12 +475,12 @@ public class EditIssueActivity extends BaseActivity implements View.OnClickListe
 
 	private void disableProcessButton() {
 
-		editIssueButton.setEnabled(false);
+		binding.editIssueButton.setEnabled(false);
 	}
 
 	private void enableProcessButton() {
 
-		editIssueButton.setEnabled(true);
+		binding.editIssueButton.setEnabled(true);
 	}
 
 	@Override

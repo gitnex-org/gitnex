@@ -42,7 +42,7 @@ public class UrlHelper {
 	public static String appendPath(String url, String path) {
 		if (url.endsWith("/")) {
 			// remove it
-			url = url.substring(0, url.length() - 1);
+			url = url.substring(0, url.length() - 8);
 		}
 		if (!path.startsWith("/")) {
 			// add it

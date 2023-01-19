@@ -30,7 +30,7 @@
                 android:contentDescription="@string/close"
                 android:focusable="true"
                 android:gravity="center_vertical"
-                android:src="@drawable/ic_close"/>
+                android:src="@drawable/ic_close" />
 
             <TextView
                 android:id="@+id/toolbar_title"
@@ -40,7 +40,7 @@
                 android:maxLines="1"
                 android:text="@string/pageTitleCreateNewIssue"
                 android:textColor="?attr/primaryTextColor"
-                android:textSize="@dimen/dimen20sp"/>
+                android:textSize="@dimen/dimen20sp" />
 
         </com.google.android.material.appbar.MaterialToolbar>
 
@@ -93,7 +93,7 @@
                     android:textColor="?attr/inputTextColor"
                     android:textColorHighlight="?attr/hintColor"
                     android:textColorHint="?attr/hintColor"
-                    android:textSize="@dimen/dimen16sp"/>
+                    android:textSize="@dimen/dimen16sp" />
 
             </com.google.android.material.textfield.TextInputLayout>
 
@@ -114,16 +114,28 @@
                 <com.google.android.material.textfield.TextInputEditText
                     android:id="@+id/newIssueDescription"
                     android:layout_width="match_parent"
-                    android:layout_height="@dimen/dimen140dp"
+                    android:layout_height="@dimen/dimen180dp"
                     android:gravity="top|start"
                     android:inputType="textCapSentences|textMultiLine"
                     android:scrollbars="vertical"
                     android:textColor="?attr/inputTextColor"
                     android:textColorHighlight="?attr/hintColor"
                     android:textColorHint="?attr/hintColor"
-                    android:textSize="@dimen/dimen16sp"/>
+                    android:textSize="@dimen/dimen16sp" />
 
             </com.google.android.material.textfield.TextInputLayout>
+
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/markdown_preview"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:minHeight="@dimen/dimen186dp"
+                android:layout_marginTop="@dimen/dimen8dp"
+                android:layout_marginBottom="@dimen/dimen8dp"
+                android:textColor="?attr/primaryTextColor"
+                android:textIsSelectable="true"
+                android:textSize="@dimen/dimen14sp"
+                android:visibility="gone" />
 
             <com.google.android.material.textfield.TextInputLayout
                 android:id="@+id/newIssueAssigneesListLayout"
@@ -144,7 +156,7 @@
                     android:textColor="?attr/inputTextColor"
                     android:textColorHighlight="?attr/hintColor"
                     android:textColorHint="?attr/hintColor"
-                    android:textSize="@dimen/dimen16sp"/>
+                    android:textSize="@dimen/dimen16sp" />
 
             </com.google.android.material.textfield.TextInputLayout>
 
@@ -168,7 +180,7 @@
                     android:inputType="none"
                     android:labelFor="@+id/newIssueMilestoneSpinner"
                     android:textColor="?attr/inputTextColor"
-                    android:textSize="@dimen/dimen16sp"/>
+                    android:textSize="@dimen/dimen16sp" />
 
             </com.google.android.material.textfield.TextInputLayout>
 
@@ -191,7 +203,7 @@
                     android:textColor="?attr/inputTextColor"
                     android:textColorHighlight="?attr/hintColor"
                     android:textColorHint="?attr/hintColor"
-                    android:textSize="@dimen/dimen16sp"/>
+                    android:textSize="@dimen/dimen16sp" />
 
             </com.google.android.material.textfield.TextInputLayout>
 
@@ -218,7 +230,7 @@
                     android:textColor="?attr/inputTextColor"
                     android:textColorHighlight="?attr/hintColor"
                     android:textColorHint="?attr/hintColor"
-                    android:textSize="@dimen/dimen16sp"/>
+                    android:textSize="@dimen/dimen16sp" />
 
             </com.google.android.material.textfield.TextInputLayout>
 
@@ -229,7 +241,7 @@
                 android:layout_marginTop="@dimen/dimen8dp"
                 android:text="@string/newCreateButtonCopy"
                 android:textColor="@color/btnTextColor"
-                android:textStyle="bold"/>
+                android:textStyle="bold" />
 
         </LinearLayout>
 

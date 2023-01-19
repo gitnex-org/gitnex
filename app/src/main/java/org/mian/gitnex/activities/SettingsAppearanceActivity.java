@@ -10,7 +10,6 @@ import android.widget.TimePicker;
 import androidx.annotation.NonNull;
 import androidx.fragment.app.DialogFragment;
 import com.google.android.material.dialog.MaterialAlertDialogBuilder;
-import com.google.android.material.switchmaterial.SwitchMaterial;
 import org.mian.gitnex.R;
 import org.mian.gitnex.databinding.ActivitySettingsAppearanceBinding;
 import org.mian.gitnex.fragments.SettingsFragment;
@@ -46,8 +45,6 @@ public class SettingsAppearanceActivity extends BaseActivity {
 		LinearLayout lightTimeFrame =
 				activitySettingsAppearanceBinding.lightThemeTimeSelectionFrame;
 		LinearLayout darkTimeFrame = activitySettingsAppearanceBinding.darkThemeTimeSelectionFrame;
-
-		SwitchMaterial counterBadgesSwitch = activitySettingsAppearanceBinding.switchCounterBadge;
 
 		customFontList = getResources().getStringArray(R.array.fonts);
 		themeList = getResources().getStringArray(R.array.themes);
@@ -94,16 +91,19 @@ public class SettingsAppearanceActivity extends BaseActivity {
 			lightTimeFrame.setVisibility(View.GONE);
 		}
 
-		counterBadgesSwitch.setChecked(tinyDB.getBoolean("enableCounterBadges", true));
+		activitySettingsAppearanceBinding.switchCounterBadge.setChecked(
+				tinyDB.getBoolean("enableCounterBadges", true));
 
 		// counter badge switcher
-		counterBadgesSwitch.setOnCheckedChangeListener(
+		activitySettingsAppearanceBinding.switchCounterBadge.setOnCheckedChangeListener(
 				(buttonView, isChecked) -> {
 					tinyDB.putBoolean("enableCounterBadges", isChecked);
 					Toasty.success(appCtx, getResources().getString(R.string.settingsSave));
 				});
 		activitySettingsAppearanceBinding.counterBadgeFrame.setOnClickListener(
-				v -> counterBadgesSwitch.setChecked(!counterBadgesSwitch.isChecked()));
+				v ->
+						activitySettingsAppearanceBinding.switchCounterBadge.setChecked(
+								!activitySettingsAppearanceBinding.switchCounterBadge.isChecked()));
 
 		// show labels in lists(issues, pr) - default is color dots
 		activitySettingsAppearanceBinding.switchLabelsInListBadge.setChecked(

@@ -5,6 +5,9 @@ import android.app.DatePickerDialog;
 import android.content.Context;
 import android.os.Bundle;
 import android.view.LayoutInflater;
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.inputmethod.InputMethodManager;
@@ -12,6 +15,7 @@ import android.widget.ArrayAdapter;
 import android.widget.TextView;
 import androidx.annotation.NonNull;
 import com.google.android.material.dialog.MaterialAlertDialogBuilder;
+import com.vdurmont.emoji.EmojiParser;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
@@ -36,6 +40,7 @@ import org.mian.gitnex.fragments.IssuesFragment;
 import org.mian.gitnex.helpers.AlertDialogs;
 import org.mian.gitnex.helpers.AppUtil;
 import org.mian.gitnex.helpers.Constants;
+import org.mian.gitnex.helpers.Markdown;
 import org.mian.gitnex.helpers.Toasty;
 import org.mian.gitnex.helpers.contexts.RepositoryContext;
 import retrofit2.Call;
@@ -62,6 +67,8 @@ public class CreateIssueActivity extends BaseActivity
 	private MaterialAlertDialogBuilder materialAlertDialogBuilder;
 	private List<Integer> labelsIds = new ArrayList<>();
 	private List<String> assigneesListData = new ArrayList<>();
+	private boolean renderMd = false;
+	private RepositoryContext repositoryContext;
 
 	@SuppressLint("ClickableViewAccessibility")
 	@Override
@@ -71,6 +78,9 @@ public class CreateIssueActivity extends BaseActivity
 
 		viewBinding = ActivityCreateIssueBinding.inflate(getLayoutInflater());
 		setContentView(viewBinding.getRoot());
+		setSupportActionBar(viewBinding.toolbar);
+
+		repositoryContext = RepositoryContext.fromIntent(getIntent());
 
 		boolean connToInternet = AppUtil.hasNetworkConnection(appCtx);
 
@@ -134,6 +144,46 @@ public class CreateIssueActivity extends BaseActivity
 			viewBinding.newIssueMilestoneSpinnerLayout.setVisibility(View.GONE);
 			viewBinding.newIssueLabelsLayout.setVisibility(View.GONE);
 			viewBinding.newIssueDueDateLayout.setVisibility(View.GONE);
+		}
+	}
+
+	@Override
+	public boolean onCreateOptionsMenu(@NonNull Menu menu) {
+
+		MenuInflater inflater = getMenuInflater();
+		inflater.inflate(R.menu.markdown_switcher, menu);
+
+		return true;
+	}
+
+	@Override
+	public boolean onOptionsItemSelected(MenuItem item) {
+
+		int id = item.getItemId();
+
+		if (id == R.id.markdown) {
+
+			if (!renderMd) {
+				Markdown.render(
+						ctx,
+						EmojiParser.parseToUnicode(
+								Objects.requireNonNull(viewBinding.newIssueDescription.getText())
+										.toString()),
+						viewBinding.markdownPreview,
+						repositoryContext);
+
+				viewBinding.markdownPreview.setVisibility(View.VISIBLE);
+				viewBinding.newIssueDescriptionLayout.setVisibility(View.GONE);
+				renderMd = true;
+			} else {
+				viewBinding.markdownPreview.setVisibility(View.GONE);
+				viewBinding.newIssueDescriptionLayout.setVisibility(View.VISIBLE);
+				renderMd = false;
+			}
+
+			return true;
+		} else {
+			return super.onOptionsItemSelected(item);
 		}
 	}
 

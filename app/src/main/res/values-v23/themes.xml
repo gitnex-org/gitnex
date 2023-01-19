@@ -42,7 +42,6 @@
         <item name="colorSurface">@color/lightThemeInputBackground</item>
         <item name="shapeAppearanceSmallComponent">@style/inputsMaterialComponentCorner</item>
         <item name="android:windowAnimationStyle">@style/WindowAnimationTransition</item>
-        <item name="switchStyle">@style/MaterialSwitch</item>
         <item name="isDark">0</item>
     </style>
     <!-- Light theme -->
@@ -88,7 +87,6 @@
         <item name="colorSurface">@color/retroThemeInputBackground</item>
         <item name="shapeAppearanceSmallComponent">@style/inputsMaterialComponentCorner</item>
         <item name="android:windowAnimationStyle">@style/WindowAnimationTransition</item>
-        <item name="switchStyle">@style/MaterialSwitch</item>
         <item name="isDark">0</item>
     </style>
     <!-- Retro theme -->

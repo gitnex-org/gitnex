@@ -31,7 +31,7 @@
                 android:contentDescription="@string/close"
                 android:focusable="true"
                 android:gravity="center_vertical"
-                android:src="@drawable/ic_close"/>
+                android:src="@drawable/ic_close" />
 
             <TextView
                 android:id="@+id/toolbar_title"
@@ -41,7 +41,7 @@
                 android:maxLines="1"
                 android:text="@string/reportViewerHeader"
                 android:textColor="?attr/primaryTextColor"
-                android:textSize="@dimen/dimen20sp"/>
+                android:textSize="@dimen/dimen20sp" />
 
         </com.google.android.material.appbar.MaterialToolbar>
 
@@ -65,7 +65,7 @@
             android:layout_marginStart="@dimen/dimen24dp"
             android:text="@string/settingsEnableReportsText"
             android:textColor="?attr/primaryTextColor"
-            android:textSize="@dimen/dimen18sp"/>
+            android:textSize="@dimen/dimen18sp" />
 
         <LinearLayout
             android:layout_width="wrap_content"
@@ -74,13 +74,12 @@
             android:gravity="center_vertical|end"
             android:orientation="horizontal">
 
-            <com.google.android.material.switchmaterial.SwitchMaterial
+            <com.google.android.material.materialswitch.MaterialSwitch
                 android:id="@+id/crashReportsSwitch"
                 android:layout_width="wrap_content"
                 android:layout_height="@dimen/dimen32dp"
                 android:paddingStart="@dimen/dimen24dp"
-                android:paddingEnd="@dimen/dimen24dp"
-                android:switchMinWidth="@dimen/dimen56dp"/>
+                android:paddingEnd="@dimen/dimen24dp" />
 
         </LinearLayout>
 

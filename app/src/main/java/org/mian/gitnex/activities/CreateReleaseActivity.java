@@ -5,18 +5,18 @@ import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.ArrayAdapter;
-import android.widget.AutoCompleteTextView;
-import android.widget.Button;
-import android.widget.CheckBox;
-import android.widget.EditText;
-import android.widget.ImageView;
 import androidx.annotation.NonNull;
+import com.vdurmont.emoji.EmojiParser;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 import org.gitnex.tea4j.v2.models.Branch;
 import org.gitnex.tea4j.v2.models.CreateReleaseOption;
 import org.gitnex.tea4j.v2.models.CreateTagOption;
@@ -27,6 +27,7 @@ import org.mian.gitnex.clients.RetrofitClient;
 import org.mian.gitnex.databinding.ActivityCreateReleaseBinding;
 import org.mian.gitnex.helpers.AlertDialogs;
 import org.mian.gitnex.helpers.AppUtil;
+import org.mian.gitnex.helpers.Markdown;
 import org.mian.gitnex.helpers.Toasty;
 import org.mian.gitnex.helpers.contexts.RepositoryContext;
 import retrofit2.Call;
@@ -37,20 +38,13 @@ import retrofit2.Callback;
  */
 public class CreateReleaseActivity extends BaseActivity {
 
-	public ImageView closeActivity;
+	private ActivityCreateReleaseBinding binding;
 	List<String> branchesList = new ArrayList<>();
 	private View.OnClickListener onClickListener;
-	private EditText releaseTagName;
-	private AutoCompleteTextView releaseBranch;
-	private EditText releaseTitle;
-	private EditText releaseContent;
-	private CheckBox releaseType;
-	private CheckBox releaseDraft;
-	private Button createNewRelease;
 	private String selectedBranch;
-	private Button createNewTag;
 	private RepositoryContext repository;
 	private final View.OnClickListener createReleaseListener = v -> processNewRelease();
+	private boolean renderMd = false;
 
 	@SuppressLint("ClickableViewAccessibility")
 	@Override
@@ -58,9 +52,9 @@ public class CreateReleaseActivity extends BaseActivity {
 
 		super.onCreate(savedInstanceState);
 
-		ActivityCreateReleaseBinding activityCreateReleaseBinding =
-				ActivityCreateReleaseBinding.inflate(getLayoutInflater());
-		setContentView(activityCreateReleaseBinding.getRoot());
+		binding = ActivityCreateReleaseBinding.inflate(getLayoutInflater());
+		setContentView(binding.getRoot());
+		setSupportActionBar(binding.toolbar);
 
 		boolean connToInternet = AppUtil.hasNetworkConnection(appCtx);
 
@@ -69,18 +63,11 @@ public class CreateReleaseActivity extends BaseActivity {
 
 		repository = RepositoryContext.fromIntent(getIntent());
 
-		closeActivity = activityCreateReleaseBinding.close;
-		releaseTagName = activityCreateReleaseBinding.releaseTagName;
-		releaseTitle = activityCreateReleaseBinding.releaseTitle;
-		releaseContent = activityCreateReleaseBinding.releaseContent;
-		releaseType = activityCreateReleaseBinding.releaseType;
-		releaseDraft = activityCreateReleaseBinding.releaseDraft;
-
-		releaseTitle.requestFocus();
+		binding.releaseTitle.requestFocus();
 		assert imm != null;
-		imm.showSoftInput(releaseTitle, InputMethodManager.SHOW_IMPLICIT);
+		imm.showSoftInput(binding.releaseTitle, InputMethodManager.SHOW_IMPLICIT);
 
-		releaseContent.setOnTouchListener(
+		binding.releaseContent.setOnTouchListener(
 				(touchView, motionEvent) -> {
 					touchView.getParent().requestDisallowInterceptTouchEvent(true);
 
@@ -93,13 +80,10 @@ public class CreateReleaseActivity extends BaseActivity {
 				});
 
 		initCloseListener();
-		closeActivity.setOnClickListener(onClickListener);
+		binding.close.setOnClickListener(onClickListener);
 
-		releaseBranch = activityCreateReleaseBinding.releaseBranch;
 		getBranches(repository.getOwner(), repository.getName());
 
-		createNewRelease = activityCreateReleaseBinding.createNewRelease;
-		createNewTag = activityCreateReleaseBinding.createNewTag;
 		disableProcessButton();
 
 		if (!connToInternet) {
@@ -107,18 +91,60 @@ public class CreateReleaseActivity extends BaseActivity {
 			disableProcessButton();
 		} else {
 
-			createNewRelease.setOnClickListener(createReleaseListener);
+			binding.createNewRelease.setOnClickListener(createReleaseListener);
 		}
 
-		createNewTag.setOnClickListener(v -> createNewTag());
+		binding.createNewTag.setOnClickListener(v -> createNewTag());
+	}
+
+	@Override
+	public boolean onCreateOptionsMenu(@NonNull Menu menu) {
+
+		MenuInflater inflater = getMenuInflater();
+		inflater.inflate(R.menu.markdown_switcher, menu);
+
+		return true;
+	}
+
+	@Override
+	public boolean onOptionsItemSelected(MenuItem item) {
+
+		int id = item.getItemId();
+
+		if (id == R.id.markdown) {
+
+			if (!renderMd) {
+				Markdown.render(
+						ctx,
+						EmojiParser.parseToUnicode(
+								Objects.requireNonNull(
+										Objects.requireNonNull(binding.releaseContent.getText())
+												.toString())),
+						binding.markdownPreview);
+
+				binding.markdownPreview.setVisibility(View.VISIBLE);
+				binding.releaseContentLayout.setVisibility(View.GONE);
+				renderMd = true;
+			} else {
+				binding.markdownPreview.setVisibility(View.GONE);
+				binding.releaseContentLayout.setVisibility(View.VISIBLE);
+				renderMd = false;
+			}
+
+			return true;
+		} else {
+			return super.onOptionsItemSelected(item);
+		}
 	}
 
 	private void createNewTag() {
 		boolean connToInternet = AppUtil.hasNetworkConnection(appCtx);
 
-		String tagName = releaseTagName.getText().toString();
+		String tagName = Objects.requireNonNull(binding.releaseTagName.getText()).toString();
 		String message =
-				releaseTitle.getText().toString() + "\n\n" + releaseContent.getText().toString();
+				Objects.requireNonNull(binding.releaseTitle.getText()).toString()
+						+ "\n\n"
+						+ Objects.requireNonNull(binding.releaseContent.getText()).toString();
 
 		if (!connToInternet) {
 			Toasty.error(ctx, getResources().getString(R.string.checkNetConnection));
@@ -188,12 +214,14 @@ public class CreateReleaseActivity extends BaseActivity {
 
 		boolean connToInternet = AppUtil.hasNetworkConnection(appCtx);
 
-		String newReleaseTagName = releaseTagName.getText().toString();
-		String newReleaseTitle = releaseTitle.getText().toString();
-		String newReleaseContent = releaseContent.getText().toString();
+		String newReleaseTagName =
+				Objects.requireNonNull(binding.releaseTagName.getText()).toString();
+		String newReleaseTitle = Objects.requireNonNull(binding.releaseTitle.getText()).toString();
+		String newReleaseContent =
+				Objects.requireNonNull(binding.releaseContent.getText()).toString();
 		String checkBranch = selectedBranch;
-		boolean newReleaseType = releaseType.isChecked();
-		boolean newReleaseDraft = releaseDraft.isChecked();
+		boolean newReleaseType = binding.releaseType.isChecked();
+		boolean newReleaseDraft = binding.releaseDraft.isChecked();
 
 		if (!connToInternet) {
 
@@ -325,10 +353,10 @@ public class CreateReleaseActivity extends BaseActivity {
 												R.layout.list_spinner_items,
 												branchesList);
 
-								releaseBranch.setAdapter(adapter);
+								binding.releaseBranch.setAdapter(adapter);
 								enableProcessButton();
 
-								releaseBranch.setOnItemClickListener(
+								binding.releaseBranch.setOnItemClickListener(
 										(parent, view, position, id) ->
 												selectedBranch = branchesList.get(position));
 							}
@@ -349,13 +377,13 @@ public class CreateReleaseActivity extends BaseActivity {
 	}
 
 	private void disableProcessButton() {
-		createNewTag.setEnabled(false);
-		createNewRelease.setEnabled(false);
+		binding.createNewTag.setEnabled(false);
+		binding.createNewRelease.setEnabled(false);
 	}
 
 	private void enableProcessButton() {
-		createNewTag.setEnabled(true);
-		createNewRelease.setEnabled(true);
+		binding.createNewTag.setEnabled(true);
+		binding.createNewRelease.setEnabled(true);
 	}
 
 	@Override
