@@ -1,1 +1,1 @@
-GitNex for Gitea
+GitNex for Forgejo and Gitea

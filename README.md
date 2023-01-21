@@ -2,10 +2,9 @@
 
 [<img alt="Become a Patreon" src="https://codeberg.org/gitnex/GitNex/raw/branch/main/assets/patreon.png" height="40"/>](https://www.patreon.com/mmarif) [<img alt="Buy me a coffee" src="https://codeberg.org/gitnex/GitNex/raw/branch/main/assets/buy-me-a-coffee.png" height="40"/>](https://www.buymeacoffee.com/mmarif)
 
-# GitNex - Android client for Gitea
+# GitNex - Android client for Forgejo and Gitea
 
-GitNex is a free/paid, open-source Android client for Git repository management tool Gitea. Gitea is a community managed fork of Gogs, lightweight
-code hosting solution written in Go.
+GitNex is a free/paid, open-source Android client for Git repository management tool Forgejo and Gitea.
 
 GitNex is licensed under GPLv3 License. See the LICENSE file for the full license text. **No trackers are used** and source code is available here for
 anyone to audit.
@@ -16,7 +15,7 @@ anyone to audit.
 [<img alt='Get it on Google Play' src='https://codeberg.org/gitnex/GitNex/raw/branch/main/assets/google-play.png' height="80"/>](https://play.google.com/store/apps/details?id=org.mian.gitnex.pro)
 [<img alt='Download builds and releases' src='https://codeberg.org/gitnex/GitNex/raw/branch/main/assets/apk-badge.png' height="82"/>](https://cloud.swatian.com/s/DN7E5xxtaw4fRbE)
 
-## Note about Gitea version
+## Note about Forgejo and Gitea version
 
 Please make sure that you are on latest stable release or later for better app experience.
 

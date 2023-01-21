@@ -5,11 +5,11 @@
     <string name="appRepo" translatable="false">Source code</string>
     <string name="appRepoLink" translatable="false">https://codeberg.org/gitnex/GitNex</string>
     <string name="appWebsiteLink" translatable="false">https://gitnex.com/</string>
-    <string name="commitPage" translatable="false">Your Gitea Version</string>
+    <string name="commitPage" translatable="false">Your Instance Version</string>
     <string name="supportLinkPatreon" translatable="false">https://www.patreon.com/mmarif</string>
     <string name="supportLinkBuyMeaCoffee" translatable="false">https://www.buymeacoffee.com/mmarif</string>
     <string name="appVersionBuild" translatable="false">%s / %d</string>
-    <string name="appDesc" translatable="false">GitNex is a free, open-source Android client for Git repository management tool Gitea. GitNex is Licensed under GPLv3.\n\nThanks to all the contributors and donators for your generous work and donations.</string>
+    <string name="appDesc" translatable="false">GitNex is a free, open-source Android client for Git repository management tools Forgejo and Gitea. GitNex is Licensed under GPLv3.\n\nThanks to all the contributors and donators for your generous work and donations.</string>
     <string name="crowdInLink" translatable="false">https://crowdin.com/project/gitnex</string>
     <string name="crashReportEmailSubject" translatable="false">[GitNex] - Crash Report #%1$d</string>
     <string name="translateWithCrowdin" translatable="false">Crowdin</string>
@@ -29,7 +29,7 @@
     <string name="navAbout">About</string>
     <string name="navRate">Rate GitNex</string>
     <string name="navLogout">Logout</string>
-    <string name="navAdministration">Administration</string>
+    <string name="navAdministration">Instance Administration</string>
     <string name="navMyIssues">My Issues</string>
     <string name="navMostVisited">Most Visited Repos</string>
     <string name="navNotes">Notes</string>
@@ -50,7 +50,7 @@
     <string name="pageTitleAddEmail">Add Email Address</string>
     <string name="pageTitleNewFile">New File</string>
     <string name="pageTitleExplore">Explore</string>
-    <string name="pageTitleAdministration">Gitea Administration</string>
+    <string name="pageTitleAdministration">Administration</string>
     <string name="pageTitleNewPullRequest">New Pull Request</string>
     <string name="pageTitleUsers">Users</string>
     <!-- page titles -->
@@ -77,9 +77,8 @@
     <string name="instanceUrl">Instance URL</string>
     <string name="navigationDrawerOpen">Open Navigation Drawer</string>
     <string name="navigationDrawerClose">Close Navigation Drawer</string>
-    <string name="logo">Login to Gitea</string>
     <string name="protocol">Protocol</string>
-    <string name="urlInfoTooltip">1- Choose the correct protocol(https or http). \n2- Enter Gitea url e.g: try.gitea.io. \n3- If you have enabled 2FA for your account, enter the code in the OTP Code field. \n4- For HTTP basic auth use USERNAME@DOMAIN.COM in the URL field.</string>
+    <string name="urlInfoTooltip">1- Choose the correct protocol(https or http). \n2- Enter instance url e.g: try.gitea.io. \n3- If you have enabled 2FA for your account, enter the code in the OTP Code field. \n4- For HTTP basic auth use USERNAME@DOMAIN.COM in the URL field.</string>
     <string name="malformedUrl">Couldn\'t connect to host. Please check your URL or port for any errors</string>
     <string name="protocolError">It is not recommended to use HTTP protocol unless you are testing on local network</string>
     <string name="malformedJson">Malformed JSON was received. Server response was not successful</string>
@@ -459,7 +458,7 @@
     <string name="doneButton">Done</string>
     <string name="cancelButton">Cancel</string>
     <string name="genericError">Something went wrong, please try again</string>
-    <string name="apiNotFound">This request needs higher Gitea version than the one installed. Please upgrade your instance to the latest version of Gitea.</string>
+    <string name="apiNotFound">This request needs higher version than the one installed. Please upgrade your instance to the latest version.</string>
     <string name="noDataFound">🌟 Nothing in here 🌟</string>
     <string name="addButton">Add</string>
     <string name="removeButton">Remove</string>
@@ -624,7 +623,7 @@
     <string name="languagesHintText">Languages</string>
     <string name="reportsHintText">Crash reports</string>
     <string name="rateAppHintText">If you like GitNex you can give it a thumbs up</string>
-    <string name="aboutAppHintText">App version, build, user gitea version</string>
+    <string name="aboutAppHintText">App version, build, user instance version</string>
 
     <string name="archivedRepository">Archived</string>
     <string name="archivedRepositoryMessage">This repo is archived. You can view files, but cannot push or open issues/pull-requests.</string>
