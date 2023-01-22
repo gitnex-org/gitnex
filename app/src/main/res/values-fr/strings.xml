@@ -10,9 +10,10 @@
     <string name="navAbout">À propos</string>
     <string name="navRate">Noter GitNex</string>
     <string name="navLogout">Se déconnecter</string>
-    <string name="navAdministration">Administration</string>
+    <string name="navAdministration">Administration de l’instance</string>
     <string name="navMyIssues">Mes tickets</string>
     <string name="navMostVisited">Dépôts les plus visités</string>
+    <string name="navNotes">Notes</string>
     <!-- menu items -->
     <!-- page titles -->
     <string name="pageTitleNewRepo">Nouveau dépôt</string>
@@ -29,7 +30,7 @@
     <string name="pageTitleAddEmail">Ajouter une adresse courriel</string>
     <string name="pageTitleNewFile">Nouveau fichier</string>
     <string name="pageTitleExplore">Rechercher</string>
-    <string name="pageTitleAdministration">Administration de Gitea</string>
+    <string name="pageTitleAdministration">Administration</string>
     <string name="pageTitleNewPullRequest">Nouvelle demande d’ajout</string>
     <string name="pageTitleUsers">Utilisateurs</string>
     <!-- page titles -->
@@ -50,9 +51,8 @@
     <string name="instanceUrl">URL de l’instance</string>
     <string name="navigationDrawerOpen">Ouvrir le volet de navigation</string>
     <string name="navigationDrawerClose">Fermer le volet de navigation</string>
-    <string name="logo">Se connecter à Gitea</string>
     <string name="protocol">Protocole</string>
-    <string name="urlInfoTooltip">1. Choisissez le protocole adéquat (HTTPS ou HTTP)\n2. Entrez l’URL de votre instance Gitea (ex : try.gitea.io)\n3. Si l’authentification à deux facteurs est activée pour votre compte, saisissez le code OTP\n4. Pour une authentification basique avec HTTP, utilisez NOMDUTILISATEUR@DOMAINE.COM dans le champ URL Gitea.</string>
+    <string name="urlInfoTooltip">1- Choose the correct protocol(https or http). \n2- Enter instance url e.g: try.gitea.io. \n3- If you have enabled 2FA for your account, enter the code in the OTP Code field. \n4- For HTTP basic auth use USERNAME@DOMAIN.COM in the URL field.</string>
     <string name="malformedUrl">Connexion impossible. Veuillez vérifier l’URL et le port</string>
     <string name="protocolError">Le protocole HTTP est déconseillé en dehors de tests sur un réseau local</string>
     <string name="malformedJson">JSON mal formé. Le serveur ne répond pas.</string>
@@ -148,13 +148,10 @@
     <string name="settingsCertsSelectorHeader">Supprimer les certificats</string>
     <string name="settingsCertsPopupTitle">Supprimer les certificats ?</string>
     <string name="settingsCertsPopupMessage">Souhaitez-vous vraiment supprimer tout certificat et nom de domaine ajouté manuellement ?\n\nVous devrez vous reconnecter.</string>
-    <string name="settingsDateTimeHeaderText">Date et heure</string>
     <string name="settingsSave">Réglages enregistrés</string>
     <string name="settingsLanguageSelectorHeader">Langue</string>
     <string name="settingsLanguageSelectedHeaderDefault">Français</string>
     <string name="settingsAppearanceHeader">Apparence</string>
-    <string name="settingsDateTimeHeaderDefault">Relatif</string>
-    <string name="settingsDateTimeNormal">Normale</string>
     <string name="settingsLanguageSelectorDialogTitle">Langue</string>
     <string name="settingsLightThemeTimeSelectorHeader">Heure de passage au thème clair</string>
     <string name="settingsDarkThemeTimeSelectorHeader">Heure de passage au thème sombre</string>
@@ -372,7 +369,7 @@
     <string name="doneButton">Terminé</string>
     <string name="cancelButton">Annuler</string>
     <string name="genericError">Une erreur s’est produite, veuillez réessayer</string>
-    <string name="apiNotFound">Cette requête nécessite une version plus récente de Gitea. Veuillez mettre à jour votre instance.</string>
+    <string name="apiNotFound">Cette requête nécessite une version plus récente de l’instance. Veuillez la mettre à jour.</string>
     <string name="noDataFound">🌟 Rien ici 🌟</string>
     <string name="addButton">Ajouter</string>
     <string name="removeButton">Supprimer</string>
@@ -516,7 +513,7 @@
     <string name="languagesHintText">Langues</string>
     <string name="reportsHintText">Rapports de plantage</string>
     <string name="rateAppHintText">Vous aimez GitNex ? Mettez-lui un pouce !</string>
-    <string name="aboutAppHintText">Numéros de version GitNex et Gitea, autres liens</string>
+    <string name="aboutAppHintText">Version de l’application, version de l’instance utilisateur</string>
     <string name="archivedRepository">Archivé</string>
     <string name="archivedRepositoryMessage">Ce dépôt est archivé. Les fichiers sont accessibles, mais aucune modification n’est possible.</string>
     <string name="accountDeletedMessage">Compte supprimé</string>
@@ -647,7 +644,7 @@
     <string name="adoptRepo">Adopter</string>
     <string name="repoAdopted">Dépôt %s adopté</string>
     <string name="unadoptedRepos">Dépôts abandonnés</string>
-    <string name="unadoptedReposMessage">- Adopter le dépôt %s l’ajoutera à l’organisation/utilisateur %s.\n- Le supprimer l’effacera du système.</string>
+    <string name="unadoptedReposMessage">- Adopter le dépôt %1$s l’ajoutera à l’organisation/utilisateur %2$s.\n- Supprimer l’effacera du système.</string>
     <string name="commits">Révisions</string>
     <!-- wiki -->
     <string name="wiki">Wiki</string>
@@ -660,4 +657,60 @@
     <string name="wikiCreated">Page wiki créée</string>
     <!-- code editor -->
     <string name="openInCodeEditor">Ouvrir dans l’Éditeur de code</string>
+    <!-- notes -->
+    <string name="newNote">Nouvelle note</string>
+    <string name="editNote">Modifier note</string>
+    <string name="newNoteContentHint">Prenez vos notes ici</string>
+    <string name="noteDateTime">Créée le %s</string>
+    <string name="noteTimeModified">Mise à jour le %s</string>
+    <string name="noteDeleteDialoMessage">Souhaitez-vous vraiment supprimer cette note ?</string>
+    <plurals name="noteDeleteMessage">
+        <item quantity="one">Note supprimée</item>
+        <item quantity="other">Notes supprimées</item>
+    </plurals>
+    <string name="notesAllDeletionMessage">Toutes vos notes seront supprimées. Cette action est irréversible.</string>
+    <!-- timeline -->
+    <string name="commitText">révision</string>
+    <string name="timelineAddedCommit">%1$s a ajouté %2$s %3$s</string>
+    <!-- the | is replaced by the label -->
+    <string name="timelineAddedLabel">%1$s a ajouté | l’étiquette %2$s</string>
+    <!-- the | is replaced by the label -->
+    <string name="timelineRemovedLabel">%1$s a retiré | l’étiquette %2$s</string>
+    <string name="timelineAssigneesRemoved">%1$s s’est désaffecté de ceci %2$s</string>
+    <string name="timelineAssigneesUnassigned">%1$s a été désaffecté par %2$s %3$s</string>
+    <string name="timelineAssigneesSelfAssigned">%1$s s’est affecté à ceci %2$s</string>
+    <string name="timelineAssigneesAssigned">%1$s a été affecté par %2$s %3$s</string>
+    <string name="timelineMilestoneAdded">%1$s a ajouté ceci au jalon %2$s %3$s</string>
+    <string name="timelineMilestoneRemoved">%1$s a retiré ceci du jalon %2$s %3$s</string>
+    <string name="timelineStatusClosedIssue">%1$s a fermé ce ticket %2$s</string>
+    <string name="timelineStatusReopenedIssue">%1$s a rouvert ce ticket %2$s</string>
+    <string name="timelineStatusReopenedPr">%1$s a rouvert cette demande de fusion %2$s</string>
+    <string name="timelineStatusClosedPr">%1$s a fermé cette demande de fusion %2$s</string>
+    <string name="timelineStatusMergedPr">%1$s a accepté cette demande de fusion %2$s</string>
+    <string name="timelineStatusRefPr"><![CDATA[%1$s s’est référé à cette demande de fusion depuis un <font color=\'%2$d\'>%3$s</font> %4$s]]></string>
+    <string name="timelineReviewRequest">%1$s a demandé l’avis de %2$s %3$s</string>
+    <string name="timelineChangeTitle">%1$s a renommé %2$s en %3$s %4$s</string>
+    <string name="timelineLocked">%1$s a verrouillé en raison de %2$s et limité la discussion aux collaborateurs %3$s</string>
+    <string name="timelineUnlocked">%1$s a déverrouillé cette conversation %2$s</string>
+    <string name="timelineDependencyAdded">%1$s a ajouté une nouvelle dépendance #%2$d %3$s</string>
+    <string name="timelineDependencyRemoved">%1$s a supprimé une dépendance #%2$d %3$s</string>
+    <string name="timelineProjectAdded">%1$s a ajouté ceci à un projet %2$s</string>
+    <string name="timelineProjectRemoved">%1$s a supprimé ceci d\'un projet %2$s</string>
+    <string name="timelineDueDateAdded">%1$s a fixé l’échéance au %2$s %3$s</string>
+    <string name="timelineDueDateModified">%1$s a modifié l’échéance du %3$s au %2$s %4$s</string>
+    <string name="timelineDueDateRemoved">%1$s a supprimé l’échéance au %2$s %3$s</string>
+    <string name="timelineBranchChanged">%1$s a changé la branche cible de %2$s à %3$s %4$s</string>
+    <string name="timelineBranchDeleted">%1$s a supprimé la branche %2$s %3$s</string>
+    <string name="timelineTimeTrackingStart">%1$s started working %2$s</string>
+    <string name="timelineTimeTrackingStop">%1$s stopped time tracking %2$s</string>
+    <string name="timelineTimeTrackingCancel">%1$s cancelled time tracking %2$s</string>
+    <string name="timelineTimeTrackingAddManualTime">%1$s a ajouté le temps passé %2$s %3$s</string>
+    <string name="timelineTimeTrackingDeleteManualTime">%1$s a supprimé le temps passé %2$s %3$s</string>
+    <string name="timelineChangeIssueRef">%1$s a ajouté la référence %2$s %3$s</string>
+    <string name="timelineRefIssue">%1$s s’est référé à ce ticket dans #%2$d %3$s</string>
+    <string name="timelineRefPr">%1$s a fait référence à cette demande de fusion dans #%2$d %3$s</string>
+    <string name="timelineStatusRefIssue"><![CDATA[%1$s s’est référé à ce ticket depuis un <font color=\'%2$d\'>%3$s</font> %4$s]]></string>
+    <string name="commitStatuses">Statuts</string>
+    <string name="statusNoUrl">Ce statut n’a pas d’URL.</string>
+    <string name="starredRepos">Dépôts favoris</string>
 </resources>

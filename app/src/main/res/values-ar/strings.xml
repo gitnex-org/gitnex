@@ -4,33 +4,35 @@
     <string name="navMyRepos">مستودعاتي</string>
     <string name="navStarredRepos">المستودعات المفضلة</string>
     <string name="navRepos">المستودعات</string>
-    <string name="navProfile">الملف التعريفي</string>
+    <string name="navProfile">المِلف التعريفي</string>
     <string name="navSettings">الإعدادات</string>
     <string name="navOrg">المنظمات</string>
     <string name="navAbout">عن التطبيق</string>
     <string name="navRate">GitNex معدل</string>
-    <string name="navLogout">الخروج</string>
-    <string name="navAdministration">Administration</string>
-    <string name="navMyIssues">My Issues</string>
+    <string name="navLogout">تسجيل الخروج</string>
+    <string name="navAdministration">Instance Administration</string>
+    <string name="navMyIssues">قضاياي</string>
+    <string name="navMostVisited">المستودعات الأكثر زيارة</string>
+    <string name="navNotes">الملاحظات</string>
     <!-- menu items -->
     <!-- page titles -->
     <string name="pageTitleNewRepo">مستودع جديد</string>
-    <string name="pageTitleIssues">مسائل</string>
+    <string name="pageTitleIssues">قضايا</string>
     <string name="pageTitleCreateOrganization">منظمة جديدة</string>
-    <string name="pageTitleCreateMilestone">New Milestone</string>
-    <string name="pageTitleCreateNewIssue">New Issue</string>
-    <string name="pageTitleCreateLabel">New Label</string>
-    <string name="pageTitleCredits">Credits</string>
-    <string name="pageTitleChooseBranch">اختر فرعًا</string>
-    <string name="pageTitleLabelUpdate">Update Label</string>
+    <string name="pageTitleCreateMilestone">مرحلة جديدة</string>
+    <string name="pageTitleCreateNewIssue">مُشكلة جديدة</string>
+    <string name="pageTitleCreateLabel">وسم جديد</string>
+    <string name="pageTitleCredits">المساهمون في العمل</string>
+    <string name="pageTitleChooseBranch">اِختر فرعاً</string>
+    <string name="pageTitleLabelUpdate">تحديث الوسم</string>
     <string name="pageTitleStarredRepos">المستودعات المفضلة</string>
     <string name="pageTitleCreateTeam">فريق جديد</string>
     <string name="pageTitleAddEmail">إضافة عنوان بريد الكتروني</string>
-    <string name="pageTitleNewFile">ملف جديد</string>
+    <string name="pageTitleNewFile">مِلف جديد</string>
     <string name="pageTitleExplore">استكشف</string>
-    <string name="pageTitleAdministration">Gitea Administration</string>
-    <string name="pageTitleNewPullRequest">New Pull Request</string>
-    <string name="pageTitleUsers">Users</string>
+    <string name="pageTitleAdministration">Administration</string>
+    <string name="pageTitleNewPullRequest">طلب دمج جديد</string>
+    <string name="pageTitleUsers">المُستخدمون</string>
     <!-- page titles -->
     <string name="repoName">Demo repo</string>
     <string name="repoDescription">مثال عن الوصف</string>
@@ -40,605 +42,604 @@
     <string name="newRepoTintCopy">اسم المستودع</string>
     <string name="newRepoDescTintCopy">وصف المستودَع</string>
     <string name="newRepoPrivateCopy">خاص</string>
-    <string name="newRepoOwner">مالك</string>
+    <string name="newRepoOwner">المالك</string>
     <string name="newOrgTintCopy">اسم المنظمة</string>
     <string name="newOrgDescTintCopy">وصف المنظمة</string>
     <string name="userName">اسم المستخدم</string>
-    <string name="passWord">الكلمة السرية</string>
+    <string name="passWord">كلمة المرور</string>
     <string name="btnLogin">لِج</string>
     <string name="instanceUrl">عنوان مثيل الخادم</string>
-    <string name="navigationDrawerOpen">Open Navigation Drawer</string>
-    <string name="navigationDrawerClose">Close Navigation Drawer</string>
-    <string name="logo">لِج إلى Gitea</string>
-    <string name="protocol">Protocol</string>
-    <string name="urlInfoTooltip">1. پروتکل درست را انتخاب کنید (http یا https)
-2. نشانی Gitea را وارد کنید. مثلا: try.gitea.io
-3. اگر احراز هویت دو مرحله‌ای را برای حساب خود فعال کرده‌اید، رمز را در کادر OTP وارد کنید.
-4. برای احراز هویت عادی HTTP از USERNAME@DOMAIN.COM در نشانی استفاده کنید.</string>
-    <string name="malformedUrl">Couldn\'t connect to host. Please check your URL or port for any errors</string>
-    <string name="protocolError">It is not recommended to use HTTP protocol unless you are testing on local network</string>
-    <string name="malformedJson">Malformed JSON was received. Server response was not successful</string>
-    <string name="emptyFieldURL">Instance URL is required</string>
-    <string name="emptyFieldUsername">اسم المستخدم لازم</string>
-    <string name="emptyFieldPassword">الكلمة السرية لازمة</string>
-    <string name="protocolEmptyError">Protocol is required</string>
-    <string name="checkNetConnection">Cannot access network, please check your Internet connection</string>
+    <string name="navigationDrawerOpen">فتح درج التنقل</string>
+    <string name="navigationDrawerClose">إغلاق درج التنقل</string>
+    <string name="protocol">برتوكول</string>
+    <string name="urlInfoTooltip">1- Choose the correct protocol(https or http). \n2- Enter instance url e.g: try.gitea.io. \n3- If you have enabled 2FA for your account, enter the code in the OTP Code field. \n4- For HTTP basic auth use USERNAME@DOMAIN.COM in the URL field.</string>
+    <string name="malformedUrl">لا يمكن الاتصال بالخادم. رجاءً تحقق رابطك أو منفذك لأي أخطاء</string>
+    <string name="protocolError">لا يُنصح باستخدام بروتوكول HTTP إلا إذا كنت تجرب في شبكة محلية</string>
+    <string name="malformedJson">أُستلم JSON غير صحيح. لم تكن استجابة الخادم ناجحة</string>
+    <string name="emptyFieldURL">عنوان URL للمثيل مطلوب</string>
+    <string name="emptyFieldUsername">اسم المستخدم مطلوب</string>
+    <string name="emptyFieldPassword">كلمة المرور مطلوبة</string>
+    <string name="protocolEmptyError">البروتوكول مطلوب</string>
+    <string name="checkNetConnection">لا يمكن الوصول إلى الشبكة، رجاءً تحقق اتصالك بالإنترنت</string>
     <string name="repoNameErrorEmpty">اسم المستودع فارغ</string>
-    <string name="repoNameErrorInvalid">Repository name is not valid. [a&#8211;z A&#8211;Z 0&#8211;9 &#8211; _]</string>
-    <string name="repoNameErrorReservedName">Repository name is reserved</string>
-    <string name="repoNameErrorReservedPatterns">Repository name contains reserved keywords</string>
-    <string name="repoDescError">Repository description exceeds the max 255 characters limit</string>
-    <string name="repoCreated">Repository created successfully</string>
-    <string name="repoExistsError">Repository of this name already exists under selected Owner</string>
-    <string name="repoOwnerError">Select owner for the repository</string>
-    <string name="orgNameErrorEmpty">Organization name is empty</string>
-    <string name="orgNameErrorInvalid">Organization name is not valid, [a&#8211;z A&#8211;Z 0&#8211;9 &#8211; _]</string>
-    <string name="orgDescError">Organization description exceeds the max 255 characters limit</string>
-    <string name="orgCreated">Organization created successfully</string>
-    <string name="orgExistsError">Organization already exists</string>
-    <string name="diffStatistics">%1$s addition(s) and %2$s deletion(s)</string>
-    <string name="processingText">Processing</string>
+    <string name="repoNameErrorInvalid">اسم المستودع غير صالح. [a&#8211;z A&#8211;Z 0&#8211;9 &#8211; _]</string>
+    <string name="repoNameErrorReservedName">اسم المستودع محجوز</string>
+    <string name="repoNameErrorReservedPatterns">اسم المستودع يحوي كلمات محجوزة</string>
+    <string name="repoDescError">تجاوز وصف المستودع عدد الحروف الأقصى 255 حرفاً</string>
+    <string name="repoCreated">أُنشئ المستودع بنجاح</string>
+    <string name="repoExistsError">يوجد مستودع بهذا الاسم للمالك المحدد فعلًا</string>
+    <string name="repoOwnerError">اِختر مالك المستودع</string>
+    <string name="orgNameErrorEmpty">اسم المنظمة فارغ</string>
+    <string name="orgNameErrorInvalid">اسم المنظمة غير صالح. [a&#8211;z A&#8211;Z 0&#8211;9 &#8211; _]</string>
+    <string name="orgDescError">تجاوز وصف المنظمة عدد الحروف الأقصى 255 حرفاً</string>
+    <string name="orgCreated">أُنشئت المنظمة بنجاح</string>
+    <string name="orgExistsError">المنظمة موجودة مسبقاً</string>
+    <string name="diffStatistics">%1$s إضافة (إضافات) و %2$s حذف (محذوفات)</string>
+    <string name="processingText">جارٍ المعالجة</string>
     <string name="search">البحث</string>
-    <string name="close">أغلق</string>
+    <string name="close">إغلاق</string>
     <string name="addNewContent">إضافة</string>
     <string name="orgContentAvatar">Org</string>
     <string name="repoContentAvatar">Repo</string>
     <string name="privateAvatar">Pri</string>
     <string name="removeContent">إزالة</string>
-    <string name="genericApiError">Instance has returned an error. Code %d</string>
+    <string name="genericApiError">أرجع المثيل خطأ. الرمز %d</string>
     <string name="tabTextInfo">التفاصيل</string>
-    <string name="tabTextFiles">الملفات</string>
-    <string name="tabTextMl">Milestones</string>
+    <string name="tabTextFiles">المِلفات</string>
+    <string name="tabTextMl">المراحل</string>
     <string name="tabTextReleases">اﻹصدارات</string>
     <string name="tabTextBranches">الفروع</string>
     <string name="tabTextCollaborators">المتعاونون</string>
-    <string name="tabPullRequests">Pull Requests</string>
-    <string name="pullRequest">Pull Request</string>
+    <string name="tabPullRequests">طلبات الدمج</string>
+    <string name="pullRequest">طلب دمج</string>
     <string name="infoTabRepoSize">الحجم</string>
-    <string name="infoTabRepoDefaultBranch">الفرع المبدئيّ</string>
+    <string name="infoTabRepoDefaultBranch">الفرع الافتراضي</string>
     <string name="infoTabRepoSshUrl">عنوان SSH</string>
-    <string name="infoTabRepoCloneUrl">انسخ العنوان</string>
+    <string name="infoTabRepoCloneUrl">نسخ عنوان URL</string>
     <string name="infoTabRepoRepoUrl">عنوان المستودع</string>
     <string name="infoTabRepoForksCount">المُشتقّات</string>
-    <string name="infoTabRepoCreatedAt">Created</string>
-    <string name="infoTabRepoUpdatedAt">Last Updated</string>
-    <string name="infoShowMoreInformation">Show More Information</string>
-    <string name="infoMoreInformation">More Information</string>
+    <string name="infoTabRepoCreatedAt">أُنشئ</string>
+    <string name="infoTabRepoUpdatedAt">آخر تحديث</string>
+    <string name="infoShowMoreInformation">إظهار المزيد من المعلومات</string>
+    <string name="infoMoreInformation">المزيد من المعلومات</string>
     <string name="timeAtText">على</string>
-    <string name="issueMilestone">Milestone %1$s</string>
-    <string name="dueDate">Due on %1$s</string>
-    <string name="assignedTo">Assigned to: %1$s</string>
-    <string name="assignedToMe">Assigned to Me</string>
+    <string name="issueMilestone">المرحلة %1$s</string>
+    <string name="dueDate">سُلِّم في %1$s</string>
+    <string name="assignedTo">موكلة على: %1$s</string>
+    <string name="assignedToMe">موكلة علي</string>
     <string name="commentButtonText">تعليق</string>
-    <string name="commentEmptyError">Please write your comment</string>
-    <string name="commentSuccess">Comment posted</string>
-    <string name="featureDeprecated">This function will be removed in the future</string>
-    <string name="generalImgContentText">Image</string>
-    <string name="commitAuthor">Commit author: %1$s</string>
+    <string name="commentEmptyError">رجاءً أكتب تعليقك</string>
+    <string name="commentSuccess">نُشِر التعليق</string>
+    <string name="featureDeprecated">ستُزال هذه الوظيفة في المستقبل</string>
+    <string name="generalImgContentText">صورة</string>
+    <string name="commitAuthor">صاحب الإيداع: %1$s</string>
     <string name="releaseDownloadText">التنزيلات</string>
-    <string name="releasePublishedBy">Published by @%1$s</string>
-    <string name="noReleaseBodyContent">Release notes are not provided by the publisher.</string>
+    <string name="releasePublishedBy">نُشِر بواسطة @%1$s</string>
+    <string name="noReleaseBodyContent">لم توفر ملاحظات الإصدار من قبل الناشر.</string>
     <string name="newMilestoneTitle">العنوان</string>
     <string name="newMilestoneDescription">الوصف</string>
-    <string name="newMilestoneDueDate">Due Date</string>
-    <string name="milestoneNameErrorEmpty">Milestone title is empty</string>
-    <string name="milestoneDescError">Milestone description exceeds the max 255 characters limit</string>
-    <string name="milestoneCreated">Milestone created successfully</string>
-    <string name="milestoneDateEmpty">Please choose due date</string>
-    <string name="milestoneNoDueDate">No due date</string>
-    <string name="milestoneNoDescription">No description</string>
-    <string name="milestoneIssueStatusOpen">%1$d Open</string>
-    <string name="milestoneIssueStatusClosed">%1$d Closed</string>
-    <string name="selectMilestone">Select Milestone</string>
-    <string name="newIssueSelectAssigneesListTitle">Select Assignees</string>
-    <string name="newIssueSelectLabelsListTitle">Select Labels</string>
+    <string name="newMilestoneDueDate">تاريخ الإكمال</string>
+    <string name="milestoneNameErrorEmpty">اسم المرحلة فارغ</string>
+    <string name="milestoneDescError">تجاوز وصف المرحلة عدد الحروف الأقصى 255 حرفاً</string>
+    <string name="milestoneCreated">أُنشئت المرحلة بنجاح</string>
+    <string name="milestoneDateEmpty">يرجى اختيار تاريخ الإكمال</string>
+    <string name="milestoneNoDueDate">لا يوجد تاريخ إكمال</string>
+    <string name="milestoneNoDescription">لا يوجد وصف</string>
+    <string name="milestoneIssueStatusOpen">%1$d مفتوحة</string>
+    <string name="milestoneIssueStatusClosed">%1$d مغلقة</string>
+    <string name="selectMilestone">اِختر المرحلة</string>
+    <string name="newIssueSelectAssigneesListTitle">اِختر الموكل عليهم</string>
+    <string name="newIssueSelectLabelsListTitle">اِختر الأوسمة</string>
     <string name="newIssueTitle">العنوان</string>
-    <string name="newIssueAssigneesListTitle">Assignees</string>
+    <string name="newIssueAssigneesListTitle">الموكل عليهم</string>
     <string name="newIssueDescriptionTitle">الوصف</string>
-    <string name="newIssueDueDateTitle">Due Date</string>
-    <string name="newIssueMilestoneTitle">Milestone</string>
-    <string name="newIssueLabelsTitle">Labels</string>
-    <string name="issueTitleEmpty">Issue title is empty</string>
-    <string name="issueDescriptionEmpty">Issue description is empty</string>
-    <string name="issueCreated">New issue created successfully</string>
-    <string name="issueCreatedNoMilestone">No milestone</string>
-    <string name="noAssigneesFound">No assignees found</string>
+    <string name="newIssueDueDateTitle">تاريخ الإكمال</string>
+    <string name="newIssueMilestoneTitle">المرحلة</string>
+    <string name="newIssueLabelsTitle">الأوسمة</string>
+    <string name="issueTitleEmpty">اسم القضية فارغ</string>
+    <string name="issueDescriptionEmpty">وصف القضية فارغ</string>
+    <string name="issueCreated">أُنشئت القضية الجديدة بنجاح</string>
+    <string name="issueCreatedNoMilestone">لا يوجد مراحل</string>
+    <string name="noAssigneesFound">لا يوجد أشخاص موكلين</string>
     <!-- settings -->
     <string name="settingsLanguageHeaderText">الترجمة</string>
-    <string name="settingsLanguageSystem">System</string>
-    <string name="settingsSecurityHeader">Security</string>
-    <string name="settingsCertsSelectorHeader">Delete Trusted Certificates</string>
-    <string name="settingsCertsPopupTitle">Delete Trusted Certificates?</string>
-    <string name="settingsCertsPopupMessage">Are you sure to delete any manually trusted certificate or hostname? \n\nYou will also be logged out.</string>
-    <string name="settingsDateTimeHeaderText">التاريخ والوقت</string>
+    <string name="settingsLanguageSystem">اِستعمال لغة النظام</string>
+    <string name="settingsSecurityHeader">الأمان</string>
+    <string name="settingsCertsSelectorHeader">حذف الشهادات الموثوقة</string>
+    <string name="settingsCertsPopupTitle">أتريد حذف الشهادات الموثوقة؟</string>
+    <string name="settingsCertsPopupMessage">أمتأكد من حذف أي شهادة أو اسم مضيف موثق يدوياً؟\n\n سيُسجل خروجك أيضاً.</string>
     <string name="settingsSave">تم حفظ الإعدادات</string>
     <string name="settingsLanguageSelectorHeader">اللغة</string>
-    <string name="settingsLanguageSelectedHeaderDefault">العربية</string>
+    <string name="settingsLanguageSelectedHeaderDefault">الإنجليزية</string>
     <string name="settingsAppearanceHeader">المظهر</string>
-    <string name="settingsDateTimeHeaderDefault">جميل</string>
-    <string name="settingsDateTimeNormal">Normal</string>
-    <string name="settingsLanguageSelectorDialogTitle">اختر اللغة</string>
-    <string name="settingsLightThemeTimeSelectorHeader">Light Theme Switch Time</string>
-    <string name="settingsDarkThemeTimeSelectorHeader">Dark Theme Switch Time</string>
-    <string name="settingsTimeSelectorDialogTitle">اختر تنسيقًا للوقت</string>
-    <string name="settingsHelpTranslateText">Translate GitNex via Crowdin</string>
-    <string name="codeBlockHeaderText">Code Block Color</string>
-    <string name="settingsCodeBlockSelectorDialogTitle">Code Block Color Selector</string>
-    <string name="settingsHomeScreenHeaderText">الشاشة الرئيسية</string>
+    <string name="settingsLanguageSelectorDialogTitle">اِختر اللغة</string>
+    <string name="settingsLightThemeTimeSelectorHeader">موعد التحويل للوضع الفاتح</string>
+    <string name="settingsDarkThemeTimeSelectorHeader">موعد التحويل للوضع الغامق</string>
+    <string name="settingsTimeSelectorDialogTitle">اِختر تنسيق الوقت</string>
+    <string name="settingsHelpTranslateText">ترجم GitNex بواسطة كراودين</string>
+    <string name="codeBlockHeaderText">لون كتل التعليمات البرمجية</string>
+    <string name="settingsCodeBlockSelectorDialogTitle">اختيار لون كتل التعليمات البرمجية</string>
+    <string name="settingsHomeScreenHeaderText">الشاشة الرئيسة</string>
     <string name="settingsHomeScreenSelectedText">مستودعاتي</string>
-    <string name="settingsHomeScreenSelectorDialogTitle">Select Home Screen</string>
+    <string name="settingsHomeScreenSelectorDialogTitle">اِختر الشاشة الرئيسة</string>
     <string name="settingsCustomFontHeaderText">الخط</string>
-    <string name="settingsCustomFontSelectorDialogTitle">اختر الخط</string>
-    <string name="themeSelectorDialogTitle">اختر سمة التطبيق</string>
-    <string name="themeSelectionHeaderText">الحُلّة</string>
-    <string name="settingsCounterBadges">Counter Badges</string>
-    <string name="settingsFileViewerSourceCodeHeaderText">Source Code Theme</string>
-    <string name="cacheSizeDataDialogHeader">Data Cache Size</string>
-    <string name="cacheSizeDataSelectionHeaderText">Data Cache Size</string>
-    <string name="cacheSizeImagesDialogHeader">Images Cache Size</string>
-    <string name="cacheSizeImagesSelectionHeaderText">Images Cache Size</string>
-    <string name="clearCacheSelectionHeaderText">Clear Cache</string>
-    <string name="clearCacheDialogHeader">Clear Cache?</string>
-    <string name="clearCacheDialogMessage">This will delete all the cache data including files and images.\n\nProceed with deletion?</string>
-    <string name="draftsHeader">Drafts</string>
-    <string name="draftsHintText">Comments draft</string>
-    <string name="settingsEnableCommentsDeletionText">Enable Drafts Deletion</string>
-    <string name="settingsEnableCommentsDeletionHintText">Delete comment draft when comment is posted</string>
-    <string name="settingsGeneralHeader">General</string>
-    <string name="generalHintText">Home screen, default link handler</string>
-    <string name="generalDeepLinkDefaultScreen">Default Link Handler</string>
-    <string name="generalDeepLinkDefaultScreenHintText">Choose what screen should be loaded if the app cannot handle external links. It will redirect you automatically.</string>
-    <string name="generalDeepLinkSelectedText">N/A</string>
-    <string name="linkSelectorDialogTitle">Select Default Link Handler Screen</string>
-    <string name="settingsBiometricHeader">Biometric Support</string>
-    <string name="settingsLabelsInListHeader">Labels With Text Support</string>
-    <string name="settingsLabelsInListHint">Enabling this will show labels with text in issues and pr lists, default are color dots</string>
+    <string name="settingsCustomFontSelectorDialogTitle">اِختر الخط</string>
+    <string name="themeSelectorDialogTitle">اِختر سمة التطبيق</string>
+    <string name="themeSelectionHeaderText">السمة</string>
+    <string name="settingsCounterBadges">شارات التعداد</string>
+    <string name="settingsFileViewerSourceCodeHeaderText">سمة الشفرة المصدرية</string>
+    <string name="cacheSizeDataDialogHeader">حجم البيانات المؤقتة</string>
+    <string name="cacheSizeDataSelectionHeaderText">حجم الذاكرة المؤقتة</string>
+    <string name="cacheSizeImagesDialogHeader">حجم الذاكرة المؤقتة للصور</string>
+    <string name="cacheSizeImagesSelectionHeaderText">حجم التخزين المؤقت للصور</string>
+    <string name="clearCacheSelectionHeaderText">مسح التخزين المؤقت</string>
+    <string name="clearCacheDialogHeader">مسح التخزين المؤقت؟</string>
+    <string name="clearCacheDialogMessage">سيحذف هذا كل البيانات المؤقتة متضمنةً الملفات والصور.\n\n هل تريد إكمال الحذف؟</string>
+    <string name="draftsHeader">المسودات</string>
+    <string name="draftsHintText">مسودة التعليقات</string>
+    <string name="settingsEnableCommentsDeletionText">تمكين حذف المسودات</string>
+    <string name="settingsEnableCommentsDeletionHintText">حذف مسودة التعليق عندما يُنشر</string>
+    <string name="settingsGeneralHeader">الإعدادات العامّة</string>
+    <string name="generalHintText">الصفحة الرئيسة، معالج الرابط الافتراضي</string>
+    <string name="generalDeepLinkDefaultScreen">معالج الرابط الافتراضي</string>
+    <string name="generalDeepLinkDefaultScreenHintText">اختر الشاشة التي يجب عرضها إذا لم يستطع التطبيق التعامل مع الروابط الخارجية سيعيد توجيهك تلقائيًا إليها.</string>
+    <string name="generalDeepLinkSelectedText">غير متاح</string>
+    <string name="linkSelectorDialogTitle">اِختر صفحة معالج الرابط الافتراضية</string>
+    <string name="settingsBiometricHeader">دعم القُفْل الحيوي</string>
+    <string name="settingsLabelsInListHeader">أوسمة مع دعم النصوص</string>
+    <string name="settingsLabelsInListHint">سيؤدي تمكين هذا إلى إظهار الأوسمة التي تحوي نصاً في المشكلات وطلبات الدمج، بشكل افتراضي ستعرض نُقَطٌ ملونة</string>
     <!-- settings -->
-    <string name="noMoreData">No more data available</string>
-    <string name="createLabel">New Label</string>
+    <string name="noMoreData">لا يوجد المزيد من البيانات المتاحة</string>
+    <string name="createLabel">وسم جديد</string>
     <string name="menuTitleText">قائمة المستودع</string>
-    <string name="labelName">Label Name</string>
-    <string name="labelColor">Label Color</string>
-    <string name="labelEmptyError">Label name is empty</string>
-    <string name="labelNameError">Label name is not valid</string>
-    <string name="labelCreated">Label created</string>
-    <string name="labelUpdated">Label updated</string>
+    <string name="labelName">اسم الوسم</string>
+    <string name="labelColor">لون الوسم</string>
+    <string name="labelEmptyError">اسم الوسم فارغ</string>
+    <string name="labelNameError">اسم الوسم غير صالح</string>
+    <string name="labelCreated">أُنشئ الوسم</string>
+    <string name="labelUpdated">حُدِّث الوسم</string>
     <string name="labelMenuContentDesc">الوصف</string>
-    <string name="labelDeleteText">Label deleted</string>
-    <string name="selectBranchError">Select a branch for release</string>
-    <string name="alertDialogTokenRevokedTitle">Authorization Error</string>
-    <string name="alertDialogTokenRevokedMessage">It seems that the Access Token is revoked OR your are not allowed to see these contents.\n\nIn case of revoked Token, please logout and login again</string>
-    <string name="labelDeleteMessage">Do you really want to delete this label?</string>
+    <string name="labelDeleteText">حُذف الوسم</string>
+    <string name="selectBranchError">اختر فرعاً للإصدار</string>
+    <string name="alertDialogTokenRevokedTitle">خطأ في المصادقة</string>
+    <string name="alertDialogTokenRevokedMessage">يبدو أن رمز الوصول قد أُبطل أو أنه غير مسموح لك برؤية هذا المحتوى.\n\nإذا كنت قد أبطلت الرمز، يرجى تسجيل الخروج وتسجيل الدخول مرة أخرى</string>
+    <string name="labelDeleteMessage">هل تريد حقاً حذف هذا الوسم؟</string>
     <!-- org tabbed layout str -->
     <string name="orgTabTeams">الفِرَق</string>
     <string name="orgTabMembers">الأعضاء</string>
     <string name="teamTitle">اسم الفريق</string>
     <string name="teamDescription">وصف الفريق</string>
-    <string name="teamPermissions">Permissions</string>
-    <string name="teamPermissionNone">• Members of this team do not have any permissions.</string>
-    <string name="teamPermissionRead">• Members of this team can view team repositories.</string>
-    <string name="teamPermissionWrite">• Members of this team can view and push to team repositories.</string>
-    <string name="teamPermissionAdmin">• Members of this team can push to and from team repositories and add collaborators.</string>
-    <string name="teamPermissionOwner">• Members of this team have owner permissions.</string>
-    <string name="teamShowAll">show all</string>
+    <string name="teamPermissions">الصلاحيات</string>
+    <string name="teamPermissionNone">•أعضاء هذا الفريق لا يملكون أي صلاحيات.</string>
+    <string name="teamPermissionRead">•أعضاء هذا الفريق يستطيعون رؤية مستودعات الفريق.</string>
+    <string name="teamPermissionWrite">•أعضاء هذا الفريق يستطيعون رؤية ودفع التحديثات لمستودعات الفريق.</string>
+    <string name="teamPermissionAdmin">أعضاء هذا الفريق يستطيعون الدفع من وإلى مستودعات الفريق وإضافة المتعاونين.</string>
+    <string name="teamPermissionOwner">أعضاء هذا الفريق يملكون صلاحيات المالك.</string>
+    <string name="teamShowAll">إظهار الكل</string>
     <string name="orgMember">أعضاء المنظمة</string>
-    <string name="orgTeamMembers">Organization team members</string>
-    <string name="removeTeamMember">Remove %s</string>
-    <string name="addTeamMember">Add %s</string>
-    <string name="addTeamMemberMessage">Do you want to add this user to the team?</string>
-    <string name="removeTeamMemberMessage">Do you want to remove this user from the team?</string>
-    <string name="memberAddedMessage">Member added to the team successfully</string>
-    <string name="memberRemovedMessage">Member removed from the team successfully</string>
-    <string name="repoAddedMessage">Repository added to the team successfully</string>
-    <string name="repoRemovedMessage">Repository removed from the team successfully</string>
-    <string name="repoAddToTeamMessage">Add repository %1$s to organization %2$s team %3$s</string>
-    <string name="repoRemoveTeamMessage">Remove repository %1$s from team %2$s</string>
+    <string name="orgTeamMembers">أعضاء فريق المنظمة</string>
+    <string name="removeTeamMember">حذف %s</string>
+    <string name="addTeamMember">إضافة %s</string>
+    <string name="addTeamMemberMessage">هل تريد إضافة هذا المستخدم للفريق؟</string>
+    <string name="removeTeamMemberMessage">هل تريد إزالة هذا المستخدم من الفريق؟</string>
+    <string name="memberAddedMessage">أُضيف المستخدم للفريق بنجاح</string>
+    <string name="memberRemovedMessage">أُزيل المستخدم من الفريق بنجاح</string>
+    <string name="repoAddedMessage">أُضيف المستودع للفريق بنجاح</string>
+    <string name="repoRemovedMessage">أُزيل المستودع من الفريق بنجاح</string>
+    <string name="repoAddToTeamMessage">إضافة المستودع %1$s لمنظمة %2$s فريق %3$s</string>
+    <string name="repoRemoveTeamMessage">إزالة المستودع %1$s من الفريق %2$s</string>
     <!-- org tabbed layout str -->
     <!-- create team -->
     <string name="newTeamTitle">اسم الفريق</string>
     <string name="newTeamDesc">الوصف</string>
-    <string name="newTeamPermission">Permission</string>
-    <string name="newTeamAccessControls">Access Controls</string>
-    <string name="newTeamPermissionRead">Members can view and clone team repositories</string>
-    <string name="newTeamPermissionWrite">Members can read and push to team repositories</string>
-    <string name="newTeamPermissionAdmin">Members can pull and push to team repositories and add collaborators to them</string>
+    <string name="newTeamPermission">الصلاحيّة</string>
+    <string name="newTeamAccessControls">صلاحيات الوصول</string>
+    <string name="newTeamPermissionRead">الأعضاء يستطيعون رؤية ونسخ مستودعات الفريق</string>
+    <string name="newTeamPermissionWrite">الأعضاء يستطيعون القراءة والدفع لمستودعات الفريق</string>
+    <string name="newTeamPermissionAdmin">الأعضاء يستطيعون السحب والدفع لمستودعات الفريق وإضافة متعاونين لها</string>
     <string name="teamNameEmpty">يرجى إدخال إسم للفريق</string>
-    <string name="teamNameError">Team name should contain only alphanumeric, dash (-), underscore (_) and dot (.) characters</string>
-    <string name="teamPermissionEmpty">Please select permission</string>
-    <string name="teamDescError">Team description have illegal characters</string>
-    <string name="teamDescLimit">Team description have more than 100 characters</string>
-    <string name="teamCreated">Team created successfully</string>
+    <string name="teamNameError">اسم الفريق يجب أن يحوي فقط أحرفاً وأرقاماً، شرطة عرضية (-)، شرطة سفلية (_) ونقطة (.)</string>
+    <string name="teamPermissionEmpty">رجاءً اِختر صلاحيّة</string>
+    <string name="teamDescError">وصف الفريق يحوي حروفاً غير مسموح بها</string>
+    <string name="teamDescLimit">وصف الفريق يحوي أكثر من 100 حرفاً</string>
+    <string name="teamCreated">أُنشئ الفريق بنجاح</string>
     <!-- create team -->
     <!-- issue comments -->
     <string name="editCommentTitle">تعديل التعليق</string>
-    <string name="editCommentUpdatedText">Comment updated</string>
-    <string name="issueCommentShare">Share Comment</string>
-    <string name="deleteCommentSuccess">Comment deleted successfully</string>
-    <string name="copyCommentText">Copy Comment</string>
+    <string name="editCommentUpdatedText">حُدِّث التعليق</string>
+    <string name="issueCommentShare">مشاركة التعليق</string>
+    <string name="deleteCommentSuccess">حُذف التعليق بنجاح</string>
+    <string name="copyCommentText">نسخ التعليق</string>
     <!-- issue comments -->
     <!-- add collaborator -->
     <string name="addCollaboratorSearchHint">البحث عن مستخدمين</string>
     <string name="addCollaboratorViewUserDesc">اسم المستخدم</string>
-    <string name="removeCollaboratorDialogTitle">Remove %s?</string>
-    <string name="removeCollaboratorMessage">Do you want to remove this user from the repository?</string>
-    <string name="removeCollaboratorToastText">User removed from the repository.</string>
-    <string name="addCollaboratorToastText">User added to the repository.</string>
+    <string name="removeCollaboratorDialogTitle">حذف %s؟</string>
+    <string name="removeCollaboratorMessage">أتريد أزالة هذا المستخدم من المستودع؟</string>
+    <string name="removeCollaboratorToastText">أُزيل المستخدم من المستودع.</string>
+    <string name="addCollaboratorToastText">أُضيف المستخدم للمستودع.</string>
     <!-- add collaborator -->
     <!-- profile section -->
     <string name="profileTabFollowers">المتابِعون</string>
-    <string name="profileTabFollowing">يتابع</string>
+    <string name="profileTabFollowing">المتابَعون</string>
     <string name="profileCreateNewEmailAddress">إضافة عنوان بريد إلكتروني</string>
     <string name="profileEmailTitle">عنوان البريد الإلكتروني</string>
-    <string name="emailAddedText">New email added successfully</string>
-    <string name="emailErrorEmpty">Email address is empty</string>
+    <string name="emailAddedText">أُضيف البريد الإلكتروني الجديد بنجاح</string>
+    <string name="emailErrorEmpty">عنوان البريد الإلكتروني فارغ</string>
     <string name="emailErrorInvalid">عنوان البريد الإلكتروني غير صالح</string>
     <string name="emailErrorInUse">عنوان البريد الإلكتروني مستخدم مسبقاً</string>
     <string name="emailTypeText">أساسي</string>
     <string name="profileTabEmails">العناوين البريدية</string>
     <!-- profile section -->
     <!-- single issue section -->
-    <string name="singleIssueEditLabels">Add / Remove Labels</string>
-    <string name="labelsUpdated">Labels updated</string>
-    <string name="closeIssue">Close Issue</string>
-    <string name="editIssue">Edit Issue</string>
-    <string name="reOpenIssue">Reopen Issue</string>
-    <string name="issueStateClosed">Issue closed</string>
-    <string name="issueStateReopened">Issue reopened</string>
-    <string name="addRemoveAssignees">Add / Remove Assignees</string>
-    <string name="assigneesUpdated">Assignees updated</string>
-    <string name="singleIssueSubscribe">Subscribe</string>
-    <string name="singleIssueUnSubscribe">Unsubscribe</string>
+    <string name="singleIssueEditLabels">إضافة / حذف الأوسمة</string>
+    <string name="labelsUpdated">حُدِّثت الأوسمة</string>
+    <string name="closeIssue">إغلاق القضية</string>
+    <string name="editIssue">تعديل القضية</string>
+    <string name="reOpenIssue">إعادة فتح القضية</string>
+    <string name="issueStateClosed">أُغلقت القضية</string>
+    <string name="issueStateReopened">أُعيد فتح القضية</string>
+    <string name="addRemoveAssignees">إضافة / حذف الموكل عليهم</string>
+    <string name="assigneesUpdated">حُدِّث الموكل عليهم</string>
+    <string name="singleIssueSubscribe">اِشتراك</string>
+    <string name="singleIssueUnSubscribe">إلغاء الاشتراك</string>
     <!-- single issue section -->
-    <string name="repoMetaData">Repository Meta</string>
+    <string name="repoMetaData">معلومات المستودع</string>
     <!-- admin -->
-    <string name="adminCreateNewUser">New User</string>
-    <string name="adminUsers">System Users</string>
+    <string name="adminCreateNewUser">مستخدم جديد</string>
+    <string name="adminUsers">مُستخدمو النظام</string>
     <string name="userRoleAdmin">المُدير</string>
-    <string name="adminCron">Cron Tasks</string>
-    <string name="adminCronScheduleHeader">Schedule</string>
-    <string name="adminCronNextRunHeader">Next Run</string>
-    <string name="adminCronLastRunHeader">Last Run</string>
-    <string name="adminCronExecutionHeader">Executions</string>
-    <string name="adminCronTaskSuccessMsg">Task %1$s is initiated successfully</string>
+    <string name="adminCron">جدولة المهام</string>
+    <string name="adminCronScheduleHeader">الجدولة</string>
+    <string name="adminCronNextRunHeader">التشغيل التالي</string>
+    <string name="adminCronLastRunHeader">آخر تشغيل</string>
+    <string name="adminCronExecutionHeader">التنفيذ</string>
+    <string name="adminCronTaskSuccessMsg">العملية %1$s بدأت بنجاح</string>
     <!-- admin -->
     <!-- create user -->
     <string name="userFullNameText">الاسم الكامل</string>
     <string name="userEmail">البريد الإلكتروني</string>
     <string name="userUserName">اسم المستخدم</string>
-    <string name="userPassword">الكلمة السرية</string>
+    <string name="userPassword">كلمة المرور</string>
     <string name="userInvalidFullName">الاسم الكامل غير صالح</string>
     <string name="userInvalidUserName">اسم المستخدم غير صحيح</string>
     <string name="userInvalidEmail">البريد الالكتروني غير صحيح</string>
-    <string name="userCreatedText">تمت إضافة مستخدم جديد بنجاح</string>
+    <string name="userCreatedText">أُضيف المستخدم الجديد بنجاح</string>
     <string name="userExistsError">المستخدم موجود مسبقاً</string>
     <!-- create user -->
     <!-- edit issue -->
-    <string name="editIssueNavHeader">Edit Issue #%1$s</string>
-    <string name="editIssueSuccessMessage">Issue updated</string>
+    <string name="editIssueNavHeader">تعديل القضية #%1$s</string>
+    <string name="editIssueSuccessMessage">حُدِّثت القضية</string>
     <!-- edit issue -->
     <!-- release -->
-    <string name="createRelease">New Release</string>
-    <string name="releaseTagNameText">Tag Name</string>
+    <string name="createRelease">إصدار جديد</string>
+    <string name="releaseTagNameText">اسم العلامة</string>
     <string name="releaseTitleText">العنوان</string>
     <string name="releaseContentText">المحتوى</string>
-    <string name="releaseTypeText">Mark as Pre-Release</string>
-    <string name="releaseBranchText">اختر فرعًا</string>
+    <string name="releaseTypeText">الوسم كإصدار أولي</string>
+    <string name="releaseBranchText">اِختر فرعًا</string>
     <string name="releaseDraftText">مسودة</string>
-    <string name="tagNameErrorEmpty">Tag name is empty</string>
+    <string name="tagNameErrorEmpty">اسم العلامة فارغ</string>
     <string name="titleErrorEmpty">العنوان فارغ</string>
-    <string name="releaseCreatedText">New release created</string>
-    <string name="deleteReleaseConfirmation">Do you really want to delete this release?</string>
-    <string name="releaseDeleted">Release deleted</string>
+    <string name="releaseCreatedText">أُنشئ الإصدار الجديد</string>
+    <string name="deleteReleaseConfirmation">هل تريد حقاً حذف هذا الإصدار؟</string>
+    <string name="releaseDeleted">حُذف الإصدار</string>
     <!-- release -->
-    <string name="loginOTPTypeError">OTP code should be numbers</string>
-    <string name="loginOTP">OTP Code (Optional)</string>
-    <string name="otpMessage">Enter otp code if 2FA is enabled</string>
+    <string name="loginOTPTypeError">رمز OTP يجب أن يحوي أرقاماً فقط</string>
+    <string name="loginOTP">رمز OTP (اختياري)</string>
+    <string name="otpMessage">أدخل رمز OTP إذا كان التحقق بخطوتين مفعلاً</string>
     <string name="openWebRepo">افتح في المتصفح</string>
     <string name="repoStargazersInMenu">المُعجَبون</string>
     <string name="repoWatchersInMenu">المشاهدون</string>
-    <string name="noDataWebsite">No website found</string>
-    <string name="noDataDescription">No description found</string>
-    <string name="noDataLocation">No location found</string>
-    <string name="starMember">Star</string>
+    <string name="noDataWebsite">لم يعثر على موقع</string>
+    <string name="noDataDescription">لم يعثر على وصف</string>
+    <string name="noDataLocation">لم يعثر على موقع جغرافي</string>
+    <string name="starMember">إعجاب</string>
     <string name="watcherMember">مشاهد</string>
-    <string name="zipArchiveDownloadReleasesTab">Source code (ZIP)</string>
-    <string name="tarArchiveDownloadReleasesTab">Source code (TAR.GZ)</string>
+    <string name="zipArchiveDownloadReleasesTab">الشفرة المصدرية (ZIP)</string>
+    <string name="tarArchiveDownloadReleasesTab">الشفرة المصدرية (TAR.GZ)</string>
     <!-- new file -->
-    <string name="newFileNameTintCopy">اسم الملف</string>
-    <string name="newFileBranchTintCopy">اسم فرع جديد</string>
-    <string name="newFileContentTintCopy">محتوى الملف</string>
-    <string name="newFileButtonCopy">أنشئ ملفا جديدا</string>
-    <string name="newFileNameHintMessage">with folder: app/test.md</string>
-    <string name="newFileMessageTintCopy">Commit Message</string>
-    <string name="newFileInvalidBranchName">Invalid branch name, may only contain &#8211;, a&#8211;z, 0&#8211;9</string>
-    <string name="newFileCommitMessageError">Commit message is too long</string>
-    <string name="newFileSuccessMessage">أنشئ ملف جديد</string>
-    <string name="newFileBranches">Select or create a branch</string>
-    <string name="newFileRequiredFields">Fields like filename, content and commit message are required</string>
-    <string name="newFileEmptyBranchMessage">Leave blank to push to the default branch</string>
-    <string name="newFileRequiredFieldNewBranchName">New branch name cannot be empty if current branch is not selected</string>
-    <string name="strFilter">Filter</string>
-    <string name="strSwitchBranches">Branches</string>
-    <string name="strMarkdown">Markdown</string>
-    <string name="copyIssueUrl">انسخ عنوان المشكلة</string>
-    <string name="copyIssueUrlToastMsg">URL copied to clipboard</string>
-    <string name="copyIssueCommentToastMsg">Comment copied to clipboard</string>
-    <string name="copyShaToastMsg">SHA copied to clipboard</string>
-    <string name="milestoneCompletion">%1$d\uFF05 completed</string>
+    <string name="newFileNameTintCopy">اسم المِلف</string>
+    <string name="newFileBranchTintCopy">اسم الفرع الجديد</string>
+    <string name="newFileContentTintCopy">محتوى المِلف</string>
+    <string name="newFileButtonCopy">أنشاء مِلف جديد</string>
+    <string name="newFileNameHintMessage">مع المجلد: app/test.md</string>
+    <string name="newFileMessageTintCopy">رسالة الإيداع</string>
+    <string name="newFileInvalidBranchName">اسم فرع غير صالح. يجب أن يحوي فقط &#8211;، a&#8211;z، 0&#8211;9</string>
+    <string name="newFileCommitMessageError">رسالة الإيداع طويلة جدا</string>
+    <string name="newFileSuccessMessage">أُنشئ مِلف جديد</string>
+    <string name="newFileBranches">اِختر أو أنشئ فرعاً</string>
+    <string name="newFileRequiredFields">الحقول كأسماء الملفات والمحتوى ورسالة الإيداع مطلوبة</string>
+    <string name="newFileEmptyBranchMessage">دعه فارغاً للدفع للفرع الافتراضي</string>
+    <string name="newFileRequiredFieldNewBranchName">اسم الفرع الجديد لا يمكن أن يكون فارغاً إذا لم يُختر الفرع الحالي</string>
+    <string name="strFilter">التصفية</string>
+    <string name="strSwitchBranches">الفروع</string>
+    <string name="strMarkdown">ماركداون</string>
+    <string name="copyIssueUrl">نسخ رابط القضية</string>
+    <string name="copyIssueUrlToastMsg">نُسخ عنوان URL إلى الحافظة</string>
+    <string name="copyIssueCommentToastMsg">نُسخ الإيداع إلى الحافظة</string>
+    <string name="copyShaToastMsg">نُسخ SHA إلى الحافظة</string>
+    <string name="milestoneCompletion">%1$d\uFF05 إكتمل</string>
     <!-- files -->
-    <string name="filesGenericError">Sorry this file cannot be viewed as API returned an error</string>
-    <string name="fileTypeCannotBeEdited">Files of this type cannot be edited</string>
-    <string name="notSupported">Not supported</string>
+    <string name="filesGenericError">عذراً، لا يمكن عرض هذا المِلف لأن واجهة برمجة التطبيقات أعادت خطأً</string>
+    <string name="fileTypeCannotBeEdited">لا يمكن تعديل هذا النوع من المِلفات</string>
+    <string name="notSupported">غير مدعوم</string>
     <!-- generic copy -->
     <string name="okButton">حسنًا</string>
     <string name="doneButton">تمّ</string>
     <string name="cancelButton">إلغاء</string>
-    <string name="genericError">Something went wrong, please try again</string>
-    <string name="apiNotFound">This request needs higher Gitea version than the one installed. Please upgrade your instance to the latest version of Gitea.</string>
-    <string name="noDataFound">🌟 Nothing in here 🌟</string>
+    <string name="genericError">حدث خطأ ما، رجاءً حاول مجدداً</string>
+    <string name="apiNotFound">This request needs higher version than the one installed. Please upgrade your instance to the latest version.</string>
+    <string name="noDataFound">🌟لا شيء هنا 🌟</string>
     <string name="addButton">أضف</string>
     <string name="removeButton">أزِل</string>
-    <string name="authorizeError">You are not authorized to perform this action.</string>
+    <string name="authorizeError">لا تملك صلاحيّة لتقوم بهذا الإجراء.</string>
     <string name="menuContentDesc">القائمة</string>
     <string name="menuEditText">تعديل</string>
-    <string name="menuDeleteText">احذف</string>
-    <string name="menuCopyText">Copy</string>
-    <string name="menuQuoteText">Quote Reply</string>
-    <string name="modifiedText">تم تحريره</string>
-    <string name="saveButton">احفظ</string>
-    <string name="websiteText">موقع الويب</string>
-    <string name="locationText">المكان</string>
+    <string name="menuDeleteText">حذف</string>
+    <string name="menuCopyText">نسخ</string>
+    <string name="menuQuoteText">اقتباس الرد</string>
+    <string name="modifiedText">عُدِّل</string>
+    <string name="saveButton">حفظ</string>
+    <string name="websiteText">موقع الإنترنت</string>
+    <string name="locationText">الموقع الجغرافي</string>
     <string name="characters255Limit">الحد الأقصى 255 حرفًا</string>
-    <string name="emptyFields">كافة الحقول لازمة</string>
+    <string name="emptyFields">جميع الحقول مطلوبة</string>
     <string name="textContinue">مواصلة</string>
-    <string name="copyToken">Token</string>
-    <string name="viewInBrowser">View in Browser</string>
-    <string name="isOpen">Open</string>
-    <string name="isClosed">Closed</string>
-    <string name="genericServerResponseError">We cannot reach the server at the moment, please check your server status and try again</string>
-    <string name="genericCopyUrl">Copy URL</string>
-    <string name="genericWaitFor">Hold on ☕</string>
-    <string name="file">File</string>
-    <string name="issue">Issue</string>
-    <string name="label">Label</string>
-    <string name="release">Release</string>
-    <string name="pr">Pull Request</string>
-    <string name="collaborator">Collaborator</string>
-    <string name="unstar">Unstar</string>
-    <string name="watch">Watch</string>
-    <string name="unwatch">Unwatch</string>
-    <string name="share">Share</string>
-    <string name="repository">Repository</string>
-    <string name="team">Team</string>
-    <string name="organization">Organization</string>
-    <string name="addRemove">Add / Remove</string>
-    <string name="download">Download</string>
-    <string name="reopen">Reopen</string>
-    <string name="openInBrowser">Open in Browser</string>
-    <string name="deleteGenericTitle">Delete %s</string>
+    <string name="copyToken">الرمز</string>
+    <string name="viewInBrowser">عرض في المتصفح</string>
+    <string name="isOpen">مفتوح</string>
+    <string name="isClosed">مغلق</string>
+    <string name="genericServerResponseError">لا يمكننا الوصول إلى الخادم في الوقت الحالي، يرجى التحقق من حالة الخادم والمحاولة مرة أخرى</string>
+    <string name="genericCopyUrl">نسخ عنوان URL</string>
+    <string name="genericWaitFor">اِنتظر ☕</string>
+    <string name="file">مِلف</string>
+    <string name="issue">قضية</string>
+    <string name="labelTxt">وسم</string>
+    <string name="release">إصدار</string>
+    <string name="pr">طلب دمج</string>
+    <string name="collaborator">متعاون</string>
+    <string name="unstar">أزِل الإعجاب</string>
+    <string name="watch">راقب</string>
+    <string name="unwatch">لا تراقب</string>
+    <string name="share">مشاركة</string>
+    <string name="repository">مستودع</string>
+    <string name="team">فريق</string>
+    <string name="organization">منظمة</string>
+    <string name="addRemove">إضافة / حذف</string>
+    <string name="download">تحميل</string>
+    <string name="reopen">إعادة فتح</string>
+    <string name="openInBrowser">فتح في المتصفح</string>
+    <string name="deleteGenericTitle">حذف %s</string>
+    <string name="reset">إعادة تعيين</string>
     <!-- generic copy -->
-    <string name="exploreUsers">Explore users</string>
-    <string name="exploreIssues">Explore issues</string>
-    <string name="exploreTextBoxHint">Explore repositories</string>
-    <string name="starRepositorySuccess">تمت إضافة المستودع إلى قائمة المفضلة</string>
-    <string name="unStarRepositorySuccess">تمت إزالة المستودع مِن قائمة المفضلة</string>
-    <string name="watchRepositorySuccess">تمت إضافة المستودع إلى قائمة المراقبة</string>
-    <string name="unWatchRepositorySuccess">تمت إزالة المستودع مِن قائمة المراقبة</string>
-    <string name="titleDrafts">Drafts</string>
-    <string name="versionUnsupportedOld">Unsupported old version(%1$s) of Gitea detected. Please update to latest stable version. If you continue, some features may not work.</string>
-    <string name="versionUnsupportedNew">New Gitea version detected! Please UPDATE GitNex!</string>
-    <string name="versionUnknown">No Gitea detected!</string>
-    <string name="versionAlertDialogHeader">Unsupported Version of Gitea</string>
-    <string name="loginViaPassword">اسم المستخدم / الكلمة السرية</string>
-    <string name="loginMethodText">Choose your preferred login method to access your account. Token is more secure!</string>
-    <string name="unauthorizedApiError">Instance has returned an error - Unauthorized. Check your credentials and try again</string>
-    <string name="loginTokenError">Token is required</string>
-    <string name="prDeletedFork">Deleted Fork</string>
-    <string name="editPrNavHeader">Edit Pull Request #%1$s</string>
-    <string name="editPrSuccessMessage">Pull Request updated</string>
-    <string name="fileDiffViewHeader">%1$s Files Changed</string>
-    <string name="fileDiffViewHeaderSingle">%1$s File Changed</string>
-    <string name="updatePullRequestText">Update Pull Request</string>
-    <string name="openFileDiffText">Show Changed Files</string>
-    <string name="mergePullRequestText">Merge Pull Request</string>
-    <string name="deleteBranchSuccess">Branch deleted successfully</string>
-    <string name="deleteBranchError">Could not delete branch</string>
-    <string name="deleteBranchErrorNotFound">Branch does not exist</string>
+    <string name="exploreUsers">استكشاف المستخدمين</string>
+    <string name="exploreIssues">استكشاف القضايا</string>
+    <string name="exploreTextBoxHint">استكشاف المستودعات</string>
+    <string name="starRepositorySuccess">أُضيف المستودع إلى قائمة المفضلة</string>
+    <string name="unStarRepositorySuccess">أُزيل المستودع من قائمة المفضلة</string>
+    <string name="watchRepositorySuccess">أُضيف المستودع لقائمة المراقبة</string>
+    <string name="unWatchRepositorySuccess">أُزيل المستودع من قائمة المراقبة</string>
+    <string name="titleDrafts">المسودات</string>
+    <string name="versionUnsupportedOld">أُكتشف إصدار قديم غير مدعوم (%1$s) من Gitea. رجاءً حدث إلى أحدث إصدار مستقر. إذا تابعت فقد لا تعمل بعض الميزات.</string>
+    <string name="versionUnsupportedNew">أُكتشف إصدار جديد من Gitea! يرجى تحديث GitNex!</string>
+    <string name="versionUnknown">لم يُكتشف Gitea!</string>
+    <string name="versionAlertDialogHeader">إصدار غير مدعوم من Gitea</string>
+    <string name="loginViaPassword">اسم المستخدم / كلمة المرور</string>
+    <string name="loginMethodText">اِختر طريقتك المفضلة لتسجيل الدخول للوصول لحسابك. الرمز أكثر أماناً!</string>
+    <string name="unauthorizedApiError">أرجع المثيل خطأ - غير مصرح به. تحقق من بيانات تسجيل دخولك وحاول مرة أخرى</string>
+    <string name="loginTokenError">الرمز مطلوب</string>
+    <string name="prDeletedFork">اشتقاق محذوف</string>
+    <string name="editPrNavHeader">تعديل طلب الدمج #%1$s</string>
+    <string name="editPrSuccessMessage">حُدِّث طلب الدمج</string>
+    <string name="fileDiffViewHeader">%1$s مِلفاً تغير</string>
+    <string name="fileDiffViewHeaderSingle">تغير مِلف %1$s</string>
+    <string name="updatePullRequestText">تحديث طلب الدمج</string>
+    <string name="openFileDiffText">إظهار الملفات المعدّلة</string>
+    <string name="mergePullRequestText">دمج طلب الدمج</string>
+    <string name="deleteBranchSuccess">حُذف الفرع بنجاح</string>
+    <string name="deleteBranchError">تعذّر حذف الفرع</string>
+    <string name="deleteBranchErrorNotFound">الفرع غير موجود</string>
     <string name="mergePullRequestButtonText">دمج</string>
-    <string name="deleteBranchAfterMerge">Delete branch after merge</string>
-    <string name="mergeNoteText">Merge may fail if you are not authorized to merge this Pull Request.</string>
-    <string name="mergeInfoDisabledMessage">Disabled Merge button means that there are conflicts OR other things to fix before Merge</string>
-    <string name="deleteBranchForkInfo">This branch belong to a forked repository</string>
-    <string name="mergeCommentText">Merge comment</string>
-    <string name="mergePRSuccessMsg">Pull Request was merged successfully</string>
-    <string name="mergePR404ErrorMsg">Pull Request is not available for merge</string>
-    <string name="mergeOptionMerge">Merge Pull Request</string>
-    <string name="mergeOptionRebase">Rebase and Merge</string>
-    <string name="mergeOptionRebaseCommit">Rebase and Merge (&#45;&#45;no-ff)</string>
-    <string name="mergeOptionSquash">Squash and Merge</string>
-    <string name="mergeStrategy">Merge Strategy</string>
-    <string name="selectMergeStrategy">Select merge strategy</string>
-    <string name="mergeNotAllowed">Not allowed to merge [Reason: Does not have enough approvals]</string>
-    <string name="deleteBranch">Delete Branch</string>
-    <string name="waitLoadingDownloadFile">Please wait for the file to load to memory</string>
-    <string name="downloadFileSaved">File saved successfully</string>
-    <string name="excludeFilesInFileViewer">This file type/size is not supported in file viewer. You can download it from the menu.</string>
-    <string name="deleteFile">Delete This File</string>
-    <string name="editFile">Edit This File</string>
-    <string name="deleteFileMessage">File is set for deletion by branch %1$s</string>
-    <string name="editFileText">Edit %1$s</string>
-    <string name="editFileMessage">File is modified by branch %1$s</string>
-    <string name="sizeCopy">Size</string>
-    <string name="shareIssue">Share Issue</string>
-    <string name="shareRepository">Share Repository</string>
-    <string name="createRepository">Create Repository</string>
-    <string name="commitTitle">Commits</string>
-    <string name="commitAuthoredByAndCommittedByWhen"><![CDATA[<b>%1$s</b> authored and <b>%2$s</b> committed %3$s]]></string>
-    <string name="commitCommittedByWhen"><![CDATA[<b>%1$s</b> committed %2$s]]></string>
-    <string name="viewCommits">View Commits</string>
+    <string name="deleteBranchAfterMerge">حذف الفرع بعد الدمج</string>
+    <string name="mergeNoteText">يمكن للدمج أن يفشل إن لم يكن مصرحاً لك لدمج طلب الدمج هذا.</string>
+    <string name="mergeInfoDisabledMessage">زر الدمج المعطّل يعني بأن هناك تعارضاً أو أموراً أخرى لإصلاحها قبل الدمج</string>
+    <string name="deleteBranchForkInfo">هذا الفرع يعود لمستودع مشتق</string>
+    <string name="mergeCommentText">تعليق الدمج</string>
+    <string name="mergePRSuccessMsg">دُمج طلب الدمج بنجاح</string>
+    <string name="mergePR404ErrorMsg">طلب الدمج غير متوفرٍ للدمج</string>
+    <string name="mergeOptionMerge">دمج طلب الدمج</string>
+    <string name="mergeOptionRebase">إعادة التأسيس والدمج</string>
+    <string name="mergeOptionRebaseCommit">إعادة التأسيس والدمج (&#45;&#45;no-ff)</string>
+    <string name="mergeOptionSquash">سكوتش ودمج</string>
+    <string name="mergeStrategy">استراتيجية الدمج</string>
+    <string name="selectMergeStrategy">اِختر استراتيجية الدمج</string>
+    <string name="mergeNotAllowed">غير مسموح بالدمج [السبب: لا يملك ما يكفي من الموافقات]</string>
+    <string name="deleteBranch">حذف الفرع</string>
+    <string name="waitLoadingDownloadFile">رجاءً اِنتظر حتى يحمّل الملف للذاكرة</string>
+    <string name="downloadFileSaved">حُفِظ المِلف بنجاح</string>
+    <string name="excludeFilesInFileViewer">نوع/حجم المِلف غير مدعوم في عارض المِلفات.
+يمكنك تحميله من القائمة.</string>
+    <string name="deleteFile">حذف هذا المِلف</string>
+    <string name="editFile">تعديل هذا المِلف</string>
+    <string name="deleteFileMessage">وضع المِلف ليحذف بواسطة الفرع %1$s</string>
+    <string name="editFileText">تعديل %1$s</string>
+    <string name="editFileMessage">عُدِّل المِلف من الفرع %1$s</string>
+    <string name="sizeCopy">الحجم</string>
+    <string name="shareIssue">مشاركة القضية</string>
+    <string name="shareRepository">مشاركة المستودع</string>
+    <string name="createRepository">إنشاء مستودع</string>
+    <string name="commitTitle">الإيداعات</string>
+    <string name="commitAuthoredByAndCommittedByWhen"><![CDATA[<b>%1$s</b> مصرح به و <b>%2$s</b> أودع %3$s]]></string>
+    <string name="commitCommittedByWhen"><![CDATA[<b>%1$s</b> أودع %2$s]]></string>
+    <string name="viewCommits">عرض الإيداعات</string>
     <!-- Memorizing Trust Manager -->
-    <string name="mtmNotification">Certificate Verification</string>
-    <string name="mtmAcceptCert">Accept Unknown Certificate?</string>
-    <string name="mtmTrustAnchor">The server certificate is not signed by a known Certificate Authority</string>
-    <string name="mtmCertExpired">The server certificate is expired.</string>
-    <string name="mtmAcceptServerName">Accept Mismatching Server Name?</string>
-    <string name="mtmHostnameMismatch">Server could not authenticate as \&quot;%s\&quot;. The certificate is only valid for:</string>
-    <string name="mtmConnectAnyway">Do you want to connect anyway?</string>
-    <string name="mtmCertDetails">Certificate details:</string>
-    <string name="mtmDecisionAlways">Trust</string>
-    <string name="mtmDecisionAbort">Abort</string>
-    <string name="subscribedSuccessfully">Subscribed successfully</string>
-    <string name="alreadySubscribed">You have already subscribed</string>
-    <string name="subscriptionError">Subscription failed</string>
-    <string name="unsubscribedSuccessfully">Unsubscribed successfully</string>
-    <string name="alreadyUnsubscribed">You have already Unsubscribed</string>
-    <string name="unSubscriptionError">Un-Subscription failed</string>
-    <string name="closeMilestone">Close Milestone</string>
-    <string name="openMilestone">Open Milestone</string>
-    <string name="milestoneStatusUpdate">Milestone status updated successfully</string>
-    <string name="reportViewerHeader">Crash Reports</string>
-    <string name="settingsEnableReportsText">Enable Crash Reports</string>
-    <string name="crashTitle">GitNex has stopped :(</string>
-    <string name="setCrashReports">Crash reports</string>
-    <string name="crashMessage">It is encouraged to open an issue at the project repository with how to reproduce this bug. It is easier to debug and fix the problem that way.\n\nTap the OK button to send the crash report by email instead. Additional content could be added in the email.\nThank you!</string>
-    <string name="forceLogoutDialogHeader">Please sign in again</string>
-    <string name="forceLogoutDialogDescription">Due to some major changes regarding the internal functioning of the app, we require you to login again. These changes allow us to make the app more flexible in the future.\n\nThank you for your patience and sorry for the inconvenience.</string>
-    <string name="deleteAllDrafts">Delete All Drafts</string>
-    <string name="draftsListEmpty">No drafts found</string>
-    <string name="draftsDeleteSuccess">Drafts deleted successfully</string>
-    <string name="draftsSingleDeleteSuccess">Draft deleted successfully</string>
-    <string name="deleteAllDraftsDialogMessage">This will delete all the drafts for this account. \n\nProceed with deletion?</string>
-    <string name="draftSaved">Draft was saved automatically.</string>
-    <string name="appearanceHintText">Themes, fonts, badges</string>
-    <string name="securityHintText">Biometric authentication, SSL certificates, cache</string>
-    <string name="languagesHintText">Languages</string>
-    <string name="reportsHintText">Crash reports</string>
-    <string name="rateAppHintText">If you like GitNex you can give it a thumbs up</string>
-    <string name="aboutAppHintText">App version, build, user gitea version</string>
-    <string name="archivedRepository">Archived</string>
-    <string name="archivedRepositoryMessage">This repo is archived. You can view files, but cannot push or open issues/pull-requests.</string>
-    <string name="accountDeletedMessage">Account deleted successfully</string>
-    <string name="removeAccountPopupTitle">Remove Account</string>
-    <string name="removeAccountPopupMessage">Are you sure you want to remove this account from the app?\n\nThis will remove all the data related to this account on the app only.</string>
-    <string name="addNewAccount">New Account</string>
-    <string name="addNewAccountText">Add New Account</string>
-    <string name="accountAlreadyExistsError">Account already exists in the app</string>
-    <string name="accountAddedMessage">Account added successfully</string>
-    <string name="switchAccountSuccess">Switched to account : %1$s@%2$s</string>
+    <string name="mtmNotification">التحقق من الشهادة</string>
+    <string name="mtmAcceptCert">هل تريد قَبُول الشهادة المجهولة؟</string>
+    <string name="mtmTrustAnchor">لم يتم توقيع شهادة الخادم بواسطة مرجع مصدق معروف</string>
+    <string name="mtmCertExpired">انتهت صلاحيّة شهادة الخادم.</string>
+    <string name="mtmAcceptServerName">قَبُول عدم تطابق اسم الخادم؟</string>
+    <string name="mtmHostnameMismatch">تعذر على الخادم المصادقة كـ \&quot;%s\&quot;. الشهادة صالحة فقط لـ:</string>
+    <string name="mtmConnectAnyway">هل تريد الاتصال على أية حال؟</string>
+    <string name="mtmCertDetails">تفاصيل الشهادة:</string>
+    <string name="mtmDecisionAlways">الوثوق</string>
+    <string name="mtmDecisionAbort">إلغاء</string>
+    <string name="subscribedSuccessfully">أُشترك بنجاح</string>
+    <string name="alreadySubscribed">أنت مشترك مسبقاً</string>
+    <string name="subscriptionError">فشل الاشتراك</string>
+    <string name="unsubscribedSuccessfully">أُلغي الاشتراك بنجاح</string>
+    <string name="alreadyUnsubscribed">أنت غير مشترك مسبقاً</string>
+    <string name="unSubscriptionError">فشل إلغاء الاشتراك</string>
+    <string name="closeMilestone">إغلاق المرحلة</string>
+    <string name="openMilestone">فتح مرحلة</string>
+    <string name="milestoneStatusUpdate">حُدِّثت حالة المرحلة بنجاح</string>
+    <string name="reportViewerHeader">تقارير الأعطال</string>
+    <string name="settingsEnableReportsText">تفعيل تقارير الأعطال</string>
+    <string name="crashTitle">توقف GitNex</string>
+    <string name="setCrashReports">تقارير الأعطال</string>
+    <string name="crashMessage">نشجع على فتح مشكلة في مستودع المشروع حول كيفية إعادة إنتاج هذا الخطأ. من الأسهل تصحيح الأخطاء وإصلاحها بهذه الطريقة.\n\n انقر فوق الزر \"موافق\" لإرسال تقرير التعطل بالبريد الإلكتروني بدلاً من ذلك. يمكن إضافة محتوى إضافي في البريد الإلكتروني.\nشكرًا لك!</string>
+    <string name="forceLogoutDialogHeader">رجاءً سجل الدخول مرة أخرى</string>
+    <string name="forceLogoutDialogDescription">نظرًا لبعض التغييرات الجذرية المتعلقة بالأداء الداخلي للتطبيق، نطلب منك تسجيل الدخول مرة أخرى. تسمح لنا هذه التغييرات بجعل التطبيق أكثر مرونة في المستقبل.\n\n نشكرك على صبرك ونأسف للإزعاج.</string>
+    <string name="deleteAllDrafts">حذف جميع المسودات</string>
+    <string name="draftsListEmpty">لم يُعثر على مسودات</string>
+    <string name="draftsDeleteSuccess">حُذفت المسودات بنجاح</string>
+    <string name="draftsSingleDeleteSuccess">حُذفت المسودة بنجاح</string>
+    <string name="deleteAllDraftsDialogMessage">سيحذف هذا جميع مسودات هذا الحساب.\n\nالإكمال مع الحذف؟</string>
+    <string name="draftSaved">حُفظت المسودة تلقائياً.</string>
+    <string name="resetMostReposCounter">أُعيد تعيين العداد بنجاح</string>
+    <string name="resetCounterDialogMessage">أتريد إعادة تعيين عداد المستودع %s؟</string>
+    <string name="resetCounterAllDialogMessage">سيعيد هذا تعيين جميع العدادات لمستودعات هذا الحساب.</string>
+    <string name="appearanceHintText">السمات، الخطوط، الشارات</string>
+    <string name="securityHintText">المصادقة الحيوية، شهادات SSL، التخزين المؤقت</string>
+    <string name="languagesHintText">اللغات</string>
+    <string name="reportsHintText">تقارير الأعطال</string>
+    <string name="rateAppHintText">إذا أحببت GitNex يمكنك الإعجاب به</string>
+    <string name="aboutAppHintText">App version, build, user instance version</string>
+    <string name="archivedRepository">مؤرشف</string>
+    <string name="archivedRepositoryMessage">المستودع مؤرشف. يمكنك رؤية الملفات لكن لا يمكنك الدفع أو فتح قضية/طلب دمج.</string>
+    <string name="accountDeletedMessage">حُذف الحساب بنجاح</string>
+    <string name="removeAccountPopupTitle">حذف الحساب</string>
+    <string name="removeAccountPopupMessage">أمتأكد أنك تريد إزالة هذا الحساب من التطبيق؟\n\nسيحذف هذا جميع البيانات المتعلقة بهذا الحساب من التطبيق فقط.</string>
+    <string name="addNewAccount">حساب جديد</string>
+    <string name="addNewAccountText">إضافة حساب جديد</string>
+    <string name="accountAlreadyExistsError">الحساب موجود في التطبيق فعلًا</string>
+    <string name="accountAddedMessage">أُضيف الحساب بنجاح</string>
+    <string name="switchAccountSuccess">حُوُّلَ للحساب: %1$s@%2$s</string>
     <!-- Notifications -->
-    <string name="pageTitleNotifications">Notifications</string>
-    <string name="noDataNotifications">All caught up 🚀</string>
-    <string name="notificationsPollingHeaderText">Notifications Polling Delay</string>
-    <string name="pollingDelaySelectedText">%d Minutes</string>
-    <string name="pollingDelayDialogHeaderText">Select Polling Delay</string>
-    <string name="pollingDelayDialogDescriptionText">Choose a minutely delay in which GitNex tries to poll new notifications</string>
-    <string name="markAsRead">Mark Read</string>
-    <string name="markAsUnread">Mark Unread</string>
-    <string name="pinNotification">Pin</string>
-    <string name="markedNotificationsAsRead">Successfully marked all notifications as read</string>
-    <string name="notificationsHintText">Polling delay, light, vibration</string>
-    <string name="enableNotificationsHeaderText">Enable Notifications</string>
-    <string name="enableLightsHeaderText">Enable Light</string>
-    <string name="enableVibrationHeaderText">Enable Vibration</string>
-    <string name="chooseColorSelectorHeader">Choose Color</string>
-    <string name="newMessages">New messages for %s</string>
-    <string name="youHaveGotNewNotifications">You\'ve got %d new notifications.</string>
-    <string name="mainNotificationChannelName">Notifications</string>
-    <string name="mainNotificationChannelDescription">This is the main notification channel of GitNex.</string>
+    <string name="pageTitleNotifications">الإشعارات</string>
+    <string name="noDataNotifications">إطَّلعت على جميعها 🚀</string>
+    <string name="notificationsPollingHeaderText">تأخير تحديث الإشعارات</string>
+    <string name="pollingDelaySelectedText">%d دقائق</string>
+    <string name="pollingDelayDialogHeaderText">اِختر تأخير التحديث</string>
+    <string name="pollingDelayDialogDescriptionText">اِختر تأخيراً بالدقائق ليحاول GitNex جلب إشعارات جديدة</string>
+    <string name="markAsRead">الوسم كمقروء</string>
+    <string name="markAsUnread">الوسم كغير مقروء</string>
+    <string name="pinNotification">تثبيت</string>
+    <string name="markedNotificationsAsRead">وُسِمت جميع الإشعارات كمقروءة بنجاح</string>
+    <string name="notificationsHintText">تأخير الطلبات، الإضاءة، الاهتزاز</string>
+    <string name="enableNotificationsHeaderText">تمكين الإشعارات</string>
+    <string name="enableLightsHeaderText">تمكين الإضاءة</string>
+    <string name="enableVibrationHeaderText">تمكين الاهتزاز</string>
+    <string name="chooseColorSelectorHeader">اِختر اللون</string>
+    <string name="newMessages">رسالة جديدة ل %s</string>
+    <string name="youHaveGotNewNotifications">لديك %d إشعار / إشعارات جديدة.</string>
+    <string name="mainNotificationChannelName">الإشعارات</string>
+    <string name="mainNotificationChannelDescription">هذه هي قناة الإشعارات الرئيسة ل GitNex.</string>
     <plurals name="youHaveNewNotifications">
-        <item quantity="zero">You have %s new notifications</item>
-        <item quantity="one">You have %s new notification</item>
-        <item quantity="two">You have %s new notifications</item>
-        <item quantity="few">You have %s new notifications</item>
+        <item quantity="zero">ليس لديك أي إشعارات جديدة</item>
+        <item quantity="one">لديك إشعار جديد</item>
+        <item quantity="two">لديك إشعاران جديدان</item>
+        <item quantity="few">لديك %s إشعارات جديدة</item>
         <item quantity="many">You have %s new notifications</item>
         <item quantity="other">You have %s new notifications</item>
     </plurals>
-    <string name="isRead">Read</string>
-    <string name="isUnread">Unread</string>
-    <string name="repoSettingsTitle">Repository Settings</string>
-    <string name="repoSettingsEditProperties">Edit Properties</string>
-    <string name="repoSettingsDelete">Delete Repository</string>
-    <string name="repoSettingsDeleteHint">Be careful, this operation CANNOT be undone!</string>
-    <string name="repoPropertiesTemplate">Set as Template</string>
-    <string name="repoPropertiesEnableIssues">Enable Issues</string>
-    <string name="repoPropertiesExternalIssuesUrl">External Issue Tracker Url</string>
-    <string name="repoPropertiesEnableWiki">Enable Wiki</string>
-    <string name="repoPropertiesExternalWikiUrl">External Wiki Url</string>
-    <string name="repoPropertiesEnablePr">Enable Pull Requests</string>
-    <string name="repoPropertiesEnableTimeTracker">Enable Time Tracker</string>
-    <string name="repoPropertiesEnableMergeCommits">Enable Merge Commits</string>
-    <string name="repoPropertiesEnableRebase">Enable Rebase</string>
-    <string name="repoPropertiesEnableSquash">Enable Squash and Merge</string>
-    <string name="repoPropertiesEnableForceMerge">Enable Rebase with Merge Commits (&#8212;&#8212;no-ff)</string>
-    <string name="repoPropertiesSaveSuccess">Repository properties updated successfully</string>
-    <string name="repoSettingsDeleteDescription">Things to know before deletion:\n\n- This operation CANNOT be undone.\n- This operation will permanently delete the repository including code, issues, comments, wiki data and collaborator settings.\n\nEnter the repository name as confirmation</string>
-    <string name="repoSettingsDeleteError">Repository name does not match</string>
-    <string name="repoDeletionSuccess">Repository deleted successfully</string>
-    <string name="repoSettingsTransferOwnership">Transfer Ownership</string>
-    <string name="repoSettingsTransferOwnershipHint">Transfer this repository to a user or to an organization for which you have administrator rights</string>
-    <string name="repoSettingsTransferOwnershipDescription">Things to know before transfer:\n\n- You will lose access to the repository if you transfer it to an individual user.\n- You will keep access to the repository if you transfer it to an organization that you (co-)own.\n\nEnter the repository name as confirmation</string>
-    <string name="repoTransferText">Perform Transfer</string>
-    <string name="repoTransferOwnerText">New Owner</string>
-    <string name="repoTransferSuccess">Repository transferred successfully</string>
-    <string name="repoTransferOwnerError">New owner is required</string>
-    <string name="repoTransferError">There is a problem with the owner name. Make sure that the new owner exists</string>
-    <string name="exploreFilterDialogTitle">Filter Repositories</string>
-    <string name="exploreFilterIncludeTopic">Search ONLY in Topic</string>
-    <string name="exploreFilterIncludeDesc">Search in Description</string>
-    <string name="exploreFilterIncludeArchive">Only Archived Repositories</string>
-    <string name="exploreFilterIncludePrivate">Only Private Repositories</string>
-    <string name="exploreFilterIncludeTemplateRepos">Search in Template Repositories</string>
-    <string name="mergeIntoBranch">Merge Into</string>
-    <string name="pullFromBranch">Pull From</string>
-    <string name="sameBranchesError">These branches are equal. There is no need to create a pull request</string>
-    <string name="mergeIntoError">Merge into branch is required</string>
-    <string name="pullFromError">Pull from branch is required</string>
-    <string name="titleError">Title is required</string>
-    <string name="prCreateSuccess">Pull Request created successfully</string>
-    <string name="prAlreadyExists">A pull request between these branches already exists</string>
-    <string name="prClosed">Pull Request closed</string>
-    <string name="prReopened">Pull Request reopened</string>
-    <string name="prMergeInfo">Pull Request Info</string>
-    <string name="accountDoesNotExist">It seems that account for URI %1$s does not exists in the app. You can add one by tapping on the Add New Account button.</string>
-    <string name="launchApp">Go to App</string>
-    <string name="noActionText">GitNex cannot handle the requested resource, you can open an issue at the project repository as an improvement with providing details of the work. Just launch a default screen for now from the buttons below, it can be changed from settings.</string>
-    <string name="biometricAuthTitle">Biometric Authentication</string>
-    <string name="biometricAuthSubTitle">Unlock using your biometric credentials</string>
-    <string name="biometricNotSupported">No biometric features available on this device</string>
-    <string name="biometricNotAvailable">Biometric features are currently unavailable</string>
-    <string name="enrollBiometric">Enroll biometric from phone settings</string>
-    <string name="copyLoginIdToClipBoard">Login ID \'%s\' copied to clipboard</string>
+    <string name="isRead">مقروء</string>
+    <string name="isUnread">غير مقروء</string>
+    <string name="repoSettingsTitle">إعدادات المستودع</string>
+    <string name="repoSettingsEditProperties">تعديل الخصائص</string>
+    <string name="repoSettingsDelete">حذف المستودع</string>
+    <string name="repoSettingsDeleteHint">كن حذراً، لا يمكن التراجع عن هذه العملية!</string>
+    <string name="repoPropertiesTemplate">تعيين كقالب</string>
+    <string name="repoPropertiesEnableIssues">تمكين القضايا</string>
+    <string name="repoPropertiesExternalIssuesUrl">رابط متابع القضايا الخارجي</string>
+    <string name="repoPropertiesEnableWiki">تمكين الويكي</string>
+    <string name="repoPropertiesExternalWikiUrl">رابط الويكي الخارجية</string>
+    <string name="repoPropertiesEnablePr">تمكين طلبات الدمج</string>
+    <string name="repoPropertiesEnableTimeTracker">تمكين متتبع الوقت</string>
+    <string name="repoPropertiesEnableMergeCommits">تمكين إيداعات الدمج</string>
+    <string name="repoPropertiesEnableRebase">تمكين إعادة التأسيس</string>
+    <string name="repoPropertiesEnableSquash">تمكين السكواش والدمج</string>
+    <string name="repoPropertiesEnableForceMerge">تمكين إعادة التأسيس ودمج الإيداعات (&#8212;&#8212;no-ff)</string>
+    <string name="repoPropertiesSaveSuccess">حُدِّثت خصائص المستودع بنجاح</string>
+    <string name="repoSettingsDeleteDescription">أشياء يجب معرفتها قبل الحذف: \n\n- لا يمكن التراجع عن هذه العملية.\n- ستؤدي هذه العملية إلى حذف المستودع نهائيًا بما في ذلك التعليمات البرمجية والمشكلات والتعليقات وبيانات الويكي وإعدادات المتعاون.\n\n أدخل اسم المستودع كتأكيد</string>
+    <string name="repoSettingsDeleteError">اسم المستودع غير مطابق</string>
+    <string name="repoDeletionSuccess">حُذف المستودع بنجاح</string>
+    <string name="repoSettingsTransferOwnership">نقل الملكية</string>
+    <string name="repoSettingsTransferOwnershipHint">نقل هذا المستودع لمستخدم آخر أو لمنظمة لديك صلاحيات المسؤول بها</string>
+    <string name="repoSettingsTransferOwnershipDescription">أشياء يجب معرفتها قبل النقل: \n\n- ستفقد إمكانية الوصول إلى المستودع إذا نقلته إلى مستخدم فردي.\n- ستظل قادرًا على الوصول إلى المستودع إذا نقلته إلى منظمة تملكها أو تشارك فيها.\n\nأدخل اسم المستودع كتأكيد</string>
+    <string name="repoTransferText">تنفيذ عملية النقل</string>
+    <string name="repoTransferOwnerText">المالك الجديد</string>
+    <string name="repoTransferSuccess">نقلت ملكية المستودع بنجاح</string>
+    <string name="repoTransferOwnerError">المالك الجديد مطلوب</string>
+    <string name="repoTransferError">هناك خطأٌ في اسم المالك. تحقق أن المالك الجديد موجود</string>
+    <string name="exploreFilterDialogTitle">تصفية المستودعات</string>
+    <string name="exploreFilterIncludeTopic">البحث فقط في موضوع</string>
+    <string name="exploreFilterIncludeDesc">البحث في الوصف</string>
+    <string name="exploreFilterIncludeArchive">فقط المستودعات المؤرشفة</string>
+    <string name="exploreFilterIncludePrivate">فقط المستودعات الخاصة</string>
+    <string name="exploreFilterIncludeTemplateRepos">البحث في مستودعات القوالب</string>
+    <string name="mergeIntoBranch">الدمج مع</string>
+    <string name="pullFromBranch">الدمج من</string>
+    <string name="sameBranchesError">هذان الفرعان متطابقان. لا حاجة لإنشاء طلب دمج</string>
+    <string name="mergeIntoError">الفرع المدمج إليه مطلوب</string>
+    <string name="pullFromError">الفرع المدمج منه مطلوب</string>
+    <string name="titleError">العنوان مطلوب</string>
+    <string name="prCreateSuccess">أُنشئ طلب الدمج بنجاح</string>
+    <string name="prAlreadyExists">يوجد طلب دمج بين هذين الفرعين مسبقاً</string>
+    <string name="prClosed">أُغلق طلب الدمج</string>
+    <string name="prReopened">أُعيد فتح طلب الدمج</string>
+    <string name="prMergeInfo">معلومات طلب الدمج</string>
+    <string name="accountDoesNotExist">يبدو أن الحساب للرابط %1$s غير موجود في التطبيق. يمكنك إضافة حساب بالنقر على زر إضافة حساب جديد.</string>
+    <string name="launchApp">انتقل إلى التطبيق</string>
+    <string name="noActionText">لا يستطيع GitNex التعامل مع الموارد المطلوبة، يمكنك فتح مشكلة في مستودع المشروع كتحسين مع توفير تفاصيل العمل. ما عليك سوى تشغيل الشاشة الافتراضية الآن من الأزرار أدناه، ويمكن تغييرها من الإعدادات.</string>
+    <string name="biometricAuthTitle">المصادقة الحيوية</string>
+    <string name="biometricAuthSubTitle">فتح القُفْل باستخدام المصادقة الحيوية</string>
+    <string name="biometricNotSupported">لا يوجد ميزات مصادقة حيوية متوفرة في هذا الجهاز</string>
+    <string name="biometricNotAvailable">ميزات المصادقة الحيوية غير متوفرة حالياً</string>
+    <string name="enrollBiometric">سجّل البصمات الحيوية من إعدادات الهاتف</string>
+    <string name="copyLoginIdToClipBoard">معرف الدخول \'%s\' نُسخ إلى الحافظة</string>
     <!-- file viewer activity -->
-    <string name="fileViewerNotificationTitleStarted">Download in progress</string>
-    <string name="fileViewerNotificationDescriptionStarted">Downloading %s</string>
-    <string name="fileViewerNotificationTitleFinished">Download successful</string>
-    <string name="fileViewerNotificationDescriptionFinished">Downloaded %s</string>
-    <string name="fileViewerNotificationTitleFailed">Download failed</string>
-    <string name="fileViewerNotificationDescriptionFailed">Couldn\'t download %s</string>
-    <string name="fileViewerNotificationChannelName">Download manager</string>
-    <string name="fileViewerNotificationChannelDescription">Indicates the progress of ongoing downloads</string>
-    <string name="lastUpdatedAt">Updated %s</string>
-    <string name="joined">Joined</string>
-    <string name="userFollow">Follow</string>
-    <string name="unfollowUser">Unfollow</string>
-    <string name="unfollowedUser">Unfollowed @%s</string>
-    <string name="nowFollowUser">You now follow @%s</string>
-    <string name="unfollowingFailed">Couldn\'t unfollow user</string>
-    <string name="followingFailed">Couldn\'t follow user</string>
-    <string name="updatePrConflict">The pull request conflicts with the base branch. Please resolve the conflicts and try again.</string>
-    <string name="updatePrSuccess">Pull Request updated successfully</string>
-    <string name="updateStrategyMerge">Merge</string>
-    <string name="updateStrategyRebase">Rebase</string>
-    <string name="selectUpdateStrategy">Select Update Strategy</string>
-    <string name="userAvatar">Avatar</string>
-    <string name="tags">Tags</string>
-    <string name="releasesTags">Releases/Tags</string>
-    <string name="create_tag">Create Tag Only</string>
-    <string name="tagCreated">Tag created</string>
-    <string name="asRef">Use as reference</string>
-    <string name="deleteTagConfirmation">Do you really want to delete this tag?</string>
-    <string name="tagDeleted">Tag deleted</string>
-    <string name="tagDeleteError">A tag attached to a release cannot be deleted directly</string>
+    <string name="fileViewerNotificationTitleStarted">جارٍ التنزيل</string>
+    <string name="fileViewerNotificationDescriptionStarted">جارٍ التحميل %s</string>
+    <string name="fileViewerNotificationTitleFinished">نجح التحميل</string>
+    <string name="fileViewerNotificationDescriptionFinished">حُمِّل %s</string>
+    <string name="fileViewerNotificationTitleFailed">فشل التحميل</string>
+    <string name="fileViewerNotificationDescriptionFailed">تعذر تحميل %s</string>
+    <string name="fileViewerNotificationChannelName">مدير التحميل</string>
+    <string name="fileViewerNotificationChannelDescription">يشير إلى تقدم التنزيلات الجارية</string>
+    <string name="lastUpdatedAt">حُدِّث %s</string>
+    <string name="joined">إنضمّ</string>
+    <string name="userFollow">متابعة</string>
+    <string name="unfollowUser">ألغِ المتابعة</string>
+    <string name="unfollowedUser">أُلغيت متابعة @%s</string>
+    <string name="nowFollowUser">أنت تتابع الآن @%s</string>
+    <string name="unfollowingFailed">لا يمكن إلغاء متابعة المستخدم</string>
+    <string name="followingFailed">لا يمكن متابعة المستخدم</string>
+    <string name="updatePrConflict">طلب الدمج يتعارض مع الفرع الرئيس.
+رجاءً حُل التعارض وحاول مجدداً.</string>
+    <string name="updatePrSuccess">حُدِّث طلب الدمج بنجاح</string>
+    <string name="updateStrategyMerge">دمج</string>
+    <string name="updateStrategyRebase">إعادة تأسيس</string>
+    <string name="selectUpdateStrategy">اِختر استراتيجية التحديث</string>
+    <string name="userAvatar">الصورة الرمزية</string>
+    <string name="tags">العلامات</string>
+    <string name="releasesTags">الإصدارات/العلامات</string>
+    <string name="create_tag">إنشاء علامة فقط</string>
+    <string name="tagCreated">أُنشئت العلامة</string>
+    <string name="asRef">الاستعمال كمرجع</string>
+    <string name="deleteTagConfirmation">أتريد حقاً حذف هذه العلامة؟</string>
+    <string name="tagDeleted">حُذفت العلامة</string>
+    <string name="tagDeleteError">لا يمكن حذف العلامة المرفقة بإصدار مباشرة</string>
     <string name="useCustomTabs">Use Custom Tabs</string>
     <string name="browserOpenFailed">No application found to open this link. SSH URLs and URLs with another prefix the http:// or https:// are not supported by most browser</string>
     <string name="logInAgain">Log in again</string>
@@ -649,7 +650,7 @@
     <string name="adoptRepo">Adopt</string>
     <string name="repoAdopted">Adopted repository %s</string>
     <string name="unadoptedRepos">Unadopted Repositories</string>
-    <string name="unadoptedReposMessage">- Adopt will add repository %s to organization/user %s.\n- Delete will remove it from the system.</string>
+    <string name="unadoptedReposMessage">- Adopt will add repository %1$s to organization/user %2$s.\n- Delete will remove it from the system.</string>
     <string name="commits">Commits</string>
     <!-- wiki -->
     <string name="wiki">Wiki</string>
@@ -661,4 +662,65 @@
     <string name="wikiUpdated">Wiki page updated successfully</string>
     <string name="wikiCreated">Wiki page created successfully</string>
     <!-- code editor -->
+    <string name="openInCodeEditor">Open in Code Editor</string>
+    <!-- notes -->
+    <string name="newNote">New Note</string>
+    <string name="editNote">Edit Note</string>
+    <string name="newNoteContentHint">Start taking your notes here</string>
+    <string name="noteDateTime">Created %s</string>
+    <string name="noteTimeModified">Updated %s</string>
+    <string name="noteDeleteDialoMessage">Do you really want to delete this note?</string>
+    <plurals name="noteDeleteMessage">
+        <item quantity="zero">Notes deleted successfully</item>
+        <item quantity="one">Note deleted successfully</item>
+        <item quantity="two">Notes deleted successfully</item>
+        <item quantity="few">Notes deleted successfully</item>
+        <item quantity="many">Notes deleted successfully</item>
+        <item quantity="other">Notes deleted successfully</item>
+    </plurals>
+    <string name="notesAllDeletionMessage">This will delete all of your notes. This action cannot be undone.</string>
+    <!-- timeline -->
+    <string name="commitText">commit</string>
+    <string name="timelineAddedCommit">%1$s added %2$s %3$s</string>
+    <!-- the | is replaced by the label -->
+    <string name="timelineAddedLabel">%1$s added the | label %2$s</string>
+    <!-- the | is replaced by the label -->
+    <string name="timelineRemovedLabel">%1$s أزال وسم | %2$s</string>
+    <string name="timelineAssigneesRemoved">%1$s ألغوا توكيلهم %2$s</string>
+    <string name="timelineAssigneesUnassigned">%1$s أُلغي توكيله من قبل %2$s %3$s</string>
+    <string name="timelineAssigneesSelfAssigned">%1$s وكل نفسه بهذا %2$s</string>
+    <string name="timelineAssigneesAssigned">%1$s وُكِّل بواسطة %2$s %3$s</string>
+    <string name="timelineMilestoneAdded">%1$s أضاف إلى مرحلة %2$s %3$s</string>
+    <string name="timelineMilestoneRemoved">%1$s أزال من مرحلة %2$s %3$s</string>
+    <string name="timelineStatusClosedIssue">%1$s أغلق قضية %2$s</string>
+    <string name="timelineStatusReopenedIssue">%1$s أعاد فتح قضية %2$s</string>
+    <string name="timelineStatusReopenedPr">%1$s أعاد فتح طلب الدمج %2$s</string>
+    <string name="timelineStatusClosedPr">%1$s أغلق طلب الدمج %2$s</string>
+    <string name="timelineStatusMergedPr">%1$s دمج طلب الدمج %2$s</string>
+    <string name="timelineStatusRefPr"><![CDATA[%1$s أشار إلى طلب الدمج هذا من <font color=\'%2$d\'>%3$s</font> %4$s]]></string>
+    <string name="timelineReviewRequest">%1$s طلب من %2$s مراجعة %3$s</string>
+    <string name="timelineChangeTitle">%1$s عدّل العنوان من %2$s إلى %3$s %4$s</string>
+    <string name="timelineLocked">%1$s locked as %2$s and limited conversation to collaborators %3$s</string>
+    <string name="timelineUnlocked">%1$s ألغى قفل هذه المحادثة %2$s</string>
+    <string name="timelineDependencyAdded">%1$s أضاف تبعية جديدة #%2$d %3$s</string>
+    <string name="timelineDependencyRemoved">%1$s أزال تبعية #%2$d %3$s</string>
+    <string name="timelineProjectAdded">%1$s أضاف هذا لمشروع %2$s</string>
+    <string name="timelineProjectRemoved">%1$s حذف هذا من مشروع %2$s</string>
+    <string name="timelineDueDateAdded">%1$s أضاف تاريخ الإكمال %2$s %3$s</string>
+    <string name="timelineDueDateModified">%1$s عدّل تاريخ الإكمال من %2$s إلى %3$s %4$s</string>
+    <string name="timelineDueDateRemoved">%1$s حذف تاريخ الإكمال %2$s %3$s</string>
+    <string name="timelineBranchChanged">%1$s عدّل الفرع المستهدف من %2$s إلى %3$s %4$s</string>
+    <string name="timelineBranchDeleted">%1$s حذف فرع %2$s %3$s</string>
+    <string name="timelineTimeTrackingStart">%1$s بدأ يعمل على %2$s</string>
+    <string name="timelineTimeTrackingStop">%1$s أوقف متابعة %2$s</string>
+    <string name="timelineTimeTrackingCancel">%1$s ألغى متابعة %2$s</string>
+    <string name="timelineTimeTrackingAddManualTime">%1$s أضاف الوقت الممضي %2$s %3$s</string>
+    <string name="timelineTimeTrackingDeleteManualTime">%1$s حذف الوقت الممضي %2$s %3$s</string>
+    <string name="timelineChangeIssueRef">%1$s أضاف مرجعاً %2$s %3$s</string>
+    <string name="timelineRefIssue">%1$s أشار إلى هذه القضية في #%2$d %3$s</string>
+    <string name="timelineRefPr">%1$s أشار إلى طلب الدمج هذا في #%2$d %3$s</string>
+    <string name="timelineStatusRefIssue"><![CDATA[%1$s أشار إلى هذه القضية من <font color=\'%2$d\'>%3$s</font> %4$s]]></string>
+    <string name="commitStatuses">الحالات</string>
+    <string name="statusNoUrl">هذه الحالة ليس لها عنوان URL مستهدف مرتبط.</string>
+    <string name="starredRepos">Starred Repos</string>
 </resources>

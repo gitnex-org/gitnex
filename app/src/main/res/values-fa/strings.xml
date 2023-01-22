@@ -10,8 +10,10 @@
     <string name="navAbout">درباره ما</string>
     <string name="navRate">به GitNex امتیاز دهید</string>
     <string name="navLogout">خروج از حساب کاربری</string>
-    <string name="navAdministration">مدیریت</string>
+    <string name="navAdministration">Instance Administration</string>
     <string name="navMyIssues">My Issues</string>
+    <string name="navMostVisited">Most Visited Repos</string>
+    <string name="navNotes">Notes</string>
     <!-- menu items -->
     <!-- page titles -->
     <string name="pageTitleNewRepo">ایجاد مخزن جدید</string>
@@ -28,7 +30,7 @@
     <string name="pageTitleAddEmail">افزدون پست الکترونیکی</string>
     <string name="pageTitleNewFile">فایل جدید</string>
     <string name="pageTitleExplore">گشت‌و‌گذار</string>
-    <string name="pageTitleAdministration">مدیریت Gitea</string>
+    <string name="pageTitleAdministration">Administration</string>
     <string name="pageTitleNewPullRequest">ایجاد درخواست ادغام جدید</string>
     <string name="pageTitleUsers">Users</string>
     <!-- page titles -->
@@ -49,12 +51,8 @@
     <string name="instanceUrl">URL نمونه</string>
     <string name="navigationDrawerOpen">بار کردن کشوی ناوبری</string>
     <string name="navigationDrawerClose">بستن کشوی ناوبری</string>
-    <string name="logo">ورود به Gitea</string>
     <string name="protocol">پروتکل</string>
-    <string name="urlInfoTooltip">1. پروتوکل صحیح را انتخاب کنید (http یا https)
-2. URL گیتی را وارد کنید. مثلا: try.gitea.io
-3. اگر احراز هویت دو مرحله‌ای را برای حساب خود فعال کرده‌اید، کد را در کادر OTP وارد کنید.
-4. برای احراز هویت عادی HTTP از نام‌کاربری@دامنه در کادر URL استفاده کنید.</string>
+    <string name="urlInfoTooltip">1- Choose the correct protocol(https or http). \n2- Enter instance url e.g: try.gitea.io. \n3- If you have enabled 2FA for your account, enter the code in the OTP Code field. \n4- For HTTP basic auth use USERNAME@DOMAIN.COM in the URL field.</string>
     <string name="malformedUrl">Couldn\'t connect to host. Please check your URL or port for any errors</string>
     <string name="protocolError">استفاده از پروتکل HTTP توصیه نمی‌شود مگر اینکه در حال آزمایش در شبکه محلی باشید</string>
     <string name="malformedJson">Malformed JSON was received. Server response was not successful</string>
@@ -150,13 +148,10 @@
     <string name="settingsCertsSelectorHeader">Delete Trusted Certificates</string>
     <string name="settingsCertsPopupTitle">Delete Trusted Certificates?</string>
     <string name="settingsCertsPopupMessage">Are you sure to delete any manually trusted certificate or hostname? \n\nYou will also be logged out.</string>
-    <string name="settingsDateTimeHeaderText">تاریخ و زمان</string>
     <string name="settingsSave">تنظیمات ذخیره شد</string>
     <string name="settingsLanguageSelectorHeader">زبان</string>
     <string name="settingsLanguageSelectedHeaderDefault">انگلیسی</string>
     <string name="settingsAppearanceHeader">ظاهر</string>
-    <string name="settingsDateTimeHeaderDefault">زیبا</string>
-    <string name="settingsDateTimeNormal">Normal</string>
     <string name="settingsLanguageSelectorDialogTitle">انتخاب زبان</string>
     <string name="settingsLightThemeTimeSelectorHeader">Light Theme Switch Time</string>
     <string name="settingsDarkThemeTimeSelectorHeader">Dark Theme Switch Time</string>
@@ -374,7 +369,7 @@
     <string name="doneButton">انجام شد</string>
     <string name="cancelButton">لغو</string>
     <string name="genericError">Something went wrong, please try again</string>
-    <string name="apiNotFound">This request needs higher Gitea version than the one installed. Please upgrade your instance to the latest version of Gitea.</string>
+    <string name="apiNotFound">This request needs higher version than the one installed. Please upgrade your instance to the latest version.</string>
     <string name="noDataFound">🌟 Nothing in here 🌟</string>
     <string name="addButton">افزودن</string>
     <string name="removeButton">حذف</string>
@@ -400,7 +395,7 @@
     <string name="genericWaitFor">Hold on ☕</string>
     <string name="file">File</string>
     <string name="issue">Issue</string>
-    <string name="label">Label</string>
+    <string name="labelTxt">Label</string>
     <string name="release">Release</string>
     <string name="pr">Pull Request</string>
     <string name="collaborator">Collaborator</string>
@@ -416,6 +411,7 @@
     <string name="reopen">Reopen</string>
     <string name="openInBrowser">Open in Browser</string>
     <string name="deleteGenericTitle">Delete %s</string>
+    <string name="reset">Reset</string>
     <!-- generic copy -->
     <string name="exploreUsers">Explore users</string>
     <string name="exploreIssues">Explore issues</string>
@@ -509,12 +505,15 @@
     <string name="draftsSingleDeleteSuccess">پیش نویس‌ با موفقیت حذف شد</string>
     <string name="deleteAllDraftsDialogMessage">This will delete all the drafts for this account. \n\nProceed with deletion?</string>
     <string name="draftSaved">پیش نویس خودکار ذخیره شد.</string>
+    <string name="resetMostReposCounter">Counter is reset successfully</string>
+    <string name="resetCounterDialogMessage">Do you want to reset counter for repository %s?</string>
+    <string name="resetCounterAllDialogMessage">This will reset all the counters for this account repositories.</string>
     <string name="appearanceHintText">پوسته‌ها، فونت‌ها، نشانگرها</string>
     <string name="securityHintText">Biometric authentication, SSL certificates, cache</string>
     <string name="languagesHintText">زبان‌ها</string>
     <string name="reportsHintText">گزارش‌های خرابی</string>
     <string name="rateAppHintText">اگر GitNex را می‌پسندید می‌توانید به آن امتیاز دهید</string>
-    <string name="aboutAppHintText">نگارش برنامه، ساختن، نگارش gitea کاربر</string>
+    <string name="aboutAppHintText">App version, build, user instance version</string>
     <string name="archivedRepository">بایگانی شده</string>
     <string name="archivedRepositoryMessage">This repo is archived. You can view files, but cannot push or open issues/pull-requests.</string>
     <string name="accountDeletedMessage">حساب کاربری با موفقیت حذف شد</string>
@@ -645,7 +644,7 @@
     <string name="adoptRepo">Adopt</string>
     <string name="repoAdopted">Adopted repository %s</string>
     <string name="unadoptedRepos">Unadopted Repositories</string>
-    <string name="unadoptedReposMessage">- Adopt will add repository %s to organization/user %s.\n- Delete will remove it from the system.</string>
+    <string name="unadoptedReposMessage">- Adopt will add repository %1$s to organization/user %2$s.\n- Delete will remove it from the system.</string>
     <string name="commits">Commits</string>
     <!-- wiki -->
     <string name="wiki">Wiki</string>
@@ -657,4 +656,61 @@
     <string name="wikiUpdated">Wiki page updated successfully</string>
     <string name="wikiCreated">Wiki page created successfully</string>
     <!-- code editor -->
+    <string name="openInCodeEditor">Open in Code Editor</string>
+    <!-- notes -->
+    <string name="newNote">New Note</string>
+    <string name="editNote">Edit Note</string>
+    <string name="newNoteContentHint">Start taking your notes here</string>
+    <string name="noteDateTime">Created %s</string>
+    <string name="noteTimeModified">Updated %s</string>
+    <string name="noteDeleteDialoMessage">Do you really want to delete this note?</string>
+    <plurals name="noteDeleteMessage">
+        <item quantity="one">Note deleted successfully</item>
+        <item quantity="other">Notes deleted successfully</item>
+    </plurals>
+    <string name="notesAllDeletionMessage">This will delete all of your notes. This action cannot be undone.</string>
+    <!-- timeline -->
+    <string name="commitText">commit</string>
+    <string name="timelineAddedCommit">%1$s added %2$s %3$s</string>
+    <!-- the | is replaced by the label -->
+    <string name="timelineAddedLabel">%1$s added the | label %2$s</string>
+    <!-- the | is replaced by the label -->
+    <string name="timelineRemovedLabel">%1$s removed the | label %2$s</string>
+    <string name="timelineAssigneesRemoved">%1$s removed their assignment %2$s</string>
+    <string name="timelineAssigneesUnassigned">%1$s was unassigned by %2$s %3$s</string>
+    <string name="timelineAssigneesSelfAssigned">%1$s self-assigned this %2$s</string>
+    <string name="timelineAssigneesAssigned">%1$s was assigned by %2$s %3$s</string>
+    <string name="timelineMilestoneAdded">%1$s added this to the %2$s milestone %3$s</string>
+    <string name="timelineMilestoneRemoved">%1$s removed this from the %2$s milestone %3$s</string>
+    <string name="timelineStatusClosedIssue">%1$s closed this issue %2$s</string>
+    <string name="timelineStatusReopenedIssue">%1$s reopened this issue %2$s</string>
+    <string name="timelineStatusReopenedPr">%1$s reopened this pull request %2$s</string>
+    <string name="timelineStatusClosedPr">%1$s closed this pull request %2$s</string>
+    <string name="timelineStatusMergedPr">%1$s merged this pull request %2$s</string>
+    <string name="timelineStatusRefPr"><![CDATA[%1$s referenced this pull request from a <font color=\'%2$d\'>%3$s</font> %4$s]]></string>
+    <string name="timelineReviewRequest">%1$s requested review from %2$s %3$s</string>
+    <string name="timelineChangeTitle">%1$s changed title from %2$s to %3$s %4$s</string>
+    <string name="timelineLocked">%1$s locked as %2$s and limited conversation to collaborators %3$s</string>
+    <string name="timelineUnlocked">%1$s unlocked this conversation %2$s</string>
+    <string name="timelineDependencyAdded">%1$s added a new dependency #%2$d %3$s</string>
+    <string name="timelineDependencyRemoved">%1$s removed a dependency #%2$d %3$s</string>
+    <string name="timelineProjectAdded">%1$s added this to a project %2$s</string>
+    <string name="timelineProjectRemoved">%1$s removed this from a project %2$s</string>
+    <string name="timelineDueDateAdded">%1$s added the due date %2$s %3$s</string>
+    <string name="timelineDueDateModified">%1$s modified the due date to %2$s from %3$s %4$s</string>
+    <string name="timelineDueDateRemoved">%1$s removed the due date %2$s %3$s</string>
+    <string name="timelineBranchChanged">%1$s changed target branch from %2$s to %3$s %4$s</string>
+    <string name="timelineBranchDeleted">%1$s deleted branch %2$s %3$s</string>
+    <string name="timelineTimeTrackingStart">%1$s started working %2$s</string>
+    <string name="timelineTimeTrackingStop">%1$s stopped time tracking %2$s</string>
+    <string name="timelineTimeTrackingCancel">%1$s cancelled time tracking %2$s</string>
+    <string name="timelineTimeTrackingAddManualTime">%1$s added spent time %2$s %3$s</string>
+    <string name="timelineTimeTrackingDeleteManualTime">%1$s deleted spent time %2$s %3$s</string>
+    <string name="timelineChangeIssueRef">%1$s added reference %2$s %3$s</string>
+    <string name="timelineRefIssue">%1$s referenced this issue in #%2$d %3$s</string>
+    <string name="timelineRefPr">%1$s referenced this pull request in #%2$d %3$s</string>
+    <string name="timelineStatusRefIssue"><![CDATA[%1$s referenced this issue from a <font color=\'%2$d\'>%3$s</font> %4$s]]></string>
+    <string name="commitStatuses">Statuses</string>
+    <string name="statusNoUrl">This status has no linked target URL.</string>
+    <string name="starredRepos">Starred Repos</string>
 </resources>

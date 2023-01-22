@@ -10,13 +10,13 @@
     <string name="navAbout">バージョン情報</string>
     <string name="navRate">GitNexを評価する</string>
     <string name="navLogout">ログアウト</string>
-    <string name="navAdministration">管理</string>
+    <string name="navAdministration">Instance Administration</string>
     <string name="navMyIssues">自分の課題</string>
-    <string name="navMostVisited">最も訪問したリポジトリ</string>
-    <string name="navNotes">ノート</string>
+    <string name="navMostVisited">訪問者の多いリポジトリ</string>
+    <string name="navNotes">注記</string>
     <!-- menu items -->
     <!-- page titles -->
-    <string name="pageTitleNewRepo">新規リポジトリ</string>
+    <string name="pageTitleNewRepo">新しいリポジトリ</string>
     <string name="pageTitleIssues">課題</string>
     <string name="pageTitleCreateOrganization">新規組織</string>
     <string name="pageTitleCreateMilestone">新規マイルストーン</string>
@@ -25,12 +25,12 @@
     <string name="pageTitleCredits">クレジット</string>
     <string name="pageTitleChooseBranch">ブランチを選択</string>
     <string name="pageTitleLabelUpdate">ラベルを更新</string>
-    <string name="pageTitleStarredRepos">スターを付けたリポジトリ</string>
+    <string name="pageTitleStarredRepos">スター付きリポジトリ</string>
     <string name="pageTitleCreateTeam">新規チーム</string>
-    <string name="pageTitleAddEmail">メールアドレスを追加</string>
+    <string name="pageTitleAddEmail">電子メールアドレスの追加</string>
     <string name="pageTitleNewFile">新規ファイル</string>
     <string name="pageTitleExplore">探索</string>
-    <string name="pageTitleAdministration">Gitea管理設定</string>
+    <string name="pageTitleAdministration">Administration</string>
     <string name="pageTitleNewPullRequest">新規プルリクエスト</string>
     <string name="pageTitleUsers">ユーザー</string>
     <!-- page titles -->
@@ -38,22 +38,21 @@
     <string name="repoDescription">デモの説明</string>
     <string name="orgName">デモ組織</string>
     <string name="newCreateButtonCopy">作成</string>
-    <string name="newUpdateButtonCopy">更新</string>
+    <string name="newUpdateButtonCopy">[更新]</string>
     <string name="newRepoTintCopy">リポジトリ名</string>
     <string name="newRepoDescTintCopy">リポジトリの説明</string>
     <string name="newRepoPrivateCopy">プライベート</string>
     <string name="newRepoOwner">所有者</string>
     <string name="newOrgTintCopy">組織名</string>
-    <string name="newOrgDescTintCopy">組織概要</string>
-    <string name="userName">ユーザー名</string>
+    <string name="newOrgDescTintCopy">組織の説明</string>
+    <string name="userName">ユーザ名</string>
     <string name="passWord">パスワード</string>
     <string name="btnLogin">ログイン</string>
     <string name="instanceUrl">インスタンスURL</string>
     <string name="navigationDrawerOpen">ナビゲーションドロワーを開く</string>
     <string name="navigationDrawerClose">ナビゲーションドロワーを閉じる</string>
-    <string name="logo">Giteaへのログイン</string>
     <string name="protocol">プロトコル</string>
-    <string name="urlInfoTooltip">1:正しいプロトコル(httpsまたはhttp)を選択します。\n2-GiteaのURLを入力します(例:try.gitea.io)。\n3-アカウントで2 FAを有効にしている場合は、[OTP Code]フィールドにコードを入力します。\n4-HTTP基本認証では、URLフィールドでUSERNAME@DOMAIN.COMを使用します。</string>
+    <string name="urlInfoTooltip">1- Choose the correct protocol(https or http). \n2- Enter instance url e.g: try.gitea.io. \n3- If you have enabled 2FA for your account, enter the code in the OTP Code field. \n4- For HTTP basic auth use USERNAME@DOMAIN.COM in the URL field.</string>
     <string name="malformedUrl">ホストに接続できませんでした。URLまたはポートにエラーがないか確認してください</string>
     <string name="protocolError">ローカルネットワークでテストする場合を除き、HTTPプロトコルを使用することは推奨されません。</string>
     <string name="malformedJson">不正なJSONを受信しました。サーバー応答が失敗しました</string>
@@ -72,10 +71,10 @@
     <string name="repoOwnerError">リポジトリの所有者を選択します</string>
     <string name="orgNameErrorEmpty">組織名が空です</string>
     <string name="orgNameErrorInvalid">組織名が無効です。[a&#8211;z A&#8211;Z 0&#8211;9&#8211;_]</string>
-    <string name="orgDescError">組織概要が最大255文字の制限を超えています</string>
+    <string name="orgDescError">組織の説明が最大255文字の制限を超えています</string>
     <string name="orgCreated">組織が正常に作成されました</string>
     <string name="orgExistsError">組織はすでに存在します</string>
-    <string name="diffStatistics">%1$s 個の追加と %2$s 個の削除</string>
+    <string name="diffStatistics">%1$s の追加と %2$s の削除</string>
     <string name="processingText">処理中</string>
     <string name="search">検索</string>
     <string name="close">閉じる</string>
@@ -97,25 +96,25 @@
     <string name="infoTabRepoDefaultBranch">デフォルトブランチ</string>
     <string name="infoTabRepoSshUrl">SSH URL</string>
     <string name="infoTabRepoCloneUrl">クローンURL</string>
-    <string name="infoTabRepoRepoUrl">リポジトリURL</string>
+    <string name="infoTabRepoRepoUrl">リポジトリ URL</string>
     <string name="infoTabRepoForksCount">フォーク</string>
-    <string name="infoTabRepoCreatedAt">作成日時</string>
+    <string name="infoTabRepoCreatedAt">作成済み</string>
     <string name="infoTabRepoUpdatedAt">最終更新日</string>
     <string name="infoShowMoreInformation">詳細情報を表示</string>
     <string name="infoMoreInformation">詳細情報</string>
     <string name="timeAtText">at</string>
-    <string name="issueMilestone">マイルストーン %1$s</string>
+    <string name="issueMilestone">マイルストーン %1Ss</string>
     <string name="dueDate">期限 %1$s</string>
     <string name="assignedTo">割り当て先: %1$s</string>
-    <string name="assignedToMe">自分に割り当て</string>
+    <string name="assignedToMe">自分に割り当てられた</string>
     <string name="commentButtonText">コメント</string>
     <string name="commentEmptyError">コメントを記入してください</string>
     <string name="commentSuccess">投稿されたコメント</string>
     <string name="featureDeprecated">この機能は将来削除されます。</string>
     <string name="generalImgContentText">Image</string>
-    <string name="commitAuthor">コミット作成者: %1$s</string>
+    <string name="commitAuthor">コミット作成者:%1$s</string>
     <string name="releaseDownloadText">ダウンロード</string>
-    <string name="releasePublishedBy">発行者 @%1$s</string>
+    <string name="releasePublishedBy">発行者@%1$s</string>
     <string name="noReleaseBodyContent">リリースノートは発行元から提供されていません。</string>
     <string name="newMilestoneTitle">タイトル</string>
     <string name="newMilestoneDescription">説明</string>
@@ -137,9 +136,9 @@
     <string name="newIssueDueDateTitle">期限</string>
     <string name="newIssueMilestoneTitle">マイルストーン</string>
     <string name="newIssueLabelsTitle">ラベル</string>
-    <string name="issueTitleEmpty">課題のタイトルが空です</string>
-    <string name="issueDescriptionEmpty">課題の説明が空です</string>
-    <string name="issueCreated">新規課題が正常に作成されました</string>
+    <string name="issueTitleEmpty">懸案事項のタイトルが空です</string>
+    <string name="issueDescriptionEmpty">懸案事項の説明が空です</string>
+    <string name="issueCreated">新しい懸案事項が正常に作成されました</string>
     <string name="issueCreatedNoMilestone">マイルストーンなし</string>
     <string name="noAssigneesFound">担当者が見つかりませんでした</string>
     <!-- settings -->
@@ -202,7 +201,7 @@
     <string name="labelMenuContentDesc">説明</string>
     <string name="labelDeleteText">ラベルが削除されました</string>
     <string name="selectBranchError">リリースするブランチを選択してください</string>
-    <string name="alertDialogTokenRevokedTitle">認証エラー</string>
+    <string name="alertDialogTokenRevokedTitle">認可エラー</string>
     <string name="alertDialogTokenRevokedMessage">アクセストークンが無効になっているか、これらのコンテンツの表示が許可されていないようです。\n\nトークンが無効になっている場合は、ログアウトして再度ログインしてください。</string>
     <string name="labelDeleteMessage">本当にこのラベルを削除しますか?</string>
     <!-- org tabbed layout str -->
@@ -217,10 +216,10 @@
     <string name="teamPermissionAdmin">•このチームのメンバーは、チームリポジトリとの間でプッシュしたり、コラボレーターを追加したりできます。</string>
     <string name="teamPermissionOwner">•このチームのメンバーは所有者権限を持っています。</string>
     <string name="teamShowAll">すべて表示</string>
-    <string name="orgMember">組織のメンバー</string>
+    <string name="orgMember">Orgメンバー</string>
     <string name="orgTeamMembers">組織のチームメンバー</string>
-    <string name="removeTeamMember">%s を削除</string>
-    <string name="addTeamMember">%s を追加</string>
+    <string name="removeTeamMember">%sを削除</string>
+    <string name="addTeamMember">%sを追加</string>
     <string name="addTeamMemberMessage">このユーザーをチームに追加しますか?</string>
     <string name="removeTeamMemberMessage">このユーザーをチームから削除しますか?</string>
     <string name="memberAddedMessage">メンバーがチームに追加されました</string>
@@ -370,7 +369,7 @@
     <string name="doneButton">完了</string>
     <string name="cancelButton">キャンセル</string>
     <string name="genericError">何か問題が発生しました。もう一度試してください</string>
-    <string name="apiNotFound">この要求には、インストールされているものよりも新しいGiteaバージョンが必要です。インスタンスを最新バージョンのGiteaにアップグレードしてください。</string>
+    <string name="apiNotFound">This request needs higher version than the one installed. Please upgrade your instance to the latest version.</string>
     <string name="noDataFound">🌟ここには何もない🌟</string>
     <string name="addButton">追加</string>
     <string name="removeButton">削除</string>
@@ -514,7 +513,7 @@
     <string name="languagesHintText">言語</string>
     <string name="reportsHintText">クラッシュレポート</string>
     <string name="rateAppHintText">あなたがGitNexが好きなら、それを称賛してもいいですよ。</string>
-    <string name="aboutAppHintText">アプリケーションバージョン、ビルド、ユーザーgiteaバージョン</string>
+    <string name="aboutAppHintText">App version, build, user instance version</string>
     <string name="archivedRepository">アーカイブ済み</string>
     <string name="archivedRepositoryMessage">このリポジトリはアーカイブされます。ファイルを表示することはできますが、問題/プルリクエストをプッシュまたはオープンすることはできません。</string>
     <string name="accountDeletedMessage">アカウントは正常に削除されました</string>
@@ -644,7 +643,7 @@
     <string name="adoptRepo">登録</string>
     <string name="repoAdopted">リポジトリ%sを登録しました</string>
     <string name="unadoptedRepos">未登録リポジトリ</string>
-    <string name="unadoptedReposMessage">- [登録]は リポジトリ %s を組織/ユーザ %s に追加します。\n- [削除]は、システムから削除します。</string>
+    <string name="unadoptedReposMessage">- Adopt will add repository %1$s to organization/user %2$s.\n- Delete will remove it from the system.</string>
     <string name="commits">コミット</string>
     <!-- wiki -->
     <string name="wiki">Wiki</string>
@@ -680,16 +679,16 @@
     <string name="timelineAssigneesSelfAssigned">%1$s が %2$sに自分で割り当てました</string>
     <string name="timelineAssigneesAssigned">%1$s は、%2$s から%3$sに割り当てられました。</string>
     <string name="timelineMilestoneAdded">%1$s は、これを マイルストーン %3$sの %2$s に追加しました。</string>
-    <string name="timelineMilestoneRemoved">%1$s removed this from the %2$s milestone %3$s</string>
-    <string name="timelineStatusClosedIssue">%1$s closed this issue %2$s</string>
-    <string name="timelineStatusReopenedIssue">%1$s reopened this issue %2$s</string>
-    <string name="timelineStatusReopenedPr">%1$s reopened this pull request %2$s</string>
-    <string name="timelineStatusClosedPr">%1$s closed this pull request %2$s</string>
-    <string name="timelineStatusMergedPr">%1$s merged this pull request %2$s</string>
-    <string name="timelineStatusRefPr"><![CDATA[%1$s referenced this pull request from a <font color=\'%2$d\'>%3$s</font> %4$s]]></string>
-    <string name="timelineReviewRequest">%1$s requested review from %2$s %3$s</string>
-    <string name="timelineChangeTitle">%1$s changed title from %2$s to %3$s %4$s</string>
-    <string name="timelineLocked">%1$s locked as %2$s and limited conversation to collaborators %3$s</string>
+    <string name="timelineMilestoneRemoved">%1$s はこれをマイルストーン%3$s の %2$s から 削除しました</string>
+    <string name="timelineStatusClosedIssue">%1$s は、この課題 %2$s をクローズしました。</string>
+    <string name="timelineStatusReopenedIssue">%1$s は、課題 %2$s を再オープンしました。</string>
+    <string name="timelineStatusReopenedPr">%1$s は、プルリクエスト %2$s を再オープンしました。</string>
+    <string name="timelineStatusClosedPr">%1$s は、このプルリクエスト %2$s をクローズしました。</string>
+    <string name="timelineStatusMergedPr">%1$s は、プルリクエスト %2$s をマージしました。</string>
+    <string name="timelineStatusRefPr"><![CDATA[%1$s は、 <font color=\'%2$d\'>%3$s</font> %4$s から、このプルリクエストを参照しました。]]></string>
+    <string name="timelineReviewRequest">%1$s は、 %2$s %3$s からレビューを要求しました。</string>
+    <string name="timelineChangeTitle">%1$s は、 %2$s から %3$s %4$s へタイトルを変更しました。</string>
+    <string name="timelineLocked">%1$s は、 %2$s としてロックし、協力者 %3$s との対話を制限しました。</string>
     <string name="timelineUnlocked">%1$s unlocked this conversation %2$s</string>
     <string name="timelineDependencyAdded">%1$s added a new dependency #%2$d %3$s</string>
     <string name="timelineDependencyRemoved">%1$s removed a dependency #%2$d %3$s</string>
@@ -711,4 +710,5 @@
     <string name="timelineStatusRefIssue"><![CDATA[%1$s referenced this issue from a <font color=\'%2$d\'>%3$s</font> %4$s]]></string>
     <string name="commitStatuses">Statuses</string>
     <string name="statusNoUrl">This status has no linked target URL.</string>
+    <string name="starredRepos">Starred Repos</string>
 </resources>

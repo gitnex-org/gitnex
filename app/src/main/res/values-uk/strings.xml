@@ -10,8 +10,10 @@
     <string name="navAbout">Про додаток</string>
     <string name="navRate">Оцінити GitNex</string>
     <string name="navLogout">Вийти</string>
-    <string name="navAdministration">Адміністрування</string>
+    <string name="navAdministration">Instance Administration</string>
     <string name="navMyIssues">My Issues</string>
+    <string name="navMostVisited">Most Visited Repos</string>
+    <string name="navNotes">Notes</string>
     <!-- menu items -->
     <!-- page titles -->
     <string name="pageTitleNewRepo">Новий репозиторій</string>
@@ -28,7 +30,7 @@
     <string name="pageTitleAddEmail">Додати адресу Email</string>
     <string name="pageTitleNewFile">Новий файл</string>
     <string name="pageTitleExplore">Огляд</string>
-    <string name="pageTitleAdministration">Адміністрування Gitea</string>
+    <string name="pageTitleAdministration">Administration</string>
     <string name="pageTitleNewPullRequest">New Pull Request</string>
     <string name="pageTitleUsers">Users</string>
     <!-- page titles -->
@@ -49,9 +51,8 @@
     <string name="instanceUrl">URL екземпляру</string>
     <string name="navigationDrawerOpen">Відкрити панель навігації</string>
     <string name="navigationDrawerClose">Закрити панель навігації</string>
-    <string name="logo">Увійти до Gitea</string>
     <string name="protocol">Protocol</string>
-    <string name="urlInfoTooltip">1. Оберіть правильний протокол (https або http). \n2. Введіть URL Gitea, наприклад: try.gitea.io. \n3. Якщо для вашого облікового запису увімкнено двофакторну аутентифікацію, введіть код OTP у відповідне поле. \n4. Для базової автентифікації HTTP використовуйте USERNAME@DOMAIN.COM в полі URL.</string>
+    <string name="urlInfoTooltip">1- Choose the correct protocol(https or http). \n2- Enter instance url e.g: try.gitea.io. \n3- If you have enabled 2FA for your account, enter the code in the OTP Code field. \n4- For HTTP basic auth use USERNAME@DOMAIN.COM in the URL field.</string>
     <string name="malformedUrl">Couldn\'t connect to host. Please check your URL or port for any errors</string>
     <string name="protocolError">It is not recommended to use HTTP protocol unless you are testing on local network</string>
     <string name="malformedJson">Malformed JSON was received. Server response was not successful</string>
@@ -146,14 +147,11 @@
     <string name="settingsSecurityHeader">Безпека</string>
     <string name="settingsCertsSelectorHeader">Видалення довірених сертифікатів</string>
     <string name="settingsCertsPopupTitle">Видалити надійні сертифікати?</string>
-    <string name="settingsCertsPopupMessage">Ви дійсно бажаєте видалити будь-який довірений сертифікат вручну або ім\'я хосту? \n\nВи також вийдете з системи.</string>
-    <string name="settingsDateTimeHeaderText">Дата і час</string>
+    <string name="settingsCertsPopupMessage">Are you sure to delete any manually trusted certificate or hostname? \n\nYou will also be logged out.</string>
     <string name="settingsSave">Налаштування збережено</string>
     <string name="settingsLanguageSelectorHeader">Мова</string>
     <string name="settingsLanguageSelectedHeaderDefault">Англійська</string>
     <string name="settingsAppearanceHeader">Зовнішній вигляд</string>
-    <string name="settingsDateTimeHeaderDefault">Гарний</string>
-    <string name="settingsDateTimeNormal">Normal</string>
     <string name="settingsLanguageSelectorDialogTitle">Оберіть мову</string>
     <string name="settingsLightThemeTimeSelectorHeader">Light Theme Switch Time</string>
     <string name="settingsDarkThemeTimeSelectorHeader">Dark Theme Switch Time</string>
@@ -371,7 +369,7 @@
     <string name="doneButton">Готово</string>
     <string name="cancelButton">Скасувати</string>
     <string name="genericError">Щось пішло не так. Будь ласка, спробуйте знову</string>
-    <string name="apiNotFound">Цей запит потребує новішої за встановлену версію Gitea. Будь ласка, оновіть ваш екземпляр до останньої версії Gitea.</string>
+    <string name="apiNotFound">This request needs higher version than the one installed. Please upgrade your instance to the latest version.</string>
     <string name="noDataFound">🌟 Nothing in here 🌟</string>
     <string name="addButton">Додати</string>
     <string name="removeButton">Видалити</string>
@@ -397,7 +395,7 @@
     <string name="genericWaitFor">Hold on ☕</string>
     <string name="file">File</string>
     <string name="issue">Issue</string>
-    <string name="label">Label</string>
+    <string name="labelTxt">Label</string>
     <string name="release">Release</string>
     <string name="pr">Pull Request</string>
     <string name="collaborator">Collaborator</string>
@@ -413,6 +411,7 @@
     <string name="reopen">Reopen</string>
     <string name="openInBrowser">Open in Browser</string>
     <string name="deleteGenericTitle">Delete %s</string>
+    <string name="reset">Reset</string>
     <!-- generic copy -->
     <string name="exploreUsers">Explore users</string>
     <string name="exploreIssues">Explore issues</string>
@@ -506,12 +505,15 @@
     <string name="draftsSingleDeleteSuccess">Draft deleted successfully</string>
     <string name="deleteAllDraftsDialogMessage">This will delete all the drafts for this account. \n\nProceed with deletion?</string>
     <string name="draftSaved">Draft was saved automatically.</string>
+    <string name="resetMostReposCounter">Counter is reset successfully</string>
+    <string name="resetCounterDialogMessage">Do you want to reset counter for repository %s?</string>
+    <string name="resetCounterAllDialogMessage">This will reset all the counters for this account repositories.</string>
     <string name="appearanceHintText">Themes, fonts, badges</string>
     <string name="securityHintText">Biometric authentication, SSL certificates, cache</string>
     <string name="languagesHintText">Мови</string>
     <string name="reportsHintText">Звіти про падіння</string>
     <string name="rateAppHintText">If you like GitNex you can give it a thumbs up</string>
-    <string name="aboutAppHintText">App version, build, user gitea version</string>
+    <string name="aboutAppHintText">App version, build, user instance version</string>
     <string name="archivedRepository">Архівовано</string>
     <string name="archivedRepositoryMessage">This repo is archived. You can view files, but cannot push or open issues/pull-requests.</string>
     <string name="accountDeletedMessage">Account deleted successfully</string>
@@ -644,7 +646,7 @@
     <string name="adoptRepo">Adopt</string>
     <string name="repoAdopted">Adopted repository %s</string>
     <string name="unadoptedRepos">Unadopted Repositories</string>
-    <string name="unadoptedReposMessage">- Adopt will add repository %s to organization/user %s.\n- Delete will remove it from the system.</string>
+    <string name="unadoptedReposMessage">- Adopt will add repository %1$s to organization/user %2$s.\n- Delete will remove it from the system.</string>
     <string name="commits">Commits</string>
     <!-- wiki -->
     <string name="wiki">Wiki</string>
@@ -656,4 +658,63 @@
     <string name="wikiUpdated">Wiki page updated successfully</string>
     <string name="wikiCreated">Wiki page created successfully</string>
     <!-- code editor -->
+    <string name="openInCodeEditor">Open in Code Editor</string>
+    <!-- notes -->
+    <string name="newNote">New Note</string>
+    <string name="editNote">Edit Note</string>
+    <string name="newNoteContentHint">Start taking your notes here</string>
+    <string name="noteDateTime">Created %s</string>
+    <string name="noteTimeModified">Updated %s</string>
+    <string name="noteDeleteDialoMessage">Do you really want to delete this note?</string>
+    <plurals name="noteDeleteMessage">
+        <item quantity="one">Note deleted successfully</item>
+        <item quantity="few">Notes deleted successfully</item>
+        <item quantity="many">Notes deleted successfully</item>
+        <item quantity="other">Notes deleted successfully</item>
+    </plurals>
+    <string name="notesAllDeletionMessage">This will delete all of your notes. This action cannot be undone.</string>
+    <!-- timeline -->
+    <string name="commitText">commit</string>
+    <string name="timelineAddedCommit">%1$s added %2$s %3$s</string>
+    <!-- the | is replaced by the label -->
+    <string name="timelineAddedLabel">%1$s added the | label %2$s</string>
+    <!-- the | is replaced by the label -->
+    <string name="timelineRemovedLabel">%1$s removed the | label %2$s</string>
+    <string name="timelineAssigneesRemoved">%1$s removed their assignment %2$s</string>
+    <string name="timelineAssigneesUnassigned">%1$s was unassigned by %2$s %3$s</string>
+    <string name="timelineAssigneesSelfAssigned">%1$s self-assigned this %2$s</string>
+    <string name="timelineAssigneesAssigned">%1$s was assigned by %2$s %3$s</string>
+    <string name="timelineMilestoneAdded">%1$s added this to the %2$s milestone %3$s</string>
+    <string name="timelineMilestoneRemoved">%1$s removed this from the %2$s milestone %3$s</string>
+    <string name="timelineStatusClosedIssue">%1$s closed this issue %2$s</string>
+    <string name="timelineStatusReopenedIssue">%1$s reopened this issue %2$s</string>
+    <string name="timelineStatusReopenedPr">%1$s reopened this pull request %2$s</string>
+    <string name="timelineStatusClosedPr">%1$s closed this pull request %2$s</string>
+    <string name="timelineStatusMergedPr">%1$s merged this pull request %2$s</string>
+    <string name="timelineStatusRefPr"><![CDATA[%1$s referenced this pull request from a <font color=\'%2$d\'>%3$s</font> %4$s]]></string>
+    <string name="timelineReviewRequest">%1$s requested review from %2$s %3$s</string>
+    <string name="timelineChangeTitle">%1$s changed title from %2$s to %3$s %4$s</string>
+    <string name="timelineLocked">%1$s locked as %2$s and limited conversation to collaborators %3$s</string>
+    <string name="timelineUnlocked">%1$s unlocked this conversation %2$s</string>
+    <string name="timelineDependencyAdded">%1$s added a new dependency #%2$d %3$s</string>
+    <string name="timelineDependencyRemoved">%1$s removed a dependency #%2$d %3$s</string>
+    <string name="timelineProjectAdded">%1$s added this to a project %2$s</string>
+    <string name="timelineProjectRemoved">%1$s removed this from a project %2$s</string>
+    <string name="timelineDueDateAdded">%1$s added the due date %2$s %3$s</string>
+    <string name="timelineDueDateModified">%1$s modified the due date to %2$s from %3$s %4$s</string>
+    <string name="timelineDueDateRemoved">%1$s removed the due date %2$s %3$s</string>
+    <string name="timelineBranchChanged">%1$s changed target branch from %2$s to %3$s %4$s</string>
+    <string name="timelineBranchDeleted">%1$s deleted branch %2$s %3$s</string>
+    <string name="timelineTimeTrackingStart">%1$s started working %2$s</string>
+    <string name="timelineTimeTrackingStop">%1$s stopped time tracking %2$s</string>
+    <string name="timelineTimeTrackingCancel">%1$s cancelled time tracking %2$s</string>
+    <string name="timelineTimeTrackingAddManualTime">%1$s added spent time %2$s %3$s</string>
+    <string name="timelineTimeTrackingDeleteManualTime">%1$s deleted spent time %2$s %3$s</string>
+    <string name="timelineChangeIssueRef">%1$s added reference %2$s %3$s</string>
+    <string name="timelineRefIssue">%1$s referenced this issue in #%2$d %3$s</string>
+    <string name="timelineRefPr">%1$s referenced this pull request in #%2$d %3$s</string>
+    <string name="timelineStatusRefIssue"><![CDATA[%1$s referenced this issue from a <font color=\'%2$d\'>%3$s</font> %4$s]]></string>
+    <string name="commitStatuses">Statuses</string>
+    <string name="statusNoUrl">This status has no linked target URL.</string>
+    <string name="starredRepos">Starred Repos</string>
 </resources>
