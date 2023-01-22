@@ -52,7 +52,7 @@
     <string name="navigationDrawerOpen">Ouvrir le volet de navigation</string>
     <string name="navigationDrawerClose">Fermer le volet de navigation</string>
     <string name="protocol">Protocole</string>
-    <string name="urlInfoTooltip">1- Choose the correct protocol(https or http). \n2- Enter instance url e.g: try.gitea.io. \n3- If you have enabled 2FA for your account, enter the code in the OTP Code field. \n4- For HTTP basic auth use USERNAME@DOMAIN.COM in the URL field.</string>
+    <string name="urlInfoTooltip">1. Choisissez le protocole adéquat (HTTPS ou HTTP).\n2. Entrez l’URL de votre instance (ex : try.gitea.io).\n3. Si l’authentification à deux facteurs est activée pour votre compte, saisissez le code OTP.\n4. Pour une authentification basique avec HTTP, utilisez NOMDUTILISATEUR@DOMAINE.COM dans le champ URL.</string>
     <string name="malformedUrl">Connexion impossible. Veuillez vérifier l’URL et le port</string>
     <string name="protocolError">Le protocole HTTP est déconseillé en dehors de tests sur un réseau local</string>
     <string name="malformedJson">JSON mal formé. Le serveur ne répond pas.</string>
@@ -701,9 +701,9 @@
     <string name="timelineDueDateRemoved">%1$s a supprimé l’échéance au %2$s %3$s</string>
     <string name="timelineBranchChanged">%1$s a changé la branche cible de %2$s à %3$s %4$s</string>
     <string name="timelineBranchDeleted">%1$s a supprimé la branche %2$s %3$s</string>
-    <string name="timelineTimeTrackingStart">%1$s started working %2$s</string>
-    <string name="timelineTimeTrackingStop">%1$s stopped time tracking %2$s</string>
-    <string name="timelineTimeTrackingCancel">%1$s cancelled time tracking %2$s</string>
+    <string name="timelineTimeTrackingStart">%1$s a commencé une tâche %2$s</string>
+    <string name="timelineTimeTrackingStop">%1$s a arrêté une tâche %2$s</string>
+    <string name="timelineTimeTrackingCancel">%1$s a annulé une tâche %2$s</string>
     <string name="timelineTimeTrackingAddManualTime">%1$s a ajouté le temps passé %2$s %3$s</string>
     <string name="timelineTimeTrackingDeleteManualTime">%1$s a supprimé le temps passé %2$s %3$s</string>
     <string name="timelineChangeIssueRef">%1$s a ajouté la référence %2$s %3$s</string>
