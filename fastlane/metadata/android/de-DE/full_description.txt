@@ -1,4 +1,4 @@
-GitNex ist eine freie/bezahlte Open Source Android-App für das Git-Management-Tool Gitea. Gitea ist ein gemeinschaftlich verwalteter Fork von Gogs.
+GitNex ist eine freie/bezahlte Open Source Android-App für die Git-Management-Tools Forgejo und Gitea.
 
 # Funktionen
 

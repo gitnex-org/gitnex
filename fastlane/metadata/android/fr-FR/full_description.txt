@@ -1,4 +1,4 @@
-GitNex est un client Android open-source gratuit/payant pour gérer vos projets Git hébergés avec Gitea. Gitea est un projet communautaire dérivé de Gogs, une forge logicielle légère écrite en Go.
+GitNex est un client Android open-source gratuit/payant pour vos dépôts Git gérés avec Forgejo et Gitea.
 
 # Fonctionnalités
 

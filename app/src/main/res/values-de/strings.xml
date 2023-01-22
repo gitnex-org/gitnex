@@ -10,7 +10,7 @@
     <string name="navAbout">Über</string>
     <string name="navRate">Bewerte GitNex</string>
     <string name="navLogout">Ausloggen</string>
-    <string name="navAdministration">Administration</string>
+    <string name="navAdministration">Instanz-Administration</string>
     <string name="navMyIssues">Meine Issues</string>
     <string name="navMostVisited">Meistbesuchte Repositories</string>
     <string name="navNotes">Notizen</string>
@@ -30,7 +30,7 @@
     <string name="pageTitleAddEmail">E-Mail Adresse hinzufügen</string>
     <string name="pageTitleNewFile">Neue Datei</string>
     <string name="pageTitleExplore">Erkunden</string>
-    <string name="pageTitleAdministration">Gitea-Administration</string>
+    <string name="pageTitleAdministration">Administration</string>
     <string name="pageTitleNewPullRequest">Neuer Pull-Request</string>
     <string name="pageTitleUsers">Benutzer</string>
     <!-- page titles -->
@@ -51,9 +51,8 @@
     <string name="instanceUrl">Instanz-URL</string>
     <string name="navigationDrawerOpen">Navigationsleiste öffnen</string>
     <string name="navigationDrawerClose">Navigationsleiste schließen</string>
-    <string name="logo">In Gitea anmelden</string>
     <string name="protocol">Protokoll</string>
-    <string name="urlInfoTooltip">1. Wähle das richtige Protokoll (https oder http)\n2. Gebe die Gitea-URL ein, z.B. try.gitea.io\n3. Falls du 2FA aktiviert hast, gib den Code in das OTP-Code-Feld ein.\n4. Für HTTP basic auth nutze BENUTZERNAME@DOMAIN.COM im URL-Feld.</string>
+    <string name="urlInfoTooltip">1. Wähle das richtige Protokoll (https oder http)\n2. Gebe die Instanz-URL ein, z.B. try.gitea.io\n3. Falls du 2FA aktiviert hast, gib den Code in das OTP-Code-Feld ein.\n4. Für HTTP basic auth nutze BENUTZERNAME@DOMAIN.COM im URL-Feld.</string>
     <string name="malformedUrl">Konnte keine Verbindung zum Host herstellen. Bitte überprüfe die URL oder Port auf irgendwelche Fehler</string>
     <string name="protocolError">Es wird nicht empfohlen, das HTTP-Protokoll zu verwenden, es sei denn, du testest in einem lokalen Netzwerk</string>
     <string name="malformedJson">Fehlerhaftes JSON erhalten. Serveranfrage war nicht erfolgreich</string>
@@ -370,7 +369,7 @@
     <string name="doneButton">Fertig</string>
     <string name="cancelButton">Abbrechen</string>
     <string name="genericError">Etwas ist schief gelaufen. Bitte versuche es noch ein Mal</string>
-    <string name="apiNotFound">Diese Anfrage erfordert eine neuere Gitea-Version als die, die aktuell installiert ist. Bitte aktualisiere deine Instanz auf die neuste Version.</string>
+    <string name="apiNotFound">Diese Anfrage erfordert eine neuere Version als die, die aktuell installiert ist. Bitte aktualisiere deine Instanz auf die neuste Version.</string>
     <string name="noDataFound">🌟 Hier ist nichts 🌟</string>
     <string name="addButton">Hinzufügen</string>
     <string name="removeButton">Entfernen</string>
@@ -514,7 +513,7 @@
     <string name="languagesHintText">Sprachen</string>
     <string name="reportsHintText">Absturzberichte</string>
     <string name="rateAppHintText">Wenn dir GitNex gefällt, hinterlasse Feedback</string>
-    <string name="aboutAppHintText">App-Version, Build, Gitea-Version</string>
+    <string name="aboutAppHintText">App-Version, Build, Instanz-Version</string>
     <string name="archivedRepository">Archiviert</string>
     <string name="archivedRepositoryMessage">Dieses Repo ist archiviert. Du kannst Dateien anschauen, aber nichts verändern oder erstellen.</string>
     <string name="accountDeletedMessage">Konto erfolgreich gelöscht</string>
