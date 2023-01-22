@@ -10,8 +10,10 @@
     <string name="navAbout">关于</string>
     <string name="navRate">五星好评！</string>
     <string name="navLogout">退出</string>
-    <string name="navAdministration">管理</string>
+    <string name="navAdministration">实例管理</string>
     <string name="navMyIssues">我的问题</string>
+    <string name="navMostVisited">访问最多的代码库</string>
+    <string name="navNotes">备注</string>
     <!-- menu items -->
     <!-- page titles -->
     <string name="pageTitleNewRepo">创建仓库</string>
@@ -28,7 +30,7 @@
     <string name="pageTitleAddEmail">添加电子邮件地址</string>
     <string name="pageTitleNewFile">新建文件</string>
     <string name="pageTitleExplore">探索</string>
-    <string name="pageTitleAdministration">Gitea 管理</string>
+    <string name="pageTitleAdministration">管理</string>
     <string name="pageTitleNewPullRequest">新拉取请求</string>
     <string name="pageTitleUsers">用户</string>
     <!-- page titles -->
@@ -49,9 +51,9 @@
     <string name="instanceUrl">Gitea访问地址</string>
     <string name="navigationDrawerOpen">打开导航栏</string>
     <string name="navigationDrawerClose">关闭导航栏</string>
-    <string name="logo">登录到 Gitea</string>
     <string name="protocol">协议</string>
-    <string name="urlInfoTooltip">1- 选择协议 (https 或 http). \n2- 输入Gitea访问地址(可带端口) 例如: try.gitea.io:3000. \n3- 如已启用双重验证，请在OTP输入有效代码。 \n4- 在 URL 字段中使用 USERNAME@DOMAIN.COM 进行 HTTP 基本身份验证。</string>
+    <string name="urlInfoTooltip">1- 选择正确协议(https or http). \n2- 输入实例 url 如: try.gitea.io. \n3- 如果你为账户启用了 2FA
+ ，请在 OTP 码字段输入代码。 \n4- 对 HTTP basic auth， 请在 URL 字段中使用 USERNAME@DOMAIN.COM。</string>
     <string name="malformedUrl">无法连接到主机。请检查您的 URL 或端口是否有任何错误</string>
     <string name="protocolError">除非您正在本地网络上测试，否则不建议使用 HTTP 协议</string>
     <string name="malformedJson">收到格式错误的 JSON 。服务器响应不成功</string>
@@ -147,13 +149,10 @@
     <string name="settingsCertsSelectorHeader">删除信任的证书</string>
     <string name="settingsCertsPopupTitle">删除信任的证书吗？</string>
     <string name="settingsCertsPopupMessage">您确定要删除任何手动信任的证书或主机名吗？ \n\n您也将被注销。</string>
-    <string name="settingsDateTimeHeaderText">日期与时间格式</string>
     <string name="settingsSave">设置已保存</string>
     <string name="settingsLanguageSelectorHeader">语言</string>
     <string name="settingsLanguageSelectedHeaderDefault">英语</string>
     <string name="settingsAppearanceHeader">外观</string>
-    <string name="settingsDateTimeHeaderDefault">推算时间</string>
-    <string name="settingsDateTimeNormal">普通</string>
     <string name="settingsLanguageSelectorDialogTitle">选择语言</string>
     <string name="settingsLightThemeTimeSelectorHeader">浅色主题切换时间</string>
     <string name="settingsDarkThemeTimeSelectorHeader">深色主题切换时间</string>
@@ -204,7 +203,7 @@
     <string name="labelDeleteText">标签已删除</string>
     <string name="selectBranchError">选择用于发行的分支</string>
     <string name="alertDialogTokenRevokedTitle">授权错误</string>
-    <string name="alertDialogTokenRevokedMessage">看来访问令牌已被吊销，或者您不被允许查看这些内容。\n\n如果令牌被吊销，请注销并重新登录</string>
+    <string name="alertDialogTokenRevokedMessage">看来访问令牌被吊销，或者您不被允许查看这些内容。\n\n如果令牌被吊销，请注销并重新登录</string>
     <string name="labelDeleteMessage">您真的想要删除此标签吗？</string>
     <!-- org tabbed layout str -->
     <string name="orgTabTeams">团队</string>
@@ -371,7 +370,7 @@
     <string name="doneButton">完成</string>
     <string name="cancelButton">取消</string>
     <string name="genericError">出了错，请重试</string>
-    <string name="apiNotFound">此请求需要比安装版本更高的Gitea版本。请将您的实例升级到最新版本的Gitea。</string>
+    <string name="apiNotFound">此请求需要比已安装版本更高的 Gitea 版本。请将您的实例升级到最新版本的 Gitea。</string>
     <string name="noDataFound">🌟 这里什么都没有 🌟</string>
     <string name="addButton">添加</string>
     <string name="removeButton">删除</string>
@@ -397,7 +396,7 @@
     <string name="genericWaitFor">等一下 ☕</string>
     <string name="file">文件</string>
     <string name="issue">问题</string>
-    <string name="label">标签</string>
+    <string name="labelTxt">标签</string>
     <string name="release">发布</string>
     <string name="pr">合并请求</string>
     <string name="collaborator">协作者</string>
@@ -413,6 +412,7 @@
     <string name="reopen">重新打开</string>
     <string name="openInBrowser">在浏览器中打开</string>
     <string name="deleteGenericTitle">删除 %s</string>
+    <string name="reset">重置</string>
     <!-- generic copy -->
     <string name="exploreUsers">探索用户</string>
     <string name="exploreIssues">探索问题</string>
@@ -422,7 +422,7 @@
     <string name="watchRepositorySuccess">仓库已添加到关注列表</string>
     <string name="unWatchRepositorySuccess">仓库已从关注列表中删除</string>
     <string name="titleDrafts">草稿</string>
-    <string name="versionUnsupportedOld">检测到不支持的 Gitea 旧版本 (%1$s)。请更新到最新稳定版。如果您继续，应用程序可能无法正常运行。</string>
+    <string name="versionUnsupportedOld">检测到不支持的 Gitea 旧版本 (%1$s)。请更新到最新稳定版。如果您继续，某些功能可能无法正常运行。</string>
     <string name="versionUnsupportedNew">检测到新的 Gitea 版本！请更新 GitNex！</string>
     <string name="versionUnknown">未检测到Gitea！</string>
     <string name="versionAlertDialogHeader">不支持的 Gitea 版本</string>
@@ -497,7 +497,7 @@
     <string name="settingsEnableReportsText">启用崩溃报告</string>
     <string name="crashTitle">GitNex 已停止 :(</string>
     <string name="setCrashReports">崩溃报告</string>
-    <string name="crashMessage">鼓励在项目存储库中提出一个问题，并说明如何重现这个bug。这样更容易调试和修复问题。\n\n点击OK按钮，通过电子邮件发送崩溃报告。可以在电子邮件中添加其他内容，\n谢谢！</string>
+    <string name="crashMessage">鼓励在项目存储库中新开一个 issue，并说明如何重现这个 bug。这样更让调试和修复变得比较容易。\n\n点击 OK 按钮，通过电子邮件发送崩溃报告。可以在电子邮件中添加其他内容。\n谢谢！</string>
     <string name="forceLogoutDialogHeader">请重新登录</string>
     <string name="forceLogoutDialogDescription">由于应用内部功能发生了一些重大变化，我们要求您重新登录。这些变化使我们能够使应用程序在未来更具灵活性。\n\n感谢您的耐心，对给您带来的不便我们深表歉意</string>
     <string name="deleteAllDrafts">删除所有草稿</string>
@@ -506,17 +506,20 @@
     <string name="draftsSingleDeleteSuccess">草稿已成功删除</string>
     <string name="deleteAllDraftsDialogMessage">这将删除此帐户的所有草稿。 \n\n继续删除？</string>
     <string name="draftSaved">草稿已自动保存。</string>
+    <string name="resetMostReposCounter">成功重置计数</string>
+    <string name="resetCounterDialogMessage">你要重置存储库 %s 的计数吗？</string>
+    <string name="resetCounterAllDialogMessage">这会重置此账户存储库的所有计数</string>
     <string name="appearanceHintText">主题、字体、徽章</string>
     <string name="securityHintText">生物特征认证、SSL证书、缓存</string>
     <string name="languagesHintText">语言</string>
     <string name="reportsHintText">崩溃报告</string>
     <string name="rateAppHintText">如果你喜欢GitNex，你可以给它点赞</string>
-    <string name="aboutAppHintText">应用程序版本、构建、用户gitea版本</string>
+    <string name="aboutAppHintText">应用程序版本、构建、用户实例版本</string>
     <string name="archivedRepository">已存档</string>
     <string name="archivedRepositoryMessage">此代码库已存档。您可以查看文件，但不能推送或打开issues/合并请求。</string>
     <string name="accountDeletedMessage">帐户删除成功</string>
     <string name="removeAccountPopupTitle">删除账户</string>
-    <string name="removeAccountPopupMessage">您确定要从应用中删除此帐户吗？\n\n这将仅移除应用程序上与此账户相关的所有数据。</string>
+    <string name="removeAccountPopupMessage">您确定要从应用中删除此帐户吗？\n\n 这将仅移除应用程序上与此账户相关的所有数据。</string>
     <string name="addNewAccount">新帐户</string>
     <string name="addNewAccountText">添加新账户</string>
     <string name="accountAlreadyExistsError">帐户已经存在于应用程序中</string>
@@ -563,11 +566,11 @@
     <string name="repoPropertiesEnableSquash">启用压扁和合并</string>
     <string name="repoPropertiesEnableForceMerge">用合并提交(&#8212;&#8212;no-ff)启用代码变基</string>
     <string name="repoPropertiesSaveSuccess">成功更新存储库属性</string>
-    <string name="repoSettingsDeleteDescription">删除前要知道的事:\n\n-此操作无法撤消。\n-此操作将永久删除存储库，包括代码、问题、注释、Wiki数据和协作者设置。\n\n输入存储库名称作为确认</string>
+    <string name="repoSettingsDeleteDescription">删除前要知道的事:\n\n - 此操作无法撤消。\n - 此操作将永久删除存储库，包括代码、问题、注释、Wiki 数据和协作者设置。\n\n 输入存储库名称作为确认</string>
     <string name="repoSettingsDeleteError">存储库名称不匹配</string>
     <string name="repoDeletionSuccess">成功删除存储库</string>
     <string name="repoSettingsTransferOwnership">转移所有权</string>
-    <string name="repoSettingsTransferOwnershipHint">将此存储库传输给您具有管理员权限的用户或组织</string>
+    <string name="repoSettingsTransferOwnershipHint">将此存储库转移到用户或您具有管理员权限的组织</string>
     <string name="repoSettingsTransferOwnershipDescription">转移所有权之前需要注意的事项:\n\n- 如果将存储库移交给单个用户，您将失去对该存储库的访问权。\n- 如果您将存储库转移到您和他人(共同)拥有的组织，那么您将保留对该存储库的访问权。\n\n输入存储库名称作为确认</string>
     <string name="repoTransferText">执行移交</string>
     <string name="repoTransferOwnerText">新所有者</string>
@@ -591,9 +594,9 @@
     <string name="prClosed">拉取请求已关闭</string>
     <string name="prReopened">拉取请求已重新打开</string>
     <string name="prMergeInfo">合并请求信息</string>
-    <string name="accountDoesNotExist">似乎应用程序中并不存在URI%1$s的账户。您可以通过点击添加新帐户按钮来添加一个。</string>
+    <string name="accountDoesNotExist">似乎应用程序中并不存在URI%1$s的账户。您可以通过点击“添加新账户”按钮来添加一个。</string>
     <string name="launchApp">前往应用</string>
-    <string name="noActionText">GitNex无法处理所请求的资源，您可以在项目代码库中发起一个问题，提供工作细节。只需从下面的按钮启动一个默认屏幕，您可通过设置更改默认屏。</string>
+    <string name="noActionText">GitNex 无法处理所请求的资源，您可以在项目代码库中发起一个问题，最好提供工作细节。只需从下面的按钮启动一个默认屏幕，您可通过设置更改默认屏。</string>
     <string name="biometricAuthTitle">生物特征认证</string>
     <string name="biometricAuthSubTitle">使用你的生物特征凭证解锁</string>
     <string name="biometricNotSupported">此设备无可用的生物特征功能</string>
@@ -641,7 +644,7 @@
     <string name="adoptRepo">采用</string>
     <string name="repoAdopted">已采用仓库 %s</string>
     <string name="unadoptedRepos">已取消采用仓库</string>
-    <string name="unadoptedReposMessage">- 采用将添加仓库 %s 到组织/用户 %s。\n- 删除将从系统中移除它。</string>
+    <string name="unadoptedReposMessage">- Adopt 会将添加仓库 %1$s 到组织/用户 %2$s。\n- 删除将其从系统中移除。</string>
     <string name="commits">提交</string>
     <!-- wiki -->
     <string name="wiki">维基</string>
@@ -653,4 +656,60 @@
     <string name="wikiUpdated">成功更新了维基页面</string>
     <string name="wikiCreated">成功创建了维基页面</string>
     <!-- code editor -->
+    <string name="openInCodeEditor">在代码编辑器中打开</string>
+    <!-- notes -->
+    <string name="newNote">新备注</string>
+    <string name="editNote">编辑备注</string>
+    <string name="newNoteContentHint">从此处开始记备注</string>
+    <string name="noteDateTime">创建于 %s</string>
+    <string name="noteTimeModified">更新于 %s</string>
+    <string name="noteDeleteDialoMessage">您真要删除此备注吗？</string>
+    <plurals name="noteDeleteMessage">
+        <item quantity="other">已成功删除备注</item>
+    </plurals>
+    <string name="notesAllDeletionMessage">这会删除您的所有备注。此操作无法撤消。</string>
+    <!-- timeline -->
+    <string name="commitText">提交</string>
+    <string name="timelineAddedCommit">%1$s 添加了 %2$s %3$s</string>
+    <!-- the | is replaced by the label -->
+    <string name="timelineAddedLabel">%1$s 添加了 | 标签 %2$s</string>
+    <!-- the | is replaced by the label -->
+    <string name="timelineRemovedLabel">%1$s 删除了 | 标签 %2$s</string>
+    <string name="timelineAssigneesRemoved">%1$s 删除了他们的任务分配 %2$s</string>
+    <string name="timelineAssigneesUnassigned">%2$s %3$s 取消了分配给 %1$s 的任务</string>
+    <string name="timelineAssigneesSelfAssigned">%1$s 给自己分配了这个 %2$s</string>
+    <string name="timelineAssigneesAssigned">%2$s %3$s 给 %1$s 分配了任务</string>
+    <string name="timelineMilestoneAdded">%1$s 将此添加至 %2$s 里程碑 %3$s</string>
+    <string name="timelineMilestoneRemoved">%1$s 将此从 %2$s 里程碑 %3$s 删除了</string>
+    <string name="timelineStatusClosedIssue">%1$s 关闭了这张工单 %2$s</string>
+    <string name="timelineStatusReopenedIssue">%1$s 重新打开了这张工单 %2$s</string>
+    <string name="timelineStatusReopenedPr">%1$s 重新打开了此拉取请求 %2$s</string>
+    <string name="timelineStatusClosedPr">%1$s 关闭了此拉取请求 %2$s</string>
+    <string name="timelineStatusMergedPr">%1$s 合并了此拉取请求 %2$s</string>
+    <string name="timelineStatusRefPr"><![CDATA[%1$s 引用了来自 <font color=\'%2$d\'>%3$s</font> %4$s 的拉取请求]]></string>
+    <string name="timelineReviewRequest">%1$s 请求 %2$s %3$s 进行审阅</string>
+    <string name="timelineChangeTitle">%1$s 将标题从 %2$s 改为 %3$s %4$s</string>
+    <string name="timelineLocked">%1$s 被锁定为 %2$s 并限定对话至协作者 %3$s</string>
+    <string name="timelineUnlocked">%1$s 解锁了此对话 %2$s</string>
+    <string name="timelineDependencyAdded">%1$s 添加了新依赖项 #%2$d %3$s</string>
+    <string name="timelineDependencyRemoved">%1$s 删除了依赖项 #%2$d %3$s</string>
+    <string name="timelineProjectAdded">%1$s 将此添加至项目 %2$s</string>
+    <string name="timelineProjectRemoved">%1$s 将此从项目 %2$s 中删除了</string>
+    <string name="timelineDueDateAdded">%1$s 添加了到期日 %2$s %3$s</string>
+    <string name="timelineDueDateModified">%1$s 将到期日从 %3$s %4$s 改为 %2$s</string>
+    <string name="timelineDueDateRemoved">%1$s 删除了到期日 %2$s %3$s</string>
+    <string name="timelineBranchChanged">%1$s 将目标分支从 %2$s 改为了 %3$s %4$s</string>
+    <string name="timelineBranchDeleted">%1$s 删除了分支 %2$s %3$s</string>
+    <string name="timelineTimeTrackingStart">%1$s 开始追踪 %2$s</string>
+    <string name="timelineTimeTrackingStop">%1$s 停止了时间追踪 %2$s</string>
+    <string name="timelineTimeTrackingCancel">%1$s 取消了时间追踪 %2$s</string>
+    <string name="timelineTimeTrackingAddManualTime">%1$s 添加了所花时间 %2$s %3$s</string>
+    <string name="timelineTimeTrackingDeleteManualTime">%1$s 删除了所花时间 %2$s %3$s</string>
+    <string name="timelineChangeIssueRef">%1$s 添加了参考 %2$s %3$s</string>
+    <string name="timelineRefIssue">%1$s 在 #%2$d %3$s 中提到了这张工单</string>
+    <string name="timelineRefPr">%1$s 在 #%2$d %3$s 中提到了这个拉取请求</string>
+    <string name="timelineStatusRefIssue"><![CDATA[%1$s 引用了来自 <font color=\'%2$d\'>%3$s</font> %4$s 的工单]]></string>
+    <string name="commitStatuses">状态</string>
+    <string name="statusNoUrl">此状态没有链接的目标 URL。</string>
+    <string name="starredRepos">加星标的仓库</string>
 </resources>

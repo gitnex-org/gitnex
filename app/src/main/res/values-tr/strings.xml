@@ -10,8 +10,10 @@
     <string name="navAbout">Hakkında</string>
     <string name="navRate">GitNex\'i Puanla</string>
     <string name="navLogout">Çıkış Yap</string>
-    <string name="navAdministration">Administration</string>
-    <string name="navMyIssues">My Issues</string>
+    <string name="navAdministration">Instance Administration</string>
+    <string name="navMyIssues">Konularım</string>
+    <string name="navMostVisited">En çok ziyaret edilen depolar</string>
+    <string name="navNotes">Notlar</string>
     <!-- menu items -->
     <!-- page titles -->
     <string name="pageTitleNewRepo">Yeni Depo</string>
@@ -21,15 +23,15 @@
     <string name="pageTitleCreateNewIssue">Yeni Konu</string>
     <string name="pageTitleCreateLabel">Yeni Etiket</string>
     <string name="pageTitleCredits">Katkılar</string>
-    <string name="pageTitleChooseBranch">Select Branch</string>
+    <string name="pageTitleChooseBranch">Branş seçin</string>
     <string name="pageTitleLabelUpdate">Etiketi Güncelle</string>
     <string name="pageTitleStarredRepos">Yıldızlı Depolar</string>
     <string name="pageTitleCreateTeam">Yeni Takım</string>
     <string name="pageTitleAddEmail">E-posta Adresi Ekle</string>
     <string name="pageTitleNewFile">Yeni Dosya</string>
     <string name="pageTitleExplore">Keşfet</string>
-    <string name="pageTitleAdministration">Gitea Administration</string>
-    <string name="pageTitleNewPullRequest">New Pull Request</string>
+    <string name="pageTitleAdministration">Administration</string>
+    <string name="pageTitleNewPullRequest">Yeni Değişiklik İsteği</string>
     <string name="pageTitleUsers">Kullanıcılar</string>
     <!-- page titles -->
     <string name="repoName">Demo deposu</string>
@@ -49,16 +51,15 @@
     <string name="instanceUrl">Örnek URL</string>
     <string name="navigationDrawerOpen">Gezinme Çekmecesini Aç</string>
     <string name="navigationDrawerClose">Gezinme Çekmecesini Kapat</string>
-    <string name="logo">Gitea\'ya Giriş Yap</string>
     <string name="protocol">Protokol</string>
-    <string name="urlInfoTooltip">1- Doğru protokolü seçin (https veya http). \n2- Gitea url girin, örneğin: try.gitea.io. \n3- Hesabınız için 2FA\'yı etkinleştirdiyseniz, kodu OTP Kodu alanına girin. \n4- HTTP temel kimlik doğrulaması için, URL alanında KULLANICIADI@DOMAIN.COM adresini kullanın.</string>
+    <string name="urlInfoTooltip">1- Choose the correct protocol(https or http). \n2- Enter instance url e.g: try.gitea.io. \n3- If you have enabled 2FA for your account, enter the code in the OTP Code field. \n4- For HTTP basic auth use USERNAME@DOMAIN.COM in the URL field.</string>
     <string name="malformedUrl">Sunucuya bağlanamadı. Lütfen URL\'nizde veya portunuzda hata olup olmadığını kontrol edin</string>
     <string name="protocolError">Yerel ağ üzerinde test yapmadığınız sürece HTTP protokolünü kullanmanız önerilmez</string>
     <string name="malformedJson">Malformed JSON was received. Server response was not successful</string>
     <string name="emptyFieldURL">Örnek URL gerekli</string>
     <string name="emptyFieldUsername">Kullanıcı adı gerekli</string>
     <string name="emptyFieldPassword">Parola gerekli</string>
-    <string name="protocolEmptyError">Protocol is required</string>
+    <string name="protocolEmptyError">Protokol gerekli</string>
     <string name="checkNetConnection">Ağa erişilemiyor, lütfen internet bağlantınızı kontrol edin</string>
     <string name="repoNameErrorEmpty">Depo adı boş</string>
     <string name="repoNameErrorInvalid">Depo adı geçerli değil. [a&#8211;z A&#8211;Z 0&#8211;9 &#8211; _]</string>
@@ -96,24 +97,24 @@
     <string name="infoTabRepoSshUrl">SSH Adresi</string>
     <string name="infoTabRepoCloneUrl">Klonlama Adresi</string>
     <string name="infoTabRepoRepoUrl">Depo Adresi</string>
-    <string name="infoTabRepoForksCount">Çatallar</string>
+    <string name="infoTabRepoForksCount">Forklar</string>
     <string name="infoTabRepoCreatedAt">Oluşturuldu</string>
     <string name="infoTabRepoUpdatedAt">Son Güncellenme</string>
-    <string name="infoShowMoreInformation">Show More Information</string>
-    <string name="infoMoreInformation">More Information</string>
+    <string name="infoShowMoreInformation">Daha fazla bilgi göster</string>
+    <string name="infoMoreInformation">Daha fazla bilgi</string>
     <string name="timeAtText">de</string>
     <string name="issueMilestone">Kilometre taşı %1$s</string>
     <string name="dueDate">Due on %1$s</string>
     <string name="assignedTo">Atanmış: %1$s</string>
-    <string name="assignedToMe">Assigned to Me</string>
+    <string name="assignedToMe">Bana atandı</string>
     <string name="commentButtonText">Yorum Yap</string>
     <string name="commentEmptyError">Lütfen yorumunuzu yazın</string>
     <string name="commentSuccess">Yorum gönderildi</string>
-    <string name="featureDeprecated">This function will be removed in the future</string>
-    <string name="generalImgContentText">Image</string>
+    <string name="featureDeprecated">Bu özellik gelecekte kaldırılacak</string>
+    <string name="generalImgContentText">Görsel</string>
     <string name="commitAuthor">İşleme yazarı: %1$s</string>
     <string name="releaseDownloadText">İndirmeler</string>
-    <string name="releasePublishedBy">Published by @%1$s</string>
+    <string name="releasePublishedBy">\@%1$s tarafından yayınlandı</string>
     <string name="noReleaseBodyContent">Release notes are not provided by the publisher.</string>
     <string name="newMilestoneTitle">Başlık</string>
     <string name="newMilestoneDescription">Açıklama</string>
@@ -147,13 +148,10 @@
     <string name="settingsCertsSelectorHeader">Delete Trusted Certificates</string>
     <string name="settingsCertsPopupTitle">Delete Trusted Certificates?</string>
     <string name="settingsCertsPopupMessage">Are you sure to delete any manually trusted certificate or hostname? \n\nYou will also be logged out.</string>
-    <string name="settingsDateTimeHeaderText">Tarih ve Saat</string>
     <string name="settingsSave">Ayarlar kaydedildi</string>
     <string name="settingsLanguageSelectorHeader">Dil</string>
     <string name="settingsLanguageSelectedHeaderDefault">İngilizce</string>
     <string name="settingsAppearanceHeader">Görünüm</string>
-    <string name="settingsDateTimeHeaderDefault">Güzel</string>
-    <string name="settingsDateTimeNormal">Normal</string>
     <string name="settingsLanguageSelectorDialogTitle">Dil Seç</string>
     <string name="settingsLightThemeTimeSelectorHeader">Light Theme Switch Time</string>
     <string name="settingsDarkThemeTimeSelectorHeader">Dark Theme Switch Time</string>
@@ -283,10 +281,10 @@
     <string name="issueStateReopened">Konu tekrar açıldı</string>
     <string name="addRemoveAssignees">Atanan Ekle/Kaldır</string>
     <string name="assigneesUpdated">Atanan güncellendi</string>
-    <string name="singleIssueSubscribe">Subscribe</string>
-    <string name="singleIssueUnSubscribe">Unsubscribe</string>
+    <string name="singleIssueSubscribe">Takip et</string>
+    <string name="singleIssueUnSubscribe">Takipten çık</string>
     <!-- single issue section -->
-    <string name="repoMetaData">Depo Meta</string>
+    <string name="repoMetaData">Depo Metası</string>
     <!-- admin -->
     <string name="adminCreateNewUser">New User</string>
     <string name="adminUsers">System Users</string>
@@ -310,8 +308,8 @@
     <string name="userExistsError">Bu kullanıcı zaten mevcut</string>
     <!-- create user -->
     <!-- edit issue -->
-    <string name="editIssueNavHeader">Hatayı Düzenle #%1$s</string>
-    <string name="editIssueSuccessMessage">Hata güncellendi</string>
+    <string name="editIssueNavHeader">Konuyu Düzenle #%1$s</string>
+    <string name="editIssueSuccessMessage">Konu güncellendi</string>
     <!-- edit issue -->
     <!-- release -->
     <string name="createRelease">Yeni Sürüm</string>
@@ -359,7 +357,7 @@
     <string name="strMarkdown">Markdown</string>
     <string name="copyIssueUrl">Konu Adresini Kopyala</string>
     <string name="copyIssueUrlToastMsg">URL panoya kopyalandı</string>
-    <string name="copyIssueCommentToastMsg">Comment copied to clipboard</string>
+    <string name="copyIssueCommentToastMsg">Yorum panoya kopyalandı</string>
     <string name="copyShaToastMsg">SHA copied to clipboard</string>
     <string name="milestoneCompletion">%1$d\uFF05 tamamlandı</string>
     <!-- files -->
@@ -371,7 +369,7 @@
     <string name="doneButton">Tamam</string>
     <string name="cancelButton">İptal</string>
     <string name="genericError">Bir şeyler ters gitti, lütfen tekrar deneyin</string>
-    <string name="apiNotFound">Bu isteğin yüklü olandan daha yüksek Gitea sürümü gerekiyor. Lütfen örneğinizi Gitea\'nin en son sürümüne yükseltin.</string>
+    <string name="apiNotFound">This request needs higher version than the one installed. Please upgrade your instance to the latest version.</string>
     <string name="noDataFound">🌟 Nothing in here 🌟</string>
     <string name="addButton">Ekle</string>
     <string name="removeButton">Kaldır</string>
@@ -395,48 +393,49 @@
     <string name="genericServerResponseError">We cannot reach the server at the moment, please check your server status and try again</string>
     <string name="genericCopyUrl">Copy URL</string>
     <string name="genericWaitFor">Hold on ☕</string>
-    <string name="file">File</string>
-    <string name="issue">Issue</string>
-    <string name="label">Label</string>
-    <string name="release">Release</string>
-    <string name="pr">Pull Request</string>
-    <string name="collaborator">Collaborator</string>
-    <string name="unstar">Unstar</string>
-    <string name="watch">Watch</string>
-    <string name="unwatch">Unwatch</string>
-    <string name="share">Share</string>
-    <string name="repository">Repository</string>
-    <string name="team">Team</string>
-    <string name="organization">Organization</string>
-    <string name="addRemove">Add / Remove</string>
-    <string name="download">Download</string>
-    <string name="reopen">Reopen</string>
-    <string name="openInBrowser">Open in Browser</string>
-    <string name="deleteGenericTitle">Delete %s</string>
+    <string name="file">Dosya</string>
+    <string name="issue">Konu</string>
+    <string name="labelTxt">Etiket</string>
+    <string name="release">Sürüm</string>
+    <string name="pr">Değişiklik İsteği</string>
+    <string name="collaborator">İşbirlikçi</string>
+    <string name="unstar">Yıldızı kaldır</string>
+    <string name="watch">İzle</string>
+    <string name="unwatch">İzlemeyi bırak</string>
+    <string name="share">Paylaş</string>
+    <string name="repository">Depo</string>
+    <string name="team">Takım</string>
+    <string name="organization">Organizasyon</string>
+    <string name="addRemove">Ekle / Kaldır</string>
+    <string name="download">İndir</string>
+    <string name="reopen">Tekrar aç</string>
+    <string name="openInBrowser">Tarayıcıda aç</string>
+    <string name="deleteGenericTitle">%s\'i sil</string>
+    <string name="reset">Sıfırla</string>
     <!-- generic copy -->
-    <string name="exploreUsers">Explore users</string>
-    <string name="exploreIssues">Explore issues</string>
+    <string name="exploreUsers">Kullanıcıları keşfet</string>
+    <string name="exploreIssues">Konuları keşfet</string>
     <string name="exploreTextBoxHint">Depoları keşfet</string>
     <string name="starRepositorySuccess">Depo yıldızlılar listesine eklendi</string>
     <string name="unStarRepositorySuccess">Depo yıldızlılar listesinden kaldırıldı</string>
     <string name="watchRepositorySuccess">Depo izleme listesine eklendi</string>
     <string name="unWatchRepositorySuccess">Depo izleme listesinden kaldırıldı</string>
-    <string name="titleDrafts">Drafts</string>
-    <string name="versionUnsupportedOld">Unsupported old version(%1$s) of Gitea detected. Please update to latest stable version. If you continue, some features may not work.</string>
+    <string name="titleDrafts">Taslaklar</string>
+    <string name="versionUnsupportedOld">Gitea\'nın desteklenmediği eski versiyonu (%1$s) kullanıyorsunuz. Lütfen son stabil versiyona geçiniz. Aksi taktirde bazı özellikler çalışmayabilir.</string>
     <string name="versionUnsupportedNew">Yeni Gitea versiyonu tespit edildi! Lütfen GitNex\'i GÜNCELLEYİN!</string>
-    <string name="versionUnknown">No Gitea detected!</string>
+    <string name="versionUnknown">Gitea bulunamadı!</string>
     <string name="versionAlertDialogHeader">Desteklenmeyen Gitea Versiyonu</string>
     <string name="loginViaPassword">Kullanıcı Adı / Şifre</string>
     <string name="loginMethodText">Hesabınıza erişmek için tercih ettiğiniz giriş yöntemini seçin. Jeton daha güvenli!</string>
     <string name="unauthorizedApiError">Örnek bir hata döndürdü - Yetkisiz. Kimlik bilgilerinizi kontrol edin ve tekrar deneyin</string>
-    <string name="loginTokenError">Token is required</string>
-    <string name="prDeletedFork">Deleted Fork</string>
+    <string name="loginTokenError">Token gerekli</string>
+    <string name="prDeletedFork">Silinmiş Fork</string>
     <string name="editPrNavHeader">Çekme İsteği Düzenle #%1$s</string>
     <string name="editPrSuccessMessage">Çekme İsteği güncellendi</string>
     <string name="fileDiffViewHeader">%1$s Dosya Değiştirildi</string>
     <string name="fileDiffViewHeaderSingle">%1$s Dosya Değiştirildi</string>
-    <string name="updatePullRequestText">Update Pull Request</string>
-    <string name="openFileDiffText">Show Changed Files</string>
+    <string name="updatePullRequestText">Değişiklik İsteğini Güncelle</string>
+    <string name="openFileDiffText">Değişen dosyaları göster</string>
     <string name="mergePullRequestText">Değişiklik İsteğini Birleştir</string>
     <string name="deleteBranchSuccess">Branch deleted successfully</string>
     <string name="deleteBranchError">Could not delete branch</string>
@@ -466,7 +465,7 @@
     <string name="editFileText">Edit %1$s</string>
     <string name="editFileMessage">File is modified by branch %1$s</string>
     <string name="sizeCopy">Size</string>
-    <string name="shareIssue">Share Issue</string>
+    <string name="shareIssue">Konuyu paylaş</string>
     <string name="shareRepository">Share Repository</string>
     <string name="createRepository">Create Repository</string>
     <string name="commitTitle">Commits</string>
@@ -506,14 +505,17 @@
     <string name="draftsSingleDeleteSuccess">Draft deleted successfully</string>
     <string name="deleteAllDraftsDialogMessage">This will delete all the drafts for this account. \n\nProceed with deletion?</string>
     <string name="draftSaved">Draft was saved automatically.</string>
+    <string name="resetMostReposCounter">Counter is reset successfully</string>
+    <string name="resetCounterDialogMessage">Do you want to reset counter for repository %s?</string>
+    <string name="resetCounterAllDialogMessage">This will reset all the counters for this account repositories.</string>
     <string name="appearanceHintText">Themes, fonts, badges</string>
     <string name="securityHintText">Biometric authentication, SSL certificates, cache</string>
     <string name="languagesHintText">Languages</string>
     <string name="reportsHintText">Crash reports</string>
     <string name="rateAppHintText">If you like GitNex you can give it a thumbs up</string>
-    <string name="aboutAppHintText">App version, build, user gitea version</string>
+    <string name="aboutAppHintText">App version, build, user instance version</string>
     <string name="archivedRepository">Archived</string>
-    <string name="archivedRepositoryMessage">This repo is archived. You can view files, but cannot push or open issues/pull-requests.</string>
+    <string name="archivedRepositoryMessage">Bu depo arşivlendi. Dosyaları görüntüleyebilir ama konu/değişiklik isteği açamaz veya paylaşamazsınız.</string>
     <string name="accountDeletedMessage">Account deleted successfully</string>
     <string name="removeAccountPopupTitle">Remove Account</string>
     <string name="removeAccountPopupMessage">Are you sure you want to remove this account from the app?\n\nThis will remove all the data related to this account on the app only.</string>
@@ -553,8 +555,8 @@
     <string name="repoSettingsDelete">Delete Repository</string>
     <string name="repoSettingsDeleteHint">Be careful, this operation CANNOT be undone!</string>
     <string name="repoPropertiesTemplate">Set as Template</string>
-    <string name="repoPropertiesEnableIssues">Enable Issues</string>
-    <string name="repoPropertiesExternalIssuesUrl">External Issue Tracker Url</string>
+    <string name="repoPropertiesEnableIssues">Konuları etkinleştir</string>
+    <string name="repoPropertiesExternalIssuesUrl">Harici Konu İzleyici URL\'si</string>
     <string name="repoPropertiesEnableWiki">Enable Wiki</string>
     <string name="repoPropertiesExternalWikiUrl">External Wiki Url</string>
     <string name="repoPropertiesEnablePr">Enable Pull Requests</string>
@@ -594,7 +596,7 @@
     <string name="prMergeInfo">Pull Request Info</string>
     <string name="accountDoesNotExist">It seems that account for URI %1$s does not exists in the app. You can add one by tapping on the Add New Account button.</string>
     <string name="launchApp">Go to App</string>
-    <string name="noActionText">GitNex cannot handle the requested resource, you can open an issue at the project repository as an improvement with providing details of the work. Just launch a default screen for now from the buttons below, it can be changed from settings.</string>
+    <string name="noActionText">GitNex istenen kaynağı işleyemedi, işin ayrıntılarını sağlayarak iyileştirme olarak proje deposunda bir konu açabilirsiniz. Şimdilik aşağıdaki butonlardan bir varsayılan ekran başlatmanız yeterlidir, ayarlardan değiştirilebilir.</string>
     <string name="biometricAuthTitle">Biometric Authentication</string>
     <string name="biometricAuthSubTitle">Unlock using your biometric credentials</string>
     <string name="biometricNotSupported">No biometric features available on this device</string>
@@ -642,7 +644,7 @@
     <string name="adoptRepo">Adopt</string>
     <string name="repoAdopted">Adopted repository %s</string>
     <string name="unadoptedRepos">Unadopted Repositories</string>
-    <string name="unadoptedReposMessage">- Adopt will add repository %s to organization/user %s.\n- Delete will remove it from the system.</string>
+    <string name="unadoptedReposMessage">- Adopt will add repository %1$s to organization/user %2$s.\n- Delete will remove it from the system.</string>
     <string name="commits">Commits</string>
     <!-- wiki -->
     <string name="wiki">Wiki</string>
@@ -654,4 +656,61 @@
     <string name="wikiUpdated">Wiki page updated successfully</string>
     <string name="wikiCreated">Wiki page created successfully</string>
     <!-- code editor -->
+    <string name="openInCodeEditor">Open in Code Editor</string>
+    <!-- notes -->
+    <string name="newNote">New Note</string>
+    <string name="editNote">Edit Note</string>
+    <string name="newNoteContentHint">Start taking your notes here</string>
+    <string name="noteDateTime">Created %s</string>
+    <string name="noteTimeModified">Updated %s</string>
+    <string name="noteDeleteDialoMessage">Do you really want to delete this note?</string>
+    <plurals name="noteDeleteMessage">
+        <item quantity="one">Note deleted successfully</item>
+        <item quantity="other">Notes deleted successfully</item>
+    </plurals>
+    <string name="notesAllDeletionMessage">This will delete all of your notes. This action cannot be undone.</string>
+    <!-- timeline -->
+    <string name="commitText">commit</string>
+    <string name="timelineAddedCommit">%1$s added %2$s %3$s</string>
+    <!-- the | is replaced by the label -->
+    <string name="timelineAddedLabel">%1$s added the | label %2$s</string>
+    <!-- the | is replaced by the label -->
+    <string name="timelineRemovedLabel">%1$s removed the | label %2$s</string>
+    <string name="timelineAssigneesRemoved">%1$s removed their assignment %2$s</string>
+    <string name="timelineAssigneesUnassigned">%1$s was unassigned by %2$s %3$s</string>
+    <string name="timelineAssigneesSelfAssigned">%1$s self-assigned this %2$s</string>
+    <string name="timelineAssigneesAssigned">%1$s was assigned by %2$s %3$s</string>
+    <string name="timelineMilestoneAdded">%1$s added this to the %2$s milestone %3$s</string>
+    <string name="timelineMilestoneRemoved">%1$s removed this from the %2$s milestone %3$s</string>
+    <string name="timelineStatusClosedIssue">%1$s closed this issue %2$s</string>
+    <string name="timelineStatusReopenedIssue">%1$s reopened this issue %2$s</string>
+    <string name="timelineStatusReopenedPr">%1$s reopened this pull request %2$s</string>
+    <string name="timelineStatusClosedPr">%1$s closed this pull request %2$s</string>
+    <string name="timelineStatusMergedPr">%1$s merged this pull request %2$s</string>
+    <string name="timelineStatusRefPr"><![CDATA[%1$s referenced this pull request from a <font color=\'%2$d\'>%3$s</font> %4$s]]></string>
+    <string name="timelineReviewRequest">%1$s requested review from %2$s %3$s</string>
+    <string name="timelineChangeTitle">%1$s changed title from %2$s to %3$s %4$s</string>
+    <string name="timelineLocked">%1$s locked as %2$s and limited conversation to collaborators %3$s</string>
+    <string name="timelineUnlocked">%1$s unlocked this conversation %2$s</string>
+    <string name="timelineDependencyAdded">%1$s added a new dependency #%2$d %3$s</string>
+    <string name="timelineDependencyRemoved">%1$s removed a dependency #%2$d %3$s</string>
+    <string name="timelineProjectAdded">%1$s added this to a project %2$s</string>
+    <string name="timelineProjectRemoved">%1$s removed this from a project %2$s</string>
+    <string name="timelineDueDateAdded">%1$s added the due date %2$s %3$s</string>
+    <string name="timelineDueDateModified">%1$s modified the due date to %2$s from %3$s %4$s</string>
+    <string name="timelineDueDateRemoved">%1$s removed the due date %2$s %3$s</string>
+    <string name="timelineBranchChanged">%1$s changed target branch from %2$s to %3$s %4$s</string>
+    <string name="timelineBranchDeleted">%1$s deleted branch %2$s %3$s</string>
+    <string name="timelineTimeTrackingStart">%1$s started working %2$s</string>
+    <string name="timelineTimeTrackingStop">%1$s stopped time tracking %2$s</string>
+    <string name="timelineTimeTrackingCancel">%1$s cancelled time tracking %2$s</string>
+    <string name="timelineTimeTrackingAddManualTime">%1$s added spent time %2$s %3$s</string>
+    <string name="timelineTimeTrackingDeleteManualTime">%1$s deleted spent time %2$s %3$s</string>
+    <string name="timelineChangeIssueRef">%1$s added reference %2$s %3$s</string>
+    <string name="timelineRefIssue">%1$s referenced this issue in #%2$d %3$s</string>
+    <string name="timelineRefPr">%1$s referenced this pull request in #%2$d %3$s</string>
+    <string name="timelineStatusRefIssue"><![CDATA[%1$s referenced this issue from a <font color=\'%2$d\'>%3$s</font> %4$s]]></string>
+    <string name="commitStatuses">Statuses</string>
+    <string name="statusNoUrl">This status has no linked target URL.</string>
+    <string name="starredRepos">Starred Repos</string>
 </resources>

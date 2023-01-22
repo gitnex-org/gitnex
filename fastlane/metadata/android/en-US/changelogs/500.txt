@@ -1,0 +1,19 @@
+5.0.0
+
+🎉 Features 🎉
+- Timeline view for issues and pull requests
+- Notes [App only]
+- CI statuses for commits
+- Markdown preview for issue/pr descriptions
+- Material profile view
+
+🚀 Improvements 🚀
+- Improve code editor (CE)
+- [CE] More languages support like C, C++, JS/TS, JSON
+- [CE] Respect your selected theme style
+
+Release Notes: https://codeberg.org/gitnex/GitNex/releases
+
+Release Video: https://youtu.be/dLhoz8t03hQ
+
+Release Posts: https://najigram.com/category/gitnex/

@@ -10,7 +10,7 @@
     <string name="navAbout">මේ ගැන</string>
     <string name="navRate">GitNex අගයන්න</string>
     <string name="navLogout">පිටවීම</string>
-    <string name="navAdministration">පරිපාලනය</string>
+    <string name="navAdministration">Instance Administration</string>
     <string name="navMyIssues">මගේ ගැටළු</string>
     <string name="navMostVisited">Most Visited Repos</string>
     <string name="navNotes">Notes</string>
@@ -30,7 +30,7 @@
     <string name="pageTitleAddEmail">වි-තැපෑල එකතු කරන්න</string>
     <string name="pageTitleNewFile">නව ගොනුව</string>
     <string name="pageTitleExplore">ගවේශණය</string>
-    <string name="pageTitleAdministration">ගිටියා පරිපාලනය</string>
+    <string name="pageTitleAdministration">Administration</string>
     <string name="pageTitleNewPullRequest">නව අදින්න ඉල්ලීම</string>
     <string name="pageTitleUsers">පරිශිලකයින්</string>
     <!-- page titles -->
@@ -51,9 +51,8 @@
     <string name="instanceUrl">උදාහරණ URL</string>
     <string name="navigationDrawerOpen">සංචාලන ලාච්චුව විවෘත කරන්න</string>
     <string name="navigationDrawerClose">සංචාලන ලාච්චුව වසන්න</string>
-    <string name="logo">Gitea වෙත පිවිසෙන්න</string>
     <string name="protocol">කෙටුම්පත</string>
-    <string name="urlInfoTooltip">1- Choose the correct protocol(https or http). \n2- Enter Gitea url e.g: try.gitea.io. \n3- If you have enabled 2FA for your account, enter the code in the OTP Code field. \n4- For HTTP basic auth use USERNAME@DOMAIN.COM in the URL field.</string>
+    <string name="urlInfoTooltip">1- Choose the correct protocol(https or http). \n2- Enter instance url e.g: try.gitea.io. \n3- If you have enabled 2FA for your account, enter the code in the OTP Code field. \n4- For HTTP basic auth use USERNAME@DOMAIN.COM in the URL field.</string>
     <string name="malformedUrl">සත්කාරක වෙත සම්බන්ධ වීමට නොහැකි විය. කිසියම් දෝෂයක් සඳහා කරුණාකර ඔබගේ URL හෝ තොට පරීක්ෂා කරන්න</string>
     <string name="protocolError">ඔබ දේශීය ජාලයේ පරීක්‍ෂා කරන්නේ නම් මිස HTTP ප්‍රොටෝකෝලය භාවිතා කිරීම නිර්දේශ නොකරයි</string>
     <string name="malformedJson">Malformed JSON ලැබුණි. සේවාදායක ප්‍රතිචාරය සාර්ථක නොවීය</string>
@@ -370,7 +369,7 @@
     <string name="doneButton">කළා</string>
     <string name="cancelButton">අවලංගු කරන්න</string>
     <string name="genericError">යම් දෙයක් වැරදී ඇත, කරුණාකර නැවත උත්සාහ කරන්න</string>
-    <string name="apiNotFound">This request needs higher Gitea version than the one installed. Please upgrade your instance to the latest version of Gitea.</string>
+    <string name="apiNotFound">This request needs higher version than the one installed. Please upgrade your instance to the latest version.</string>
     <string name="noDataFound">🌟 මෙතන මොකුත් නෑ 🌟</string>
     <string name="addButton">එකතු කරන්න</string>
     <string name="removeButton">ඉවත් කරන්න</string>
@@ -514,7 +513,7 @@
     <string name="languagesHintText">භාෂා</string>
     <string name="reportsHintText">බිඳ වැටීම් වාර්තා</string>
     <string name="rateAppHintText">ඔබ GitNex වලට කැමති නම් ඔබට එය thumbs up ලබා දිය හැක</string>
-    <string name="aboutAppHintText">යෙදුම් අනුවාදය, ගොඩනැගීම, පරිශීලක gitea අනුවාදය</string>
+    <string name="aboutAppHintText">App version, build, user instance version</string>
     <string name="archivedRepository">සංරක්ෂණය කර ඇත</string>
     <string name="archivedRepositoryMessage">මෙම රෙපෝව සංරක්ෂණය කර ඇත. ඔබට ගොනු බැලිය හැක, නමුත් ගැටළු/අදින්න-ඉල්ලීම් තල්ලු කිරීමට හෝ විවෘත කිරීමට නොහැක.</string>
     <string name="accountDeletedMessage">ගිණුම සාර්ථකව මකා ඇත</string>
@@ -645,7 +644,7 @@
     <string name="adoptRepo">හදාගන්න</string>
     <string name="repoAdopted">සම්මත කරන ලද නිධිය %s</string>
     <string name="unadoptedRepos">අනුමත නොකළ නිධි</string>
-    <string name="unadoptedReposMessage">- Adopt විසින් සංවිධානය/පරිශීලක %sවෙත නිධිය %s එකතු කරනු ඇත.\n- මකන්න එය පද්ධතියෙන් ඉවත් කරයි.</string>
+    <string name="unadoptedReposMessage">- Adopt will add repository %1$s to organization/user %2$s.\n- Delete will remove it from the system.</string>
     <string name="commits">කැපවෙනවා</string>
     <!-- wiki -->
     <string name="wiki">විකි</string>
@@ -713,4 +712,5 @@
     <string name="timelineStatusRefIssue"><![CDATA[%1$s referenced this issue from a <font color=\'%2$d\'>%3$s</font> %4$s]]></string>
     <string name="commitStatuses">Statuses</string>
     <string name="statusNoUrl">This status has no linked target URL.</string>
+    <string name="starredRepos">Starred Repos</string>
 </resources>

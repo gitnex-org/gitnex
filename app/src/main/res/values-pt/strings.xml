@@ -10,8 +10,10 @@
     <string name="navAbout">Sobre</string>
     <string name="navRate">Avalie o GitNex</string>
     <string name="navLogout">Sair</string>
-    <string name="navAdministration">Administração</string>
+    <string name="navAdministration">Instance Administration</string>
     <string name="navMyIssues">Meus Issues</string>
+    <string name="navMostVisited">Most Visited Repos</string>
+    <string name="navNotes">Notes</string>
     <!-- menu items -->
     <!-- page titles -->
     <string name="pageTitleNewRepo">Novo repositório</string>
@@ -28,7 +30,7 @@
     <string name="pageTitleAddEmail">Adicionar endereço de E-mail</string>
     <string name="pageTitleNewFile">Novo arquivo</string>
     <string name="pageTitleExplore">Explorar</string>
-    <string name="pageTitleAdministration">Administração de Gitea</string>
+    <string name="pageTitleAdministration">Administration</string>
     <string name="pageTitleNewPullRequest">Novo Pull Request</string>
     <string name="pageTitleUsers">Usuários</string>
     <!-- page titles -->
@@ -49,9 +51,8 @@
     <string name="instanceUrl">URL da instância</string>
     <string name="navigationDrawerOpen">Abrir painel de navegação</string>
     <string name="navigationDrawerClose">Fechar painel de navegação</string>
-    <string name="logo">Conectar no Gitea</string>
     <string name="protocol">Protocolo</string>
-    <string name="urlInfoTooltip">1- Escolha o protocolo correto (https ou http). \n2- Insira a url do Gitea. Por exemplo: try.gitea.io. \n3 - Se você habilitou 2FA para sua conta, digite o código no campo de código OTP. \n4- Para autenticação básica HTTP use USUARIO@DOMINIO.COM no campo URL.</string>
+    <string name="urlInfoTooltip">1- Choose the correct protocol(https or http). \n2- Enter instance url e.g: try.gitea.io. \n3- If you have enabled 2FA for your account, enter the code in the OTP Code field. \n4- For HTTP basic auth use USERNAME@DOMAIN.COM in the URL field.</string>
     <string name="malformedUrl">Não foi possível conectar-se ao host. Por favor verifique sua URL ou porta para ver se há algum erro</string>
     <string name="protocolError">Não é recomendado usar o protocolo HTTP a menos que você esteja testando na rede local</string>
     <string name="malformedJson">JSON malformado foi recebido. A resposta do servidor não foi bem sucedida</string>
@@ -146,14 +147,11 @@
     <string name="settingsSecurityHeader">Segurança</string>
     <string name="settingsCertsSelectorHeader">Excluir Certificados Confiáveis</string>
     <string name="settingsCertsPopupTitle">Excluir Certificados Confiáveis?</string>
-    <string name="settingsCertsPopupMessage">Tem certeza que deseja excluir qualquer certificado ou hostname confiado manualmente? \n\nVocê também será desconectado.</string>
-    <string name="settingsDateTimeHeaderText">Data &amp; Hora</string>
+    <string name="settingsCertsPopupMessage">Are you sure to delete any manually trusted certificate or hostname? \n\nYou will also be logged out.</string>
     <string name="settingsSave">Configurações salvas</string>
     <string name="settingsLanguageSelectorHeader">Idioma</string>
     <string name="settingsLanguageSelectedHeaderDefault">Português (Brasil)</string>
     <string name="settingsAppearanceHeader">Aparência</string>
-    <string name="settingsDateTimeHeaderDefault">Bonito</string>
-    <string name="settingsDateTimeNormal">Normal</string>
     <string name="settingsLanguageSelectorDialogTitle">Escolha o idioma</string>
     <string name="settingsLightThemeTimeSelectorHeader">Light Theme Switch Time</string>
     <string name="settingsDarkThemeTimeSelectorHeader">Dark Theme Switch Time</string>
@@ -204,7 +202,7 @@
     <string name="labelDeleteText">Marcador excluído</string>
     <string name="selectBranchError">Select a branch for release</string>
     <string name="alertDialogTokenRevokedTitle">Erro de autorização</string>
-    <string name="alertDialogTokenRevokedMessage">Parece que o Token de Acesso foi revogado OU você não está autorizado para ver esses conteúdos.\n\nNo caso de token ser revogado, faça o logout e login de novo</string>
+    <string name="alertDialogTokenRevokedMessage">It seems that the Access Token is revoked OR your are not allowed to see these contents.\n\nIn case of revoked Token, please logout and login again</string>
     <string name="labelDeleteMessage">Você realmente deseja excluir este marcador?</string>
     <!-- org tabbed layout str -->
     <string name="orgTabTeams">Equipes</string>
@@ -371,7 +369,7 @@
     <string name="doneButton">Feito</string>
     <string name="cancelButton">Cancelar</string>
     <string name="genericError">Algo deu errado, por favor, tente de novo</string>
-    <string name="apiNotFound">Esta solicitação precisa de uma versão do Gitea maior do que a instalada. Por favor, atualize sua instância para a versão mais recente do Gitea.</string>
+    <string name="apiNotFound">This request needs higher version than the one installed. Please upgrade your instance to the latest version.</string>
     <string name="noDataFound">🌟 Nothing in here 🌟</string>
     <string name="addButton">Adicionar</string>
     <string name="removeButton">Remover</string>
@@ -397,7 +395,7 @@
     <string name="genericWaitFor">Hold on ☕</string>
     <string name="file">File</string>
     <string name="issue">Issue</string>
-    <string name="label">Label</string>
+    <string name="labelTxt">Label</string>
     <string name="release">Release</string>
     <string name="pr">Pull Request</string>
     <string name="collaborator">Collaborator</string>
@@ -413,6 +411,7 @@
     <string name="reopen">Reabrir</string>
     <string name="openInBrowser">Abrir no Navegador</string>
     <string name="deleteGenericTitle">Delete %s</string>
+    <string name="reset">Reset</string>
     <!-- generic copy -->
     <string name="exploreUsers">Explore users</string>
     <string name="exploreIssues">Explore issues</string>
@@ -499,24 +498,27 @@
     <string name="setCrashReports">Relatórios de erros</string>
     <string name="crashMessage">It is encouraged to open an issue at the project repository with how to reproduce this bug. It is easier to debug and fix the problem that way.\n\nTap the OK button to send the crash report by email instead. Additional content could be added in the email.\nThank you!</string>
     <string name="forceLogoutDialogHeader">Por favor, faça o login novamente</string>
-    <string name="forceLogoutDialogDescription">Devido a algumas mudanças principais no funcionamento interno do aplicativo, exigimos que você faça o login novamente. Essas alterações nos permitem tornar o aplicativo mais flexível no futuro.\n\nAgradecemos por sua paciência e lamentamos o inconveniente.</string>
+    <string name="forceLogoutDialogDescription">Due to some major changes regarding the internal functioning of the app, we require you to login again. These changes allow us to make the app more flexible in the future.\n\nThank you for your patience and sorry for the inconvenience.</string>
     <string name="deleteAllDrafts">Excluir Todos os Rascunhos</string>
     <string name="draftsListEmpty">Nenhum rascunho encontrado</string>
     <string name="draftsDeleteSuccess">Rascunhos excluídos com êxito</string>
     <string name="draftsSingleDeleteSuccess">Rascunho excluído com êxito</string>
     <string name="deleteAllDraftsDialogMessage">Isso vai excluir todos os rascunhos para essa conta. \n\nProsseguir com a exclusão?</string>
     <string name="draftSaved">O rascunho foi salvo automaticamente.</string>
+    <string name="resetMostReposCounter">Counter is reset successfully</string>
+    <string name="resetCounterDialogMessage">Do you want to reset counter for repository %s?</string>
+    <string name="resetCounterAllDialogMessage">This will reset all the counters for this account repositories.</string>
     <string name="appearanceHintText">Themes, fonts, badges</string>
     <string name="securityHintText">Biometric authentication, SSL certificates, cache</string>
     <string name="languagesHintText">Idiomas</string>
     <string name="reportsHintText">Relatórios de erros</string>
     <string name="rateAppHintText">Se você gosta do GitNex você pode dar um joinha</string>
-    <string name="aboutAppHintText">App version, build, user gitea version</string>
+    <string name="aboutAppHintText">App version, build, user instance version</string>
     <string name="archivedRepository">Arquivado</string>
     <string name="archivedRepositoryMessage">This repo is archived. You can view files, but cannot push or open issues/pull-requests.</string>
     <string name="accountDeletedMessage">Conta excluída com êxito</string>
     <string name="removeAccountPopupTitle">Excluir Conta</string>
-    <string name="removeAccountPopupMessage">Tem certeza de que deseja excluir esta conta do aplicativo?\n\nIsso excluirá todos os dados relacionados a esta conta apenas no app.</string>
+    <string name="removeAccountPopupMessage">Are you sure you want to remove this account from the app?\n\nThis will remove all the data related to this account on the app only.</string>
     <string name="addNewAccount">Nova Conta</string>
     <string name="addNewAccountText">Adicionar Nova Conta</string>
     <string name="accountAlreadyExistsError">Esta conta já existe no app</string>
@@ -568,8 +570,8 @@
     <string name="repoSettingsDeleteError">Repository name does not match</string>
     <string name="repoDeletionSuccess">Repositório deletado com sucesso</string>
     <string name="repoSettingsTransferOwnership">Transfer Ownership</string>
-    <string name="repoSettingsTransferOwnershipHint">Transferir este repositório para um outro usuário ou para uma organização onde você tem permissões de administrador</string>
-    <string name="repoSettingsTransferOwnershipDescription">Coisas para saber antes da transferência:\n\n- Você irá perder acesso ao repositório se você transferir-o para um usuário individual.\n- Você irá manter o acesso ao repositório se você transferir para uma organização que você (co-)pertence.\n\nInsira o nome do repositório como confirmação</string>
+    <string name="repoSettingsTransferOwnershipHint">Transfer this repository to a user or to an organization for which you have administrator rights</string>
+    <string name="repoSettingsTransferOwnershipDescription">Things to know before transfer:\n\n- You will lose access to the repository if you transfer it to an individual user.\n- You will keep access to the repository if you transfer it to an organization that you (co-)own.\n\nEnter the repository name as confirmation</string>
     <string name="repoTransferText">Realizar Transferência</string>
     <string name="repoTransferOwnerText">New Owner</string>
     <string name="repoTransferSuccess">Repositório transferido com sucesso</string>
@@ -592,7 +594,7 @@
     <string name="prClosed">Pull Request closed</string>
     <string name="prReopened">Pull Request reopened</string>
     <string name="prMergeInfo">Pull Request Info</string>
-    <string name="accountDoesNotExist">Parece que a conta para a URI %1$s não existe no aplicativo. Você pode adicionar uma tocando no botão de Adicionar Uma Conta.</string>
+    <string name="accountDoesNotExist">It seems that account for URI %1$s does not exists in the app. You can add one by tapping on the Add New Account button.</string>
     <string name="launchApp">Ir para o Aplicativo</string>
     <string name="noActionText">GitNex cannot handle the requested resource, you can open an issue at the project repository as an improvement with providing details of the work. Just launch a default screen for now from the buttons below, it can be changed from settings.</string>
     <string name="biometricAuthTitle">Biometric Authentication</string>
@@ -642,7 +644,7 @@
     <string name="adoptRepo">Adopt</string>
     <string name="repoAdopted">Adopted repository %s</string>
     <string name="unadoptedRepos">Unadopted Repositories</string>
-    <string name="unadoptedReposMessage">- Adopt will add repository %s to organization/user %s.\n- Delete will remove it from the system.</string>
+    <string name="unadoptedReposMessage">- Adopt will add repository %1$s to organization/user %2$s.\n- Delete will remove it from the system.</string>
     <string name="commits">Commits</string>
     <!-- wiki -->
     <string name="wiki">Wiki</string>
@@ -654,4 +656,61 @@
     <string name="wikiUpdated">Wiki page updated successfully</string>
     <string name="wikiCreated">Wiki page created successfully</string>
     <!-- code editor -->
+    <string name="openInCodeEditor">Open in Code Editor</string>
+    <!-- notes -->
+    <string name="newNote">New Note</string>
+    <string name="editNote">Edit Note</string>
+    <string name="newNoteContentHint">Start taking your notes here</string>
+    <string name="noteDateTime">Created %s</string>
+    <string name="noteTimeModified">Updated %s</string>
+    <string name="noteDeleteDialoMessage">Do you really want to delete this note?</string>
+    <plurals name="noteDeleteMessage">
+        <item quantity="one">Note deleted successfully</item>
+        <item quantity="other">Notes deleted successfully</item>
+    </plurals>
+    <string name="notesAllDeletionMessage">This will delete all of your notes. This action cannot be undone.</string>
+    <!-- timeline -->
+    <string name="commitText">commit</string>
+    <string name="timelineAddedCommit">%1$s added %2$s %3$s</string>
+    <!-- the | is replaced by the label -->
+    <string name="timelineAddedLabel">%1$s added the | label %2$s</string>
+    <!-- the | is replaced by the label -->
+    <string name="timelineRemovedLabel">%1$s removed the | label %2$s</string>
+    <string name="timelineAssigneesRemoved">%1$s removed their assignment %2$s</string>
+    <string name="timelineAssigneesUnassigned">%1$s was unassigned by %2$s %3$s</string>
+    <string name="timelineAssigneesSelfAssigned">%1$s self-assigned this %2$s</string>
+    <string name="timelineAssigneesAssigned">%1$s was assigned by %2$s %3$s</string>
+    <string name="timelineMilestoneAdded">%1$s added this to the %2$s milestone %3$s</string>
+    <string name="timelineMilestoneRemoved">%1$s removed this from the %2$s milestone %3$s</string>
+    <string name="timelineStatusClosedIssue">%1$s closed this issue %2$s</string>
+    <string name="timelineStatusReopenedIssue">%1$s reopened this issue %2$s</string>
+    <string name="timelineStatusReopenedPr">%1$s reopened this pull request %2$s</string>
+    <string name="timelineStatusClosedPr">%1$s closed this pull request %2$s</string>
+    <string name="timelineStatusMergedPr">%1$s merged this pull request %2$s</string>
+    <string name="timelineStatusRefPr"><![CDATA[%1$s referenced this pull request from a <font color=\'%2$d\'>%3$s</font> %4$s]]></string>
+    <string name="timelineReviewRequest">%1$s requested review from %2$s %3$s</string>
+    <string name="timelineChangeTitle">%1$s changed title from %2$s to %3$s %4$s</string>
+    <string name="timelineLocked">%1$s locked as %2$s and limited conversation to collaborators %3$s</string>
+    <string name="timelineUnlocked">%1$s unlocked this conversation %2$s</string>
+    <string name="timelineDependencyAdded">%1$s added a new dependency #%2$d %3$s</string>
+    <string name="timelineDependencyRemoved">%1$s removed a dependency #%2$d %3$s</string>
+    <string name="timelineProjectAdded">%1$s added this to a project %2$s</string>
+    <string name="timelineProjectRemoved">%1$s removed this from a project %2$s</string>
+    <string name="timelineDueDateAdded">%1$s added the due date %2$s %3$s</string>
+    <string name="timelineDueDateModified">%1$s modified the due date to %2$s from %3$s %4$s</string>
+    <string name="timelineDueDateRemoved">%1$s removed the due date %2$s %3$s</string>
+    <string name="timelineBranchChanged">%1$s changed target branch from %2$s to %3$s %4$s</string>
+    <string name="timelineBranchDeleted">%1$s deleted branch %2$s %3$s</string>
+    <string name="timelineTimeTrackingStart">%1$s started working %2$s</string>
+    <string name="timelineTimeTrackingStop">%1$s stopped time tracking %2$s</string>
+    <string name="timelineTimeTrackingCancel">%1$s cancelled time tracking %2$s</string>
+    <string name="timelineTimeTrackingAddManualTime">%1$s added spent time %2$s %3$s</string>
+    <string name="timelineTimeTrackingDeleteManualTime">%1$s deleted spent time %2$s %3$s</string>
+    <string name="timelineChangeIssueRef">%1$s added reference %2$s %3$s</string>
+    <string name="timelineRefIssue">%1$s referenced this issue in #%2$d %3$s</string>
+    <string name="timelineRefPr">%1$s referenced this pull request in #%2$d %3$s</string>
+    <string name="timelineStatusRefIssue"><![CDATA[%1$s referenced this issue from a <font color=\'%2$d\'>%3$s</font> %4$s]]></string>
+    <string name="commitStatuses">Statuses</string>
+    <string name="statusNoUrl">This status has no linked target URL.</string>
+    <string name="starredRepos">Starred Repos</string>
 </resources>
