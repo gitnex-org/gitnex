@@ -1,0 +1,19 @@
+5.0.0
+
+🎉 Fonctionnalités 🎉
+- Écran Historique pour les tickets et les demandes de fusion
+- Notes [app seulement]
+- Intégration continue : statuts des révisions
+- Aperçu Markdown de la description des tickets et demandes de fusion
+- Écran Profil refondu en Material
+
+🚀 Améliorations 🚀
+- Éditeur de code amélioré (ÉdC)
+- [ÉdC] Nouvelles syntaxes intégrées (C, C++, JS/TS, JSON)
+- [ÉdC] Cohérence avec le thème sélectionné
+
+Notes de version : https://codeberg.org/gitnex/GitNex/releases
+
+Vidéo : https://youtu.be/dLhoz8t03hQ
+
+Billet : https://najigram.com/category/gitnex/
