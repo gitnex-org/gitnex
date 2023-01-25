@@ -1,1 +1,1 @@
-Cliente nativo para Gitea
+Cliente nativo para Forgejo y Gitea

@@ -1,4 +1,4 @@
-GitNex es un cliente para Android de código abierto para repositorios Git en Gitea. Gitea es una rama de Gogs administrado por la comunidad, es una solución de alojamiento de código escrito en Go.
+GitNex es un cliente nativo Android de pago/gratuito, de código abierto para repositorios Git alojados en Forgejo y Gitea.
 
 # Características
 
