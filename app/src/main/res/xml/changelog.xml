@@ -1,18 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 <changelog>
 
-    <release version="5.0.0" versioncode="500">
-        <change>[New] Timeline view for issues and pull requests</change>
-        <change>[New] Notes (App only)</change>
-        <change>[New] CI statuses for commits</change>
-        <change>[New] Markdown preview for issue/pr descriptions</change>
-        <change>[New] Material profile view</change>
-        <change>[Improvement] Improve code editor (CE)</change>
-        <change>[Improvement] More languages support like C, C++, JS/TS, JSON</change>
-        <change>[Improvement] Respect your selected theme style</change>
-        <change>[Bugfix] Fix open in browser loop</change>
-        <change>[Bugfix] Fix not showing labels for user as organization</change>
-        <change>[Bugfix] Fix missing sub path for assets</change>
+    <release version="5.1.0-dev" versioncode="505">
+        <change>Under development</change>
     </release>
 
 </changelog>
