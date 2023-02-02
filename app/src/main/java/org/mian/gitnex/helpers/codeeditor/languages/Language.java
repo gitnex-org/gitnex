@@ -51,10 +51,9 @@ public abstract class Language {
 	public static boolean isValid(String name) {
 		initializeMap();
 
-		if(name != null) {
+		if (name != null) {
 			return languages.containsKey(name.toUpperCase());
-		}
-		else {
+		} else {
 			return languages.containsKey(null);
 		}
 	}
