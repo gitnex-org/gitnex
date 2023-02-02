@@ -12,6 +12,7 @@ import android.os.Handler;
 import android.text.Spannable;
 import android.text.SpannableString;
 import android.text.style.ImageSpan;
+import android.util.Log;
 import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -462,9 +463,9 @@ public class IssueCommentsAdapter extends RecyclerView.Adapter<RecyclerView.View
 
 			this.issueComment = timelineComment;
 
-			if (timelineLastView) {
+			//if (timelineLastView) {
 				// timelineLine2.setVisibility(View.GONE);
-			}
+			//}
 
 			StringBuilder infoBuilder = null;
 			if (issueComment.getCreatedAt() != null) {
@@ -485,6 +486,7 @@ public class IssueCommentsAdapter extends RecyclerView.Adapter<RecyclerView.View
 							.append(context.getString(R.string.modifiedText));
 				}
 			}
+			assert infoBuilder != null;
 			String info = infoBuilder.toString();
 
 			// label view in timeline
@@ -701,17 +703,15 @@ public class IssueCommentsAdapter extends RecyclerView.Adapter<RecyclerView.View
 									issueComment.getMilestone().getTitle(),
 									info));
 				} else {
-					start.setText(
-							context.getString(
-									R.string.timelineMilestoneRemoved,
-									issueComment.getUser().getLogin(),
-									issueComment.getOldMilestone().getTitle(),
-									info));
-					timelineIcon.setColorFilter(
-							context.getResources().getColor(R.color.iconIssuePrClosedColor, null));
+					if (issueComment.getOldMilestone() != null) {
+						start.setText(context.getString(R.string.timelineMilestoneRemoved, issueComment.getUser().getLogin(), issueComment.getOldMilestone().getTitle(), info));
+					}
+					else {
+						start.setText(context.getString(R.string.timelineMilestoneDeleted, issueComment.getUser().getLogin(), info));
+					}
+					timelineIcon.setColorFilter(context.getResources().getColor(R.color.iconIssuePrClosedColor, null));
 				}
 				start.setTextSize(fontSize);
-
 				timelineIcon.setImageDrawable(
 						ContextCompat.getDrawable(context, R.drawable.ic_milestone));
 				timelineData.addView(start);

@@ -814,6 +814,7 @@
     <string name="timelineAssigneesAssigned">%1$s was assigned by %2$s %3$s</string>
     <string name="timelineMilestoneAdded">%1$s added this to the %2$s milestone %3$s</string>
     <string name="timelineMilestoneRemoved">%1$s removed this from the %2$s milestone %3$s</string>
+    <string name="timelineMilestoneDeleted">%1$s added this to a deleted milestone %2$s</string>
     <string name="timelineStatusClosedIssue">%1$s closed this issue %2$s</string>
     <string name="timelineStatusReopenedIssue">%1$s reopened this issue %2$s</string>
     <string name="timelineStatusReopenedPr">%1$s reopened this pull request %2$s</string>
