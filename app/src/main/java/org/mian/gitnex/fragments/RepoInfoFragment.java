@@ -203,7 +203,7 @@ public class RepoInfoFragment extends Fragment {
 			binding.repoMetaForks.setText(String.valueOf(repoInfo.getForksCount()));
 			binding.repoMetaWatchers.setText(String.valueOf(repoInfo.getWatchersCount()));
 			binding.repoMetaSize.setText(
-					FileUtils.byteCountToDisplaySize(repoInfo.getSize() * 1024));
+					FileUtils.byteCountToDisplaySize((int) (repoInfo.getSize() * 1024)));
 
 			binding.repoMetaCreatedAt.setText(
 					TimeHelper.formatTime(repoInfo.getCreatedAt(), locale));

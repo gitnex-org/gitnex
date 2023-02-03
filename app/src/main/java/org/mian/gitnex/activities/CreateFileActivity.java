@@ -17,7 +17,7 @@ import androidx.annotation.NonNull;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
-import org.apache.commons.io.FilenameUtils;
+import org.apache.commons.io.FileUtils;
 import org.gitnex.tea4j.v2.models.Branch;
 import org.gitnex.tea4j.v2.models.CreateFileOptions;
 import org.gitnex.tea4j.v2.models.DeleteFileOptions;
@@ -136,7 +136,7 @@ public class CreateFileActivity extends BaseActivity {
 				v ->
 						launchCodeEditorActivityForResult(
 								Objects.requireNonNull(binding.newFileContent.getText()).toString(),
-								FilenameUtils.getExtension(
+								FileUtils.getExtension(
 										String.valueOf(binding.newFileName.getText()))));
 
 		NetworkStatusObserver networkStatusObserver = NetworkStatusObserver.getInstance(ctx);

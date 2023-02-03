@@ -22,7 +22,7 @@ import java.io.IOException;
 import java.io.OutputStream;
 import java.util.Arrays;
 import okhttp3.ResponseBody;
-import org.apache.commons.io.FilenameUtils;
+import org.apache.commons.io.FileUtils;
 import org.gitnex.tea4j.v2.models.ContentsResponse;
 import org.mian.gitnex.R;
 import org.mian.gitnex.clients.RetrofitClient;
@@ -233,7 +233,7 @@ public class FileViewActivity extends BaseActivity implements BottomSheetListene
 
 										runOnUiThread(
 												() -> binding.progressBar.setVisibility(View.GONE));
-										String fileExtension = FilenameUtils.getExtension(filename);
+										String fileExtension = FileUtils.getExtension(filename);
 
 										switch (AppUtil.getFileType(fileExtension)) {
 											case IMAGE:
@@ -397,7 +397,7 @@ public class FileViewActivity extends BaseActivity implements BottomSheetListene
 		inflater.inflate(R.menu.generic_nav_dotted_menu, menu);
 		inflater.inflate(R.menu.markdown_switcher, menu);
 
-		if (!FilenameUtils.getExtension(file.getName()).equalsIgnoreCase("md")) {
+		if (!FileUtils.getExtension(file.getName()).equalsIgnoreCase("md")) {
 
 			menu.getItem(0).setVisible(false);
 		}
