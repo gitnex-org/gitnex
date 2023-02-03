@@ -10,7 +10,7 @@
     <string name="navAbout">Acerca de</string>
     <string name="navRate">Valorar GitNex</string>
     <string name="navLogout">Cerrar sesión</string>
-    <string name="navAdministration">Instance Administration</string>
+    <string name="navAdministration">Administración de la instancia</string>
     <string name="navMyIssues">Mis incidencias</string>
     <string name="navMostVisited">Repositorios más visitados</string>
     <string name="navNotes">Notas</string>
@@ -30,7 +30,7 @@
     <string name="pageTitleAddEmail">Añadir dirección de email</string>
     <string name="pageTitleNewFile">Nuevo archivo</string>
     <string name="pageTitleExplore">Explorar</string>
-    <string name="pageTitleAdministration">Administration</string>
+    <string name="pageTitleAdministration">Administración</string>
     <string name="pageTitleNewPullRequest">Nuevo pull request</string>
     <string name="pageTitleUsers">Usuarios</string>
     <!-- page titles -->
@@ -52,7 +52,7 @@
     <string name="navigationDrawerOpen">Abrir cajón de navegación</string>
     <string name="navigationDrawerClose">Cerrar cajón de navegación</string>
     <string name="protocol">Protocolo</string>
-    <string name="urlInfoTooltip">1- Choose the correct protocol(https or http). \n2- Enter instance url e.g: try.gitea.io. \n3- If you have enabled 2FA for your account, enter the code in the OTP Code field. \n4- For HTTP basic auth use USERNAME@DOMAIN.COM in the URL field.</string>
+    <string name="urlInfoTooltip">1- Elige el protocolo correcto (HTTPS o HTTP).\n2- Introduce la URL de Gitea p.e: try.gitea.io.\n3- Si has activado 2FA, introduce el código OTP.\n4- Para autenticación HTTP básica usa USUARIO@DOMAIN.COM en la URL.</string>
     <string name="malformedUrl">No se ha podido conectar con el host. Por favor, compruebe su URL o puerto para ver si hay algún error</string>
     <string name="protocolError">No se recomienda usar el protocolo HTTP si no estás en tu red local</string>
     <string name="malformedJson">El JSON recibido es inválido. La respuesta del servidor no tuvo éxito</string>
@@ -369,7 +369,7 @@
     <string name="doneButton">Hecho</string>
     <string name="cancelButton">Cancelar</string>
     <string name="genericError">Algo salió mal, por favor, inténtalo de nuevo</string>
-    <string name="apiNotFound">This request needs higher version than the one installed. Please upgrade your instance to the latest version.</string>
+    <string name="apiNotFound">Esta solicitud necesita una versión de Gitea más alta de la que está instalada. Por favor, actualiza tu instancia de Gitea a la versión más actual.</string>
     <string name="noDataFound">🌟 Aquí no hay nada 🌟</string>
     <string name="addButton">Añadir</string>
     <string name="removeButton">Eliminar</string>
@@ -513,7 +513,7 @@
     <string name="languagesHintText">Idiomas</string>
     <string name="reportsHintText">Reportes de errores</string>
     <string name="rateAppHintText">Si te gusta GitNex, ¡deja una valoración positiva!</string>
-    <string name="aboutAppHintText">App version, build, user instance version</string>
+    <string name="aboutAppHintText">Versión de la aplicación, build, versión de Gitea</string>
     <string name="archivedRepository">Archivado</string>
     <string name="archivedRepositoryMessage">Este repositorio está archivado. Puedes ver los archivos, pero no puedes hacer push, abrir incidencias o pull requests.</string>
     <string name="accountDeletedMessage">Cuenta eliminada con éxito</string>
@@ -673,9 +673,9 @@
     <string name="commitText">commit</string>
     <string name="timelineAddedCommit">%1$s ha añadido %2$s %3$s</string>
     <!-- the | is replaced by the label -->
-    <string name="timelineAddedLabel">%1$s ha añadido la etiqueta %2$s</string>
+    <string name="timelineAddedLabel">%1$s ha añadido | la etiqueta %2$s</string>
     <!-- the | is replaced by the label -->
-    <string name="timelineRemovedLabel">%1$s ha eliminado la etiqueta %2$s</string>
+    <string name="timelineRemovedLabel">%1$s ha eliminado | la etiqueta %2$s</string>
     <string name="timelineAssigneesRemoved">%1$s ha eliminado su asignación %2$s</string>
     <string name="timelineAssigneesUnassigned">%1$s ha sido desasignado por %2$s %3$s</string>
     <string name="timelineAssigneesSelfAssigned">%1$s se ha autoasignado %2$s</string>
