@@ -673,15 +673,16 @@
     <string name="commitText">commit</string>
     <string name="timelineAddedCommit">%1$s ha añadido %2$s %3$s</string>
     <!-- the | is replaced by the label -->
-    <string name="timelineAddedLabel">%1$s ha añadido la etiqueta %2$s</string>
+    <string name="timelineAddedLabel">%1$s ha añadido | la etiqueta %2$s</string>
     <!-- the | is replaced by the label -->
-    <string name="timelineRemovedLabel">%1$s ha eliminado la etiqueta %2$s</string>
+    <string name="timelineRemovedLabel">%1$s ha eliminado | la etiqueta %2$s</string>
     <string name="timelineAssigneesRemoved">%1$s ha eliminado su asignación %2$s</string>
     <string name="timelineAssigneesUnassigned">%1$s ha sido desasignado por %2$s %3$s</string>
     <string name="timelineAssigneesSelfAssigned">%1$s se ha autoasignado %2$s</string>
     <string name="timelineAssigneesAssigned">%1$s ha sido asignado por %2$s %3$s</string>
     <string name="timelineMilestoneAdded">%1$s ha añadido %2$s al hito %3$s</string>
     <string name="timelineMilestoneRemoved">%1$s ha eliminado %2$s del hito %3$s</string>
+    <string name="timelineMilestoneDeleted">%1$s ha añadido esto a un hito eliminado %2$s</string>
     <string name="timelineStatusClosedIssue">%1$s ha cerrado la incidencia %2$s</string>
     <string name="timelineStatusReopenedIssue">%1$s ha reabierto la incidencia %2$s</string>
     <string name="timelineStatusReopenedPr">%1$s ha reabierto este Pull Request %2$s</string>
