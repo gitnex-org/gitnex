@@ -682,6 +682,7 @@
     <string name="timelineAssigneesAssigned">%1$s a été affecté par %2$s %3$s</string>
     <string name="timelineMilestoneAdded">%1$s a ajouté ceci au jalon %2$s %3$s</string>
     <string name="timelineMilestoneRemoved">%1$s a retiré ceci du jalon %2$s %3$s</string>
+    <string name="timelineMilestoneDeleted">%1$s a ajouté ceci à un jalon supprimé %2$s</string>
     <string name="timelineStatusClosedIssue">%1$s a fermé ce ticket %2$s</string>
     <string name="timelineStatusReopenedIssue">%1$s a rouvert ce ticket %2$s</string>
     <string name="timelineStatusReopenedPr">%1$s a rouvert cette demande de fusion %2$s</string>
