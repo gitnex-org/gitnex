@@ -1,18 +1,11 @@
 <?xml version="1.0" encoding="utf-8"?>
 <changelog>
 
-    <release version="5.0.0" versioncode="500">
-        <change>[New] Timeline view for issues and pull requests</change>
-        <change>[New] Notes (App only)</change>
-        <change>[New] CI statuses for commits</change>
-        <change>[New] Markdown preview for issue/pr descriptions</change>
-        <change>[New] Material profile view</change>
-        <change>[Improvement] Improve code editor (CE)</change>
-        <change>[Improvement] More languages support like C, C++, JS/TS, JSON</change>
-        <change>[Improvement] Respect your selected theme style</change>
-        <change>[Bugfix] Fix open in browser loop</change>
-        <change>[Bugfix] Fix not showing labels for user as organization</change>
-        <change>[Bugfix] Fix missing sub path for assets</change>
+    <release version="5.0.1" versioncode="501">
+        <change>[Bugfix] [Timeline] Fix crash on deleted milestones</change>
+        <change>[Bugfix] [Timeline] Fix crash on Spanish translation</change>
+        <change>[Bugfix] Fix crash on md files in file viewer when tabs are used</change>
+        <change>[Bugfix] Fix crash on entering Security settings on lower Android devices</change>
     </release>
 
 </changelog>

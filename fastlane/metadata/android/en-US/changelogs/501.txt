@@ -1,0 +1,13 @@
+5.0.1
+
+🐛 Bug Fixes 🐛
+- [Timeline] Fix crash on deleted milestones
+- [Timeline] Fix crash on Spanish translation
+- Fix crash on md files in file viewer when tabs are used
+- Fix crash on entering Security settings on lower Android devices
+
+Release Notes: https://codeberg.org/gitnex/GitNex/releases
+
+Release Video: https://youtu.be/dLhoz8t03hQ
+
+Release Posts: https://najigram.com/category/gitnex/
