@@ -176,7 +176,7 @@
     <string name="clearCacheDialogHeader">Vider le cache ?</string>
     <string name="clearCacheDialogMessage">Toutes les données du cache seront supprimées, y compris les fichiers et les images.\n\nContinuer ?</string>
     <string name="draftsHeader">Brouillons</string>
-    <string name="draftsHintText">Brouillon de commentaires</string>
+    <string name="draftsHintText">Brouillons de commentaire</string>
     <string name="settingsEnableCommentsDeletionText">Supprimer les brouillons</string>
     <string name="settingsEnableCommentsDeletionHintText">Supprimer le brouillon d’un commentaire publié</string>
     <string name="settingsGeneralHeader">Général</string>
@@ -187,7 +187,7 @@
     <string name="linkSelectorDialogTitle">Écran par défaut</string>
     <string name="settingsBiometricHeader">Biométrie</string>
     <string name="settingsLabelsInListHeader">Notifications textuelles</string>
-    <string name="settingsLabelsInListHint">Affiche du texte dans les tickets et les requêtes de tirage au lieu de simples points colorés</string>
+    <string name="settingsLabelsInListHint">Affiche du texte dans les tickets et les demandes de fusion au lieu d’une simple pastille colorée</string>
     <!-- settings -->
     <string name="noMoreData">Aucune donnée</string>
     <string name="createLabel">Nouvelle étiquette</string>
@@ -510,10 +510,10 @@
     <string name="resetCounterAllDialogMessage">Tous les compteurs des dépôt de ce compte seront remis à zéro.</string>
     <string name="appearanceHintText">Thèmes, polices, pastilles de comptage</string>
     <string name="securityHintText">Biométrie, certificats SSL, cache</string>
-    <string name="languagesHintText">Langues</string>
+    <string name="languagesHintText">Langue de l’application</string>
     <string name="reportsHintText">Rapports de plantage</string>
     <string name="rateAppHintText">Vous aimez GitNex ? Mettez-lui un pouce !</string>
-    <string name="aboutAppHintText">Version de l’application, version de l’instance utilisateur</string>
+    <string name="aboutAppHintText">Version de l’application, version de l’instance</string>
     <string name="archivedRepository">Archivé</string>
     <string name="archivedRepositoryMessage">Ce dépôt est archivé. Les fichiers sont accessibles, mais aucune modification n’est possible.</string>
     <string name="accountDeletedMessage">Compte supprimé</string>
@@ -630,7 +630,7 @@
     <string name="releasesTags">Versions/Tags</string>
     <string name="create_tag">Créer un tag seulement</string>
     <string name="tagCreated">Tag créé</string>
-    <string name="asRef">Utiliser comme référence</string>
+    <string name="asRef">Mentionné</string>
     <string name="deleteTagConfirmation">Êtes-vous certain de vouloir supprimer ce tag ?</string>
     <string name="tagDeleted">Tag supprimé</string>
     <string name="tagDeleteError">Un tag attaché à une diffusion ne peut être directement supprimé.</string>
@@ -673,9 +673,9 @@
     <string name="commitText">révision</string>
     <string name="timelineAddedCommit">%1$s a ajouté %2$s %3$s</string>
     <!-- the | is replaced by the label -->
-    <string name="timelineAddedLabel">%1$s a ajouté | l’étiquette %2$s</string>
+    <string name="timelineAddedLabel">%1$s a ajouté l’étiquette | %2$s</string>
     <!-- the | is replaced by the label -->
-    <string name="timelineRemovedLabel">%1$s a retiré | l’étiquette %2$s</string>
+    <string name="timelineRemovedLabel">%1$s a retiré l’étiquette | %2$s</string>
     <string name="timelineAssigneesRemoved">%1$s s’est désaffecté de ceci %2$s</string>
     <string name="timelineAssigneesUnassigned">%1$s a été désaffecté par %2$s %3$s</string>
     <string name="timelineAssigneesSelfAssigned">%1$s s’est affecté à ceci %2$s</string>
@@ -688,7 +688,7 @@
     <string name="timelineStatusReopenedPr">%1$s a rouvert cette demande de fusion %2$s</string>
     <string name="timelineStatusClosedPr">%1$s a fermé cette demande de fusion %2$s</string>
     <string name="timelineStatusMergedPr">%1$s a accepté cette demande de fusion %2$s</string>
-    <string name="timelineStatusRefPr"><![CDATA[%1$s s’est référé à cette demande de fusion depuis un <font color=\'%2$d\'>%3$s</font> %4$s]]></string>
+    <string name="timelineStatusRefPr"><![CDATA[%1$s a mentionné cette demande de fusion dans une <font color=\'%2$d\'>%3$s</font> %4$s]]></string>
     <string name="timelineReviewRequest">%1$s a demandé l’avis de %2$s %3$s</string>
     <string name="timelineChangeTitle">%1$s a renommé %2$s en %3$s %4$s</string>
     <string name="timelineLocked">%1$s a verrouillé en raison de %2$s et limité la discussion aux collaborateurs %3$s</string>
@@ -708,9 +708,9 @@
     <string name="timelineTimeTrackingAddManualTime">%1$s a ajouté le temps passé %2$s %3$s</string>
     <string name="timelineTimeTrackingDeleteManualTime">%1$s a supprimé le temps passé %2$s %3$s</string>
     <string name="timelineChangeIssueRef">%1$s a ajouté la référence %2$s %3$s</string>
-    <string name="timelineRefIssue">%1$s s’est référé à ce ticket dans #%2$d %3$s</string>
-    <string name="timelineRefPr">%1$s a fait référence à cette demande de fusion dans #%2$d %3$s</string>
-    <string name="timelineStatusRefIssue"><![CDATA[%1$s s’est référé à ce ticket depuis un <font color=\'%2$d\'>%3$s</font> %4$s]]></string>
+    <string name="timelineRefIssue">%1$s mentionné ce ticket dans #%2$d %3$s</string>
+    <string name="timelineRefPr">%1$s a mentionné cette demande de fusion dans #%2$d %3$s</string>
+    <string name="timelineStatusRefIssue"><![CDATA[%1$s mentionné ce ticket dans une <font color=\'%2$d\'>%3$s</font> %4$s]]></string>
     <string name="commitStatuses">Statuts</string>
     <string name="statusNoUrl">Ce statut n’a pas d’URL.</string>
     <string name="starredRepos">Dépôts favoris</string>
