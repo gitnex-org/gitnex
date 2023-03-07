@@ -573,10 +573,10 @@ public class IssueCommentsAdapter extends RecyclerView.Adapter<RecyclerView.View
 				}
 
 				String commitText =
-						context.getResources().getString(R.string.commits).toLowerCase();
+						context.getResources().getString(R.string.commitsText);
 				if (Objects.requireNonNull(commitsShaArray).length() == 1) {
 					commitText =
-							context.getResources().getString(R.string.commitText).toLowerCase();
+							context.getResources().getString(R.string.commitText);
 				}
 
 				String commitString =
