@@ -1,7 +1,7 @@
 <resources>
-
     <style name="AppThemeSystem" parent="AppTheme"/>
 
     <style name="AppThemeSystemPitchBlack" parent="AppThemePitchBlack"/>
 
+    <style name="AppThemeDynamicSystem" parent="AppThemeDarkDynamicColors"/>
 </resources>

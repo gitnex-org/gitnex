@@ -2,6 +2,7 @@ package org.mian.gitnex.core;
 
 import android.app.Application;
 import android.content.Context;
+import com.google.android.material.color.DynamicColors;
 import org.acra.ACRA;
 import org.acra.BuildConfig;
 import org.acra.ReportField;
@@ -41,6 +42,7 @@ public class MainApplication extends Application {
 		FontsOverride.setDefaultFont(getBaseContext());
 
 		Notifications.createChannels(appCtx);
+		DynamicColors.applyToActivitiesIfAvailable(this);
 	}
 
 	@Override

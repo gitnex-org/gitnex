@@ -1,5 +1,7 @@
 package org.mian.gitnex.adapters;
 
+import static org.mian.gitnex.helpers.AppUtil.isNightModeThemeDynamic;
+
 import android.annotation.SuppressLint;
 import android.content.ClipData;
 import android.content.ClipboardManager;
@@ -7,6 +9,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.graphics.Color;
 import android.graphics.Typeface;
+import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
 import android.text.Spannable;
@@ -550,6 +553,14 @@ public class IssueCommentsAdapter extends RecyclerView.Adapter<RecyclerView.View
 											text.indexOf('|'),
 											text.indexOf('|') + 1,
 											Spannable.SPAN_INCLUSIVE_EXCLUSIVE);
+									if (!isNightModeThemeDynamic(context, 8)
+											&& Build.VERSION.SDK_INT >= Build.VERSION_CODES.S) {
+										textView.setTextColor(
+												context.getResources()
+														.getColor(
+																android.R.color.system_accent1_900,
+																null));
+									}
 									textView.setText(spannableString);
 									timelineData.addView(textView);
 								},
@@ -585,6 +596,12 @@ public class IssueCommentsAdapter extends RecyclerView.Adapter<RecyclerView.View
 								issueComment.getUser().getLogin(),
 								commitText,
 								info);
+				if (!isNightModeThemeDynamic(context, 8)
+						&& Build.VERSION.SDK_INT >= Build.VERSION_CODES.S) {
+					start.setTextColor(
+							context.getResources()
+									.getColor(android.R.color.system_accent1_900, null));
+				}
 				start.setText(HtmlCompat.fromHtml(commitString, HtmlCompat.FROM_HTML_MODE_LEGACY));
 				start.setTextSize(fontSize);
 
@@ -643,6 +660,13 @@ public class IssueCommentsAdapter extends RecyclerView.Adapter<RecyclerView.View
 
 				TextView start = new TextView(context);
 
+				if (!isNightModeThemeDynamic(context, 8)
+						&& Build.VERSION.SDK_INT >= Build.VERSION_CODES.S) {
+					start.setTextColor(
+							context.getResources()
+									.getColor(android.R.color.system_accent1_900, null));
+				}
+
 				if (issueComment.isRemovedAssignee()) {
 
 					if (issueComment
@@ -694,6 +718,13 @@ public class IssueCommentsAdapter extends RecyclerView.Adapter<RecyclerView.View
 
 				TextView start = new TextView(context);
 
+				if (!isNightModeThemeDynamic(context, 8)
+						&& Build.VERSION.SDK_INT >= Build.VERSION_CODES.S) {
+					start.setTextColor(
+							context.getResources()
+									.getColor(android.R.color.system_accent1_900, null));
+				}
+
 				if (issueComment.getMilestone() != null) {
 					start.setText(
 							context.getString(
@@ -731,6 +762,13 @@ public class IssueCommentsAdapter extends RecyclerView.Adapter<RecyclerView.View
 					|| issueComment.getType().equalsIgnoreCase("commit_ref")) {
 
 				TextView start = new TextView(context);
+
+				if (!isNightModeThemeDynamic(context, 8)
+						&& Build.VERSION.SDK_INT >= Build.VERSION_CODES.S) {
+					start.setTextColor(
+							context.getResources()
+									.getColor(android.R.color.system_accent1_900, null));
+				}
 
 				if (issue.getIssueType().equalsIgnoreCase("Issue")) {
 					if (issueComment.getType().equals("close")) {
@@ -850,6 +888,13 @@ public class IssueCommentsAdapter extends RecyclerView.Adapter<RecyclerView.View
 
 				TextView start = new TextView(context);
 
+				if (!isNightModeThemeDynamic(context, 8)
+						&& Build.VERSION.SDK_INT >= Build.VERSION_CODES.S) {
+					start.setTextColor(
+							context.getResources()
+									.getColor(android.R.color.system_accent1_900, null));
+				}
+
 				if (issueComment.getType().equalsIgnoreCase("review")) {
 					timelineView.setVisibility(View.GONE);
 					timelineDividerView.setVisibility(View.GONE);
@@ -874,6 +919,14 @@ public class IssueCommentsAdapter extends RecyclerView.Adapter<RecyclerView.View
 			else if (issueComment.getType().equalsIgnoreCase("change_title")) {
 
 				TextView start = new TextView(context);
+
+				if (!isNightModeThemeDynamic(context, 8)
+						&& Build.VERSION.SDK_INT >= Build.VERSION_CODES.S) {
+					start.setTextColor(
+							context.getResources()
+									.getColor(android.R.color.system_accent1_900, null));
+				}
+
 				start.setText(
 						context.getString(
 								R.string.timelineChangeTitle,
@@ -892,6 +945,13 @@ public class IssueCommentsAdapter extends RecyclerView.Adapter<RecyclerView.View
 					|| issueComment.getType().equalsIgnoreCase("unlock")) {
 
 				TextView start = new TextView(context);
+
+				if (!isNightModeThemeDynamic(context, 8)
+						&& Build.VERSION.SDK_INT >= Build.VERSION_CODES.S) {
+					start.setTextColor(
+							context.getResources()
+									.getColor(android.R.color.system_accent1_900, null));
+				}
 
 				if (issueComment.getType().equalsIgnoreCase("lock")) {
 					start.setText(
@@ -920,6 +980,13 @@ public class IssueCommentsAdapter extends RecyclerView.Adapter<RecyclerView.View
 					|| issueComment.getType().equalsIgnoreCase("remove_dependency")) {
 
 				TextView start = new TextView(context);
+
+				if (!isNightModeThemeDynamic(context, 8)
+						&& Build.VERSION.SDK_INT >= Build.VERSION_CODES.S) {
+					start.setTextColor(
+							context.getResources()
+									.getColor(android.R.color.system_accent1_900, null));
+				}
 
 				if (issueComment.getType().equalsIgnoreCase("add_dependency")) {
 					start.setText(
@@ -950,6 +1017,13 @@ public class IssueCommentsAdapter extends RecyclerView.Adapter<RecyclerView.View
 
 				TextView start = new TextView(context);
 
+				if (!isNightModeThemeDynamic(context, 8)
+						&& Build.VERSION.SDK_INT >= Build.VERSION_CODES.S) {
+					start.setTextColor(
+							context.getResources()
+									.getColor(android.R.color.system_accent1_900, null));
+				}
+
 				if (issueComment.getProjectId() > 0) {
 					start.setText(
 							context.getString(
@@ -977,6 +1051,13 @@ public class IssueCommentsAdapter extends RecyclerView.Adapter<RecyclerView.View
 					|| issueComment.getType().equalsIgnoreCase("removed_deadline")) {
 
 				TextView start = new TextView(context);
+
+				if (!isNightModeThemeDynamic(context, 8)
+						&& Build.VERSION.SDK_INT >= Build.VERSION_CODES.S) {
+					start.setTextColor(
+							context.getResources()
+									.getColor(android.R.color.system_accent1_900, null));
+				}
 
 				// TODO pretty-print
 				if (issueComment.getType().equalsIgnoreCase("added_deadline")) {
@@ -1016,6 +1097,13 @@ public class IssueCommentsAdapter extends RecyclerView.Adapter<RecyclerView.View
 
 				TextView start = new TextView(context);
 
+				if (!isNightModeThemeDynamic(context, 8)
+						&& Build.VERSION.SDK_INT >= Build.VERSION_CODES.S) {
+					start.setTextColor(
+							context.getResources()
+									.getColor(android.R.color.system_accent1_900, null));
+				}
+
 				if (issueComment.getType().equalsIgnoreCase("change_target_branch")) {
 					start.setText(
 							context.getString(
@@ -1048,6 +1136,13 @@ public class IssueCommentsAdapter extends RecyclerView.Adapter<RecyclerView.View
 					|| issueComment.getType().equalsIgnoreCase("delete_time_manual")) {
 
 				TextView start = new TextView(context);
+
+				if (!isNightModeThemeDynamic(context, 8)
+						&& Build.VERSION.SDK_INT >= Build.VERSION_CODES.S) {
+					start.setTextColor(
+							context.getResources()
+									.getColor(android.R.color.system_accent1_900, null));
+				}
 
 				if (issueComment.getType().equalsIgnoreCase("start_tracking")) {
 					start.setText(

@@ -4,6 +4,7 @@ import android.content.Intent;
 import android.content.res.ColorStateList;
 import android.graphics.Color;
 import android.graphics.Typeface;
+import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Looper;
@@ -724,6 +725,15 @@ public class IssueDetailActivity extends BaseActivity
 										ctx.getResources()
 												.getColor(R.color.retroThemeColorPrimary, null)));
 					}
+				} else if (tinyDB.getInt("themeId") == 8) {
+					if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.S) {
+						ImageViewCompat.setImageTintList(
+								viewBinding.issuePrState,
+								ColorStateList.valueOf(
+										ctx.getResources()
+												.getColor(
+														android.R.color.system_accent1_300, null)));
+					}
 				} else {
 					ImageViewCompat.setImageTintList(
 							viewBinding.issuePrState,
@@ -764,6 +774,14 @@ public class IssueDetailActivity extends BaseActivity
 							ColorStateList.valueOf(
 									ctx.getResources()
 											.getColor(R.color.retroThemeColorPrimary, null)));
+				}
+			} else if (tinyDB.getInt("themeId") == 8) {
+				if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.S) {
+					ImageViewCompat.setImageTintList(
+							viewBinding.issuePrState,
+							ColorStateList.valueOf(
+									ctx.getResources()
+											.getColor(android.R.color.system_accent1_300, null)));
 				}
 			} else {
 				ImageViewCompat.setImageTintList(

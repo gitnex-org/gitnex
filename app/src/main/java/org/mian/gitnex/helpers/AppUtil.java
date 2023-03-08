@@ -663,4 +663,18 @@ public class AppUtil {
 
 		void onProgressChanged(short progress);
 	}
+
+	public static boolean isNightModeThemeDynamic(Context context, int themeId) {
+
+		int nightModeFlags;
+		TinyDB tinyDB = TinyDB.getInstance(context);
+		nightModeFlags =
+				context.getResources().getConfiguration().uiMode & Configuration.UI_MODE_NIGHT_MASK;
+
+		if (tinyDB.getInt("themeId") == themeId) {
+			return nightModeFlags == Configuration.UI_MODE_NIGHT_YES;
+		} else {
+			return nightModeFlags == Configuration.UI_MODE_NIGHT_NO;
+		}
+	}
 }

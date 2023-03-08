@@ -64,7 +64,7 @@
                             android:paddingBottom="@dimen/dimen10dp"
                             android:paddingStart="@dimen/dimen0dp"
                             android:paddingEnd="@dimen/dimen0dp"
-                            android:textColor="@color/lightGray"/>
+                            android:textColor="?attr/hintColor"/>
 
                         <ImageView
                             android:id="@+id/repoMetaDataExpandCollapse"
@@ -456,7 +456,7 @@
                             android:paddingEnd="@dimen/dimen0dp"
                             android:autoLink="web"
                             android:textColorLink="@color/lightBlue"
-                            android:textColor="@color/lightGray"/>
+                            android:textColor="?attr/hintColor"/>
 
                         <ImageView
                             android:id="@+id/repoFilenameExpandCollapse"

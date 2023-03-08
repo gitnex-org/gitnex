@@ -2,6 +2,7 @@ package org.mian.gitnex.activities;
 
 import android.app.Dialog;
 import android.app.TimePickerDialog;
+import android.os.Build;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.ImageView;
@@ -47,7 +48,12 @@ public class SettingsAppearanceActivity extends BaseActivity {
 		LinearLayout darkTimeFrame = activitySettingsAppearanceBinding.darkThemeTimeSelectionFrame;
 
 		customFontList = getResources().getStringArray(R.array.fonts);
-		themeList = getResources().getStringArray(R.array.themes);
+
+		if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.S || "S".equals(Build.VERSION.CODENAME)) {
+			themeList = getResources().getStringArray(R.array.themesAndroid12);
+		} else {
+			themeList = getResources().getStringArray(R.array.themes);
+		}
 
 		initCloseListener();
 		closeActivity.setOnClickListener(onClickListener);

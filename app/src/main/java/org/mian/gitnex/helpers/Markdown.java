@@ -1,8 +1,11 @@
 package org.mian.gitnex.helpers;
 
+import static org.mian.gitnex.helpers.AppUtil.isNightModeThemeDynamic;
+
 import android.content.Context;
 import android.content.Intent;
 import android.graphics.Typeface;
+import android.os.Build;
 import android.text.Spanned;
 import android.widget.TextView;
 import androidx.annotation.NonNull;
@@ -366,6 +369,16 @@ public class Markdown {
 												tf = AppUtil.getTypeface(context);
 											}
 											textView.setTypeface(tf);
+											if (!isNightModeThemeDynamic(context, 8)
+													&& Build.VERSION.SDK_INT
+															>= Build.VERSION_CODES.S) {
+												textView.setTextColor(
+														context.getResources()
+																.getColor(
+																		android.R.color
+																				.system_accent1_900,
+																		null));
+											}
 											super.beforeSetText(textView, markdown);
 										}
 
