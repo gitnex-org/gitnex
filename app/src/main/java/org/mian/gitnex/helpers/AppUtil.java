@@ -664,17 +664,25 @@ public class AppUtil {
 		void onProgressChanged(short progress);
 	}
 
-	public static boolean isNightModeThemeDynamic(Context context, int themeId) {
+	public static boolean isNightModeThemeDynamic(Context context) {
 
-		int nightModeFlags;
 		TinyDB tinyDB = TinyDB.getInstance(context);
-		nightModeFlags =
+		int nightModeFlags =
 				context.getResources().getConfiguration().uiMode & Configuration.UI_MODE_NIGHT_MASK;
 
-		if (tinyDB.getInt("themeId") == themeId) {
+		if (tinyDB.getInt("themeId") == 8) {
 			return nightModeFlags == Configuration.UI_MODE_NIGHT_YES;
 		} else {
 			return nightModeFlags == Configuration.UI_MODE_NIGHT_NO;
 		}
+	}
+
+	public static int dynamicColorResource(Context context) {
+
+		int resource = 0;
+		if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.S) {
+			resource = context.getResources().getColor(android.R.color.system_accent1_900, null);
+		}
+		return resource;
 	}
 }
