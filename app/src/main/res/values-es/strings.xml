@@ -670,6 +670,7 @@
     </plurals>
     <string name="notesAllDeletionMessage">Esto eliminará todas tus notas. Esta acción no puede deshacerse.</string>
     <!-- timeline -->
+    <string name="commitsText">commit</string>
     <string name="commitText">commit</string>
     <string name="timelineAddedCommit">%1$s ha añadido %2$s %3$s</string>
     <!-- the | is replaced by the label -->
