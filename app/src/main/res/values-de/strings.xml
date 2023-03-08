@@ -682,6 +682,7 @@
     <string name="timelineAssigneesAssigned">%1$s wurde von %2$s %3$s hinzugefügt</string>
     <string name="timelineMilestoneAdded">%1$s hat dies zum Meilenstein %2$s %3$s hinzugefügt</string>
     <string name="timelineMilestoneRemoved">%1$s hat dies vom Meilenstein %2$s %3$s hinzugefügt</string>
+    <string name="timelineMilestoneDeleted">%1$s hat dies zu einem gelöschten Meilenstein %2$s hinzugefügt</string>
     <string name="timelineStatusClosedIssue">%1$s hat diesen Issue %2$s geschlossen</string>
     <string name="timelineStatusReopenedIssue">%1$s hat diesen Issue wieder %2$s geöffnet</string>
     <string name="timelineStatusReopenedPr">%1$s hat diesen Pull-Request wieder %2$s geöffnet</string>

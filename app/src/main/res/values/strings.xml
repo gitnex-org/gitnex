@@ -803,6 +803,7 @@
     <string name="notesAllDeletionMessage">This will delete all of your notes. This action cannot be undone.</string>
 
     <!-- timeline -->
+    <string name="commitsText">commit</string>
     <string name="commitText">commit</string>
     <string name="timelineAddedCommit">%1$s added %2$s %3$s</string>
     <!-- the | is replaced by the label -->
