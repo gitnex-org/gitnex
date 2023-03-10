@@ -874,14 +874,23 @@ public class MainActivity extends BaseActivity
 						if (response.code() == 200) {
 
 							assert notificationCount != null;
-							if(notificationCount.getNew() > 0) {
+							if (notificationCount.getNew() > 0) {
 
-								navNotifications.getActionView().findViewById(R.id.counterBadgeNotification).setVisibility(View.VISIBLE);
-								notificationCounter = navNotifications.getActionView().findViewById(R.id.counterBadgeNotification);
-								notificationCounter.setText(String.valueOf(notificationCount.getNew()));
-							}
-							else {
-								navNotifications.getActionView().findViewById(R.id.counterBadgeNotification).setVisibility(View.GONE);
+								navNotifications
+										.getActionView()
+										.findViewById(R.id.counterBadgeNotification)
+										.setVisibility(View.VISIBLE);
+								notificationCounter =
+										navNotifications
+												.getActionView()
+												.findViewById(R.id.counterBadgeNotification);
+								notificationCounter.setText(
+										String.valueOf(notificationCount.getNew()));
+							} else {
+								navNotifications
+										.getActionView()
+										.findViewById(R.id.counterBadgeNotification)
+										.setVisibility(View.GONE);
 							}
 						}
 					}
