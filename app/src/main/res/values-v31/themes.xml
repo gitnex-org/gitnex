@@ -1,0 +1,100 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <style name="AppThemeDarkDynamicColors" parent="Theme.Material3.Dark.NoActionBar">
+        <item name="android:statusBarColor">@android:color/system_neutral1_900</item>
+        <item name="android:typeface">monospace</item>
+        <item name="colorAccent">@android:color/system_neutral1_800</item>
+        <item name="android:textColorSecondary">@android:color/system_accent1_0</item>
+        <item name="android:textColorPrimary">@android:color/system_accent1_0</item>
+        <item name="colorPrimary">@android:color/system_accent1_300</item>
+        <item name="colorSecondary">@android:color/system_accent1_0</item>
+        <item name="colorOnSurfaceVariant">@android:color/system_accent1_0</item>
+        <item name="colorSecondaryContainer">@android:color/system_neutral1_800</item>
+        <item name="materialCardBackgroundColor">@android:color/system_neutral1_800</item>
+
+        <item name="diffAddedColor">@color/diffAddedColor</item>
+        <item name="diffRemovedColor">@color/diffRemovedColor</item>
+        <item name="diffSelectedColor">@color/diffSelectedColor</item>
+        <item name="primaryTextColor">@android:color/system_accent1_0</item>
+        <item name="primaryBackgroundColor">@android:color/system_neutral1_900</item>
+        <item name="inputBackgroundColor">@android:color/system_neutral1_800</item>
+        <item name="inputSelectedColor">@android:color/system_accent1_300</item>
+        <item name="inputTextColor">@android:color/system_accent1_0</item>
+        <item name="checkboxStyle">@style/AppThemeCheckBoxStyle</item>
+        <item name="selectedTextColor">@android:color/system_accent1_300</item>
+        <item name="alertDialogTheme">@style/AppThemeConfirmDialog</item>
+        <item name="popupMenuStyle">@style/AppThemePopupMenuStyle</item>
+        <item name="android:homeAsUpIndicator">@drawable/ic_arrow_back</item>
+        <item name="autoCompleteTextViewStyle">@style/AppThemeDarkSearchAutoCompleteTextView</item>
+        <item name="hintColor">@android:color/system_accent1_10</item>
+        <item name="colorControlActivated">@android:color/system_accent1_300</item>
+        <item name="dividerColor">@android:color/system_accent2_600</item>
+        <item name="bottomSheetDialogTheme">@style/AppThemeDarkBottomSheetDialog</item>
+        <item name="searchViewStyle">@style/AppSearchViewStyle</item>
+        <item name="progressIndicatorColor">@android:color/system_accent1_300</item>
+        <item name="fabColor">@android:color/system_accent1_300</item>
+        <item name="iconsColor">@android:color/system_accent1_300</item>
+        <item name="pagerTabIndicatorColor">@android:color/system_accent1_300</item>
+        <item name="android:actionOverflowButtonStyle">@style/customOverflowButtonStyle</item>
+        <item name="actionOverflowMenuStyle">@style/customOverflowMenuStyle</item>
+        <item name="colorSurface">@android:color/system_neutral1_800</item>
+        <item name="shapeAppearanceSmallComponent">@style/inputsMaterialComponentCorner</item>
+        <item name="android:windowAnimationStyle">@style/WindowAnimationTransition</item>
+        <item name="materialSwitchStyle">@style/materialSwitchStyle</item>
+        <item name="isDark">1</item>
+    </style>
+
+    <style name="AppThemeLightDynamicColors" parent="Theme.Material3.Dark.NoActionBar">
+        <item name="android:statusBarColor">@android:color/system_neutral1_10</item>
+        <item name="android:windowLightStatusBar">true</item>
+        <item name="android:typeface">monospace</item>
+        <item name="materialCardBackgroundColor">@android:color/system_accent2_50</item>
+        <item name="colorOnSurfaceVariant">@android:color/system_accent2_900</item>
+        <item name="colorSecondaryContainer">@android:color/system_accent1_200</item>
+        <item name="colorPrimary">@android:color/system_accent1_300</item>
+        <item name="colorAccent">@android:color/system_neutral1_800</item>
+        <item name="android:textColorSecondary">@android:color/system_neutral1_800</item>
+        <item name="android:textColorPrimary">@android:color/system_neutral1_800</item>
+        <item name="colorSecondary">@android:color/system_accent1_200</item>
+        <item name="colorOnSurface">@android:color/system_accent2_900</item>
+
+        <item name="diffAddedColor">@color/diffAddedColor</item>
+        <item name="diffRemovedColor">@color/diffRemovedColor</item>
+        <item name="diffSelectedColor">@color/diffSelectedColor</item>
+        <item name="primaryTextColor">@android:color/system_accent2_900</item>
+        <item name="primaryBackgroundColor">@android:color/system_neutral1_10</item>
+        <item name="hintColor">@android:color/system_accent1_800</item>
+        <item name="dividerColor">@android:color/system_accent2_600</item>
+        <item name="colorSurface">@android:color/system_neutral1_10</item>
+        <item name="checkboxStyle">@style/AppThemeLightCheckBoxStyle</item>
+        <item name="alertDialogTheme">@style/AppThemeLightConfirmDialog</item>
+        <item name="popupMenuStyle">@style/AppThemeLightPopupMenuStyle</item>
+        <item name="android:homeAsUpIndicator">@drawable/ic_arrow_back</item>
+        <item name="autoCompleteTextViewStyle">@style/AppThemeLightSearchAutoCompleteTextView</item>
+        <item name="bottomSheetDialogTheme">@style/AppThemeLightBottomSheetDialog</item>
+        <item name="searchViewStyle">@style/AppSearchViewStyle</item>
+        <item name="android:actionOverflowButtonStyle">@style/customOverflowButtonStyle</item>
+        <item name="actionOverflowMenuStyle">@style/customOverflowMenuStyle</item>
+        <item name="shapeAppearanceSmallComponent">@style/inputsMaterialComponentCorner</item>
+        <item name="android:windowAnimationStyle">@style/WindowAnimationTransition</item>
+        <item name="progressIndicatorColor">@android:color/system_accent1_300</item>
+        <item name="fabColor">@android:color/system_accent1_300</item>
+        <item name="iconsColor">@android:color/system_accent1_300</item>
+        <item name="pagerTabIndicatorColor">@android:color/system_accent1_300</item>
+        <item name="selectedTextColor">@android:color/system_accent1_300</item>
+        <item name="colorControlActivated">@android:color/system_accent1_300</item>
+        <item name="inputBackgroundColor">@android:color/system_neutral1_50</item>
+        <item name="inputSelectedColor">@android:color/system_accent1_300</item>
+        <item name="inputTextColor">@android:color/system_accent2_900</item>
+        <item name="materialSwitchStyle">@style/materialSwitchStyle</item>
+        <item name="isDark">0</item>
+    </style>
+
+    <style name="AppThemeLightCheckBoxStyle" parent="Widget.Material3.CompoundButton.CheckBox">
+        <item name="buttonTint">@android:color/system_accent1_300</item>
+    </style>
+
+    <style name="materialSwitchStyle" parent="Widget.Material3.CompoundButton.MaterialSwitch">
+        <item name="thumbTint">@android:color/system_accent1_0</item>
+    </style>
+</resources>

@@ -17,7 +17,7 @@
             android:layout_alignParentTop="true"
             android:layout_centerHorizontal="true"
             android:layout_gravity="center"
-            android:layout_marginTop="12dp"
+            android:layout_marginTop="@dimen/dimen12dp"
             android:orientation="vertical"
             tools:ignore="UselessParent">
 
@@ -35,7 +35,7 @@
                     android:layout_alignParentTop="true"
                     android:layout_centerHorizontal="true"
                     android:contentDescription="@string/appName"
-                    android:src="@mipmap/app_logo"/>
+                    android:src="@mipmap/app_logo" />
 
             </com.google.android.material.card.MaterialCardView>
 
@@ -49,29 +49,43 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_gravity="center_horizontal"
-                    android:layout_marginTop="5dp"
+                    android:layout_marginTop="@dimen/dimen6dp"
                     android:text="@string/appName"
                     android:textColor="?attr/primaryTextColor"
-                    android:textSize="24sp"
-                    android:textStyle="bold"/>
+                    android:textSize="@dimen/dimen24sp"
+                    android:textStyle="bold" />
 
-                <TextView
-                    android:id="@+id/appVersionBuild"
+                <com.google.android.material.card.MaterialCardView
+                    style="?attr/materialCardViewFilledStyle"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_gravity="center_horizontal"
-                    android:layout_marginTop="5dp"
-                    android:text="@string/appVersionBuild"
-                    android:textColor="?attr/primaryTextColor"
-                    android:textIsSelectable="true"
-                    android:textSize="14sp"/>
+                    android:layout_marginTop="@dimen/dimen6dp"
+                    app:cardBackgroundColor="@color/colorWhite"
+                    app:cardCornerRadius="@dimen/dimen36dp">
+
+                    <TextView
+                        android:id="@+id/appVersionBuild"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center_horizontal"
+                        android:text="@string/appVersionBuild"
+                        android:textColor="@color/iconPrMergedColor"
+                        android:textIsSelectable="true"
+                        android:paddingTop="@dimen/dimen8dp"
+                        android:paddingBottom="@dimen/dimen8dp"
+                        android:paddingStart="@dimen/dimen10dp"
+                        android:paddingEnd="@dimen/dimen10dp"
+                        android:textSize="@dimen/dimen14sp" />
+
+                </com.google.android.material.card.MaterialCardView>
 
             </LinearLayout>
 
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="15dp"
+                android:layout_marginTop="@dimen/dimen16dp"
                 android:orientation="vertical">
 
                 <!-- user server version -->
@@ -79,23 +93,23 @@
                     android:id="@+id/userServerVersionHeader"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_marginTop="24dp"
-                    android:paddingStart="28dp"
-                    android:paddingEnd="28dp"
+                    android:layout_marginTop="@dimen/dimen24dp"
+                    android:paddingStart="@dimen/dimen28dp"
+                    android:paddingEnd="@dimen/dimen28dp"
                     android:text="@string/commitPage"
                     android:textColor="?attr/primaryTextColor"
-                    android:textSize="16sp"
-                    android:textStyle="bold"/>
+                    android:textSize="@dimen/dimen16sp"
+                    android:textStyle="bold" />
 
                 <TextView
                     android:id="@+id/userServerVersion"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:paddingStart="28dp"
-                    android:paddingEnd="28dp"
+                    android:paddingStart="@dimen/dimen28dp"
+                    android:paddingEnd="@dimen/dimen28dp"
                     android:textColor="?attr/primaryTextColor"
                     android:textIsSelectable="true"
-                    android:textSize="14sp"/>
+                    android:textSize="@dimen/dimen14sp" />
                 <!-- user server version -->
 
                 <!-- support -->
@@ -103,37 +117,37 @@
                     android:id="@+id/supportHeader"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_marginTop="24dp"
-                    android:paddingStart="28dp"
-                    android:paddingEnd="28dp"
+                    android:layout_marginTop="@dimen/dimen24dp"
+                    android:paddingStart="@dimen/dimen28dp"
+                    android:paddingEnd="@dimen/dimen28dp"
                     android:text="@string/supportText"
                     android:textColor="?attr/primaryTextColor"
-                    android:textSize="16sp"
-                    android:textStyle="bold"/>
+                    android:textSize="@dimen/dimen16sp"
+                    android:textStyle="bold" />
 
                 <TextView
                     android:id="@+id/donationLinkPatreon"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:autoLink="web"
-                    android:paddingStart="28dp"
-                    android:paddingEnd="28dp"
+                    android:paddingStart="@dimen/dimen28dp"
+                    android:paddingEnd="@dimen/dimen28dp"
                     android:text="@string/supportTextPatreon"
                     android:textColor="@color/lightBlue"
                     android:textColorLink="@color/lightBlue"
-                    android:textSize="14sp"/>
+                    android:textSize="@dimen/dimen14sp" />
 
                 <TextView
                     android:id="@+id/donationLinkBuyMeaCoffee"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:autoLink="web"
-                    android:paddingStart="28dp"
-                    android:paddingEnd="28dp"
+                    android:paddingStart="@dimen/dimen28dp"
+                    android:paddingEnd="@dimen/dimen28dp"
                     android:text="@string/supportTextBuyMeaCoffee"
                     android:textColor="@color/lightBlue"
                     android:textColorLink="@color/lightBlue"
-                    android:textSize="14sp"/>
+                    android:textSize="@dimen/dimen14sp" />
                 <!-- support -->
 
                 <!-- translate -->
@@ -141,13 +155,13 @@
                     android:id="@+id/translateHeader"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_marginTop="24dp"
-                    android:paddingStart="28dp"
-                    android:paddingEnd="28dp"
+                    android:layout_marginTop="@dimen/dimen24dp"
+                    android:paddingStart="@dimen/dimen28dp"
+                    android:paddingEnd="@dimen/dimen28dp"
                     android:text="@string/translateText"
                     android:textColor="?attr/primaryTextColor"
-                    android:textSize="16sp"
-                    android:textStyle="bold"/>
+                    android:textSize="@dimen/dimen16sp"
+                    android:textStyle="bold" />
 
                 <TextView
                     android:id="@+id/translateLink"
@@ -155,13 +169,13 @@
                     android:layout_height="wrap_content"
                     android:autoLink="web"
                     android:gravity="start"
-                    android:paddingStart="28dp"
-                    android:paddingEnd="28dp"
+                    android:paddingStart="@dimen/dimen28dp"
+                    android:paddingEnd="@dimen/dimen28dp"
                     android:text="@string/translateWithCrowdin"
                     android:textColor="@color/lightBlue"
                     android:textColorLink="@color/lightBlue"
-                    android:textSize="14sp"
-                    android:visibility="visible"/>
+                    android:textSize="@dimen/dimen14sp"
+                    android:visibility="visible" />
                 <!-- translate -->
 
             </LinearLayout>
@@ -174,8 +188,8 @@
                 android:layout_margin="@dimen/dimen24dp"
                 android:text="@string/websiteText"
                 android:textColor="@color/btnTextColor"
-                android:textSize="16sp"
-                android:textStyle="bold"/>
+                android:textSize="@dimen/dimen16sp"
+                android:textStyle="bold" />
 
         </LinearLayout>
 

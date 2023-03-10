@@ -261,7 +261,7 @@
             android:layout_height="wrap_content"
             android:layout_below="@+id/label_title_frame"
             android:layout_marginStart="@dimen/dimen24dp"
-            android:layout_marginEnd="@dimen/dimen72dp"
+            android:layout_marginEnd="@dimen/dimen84dp"
             android:text="@string/settingsLabelsInListHint"
             android:textColor="?attr/hintColor"
             android:textSize="@dimen/dimen12sp" />

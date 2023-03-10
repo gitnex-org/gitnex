@@ -1,5 +1,7 @@
 package org.mian.gitnex.adapters;
 
+import static org.mian.gitnex.helpers.AppUtil.isNightModeThemeDynamic;
+
 import android.annotation.SuppressLint;
 import android.content.ClipData;
 import android.content.ClipboardManager;
@@ -550,6 +552,10 @@ public class IssueCommentsAdapter extends RecyclerView.Adapter<RecyclerView.View
 											text.indexOf('|'),
 											text.indexOf('|') + 1,
 											Spannable.SPAN_INCLUSIVE_EXCLUSIVE);
+									if (!isNightModeThemeDynamic(context)) {
+										textView.setTextColor(
+												AppUtil.dynamicColorResource(context));
+									}
 									textView.setText(spannableString);
 									timelineData.addView(textView);
 								},
@@ -572,11 +578,9 @@ public class IssueCommentsAdapter extends RecyclerView.Adapter<RecyclerView.View
 				} catch (JSONException ignored) {
 				}
 
-				String commitText =
-						context.getResources().getString(R.string.commitsText);
+				String commitText = context.getResources().getString(R.string.commitsText);
 				if (Objects.requireNonNull(commitsShaArray).length() == 1) {
-					commitText =
-							context.getResources().getString(R.string.commitText);
+					commitText = context.getResources().getString(R.string.commitText);
 				}
 
 				String commitString =
@@ -585,6 +589,9 @@ public class IssueCommentsAdapter extends RecyclerView.Adapter<RecyclerView.View
 								issueComment.getUser().getLogin(),
 								commitText,
 								info);
+				if (!isNightModeThemeDynamic(context)) {
+					start.setTextColor(AppUtil.dynamicColorResource(context));
+				}
 				start.setText(HtmlCompat.fromHtml(commitString, HtmlCompat.FROM_HTML_MODE_LEGACY));
 				start.setTextSize(fontSize);
 
@@ -643,6 +650,10 @@ public class IssueCommentsAdapter extends RecyclerView.Adapter<RecyclerView.View
 
 				TextView start = new TextView(context);
 
+				if (!isNightModeThemeDynamic(context)) {
+					start.setTextColor(AppUtil.dynamicColorResource(context));
+				}
+
 				if (issueComment.isRemovedAssignee()) {
 
 					if (issueComment
@@ -694,6 +705,10 @@ public class IssueCommentsAdapter extends RecyclerView.Adapter<RecyclerView.View
 
 				TextView start = new TextView(context);
 
+				if (!isNightModeThemeDynamic(context)) {
+					start.setTextColor(AppUtil.dynamicColorResource(context));
+				}
+
 				if (issueComment.getMilestone() != null) {
 					start.setText(
 							context.getString(
@@ -731,6 +746,10 @@ public class IssueCommentsAdapter extends RecyclerView.Adapter<RecyclerView.View
 					|| issueComment.getType().equalsIgnoreCase("commit_ref")) {
 
 				TextView start = new TextView(context);
+
+				if (!isNightModeThemeDynamic(context)) {
+					start.setTextColor(AppUtil.dynamicColorResource(context));
+				}
 
 				if (issue.getIssueType().equalsIgnoreCase("Issue")) {
 					if (issueComment.getType().equals("close")) {
@@ -850,6 +869,10 @@ public class IssueCommentsAdapter extends RecyclerView.Adapter<RecyclerView.View
 
 				TextView start = new TextView(context);
 
+				if (!isNightModeThemeDynamic(context)) {
+					start.setTextColor(AppUtil.dynamicColorResource(context));
+				}
+
 				if (issueComment.getType().equalsIgnoreCase("review")) {
 					timelineView.setVisibility(View.GONE);
 					timelineDividerView.setVisibility(View.GONE);
@@ -874,6 +897,11 @@ public class IssueCommentsAdapter extends RecyclerView.Adapter<RecyclerView.View
 			else if (issueComment.getType().equalsIgnoreCase("change_title")) {
 
 				TextView start = new TextView(context);
+
+				if (!isNightModeThemeDynamic(context)) {
+					start.setTextColor(AppUtil.dynamicColorResource(context));
+				}
+
 				start.setText(
 						context.getString(
 								R.string.timelineChangeTitle,
@@ -892,6 +920,10 @@ public class IssueCommentsAdapter extends RecyclerView.Adapter<RecyclerView.View
 					|| issueComment.getType().equalsIgnoreCase("unlock")) {
 
 				TextView start = new TextView(context);
+
+				if (!isNightModeThemeDynamic(context)) {
+					start.setTextColor(AppUtil.dynamicColorResource(context));
+				}
 
 				if (issueComment.getType().equalsIgnoreCase("lock")) {
 					start.setText(
@@ -920,6 +952,10 @@ public class IssueCommentsAdapter extends RecyclerView.Adapter<RecyclerView.View
 					|| issueComment.getType().equalsIgnoreCase("remove_dependency")) {
 
 				TextView start = new TextView(context);
+
+				if (!isNightModeThemeDynamic(context)) {
+					start.setTextColor(AppUtil.dynamicColorResource(context));
+				}
 
 				if (issueComment.getType().equalsIgnoreCase("add_dependency")) {
 					start.setText(
@@ -950,6 +986,10 @@ public class IssueCommentsAdapter extends RecyclerView.Adapter<RecyclerView.View
 
 				TextView start = new TextView(context);
 
+				if (!isNightModeThemeDynamic(context)) {
+					start.setTextColor(AppUtil.dynamicColorResource(context));
+				}
+
 				if (issueComment.getProjectId() > 0) {
 					start.setText(
 							context.getString(
@@ -977,6 +1017,10 @@ public class IssueCommentsAdapter extends RecyclerView.Adapter<RecyclerView.View
 					|| issueComment.getType().equalsIgnoreCase("removed_deadline")) {
 
 				TextView start = new TextView(context);
+
+				if (!isNightModeThemeDynamic(context)) {
+					start.setTextColor(AppUtil.dynamicColorResource(context));
+				}
 
 				// TODO pretty-print
 				if (issueComment.getType().equalsIgnoreCase("added_deadline")) {
@@ -1016,6 +1060,10 @@ public class IssueCommentsAdapter extends RecyclerView.Adapter<RecyclerView.View
 
 				TextView start = new TextView(context);
 
+				if (!isNightModeThemeDynamic(context)) {
+					start.setTextColor(AppUtil.dynamicColorResource(context));
+				}
+
 				if (issueComment.getType().equalsIgnoreCase("change_target_branch")) {
 					start.setText(
 							context.getString(
@@ -1048,6 +1096,10 @@ public class IssueCommentsAdapter extends RecyclerView.Adapter<RecyclerView.View
 					|| issueComment.getType().equalsIgnoreCase("delete_time_manual")) {
 
 				TextView start = new TextView(context);
+
+				if (!isNightModeThemeDynamic(context)) {
+					start.setTextColor(AppUtil.dynamicColorResource(context));
+				}
 
 				if (issueComment.getType().equalsIgnoreCase("start_tracking")) {
 					start.setText(

@@ -16,6 +16,7 @@
         android:resizeableActivity="true"
         android:roundIcon="@mipmap/app_logo_round"
         android:supportsRtl="true"
+        android:exported="true"
         tools:targetApi="n">
         <activity
             android:name=".activities.MergePullRequestActivity"
