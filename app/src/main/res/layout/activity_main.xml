@@ -48,6 +48,8 @@
         android:id="@+id/nav_view"
         app:headerLayout="@layout/nav_header"
         android:background="?attr/primaryBackgroundColor"
+        app:itemIconTint="?attr/primaryTextColor"
+        app:itemTextColor="?attr/primaryTextColor"
         app:menu="@menu/drawer_menu"/>
 
 </androidx.drawerlayout.widget.DrawerLayout>

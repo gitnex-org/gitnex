@@ -42,6 +42,7 @@
         <item name="colorSurface">@color/inputBackground</item>
         <item name="shapeAppearanceSmallComponent">@style/inputsMaterialComponentCorner</item>
         <item name="android:windowAnimationStyle">@style/WindowAnimationTransition</item>
+        <item name="materialSwitchStyle">@style/m3SwitchStyle</item>
         <item name="isDark">1</item>
     </style>
     <!-- Dark theme - default -->
@@ -176,9 +177,14 @@
         <item name="colorSurface">@color/inputBackground</item>
         <item name="shapeAppearanceSmallComponent">@style/inputsMaterialComponentCorner</item>
         <item name="android:windowAnimationStyle">@style/WindowAnimationTransition</item>
+        <item name="materialSwitchStyle">@style/m3SwitchStyle</item>
         <item name="isDark">1</item>
     </style>
     <!-- Pitch black theme -->
+
+    <style name="m3SwitchStyle" parent="Widget.Material3.CompoundButton.MaterialSwitch">
+        <item name="thumbTint">@color/colorWhite</item>
+    </style>
 
     <!-- Custom Material cards -->
     <style name="CustomMaterCardViewStyle" parent="@style/Widget.MaterialComponents.CardView">
