@@ -4,15 +4,15 @@
     android:layout_width="fill_parent"
     android:layout_height="fill_parent"
     android:background="@drawable/shape_full_circle"
-    android:backgroundTint="?attr/inputTextColor"
+    android:backgroundTint="@color/retroThemeDiffAddedColor"
     android:orientation="horizontal"
-    android:padding="15dp">
+    android:padding="@dimen/dimen16dp" >
 
     <TextView android:id="@+id/toastText"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_gravity="center"
         android:gravity="center"
-        android:textColor="?attr/primaryBackgroundColor" />
+        android:textColor="@color/black" />
 
 </LinearLayout>

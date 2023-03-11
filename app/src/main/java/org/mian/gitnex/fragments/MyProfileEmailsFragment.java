@@ -1,5 +1,6 @@
 package org.mian.gitnex.fragments;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Looper;
@@ -14,6 +15,7 @@ import androidx.lifecycle.ViewModelProvider;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
+import org.mian.gitnex.activities.MyProfileEmailActivity;
 import org.mian.gitnex.adapters.MyProfileEmailsAdapter;
 import org.mian.gitnex.databinding.FragmentProfileEmailsBinding;
 import org.mian.gitnex.viewmodels.ProfileEmailsViewModel;
@@ -61,6 +63,9 @@ public class MyProfileEmailsFragment extends Fragment {
 										200));
 
 		fetchDataAsync();
+
+		fragmentProfileEmailsBinding.addNewEmailAddress.setOnClickListener(
+				v1 -> startActivity(new Intent(getContext(), MyProfileEmailActivity.class)));
 
 		return fragmentProfileEmailsBinding.getRoot();
 	}

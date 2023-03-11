@@ -5,9 +5,6 @@ import android.graphics.Typeface;
 import android.os.Bundle;
 import android.text.Html;
 import android.view.LayoutInflater;
-import android.view.Menu;
-import android.view.MenuInflater;
-import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
@@ -45,7 +42,7 @@ public class MyProfileFragment extends Fragment {
 		ctx = getContext();
 
 		View v = inflater.inflate(R.layout.fragment_profile, container, false);
-		setHasOptionsMenu(true);
+		setHasOptionsMenu(false);
 
 		((MainActivity) requireActivity())
 				.setActionBarTitle(getResources().getString(R.string.navProfile));
@@ -66,31 +63,6 @@ public class MyProfileFragment extends Fragment {
 		}
 
 		return v;
-	}
-
-	@Override
-	public void onCreateOptionsMenu(@NonNull Menu menu, @NonNull MenuInflater inflater) {
-
-		menu.clear();
-		requireActivity().getMenuInflater().inflate(R.menu.profile_dotted_menu, menu);
-		super.onCreateOptionsMenu(menu, inflater);
-	}
-
-	@Override
-	public boolean onOptionsItemSelected(@NonNull MenuItem item) {
-
-		int id = item.getItemId();
-
-		if (id == android.R.id.home) {
-			((MainActivity) ctx).finish();
-			return true;
-		} else if (id == R.id.profileMenu) {
-			BottomSheetMyProfileFragment bottomSheet = new BottomSheetMyProfileFragment();
-			bottomSheet.show(getChildFragmentManager(), "profileBottomSheet");
-			return true;
-		} else {
-			return super.onOptionsItemSelected(item);
-		}
 	}
 
 	public void viewData(View v, AccountContext account) {
