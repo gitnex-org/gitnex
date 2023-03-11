@@ -4,7 +4,7 @@
     android:layout_width="fill_parent"
     android:layout_height="fill_parent"
     android:background="@drawable/shape_full_circle"
-    android:backgroundTint="@color/toastBackground"
+    android:backgroundTint="?attr/inputTextColor"
     android:orientation="horizontal"
     android:padding="15dp">
 
@@ -13,6 +13,6 @@
         android:layout_height="wrap_content"
         android:layout_gravity="center"
         android:gravity="center"
-        android:textColor="@color/colorWhite"/>
+        android:textColor="?attr/primaryBackgroundColor" />
 
 </LinearLayout>
