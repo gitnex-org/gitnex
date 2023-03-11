@@ -15,7 +15,8 @@
         android:paddingStart="@dimen/dimen4dp"
         android:paddingEnd="@dimen/dimen4dp"
         android:singleLine="true"
-        android:textColor="@color/colorWhite"
-        android:textSize="@dimen/dimen12sp"/>
+        android:textColor="?attr/primaryTextColor"
+        android:textSize="@dimen/dimen12sp"
+        android:visibility="gone" />
 
 </LinearLayout>
