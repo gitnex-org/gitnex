@@ -95,7 +95,7 @@
                 android:textSize="@dimen/dimen16sp"/>
 
             <com.google.android.material.card.MaterialCardView
-                style="?attr/materialCardViewFilledStyle"
+                style="?attr/materialCardViewElevatedStyle"
                 android:layout_width="@dimen/dimen28dp"
                 android:layout_height="@dimen/dimen28dp"
                 app:cardCornerRadius="@dimen/dimen16dp"

@@ -93,7 +93,7 @@
 
                     <com.google.android.material.card.MaterialCardView
                         android:id="@+id/titleCard"
-                        style="?attr/materialCardViewFilledStyle"
+                        style="?attr/materialCardViewElevatedStyle"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:layout_marginBottom="@dimen/dimen12dp"
@@ -122,7 +122,7 @@
 
                     <com.google.android.material.card.MaterialCardView
                         android:id="@+id/mainThreadCard"
-                        style="?attr/materialCardViewFilledStyle"
+                        style="?attr/materialCardViewElevatedStyle"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:layout_below="@+id/titleCard"
@@ -144,7 +144,7 @@
                                 android:orientation="horizontal">
 
                                 <com.google.android.material.card.MaterialCardView
-                                    style="?attr/materialCardViewFilledStyle"
+                                    style="?attr/materialCardViewElevatedStyle"
                                     android:layout_width="@dimen/dimen24dp"
                                     android:layout_height="@dimen/dimen24dp"
                                     app:cardCornerRadius="@dimen/dimen12dp"

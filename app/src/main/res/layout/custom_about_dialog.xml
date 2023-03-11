@@ -70,7 +70,7 @@
                         android:layout_height="wrap_content"
                         android:layout_gravity="center_horizontal"
                         android:text="@string/appVersionBuild"
-                        android:textColor="@color/iconPrMergedColor"
+                        android:textColor="@color/retroThemeColorSecondary"
                         android:textIsSelectable="true"
                         android:paddingTop="@dimen/dimen8dp"
                         android:paddingBottom="@dimen/dimen8dp"

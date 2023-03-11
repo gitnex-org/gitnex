@@ -9,7 +9,7 @@
     android:paddingBottom="@dimen/dimen4dp">
 
     <com.google.android.material.card.MaterialCardView
-        style="?attr/materialCardViewFilledStyle"
+        style="?attr/materialCardViewElevatedStyle"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         app:cardElevation="@dimen/dimen0dp">
@@ -69,7 +69,7 @@
                         tools:ignore="UseCompoundDrawables">
 
                         <com.google.android.material.card.MaterialCardView
-                            style="?attr/materialCardViewFilledStyle"
+                            style="?attr/materialCardViewElevatedStyle"
                             android:layout_width="@dimen/dimen24dp"
                             android:layout_height="@dimen/dimen24dp"
                             app:cardCornerRadius="@dimen/dimen12dp"

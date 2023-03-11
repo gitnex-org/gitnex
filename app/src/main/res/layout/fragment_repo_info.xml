@@ -33,7 +33,7 @@
             <com.google.android.material.card.MaterialCardView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                style="?attr/materialCardViewFilledStyle"
+                style="?attr/materialCardViewElevatedStyle"
                 app:cardElevation="@dimen/dimen0dp">
 
                 <LinearLayout
@@ -423,7 +423,7 @@
                 android:id="@+id/fileContentsFrameHeader"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                style="?attr/materialCardViewFilledStyle"
+                style="?attr/materialCardViewElevatedStyle"
                 android:layout_marginTop="@dimen/dimen8dp"
                 app:cardElevation="@dimen/dimen0dp">
 

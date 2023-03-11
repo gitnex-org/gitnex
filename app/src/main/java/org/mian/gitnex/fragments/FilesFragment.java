@@ -17,11 +17,6 @@ import androidx.appcompat.widget.SearchView;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModelProvider;
 import androidx.recyclerview.widget.LinearLayoutManager;
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.List;
-import moe.feng.common.view.breadcrumbs.DefaultBreadcrumbsCallback;
-import moe.feng.common.view.breadcrumbs.model.BreadcrumbItem;
 import org.gitnex.tea4j.v2.models.ContentsResponse;
 import org.mian.gitnex.R;
 import org.mian.gitnex.activities.FileViewActivity;
@@ -35,6 +30,11 @@ import org.mian.gitnex.helpers.AppUtil;
 import org.mian.gitnex.helpers.Path;
 import org.mian.gitnex.helpers.contexts.RepositoryContext;
 import org.mian.gitnex.viewmodels.FilesViewModel;
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.List;
+import moe.feng.common.view.breadcrumbs.DefaultBreadcrumbsCallback;
+import moe.feng.common.view.breadcrumbs.model.BreadcrumbItem;
 
 /**
  * @author M M Arif

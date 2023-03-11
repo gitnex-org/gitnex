@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout
+<androidx.coordinatorlayout.widget.CoordinatorLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
@@ -18,7 +18,7 @@
         <com.google.android.material.card.MaterialCardView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            style="?attr/materialCardViewFilledStyle"
+            style="?attr/materialCardViewElevatedStyle"
             android:layout_margin="@dimen/dimen8dp"
             app:cardElevation="@dimen/dimen0dp">
 
@@ -36,8 +36,8 @@
                     android:saveEnabled="false"
                     android:text="@string/filesBreadcrumbRoot"
                     app:CustomTextSize="@dimen/dimen16sp"
-                    app:SelectedTextColor="?attr/primaryTextColor"
-                    app:UnSelectedTextColor="@color/lightGray"/>
+                    app:SelectedTextColor="?attr/inputSelectedColor"
+                    app:UnSelectedTextColor="?attr/primaryTextColor" />
 
             </LinearLayout>
 
@@ -57,7 +57,7 @@
                 <androidx.recyclerview.widget.RecyclerView
                     android:id="@+id/recyclerView"
                     android:layout_width="match_parent"
-                    android:layout_height="match_parent"/>
+                    android:layout_height="match_parent" />
 
             </androidx.swiperefreshlayout.widget.SwipeRefreshLayout>
 
@@ -69,12 +69,12 @@
         android:id="@+id/noDataFiles"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_margin="15dp"
+        android:layout_margin="@dimen/dimen16dp"
         android:gravity="center"
         android:text="@string/noDataFound"
         android:textColor="?attr/primaryTextColor"
-        android:textSize="18sp"
-        android:visibility="gone"/>
+        android:textSize="@dimen/dimen18sp"
+        android:visibility="gone" />
 
     <com.google.android.material.progressindicator.LinearProgressIndicator
         android:id="@+id/progress_bar"
@@ -83,6 +83,6 @@
         android:layout_height="wrap_content"
         android:layout_alignTop="@id/filesFrame"
         android:indeterminate="true"
-        app:indicatorColor="?attr/progressIndicatorColor"/>
+        app:indicatorColor="?attr/progressIndicatorColor" />
 
-</RelativeLayout>
+</androidx.coordinatorlayout.widget.CoordinatorLayout>

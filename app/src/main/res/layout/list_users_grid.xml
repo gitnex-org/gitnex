@@ -10,7 +10,7 @@
     <com.google.android.material.card.MaterialCardView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        style="?attr/materialCardViewFilledStyle"
+        style="?attr/materialCardViewElevatedStyle"
         app:cardElevation="@dimen/dimen0dp">
 
         <LinearLayout
@@ -54,6 +54,8 @@
                     android:paddingEnd="@dimen/dimen2dp"
                     android:text="@string/userName"
                     android:textColor="?attr/primaryTextColor"
+                    android:ellipsize="end"
+                    android:maxLines="2"
                     android:textSize="14sp"/>
 
                 <TextView
@@ -64,6 +66,8 @@
                     android:paddingEnd="@dimen/dimen2dp"
                     android:text="@string/userName"
                     android:textColor="?attr/primaryTextColor"
+                    android:ellipsize="end"
+                    android:maxLines="1"
                     android:textSize="@dimen/dimen12sp"/>
 
             </LinearLayout>
