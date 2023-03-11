@@ -640,6 +640,7 @@
     <string name="notLoggedIn">%s \u25CF n’est pas connecté</string>
     <string name="followSystem">Suivant le système (clair/sombre)</string>
     <string name="followSystemBlack">Suivant le système (clair/noir)</string>
+    <string name="dynamicColorsFollowSystem">Couleurs assorties au système (clair/sombre)</string>
     <string name="repoForkOf">Bifurcation de : %s</string>
     <string name="adoptRepo">Adopter</string>
     <string name="repoAdopted">Dépôt %s adopté</string>
