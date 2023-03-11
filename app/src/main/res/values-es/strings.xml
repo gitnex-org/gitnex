@@ -640,6 +640,7 @@
     <string name="notLoggedIn">%s \u25CF no ha iniciado sesión</string>
     <string name="followSystem">Sistema (Claro / Oscuro)</string>
     <string name="followSystemBlack">Sistema (Claro / Pitch Black)</string>
+    <string name="dynamicColorsFollowSystem">Colores dinámicos - Según sistema (Claro/Oscuro)</string>
     <string name="repoForkOf">Rama de: %s</string>
     <string name="adoptRepo">Adoptar</string>
     <string name="repoAdopted">Repositorio adoptado %s</string>
