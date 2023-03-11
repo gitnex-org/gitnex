@@ -54,9 +54,9 @@
         android:layout_margin="16dp"
         android:text="@string/pageTitleNewRepo"
         android:contentDescription="@string/pageTitleNewRepo"
-        android:textColor="@color/colorWhite"
+        android:textColor="?attr/primaryBackgroundColor"
         android:backgroundTint="?attr/fabColor"
-        app:iconTint="@color/colorWhite"
+        app:iconTint="?attr/primaryBackgroundColor"
         app:icon="@drawable/ic_add"/>
 
 </androidx.coordinatorlayout.widget.CoordinatorLayout>

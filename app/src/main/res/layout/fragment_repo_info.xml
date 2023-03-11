@@ -26,9 +26,11 @@
                 android:layout_gravity="center"
                 android:text="@string/archivedRepositoryMessage"
                 android:background="@drawable/shape_archived"
-                android:padding="@dimen/dimen6dp"
-                android:layout_marginBottom="@dimen/dimen8dp"
-                android:textColor="@color/colorWhite"/>
+                android:padding="@dimen/dimen10dp"
+                android:layout_marginBottom="@dimen/dimen10dp"
+                android:textStyle="bold"
+                android:textSize="@dimen/dimen14sp"
+                android:textColor="?attr/fabColor" />
 
             <com.google.android.material.card.MaterialCardView
                 android:layout_width="match_parent"

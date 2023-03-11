@@ -17,8 +17,14 @@ import androidx.appcompat.widget.SearchView;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModelProvider;
 import androidx.recyclerview.widget.LinearLayoutManager;
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.List;
+import moe.feng.common.view.breadcrumbs.DefaultBreadcrumbsCallback;
+import moe.feng.common.view.breadcrumbs.model.BreadcrumbItem;
 import org.gitnex.tea4j.v2.models.ContentsResponse;
 import org.mian.gitnex.R;
+import org.mian.gitnex.activities.CreateFileActivity;
 import org.mian.gitnex.activities.FileViewActivity;
 import org.mian.gitnex.activities.RepoDetailActivity;
 import org.mian.gitnex.adapters.FilesAdapter;
@@ -30,11 +36,6 @@ import org.mian.gitnex.helpers.AppUtil;
 import org.mian.gitnex.helpers.Path;
 import org.mian.gitnex.helpers.contexts.RepositoryContext;
 import org.mian.gitnex.viewmodels.FilesViewModel;
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.List;
-import moe.feng.common.view.breadcrumbs.DefaultBreadcrumbsCallback;
-import moe.feng.common.view.breadcrumbs.model.BreadcrumbItem;
 
 /**
  * @author M M Arif
@@ -78,10 +79,7 @@ public class FilesFragment extends Fragment implements FilesAdapter.FilesAdapter
 		binding.breadcrumbsView.setItems(
 				new ArrayList<>(
 						Collections.singletonList(
-								BreadcrumbItem.createSimpleItem(
-										getResources().getString(R.string.filesBreadcrumbRoot)
-												+ getResources().getString(R.string.colonDivider)
-												+ repository.getBranchRef()))));
+								BreadcrumbItem.createSimpleItem(repository.getBranchRef()))));
 		// noinspection unchecked
 		binding.breadcrumbsView.setCallback(
 				new DefaultBreadcrumbsCallback<BreadcrumbItem>() {
@@ -150,15 +148,7 @@ public class FilesFragment extends Fragment implements FilesAdapter.FilesAdapter
 									new ArrayList<>(
 											Collections.singletonList(
 													BreadcrumbItem.createSimpleItem(
-															getResources()
-																			.getString(
-																					R.string
-																							.filesBreadcrumbRoot)
-																	+ getResources()
-																			.getString(
-																					R.string
-																							.colonDivider)
-																	+ repository.getBranchRef()))));
+															repository.getBranchRef()))));
 							refresh();
 						});
 
@@ -172,7 +162,20 @@ public class FilesFragment extends Fragment implements FilesAdapter.FilesAdapter
 		}
 		refresh();
 
+		binding.newFile.setOnClickListener(
+				v17 -> startActivity(repository.getIntent(getContext(), CreateFileActivity.class)));
+
 		return binding.getRoot();
+	}
+
+	@Override
+	public void onResume() {
+		super.onResume();
+
+		if (RepoDetailActivity.updateFABActions) {
+			refresh();
+			RepoDetailActivity.updateFABActions = false;
+		}
 	}
 
 	@Override

@@ -12,7 +12,7 @@
         android:text="@string/pageTitleIssues"
         android:textColor="@color/lightGray"
         android:textSize="@dimen/dimen16sp"
-        app:textAllCaps="true"/>
+        app:textAllCaps="true" />
 
     <TextView
         android:id="@+id/counterBadgeIssue"
@@ -24,7 +24,7 @@
         android:background="@drawable/shape_badge_background"
         android:gravity="center"
         android:text="@string/infoTabRepoZero"
-        android:textColor="@color/colorWhite"
-        android:textSize="@dimen/dimen12sp"/>
+        android:textColor="?attr/primaryBackgroundColor"
+        android:textSize="@dimen/dimen12sp" />
 
 </RelativeLayout>

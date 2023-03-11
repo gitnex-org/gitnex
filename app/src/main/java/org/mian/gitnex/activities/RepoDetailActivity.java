@@ -64,6 +64,7 @@ import retrofit2.Response;
  */
 public class RepoDetailActivity extends BaseActivity implements BottomSheetListener {
 
+	public static boolean updateFABActions = false;
 	public static boolean updateRepo = false;
 	private final ActivityResultLauncher<Intent> settingsLauncher =
 			registerForActivityResult(

@@ -34,7 +34,7 @@
         android:layout_height="wrap_content"
         android:indeterminate="true"
         style="@style/Widget.MaterialComponents.LinearProgressIndicator"
-        app:indicatorColor="?attr/progressIndicatorColor"/>
+        app:indicatorColor="?attr/progressIndicatorColor" />
 
     <TextView
         android:id="@+id/noDataNotifications"
@@ -45,7 +45,7 @@
         android:text="@string/noDataNotifications"
         android:textColor="?attr/primaryTextColor"
         android:textSize="20sp"
-        android:visibility="gone"/>
+        android:visibility="gone" />
 
     <com.google.android.material.floatingactionbutton.ExtendedFloatingActionButton
         android:id="@+id/markAllAsRead"
@@ -55,10 +55,10 @@
         android:layout_margin="16dp"
         android:text="@string/markAsRead"
         android:contentDescription="@string/markAsRead"
-        android:textColor="@color/colorWhite"
+        android:textColor="?attr/primaryBackgroundColor"
         android:backgroundTint="?attr/fabColor"
         app:layout_behavior="com.google.android.material.behavior.HideBottomViewOnScrollBehavior"
-        app:iconTint="@color/colorWhite"
-        app:icon="@drawable/ic_done"/>
+        app:iconTint="?attr/primaryBackgroundColor"
+        app:icon="@drawable/ic_done" />
 
 </androidx.coordinatorlayout.widget.CoordinatorLayout>

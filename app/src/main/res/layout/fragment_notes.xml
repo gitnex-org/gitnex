@@ -54,9 +54,9 @@
         android:layout_margin="@dimen/dimen16dp"
         android:text="@string/newNote"
         android:contentDescription="@string/newNote"
-        android:textColor="@color/colorWhite"
+        android:textColor="?attr/primaryBackgroundColor"
         android:backgroundTint="?attr/fabColor"
-        app:iconTint="@color/colorWhite"
+        app:iconTint="?attr/primaryBackgroundColor"
         app:icon="@drawable/ic_add" />
 
 </androidx.coordinatorlayout.widget.CoordinatorLayout>

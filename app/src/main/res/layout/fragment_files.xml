@@ -36,8 +36,8 @@
                     android:saveEnabled="false"
                     android:text="@string/filesBreadcrumbRoot"
                     app:CustomTextSize="@dimen/dimen16sp"
-                    app:SelectedTextColor="?attr/inputSelectedColor"
-                    app:UnSelectedTextColor="?attr/primaryTextColor" />
+                    app:SelectedTextColor="?attr/primaryTextColor"
+                    app:UnSelectedTextColor="?attr/inputSelectedColor" />
 
             </LinearLayout>
 
@@ -57,7 +57,9 @@
                 <androidx.recyclerview.widget.RecyclerView
                     android:id="@+id/recyclerView"
                     android:layout_width="match_parent"
-                    android:layout_height="match_parent" />
+                    android:layout_height="match_parent"
+                    android:clipToPadding="false"
+                    android:paddingBottom="@dimen/dimen72dp" />
 
             </androidx.swiperefreshlayout.widget.SwipeRefreshLayout>
 
@@ -84,5 +86,18 @@
         android:layout_alignTop="@id/filesFrame"
         android:indeterminate="true"
         app:indicatorColor="?attr/progressIndicatorColor" />
+
+    <com.google.android.material.floatingactionbutton.ExtendedFloatingActionButton
+        android:id="@+id/newFile"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="end|bottom"
+        android:layout_margin="@dimen/dimen16dp"
+        android:text="@string/pageTitleNewFile"
+        android:contentDescription="@string/pageTitleNewFile"
+        android:textColor="?attr/primaryBackgroundColor"
+        android:backgroundTint="?attr/fabColor"
+        app:iconTint="?attr/primaryBackgroundColor"
+        app:icon="@drawable/ic_add" />
 
 </androidx.coordinatorlayout.widget.CoordinatorLayout>
