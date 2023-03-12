@@ -1,5 +1,6 @@
 package org.mian.gitnex.fragments;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Looper;
@@ -20,6 +21,7 @@ import androidx.recyclerview.widget.RecyclerView;
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 import org.gitnex.tea4j.v2.models.OrganizationPermissions;
 import org.mian.gitnex.R;
+import org.mian.gitnex.activities.CreateTeamByOrgActivity;
 import org.mian.gitnex.adapters.OrganizationTeamsAdapter;
 import org.mian.gitnex.databinding.FragmentOrganizationTeamsBinding;
 import org.mian.gitnex.viewmodels.TeamsByOrgViewModel;
@@ -95,6 +97,17 @@ public class OrganizationTeamsFragment extends Fragment {
 										200));
 
 		fetchDataAsync(orgName);
+
+		if (!permissions.isIsOwner()) {
+			fragmentTeamsByOrgBinding.createTeam.setVisibility(View.GONE);
+		}
+
+		fragmentTeamsByOrgBinding.createTeam.setOnClickListener(
+				v1 -> {
+					Intent intentTeam = new Intent(getContext(), CreateTeamByOrgActivity.class);
+					intentTeam.putExtras(requireActivity().getIntent().getExtras());
+					startActivity(intentTeam);
+				});
 
 		return fragmentTeamsByOrgBinding.getRoot();
 	}

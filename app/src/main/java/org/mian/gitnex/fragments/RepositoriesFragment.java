@@ -57,9 +57,6 @@ public class RepositoriesFragment extends Fragment {
 		fragmentRepositoriesBinding.recyclerView.setLayoutManager(
 				new LinearLayoutManager(getContext()));
 
-		fragmentRepositoriesBinding.recyclerView.setPadding(0, 0, 0, 220);
-		fragmentRepositoriesBinding.recyclerView.setClipToPadding(false);
-
 		fragmentRepositoriesBinding.pullToRefresh.setOnRefreshListener(
 				() ->
 						new Handler(Looper.getMainLooper())

@@ -21,7 +21,9 @@
             <androidx.recyclerview.widget.RecyclerView
                 android:id="@+id/recyclerView"
                 android:layout_width="match_parent"
-                android:layout_height="match_parent"/>
+                android:layout_height="match_parent"
+                android:clipToPadding="false"
+                android:paddingBottom="@dimen/dimen72dp" />
 
         </androidx.swiperefreshlayout.widget.SwipeRefreshLayout>
 
@@ -33,30 +35,30 @@
         android:layout_height="wrap_content"
         android:indeterminate="true"
         style="@style/Widget.Material3.LinearProgressIndicator"
-        app:indicatorColor="?attr/progressIndicatorColor"/>
+        app:indicatorColor="?attr/progressIndicatorColor" />
 
     <TextView
         android:id="@+id/noData"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_margin="15dp"
+        android:layout_margin="@dimen/dimen16dp"
         android:gravity="center"
         android:text="@string/noDataFound"
         android:textColor="?attr/primaryTextColor"
-        android:textSize="18sp"
-        android:visibility="gone"/>
+        android:textSize="@dimen/dimen18sp"
+        android:visibility="gone" />
 
     <com.google.android.material.floatingactionbutton.ExtendedFloatingActionButton
         android:id="@+id/addNewRepo"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_gravity="end|bottom"
-        android:layout_margin="16dp"
+        android:layout_margin="@dimen/dimen16dp"
         android:text="@string/pageTitleNewRepo"
         android:contentDescription="@string/pageTitleNewRepo"
         android:textColor="?attr/primaryBackgroundColor"
         android:backgroundTint="?attr/fabColor"
         app:iconTint="?attr/primaryBackgroundColor"
-        app:icon="@drawable/ic_add"/>
+        app:icon="@drawable/ic_add" />
 
 </androidx.coordinatorlayout.widget.CoordinatorLayout>
