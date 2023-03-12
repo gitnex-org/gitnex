@@ -34,6 +34,23 @@
                     android:textColor="?attr/primaryTextColor"
                     android:textSize="@dimen/dimen18sp" />
 
+                <com.google.android.material.card.MaterialCardView
+                    style="?attr/materialCardViewFilledStyle"
+                    android:layout_width="@dimen/dimen48dp"
+                    android:layout_height="@dimen/dimen4dp"
+                    android:layout_gravity="center_horizontal"
+                    android:layout_marginTop="@dimen/dimen8dp"
+                    android:layout_marginBottom="@dimen/dimen16dp"
+                    app:cardCornerRadius="@dimen/dimen24dp"
+                    app:cardElevation="@dimen/dimen0dp">
+
+                    <View
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:background="?attr/dividerColor" />
+
+                </com.google.android.material.card.MaterialCardView>
+
             </LinearLayout>
 
             <com.google.android.flexbox.FlexboxLayout

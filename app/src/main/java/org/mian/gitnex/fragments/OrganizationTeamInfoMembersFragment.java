@@ -1,6 +1,7 @@
 package org.mian.gitnex.fragments;
 
 import android.content.Context;
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -12,10 +13,14 @@ import java.util.List;
 import org.gitnex.tea4j.v2.models.Team;
 import org.gitnex.tea4j.v2.models.User;
 import org.mian.gitnex.R;
+import org.mian.gitnex.activities.AddNewTeamMemberActivity;
+import org.mian.gitnex.activities.CreateLabelActivity;
+import org.mian.gitnex.activities.OrganizationTeamInfoActivity;
 import org.mian.gitnex.adapters.UserGridAdapter;
 import org.mian.gitnex.clients.RetrofitClient;
 import org.mian.gitnex.databinding.FragmentOrganizationTeamInfoMembersBinding;
 import org.mian.gitnex.helpers.Toasty;
+import org.mian.gitnex.viewmodels.OrganizationLabelsViewModel;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
@@ -30,6 +35,7 @@ public class OrganizationTeamInfoMembersFragment extends Fragment {
 	private FragmentOrganizationTeamInfoMembersBinding binding;
 	private Team team;
 	private UserGridAdapter adapter;
+	public static boolean refreshMembers = false;
 
 	public OrganizationTeamInfoMembersFragment() {}
 
@@ -55,7 +61,25 @@ public class OrganizationTeamInfoMembersFragment extends Fragment {
 		binding.members.setAdapter(adapter);
 		fetchMembersAsync();
 
+		binding.addNewMember.setOnClickListener(
+			v1 -> {
+				Intent intent =
+					new Intent(getContext(), AddNewTeamMemberActivity.class);
+				intent.putExtra("teamId", team.getId());
+				startActivity(intent);
+			});
+
 		return binding.getRoot();
+	}
+
+	@Override
+	public void onResume() {
+		super.onResume();
+
+		if (refreshMembers) {
+			fetchMembersAsync();
+			refreshMembers = false;
+		}
 	}
 
 	private void fetchMembersAsync() {

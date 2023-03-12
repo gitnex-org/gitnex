@@ -26,7 +26,7 @@ import org.mian.gitnex.viewmodels.OrganizationLabelsViewModel;
  */
 public class OrganizationLabelsFragment extends Fragment {
 
-	private final OrganizationPermissions permissions;
+	private OrganizationPermissions permissions;
 	private OrganizationLabelsViewModel organizationLabelsViewModel;
 	private ProgressBar mProgressBar;
 	private RecyclerView mRecyclerView;
@@ -36,16 +36,16 @@ public class OrganizationLabelsFragment extends Fragment {
 	private String repoOwner;
 	private final String type = "org";
 
-	public OrganizationLabelsFragment(OrganizationPermissions permissions) {
-		this.permissions = permissions;
+	public OrganizationLabelsFragment() {
 	}
 
 	public static OrganizationLabelsFragment newInstance(
 			String repoOwner, OrganizationPermissions permissions) {
 
-		OrganizationLabelsFragment fragment = new OrganizationLabelsFragment(permissions);
+		OrganizationLabelsFragment fragment = new OrganizationLabelsFragment();
 		Bundle args = new Bundle();
 		args.putString(getOrgName, repoOwner);
+		args.putSerializable("permissions", permissions);
 		fragment.setArguments(args);
 		return fragment;
 	}
@@ -58,6 +58,7 @@ public class OrganizationLabelsFragment extends Fragment {
 		if (getArguments() != null) {
 
 			repoOwner = getArguments().getString(getOrgName);
+			permissions = (OrganizationPermissions) getArguments().getSerializable("permissions");
 		}
 	}
 

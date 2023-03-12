@@ -29,7 +29,7 @@ import org.mian.gitnex.viewmodels.RepositoriesViewModel;
  */
 public class OrganizationRepositoriesFragment extends Fragment {
 
-	private final OrganizationPermissions permissions;
+	private OrganizationPermissions permissions;
 	private RepositoriesViewModel repositoriesViewModel;
 	private FragmentRepositoriesBinding fragmentRepositoriesBinding;
 	private ReposListAdapter adapter;
@@ -38,16 +38,15 @@ public class OrganizationRepositoriesFragment extends Fragment {
 	private static final String getOrgName = null;
 	private String orgName;
 
-	public OrganizationRepositoriesFragment(OrganizationPermissions permissions) {
-		this.permissions = permissions;
-	}
+	public OrganizationRepositoriesFragment() {}
 
 	public static OrganizationRepositoriesFragment newInstance(
 			String orgName, OrganizationPermissions permissions) {
 		OrganizationRepositoriesFragment fragment =
-				new OrganizationRepositoriesFragment(permissions);
+				new OrganizationRepositoriesFragment();
 		Bundle args = new Bundle();
 		args.putString(getOrgName, orgName);
+		args.putSerializable("permissions", permissions);
 		fragment.setArguments(args);
 		return fragment;
 	}
@@ -57,6 +56,7 @@ public class OrganizationRepositoriesFragment extends Fragment {
 		super.onCreate(savedInstanceState);
 		if (getArguments() != null) {
 			orgName = getArguments().getString(getOrgName);
+			permissions = (OrganizationPermissions) getArguments().getSerializable("permissions");
 		}
 	}
 

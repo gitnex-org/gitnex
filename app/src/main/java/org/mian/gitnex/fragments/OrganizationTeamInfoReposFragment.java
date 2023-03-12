@@ -1,5 +1,6 @@
 package org.mian.gitnex.fragments;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Looper;
@@ -16,7 +17,9 @@ import androidx.lifecycle.ViewModelProvider;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import org.gitnex.tea4j.v2.models.Team;
 import org.mian.gitnex.R;
+import org.mian.gitnex.activities.AddNewTeamRepoActivity;
 import org.mian.gitnex.activities.MainActivity;
+import org.mian.gitnex.activities.OrganizationTeamInfoActivity;
 import org.mian.gitnex.adapters.ReposListAdapter;
 import org.mian.gitnex.databinding.FragmentRepositoriesBinding;
 import org.mian.gitnex.helpers.Constants;
@@ -41,6 +44,7 @@ public class OrganizationTeamInfoReposFragment extends Fragment {
 
 		Bundle bundle = new Bundle();
 		bundle.putSerializable("team", team);
+		bundle.putBoolean("showRepo", !team.isIncludesAllRepositories());
 		fragment.setArguments(bundle);
 
 		return fragment;
@@ -59,7 +63,7 @@ public class OrganizationTeamInfoReposFragment extends Fragment {
 
 		repositoriesViewModel = new ViewModelProvider(this).get(RepositoriesViewModel.class);
 
-		fragmentRepositoriesBinding.addNewRepo.setVisibility(View.GONE);
+		fragmentRepositoriesBinding.addNewRepo.setText(R.string.pageTitleAddRepository);
 
 		fragmentRepositoriesBinding.recyclerView.setHasFixedSize(true);
 		fragmentRepositoriesBinding.recyclerView.setLayoutManager(
@@ -80,6 +84,19 @@ public class OrganizationTeamInfoReposFragment extends Fragment {
 										50));
 
 		fetchDataAsync();
+
+		if (!requireArguments().getBoolean("showRepo")) {
+			fragmentRepositoriesBinding.addNewRepo.setVisibility(View.GONE);
+		}
+		fragmentRepositoriesBinding.addNewRepo.setOnClickListener(
+			v1 -> {
+				Intent intent =
+					new Intent(getContext(), AddNewTeamRepoActivity.class);
+				intent.putExtra("teamId", team.getId());
+				intent.putExtra("teamName", team.getName());
+				intent.putExtra("orgName", requireActivity().getIntent().getStringExtra("orgName"));
+				startActivity(intent);
+			});
 
 		return fragmentRepositoriesBinding.getRoot();
 	}
