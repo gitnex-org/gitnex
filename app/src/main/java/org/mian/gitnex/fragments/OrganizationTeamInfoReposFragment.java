@@ -15,11 +15,11 @@ import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModelProvider;
 import androidx.recyclerview.widget.LinearLayoutManager;
+import org.gitnex.tea4j.v2.models.OrganizationPermissions;
 import org.gitnex.tea4j.v2.models.Team;
 import org.mian.gitnex.R;
 import org.mian.gitnex.activities.AddNewTeamRepoActivity;
 import org.mian.gitnex.activities.MainActivity;
-import org.mian.gitnex.activities.OrganizationTeamInfoActivity;
 import org.mian.gitnex.adapters.ReposListAdapter;
 import org.mian.gitnex.databinding.FragmentRepositoriesBinding;
 import org.mian.gitnex.helpers.Constants;
@@ -85,7 +85,10 @@ public class OrganizationTeamInfoReposFragment extends Fragment {
 
 		fetchDataAsync();
 
-		if (!requireArguments().getBoolean("showRepo")) {
+		OrganizationPermissions permissions =
+			(OrganizationPermissions) requireActivity().getIntent().getSerializableExtra("permissions");
+
+		if (!requireArguments().getBoolean("showRepo") || !permissions.isIsOwner()) {
 			fragmentRepositoriesBinding.addNewRepo.setVisibility(View.GONE);
 		}
 		fragmentRepositoriesBinding.addNewRepo.setOnClickListener(
@@ -105,7 +108,7 @@ public class OrganizationTeamInfoReposFragment extends Fragment {
 
 		repositoriesViewModel
 				.getRepositories(
-						page, resultLimit, String.valueOf(team.getId()), "team", null, getContext())
+						page, resultLimit, String.valueOf(team.getId()), "team", null, getContext(), fragmentRepositoriesBinding)
 				.observe(
 						getViewLifecycleOwner(),
 						reposListMain -> {

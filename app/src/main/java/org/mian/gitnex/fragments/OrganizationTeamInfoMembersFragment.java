@@ -10,17 +10,15 @@ import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
 import java.util.ArrayList;
 import java.util.List;
+import org.gitnex.tea4j.v2.models.OrganizationPermissions;
 import org.gitnex.tea4j.v2.models.Team;
 import org.gitnex.tea4j.v2.models.User;
 import org.mian.gitnex.R;
 import org.mian.gitnex.activities.AddNewTeamMemberActivity;
-import org.mian.gitnex.activities.CreateLabelActivity;
-import org.mian.gitnex.activities.OrganizationTeamInfoActivity;
 import org.mian.gitnex.adapters.UserGridAdapter;
 import org.mian.gitnex.clients.RetrofitClient;
 import org.mian.gitnex.databinding.FragmentOrganizationTeamInfoMembersBinding;
 import org.mian.gitnex.helpers.Toasty;
-import org.mian.gitnex.viewmodels.OrganizationLabelsViewModel;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
@@ -61,6 +59,12 @@ public class OrganizationTeamInfoMembersFragment extends Fragment {
 		binding.members.setAdapter(adapter);
 		fetchMembersAsync();
 
+		OrganizationPermissions permissions =
+			(OrganizationPermissions) requireActivity().getIntent().getSerializableExtra("permissions");
+
+		if (!permissions.isIsOwner()) {
+			binding.addNewMember.setVisibility(View.GONE);
+		}
 		binding.addNewMember.setOnClickListener(
 			v1 -> {
 				Intent intent =

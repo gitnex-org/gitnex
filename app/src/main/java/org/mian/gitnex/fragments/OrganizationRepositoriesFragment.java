@@ -113,7 +113,7 @@ public class OrganizationRepositoriesFragment extends Fragment {
 	private void fetchDataAsync() {
 
 		repositoriesViewModel
-				.getRepositories(page, resultLimit, "", "org", orgName, getContext())
+				.getRepositories(page, resultLimit, "", "org", orgName, getContext(), fragmentRepositoriesBinding)
 				.observe(
 						getViewLifecycleOwner(),
 						reposListMain -> {

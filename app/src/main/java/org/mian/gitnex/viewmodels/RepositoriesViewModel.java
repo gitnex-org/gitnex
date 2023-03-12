@@ -1,6 +1,7 @@
 package org.mian.gitnex.viewmodels;
 
 import android.content.Context;
+import android.view.View;
 import androidx.annotation.NonNull;
 import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MutableLiveData;
@@ -10,6 +11,7 @@ import org.gitnex.tea4j.v2.models.Repository;
 import org.mian.gitnex.R;
 import org.mian.gitnex.adapters.ReposListAdapter;
 import org.mian.gitnex.clients.RetrofitClient;
+import org.mian.gitnex.databinding.FragmentRepositoriesBinding;
 import org.mian.gitnex.helpers.Toasty;
 import retrofit2.Call;
 import retrofit2.Callback;
@@ -23,16 +25,16 @@ public class RepositoriesViewModel extends ViewModel {
 	private MutableLiveData<List<Repository>> reposList;
 
 	public LiveData<List<Repository>> getRepositories(
-			int page, int resultLimit, String userLogin, String type, String orgName, Context ctx) {
+			int page, int resultLimit, String userLogin, String type, String orgName, Context ctx, FragmentRepositoriesBinding fragmentRepositoriesBinding) {
 
 		reposList = new MutableLiveData<>();
-		loadReposList(page, resultLimit, userLogin, type, orgName, ctx);
+		loadReposList(page, resultLimit, userLogin, type, orgName, ctx, fragmentRepositoriesBinding);
 
 		return reposList;
 	}
 
 	public void loadReposList(
-			int page, int resultLimit, String userLogin, String type, String orgName, Context ctx) {
+			int page, int resultLimit, String userLogin, String type, String orgName, Context ctx, FragmentRepositoriesBinding fragmentRepositoriesBinding) {
 
 		Call<List<Repository>> call;
 
@@ -72,7 +74,12 @@ public class RepositoriesViewModel extends ViewModel {
 							if (response.code() == 200) {
 								reposList.postValue(response.body());
 							}
-						} else {
+						}
+						else if (response.code() == 403) {
+							fragmentRepositoriesBinding.progressBar.setVisibility(View.GONE);
+							fragmentRepositoriesBinding.noData.setVisibility(View.VISIBLE);
+						}
+						else {
 							Toasty.error(ctx, ctx.getString(R.string.genericError));
 						}
 					}
