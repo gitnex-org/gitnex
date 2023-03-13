@@ -19,6 +19,7 @@ import java.util.ArrayList;
 import java.util.List;
 import org.gitnex.tea4j.v2.models.Issue;
 import org.mian.gitnex.R;
+import org.mian.gitnex.activities.CreateIssueActivity;
 import org.mian.gitnex.activities.RepoDetailActivity;
 import org.mian.gitnex.adapters.IssuesAdapter;
 import org.mian.gitnex.clients.RetrofitClient;
@@ -64,6 +65,8 @@ public class IssuesFragment extends Fragment {
 		context = getContext();
 
 		repository = RepositoryContext.fromBundle(requireArguments());
+
+		boolean archived = repository.getRepository().isArchived();
 
 		resultLimit = Constants.getCurrentResultLimit(context);
 
@@ -213,6 +216,25 @@ public class IssuesFragment extends Fragment {
 				repository.getIssueState().toString(),
 				repository.getIssueMilestoneFilterName(),
 				null);
+
+		if (archived) {
+			fragmentIssuesBinding.createNewIssue.setVisibility(View.GONE);
+		}
+
+		if (repository.getRepository().isHasIssues() && !archived) {
+
+			fragmentIssuesBinding.createNewIssue.setVisibility(View.VISIBLE);
+			fragmentIssuesBinding.createNewIssue.setOnClickListener(
+					v12 -> {
+						((RepoDetailActivity) requireActivity())
+								.createIssueLauncher.launch(
+										repository.getIntent(
+												getContext(), CreateIssueActivity.class));
+					});
+		} else {
+
+			fragmentIssuesBinding.createNewIssue.setVisibility(View.GONE);
+		}
 
 		return fragmentIssuesBinding.getRoot();
 	}

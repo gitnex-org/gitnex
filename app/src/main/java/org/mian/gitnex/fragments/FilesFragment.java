@@ -70,6 +70,9 @@ public class FilesFragment extends Fragment implements FilesAdapter.FilesAdapter
 		binding = FragmentFilesBinding.inflate(inflater, container, false);
 		setHasOptionsMenu(true);
 
+		boolean canPush = repository.getPermissions().isPush();
+		boolean archived = repository.getRepository().isArchived();
+
 		filesAdapter = new FilesAdapter(getContext(), this);
 
 		binding.recyclerView.setHasFixedSize(true);
@@ -161,6 +164,10 @@ public class FilesFragment extends Fragment implements FilesAdapter.FilesAdapter
 			}
 		}
 		refresh();
+
+		if (!canPush || archived) {
+			binding.newFile.setVisibility(View.GONE);
+		}
 
 		binding.newFile.setOnClickListener(
 				v17 -> startActivity(repository.getIntent(getContext(), CreateFileActivity.class)));
