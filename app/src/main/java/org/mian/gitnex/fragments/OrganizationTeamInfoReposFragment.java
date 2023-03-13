@@ -86,20 +86,21 @@ public class OrganizationTeamInfoReposFragment extends Fragment {
 		fetchDataAsync();
 
 		OrganizationPermissions permissions =
-			(OrganizationPermissions) requireActivity().getIntent().getSerializableExtra("permissions");
+				(OrganizationPermissions)
+						requireActivity().getIntent().getSerializableExtra("permissions");
 
 		if (!requireArguments().getBoolean("showRepo") || !permissions.isIsOwner()) {
 			fragmentRepositoriesBinding.addNewRepo.setVisibility(View.GONE);
 		}
 		fragmentRepositoriesBinding.addNewRepo.setOnClickListener(
-			v1 -> {
-				Intent intent =
-					new Intent(getContext(), AddNewTeamRepoActivity.class);
-				intent.putExtra("teamId", team.getId());
-				intent.putExtra("teamName", team.getName());
-				intent.putExtra("orgName", requireActivity().getIntent().getStringExtra("orgName"));
-				startActivity(intent);
-			});
+				v1 -> {
+					Intent intent = new Intent(getContext(), AddNewTeamRepoActivity.class);
+					intent.putExtra("teamId", team.getId());
+					intent.putExtra("teamName", team.getName());
+					intent.putExtra(
+							"orgName", requireActivity().getIntent().getStringExtra("orgName"));
+					startActivity(intent);
+				});
 
 		return fragmentRepositoriesBinding.getRoot();
 	}
@@ -108,7 +109,13 @@ public class OrganizationTeamInfoReposFragment extends Fragment {
 
 		repositoriesViewModel
 				.getRepositories(
-						page, resultLimit, String.valueOf(team.getId()), "team", null, getContext(), fragmentRepositoriesBinding)
+						page,
+						resultLimit,
+						String.valueOf(team.getId()),
+						"team",
+						null,
+						getContext(),
+						fragmentRepositoriesBinding)
 				.observe(
 						getViewLifecycleOwner(),
 						reposListMain -> {

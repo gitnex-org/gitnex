@@ -42,8 +42,7 @@ public class OrganizationRepositoriesFragment extends Fragment {
 
 	public static OrganizationRepositoriesFragment newInstance(
 			String orgName, OrganizationPermissions permissions) {
-		OrganizationRepositoriesFragment fragment =
-				new OrganizationRepositoriesFragment();
+		OrganizationRepositoriesFragment fragment = new OrganizationRepositoriesFragment();
 		Bundle args = new Bundle();
 		args.putString(getOrgName, orgName);
 		args.putSerializable("permissions", permissions);
@@ -113,7 +112,14 @@ public class OrganizationRepositoriesFragment extends Fragment {
 	private void fetchDataAsync() {
 
 		repositoriesViewModel
-				.getRepositories(page, resultLimit, "", "org", orgName, getContext(), fragmentRepositoriesBinding)
+				.getRepositories(
+						page,
+						resultLimit,
+						"",
+						"org",
+						orgName,
+						getContext(),
+						fragmentRepositoriesBinding)
 				.observe(
 						getViewLifecycleOwner(),
 						reposListMain -> {

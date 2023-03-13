@@ -25,16 +25,29 @@ public class RepositoriesViewModel extends ViewModel {
 	private MutableLiveData<List<Repository>> reposList;
 
 	public LiveData<List<Repository>> getRepositories(
-			int page, int resultLimit, String userLogin, String type, String orgName, Context ctx, FragmentRepositoriesBinding fragmentRepositoriesBinding) {
+			int page,
+			int resultLimit,
+			String userLogin,
+			String type,
+			String orgName,
+			Context ctx,
+			FragmentRepositoriesBinding fragmentRepositoriesBinding) {
 
 		reposList = new MutableLiveData<>();
-		loadReposList(page, resultLimit, userLogin, type, orgName, ctx, fragmentRepositoriesBinding);
+		loadReposList(
+				page, resultLimit, userLogin, type, orgName, ctx, fragmentRepositoriesBinding);
 
 		return reposList;
 	}
 
 	public void loadReposList(
-			int page, int resultLimit, String userLogin, String type, String orgName, Context ctx, FragmentRepositoriesBinding fragmentRepositoriesBinding) {
+			int page,
+			int resultLimit,
+			String userLogin,
+			String type,
+			String orgName,
+			Context ctx,
+			FragmentRepositoriesBinding fragmentRepositoriesBinding) {
 
 		Call<List<Repository>> call;
 
@@ -74,12 +87,10 @@ public class RepositoriesViewModel extends ViewModel {
 							if (response.code() == 200) {
 								reposList.postValue(response.body());
 							}
-						}
-						else if (response.code() == 403) {
+						} else if (response.code() == 403) {
 							fragmentRepositoriesBinding.progressBar.setVisibility(View.GONE);
 							fragmentRepositoriesBinding.noData.setVisibility(View.VISIBLE);
-						}
-						else {
+						} else {
 							Toasty.error(ctx, ctx.getString(R.string.genericError));
 						}
 					}

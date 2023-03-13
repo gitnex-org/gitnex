@@ -86,7 +86,14 @@ public class MyRepositoriesFragment extends Fragment {
 	private void fetchDataAsync(String userLogin) {
 
 		repositoriesViewModel
-				.getRepositories(page, resultLimit, userLogin, "myRepos", null, getContext(), fragmentRepositoriesBinding)
+				.getRepositories(
+						page,
+						resultLimit,
+						userLogin,
+						"myRepos",
+						null,
+						getContext(),
+						fragmentRepositoriesBinding)
 				.observe(
 						getViewLifecycleOwner(),
 						reposListMain -> {

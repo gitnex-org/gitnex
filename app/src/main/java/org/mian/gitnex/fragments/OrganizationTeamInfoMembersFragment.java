@@ -60,18 +60,18 @@ public class OrganizationTeamInfoMembersFragment extends Fragment {
 		fetchMembersAsync();
 
 		OrganizationPermissions permissions =
-			(OrganizationPermissions) requireActivity().getIntent().getSerializableExtra("permissions");
+				(OrganizationPermissions)
+						requireActivity().getIntent().getSerializableExtra("permissions");
 
 		if (!permissions.isIsOwner()) {
 			binding.addNewMember.setVisibility(View.GONE);
 		}
 		binding.addNewMember.setOnClickListener(
-			v1 -> {
-				Intent intent =
-					new Intent(getContext(), AddNewTeamMemberActivity.class);
-				intent.putExtra("teamId", team.getId());
-				startActivity(intent);
-			});
+				v1 -> {
+					Intent intent = new Intent(getContext(), AddNewTeamMemberActivity.class);
+					intent.putExtra("teamId", team.getId());
+					startActivity(intent);
+				});
 
 		return binding.getRoot();
 	}
