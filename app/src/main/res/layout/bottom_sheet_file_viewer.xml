@@ -5,8 +5,8 @@
     android:layout_height="wrap_content"
     android:background="?attr/primaryBackgroundColor"
     android:orientation="vertical"
-    android:paddingTop="6dp"
-    android:paddingBottom="12dp">
+    android:paddingTop="@dimen/dimen6dp"
+    android:paddingBottom="@dimen/dimen12dp">
 
     <androidx.core.widget.NestedScrollView
         android:layout_width="match_parent"
@@ -22,7 +22,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:orientation="vertical"
-                android:padding="8dp">
+                android:padding="@dimen/dimen8dp">
 
                 <TextView
                     android:id="@+id/bottomSheetHeader"
@@ -31,7 +31,24 @@
                     android:gravity="center"
                     android:text="@string/file"
                     android:textColor="?attr/primaryTextColor"
-                    android:textSize="16sp" />
+                    android:textSize="@dimen/dimen16sp" />
+
+                <com.google.android.material.card.MaterialCardView
+                    style="?attr/materialCardViewFilledStyle"
+                    android:layout_width="@dimen/dimen28dp"
+                    android:layout_height="@dimen/dimen4dp"
+                    android:layout_gravity="center_horizontal"
+                    android:layout_marginTop="@dimen/dimen8dp"
+                    android:layout_marginBottom="@dimen/dimen16dp"
+                    app:cardCornerRadius="@dimen/dimen24dp"
+                    app:cardElevation="@dimen/dimen0dp">
+
+                    <View
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:background="?attr/dividerColor" />
+
+                </com.google.android.material.card.MaterialCardView>
 
             </LinearLayout>
 
@@ -39,7 +56,7 @@
                 android:id="@+id/filesSection"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:padding="4dp"
+                android:padding="@dimen/dimen4dp"
                 app:alignContent="center"
                 app:alignItems="flex_start"
                 app:flexWrap="wrap"
@@ -47,97 +64,79 @@
 
                 <TextView
                     android:id="@+id/editFile"
-                    android:layout_width="100dp"
-                    android:layout_height="100dp"
+                    android:layout_width="@dimen/dimen132dp"
+                    android:layout_height="@dimen/dimen100dp"
                     android:background="?android:attr/selectableItemBackgroundBorderless"
                     android:gravity="center"
-                    android:padding="4dp"
+                    android:padding="@dimen/dimen4dp"
                     android:text="@string/menuEditText"
                     android:textColor="?attr/primaryTextColor"
-                    android:textSize="16sp"
+                    android:textSize="@dimen/dimen14sp"
                     app:drawableTopCompat="@drawable/ic_edit"
                     app:layout_alignSelf="flex_start" />
 
                 <TextView
                     android:id="@+id/deleteFile"
-                    android:layout_width="100dp"
-                    android:layout_height="100dp"
+                    android:layout_width="@dimen/dimen132dp"
+                    android:layout_height="@dimen/dimen100dp"
                     android:background="?android:attr/selectableItemBackgroundBorderless"
                     android:gravity="center"
-                    android:padding="4dp"
+                    android:padding="@dimen/dimen4dp"
                     android:text="@string/menuDeleteText"
                     android:textColor="?attr/primaryTextColor"
-                    android:textSize="16sp"
+                    android:textSize="@dimen/dimen14sp"
                     app:drawableTopCompat="@drawable/ic_delete"
                     app:layout_alignSelf="flex_start" />
 
                 <TextView
                     android:id="@+id/downloadFile"
-                    android:layout_width="100dp"
-                    android:layout_height="100dp"
+                    android:layout_width="@dimen/dimen132dp"
+                    android:layout_height="@dimen/dimen100dp"
                     android:background="?android:attr/selectableItemBackgroundBorderless"
                     android:gravity="center"
-                    android:padding="4dp"
+                    android:padding="@dimen/dimen4dp"
                     android:text="@string/download"
                     android:textColor="?attr/primaryTextColor"
-                    android:textSize="16sp"
+                    android:textSize="@dimen/dimen14sp"
                     app:drawableTopCompat="@drawable/ic_download"
                     app:layout_alignSelf="flex_start" />
 
-            </com.google.android.flexbox.FlexboxLayout>
-
-            <View
-                android:id="@+id/file_viewer_divider"
-                android:layout_width="match_parent"
-                android:layout_height="4dp"
-                android:layout_marginBottom="16dp"
-                android:background="?attr/dividerColor" />
-
-            <com.google.android.flexbox.FlexboxLayout
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:padding="4dp"
-                app:alignContent="center"
-                app:alignItems="flex_start"
-                app:flexWrap="wrap"
-                app:justifyContent="center">
-
                 <TextView
                     android:id="@+id/copy_url"
-                    android:layout_width="100dp"
-                    android:layout_height="100dp"
+                    android:layout_width="@dimen/dimen132dp"
+                    android:layout_height="@dimen/dimen100dp"
                     android:background="?android:attr/selectableItemBackgroundBorderless"
                     android:gravity="center"
-                    android:padding="8dp"
+                    android:padding="@dimen/dimen4dp"
                     android:text="@string/genericCopyUrl"
                     android:textColor="?attr/primaryTextColor"
-                    android:textSize="16sp"
+                    android:textSize="@dimen/dimen14sp"
                     app:drawableTopCompat="@drawable/ic_copy"
                     app:layout_alignSelf="flex_start" />
 
                 <TextView
                     android:id="@+id/share"
-                    android:layout_width="100dp"
-                    android:layout_height="100dp"
+                    android:layout_width="@dimen/dimen132dp"
+                    android:layout_height="@dimen/dimen100dp"
                     android:background="?android:attr/selectableItemBackgroundBorderless"
                     android:gravity="center"
-                    android:padding="8dp"
+                    android:padding="@dimen/dimen4dp"
                     android:text="@string/share"
                     android:textColor="?attr/primaryTextColor"
-                    android:textSize="16sp"
+                    android:textSize="@dimen/dimen14sp"
                     app:drawableTopCompat="@drawable/ic_share"
                     app:layout_alignSelf="flex_start" />
 
                 <TextView
                     android:id="@+id/open"
-                    android:layout_width="100dp"
-                    android:layout_height="100dp"
+                    android:layout_width="@dimen/dimen132dp"
+                    android:layout_height="@dimen/dimen100dp"
                     android:background="?android:attr/selectableItemBackgroundBorderless"
                     android:gravity="center"
-                    android:padding="8dp"
+                    android:padding="@dimen/dimen4dp"
                     android:text="@string/openInBrowser"
                     android:textColor="?attr/primaryTextColor"
-                    android:textSize="16sp"
+                    android:textSize="@dimen/dimen14sp"
                     app:drawableTopCompat="@drawable/ic_browser"
                     app:layout_alignSelf="flex_start" />
 

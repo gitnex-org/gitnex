@@ -36,7 +36,7 @@
 
                 <com.google.android.material.card.MaterialCardView
                     style="?attr/materialCardViewFilledStyle"
-                    android:layout_width="@dimen/dimen48dp"
+                    android:layout_width="@dimen/dimen28dp"
                     android:layout_height="@dimen/dimen4dp"
                     android:layout_gravity="center_horizontal"
                     android:layout_marginTop="@dimen/dimen8dp"

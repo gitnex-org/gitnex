@@ -55,10 +55,10 @@
         android:layout_margin="16dp"
         android:text="@string/markAsRead"
         android:contentDescription="@string/markAsRead"
-        android:textColor="?attr/primaryBackgroundColor"
+        android:textColor="?attr/primaryTextColor"
         android:backgroundTint="?attr/fabColor"
         app:layout_behavior="com.google.android.material.behavior.HideBottomViewOnScrollBehavior"
-        app:iconTint="?attr/primaryBackgroundColor"
+        app:iconTint="?attr/primaryTextColor"
         app:icon="@drawable/ic_done" />
 
 </androidx.coordinatorlayout.widget.CoordinatorLayout>

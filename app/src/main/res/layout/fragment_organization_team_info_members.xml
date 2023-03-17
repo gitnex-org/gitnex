@@ -52,9 +52,9 @@
         android:layout_margin="@dimen/dimen16dp"
         android:text="@string/addRemoveMember"
         android:contentDescription="@string/addRemoveMember"
-        android:textColor="?attr/primaryBackgroundColor"
+        android:textColor="?attr/primaryTextColor"
         android:backgroundTint="?attr/fabColor"
-        app:iconTint="?attr/primaryBackgroundColor"
+        app:iconTint="?attr/primaryTextColor"
         app:icon="@drawable/ic_add" />
 
 </androidx.coordinatorlayout.widget.CoordinatorLayout>

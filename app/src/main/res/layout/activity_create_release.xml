@@ -203,7 +203,7 @@
                 android:layout_height="@dimen/dimen54dp"
                 android:layout_marginTop="@dimen/dimen8dp"
                 android:text="@string/newCreateButtonCopy"
-                android:textColor="@color/btnTextColor"
+                android:textColor="?attr/primaryTextColor"
                 android:textStyle="bold"/>
 
             <com.google.android.material.button.MaterialButton
@@ -212,7 +212,7 @@
                 android:layout_height="@dimen/dimen54dp"
                 android:layout_marginTop="@dimen/dimen8dp"
                 android:text="@string/create_tag"
-                android:textColor="@color/btnTextColor"
+                android:textColor="?attr/primaryTextColor"
                 android:textStyle="bold"/>
 
         </LinearLayout>
