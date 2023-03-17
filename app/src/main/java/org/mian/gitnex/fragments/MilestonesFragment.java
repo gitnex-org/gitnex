@@ -20,6 +20,7 @@ import java.util.ArrayList;
 import java.util.List;
 import org.gitnex.tea4j.v2.models.Milestone;
 import org.mian.gitnex.R;
+import org.mian.gitnex.activities.CreateMilestoneActivity;
 import org.mian.gitnex.activities.RepoDetailActivity;
 import org.mian.gitnex.adapters.MilestonesAdapter;
 import org.mian.gitnex.databinding.FragmentMilestonesBinding;
@@ -61,6 +62,9 @@ public class MilestonesFragment extends Fragment {
 		setHasOptionsMenu(true);
 		Context ctx = getContext();
 		milestonesViewModel = new ViewModelProvider(this).get(MilestonesViewModel.class);
+
+		boolean canPush = repository.getPermissions().isPush();
+		boolean archived = repository.getRepository().isArchived();
 
 		milestoneId = requireActivity().getIntent().getStringExtra("milestoneId");
 		requireActivity().getIntent().removeExtra("milestoneId");
@@ -107,8 +111,25 @@ public class MilestonesFragment extends Fragment {
 									repository.getOwner(), repository.getName(), milestoneState);
 						});
 
+		if (!canPush || archived) {
+			viewBinding.createNewMilestone.setVisibility(View.GONE);
+		}
+
+		viewBinding.createNewMilestone.setOnClickListener(
+			v13 -> startActivity(repository.getIntent(ctx, CreateMilestoneActivity.class)));
+
 		fetchDataAsync(repository.getOwner(), repository.getName(), state);
 		return viewBinding.getRoot();
+	}
+
+	@Override
+	public void onResume() {
+		super.onResume();
+
+		if (RepoDetailActivity.updateFABActions) {
+			fetchDataAsync(repository.getOwner(), repository.getName(), state);
+			RepoDetailActivity.updateFABActions = false;
+		}
 	}
 
 	private void fetchDataAsync(String repoOwner, String repoName, String state) {

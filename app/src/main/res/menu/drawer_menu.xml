@@ -68,10 +68,6 @@
             android:icon="@drawable/ic_settings"
             android:title="@string/navSettings"/>
 
-        <item android:id="@+id/nav_logout"
-            android:icon="@drawable/ic_logout"
-            android:title="@string/navLogout"/>
-
     </group>
 
 </menu>

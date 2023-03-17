@@ -86,7 +86,7 @@ public class RepoDetailActivity extends BaseActivity implements BottomSheetListe
 	private FragmentRefreshListener fragmentRefreshListener;
 	private FragmentRefreshListener fragmentRefreshListenerPr;
 	private FragmentRefreshListener fragmentRefreshListenerMilestone;
-	private final ActivityResultLauncher<Intent> createMilestoneLauncher =
+	/*private final ActivityResultLauncher<Intent> createMilestoneLauncher =
 			registerForActivityResult(
 					new ActivityResultContracts.StartActivityForResult(),
 					result -> {
@@ -99,7 +99,7 @@ public class RepoDetailActivity extends BaseActivity implements BottomSheetListe
 								}
 							}
 						}
-					});
+					});*/
 	private FragmentRefreshListener fragmentRefreshListenerFiles;
 	private final ActivityResultLauncher<Intent> editFileLauncher =
 			registerForActivityResult(
@@ -295,8 +295,8 @@ public class RepoDetailActivity extends BaseActivity implements BottomSheetListe
 				startActivity(repository.getIntent(ctx, CreateIssueActivity.class));
 				break;
 			case "newMilestone":
-				createMilestoneLauncher.launch(
-						repository.getIntent(ctx, CreateMilestoneActivity.class));
+				/*createMilestoneLauncher.launch(
+						repository.getIntent(ctx, CreateMilestoneActivity.class));*/
 				break;
 			case "addCollaborator":
 				startActivity(repository.getIntent(ctx, AddCollaboratorToRepositoryActivity.class));
@@ -810,8 +810,7 @@ public class RepoDetailActivity extends BaseActivity implements BottomSheetListe
 					break;
 				case "milestonesNew":
 					viewPager.setCurrentItem(6);
-					createMilestoneLauncher.launch(
-							repository.getIntent(ctx, CreateMilestoneActivity.class));
+					startActivity(repository.getIntent(ctx, CreateMilestoneActivity.class));
 					break;
 				case "labels":
 					viewPager.setCurrentItem(7);
