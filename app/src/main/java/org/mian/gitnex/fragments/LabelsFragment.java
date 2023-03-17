@@ -55,6 +55,9 @@ public class LabelsFragment extends Fragment {
 				FragmentLabelsBinding.inflate(inflater, container, false);
 		setHasOptionsMenu(true);
 
+		boolean canPush = repository.getPermissions().isPush();
+		boolean archived = repository.getRepository().isArchived();
+
 		final SwipeRefreshLayout swipeRefresh = fragmentLabelsBinding.pullToRefresh;
 		noData = fragmentLabelsBinding.noData;
 
@@ -78,6 +81,15 @@ public class LabelsFragment extends Fragment {
 										200));
 
 		fetchDataAsync(repository.getOwner(), repository.getName());
+
+		if (!canPush || archived) {
+			fragmentLabelsBinding.createLabel.setVisibility(View.GONE);
+		}
+
+		fragmentLabelsBinding.createLabel.setOnClickListener(
+			v112 -> {
+				startActivity(repository.getIntent(getContext(), CreateLabelActivity.class));
+			});
 
 		return fragmentLabelsBinding.getRoot();
 	}
