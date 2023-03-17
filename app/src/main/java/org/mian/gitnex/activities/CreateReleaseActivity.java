@@ -2,7 +2,6 @@ package org.mian.gitnex.activities;
 
 import android.annotation.SuppressLint;
 import android.content.Context;
-import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.Menu;
@@ -182,9 +181,7 @@ public class CreateReleaseActivity extends BaseActivity {
 
 						if (response.code() == 201) {
 
-							Intent result = new Intent();
-							result.putExtra("updateReleases", true);
-							setResult(201, result);
+							RepoDetailActivity.updateFABActions = true;
 							Toasty.success(ctx, getString(R.string.tagCreated));
 							finish();
 						} else if (response.code() == 401) {
@@ -291,9 +288,7 @@ public class CreateReleaseActivity extends BaseActivity {
 
 						if (response.code() == 201) {
 
-							Intent result = new Intent();
-							result.putExtra("updateReleases", true);
-							setResult(201, result);
+							RepoDetailActivity.updateFABActions = true;
 							Toasty.success(ctx, getString(R.string.releaseCreatedText));
 							finish();
 						} else if (response.code() == 401) {

@@ -21,6 +21,7 @@ import java.util.ArrayList;
 import java.util.List;
 import org.gitnex.tea4j.v2.models.PullRequest;
 import org.mian.gitnex.R;
+import org.mian.gitnex.activities.CreatePullRequestActivity;
 import org.mian.gitnex.activities.RepoDetailActivity;
 import org.mian.gitnex.adapters.PullRequestsAdapter;
 import org.mian.gitnex.clients.RetrofitClient;
@@ -71,6 +72,7 @@ public class PullRequestsFragment extends Fragment {
 		resultLimit = Constants.getCurrentResultLimit(context);
 		prList = new ArrayList<>();
 		repository = RepositoryContext.fromBundle(requireArguments());
+		boolean archived = repository.getRepository().isArchived();
 
 		swipeRefresh.setOnRefreshListener(
 				() ->
@@ -158,6 +160,25 @@ public class PullRequestsFragment extends Fragment {
 				pageSize,
 				repository.getPrState().toString(),
 				resultLimit);
+
+		if (archived) {
+			fragmentPullRequestsBinding.createPullRequest.setVisibility(View.GONE);
+		}
+
+		if (repository.getRepository().isHasPullRequests() && !archived) {
+
+			fragmentPullRequestsBinding.createPullRequest.setVisibility(View.VISIBLE);
+			fragmentPullRequestsBinding.createPullRequest.setOnClickListener(
+					v12 -> {
+						((RepoDetailActivity) requireActivity())
+								.createPrLauncher.launch(
+										repository.getIntent(
+												getContext(), CreatePullRequestActivity.class));
+					});
+		} else {
+
+			fragmentPullRequestsBinding.createPullRequest.setVisibility(View.GONE);
+		}
 
 		return fragmentPullRequestsBinding.getRoot();
 	}

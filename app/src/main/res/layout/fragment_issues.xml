@@ -41,11 +41,11 @@
         android:id="@+id/noDataIssues"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_margin="15dp"
+        android:layout_margin="@dimen/dimen16dp"
         android:text="@string/noDataFound"
         android:textColor="?attr/primaryTextColor"
         android:gravity="center"
-        android:textSize="18sp"
+        android:textSize="@dimen/dimen18sp"
         android:visibility="gone" />
 
     <com.google.android.material.floatingactionbutton.ExtendedFloatingActionButton

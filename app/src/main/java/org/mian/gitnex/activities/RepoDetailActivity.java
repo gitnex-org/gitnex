@@ -120,21 +120,21 @@ public class RepoDetailActivity extends BaseActivity implements BottomSheetListe
 	private Dialog progressDialog;
 	private MaterialAlertDialogBuilder materialAlertDialogBuilder;
 	private Intent intentWiki;
-	private final ActivityResultLauncher<Intent> createReleaseLauncher =
-			registerForActivityResult(
-					new ActivityResultContracts.StartActivityForResult(),
-					result -> {
-						if (result.getResultCode() == 201) {
-							assert result.getData() != null;
-							if (result.getData().getBooleanExtra("updateReleases", false)) {
-								if (fragmentRefreshListenerReleases != null) {
-									fragmentRefreshListenerReleases.onRefresh(null);
-								}
-								repository.removeRepository();
-								getRepoInfo(repository.getOwner(), repository.getName());
-							}
+	/*private final ActivityResultLauncher<Intent> createReleaseLauncher =
+	registerForActivityResult(
+			new ActivityResultContracts.StartActivityForResult(),
+			result -> {
+				if (result.getResultCode() == 201) {
+					assert result.getData() != null;
+					if (result.getData().getBooleanExtra("updateReleases", false)) {
+						if (fragmentRefreshListenerReleases != null) {
+							fragmentRefreshListenerReleases.onRefresh(null);
 						}
-					});
+						repository.removeRepository();
+						getRepoInfo(repository.getOwner(), repository.getName());
+					}
+				}
+			});*/
 
 	public ActivityResultLauncher<Intent> createIssueLauncher =
 			registerForActivityResult(
@@ -305,8 +305,8 @@ public class RepoDetailActivity extends BaseActivity implements BottomSheetListe
 				chooseBranch();
 				break;
 			case "createRelease":
-				createReleaseLauncher.launch(
-						repository.getIntent(ctx, CreateReleaseActivity.class));
+				// createReleaseLauncher.launch(
+				//		repository.getIntent(ctx, CreateReleaseActivity.class));
 				break;
 			case "openWebRepo":
 				AppUtil.openUrlInBrowser(this, repository.getRepository().getHtmlUrl());
@@ -791,8 +791,9 @@ public class RepoDetailActivity extends BaseActivity implements BottomSheetListe
 					break;
 				case "newRelease":
 					viewPager.setCurrentItem(4);
-					createReleaseLauncher.launch(
-							repository.getIntent(ctx, CreateReleaseActivity.class));
+					startActivity(repository.getIntent(ctx, CreateReleaseActivity.class));
+					// createReleaseLauncher.launch(
+					//	repository.getIntent(ctx, CreateReleaseActivity.class));
 					break;
 				case "wiki":
 					viewPager.setCurrentItem(5);
