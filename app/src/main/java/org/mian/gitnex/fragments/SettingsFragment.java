@@ -82,10 +82,13 @@ public class SettingsFragment extends Fragment {
 
 		fragmentSettingsBinding.aboutAppFrame.setOnClickListener(aboutApp -> showAboutAppDialog());
 
-		fragmentSettingsBinding.navLogout.setOnClickListener(logout -> {
-			AppUtil.logout(ctx);
-			requireActivity().overridePendingTransition(android.R.anim.fade_in, android.R.anim.fade_out);
-		});
+		fragmentSettingsBinding.navLogout.setOnClickListener(
+				logout -> {
+					AppUtil.logout(ctx);
+					requireActivity()
+							.overridePendingTransition(
+									android.R.anim.fade_in, android.R.anim.fade_out);
+				});
 
 		return fragmentSettingsBinding.getRoot();
 	}

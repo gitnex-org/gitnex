@@ -116,7 +116,7 @@ public class MilestonesFragment extends Fragment {
 		}
 
 		viewBinding.createNewMilestone.setOnClickListener(
-			v13 -> startActivity(repository.getIntent(ctx, CreateMilestoneActivity.class)));
+				v13 -> startActivity(repository.getIntent(ctx, CreateMilestoneActivity.class)));
 
 		fetchDataAsync(repository.getOwner(), repository.getName(), state);
 		return viewBinding.getRoot();

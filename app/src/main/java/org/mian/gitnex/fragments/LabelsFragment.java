@@ -87,9 +87,9 @@ public class LabelsFragment extends Fragment {
 		}
 
 		fragmentLabelsBinding.createLabel.setOnClickListener(
-			v112 -> {
-				startActivity(repository.getIntent(getContext(), CreateLabelActivity.class));
-			});
+				v112 -> {
+					startActivity(repository.getIntent(getContext(), CreateLabelActivity.class));
+				});
 
 		return fragmentLabelsBinding.getRoot();
 	}

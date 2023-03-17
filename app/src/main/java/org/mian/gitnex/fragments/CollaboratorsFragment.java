@@ -7,6 +7,7 @@ import android.view.ViewGroup;
 import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModelProvider;
+import org.mian.gitnex.activities.AddCollaboratorToRepositoryActivity;
 import org.mian.gitnex.adapters.CollaboratorsAdapter;
 import org.mian.gitnex.databinding.FragmentCollaboratorsBinding;
 import org.mian.gitnex.helpers.contexts.RepositoryContext;
@@ -42,6 +43,19 @@ public class CollaboratorsFragment extends Fragment {
 
 		fragmentCollaboratorsBinding =
 				FragmentCollaboratorsBinding.inflate(inflater, container, false);
+
+		if (repository.getPermissions().isAdmin()) {
+
+			fragmentCollaboratorsBinding.addCollaborator.setOnClickListener(
+					v1 -> {
+						startActivity(
+								repository.getIntent(
+										getContext(), AddCollaboratorToRepositoryActivity.class));
+					});
+		} else {
+
+			fragmentCollaboratorsBinding.addCollaborator.setVisibility(View.GONE);
+		}
 
 		fetchDataAsync(repository.getOwner(), repository.getName());
 		return fragmentCollaboratorsBinding.getRoot();

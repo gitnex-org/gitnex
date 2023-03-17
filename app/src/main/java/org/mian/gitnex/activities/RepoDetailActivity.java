@@ -86,55 +86,12 @@ public class RepoDetailActivity extends BaseActivity implements BottomSheetListe
 	private FragmentRefreshListener fragmentRefreshListener;
 	private FragmentRefreshListener fragmentRefreshListenerPr;
 	private FragmentRefreshListener fragmentRefreshListenerMilestone;
-	/*private final ActivityResultLauncher<Intent> createMilestoneLauncher =
-			registerForActivityResult(
-					new ActivityResultContracts.StartActivityForResult(),
-					result -> {
-						if (result.getResultCode() == 201) {
-							assert result.getData() != null;
-							if (result.getData().getBooleanExtra("milestoneCreated", false)) {
-								if (fragmentRefreshListenerMilestone != null) {
-									fragmentRefreshListenerMilestone.onRefresh(
-											repository.getMilestoneState().toString());
-								}
-							}
-						}
-					});*/
 	private FragmentRefreshListener fragmentRefreshListenerFiles;
-	private final ActivityResultLauncher<Intent> editFileLauncher =
-			registerForActivityResult(
-					new ActivityResultContracts.StartActivityForResult(),
-					result -> {
-						if (result.getResultCode() == 200) {
-							assert result.getData() != null;
-							if (result.getData().getBooleanExtra("fileModified", false)) {
-								if (fragmentRefreshListenerFiles != null) {
-									fragmentRefreshListenerFiles.onRefresh(
-											repository.getBranchRef());
-								}
-							}
-						}
-					});
 	private FragmentRefreshListener fragmentRefreshListenerFilterIssuesByMilestone;
 	private FragmentRefreshListener fragmentRefreshListenerReleases;
 	private Dialog progressDialog;
 	private MaterialAlertDialogBuilder materialAlertDialogBuilder;
 	private Intent intentWiki;
-	/*private final ActivityResultLauncher<Intent> createReleaseLauncher =
-	registerForActivityResult(
-			new ActivityResultContracts.StartActivityForResult(),
-			result -> {
-				if (result.getResultCode() == 201) {
-					assert result.getData() != null;
-					if (result.getData().getBooleanExtra("updateReleases", false)) {
-						if (fragmentRefreshListenerReleases != null) {
-							fragmentRefreshListenerReleases.onRefresh(null);
-						}
-						repository.removeRepository();
-						getRepoInfo(repository.getOwner(), repository.getName());
-					}
-				}
-			});*/
 
 	public ActivityResultLauncher<Intent> createIssueLauncher =
 			registerForActivityResult(
@@ -288,25 +245,8 @@ public class RepoDetailActivity extends BaseActivity implements BottomSheetListe
 	public void onButtonClicked(String text) {
 
 		switch (text) {
-			case "label":
-				startActivity(repository.getIntent(ctx, CreateLabelActivity.class));
-				break;
-			case "newIssue":
-				startActivity(repository.getIntent(ctx, CreateIssueActivity.class));
-				break;
-			case "newMilestone":
-				/*createMilestoneLauncher.launch(
-						repository.getIntent(ctx, CreateMilestoneActivity.class));*/
-				break;
-			case "addCollaborator":
-				startActivity(repository.getIntent(ctx, AddCollaboratorToRepositoryActivity.class));
-				break;
 			case "chooseBranch":
 				chooseBranch();
-				break;
-			case "createRelease":
-				// createReleaseLauncher.launch(
-				//		repository.getIntent(ctx, CreateReleaseActivity.class));
 				break;
 			case "openWebRepo":
 				AppUtil.openUrlInBrowser(this, repository.getRepository().getHtmlUrl());
@@ -319,9 +259,6 @@ public class RepoDetailActivity extends BaseActivity implements BottomSheetListe
 						this,
 						repository.getRepository().getHtmlUrl(),
 						ctx.getString(R.string.copyIssueUrlToastMsg));
-				break;
-			case "newFile":
-				editFileLauncher.launch(repository.getIntent(ctx, CreateFileActivity.class));
 				break;
 			case "filterByMilestone":
 				filterIssuesByMilestone();
@@ -395,13 +332,6 @@ public class RepoDetailActivity extends BaseActivity implements BottomSheetListe
 				break;
 			case "star":
 				repository.setStarred(true);
-				break;
-			case "createWiki":
-				Intent intent = new Intent(ctx, WikiActivity.class);
-				intent.putExtra("action", "add");
-				intent.putExtra(
-						RepositoryContext.INTENT_EXTRA, ((RepoDetailActivity) ctx).repository);
-				ctx.startActivity(intent);
 				break;
 		}
 	}
@@ -792,8 +722,6 @@ public class RepoDetailActivity extends BaseActivity implements BottomSheetListe
 				case "newRelease":
 					viewPager.setCurrentItem(4);
 					startActivity(repository.getIntent(ctx, CreateReleaseActivity.class));
-					// createReleaseLauncher.launch(
-					//	repository.getIntent(ctx, CreateReleaseActivity.class));
 					break;
 				case "wiki":
 					viewPager.setCurrentItem(5);
