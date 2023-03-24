@@ -24,13 +24,6 @@ import androidx.annotation.ColorInt;
 import androidx.browser.customtabs.CustomTabColorSchemeParams;
 import androidx.browser.customtabs.CustomTabsIntent;
 import androidx.core.content.pm.PackageInfoCompat;
-import org.mian.gitnex.R;
-import org.mian.gitnex.activities.LoginActivity;
-import org.mian.gitnex.activities.MainActivity;
-import org.mian.gitnex.core.MainApplication;
-import org.mian.gitnex.database.api.BaseApi;
-import org.mian.gitnex.database.api.UserAccountsApi;
-import org.mian.gitnex.database.models.UserAccount;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
@@ -49,6 +42,13 @@ import java.util.Locale;
 import java.util.Objects;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
+import org.mian.gitnex.R;
+import org.mian.gitnex.activities.LoginActivity;
+import org.mian.gitnex.activities.MainActivity;
+import org.mian.gitnex.core.MainApplication;
+import org.mian.gitnex.database.api.BaseApi;
+import org.mian.gitnex.database.api.UserAccountsApi;
+import org.mian.gitnex.database.models.UserAccount;
 
 /**
  * @author M M Arif

@@ -79,6 +79,10 @@ public class MainGrammarLocator {
 			case "sc":
 				return "scala";
 
+			case "el":
+			case "lisp":
+				return "lisp";
+
 			case "yaml":
 			case "yml":
 			case "properties": // This extension doesn't correspond to YAML, but it's the next best
