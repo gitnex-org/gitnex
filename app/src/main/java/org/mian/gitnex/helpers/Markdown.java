@@ -1,7 +1,5 @@
 package org.mian.gitnex.helpers;
 
-import static org.mian.gitnex.helpers.AppUtil.isNightModeThemeDynamic;
-
 import android.content.Context;
 import android.content.Intent;
 import android.graphics.Typeface;
@@ -11,33 +9,6 @@ import androidx.annotation.NonNull;
 import androidx.core.content.res.ResourcesCompat;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
-import io.noties.markwon.AbstractMarkwonPlugin;
-import io.noties.markwon.Markwon;
-import io.noties.markwon.MarkwonConfiguration;
-import io.noties.markwon.SoftBreakAddsNewLinePlugin;
-import io.noties.markwon.core.CorePlugin;
-import io.noties.markwon.core.MarkwonTheme;
-import io.noties.markwon.ext.strikethrough.StrikethroughPlugin;
-import io.noties.markwon.ext.tables.TableAwareMovementMethod;
-import io.noties.markwon.ext.tables.TablePlugin;
-import io.noties.markwon.ext.tasklist.TaskListPlugin;
-import io.noties.markwon.html.HtmlPlugin;
-import io.noties.markwon.image.picasso.PicassoImagesPlugin;
-import io.noties.markwon.inlineparser.InlineProcessor;
-import io.noties.markwon.inlineparser.MarkwonInlineParser;
-import io.noties.markwon.linkify.LinkifyPlugin;
-import io.noties.markwon.movement.MovementMethodPlugin;
-import io.noties.markwon.recycler.MarkwonAdapter;
-import io.noties.markwon.recycler.SimpleEntry;
-import io.noties.markwon.recycler.table.TableEntry;
-import io.noties.markwon.recycler.table.TableEntryPlugin;
-import java.util.Objects;
-import java.util.concurrent.ExecutorService;
-import java.util.concurrent.LinkedBlockingQueue;
-import java.util.concurrent.ThreadPoolExecutor;
-import java.util.concurrent.TimeUnit;
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
 import org.commonmark.ext.gfm.tables.TableBlock;
 import org.commonmark.node.AbstractVisitor;
 import org.commonmark.node.FencedCodeBlock;
@@ -59,6 +30,33 @@ import org.mian.gitnex.helpers.codeeditor.markwon.MarkwonHighlighter;
 import org.mian.gitnex.helpers.codeeditor.theme.Theme;
 import org.mian.gitnex.helpers.contexts.IssueContext;
 import org.mian.gitnex.helpers.contexts.RepositoryContext;
+import java.util.Objects;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.LinkedBlockingQueue;
+import java.util.concurrent.ThreadPoolExecutor;
+import java.util.concurrent.TimeUnit;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
+import io.noties.markwon.AbstractMarkwonPlugin;
+import io.noties.markwon.Markwon;
+import io.noties.markwon.MarkwonConfiguration;
+import io.noties.markwon.SoftBreakAddsNewLinePlugin;
+import io.noties.markwon.core.CorePlugin;
+import io.noties.markwon.core.MarkwonTheme;
+import io.noties.markwon.ext.strikethrough.StrikethroughPlugin;
+import io.noties.markwon.ext.tables.TableAwareMovementMethod;
+import io.noties.markwon.ext.tables.TablePlugin;
+import io.noties.markwon.ext.tasklist.TaskListPlugin;
+import io.noties.markwon.html.HtmlPlugin;
+import io.noties.markwon.image.picasso.PicassoImagesPlugin;
+import io.noties.markwon.inlineparser.InlineProcessor;
+import io.noties.markwon.inlineparser.MarkwonInlineParser;
+import io.noties.markwon.linkify.LinkifyPlugin;
+import io.noties.markwon.movement.MovementMethodPlugin;
+import io.noties.markwon.recycler.MarkwonAdapter;
+import io.noties.markwon.recycler.SimpleEntry;
+import io.noties.markwon.recycler.table.TableEntry;
+import io.noties.markwon.recycler.table.TableEntryPlugin;
 import stormpot.Allocator;
 import stormpot.BlazePool;
 import stormpot.Config;
@@ -66,6 +64,7 @@ import stormpot.Pool;
 import stormpot.Poolable;
 import stormpot.Slot;
 import stormpot.Timeout;
+import static org.mian.gitnex.helpers.AppUtil.isNightModeThemeDynamic;
 
 /**
  * @author opyale
@@ -168,6 +167,7 @@ public class Markdown {
 		private Context context;
 		private String markdown;
 		private TextView textView;
+		TinyDB tinyDB = TinyDB.getInstance(null);
 
 		public Renderer(Slot slot) {
 
@@ -207,6 +207,12 @@ public class Markdown {
 
 											if (tf == null) {
 												tf = AppUtil.getTypeface(textView.getContext());
+											}
+											if (tinyDB.getInt("themeId") == 8) {
+												if (!isNightModeThemeDynamic(context)) {
+													textView.setTextColor(
+														AppUtil.dynamicColorResource(context));
+												}
 											}
 											textView.setTypeface(tf);
 											super.beforeSetText(textView, markdown);
@@ -308,6 +314,7 @@ public class Markdown {
 		private RecyclerView recyclerView;
 		private MarkwonAdapter adapter;
 		private RepositoryContext repository;
+		TinyDB tinyDB = TinyDB.getInstance(null);
 
 		private LinkPostProcessor linkPostProcessor;
 
@@ -367,11 +374,13 @@ public class Markdown {
 											if (tf == null) {
 												tf = AppUtil.getTypeface(context);
 											}
-											textView.setTypeface(tf);
-											if (!isNightModeThemeDynamic(context)) {
-												textView.setTextColor(
+											if (tinyDB.getInt("themeId") == 8) {
+												if (!isNightModeThemeDynamic(context)) {
+													textView.setTextColor(
 														AppUtil.dynamicColorResource(context));
+												}
 											}
+											textView.setTypeface(tf);
 											super.beforeSetText(textView, markdown);
 										}
 

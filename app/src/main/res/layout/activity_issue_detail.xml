@@ -61,9 +61,9 @@
         android:backgroundTint="?attr/fabColor"
         android:contentDescription="@string/commentButtonText"
         android:text="@string/commentButtonText"
-        android:textColor="@color/colorWhite"
-        app:icon="@drawable/ic_reply"
-        app:iconTint="@color/colorWhite" />
+        android:textColor="?attr/materialCardBackgroundColor"
+        app:iconTint="?attr/materialCardBackgroundColor"
+        app:icon="@drawable/ic_reply" />
 
     <RelativeLayout
         android:id="@+id/relativeMainLayoutFrame"

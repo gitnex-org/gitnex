@@ -413,7 +413,7 @@
                             android:layout_marginTop="@dimen/dimen6dp"
                             android:layout_marginBottom="@dimen/dimen20dp"
                             android:text="@string/infoShowMoreInformation"
-                            android:textColor="?attr/primaryTextColor"/>
+                            android:textColor="?attr/materialCardBackgroundColor"/>
 
                     </LinearLayout>
 

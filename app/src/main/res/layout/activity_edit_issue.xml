@@ -182,7 +182,7 @@
                 android:layout_height="@dimen/dimen54dp"
                 android:layout_marginTop="@dimen/dimen8dp"
                 android:text="@string/saveButton"
-                android:textColor="?attr/primaryTextColor"
+                android:textColor="?attr/materialCardBackgroundColor"
                 android:textStyle="bold"/>
 
         </LinearLayout>

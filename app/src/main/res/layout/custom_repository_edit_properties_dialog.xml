@@ -196,7 +196,7 @@
                 android:layout_height="@dimen/dimen54dp"
                 android:layout_marginTop="@dimen/dimen16dp"
                 android:text="@string/saveButton"
-                android:textColor="@color/colorWhite"
+                android:textColor="?attr/materialCardBackgroundColor"
                 android:textSize="16sp"
                 android:textStyle="bold"/>
 

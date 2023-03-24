@@ -54,7 +54,7 @@
                     <View
                         android:layout_width="match_parent"
                         android:layout_height="match_parent"
-                        android:background="?attr/dividerColor" />
+                        android:background="?attr/fabColor" />
 
                 </com.google.android.material.card.MaterialCardView>
 

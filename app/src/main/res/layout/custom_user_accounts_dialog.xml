@@ -21,22 +21,18 @@
 
     </LinearLayout>
 
-    <View
-        android:id="@+id/divider"
-        android:layout_width="match_parent"
-        android:layout_height="1dp"
-        android:background="?attr/dividerColor" />
-
     <com.google.android.material.button.MaterialButton
         android:id="@+id/newAccount"
         android:layout_width="match_parent"
         android:layout_height="@dimen/dimen54dp"
-        android:layout_margin="16dp"
-        android:paddingStart="4dp"
-        android:paddingEnd="4dp"
+        android:layout_marginBottom="@dimen/dimen16dp"
+        android:layout_marginStart="@dimen/dimen16dp"
+        android:layout_marginEnd="@dimen/dimen16dp"
+        android:paddingStart="@dimen/dimen4dp"
+        android:paddingEnd="@dimen/dimen4dp"
         android:text="@string/addNewAccount"
-        android:textColor="@color/colorWhite"
-        android:textSize="16sp"
+        android:textColor="?attr/materialCardBackgroundColor"
+        android:textSize="@dimen/dimen16sp"
         android:textStyle="bold" />
 
 </LinearLayout>

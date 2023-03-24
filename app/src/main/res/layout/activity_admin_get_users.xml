@@ -101,9 +101,9 @@
         android:layout_margin="@dimen/dimen16dp"
         android:text="@string/adminCreateNewUser"
         android:contentDescription="@string/adminCreateNewUser"
-        android:textColor="?attr/primaryBackgroundColor"
+        android:textColor="?attr/materialCardBackgroundColor"
+        app:iconTint="?attr/materialCardBackgroundColor"
         android:backgroundTint="?attr/fabColor"
-        app:iconTint="?attr/primaryBackgroundColor"
         app:icon="@drawable/ic_add" />
 
 </androidx.coordinatorlayout.widget.CoordinatorLayout>

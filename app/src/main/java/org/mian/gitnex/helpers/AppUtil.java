@@ -24,6 +24,13 @@ import androidx.annotation.ColorInt;
 import androidx.browser.customtabs.CustomTabColorSchemeParams;
 import androidx.browser.customtabs.CustomTabsIntent;
 import androidx.core.content.pm.PackageInfoCompat;
+import org.mian.gitnex.R;
+import org.mian.gitnex.activities.LoginActivity;
+import org.mian.gitnex.activities.MainActivity;
+import org.mian.gitnex.core.MainApplication;
+import org.mian.gitnex.database.api.BaseApi;
+import org.mian.gitnex.database.api.UserAccountsApi;
+import org.mian.gitnex.database.models.UserAccount;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
@@ -42,13 +49,6 @@ import java.util.Locale;
 import java.util.Objects;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
-import org.mian.gitnex.R;
-import org.mian.gitnex.activities.LoginActivity;
-import org.mian.gitnex.activities.MainActivity;
-import org.mian.gitnex.core.MainApplication;
-import org.mian.gitnex.database.api.BaseApi;
-import org.mian.gitnex.database.api.UserAccountsApi;
-import org.mian.gitnex.database.models.UserAccount;
 
 /**
  * @author M M Arif
@@ -665,16 +665,10 @@ public class AppUtil {
 	}
 
 	public static boolean isNightModeThemeDynamic(Context context) {
-
-		TinyDB tinyDB = TinyDB.getInstance(context);
 		int nightModeFlags =
 				context.getResources().getConfiguration().uiMode & Configuration.UI_MODE_NIGHT_MASK;
 
-		if (tinyDB.getInt("themeId") == 8) {
-			return nightModeFlags == Configuration.UI_MODE_NIGHT_YES;
-		} else {
-			return nightModeFlags == Configuration.UI_MODE_NIGHT_NO;
-		}
+		return nightModeFlags == Configuration.UI_MODE_NIGHT_YES;
 	}
 
 	public static int dynamicColorResource(Context context) {

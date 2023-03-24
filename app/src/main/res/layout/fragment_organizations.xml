@@ -52,9 +52,9 @@
         android:layout_margin="16dp"
         android:text="@string/pageTitleCreateOrganization"
         android:contentDescription="@string/pageTitleCreateOrganization"
-        android:textColor="?attr/primaryTextColor"
+        android:textColor="?attr/materialCardBackgroundColor"
+        app:iconTint="?attr/materialCardBackgroundColor"
         android:backgroundTint="?attr/fabColor"
-        app:iconTint="?attr/primaryTextColor"
         app:icon="@drawable/ic_add" />
 
 </androidx.coordinatorlayout.widget.CoordinatorLayout>
