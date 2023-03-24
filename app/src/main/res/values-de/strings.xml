@@ -640,6 +640,7 @@
     <string name="notLoggedIn">%s \u25CF nicht angemeldet</string>
     <string name="followSystem">System folgen (Light/Dark)</string>
     <string name="followSystemBlack">System folgen (Light/Pitch Black)</string>
+    <string name="dynamicColorsFollowSystem">Dynamische Farben - System folgen (Light/Dark)</string>
     <string name="repoForkOf">Fork von: %s</string>
     <string name="adoptRepo">Übernehmen</string>
     <string name="repoAdopted">Repository %s wurde übernommen</string>
