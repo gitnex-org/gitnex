@@ -36,8 +36,6 @@ public class OrganizationLabelsFragment extends Fragment {
 	private String repoOwner;
 	private final String type = "org";
 
-	public OrganizationLabelsFragment() {}
-
 	public static OrganizationLabelsFragment newInstance(
 			String repoOwner, OrganizationPermissions permissions) {
 
