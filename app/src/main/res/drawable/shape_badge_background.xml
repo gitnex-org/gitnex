@@ -4,7 +4,7 @@
 
     <corners android:radius="8dp"/>
     <solid
-        android:color="?attr/iconsColor"/>
+        android:color="?attr/primaryTextColor"/>
     <padding
         android:bottom="2dp"
         android:left="5dp"

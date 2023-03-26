@@ -26,14 +26,16 @@
                 android:layout_gravity="center"
                 android:text="@string/archivedRepositoryMessage"
                 android:background="@drawable/shape_archived"
-                android:padding="@dimen/dimen6dp"
-                android:layout_marginBottom="@dimen/dimen8dp"
-                android:textColor="@color/colorWhite"/>
+                android:padding="@dimen/dimen10dp"
+                android:layout_marginBottom="@dimen/dimen10dp"
+                android:textStyle="bold"
+                android:textSize="@dimen/dimen14sp"
+                android:textColor="?attr/fabColor" />
 
             <com.google.android.material.card.MaterialCardView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                style="?attr/materialCardViewFilledStyle"
+                style="?attr/materialCardViewElevatedStyle"
                 app:cardElevation="@dimen/dimen0dp">
 
                 <LinearLayout
@@ -411,7 +413,7 @@
                             android:layout_marginTop="@dimen/dimen6dp"
                             android:layout_marginBottom="@dimen/dimen20dp"
                             android:text="@string/infoShowMoreInformation"
-                            android:textColor="@color/btnTextColor"/>
+                            android:textColor="?attr/materialCardBackgroundColor"/>
 
                     </LinearLayout>
 
@@ -423,7 +425,7 @@
                 android:id="@+id/fileContentsFrameHeader"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                style="?attr/materialCardViewFilledStyle"
+                style="?attr/materialCardViewElevatedStyle"
                 android:layout_marginTop="@dimen/dimen8dp"
                 app:cardElevation="@dimen/dimen0dp">
 

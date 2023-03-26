@@ -1,6 +1,5 @@
 package org.mian.gitnex.activities;
 
-import android.content.Intent;
 import android.graphics.Typeface;
 import android.os.Bundle;
 import android.view.Menu;
@@ -38,6 +37,7 @@ import retrofit2.Response;
  */
 public class OrganizationDetailActivity extends BaseActivity implements BottomSheetListener {
 
+	public static boolean updateOrgFABActions = false;
 	public OrganizationPermissions permissions;
 	private String orgName;
 	private boolean isMember = false;
@@ -175,8 +175,7 @@ public class OrganizationDetailActivity extends BaseActivity implements BottomSh
 			return true;
 		} else if (id == R.id.repoMenu) {
 
-			BottomSheetOrganizationFragment bottomSheet =
-					new BottomSheetOrganizationFragment(permissions);
+			BottomSheetOrganizationFragment bottomSheet = new BottomSheetOrganizationFragment();
 			bottomSheet.show(getSupportFragmentManager(), "orgBottomSheet");
 			return true;
 		} else {
@@ -195,25 +194,6 @@ public class OrganizationDetailActivity extends BaseActivity implements BottomSh
 		url = url + getIntent().getStringExtra("orgName");
 
 		switch (text) {
-			case "repository":
-				Intent intentRepo = new Intent(this, CreateRepoActivity.class);
-				intentRepo.putExtra("organizationAction", true);
-				intentRepo.putExtra("orgName", getIntent().getStringExtra("orgName"));
-				intentRepo.putExtras(getIntent().getExtras());
-				startActivity(intentRepo);
-				break;
-			case "label":
-				Intent intent = new Intent(ctx, CreateLabelActivity.class);
-				intent.putExtra("orgName", getIntent().getStringExtra("orgName"));
-				intent.putExtra("type", "org");
-				ctx.startActivity(intent);
-				break;
-			case "team":
-				Intent intentTeam =
-						new Intent(OrganizationDetailActivity.this, CreateTeamByOrgActivity.class);
-				intentTeam.putExtras(getIntent().getExtras());
-				startActivity(intentTeam);
-				break;
 			case "copyOrgUrl":
 				AppUtil.copyToClipboard(this, url, ctx.getString(R.string.copyIssueUrlToastMsg));
 				break;
@@ -242,9 +222,9 @@ public class OrganizationDetailActivity extends BaseActivity implements BottomSh
 				case 0: // info
 					return OrganizationInfoFragment.newInstance(orgName);
 				case 1: // repos
-					return OrganizationRepositoriesFragment.newInstance(orgName);
+					return OrganizationRepositoriesFragment.newInstance(orgName, permissions);
 				case 2: // labels
-					return OrganizationLabelsFragment.newInstance(orgName);
+					return OrganizationLabelsFragment.newInstance(orgName, permissions);
 				case 3: // teams / members
 					if (isMember) {
 						return OrganizationTeamsFragment.newInstance(orgName, permissions);

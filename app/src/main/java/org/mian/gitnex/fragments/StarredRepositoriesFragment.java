@@ -82,7 +82,14 @@ public class StarredRepositoriesFragment extends Fragment {
 	private void fetchDataAsync() {
 
 		repositoriesViewModel
-				.getRepositories(page, resultLimit, "", "starredRepos", null, getContext())
+				.getRepositories(
+						page,
+						resultLimit,
+						"",
+						"starredRepos",
+						null,
+						getContext(),
+						fragmentRepositoriesBinding)
 				.observe(
 						getViewLifecycleOwner(),
 						reposListMain -> {

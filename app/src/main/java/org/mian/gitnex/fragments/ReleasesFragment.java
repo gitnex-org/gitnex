@@ -39,6 +39,7 @@ import org.gitnex.tea4j.v2.auth.ApiKeyAuth;
 import org.gitnex.tea4j.v2.models.Release;
 import org.mian.gitnex.R;
 import org.mian.gitnex.activities.BaseActivity;
+import org.mian.gitnex.activities.CreateReleaseActivity;
 import org.mian.gitnex.activities.RepoDetailActivity;
 import org.mian.gitnex.adapters.ReleasesAdapter;
 import org.mian.gitnex.adapters.TagsAdapter;
@@ -92,6 +93,9 @@ public class ReleasesFragment extends Fragment {
 		fragmentReleasesBinding.recyclerView.setLayoutManager(
 				new LinearLayoutManager(getContext()));
 
+		boolean canPush = repository.getPermissions().isPush();
+		boolean archived = repository.getRepository().isArchived();
+
 		fragmentReleasesBinding.pullToRefresh.setOnRefreshListener(
 				() ->
 						new Handler(Looper.getMainLooper())
@@ -136,7 +140,26 @@ public class ReleasesFragment extends Fragment {
 							fragmentReleasesBinding.progressBar.setVisibility(View.VISIBLE);
 						});
 
+		if (!canPush || archived) {
+			fragmentReleasesBinding.createRelease.setVisibility(View.GONE);
+		}
+
+		fragmentReleasesBinding.createRelease.setOnClickListener(
+				v14 ->
+						startActivity(
+								repository.getIntent(getContext(), CreateReleaseActivity.class)));
+
 		return fragmentReleasesBinding.getRoot();
+	}
+
+	@Override
+	public void onResume() {
+		super.onResume();
+
+		if (RepoDetailActivity.updateFABActions) {
+			fetchDataAsync(repository.getOwner(), repository.getName());
+			RepoDetailActivity.updateFABActions = false;
+		}
 	}
 
 	private void fetchDataAsync(String owner, String repo) {

@@ -95,7 +95,7 @@
                 android:textSize="@dimen/dimen16sp"/>
 
             <com.google.android.material.card.MaterialCardView
-                style="?attr/materialCardViewFilledStyle"
+                style="?attr/materialCardViewElevatedStyle"
                 android:layout_width="@dimen/dimen28dp"
                 android:layout_height="@dimen/dimen28dp"
                 app:cardCornerRadius="@dimen/dimen16dp"
@@ -117,7 +117,7 @@
             android:layout_height="@dimen/dimen54dp"
             android:layout_marginTop="@dimen/dimen8dp"
             android:text="@string/newCreateButtonCopy"
-            android:textColor="@color/btnTextColor"
+            android:textColor="?attr/materialCardBackgroundColor"
             android:textStyle="bold"/>
 
     </LinearLayout>

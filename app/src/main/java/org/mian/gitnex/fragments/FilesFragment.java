@@ -24,6 +24,7 @@ import moe.feng.common.view.breadcrumbs.DefaultBreadcrumbsCallback;
 import moe.feng.common.view.breadcrumbs.model.BreadcrumbItem;
 import org.gitnex.tea4j.v2.models.ContentsResponse;
 import org.mian.gitnex.R;
+import org.mian.gitnex.activities.CreateFileActivity;
 import org.mian.gitnex.activities.FileViewActivity;
 import org.mian.gitnex.activities.RepoDetailActivity;
 import org.mian.gitnex.adapters.FilesAdapter;
@@ -69,6 +70,9 @@ public class FilesFragment extends Fragment implements FilesAdapter.FilesAdapter
 		binding = FragmentFilesBinding.inflate(inflater, container, false);
 		setHasOptionsMenu(true);
 
+		boolean canPush = repository.getPermissions().isPush();
+		boolean archived = repository.getRepository().isArchived();
+
 		filesAdapter = new FilesAdapter(getContext(), this);
 
 		binding.recyclerView.setHasFixedSize(true);
@@ -78,10 +82,7 @@ public class FilesFragment extends Fragment implements FilesAdapter.FilesAdapter
 		binding.breadcrumbsView.setItems(
 				new ArrayList<>(
 						Collections.singletonList(
-								BreadcrumbItem.createSimpleItem(
-										getResources().getString(R.string.filesBreadcrumbRoot)
-												+ getResources().getString(R.string.colonDivider)
-												+ repository.getBranchRef()))));
+								BreadcrumbItem.createSimpleItem(repository.getBranchRef()))));
 		// noinspection unchecked
 		binding.breadcrumbsView.setCallback(
 				new DefaultBreadcrumbsCallback<BreadcrumbItem>() {
@@ -150,15 +151,7 @@ public class FilesFragment extends Fragment implements FilesAdapter.FilesAdapter
 									new ArrayList<>(
 											Collections.singletonList(
 													BreadcrumbItem.createSimpleItem(
-															getResources()
-																			.getString(
-																					R.string
-																							.filesBreadcrumbRoot)
-																	+ getResources()
-																			.getString(
-																					R.string
-																							.colonDivider)
-																	+ repository.getBranchRef()))));
+															repository.getBranchRef()))));
 							refresh();
 						});
 
@@ -172,7 +165,24 @@ public class FilesFragment extends Fragment implements FilesAdapter.FilesAdapter
 		}
 		refresh();
 
+		if (!canPush || archived) {
+			binding.newFile.setVisibility(View.GONE);
+		}
+
+		binding.newFile.setOnClickListener(
+				v17 -> startActivity(repository.getIntent(getContext(), CreateFileActivity.class)));
+
 		return binding.getRoot();
+	}
+
+	@Override
+	public void onResume() {
+		super.onResume();
+
+		if (RepoDetailActivity.updateFABActions) {
+			refresh();
+			RepoDetailActivity.updateFABActions = false;
+		}
 	}
 
 	@Override

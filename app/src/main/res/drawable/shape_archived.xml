@@ -2,7 +2,7 @@
 <shape xmlns:android="http://schemas.android.com/apk/res/android"
     android:shape="rectangle">
 
-    <corners android:radius="@dimen/dimen8dp"/>
-    <solid android:color="@color/releasePre"/>
+    <corners android:radius="@dimen/dimen12dp"/>
+    <solid android:color="?attr/materialCardBackgroundColor"/>
 
 </shape>

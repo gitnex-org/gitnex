@@ -187,7 +187,7 @@
                 android:layout_height="@dimen/dimen54dp"
                 android:layout_marginTop="@dimen/dimen8dp"
                 android:text="@string/mergePullRequestButtonText"
-                android:textColor="@color/btnTextColor"
+                android:textColor="?attr/materialCardBackgroundColor"
                 android:textStyle="bold"/>
 
             <TextView

@@ -23,7 +23,7 @@
         android:layout_marginStart="@dimen/dimen8dp"
         android:background="@drawable/shape_badge_background"
         android:text="@string/infoTabRepoZero"
-        android:textColor="@color/colorWhite"
+        android:textColor="?attr/primaryBackgroundColor"
         android:textSize="@dimen/dimen12sp"/>
 
 </LinearLayout>

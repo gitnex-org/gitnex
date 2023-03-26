@@ -168,6 +168,7 @@ public class Markdown {
 		private Context context;
 		private String markdown;
 		private TextView textView;
+		TinyDB tinyDB = TinyDB.getInstance(null);
 
 		public Renderer(Slot slot) {
 
@@ -207,6 +208,12 @@ public class Markdown {
 
 											if (tf == null) {
 												tf = AppUtil.getTypeface(textView.getContext());
+											}
+											if (tinyDB.getInt("themeId") == 8) {
+												if (!isNightModeThemeDynamic(context)) {
+													textView.setTextColor(
+															AppUtil.dynamicColorResource(context));
+												}
 											}
 											textView.setTypeface(tf);
 											super.beforeSetText(textView, markdown);
@@ -308,6 +315,7 @@ public class Markdown {
 		private RecyclerView recyclerView;
 		private MarkwonAdapter adapter;
 		private RepositoryContext repository;
+		TinyDB tinyDB = TinyDB.getInstance(null);
 
 		private LinkPostProcessor linkPostProcessor;
 
@@ -367,11 +375,13 @@ public class Markdown {
 											if (tf == null) {
 												tf = AppUtil.getTypeface(context);
 											}
-											textView.setTypeface(tf);
-											if (!isNightModeThemeDynamic(context)) {
-												textView.setTextColor(
-														AppUtil.dynamicColorResource(context));
+											if (tinyDB.getInt("themeId") == 8) {
+												if (!isNightModeThemeDynamic(context)) {
+													textView.setTextColor(
+															AppUtil.dynamicColorResource(context));
+												}
 											}
+											textView.setTypeface(tf);
 											super.beforeSetText(textView, markdown);
 										}
 

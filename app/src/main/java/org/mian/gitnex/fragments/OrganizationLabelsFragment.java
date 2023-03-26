@@ -1,5 +1,6 @@
 package org.mian.gitnex.fragments;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Looper;
@@ -14,6 +15,7 @@ import androidx.lifecycle.ViewModelProvider;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
+import org.gitnex.tea4j.v2.models.OrganizationPermissions;
 import org.mian.gitnex.activities.CreateLabelActivity;
 import org.mian.gitnex.adapters.LabelsAdapter;
 import org.mian.gitnex.databinding.FragmentLabelsBinding;
@@ -24,21 +26,23 @@ import org.mian.gitnex.viewmodels.OrganizationLabelsViewModel;
  */
 public class OrganizationLabelsFragment extends Fragment {
 
+	private OrganizationPermissions permissions;
 	private OrganizationLabelsViewModel organizationLabelsViewModel;
 	private ProgressBar mProgressBar;
 	private RecyclerView mRecyclerView;
 	private LabelsAdapter adapter;
 	private TextView noData;
-	private static final String repoOwnerF = "param1";
+	private static final String getOrgName = null;
+	private String repoOwner;
 	private final String type = "org";
 
-	private String repoOwner;
-
-	public static OrganizationLabelsFragment newInstance(String param1) {
+	public static OrganizationLabelsFragment newInstance(
+			String repoOwner, OrganizationPermissions permissions) {
 
 		OrganizationLabelsFragment fragment = new OrganizationLabelsFragment();
 		Bundle args = new Bundle();
-		args.putString(repoOwnerF, param1);
+		args.putString(getOrgName, repoOwner);
+		args.putSerializable("permissions", permissions);
 		fragment.setArguments(args);
 		return fragment;
 	}
@@ -50,7 +54,8 @@ public class OrganizationLabelsFragment extends Fragment {
 
 		if (getArguments() != null) {
 
-			repoOwner = getArguments().getString(repoOwnerF);
+			repoOwner = getArguments().getString(getOrgName);
+			permissions = (OrganizationPermissions) getArguments().getSerializable("permissions");
 		}
 	}
 
@@ -85,6 +90,18 @@ public class OrganizationLabelsFragment extends Fragment {
 										200));
 
 		fetchDataAsync(repoOwner);
+
+		if (!permissions.isIsOwner()) {
+			fragmentLabelsBinding.createLabel.setVisibility(View.GONE);
+		}
+
+		fragmentLabelsBinding.createLabel.setOnClickListener(
+				v1 -> {
+					Intent intent = new Intent(getContext(), CreateLabelActivity.class);
+					intent.putExtra("orgName", repoOwner);
+					intent.putExtra("type", "org");
+					startActivity(intent);
+				});
 
 		return fragmentLabelsBinding.getRoot();
 	}

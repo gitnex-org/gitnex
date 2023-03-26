@@ -3,37 +3,17 @@
     xmlns:app="http://schemas.android.com/apk/res-auto">
 
     <item
-        android:id="@+id/mainRepoMenu"
-        android:icon="@drawable/ic_dotted_menu"
+        android:id="@+id/switchBranches"
+        android:icon="@drawable/ic_branch"
         android:orderInCategory="1"
-        android:title="@string/menuTitleText"
-        app:showAsAction="always">
+        android:title="@string/strSwitchBranches"
+        app:showAsAction="ifRoom|withText" />
 
-        <menu>
-
-            <item
-                android:id="@+id/repoMenu"
-                android:icon="@drawable/ic_dotted_menu"
-                android:orderInCategory="0"
-                android:title="@string/menuTitleText"
-                app:showAsAction="ifRoom|withText"/>
-
-            <item
-                android:id="@+id/switchBranches"
-                android:icon="@drawable/ic_branch"
-                android:orderInCategory="1"
-                android:title="@string/strSwitchBranches"
-                app:showAsAction="ifRoom|withText"/>
-
-            <item
-                android:id="@+id/branchCommits"
-                android:icon="@drawable/ic_commit"
-                android:orderInCategory="2"
-                android:title="@string/commitTitle"
-                app:showAsAction="ifRoom|withText"/>
-
-        </menu>
-
-    </item>
+    <item
+        android:id="@+id/branchCommits"
+        android:icon="@drawable/ic_commit"
+        android:orderInCategory="2"
+        android:title="@string/commitTitle"
+        app:showAsAction="ifRoom|withText" />
 
 </menu>

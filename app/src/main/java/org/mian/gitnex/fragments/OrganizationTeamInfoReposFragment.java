@@ -1,5 +1,6 @@
 package org.mian.gitnex.fragments;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Looper;
@@ -14,8 +15,10 @@ import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModelProvider;
 import androidx.recyclerview.widget.LinearLayoutManager;
+import org.gitnex.tea4j.v2.models.OrganizationPermissions;
 import org.gitnex.tea4j.v2.models.Team;
 import org.mian.gitnex.R;
+import org.mian.gitnex.activities.AddNewTeamRepoActivity;
 import org.mian.gitnex.activities.MainActivity;
 import org.mian.gitnex.adapters.ReposListAdapter;
 import org.mian.gitnex.databinding.FragmentRepositoriesBinding;
@@ -41,6 +44,7 @@ public class OrganizationTeamInfoReposFragment extends Fragment {
 
 		Bundle bundle = new Bundle();
 		bundle.putSerializable("team", team);
+		bundle.putBoolean("showRepo", !team.isIncludesAllRepositories());
 		fragment.setArguments(bundle);
 
 		return fragment;
@@ -59,7 +63,7 @@ public class OrganizationTeamInfoReposFragment extends Fragment {
 
 		repositoriesViewModel = new ViewModelProvider(this).get(RepositoriesViewModel.class);
 
-		fragmentRepositoriesBinding.addNewRepo.setVisibility(View.GONE);
+		fragmentRepositoriesBinding.addNewRepo.setText(R.string.pageTitleAddRepository);
 
 		fragmentRepositoriesBinding.recyclerView.setHasFixedSize(true);
 		fragmentRepositoriesBinding.recyclerView.setLayoutManager(
@@ -81,6 +85,23 @@ public class OrganizationTeamInfoReposFragment extends Fragment {
 
 		fetchDataAsync();
 
+		OrganizationPermissions permissions =
+				(OrganizationPermissions)
+						requireActivity().getIntent().getSerializableExtra("permissions");
+
+		if (!requireArguments().getBoolean("showRepo") || !permissions.isIsOwner()) {
+			fragmentRepositoriesBinding.addNewRepo.setVisibility(View.GONE);
+		}
+		fragmentRepositoriesBinding.addNewRepo.setOnClickListener(
+				v1 -> {
+					Intent intent = new Intent(getContext(), AddNewTeamRepoActivity.class);
+					intent.putExtra("teamId", team.getId());
+					intent.putExtra("teamName", team.getName());
+					intent.putExtra(
+							"orgName", requireActivity().getIntent().getStringExtra("orgName"));
+					startActivity(intent);
+				});
+
 		return fragmentRepositoriesBinding.getRoot();
 	}
 
@@ -88,7 +109,13 @@ public class OrganizationTeamInfoReposFragment extends Fragment {
 
 		repositoriesViewModel
 				.getRepositories(
-						page, resultLimit, String.valueOf(team.getId()), "team", null, getContext())
+						page,
+						resultLimit,
+						String.valueOf(team.getId()),
+						"team",
+						null,
+						getContext(),
+						fragmentRepositoriesBinding)
 				.observe(
 						getViewLifecycleOwner(),
 						reposListMain -> {

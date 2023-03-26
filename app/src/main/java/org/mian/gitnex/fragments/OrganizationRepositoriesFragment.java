@@ -1,5 +1,6 @@
 package org.mian.gitnex.fragments;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Looper;
@@ -14,8 +15,10 @@ import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModelProvider;
 import androidx.recyclerview.widget.LinearLayoutManager;
+import org.gitnex.tea4j.v2.models.OrganizationPermissions;
 import org.mian.gitnex.R;
-import org.mian.gitnex.activities.MainActivity;
+import org.mian.gitnex.activities.CreateRepoActivity;
+import org.mian.gitnex.activities.OrganizationDetailActivity;
 import org.mian.gitnex.adapters.ReposListAdapter;
 import org.mian.gitnex.databinding.FragmentRepositoriesBinding;
 import org.mian.gitnex.helpers.Constants;
@@ -26,6 +29,7 @@ import org.mian.gitnex.viewmodels.RepositoriesViewModel;
  */
 public class OrganizationRepositoriesFragment extends Fragment {
 
+	private OrganizationPermissions permissions;
 	private RepositoriesViewModel repositoriesViewModel;
 	private FragmentRepositoriesBinding fragmentRepositoriesBinding;
 	private ReposListAdapter adapter;
@@ -36,10 +40,12 @@ public class OrganizationRepositoriesFragment extends Fragment {
 
 	public OrganizationRepositoriesFragment() {}
 
-	public static OrganizationRepositoriesFragment newInstance(String orgName) {
+	public static OrganizationRepositoriesFragment newInstance(
+			String orgName, OrganizationPermissions permissions) {
 		OrganizationRepositoriesFragment fragment = new OrganizationRepositoriesFragment();
 		Bundle args = new Bundle();
 		args.putString(getOrgName, orgName);
+		args.putSerializable("permissions", permissions);
 		fragment.setArguments(args);
 		return fragment;
 	}
@@ -49,6 +55,7 @@ public class OrganizationRepositoriesFragment extends Fragment {
 		super.onCreate(savedInstanceState);
 		if (getArguments() != null) {
 			orgName = getArguments().getString(getOrgName);
+			permissions = (OrganizationPermissions) getArguments().getSerializable("permissions");
 		}
 	}
 
@@ -62,8 +69,6 @@ public class OrganizationRepositoriesFragment extends Fragment {
 		repositoriesViewModel = new ViewModelProvider(this).get(RepositoriesViewModel.class);
 
 		resultLimit = Constants.getCurrentResultLimit(getContext());
-
-		fragmentRepositoriesBinding.addNewRepo.setVisibility(View.GONE);
 
 		fragmentRepositoriesBinding.recyclerView.setHasFixedSize(true);
 		fragmentRepositoriesBinding.recyclerView.setLayoutManager(
@@ -86,14 +91,35 @@ public class OrganizationRepositoriesFragment extends Fragment {
 		page = 1;
 		fetchDataAsync();
 
+		if (permissions != null) {
+			if (!permissions.isCanCreateRepository()) {
+				fragmentRepositoriesBinding.addNewRepo.setVisibility(View.GONE);
+			}
+		}
+
+		fragmentRepositoriesBinding.addNewRepo.setOnClickListener(
+				v12 -> {
+					Intent intentRepo = new Intent(getContext(), CreateRepoActivity.class);
+					intentRepo.putExtra("organizationAction", true);
+					intentRepo.putExtra("orgName", orgName);
+					intentRepo.putExtras(requireActivity().getIntent().getExtras());
+					startActivity(intentRepo);
+				});
+
 		return fragmentRepositoriesBinding.getRoot();
 	}
-	;
 
 	private void fetchDataAsync() {
 
 		repositoriesViewModel
-				.getRepositories(page, resultLimit, "", "org", orgName, getContext())
+				.getRepositories(
+						page,
+						resultLimit,
+						"",
+						"org",
+						orgName,
+						getContext(),
+						fragmentRepositoriesBinding)
 				.observe(
 						getViewLifecycleOwner(),
 						reposListMain -> {
@@ -144,10 +170,10 @@ public class OrganizationRepositoriesFragment extends Fragment {
 
 		super.onResume();
 
-		if (MainActivity.reloadRepos) {
-			repositoriesViewModel.loadReposList(
-					page, resultLimit, null, "org", orgName, getContext());
-			MainActivity.reloadRepos = false;
+		if (OrganizationDetailActivity.updateOrgFABActions) {
+			page = 1;
+			fetchDataAsync();
+			OrganizationDetailActivity.updateOrgFABActions = false;
 		}
 	}
 

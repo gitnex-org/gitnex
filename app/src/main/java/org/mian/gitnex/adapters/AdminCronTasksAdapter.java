@@ -5,7 +5,6 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
-import android.widget.LinearLayout;
 import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
@@ -45,10 +44,8 @@ public class AdminCronTasksAdapter
 
 			ImageView runTask = itemView.findViewById(R.id.runTask);
 			taskName = itemView.findViewById(R.id.taskName);
-			LinearLayout cronTasksInfo = itemView.findViewById(R.id.cronTasksInfo);
-			LinearLayout cronTasksRun = itemView.findViewById(R.id.cronTasksRun);
 
-			cronTasksInfo.setOnClickListener(
+			taskName.setOnClickListener(
 					taskInfo -> {
 						String nextRun = "";
 						String lastRun = "";
@@ -85,10 +82,7 @@ public class AdminCronTasksAdapter
 						materialAlertDialogBuilder.create().show();
 					});
 
-			cronTasksRun.setOnClickListener(
-					taskInfo -> {
-						runCronTask(ctx, cronTasks.getName());
-					});
+			runTask.setOnClickListener(taskInfo -> runCronTask(ctx, cronTasks.getName()));
 		}
 	}
 

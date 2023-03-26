@@ -8,7 +8,6 @@ import android.view.ViewGroup;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment;
-import org.gitnex.tea4j.v2.models.OrganizationPermissions;
 import org.mian.gitnex.databinding.BottomSheetOrganizationBinding;
 import org.mian.gitnex.structs.BottomSheetListener;
 
@@ -17,12 +16,7 @@ import org.mian.gitnex.structs.BottomSheetListener;
  */
 public class BottomSheetOrganizationFragment extends BottomSheetDialogFragment {
 
-	private final OrganizationPermissions permissions;
 	private BottomSheetListener bmListener;
-
-	public BottomSheetOrganizationFragment(OrganizationPermissions org) {
-		permissions = org;
-	}
 
 	@Nullable @Override
 	public View onCreateView(
@@ -32,39 +26,6 @@ public class BottomSheetOrganizationFragment extends BottomSheetDialogFragment {
 
 		BottomSheetOrganizationBinding bottomSheetOrganizationBinding =
 				BottomSheetOrganizationBinding.inflate(inflater, container, false);
-
-		if (permissions != null) {
-			if (!permissions.isCanCreateRepository()) {
-				bottomSheetOrganizationBinding.createRepository.setVisibility(View.GONE);
-			}
-			if (!permissions.isIsOwner()) {
-				bottomSheetOrganizationBinding.createLabel.setVisibility(View.GONE);
-				bottomSheetOrganizationBinding.createTeam.setVisibility(View.GONE);
-			}
-			if (!permissions.isCanCreateRepository() || !permissions.isIsOwner()) {
-				bottomSheetOrganizationBinding.organizationHeadFrame.setVisibility(View.GONE);
-				bottomSheetOrganizationBinding.orgCreateSection.setVisibility(View.GONE);
-				bottomSheetOrganizationBinding.orgDivider.setVisibility(View.GONE);
-			}
-		}
-
-		bottomSheetOrganizationBinding.createTeam.setOnClickListener(
-				v1 -> {
-					bmListener.onButtonClicked("team");
-					dismiss();
-				});
-
-		bottomSheetOrganizationBinding.createLabel.setOnClickListener(
-				v1 -> {
-					bmListener.onButtonClicked("label");
-					dismiss();
-				});
-
-		bottomSheetOrganizationBinding.createRepository.setOnClickListener(
-				v12 -> {
-					bmListener.onButtonClicked("repository");
-					dismiss();
-				});
 
 		bottomSheetOrganizationBinding.copyOrgUrl.setOnClickListener(
 				v1 -> {

@@ -552,9 +552,12 @@ public class IssueCommentsAdapter extends RecyclerView.Adapter<RecyclerView.View
 											text.indexOf('|'),
 											text.indexOf('|') + 1,
 											Spannable.SPAN_INCLUSIVE_EXCLUSIVE);
-									if (!isNightModeThemeDynamic(context)) {
-										textView.setTextColor(
-												AppUtil.dynamicColorResource(context));
+
+									if (tinyDB.getInt("themeId") == 8) {
+										if (!isNightModeThemeDynamic(context)) {
+											textView.setTextColor(
+													AppUtil.dynamicColorResource(context));
+										}
 									}
 									textView.setText(spannableString);
 									timelineData.addView(textView);
@@ -589,8 +592,10 @@ public class IssueCommentsAdapter extends RecyclerView.Adapter<RecyclerView.View
 								issueComment.getUser().getLogin(),
 								commitText,
 								info);
-				if (!isNightModeThemeDynamic(context)) {
-					start.setTextColor(AppUtil.dynamicColorResource(context));
+				if (tinyDB.getInt("themeId") == 8) {
+					if (!isNightModeThemeDynamic(context)) {
+						start.setTextColor(AppUtil.dynamicColorResource(context));
+					}
 				}
 				start.setText(HtmlCompat.fromHtml(commitString, HtmlCompat.FROM_HTML_MODE_LEGACY));
 				start.setTextSize(fontSize);
@@ -650,8 +655,10 @@ public class IssueCommentsAdapter extends RecyclerView.Adapter<RecyclerView.View
 
 				TextView start = new TextView(context);
 
-				if (!isNightModeThemeDynamic(context)) {
-					start.setTextColor(AppUtil.dynamicColorResource(context));
+				if (tinyDB.getInt("themeId") == 8) {
+					if (!isNightModeThemeDynamic(context)) {
+						start.setTextColor(AppUtil.dynamicColorResource(context));
+					}
 				}
 
 				if (issueComment.isRemovedAssignee()) {
@@ -705,8 +712,10 @@ public class IssueCommentsAdapter extends RecyclerView.Adapter<RecyclerView.View
 
 				TextView start = new TextView(context);
 
-				if (!isNightModeThemeDynamic(context)) {
-					start.setTextColor(AppUtil.dynamicColorResource(context));
+				if (tinyDB.getInt("themeId") == 8) {
+					if (!isNightModeThemeDynamic(context)) {
+						start.setTextColor(AppUtil.dynamicColorResource(context));
+					}
 				}
 
 				if (issueComment.getMilestone() != null) {
@@ -747,8 +756,10 @@ public class IssueCommentsAdapter extends RecyclerView.Adapter<RecyclerView.View
 
 				TextView start = new TextView(context);
 
-				if (!isNightModeThemeDynamic(context)) {
-					start.setTextColor(AppUtil.dynamicColorResource(context));
+				if (tinyDB.getInt("themeId") == 8) {
+					if (!isNightModeThemeDynamic(context)) {
+						start.setTextColor(AppUtil.dynamicColorResource(context));
+					}
 				}
 
 				if (issue.getIssueType().equalsIgnoreCase("Issue")) {
@@ -869,8 +880,10 @@ public class IssueCommentsAdapter extends RecyclerView.Adapter<RecyclerView.View
 
 				TextView start = new TextView(context);
 
-				if (!isNightModeThemeDynamic(context)) {
-					start.setTextColor(AppUtil.dynamicColorResource(context));
+				if (tinyDB.getInt("themeId") == 8) {
+					if (!isNightModeThemeDynamic(context)) {
+						start.setTextColor(AppUtil.dynamicColorResource(context));
+					}
 				}
 
 				if (issueComment.getType().equalsIgnoreCase("review")) {
@@ -898,8 +911,10 @@ public class IssueCommentsAdapter extends RecyclerView.Adapter<RecyclerView.View
 
 				TextView start = new TextView(context);
 
-				if (!isNightModeThemeDynamic(context)) {
-					start.setTextColor(AppUtil.dynamicColorResource(context));
+				if (tinyDB.getInt("themeId") == 8) {
+					if (!isNightModeThemeDynamic(context)) {
+						start.setTextColor(AppUtil.dynamicColorResource(context));
+					}
 				}
 
 				start.setText(
@@ -921,8 +936,10 @@ public class IssueCommentsAdapter extends RecyclerView.Adapter<RecyclerView.View
 
 				TextView start = new TextView(context);
 
-				if (!isNightModeThemeDynamic(context)) {
-					start.setTextColor(AppUtil.dynamicColorResource(context));
+				if (tinyDB.getInt("themeId") == 8) {
+					if (!isNightModeThemeDynamic(context)) {
+						start.setTextColor(AppUtil.dynamicColorResource(context));
+					}
 				}
 
 				if (issueComment.getType().equalsIgnoreCase("lock")) {
@@ -953,8 +970,10 @@ public class IssueCommentsAdapter extends RecyclerView.Adapter<RecyclerView.View
 
 				TextView start = new TextView(context);
 
-				if (!isNightModeThemeDynamic(context)) {
-					start.setTextColor(AppUtil.dynamicColorResource(context));
+				if (tinyDB.getInt("themeId") == 8) {
+					if (!isNightModeThemeDynamic(context)) {
+						start.setTextColor(AppUtil.dynamicColorResource(context));
+					}
 				}
 
 				if (issueComment.getType().equalsIgnoreCase("add_dependency")) {
@@ -986,8 +1005,10 @@ public class IssueCommentsAdapter extends RecyclerView.Adapter<RecyclerView.View
 
 				TextView start = new TextView(context);
 
-				if (!isNightModeThemeDynamic(context)) {
-					start.setTextColor(AppUtil.dynamicColorResource(context));
+				if (tinyDB.getInt("themeId") == 8) {
+					if (!isNightModeThemeDynamic(context)) {
+						start.setTextColor(AppUtil.dynamicColorResource(context));
+					}
 				}
 
 				if (issueComment.getProjectId() > 0) {
@@ -1018,8 +1039,10 @@ public class IssueCommentsAdapter extends RecyclerView.Adapter<RecyclerView.View
 
 				TextView start = new TextView(context);
 
-				if (!isNightModeThemeDynamic(context)) {
-					start.setTextColor(AppUtil.dynamicColorResource(context));
+				if (tinyDB.getInt("themeId") == 8) {
+					if (!isNightModeThemeDynamic(context)) {
+						start.setTextColor(AppUtil.dynamicColorResource(context));
+					}
 				}
 
 				// TODO pretty-print
@@ -1060,8 +1083,10 @@ public class IssueCommentsAdapter extends RecyclerView.Adapter<RecyclerView.View
 
 				TextView start = new TextView(context);
 
-				if (!isNightModeThemeDynamic(context)) {
-					start.setTextColor(AppUtil.dynamicColorResource(context));
+				if (tinyDB.getInt("themeId") == 8) {
+					if (!isNightModeThemeDynamic(context)) {
+						start.setTextColor(AppUtil.dynamicColorResource(context));
+					}
 				}
 
 				if (issueComment.getType().equalsIgnoreCase("change_target_branch")) {
@@ -1097,8 +1122,10 @@ public class IssueCommentsAdapter extends RecyclerView.Adapter<RecyclerView.View
 
 				TextView start = new TextView(context);
 
-				if (!isNightModeThemeDynamic(context)) {
-					start.setTextColor(AppUtil.dynamicColorResource(context));
+				if (tinyDB.getInt("themeId") == 8) {
+					if (!isNightModeThemeDynamic(context)) {
+						start.setTextColor(AppUtil.dynamicColorResource(context));
+					}
 				}
 
 				if (issueComment.getType().equalsIgnoreCase("start_tracking")) {

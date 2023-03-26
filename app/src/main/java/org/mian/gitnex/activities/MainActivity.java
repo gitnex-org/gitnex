@@ -638,10 +638,6 @@ public class MainActivity extends BaseActivity
 					.beginTransaction()
 					.replace(R.id.fragment_container, new SettingsFragment())
 					.commit();
-		} else if (id == R.id.nav_logout) {
-
-			AppUtil.logout(ctx);
-			overridePendingTransition(android.R.anim.fade_in, android.R.anim.fade_out);
 		} else if (id == R.id.nav_starred_repos) {
 
 			toolbarTitle.setText(getResources().getString(R.string.pageTitleStarredRepos));

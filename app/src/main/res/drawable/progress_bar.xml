@@ -10,7 +10,7 @@
         android:top="2dp">
         <shape>
             <corners android:radius="10dp"/>
-            <solid android:color="?attr/inputBackgroundColor"/>
+            <solid android:color="?attr/primaryBackgroundColor"/>
         </shape>
     </item>
 

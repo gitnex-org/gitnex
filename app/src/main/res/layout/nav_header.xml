@@ -27,7 +27,7 @@
             android:orientation="horizontal">
 
             <com.google.android.material.card.MaterialCardView
-                style="?attr/materialCardViewFilledStyle"
+                style="?attr/materialCardViewElevatedStyle"
                 android:layout_width="@dimen/dimen60dp"
                 android:layout_height="@dimen/dimen60dp"
                 app:cardCornerRadius="@dimen/dimen32dp"
@@ -51,7 +51,7 @@
 
                 <com.google.android.material.card.MaterialCardView
                     android:id="@+id/userAccountsFrame"
-                    style="?attr/materialCardViewFilledStyle"
+                    style="?attr/materialCardViewElevatedStyle"
                     android:layout_width="wrap_content"
                     android:layout_height="@dimen/dimen40dp"
                     android:layout_gravity="end"

@@ -1,5 +1,6 @@
 package org.mian.gitnex.fragments;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Looper;
@@ -10,9 +11,12 @@ import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModelProvider;
 import androidx.recyclerview.widget.LinearLayoutManager;
+import org.mian.gitnex.activities.BaseActivity;
+import org.mian.gitnex.activities.WikiActivity;
 import org.mian.gitnex.adapters.WikiListAdapter;
 import org.mian.gitnex.databinding.FragmentWikiBinding;
 import org.mian.gitnex.helpers.Constants;
+import org.mian.gitnex.helpers.contexts.AccountContext;
 import org.mian.gitnex.helpers.contexts.RepositoryContext;
 import org.mian.gitnex.viewmodels.WikiViewModel;
 
@@ -49,6 +53,9 @@ public class WikiFragment extends Fragment {
 		fragmentWikiBinding = FragmentWikiBinding.inflate(inflater, container, false);
 		setHasOptionsMenu(true);
 
+		AccountContext account = ((BaseActivity) requireActivity()).getAccount();
+		boolean archived = repository.getRepository().isArchived();
+
 		wikiViewModel = new ViewModelProvider(this).get(WikiViewModel.class);
 
 		resultLimit = Constants.getCurrentResultLimit(getContext());
@@ -71,6 +78,28 @@ public class WikiFragment extends Fragment {
 										50));
 
 		fetchDataAsync(repository.getOwner(), repository.getName());
+
+		if (!account.requiresVersion("1.16")) {
+			fragmentWikiBinding.createWiki.setVisibility(View.GONE);
+		}
+
+		if (archived) {
+			fragmentWikiBinding.createWiki.setVisibility(View.GONE);
+		}
+
+		if (repository.getPermissions().isAdmin()) {
+
+			fragmentWikiBinding.createWiki.setOnClickListener(
+					v1 -> {
+						Intent intent = new Intent(getContext(), WikiActivity.class);
+						intent.putExtra("action", "add");
+						intent.putExtra(RepositoryContext.INTENT_EXTRA, (repository));
+						startActivity(intent);
+					});
+		} else {
+
+			fragmentWikiBinding.createWiki.setVisibility(View.GONE);
+		}
 
 		return fragmentWikiBinding.getRoot();
 	}

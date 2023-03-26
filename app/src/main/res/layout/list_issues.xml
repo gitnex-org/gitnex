@@ -12,7 +12,7 @@
     <com.google.android.material.card.MaterialCardView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        style="?attr/materialCardViewFilledStyle"
+        style="?attr/materialCardViewElevatedStyle"
         app:cardElevation="@dimen/dimen0dp">
 
         <LinearLayout
@@ -33,7 +33,7 @@
                 <com.google.android.material.card.MaterialCardView
                     android:layout_width="@dimen/dimen24dp"
                     android:layout_height="@dimen/dimen24dp"
-                    style="?attr/materialCardViewFilledStyle"
+                    style="?attr/materialCardViewElevatedStyle"
                     app:cardElevation="@dimen/dimen0dp"
                     android:layout_marginEnd="@dimen/dimen12dp"
                     app:cardCornerRadius="@dimen/dimen12dp">

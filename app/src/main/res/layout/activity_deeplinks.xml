@@ -49,7 +49,7 @@
                     android:layout_height="@dimen/dimen54dp"
                     android:layout_marginTop="@dimen/dimen24dp"
                     android:text="@string/addNewAccountText"
-                    android:textColor="@color/btnTextColor"
+                    android:textColor="?attr/materialCardBackgroundColor"
                     android:textSize="@dimen/dimen16sp"
                     android:textStyle="bold"/>
 
@@ -59,7 +59,7 @@
                     android:layout_height="@dimen/dimen60dp"
                     android:layout_marginTop="@dimen/dimen8dp"
                     android:text="@string/openWebRepo"
-                    android:textColor="@color/btnTextColor"
+                    android:textColor="?attr/materialCardBackgroundColor"
                     android:textSize="@dimen/dimen16sp"/>
 
                 <com.google.android.material.button.MaterialButton
@@ -68,7 +68,7 @@
                     android:layout_height="@dimen/dimen54dp"
                     android:layout_marginTop="@dimen/dimen8dp"
                     android:text="@string/launchApp"
-                    android:textColor="@color/btnTextColor"
+                    android:textColor="?attr/materialCardBackgroundColor"
                     android:textSize="@dimen/dimen16sp"
                     android:textStyle="bold"/>
 
@@ -99,7 +99,7 @@
                     android:layout_height="@dimen/dimen54dp"
                     android:layout_marginTop="@dimen/dimen24dp"
                     android:text="@string/navRepos"
-                    android:textColor="@color/btnTextColor"
+                    android:textColor="?attr/materialCardBackgroundColor"
                     android:textSize="@dimen/dimen16sp"
                     android:textStyle="bold"/>
 
@@ -109,7 +109,7 @@
                     android:layout_height="@dimen/dimen54dp"
                     android:layout_marginTop="@dimen/dimen8dp"
                     android:text="@string/navOrg"
-                    android:textColor="@color/btnTextColor"
+                    android:textColor="?attr/materialCardBackgroundColor"
                     android:textSize="@dimen/dimen16sp"
                     android:textStyle="bold"/>
 
@@ -119,7 +119,7 @@
                     android:layout_height="@dimen/dimen54dp"
                     android:layout_marginTop="@dimen/dimen8dp"
                     android:text="@string/pageTitleNotifications"
-                    android:textColor="@color/btnTextColor"
+                    android:textColor="?attr/materialCardBackgroundColor"
                     android:textSize="@dimen/dimen16sp"
                     android:textStyle="bold"/>
 
@@ -129,7 +129,7 @@
                     android:layout_height="@dimen/dimen54dp"
                     android:layout_marginTop="@dimen/dimen8dp"
                     android:text="@string/pageTitleExplore"
-                    android:textColor="@color/btnTextColor"
+                    android:textColor="?attr/materialCardBackgroundColor"
                     android:textSize="@dimen/dimen16sp"
                     android:textStyle="bold"/>
 
@@ -139,7 +139,7 @@
                     android:layout_height="@dimen/dimen54dp"
                     android:layout_marginTop="@dimen/dimen8dp"
                     android:text="@string/launchApp"
-                    android:textColor="@color/btnTextColor"
+                    android:textColor="?attr/materialCardBackgroundColor"
                     android:textSize="@dimen/dimen16sp"
                     android:textStyle="bold"/>
 

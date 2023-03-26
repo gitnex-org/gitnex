@@ -44,6 +44,8 @@ public class MyIssuesFragment extends Fragment {
 		fragmentIssuesBinding.recyclerView.setHasFixedSize(true);
 		fragmentIssuesBinding.recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
 
+		fragmentIssuesBinding.createNewIssue.setVisibility(View.GONE);
+
 		((MainActivity) requireActivity())
 				.setFragmentRefreshListenerMyIssues(
 						myIssues -> {

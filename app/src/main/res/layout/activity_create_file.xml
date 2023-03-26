@@ -192,7 +192,7 @@
                 android:layout_height="@dimen/dimen54dp"
                 android:layout_marginTop="@dimen/dimen8dp"
                 android:text="@string/newFileButtonCopy"
-                android:textColor="@color/btnTextColor"
+                android:textColor="?attr/materialCardBackgroundColor"
                 android:textStyle="bold"/>
 
         </LinearLayout>

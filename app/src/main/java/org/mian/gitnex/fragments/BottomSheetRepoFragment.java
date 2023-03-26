@@ -10,12 +10,7 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment;
 import org.mian.gitnex.actions.RepositoryActions;
-import org.mian.gitnex.activities.BaseActivity;
-import org.mian.gitnex.activities.CreateIssueActivity;
-import org.mian.gitnex.activities.CreatePullRequestActivity;
-import org.mian.gitnex.activities.RepoDetailActivity;
 import org.mian.gitnex.databinding.BottomSheetRepoBinding;
-import org.mian.gitnex.helpers.contexts.AccountContext;
 import org.mian.gitnex.helpers.contexts.RepositoryContext;
 import org.mian.gitnex.structs.BottomSheetListener;
 
@@ -40,17 +35,7 @@ public class BottomSheetRepoFragment extends BottomSheetDialogFragment {
 		BottomSheetRepoBinding bottomSheetRepoBinding =
 				BottomSheetRepoBinding.inflate(inflater, container, false);
 
-		final Context ctx = getContext();
-
-		AccountContext account = ((BaseActivity) requireActivity()).getAccount();
-
-		TextView createLabel = bottomSheetRepoBinding.createLabel;
-		TextView createIssue = bottomSheetRepoBinding.createNewIssue;
-		TextView createMilestone = bottomSheetRepoBinding.createNewMilestone;
-		TextView addCollaborator = bottomSheetRepoBinding.addCollaborator;
-		TextView createRelease = bottomSheetRepoBinding.createRelease;
 		TextView openWebRepo = bottomSheetRepoBinding.openWebRepo;
-		TextView newFile = bottomSheetRepoBinding.newFile;
 		TextView starRepository = bottomSheetRepoBinding.starRepository;
 		TextView unStarRepository = bottomSheetRepoBinding.unStarRepository;
 		TextView watchRepository = bottomSheetRepoBinding.watchRepository;
@@ -58,73 +43,6 @@ public class BottomSheetRepoFragment extends BottomSheetDialogFragment {
 		TextView shareRepository = bottomSheetRepoBinding.shareRepository;
 		TextView copyRepoUrl = bottomSheetRepoBinding.copyRepoUrl;
 		TextView repoSettings = bottomSheetRepoBinding.repoSettings;
-		TextView createPullRequest = bottomSheetRepoBinding.createPullRequest;
-		TextView createWiki = bottomSheetRepoBinding.createWiki;
-
-		boolean canPush = repository.getPermissions().isPush();
-		if (!canPush) {
-			createMilestone.setVisibility(View.GONE);
-			createLabel.setVisibility(View.GONE);
-			createRelease.setVisibility(View.GONE);
-			newFile.setVisibility(View.GONE);
-		}
-
-		if (!account.requiresVersion("1.16")) {
-			createWiki.setVisibility(View.GONE);
-		}
-
-		boolean archived = repository.getRepository().isArchived();
-		if (archived) {
-			createIssue.setVisibility(View.GONE);
-			createPullRequest.setVisibility(View.GONE);
-			createMilestone.setVisibility(View.GONE);
-			createLabel.setVisibility(View.GONE);
-			createRelease.setVisibility(View.GONE);
-			newFile.setVisibility(View.GONE);
-			createWiki.setVisibility(View.GONE);
-		}
-
-		createLabel.setOnClickListener(
-				v112 -> {
-					bmListener.onButtonClicked("label");
-					dismiss();
-				});
-
-		if (repository.getRepository().isHasIssues() && !archived) {
-
-			createIssue.setVisibility(View.VISIBLE);
-			createIssue.setOnClickListener(
-					v12 -> {
-						((RepoDetailActivity) requireActivity())
-								.createIssueLauncher.launch(
-										repository.getIntent(ctx, CreateIssueActivity.class));
-						dismiss();
-					});
-		} else {
-
-			createIssue.setVisibility(View.GONE);
-		}
-
-		if (repository.getRepository().isHasPullRequests() && !archived) {
-
-			createPullRequest.setVisibility(View.VISIBLE);
-			createPullRequest.setOnClickListener(
-					v12 -> {
-						((RepoDetailActivity) requireActivity())
-								.createPrLauncher.launch(
-										repository.getIntent(ctx, CreatePullRequestActivity.class));
-						dismiss();
-					});
-		} else {
-
-			createPullRequest.setVisibility(View.GONE);
-		}
-
-		createMilestone.setOnClickListener(
-				v13 -> {
-					bmListener.onButtonClicked("newMilestone");
-					dismiss();
-				});
 
 		if (repository.getPermissions().isAdmin()) {
 
@@ -133,30 +51,10 @@ public class BottomSheetRepoFragment extends BottomSheetDialogFragment {
 						bmListener.onButtonClicked("repoSettings");
 						dismiss();
 					});
-
-			addCollaborator.setOnClickListener(
-					v1 -> {
-						bmListener.onButtonClicked("addCollaborator");
-						dismiss();
-					});
-
-			createWiki.setOnClickListener(
-					v1 -> {
-						bmListener.onButtonClicked("createWiki");
-						dismiss();
-					});
 		} else {
 
-			addCollaborator.setVisibility(View.GONE);
 			repoSettings.setVisibility(View.GONE);
-			createWiki.setVisibility(View.GONE);
 		}
-
-		createRelease.setOnClickListener(
-				v14 -> {
-					bmListener.onButtonClicked("createRelease");
-					dismiss();
-				});
 
 		shareRepository.setOnClickListener(
 				v15 -> {
@@ -176,12 +74,6 @@ public class BottomSheetRepoFragment extends BottomSheetDialogFragment {
 					dismiss();
 				});
 
-		newFile.setOnClickListener(
-				v17 -> {
-					bmListener.onButtonClicked("newFile");
-					dismiss();
-				});
-
 		if (repository.isStarred()) {
 
 			starRepository.setVisibility(View.GONE);
@@ -191,7 +83,6 @@ public class BottomSheetRepoFragment extends BottomSheetDialogFragment {
 						bmListener.onButtonClicked("unstar");
 						dismiss();
 					});
-
 		} else {
 
 			unStarRepository.setVisibility(View.GONE);
@@ -212,7 +103,6 @@ public class BottomSheetRepoFragment extends BottomSheetDialogFragment {
 						bmListener.onButtonClicked("unwatch");
 						dismiss();
 					});
-
 		} else {
 
 			unWatchRepository.setVisibility(View.GONE);

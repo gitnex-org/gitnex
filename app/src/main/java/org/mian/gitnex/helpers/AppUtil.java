@@ -665,16 +665,10 @@ public class AppUtil {
 	}
 
 	public static boolean isNightModeThemeDynamic(Context context) {
-
-		TinyDB tinyDB = TinyDB.getInstance(context);
 		int nightModeFlags =
 				context.getResources().getConfiguration().uiMode & Configuration.UI_MODE_NIGHT_MASK;
 
-		if (tinyDB.getInt("themeId") == 8) {
-			return nightModeFlags == Configuration.UI_MODE_NIGHT_YES;
-		} else {
-			return nightModeFlags == Configuration.UI_MODE_NIGHT_NO;
-		}
+		return nightModeFlags == Configuration.UI_MODE_NIGHT_YES;
 	}
 
 	public static int dynamicColorResource(Context context) {

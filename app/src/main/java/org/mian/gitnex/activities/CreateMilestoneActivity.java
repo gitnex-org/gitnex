@@ -3,7 +3,6 @@ package org.mian.gitnex.activities;
 import android.annotation.SuppressLint;
 import android.app.DatePickerDialog;
 import android.content.Context;
-import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.Menu;
@@ -196,9 +195,7 @@ public class CreateMilestoneActivity extends BaseActivity implements View.OnClic
 
 							if (response.code() == 201) {
 
-								Intent result = new Intent();
-								result.putExtra("milestoneCreated", true);
-								setResult(201, result);
+								RepoDetailActivity.updateFABActions = true;
 								Toasty.success(ctx, getString(R.string.milestoneCreated));
 								enableProcessButton();
 								finish();
