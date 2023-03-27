@@ -33,6 +33,7 @@
     <string name="pageTitleAdministration">Administración</string>
     <string name="pageTitleNewPullRequest">Nuevo pull request</string>
     <string name="pageTitleUsers">Usuarios</string>
+    <string name="pageTitleAddRepository">Añadir Repositorio</string>
     <!-- page titles -->
     <string name="repoName">Repositorio de demostración</string>
     <string name="repoDescription">Descripción de demostración</string>
@@ -228,6 +229,7 @@
     <string name="repoRemovedMessage">Repositorio eliminado del equipo correctamente</string>
     <string name="repoAddToTeamMessage">Añadir repositorio %1$s a la organización %2$s del equipo %3$s</string>
     <string name="repoRemoveTeamMessage">Eliminar repositorio %1$s del equipo %2$s</string>
+    <string name="addRemoveMember">Añadir / Eliminar miembro</string>
     <!-- org tabbed layout str -->
     <!-- create team -->
     <string name="newTeamTitle">Nombre del equipo</string>
