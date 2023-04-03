@@ -1,18 +1,28 @@
 package org.mian.gitnex.fragments;
 
+import static org.mian.gitnex.helpers.languagestatistics.LanguageColor.languageColor;
+import static org.mian.gitnex.helpers.languagestatistics.LanguageStatisticsHelper.calculatePercentage;
+
 import android.content.Context;
 import android.content.Intent;
+import android.graphics.Color;
 import android.os.Bundle;
+import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
 import android.widget.LinearLayout;
+import android.widget.SeekBar;
 import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
+import com.amulyakhare.textdrawable.TextDrawable;
 import com.google.android.material.dialog.MaterialAlertDialogBuilder;
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.Locale;
+import java.util.Map;
 import okhttp3.ResponseBody;
 import org.apache.commons.io.FileUtils;
 import org.gitnex.tea4j.v2.models.Organization;
@@ -34,6 +44,7 @@ import org.mian.gitnex.helpers.Markdown;
 import org.mian.gitnex.helpers.TimeHelper;
 import org.mian.gitnex.helpers.Toasty;
 import org.mian.gitnex.helpers.contexts.RepositoryContext;
+import org.mian.gitnex.helpers.languagestatistics.SeekbarItem;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
@@ -104,6 +115,8 @@ public class RepoInfoFragment extends Fragment {
 		binding.repoMetaPullRequestsFrame.setOnClickListener(
 				metaPR -> ((RepoDetailActivity) requireActivity()).viewPager.setCurrentItem(3));
 
+		setLanguageStatistics();
+
 		return binding.getRoot();
 	}
 
@@ -143,6 +156,201 @@ public class RepoInfoFragment extends Fragment {
 
 	private boolean isExpandViewMetaVisible() {
 		return binding.repoMetaFrame.getVisibility() == View.VISIBLE;
+	}
+
+	private void setLanguageStatistics() {
+
+		Call<Map<String, Long>> call =
+				RetrofitClient.getApiInterface(getContext())
+						.repoGetLanguages(repository.getOwner(), repository.getName());
+
+		call.enqueue(
+				new Callback<>() {
+
+					@Override
+					public void onResponse(
+							@NonNull Call<Map<String, Long>> call,
+							@NonNull Response<Map<String, Long>> response) {
+
+						if (isAdded()) {
+
+							switch (response.code()) {
+								case 200:
+									assert response.body() != null;
+									if (response.body().size() > 0) {
+
+										ArrayList<SeekbarItem> seekbarItemList = new ArrayList<>();
+
+										float totalSpan =
+												(float)
+														response.body().values().stream()
+																.mapToDouble(a -> a)
+																.sum();
+
+										for (Map.Entry<String, Long> entry :
+												response.body().entrySet()) {
+
+											SeekbarItem seekbarItem = new SeekbarItem();
+
+											seekbarItem.progressItemPercentage =
+													(entry.getValue() / totalSpan) * 100;
+											seekbarItem.color = languageColor(entry.getKey());
+											seekbarItemList.add(seekbarItem);
+										}
+
+										binding.languagesStatistic.setVisibility(View.VISIBLE);
+										binding.languagesStatistic.initData(seekbarItemList);
+
+										binding.languagesStatistic.setOnSeekBarChangeListener(
+												new SeekBar.OnSeekBarChangeListener() {
+
+													@Override
+													public void onStopTrackingTouch(
+															SeekBar seekBar) {}
+
+													@Override
+													public void onStartTrackingTouch(
+															SeekBar seekBar) {}
+
+													@Override
+													public void onProgressChanged(
+															SeekBar seekBar,
+															int progress,
+															boolean fromUser) {
+
+														View view =
+																LayoutInflater.from(ctx)
+																		.inflate(
+																				R.layout
+																						.layout_repo_language_statistics,
+																				null);
+
+														LinearLayout.LayoutParams params =
+																new LinearLayout.LayoutParams(
+																		LinearLayout.LayoutParams
+																				.WRAP_CONTENT,
+																		LinearLayout.LayoutParams
+																				.WRAP_CONTENT);
+														params.setMargins(0, 32, 32, 0);
+
+														LinearLayout layout =
+																view.findViewById(R.id.lang_color);
+														layout.removeAllViews();
+
+														for (Map.Entry<String, Long> entry :
+																response.body().entrySet()) {
+
+															LinearLayout layoutSub =
+																	new LinearLayout(getContext());
+															layoutSub.setOrientation(
+																	LinearLayout.HORIZONTAL);
+															layoutSub.setGravity(
+																	Gravity.START | Gravity.TOP);
+															layout.addView(layoutSub);
+
+															ImageView colorView =
+																	new ImageView(getContext());
+															colorView.setLayoutParams(params);
+
+															String hexColor =
+																	String.format(
+																			"#%06X",
+																			(0xFFFFFF
+																					& languageColor(
+																							entry
+																									.getKey())));
+															TextDrawable drawable =
+																	TextDrawable.builder()
+																			.beginConfig()
+																			.width(64)
+																			.height(64)
+																			.endConfig()
+																			.buildRoundRect(
+																					"",
+																					Color
+																							.parseColor(
+																									hexColor),
+																					8);
+															drawable.setTint(
+																	getResources()
+																			.getColor(
+																					languageColor(
+																							entry
+																									.getKey()),
+																					null));
+															colorView.setImageDrawable(drawable);
+															layoutSub.addView(colorView);
+
+															TextView langName =
+																	new TextView(getContext());
+															langName.setLayoutParams(params);
+															langName.setText(entry.getKey());
+															layoutSub.addView(langName);
+
+															TextView langPercentage =
+																	new TextView(getContext());
+															langPercentage.setLayoutParams(params);
+															langPercentage.setTextSize(12);
+															langPercentage.setText(
+																	getString(
+																			R.string
+																					.lang_percentage,
+																			calculatePercentage(
+																					entry
+																							.getValue(),
+																					totalSpan)));
+															layoutSub.addView(langPercentage);
+														}
+
+														MaterialAlertDialogBuilder
+																materialAlertDialogBuilder1 =
+																		new MaterialAlertDialogBuilder(
+																						ctx)
+																				.setTitle(
+																						R.string
+																								.lang_statistics)
+																				.setView(view)
+																				.setNeutralButton(
+																						getString(
+																								R
+																										.string
+																										.close),
+																						null);
+
+														materialAlertDialogBuilder1.create().show();
+													}
+												});
+									}
+
+									break;
+
+								case 401:
+									AlertDialogs.authorizationTokenRevokedDialog(ctx);
+									break;
+
+								case 403:
+									Toasty.error(ctx, ctx.getString(R.string.authorizeError));
+									binding.languagesStatistic.setVisibility(View.GONE);
+									break;
+
+								case 404:
+									binding.languagesStatistic.setVisibility(View.GONE);
+									break;
+
+								default:
+									Toasty.error(getContext(), getString(R.string.genericError));
+									binding.languagesStatistic.setVisibility(View.GONE);
+									break;
+							}
+						}
+					}
+
+					@Override
+					public void onFailure(
+							@NonNull Call<Map<String, Long>> call, @NonNull Throwable t) {
+						Toasty.error(ctx, ctx.getString(R.string.genericServerResponseError));
+					}
+				});
 	}
 
 	private void setRepoInfo(Locale locale) {

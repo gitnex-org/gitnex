@@ -72,7 +72,7 @@ public class NotesAdapter extends RecyclerView.Adapter<NotesAdapter.NotesViewHol
 
 						materialAlertDialogBuilder
 								.setTitle(ctx.getString(R.string.menuDeleteText))
-								.setMessage(ctx.getString(R.string.noteDeleteDialoMessage))
+								.setMessage(ctx.getString(R.string.noteDeleteDialogMessage))
 								.setPositiveButton(
 										R.string.menuDeleteText,
 										(dialog, whichButton) ->
