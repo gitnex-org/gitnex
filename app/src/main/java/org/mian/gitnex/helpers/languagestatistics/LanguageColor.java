@@ -1,8 +1,8 @@
 package org.mian.gitnex.helpers.languagestatistics;
 
-import org.mian.gitnex.R;
 import java.util.HashMap;
 import java.util.Map;
+import org.mian.gitnex.R;
 
 /**
  * @author M M Arif
@@ -211,7 +211,7 @@ public class LanguageColor {
 		colors.put("xBase", R.color.x_base);
 
 		for (Map.Entry<String, Integer> s : colors.entrySet()) {
-			if(key.equalsIgnoreCase(s.getKey())){
+			if (key.equalsIgnoreCase(s.getKey())) {
 				color = s.getValue();
 			}
 		}
