@@ -1,6 +1,8 @@
 package org.mian.gitnex.helpers.languagestatistics;
 
 import org.mian.gitnex.R;
+import java.util.HashMap;
+import java.util.Map;
 
 /**
  * @author M M Arif
@@ -9,402 +11,211 @@ public class LanguageColor {
 
 	public static int languageColor(String key) {
 
-		int color;
-		if (key.equalsIgnoreCase("ASP.NET")) {
-			color = R.color.default_lang_color;
-		} else if (key.equalsIgnoreCase("ATS")) {
-			color = R.color.ats;
-		} else if (key.equalsIgnoreCase("ActionScript")) {
-			color = R.color.action_script;
-		} else if (key.equalsIgnoreCase("Ada")) {
-			color = R.color.ada;
-		} else if (key.equalsIgnoreCase("AngelScript")) {
-			color = R.color.angel_script;
-		} else if (key.equalsIgnoreCase("Ant Build System")) {
-			color = R.color.ant_build_system;
-		} else if (key.equalsIgnoreCase("Antlers")) {
-			color = R.color.antlers;
-		} else if (key.equalsIgnoreCase("ApacheConf")) {
-			color = R.color.apache_conf;
-		} else if (key.equalsIgnoreCase("Apex")) {
-			color = R.color.apex;
-		} else if (key.equalsIgnoreCase("AppleScript")) {
-			color = R.color.apple_script;
-		} else if (key.equalsIgnoreCase("AsciiDoc")) {
-			color = R.color.ascii_doc;
-		} else if (key.equalsIgnoreCase("Assembly")) {
-			color = R.color.assembly;
-		} else if (key.equalsIgnoreCase("Awk")) {
-			color = R.color.awk;
-		} else if (key.equalsIgnoreCase("BASIC")) {
-			color = R.color.basic;
-		} else if (key.equalsIgnoreCase("Batchfile")) {
-			color = R.color.batch_file;
-		} else if (key.equalsIgnoreCase("Bison")) {
-			color = R.color.bison;
-		} else if (key.equalsIgnoreCase("Blade")) {
-			color = R.color.blade;
-		} else if (key.equalsIgnoreCase("C")) {
-			color = R.color.c;
-		} else if (key.equalsIgnoreCase("C#")) {
-			color = R.color.c_sharp;
-		} else if (key.equalsIgnoreCase("C++")) {
-			color = R.color.c_plus_plus;
-		} else if (key.equalsIgnoreCase("CMake")) {
-			color = R.color.c_make;
-		} else if (key.equalsIgnoreCase("COBOL")) {
-			color = R.color.c_make;
-		} else if (key.equalsIgnoreCase("CSS")) {
-			color = R.color.css;
-		} else if (key.equalsIgnoreCase("CSV")) {
-			color = R.color.csv;
-		} else if (key.equalsIgnoreCase("Checksums")) {
-			color = R.color.csv;
-		} else if (key.equalsIgnoreCase("Classic ASP")) {
-			color = R.color.classic_asp;
-		} else if (key.equalsIgnoreCase("Clojure")) {
-			color = R.color.clojure;
-		} else if (key.equalsIgnoreCase("Closure Templates")) {
-			color = R.color.closure_templates;
-		} else if (key.equalsIgnoreCase("CodeQL")) {
-			color = R.color.code_ql;
-		} else if (key.equalsIgnoreCase("CoffeeScript")) {
-			color = R.color.coffee_script;
-		} else if (key.equalsIgnoreCase("ColdFusion")) {
-			color = R.color.cold_fusion;
-		} else if (key.equalsIgnoreCase("Common Lisp")) {
-			color = R.color.common_lisp;
-		} else if (key.equalsIgnoreCase("Cython")) {
-			color = R.color.cython;
-		} else if (key.equalsIgnoreCase("DNS Zone")) {
-			color = R.color.cython;
-		} else if (key.equalsIgnoreCase("Dart")) {
-			color = R.color.dart;
-		} else if (key.equalsIgnoreCase("Diff")) {
-			color = R.color.dart;
-		} else if (key.equalsIgnoreCase("Dockerfile")) {
-			color = R.color.docker_file;
-		} else if (key.equalsIgnoreCase("Dotenv")) {
-			color = R.color.dot_env;
-		} else if (key.equalsIgnoreCase("E-mail")) {
-			color = R.color.dot_env;
-		} else if (key.equalsIgnoreCase("EJS")) {
-			color = R.color.ejs;
-		} else if (key.equalsIgnoreCase("Elixir")) {
-			color = R.color.elixir;
-		} else if (key.equalsIgnoreCase("Elm")) {
-			color = R.color.elm;
-		} else if (key.equalsIgnoreCase("Emacs Lisp")) {
-			color = R.color.emacs_lisp;
-		} else if (key.equalsIgnoreCase("EmberScript")) {
-			color = R.color.ember_script;
-		} else if (key.equalsIgnoreCase("Erlang")) {
-			color = R.color.erlang;
-		} else if (key.equalsIgnoreCase("Forth")) {
-			color = R.color.forth;
-		} else if (key.equalsIgnoreCase("Fortran")) {
-			color = R.color.fortran;
-		} else if (key.equalsIgnoreCase("Fortran Free Form")) {
-			color = R.color.fortran_free_form;
-		} else if (key.equalsIgnoreCase("FreeBasic")) {
-			color = R.color.free_basic;
-		} else if (key.equalsIgnoreCase("GDScript")) {
-			color = R.color.gd_script;
-		} else if (key.equalsIgnoreCase("GLSL")) {
-			color = R.color.glsl;
-		} else if (key.equalsIgnoreCase("Git Attributes")) {
-			color = R.color.git_attributes;
-		} else if (key.equalsIgnoreCase("Git Config")) {
-			color = R.color.git_config;
-		} else if (key.equalsIgnoreCase("Gnuplot")) {
-			color = R.color.gnuplot;
-		} else if (key.equalsIgnoreCase("Go")) {
-			color = R.color.go;
-		} else if (key.equalsIgnoreCase("Go Checksums")) {
-			color = R.color.go_checksums;
-		} else if (key.equalsIgnoreCase("Go Module")) {
-			color = R.color.go_module;
-		} else if (key.equalsIgnoreCase("Gradle")) {
-			color = R.color.gradle;
-		} else if (key.equalsIgnoreCase("GraphQL")) {
-			color = R.color.graph_ql;
-		} else if (key.equalsIgnoreCase("Groovy")) {
-			color = R.color.groovy;
-		} else if (key.equalsIgnoreCase("HAProxy")) {
-			color = R.color.ha_proxy;
-		} else if (key.equalsIgnoreCase("HCL")) {
-			color = R.color.hcl;
-		} else if (key.equalsIgnoreCase("HTML")) {
-			color = R.color.html;
-		} else if (key.equalsIgnoreCase("HTML+PHP")) {
-			color = R.color.html_php;
-		} else if (key.equalsIgnoreCase("Hack")) {
-			color = R.color.hack;
-		} else if (key.equalsIgnoreCase("Haml")) {
-			color = R.color.haml;
-		} else if (key.equalsIgnoreCase("Haskell")) {
-			color = R.color.haskell;
-		} else if (key.equalsIgnoreCase("Haxe")) {
-			color = R.color.haxe;
-		} else if (key.equalsIgnoreCase("INI")) {
-			color = R.color.ini;
-		} else if (key.equalsIgnoreCase("Ignore List")) {
-			color = R.color.ignore_list;
-		} else if (key.equalsIgnoreCase("JAR Manifest")) {
-			color = R.color.jar_manifest;
-		} else if (key.equalsIgnoreCase("JSON")) {
-			color = R.color.json;
-		} else if (key.equalsIgnoreCase("JSON with Comments")) {
-			color = R.color.json_with_comments;
-		} else if (key.equalsIgnoreCase("JSON5")) {
-			color = R.color.json5;
-		} else if (key.equalsIgnoreCase("JSONLD")) {
-			color = R.color.json_ld;
-		} else if (key.equalsIgnoreCase("JSONiq")) {
-			color = R.color.json_iq;
-		} else if (key.equalsIgnoreCase("Java")) {
-			color = R.color.java;
-		} else if (key.equalsIgnoreCase("Java Properties")) {
-			color = R.color.java_properties;
-		} else if (key.equalsIgnoreCase("Java Server Pages")) {
-			color = R.color.java_server_pages;
-		} else if (key.equalsIgnoreCase("JavaScript")) {
-			color = R.color.java_script;
-		} else if (key.equalsIgnoreCase("Jinja")) {
-			color = R.color.jinja;
-		} else if (key.equalsIgnoreCase("Julia")) {
-			color = R.color.julia;
-		} else if (key.equalsIgnoreCase("Jupyter Notebook")) {
-			color = R.color.jupyter_notebook;
-		} else if (key.equalsIgnoreCase("Kotlin")) {
-			color = R.color.kotlin;
-		} else if (key.equalsIgnoreCase("LLVM")) {
-			color = R.color.llvm;
-		} else if (key.equalsIgnoreCase("LSL")) {
-			color = R.color.lsl;
-		} else if (key.equalsIgnoreCase("Lasso")) {
-			color = R.color.lasso;
-		} else if (key.equalsIgnoreCase("Latte")) {
-			color = R.color.latte;
-		} else if (key.equalsIgnoreCase("Less")) {
-			color = R.color.less;
-		} else if (key.equalsIgnoreCase("LiveScript")) {
-			color = R.color.live_script;
-		} else if (key.equalsIgnoreCase("Lua")) {
-			color = R.color.lua;
-		} else if (key.equalsIgnoreCase("MATLAB")) {
-			color = R.color.matlab;
-		} else if (key.equalsIgnoreCase("MTML")) {
-			color = R.color.mtml;
-		} else if (key.equalsIgnoreCase("Makefile")) {
-			color = R.color.make_file;
-		} else if (key.equalsIgnoreCase("Markdown")) {
-			color = R.color.markdown;
-		} else if (key.equalsIgnoreCase("Mathematica")) {
-			color = R.color.mathematica;
-		} else if (key.equalsIgnoreCase("Maven POM")) {
-			color = R.color.mathematica;
-		} else if (key.equalsIgnoreCase("Max")) {
-			color = R.color.max;
-		} else if (key.equalsIgnoreCase("Mercury")) {
-			color = R.color.mercury;
-		} else if (key.equalsIgnoreCase("Mermaid")) {
-			color = R.color.mermaid;
-		} else if (key.equalsIgnoreCase("Meson")) {
-			color = R.color.meson;
-		} else if (key.equalsIgnoreCase("MiniYAML")) {
-			color = R.color.mini_yaml;
-		} else if (key.equalsIgnoreCase("NPM Config")) {
-			color = R.color.npm_rc;
-		} else if (key.equalsIgnoreCase("NSIS")) {
-			color = R.color.npm_rc;
-		} else if (key.equalsIgnoreCase("Nginx")) {
-			color = R.color.nginx;
-		} else if (key.equalsIgnoreCase("Nim")) {
-			color = R.color.nim;
-		} else if (key.equalsIgnoreCase("Nix")) {
-			color = R.color.nix;
-		} else if (key.equalsIgnoreCase("ObjectScript")) {
-			color = R.color.object_script;
-		} else if (key.equalsIgnoreCase("Objective-C")) {
-			color = R.color.objective_c;
-		} else if (key.equalsIgnoreCase("Objective-C++")) {
-			color = R.color.objective_c_plus_plus;
-		} else if (key.equalsIgnoreCase("PHP")) {
-			color = R.color.php;
-		} else if (key.equalsIgnoreCase("PLSQL")) {
-			color = R.color.pl_sql;
-		} else if (key.equalsIgnoreCase("PLpgSQL")) {
-			color = R.color.pl_pg_sql;
-		} else if (key.equalsIgnoreCase("Pascal")) {
-			color = R.color.pascal;
-		} else if (key.equalsIgnoreCase("Perl")) {
-			color = R.color.perl;
-		} else if (key.equalsIgnoreCase("PostCSS")) {
-			color = R.color.post_css;
-		} else if (key.equalsIgnoreCase("PostScript")) {
-			color = R.color.post_script;
-		} else if (key.equalsIgnoreCase("PowerShell")) {
-			color = R.color.power_shell;
-		} else if (key.equalsIgnoreCase("Proguard")) {
-			color = R.color.pro_log;
-		} else if (key.equalsIgnoreCase("Prolog")) {
-			color = R.color.pro_log;
-		} else if (key.equalsIgnoreCase("Public Key")) {
-			color = R.color.pro_log;
-		} else if (key.equalsIgnoreCase("Pug")) {
-			color = R.color.pug;
-		} else if (key.equalsIgnoreCase("Puppet")) {
-			color = R.color.puppet;
-		} else if (key.equalsIgnoreCase("Python")) {
-			color = R.color.python;
-		} else if (key.equalsIgnoreCase("Python console")) {
-			color = R.color.python;
-		} else if (key.equalsIgnoreCase("Python traceback")) {
-			color = R.color.python;
-		} else if (key.equalsIgnoreCase("QML")) {
-			color = R.color.qml;
-		} else if (key.equalsIgnoreCase("Qt Script")) {
-			color = R.color.qt_script;
-		} else if (key.equalsIgnoreCase("R")) {
-			color = R.color.r;
-		} else if (key.equalsIgnoreCase("Racket")) {
-			color = R.color.racket;
-		} else if (key.equalsIgnoreCase("Raku")) {
-			color = R.color.raku;
-		} else if (key.equalsIgnoreCase("Raw token data")) {
-			color = R.color.raku;
-		} else if (key.equalsIgnoreCase("Regular Expression")) {
-			color = R.color.regexp;
-		} else if (key.equalsIgnoreCase("Rich Text Format")) {
-			color = R.color.regexp;
-		} else if (key.equalsIgnoreCase("Roff")) {
-			color = R.color.roff;
-		} else if (key.equalsIgnoreCase("Roff Manpage")) {
-			color = R.color.hack;
-		} else if (key.equalsIgnoreCase("Ruby")) {
-			color = R.color.ruby;
-		} else if (key.equalsIgnoreCase("Rust")) {
-			color = R.color.rust;
-		} else if (key.equalsIgnoreCase("SCSS")) {
-			color = R.color.scss;
-		} else if (key.equalsIgnoreCase("SELinux Policy")) {
-			color = R.color.scss;
-		} else if (key.equalsIgnoreCase("SQL")) {
-			color = R.color.sql;
-		} else if (key.equalsIgnoreCase("SQLPL")) {
-			color = R.color.sql;
-		} else if (key.equalsIgnoreCase("SSH Config")) {
-			color = R.color.sql;
-		} else if (key.equalsIgnoreCase("SVG")) {
-			color = R.color.svg;
-		} else if (key.equalsIgnoreCase("Sass")) {
-			color = R.color.sass;
-		} else if (key.equalsIgnoreCase("Scala")) {
-			color = R.color.scala;
-		} else if (key.equalsIgnoreCase("Scheme")) {
-			color = R.color.scheme;
-		} else if (key.equalsIgnoreCase("Shell")) {
-			color = R.color.shell;
-		} else if (key.equalsIgnoreCase("ShellCheck Config")) {
-			color = R.color.scheme;
-		} else if (key.equalsIgnoreCase("ShellSession")) {
-			color = R.color.scala;
-		} else if (key.equalsIgnoreCase("Smarty")) {
-			color = R.color.smarty;
-		} else if (key.equalsIgnoreCase("Standard ML")) {
-			color = R.color.standard_ml;
-		} else if (key.equalsIgnoreCase("Stata")) {
-			color = R.color.stata;
-		} else if (key.equalsIgnoreCase("Stylus")) {
-			color = R.color.stylus;
-		} else if (key.equalsIgnoreCase("Svelte")) {
-			color = R.color.svelte;
-		} else if (key.equalsIgnoreCase("Swift")) {
-			color = R.color.swift;
-		} else if (key.equalsIgnoreCase("TOML")) {
-			color = R.color.toml;
-		} else if (key.equalsIgnoreCase("TSQL")) {
-			color = R.color.swift;
-		} else if (key.equalsIgnoreCase("TSV")) {
-			color = R.color.swift;
-		} else if (key.equalsIgnoreCase("TSX")) {
-			color = R.color.swift;
-		} else if (key.equalsIgnoreCase("TXL")) {
-			color = R.color.swift;
-		} else if (key.equalsIgnoreCase("Tcl")) {
-			color = R.color.tcl;
-		} else if (key.equalsIgnoreCase("TeX")) {
-			color = R.color.tex;
-		} else if (key.equalsIgnoreCase("Texinfo")) {
-			color = R.color.tex;
-		} else if (key.equalsIgnoreCase("Text")) {
-			color = R.color.roff;
-		} else if (key.equalsIgnoreCase("Twig")) {
-			color = R.color.twig;
-		} else if (key.equalsIgnoreCase("TypeScript")) {
-			color = R.color.type_script;
-		} else if (key.equalsIgnoreCase("Unity3D Asset")) {
-			color = R.color.unity_asset;
-		} else if (key.equalsIgnoreCase("VBA")) {
-			color = R.color.vba;
-		} else if (key.equalsIgnoreCase("VBScript")) {
-			color = R.color.vbs;
-		} else if (key.equalsIgnoreCase("VHDL")) {
-			color = R.color.vhdl;
-		} else if (key.equalsIgnoreCase("Vala")) {
-			color = R.color.vala;
-		} else if (key.equalsIgnoreCase("Vim Help File")) {
-			color = R.color.vim;
-		} else if (key.equalsIgnoreCase("Vim Script")) {
-			color = R.color.vim;
-		} else if (key.equalsIgnoreCase("Vim Snippet")) {
-			color = R.color.vb_net;
-		} else if (key.equalsIgnoreCase("Visual Basic .NET")) {
-			color = R.color.hack;
-		} else if (key.equalsIgnoreCase("Visual Basic 6.0")) {
-			color = R.color.vb6;
-		} else if (key.equalsIgnoreCase("Volt")) {
-			color = R.color.volt;
-		} else if (key.equalsIgnoreCase("Vue")) {
-			color = R.color.vue;
-		} else if (key.equalsIgnoreCase("WebAssembly")) {
-			color = R.color.web_assembly;
-		} else if (key.equalsIgnoreCase("Wikitext")) {
-			color = R.color.wiki;
-		} else if (key.equalsIgnoreCase("Windows Registry Entries")) {
-			color = R.color.win_reg_entries;
-		} else if (key.equalsIgnoreCase("XML")) {
-			color = R.color.xml;
-		} else if (key.equalsIgnoreCase("XML Property List")) {
-			color = R.color.xml_props_list;
-		} else if (key.equalsIgnoreCase("XQuery")) {
-			color = R.color.vb6;
-		} else if (key.equalsIgnoreCase("XS")) {
-			color = R.color.wiki;
-		} else if (key.equalsIgnoreCase("XSLT")) {
-			color = R.color.xslt;
-		} else if (key.equalsIgnoreCase("XProc")) {
-			color = R.color.vb6;
-		} else if (key.equalsIgnoreCase("YAML")) {
-			color = R.color.yaml;
-		} else if (key.equalsIgnoreCase("Zephir")) {
-			color = R.color.zep;
-		} else if (key.equalsIgnoreCase("cURL Config")) {
-			color = R.color.zep;
-		} else if (key.equalsIgnoreCase("desktop")) {
-			color = R.color.win_reg_entries;
-		} else if (key.equalsIgnoreCase("dircolors")) {
-			color = R.color.xslt;
-		} else if (key.equalsIgnoreCase("robots.txt")) {
-			color = R.color.yaml;
-		} else if (key.equalsIgnoreCase("sed")) {
-			color = R.color.sed;
-		} else if (key.equalsIgnoreCase("xBase")) {
-			color = R.color.x_base;
-		} else {
-			color = R.color.default_lang_color;
+		int color = R.color.default_lang_color;
+		Map<String, Integer> colors = new HashMap<>();
+
+		colors.put("ASP.NET", R.color.default_lang_color);
+		colors.put("ATS", R.color.ats);
+		colors.put("ActionScript", R.color.action_script);
+		colors.put("Ada", R.color.ada);
+		colors.put("AngelScript", R.color.angel_script);
+		colors.put("Ant Build System", R.color.ant_build_system);
+		colors.put("Antlers", R.color.antlers);
+		colors.put("ApacheConf", R.color.apache_conf);
+		colors.put("Apex", R.color.apex);
+		colors.put("AppleScript", R.color.apple_script);
+		colors.put("AsciiDoc", R.color.ascii_doc);
+		colors.put("Assembly", R.color.assembly);
+		colors.put("Awk", R.color.awk);
+		colors.put("BASIC", R.color.basic);
+		colors.put("Batchfile", R.color.batch_file);
+		colors.put("Bison", R.color.bison);
+		colors.put("Blade", R.color.blade);
+		colors.put("C", R.color.c);
+		colors.put("C#", R.color.c_sharp);
+		colors.put("C++", R.color.c_plus_plus);
+		colors.put("CMake", R.color.c_make);
+		colors.put("COBOL", R.color.c_make);
+		colors.put("CSS", R.color.css);
+		colors.put("CSV", R.color.csv);
+		colors.put("Classic ASP", R.color.classic_asp);
+		colors.put("Clojure", R.color.clojure);
+		colors.put("Closure Templates", R.color.closure_templates);
+		colors.put("CodeQL", R.color.code_ql);
+		colors.put("CoffeeScript", R.color.coffee_script);
+		colors.put("ColdFusion", R.color.cold_fusion);
+		colors.put("Common Lisp", R.color.common_lisp);
+		colors.put("Cython", R.color.cython);
+		colors.put("DNS Zone", R.color.cython);
+		colors.put("Dart", R.color.dart);
+		colors.put("Diff", R.color.dart);
+		colors.put("Dockerfile", R.color.docker_file);
+		colors.put("Dotenv", R.color.dot_env);
+		colors.put("E-mail", R.color.dot_env);
+		colors.put("EJS", R.color.ejs);
+		colors.put("Elixir", R.color.elixir);
+		colors.put("Elm", R.color.elm);
+		colors.put("Emacs Lisp", R.color.emacs_lisp);
+		colors.put("EmberScript", R.color.ember_script);
+		colors.put("Erlang", R.color.erlang);
+		colors.put("Forth", R.color.forth);
+		colors.put("Fortran", R.color.fortran);
+		colors.put("Fortran Free Form", R.color.fortran_free_form);
+		colors.put("FreeBasic", R.color.free_basic);
+		colors.put("GDScript", R.color.gd_script);
+		colors.put("GLSL", R.color.glsl);
+		colors.put("Git Attributes", R.color.git_attributes);
+		colors.put("Git Config", R.color.git_config);
+		colors.put("Gnuplot", R.color.gnuplot);
+		colors.put("Go", R.color.go);
+		colors.put("Go Checksums", R.color.go_checksums);
+		colors.put("Go Module", R.color.go_module);
+		colors.put("Gradle", R.color.gradle);
+		colors.put("GraphQL", R.color.graph_ql);
+		colors.put("Groovy", R.color.groovy);
+		colors.put("HAProxy", R.color.ha_proxy);
+		colors.put("HCL", R.color.hcl);
+		colors.put("HTML", R.color.html);
+		colors.put("HTML+PHP", R.color.html_php);
+		colors.put("Hack", R.color.hack);
+		colors.put("Haml", R.color.haml);
+		colors.put("Haskell", R.color.haskell);
+		colors.put("Haxe", R.color.haxe);
+		colors.put("INI", R.color.ini);
+		colors.put("Ignore List", R.color.ignore_list);
+		colors.put("JAR Manifest", R.color.jar_manifest);
+		colors.put("JSON", R.color.json);
+		colors.put("JSON with Comments", R.color.json_with_comments);
+		colors.put("JSON5", R.color.json5);
+		colors.put("JSONLD", R.color.json_ld);
+		colors.put("JSONiq", R.color.json_iq);
+		colors.put("Java", R.color.java);
+		colors.put("Java Properties", R.color.java_properties);
+		colors.put("Java Server Pages", R.color.java_server_pages);
+		colors.put("JavaScript", R.color.java_script);
+		colors.put("Jinja", R.color.jinja);
+		colors.put("Julia", R.color.julia);
+		colors.put("Jupyter Notebook", R.color.jupyter_notebook);
+		colors.put("Kotlin", R.color.kotlin);
+		colors.put("LLVM", R.color.llvm);
+		colors.put("LSL", R.color.lsl);
+		colors.put("Lasso", R.color.lasso);
+		colors.put("Latte", R.color.latte);
+		colors.put("Less", R.color.less);
+		colors.put("LiveScript", R.color.live_script);
+		colors.put("Lua", R.color.lua);
+		colors.put("MATLAB", R.color.matlab);
+		colors.put("MTML", R.color.mtml);
+		colors.put("Makefile", R.color.make_file);
+		colors.put("Markdown", R.color.markdown);
+		colors.put("Mathematica", R.color.mathematica);
+		colors.put("Maven POM", R.color.mathematica);
+		colors.put("Max", R.color.max);
+		colors.put("Mercury", R.color.mercury);
+		colors.put("Mermaid", R.color.mermaid);
+		colors.put("Meson", R.color.meson);
+		colors.put("MiniYAML", R.color.mini_yaml);
+		colors.put("NPM Config", R.color.npm_rc);
+		colors.put("NSIS", R.color.npm_rc);
+		colors.put("Nginx", R.color.nginx);
+		colors.put("Nim", R.color.nim);
+		colors.put("Nix", R.color.nix);
+		colors.put("ObjectScript", R.color.object_script);
+		colors.put("Objective-C", R.color.objective_c);
+		colors.put("Objective-C++", R.color.objective_c_plus_plus);
+		colors.put("PHP", R.color.php);
+		colors.put("PLSQL", R.color.pl_sql);
+		colors.put("PLpgSQL", R.color.pl_pg_sql);
+		colors.put("Pascal", R.color.pascal);
+		colors.put("Perl", R.color.perl);
+		colors.put("PostCSS", R.color.post_css);
+		colors.put("PostScript", R.color.post_script);
+		colors.put("PowerShell", R.color.power_shell);
+		colors.put("Proguard", R.color.pro_log);
+		colors.put("Prolog", R.color.pro_log);
+		colors.put("Public Key", R.color.post_css);
+		colors.put("Pug", R.color.pug);
+		colors.put("Puppet", R.color.puppet);
+		colors.put("Python", R.color.python);
+		colors.put("Python console", R.color.python);
+		colors.put("Python traceback", R.color.python);
+		colors.put("QML", R.color.qml);
+		colors.put("Qt Script", R.color.qt_script);
+		colors.put("R", R.color.r);
+		colors.put("Racket", R.color.racket);
+		colors.put("Raku", R.color.raku);
+		colors.put("Raw token data", R.color.raku);
+		colors.put("Regular Expression", R.color.regexp);
+		colors.put("Rich Text Format", R.color.regexp);
+		colors.put("Roff", R.color.roff);
+		colors.put("Roff Manpage", R.color.hack);
+		colors.put("Ruby", R.color.ruby);
+		colors.put("Rust", R.color.rust);
+		colors.put("SCSS", R.color.scss);
+		colors.put("SELinux Policy", R.color.scss);
+		colors.put("SQL", R.color.sql);
+		colors.put("SQLPL", R.color.sql);
+		colors.put("SSH Config", R.color.r);
+		colors.put("SVG", R.color.svg);
+		colors.put("Sass", R.color.sass);
+		colors.put("Scala", R.color.scala);
+		colors.put("Scheme", R.color.scheme);
+		colors.put("Shell", R.color.shell);
+		colors.put("ShellCheck Config", R.color.scheme);
+		colors.put("ShellSession", R.color.scala);
+		colors.put("Smarty", R.color.smarty);
+		colors.put("Standard ML", R.color.standard_ml);
+		colors.put("Stata", R.color.stata);
+		colors.put("Stylus", R.color.stylus);
+		colors.put("Svelte", R.color.svelte);
+		colors.put("Swift", R.color.swift);
+		colors.put("TOML", R.color.toml);
+		colors.put("TSQL", R.color.swift);
+		colors.put("TSV", R.color.smarty);
+		colors.put("TSX", R.color.toml);
+		colors.put("TXL", R.color.smarty);
+		colors.put("Tcl", R.color.tcl);
+		colors.put("TeX", R.color.tex);
+		colors.put("Texinfo", R.color.tex);
+		colors.put("Text", R.color.roff);
+		colors.put("Twig", R.color.twig);
+		colors.put("TypeScript", R.color.type_script);
+		colors.put("Unity3D Asset", R.color.unity_asset);
+		colors.put("VBA", R.color.vba);
+		colors.put("VBScript", R.color.vbs);
+		colors.put("VHDL", R.color.vhdl);
+		colors.put("Vala", R.color.vala);
+		colors.put("Vim Help File", R.color.vim);
+		colors.put("Vim Script", R.color.vim);
+		colors.put("Vim Snippet", R.color.vb_net);
+		colors.put("Visual Basic .NET", R.color.hack);
+		colors.put("Visual Basic 6.0", R.color.vb6);
+		colors.put("Volt", R.color.volt);
+		colors.put("Vue", R.color.vue);
+		colors.put("WebAssembly", R.color.web_assembly);
+		colors.put("Wikitext", R.color.wiki);
+		colors.put("Windows Registry Entries", R.color.win_reg_entries);
+		colors.put("XML", R.color.xml);
+		colors.put("XML Property List", R.color.xml_props_list);
+		colors.put("XQuery", R.color.vb6);
+		colors.put("XS", R.color.wiki);
+		colors.put("XSLT", R.color.xslt);
+		colors.put("XProc", R.color.yaml);
+		colors.put("YAML", R.color.vb6);
+		colors.put("Zephir", R.color.zep);
+		colors.put("cURL Config", R.color.zep);
+		colors.put("desktop", R.color.win_reg_entries);
+		colors.put("dircolors", R.color.xslt);
+		colors.put("robots.txt", R.color.yaml);
+		colors.put("sed", R.color.sed);
+		colors.put("xBase", R.color.x_base);
+
+		for (Map.Entry<String, Integer> s : colors.entrySet()) {
+			if(key.equalsIgnoreCase(s.getKey())){
+				color = s.getValue();
+			}
 		}
+
 		return color;
 	}
 }
