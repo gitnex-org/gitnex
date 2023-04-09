@@ -9,10 +9,10 @@ import org.mian.gitnex.R;
  */
 public class LanguageColor {
 
+	private static int color = R.color.default_lang_color;
+	private static final Map<String, Integer> colors = new HashMap<>();
+	
 	public static int languageColor(String key) {
-
-		int color = R.color.default_lang_color;
-		Map<String, Integer> colors = new HashMap<>();
 
 		colors.put("ASP.NET", R.color.default_lang_color);
 		colors.put("ATS", R.color.ats);
