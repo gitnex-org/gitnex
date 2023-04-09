@@ -11,9 +11,8 @@ public class LanguageColor {
 
 	private static int color = R.color.default_lang_color;
 	private static final Map<String, Integer> colors = new HashMap<>();
-	
-	public static int languageColor(String key) {
 
+	static {
 		colors.put("ASP.NET", R.color.default_lang_color);
 		colors.put("ATS", R.color.ats);
 		colors.put("ActionScript", R.color.action_script);
@@ -209,6 +208,9 @@ public class LanguageColor {
 		colors.put("robots.txt", R.color.yaml);
 		colors.put("sed", R.color.sed);
 		colors.put("xBase", R.color.x_base);
+	}
+
+	public static int languageColor(String key) {
 
 		for (Map.Entry<String, Integer> s : colors.entrySet()) {
 			if (key.equalsIgnoreCase(s.getKey())) {
