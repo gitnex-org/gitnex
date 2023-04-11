@@ -8,6 +8,7 @@
     <string name="commitPage" translatable="false">Your Instance Version</string>
     <string name="supportLinkPatreon" translatable="false">https://www.patreon.com/mmarif</string>
     <string name="supportLinkBuyMeaCoffee" translatable="false">https://www.buymeacoffee.com/mmarif</string>
+    <string name="feedbackLink" translatable="false">https://www.buymeacoffee.com/mmarif</string>
     <string name="appVersionBuild" translatable="false">%s / %d</string>
     <string name="appDesc" translatable="false">GitNex is a free, open-source Android client for Git repository management tools Forgejo and Gitea. GitNex is Licensed under GPLv3.\n\nThanks to all the contributors and donators for your generous work and donations.</string>
     <string name="crowdInLink" translatable="false">https://crowdin.com/project/gitnex</string>
@@ -17,7 +18,8 @@
     <string name="supportText" translatable="false">Support</string>
 
     <string name="supportTextPatreon" translatable="false">Patreon</string>
-    <string name="supportTextBuyMeaCoffee" translatable="false">Buy Me a Coffee</string>
+    <string name="supportTextBuyMeaCoffee" translatable="false">BMC</string>
+    <string name="feedbackText" translatable="false">Feedback</string>
 
     <!-- menu items -->
     <string name="navMyRepos">My Repositories</string>

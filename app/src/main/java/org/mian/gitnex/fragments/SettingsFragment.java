@@ -63,6 +63,9 @@ public class SettingsFragment extends Fragment {
 		fragmentSettingsBinding.appearanceFrame.setOnClickListener(
 				v1 -> startActivity(new Intent(ctx, SettingsAppearanceActivity.class)));
 
+		fragmentSettingsBinding.codeEditorFrame.setOnClickListener(
+			v1 -> startActivity(new Intent(ctx, SettingsReportsActivity.class)));
+
 		fragmentSettingsBinding.draftsFrame.setOnClickListener(
 				v1 -> startActivity(new Intent(ctx, SettingsDraftsActivity.class)));
 
@@ -135,10 +138,14 @@ public class SettingsFragment extends Fragment {
 							requireContext(), getResources().getString(R.string.appWebsiteLink));
 				});
 
+		aboutAppDialogBinding.feedback.setOnClickListener(
+			v14 -> {
+				AppUtil.openUrlInBrowser(
+					requireContext(), getResources().getString(R.string.feedbackLink));
+			});
+
 		if (AppUtil.isPro(requireContext())) {
-			aboutAppDialogBinding.supportHeader.setVisibility(View.GONE);
-			aboutAppDialogBinding.donationLinkPatreon.setVisibility(View.GONE);
-			aboutAppDialogBinding.donationLinkBuyMeaCoffee.setVisibility(View.GONE);
+			aboutAppDialogBinding.layoutFrame1.setVisibility(View.GONE);
 		}
 
 		materialAlertDialogBuilder.show();
