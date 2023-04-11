@@ -16,10 +16,8 @@ import org.mian.gitnex.R;
 import org.mian.gitnex.activities.BaseActivity;
 import org.mian.gitnex.activities.MainActivity;
 import org.mian.gitnex.activities.SettingsAppearanceActivity;
-import org.mian.gitnex.activities.SettingsDraftsActivity;
 import org.mian.gitnex.activities.SettingsGeneralActivity;
 import org.mian.gitnex.activities.SettingsNotificationsActivity;
-import org.mian.gitnex.activities.SettingsReportsActivity;
 import org.mian.gitnex.activities.SettingsSecurityActivity;
 import org.mian.gitnex.activities.SettingsTranslationActivity;
 import org.mian.gitnex.databinding.CustomAboutDialogBinding;
@@ -64,10 +62,7 @@ public class SettingsFragment extends Fragment {
 				v1 -> startActivity(new Intent(ctx, SettingsAppearanceActivity.class)));
 
 		fragmentSettingsBinding.codeEditorFrame.setOnClickListener(
-			v1 -> startActivity(new Intent(ctx, SettingsReportsActivity.class)));
-
-		fragmentSettingsBinding.draftsFrame.setOnClickListener(
-				v1 -> startActivity(new Intent(ctx, SettingsDraftsActivity.class)));
+			v1 -> startActivity(new Intent(ctx, SettingsAppearanceActivity.class)));
 
 		fragmentSettingsBinding.securityFrame.setOnClickListener(
 				v1 -> startActivity(new Intent(ctx, SettingsSecurityActivity.class)));
@@ -77,9 +72,6 @@ public class SettingsFragment extends Fragment {
 
 		fragmentSettingsBinding.languagesFrame.setOnClickListener(
 				v1 -> startActivity(new Intent(ctx, SettingsTranslationActivity.class)));
-
-		fragmentSettingsBinding.reportsFrame.setOnClickListener(
-				v1 -> startActivity(new Intent(ctx, SettingsReportsActivity.class)));
 
 		fragmentSettingsBinding.rateAppFrame.setOnClickListener(rateApp -> rateThisApp());
 
