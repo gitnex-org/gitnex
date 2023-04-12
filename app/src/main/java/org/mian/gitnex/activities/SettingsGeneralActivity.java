@@ -172,30 +172,30 @@ public class SettingsGeneralActivity extends BaseActivity {
 
 		// enable drafts deletion
 		viewBinding.commentsDeletionSwitch.setChecked(
-			tinyDB.getBoolean("draftsCommentsDeletionEnabled", true));
+				tinyDB.getBoolean("draftsCommentsDeletionEnabled", true));
 
 		// delete comments on submit switcher
 		viewBinding.commentsDeletionSwitch.setOnCheckedChangeListener(
-			(buttonView, isChecked) -> {
-				tinyDB.putBoolean("draftsCommentsDeletionEnabled", isChecked);
-				Toasty.success(appCtx, getResources().getString(R.string.settingsSave));
-			});
+				(buttonView, isChecked) -> {
+					tinyDB.putBoolean("draftsCommentsDeletionEnabled", isChecked);
+					Toasty.success(appCtx, getResources().getString(R.string.settingsSave));
+				});
 		viewBinding.enableDraftsCommentsDeletion.setOnClickListener(
-			v ->
-				viewBinding.commentsDeletionSwitch.setChecked(
-					!viewBinding.commentsDeletionSwitch.isChecked()));
+				v ->
+						viewBinding.commentsDeletionSwitch.setChecked(
+								!viewBinding.commentsDeletionSwitch.isChecked()));
 		// enable drafts deletion
 
 		// crash reports switcher
 		viewBinding.crashReportsSwitch.setOnCheckedChangeListener(
-			(buttonView, isChecked) -> {
-				tinyDB.putBoolean("crashReportingEnabled", isChecked);
-				Toasty.success(appCtx, getResources().getString(R.string.settingsSave));
-			});
+				(buttonView, isChecked) -> {
+					tinyDB.putBoolean("crashReportingEnabled", isChecked);
+					Toasty.success(appCtx, getResources().getString(R.string.settingsSave));
+				});
 		viewBinding.enableSendReports.setOnClickListener(
-			v ->
-				viewBinding.crashReportsSwitch.setChecked(
-					!viewBinding.crashReportsSwitch.isChecked()));
+				v ->
+						viewBinding.crashReportsSwitch.setChecked(
+								!viewBinding.crashReportsSwitch.isChecked()));
 		// crash reports switcher
 	}
 

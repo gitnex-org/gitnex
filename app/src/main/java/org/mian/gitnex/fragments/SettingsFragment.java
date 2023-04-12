@@ -62,7 +62,7 @@ public class SettingsFragment extends Fragment {
 				v1 -> startActivity(new Intent(ctx, SettingsAppearanceActivity.class)));
 
 		fragmentSettingsBinding.codeEditorFrame.setOnClickListener(
-			v1 -> startActivity(new Intent(ctx, SettingsAppearanceActivity.class)));
+				v1 -> startActivity(new Intent(ctx, SettingsAppearanceActivity.class)));
 
 		fragmentSettingsBinding.securityFrame.setOnClickListener(
 				v1 -> startActivity(new Intent(ctx, SettingsSecurityActivity.class)));
@@ -131,10 +131,10 @@ public class SettingsFragment extends Fragment {
 				});
 
 		aboutAppDialogBinding.feedback.setOnClickListener(
-			v14 -> {
-				AppUtil.openUrlInBrowser(
-					requireContext(), getResources().getString(R.string.feedbackLink));
-			});
+				v14 -> {
+					AppUtil.openUrlInBrowser(
+							requireContext(), getResources().getString(R.string.feedbackLink));
+				});
 
 		if (AppUtil.isPro(requireContext())) {
 			aboutAppDialogBinding.layoutFrame1.setVisibility(View.GONE);
