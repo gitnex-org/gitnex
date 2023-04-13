@@ -127,9 +127,6 @@
             android:name=".activities.SettingsSecurityActivity"
             android:configChanges="orientation|screenSize|smallestScreenSize|density|screenLayout|keyboard|keyboardHidden|navigation"/>
         <activity
-            android:name=".activities.SettingsTranslationActivity"
-            android:configChanges="orientation|screenSize|smallestScreenSize|density|screenLayout|keyboard|keyboardHidden|navigation"/>
-        <activity
             android:name=".activities.AddNewTeamMemberActivity"
             android:configChanges="orientation|screenSize|smallestScreenSize|density|screenLayout|keyboard|keyboardHidden|navigation"/>
         <activity

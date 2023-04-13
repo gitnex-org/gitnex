@@ -19,7 +19,6 @@ import org.mian.gitnex.activities.SettingsAppearanceActivity;
 import org.mian.gitnex.activities.SettingsGeneralActivity;
 import org.mian.gitnex.activities.SettingsNotificationsActivity;
 import org.mian.gitnex.activities.SettingsSecurityActivity;
-import org.mian.gitnex.activities.SettingsTranslationActivity;
 import org.mian.gitnex.databinding.CustomAboutDialogBinding;
 import org.mian.gitnex.databinding.FragmentSettingsBinding;
 import org.mian.gitnex.helpers.AppUtil;
@@ -69,9 +68,6 @@ public class SettingsFragment extends Fragment {
 
 		fragmentSettingsBinding.notificationsFrame.setOnClickListener(
 				v1 -> startActivity(new Intent(ctx, SettingsNotificationsActivity.class)));
-
-		fragmentSettingsBinding.languagesFrame.setOnClickListener(
-				v1 -> startActivity(new Intent(ctx, SettingsTranslationActivity.class)));
 
 		fragmentSettingsBinding.rateAppFrame.setOnClickListener(rateApp -> rateThisApp());
 

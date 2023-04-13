@@ -622,7 +622,7 @@
     <string name="resetCounterDialogMessage">Do you want to reset counter for repository %s?</string>
     <string name="resetCounterAllDialogMessage">This will reset all the counters for this account repositories.</string>
 
-    <string name="appearanceHintText">Themes, fonts, badges</string>
+    <string name="appearanceHintText">Themes, fonts, badges, translation</string>
     <string name="securityHintText">Biometric authentication, SSL certificates, cache</string>
     <string name="languagesHintText">Languages</string>
     <string name="reportsHintText">Crash reports</string>

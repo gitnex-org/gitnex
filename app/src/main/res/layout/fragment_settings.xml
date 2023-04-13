@@ -294,61 +294,6 @@
             </LinearLayout>
 
             <LinearLayout
-                android:id="@+id/languagesFrame"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginBottom="5dp"
-                android:background="?android:attr/selectableItemBackground"
-                android:gravity="center_vertical"
-                android:orientation="horizontal"
-                android:padding="15dp">
-
-                <ImageView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:contentDescription="@string/generalImgContentText"
-                    app:srcCompat="@drawable/ic_flag"/>
-
-                <LinearLayout
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:layout_marginStart="10dp"
-                    android:layout_marginEnd="10dp"
-                    android:layout_weight="1"
-                    android:orientation="vertical">
-
-                    <TextView
-                        android:id="@+id/tvLanguages"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:paddingStart="12dp"
-                        android:paddingEnd="12dp"
-                        android:text="@string/settingsLanguageHeaderText"
-                        android:textColor="?attr/primaryTextColor"
-                        android:textSize="18sp"/>
-
-                    <TextView
-                        android:id="@+id/languagesHintText"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:layout_gravity="center_vertical"
-                        android:paddingStart="12dp"
-                        android:paddingEnd="12dp"
-                        android:text="@string/languagesHintText"
-                        android:textColor="?attr/primaryTextColor"
-                        android:textSize="12sp"/>
-
-                </LinearLayout>
-
-                <ImageView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:contentDescription="@string/generalImgContentText"
-                    app:srcCompat="@drawable/ic_chevron_right"/>
-
-            </LinearLayout>
-
-            <LinearLayout
                 android:id="@+id/rateAppFrame"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"

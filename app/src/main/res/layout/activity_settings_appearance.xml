@@ -216,7 +216,7 @@
         android:id="@+id/labelsInListFrame"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginBottom="@dimen/dimen60dp"
+        android:layout_marginBottom="@dimen/dimen6dp"
         android:background="?android:attr/selectableItemBackground"
         android:orientation="horizontal"
         android:padding="@dimen/dimen16dp">
@@ -267,5 +267,52 @@
             android:textSize="@dimen/dimen12sp" />
 
     </RelativeLayout>
+
+    <LinearLayout
+        android:id="@+id/langFrame"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="?android:attr/selectableItemBackground"
+        android:clickable="true"
+        android:focusable="true"
+        android:orientation="vertical"
+        android:padding="@dimen/dimen16dp">
+
+        <TextView
+            android:id="@+id/tvLanguageHeaderSelector"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="@dimen/dimen24dp"
+            android:layout_marginEnd="@dimen/dimen24dp"
+            android:text="@string/settingsLanguageSelectorHeader"
+            android:textColor="?attr/primaryTextColor"
+            android:textSize="@dimen/dimen18sp"/>
+
+        <TextView
+            android:id="@+id/tvLanguageSelected"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="@dimen/dimen24dp"
+            android:layout_marginEnd="@dimen/dimen24dp"
+            android:text="@string/settingsLanguageSelectedHeaderDefault"
+            android:textColor="?attr/selectedTextColor"
+            android:textSize="@dimen/dimen16sp"/>
+
+    </LinearLayout>
+
+    <TextView
+        android:id="@+id/helpTranslate"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:autoLink="web"
+        android:background="?android:attr/selectableItemBackground"
+        android:paddingStart="@dimen/dimen40dp"
+        android:paddingTop="@dimen/dimen12dp"
+        android:paddingBottom="@dimen/dimen12dp"
+        android:paddingEnd="@dimen/dimen24dp"
+        android:layout_marginBottom="@dimen/dimen2dp"
+        android:text="@string/settingsHelpTranslateText"
+        android:textColor="@color/lightBlue"
+        android:textSize="@dimen/dimen16sp" />
 
 </LinearLayout>
