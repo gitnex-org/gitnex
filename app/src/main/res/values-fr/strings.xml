@@ -666,7 +666,7 @@
     <string name="newNoteContentHint">Prenez vos notes ici</string>
     <string name="noteDateTime">Créée le %s</string>
     <string name="noteTimeModified">Mise à jour le %s</string>
-    <string name="noteDeleteDialoMessage">Souhaitez-vous vraiment supprimer cette note ?</string>
+    <string name="noteDeleteDialogMessage">Voulez-vous vraiment supprimer cette note ?</string>
     <plurals name="noteDeleteMessage">
         <item quantity="one">Note supprimée</item>
         <item quantity="other">Notes supprimées</item>
@@ -718,4 +718,5 @@
     <string name="commitStatuses">Statuts</string>
     <string name="statusNoUrl">Ce statut n’a pas d’URL.</string>
     <string name="starredRepos">Dépôts favoris</string>
+    <string name="lang_statistics">Statistiques du langage</string>
 </resources>

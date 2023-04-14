@@ -666,7 +666,7 @@
     <string name="newNoteContentHint">Schreibe hier deine Notizen</string>
     <string name="noteDateTime">%s erstellt</string>
     <string name="noteTimeModified">%s aktualisiert</string>
-    <string name="noteDeleteDialoMessage">Möchten Sie diese Notiz wirklich löschen?</string>
+    <string name="noteDeleteDialogMessage">Möchten Sie diese Notiz wirklich löschen?</string>
     <plurals name="noteDeleteMessage">
         <item quantity="one">Notiz erfolgreich gelöscht</item>
         <item quantity="other">Notizen erfolgreich gelöscht</item>
@@ -718,4 +718,5 @@
     <string name="commitStatuses">Status</string>
     <string name="statusNoUrl">Dieser Status hat keine Ziel-URL.</string>
     <string name="starredRepos">Favoriten</string>
+    <string name="lang_statistics">Sprach-Statistik</string>
 </resources>
