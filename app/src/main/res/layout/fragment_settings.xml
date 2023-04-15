@@ -169,7 +169,7 @@
                         android:layout_gravity="center_vertical"
                         android:paddingStart="12dp"
                         android:paddingEnd="12dp"
-                        android:text="@string/appearanceHintText"
+                        android:text="@string/codeEditorHintText"
                         android:textColor="?attr/primaryTextColor"
                         android:textSize="12sp"/>
 

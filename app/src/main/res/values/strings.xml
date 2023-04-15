@@ -8,7 +8,7 @@
     <string name="commitPage" translatable="false">Your Instance Version</string>
     <string name="supportLinkPatreon" translatable="false">https://www.patreon.com/mmarif</string>
     <string name="supportLinkBuyMeaCoffee" translatable="false">https://www.buymeacoffee.com/mmarif</string>
-    <string name="feedbackLink" translatable="false">https://www.buymeacoffee.com/mmarif</string>
+    <string name="feedbackLink" translatable="false">https://cloud.swatian.com/apps/forms/s/xe7KekTNKgrj58EK6WHQyJDf</string>
     <string name="appVersionBuild" translatable="false">%s / %d</string>
     <string name="appDesc" translatable="false">GitNex is a free, open-source Android client for Git repository management tools Forgejo and Gitea. GitNex is Licensed under GPLv3.\n\nThanks to all the contributors and donators for your generous work and donations.</string>
     <string name="crowdInLink" translatable="false">https://crowdin.com/project/gitnex</string>
@@ -89,6 +89,7 @@
     <string name="emptyFieldUsername">Username is required</string>
     <string name="emptyFieldPassword">Password is required</string>
     <string name="protocolEmptyError">Protocol is required</string>
+    <string name="instanceHelperText">Enter URL without http or https. Example: codeberg.org</string>
 
     <string name="checkNetConnection">Cannot access network, please check your Internet connection</string>
 
@@ -250,6 +251,9 @@
     <string name="settingsBiometricHeader">Biometric Support</string>
     <string name="settingsLabelsInListHeader">Labels With Text Support</string>
     <string name="settingsLabelsInListHint">Enabling this will show labels with text in issues and pr lists, default are color dots</string>
+    <string name="ceSyntaxHighlightColor">Syntax Highlighting Color</string>
+    <string name="ceIndentation">Indentation</string>
+    <string name="ceIndentationTabsWidth">Tabs Width</string>
     <!-- settings -->
 
     <string name="noMoreData">No more data available</string>
@@ -628,6 +632,7 @@
     <string name="reportsHintText">Crash reports</string>
     <string name="rateAppHintText">If you like GitNex you can give it a thumbs up</string>
     <string name="aboutAppHintText">App version, build, user instance version</string>
+    <string name="codeEditorHintText">Syntax color, indentation</string>
 
     <string name="archivedRepository">Archived</string>
     <string name="archivedRepositoryMessage">This repo is archived. You can view files, but cannot push or open issues/pull-requests.</string>

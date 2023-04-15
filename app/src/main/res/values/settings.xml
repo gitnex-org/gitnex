@@ -90,4 +90,21 @@
         <item>500 MB</item>
         <item>1 GB</item>
     </string-array>
+
+    <string-array name="ceColors">
+        <item>Five O Clock</item>
+        <item>Monro</item>
+    </string-array>
+
+    <string-array name="ceIndentation">
+        <item>Tabs</item>
+        <item>Spaces</item>
+    </string-array>
+
+    <string-array name="ceIndentationTabsWidth">
+        <item>2</item>
+        <item>4</item>
+        <item>6</item>
+        <item>8</item>
+    </string-array>
 </resources>

@@ -129,10 +129,11 @@
 
                     <com.google.android.material.floatingactionbutton.ExtendedFloatingActionButton
                         android:id="@+id/donationLinkPatreon"
-                        android:layout_width="@dimen/dimen150dp"
+                        android:layout_width="@dimen/dimen0dp"
                         android:layout_height="@dimen/dimen60dp"
                         android:layout_marginEnd="@dimen/dimen4dp"
                         android:layout_marginStart="@dimen/dimen0dp"
+                        android:layout_weight=".5"
                         android:stateListAnimator="@null"
                         android:text="@string/supportTextPatreon"
                         android:textStyle="bold"
@@ -144,10 +145,11 @@
 
                     <com.google.android.material.floatingactionbutton.ExtendedFloatingActionButton
                         android:id="@+id/donationLinkBuyMeaCoffee"
-                        android:layout_width="@dimen/dimen150dp"
+                        android:layout_width="@dimen/dimen0dp"
                         android:layout_height="@dimen/dimen60dp"
                         android:layout_marginEnd="@dimen/dimen0dp"
                         android:layout_marginStart="@dimen/dimen6dp"
+                        android:layout_weight=".5"
                         android:stateListAnimator="@null"
                         android:text="@string/supportTextBuyMeaCoffee"
                         android:textStyle="bold"
@@ -169,10 +171,11 @@
 
                     <com.google.android.material.floatingactionbutton.ExtendedFloatingActionButton
                         android:id="@+id/translateLink"
-                        android:layout_width="@dimen/dimen150dp"
+                        android:layout_width="@dimen/dimen0dp"
                         android:layout_height="@dimen/dimen60dp"
                         android:layout_marginEnd="@dimen/dimen4dp"
                         android:layout_marginStart="@dimen/dimen0dp"
+                        android:layout_weight=".5"
                         android:stateListAnimator="@null"
                         android:text="@string/translateWithCrowdin"
                         android:textStyle="bold"
@@ -184,10 +187,11 @@
 
                     <com.google.android.material.floatingactionbutton.ExtendedFloatingActionButton
                         android:id="@+id/appWebsite"
-                        android:layout_width="@dimen/dimen150dp"
+                        android:layout_width="@dimen/dimen0dp"
                         android:layout_height="@dimen/dimen60dp"
                         android:layout_marginEnd="@dimen/dimen0dp"
                         android:layout_marginStart="@dimen/dimen6dp"
+                        android:layout_weight=".5"
                         android:stateListAnimator="@null"
                         android:text="@string/websiteText"
                         android:textStyle="bold"
@@ -209,10 +213,11 @@
 
                     <com.google.android.material.floatingactionbutton.ExtendedFloatingActionButton
                         android:id="@+id/feedback"
-                        android:layout_width="@dimen/dimen150dp"
+                        android:layout_width="@dimen/dimen0dp"
                         android:layout_height="@dimen/dimen60dp"
                         android:layout_marginEnd="@dimen/dimen4dp"
                         android:layout_marginStart="@dimen/dimen0dp"
+                        android:layout_weight=".5"
                         android:stateListAnimator="@null"
                         android:text="@string/feedbackText"
                         android:textStyle="bold"
@@ -221,6 +226,12 @@
                         app:iconTint="?attr/materialCardBackgroundColor"
                         android:backgroundTint="?attr/fabColor"
                         app:icon="@drawable/ic_feedback" />
+                    
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:visibility="invisible"
+                        android:layout_weight=".5" />
 
                 </LinearLayout>
 

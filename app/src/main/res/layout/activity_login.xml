@@ -97,7 +97,8 @@
             app:endIconTint="?attr/iconsColor"
             app:hintTextColor="?attr/hintColor"
             app:startIconDrawable="@drawable/ic_link"
-            app:startIconTint="?attr/iconsColor">
+            app:startIconTint="?attr/iconsColor"
+            app:helperText="@string/instanceHelperText">
 
             <com.google.android.material.textfield.TextInputEditText
                 android:id="@+id/instance_url"
