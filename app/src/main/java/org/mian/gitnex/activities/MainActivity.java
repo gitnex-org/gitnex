@@ -162,6 +162,22 @@ public class MainActivity extends BaseActivity
 		Menu menu = navigationView.getMenu();
 		navNotifications = menu.findItem(R.id.nav_notifications);
 
+		navigationView
+				.getViewTreeObserver()
+				.addOnGlobalLayoutListener(
+						() -> {
+							ArrayList<View> menuItems = new ArrayList<>(menu.size());
+							for (int i = 0; i < menu.size(); i++) {
+								MenuItem item = menu.getItem(i);
+								navigationView.findViewsWithText(
+										menuItems, item.getTitle(), View.FIND_VIEWS_WITH_TEXT);
+							}
+
+							for (final View menuItem : menuItems) {
+								((TextView) menuItem).setTypeface(myTypeface);
+							}
+						});
+
 		ActionBarDrawerToggle toggle =
 				new ActionBarDrawerToggle(
 						this,

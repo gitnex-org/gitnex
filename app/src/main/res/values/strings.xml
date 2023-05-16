@@ -254,6 +254,7 @@
     <string name="ceSyntaxHighlightColor">Syntax Highlighting Color</string>
     <string name="ceIndentation">Indentation</string>
     <string name="ceIndentationTabsWidth">Tabs Width</string>
+    <string name="system_font">System Default Font</string>
     <!-- settings -->
 
     <string name="noMoreData">No more data available</string>

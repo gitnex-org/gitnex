@@ -26,6 +26,7 @@
         <item>Roboto</item>
         <item>Manrope</item>
         <item>Source Code Pro</item>
+        <item>@string/system_font</item>
     </string-array>
 
     <string-array name="themes">

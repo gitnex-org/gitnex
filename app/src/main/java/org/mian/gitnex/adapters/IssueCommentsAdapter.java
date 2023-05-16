@@ -457,6 +457,7 @@ public class IssueCommentsAdapter extends RecyclerView.Adapter<RecyclerView.View
 
 		void bindData(TimelineComment timelineComment) {
 
+			Typeface typeface = AppUtil.getTypeface(context);
 			int fontSize = 14;
 			int imgRadius = AppUtil.getPixelsFromDensity(context, 3);
 
@@ -500,13 +501,13 @@ public class IssueCommentsAdapter extends RecyclerView.Adapter<RecyclerView.View
 				TextDrawable drawable =
 						TextDrawable.builder()
 								.beginConfig()
-								.useFont(Typeface.DEFAULT)
+								.useFont(typeface)
 								.textColor(new ColorInverter().getContrastColor(color))
 								.fontSize(textSize)
 								.width(
 										LabelWidthCalculator.calculateLabelWidth(
 												issueComment.getLabel().getName(),
-												Typeface.DEFAULT,
+												typeface,
 												textSize,
 												AppUtil.getPixelsFromDensity(context, 10)))
 								.height(height)

@@ -599,6 +599,9 @@ public class AppUtil {
 							Typeface.createFromAsset(
 									context.getAssets(), "fonts/sourcecodeproregular.ttf");
 					break;
+				case 3:
+					typeface = Typeface.DEFAULT;
+					break;
 				default:
 					typeface =
 							Typeface.createFromAsset(

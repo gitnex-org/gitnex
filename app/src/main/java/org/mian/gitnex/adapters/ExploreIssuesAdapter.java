@@ -230,6 +230,8 @@ public class ExploreIssuesAdapter extends RecyclerView.Adapter<RecyclerView.View
 							LinearLayout.LayoutParams.WRAP_CONTENT);
 			params.setMargins(0, 0, 15, 0);
 
+			Typeface typeface = AppUtil.getTypeface(context);
+
 			if (issue.getLabels() != null) {
 
 				if (!tinyDb.getBoolean("showLabelsInList", false)) { // default
@@ -251,7 +253,7 @@ public class ExploreIssuesAdapter extends RecyclerView.Adapter<RecyclerView.View
 						TextDrawable drawable =
 								TextDrawable.builder()
 										.beginConfig()
-										.useFont(Typeface.DEFAULT)
+										.useFont(typeface)
 										.width(54)
 										.height(54)
 										.endConfig()
@@ -283,13 +285,13 @@ public class ExploreIssuesAdapter extends RecyclerView.Adapter<RecyclerView.View
 						TextDrawable drawable =
 								TextDrawable.builder()
 										.beginConfig()
-										.useFont(Typeface.DEFAULT)
+										.useFont(typeface)
 										.textColor(new ColorInverter().getContrastColor(color))
 										.fontSize(textSize)
 										.width(
 												LabelWidthCalculator.calculateLabelWidth(
 														labelName,
-														Typeface.DEFAULT,
+														typeface,
 														textSize,
 														AppUtil.getPixelsFromDensity(context, 8)))
 										.height(height)

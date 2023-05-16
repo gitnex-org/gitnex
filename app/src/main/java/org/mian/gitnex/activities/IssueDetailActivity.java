@@ -85,6 +85,7 @@ public class IssueDetailActivity extends BaseActivity
 				AssigneesListAdapter.AssigneesListAdapterListener,
 				BottomSheetListener {
 
+	private Typeface myTypeface;
 	public static boolean singleIssueUpdate = false;
 	public static boolean commentPosted = false;
 	private final List<Label> labelsList = new ArrayList<>();
@@ -185,7 +186,7 @@ public class IssueDetailActivity extends BaseActivity
 										},
 										50));
 
-		Typeface myTypeface = AppUtil.getTypeface(this);
+		myTypeface = AppUtil.getTypeface(this);
 		viewBinding.toolbarTitle.setTypeface(myTypeface);
 		viewBinding.toolbarTitle.setText(repoName);
 
@@ -935,13 +936,13 @@ public class IssueDetailActivity extends BaseActivity
 				TextDrawable drawable =
 						TextDrawable.builder()
 								.beginConfig()
-								.useFont(Typeface.DEFAULT)
+								.useFont(myTypeface)
 								.textColor(new ColorInverter().getContrastColor(color))
 								.fontSize(textSize)
 								.width(
 										LabelWidthCalculator.calculateLabelWidth(
 												labelName,
-												Typeface.DEFAULT,
+												myTypeface,
 												textSize,
 												AppUtil.getPixelsFromDensity(ctx, 10)))
 								.height(height)
