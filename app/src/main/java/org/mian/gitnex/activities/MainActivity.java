@@ -501,6 +501,7 @@ public class MainActivity extends BaseActivity
 			}
 		}
 
+		loadUserInfo();
 		handler.postDelayed(
 				() -> {
 					boolean connToInternet = AppUtil.hasNetworkConnection(appCtx);
@@ -513,7 +514,6 @@ public class MainActivity extends BaseActivity
 						noConnection = true;
 					} else {
 
-						loadUserInfo();
 						giteaVersion();
 						serverPageLimitSettings();
 						noConnection = false;
