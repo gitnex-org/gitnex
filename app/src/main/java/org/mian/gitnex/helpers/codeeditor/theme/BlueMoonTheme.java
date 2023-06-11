@@ -5,10 +5,9 @@ import org.mian.gitnex.R;
 import org.mian.gitnex.helpers.codeeditor.languages.LanguageElement;
 
 /**
- * @author qwerty287
  * @author M M Arif
  */
-public class FiveColorsDarkTheme implements Theme {
+public class BlueMoonTheme implements Theme {
 
 	@Override
 	@ColorRes
@@ -19,31 +18,31 @@ public class FiveColorsDarkTheme implements Theme {
 			case KEYWORD:
 			case OPERATION:
 			case GENERIC:
-				return R.color.five_dark_purple;
+				return R.color.moon_dark_blue;
 			case CHAR:
 			case STRING:
-				return R.color.five_dark_yellow;
+				return R.color.moon_dark_turquoise;
 			case SINGLE_LINE_COMMENT:
 			case MULTI_LINE_COMMENT:
-				return R.color.five_dark_grey;
+				return R.color.moon_dark_grey;
 			case ATTRIBUTE:
 			case TODO_COMMENT:
 			case ANNOTATION:
-				return R.color.five_dark_blue;
+				return R.color.moon_deep_sky_blue;
 			default:
-				return R.color.five_dark_white;
+				return R.color.moon_dark_black;
 		}
 	}
 
 	@Override
 	@ColorRes
 	public int getDefaultColor() {
-		return R.color.five_dark_white;
+		return R.color.moon_dark_black;
 	}
 
 	@Override
 	@ColorRes
 	public int getBackgroundColor() {
-		return R.color.five_dark_black;
+		return R.color.moon_background_grey;
 	}
 }
