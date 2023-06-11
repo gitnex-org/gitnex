@@ -35,6 +35,7 @@ public class SettingsCodeEditorActivity extends BaseActivity {
 
 		// color selector dialog
 		colorList = getResources().getStringArray(R.array.ceColors);
+		colorSelectedChoice = tinyDB.getInt("ceColorId");
 		activitySettingsCodeEditorBinding.ceColorSelected.setText(colorList[colorSelectedChoice]);
 
 		activitySettingsCodeEditorBinding.ceColorSelectionFrame.setOnClickListener(
@@ -66,6 +67,7 @@ public class SettingsCodeEditorActivity extends BaseActivity {
 
 		// indentation selector dialog
 		indentationList = getResources().getStringArray(R.array.ceIndentation);
+		indentationSelectedChoice = tinyDB.getInt("ceIndentationId");
 		activitySettingsCodeEditorBinding.indentationSelected.setText(
 				indentationList[indentationSelectedChoice]);
 
@@ -107,6 +109,7 @@ public class SettingsCodeEditorActivity extends BaseActivity {
 		}
 
 		indentationTabsList = getResources().getStringArray(R.array.ceIndentationTabsWidth);
+		indentationTabsSelectedChoice = tinyDB.getInt("ceIndentationTabsId");
 		activitySettingsCodeEditorBinding.indentationTabsSelected.setText(
 				indentationTabsList[indentationTabsSelectedChoice]);
 
