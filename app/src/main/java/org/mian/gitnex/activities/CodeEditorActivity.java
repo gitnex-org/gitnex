@@ -73,8 +73,25 @@ public class CodeEditorActivity extends BaseActivity {
 		binding.codeView.setLineNumberTextSize(32f);
 
 		// Setup Auto indenting feature
-		binding.codeView.setTabLength(4);
-		binding.codeView.setEnableAutoIndentation(true);
+		if (tinyDB.getInt("ceIndentationId") == 0) {
+			binding.codeView.setEnableAutoIndentation(true);
+			switch (tinyDB.getInt("ceIndentationTabsId")) {
+				case 0:
+					binding.codeView.setTabLength(2);
+					break;
+				case 1:
+					binding.codeView.setTabLength(4);
+					break;
+				case 2:
+					binding.codeView.setTabLength(6);
+					break;
+				case 3:
+					binding.codeView.setTabLength(8);
+					break;
+			}
+		} else {
+			binding.codeView.setEnableAutoIndentation(false);
+		}
 
 		// Set up the language and theme with SyntaxManager helper class
 		currentLanguage.applyTheme(this, binding.codeView, currentTheme);

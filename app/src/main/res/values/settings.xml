@@ -26,6 +26,7 @@
         <item>Roboto</item>
         <item>Manrope</item>
         <item>Source Code Pro</item>
+        <item>@string/system_font</item>
     </string-array>
 
     <string-array name="themes">
@@ -89,5 +90,22 @@
         <item>250 MB</item>
         <item>500 MB</item>
         <item>1 GB</item>
+    </string-array>
+
+    <string-array name="ceColors">
+        <item>Five O Clock</item>
+        <item>Blue Moon</item>
+    </string-array>
+
+    <string-array name="ceIndentation">
+        <item>Tabs</item>
+        <item>Spaces</item>
+    </string-array>
+
+    <string-array name="ceIndentationTabsWidth">
+        <item>2</item>
+        <item>4</item>
+        <item>6</item>
+        <item>8</item>
     </string-array>
 </resources>

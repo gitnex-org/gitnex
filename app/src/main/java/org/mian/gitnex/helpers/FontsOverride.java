@@ -14,7 +14,7 @@ public class FontsOverride {
 	public static void setDefaultFont(Context context) {
 		final Typeface regular = AppUtil.getTypeface(context);
 
-		for (String field : new String[] {"DEFAULT", "MONOSPACE", "SERIF", "SANS_SERIF"}) {
+		for (String field : new String[] {"MONOSPACE"}) {
 			replaceFont(field, regular);
 		}
 	}

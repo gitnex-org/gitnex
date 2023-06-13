@@ -8,6 +8,7 @@
     <string name="commitPage" translatable="false">Your Instance Version</string>
     <string name="supportLinkPatreon" translatable="false">https://www.patreon.com/mmarif</string>
     <string name="supportLinkBuyMeaCoffee" translatable="false">https://www.buymeacoffee.com/mmarif</string>
+    <string name="feedbackLink" translatable="false">https://cloud.swatian.com/apps/forms/s/xe7KekTNKgrj58EK6WHQyJDf</string>
     <string name="appVersionBuild" translatable="false">%s / %d</string>
     <string name="appDesc" translatable="false">GitNex is a free, open-source Android client for Git repository management tools Forgejo and Gitea. GitNex is Licensed under GPLv3.\n\nThanks to all the contributors and donators for your generous work and donations.</string>
     <string name="crowdInLink" translatable="false">https://crowdin.com/project/gitnex</string>
@@ -17,7 +18,8 @@
     <string name="supportText" translatable="false">Support</string>
 
     <string name="supportTextPatreon" translatable="false">Patreon</string>
-    <string name="supportTextBuyMeaCoffee" translatable="false">Buy Me a Coffee</string>
+    <string name="supportTextBuyMeaCoffee" translatable="false">BMC</string>
+    <string name="feedbackText" translatable="false">Feedback</string>
 
     <!-- menu items -->
     <string name="navMyRepos">My Repositories</string>
@@ -87,6 +89,7 @@
     <string name="emptyFieldUsername">Username is required</string>
     <string name="emptyFieldPassword">Password is required</string>
     <string name="protocolEmptyError">Protocol is required</string>
+    <string name="instanceHelperText">Enter URL without http or https. Example: codeberg.org</string>
 
     <string name="checkNetConnection">Cannot access network, please check your Internet connection</string>
 
@@ -240,7 +243,7 @@
     <string name="settingsEnableCommentsDeletionText">Enable Drafts Deletion</string>
     <string name="settingsEnableCommentsDeletionHintText">Delete comment draft when comment is posted</string>
     <string name="settingsGeneralHeader">General</string>
-    <string name="generalHintText">Home screen, default link handler</string>
+    <string name="generalHintText">Home screen, drafts, crash reports</string>
     <string name="generalDeepLinkDefaultScreen">Default Link Handler</string>
     <string name="generalDeepLinkDefaultScreenHintText">Choose what screen should be loaded if the app cannot handle external links. It will redirect you automatically.</string>
     <string name="generalDeepLinkSelectedText">N/A</string>
@@ -248,6 +251,10 @@
     <string name="settingsBiometricHeader">Biometric Support</string>
     <string name="settingsLabelsInListHeader">Labels With Text Support</string>
     <string name="settingsLabelsInListHint">Enabling this will show labels with text in issues and pr lists, default are color dots</string>
+    <string name="ceSyntaxHighlightColor">Syntax Highlighting Color</string>
+    <string name="ceIndentation">Indentation</string>
+    <string name="ceIndentationTabsWidth">Tabs Width</string>
+    <string name="system_font">System Default Font</string>
     <!-- settings -->
 
     <string name="noMoreData">No more data available</string>
@@ -620,12 +627,13 @@
     <string name="resetCounterDialogMessage">Do you want to reset counter for repository %s?</string>
     <string name="resetCounterAllDialogMessage">This will reset all the counters for this account repositories.</string>
 
-    <string name="appearanceHintText">Themes, fonts, badges</string>
+    <string name="appearanceHintText">Themes, fonts, badges, translation</string>
     <string name="securityHintText">Biometric authentication, SSL certificates, cache</string>
     <string name="languagesHintText">Languages</string>
     <string name="reportsHintText">Crash reports</string>
     <string name="rateAppHintText">If you like GitNex you can give it a thumbs up</string>
     <string name="aboutAppHintText">App version, build, user instance version</string>
+    <string name="codeEditorHintText">Syntax color, indentation</string>
 
     <string name="archivedRepository">Archived</string>
     <string name="archivedRepositoryMessage">This repo is archived. You can view files, but cannot push or open issues/pull-requests.</string>

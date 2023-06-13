@@ -18,7 +18,8 @@
             android:id="@+id/toolbar"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:background="?attr/primaryBackgroundColor">
+            android:background="?attr/primaryBackgroundColor"
+            android:theme="@style/AppTheme.AppBarOverlay">
 
             <ImageView
                 android:id="@+id/close"
@@ -39,7 +40,7 @@
                 android:layout_height="wrap_content"
                 android:layout_gravity="center_vertical"
                 android:maxLines="1"
-                android:text="@string/settingsLanguageHeaderText"
+                android:text="@string/codeEditor"
                 android:textColor="?attr/primaryTextColor"
                 android:textSize="@dimen/dimen20sp"/>
 
@@ -48,9 +49,10 @@
     </com.google.android.material.appbar.AppBarLayout>
 
     <LinearLayout
-        android:id="@+id/langFrame"
+        android:id="@+id/ceColorSelectionFrame"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:layout_marginBottom="@dimen/dimen6dp"
         android:background="?android:attr/selectableItemBackground"
         android:clickable="true"
         android:focusable="true"
@@ -58,39 +60,91 @@
         android:padding="@dimen/dimen16dp">
 
         <TextView
-            android:id="@+id/tvLanguageHeaderSelector"
+            android:id="@+id/ceColorHeaderSelector"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginStart="@dimen/dimen24dp"
             android:layout_marginEnd="@dimen/dimen24dp"
-            android:text="@string/settingsLanguageSelectorHeader"
+            android:text="@string/ceSyntaxHighlightColor"
             android:textColor="?attr/primaryTextColor"
             android:textSize="@dimen/dimen18sp"/>
 
         <TextView
-            android:id="@+id/tvLanguageSelected"
+            android:id="@+id/ceColorSelected"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginStart="@dimen/dimen24dp"
             android:layout_marginEnd="@dimen/dimen24dp"
-            android:text="@string/settingsLanguageSelectedHeaderDefault"
+            android:text="@string/themeSelectionSelectedText"
             android:textColor="?attr/selectedTextColor"
             android:textSize="@dimen/dimen16sp"/>
 
     </LinearLayout>
 
-    <TextView
-        android:id="@+id/helpTranslate"
+    <LinearLayout
+        android:id="@+id/indentationSelectionFrame"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:autoLink="web"
+        android:layout_marginBottom="@dimen/dimen6dp"
         android:background="?android:attr/selectableItemBackground"
-        android:paddingStart="@dimen/dimen40dp"
-        android:paddingTop="@dimen/dimen16dp"
-        android:paddingEnd="@dimen/dimen24dp"
-        android:paddingBottom="@dimen/dimen16dp"
-        android:text="@string/settingsHelpTranslateText"
-        android:textColor="@color/lightBlue"
-        android:textSize="@dimen/dimen16sp"/>
+        android:clickable="true"
+        android:focusable="true"
+        android:orientation="vertical"
+        android:padding="@dimen/dimen16dp">
+
+        <TextView
+            android:id="@+id/indentationHeaderSelector"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="@dimen/dimen24dp"
+            android:layout_marginEnd="@dimen/dimen24dp"
+            android:text="@string/ceIndentation"
+            android:textColor="?attr/primaryTextColor"
+            android:textSize="@dimen/dimen18sp"/>
+
+        <TextView
+            android:id="@+id/indentationSelected"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="@dimen/dimen24dp"
+            android:layout_marginEnd="@dimen/dimen24dp"
+            android:text="@string/settingsThemeTimeSelectedHint"
+            android:textColor="?attr/selectedTextColor"
+            android:textSize="@dimen/dimen16sp"/>
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:id="@+id/indentationTabsSelectionFrame"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="@dimen/dimen6dp"
+        android:background="?android:attr/selectableItemBackground"
+        android:clickable="true"
+        android:focusable="true"
+        android:orientation="vertical"
+        android:padding="@dimen/dimen16dp">
+
+        <TextView
+            android:id="@+id/indentationTabsHeaderSelector"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="@dimen/dimen24dp"
+            android:layout_marginEnd="@dimen/dimen24dp"
+            android:text="@string/ceIndentationTabsWidth"
+            android:textColor="?attr/primaryTextColor"
+            android:textSize="@dimen/dimen18sp"/>
+
+        <TextView
+            android:id="@+id/indentationTabsSelected"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="@dimen/dimen24dp"
+            android:layout_marginEnd="@dimen/dimen24dp"
+            android:text="@string/settingsThemeTimeSelectedHint"
+            android:textColor="?attr/selectedTextColor"
+            android:textSize="@dimen/dimen16sp"/>
+
+    </LinearLayout>
 
 </LinearLayout>

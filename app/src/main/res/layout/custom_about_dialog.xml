@@ -9,7 +9,8 @@
 
     <RelativeLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content">
+        android:layout_height="wrap_content"
+        android:layout_margin="@dimen/dimen16dp">
 
         <LinearLayout
             android:layout_width="match_parent"
@@ -17,7 +18,6 @@
             android:layout_alignParentTop="true"
             android:layout_centerHorizontal="true"
             android:layout_gravity="center"
-            android:layout_marginTop="@dimen/dimen12dp"
             android:orientation="vertical"
             tools:ignore="UselessParent">
 
@@ -70,7 +70,7 @@
                         android:layout_height="wrap_content"
                         android:layout_gravity="center_horizontal"
                         android:text="@string/appVersionBuild"
-                        android:textColor="@color/retroThemeColorSecondary"
+                        android:textColor="@color/retroThemeInputTextColor"
                         android:textIsSelectable="true"
                         android:paddingTop="@dimen/dimen8dp"
                         android:paddingBottom="@dimen/dimen8dp"
@@ -85,111 +85,157 @@
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="@dimen/dimen16dp"
+                android:layout_marginTop="@dimen/dimen24dp"
                 android:orientation="vertical">
 
                 <!-- user server version -->
-                <TextView
-                    android:id="@+id/userServerVersionHeader"
+                <com.google.android.material.card.MaterialCardView
+                    style="?attr/materialCardViewFilledStyle"
+                    android:layout_width="match_parent"
+                    android:layout_height="@dimen/dimen72dp"
+                    android:layout_gravity="center_horizontal"
+                    app:cardBackgroundColor="?attr/materialCardBackgroundColor"
+                    app:cardCornerRadius="@dimen/dimen16dp">
+
+                    <TextView
+                        android:id="@+id/userServerVersionHeader"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:padding="@dimen/dimen12dp"
+                        android:text="@string/commitPage"
+                        android:textColor="?attr/primaryTextColor"
+                        android:textSize="@dimen/dimen16sp"
+                        android:textStyle="bold" />
+
+                    <TextView
+                        android:id="@+id/userServerVersion"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="@dimen/dimen28dp"
+                        android:padding="@dimen/dimen12dp"
+                        android:textColor="?attr/primaryTextColor"
+                        android:textIsSelectable="true"
+                        android:textSize="@dimen/dimen14sp" />
+
+                </com.google.android.material.card.MaterialCardView>
+
+                <!-- donate text -->
+                <LinearLayout
+                    android:id="@+id/layout_frame_1"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_marginTop="@dimen/dimen24dp"
-                    android:paddingStart="@dimen/dimen28dp"
-                    android:paddingEnd="@dimen/dimen28dp"
-                    android:text="@string/commitPage"
-                    android:textColor="?attr/primaryTextColor"
-                    android:textSize="@dimen/dimen16sp"
-                    android:textStyle="bold" />
+                    android:layout_marginTop="@dimen/dimen12dp"
+                    android:orientation="horizontal">
 
-                <TextView
-                    android:id="@+id/userServerVersion"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:paddingStart="@dimen/dimen28dp"
-                    android:paddingEnd="@dimen/dimen28dp"
-                    android:textColor="?attr/primaryTextColor"
-                    android:textIsSelectable="true"
-                    android:textSize="@dimen/dimen14sp" />
-                <!-- user server version -->
+                    <com.google.android.material.floatingactionbutton.ExtendedFloatingActionButton
+                        android:id="@+id/donationLinkPatreon"
+                        android:layout_width="@dimen/dimen0dp"
+                        android:layout_height="@dimen/dimen60dp"
+                        android:layout_marginEnd="@dimen/dimen4dp"
+                        android:layout_marginStart="@dimen/dimen0dp"
+                        android:layout_weight=".5"
+                        android:stateListAnimator="@null"
+                        android:text="@string/supportTextPatreon"
+                        android:textStyle="bold"
+                        android:contentDescription="@string/supportTextPatreon"
+                        android:textColor="?attr/materialCardBackgroundColor"
+                        app:iconTint="?attr/materialCardBackgroundColor"
+                        android:backgroundTint="?attr/fabColor"
+                        app:icon="@drawable/ic_patreon" />
 
-                <!-- support -->
-                <TextView
-                    android:id="@+id/supportHeader"
+                    <com.google.android.material.floatingactionbutton.ExtendedFloatingActionButton
+                        android:id="@+id/donationLinkBuyMeaCoffee"
+                        android:layout_width="@dimen/dimen0dp"
+                        android:layout_height="@dimen/dimen60dp"
+                        android:layout_marginEnd="@dimen/dimen0dp"
+                        android:layout_marginStart="@dimen/dimen6dp"
+                        android:layout_weight=".5"
+                        android:stateListAnimator="@null"
+                        android:text="@string/supportTextBuyMeaCoffee"
+                        android:textStyle="bold"
+                        android:contentDescription="@string/supportTextBuyMeaCoffee"
+                        android:textColor="?attr/materialCardBackgroundColor"
+                        app:iconTint="?attr/materialCardBackgroundColor"
+                        android:backgroundTint="?attr/fabColor"
+                        app:icon="@drawable/ic_bmc" />
+
+                </LinearLayout>
+
+                <!-- translate/website text -->
+                <LinearLayout
+                    android:id="@+id/layout_frame_2"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_marginTop="@dimen/dimen24dp"
-                    android:paddingStart="@dimen/dimen28dp"
-                    android:paddingEnd="@dimen/dimen28dp"
-                    android:text="@string/supportText"
-                    android:textColor="?attr/primaryTextColor"
-                    android:textSize="@dimen/dimen16sp"
-                    android:textStyle="bold" />
+                    android:layout_marginTop="@dimen/dimen12dp"
+                    android:orientation="horizontal">
 
-                <TextView
-                    android:id="@+id/donationLinkPatreon"
+                    <com.google.android.material.floatingactionbutton.ExtendedFloatingActionButton
+                        android:id="@+id/translateLink"
+                        android:layout_width="@dimen/dimen0dp"
+                        android:layout_height="@dimen/dimen60dp"
+                        android:layout_marginEnd="@dimen/dimen4dp"
+                        android:layout_marginStart="@dimen/dimen0dp"
+                        android:layout_weight=".5"
+                        android:stateListAnimator="@null"
+                        android:text="@string/translateWithCrowdin"
+                        android:textStyle="bold"
+                        android:contentDescription="@string/translateWithCrowdin"
+                        android:textColor="?attr/materialCardBackgroundColor"
+                        app:iconTint="?attr/materialCardBackgroundColor"
+                        android:backgroundTint="?attr/fabColor"
+                        app:icon="@drawable/ic_language" />
+
+                    <com.google.android.material.floatingactionbutton.ExtendedFloatingActionButton
+                        android:id="@+id/appWebsite"
+                        android:layout_width="@dimen/dimen0dp"
+                        android:layout_height="@dimen/dimen60dp"
+                        android:layout_marginEnd="@dimen/dimen0dp"
+                        android:layout_marginStart="@dimen/dimen6dp"
+                        android:layout_weight=".5"
+                        android:stateListAnimator="@null"
+                        android:text="@string/websiteText"
+                        android:textStyle="bold"
+                        android:contentDescription="@string/websiteText"
+                        android:textColor="?attr/materialCardBackgroundColor"
+                        app:iconTint="?attr/materialCardBackgroundColor"
+                        android:backgroundTint="?attr/fabColor"
+                        app:icon="@drawable/ic_browser" />
+
+                </LinearLayout>
+
+                <!-- feedback text -->
+                <LinearLayout
+                    android:id="@+id/layout_frame_3"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:autoLink="web"
-                    android:paddingStart="@dimen/dimen28dp"
-                    android:paddingEnd="@dimen/dimen28dp"
-                    android:text="@string/supportTextPatreon"
-                    android:textColor="@color/lightBlue"
-                    android:textColorLink="@color/lightBlue"
-                    android:textSize="@dimen/dimen14sp" />
+                    android:layout_marginTop="@dimen/dimen12dp"
+                    android:orientation="horizontal">
 
-                <TextView
-                    android:id="@+id/donationLinkBuyMeaCoffee"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:autoLink="web"
-                    android:paddingStart="@dimen/dimen28dp"
-                    android:paddingEnd="@dimen/dimen28dp"
-                    android:text="@string/supportTextBuyMeaCoffee"
-                    android:textColor="@color/lightBlue"
-                    android:textColorLink="@color/lightBlue"
-                    android:textSize="@dimen/dimen14sp" />
-                <!-- support -->
+                    <com.google.android.material.floatingactionbutton.ExtendedFloatingActionButton
+                        android:id="@+id/feedback"
+                        android:layout_width="@dimen/dimen0dp"
+                        android:layout_height="@dimen/dimen60dp"
+                        android:layout_marginEnd="@dimen/dimen4dp"
+                        android:layout_marginStart="@dimen/dimen0dp"
+                        android:layout_weight=".5"
+                        android:stateListAnimator="@null"
+                        android:text="@string/feedbackText"
+                        android:textStyle="bold"
+                        android:contentDescription="@string/feedbackText"
+                        android:textColor="?attr/materialCardBackgroundColor"
+                        app:iconTint="?attr/materialCardBackgroundColor"
+                        android:backgroundTint="?attr/fabColor"
+                        app:icon="@drawable/ic_feedback" />
+                    
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:visibility="invisible"
+                        android:layout_weight=".5" />
 
-                <!-- translate -->
-                <TextView
-                    android:id="@+id/translateHeader"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="@dimen/dimen24dp"
-                    android:paddingStart="@dimen/dimen28dp"
-                    android:paddingEnd="@dimen/dimen28dp"
-                    android:text="@string/translateText"
-                    android:textColor="?attr/primaryTextColor"
-                    android:textSize="@dimen/dimen16sp"
-                    android:textStyle="bold" />
-
-                <TextView
-                    android:id="@+id/translateLink"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:autoLink="web"
-                    android:gravity="start"
-                    android:paddingStart="@dimen/dimen28dp"
-                    android:paddingEnd="@dimen/dimen28dp"
-                    android:text="@string/translateWithCrowdin"
-                    android:textColor="@color/lightBlue"
-                    android:textColorLink="@color/lightBlue"
-                    android:textSize="@dimen/dimen14sp"
-                    android:visibility="visible" />
-                <!-- translate -->
+                </LinearLayout>
 
             </LinearLayout>
-
-            <com.google.android.material.button.MaterialButton
-                android:id="@+id/appWebsite"
-                android:layout_width="match_parent"
-                android:layout_height="@dimen/dimen54dp"
-                android:layout_gravity="center_horizontal"
-                android:layout_margin="@dimen/dimen24dp"
-                android:text="@string/websiteText"
-                android:textColor="?attr/materialCardBackgroundColor"
-                android:textSize="@dimen/dimen16sp"
-                android:textStyle="bold" />
 
         </LinearLayout>
 

@@ -23,8 +23,6 @@ public class FiveColorsTheme implements Theme {
 			case CHAR:
 			case STRING:
 				return R.color.five_yellow;
-			case BUILTIN:
-				return R.color.five_dark_black;
 			case SINGLE_LINE_COMMENT:
 			case MULTI_LINE_COMMENT:
 				return R.color.five_dark_grey;

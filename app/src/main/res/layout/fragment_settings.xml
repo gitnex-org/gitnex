@@ -129,7 +129,7 @@
             </LinearLayout>
 
             <LinearLayout
-                android:id="@+id/draftsFrame"
+                android:id="@+id/codeEditorFrame"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginBottom="5dp"
@@ -142,7 +142,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:contentDescription="@string/generalImgContentText"
-                    app:srcCompat="@drawable/ic_drafts"/>
+                    app:srcCompat="@drawable/ic_code_v2"/>
 
                 <LinearLayout
                     android:layout_width="0dp"
@@ -153,23 +153,23 @@
                     android:orientation="vertical">
 
                     <TextView
-                        android:id="@+id/draftsHeader"
+                        android:id="@+id/codeEditor"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:paddingStart="12dp"
                         android:paddingEnd="12dp"
-                        android:text="@string/draftsHeader"
+                        android:text="@string/codeEditor"
                         android:textColor="?attr/primaryTextColor"
                         android:textSize="18sp"/>
 
                     <TextView
-                        android:id="@+id/draftsHintText"
+                        android:id="@+id/codeEditorHintText"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:layout_gravity="center_vertical"
                         android:paddingStart="12dp"
                         android:paddingEnd="12dp"
-                        android:text="@string/draftsHintText"
+                        android:text="@string/codeEditorHintText"
                         android:textColor="?attr/primaryTextColor"
                         android:textSize="12sp"/>
 
@@ -280,116 +280,6 @@
                         android:paddingStart="12dp"
                         android:paddingEnd="12dp"
                         android:text="@string/notificationsHintText"
-                        android:textColor="?attr/primaryTextColor"
-                        android:textSize="12sp"/>
-
-                </LinearLayout>
-
-                <ImageView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:contentDescription="@string/generalImgContentText"
-                    app:srcCompat="@drawable/ic_chevron_right"/>
-
-            </LinearLayout>
-
-            <LinearLayout
-                android:id="@+id/languagesFrame"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginBottom="5dp"
-                android:background="?android:attr/selectableItemBackground"
-                android:gravity="center_vertical"
-                android:orientation="horizontal"
-                android:padding="15dp">
-
-                <ImageView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:contentDescription="@string/generalImgContentText"
-                    app:srcCompat="@drawable/ic_flag"/>
-
-                <LinearLayout
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:layout_marginStart="10dp"
-                    android:layout_marginEnd="10dp"
-                    android:layout_weight="1"
-                    android:orientation="vertical">
-
-                    <TextView
-                        android:id="@+id/tvLanguages"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:paddingStart="12dp"
-                        android:paddingEnd="12dp"
-                        android:text="@string/settingsLanguageHeaderText"
-                        android:textColor="?attr/primaryTextColor"
-                        android:textSize="18sp"/>
-
-                    <TextView
-                        android:id="@+id/languagesHintText"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:layout_gravity="center_vertical"
-                        android:paddingStart="12dp"
-                        android:paddingEnd="12dp"
-                        android:text="@string/languagesHintText"
-                        android:textColor="?attr/primaryTextColor"
-                        android:textSize="12sp"/>
-
-                </LinearLayout>
-
-                <ImageView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:contentDescription="@string/generalImgContentText"
-                    app:srcCompat="@drawable/ic_chevron_right"/>
-
-            </LinearLayout>
-
-            <LinearLayout
-                android:id="@+id/reportsFrame"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginBottom="5dp"
-                android:background="?android:attr/selectableItemBackground"
-                android:gravity="center_vertical"
-                android:orientation="horizontal"
-                android:padding="15dp">
-
-                <ImageView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:contentDescription="@string/generalImgContentText"
-                    app:srcCompat="@drawable/ic_bug_report"/>
-
-                <LinearLayout
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:layout_marginStart="10dp"
-                    android:layout_marginEnd="10dp"
-                    android:layout_weight="1"
-                    android:orientation="vertical">
-
-                    <TextView
-                        android:id="@+id/appReports"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:paddingStart="12dp"
-                        android:paddingEnd="12dp"
-                        android:text="@string/reportViewerHeader"
-                        android:textColor="?attr/primaryTextColor"
-                        android:textSize="18sp"/>
-
-                    <TextView
-                        android:id="@+id/reportsHintText"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:layout_gravity="center_vertical"
-                        android:paddingStart="12dp"
-                        android:paddingEnd="12dp"
-                        android:text="@string/reportsHintText"
                         android:textColor="?attr/primaryTextColor"
                         android:textSize="12sp"/>
 

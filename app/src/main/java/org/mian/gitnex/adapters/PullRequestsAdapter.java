@@ -198,6 +198,8 @@ public class PullRequestsAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
 							LinearLayout.LayoutParams.WRAP_CONTENT);
 			params.setMargins(0, 0, 15, 0);
 
+			Typeface typeface = AppUtil.getTypeface(context);
+
 			if (pullRequest.getLabels() != null) {
 
 				if (!tinyDb.getBoolean("showLabelsInList", false)) { // default
@@ -219,7 +221,7 @@ public class PullRequestsAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
 						TextDrawable drawable =
 								TextDrawable.builder()
 										.beginConfig()
-										.useFont(Typeface.DEFAULT)
+										.useFont(typeface)
 										.width(54)
 										.height(54)
 										.endConfig()
@@ -251,13 +253,13 @@ public class PullRequestsAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
 						TextDrawable drawable =
 								TextDrawable.builder()
 										.beginConfig()
-										.useFont(Typeface.DEFAULT)
+										.useFont(typeface)
 										.textColor(new ColorInverter().getContrastColor(color))
 										.fontSize(textSize)
 										.width(
 												LabelWidthCalculator.calculateLabelWidth(
 														labelName,
-														Typeface.DEFAULT,
+														typeface,
 														textSize,
 														AppUtil.getPixelsFromDensity(context, 8)))
 										.height(height)

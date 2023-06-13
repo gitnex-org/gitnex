@@ -11,6 +11,8 @@ import android.widget.TimePicker;
 import androidx.annotation.NonNull;
 import androidx.fragment.app.DialogFragment;
 import com.google.android.material.dialog.MaterialAlertDialogBuilder;
+import java.util.LinkedHashMap;
+import java.util.Locale;
 import org.mian.gitnex.R;
 import org.mian.gitnex.databinding.ActivitySettingsAppearanceBinding;
 import org.mian.gitnex.fragments.SettingsFragment;
@@ -29,6 +31,7 @@ public class SettingsAppearanceActivity extends BaseActivity {
 	private static String[] themeList;
 	private static int themeSelectedChoice = 0;
 	private View.OnClickListener onClickListener;
+	private static int langSelectedChoice = 0;
 
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
@@ -38,6 +41,12 @@ public class SettingsAppearanceActivity extends BaseActivity {
 		ActivitySettingsAppearanceBinding activitySettingsAppearanceBinding =
 				ActivitySettingsAppearanceBinding.inflate(getLayoutInflater());
 		setContentView(activitySettingsAppearanceBinding.getRoot());
+
+		LinkedHashMap<String, String> lang = new LinkedHashMap<>();
+		lang.put("", getString(R.string.settingsLanguageSystem));
+		for (String langCode : getResources().getStringArray(R.array.languages)) {
+			lang.put(langCode, getLanguageDisplayName(langCode));
+		}
 
 		ImageView closeActivity = activitySettingsAppearanceBinding.close;
 
@@ -196,6 +205,48 @@ public class SettingsAppearanceActivity extends BaseActivity {
 
 					materialAlertDialogBuilder.create().show();
 				});
+
+		// language selector dialog
+		LinearLayout langFrame = activitySettingsAppearanceBinding.langFrame;
+
+		activitySettingsAppearanceBinding.helpTranslate.setOnClickListener(
+				v12 -> {
+					AppUtil.openUrlInBrowser(this, getResources().getString(R.string.crowdInLink));
+				});
+
+		langSelectedChoice = tinyDB.getInt("langId");
+		activitySettingsAppearanceBinding.tvLanguageSelected.setText(
+				lang.get(lang.keySet().toArray(new String[0])[langSelectedChoice]));
+
+		// language dialog
+		langFrame.setOnClickListener(
+				view -> {
+					MaterialAlertDialogBuilder materialAlertDialogBuilder =
+							new MaterialAlertDialogBuilder(ctx)
+									.setTitle(R.string.settingsLanguageSelectorDialogTitle)
+									.setCancelable(langSelectedChoice != -1)
+									.setNeutralButton(getString(R.string.cancelButton), null)
+									.setSingleChoiceItems(
+											lang.values().toArray(new String[0]),
+											langSelectedChoice,
+											(dialogInterface, i) -> {
+												String selectedLanguage =
+														lang.keySet().toArray(new String[0])[i];
+												tinyDB.putInt("langId", i);
+												tinyDB.putString("locale", selectedLanguage);
+
+												SettingsFragment.refreshParent = true;
+												this.overridePendingTransition(0, 0);
+												dialogInterface.dismiss();
+												Toasty.success(
+														appCtx,
+														getResources()
+																.getString(R.string.settingsSave));
+												this.recreate();
+											});
+
+					materialAlertDialogBuilder.create().show();
+				});
 	}
 
 	private void initCloseListener() {
@@ -254,5 +305,13 @@ public class SettingsAppearanceActivity extends BaseActivity {
 					requireContext().getResources().getString(R.string.settingsSave));
 			requireActivity().recreate();
 		}
+	}
+
+	private static String getLanguageDisplayName(String langCode) {
+		Locale english = new Locale("en");
+		Locale translated = new Locale(langCode);
+		return String.format(
+				"%s (%s)",
+				translated.getDisplayName(translated), translated.getDisplayName(english));
 	}
 }
