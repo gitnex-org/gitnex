@@ -61,6 +61,7 @@
     <string name="emptyFieldUsername">Nom d’utilisateur requis</string>
     <string name="emptyFieldPassword">Mot de passe requis</string>
     <string name="protocolEmptyError">Le protocole est requis</string>
+    <string name="instanceHelperText">Entrez une URL sans http ou https. Par exemple : codeberg.org</string>
     <string name="checkNetConnection">Impossible d’accéder au réseau, veuillez vérifier votre connexion Internet</string>
     <string name="repoNameErrorEmpty">Veuillez donner un nom à ce dépôt</string>
     <string name="repoNameErrorInvalid">Nom de dépôt invalide [a&#8211;z A&#8211;Z 0&#8211;9 &#8211; _]</string>
@@ -181,7 +182,7 @@
     <string name="settingsEnableCommentsDeletionText">Supprimer les brouillons</string>
     <string name="settingsEnableCommentsDeletionHintText">Supprimer le brouillon d’un commentaire publié</string>
     <string name="settingsGeneralHeader">Général</string>
-    <string name="generalHintText">Ouverture des liens, écran d’accueil</string>
+    <string name="generalHintText">Écran d’accueil, brouillons, rapports d’erreur</string>
     <string name="generalDeepLinkDefaultScreen">Écran par défaut</string>
     <string name="generalDeepLinkDefaultScreenHintText">Sélectionnez l’écran à afficher par défaut lorsque l’application ne parvient pas à ouvrir un lien externe.</string>
     <string name="generalDeepLinkSelectedText">S/O</string>
@@ -189,6 +190,10 @@
     <string name="settingsBiometricHeader">Biométrie</string>
     <string name="settingsLabelsInListHeader">Notifications textuelles</string>
     <string name="settingsLabelsInListHint">Affiche du texte dans les tickets et les demandes de fusion au lieu d’une simple pastille colorée</string>
+    <string name="ceSyntaxHighlightColor">Coloration syntaxique</string>
+    <string name="ceIndentation">Indentation</string>
+    <string name="ceIndentationTabsWidth">Largeur des tabulations</string>
+    <string name="system_font">Police du système</string>
     <!-- settings -->
     <string name="noMoreData">Aucune donnée</string>
     <string name="createLabel">Nouvelle étiquette</string>
@@ -510,12 +515,13 @@
     <string name="resetMostReposCounter">Compteur remis à zéro</string>
     <string name="resetCounterDialogMessage">Souhaitez-vous remettre à zéro le compteur du dépôt %s ?</string>
     <string name="resetCounterAllDialogMessage">Tous les compteurs des dépôt de ce compte seront remis à zéro.</string>
-    <string name="appearanceHintText">Thèmes, polices, pastilles de comptage</string>
+    <string name="appearanceHintText">Thèmes, polices, pastilles, traduction</string>
     <string name="securityHintText">Biométrie, certificats SSL, cache</string>
     <string name="languagesHintText">Langue de l’application</string>
     <string name="reportsHintText">Rapports de plantage</string>
     <string name="rateAppHintText">Vous aimez GitNex ? Mettez-lui un pouce !</string>
     <string name="aboutAppHintText">Version de l’application, version de l’instance</string>
+    <string name="codeEditorHintText">Coloration syntaxique, indentation</string>
     <string name="archivedRepository">Archivé</string>
     <string name="archivedRepositoryMessage">Ce dépôt est archivé. Les fichiers sont accessibles, mais aucune modification n’est possible.</string>
     <string name="accountDeletedMessage">Compte supprimé</string>
