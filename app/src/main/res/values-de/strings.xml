@@ -61,6 +61,7 @@
     <string name="emptyFieldUsername">Benutzername ist erforderlich</string>
     <string name="emptyFieldPassword">Passwort ist erforderlich</string>
     <string name="protocolEmptyError">Protokoll ist erforderlich</string>
+    <string name="instanceHelperText">URL ohne http oder https eingeben. Beispiel: codeberg.org</string>
     <string name="checkNetConnection">Kann nicht auf das Netzwerk zugreifen. Bitte überprüfe die Internetverbindung</string>
     <string name="repoNameErrorEmpty">Der Repository Name ist leer.</string>
     <string name="repoNameErrorInvalid">Der Repository Name ist nicht gültig. [a&#8211;z A&#8211;Z 0&#8211;9 &#8211; _]</string>
@@ -181,7 +182,7 @@
     <string name="settingsEnableCommentsDeletionText">Entwürfe löschen aktivieren</string>
     <string name="settingsEnableCommentsDeletionHintText">Kommentar-Entwurf löschen, wenn Kommentar veröffentlicht wird</string>
     <string name="settingsGeneralHeader">Allgemein</string>
-    <string name="generalHintText">Startseite, Standard-Link-Handhaber</string>
+    <string name="generalHintText">Startseite, Entwürfe, Absturzberichte</string>
     <string name="generalDeepLinkDefaultScreen">Standard-Link-Handhaber</string>
     <string name="generalDeepLinkDefaultScreenHintText">Wähle die Ansicht, welche geladen werden soll, wenn ein externer Link nicht handhabbar ist. Du wirst dann automatisch zu jener weitergeleitet.</string>
     <string name="generalDeepLinkSelectedText">N/V</string>
@@ -189,6 +190,10 @@
     <string name="settingsBiometricHeader">Biometrisches Entsperren</string>
     <string name="settingsLabelsInListHeader">Labels mit Text</string>
     <string name="settingsLabelsInListHint">Dies wird Labels mit Text in Issue- und Pull-Request-Lister anzeigen, Standard sind farbige Punkte</string>
+    <string name="ceSyntaxHighlightColor">Farbe für Syntax-Highlighting</string>
+    <string name="ceIndentation">Einrückung</string>
+    <string name="ceIndentationTabsWidth">Tabulatorbreite</string>
+    <string name="system_font">Standard-Schriftart des Systems</string>
     <!-- settings -->
     <string name="noMoreData">Keine weiteren Daten verfügbar.</string>
     <string name="createLabel">Label erstellen</string>
@@ -510,12 +515,13 @@
     <string name="resetMostReposCounter">Zähler wurde erfolgreich zurückgesetzt</string>
     <string name="resetCounterDialogMessage">Möchtest du den Zähler für das Repository %s zurücksetzen?</string>
     <string name="resetCounterAllDialogMessage">Das wird alle Zähler der Repoitories dieses Accounts zurücksetzen.</string>
-    <string name="appearanceHintText">Design, Schriften, Zähler</string>
+    <string name="appearanceHintText">Design, Schriftarten Zähler, Übersetzung</string>
     <string name="securityHintText">Biometrische Authentifizierung, SSL-Zertifikate, Cache</string>
     <string name="languagesHintText">Sprachen</string>
     <string name="reportsHintText">Absturzberichte</string>
     <string name="rateAppHintText">Wenn dir GitNex gefällt, hinterlasse Feedback</string>
     <string name="aboutAppHintText">App-Version, Build, Instanz-Version</string>
+    <string name="codeEditorHintText">Syntax-Farbe, Einrückung</string>
     <string name="archivedRepository">Archiviert</string>
     <string name="archivedRepositoryMessage">Dieses Repo ist archiviert. Du kannst Dateien anschauen, aber nichts verändern oder erstellen.</string>
     <string name="accountDeletedMessage">Konto erfolgreich gelöscht</string>
