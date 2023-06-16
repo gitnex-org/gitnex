@@ -1,0 +1,14 @@
+5.1.0
+
+🎉 Features 🎉
+- Dynamic colors for Android 12+
+- FAB buttons for each task where required
+- Lisp language support
+- Repository language statistics
+- Settings to change syntax highlighting color (Settings -> Code Editor)
+- Settings to choose Tabs or Spaces for indentation (Settings -> Code Editor)
+- System default font (Settings -> Appearance -> Font)
+
+Release Notes: https://codeberg.org/gitnex/GitNex/releases
+
+Release Posts: https://najigram.com/category/gitnex/
