@@ -1,0 +1,14 @@
+5.1.0
+
+🎉 Funktionen 🎉
+- Dynamische Farben für Android 12+
+- FABs für jede Aufgabe wenn notwendig
+- Sprachunterstützung für Lisp
+- Sprach-Statistik für Repositories
+- Einstellungen, um Syntax-Highlighting-Farbe zu ändern (Einstellungen -> Code-Editor)
+- Einstellungen, um Tabs oder Leerzeichen für Einrückung auszuwählen (Einstellungen -> Code-Editor)
+- Standard-Schriftart des Systems (Einstellungen -> Design -> Schriftart)
+
+Release-Anmerkungen: https://codeberg.org/gitnex/GitNex/releases
+
+Release-Posts: https://najigram.com/category/gitnex/
