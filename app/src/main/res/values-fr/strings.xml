@@ -107,8 +107,8 @@
     <string name="timeAtText">à</string>
     <string name="issueMilestone">Jalon %1$s</string>
     <string name="dueDate">Échéance au %1$s</string>
-    <string name="assignedTo">Assigné à : %1$s</string>
-    <string name="assignedToMe">Assigné à moi</string>
+    <string name="assignedTo">Affecté à : %1$s</string>
+    <string name="assignedToMe">Affecté à moi-même</string>
     <string name="commentButtonText">Publier</string>
     <string name="commentEmptyError">Veuillez saisir votre commentaire</string>
     <string name="commentSuccess">Commentaire publié</string>
@@ -130,10 +130,10 @@
     <string name="milestoneIssueStatusOpen">%1$d ouvert</string>
     <string name="milestoneIssueStatusClosed">%1$d fermé</string>
     <string name="selectMilestone">Jalon</string>
-    <string name="newIssueSelectAssigneesListTitle">Assignés</string>
+    <string name="newIssueSelectAssigneesListTitle">Affectation</string>
     <string name="newIssueSelectLabelsListTitle">Étiquettes</string>
     <string name="newIssueTitle">Titre</string>
-    <string name="newIssueAssigneesListTitle">Assignés</string>
+    <string name="newIssueAssigneesListTitle">Affectation</string>
     <string name="newIssueDescriptionTitle">Description</string>
     <string name="newIssueDueDateTitle">Échéance</string>
     <string name="newIssueMilestoneTitle">Jalon</string>
@@ -142,7 +142,7 @@
     <string name="issueDescriptionEmpty">Description du ticket requise</string>
     <string name="issueCreated">Nouveau ticket créé</string>
     <string name="issueCreatedNoMilestone">Aucun jalon</string>
-    <string name="noAssigneesFound">Aucun membre assigné</string>
+    <string name="noAssigneesFound">Aucun membre affecté</string>
     <!-- settings -->
     <string name="settingsLanguageHeaderText">Traduction</string>
     <string name="settingsLanguageSystem">Système</string>
@@ -286,8 +286,8 @@
     <string name="reOpenIssue">Réouvrir le ticket</string>
     <string name="issueStateClosed">Ticket fermé</string>
     <string name="issueStateReopened">Ticket réouvert</string>
-    <string name="addRemoveAssignees">Gérer les assignés</string>
-    <string name="assigneesUpdated">Assignés mis à jour</string>
+    <string name="addRemoveAssignees">Gérer l’affectation</string>
+    <string name="assigneesUpdated">Affectation mise à jour</string>
     <string name="singleIssueSubscribe">S’abonner</string>
     <string name="singleIssueUnSubscribe">Se désabonner</string>
     <!-- single issue section -->
