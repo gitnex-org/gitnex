@@ -679,7 +679,7 @@
     </plurals>
     <string name="notesAllDeletionMessage">Toutes vos notes seront supprimées. Cette action est irréversible.</string>
     <!-- timeline -->
-    <string name="commitsText">révision</string>
+    <string name="commitsText">une révision</string>
     <string name="commitText">révision</string>
     <string name="timelineAddedCommit">%1$s a ajouté %2$s %3$s</string>
     <!-- the | is replaced by the label -->
