@@ -8,12 +8,12 @@ pipeline:
       must_contain: true
 
   style:
-    image: alvrme/alpine-android:android-31-jdk11
+    image: alvrme/alpine-android:android-32-jdk17
     group: check
     commands:
       - ./gradlew :app:spotlessCheck
 
   test:
-    image: alvrme/alpine-android:android-31-jdk11
+    image: alvrme/alpine-android:android-32-jdk17
     commands:
       - ./gradlew test

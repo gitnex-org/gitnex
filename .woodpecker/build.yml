@@ -1,13 +1,13 @@
 pipeline:
   build:
-    image: alvrme/alpine-android:android-31-jdk11
+    image: alvrme/alpine-android:android-32-jdk17
     commands:
       - ./gradlew assembleFreeRelease
     when:
       path: [ app/**, build.gradle ]
 
   sign:
-    image: alvrme/alpine-android:android-31-jdk11
+    image: alvrme/alpine-android:android-32-jdk17
     environment:
       OUTPUT: "signed.apk"
       INSTANCE: "https://codeberg.org"
