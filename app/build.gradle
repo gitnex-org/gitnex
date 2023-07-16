@@ -4,13 +4,13 @@ plugins {
 apply plugin: 'com.android.application'
 
 android {
-    compileSdkVersion 33
+    compileSdkVersion 34
     defaultConfig {
         applicationId "org.mian.gitnex"
         minSdkVersion 23
-        targetSdkVersion 33
-        versionCode 510
-        versionName "5.1.0"
+        targetSdkVersion 34
+        versionCode 515
+        versionName "5.2.0-dev"
         multiDexEnabled true
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
     }
@@ -37,7 +37,7 @@ android {
         coreLibraryDesugaringEnabled true
 
         sourceCompatibility JavaVersion.VERSION_11
-        targetCompatibility JavaVersion.VERSION_11
+        targetCompatibility JavaVersion.VERSION_17
     }
     lint {
         abortOnError false
@@ -54,17 +54,17 @@ configurations {
 }
 
 dependencies {
-    def lifecycle_version = '2.6.0'
+    def lifecycle_version = '2.6.1'
     def markwon_version = '4.6.2'
     def work_version = '2.8.1'
     def acra = '5.9.7'
 
     implementation fileTree(include: ['*.jar'], dir: 'libs')
     implementation 'androidx.appcompat:appcompat:1.6.1'
-    implementation 'com.google.android.material:material:1.9.0-beta01'
-    implementation 'androidx.compose.material3:material3:1.1.0-beta01'
-    implementation 'androidx.compose.material3:material3-window-size-class:1.1.0-beta01'
-    implementation 'androidx.viewpager2:viewpager2:1.1.0-beta01'
+    implementation 'com.google.android.material:material:1.11.0-alpha01'
+    implementation 'androidx.compose.material3:material3:1.2.0-alpha03'
+    implementation 'androidx.compose.material3:material3-window-size-class:1.2.0-alpha03'
+    implementation 'androidx.viewpager2:viewpager2:1.1.0-beta02'
     implementation 'androidx.constraintlayout:constraintlayout:2.1.4'
     implementation "androidx.legacy:legacy-support-v4:1.0.0"
     implementation "androidx.lifecycle:lifecycle-viewmodel:$lifecycle_version"
@@ -79,7 +79,7 @@ dependencies {
     implementation 'com.squareup.retrofit2:converter-gson:2.9.0'
     implementation 'com.squareup.retrofit2:converter-scalars:2.9.0'
     implementation 'com.squareup.okhttp3:logging-interceptor:5.0.0-alpha.2'
-    implementation 'org.ocpsoft.prettytime:prettytime:5.0.6.Final'
+    implementation 'org.ocpsoft.prettytime:prettytime:5.0.7.Final'
     implementation 'com.github.Pes8:android-material-color-picker-dialog:master'
     implementation "io.noties.markwon:core:$markwon_version"
     implementation "io.noties.markwon:ext-latex:$markwon_version"
@@ -103,8 +103,8 @@ dependencies {
     implementation "ch.acra:acra-mail:$acra"
     implementation "ch.acra:acra-limiter:$acra"
     implementation "ch.acra:acra-notification:$acra"
-    implementation 'androidx.room:room-runtime:2.5.1'
-    annotationProcessor 'androidx.room:room-compiler:2.5.1'
+    implementation 'androidx.room:room-runtime:2.5.2'
+    annotationProcessor 'androidx.room:room-compiler:2.5.2'
     implementation "androidx.work:work-runtime:$work_version"
     implementation "io.mikael:urlbuilder:2.0.9"
     implementation "org.codeberg.gitnex-garage:emoji-java:v5.1.2"
@@ -116,7 +116,7 @@ dependencies {
     implementation('org.codeberg.gitnex:tea4j-autodeploy:3111bc1b18') {
         exclude module: 'org.apache.oltu.oauth2.common'
     }
-    implementation 'io.github.amrdeveloper:codeview:1.3.7'
+    implementation 'io.github.amrdeveloper:codeview:1.3.8'
 
     constraints {
         implementation("org.jetbrains.kotlin:kotlin-stdlib-jdk7:1.8.0")
