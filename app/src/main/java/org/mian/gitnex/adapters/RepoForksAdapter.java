@@ -8,12 +8,15 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.CheckBox;
+import android.widget.Filter;
+import android.widget.Filterable;
 import android.widget.ImageView;
 import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 import com.amulyakhare.textdrawable.TextDrawable;
 import com.amulyakhare.textdrawable.util.ColorGenerator;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Locale;
 import org.mian.gitnex.R;
@@ -29,19 +32,62 @@ import org.mian.gitnex.helpers.contexts.RepositoryContext;
 /**
  * @author M M Arif
  */
-public class RepoForksAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
+public class RepoForksAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder>
+		implements Filterable {
 
+	private final List<org.gitnex.tea4j.v2.models.Repository> forksListFull;
 	private final Context context;
 	private List<org.gitnex.tea4j.v2.models.Repository> forksList;
-	private Runnable loadMoreListener;
-	private boolean isLoading = false;
-	private boolean isMoreDataAvailable = true;
+	private OnLoadMoreListener loadMoreListener;
+	private boolean isLoading = false, isMoreDataAvailable = true;
+
+	private final Filter forksFilter =
+			new Filter() {
+				@Override
+				protected FilterResults performFiltering(CharSequence constraint) {
+					List<org.gitnex.tea4j.v2.models.Repository> filteredList = new ArrayList<>();
+
+					if (constraint == null || constraint.length() == 0) {
+						filteredList.addAll(forksListFull);
+					} else {
+						String filterPattern = constraint.toString().toLowerCase().trim();
+
+						for (org.gitnex.tea4j.v2.models.Repository item : forksListFull) {
+							if (item.getFullName().toLowerCase().contains(filterPattern)
+									|| item.getOwner()
+											.getLogin()
+											.toLowerCase()
+											.contains(filterPattern)
+									|| item.getOwner()
+											.getEmail()
+											.toLowerCase()
+											.contains(filterPattern)) {
+								filteredList.add(item);
+							}
+						}
+					}
+
+					FilterResults results = new FilterResults();
+					results.values = filteredList;
+
+					return results;
+				}
+
+				@Override
+				protected void publishResults(CharSequence constraint, FilterResults results) {
+
+					forksList.clear();
+					forksList.addAll((List) results.values);
+					notifyDataChanged();
+				}
+			};
 
 	public RepoForksAdapter(
 			Context ctx, List<org.gitnex.tea4j.v2.models.Repository> forksListMain) {
 
 		this.context = ctx;
 		this.forksList = forksListMain;
+		forksListFull = new ArrayList<>(forksList);
 	}
 
 	@NonNull @Override
@@ -59,7 +105,7 @@ public class RepoForksAdapter extends RecyclerView.Adapter<RecyclerView.ViewHold
 				&& !isLoading
 				&& loadMoreListener != null) {
 			isLoading = true;
-			loadMoreListener.run();
+			loadMoreListener.onLoadMore();
 		}
 		((RepoForksAdapter.ForksHolder) holder).bindData(forksList.get(position));
 	}
@@ -76,21 +122,37 @@ public class RepoForksAdapter extends RecyclerView.Adapter<RecyclerView.ViewHold
 
 	public void setMoreDataAvailable(boolean moreDataAvailable) {
 		isMoreDataAvailable = moreDataAvailable;
+		if (!isMoreDataAvailable) {
+			loadMoreListener.onLoadFinished();
+		}
 	}
 
 	@SuppressLint("NotifyDataSetChanged")
 	public void notifyDataChanged() {
 		notifyDataSetChanged();
 		isLoading = false;
+		loadMoreListener.onLoadFinished();
 	}
 
-	public void setLoadMoreListener(Runnable loadMoreListener) {
+	public void setLoadMoreListener(OnLoadMoreListener loadMoreListener) {
 		this.loadMoreListener = loadMoreListener;
 	}
 
 	public void updateList(List<org.gitnex.tea4j.v2.models.Repository> list) {
 		forksList = list;
 		notifyDataChanged();
+	}
+
+	@Override
+	public Filter getFilter() {
+		return forksFilter;
+	}
+
+	public interface OnLoadMoreListener {
+
+		void onLoadMore();
+
+		void onLoadFinished();
 	}
 
 	class ForksHolder extends RecyclerView.ViewHolder {
