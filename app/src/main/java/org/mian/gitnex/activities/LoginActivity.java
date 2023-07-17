@@ -639,6 +639,10 @@ public class LoginActivity extends BaseActivity {
 		final String credential = Credentials.basic(loginUid, loginPass, StandardCharsets.UTF_8);
 
 		CreateAccessTokenOption createUserToken = new CreateAccessTokenOption().name(tokenName);
+		if (giteaVersion.higherOrEqual("1.19.0")) {
+			createUserToken.addScopesItem("all");
+			createUserToken.addScopesItem("sudo");
+		}
 		Call<AccessToken> callCreateToken;
 
 		if (loginOTP != 0) {

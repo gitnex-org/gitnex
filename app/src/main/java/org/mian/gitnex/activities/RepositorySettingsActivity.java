@@ -42,6 +42,7 @@ public class RepositorySettingsActivity extends BaseActivity {
 	private View.OnClickListener onClickListener;
 
 	private RepositoryContext repository;
+	private String repositoryName;
 
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
@@ -52,6 +53,7 @@ public class RepositorySettingsActivity extends BaseActivity {
 		setContentView(viewBinding.getRoot());
 
 		repository = RepositoryContext.fromIntent(getIntent());
+		;
 
 		ImageView closeActivity = findViewById(R.id.close);
 
@@ -246,6 +248,8 @@ public class RepositorySettingsActivity extends BaseActivity {
 
 		propBinding.repoEnableIssues.setChecked(repoInfo.isHasIssues());
 
+		repositoryName = repoInfo.getName();
+
 		propBinding.repoEnableIssues.setOnCheckedChangeListener(
 				(buttonView, isChecked) -> {
 					if (isChecked) {
@@ -340,19 +344,22 @@ public class RepositorySettingsActivity extends BaseActivity {
 
 							dialogRepo.dismiss();
 							Toasty.success(ctx, getString(R.string.repoPropertiesSaveSuccess));
-							assert response.body() != null;
-							repository.setRepository(response.body());
 
 							if (!repository.getName().equals(repoName)) {
+
+								int currentActiveAccountId =
+										tinyDB.getInt("currentActiveAccountId");
+
 								Objects.requireNonNull(
 												BaseApi.getInstance(ctx, RepositoriesApi.class))
-										.updateRepositoryOwnerAndName(
-												repository.getOwner(),
-												repoName,
-												repository.getRepositoryId());
-								Intent result = new Intent();
-								result.putExtra("nameChanged", true);
-								setResult(200, result);
+										.deleteRepositoryByName(
+												currentActiveAccountId, repositoryName);
+
+								Intent intent =
+										new Intent(
+												RepositorySettingsActivity.this,
+												MainActivity.class);
+								RepositorySettingsActivity.this.startActivity(intent);
 								finish();
 							}
 						} else {

@@ -63,6 +63,7 @@ public class IssuesViewModel extends ViewModel {
 								null,
 								null,
 								null,
+								null,
 								1,
 								resultLimit);
 
@@ -112,6 +113,7 @@ public class IssuesViewModel extends ViewModel {
 								null,
 								assignedToMe,
 								created,
+								null,
 								null,
 								null,
 								null,
