@@ -702,6 +702,16 @@ public class RepoDetailActivity extends BaseActivity implements BottomSheetListe
 					Intent intent1 = repository.getIntent(ctx, CommitsActivity.class);
 					ctx.startActivity(intent1);
 					break;
+				case "commit":
+					viewPager.setCurrentItem(0);
+					String sha = mainIntent.getStringExtra("sha");
+					if (getFragmentRefreshListenerFiles() != null) {
+						getFragmentRefreshListenerFiles().onRefresh(sha);
+					}
+					Intent commitIntent = repository.getIntent(ctx, CommitDetailActivity.class);
+					commitIntent.putExtra("sha", sha);
+					ctx.startActivity(commitIntent);
+					break;
 				case "issue":
 					viewPager.setCurrentItem(2);
 					break;
