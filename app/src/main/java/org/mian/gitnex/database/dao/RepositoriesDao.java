@@ -46,6 +46,10 @@ public interface RepositoriesDao {
 	@Query("DELETE FROM Repositories WHERE repositoryId = :repositoryId")
 	void deleteRepository(int repositoryId);
 
+	@Query(
+			"DELETE FROM Repositories WHERE repositoryName = :repositoryName AND repoAccountId = :currentActiveAccountId")
+	void deleteRepositoryByName(int currentActiveAccountId, String repositoryName);
+
 	@Query("DELETE FROM Repositories WHERE repoAccountId = :repoAccountId")
 	void deleteRepositoriesByAccount(int repoAccountId);
 

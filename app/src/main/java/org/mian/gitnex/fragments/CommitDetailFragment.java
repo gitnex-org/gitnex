@@ -185,7 +185,7 @@ public class CommitDetailFragment extends Fragment {
 	private void getCommit() {
 
 		RetrofitClient.getApiInterface(requireContext())
-				.repoGetSingleCommit(repoOwner, repoName, sha)
+				.repoGetSingleCommit(repoOwner, repoName, sha, true, false, true)
 				.enqueue(
 						new Callback<>() {
 

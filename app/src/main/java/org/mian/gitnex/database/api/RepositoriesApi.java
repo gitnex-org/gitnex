@@ -79,6 +79,14 @@ public class RepositoriesApi extends BaseApi {
 		executorService.execute(() -> repositoriesDao.deleteRepository(repositoryId));
 	}
 
+	public void deleteRepositoryByName(
+			final int currentActiveAccountId, final String repositoryName) {
+		executorService.execute(
+				() ->
+						repositoriesDao.deleteRepositoryByName(
+								currentActiveAccountId, repositoryName));
+	}
+
 	public void updateRepositoryMostVisited(int mostVisited, int repositoryId) {
 		executorService.execute(
 				() -> repositoriesDao.updateRepositoryMostVisited(mostVisited, repositoryId));
