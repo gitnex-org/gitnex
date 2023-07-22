@@ -863,4 +863,6 @@
 
     <string name="lang_statistics">Language Statistics</string>
     <string name="lang_percentage" translatable="false">%s%%</string>
+
+    <string name="dashboard">Dashboard</string>
 </resources>
