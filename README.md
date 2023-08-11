@@ -4,10 +4,9 @@
 
 # GitNex - Android client for Forgejo and Gitea
 
-GitNex is a free/paid, open-source Android client for Git repository management tool Forgejo and Gitea.
+GitNex is a free/paid, open-source Android client for the Git repository management tools Forgejo and Gitea.
 
-GitNex is licensed under GPLv3 License. See the LICENSE file for the full license text. **No trackers are used** and source code is available here for
-anyone to audit.
+GitNex is licensed under the GPLv3 License. Please refer to the LICENSE file for the full text of the license. **No trackers are used**, and the source code is available here for anyone to audit.
 
 ## Downloads
 
@@ -17,16 +16,15 @@ anyone to audit.
 
 ## Note about Forgejo and Gitea version
 
-Please make sure that you are on latest stable release or later for better app experience.
+Please make sure that you are on the latest stable release or later for a better app experience.
 
-Check the versions [compatibility page](https://codeberg.org/gitnex/GitNex/wiki/Compatibility) which lists all the supported versions with
-compatibility ratio.
+Check the version [compatibility page](https://codeberg.org/gitnex/GitNex/wiki/Compatibility), which lists all the supported versions along with their compatibility ratios.
 
 ## Build from source
 
-Option 1 - Download the source code, open it in Android Studio and build it there.
+Option 1 - Download the source code, open it in Android Studio, and build it there.
 
-Option 2 - Open terminal(Linux) and cd to the project dir. Run `./gradlew assembleFree`.
+Option 2 - Open the terminal (Linux) and navigate to the project directory. Then, run `./gradlew assembleFree`.
 
 ## Features
 
@@ -48,10 +46,9 @@ Option 2 - Open terminal(Linux) and cd to the project dir. Run `./gradlew assemb
 
 ## Translation
 
-Help us translate GitNex to your native language.
+Help us translate GitNex into your native language.
 
-We use [Crowdin](https://crowdin.com/project/gitnex) for translation. If your language is not listed, please
-request [here](https://codeberg.org/gitnex/GitNex/issues) to add it to the project.
+We use [Crowdin](https://crowdin.com/project/gitnex) for translations. If your language is not listed, please request to add it to the project [here](https://codeberg.org/gitnex/GitNex/issues).
 
 **Link: https://crowdin.com/project/GitNex**
 
@@ -75,7 +72,7 @@ request [here](https://codeberg.org/gitnex/GitNex/issues) to add it to the proje
 
 ## Thanks
 
-Thanks to all the open source libraries, contributors and donators.
+Thanks to all the open source libraries, contributors, and donors.
 
 #### Open source libraries
 
