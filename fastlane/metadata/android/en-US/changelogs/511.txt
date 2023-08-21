@@ -1,0 +1,12 @@
+5.1.1
+
+🚀 Improvements 🚀
+- Support for Android 14
+- Updated to latest API build
+
+🐛 Bug Fixes 🐛
+- Fix login for newer versions of Gitea/Forgejo (1.19 and above)
+
+Release Notes: https://codeberg.org/gitnex/GitNex/releases
+
+Release Posts: https://najigram.com/category/gitnex/

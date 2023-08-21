@@ -1,18 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
 <changelog>
 
-    <release version="5.1.0" versioncode="510">
-        <change>New: Dynamic colors for Android 12+ (Settings -> Appearance -> Theme)</change>
-        <change>New: FAB buttons for each task where required</change>
-        <change>New: Lisp language support</change>
-        <change>New: Repository language statistics</change>
-        <change>New: [CE] Settings to change syntax highlighting color (Settings -> Code Editor)</change>
-        <change>New: [CE] Settings to choose Tabs or Spaces for indentation (Settings -> Code Editor)</change>
-        <change>New: System default font (Settings -> Appearance -> Font)</change>
-        <change>Improvement: Hide notification count when no notification available</change>
-        <change>Improvement: Move logout from navigation to settings</change>
-        <change>Improvement: Move drafts, crash reports to General section</change>
-        <change>Improvement: Move translation to Appearance section</change>
+    <release version="5.1.1" versioncode="511">
+        <change>Improvement: Support for Android 14</change>
+        <change>Improvement: Updated to latest API build</change>
+        <change>Bug Fix: Fix login for newer versions of Gitea/Forgejo (1.19 and above)</change>
     </release>
 
 </changelog>

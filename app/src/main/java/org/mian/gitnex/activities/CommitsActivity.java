@@ -126,7 +126,13 @@ public class CommitsActivity extends BaseActivity {
 
 		Call<List<Commit>> call =
 				RetrofitClient.getApiInterface(ctx)
-						.repoGetAllCommits(repoOwner, repoName, branchName, null, 1, resultLimit);
+						.repoGetAllCommits(repoOwner, repoName, branchName, null,
+							true,
+							false,
+							true,
+							1,
+							resultLimit,
+							"");
 
 		call.enqueue(
 				new Callback<>() {
@@ -180,7 +186,13 @@ public class CommitsActivity extends BaseActivity {
 		Call<List<Commit>> call =
 				RetrofitClient.getApiInterface(ctx)
 						.repoGetAllCommits(
-								repoOwner, repoName, branchName, null, page, resultLimit);
+								repoOwner, repoName, branchName, null,
+							true,
+							false,
+							true,
+							page,
+							resultLimit,
+							"");
 
 		call.enqueue(
 				new Callback<>() {
