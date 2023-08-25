@@ -9,7 +9,8 @@
 
         <item android:id="@+id/nav_dashboard"
             android:icon="@drawable/ic_dashboard"
-            android:title="@string/dashboard"/>
+            android:title="@string/dashboard"
+            android:visible="false"/>
 
         <item android:id="@+id/nav_home"
             android:icon="@drawable/ic_repo"

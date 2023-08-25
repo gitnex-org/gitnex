@@ -74,6 +74,7 @@
         <item>@string/navMyIssues</item>
         <item>@string/navMostVisited</item>
         <item>@string/navNotes</item>
+        <item>@string/dashboard</item>
     </string-array>
 
     <string-array name="linkHandlerDefaultScreen">

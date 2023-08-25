@@ -1,4 +1,4 @@
-pipeline:
+steps:
   author-header:
     image: qwerty287/woodpecker-regex-check
     group: check

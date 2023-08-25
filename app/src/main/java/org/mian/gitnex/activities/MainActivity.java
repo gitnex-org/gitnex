@@ -39,6 +39,7 @@ import org.mian.gitnex.databinding.ActivityMainBinding;
 import org.mian.gitnex.fragments.AdministrationFragment;
 import org.mian.gitnex.fragments.BottomSheetDraftsFragment;
 import org.mian.gitnex.fragments.BottomSheetMyIssuesFilterFragment;
+import org.mian.gitnex.fragments.DashboardFragment;
 import org.mian.gitnex.fragments.DraftsFragment;
 import org.mian.gitnex.fragments.ExploreFragment;
 import org.mian.gitnex.fragments.MostVisitedReposFragment;
@@ -150,6 +151,8 @@ public class MainActivity extends BaseActivity
 			toolbarTitle.setText(getResources().getString(R.string.pageTitleAdministration));
 		} else if (fragmentById instanceof MyIssuesFragment) {
 			toolbarTitle.setText(getResources().getString(R.string.navMyIssues));
+		} else if (fragmentById instanceof DashboardFragment) {
+			toolbarTitle.setText(getResources().getString(R.string.dashboard));
 		}
 
 		getNotificationsCount();
@@ -295,6 +298,10 @@ public class MainActivity extends BaseActivity
 
 						if (getAccount().requiresVersion("1.14.0")) {
 							navigationView.getMenu().findItem(R.id.nav_my_issues).setVisible(true);
+						}
+
+						if (getAccount().requiresVersion("1.20.0")) {
+							navigationView.getMenu().findItem(R.id.nav_dashboard).setVisible(true);
 						}
 					}
 
@@ -489,7 +496,14 @@ public class MainActivity extends BaseActivity
 							.commit();
 					navigationView.setCheckedItem(R.id.nav_notes);
 					break;
-
+				case 11:
+					toolbarTitle.setText(getResources().getString(R.string.dashboard));
+					getSupportFragmentManager()
+							.beginTransaction()
+							.replace(R.id.fragment_container, new DashboardFragment())
+							.commit();
+					navigationView.setCheckedItem(R.id.nav_dashboard);
+					break;
 				default:
 					toolbarTitle.setText(getResources().getString(R.string.navMyRepos));
 					getSupportFragmentManager()
@@ -709,6 +723,13 @@ public class MainActivity extends BaseActivity
 			getSupportFragmentManager()
 					.beginTransaction()
 					.replace(R.id.fragment_container, new NotesFragment())
+					.commit();
+		} else if (id == R.id.nav_dashboard) {
+
+			toolbarTitle.setText(getResources().getString(R.string.dashboard));
+			getSupportFragmentManager()
+					.beginTransaction()
+					.replace(R.id.fragment_container, new DashboardFragment())
 					.commit();
 		}
 
