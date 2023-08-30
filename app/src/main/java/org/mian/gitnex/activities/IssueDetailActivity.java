@@ -710,10 +710,16 @@ public class IssueDetailActivity extends BaseActivity
 								ctx.getResources().getColor(R.color.colorWhite, null)));
 				viewBinding.issuePrState.setBackgroundResource(R.drawable.shape_draft_release);
 				viewBinding.issuePrState.setPadding(
-						R.dimen.dimen8dp, R.dimen.dimen2dp, R.dimen.dimen8dp, R.dimen.dimen2dp);
+						(int) ctx.getResources().getDimension(R.dimen.dimen8dp),
+						(int) ctx.getResources().getDimension(R.dimen.dimen2dp),
+						(int) ctx.getResources().getDimension(R.dimen.dimen8dp),
+						(int) ctx.getResources().getDimension(R.dimen.dimen2dp));
 
 				viewBinding.toolbarTitle.setPadding(
-						R.dimen.dimen16dp, R.dimen.dimen0dp, R.dimen.dimen0dp, R.dimen.dimen0dp);
+						(int) ctx.getResources().getDimension(R.dimen.dimen16dp),
+						(int) ctx.getResources().getDimension(R.dimen.dimen0dp),
+						(int) ctx.getResources().getDimension(R.dimen.dimen0dp),
+						(int) ctx.getResources().getDimension(R.dimen.dimen0dp));
 			} else { // open
 
 				viewBinding.issuePrState.setImageResource(R.drawable.ic_pull_request);

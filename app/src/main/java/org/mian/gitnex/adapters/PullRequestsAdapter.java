@@ -298,9 +298,15 @@ public class PullRequestsAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
 								context.getResources().getColor(R.color.colorWhite, null)));
 				this.issuePrState.setBackgroundResource(R.drawable.shape_draft_release);
 				this.issuePrState.setPadding(
-						R.dimen.dimen8dp, R.dimen.dimen2dp, R.dimen.dimen8dp, R.dimen.dimen2dp);
+						(int) context.getResources().getDimension(R.dimen.dimen8dp),
+						(int) context.getResources().getDimension(R.dimen.dimen2dp),
+						(int) context.getResources().getDimension(R.dimen.dimen8dp),
+						(int) context.getResources().getDimension(R.dimen.dimen2dp));
 				this.prTitle.setPadding(
-						R.dimen.dimen16dp, R.dimen.dimen0dp, R.dimen.dimen0dp, R.dimen.dimen0dp);
+						(int) context.getResources().getDimension(R.dimen.dimen16dp),
+						(int) context.getResources().getDimension(R.dimen.dimen0dp),
+						(int) context.getResources().getDimension(R.dimen.dimen0dp),
+						(int) context.getResources().getDimension(R.dimen.dimen0dp));
 			} else {
 				this.issuePrState.setVisibility(View.GONE);
 			}
