@@ -3,6 +3,7 @@ package org.mian.gitnex.adapters;
 import android.annotation.SuppressLint;
 import android.content.Context;
 import android.content.Intent;
+import android.content.res.ColorStateList;
 import android.graphics.Color;
 import android.graphics.Typeface;
 import android.os.Handler;
@@ -18,6 +19,7 @@ import androidx.annotation.NonNull;
 import androidx.core.content.ContextCompat;
 import androidx.core.content.res.ResourcesCompat;
 import androidx.core.text.HtmlCompat;
+import androidx.core.widget.ImageViewCompat;
 import androidx.recyclerview.widget.RecyclerView;
 import com.amulyakhare.textdrawable.TextDrawable;
 import com.vdurmont.emoji.EmojiParser;
@@ -106,6 +108,7 @@ public class PullRequestsAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
 
 		private final ImageView assigneeAvatar;
 		private final TextView prTitle;
+		private final ImageView issuePrState;
 		private final TextView prCreatedTime;
 		private final TextView prCommentsCount;
 		private final HorizontalScrollView labelsScrollViewWithText;
@@ -120,6 +123,7 @@ public class PullRequestsAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
 			super(itemView);
 			assigneeAvatar = itemView.findViewById(R.id.assigneeAvatar);
 			prTitle = itemView.findViewById(R.id.prTitle);
+			issuePrState = itemView.findViewById(R.id.issuePrState);
 			prCommentsCount = itemView.findViewById(R.id.prCommentsCount);
 			prCreatedTime = itemView.findViewById(R.id.prCreatedTime);
 			labelsScrollViewWithText = itemView.findViewById(R.id.labelsScrollViewWithText);
@@ -283,6 +287,23 @@ public class PullRequestsAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
 							+ context.getResources().getString(R.string.hash)
 							+ pullRequest.getNumber()
 							+ "</font>";
+
+			if (pullRequest.getTitle().contains("[WIP]")
+					|| pullRequest.getTitle().contains("[wip]")) {
+				this.issuePrState.setVisibility(View.VISIBLE);
+				this.issuePrState.setImageResource(R.drawable.ic_draft);
+				ImageViewCompat.setImageTintList(
+						this.issuePrState,
+						ColorStateList.valueOf(
+								context.getResources().getColor(R.color.colorWhite, null)));
+				this.issuePrState.setBackgroundResource(R.drawable.shape_draft_release);
+				this.issuePrState.setPadding(
+						R.dimen.dimen8dp, R.dimen.dimen2dp, R.dimen.dimen8dp, R.dimen.dimen2dp);
+				this.prTitle.setPadding(
+						R.dimen.dimen16dp, R.dimen.dimen0dp, R.dimen.dimen0dp, R.dimen.dimen0dp);
+			} else {
+				this.issuePrState.setVisibility(View.GONE);
+			}
 
 			this.prTitle.setText(
 					HtmlCompat.fromHtml(

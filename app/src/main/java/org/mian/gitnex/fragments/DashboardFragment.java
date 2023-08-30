@@ -9,60 +9,68 @@ import android.view.View;
 import android.view.ViewGroup;
 import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
+import androidx.lifecycle.ViewModelProvider;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import java.util.ArrayList;
 import java.util.List;
+import org.gitnex.tea4j.v2.models.Activity;
 import org.mian.gitnex.R;
+import org.mian.gitnex.activities.BaseActivity;
 import org.mian.gitnex.activities.MainActivity;
-import org.mian.gitnex.adapters.NotesAdapter;
-import org.mian.gitnex.database.models.Notes;
-import org.mian.gitnex.databinding.FragmentNotesBinding;
+import org.mian.gitnex.adapters.DashboardAdapter;
+import org.mian.gitnex.databinding.FragmentDashboardBinding;
+import org.mian.gitnex.helpers.TinyDB;
+import org.mian.gitnex.viewmodels.DashboardViewModel;
 
 /**
  * @author M M Arif
  */
 public class DashboardFragment extends Fragment {
 
-	private FragmentNotesBinding binding;
-	private Context ctx;
-	private NotesAdapter adapter;
-	private List<Notes> notesList;
+	protected TinyDB tinyDB;
+	private DashboardViewModel dashboardViewModel;
+	private FragmentDashboardBinding binding;
+	private DashboardAdapter adapter;
+	private List<Activity> activityList;
+	private int page = 1;
+	private String username;
 
 	@Override
 	public View onCreateView(
 			@NonNull LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
 
-		binding = FragmentNotesBinding.inflate(inflater, container, false);
+		binding = FragmentDashboardBinding.inflate(inflater, container, false);
 
-		ctx = getContext();
+		Context ctx = getContext();
 		setHasOptionsMenu(true);
 
 		((MainActivity) requireActivity())
 				.setActionBarTitle(getResources().getString(R.string.dashboard));
 
-		notesList = new ArrayList<>();
+		activityList = new ArrayList<>();
+
+		dashboardViewModel = new ViewModelProvider(this).get(DashboardViewModel.class);
+
+		username = ((BaseActivity) requireActivity()).getAccount().getAccount().getUserName();
 
 		binding.recyclerView.setHasFixedSize(true);
 		binding.recyclerView.setLayoutManager(new LinearLayoutManager(ctx));
 
-		binding.recyclerView.setPadding(0, 0, 0, 220);
-		binding.recyclerView.setClipToPadding(false);
-
-		adapter = new NotesAdapter(ctx, notesList);
+		adapter = new DashboardAdapter(activityList, ctx);
 
 		binding.pullToRefresh.setOnRefreshListener(
 				() ->
 						new Handler(Looper.getMainLooper())
 								.postDelayed(
 										() -> {
-											notesList.clear();
+											activityList.clear();
 											binding.pullToRefresh.setRefreshing(false);
 											binding.progressBar.setVisibility(View.VISIBLE);
-											// fetchDataAsync();
+											fetchDataAsync(username);
 										},
 										250));
 
-		// fetchDataAsync();
+		fetchDataAsync(username);
 
 		return binding.getRoot();
 	}
@@ -70,6 +78,46 @@ public class DashboardFragment extends Fragment {
 	@Override
 	public void onResume() {
 		super.onResume();
-		// fetchDataAsync();
+		fetchDataAsync(username);
+	}
+
+	private void fetchDataAsync(String username) {
+
+		dashboardViewModel
+				.getActivitiesList(username, getContext(), binding)
+				.observe(
+						getViewLifecycleOwner(),
+						activityListMain -> {
+							adapter = new DashboardAdapter(activityListMain, getContext());
+							adapter.setLoadMoreListener(
+									new DashboardAdapter.OnLoadMoreListener() {
+
+										@Override
+										public void onLoadMore() {
+
+											page += 1;
+											dashboardViewModel.loadMoreActivities(
+													username, page, getContext(), adapter, binding);
+											binding.progressBar.setVisibility(View.VISIBLE);
+										}
+
+										@Override
+										public void onLoadFinished() {
+
+											binding.progressBar.setVisibility(View.GONE);
+										}
+									});
+
+							if (adapter.getItemCount() > 0) {
+								binding.recyclerView.setAdapter(adapter);
+								binding.noData.setVisibility(View.GONE);
+							} else {
+								adapter.notifyDataChanged();
+								binding.recyclerView.setAdapter(adapter);
+								binding.noData.setVisibility(View.VISIBLE);
+							}
+
+							binding.progressBar.setVisibility(View.GONE);
+						});
 	}
 }
