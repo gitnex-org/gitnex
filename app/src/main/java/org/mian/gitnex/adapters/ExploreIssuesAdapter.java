@@ -170,26 +170,31 @@ public class ExploreIssuesAdapter extends RecyclerView.Adapter<RecyclerView.View
 											repo.saveToDB(context);
 											context.startActivity(intentIssueDetail);
 										});
+
+								if (!AppUtil.checkGhostUsers(issue.getUser().getLogin())) {
+
+									issueAssigneeAvatar.setOnClickListener(
+											v -> {
+												Intent intent =
+														new Intent(context, ProfileActivity.class);
+												intent.putExtra(
+														"username", issue.getUser().getLogin());
+												context.startActivity(intent);
+											});
+
+									issueAssigneeAvatar.setOnLongClickListener(
+											loginId -> {
+												AppUtil.copyToClipboard(
+														context,
+														issue.getUser().getLogin(),
+														context.getString(
+																R.string.copyLoginIdToClipBoard,
+																issue.getUser().getLogin()));
+												return true;
+											});
+								}
 							},
 							200);
-
-			issueAssigneeAvatar.setOnClickListener(
-					v -> {
-						Intent intent = new Intent(context, ProfileActivity.class);
-						intent.putExtra("username", issue.getUser().getLogin());
-						context.startActivity(intent);
-					});
-
-			issueAssigneeAvatar.setOnLongClickListener(
-					loginId -> {
-						AppUtil.copyToClipboard(
-								context,
-								issue.getUser().getLogin(),
-								context.getString(
-										R.string.copyLoginIdToClipBoard,
-										issue.getUser().getLogin()));
-						return true;
-					});
 		}
 
 		void bindData(Issue issue) {

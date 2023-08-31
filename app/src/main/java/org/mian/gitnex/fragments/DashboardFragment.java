@@ -78,7 +78,7 @@ public class DashboardFragment extends Fragment {
 	@Override
 	public void onResume() {
 		super.onResume();
-		fetchDataAsync(username);
+		// fetchDataAsync(username);
 	}
 
 	private void fetchDataAsync(String username) {

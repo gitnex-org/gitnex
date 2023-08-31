@@ -2,6 +2,8 @@ package org.mian.gitnex.adapters;
 
 import android.annotation.SuppressLint;
 import android.content.Context;
+import android.content.Intent;
+import android.os.Handler;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -17,12 +19,15 @@ import java.util.List;
 import java.util.Locale;
 import org.gitnex.tea4j.v2.models.Activity;
 import org.mian.gitnex.R;
+import org.mian.gitnex.activities.ProfileActivity;
+import org.mian.gitnex.activities.RepoDetailActivity;
 import org.mian.gitnex.clients.PicassoService;
 import org.mian.gitnex.helpers.AppUtil;
 import org.mian.gitnex.helpers.ClickListener;
 import org.mian.gitnex.helpers.RoundedTransformation;
 import org.mian.gitnex.helpers.TimeHelper;
 import org.mian.gitnex.helpers.TinyDB;
+import org.mian.gitnex.helpers.contexts.RepositoryContext;
 
 /**
  * @author M M Arif
@@ -34,6 +39,8 @@ public class DashboardAdapter extends RecyclerView.Adapter<RecyclerView.ViewHold
 	private List<Activity> activityList;
 	private OnLoadMoreListener loadMoreListener;
 	private boolean isLoading = false, isMoreDataAvailable = true;
+	private Intent intent;
+	public boolean isUserOrg = false;
 
 	public DashboardAdapter(List<Activity> dataList, Context ctx) {
 		this.context = ctx;
@@ -122,37 +129,64 @@ public class DashboardAdapter extends RecyclerView.Adapter<RecyclerView.ViewHold
 			dashText = itemView.findViewById(R.id.text);
 			dashTextFrame = itemView.findViewById(R.id.dash_text_frame);
 
-			/*new Handler()
-			.postDelayed(
-				() -> {
-					if (!AppUtil.checkGhostUsers(issueObject.getUser().getLogin())) {
+			new Handler()
+					.postDelayed(
+							() -> {
+								if (!AppUtil.checkGhostUsers(
+										activityObject.getActUser().getLogin())) {
 
-						issueAssigneeAvatar.setOnLongClickListener(
-							loginId -> {
-								AppUtil.copyToClipboard(
-									context,
-									issueObject.getUser().getLogin(),
-									context.getString(
-										R.string.copyLoginIdToClipBoard,
-										issueObject.getUser().getLogin()));
-								return true;
-							});
+									userAvatar.setOnLongClickListener(
+											loginId -> {
+												AppUtil.copyToClipboard(
+														context,
+														activityObject.getActUser().getLogin(),
+														context.getString(
+																R.string.copyLoginIdToClipBoard,
+																activityObject
+																		.getActUser()
+																		.getLogin()));
+												return true;
+											});
 
-						issueAssigneeAvatar.setOnClickListener(
-							v -> {
-								Intent intent =
-									new Intent(context, ProfileActivity.class);
-								intent.putExtra(
-									"username",
-									issueObject.getUser().getLogin());
-								context.startActivity(intent);
-							});
-					}
-				},
-				500);*/
+									userAvatar.setOnClickListener(
+											v -> {
+												intent = new Intent(context, ProfileActivity.class);
+												intent.putExtra(
+														"username",
+														activityObject.getActUser().getLogin());
+												context.startActivity(intent);
+											});
+								}
+
+								if (activityObject.getOpType().equalsIgnoreCase("create_repo")
+										|| activityObject
+												.getOpType()
+												.equalsIgnoreCase("rename_repo")
+										|| activityObject.getOpType().equalsIgnoreCase("star_repo")
+										|| activityObject
+												.getOpType()
+												.equalsIgnoreCase("transfer_repo")) {
+
+									itemView.setOnClickListener(
+											v -> {
+												Context context = v.getContext();
+												RepositoryContext repo =
+														new RepositoryContext(
+																activityObject.getRepo(), context);
+												repo.saveToDB(context);
+												Intent intent =
+														repo.getIntent(
+																context, RepoDetailActivity.class);
+												if (isUserOrg) {
+													intent.putExtra("openedFromUserOrg", true);
+												}
+												context.startActivity(intent);
+											});
+								}
+							},
+							200);
 		}
 
-		@SuppressLint("SetTextI18n")
 		void bindData(Activity activity) {
 
 			this.activityObject = activity;
@@ -606,131 +640,11 @@ public class DashboardAdapter extends RecyclerView.Adapter<RecyclerView.ViewHold
 							username + " " + typeString + " " + headerString,
 							HtmlCompat.FROM_HTML_MODE_LEGACY));
 
-			/*String issueNumber_ =
-				"<font color='"
-					+ ResourcesCompat.getColor(
-					context.getResources(), R.color.lightGray, null)
-					+ "'>"
-					+ context.getResources().getString(R.string.hash)
-					+ issue.getNumber()
-					+ "</font>";
-			issueTitle.setText(
-				HtmlCompat.fromHtml(
-					issueNumber_ + " " + EmojiParser.parseToUnicode(issue.getTitle()),
-					HtmlCompat.FROM_HTML_MODE_LEGACY));
-
-			this.issueObject = issue;
-			this.issueCommentsCount.setText(String.valueOf(issue.getComments()));
-
-			Intent intentIssueDetail =
-				new IssueContext(issueObject, ((RepoDetailActivity) context).repository)
-					.getIntent(context, IssueDetailActivity.class);*/
-
-			/*itemView.setOnClickListener(layoutView -> context.startActivity(intentIssueDetail));
-			frameLabels.setOnClickListener(v -> context.startActivity(intentIssueDetail));
-			frameLabelsDots.setOnClickListener(v -> context.startActivity(intentIssueDetail));*/
-
-			/*LinearLayout.LayoutParams params =
-				new LinearLayout.LayoutParams(
-					LinearLayout.LayoutParams.WRAP_CONTENT,
-					LinearLayout.LayoutParams.WRAP_CONTENT);
-			params.setMargins(0, 0, 15, 0);
-
-			Typeface typeface = AppUtil.getTypeface(context);*/
-
 			this.createdTime.setText(TimeHelper.formatTime(activity.getCreated(), locale));
 			this.createdTime.setOnClickListener(
 					new ClickListener(
 							TimeHelper.customDateFormatForToastDateFormat(activity.getCreated()),
 							context));
-
-			/*if (issue.getLabels() != null) {
-
-				if (!tinyDb.getBoolean("showLabelsInList", false)) { // default
-
-					labelsScrollViewWithText.setVisibility(View.GONE);
-					labelsScrollViewDots.setVisibility(View.VISIBLE);
-					frameLabelsDots.removeAllViews();
-
-					for (int i = 0; i < issue.getLabels().size(); i++) {
-
-						String labelColor = issue.getLabels().get(i).getColor();
-						int color = Color.parseColor("#" + labelColor);
-
-						ImageView labelsView = new ImageView(context);
-						frameLabelsDots.setOrientation(LinearLayout.HORIZONTAL);
-						frameLabelsDots.setGravity(Gravity.START | Gravity.TOP);
-						labelsView.setLayoutParams(params);
-
-						TextDrawable drawable =
-							TextDrawable.builder()
-								.beginConfig()
-								.useFont(typeface)
-								.width(54)
-								.height(54)
-								.endConfig()
-								.buildRound("", color);
-
-						labelsView.setImageDrawable(drawable);
-						frameLabelsDots.addView(labelsView);
-					}
-				} else {
-
-					labelsScrollViewDots.setVisibility(View.GONE);
-					labelsScrollViewWithText.setVisibility(View.VISIBLE);
-					frameLabels.removeAllViews();
-
-					for (int i = 0; i < issue.getLabels().size(); i++) {
-
-						String labelColor = issue.getLabels().get(i).getColor();
-						String labelName = issue.getLabels().get(i).getName();
-						int color = Color.parseColor("#" + labelColor);
-
-						ImageView labelsView = new ImageView(context);
-						frameLabels.setOrientation(LinearLayout.HORIZONTAL);
-						frameLabels.setGravity(Gravity.START | Gravity.TOP);
-						labelsView.setLayoutParams(params);
-
-						int height = AppUtil.getPixelsFromDensity(context, 20);
-						int textSize = AppUtil.getPixelsFromScaledDensity(context, 12);
-
-						TextDrawable drawable =
-							TextDrawable.builder()
-								.beginConfig()
-								.useFont(typeface)
-								.textColor(new ColorInverter().getContrastColor(color))
-								.fontSize(textSize)
-								.width(
-									LabelWidthCalculator.calculateLabelWidth(
-										labelName,
-										typeface,
-										textSize,
-										AppUtil.getPixelsFromDensity(context, 8)))
-								.height(height)
-								.endConfig()
-								.buildRoundRect(
-									labelName,
-									color,
-									AppUtil.getPixelsFromDensity(context, 18));
-
-						labelsView.setImageDrawable(drawable);
-						frameLabels.addView(labelsView);
-					}
-				}
-			}*/
-
-			/*if (issue.getComments() > 15) {
-				commentIcon.setImageDrawable(
-					ContextCompat.getDrawable(context, R.drawable.ic_flame));
-				commentIcon.setColorFilter(
-					context.getResources().getColor(R.color.releasePre, null));
-			}*/
-
-			/*this.issueCreatedTime.setText(TimeHelper.formatTime(issue.getCreatedAt(), locale));
-			this.issueCreatedTime.setOnClickListener(
-				new ClickListener(
-					TimeHelper.customDateFormatForToastDateFormat(issue.getCreatedAt()),
-					context));*/
 		}
 	}
 }
