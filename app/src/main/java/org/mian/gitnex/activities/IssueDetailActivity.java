@@ -710,13 +710,13 @@ public class IssueDetailActivity extends BaseActivity
 								ctx.getResources().getColor(R.color.colorWhite, null)));
 				viewBinding.issuePrState.setBackgroundResource(R.drawable.shape_draft_release);
 				viewBinding.issuePrState.setPadding(
-						(int) ctx.getResources().getDimension(R.dimen.dimen8dp),
+						(int) ctx.getResources().getDimension(R.dimen.dimen4dp),
 						(int) ctx.getResources().getDimension(R.dimen.dimen2dp),
-						(int) ctx.getResources().getDimension(R.dimen.dimen8dp),
+						(int) ctx.getResources().getDimension(R.dimen.dimen4dp),
 						(int) ctx.getResources().getDimension(R.dimen.dimen2dp));
 
 				viewBinding.toolbarTitle.setPadding(
-						(int) ctx.getResources().getDimension(R.dimen.dimen16dp),
+						(int) ctx.getResources().getDimension(R.dimen.dimen12dp),
 						(int) ctx.getResources().getDimension(R.dimen.dimen0dp),
 						(int) ctx.getResources().getDimension(R.dimen.dimen0dp),
 						(int) ctx.getResources().getDimension(R.dimen.dimen0dp));

@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:gravity="center_vertical">
+
+    <TextView
+        android:id="@+id/betaBadge"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:background="@drawable/shape_beta_badge"
+        android:ellipsize="marquee"
+        android:paddingStart="@dimen/dimen4dp"
+        android:paddingEnd="@dimen/dimen4dp"
+        android:singleLine="true"
+        android:layout_marginEnd="@dimen/dimen140dp"
+        android:textColor="?attr/primaryBackgroundColor"
+        android:textSize="@dimen/dimen12sp"
+        android:visibility="gone" />
+
+</LinearLayout>

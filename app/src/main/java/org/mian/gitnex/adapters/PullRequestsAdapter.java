@@ -303,7 +303,7 @@ public class PullRequestsAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
 						(int) context.getResources().getDimension(R.dimen.dimen4dp),
 						(int) context.getResources().getDimension(R.dimen.dimen0dp));
 				this.prTitle.setPadding(
-						(int) context.getResources().getDimension(R.dimen.dimen16dp),
+						(int) context.getResources().getDimension(R.dimen.dimen12dp),
 						(int) context.getResources().getDimension(R.dimen.dimen0dp),
 						(int) context.getResources().getDimension(R.dimen.dimen0dp),
 						(int) context.getResources().getDimension(R.dimen.dimen0dp));
