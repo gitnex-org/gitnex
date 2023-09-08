@@ -62,12 +62,10 @@
 
                         <ImageView
                             android:id="@+id/issuePrState"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
+                            android:layout_width="@dimen/dimen26dp"
+                            android:layout_height="@dimen/dimen26dp"
                             android:contentDescription="@string/generalImgContentText"
-                            android:paddingStart="@dimen/dimen0dp"
-                            android:paddingEnd="@dimen/dimen8dp"
-                            android:src="@drawable/ic_issue"
+                            android:src="@drawable/ic_draft"
                             android:visibility="gone" />
 
                         <TextView

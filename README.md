@@ -12,7 +12,7 @@ GitNex is licensed under the GPLv3 License. Please refer to the LICENSE file for
 
 [<img alt='Get it on F-Droid' src='https://codeberg.org/gitnex/GitNex/raw/branch/main/assets/fdroid.png' height="80"/>](https://f-droid.org/en/packages/org.mian.gitnex/)
 [<img alt='Get it on Google Play' src='https://codeberg.org/gitnex/GitNex/raw/branch/main/assets/google-play.png' height="80"/>](https://play.google.com/store/apps/details?id=org.mian.gitnex.pro)
-[<img alt='Download builds and releases' src='https://codeberg.org/gitnex/GitNex/raw/branch/main/assets/apk-badge.png' height="82"/>](https://cloud.swatian.com/s/DN7E5xxtaw4fRbE)
+[<img alt='Download builds and releases' src='https://codeberg.org/gitnex/GitNex/raw/branch/main/assets/apk-badge.png' height="82"/>](https://cloud.swatian.com/s/WS4k3seXnmfQppo)
 
 ## Note about Forgejo and Gitea version
 

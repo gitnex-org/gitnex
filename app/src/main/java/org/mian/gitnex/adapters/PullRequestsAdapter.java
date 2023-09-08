@@ -298,10 +298,10 @@ public class PullRequestsAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
 								context.getResources().getColor(R.color.colorWhite, null)));
 				this.issuePrState.setBackgroundResource(R.drawable.shape_draft_release);
 				this.issuePrState.setPadding(
-						(int) context.getResources().getDimension(R.dimen.dimen8dp),
-						(int) context.getResources().getDimension(R.dimen.dimen2dp),
-						(int) context.getResources().getDimension(R.dimen.dimen8dp),
-						(int) context.getResources().getDimension(R.dimen.dimen2dp));
+						(int) context.getResources().getDimension(R.dimen.dimen4dp),
+						(int) context.getResources().getDimension(R.dimen.dimen0dp),
+						(int) context.getResources().getDimension(R.dimen.dimen4dp),
+						(int) context.getResources().getDimension(R.dimen.dimen0dp));
 				this.prTitle.setPadding(
 						(int) context.getResources().getDimension(R.dimen.dimen16dp),
 						(int) context.getResources().getDimension(R.dimen.dimen0dp),

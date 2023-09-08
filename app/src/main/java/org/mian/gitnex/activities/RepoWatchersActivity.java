@@ -1,15 +1,19 @@
 package org.mian.gitnex.activities;
 
 import android.os.Bundle;
+import android.os.Handler;
+import android.os.Looper;
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.view.View;
-import android.widget.GridView;
-import android.widget.ImageView;
-import android.widget.ProgressBar;
-import android.widget.TextView;
+import android.view.inputmethod.EditorInfo;
+import androidx.appcompat.widget.SearchView;
 import androidx.lifecycle.ViewModelProvider;
 import org.mian.gitnex.R;
 import org.mian.gitnex.adapters.UserGridAdapter;
 import org.mian.gitnex.databinding.ActivityRepoWatchersBinding;
+import org.mian.gitnex.helpers.AppUtil;
 import org.mian.gitnex.helpers.contexts.RepositoryContext;
 import org.mian.gitnex.viewmodels.RepoWatchersViewModel;
 
@@ -18,12 +22,10 @@ import org.mian.gitnex.viewmodels.RepoWatchersViewModel;
  */
 public class RepoWatchersActivity extends BaseActivity {
 
-	private TextView noDataWatchers;
 	private View.OnClickListener onClickListener;
 	private UserGridAdapter adapter;
-	private GridView mGridView;
-	private ProgressBar mProgressBar;
-
+	private Boolean searchFilter = false;
+	private ActivityRepoWatchersBinding activityRepoWatchersBinding;
 	private RepositoryContext repository;
 
 	@Override
@@ -31,24 +33,19 @@ public class RepoWatchersActivity extends BaseActivity {
 
 		super.onCreate(savedInstanceState);
 
-		ActivityRepoWatchersBinding activityRepoWatchersBinding =
-				ActivityRepoWatchersBinding.inflate(getLayoutInflater());
+		activityRepoWatchersBinding = ActivityRepoWatchersBinding.inflate(getLayoutInflater());
 		setContentView(activityRepoWatchersBinding.getRoot());
 
-		ImageView closeActivity = activityRepoWatchersBinding.close;
-		TextView toolbarTitle = activityRepoWatchersBinding.toolbarTitle;
-		noDataWatchers = activityRepoWatchersBinding.noDataWatchers;
-		mGridView = activityRepoWatchersBinding.gridView;
-		mProgressBar = activityRepoWatchersBinding.progressBar;
+		setSupportActionBar(activityRepoWatchersBinding.toolbar);
 
 		repository = RepositoryContext.fromIntent(getIntent());
 		final String repoOwner = repository.getOwner();
 		final String repoName = repository.getName();
 
 		initCloseListener();
-		closeActivity.setOnClickListener(onClickListener);
+		activityRepoWatchersBinding.close.setOnClickListener(onClickListener);
 
-		toolbarTitle.setText(R.string.repoWatchersInMenu);
+		activityRepoWatchersBinding.toolbarTitle.setText(R.string.repoWatchersInMenu);
 
 		fetchDataAsync(repoOwner, repoName);
 	}
@@ -67,16 +64,18 @@ public class RepoWatchersActivity extends BaseActivity {
 
 							if (adapter.getCount() > 0) {
 
-								mGridView.setAdapter(adapter);
-								noDataWatchers.setVisibility(View.GONE);
+								activityRepoWatchersBinding.gridView.setAdapter(adapter);
+								activityRepoWatchersBinding.noDataWatchers.setVisibility(View.GONE);
+								searchFilter = true;
 							} else {
 
 								adapter.notifyDataSetChanged();
-								mGridView.setAdapter(adapter);
-								noDataWatchers.setVisibility(View.VISIBLE);
+								activityRepoWatchersBinding.gridView.setAdapter(adapter);
+								activityRepoWatchersBinding.noDataWatchers.setVisibility(
+										View.VISIBLE);
 							}
 
-							mProgressBar.setVisibility(View.GONE);
+							activityRepoWatchersBinding.progressBar.setVisibility(View.GONE);
 						});
 	}
 
@@ -89,5 +88,50 @@ public class RepoWatchersActivity extends BaseActivity {
 	public void onResume() {
 		super.onResume();
 		repository.checkAccountSwitch(this);
+	}
+
+	@Override
+	public boolean onCreateOptionsMenu(final Menu menu) {
+
+		final MenuInflater inflater = getMenuInflater();
+
+		new Handler(Looper.getMainLooper())
+				.postDelayed(
+						() -> {
+							if (searchFilter) {
+
+								boolean connToInternet = AppUtil.hasNetworkConnection(appCtx);
+
+								inflater.inflate(R.menu.search_menu, menu);
+
+								MenuItem searchItem = menu.findItem(R.id.action_search);
+								SearchView searchView = (SearchView) searchItem.getActionView();
+								searchView.setImeOptions(EditorInfo.IME_ACTION_DONE);
+
+								if (!connToInternet) {
+									return;
+								}
+
+								searchView.setOnQueryTextListener(
+										new androidx.appcompat.widget.SearchView
+												.OnQueryTextListener() {
+
+											@Override
+											public boolean onQueryTextSubmit(String query) {
+												return true;
+											}
+
+											@Override
+											public boolean onQueryTextChange(String newText) {
+
+												adapter.getFilter().filter(newText);
+												return false;
+											}
+										});
+							}
+						},
+						500);
+
+		return true;
 	}
 }

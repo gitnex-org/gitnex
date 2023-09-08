@@ -1,15 +1,19 @@
 package org.mian.gitnex.activities;
 
 import android.os.Bundle;
+import android.os.Handler;
+import android.os.Looper;
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.view.View;
-import android.widget.GridView;
-import android.widget.ImageView;
-import android.widget.ProgressBar;
-import android.widget.TextView;
+import android.view.inputmethod.EditorInfo;
+import androidx.appcompat.widget.SearchView;
 import androidx.lifecycle.ViewModelProvider;
 import org.mian.gitnex.R;
 import org.mian.gitnex.adapters.UserGridAdapter;
 import org.mian.gitnex.databinding.ActivityRepoStargazersBinding;
+import org.mian.gitnex.helpers.AppUtil;
 import org.mian.gitnex.helpers.contexts.RepositoryContext;
 import org.mian.gitnex.viewmodels.RepoStargazersViewModel;
 
@@ -18,37 +22,30 @@ import org.mian.gitnex.viewmodels.RepoStargazersViewModel;
  */
 public class RepoStargazersActivity extends BaseActivity {
 
-	private TextView noDataStargazers;
 	private View.OnClickListener onClickListener;
 	private UserGridAdapter adapter;
-	private GridView mGridView;
-	private ProgressBar mProgressBar;
-
+	private Boolean searchFilter = false;
 	private RepositoryContext repository;
+	private ActivityRepoStargazersBinding activityRepoStargazersBinding;
 
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
 
 		super.onCreate(savedInstanceState);
 
-		ActivityRepoStargazersBinding activityRepoStargazersBinding =
-				ActivityRepoStargazersBinding.inflate(getLayoutInflater());
+		activityRepoStargazersBinding = ActivityRepoStargazersBinding.inflate(getLayoutInflater());
 		setContentView(activityRepoStargazersBinding.getRoot());
 
-		ImageView closeActivity = activityRepoStargazersBinding.close;
-		TextView toolbarTitle = activityRepoStargazersBinding.toolbarTitle;
-		noDataStargazers = activityRepoStargazersBinding.noDataStargazers;
-		mGridView = activityRepoStargazersBinding.gridView;
-		mProgressBar = activityRepoStargazersBinding.progressBar;
+		setSupportActionBar(activityRepoStargazersBinding.toolbar);
 
 		repository = RepositoryContext.fromIntent(getIntent());
 		final String repoOwner = repository.getOwner();
 		final String repoName = repository.getName();
 
 		initCloseListener();
-		closeActivity.setOnClickListener(onClickListener);
+		activityRepoStargazersBinding.close.setOnClickListener(onClickListener);
 
-		toolbarTitle.setText(R.string.repoStargazersInMenu);
+		activityRepoStargazersBinding.toolbarTitle.setText(R.string.repoStargazersInMenu);
 
 		fetchDataAsync(repoOwner, repoName);
 	}
@@ -67,16 +64,19 @@ public class RepoStargazersActivity extends BaseActivity {
 
 							if (adapter.getCount() > 0) {
 
-								mGridView.setAdapter(adapter);
-								noDataStargazers.setVisibility(View.GONE);
+								activityRepoStargazersBinding.gridView.setAdapter(adapter);
+								activityRepoStargazersBinding.noDataStargazers.setVisibility(
+										View.GONE);
+								searchFilter = true;
 							} else {
 
 								adapter.notifyDataSetChanged();
-								mGridView.setAdapter(adapter);
-								noDataStargazers.setVisibility(View.VISIBLE);
+								activityRepoStargazersBinding.gridView.setAdapter(adapter);
+								activityRepoStargazersBinding.noDataStargazers.setVisibility(
+										View.VISIBLE);
 							}
 
-							mProgressBar.setVisibility(View.GONE);
+							activityRepoStargazersBinding.progressBar.setVisibility(View.GONE);
 						});
 	}
 
@@ -89,5 +89,50 @@ public class RepoStargazersActivity extends BaseActivity {
 	public void onResume() {
 		super.onResume();
 		repository.checkAccountSwitch(this);
+	}
+
+	@Override
+	public boolean onCreateOptionsMenu(final Menu menu) {
+
+		final MenuInflater inflater = getMenuInflater();
+
+		new Handler(Looper.getMainLooper())
+				.postDelayed(
+						() -> {
+							if (searchFilter) {
+
+								boolean connToInternet = AppUtil.hasNetworkConnection(appCtx);
+
+								inflater.inflate(R.menu.search_menu, menu);
+
+								MenuItem searchItem = menu.findItem(R.id.action_search);
+								SearchView searchView = (SearchView) searchItem.getActionView();
+								searchView.setImeOptions(EditorInfo.IME_ACTION_DONE);
+
+								if (!connToInternet) {
+									return;
+								}
+
+								searchView.setOnQueryTextListener(
+										new androidx.appcompat.widget.SearchView
+												.OnQueryTextListener() {
+
+											@Override
+											public boolean onQueryTextSubmit(String query) {
+												return true;
+											}
+
+											@Override
+											public boolean onQueryTextChange(String newText) {
+
+												adapter.getFilter().filter(newText);
+												return false;
+											}
+										});
+							}
+						},
+						500);
+
+		return true;
 	}
 }
