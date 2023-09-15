@@ -515,7 +515,7 @@
     <string name="openInBrowser">Open in Browser</string>
     <string name="deleteGenericTitle">Delete %s</string>
     <string name="reset">Reset</string>
-    <string name="beta">beta</string>
+    <string name="beta">BETA</string>
     <!-- generic copy -->
 
     <string name="exploreUsers">Explore users</string>

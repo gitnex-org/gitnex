@@ -1,8 +1,6 @@
 package org.mian.gitnex.activities;
 
 import android.os.Bundle;
-import android.os.Handler;
-import android.os.Looper;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
@@ -13,7 +11,6 @@ import androidx.lifecycle.ViewModelProvider;
 import org.mian.gitnex.R;
 import org.mian.gitnex.adapters.UserGridAdapter;
 import org.mian.gitnex.databinding.ActivityRepoWatchersBinding;
-import org.mian.gitnex.helpers.AppUtil;
 import org.mian.gitnex.helpers.contexts.RepositoryContext;
 import org.mian.gitnex.viewmodels.RepoWatchersViewModel;
 
@@ -24,7 +21,6 @@ public class RepoWatchersActivity extends BaseActivity {
 
 	private View.OnClickListener onClickListener;
 	private UserGridAdapter adapter;
-	private Boolean searchFilter = false;
 	private ActivityRepoWatchersBinding activityRepoWatchersBinding;
 	private RepositoryContext repository;
 
@@ -66,7 +62,6 @@ public class RepoWatchersActivity extends BaseActivity {
 
 								activityRepoWatchersBinding.gridView.setAdapter(adapter);
 								activityRepoWatchersBinding.noDataWatchers.setVisibility(View.GONE);
-								searchFilter = true;
 							} else {
 
 								adapter.notifyDataSetChanged();
@@ -94,43 +89,29 @@ public class RepoWatchersActivity extends BaseActivity {
 	public boolean onCreateOptionsMenu(final Menu menu) {
 
 		final MenuInflater inflater = getMenuInflater();
+		inflater.inflate(R.menu.search_menu, menu);
 
-		new Handler(Looper.getMainLooper())
-				.postDelayed(
-						() -> {
-							if (searchFilter) {
+		MenuItem searchItem = menu.findItem(R.id.action_search);
+		SearchView searchView = (SearchView) searchItem.getActionView();
+		searchView.setImeOptions(EditorInfo.IME_ACTION_DONE);
 
-								boolean connToInternet = AppUtil.hasNetworkConnection(appCtx);
+		searchView.setOnQueryTextListener(
+				new androidx.appcompat.widget.SearchView.OnQueryTextListener() {
 
-								inflater.inflate(R.menu.search_menu, menu);
+					@Override
+					public boolean onQueryTextSubmit(String query) {
+						return true;
+					}
 
-								MenuItem searchItem = menu.findItem(R.id.action_search);
-								SearchView searchView = (SearchView) searchItem.getActionView();
-								searchView.setImeOptions(EditorInfo.IME_ACTION_DONE);
+					@Override
+					public boolean onQueryTextChange(String newText) {
 
-								if (!connToInternet) {
-									return;
-								}
-
-								searchView.setOnQueryTextListener(
-										new androidx.appcompat.widget.SearchView
-												.OnQueryTextListener() {
-
-											@Override
-											public boolean onQueryTextSubmit(String query) {
-												return true;
-											}
-
-											@Override
-											public boolean onQueryTextChange(String newText) {
-
-												adapter.getFilter().filter(newText);
-												return false;
-											}
-										});
-							}
-						},
-						500);
+						if (activityRepoWatchersBinding.gridView.getAdapter() != null) {
+							adapter.getFilter().filter(newText);
+						}
+						return false;
+					}
+				});
 
 		return true;
 	}
