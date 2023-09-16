@@ -210,10 +210,9 @@ public class DashboardAdapter extends RecyclerView.Adapter<RecyclerView.ViewHold
 									RepositoryContext repo =
 											new RepositoryContext(repoOwner, repoName, context);
 
-									String id = "";
 									String[] contentParts =
 											activityObject.getContent().split("\\|");
-									id = contentParts[0];
+									String id = contentParts[0];
 
 									Intent intentIssueDetail =
 											new IssueContext(repo, Integer.parseInt(id), "open")
@@ -260,10 +259,9 @@ public class DashboardAdapter extends RecyclerView.Adapter<RecyclerView.ViewHold
 									RepositoryContext repo =
 											new RepositoryContext(repoOwner, repoName, context);
 
-									String id = "";
 									String[] contentParts =
 											activityObject.getContent().split("\\|");
-									id = contentParts[0];
+									String id = contentParts[0];
 
 									Intent intentIssueDetail =
 											new IssueContext(repo, Integer.parseInt(id), "open")
@@ -316,9 +314,10 @@ public class DashboardAdapter extends RecyclerView.Adapter<RecyclerView.ViewHold
 									}
 								}
 
-								if (activityObject
-										.getOpType()
-										.equalsIgnoreCase("publish_release")) {
+								if (activityObject.getOpType().equalsIgnoreCase("publish_release")
+										|| activityObject
+												.getOpType()
+												.equalsIgnoreCase("push_tag")) {
 
 									itemView.setOnClickListener(
 											v -> {
@@ -545,8 +544,8 @@ public class DashboardAdapter extends RecyclerView.Adapter<RecyclerView.ViewHold
 				}
 			} else if (activity.getOpType().contains("issue")) {
 
-				String id = "";
-				String content = "";
+				String id;
+				String content;
 				String[] contentParts = activity.getContent().split("\\|");
 				if (contentParts.length > 1) {
 					id = contentParts[0];
@@ -612,8 +611,8 @@ public class DashboardAdapter extends RecyclerView.Adapter<RecyclerView.ViewHold
 				}
 			} else if (activity.getOpType().contains("pull")) {
 
-				String id = "";
-				String content = "";
+				String id;
+				String content;
 				String[] contentParts = activity.getContent().split("\\|");
 				if (contentParts.length > 1) {
 					id = contentParts[0];
@@ -731,16 +730,12 @@ public class DashboardAdapter extends RecyclerView.Adapter<RecyclerView.ViewHold
 				}
 			} else if (activity.getOpType().contains("branch")) {
 
-				String id = "";
-				String content = "";
+				String content;
 				String[] contentParts = activity.getContent().split("\\|");
 				if (contentParts.length > 1) {
-					id = contentParts[0];
 					content = contentParts[1];
 					dashTextFrame.setVisibility(View.VISIBLE);
 					dashText.setText(EmojiParser.parseToUnicode(content));
-				} else {
-					id = contentParts[0];
 				}
 
 				if (activity.getOpType().equalsIgnoreCase("delete_branch")) {
