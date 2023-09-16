@@ -19,6 +19,7 @@ import java.util.List;
 import java.util.Locale;
 import org.gitnex.tea4j.v2.models.Activity;
 import org.mian.gitnex.R;
+import org.mian.gitnex.activities.IssueDetailActivity;
 import org.mian.gitnex.activities.ProfileActivity;
 import org.mian.gitnex.activities.RepoDetailActivity;
 import org.mian.gitnex.clients.PicassoService;
@@ -27,6 +28,7 @@ import org.mian.gitnex.helpers.ClickListener;
 import org.mian.gitnex.helpers.RoundedTransformation;
 import org.mian.gitnex.helpers.TimeHelper;
 import org.mian.gitnex.helpers.TinyDB;
+import org.mian.gitnex.helpers.contexts.IssueContext;
 import org.mian.gitnex.helpers.contexts.RepositoryContext;
 
 /**
@@ -181,6 +183,108 @@ public class DashboardAdapter extends RecyclerView.Adapter<RecyclerView.ViewHold
 													intent.putExtra("openedFromUserOrg", true);
 												}
 												context.startActivity(intent);
+											});
+								}
+
+								if (activityObject.getOpType().equalsIgnoreCase("create_issue")
+										|| activityObject
+												.getOpType()
+												.equalsIgnoreCase("comment_issue")
+										|| activityObject
+												.getOpType()
+												.equalsIgnoreCase("close_issue")
+										|| activityObject
+												.getOpType()
+												.equalsIgnoreCase("reopen_issue")) {
+
+									String[] parts =
+											activityObject.getRepo().getFullName().split("/");
+									final String repoOwner = parts[0];
+									final String repoName = parts[1];
+
+									RepositoryContext repo =
+											new RepositoryContext(repoOwner, repoName, context);
+
+									String id = "";
+									String content = "";
+									String[] contentParts =
+											activityObject.getContent().split("\\|");
+									if (contentParts.length > 1) {
+										id = contentParts[0];
+										content = contentParts[1];
+										dashTextFrame.setVisibility(View.VISIBLE);
+										dashText.setText(EmojiParser.parseToUnicode(content));
+									} else {
+										id = contentParts[0];
+									}
+
+									Intent intentIssueDetail =
+											new IssueContext(repo, Integer.parseInt(id), "open")
+													.getIntent(context, IssueDetailActivity.class);
+									intentIssueDetail.putExtra("openedFromLink", "true");
+
+									itemView.setOnClickListener(
+											v -> {
+												repo.saveToDB(context);
+												context.startActivity(intentIssueDetail);
+											});
+								}
+
+								if (activityObject
+												.getOpType()
+												.equalsIgnoreCase("create_pull_request")
+										|| activityObject
+												.getOpType()
+												.equalsIgnoreCase("close_pull_request")
+										|| activityObject
+												.getOpType()
+												.equalsIgnoreCase("reopen_pull_request")
+										|| activityObject
+												.getOpType()
+												.equalsIgnoreCase("approve_pull_request")
+										|| activityObject
+												.getOpType()
+												.equalsIgnoreCase("reject_pull_request")
+										|| activityObject
+												.getOpType()
+												.equalsIgnoreCase("comment_pull")
+										|| activityObject
+												.getOpType()
+												.equalsIgnoreCase("auto_merge_pull_request")
+										|| activityObject
+												.getOpType()
+												.equalsIgnoreCase("merge_pull_request")) {
+
+									String[] parts =
+											activityObject.getRepo().getFullName().split("/");
+									final String repoOwner = parts[0];
+									final String repoName = parts[1];
+
+									RepositoryContext repo =
+											new RepositoryContext(repoOwner, repoName, context);
+
+									String id = "";
+									String content = "";
+									String[] contentParts =
+											activityObject.getContent().split("\\|");
+									if (contentParts.length > 1) {
+										id = contentParts[0];
+										content = contentParts[1];
+										dashTextFrame.setVisibility(View.VISIBLE);
+										dashText.setText(EmojiParser.parseToUnicode(content));
+									} else {
+										id = contentParts[0];
+									}
+
+									Intent intentIssueDetail =
+											new IssueContext(repo, Integer.parseInt(id), "open")
+													.getIntent(context, IssueDetailActivity.class);
+									intentIssueDetail.putExtra("openedFromLink", "true");
+
+									itemView.setOnClickListener(
+											v -> {
+												repo.saveToDB(context);
+												context.startActivity(intentIssueDetail);
 											});
 								}
 							},
