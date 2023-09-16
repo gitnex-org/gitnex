@@ -17,7 +17,12 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.vdurmont.emoji.EmojiParser;
 import java.util.List;
 import java.util.Locale;
+import java.util.Objects;
+import org.apache.commons.lang3.StringUtils;
 import org.gitnex.tea4j.v2.models.Activity;
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
 import org.mian.gitnex.R;
 import org.mian.gitnex.activities.IssueDetailActivity;
 import org.mian.gitnex.activities.ProfileActivity;
@@ -206,17 +211,9 @@ public class DashboardAdapter extends RecyclerView.Adapter<RecyclerView.ViewHold
 											new RepositoryContext(repoOwner, repoName, context);
 
 									String id = "";
-									String content = "";
 									String[] contentParts =
 											activityObject.getContent().split("\\|");
-									if (contentParts.length > 1) {
-										id = contentParts[0];
-										content = contentParts[1];
-										dashTextFrame.setVisibility(View.VISIBLE);
-										dashText.setText(EmojiParser.parseToUnicode(content));
-									} else {
-										id = contentParts[0];
-									}
+									id = contentParts[0];
 
 									Intent intentIssueDetail =
 											new IssueContext(repo, Integer.parseInt(id), "open")
@@ -264,17 +261,9 @@ public class DashboardAdapter extends RecyclerView.Adapter<RecyclerView.ViewHold
 											new RepositoryContext(repoOwner, repoName, context);
 
 									String id = "";
-									String content = "";
 									String[] contentParts =
 											activityObject.getContent().split("\\|");
-									if (contentParts.length > 1) {
-										id = contentParts[0];
-										content = contentParts[1];
-										dashTextFrame.setVisibility(View.VISIBLE);
-										dashText.setText(EmojiParser.parseToUnicode(content));
-									} else {
-										id = contentParts[0];
-									}
+									id = contentParts[0];
 
 									Intent intentIssueDetail =
 											new IssueContext(repo, Integer.parseInt(id), "open")
@@ -286,6 +275,45 @@ public class DashboardAdapter extends RecyclerView.Adapter<RecyclerView.ViewHold
 												repo.saveToDB(context);
 												context.startActivity(intentIssueDetail);
 											});
+								}
+
+								if (activityObject.getOpType().equalsIgnoreCase("commit_repo")) {
+
+									if (activityObject.getContent().isEmpty()) {
+
+										itemView.setOnClickListener(
+												v -> {
+													RepositoryContext repo =
+															new RepositoryContext(
+																	activityObject.getRepo(),
+																	context);
+
+													Intent repoIntent =
+															new Intent(
+																	context,
+																	RepoDetailActivity.class);
+													repoIntent.putExtra("goToSection", "yes");
+													repoIntent.putExtra(
+															"goToSectionType", "commitsList");
+													repoIntent.putExtra(
+															"branchName",
+															activityObject
+																	.getRefName()
+																	.substring(
+																			activityObject
+																							.getRefName()
+																							.lastIndexOf(
+																									"/")
+																					+ 1)
+																	.trim());
+
+													repo.saveToDB(context);
+													repoIntent.putExtra(
+															RepositoryContext.INTENT_EXTRA, repo);
+
+													context.startActivity(repoIntent);
+												});
+									}
 								}
 							},
 							200);
@@ -373,6 +401,7 @@ public class DashboardAdapter extends RecyclerView.Adapter<RecyclerView.ViewHold
 									+ "'>"
 									+ activity.getRepo().getFullName()
 									+ "</font>";
+
 					if (activity.getContent().isEmpty()) {
 						String branch =
 								"<font color='"
@@ -397,6 +426,85 @@ public class DashboardAdapter extends RecyclerView.Adapter<RecyclerView.ViewHold
 												.trim()
 										+ "</font>";
 						typeString = "pushed to " + branch + " at";
+
+						JSONObject commitsObj = null;
+						try {
+							commitsObj = new JSONObject(activity.getContent());
+						} catch (JSONException ignored) {
+						}
+
+						JSONArray commitsShaArray = null;
+						try {
+							commitsShaArray =
+									Objects.requireNonNull(commitsObj).getJSONArray("Commits");
+						} catch (JSONException ignored) {
+						}
+
+						dashTextFrame.setVisibility(View.VISIBLE);
+
+						dashTextFrame.setOrientation(LinearLayout.VERTICAL);
+						dashTextFrame.removeAllViews();
+
+						for (int i = 0; i < Objects.requireNonNull(commitsShaArray).length(); i++) {
+
+							try {
+
+								String timelineCommits =
+										"<font color='"
+												+ ResourcesCompat.getColor(
+														context.getResources(),
+														R.color.lightBlue,
+														null)
+												+ "'>"
+												+ StringUtils.substring(
+														String.valueOf(commitsShaArray.get(i)),
+														9,
+														19)
+												+ "</font>";
+
+								TextView dynamicCommitTv = new TextView(context);
+								dynamicCommitTv.setId(View.generateViewId());
+
+								dynamicCommitTv.setText(
+										HtmlCompat.fromHtml(
+												timelineCommits, HtmlCompat.FROM_HTML_MODE_LEGACY));
+
+								JSONObject sha1Obj = null;
+								try {
+									sha1Obj = (JSONObject) commitsShaArray.get(i);
+								} catch (JSONException ignored) {
+								}
+
+								JSONObject finalSha1Obj = sha1Obj;
+								dynamicCommitTv.setOnClickListener(
+										v14 -> {
+											RepositoryContext repo =
+													new RepositoryContext(
+															activity.getRepo(), context);
+
+											Intent repoIntent =
+													new Intent(context, RepoDetailActivity.class);
+											repoIntent.putExtra("goToSection", "yes");
+											repoIntent.putExtra("goToSectionType", "commit");
+											try {
+												assert finalSha1Obj != null;
+												repoIntent.putExtra(
+														"sha", (String) finalSha1Obj.get("Sha1"));
+											} catch (JSONException ignored) {
+											}
+
+											repo.saveToDB(context);
+											repoIntent.putExtra(
+													RepositoryContext.INTENT_EXTRA, repo);
+
+											context.startActivity(repoIntent);
+										});
+
+								dashTextFrame.setOrientation(LinearLayout.VERTICAL);
+								dashTextFrame.addView(dynamicCommitTv);
+							} catch (JSONException ignored) {
+							}
+						}
 					}
 					typeIcon.setImageResource(R.drawable.ic_commit);
 				}
