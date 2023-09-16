@@ -315,6 +315,41 @@ public class DashboardAdapter extends RecyclerView.Adapter<RecyclerView.ViewHold
 												});
 									}
 								}
+
+								if (activityObject
+										.getOpType()
+										.equalsIgnoreCase("publish_release")) {
+
+									itemView.setOnClickListener(
+											v -> {
+												RepositoryContext repo =
+														new RepositoryContext(
+																activityObject.getRepo(), context);
+
+												Intent repoIntent =
+														new Intent(
+																context, RepoDetailActivity.class);
+												repoIntent.putExtra("goToSection", "yes");
+												repoIntent.putExtra("goToSectionType", "releases");
+												repoIntent.putExtra(
+														"releaseTagName",
+														activityObject
+																.getRefName()
+																.substring(
+																		activityObject
+																						.getRefName()
+																						.lastIndexOf(
+																								"/")
+																				+ 1)
+																.trim());
+
+												repo.saveToDB(context);
+												repoIntent.putExtra(
+														RepositoryContext.INTENT_EXTRA, repo);
+
+												context.startActivity(repoIntent);
+											});
+								}
 							},
 							200);
 		}
