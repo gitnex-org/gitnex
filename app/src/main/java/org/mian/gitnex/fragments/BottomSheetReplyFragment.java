@@ -314,7 +314,7 @@ public class BottomSheetReplyFragment extends BottomSheetDialogFragment {
 			}
 
 			draftsHint.setVisibility(View.VISIBLE);
-			valueAnimator.start();
+			// valueAnimator.start();
 		}
 	}
 
