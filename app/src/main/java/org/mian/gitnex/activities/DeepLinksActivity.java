@@ -101,7 +101,7 @@ public class DeepLinksActivity extends BaseActivity {
 
 				accountFound = true;
 
-				AppUtil.switchToAccount(ctx, userAccount, true);
+				AppUtil.switchToAccount(ctx, userAccount, false);
 				break;
 			}
 		}

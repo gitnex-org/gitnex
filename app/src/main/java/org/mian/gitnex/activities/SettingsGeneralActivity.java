@@ -93,6 +93,9 @@ public class SettingsGeneralActivity extends BaseActivity {
 		} else if (homeScreenSelectedChoice == 10) {
 
 			viewBinding.homeScreenSelected.setText(getResources().getString(R.string.navNotes));
+		} else if (homeScreenSelectedChoice == 11) {
+
+			viewBinding.homeScreenSelected.setText(getResources().getString(R.string.dashboard));
 		}
 
 		viewBinding.homeScreenFrame.setOnClickListener(

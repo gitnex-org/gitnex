@@ -6,7 +6,7 @@ depends_on:
 run_on: [ success, failure ]
 skip_clone: true
 
-pipeline:
+steps:
   discord:
     image: appleboy/drone-discord
     settings:

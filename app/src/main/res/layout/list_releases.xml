@@ -112,8 +112,10 @@
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
                                 android:background="@drawable/shape_stable_release"
-                                android:paddingStart="@dimen/dimen8dp"
-                                android:paddingEnd="@dimen/dimen8dp"
+                                android:paddingStart="@dimen/dimen6dp"
+                                android:paddingEnd="@dimen/dimen6dp"
+                                android:paddingTop="@dimen/dimen2dp"
+                                android:paddingBottom="@dimen/dimen2dp"
                                 android:textColor="@color/colorWhite"
                                 android:textSize="@dimen/dimen14sp" />
 

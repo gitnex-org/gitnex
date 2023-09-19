@@ -54,16 +54,16 @@ configurations {
 }
 
 dependencies {
-    def lifecycle_version = '2.6.1'
+    def lifecycle_version = '2.6.2'
     def markwon_version = '4.6.2'
     def work_version = '2.8.1'
     def acra = '5.9.7'
 
     implementation fileTree(include: ['*.jar'], dir: 'libs')
     implementation 'androidx.appcompat:appcompat:1.6.1'
-    implementation 'com.google.android.material:material:1.11.0-alpha01'
-    implementation 'androidx.compose.material3:material3:1.2.0-alpha03'
-    implementation 'androidx.compose.material3:material3-window-size-class:1.2.0-alpha03'
+    implementation 'com.google.android.material:material:1.11.0-alpha02'
+    implementation 'androidx.compose.material3:material3:1.2.0-alpha07'
+    implementation 'androidx.compose.material3:material3-window-size-class:1.2.0-alpha07'
     implementation 'androidx.viewpager2:viewpager2:1.1.0-beta02'
     implementation 'androidx.constraintlayout:constraintlayout:2.1.4'
     implementation "androidx.legacy:legacy-support-v4:1.0.0"
@@ -111,7 +111,7 @@ dependencies {
     coreLibraryDesugaring "com.android.tools:desugar_jdk_libs:1.1.5"
     implementation 'androidx.biometric:biometric:1.1.0'
     implementation 'com.github.chrisvest:stormpot:2.4.2'
-    implementation 'androidx.browser:browser:1.5.0'
+    implementation 'androidx.browser:browser:1.6.0'
     implementation 'com.google.android.flexbox:flexbox:3.0.0'
     implementation('org.codeberg.gitnex:tea4j-autodeploy:65f700d036') {
         exclude module: 'org.apache.oltu.oauth2.common'

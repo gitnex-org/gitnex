@@ -54,15 +54,31 @@
                     android:layout_height="wrap_content"
                     android:orientation="vertical">
 
-                    <TextView
-                        android:id="@+id/prTitle"
-                        android:layout_width="wrap_content"
+                    <LinearLayout
+                        android:id="@+id/titleStateSection"
+                        android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:gravity="top|center_vertical"
-                        android:textAlignment="gravity"
-                        android:text="@string/newIssueTitle"
-                        android:textColor="?attr/primaryTextColor"
-                        android:textSize="@dimen/dimen16sp" />
+                        android:orientation="horizontal">
+
+                        <ImageView
+                            android:id="@+id/issuePrState"
+                            android:layout_width="@dimen/dimen26dp"
+                            android:layout_height="@dimen/dimen26dp"
+                            android:contentDescription="@string/generalImgContentText"
+                            android:src="@drawable/ic_draft"
+                            android:visibility="gone" />
+
+                        <TextView
+                            android:id="@+id/prTitle"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:gravity="top|center_vertical"
+                            android:textAlignment="gravity"
+                            android:text="@string/newIssueTitle"
+                            android:textColor="?attr/primaryTextColor"
+                            android:textSize="@dimen/dimen16sp" />
+
+                    </LinearLayout>
 
                     <HorizontalScrollView
                         android:id="@+id/labelsScrollViewDots"

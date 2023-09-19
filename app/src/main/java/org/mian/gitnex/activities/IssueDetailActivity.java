@@ -700,6 +700,26 @@ public class IssueDetailActivity extends BaseActivity
 						viewBinding.issuePrState,
 						ColorStateList.valueOf(
 								ctx.getResources().getColor(R.color.iconIssuePrClosedColor, null)));
+			} else if (issue.getIssue().getTitle().contains("[WIP]")
+					|| issue.getIssue().getTitle().contains("[wip]")) { // draft
+
+				viewBinding.issuePrState.setImageResource(R.drawable.ic_draft);
+				ImageViewCompat.setImageTintList(
+						viewBinding.issuePrState,
+						ColorStateList.valueOf(
+								ctx.getResources().getColor(R.color.colorWhite, null)));
+				viewBinding.issuePrState.setBackgroundResource(R.drawable.shape_draft_release);
+				viewBinding.issuePrState.setPadding(
+						(int) ctx.getResources().getDimension(R.dimen.dimen4dp),
+						(int) ctx.getResources().getDimension(R.dimen.dimen2dp),
+						(int) ctx.getResources().getDimension(R.dimen.dimen4dp),
+						(int) ctx.getResources().getDimension(R.dimen.dimen2dp));
+
+				viewBinding.toolbarTitle.setPadding(
+						(int) ctx.getResources().getDimension(R.dimen.dimen12dp),
+						(int) ctx.getResources().getDimension(R.dimen.dimen0dp),
+						(int) ctx.getResources().getDimension(R.dimen.dimen0dp),
+						(int) ctx.getResources().getDimension(R.dimen.dimen0dp));
 			} else { // open
 
 				viewBinding.issuePrState.setImageResource(R.drawable.ic_pull_request);
@@ -1034,7 +1054,7 @@ public class IssueDetailActivity extends BaseActivity
 		RetrofitClient.getApiInterface(this)
 				.repoGetPullRequest(repoOwner, repoName, (long) issueIndex)
 				.enqueue(
-						new Callback<PullRequest>() {
+						new Callback<>() {
 
 							@Override
 							public void onResponse(

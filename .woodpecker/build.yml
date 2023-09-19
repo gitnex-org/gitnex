@@ -1,4 +1,4 @@
-pipeline:
+steps:
   build:
     image: alvrme/alpine-android:android-32-jdk17
     commands:

@@ -7,6 +7,12 @@
     <group android:id="@+id/nav_main"
         android:checkableBehavior="single">
 
+        <item android:id="@+id/nav_dashboard"
+            android:icon="@drawable/ic_dashboard"
+            android:title="@string/dashboard"
+            app:actionLayout="@layout/badge_beta"
+            android:visible="false"/>
+
         <item android:id="@+id/nav_home"
             android:icon="@drawable/ic_repo"
             android:title="@string/navMyRepos"/>
