@@ -419,6 +419,7 @@
     <string name="openInBrowser">Ouvrir dans le navigateur</string>
     <string name="deleteGenericTitle">Supprimer %s</string>
     <string name="reset">Remettre à zéro</string>
+    <string name="beta">BÊTA</string>
     <!-- generic copy -->
     <string name="exploreUsers">Rechercher des utilisateurs</string>
     <string name="exploreIssues">Rechercher des tickets</string>
@@ -725,4 +726,5 @@
     <string name="statusNoUrl">Ce statut n’a pas d’URL.</string>
     <string name="starredRepos">Dépôts favoris</string>
     <string name="lang_statistics">Statistiques du langage</string>
+    <string name="dashboard">Tableau de bord</string>
 </resources>
