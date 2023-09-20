@@ -65,4 +65,14 @@
     <color name="pitchBlackThemeGeneralBackgroundColor">#151515</color>
     <color name="pitchBlackThemeColorSecondary">#161918</color>
     <color name="pitchBlackThemeCardBackground">#0C0C0C</color>
+
+    <color name="codebergDarkThemeBackground">#0c1a24</color>
+    <color name="codebergDarkThemeTextColor">#7f8699</color>
+    <color name="codebergDarkThemeDividerColor">#082437</color>
+    <color name="codebergDarkThemeGeneralBackgroundColor">#0c1a24</color>
+    <color name="codebergDarkThemeColorSecondary">#082437</color>
+    <color name="codebergDarkThemeCardBackground">#04121b</color>
+    <color name="codebergDarkThemeIconsColors">#9dacb6</color>
+    <color name="codebergDarkColorPrimary">#14507d</color>
+    <color name="codebergDarkInputBackground">#04121b</color>
 </resources>

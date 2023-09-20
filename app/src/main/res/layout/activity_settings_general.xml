@@ -85,7 +85,7 @@
             android:layout_height="wrap_content"
             android:layout_marginStart="@dimen/dimen24dp"
             android:layout_marginEnd="@dimen/dimen24dp"
-            android:text="@string/generalDeepLinkSelectedText"
+            android:text="@string/none"
             android:textColor="?attr/selectedTextColor"
             android:textSize="@dimen/dimen16sp"/>
 

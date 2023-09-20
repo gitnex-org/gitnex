@@ -79,6 +79,9 @@ public abstract class BaseActivity extends AppCompatActivity {
 			case 8:
 				setTheme(R.style.AppThemeDynamicSystem);
 				break;
+			case 9:
+				setTheme(R.style.AppThemeCodebergDark);
+				break;
 			default:
 				setTheme(R.style.AppThemeSystem);
 				break;

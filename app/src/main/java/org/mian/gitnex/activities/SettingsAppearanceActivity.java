@@ -5,8 +5,6 @@ import android.app.TimePickerDialog;
 import android.os.Build;
 import android.os.Bundle;
 import android.view.View;
-import android.widget.ImageView;
-import android.widget.LinearLayout;
 import android.widget.TimePicker;
 import androidx.annotation.NonNull;
 import androidx.fragment.app.DialogFragment;
@@ -32,6 +30,8 @@ public class SettingsAppearanceActivity extends BaseActivity {
 	private static int themeSelectedChoice = 0;
 	private View.OnClickListener onClickListener;
 	private static int langSelectedChoice = 0;
+	private static String[] fragmentTabsAnimationList;
+	private static int fragmentTabsAnimationSelectedChoice = 0;
 
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
@@ -48,15 +48,9 @@ public class SettingsAppearanceActivity extends BaseActivity {
 			lang.put(langCode, getLanguageDisplayName(langCode));
 		}
 
-		ImageView closeActivity = activitySettingsAppearanceBinding.close;
-
-		LinearLayout customFontFrame = activitySettingsAppearanceBinding.customFontFrame;
-		LinearLayout themeFrame = activitySettingsAppearanceBinding.themeSelectionFrame;
-		LinearLayout lightTimeFrame =
-				activitySettingsAppearanceBinding.lightThemeTimeSelectionFrame;
-		LinearLayout darkTimeFrame = activitySettingsAppearanceBinding.darkThemeTimeSelectionFrame;
-
 		customFontList = getResources().getStringArray(R.array.fonts);
+
+		fragmentTabsAnimationList = getResources().getStringArray(R.array.fragmentTabsAnimation);
 
 		if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.S || "S".equals(Build.VERSION.CODENAME)) {
 			themeList = getResources().getStringArray(R.array.themesAndroid12);
@@ -65,7 +59,7 @@ public class SettingsAppearanceActivity extends BaseActivity {
 		}
 
 		initCloseListener();
-		closeActivity.setOnClickListener(onClickListener);
+		activitySettingsAppearanceBinding.close.setOnClickListener(onClickListener);
 
 		String lightMinute = String.valueOf(tinyDB.getInt("lightThemeTimeMinute"));
 		String lightHour = String.valueOf(tinyDB.getInt("lightThemeTimeHour"));
@@ -85,6 +79,7 @@ public class SettingsAppearanceActivity extends BaseActivity {
 			darkHour = "0" + darkHour;
 		}
 
+		fragmentTabsAnimationSelectedChoice = tinyDB.getInt("fragmentTabsAnimationId", 0);
 		customFontSelectedChoice = tinyDB.getInt("customFontId", 1);
 		themeSelectedChoice = tinyDB.getInt("themeId", 6); // use system theme as default
 
@@ -97,13 +92,17 @@ public class SettingsAppearanceActivity extends BaseActivity {
 		activitySettingsAppearanceBinding.customFontSelected.setText(
 				customFontList[customFontSelectedChoice]);
 		activitySettingsAppearanceBinding.themeSelected.setText(themeList[themeSelectedChoice]);
+		activitySettingsAppearanceBinding.fragmentTabsAnimationFrameSelected.setText(
+				fragmentTabsAnimationList[fragmentTabsAnimationSelectedChoice]);
 
 		if (themeList[themeSelectedChoice].startsWith("Auto")) {
-			darkTimeFrame.setVisibility(View.VISIBLE);
-			lightTimeFrame.setVisibility(View.VISIBLE);
+			activitySettingsAppearanceBinding.darkThemeTimeSelectionFrame.setVisibility(
+					View.VISIBLE);
+			activitySettingsAppearanceBinding.lightThemeTimeSelectionFrame.setVisibility(
+					View.VISIBLE);
 		} else {
-			darkTimeFrame.setVisibility(View.GONE);
-			lightTimeFrame.setVisibility(View.GONE);
+			activitySettingsAppearanceBinding.darkThemeTimeSelectionFrame.setVisibility(View.GONE);
+			activitySettingsAppearanceBinding.lightThemeTimeSelectionFrame.setVisibility(View.GONE);
 		}
 
 		activitySettingsAppearanceBinding.switchCounterBadge.setChecked(
@@ -136,7 +135,7 @@ public class SettingsAppearanceActivity extends BaseActivity {
 										.isChecked()));
 
 		// theme selection dialog
-		themeFrame.setOnClickListener(
+		activitySettingsAppearanceBinding.themeSelectionFrame.setOnClickListener(
 				view -> {
 					MaterialAlertDialogBuilder materialAlertDialogBuilder =
 							new MaterialAlertDialogBuilder(ctx)
@@ -163,20 +162,20 @@ public class SettingsAppearanceActivity extends BaseActivity {
 					materialAlertDialogBuilder.create().show();
 				});
 
-		lightTimeFrame.setOnClickListener(
+		activitySettingsAppearanceBinding.lightThemeTimeSelectionFrame.setOnClickListener(
 				view -> {
 					LightTimePicker timePicker = new LightTimePicker();
 					timePicker.show(getSupportFragmentManager(), "timePicker");
 				});
 
-		darkTimeFrame.setOnClickListener(
+		activitySettingsAppearanceBinding.darkThemeTimeSelectionFrame.setOnClickListener(
 				view -> {
 					DarkTimePicker timePicker = new DarkTimePicker();
 					timePicker.show(getSupportFragmentManager(), "timePicker");
 				});
 
 		// custom font dialog
-		customFontFrame.setOnClickListener(
+		activitySettingsAppearanceBinding.customFontFrame.setOnClickListener(
 				view -> {
 					MaterialAlertDialogBuilder materialAlertDialogBuilder =
 							new MaterialAlertDialogBuilder(ctx)
@@ -206,9 +205,39 @@ public class SettingsAppearanceActivity extends BaseActivity {
 					materialAlertDialogBuilder.create().show();
 				});
 
-		// language selector dialog
-		LinearLayout langFrame = activitySettingsAppearanceBinding.langFrame;
+		// fragment tabs animation dialog
+		activitySettingsAppearanceBinding.fragmentTabsAnimationFrame.setOnClickListener(
+				view -> {
+					MaterialAlertDialogBuilder materialAlertDialogBuilder =
+							new MaterialAlertDialogBuilder(ctx)
+									.setTitle(R.string.fragmentTabsAnimationHeader)
+									.setCancelable(fragmentTabsAnimationSelectedChoice != -1)
+									.setSingleChoiceItems(
+											fragmentTabsAnimationList,
+											fragmentTabsAnimationSelectedChoice,
+											(dialogInterfaceCustomFont, i) -> {
+												fragmentTabsAnimationSelectedChoice = i;
+												activitySettingsAppearanceBinding
+														.fragmentTabsAnimationFrameSelected.setText(
+														fragmentTabsAnimationList[i]);
+												tinyDB.putInt("fragmentTabsAnimationId", i);
+												AppUtil.typeface = null; // reset typeface
+												FontsOverride.setDefaultFont(this);
 
+												SettingsFragment.refreshParent = true;
+												this.recreate();
+												this.overridePendingTransition(0, 0);
+												dialogInterfaceCustomFont.dismiss();
+												Toasty.success(
+														appCtx,
+														appCtx.getResources()
+																.getString(R.string.settingsSave));
+											});
+
+					materialAlertDialogBuilder.create().show();
+				});
+
+		// language selector dialog
 		activitySettingsAppearanceBinding.helpTranslate.setOnClickListener(
 				v12 -> {
 					AppUtil.openUrlInBrowser(this, getResources().getString(R.string.crowdInLink));
@@ -219,7 +248,7 @@ public class SettingsAppearanceActivity extends BaseActivity {
 				lang.get(lang.keySet().toArray(new String[0])[langSelectedChoice]));
 
 		// language dialog
-		langFrame.setOnClickListener(
+		activitySettingsAppearanceBinding.langFrame.setOnClickListener(
 				view -> {
 					MaterialAlertDialogBuilder materialAlertDialogBuilder =
 							new MaterialAlertDialogBuilder(ctx)

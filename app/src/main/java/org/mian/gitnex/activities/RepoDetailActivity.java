@@ -52,6 +52,7 @@ import org.mian.gitnex.fragments.RepoInfoFragment;
 import org.mian.gitnex.fragments.WikiFragment;
 import org.mian.gitnex.helpers.AppUtil;
 import org.mian.gitnex.helpers.Toasty;
+import org.mian.gitnex.helpers.ViewPager2Transformers;
 import org.mian.gitnex.helpers.contexts.RepositoryContext;
 import org.mian.gitnex.structs.BottomSheetListener;
 import org.mian.gitnex.structs.FragmentRefreshListener;
@@ -536,6 +537,9 @@ public class RepoDetailActivity extends BaseActivity implements BottomSheetListe
 			viewPager.setOffscreenPageLimit(1);
 
 			viewPager.setAdapter(new ViewPagerAdapter(this));
+
+			ViewPager2Transformers.returnSelectedTransformer(
+					viewPager, tinyDB.getInt("fragmentTabsAnimationId", 0));
 
 			String[] tabTitles = {
 				ctx.getResources().getString(R.string.tabTextInfo),

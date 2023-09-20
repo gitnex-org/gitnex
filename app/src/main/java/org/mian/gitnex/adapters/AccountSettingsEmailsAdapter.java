@@ -17,29 +17,29 @@ import org.mian.gitnex.R;
 /**
  * @author M M Arif
  */
-public class MyProfileEmailsAdapter
-		extends RecyclerView.Adapter<MyProfileEmailsAdapter.EmailsViewHolder> {
+public class AccountSettingsEmailsAdapter
+		extends RecyclerView.Adapter<AccountSettingsEmailsAdapter.EmailsViewHolder> {
 
 	private final List<Email> emailsList;
 	private final Context context;
 
-	public MyProfileEmailsAdapter(Context ctx, List<Email> emailsListMain) {
+	public AccountSettingsEmailsAdapter(Context ctx, List<Email> emailsListMain) {
 		this.context = ctx;
 		this.emailsList = emailsListMain;
 	}
 
 	@NonNull @Override
-	public MyProfileEmailsAdapter.EmailsViewHolder onCreateViewHolder(
+	public AccountSettingsEmailsAdapter.EmailsViewHolder onCreateViewHolder(
 			@NonNull ViewGroup parent, int viewType) {
 		View v =
 				LayoutInflater.from(parent.getContext())
-						.inflate(R.layout.list_profile_emails, parent, false);
-		return new MyProfileEmailsAdapter.EmailsViewHolder(v);
+						.inflate(R.layout.list_account_settings_emails, parent, false);
+		return new AccountSettingsEmailsAdapter.EmailsViewHolder(v);
 	}
 
 	@Override
 	public void onBindViewHolder(
-			@NonNull MyProfileEmailsAdapter.EmailsViewHolder holder, int position) {
+			@NonNull AccountSettingsEmailsAdapter.EmailsViewHolder holder, int position) {
 
 		Email currentItem = emailsList.get(position);
 

@@ -22,26 +22,26 @@
             android:layout_height="wrap_content"
             android:background="?attr/materialCardBackgroundColor"
             android:padding="@dimen/dimen12dp"
-            android:orientation="horizontal">
+            android:orientation="vertical">
 
             <TextView
-                android:id="@+id/userEmail"
+                android:id="@+id/keyName"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="@string/profileEmailTitle"
+                android:text="@string/sshKeys"
                 android:textColor="?attr/primaryTextColor"
-                android:textSize="@dimen/dimen16sp"/>
+                android:textIsSelectable="true"
+                android:textSize="@dimen/dimen16sp" />
 
-            <ImageView
-                android:id="@+id/emailPrimary"
+            <TextView
+                android:id="@+id/key"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_gravity="start"
-                android:layout_marginTop="@dimen/dimen2dp"
-                android:contentDescription="@string/emailTypeText"
-                android:paddingStart="@dimen/dimen20dp"
-                android:paddingEnd="@dimen/dimen2dp"
-                tools:src="@drawable/ic_verified_user"/>
+                android:text="@string/sshKeys"
+                android:layout_marginTop="@dimen/dimen8dp"
+                android:textColor="?attr/primaryTextColor"
+                android:textIsSelectable="true"
+                android:textSize="@dimen/dimen12sp" />
 
         </LinearLayout>
 

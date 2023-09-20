@@ -40,51 +40,19 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:background="?attr/primaryBackgroundColor"
-            android:visibility="gone"
             app:tabIndicatorColor="?attr/pagerTabIndicatorColor"
-            app:tabMode="scrollable"
+            app:tabIndicatorFullWidth="true"
+            app:tabMode="auto"
+            app:tabIndicatorHeight="@dimen/dimen4dp"
             app:tabTextAppearance="@style/customTabLayout"
-            app:tabTextColor="?attr/primaryTextColor">
-
-            <com.google.android.material.tabs.TabItem
-                android:id="@+id/tabItemInfo"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="@string/tabTextInfo"/>
-
-            <com.google.android.material.tabs.TabItem
-                android:id="@+id/tabItem_repos"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="@string/navRepos"/>
-
-            <com.google.android.material.tabs.TabItem
-                android:id="@+id/tabItem_labels"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="@string/newIssueLabelsTitle"/>
-
-            <com.google.android.material.tabs.TabItem
-                android:id="@+id/tabItem_teams"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="@string/orgTabTeams"/>
-
-            <com.google.android.material.tabs.TabItem
-                android:id="@+id/tabItem_members"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="@string/orgTabMembers"/>
-
-        </com.google.android.material.tabs.TabLayout>
+            app:tabTextColor="?attr/primaryTextColor"/>
 
     </com.google.android.material.appbar.AppBarLayout>
 
-    <androidx.viewpager.widget.ViewPager
+    <androidx.viewpager2.widget.ViewPager2
         android:id="@+id/container"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:visibility="gone"
         app:layout_behavior="@string/appbar_scrolling_view_behavior"/>
 
 </androidx.coordinatorlayout.widget.CoordinatorLayout>

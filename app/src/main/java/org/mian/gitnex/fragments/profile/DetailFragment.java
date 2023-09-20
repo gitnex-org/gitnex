@@ -7,7 +7,10 @@ import android.view.View;
 import android.view.ViewGroup;
 import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
+import java.io.IOException;
 import java.util.Locale;
+import okhttp3.ResponseBody;
+import org.gitnex.tea4j.v2.models.Repository;
 import org.gitnex.tea4j.v2.models.User;
 import org.mian.gitnex.R;
 import org.mian.gitnex.clients.PicassoService;
@@ -16,6 +19,7 @@ import org.mian.gitnex.databinding.FragmentProfileDetailBinding;
 import org.mian.gitnex.helpers.AlertDialogs;
 import org.mian.gitnex.helpers.AppUtil;
 import org.mian.gitnex.helpers.ClickListener;
+import org.mian.gitnex.helpers.Markdown;
 import org.mian.gitnex.helpers.RoundedTransformation;
 import org.mian.gitnex.helpers.TimeHelper;
 import org.mian.gitnex.helpers.TinyDB;
@@ -63,6 +67,7 @@ public class DetailFragment extends Fragment {
 		locale = getResources().getConfiguration().locale;
 
 		getProfileDetail(username);
+		getProfileRepository(username);
 
 		return binding.getRoot();
 	}
@@ -159,6 +164,135 @@ public class DetailFragment extends Fragment {
 					public void onFailure(@NonNull Call<User> call, @NonNull Throwable t) {
 						Toasty.error(
 								context, context.getResources().getString(R.string.genericError));
+					}
+				});
+	}
+
+	public void getProfileRepository(String username) {
+
+		Call<Repository> call =
+				RetrofitClient.getApiInterface(context).repoGet(username, ".profile");
+
+		call.enqueue(
+				new Callback<>() {
+
+					@Override
+					public void onResponse(
+							@NonNull Call<Repository> call,
+							@NonNull retrofit2.Response<Repository> response) {
+
+						if (response.isSuccessful() && response.body() != null) {
+
+							switch (response.code()) {
+								case 200:
+									String defBranch = response.body().getDefaultBranch();
+									binding.profileRepoView.setVisibility(View.VISIBLE);
+
+									Call<ResponseBody> call_profile =
+											RetrofitClient.getWebInterface(getContext())
+													.getFileContents(
+															username,
+															".profile",
+															defBranch,
+															"README.md");
+
+									call_profile.enqueue(
+											new Callback<>() {
+
+												@Override
+												public void onResponse(
+														@NonNull Call<ResponseBody> call_profile,
+														@NonNull retrofit2.Response<ResponseBody>
+																		response) {
+
+													if (isAdded()) {
+
+														switch (response.code()) {
+															case 200:
+																assert response.body() != null;
+																new Thread(
+																				() -> {
+																					try {
+																						Markdown
+																								.render(
+																										context,
+																										response.body()
+																												.string(),
+																										binding.profileRepoContent);
+																					} catch (
+																							IOException
+																									e) {
+																						requireActivity()
+																								.runOnUiThread(
+																										() ->
+																												Toasty
+																														.error(
+																																context,
+																																context
+																																		.getString(
+																																				R
+																																						.string
+																																						.genericError)));
+																					}
+																				})
+																		.start();
+																break;
+
+															case 401:
+																binding.profileRepoView
+																		.setVisibility(View.GONE);
+																AlertDialogs
+																		.authorizationTokenRevokedDialog(
+																				context);
+																break;
+
+															case 403:
+																binding.profileRepoView
+																		.setVisibility(View.GONE);
+																Toasty.error(
+																		context,
+																		context.getString(
+																				R.string
+																						.authorizeError));
+																break;
+
+															default:
+																break;
+														}
+													}
+												}
+
+												@Override
+												public void onFailure(
+														@NonNull Call<ResponseBody> call_profile,
+														@NonNull Throwable t) {}
+											});
+
+									break;
+
+								case 401:
+									AlertDialogs.authorizationTokenRevokedDialog(context);
+									binding.profileRepoView.setVisibility(View.GONE);
+									break;
+
+								case 403:
+									binding.profileRepoView.setVisibility(View.GONE);
+									Toasty.error(
+											context, context.getString(R.string.authorizeError));
+									break;
+
+								default:
+									binding.profileRepoView.setVisibility(View.GONE);
+									Toasty.error(context, getString(R.string.genericError));
+									break;
+							}
+						}
+						binding.progressBar.setVisibility(View.GONE);
+					}
+
+					@Override
+					public void onFailure(@NonNull Call<Repository> call, @NonNull Throwable t) {
+						binding.profileRepoView.setVisibility(View.GONE);
 					}
 				});
 	}

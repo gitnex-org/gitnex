@@ -70,6 +70,11 @@ public class RepositoriesViewModel extends ViewModel {
 						RetrofitClient.getApiInterface(ctx)
 								.orgListTeamRepos(Long.valueOf(userLogin), page, resultLimit);
 				break;
+			case "watched":
+				call =
+						RetrofitClient.getApiInterface(ctx)
+								.userCurrentListSubscriptions(page, resultLimit);
+				break;
 			default:
 				call = RetrofitClient.getApiInterface(ctx).userCurrentListRepos(page, resultLimit);
 				break;

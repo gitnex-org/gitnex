@@ -18,6 +18,7 @@ import org.mian.gitnex.R;
 import org.mian.gitnex.activities.MainActivity;
 import org.mian.gitnex.helpers.AppUtil;
 import org.mian.gitnex.helpers.TinyDB;
+import org.mian.gitnex.helpers.ViewPager2Transformers;
 
 /**
  * @author M M Arif
@@ -46,6 +47,9 @@ public class ExploreFragment extends Fragment {
 
 		Typeface myTypeface = AppUtil.getTypeface(requireContext());
 		viewPager.setAdapter(new ViewPagerAdapter(this));
+
+		ViewPager2Transformers.returnSelectedTransformer(
+				viewPager, tinyDB.getInt("fragmentTabsAnimationId", 0));
 
 		String[] tabTitles = {
 			getResources().getString(R.string.navRepos),

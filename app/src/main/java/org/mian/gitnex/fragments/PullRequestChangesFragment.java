@@ -10,6 +10,8 @@ import androidx.viewpager2.adapter.FragmentStateAdapter;
 import com.google.android.material.tabs.TabLayoutMediator;
 import org.mian.gitnex.R;
 import org.mian.gitnex.databinding.FragmentPrChangesBinding;
+import org.mian.gitnex.helpers.TinyDB;
+import org.mian.gitnex.helpers.ViewPager2Transformers;
 
 /**
  * @author qwerty287
@@ -32,6 +34,8 @@ public class PullRequestChangesFragment extends Fragment {
 			@NonNull LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
 
 		binding = FragmentPrChangesBinding.inflate(inflater, container, false);
+
+		TinyDB tinyDB = TinyDB.getInstance(getContext());
 
 		binding.close.setOnClickListener(v -> requireActivity().finish());
 
@@ -56,6 +60,10 @@ public class PullRequestChangesFragment extends Fragment {
 				});
 		String[] tabs =
 				new String[] {getString(R.string.tabTextFiles), getString(R.string.commits)};
+
+		ViewPager2Transformers.returnSelectedTransformer(
+				binding.container, tinyDB.getInt("fragmentTabsAnimationId", 0));
+
 		new TabLayoutMediator(
 						binding.tabs,
 						binding.container,

@@ -38,6 +38,7 @@
         <item>Pitch Black</item>
         <item>@string/followSystem</item>
         <item>@string/followSystemBlack</item>
+
     </string-array>
 
     <string-array name="themesAndroid12">
@@ -50,6 +51,7 @@
         <item>@string/followSystem</item>
         <item>@string/followSystemBlack</item>
         <item>@string/dynamicColorsFollowSystem</item>
+        <item>@string/codebergDark</item>
     </string-array>
 
     <string-array name="appDefaultHomeScreen">
@@ -67,7 +69,7 @@
         <item>@string/pageTitleStarredRepos</item>
         <item>@string/navOrg</item>
         <item>@string/navRepos</item>
-        <item>@string/navProfile</item>
+        <item>@string/navAccount</item>
         <item>@string/pageTitleExplore</item>
         <item>@string/titleDrafts</item>
         <item>@string/pageTitleNotifications</item>
@@ -75,10 +77,11 @@
         <item>@string/navMostVisited</item>
         <item>@string/navNotes</item>
         <item>@string/dashboard</item>
+        <item>@string/navWatchedRepositories</item>
     </string-array>
 
     <string-array name="linkHandlerDefaultScreen">
-        <item>@string/generalDeepLinkSelectedText</item>
+        <item>@string/none</item>
         <item>@string/navRepos</item>
         <item>@string/navOrg</item>
         <item>@string/pageTitleNotifications</item>
@@ -108,5 +111,11 @@
         <item>4</item>
         <item>6</item>
         <item>8</item>
+    </string-array>
+
+    <string-array name="fragmentTabsAnimation">
+        <item>@string/fadeOut</item>
+        <item>@string/zoomOut</item>
+        <item>@string/none</item>
     </string-array>
 </resources>

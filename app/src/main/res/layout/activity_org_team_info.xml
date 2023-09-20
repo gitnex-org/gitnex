@@ -51,6 +51,7 @@
             app:tabIndicatorColor="?attr/pagerTabIndicatorColor"
             app:tabIndicatorFullWidth="true"
             app:tabMode="auto"
+            app:tabIndicatorHeight="@dimen/dimen4dp"
             app:tabTextAppearance="@style/customTabLayout"
             app:tabTextColor="?attr/primaryTextColor"/>
 

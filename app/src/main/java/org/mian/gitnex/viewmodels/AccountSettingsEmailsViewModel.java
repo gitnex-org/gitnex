@@ -17,7 +17,7 @@ import retrofit2.Response;
 /**
  * @author M M Arif
  */
-public class ProfileEmailsViewModel extends ViewModel {
+public class AccountSettingsEmailsViewModel extends ViewModel {
 
 	private MutableLiveData<List<Email>> emailsList;
 

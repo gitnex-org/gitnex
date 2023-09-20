@@ -35,6 +35,8 @@
     <string name="navMyIssues">My Issues</string>
     <string name="navMostVisited">Most Visited Repos</string>
     <string name="navNotes">Notes</string>
+    <string name="navAccount">Account Settings</string>
+    <string name="navWatchedRepositories">Watched Repositories</string>
     <!-- menu items -->
 
     <!-- page titles -->
@@ -246,7 +248,6 @@
     <string name="generalHintText">Home screen, drafts, crash reports</string>
     <string name="generalDeepLinkDefaultScreen">Default Link Handler</string>
     <string name="generalDeepLinkDefaultScreenHintText">Choose what screen should be loaded if the app cannot handle external links. It will redirect you automatically.</string>
-    <string name="generalDeepLinkSelectedText">N/A</string>
     <string name="linkSelectorDialogTitle">Select Default Link Handler Screen</string>
     <string name="settingsBiometricHeader">Biometric Support</string>
     <string name="settingsLabelsInListHeader">Labels With Text Support</string>
@@ -255,6 +256,9 @@
     <string name="ceIndentation">Indentation</string>
     <string name="ceIndentationTabsWidth">Tabs Width</string>
     <string name="system_font">System Default Font</string>
+    <string name="fragmentTabsAnimationHeader">Tabs Animation</string>
+    <string name="fadeOut">Fade Out</string>
+    <string name="zoomOut">Zoom Out</string>
     <!-- settings -->
 
     <string name="noMoreData">No more data available</string>
@@ -342,16 +346,19 @@
     <!-- profile section -->
     <string name="profileTabFollowers">Followers</string>
     <string name="profileTabFollowing">Following</string>
-    <string name="profileCreateNewEmailAddress">Add Email Address</string>
-    <string name="profileEmailTitle">Email Address</string>
+    <string name="usernameWithAt" translatable="false">\u0040%1$s</string>
+    <!-- profile section -->
+
+    <!-- account settings -->
+    <string name="accountEmails">Emails</string>
+    <string name="accountEmailTitle">Email Address</string>
     <string name="emailAddedText">New email added successfully</string>
     <string name="emailErrorEmpty">Email address is empty</string>
     <string name="emailErrorInvalid">Email address is not valid</string>
     <string name="emailErrorInUse">Email address is already in use</string>
     <string name="emailTypeText">Primary</string>
-    <string name="profileTabEmails">Emails</string>
-    <string name="usernameWithAt" translatable="false">\u0040%1$s</string>
-    <!-- profile section -->
+    <string name="sshKeys">SSH Keys</string>
+    <!-- account settings -->
 
     <!-- single issue section -->
     <string name="singleIssueEditLabels">Add / Remove Labels</string>
@@ -516,6 +523,7 @@
     <string name="deleteGenericTitle">Delete %s</string>
     <string name="reset">Reset</string>
     <string name="beta">BETA</string>
+    <string name="none">None</string>
     <!-- generic copy -->
 
     <string name="exploreUsers">Explore users</string>
@@ -778,6 +786,7 @@
     <string name="followSystem">Follow system (Light/Dark)</string>
     <string name="followSystemBlack">Follow system (Light/Pitch Black)</string>
     <string name="dynamicColorsFollowSystem">Dynamic colors - Follow system (Light/Dark)</string>
+    <string name="codebergDark">Codeberg (Dark)</string>
     <string name="repoForkOf">Fork of: %s</string>
     <string name="adoptRepo">Adopt</string>
     <string name="repoAdopted">Adopted repository %s</string>

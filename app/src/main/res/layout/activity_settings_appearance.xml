@@ -180,6 +180,39 @@
 
     </LinearLayout>
 
+    <LinearLayout
+        android:id="@+id/fragmentTabsAnimationFrame"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="@dimen/dimen6dp"
+        android:background="?android:attr/selectableItemBackground"
+        android:clickable="true"
+        android:focusable="true"
+        android:orientation="vertical"
+        android:padding="@dimen/dimen16dp">
+
+        <TextView
+            android:id="@+id/fragmentTabsAnimationFrameHeaderSelector"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="@dimen/dimen24dp"
+            android:layout_marginEnd="@dimen/dimen24dp"
+            android:text="@string/fragmentTabsAnimationHeader"
+            android:textColor="?attr/primaryTextColor"
+            android:textSize="@dimen/dimen18sp"/>
+
+        <TextView
+            android:id="@+id/fragmentTabsAnimationFrameSelected"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="@dimen/dimen24dp"
+            android:layout_marginEnd="@dimen/dimen24dp"
+            android:text="@string/fadeOut"
+            android:textColor="?attr/selectedTextColor"
+            android:textSize="@dimen/dimen16sp"/>
+
+    </LinearLayout>
+
     <RelativeLayout
         android:id="@+id/counterBadgeFrame"
         android:layout_width="match_parent"

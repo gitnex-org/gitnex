@@ -71,7 +71,7 @@ public class SettingsGeneralActivity extends BaseActivity {
 			viewBinding.homeScreenSelected.setText(getResources().getString(R.string.navRepos));
 		} else if (homeScreenSelectedChoice == 4) {
 
-			viewBinding.homeScreenSelected.setText(getResources().getString(R.string.navProfile));
+			viewBinding.homeScreenSelected.setText(getResources().getString(R.string.navAccount));
 		} else if (homeScreenSelectedChoice == 5) {
 
 			viewBinding.homeScreenSelected.setText(
@@ -96,6 +96,10 @@ public class SettingsGeneralActivity extends BaseActivity {
 		} else if (homeScreenSelectedChoice == 11) {
 
 			viewBinding.homeScreenSelected.setText(getResources().getString(R.string.dashboard));
+		} else if (homeScreenSelectedChoice == 12) {
+
+			viewBinding.homeScreenSelected.setText(
+					getResources().getString(R.string.navWatchedRepositories));
 		}
 
 		viewBinding.homeScreenFrame.setOnClickListener(

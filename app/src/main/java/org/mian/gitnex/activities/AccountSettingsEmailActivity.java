@@ -6,19 +6,17 @@ import android.util.Log;
 import android.util.Patterns;
 import android.view.View;
 import android.view.inputmethod.InputMethodManager;
-import android.widget.Button;
-import android.widget.EditText;
-import android.widget.ImageView;
 import androidx.annotation.NonNull;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
+import java.util.Objects;
 import org.gitnex.tea4j.v2.models.CreateEmailOption;
 import org.gitnex.tea4j.v2.models.Email;
 import org.mian.gitnex.R;
 import org.mian.gitnex.clients.RetrofitClient;
-import org.mian.gitnex.databinding.ActivityProfileEmailBinding;
-import org.mian.gitnex.fragments.MyProfileEmailsFragment;
+import org.mian.gitnex.databinding.ActivityAccountSettingsEmailBinding;
+import org.mian.gitnex.fragments.AccountSettingsEmailsFragment;
 import org.mian.gitnex.helpers.AlertDialogs;
 import org.mian.gitnex.helpers.AppUtil;
 import org.mian.gitnex.helpers.Toasty;
@@ -28,44 +26,40 @@ import retrofit2.Callback;
 /**
  * @author M M Arif
  */
-public class MyProfileEmailActivity extends BaseActivity {
+public class AccountSettingsEmailActivity extends BaseActivity {
 
 	private View.OnClickListener onClickListener;
-	private EditText userEmail;
-	private Button addEmailButton;
 	private final View.OnClickListener addEmailListener = v -> processAddNewEmail();
+	private ActivityAccountSettingsEmailBinding activityAccountSettingsEmailBinding;
 
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
 
 		super.onCreate(savedInstanceState);
 
-		ActivityProfileEmailBinding activityProfileEmailBinding =
-				ActivityProfileEmailBinding.inflate(getLayoutInflater());
-		setContentView(activityProfileEmailBinding.getRoot());
+		activityAccountSettingsEmailBinding =
+				ActivityAccountSettingsEmailBinding.inflate(getLayoutInflater());
+		setContentView(activityAccountSettingsEmailBinding.getRoot());
 
 		boolean connToInternet = AppUtil.hasNetworkConnection(appCtx);
 
 		InputMethodManager imm =
 				(InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
 
-		ImageView closeActivity = activityProfileEmailBinding.close;
-		userEmail = activityProfileEmailBinding.userEmail;
-		addEmailButton = activityProfileEmailBinding.addEmailButton;
-
-		userEmail.requestFocus();
+		activityAccountSettingsEmailBinding.userEmail.requestFocus();
 		assert imm != null;
-		imm.showSoftInput(userEmail, InputMethodManager.SHOW_IMPLICIT);
+		imm.showSoftInput(
+				activityAccountSettingsEmailBinding.userEmail, InputMethodManager.SHOW_IMPLICIT);
 
 		initCloseListener();
-		closeActivity.setOnClickListener(onClickListener);
+		activityAccountSettingsEmailBinding.close.setOnClickListener(onClickListener);
 
 		if (!connToInternet) {
 
 			disableProcessButton();
 		} else {
 
-			addEmailButton.setOnClickListener(addEmailListener);
+			activityAccountSettingsEmailBinding.addEmailButton.setOnClickListener(addEmailListener);
 		}
 	}
 
@@ -73,7 +67,10 @@ public class MyProfileEmailActivity extends BaseActivity {
 
 		boolean connToInternet = AppUtil.hasNetworkConnection(appCtx);
 
-		String newUserEmail = userEmail.getText().toString().trim();
+		String newUserEmail =
+				Objects.requireNonNull(activityAccountSettingsEmailBinding.userEmail.getText())
+						.toString()
+						.trim();
 
 		if (!connToInternet) {
 
@@ -115,7 +112,7 @@ public class MyProfileEmailActivity extends BaseActivity {
 						if (response.code() == 201) {
 
 							Toasty.success(ctx, getString(R.string.emailAddedText));
-							MyProfileEmailsFragment.refreshEmails = true;
+							AccountSettingsEmailsFragment.refreshEmails = true;
 							enableProcessButton();
 							finish();
 						} else if (response.code() == 401) {
@@ -157,11 +154,11 @@ public class MyProfileEmailActivity extends BaseActivity {
 
 	private void disableProcessButton() {
 
-		addEmailButton.setEnabled(false);
+		activityAccountSettingsEmailBinding.addEmailButton.setEnabled(false);
 	}
 
 	private void enableProcessButton() {
 
-		addEmailButton.setEnabled(true);
+		activityAccountSettingsEmailBinding.addEmailButton.setEnabled(true);
 	}
 }

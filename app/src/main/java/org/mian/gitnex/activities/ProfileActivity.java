@@ -28,6 +28,7 @@ import org.mian.gitnex.fragments.profile.RepositoriesFragment;
 import org.mian.gitnex.fragments.profile.StarredRepositoriesFragment;
 import org.mian.gitnex.helpers.AppUtil;
 import org.mian.gitnex.helpers.Toasty;
+import org.mian.gitnex.helpers.ViewPager2Transformers;
 import org.mian.gitnex.structs.BottomSheetListener;
 import retrofit2.Call;
 import retrofit2.Callback;
@@ -72,6 +73,9 @@ public class ProfileActivity extends BaseActivity implements BottomSheetListener
 		toolbarTitle.setText(username);
 
 		viewPager.setAdapter(new ViewPagerAdapter(this));
+
+		ViewPager2Transformers.returnSelectedTransformer(
+				viewPager, tinyDB.getInt("fragmentTabsAnimationId", 0));
 
 		String[] tabTitles = {
 			ctx.getResources().getString(R.string.tabTextInfo),
@@ -147,7 +151,7 @@ public class ProfileActivity extends BaseActivity implements BottomSheetListener
 		}
 
 		call.enqueue(
-				new Callback<Void>() {
+				new Callback<>() {
 
 					@Override
 					public void onResponse(

@@ -9,17 +9,17 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 import androidx.annotation.NonNull;
-import androidx.appcompat.widget.Toolbar;
 import androidx.fragment.app.Fragment;
-import androidx.fragment.app.FragmentManager;
-import androidx.fragment.app.FragmentPagerAdapter;
-import androidx.viewpager.widget.ViewPager;
-import com.google.android.material.tabs.TabLayout;
+import androidx.fragment.app.FragmentActivity;
+import androidx.viewpager2.adapter.FragmentStateAdapter;
+import androidx.viewpager2.widget.ViewPager2;
+import com.google.android.material.tabs.TabLayoutMediator;
 import io.mikael.urlbuilder.UrlBuilder;
 import java.util.Objects;
 import org.gitnex.tea4j.v2.models.OrganizationPermissions;
 import org.mian.gitnex.R;
 import org.mian.gitnex.clients.RetrofitClient;
+import org.mian.gitnex.databinding.ActivityOrgDetailBinding;
 import org.mian.gitnex.fragments.BottomSheetOrganizationFragment;
 import org.mian.gitnex.fragments.OrganizationInfoFragment;
 import org.mian.gitnex.fragments.OrganizationLabelsFragment;
@@ -27,6 +27,7 @@ import org.mian.gitnex.fragments.OrganizationMembersFragment;
 import org.mian.gitnex.fragments.OrganizationRepositoriesFragment;
 import org.mian.gitnex.fragments.OrganizationTeamsFragment;
 import org.mian.gitnex.helpers.AppUtil;
+import org.mian.gitnex.helpers.ViewPager2Transformers;
 import org.mian.gitnex.structs.BottomSheetListener;
 import retrofit2.Call;
 import retrofit2.Callback;
@@ -41,19 +42,19 @@ public class OrganizationDetailActivity extends BaseActivity implements BottomSh
 	public OrganizationPermissions permissions;
 	private String orgName;
 	private boolean isMember = false;
+	private ActivityOrgDetailBinding activityOrgDetailBinding;
 
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
 
 		super.onCreate(savedInstanceState);
 
-		setContentView(R.layout.activity_org_detail);
+		activityOrgDetailBinding = ActivityOrgDetailBinding.inflate(getLayoutInflater());
+		setContentView(activityOrgDetailBinding.getRoot());
 
 		orgName = getIntent().getStringExtra("orgName");
 
-		Toolbar toolbar = findViewById(R.id.toolbar);
-
-		setSupportActionBar(toolbar);
+		setSupportActionBar(activityOrgDetailBinding.toolbar);
 		Objects.requireNonNull(getSupportActionBar()).setTitle(orgName);
 		getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
@@ -112,48 +113,91 @@ public class OrganizationDetailActivity extends BaseActivity implements BottomSh
 	}
 
 	public void init() {
-		OrganizationDetailActivity.SectionsPagerAdapter mSectionsPagerAdapter =
-				new OrganizationDetailActivity.SectionsPagerAdapter(getSupportFragmentManager());
 
-		ViewPager mViewPager = findViewById(R.id.container);
-		mViewPager.setVisibility(View.VISIBLE);
-		mViewPager.setAdapter(mSectionsPagerAdapter);
+		ViewPager2 viewPager = activityOrgDetailBinding.container;
+		viewPager.setOffscreenPageLimit(1);
 
-		TabLayout tabLayout = findViewById(R.id.tabs);
-		tabLayout.setVisibility(View.VISIBLE);
+		ViewGroup vg = (ViewGroup) activityOrgDetailBinding.tabs.getChildAt(0);
+
+		Typeface myTypeface = AppUtil.getTypeface(ctx);
+
+		activityOrgDetailBinding.toolbarTitle.setTypeface(myTypeface);
+		activityOrgDetailBinding.toolbarTitle.setText(orgName);
+
+		viewPager.setAdapter(new OrganizationDetailActivity.ViewPagerAdapter(this));
+
+		ViewPager2Transformers.returnSelectedTransformer(
+				viewPager, tinyDB.getInt("fragmentTabsAnimationId", 0));
+
+		String[] tabTitles = {
+			getResources().getString(R.string.tabTextInfo),
+			getResources().getString(R.string.navRepos),
+			getResources().getString(R.string.newIssueLabelsTitle),
+			getResources().getString(R.string.orgTabTeams),
+			getResources().getString(R.string.orgTabMembers)
+		};
 
 		if (!isMember) {
-			tabLayout.removeTabAt(3);
+			activityOrgDetailBinding.tabs.removeTabAt(3);
 		}
 
-		Typeface myTypeface = AppUtil.getTypeface(this);
-		TextView toolbarTitle = findViewById(R.id.toolbar_title);
+		new TabLayoutMediator(
+						activityOrgDetailBinding.tabs,
+						viewPager,
+						(tab, position) -> tab.setText(tabTitles[position]))
+				.attach();
 
-		toolbarTitle.setTypeface(myTypeface);
-		toolbarTitle.setText(orgName);
-
-		ViewGroup vg = (ViewGroup) tabLayout.getChildAt(0);
-		int tabsCount = vg.getChildCount();
-
-		for (int j = 0; j < tabsCount; j++) {
+		for (int j = 0; j < tabTitles.length; j++) {
 
 			ViewGroup vgTab = (ViewGroup) vg.getChildAt(j);
 			int tabChildCount = vgTab.getChildCount();
 
 			for (int i = 0; i < tabChildCount; i++) {
-
 				View tabViewChild = vgTab.getChildAt(i);
-
 				if (tabViewChild instanceof TextView) {
-
 					((TextView) tabViewChild).setTypeface(myTypeface);
 				}
 			}
 		}
+	}
 
-		mViewPager.addOnPageChangeListener(new TabLayout.TabLayoutOnPageChangeListener(tabLayout));
-		tabLayout.addOnTabSelectedListener(
-				new TabLayout.ViewPagerOnTabSelectedListener(mViewPager));
+	public class ViewPagerAdapter extends FragmentStateAdapter {
+
+		public ViewPagerAdapter(@NonNull FragmentActivity fa) {
+			super(fa);
+		}
+
+		@NonNull @Override
+		public Fragment createFragment(int position) {
+			switch (position) {
+				case 0: // info
+					return OrganizationInfoFragment.newInstance(orgName);
+				case 1: // repos
+					return OrganizationRepositoriesFragment.newInstance(orgName, permissions);
+				case 2: // labels
+					return OrganizationLabelsFragment.newInstance(orgName, permissions);
+				case 3: // teams / members
+					if (isMember) {
+						return OrganizationTeamsFragment.newInstance(orgName, permissions);
+					} else {
+						return OrganizationMembersFragment.newInstance(orgName);
+					}
+				case 4: // members
+					if (isMember) {
+						return OrganizationMembersFragment.newInstance(orgName);
+					}
+			}
+			return null;
+		}
+
+		@Override
+		public int getItemCount() {
+			if (isMember) {
+				return 5;
+			} else {
+				return 4;
+			}
+		}
 	}
 
 	@Override
@@ -203,49 +247,6 @@ public class OrganizationDetailActivity extends BaseActivity implements BottomSh
 			case "open":
 				AppUtil.openUrlInBrowser(this, url);
 				break;
-		}
-	}
-
-	public class SectionsPagerAdapter extends FragmentPagerAdapter {
-
-		SectionsPagerAdapter(FragmentManager fm) {
-			super(fm, BEHAVIOR_RESUME_ONLY_CURRENT_FRAGMENT);
-		}
-
-		@NonNull @Override
-		public Fragment getItem(int position) {
-
-			String orgName = getIntent().getStringExtra("orgName");
-
-			Fragment fragment = null;
-			switch (position) {
-				case 0: // info
-					return OrganizationInfoFragment.newInstance(orgName);
-				case 1: // repos
-					return OrganizationRepositoriesFragment.newInstance(orgName, permissions);
-				case 2: // labels
-					return OrganizationLabelsFragment.newInstance(orgName, permissions);
-				case 3: // teams / members
-					if (isMember) {
-						return OrganizationTeamsFragment.newInstance(orgName, permissions);
-					} else {
-						return OrganizationMembersFragment.newInstance(orgName);
-					}
-				case 4: // members
-					if (isMember) {
-						return OrganizationMembersFragment.newInstance(orgName);
-					}
-			}
-			return fragment;
-		}
-
-		@Override
-		public int getCount() {
-			if (isMember) {
-				return 5;
-			} else {
-				return 4;
-			}
 		}
 	}
 }

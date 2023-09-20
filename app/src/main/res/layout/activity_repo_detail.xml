@@ -58,7 +58,9 @@
             android:layout_height="wrap_content"
             android:background="?attr/primaryBackgroundColor"
             app:tabIndicatorColor="?attr/pagerTabIndicatorColor"
-            app:tabMode="scrollable"
+            app:tabIndicatorFullWidth="true"
+            app:tabMode="auto"
+            app:tabIndicatorHeight="@dimen/dimen4dp"
             app:tabTextAppearance="@style/customTabLayout"
             app:tabTextColor="?attr/primaryTextColor">
 

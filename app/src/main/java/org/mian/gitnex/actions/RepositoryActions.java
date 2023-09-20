@@ -123,6 +123,7 @@ public class RepositoryActions {
 						if (response.isSuccessful()) {
 							if (response.code() == 200) {
 
+								MainActivity.reloadRepos = true;
 								Toasty.success(
 										context,
 										context.getString(R.string.watchRepositorySuccess));
@@ -155,7 +156,7 @@ public class RepositoryActions {
 
 		Call<Void> call =
 				RetrofitClient.getApiInterface(context)
-						.userCurrentDeleteStar(repository.getOwner(), repository.getName());
+						.userCurrentDeleteSubscription(repository.getOwner(), repository.getName());
 
 		call.enqueue(
 				new Callback<>() {
@@ -166,6 +167,7 @@ public class RepositoryActions {
 
 						if (response.code() == 204) {
 
+							MainActivity.reloadRepos = true;
 							Toasty.success(
 									context, context.getString(R.string.unWatchRepositorySuccess));
 						} else if (response.code() == 401) {

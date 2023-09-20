@@ -42,9 +42,10 @@
                 android:background="?attr/primaryBackgroundColor"
                 app:tabGravity="fill"
                 app:tabIndicatorColor="?attr/pagerTabIndicatorColor"
-                app:tabIndicatorFullWidth="false"
                 app:tabMaxWidth="0dp"
-                app:tabMode="fixed"
+                app:tabIndicatorFullWidth="true"
+                app:tabMode="auto"
+                app:tabIndicatorHeight="@dimen/dimen4dp"
                 app:tabTextAppearance="@style/customTabLayout"
                 app:tabTextColor="?attr/primaryTextColor"/>
 

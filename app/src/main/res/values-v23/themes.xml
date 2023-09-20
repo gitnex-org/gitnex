@@ -91,4 +91,50 @@
     </style>
     <!-- Retro theme -->
 
+    <!-- Codeberg dark theme -->
+    <style name="AppThemeCodebergDark" parent="Theme.Material3.Dark.NoActionBar">
+        <item name="android:statusBarColor">@color/codebergDarkThemeBackground</item>
+        <item name="android:typeface">monospace</item>
+        <item name="colorAccent">@color/colorAccent</item>
+        <item name="android:textColorSecondary">@color/codebergDarkThemeTextColor</item>
+        <item name="android:textColorPrimary">@color/codebergDarkThemeTextColor</item>
+        <item name="colorPrimary">@color/codebergDarkColorPrimary</item>
+        <item name="colorSecondary">@color/codebergDarkThemeTextColor</item>
+        <item name="colorOnSurfaceVariant">@color/codebergDarkThemeTextColor</item>
+        <item name="colorSecondaryContainer">@color/codebergDarkThemeColorSecondary</item>
+        <item name="materialCardBackgroundColor">@color/codebergDarkThemeCardBackground</item>
+
+        <item name="diffAddedColor">@color/diffAddedColor</item>
+        <item name="diffRemovedColor">@color/diffRemovedColor</item>
+        <item name="diffSelectedColor">@color/diffSelectedColor</item>
+        <item name="primaryTextColor">@color/codebergDarkThemeTextColor</item>
+        <item name="primaryBackgroundColor">@color/codebergDarkThemeBackground</item>
+        <item name="inputBackgroundColor">@color/codebergDarkInputBackground</item>
+        <item name="inputSelectedColor">@color/codebergDarkInputBackground</item>
+        <item name="inputTextColor">@color/codebergDarkThemeTextColor</item>
+        <item name="checkboxStyle">@style/AppThemeCheckBoxStyle</item>
+        <item name="selectedTextColor">@color/codebergDarkColorPrimary</item>
+        <item name="alertDialogTheme">@style/AppThemeCodebergDarkConfirmDialog</item>
+        <item name="popupMenuStyle">@style/AppThemeCodebergDarkPopupMenuStyle</item>
+        <item name="android:homeAsUpIndicator">@drawable/ic_arrow_back</item>
+        <item name="autoCompleteTextViewStyle">@style/AppThemeDarkSearchAutoCompleteTextView</item>
+        <item name="hintColor">@color/hintColor</item>
+        <item name="colorControlActivated">@color/codebergDarkColorPrimary</item>
+        <item name="dividerColor">@color/codebergDarkThemeDividerColor</item>
+        <item name="bottomSheetDialogTheme">@style/AppThemeDarkBottomSheetDialog</item>
+        <item name="searchViewStyle">@style/AppSearchViewStyle</item>
+        <item name="progressIndicatorColor">@color/codebergDarkColorPrimary</item>
+        <item name="fabColor">@color/codebergDarkThemeIconsColors</item>
+        <item name="iconsColor">@color/codebergDarkThemeIconsColors</item>
+        <item name="pagerTabIndicatorColor">@color/codebergDarkColorPrimary</item>
+        <item name="android:actionOverflowButtonStyle">@style/customOverflowButtonStyle</item>
+        <item name="actionOverflowMenuStyle">@style/customOverflowMenuStyle</item>
+        <item name="colorSurface">@color/codebergDarkInputBackground</item>
+        <item name="shapeAppearanceSmallComponent">@style/inputsMaterialComponentCorner</item>
+        <item name="android:windowAnimationStyle">@style/WindowAnimationTransition</item>
+        <item name="materialSwitchStyle">@style/m3SwitchStyle</item>
+        <item name="isDark">1</item>
+    </style>
+    <!-- Codeberg dark theme -->
+
 </resources>

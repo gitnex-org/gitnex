@@ -29,6 +29,10 @@
             android:icon="@drawable/ic_repo"
             android:title="@string/navRepos"/>
 
+        <item android:id="@+id/nav_watched_repositories"
+            android:icon="@drawable/ic_watchers"
+            android:title="@string/navWatchedRepositories"/>
+
         <item android:id="@+id/nav_my_issues"
             android:icon="@drawable/ic_issue"
             android:title="@string/navMyIssues"
@@ -59,6 +63,10 @@
         <item android:id="@+id/nav_profile"
             android:icon="@drawable/ic_person"
             android:title="@string/navProfile"/>
+
+        <item android:id="@+id/nav_account_settings"
+            android:icon="@drawable/ic_account_settings"
+            android:title="@string/navAccount" />
 
         <item android:id="@+id/nav_administration"
             android:icon="@drawable/ic_tool"
