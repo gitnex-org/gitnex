@@ -1,18 +1,22 @@
 <?xml version="1.0" encoding="utf-8"?>
 <changelog>
 
-    <release version="5.1.0" versioncode="510">
-        <change>New: Dynamic colors for Android 12+ (Settings -> Appearance -> Theme)</change>
-        <change>New: FAB buttons for each task where required</change>
-        <change>New: Lisp language support</change>
-        <change>New: Repository language statistics</change>
-        <change>New: [CE] Settings to change syntax highlighting color (Settings -> Code Editor)</change>
-        <change>New: [CE] Settings to choose Tabs or Spaces for indentation (Settings -> Code Editor)</change>
-        <change>New: System default font (Settings -> Appearance -> Font)</change>
-        <change>Improvement: Hide notification count when no notification available</change>
-        <change>Improvement: Move logout from navigation to settings</change>
-        <change>Improvement: Move drafts, crash reports to General section</change>
-        <change>Improvement: Move translation to Appearance section</change>
+    <release version="5.2.0" versioncode="520">
+        <change>New: Dashboard (BETA) (1.20 and above)</change>
+        <change>New: Open commits directly from links</change>
+        <change>New: Search stargazers and watchers</change>
+        <change>New: Profile repository view in user profile</change>
+        <change>New: New account settings screen</change>
+        <change>New: Watched repositories</change>
+        <change>New: SSH keys list</change>
+        <change>New: Codeberg theme</change>
+        <change>New: Themed icon for Android 13</change>
+        <change>New: Show draft status for pull requests</change>
+        <change>New: Tabs animation (fade out, zoom out)</change>
+        <change>Improvement: Don't flash save draft message on each change</change>
+        <change>Bugfix: Fix repo name does not match crash when saving repo settings</change>
+        <change>Bugfix: Fix repository forks pagination</change>
+        <change>Bugfix: Fix unwatch repository</change>
     </release>
 
 </changelog>

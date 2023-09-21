@@ -1,0 +1,18 @@
+5.2.0
+
+🎉 Features 🎉
+- Dashboard (BETA) (1.20 and above)
+- Open commits directly from links
+- Search stargazers and watchers
+- Profile repository view in user profile
+- New account settings screen
+- Watched repositories
+- SSH keys list
+- Codeberg theme
+- Themed icon for Android 13
+- Show draft status for pull requests
+- Tabs animation (fade out, zoom out)
+
+Release Notes: https://codeberg.org/gitnex/GitNex/releases
+
+Release Posts: https://najigram.com/category/gitnex
