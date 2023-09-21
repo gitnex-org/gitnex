@@ -14,6 +14,8 @@
     <string name="navMyIssues">Meine Issues</string>
     <string name="navMostVisited">Meistbesuchte Repositories</string>
     <string name="navNotes">Notizen</string>
+    <string name="navAccount">Kontoeinstellungen</string>
+    <string name="navWatchedRepositories">Beobachtete Repository</string>
     <!-- menu items -->
     <!-- page titles -->
     <string name="pageTitleNewRepo">Repository erstellen</string>
@@ -185,7 +187,6 @@
     <string name="generalHintText">Startseite, Entwürfe, Absturzberichte</string>
     <string name="generalDeepLinkDefaultScreen">Standard-Link-Handhaber</string>
     <string name="generalDeepLinkDefaultScreenHintText">Wähle die Ansicht, welche geladen werden soll, wenn ein externer Link nicht handhabbar ist. Du wirst dann automatisch zu jener weitergeleitet.</string>
-    <string name="generalDeepLinkSelectedText">N/V</string>
     <string name="linkSelectorDialogTitle">Wähle Standard-Link-Handhaber</string>
     <string name="settingsBiometricHeader">Biometrisches Entsperren</string>
     <string name="settingsLabelsInListHeader">Labels mit Text</string>
@@ -194,6 +195,9 @@
     <string name="ceIndentation">Einrückung</string>
     <string name="ceIndentationTabsWidth">Tabulatorbreite</string>
     <string name="system_font">Standard-Schriftart des Systems</string>
+    <string name="fragmentTabsAnimationHeader">Tab-Animation</string>
+    <string name="fadeOut">Ausblenden</string>
+    <string name="zoomOut">Herauszoomen</string>
     <!-- settings -->
     <string name="noMoreData">Keine weiteren Daten verfügbar.</string>
     <string name="createLabel">Label erstellen</string>
@@ -269,15 +273,17 @@
     <!-- profile section -->
     <string name="profileTabFollowers">Folgen mir</string>
     <string name="profileTabFollowing">Folge ich</string>
-    <string name="profileCreateNewEmailAddress">E-Mail Adresse hinzufügen</string>
-    <string name="profileEmailTitle">E-Mail Adresse</string>
+    <!-- profile section -->
+    <!-- account settings -->
+    <string name="accountEmails">E-Mails</string>
+    <string name="accountEmailTitle">E-Mail-Adresse</string>
     <string name="emailAddedText">Neue E-Mail Adresse erfolgreich hinzugefügt</string>
     <string name="emailErrorEmpty">E-Mail Adresse ist leer</string>
     <string name="emailErrorInvalid">E-Mail Adresse ist ungültig.</string>
     <string name="emailErrorInUse">E-Mail Adresse ist bereits in Benutzung.</string>
     <string name="emailTypeText">Primär</string>
-    <string name="profileTabEmails">E-Mails</string>
-    <!-- profile section -->
+    <string name="sshKeys">SSH-Schlüssel</string>
+    <!-- account settings -->
     <!-- single issue section -->
     <string name="singleIssueEditLabels">Labels hinzufügen/entfernen</string>
     <string name="labelsUpdated">Labels aktualisiert</string>
@@ -420,6 +426,7 @@
     <string name="deleteGenericTitle">%s löschen</string>
     <string name="reset">Zurücksetzen</string>
     <string name="beta">BETA</string>
+    <string name="none">Keine</string>
     <!-- generic copy -->
     <string name="exploreUsers">Benutzer erkunden</string>
     <string name="exploreIssues">Issues erkunden</string>
@@ -650,6 +657,7 @@
     <string name="followSystem">System folgen (Light/Dark)</string>
     <string name="followSystemBlack">System folgen (Light/Pitch Black)</string>
     <string name="dynamicColorsFollowSystem">Dynamische Farben - System folgen (Light/Dark)</string>
+    <string name="codebergDark">Codeberg (Dunkel)</string>
     <string name="repoForkOf">Fork von: %s</string>
     <string name="adoptRepo">Übernehmen</string>
     <string name="repoAdopted">Repository %s wurde übernommen</string>
