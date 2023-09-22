@@ -1,0 +1,18 @@
+5.2.0
+
+🎉 Fonctionnalités 🎉
+- Tableau de bord (bêta) (1.20 et ultérieur)
+- Révisions accessibles à partir d’un lien
+- Rechercher les observateurs et les fans
+- Vue sur les dépôts lié au profil
+- Nouvel écran des paramètres de compte
+- Liste des dépôts suivis
+- Liste des clés SSH
+- Thème Codeberg
+- Thème d’icônes pour Android 13
+- Indique si une requête de fusion est à l’état de brouillon
+- Onglés animés (fondu, zoom)
+
+Notes de version : https://codeberg.org/gitnex/GitNex/releases
+
+Billet : https://najigram.com/category/gitnex

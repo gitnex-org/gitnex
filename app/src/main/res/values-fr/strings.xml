@@ -14,6 +14,8 @@
     <string name="navMyIssues">Mes tickets</string>
     <string name="navMostVisited">Dépôts les plus visités</string>
     <string name="navNotes">Notes</string>
+    <string name="navAccount">Paramètres du compte</string>
+    <string name="navWatchedRepositories">Dépôts suivis</string>
     <!-- menu items -->
     <!-- page titles -->
     <string name="pageTitleNewRepo">Nouveau dépôt</string>
@@ -185,7 +187,6 @@
     <string name="generalHintText">Écran d’accueil, brouillons, rapports d’erreur</string>
     <string name="generalDeepLinkDefaultScreen">Écran par défaut</string>
     <string name="generalDeepLinkDefaultScreenHintText">Sélectionnez l’écran à afficher par défaut lorsque l’application ne parvient pas à ouvrir un lien externe.</string>
-    <string name="generalDeepLinkSelectedText">S/O</string>
     <string name="linkSelectorDialogTitle">Écran par défaut</string>
     <string name="settingsBiometricHeader">Biométrie</string>
     <string name="settingsLabelsInListHeader">Notifications textuelles</string>
@@ -194,6 +195,9 @@
     <string name="ceIndentation">Indentation</string>
     <string name="ceIndentationTabsWidth">Largeur des tabulations</string>
     <string name="system_font">Police du système</string>
+    <string name="fragmentTabsAnimationHeader">Animation des onglets</string>
+    <string name="fadeOut">Fondu</string>
+    <string name="zoomOut">Zoom</string>
     <!-- settings -->
     <string name="noMoreData">Aucune donnée</string>
     <string name="createLabel">Nouvelle étiquette</string>
@@ -269,15 +273,17 @@
     <!-- profile section -->
     <string name="profileTabFollowers">Abonnés</string>
     <string name="profileTabFollowing">Abonnements</string>
-    <string name="profileCreateNewEmailAddress">Ajouter une adresse courriel</string>
-    <string name="profileEmailTitle">Adresse courriel</string>
+    <!-- profile section -->
+    <!-- account settings -->
+    <string name="accountEmails">Courriels</string>
+    <string name="accountEmailTitle">Adresse courriel</string>
     <string name="emailAddedText">Adresse courriel ajoutée</string>
     <string name="emailErrorEmpty">L’adresse courriel est requise</string>
     <string name="emailErrorInvalid">Adresse courriel invalide</string>
     <string name="emailErrorInUse">Adresse courriel déjà utilisée</string>
     <string name="emailTypeText">Principale</string>
-    <string name="profileTabEmails">Courriels</string>
-    <!-- profile section -->
+    <string name="sshKeys">Clés SSH</string>
+    <!-- account settings -->
     <!-- single issue section -->
     <string name="singleIssueEditLabels">Gérer les étiquettes</string>
     <string name="labelsUpdated">Étiquettes mises à jour</string>
@@ -420,6 +426,7 @@
     <string name="deleteGenericTitle">Supprimer %s</string>
     <string name="reset">Remettre à zéro</string>
     <string name="beta">BÊTA</string>
+    <string name="none">Aucun</string>
     <!-- generic copy -->
     <string name="exploreUsers">Rechercher des utilisateurs</string>
     <string name="exploreIssues">Rechercher des tickets</string>
@@ -650,6 +657,7 @@
     <string name="followSystem">Suivant le système (clair/sombre)</string>
     <string name="followSystemBlack">Suivant le système (clair/noir)</string>
     <string name="dynamicColorsFollowSystem">Couleurs assorties au système (clair/sombre)</string>
+    <string name="codebergDark">Codeberg (sombre)</string>
     <string name="repoForkOf">Bifurcation de : %s</string>
     <string name="adoptRepo">Adopter</string>
     <string name="repoAdopted">Dépôt %s adopté</string>
