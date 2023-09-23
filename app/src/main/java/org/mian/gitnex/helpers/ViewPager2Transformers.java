@@ -41,7 +41,7 @@ public abstract class ViewPager2Transformers {
 				view.setAlpha(1 - position);
 
 				// Counteract the default slide transition
-				view.setTranslationX(pageWidth * -position);
+				// view.setTranslationX(pageWidth * -position);
 
 				// Scale the page down (between MIN_SCALE and 1)
 				float scaleFactor = MIN_SCALE + (1 - MIN_SCALE) * (1 - Math.abs(position));

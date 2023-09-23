@@ -27,16 +27,20 @@ import androidx.core.widget.ImageViewCompat;
 import androidx.lifecycle.ViewModelProvider;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import com.amulyakhare.textdrawable.TextDrawable;
+import com.google.android.material.card.MaterialCardView;
 import com.google.android.material.dialog.MaterialAlertDialogBuilder;
 import com.vdurmont.emoji.EmojiParser;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Collections;
 import java.util.LinkedHashSet;
 import java.util.List;
 import java.util.Locale;
 import java.util.Objects;
+import org.apache.commons.io.FilenameUtils;
+import org.gitnex.tea4j.v2.models.Attachment;
 import org.gitnex.tea4j.v2.models.EditIssueOption;
 import org.gitnex.tea4j.v2.models.Issue;
 import org.gitnex.tea4j.v2.models.IssueLabelsOption;
@@ -55,6 +59,7 @@ import org.mian.gitnex.clients.PicassoService;
 import org.mian.gitnex.clients.RetrofitClient;
 import org.mian.gitnex.databinding.ActivityIssueDetailBinding;
 import org.mian.gitnex.databinding.CustomAssigneesSelectionDialogBinding;
+import org.mian.gitnex.databinding.CustomImageViewDialogBinding;
 import org.mian.gitnex.databinding.CustomLabelsSelectionDialogBinding;
 import org.mian.gitnex.databinding.CustomPrInfoDialogBinding;
 import org.mian.gitnex.fragments.BottomSheetReplyFragment;
@@ -64,11 +69,13 @@ import org.mian.gitnex.helpers.AlertDialogs;
 import org.mian.gitnex.helpers.AppUtil;
 import org.mian.gitnex.helpers.ClickListener;
 import org.mian.gitnex.helpers.ColorInverter;
+import org.mian.gitnex.helpers.DownloadService;
 import org.mian.gitnex.helpers.LabelWidthCalculator;
 import org.mian.gitnex.helpers.Markdown;
 import org.mian.gitnex.helpers.RoundedTransformation;
 import org.mian.gitnex.helpers.TimeHelper;
 import org.mian.gitnex.helpers.Toasty;
+import org.mian.gitnex.helpers.UrlHelper;
 import org.mian.gitnex.helpers.contexts.IssueContext;
 import org.mian.gitnex.structs.BottomSheetListener;
 import org.mian.gitnex.viewmodels.IssueCommentsViewModel;
@@ -598,6 +605,7 @@ public class IssueDetailActivity extends BaseActivity
 			viewBinding.progressBar.setVisibility(View.GONE);
 			getSubscribed();
 			initWithIssue();
+			getAttachments();
 			return;
 		}
 
@@ -1102,6 +1110,143 @@ public class IssueDetailActivity extends BaseActivity
 
 						Toasty.error(ctx, getString(R.string.genericError));
 					}
+				});
+	}
+
+	private void getAttachments() {
+		Call<List<Attachment>> call =
+				RetrofitClient.getApiInterface(ctx)
+						.issueListIssueAttachments(
+								issue.getRepository().getOwner(),
+								issue.getRepository().getName(),
+								(long) issueIndex);
+		call.enqueue(
+				new Callback<>() {
+
+					@Override
+					public void onResponse(
+							@NonNull Call<List<Attachment>> call,
+							@NonNull retrofit2.Response<List<Attachment>> response) {
+
+						List<Attachment> attachment = response.body();
+
+						if (response.code() == 200) {
+							assert attachment != null;
+
+							if (attachment.size() > 0) {
+
+								viewBinding.attachmentFrame.setVisibility(View.VISIBLE);
+								LinearLayout.LayoutParams paramsAttachment =
+										new LinearLayout.LayoutParams(96, 96);
+								paramsAttachment.setMargins(0, 0, 48, 0);
+
+								for (int i = 0; i < attachment.size(); i++) {
+
+									ImageView attachmentView = new ImageView(ctx);
+									MaterialCardView materialCardView = new MaterialCardView(ctx);
+									materialCardView.setLayoutParams(paramsAttachment);
+									materialCardView.setStrokeWidth(0);
+									materialCardView.setCardBackgroundColor(Color.TRANSPARENT);
+
+									if (Arrays.asList(
+													"bmp", "gif", "jpg", "jpeg", "png", "webp",
+													"heic", "heif")
+											.contains(
+													FilenameUtils.getExtension(
+																	attachment.get(i).getName())
+															.toLowerCase())) {
+
+										PicassoService.getInstance(ctx)
+												.get()
+												.load(
+														UrlHelper.appendPath(
+																		getAccount()
+																				.getAccount()
+																				.getInstanceUrl(),
+																		"/attachments/")
+																+ attachment.get(i).getUuid())
+												.placeholder(R.drawable.loader_animated)
+												.resize(120, 120)
+												.centerCrop()
+												.error(R.drawable.ic_close)
+												.into(attachmentView);
+
+										viewBinding.attachmentsView.addView(materialCardView);
+										attachmentView.setLayoutParams(paramsAttachment);
+										materialCardView.addView(attachmentView);
+
+										int finalI1 = i;
+										materialCardView.setOnClickListener(
+												v1 -> {
+													CustomImageViewDialogBinding
+															imageViewDialogBinding =
+																	CustomImageViewDialogBinding
+																			.inflate(
+																					LayoutInflater
+																							.from(
+																									ctx));
+													View view = imageViewDialogBinding.getRoot();
+													materialAlertDialogBuilder.setView(view);
+
+													materialAlertDialogBuilder.setNeutralButton(
+															getString(R.string.close), null);
+													PicassoService.getInstance(ctx)
+															.get()
+															.load(
+																	UrlHelper.appendPath(
+																					getAccount()
+																							.getAccount()
+																							.getInstanceUrl(),
+																					"/attachments/")
+																			+ attachment
+																					.get(finalI1)
+																					.getUuid())
+															.placeholder(R.drawable.loader_animated)
+															.resize(0, 1600)
+															.onlyScaleDown()
+															.centerCrop()
+															.error(R.drawable.ic_close)
+															.into(imageViewDialogBinding.imageView);
+													materialAlertDialogBuilder.create().show();
+												});
+
+									} else {
+
+										attachmentView.setImageResource(
+												R.drawable.ic_file_download);
+										attachmentView.setPadding(4, 4, 4, 4);
+										viewBinding.attachmentsView.addView(materialCardView);
+										attachmentView.setLayoutParams(paramsAttachment);
+										materialCardView.addView(attachmentView);
+
+										int finalI = i;
+										materialCardView.setOnClickListener(
+												v1 -> {
+													DownloadService downloadService =
+															new DownloadService();
+													downloadService.downloadFile(
+															ctx,
+															UrlHelper.appendPath(
+																			getAccount()
+																					.getAccount()
+																					.getInstanceUrl(),
+																			"/attachments/")
+																	+ attachment
+																			.get(finalI)
+																			.getUuid(),
+															attachment.get(finalI).getName());
+												});
+									}
+								}
+							} else {
+								viewBinding.attachmentFrame.setVisibility(View.GONE);
+							}
+						}
+					}
+
+					@Override
+					public void onFailure(
+							@NonNull Call<List<Attachment>> call, @NonNull Throwable t) {}
 				});
 	}
 }
