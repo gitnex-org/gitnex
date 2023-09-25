@@ -103,7 +103,7 @@
                     android:textColor="?attr/inputTextColor"
                     android:textColorHighlight="?attr/hintColor"
                     android:textColorHint="?attr/hintColor"
-                    android:textSize="@dimen/dimen16sp"/>
+                    android:textSize="@dimen/dimen16sp" />
 
             </com.google.android.material.textfield.TextInputLayout>
 
@@ -133,7 +133,7 @@
                     android:textColor="?attr/inputTextColor"
                     android:textColorHighlight="?attr/hintColor"
                     android:textColorHint="?attr/hintColor"
-                    android:textSize="@dimen/dimen16sp"/>
+                    android:textSize="@dimen/dimen16sp" />
 
             </com.google.android.material.textfield.TextInputLayout>
 
@@ -145,7 +145,7 @@
                 android:checked="true"
                 android:text="@string/newRepoPrivateCopy"
                 android:textColor="?attr/primaryTextColor"
-                android:textSize="@dimen/dimen16sp"/>
+                android:textSize="@dimen/dimen16sp" />
 
             <com.google.android.material.button.MaterialButton
                 android:id="@+id/createNewRepoButton"
@@ -161,5 +161,3 @@
     </ScrollView>
 
 </LinearLayout>
-
-

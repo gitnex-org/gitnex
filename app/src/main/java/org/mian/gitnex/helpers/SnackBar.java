@@ -15,6 +15,7 @@ public class SnackBar {
 		Snackbar snackBar = Snackbar.make(view, message, Snackbar.LENGTH_LONG);
 		View sbView = snackBar.getView();
 		TextView textView = sbView.findViewById(R.id.snackbar_text);
+		snackBar.setBackgroundTint(context.getColor(R.color.material_dynamic_neutral0));
 		textView.setTextColor(context.getColor(R.color.colorWhite));
 		snackBar.show();
 	}
@@ -23,7 +24,8 @@ public class SnackBar {
 		Snackbar snackBar = Snackbar.make(view, message, Snackbar.LENGTH_LONG);
 		View sbView = snackBar.getView();
 		TextView textView = sbView.findViewById(R.id.snackbar_text);
-		textView.setTextColor(context.getColor(R.color.colorLightGreen));
+		snackBar.setBackgroundTint(context.getColor(R.color.material_dynamic_neutral0));
+		textView.setTextColor(context.getColor(R.color.colorWhite));
 		snackBar.show();
 	}
 
@@ -31,6 +33,7 @@ public class SnackBar {
 		Snackbar snackBar = Snackbar.make(view, message, Snackbar.LENGTH_LONG);
 		View sbView = snackBar.getView();
 		TextView textView = sbView.findViewById(R.id.snackbar_text);
+		snackBar.setBackgroundTint(context.getColor(R.color.material_dynamic_neutral0));
 		textView.setTextColor(context.getColor(R.color.lightYellow));
 		snackBar.show();
 	}
@@ -39,7 +42,8 @@ public class SnackBar {
 		Snackbar snackBar = Snackbar.make(view, message, Snackbar.LENGTH_LONG);
 		View sbView = snackBar.getView();
 		TextView textView = sbView.findViewById(R.id.snackbar_text);
-		textView.setTextColor(context.getColor(R.color.darkRed));
+		snackBar.setBackgroundTint(context.getColor(R.color.material_dynamic_neutral0));
+		textView.setTextColor(context.getColor(R.color.materialcolorpicker__red));
 		snackBar.show();
 	}
 }

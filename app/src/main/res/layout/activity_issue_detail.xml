@@ -340,11 +340,10 @@
                                 android:visibility="gone"
                                 android:orientation="vertical">
 
-                                <View
+                                <com.google.android.material.divider.MaterialDivider
                                     android:layout_width="match_parent"
-                                    android:layout_height="@dimen/dimen1dp"
-                                    android:layout_marginTop="@dimen/dimen4dp"
-                                    android:background="?attr/dividerColor" />
+                                    android:layout_height="wrap_content"
+                                    android:layout_marginTop="@dimen/dimen4dp" />
 
                                 <LinearLayout
                                     android:id="@+id/attachmentsView"
