@@ -5,7 +5,6 @@
 
     <item
         android:id="@+id/save"
-        android:icon="@drawable/ic_save"
         android:orderInCategory="1"
         android:title="@string/saveButton"
         app:showAsAction="ifRoom"/>
