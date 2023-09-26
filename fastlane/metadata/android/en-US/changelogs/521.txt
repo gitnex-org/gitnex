@@ -1,0 +1,22 @@
+5.2.0
+
+🎉 Features 🎉
+- Dashboard (BETA)
+- Open commits directly from links
+- Search stargazers and watchers
+- Profile repository view in user profile
+- New account settings screen
+- Watched repositories
+- SSH keys list
+- Codeberg theme
+- Themed icon for Android 13
+
+5.2.1
+
+🐛 Bug Fixes 🐛
+- Fix tabs animation (fade out)
+- Fix org screen if user is not a member
+- Fix showing 504 error code on app startup
+- Fix dynamic light theme dialogs
+
+Release Posts: https://najigram.com/category/gitnex

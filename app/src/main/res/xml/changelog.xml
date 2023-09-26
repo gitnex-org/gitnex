@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <changelog>
 
-    <release version="5.2.0" versioncode="520">
+    <release version="5.2.1" versioncode="521">
         <change>New: Dashboard (BETA) (1.20 and above)</change>
         <change>New: Open commits directly from links</change>
         <change>New: Search stargazers and watchers</change>
@@ -17,6 +17,10 @@
         <change>Bugfix: Fix repo name does not match crash when saving repo settings</change>
         <change>Bugfix: Fix repository forks pagination</change>
         <change>Bugfix: Fix unwatch repository</change>
+        <change>Bugfix: Fix tabs animation (fade out)</change>
+        <change>Bugfix: Fix org screen if user is not a member</change>
+        <change>Bugfix: Fix showing 504 error code on app startup</change>
+        <change>Bugfix: Fix dynamic light theme dialogs</change>
     </release>
 
 </changelog>
