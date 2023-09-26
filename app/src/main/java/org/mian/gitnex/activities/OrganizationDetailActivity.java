@@ -15,6 +15,8 @@ import androidx.viewpager2.adapter.FragmentStateAdapter;
 import androidx.viewpager2.widget.ViewPager2;
 import com.google.android.material.tabs.TabLayoutMediator;
 import io.mikael.urlbuilder.UrlBuilder;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Objects;
 import org.gitnex.tea4j.v2.models.OrganizationPermissions;
 import org.mian.gitnex.R;
@@ -129,25 +131,24 @@ public class OrganizationDetailActivity extends BaseActivity implements BottomSh
 		ViewPager2Transformers.returnSelectedTransformer(
 				viewPager, tinyDB.getInt("fragmentTabsAnimationId", 0));
 
-		String[] tabTitles = {
-			getResources().getString(R.string.tabTextInfo),
-			getResources().getString(R.string.navRepos),
-			getResources().getString(R.string.newIssueLabelsTitle),
-			getResources().getString(R.string.orgTabTeams),
-			getResources().getString(R.string.orgTabMembers)
-		};
+		List<String> tabsList = new ArrayList<>();
+		tabsList.add(getResources().getString(R.string.tabTextInfo));
+		tabsList.add(getResources().getString(R.string.navRepos));
+		tabsList.add(getResources().getString(R.string.newIssueLabelsTitle));
+		tabsList.add(getResources().getString(R.string.orgTabTeams));
+		tabsList.add(getResources().getString(R.string.orgTabMembers));
 
 		if (!isMember) {
-			activityOrgDetailBinding.tabs.removeTabAt(3);
+			tabsList.remove(3);
 		}
 
 		new TabLayoutMediator(
 						activityOrgDetailBinding.tabs,
 						viewPager,
-						(tab, position) -> tab.setText(tabTitles[position]))
+						(tab, position) -> tab.setText(tabsList.get(position)))
 				.attach();
 
-		for (int j = 0; j < tabTitles.length; j++) {
+		for (int j = 0; j < tabsList.size(); j++) {
 
 			ViewGroup vgTab = (ViewGroup) vg.getChildAt(j);
 			int tabChildCount = vgTab.getChildCount();
