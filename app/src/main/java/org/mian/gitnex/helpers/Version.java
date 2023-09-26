@@ -36,7 +36,7 @@ public class Version {
 			return false;
 		}
 		final Pattern patternValid =
-				Pattern.compile("^[v,V]?(\\d+)+(\\.(\\d+))*([_,\\-,+][\\w,\\d,_,\\-,+]*)?$");
+				Pattern.compile("^[vV]?(\\d+)+(\\.(\\d+))*([_\\-+][\\w\\-+\\.]*)?$");
 		return value.equals("main") || patternValid.matcher(value).find();
 	}
 
