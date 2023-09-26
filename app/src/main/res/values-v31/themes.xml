@@ -44,7 +44,7 @@
         <item name="isDark">1</item>
     </style>
 
-    <style name="AppThemeLightDynamicColors" parent="Theme.Material3.Dark.NoActionBar">
+    <style name="AppThemeLightDynamicColors" parent="Theme.Material3.Light.NoActionBar">
         <item name="android:statusBarColor">@android:color/system_neutral1_10</item>
         <item name="android:windowLightStatusBar">true</item>
         <item name="android:typeface">monospace</item>

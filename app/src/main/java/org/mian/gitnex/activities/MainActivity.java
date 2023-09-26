@@ -521,7 +521,24 @@ public class MainActivity extends BaseActivity
 			}
 		}
 
-		loadUserInfo();
+		handler.postDelayed(
+				() -> {
+					boolean connToInternet = AppUtil.hasNetworkConnection(appCtx);
+					if (!connToInternet) {
+
+						if (!noConnection) {
+							Toasty.error(
+									ctx, getResources().getString(R.string.checkNetConnection));
+						}
+						noConnection = true;
+					} else {
+
+						loadUserInfo();
+						noConnection = false;
+					}
+				},
+				750);
+
 		handler.postDelayed(
 				() -> {
 					boolean connToInternet = AppUtil.hasNetworkConnection(appCtx);
@@ -901,7 +918,7 @@ public class MainActivity extends BaseActivity
 							String toastError =
 									getResources()
 											.getString(R.string.genericApiError, response.code());
-							Toasty.error(ctx, toastError);
+							// Toasty.error(ctx, toastError);
 						}
 					}
 
