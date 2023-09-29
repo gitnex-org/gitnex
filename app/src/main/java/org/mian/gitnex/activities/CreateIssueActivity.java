@@ -1,17 +1,28 @@
 package org.mian.gitnex.activities;
 
 import android.annotation.SuppressLint;
+import android.app.Activity;
+import android.content.Context;
+import android.content.Intent;
+import android.net.Uri;
 import android.os.Bundle;
 import android.os.Handler;
 import android.view.LayoutInflater;
 import android.view.MotionEvent;
 import android.view.View;
+import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 import android.widget.TextView;
+import androidx.activity.result.ActivityResultLauncher;
+import androidx.activity.result.contract.ActivityResultContracts;
 import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import com.google.android.material.bottomsheet.BottomSheetDialogFragment;
 import com.google.android.material.datepicker.MaterialDatePicker;
 import com.google.android.material.dialog.MaterialAlertDialogBuilder;
 import com.vdurmont.emoji.EmojiParser;
+import java.io.File;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
@@ -21,6 +32,9 @@ import java.util.List;
 import java.util.Locale;
 import java.util.Objects;
 import java.util.TimeZone;
+import okhttp3.MediaType;
+import okhttp3.RequestBody;
+import org.gitnex.tea4j.v2.models.Attachment;
 import org.gitnex.tea4j.v2.models.CreateIssueOption;
 import org.gitnex.tea4j.v2.models.Issue;
 import org.gitnex.tea4j.v2.models.Label;
@@ -30,9 +44,11 @@ import org.mian.gitnex.R;
 import org.mian.gitnex.actions.AssigneesActions;
 import org.mian.gitnex.actions.LabelsActions;
 import org.mian.gitnex.adapters.AssigneesListAdapter;
+import org.mian.gitnex.adapters.AttachmentsAdapter;
 import org.mian.gitnex.adapters.LabelsListAdapter;
 import org.mian.gitnex.clients.RetrofitClient;
 import org.mian.gitnex.databinding.ActivityCreateIssueBinding;
+import org.mian.gitnex.databinding.BottomSheetAttachmentsBinding;
 import org.mian.gitnex.databinding.CustomAssigneesSelectionDialogBinding;
 import org.mian.gitnex.databinding.CustomLabelsSelectionDialogBinding;
 import org.mian.gitnex.fragments.IssuesFragment;
@@ -40,7 +56,10 @@ import org.mian.gitnex.helpers.AlertDialogs;
 import org.mian.gitnex.helpers.Constants;
 import org.mian.gitnex.helpers.Markdown;
 import org.mian.gitnex.helpers.SnackBar;
+import org.mian.gitnex.helpers.attachments.AttachmentUtils;
+import org.mian.gitnex.helpers.attachments.AttachmentsModel;
 import org.mian.gitnex.helpers.contexts.RepositoryContext;
+import org.mian.gitnex.structs.BottomSheetListener;
 import retrofit2.Call;
 import retrofit2.Callback;
 
@@ -49,7 +68,9 @@ import retrofit2.Callback;
  */
 public class CreateIssueActivity extends BaseActivity
 		implements LabelsListAdapter.LabelsListAdapterListener,
-				AssigneesListAdapter.AssigneesListAdapterListener {
+				AssigneesListAdapter.AssigneesListAdapterListener,
+				BottomSheetListener,
+				AttachmentsAdapter.AttachmentsReceiverListener {
 
 	private final List<Label> labelsList = new ArrayList<>();
 	private final LinkedHashMap<String, Milestone> milestonesList = new LinkedHashMap<>();
@@ -64,6 +85,9 @@ public class CreateIssueActivity extends BaseActivity
 	private List<String> assigneesListData = new ArrayList<>();
 	private boolean renderMd = false;
 	private RepositoryContext repositoryContext;
+	private static List<AttachmentsModel> attachmentsList;
+	private AttachmentsAdapter attachmentsAdapter;
+	private static final List<Uri> contentUri = new ArrayList<>();
 
 	@SuppressLint("ClickableViewAccessibility")
 	@Override
@@ -82,6 +106,11 @@ public class CreateIssueActivity extends BaseActivity
 		repository = RepositoryContext.fromIntent(getIntent());
 
 		int resultLimit = Constants.getCurrentResultLimit(ctx);
+
+		attachmentsList = new ArrayList<>();
+		attachmentsAdapter = new AttachmentsAdapter(attachmentsList, ctx);
+
+		AttachmentsAdapter.setAttachmentsReceiveListener(this);
 
 		viewBinding.newIssueDescription.setOnTouchListener(
 				(touchView, motionEvent) -> {
@@ -103,11 +132,13 @@ public class CreateIssueActivity extends BaseActivity
 		showDatePickerDialog();
 
 		viewBinding.newIssueDueDateLayout.setEndIconOnClickListener(
-				view -> {
-					viewBinding.newIssueDueDate.setText("");
-				});
+				view -> viewBinding.newIssueDueDate.setText(""));
 
-		viewBinding.topAppBar.setNavigationOnClickListener(v -> finish());
+		viewBinding.topAppBar.setNavigationOnClickListener(
+				v -> {
+					finish();
+					contentUri.clear();
+				});
 
 		viewBinding.topAppBar.setOnMenuItemClickListener(
 				menuItem -> {
@@ -139,6 +170,9 @@ public class CreateIssueActivity extends BaseActivity
 					} else if (id == R.id.create) {
 						processNewIssue();
 						return true;
+					} else if (id == R.id.attachment) {
+						checkForAttachments();
+						return true;
 					} else {
 						return super.onOptionsItemSelected(menuItem);
 					}
@@ -157,6 +191,154 @@ public class CreateIssueActivity extends BaseActivity
 			viewBinding.newIssueLabelsLayout.setVisibility(View.GONE);
 			viewBinding.newIssueDueDateLayout.setVisibility(View.GONE);
 		}
+	}
+
+	ActivityResultLauncher<Intent> startActivityForResult =
+			registerForActivityResult(
+					new ActivityResultContracts.StartActivityForResult(),
+					result -> {
+						if (result.getResultCode() == Activity.RESULT_OK) {
+							Intent data = result.getData();
+							assert data != null;
+							contentUri.add(data.getData());
+							attachmentsList.add(
+									new AttachmentsModel(
+											AttachmentUtils.queryName(ctx, data.getData()),
+											data.getData()));
+							attachmentsAdapter.updateList(attachmentsList);
+						}
+					});
+
+	public void onDestroy() {
+		AttachmentsAdapter.setAttachmentsReceiveListener(null);
+		super.onDestroy();
+	}
+
+	@Override
+	public void setAttachmentsData(Uri filename) {
+		contentUri.remove(filename);
+	}
+
+	public class BottomSheetAttachments extends BottomSheetDialogFragment {
+
+		private BottomSheetListener bmListener;
+
+		@Nullable @Override
+		public View onCreateView(
+				@NonNull LayoutInflater inflater,
+				@Nullable ViewGroup container,
+				@Nullable Bundle savedInstanceState) {
+
+			BottomSheetAttachmentsBinding bottomSheetAttachmentsBinding =
+					BottomSheetAttachmentsBinding.inflate(inflater, container, false);
+
+			bottomSheetAttachmentsBinding.addAttachment.setOnClickListener(
+					v1 -> bmListener.onButtonClicked("addAttachment"));
+
+			bottomSheetAttachmentsBinding.recyclerViewAttachments.setHasFixedSize(true);
+			bottomSheetAttachmentsBinding.recyclerViewAttachments.setLayoutManager(
+					new LinearLayoutManager(getContext()));
+			bottomSheetAttachmentsBinding.recyclerViewAttachments.setAdapter(attachmentsAdapter);
+
+			return bottomSheetAttachmentsBinding.getRoot();
+		}
+
+		@Override
+		public void onAttach(@NonNull Context context) {
+
+			super.onAttach(context);
+
+			try {
+				bmListener = (BottomSheetListener) context;
+			} catch (ClassCastException e) {
+				throw new ClassCastException(context + " must implement BottomSheetListener");
+			}
+		}
+	}
+
+	@Override
+	public void onButtonClicked(String text) {
+
+		if ("addAttachment".equals(text)) {
+			openFileAttachmentActivity();
+		}
+	}
+
+	private void checkForAttachments() {
+
+		if (contentUri.size() > 0) {
+			BottomSheetAttachments bottomSheet = new BottomSheetAttachments();
+			bottomSheet.show(getSupportFragmentManager(), "attachmentsBottomSheet");
+		} else {
+			openFileAttachmentActivity();
+		}
+	}
+
+	private void openFileAttachmentActivity() {
+
+		Intent data = new Intent(Intent.ACTION_GET_CONTENT);
+		data.addCategory(Intent.CATEGORY_OPENABLE);
+		data.setType("*/*");
+		Intent intent = Intent.createChooser(data, "Choose a file");
+		startActivityForResult.launch(intent);
+	}
+
+	private void processAttachments(long issueIndex) {
+
+		for (int i = 0; i < attachmentsAdapter.getItemCount(); i++) {
+
+			File file = AttachmentUtils.getFile(ctx, contentUri.get(i));
+
+			RequestBody requestFile =
+					RequestBody.create(
+							file, MediaType.parse(getContentResolver().getType(contentUri.get(i))));
+
+			uploadAttachments(requestFile, issueIndex, file.getName());
+		}
+	}
+
+	private void uploadAttachments(RequestBody requestFile, long issueIndex, String filename1) {
+
+		Call<Attachment> call3 =
+				RetrofitClient.getApiInterface(ctx)
+						.issueCreateIssueAttachment(
+								requestFile,
+								repository.getOwner(),
+								repository.getName(),
+								issueIndex,
+								filename1);
+
+		call3.enqueue(
+				new Callback<>() {
+
+					@Override
+					public void onResponse(
+							@NonNull Call<Attachment> call,
+							@NonNull retrofit2.Response<Attachment> response2) {
+
+						if (response2.code() == 201) {
+							new Handler().postDelayed(() -> finish(), 3000);
+						} else if (response2.code() == 401) {
+
+							AlertDialogs.authorizationTokenRevokedDialog(ctx);
+						} else {
+
+							SnackBar.error(
+									ctx,
+									findViewById(android.R.id.content),
+									getString(R.string.attachmentsSaveError));
+						}
+					}
+
+					@Override
+					public void onFailure(@NonNull Call<Attachment> call, @NonNull Throwable t) {
+
+						SnackBar.error(
+								ctx,
+								findViewById(android.R.id.content),
+								getString(R.string.genericServerResponseError));
+					}
+				});
 	}
 
 	private void showDatePickerDialog() {
@@ -324,7 +506,14 @@ public class CreateIssueActivity extends BaseActivity
 									findViewById(android.R.id.content),
 									getString(R.string.issueCreated));
 
-							new Handler().postDelayed(() -> finish(), 3000);
+							assert response2.body() != null;
+
+							if (contentUri.size() > 0) {
+								processAttachments(response2.body().getNumber());
+								contentUri.clear();
+							} else {
+								new Handler().postDelayed(() -> finish(), 3000);
+							}
 
 						} else if (response2.code() == 401) {
 

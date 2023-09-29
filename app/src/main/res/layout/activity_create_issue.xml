@@ -27,7 +27,7 @@
                  android:layout_height="?attr/actionBarSize"
                  app:title="@string/pageTitleCreateNewIssue"
                  app:layout_collapseMode="pin"
-                 app:menu="@menu/create_menu"
+                 app:menu="@menu/create_issue_menu"
                  app:navigationIcon="@drawable/ic_close" />
 
         </com.google.android.material.appbar.CollapsingToolbarLayout>

@@ -875,4 +875,8 @@
     <string name="lang_percentage" translatable="false">%s%%</string>
 
     <string name="dashboard">Dashboard</string>
+
+    <string name="attachment">Attachment</string>
+    <string name="attachments">Attachments</string>
+    <string name="attachmentsSaveError">An issue was created but cannot process attachments at this time. Check the server logs for more details.</string>
 </resources>
