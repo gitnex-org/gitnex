@@ -2,7 +2,6 @@ package org.mian.gitnex.activities;
 
 import android.annotation.SuppressLint;
 import android.app.Activity;
-import android.content.Context;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
@@ -10,15 +9,13 @@ import android.os.Handler;
 import android.view.LayoutInflater;
 import android.view.MotionEvent;
 import android.view.View;
-import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 import android.widget.TextView;
 import androidx.activity.result.ActivityResultLauncher;
 import androidx.activity.result.contract.ActivityResultContracts;
 import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
 import androidx.recyclerview.widget.LinearLayoutManager;
-import com.google.android.material.bottomsheet.BottomSheetDialogFragment;
+import com.google.android.material.bottomsheet.BottomSheetDialog;
 import com.google.android.material.datepicker.MaterialDatePicker;
 import com.google.android.material.dialog.MaterialAlertDialogBuilder;
 import com.vdurmont.emoji.EmojiParser;
@@ -59,7 +56,6 @@ import org.mian.gitnex.helpers.SnackBar;
 import org.mian.gitnex.helpers.attachments.AttachmentUtils;
 import org.mian.gitnex.helpers.attachments.AttachmentsModel;
 import org.mian.gitnex.helpers.contexts.RepositoryContext;
-import org.mian.gitnex.structs.BottomSheetListener;
 import retrofit2.Call;
 import retrofit2.Callback;
 
@@ -69,7 +65,6 @@ import retrofit2.Callback;
 public class CreateIssueActivity extends BaseActivity
 		implements LabelsListAdapter.LabelsListAdapterListener,
 				AssigneesListAdapter.AssigneesListAdapterListener,
-				BottomSheetListener,
 				AttachmentsAdapter.AttachmentsReceiverListener {
 
 	private final List<Label> labelsList = new ArrayList<>();
@@ -219,56 +214,25 @@ public class CreateIssueActivity extends BaseActivity
 		contentUri.remove(filename);
 	}
 
-	public class BottomSheetAttachments extends BottomSheetDialogFragment {
-
-		private BottomSheetListener bmListener;
-
-		@Nullable @Override
-		public View onCreateView(
-				@NonNull LayoutInflater inflater,
-				@Nullable ViewGroup container,
-				@Nullable Bundle savedInstanceState) {
-
-			BottomSheetAttachmentsBinding bottomSheetAttachmentsBinding =
-					BottomSheetAttachmentsBinding.inflate(inflater, container, false);
-
-			bottomSheetAttachmentsBinding.addAttachment.setOnClickListener(
-					v1 -> bmListener.onButtonClicked("addAttachment"));
-
-			bottomSheetAttachmentsBinding.recyclerViewAttachments.setHasFixedSize(true);
-			bottomSheetAttachmentsBinding.recyclerViewAttachments.setLayoutManager(
-					new LinearLayoutManager(getContext()));
-			bottomSheetAttachmentsBinding.recyclerViewAttachments.setAdapter(attachmentsAdapter);
-
-			return bottomSheetAttachmentsBinding.getRoot();
-		}
-
-		@Override
-		public void onAttach(@NonNull Context context) {
-
-			super.onAttach(context);
-
-			try {
-				bmListener = (BottomSheetListener) context;
-			} catch (ClassCastException e) {
-				throw new ClassCastException(context + " must implement BottomSheetListener");
-			}
-		}
-	}
-
-	@Override
-	public void onButtonClicked(String text) {
-
-		if ("addAttachment".equals(text)) {
-			openFileAttachmentActivity();
-		}
-	}
-
 	private void checkForAttachments() {
 
 		if (contentUri.size() > 0) {
-			BottomSheetAttachments bottomSheet = new BottomSheetAttachments();
-			bottomSheet.show(getSupportFragmentManager(), "attachmentsBottomSheet");
+
+			BottomSheetAttachmentsBinding bottomSheetAttachmentsBinding =
+					BottomSheetAttachmentsBinding.inflate(getLayoutInflater());
+
+			BottomSheetDialog bottomSheetDialog = new BottomSheetDialog(ctx);
+
+			bottomSheetAttachmentsBinding.addAttachment.setOnClickListener(
+					v1 -> openFileAttachmentActivity());
+
+			bottomSheetAttachmentsBinding.recyclerViewAttachments.setHasFixedSize(true);
+			bottomSheetAttachmentsBinding.recyclerViewAttachments.setLayoutManager(
+					new LinearLayoutManager(ctx));
+			bottomSheetAttachmentsBinding.recyclerViewAttachments.setAdapter(attachmentsAdapter);
+
+			bottomSheetDialog.setContentView(bottomSheetAttachmentsBinding.getRoot());
+			bottomSheetDialog.show();
 		} else {
 			openFileAttachmentActivity();
 		}
@@ -285,7 +249,7 @@ public class CreateIssueActivity extends BaseActivity
 
 	private void processAttachments(long issueIndex) {
 
-		for (int i = 0; i < attachmentsAdapter.getItemCount(); i++) {
+		for (int i = 0; i < contentUri.size(); i++) {
 
 			File file = AttachmentUtils.getFile(ctx, contentUri.get(i));
 
