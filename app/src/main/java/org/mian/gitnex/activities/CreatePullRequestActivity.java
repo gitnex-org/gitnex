@@ -1,6 +1,9 @@
 package org.mian.gitnex.activities;
 
 import android.annotation.SuppressLint;
+import android.app.Activity;
+import android.content.Intent;
+import android.net.Uri;
 import android.os.Bundle;
 import android.os.Handler;
 import android.view.LayoutInflater;
@@ -8,10 +11,15 @@ import android.view.MotionEvent;
 import android.view.View;
 import android.widget.ArrayAdapter;
 import android.widget.TextView;
+import androidx.activity.result.ActivityResultLauncher;
+import androidx.activity.result.contract.ActivityResultContracts;
 import androidx.annotation.NonNull;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import com.google.android.material.bottomsheet.BottomSheetDialog;
 import com.google.android.material.datepicker.MaterialDatePicker;
 import com.google.android.material.dialog.MaterialAlertDialogBuilder;
 import com.vdurmont.emoji.EmojiParser;
+import java.io.File;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
@@ -21,6 +29,9 @@ import java.util.List;
 import java.util.Locale;
 import java.util.Objects;
 import java.util.TimeZone;
+import okhttp3.MediaType;
+import okhttp3.RequestBody;
+import org.gitnex.tea4j.v2.models.Attachment;
 import org.gitnex.tea4j.v2.models.Branch;
 import org.gitnex.tea4j.v2.models.CreatePullRequestOption;
 import org.gitnex.tea4j.v2.models.Label;
@@ -28,14 +39,19 @@ import org.gitnex.tea4j.v2.models.Milestone;
 import org.gitnex.tea4j.v2.models.PullRequest;
 import org.mian.gitnex.R;
 import org.mian.gitnex.actions.LabelsActions;
+import org.mian.gitnex.adapters.AttachmentsAdapter;
 import org.mian.gitnex.adapters.LabelsListAdapter;
 import org.mian.gitnex.clients.RetrofitClient;
 import org.mian.gitnex.databinding.ActivityCreatePrBinding;
+import org.mian.gitnex.databinding.BottomSheetAttachmentsBinding;
 import org.mian.gitnex.databinding.CustomLabelsSelectionDialogBinding;
 import org.mian.gitnex.fragments.PullRequestsFragment;
+import org.mian.gitnex.helpers.AlertDialogs;
 import org.mian.gitnex.helpers.Constants;
 import org.mian.gitnex.helpers.Markdown;
 import org.mian.gitnex.helpers.SnackBar;
+import org.mian.gitnex.helpers.attachments.AttachmentUtils;
+import org.mian.gitnex.helpers.attachments.AttachmentsModel;
 import org.mian.gitnex.helpers.contexts.RepositoryContext;
 import retrofit2.Call;
 import retrofit2.Callback;
@@ -44,7 +60,8 @@ import retrofit2.Callback;
  * @author M M Arif
  */
 public class CreatePullRequestActivity extends BaseActivity
-		implements LabelsListAdapter.LabelsListAdapterListener {
+		implements LabelsListAdapter.LabelsListAdapterListener,
+				AttachmentsAdapter.AttachmentsReceiverListener {
 
 	private final List<String> assignees = new ArrayList<>();
 	LinkedHashMap<String, Milestone> milestonesList = new LinkedHashMap<>();
@@ -58,6 +75,9 @@ public class CreatePullRequestActivity extends BaseActivity
 	private MaterialAlertDialogBuilder materialAlertDialogBuilder;
 	private boolean renderMd = false;
 	private RepositoryContext repositoryContext;
+	private static List<AttachmentsModel> attachmentsList;
+	private AttachmentsAdapter attachmentsAdapter;
+	private static final List<Uri> contentUri = new ArrayList<>();
 
 	@SuppressLint("ClickableViewAccessibility")
 	@Override
@@ -74,6 +94,11 @@ public class CreatePullRequestActivity extends BaseActivity
 				new MaterialAlertDialogBuilder(ctx, R.style.ThemeOverlay_Material3_Dialog_Alert);
 
 		repository = RepositoryContext.fromIntent(getIntent());
+
+		attachmentsList = new ArrayList<>();
+		attachmentsAdapter = new AttachmentsAdapter(attachmentsList, ctx);
+
+		AttachmentsAdapter.setAttachmentsReceiveListener(this);
 
 		int resultLimit = Constants.getCurrentResultLimit(ctx);
 
@@ -97,7 +122,7 @@ public class CreatePullRequestActivity extends BaseActivity
 		viewBinding.topAppBar.setNavigationOnClickListener(
 				v -> {
 					finish();
-					// contentUri.clear();
+					contentUri.clear();
 				});
 
 		viewBinding.topAppBar.setOnMenuItemClickListener(
@@ -128,9 +153,9 @@ public class CreatePullRequestActivity extends BaseActivity
 					} else if (id == R.id.create) {
 						processPullRequest();
 						return true;
-						/*} else if (id == R.id.attachment) {
+					} else if (id == R.id.attachment) {
 						checkForAttachments();
-						return true;*/
+						return true;
 					} else {
 						return super.onOptionsItemSelected(menuItem);
 					}
@@ -146,6 +171,123 @@ public class CreatePullRequestActivity extends BaseActivity
 			viewBinding.prLabelsLayout.setVisibility(View.GONE);
 			viewBinding.milestonesSpinnerLayout.setVisibility(View.GONE);
 		}
+	}
+
+	ActivityResultLauncher<Intent> startActivityForResult =
+			registerForActivityResult(
+					new ActivityResultContracts.StartActivityForResult(),
+					result -> {
+						if (result.getResultCode() == Activity.RESULT_OK) {
+							Intent data = result.getData();
+							assert data != null;
+							contentUri.add(data.getData());
+							attachmentsList.add(
+									new AttachmentsModel(
+											AttachmentUtils.queryName(ctx, data.getData()),
+											data.getData()));
+							attachmentsAdapter.updateList(attachmentsList);
+						}
+					});
+
+	public void onDestroy() {
+		AttachmentsAdapter.setAttachmentsReceiveListener(null);
+		super.onDestroy();
+	}
+
+	@Override
+	public void setAttachmentsData(Uri filename) {
+		contentUri.remove(filename);
+	}
+
+	private void checkForAttachments() {
+
+		if (contentUri.size() > 0) {
+
+			BottomSheetAttachmentsBinding bottomSheetAttachmentsBinding =
+					BottomSheetAttachmentsBinding.inflate(getLayoutInflater());
+
+			BottomSheetDialog bottomSheetDialog = new BottomSheetDialog(ctx);
+
+			bottomSheetAttachmentsBinding.addAttachment.setOnClickListener(
+					v1 -> openFileAttachmentActivity());
+
+			bottomSheetAttachmentsBinding.recyclerViewAttachments.setHasFixedSize(true);
+			bottomSheetAttachmentsBinding.recyclerViewAttachments.setLayoutManager(
+					new LinearLayoutManager(ctx));
+			bottomSheetAttachmentsBinding.recyclerViewAttachments.setAdapter(attachmentsAdapter);
+
+			bottomSheetDialog.setContentView(bottomSheetAttachmentsBinding.getRoot());
+			bottomSheetDialog.show();
+		} else {
+			openFileAttachmentActivity();
+		}
+	}
+
+	private void openFileAttachmentActivity() {
+
+		Intent data = new Intent(Intent.ACTION_GET_CONTENT);
+		data.addCategory(Intent.CATEGORY_OPENABLE);
+		data.setType("*/*");
+		Intent intent = Intent.createChooser(data, "Choose a file");
+		startActivityForResult.launch(intent);
+	}
+
+	private void processAttachments(long issueIndex) {
+
+		for (int i = 0; i < contentUri.size(); i++) {
+
+			File file = AttachmentUtils.getFile(ctx, contentUri.get(i));
+
+			RequestBody requestFile =
+					RequestBody.create(
+							file, MediaType.parse(getContentResolver().getType(contentUri.get(i))));
+
+			uploadAttachments(requestFile, issueIndex, file.getName());
+		}
+	}
+
+	private void uploadAttachments(RequestBody requestFile, long issueIndex, String filename1) {
+
+		Call<Attachment> call3 =
+				RetrofitClient.getApiInterface(ctx)
+						.issueCreateIssueAttachment(
+								requestFile,
+								repository.getOwner(),
+								repository.getName(),
+								issueIndex,
+								filename1);
+
+		call3.enqueue(
+				new Callback<>() {
+
+					@Override
+					public void onResponse(
+							@NonNull Call<Attachment> call,
+							@NonNull retrofit2.Response<Attachment> response2) {
+
+						if (response2.code() == 201) {
+							new Handler().postDelayed(() -> finish(), 3000);
+						} else if (response2.code() == 401) {
+
+							AlertDialogs.authorizationTokenRevokedDialog(ctx);
+						} else {
+
+							SnackBar.error(
+									ctx,
+									findViewById(android.R.id.content),
+									getString(R.string.attachmentsSaveError));
+						}
+					}
+
+					@Override
+					public void onFailure(@NonNull Call<Attachment> call, @NonNull Throwable t) {
+
+						SnackBar.error(
+								ctx,
+								findViewById(android.R.id.content),
+								getString(R.string.genericServerResponseError));
+					}
+				});
 	}
 
 	private void processPullRequest() {
@@ -239,7 +381,14 @@ public class CreatePullRequestActivity extends BaseActivity
 							RepoDetailActivity.updateRepo = true;
 							PullRequestsFragment.resumePullRequests = true;
 							MainActivity.reloadRepos = true;
-							new Handler().postDelayed(() -> finish(), 3000);
+
+							if (contentUri.size() > 0) {
+								assert response.body() != null;
+								processAttachments(response.body().getNumber());
+								contentUri.clear();
+							} else {
+								new Handler().postDelayed(() -> finish(), 3000);
+							}
 						} else if (response.code() == 409
 								|| response.message().equals("Conflict")) {
 
