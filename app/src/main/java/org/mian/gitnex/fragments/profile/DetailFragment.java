@@ -13,6 +13,7 @@ import okhttp3.ResponseBody;
 import org.gitnex.tea4j.v2.models.Repository;
 import org.gitnex.tea4j.v2.models.User;
 import org.mian.gitnex.R;
+import org.mian.gitnex.activities.ProfileActivity;
 import org.mian.gitnex.clients.PicassoService;
 import org.mian.gitnex.clients.RetrofitClient;
 import org.mian.gitnex.databinding.FragmentProfileDetailBinding;
@@ -69,6 +70,16 @@ public class DetailFragment extends Fragment {
 		getProfileDetail(username);
 		getProfileRepository(username);
 
+		binding.userFollowersCount.setOnClickListener(
+				metaFollowersFrame ->
+						((ProfileActivity) requireActivity()).viewPager.setCurrentItem(4));
+		binding.userFollowingCount.setOnClickListener(
+				metaFollowingFrame ->
+						((ProfileActivity) requireActivity()).viewPager.setCurrentItem(5));
+		binding.userStarredReposCount.setOnClickListener(
+				metaStarredReposFrame ->
+						((ProfileActivity) requireActivity()).viewPager.setCurrentItem(2));
+
 		return binding.getRoot();
 	}
 
@@ -106,11 +117,22 @@ public class DetailFragment extends Fragment {
 									binding.userEmail.setText(email);
 
 									binding.userFollowersCount.setText(
-											String.valueOf(response.body().getFollowersCount()));
+											String.valueOf(
+													response.body().getFollowersCount()
+															+ " "
+															+ getString(
+																	R.string.profileTabFollowers)));
 									binding.userFollowingCount.setText(
-											String.valueOf(response.body().getFollowingCount()));
+											String.valueOf(
+													response.body().getFollowingCount()
+															+ " "
+															+ getString(
+																	R.string.profileTabFollowing)));
 									binding.userStarredReposCount.setText(
-											String.valueOf(response.body().getStarredReposCount()));
+											String.valueOf(
+													response.body().getStarredReposCount()
+															+ " "
+															+ getString(R.string.starredRepos)));
 
 									String[] userLanguageCodes =
 											response.body().getLanguage().split("-");

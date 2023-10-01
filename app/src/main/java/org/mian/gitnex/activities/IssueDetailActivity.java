@@ -601,11 +601,12 @@ public class IssueDetailActivity extends BaseActivity
 
 	private void getSingleIssue(String repoOwner, String repoName, int issueIndex) {
 
+		getAttachments();
+
 		if (issue.hasIssue()) {
 			viewBinding.progressBar.setVisibility(View.GONE);
 			getSubscribed();
 			initWithIssue();
-			getAttachments();
 			return;
 		}
 

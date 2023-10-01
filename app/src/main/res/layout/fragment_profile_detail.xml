@@ -101,85 +101,39 @@
                         android:layout_marginTop="@dimen/dimen20dp"
                         android:layout_marginBottom="@dimen/dimen0dp"
                         android:orientation="horizontal"
+                        android:gravity="center"
                         android:baselineAligned="false">
 
-                        <LinearLayout
-                            android:id="@+id/followers_section"
+                        <com.google.android.material.button.MaterialButtonToggleGroup
+                            android:id="@+id/metaInfoGroup"
                             android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_weight="1"
-                            android:gravity="center"
-                            android:orientation="vertical">
+                            android:layout_height="wrap_content">
 
-                            <TextView
-                                android:layout_width="wrap_content"
-                                android:layout_height="wrap_content"
-                                android:textColor="?attr/primaryTextColor"
-                                android:text="@string/profileTabFollowers"
-                                android:textSize="@dimen/dimen14sp" />
-
-                            <TextView
+                            <Button
                                 android:id="@+id/user_followers_count"
+                                style="?attr/materialButtonToggleGroupStyle"
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
-                                android:textColor="?attr/primaryTextColor"
-                                android:paddingTop="@dimen/dimen6dp"
-                                android:textStyle="bold"
-                                android:textSize="@dimen/dimen14sp" />
+                                android:textSize="@dimen/dimen12sp"
+                                android:text="@string/profileTabFollowers" />
 
-                        </LinearLayout>
-
-                        <LinearLayout
-                            android:id="@+id/following_section"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_weight="1"
-                            android:gravity="center"
-                            android:orientation="vertical">
-
-                            <TextView
-                                android:layout_width="wrap_content"
-                                android:layout_height="wrap_content"
-                                android:textColor="?attr/primaryTextColor"
-                                android:text="@string/profileTabFollowing"
-                                android:textSize="@dimen/dimen14sp" />
-
-                            <TextView
+                            <Button
                                 android:id="@+id/user_following_count"
+                                style="?attr/materialButtonToggleGroupStyle"
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
-                                android:textColor="?attr/primaryTextColor"
-                                android:paddingTop="@dimen/dimen6dp"
-                                android:textStyle="bold"
-                                android:textSize="@dimen/dimen14sp" />
+                                android:textSize="@dimen/dimen12sp"
+                                android:text="@string/profileTabFollowing" />
 
-                        </LinearLayout>
-
-                        <LinearLayout
-                            android:id="@+id/starred_repos_section"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_weight="1"
-                            android:gravity="center"
-                            android:orientation="vertical">
-
-                            <TextView
-                                android:layout_width="wrap_content"
-                                android:layout_height="wrap_content"
-                                android:textColor="?attr/primaryTextColor"
-                                android:text="@string/starredRepos"
-                                android:textSize="@dimen/dimen14sp" />
-
-                            <TextView
+                            <Button
                                 android:id="@+id/user_starred_repos_count"
+                                style="?attr/materialButtonToggleGroupStyle"
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
-                                android:textColor="?attr/primaryTextColor"
-                                android:paddingTop="@dimen/dimen6dp"
-                                android:textStyle="bold"
-                                android:textSize="@dimen/dimen14sp" />
+                                android:textSize="@dimen/dimen12sp"
+                                android:text="@string/starredRepos" />
 
-                        </LinearLayout>
+                        </com.google.android.material.button.MaterialButtonToggleGroup>
 
                     </LinearLayout>
 

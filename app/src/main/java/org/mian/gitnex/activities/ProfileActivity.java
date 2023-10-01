@@ -41,6 +41,7 @@ public class ProfileActivity extends BaseActivity implements BottomSheetListener
 
 	private String username;
 	private boolean following;
+	public ViewPager2 viewPager;
 
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
@@ -64,7 +65,7 @@ public class ProfileActivity extends BaseActivity implements BottomSheetListener
 		Objects.requireNonNull(getSupportActionBar()).setTitle(username);
 		getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
-		ViewPager2 viewPager = findViewById(R.id.profileContainer);
+		viewPager = findViewById(R.id.profileContainer);
 		viewPager.setOffscreenPageLimit(1);
 		TabLayout tabLayout = findViewById(R.id.tabs);
 
