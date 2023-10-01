@@ -204,6 +204,15 @@
                                     app:icon="@drawable/ic_watchers"
                                     android:text="@string/repoStars" />
 
+                                <Button
+                                    android:id="@+id/repoAdditionalButton"
+                                    style="?attr/materialButtonToggleGroupStyle"
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:textSize="@dimen/dimen12sp"
+                                    app:icon="@drawable/ic_info"
+                                    android:text="@string/infoMoreInformation" />
+
                             </com.google.android.material.button.MaterialButtonToggleGroup>
 
                         </LinearLayout>
@@ -365,16 +374,6 @@
                             </LinearLayout>
 
                         </LinearLayout>
-
-                        <com.google.android.material.button.MaterialButton
-                            android:id="@+id/repoAdditionalButton"
-                            android:layout_width="match_parent"
-                            android:layout_height="@dimen/dimen54dp"
-                            android:layout_gravity="center_horizontal"
-                            android:layout_marginTop="@dimen/dimen6dp"
-                            android:layout_marginBottom="@dimen/dimen20dp"
-                            android:text="@string/infoShowMoreInformation"
-                            android:textColor="?attr/materialCardBackgroundColor"/>
 
                     </LinearLayout>
 

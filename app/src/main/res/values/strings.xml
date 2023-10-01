@@ -72,6 +72,10 @@
     <string name="newRepoDescTintCopy">Repository Description</string>
     <string name="newRepoPrivateCopy">Private</string>
     <string name="newRepoOwner">Owner</string>
+    <string name="newRepoIssueLabels">Issue Labels</string>
+    <string name="advanced" translatable="false">Advanced</string>
+    <string name="defaultText" translatable="false">Default</string>
+    <string name="setAsTemplate">Make repository a template</string>
 
     <string name="newOrgTintCopy">Organization Name</string>
     <string name="newOrgDescTintCopy">Organization Description</string>
@@ -103,6 +107,7 @@
     <string name="repoCreated">Repository created successfully</string>
     <string name="repoExistsError">Repository of this name already exists under selected Owner</string>
     <string name="repoOwnerError">Select owner for the repository</string>
+    <string name="repoDefaultBranchError">The default branch must not be empty</string>
 
     <string name="orgNameErrorEmpty">Organization name is empty</string>
     <string name="orgNameErrorInvalid">Organization name is not valid, [a&#8211;z A&#8211;Z 0&#8211;9 &#8211; _]</string>
@@ -144,7 +149,6 @@
     <string name="infoTabRepoUpdatedAt">Last Updated</string>
     <string name="infoTabRepoZero" translatable="false">0</string>
 
-    <string name="infoShowMoreInformation">Show More Information</string>
     <string name="infoMoreInformation">More Information</string>
 
     <string name="timeAtText">at</string>
@@ -524,6 +528,8 @@
     <string name="reset">Reset</string>
     <string name="beta">BETA</string>
     <string name="none">None</string>
+    <string name="main">main</string>
+    <string name="license">License</string>
     <!-- generic copy -->
 
     <string name="exploreUsers">Explore users</string>
