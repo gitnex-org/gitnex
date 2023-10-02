@@ -657,7 +657,7 @@
     <string name="removeAccountPopupTitle">Remove Account</string>
     <string name="removeAccountPopupMessage">Are you sure you want to remove this account from the app?\n\nThis will remove all the data related to this account on the app only.</string>
     <string name="addNewAccount">New Account</string>
-    <string name="addNewAccountText">Add New Account</string>
+    <string name="addNewAccountText">Add Account</string>
     <string name="accountAlreadyExistsError">Account already exists in the app</string>
     <string name="accountAddedMessage">Account added successfully</string>
     <string name="switchAccountSuccess">Switched to account : %1$s@%2$s</string>

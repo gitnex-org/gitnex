@@ -3,8 +3,7 @@ package org.mian.gitnex.activities;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
-import android.util.Log;
-import android.view.View;
+import android.os.Handler;
 import android.widget.ArrayAdapter;
 import androidx.annotation.NonNull;
 import com.google.android.material.dialog.MaterialAlertDialogBuilder;
@@ -22,7 +21,7 @@ import org.mian.gitnex.database.models.UserAccount;
 import org.mian.gitnex.databinding.ActivityAddNewAccountBinding;
 import org.mian.gitnex.helpers.AppUtil;
 import org.mian.gitnex.helpers.PathsHelper;
-import org.mian.gitnex.helpers.Toasty;
+import org.mian.gitnex.helpers.SnackBar;
 import org.mian.gitnex.helpers.UrlHelper;
 import org.mian.gitnex.helpers.Version;
 import org.mian.gitnex.structs.Protocol;
@@ -34,7 +33,6 @@ import retrofit2.Callback;
  */
 public class AddNewAccountActivity extends BaseActivity {
 
-	private View.OnClickListener onClickListener;
 	private ActivityAddNewAccountBinding viewBinding;
 
 	private String spinnerSelectedValue;
@@ -52,8 +50,6 @@ public class AddNewAccountActivity extends BaseActivity {
 
 		getWindow().getDecorView().setBackground(new ColorDrawable(Color.TRANSPARENT));
 
-		initCloseListener();
-		viewBinding.close.setOnClickListener(onClickListener);
 		viewBinding.instanceUrl.setText(getIntent().getStringExtra("instanceUrl"));
 		viewBinding.loginToken.setText(getIntent().getStringExtra("token"));
 		String scheme = getIntent().getStringExtra("scheme");
@@ -68,20 +64,22 @@ public class AddNewAccountActivity extends BaseActivity {
 		ArrayAdapter<Protocol> adapterProtocols =
 				new ArrayAdapter<>(ctx, R.layout.list_spinner_items, Protocol.values());
 
+		viewBinding.topAppBar.setNavigationOnClickListener(v -> finish());
+
 		viewBinding.protocolSpinner.setAdapter(adapterProtocols);
 		viewBinding.protocolSpinner.setOnItemClickListener(
 				(parent, view1, position, id) ->
 						spinnerSelectedValue = String.valueOf(parent.getItemAtPosition(position)));
-		viewBinding.addNewAccount.setOnClickListener(
-				login -> {
-					boolean connToInternet = AppUtil.hasNetworkConnection(appCtx);
 
-					if (!connToInternet) {
+		viewBinding.topAppBar.setOnMenuItemClickListener(
+				menuItem -> {
+					int id = menuItem.getItemId();
 
-						Toasty.error(ctx, getResources().getString(R.string.checkNetConnection));
-					} else {
-
+					if (id == R.id.addAccount) {
 						processLogin();
+						return true;
+					} else {
+						return super.onOptionsItemSelected(menuItem);
 					}
 				});
 	}
@@ -102,19 +100,26 @@ public class AddNewAccountActivity extends BaseActivity {
 
 			if (protocol == null) {
 
-				Toasty.error(ctx, getResources().getString(R.string.protocolEmptyError));
+				SnackBar.error(
+						ctx,
+						findViewById(android.R.id.content),
+						getString(R.string.protocolEmptyError));
 				return;
 			}
 
 			if (instanceUrlET.equals("")) {
 
-				Toasty.error(ctx, getResources().getString(R.string.emptyFieldURL));
+				SnackBar.error(
+						ctx, findViewById(android.R.id.content), getString(R.string.emptyFieldURL));
 				return;
 			}
 
 			if (loginToken.equals("")) {
 
-				Toasty.error(ctx, getResources().getString(R.string.loginTokenError));
+				SnackBar.error(
+						ctx,
+						findViewById(android.R.id.content),
+						getString(R.string.loginTokenError));
 				return;
 			}
 
@@ -132,7 +137,8 @@ public class AddNewAccountActivity extends BaseActivity {
 
 		} catch (Exception e) {
 
-			Toasty.error(ctx, getResources().getString(R.string.malformedUrl));
+			SnackBar.error(
+					ctx, findViewById(android.R.id.content), getString(R.string.malformedUrl));
 		}
 	}
 
@@ -157,8 +163,10 @@ public class AddNewAccountActivity extends BaseActivity {
 
 							if (!Version.valid(version.getVersion())) {
 
-								Toasty.error(
-										ctx, getResources().getString(R.string.versionUnknown));
+								SnackBar.error(
+										ctx,
+										findViewById(android.R.id.content),
+										getString(R.string.versionUnknown));
 								return;
 							}
 
@@ -192,12 +200,18 @@ public class AddNewAccountActivity extends BaseActivity {
 								login(instanceUrl, loginToken);
 							} else {
 
-								Toasty.warning(
+								SnackBar.error(
 										ctx,
-										getResources().getString(R.string.versionUnsupportedNew));
+										findViewById(android.R.id.content),
+										getString(R.string.versionUnsupportedNew));
 								login(instanceUrl, loginToken);
 							}
+						} else if (responseVersion.code() == 401) {
 
+							SnackBar.error(
+									ctx,
+									findViewById(android.R.id.content),
+									getString(R.string.unauthorizedApiError));
 						} else if (responseVersion.code() == 403) {
 
 							login(instanceUrl, loginToken);
@@ -213,9 +227,10 @@ public class AddNewAccountActivity extends BaseActivity {
 					public void onFailure(
 							@NonNull Call<ServerVersion> callVersion, @NonNull Throwable t) {
 
-						Log.e("onFailure-versionCheck", t.toString());
-						Toasty.error(
-								ctx, getResources().getString(R.string.genericServerResponseError));
+						SnackBar.error(
+								ctx,
+								findViewById(android.R.id.content),
+								getString(R.string.genericServerResponseError));
 					}
 				});
 	}
@@ -291,21 +306,20 @@ public class AddNewAccountActivity extends BaseActivity {
 													defaultPagingNumber);
 									UserAccount account = userAccountsApi.getAccountById((int) id);
 									AppUtil.switchToAccount(AddNewAccountActivity.this, account);
-									Toasty.success(
+									SnackBar.success(
 											ctx,
-											getResources().getString(R.string.accountAddedMessage));
+											findViewById(android.R.id.content),
+											getString(R.string.accountAddedMessage));
 									MainActivity.refActivity = true;
-									finish();
+									new Handler().postDelayed(() -> finish(), 3000);
 								} else {
 									UserAccount account =
 											userAccountsApi.getAccountByName(accountName);
 									if (account.isLoggedIn()) {
-										Toasty.warning(
+										SnackBar.error(
 												ctx,
-												getResources()
-														.getString(
-																R.string
-																		.accountAlreadyExistsError));
+												findViewById(android.R.id.content),
+												getString(R.string.accountAlreadyExistsError));
 										AppUtil.switchToAccount(ctx, account);
 									} else {
 										userAccountsApi.updateTokenByAccountName(
@@ -315,34 +329,31 @@ public class AddNewAccountActivity extends BaseActivity {
 												AddNewAccountActivity.this, account);
 									}
 								}
-								finish();
 								break;
 
 							case 401:
-								Toasty.error(
+								SnackBar.error(
 										ctx,
-										getResources().getString(R.string.unauthorizedApiError));
+										findViewById(android.R.id.content),
+										getString(R.string.unauthorizedApiError));
 								break;
 
 							default:
-								Toasty.error(
+								SnackBar.error(
 										ctx,
-										getResources()
-												.getString(
-														R.string.genericApiError, response.code()));
+										findViewById(android.R.id.content),
+										getString(R.string.genericApiError, response.code()));
 						}
 					}
 
 					@Override
 					public void onFailure(@NonNull Call<User> call, @NonNull Throwable t) {
 
-						Toasty.error(ctx, getResources().getString(R.string.genericError));
+						SnackBar.error(
+								ctx,
+								findViewById(android.R.id.content),
+								getString(R.string.genericError));
 					}
 				});
-	}
-
-	private void initCloseListener() {
-
-		onClickListener = view -> finish();
 	}
 }
