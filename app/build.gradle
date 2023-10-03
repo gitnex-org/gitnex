@@ -4,7 +4,6 @@ plugins {
 apply plugin: 'com.android.application'
 
 android {
-    compileSdkVersion 34
     defaultConfig {
         applicationId "org.mian.gitnex"
         minSdkVersion 23
@@ -13,8 +12,9 @@ android {
         versionName "5.3.0-dev"
         multiDexEnabled true
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
+        compileSdk 34
     }
-    flavorDimensions "default"
+    flavorDimensions = ["default"]
     productFlavors {
         free {
             applicationId "org.mian.gitnex"
@@ -76,7 +76,7 @@ dependencies {
     implementation 'com.squareup.retrofit2:converter-scalars:2.9.0'
     implementation 'com.squareup.okhttp3:logging-interceptor:5.0.0-alpha.2'
     implementation 'org.ocpsoft.prettytime:prettytime:5.0.7.Final'
-    implementation 'com.github.Pes8:android-material-color-picker-dialog:master'
+    implementation "com.github.skydoves:colorpickerview:2.3.0"
     implementation "io.noties.markwon:core:4.6.2"
     implementation "io.noties.markwon:ext-latex:4.6.2"
     implementation "io.noties.markwon:ext-strikethrough:4.6.2"

@@ -293,8 +293,8 @@ public class AppUtil {
 		return str.matches("^[\\w]+$");
 	}
 
-	public static Boolean checkStrings(String str) { // [a-zA-Z0-9-_. ]
-		return str.matches("^[\\w .-]+$");
+	public static Boolean checkStrings(String str) { // [a-zA-Z0-9-_. /]
+		return str.matches("^[\\w .-/]+$");
 	}
 
 	public static Boolean checkStringsWithAlphaNumericDashDotUnderscore(

@@ -1,30 +1,28 @@
 package org.mian.gitnex.activities;
 
 import android.annotation.SuppressLint;
-import android.app.DatePickerDialog;
-import android.content.Context;
 import android.os.Bundle;
-import android.util.Log;
-import android.view.Menu;
-import android.view.MenuInflater;
+import android.os.Handler;
 import android.view.MenuItem;
 import android.view.MotionEvent;
 import android.view.View;
-import android.view.inputmethod.InputMethodManager;
 import androidx.annotation.NonNull;
+import com.google.android.material.datepicker.MaterialDatePicker;
 import com.vdurmont.emoji.EmojiParser;
+import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
+import java.util.Locale;
 import java.util.Objects;
+import java.util.TimeZone;
 import org.gitnex.tea4j.v2.models.CreateMilestoneOption;
 import org.gitnex.tea4j.v2.models.Milestone;
 import org.mian.gitnex.R;
 import org.mian.gitnex.clients.RetrofitClient;
 import org.mian.gitnex.databinding.ActivityCreateMilestoneBinding;
 import org.mian.gitnex.helpers.AlertDialogs;
-import org.mian.gitnex.helpers.AppUtil;
 import org.mian.gitnex.helpers.Markdown;
-import org.mian.gitnex.helpers.Toasty;
+import org.mian.gitnex.helpers.SnackBar;
 import org.mian.gitnex.helpers.contexts.RepositoryContext;
 import retrofit2.Call;
 import retrofit2.Callback;
@@ -32,13 +30,10 @@ import retrofit2.Callback;
 /**
  * @author M M Arif
  */
-public class CreateMilestoneActivity extends BaseActivity implements View.OnClickListener {
+public class CreateMilestoneActivity extends BaseActivity {
 
 	private ActivityCreateMilestoneBinding binding;
-	private View.OnClickListener onClickListener;
 	private RepositoryContext repository;
-	private Date currentDate = null;
-	private final View.OnClickListener createMilestoneListener = v -> processNewMilestone();
 	private boolean renderMd = false;
 
 	@SuppressLint("ClickableViewAccessibility")
@@ -49,18 +44,15 @@ public class CreateMilestoneActivity extends BaseActivity implements View.OnClic
 
 		binding = ActivityCreateMilestoneBinding.inflate(getLayoutInflater());
 		setContentView(binding.getRoot());
-		setSupportActionBar(binding.toolbar);
-
-		boolean connToInternet = AppUtil.hasNetworkConnection(appCtx);
-
-		InputMethodManager imm =
-				(InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
 
 		repository = RepositoryContext.fromIntent(getIntent());
 
-		binding.milestoneTitle.requestFocus();
-		assert imm != null;
-		imm.showSoftInput(binding.milestoneTitle, InputMethodManager.SHOW_IMPLICIT);
+		binding.topAppBar.setNavigationOnClickListener(v -> finish());
+
+		MenuItem attachment = binding.topAppBar.getMenu().getItem(0);
+		attachment.setVisible(false);
+
+		showDatePickerDialog();
 
 		binding.milestoneDescription.setOnTouchListener(
 				(touchView, motionEvent) -> {
@@ -74,78 +66,79 @@ public class CreateMilestoneActivity extends BaseActivity implements View.OnClic
 					return false;
 				});
 
-		initCloseListener();
-		binding.close.setOnClickListener(onClickListener);
-		binding.milestoneDueDate.setOnClickListener(this);
+		binding.topAppBar.setOnMenuItemClickListener(
+				menuItem -> {
+					int id = menuItem.getItemId();
 
-		if (!connToInternet) {
+					if (id == R.id.markdown) {
 
-			binding.createNewMilestoneButton.setEnabled(false);
-		} else {
+						if (!renderMd) {
+							Markdown.render(
+									ctx,
+									EmojiParser.parseToUnicode(
+											Objects.requireNonNull(
+													Objects.requireNonNull(
+																	binding.milestoneDescription
+																			.getText())
+															.toString())),
+									binding.markdownPreview);
 
-			binding.createNewMilestoneButton.setOnClickListener(createMilestoneListener);
-		}
+							binding.markdownPreview.setVisibility(View.VISIBLE);
+							binding.milestoneDescriptionLayout.setVisibility(View.GONE);
+							renderMd = true;
+						} else {
+							binding.markdownPreview.setVisibility(View.GONE);
+							binding.milestoneDescriptionLayout.setVisibility(View.VISIBLE);
+							renderMd = false;
+						}
+
+						return true;
+					} else if (id == R.id.create) {
+						processNewMilestone();
+						return true;
+					} else {
+						return super.onOptionsItemSelected(menuItem);
+					}
+				});
 	}
 
-	@Override
-	public boolean onCreateOptionsMenu(@NonNull Menu menu) {
+	private void showDatePickerDialog() {
 
-		MenuInflater inflater = getMenuInflater();
-		inflater.inflate(R.menu.markdown_switcher, menu);
+		MaterialDatePicker.Builder<Long> builder = MaterialDatePicker.Builder.datePicker();
+		builder.setSelection(Calendar.getInstance().getTimeInMillis());
+		builder.setTitleText(R.string.newIssueDueDateTitle);
+		MaterialDatePicker<Long> materialDatePicker = builder.build();
 
-		return true;
-	}
+		binding.milestoneDueDate.setOnClickListener(
+				v -> materialDatePicker.show(getSupportFragmentManager(), "DATE_PICKER"));
 
-	@Override
-	public boolean onOptionsItemSelected(MenuItem item) {
-
-		int id = item.getItemId();
-
-		if (id == R.id.markdown) {
-
-			if (!renderMd) {
-				Markdown.render(
-						ctx,
-						EmojiParser.parseToUnicode(
-								Objects.requireNonNull(
-										Objects.requireNonNull(
-														binding.milestoneDescription.getText())
-												.toString())),
-						binding.markdownPreview);
-
-				binding.markdownPreview.setVisibility(View.VISIBLE);
-				binding.milestoneDescriptionLayout.setVisibility(View.GONE);
-				renderMd = true;
-			} else {
-				binding.markdownPreview.setVisibility(View.GONE);
-				binding.milestoneDescriptionLayout.setVisibility(View.VISIBLE);
-				renderMd = false;
-			}
-
-			return true;
-		} else {
-			return super.onOptionsItemSelected(item);
-		}
+		materialDatePicker.addOnPositiveButtonClickListener(
+				selection -> {
+					Calendar calendar = Calendar.getInstance(TimeZone.getTimeZone("UTC"));
+					calendar.setTimeInMillis(selection);
+					SimpleDateFormat format =
+							new SimpleDateFormat(
+									"yyyy-MM-dd", new Locale(tinyDB.getString("locale")));
+					String formattedDate = format.format(calendar.getTime());
+					binding.milestoneDueDate.setText(formattedDate);
+				});
 	}
 
 	private void processNewMilestone() {
-
-		boolean connToInternet = AppUtil.hasNetworkConnection(appCtx);
 
 		String newMilestoneTitle =
 				Objects.requireNonNull(binding.milestoneTitle.getText()).toString();
 		String newMilestoneDescription =
 				Objects.requireNonNull(binding.milestoneDescription.getText()).toString();
-
-		if (!connToInternet) {
-
-			Toasty.error(ctx, getResources().getString(R.string.checkNetConnection));
-			return;
-		}
+		String milestoneDueDate =
+				Objects.requireNonNull(binding.milestoneDueDate.getText()).toString();
 
 		if (newMilestoneTitle.equals("")) {
 
-			Toasty.error(ctx, getString(R.string.milestoneNameErrorEmpty));
+			SnackBar.error(
+					ctx,
+					findViewById(android.R.id.content),
+					getString(R.string.milestoneNameErrorEmpty));
 			return;
 		}
 
@@ -153,29 +146,41 @@ public class CreateMilestoneActivity extends BaseActivity implements View.OnClic
 
 			if (newMilestoneDescription.length() > 255) {
 
-				Toasty.warning(ctx, getString(R.string.milestoneDescError));
+				SnackBar.error(
+						ctx,
+						findViewById(android.R.id.content),
+						getString(R.string.milestoneDescError));
 				return;
 			}
 		}
 
-		disableProcessButton();
 		createNewMilestone(
 				repository.getOwner(),
 				repository.getName(),
 				newMilestoneTitle,
-				newMilestoneDescription);
+				newMilestoneDescription,
+				milestoneDueDate);
 	}
 
 	private void createNewMilestone(
 			String repoOwner,
 			String repoName,
 			String newMilestoneTitle,
-			String newMilestoneDescription) {
+			String newMilestoneDescription,
+			String milestoneDueDate) {
 
 		CreateMilestoneOption createMilestone = new CreateMilestoneOption();
 		createMilestone.setDescription(newMilestoneDescription);
 		createMilestone.setTitle(newMilestoneTitle);
-		createMilestone.setDueOn(currentDate);
+		String[] date = milestoneDueDate.split("-");
+		if (!milestoneDueDate.equalsIgnoreCase("")) {
+			Calendar calendar = Calendar.getInstance();
+			calendar.set(Calendar.YEAR, Integer.parseInt(date[0]));
+			calendar.set(Calendar.MONTH, Integer.parseInt(date[1]));
+			calendar.set(Calendar.DATE, Integer.parseInt(date[2]));
+			Date dueDate = calendar.getTime();
+			createMilestone.setDueOn(dueDate);
+		}
 
 		Call<Milestone> call;
 
@@ -184,7 +189,7 @@ public class CreateMilestoneActivity extends BaseActivity implements View.OnClic
 						.issueCreateMilestone(repoOwner, repoName, createMilestone);
 
 		call.enqueue(
-				new Callback<Milestone>() {
+				new Callback<>() {
 
 					@Override
 					public void onResponse(
@@ -196,72 +201,28 @@ public class CreateMilestoneActivity extends BaseActivity implements View.OnClic
 							if (response.code() == 201) {
 
 								RepoDetailActivity.updateFABActions = true;
-								Toasty.success(ctx, getString(R.string.milestoneCreated));
-								enableProcessButton();
-								finish();
+								SnackBar.success(
+										ctx,
+										findViewById(android.R.id.content),
+										getString(R.string.milestoneCreated));
+
+								new Handler().postDelayed(() -> finish(), 3000);
 							}
 						} else if (response.code() == 401) {
 
-							enableProcessButton();
 							AlertDialogs.authorizationTokenRevokedDialog(ctx);
 						} else {
 
-							enableProcessButton();
-							Toasty.error(ctx, getString(R.string.genericError));
+							SnackBar.error(
+									ctx,
+									findViewById(android.R.id.content),
+									getString(R.string.genericError));
 						}
 					}
 
 					@Override
-					public void onFailure(@NonNull Call<Milestone> call, @NonNull Throwable t) {
-
-						Log.e("onFailure", t.toString());
-						enableProcessButton();
-					}
+					public void onFailure(@NonNull Call<Milestone> call, @NonNull Throwable t) {}
 				});
-	}
-
-	@Override
-	public void onClick(View v) {
-
-		if (v == binding.milestoneDueDate) {
-
-			final Calendar c = Calendar.getInstance();
-			int mYear = c.get(Calendar.YEAR);
-			final int mMonth = c.get(Calendar.MONTH);
-			final int mDay = c.get(Calendar.DAY_OF_MONTH);
-
-			DatePickerDialog datePickerDialog =
-					new DatePickerDialog(
-							this,
-							(view, year, monthOfYear, dayOfMonth) -> {
-								binding.milestoneDueDate.setText(
-										getString(
-												R.string.setDueDate,
-												year,
-												(monthOfYear + 1),
-												dayOfMonth));
-								currentDate = new Date(year - 1900, monthOfYear, dayOfMonth);
-							},
-							mYear,
-							mMonth,
-							mDay);
-			datePickerDialog.show();
-		}
-	}
-
-	private void initCloseListener() {
-
-		onClickListener = view -> finish();
-	}
-
-	private void disableProcessButton() {
-
-		binding.createNewMilestoneButton.setEnabled(false);
-	}
-
-	private void enableProcessButton() {
-
-		binding.createNewMilestoneButton.setEnabled(true);
 	}
 
 	@Override

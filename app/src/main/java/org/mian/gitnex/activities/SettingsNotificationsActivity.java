@@ -5,7 +5,9 @@ import android.os.Bundle;
 import android.view.View;
 import android.widget.NumberPicker;
 import com.google.android.material.dialog.MaterialAlertDialogBuilder;
-import com.pes.androidmaterialcolorpickerdialog.ColorPicker;
+import com.skydoves.colorpickerview.ColorPickerDialog;
+import com.skydoves.colorpickerview.flag.BubbleFlag;
+import com.skydoves.colorpickerview.listeners.ColorEnvelopeListener;
 import org.mian.gitnex.R;
 import org.mian.gitnex.databinding.ActivitySettingsNotificationsBinding;
 import org.mian.gitnex.helpers.AppUtil;
@@ -29,9 +31,7 @@ public class SettingsNotificationsActivity extends BaseActivity {
 		viewBinding = ActivitySettingsNotificationsBinding.inflate(getLayoutInflater());
 		setContentView(viewBinding.getRoot());
 
-		View.OnClickListener onClickListener = viewClose -> finish();
-
-		viewBinding.close.setOnClickListener(onClickListener);
+		viewBinding.topAppBar.setNavigationOnClickListener(v -> finish());
 
 		viewBinding.pollingDelaySelected.setText(
 				String.format(
@@ -43,9 +43,9 @@ public class SettingsNotificationsActivity extends BaseActivity {
 		viewBinding.enableNotificationsMode.setChecked(
 				tinyDB.getBoolean("notificationsEnabled", true));
 		viewBinding.enableLightsMode.setChecked(
-				tinyDB.getBoolean("notificationsEnableLights", true));
+				tinyDB.getBoolean("notificationsEnableLights", false));
 		viewBinding.enableVibrationMode.setChecked(
-				tinyDB.getBoolean("notificationsEnableVibration", true));
+				tinyDB.getBoolean("notificationsEnableVibration", false));
 
 		if (!viewBinding.enableNotificationsMode.isChecked()) {
 			AppUtil.setMultiVisibility(
@@ -154,18 +154,28 @@ public class SettingsNotificationsActivity extends BaseActivity {
 		// lights color chooser
 		viewBinding.chooseColorFrame.setOnClickListener(
 				v -> {
-					ColorPicker colorPicker = new ColorPicker(SettingsNotificationsActivity.this);
-					colorPicker.setColor(tinyDB.getInt("notificationsLightColor", Color.GREEN));
-					colorPicker.setCallback(
-							color -> {
-								tinyDB.putInt("notificationsLightColor", color);
-								viewBinding.chooseColorState.setCardBackgroundColor(color);
-								colorPicker.dismiss();
-								Toasty.success(
-										appCtx, getResources().getString(R.string.settingsSave));
-							});
+					ColorPickerDialog.Builder builder =
+							new ColorPickerDialog.Builder(this)
+									.setPreferenceName("colorPickerDialogLabels")
+									.setPositiveButton(
+											getString(R.string.okButton),
+											(ColorEnvelopeListener)
+													(envelope, clicked) -> {
+														tinyDB.putInt(
+																"notificationsLightColor",
+																envelope.getColor());
+														viewBinding.chooseColorState
+																.setCardBackgroundColor(
+																		envelope.getColor());
+													})
+									.attachAlphaSlideBar(true)
+									.attachBrightnessSlideBar(true)
+									.setBottomSpace(16);
 
-					colorPicker.show();
+					builder.getColorPickerView().setFlagView(new BubbleFlag(this));
+
+					builder.getColorPickerView().setLifecycleOwner(this);
+					builder.show();
 				});
 
 		// vibration switcher
