@@ -255,7 +255,10 @@ public class CreateIssueActivity extends BaseActivity
 
 			RequestBody requestFile =
 					RequestBody.create(
-							file, MediaType.parse(getContentResolver().getType(contentUri.get(i))));
+							file,
+							MediaType.parse(
+									Objects.requireNonNull(
+											getContentResolver().getType(contentUri.get(i)))));
 
 			uploadAttachments(requestFile, issueIndex, file.getName());
 		}

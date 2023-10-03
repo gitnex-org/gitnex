@@ -15,7 +15,6 @@ public class SettingsCodeEditorActivity extends BaseActivity {
 
 	private static String[] colorList;
 	private static int colorSelectedChoice = 0;
-	private View.OnClickListener onClickListener;
 	private static String[] indentationList;
 	private static int indentationSelectedChoice = 0;
 	private static String[] indentationTabsList;
@@ -30,8 +29,7 @@ public class SettingsCodeEditorActivity extends BaseActivity {
 				ActivitySettingsCodeEditorBinding.inflate(getLayoutInflater());
 		setContentView(activitySettingsCodeEditorBinding.getRoot());
 
-		initCloseListener();
-		activitySettingsCodeEditorBinding.close.setOnClickListener(onClickListener);
+		activitySettingsCodeEditorBinding.topAppBar.setNavigationOnClickListener(v -> finish());
 
 		// color selector dialog
 		colorList = getResources().getStringArray(R.array.ceColors);
@@ -140,9 +138,5 @@ public class SettingsCodeEditorActivity extends BaseActivity {
 
 					materialAlertDialogBuilder.create().show();
 				});
-	}
-
-	private void initCloseListener() {
-		onClickListener = view -> finish();
 	}
 }

@@ -17,6 +17,7 @@
             style="?attr/collapsingToolbarLayoutLargeStyle"
             android:layout_width="match_parent"
             app:layout_scrollFlags="scroll|exitUntilCollapsed|snap"
+            android:background="?attr/primaryBackgroundColor"
             app:contentScrim="?attr/primaryBackgroundColor"
             android:layout_height="?attr/collapsingToolbarLayoutLargeSize">
 

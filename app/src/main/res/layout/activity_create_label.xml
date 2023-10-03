@@ -17,6 +17,7 @@
             style="?attr/collapsingToolbarLayoutLargeStyle"
             android:layout_width="match_parent"
             app:layout_scrollFlags="scroll|exitUntilCollapsed|snap"
+            android:background="?attr/primaryBackgroundColor"
             app:contentScrim="?attr/primaryBackgroundColor"
             android:layout_height="?attr/collapsingToolbarLayoutLargeSize">
 
@@ -72,7 +73,7 @@
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="@dimen/dimen32dp"
-                android:layout_marginTop="@dimen/dimen16dp"
+                android:layout_marginTop="@dimen/dimen32dp"
                 android:orientation="horizontal">
 
                 <TextView
@@ -88,7 +89,7 @@
 
                 <com.google.android.material.card.MaterialCardView
                     style="?attr/materialCardViewElevatedStyle"
-                    android:layout_width="@dimen/dimen60dp"
+                    android:layout_width="@dimen/dimen48dp"
                     android:layout_height="@dimen/dimen28dp"
                     app:cardCornerRadius="@dimen/dimen16dp"
                     app:cardElevation="@dimen/dimen0dp">
