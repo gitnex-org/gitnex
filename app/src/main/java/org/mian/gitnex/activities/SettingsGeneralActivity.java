@@ -7,7 +7,7 @@ import java.util.Arrays;
 import java.util.List;
 import org.mian.gitnex.R;
 import org.mian.gitnex.databinding.ActivitySettingsGeneralBinding;
-import org.mian.gitnex.helpers.Toasty;
+import org.mian.gitnex.helpers.SnackBar;
 
 /**
  * @author M M Arif
@@ -115,10 +115,10 @@ public class SettingsGeneralActivity extends BaseActivity {
 												tinyDB.putInt("homeScreenId", i);
 
 												dialogInterfaceHomeScreen.dismiss();
-												Toasty.success(
-														appCtx,
-														getResources()
-																.getString(R.string.settingsSave));
+												SnackBar.success(
+														ctx,
+														findViewById(android.R.id.content),
+														getString(R.string.settingsSave));
 											});
 
 					materialAlertDialogBuilder.create().show();
@@ -153,10 +153,10 @@ public class SettingsGeneralActivity extends BaseActivity {
 												tinyDB.putInt("defaultScreenId", i);
 
 												dialogInterfaceHomeScreen.dismiss();
-												Toasty.success(
-														appCtx,
-														getResources()
-																.getString(R.string.settingsSave));
+												SnackBar.success(
+														ctx,
+														findViewById(android.R.id.content),
+														getString(R.string.settingsSave));
 											});
 
 					materialAlertDialogBuilder.create().show();
@@ -168,7 +168,10 @@ public class SettingsGeneralActivity extends BaseActivity {
 		viewBinding.switchTabs.setOnCheckedChangeListener(
 				(buttonView, isChecked) -> {
 					tinyDB.putBoolean("useCustomTabs", isChecked);
-					Toasty.success(appCtx, getResources().getString(R.string.settingsSave));
+					SnackBar.success(
+							ctx,
+							findViewById(android.R.id.content),
+							getString(R.string.settingsSave));
 				});
 		viewBinding.customTabsFrame.setOnClickListener(
 				v -> viewBinding.switchTabs.setChecked(!viewBinding.switchTabs.isChecked()));
@@ -182,7 +185,10 @@ public class SettingsGeneralActivity extends BaseActivity {
 		viewBinding.commentsDeletionSwitch.setOnCheckedChangeListener(
 				(buttonView, isChecked) -> {
 					tinyDB.putBoolean("draftsCommentsDeletionEnabled", isChecked);
-					Toasty.success(appCtx, getResources().getString(R.string.settingsSave));
+					SnackBar.success(
+							ctx,
+							findViewById(android.R.id.content),
+							getString(R.string.settingsSave));
 				});
 		viewBinding.enableDraftsCommentsDeletion.setOnClickListener(
 				v ->
@@ -194,7 +200,10 @@ public class SettingsGeneralActivity extends BaseActivity {
 		viewBinding.crashReportsSwitch.setOnCheckedChangeListener(
 				(buttonView, isChecked) -> {
 					tinyDB.putBoolean("crashReportingEnabled", isChecked);
-					Toasty.success(appCtx, getResources().getString(R.string.settingsSave));
+					SnackBar.success(
+							ctx,
+							findViewById(android.R.id.content),
+							getString(R.string.settingsSave));
 				});
 		viewBinding.enableSendReports.setOnClickListener(
 				v ->

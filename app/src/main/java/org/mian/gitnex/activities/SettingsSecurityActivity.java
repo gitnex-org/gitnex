@@ -6,7 +6,6 @@ import static androidx.biometric.BiometricManager.Authenticators.DEVICE_CREDENTI
 import android.app.KeyguardManager;
 import android.content.Context;
 import android.os.Bundle;
-import android.util.Log;
 import androidx.biometric.BiometricManager;
 import com.google.android.material.dialog.MaterialAlertDialogBuilder;
 import java.io.File;
@@ -15,7 +14,7 @@ import org.apache.commons.io.FileUtils;
 import org.mian.gitnex.R;
 import org.mian.gitnex.databinding.ActivitySettingsSecurityBinding;
 import org.mian.gitnex.helpers.AppUtil;
-import org.mian.gitnex.helpers.Toasty;
+import org.mian.gitnex.helpers.SnackBar;
 import org.mian.gitnex.helpers.ssl.MemorizingTrustManager;
 
 /**
@@ -78,9 +77,10 @@ public class SettingsSecurityActivity extends BaseActivity {
 									BIOMETRIC_STRONG | DEVICE_CREDENTIAL)) {
 								case BiometricManager.BIOMETRIC_SUCCESS:
 									tinyDB.putBoolean("biometricStatus", true);
-									Toasty.success(
-											appCtx,
-											getResources().getString(R.string.settingsSave));
+									SnackBar.success(
+											ctx,
+											findViewById(android.R.id.content),
+											getString(R.string.settingsSave));
 									break;
 								case BiometricManager.BIOMETRIC_ERROR_NO_HARDWARE:
 								case BiometricManager.BIOMETRIC_ERROR_SECURITY_UPDATE_REQUIRED:
@@ -89,38 +89,45 @@ public class SettingsSecurityActivity extends BaseActivity {
 									tinyDB.putBoolean("biometricStatus", false);
 									activitySettingsSecurityBinding.switchBiometric.setChecked(
 											false);
-									Toasty.error(
-											appCtx,
-											getResources()
-													.getString(R.string.biometricNotSupported));
+									SnackBar.error(
+											ctx,
+											findViewById(android.R.id.content),
+											getString(R.string.biometricNotSupported));
 									break;
 								case BiometricManager.BIOMETRIC_ERROR_HW_UNAVAILABLE:
 									tinyDB.putBoolean("biometricStatus", false);
 									activitySettingsSecurityBinding.switchBiometric.setChecked(
 											false);
-									Toasty.error(
-											appCtx,
-											getResources()
-													.getString(R.string.biometricNotAvailable));
+									SnackBar.error(
+											ctx,
+											findViewById(android.R.id.content),
+											getString(R.string.biometricNotAvailable));
 									break;
 								case BiometricManager.BIOMETRIC_ERROR_NONE_ENROLLED:
 									tinyDB.putBoolean("biometricStatus", false);
 									activitySettingsSecurityBinding.switchBiometric.setChecked(
 											false);
-									Toasty.info(
-											appCtx,
-											getResources().getString(R.string.enrollBiometric));
+									SnackBar.info(
+											ctx,
+											findViewById(android.R.id.content),
+											getString(R.string.enrollBiometric));
 									break;
 							}
 						} else {
 
 							tinyDB.putBoolean("biometricStatus", true);
-							Toasty.success(appCtx, getResources().getString(R.string.settingsSave));
+							SnackBar.success(
+									ctx,
+									findViewById(android.R.id.content),
+									getString(R.string.settingsSave));
 						}
 					} else {
 
 						tinyDB.putBoolean("biometricStatus", false);
-						Toasty.success(appCtx, getResources().getString(R.string.settingsSave));
+						SnackBar.success(
+								ctx,
+								findViewById(android.R.id.content),
+								getString(R.string.settingsSave));
 					}
 				});
 
@@ -157,7 +164,7 @@ public class SettingsSecurityActivity extends BaseActivity {
 													this.overridePendingTransition(0, 0);
 												} catch (IOException e) {
 
-													Log.e("SettingsSecurity", e.toString());
+													// Log.e("SettingsSecurity", e.toString());
 												}
 											});
 
@@ -185,10 +192,10 @@ public class SettingsSecurityActivity extends BaseActivity {
 												tinyDB.putInt("cacheSizeImagesId", i);
 
 												dialogInterfaceTheme.dismiss();
-												Toasty.success(
-														appCtx,
-														getResources()
-																.getString(R.string.settingsSave));
+												SnackBar.success(
+														ctx,
+														findViewById(android.R.id.content),
+														getString(R.string.settingsSave));
 											});
 
 					materialAlertDialogBuilder.create().show();
@@ -214,10 +221,10 @@ public class SettingsSecurityActivity extends BaseActivity {
 												tinyDB.putInt("cacheSizeId", i);
 
 												dialogInterfaceTheme.dismiss();
-												Toasty.success(
-														appCtx,
-														getResources()
-																.getString(R.string.settingsSave));
+												SnackBar.success(
+														ctx,
+														findViewById(android.R.id.content),
+														getString(R.string.settingsSave));
 											});
 
 					materialAlertDialogBuilder.create().show();

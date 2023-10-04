@@ -12,7 +12,7 @@ import org.mian.gitnex.R;
 import org.mian.gitnex.databinding.ActivitySettingsNotificationsBinding;
 import org.mian.gitnex.helpers.AppUtil;
 import org.mian.gitnex.helpers.Constants;
-import org.mian.gitnex.helpers.Toasty;
+import org.mian.gitnex.helpers.SnackBar;
 import org.mian.gitnex.notifications.Notifications;
 
 /**
@@ -82,7 +82,10 @@ public class SettingsNotificationsActivity extends BaseActivity {
 								viewBinding.pollingDelayFrame);
 					}
 
-					Toasty.success(appCtx, getResources().getString(R.string.settingsSave));
+					SnackBar.success(
+							ctx,
+							findViewById(android.R.id.content),
+							getString(R.string.settingsSave));
 				});
 		viewBinding.enableNotificationsFrame.setOnClickListener(
 				v ->
@@ -124,10 +127,10 @@ public class SettingsNotificationsActivity extends BaseActivity {
 																		R.string
 																				.pollingDelaySelectedText),
 																numberPicker.getValue()));
-												Toasty.success(
-														appCtx,
-														getResources()
-																.getString(R.string.settingsSave));
+												SnackBar.success(
+														ctx,
+														findViewById(android.R.id.content),
+														getString(R.string.settingsSave));
 											});
 
 					materialAlertDialogBuilder.setView(numberPicker);
@@ -144,7 +147,10 @@ public class SettingsNotificationsActivity extends BaseActivity {
 					}
 
 					tinyDB.putBoolean("notificationsEnableLights", isChecked);
-					Toasty.success(appCtx, getResources().getString(R.string.settingsSave));
+					SnackBar.success(
+							ctx,
+							findViewById(android.R.id.content),
+							getString(R.string.settingsSave));
 				});
 		viewBinding.enableLightsFrame.setOnClickListener(
 				v ->
@@ -182,7 +188,10 @@ public class SettingsNotificationsActivity extends BaseActivity {
 		viewBinding.enableVibrationMode.setOnCheckedChangeListener(
 				(buttonView, isChecked) -> {
 					tinyDB.putBoolean("notificationsEnableVibration", isChecked);
-					Toasty.success(appCtx, getResources().getString(R.string.settingsSave));
+					SnackBar.success(
+							ctx,
+							findViewById(android.R.id.content),
+							getString(R.string.settingsSave));
 				});
 		viewBinding.enableVibrationFrame.setOnClickListener(
 				v ->

@@ -2,15 +2,13 @@ package org.mian.gitnex.activities;
 
 import android.annotation.SuppressLint;
 import android.app.Activity;
-import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
-import android.util.Log;
+import android.os.Handler;
+import android.view.MenuItem;
 import android.view.MotionEvent;
 import android.view.View;
-import android.view.inputmethod.InputMethodManager;
 import android.widget.ArrayAdapter;
-import android.widget.TextView;
 import androidx.activity.result.ActivityResultLauncher;
 import androidx.activity.result.contract.ActivityResultContracts;
 import androidx.annotation.NonNull;
@@ -29,8 +27,7 @@ import org.mian.gitnex.clients.RetrofitClient;
 import org.mian.gitnex.databinding.ActivityCreateFileBinding;
 import org.mian.gitnex.helpers.AlertDialogs;
 import org.mian.gitnex.helpers.AppUtil;
-import org.mian.gitnex.helpers.NetworkStatusObserver;
-import org.mian.gitnex.helpers.Toasty;
+import org.mian.gitnex.helpers.SnackBar;
 import org.mian.gitnex.helpers.contexts.RepositoryContext;
 import retrofit2.Call;
 import retrofit2.Callback;
@@ -72,16 +69,14 @@ public class CreateFileActivity extends BaseActivity {
 
 		repository = RepositoryContext.fromIntent(getIntent());
 
-		TextView toolbarTitle = binding.toolbarTitle;
+		binding.topAppBar.setNavigationOnClickListener(v -> finish());
 
-		binding.newFileName.requestFocus();
+		MenuItem create = binding.topAppBar.getMenu().getItem(0);
+		MenuItem update = binding.topAppBar.getMenu().getItem(1);
+		MenuItem delete = binding.topAppBar.getMenu().getItem(2);
+		update.setVisible(false);
+		delete.setVisible(false);
 
-		InputMethodManager inputMethodManager =
-				(InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
-		assert inputMethodManager != null;
-		inputMethodManager.showSoftInput(binding.newFileName, InputMethodManager.SHOW_IMPLICIT);
-
-		binding.close.setOnClickListener(view -> finish());
 		binding.newFileContent.setOnTouchListener(
 				(touchView, motionEvent) -> {
 					touchView.getParent().requestDisallowInterceptTouchEvent(true);
@@ -103,12 +98,13 @@ public class CreateFileActivity extends BaseActivity {
 			filePath = getIntent().getStringExtra("filePath");
 			fileSha = getIntent().getStringExtra("fileSha");
 
-			toolbarTitle.setText(getString(R.string.deleteGenericTitle, filePath));
-
-			binding.newFileCreate.setText(R.string.deleteFile);
+			binding.topAppBar.setTitle(getString(R.string.deleteGenericTitle, filePath));
 
 			binding.newFileNameLayout.setVisibility(View.GONE);
 			binding.newFileContentLayout.setVisibility(View.GONE);
+			delete.setVisible(true);
+			create.setVisible(false);
+			update.setVisible(false);
 		}
 
 		if (getIntent().getStringExtra("filePath") != null
@@ -118,19 +114,19 @@ public class CreateFileActivity extends BaseActivity {
 			filePath = getIntent().getStringExtra("filePath");
 			fileSha = getIntent().getStringExtra("fileSha");
 
-			toolbarTitle.setText(getString(R.string.editFileText, filePath));
+			binding.topAppBar.setTitle(getString(R.string.editFileText, filePath));
 
-			binding.newFileCreate.setText(R.string.editFile);
 			binding.newFileName.setText(filePath);
 			binding.newFileName.setEnabled(false);
 			binding.newFileName.setFocusable(false);
 
 			binding.newFileContent.setText(getIntent().getStringExtra("fileContents"));
+			update.setVisible(true);
+			create.setVisible(false);
+			delete.setVisible(false);
 		}
 
 		getBranches(repository.getOwner(), repository.getName());
-
-		disableProcessButton();
 
 		binding.openCodeEditor.setOnClickListener(
 				v ->
@@ -139,13 +135,23 @@ public class CreateFileActivity extends BaseActivity {
 								FilenameUtils.getExtension(
 										String.valueOf(binding.newFileName.getText()))));
 
-		NetworkStatusObserver networkStatusObserver = NetworkStatusObserver.getInstance(ctx);
-		networkStatusObserver.registerNetworkStatusListener(
-				hasNetworkConnection ->
-						runOnUiThread(
-								() -> binding.newFileCreate.setEnabled(hasNetworkConnection)));
+		binding.topAppBar.setOnMenuItemClickListener(
+				menuItem -> {
+					int id = menuItem.getItemId();
 
-		binding.newFileCreate.setOnClickListener(v -> processNewFile());
+					if (id == R.id.create) {
+						processNewFile();
+						return true;
+					} else if (id == R.id.update) {
+						processNewFile();
+						return true;
+					} else if (id == R.id.delete) {
+						processNewFile();
+						return true;
+					} else {
+						return super.onOptionsItemSelected(menuItem);
+					}
+				});
 	}
 
 	public void launchCodeEditorActivityForResult(String fileContent, String fileExtension) {
@@ -175,28 +181,38 @@ public class CreateFileActivity extends BaseActivity {
 						: "";
 
 		if (!AppUtil.hasNetworkConnection(appCtx)) {
-			Toasty.error(ctx, getResources().getString(R.string.checkNetConnection));
+			SnackBar.error(
+					ctx,
+					findViewById(android.R.id.content),
+					getString(R.string.checkNetConnection));
 			return;
 		}
 
 		if (((newFileName.isEmpty() || newFileContent.isEmpty())
 						&& fileAction != FILE_ACTION_DELETE)
 				|| newFileCommitMessage.isEmpty()) {
-			Toasty.error(ctx, getString(R.string.newFileRequiredFields));
+			SnackBar.error(
+					ctx,
+					findViewById(android.R.id.content),
+					getString(R.string.newFileRequiredFields));
 			return;
 		}
 
 		if (!AppUtil.checkStringsWithDash(newFileBranchName)) {
-			Toasty.error(ctx, getString(R.string.newFileInvalidBranchName));
+			SnackBar.error(
+					ctx,
+					findViewById(android.R.id.content),
+					getString(R.string.newFileInvalidBranchName));
 			return;
 		}
 
 		if (newFileCommitMessage.length() > 255) {
-			Toasty.warning(ctx, getString(R.string.newFileCommitMessageError));
+			SnackBar.error(
+					ctx,
+					findViewById(android.R.id.content),
+					getString(R.string.newFileCommitMessageError));
 			return;
 		}
-
-		disableProcessButton();
 
 		switch (fileAction) {
 			case FILE_ACTION_CREATE:
@@ -264,39 +280,40 @@ public class CreateFileActivity extends BaseActivity {
 
 						switch (response.code()) {
 							case 201:
-								enableProcessButton();
-								Toasty.success(ctx, getString(R.string.newFileSuccessMessage));
+								SnackBar.success(
+										ctx,
+										findViewById(android.R.id.content),
+										getString(R.string.newFileSuccessMessage));
 								Intent result = new Intent();
 								result.putExtra("fileModified", true);
 								result.putExtra("fileAction", fileAction);
 								setResult(200, result);
 								RepoDetailActivity.updateFABActions = true;
-								finish();
+								new Handler().postDelayed(() -> finish(), 3000);
 								break;
 
 							case 401:
-								enableProcessButton();
 								AlertDialogs.authorizationTokenRevokedDialog(ctx);
 								break;
 
 							case 404:
-								enableProcessButton();
-								Toasty.warning(ctx, getString(R.string.apiNotFound));
+								SnackBar.error(
+										ctx,
+										findViewById(android.R.id.content),
+										getString(R.string.apiNotFound));
 								break;
 
 							default:
-								enableProcessButton();
-								Toasty.error(ctx, getString(R.string.genericError));
+								SnackBar.error(
+										ctx,
+										findViewById(android.R.id.content),
+										getString(R.string.genericError));
 								break;
 						}
 					}
 
 					@Override
-					public void onFailure(@NonNull Call<FileResponse> call, @NonNull Throwable t) {
-
-						Log.e("onFailure", t.toString());
-						enableProcessButton();
-					}
+					public void onFailure(@NonNull Call<FileResponse> call, @NonNull Throwable t) {}
 				});
 	}
 
@@ -332,9 +349,9 @@ public class CreateFileActivity extends BaseActivity {
 
 						switch (response.code()) {
 							case 200:
-								enableProcessButton();
-								Toasty.info(
+								SnackBar.success(
 										ctx,
+										findViewById(android.R.id.content),
 										getString(
 												R.string.deleteFileMessage,
 												repository.getBranchRef()));
@@ -342,33 +359,32 @@ public class CreateFileActivity extends BaseActivity {
 								result.putExtra("fileModified", true);
 								result.putExtra("fileAction", fileAction);
 								setResult(200, result);
-								finish();
+								new Handler().postDelayed(() -> finish(), 3000);
 								break;
 
 							case 401:
-								enableProcessButton();
 								AlertDialogs.authorizationTokenRevokedDialog(ctx);
 								break;
 
 							case 404:
-								enableProcessButton();
-								Toasty.info(ctx, getString(R.string.apiNotFound));
+								SnackBar.error(
+										ctx,
+										findViewById(android.R.id.content),
+										getString(R.string.apiNotFound));
 								break;
 
 							default:
-								enableProcessButton();
-								Toasty.info(ctx, getString(R.string.genericError));
+								SnackBar.error(
+										ctx,
+										findViewById(android.R.id.content),
+										getString(R.string.genericError));
 								break;
 						}
 					}
 
 					@Override
 					public void onFailure(
-							@NonNull Call<FileDeleteResponse> call, @NonNull Throwable t) {
-
-						Log.e("onFailure", t.toString());
-						enableProcessButton();
-					}
+							@NonNull Call<FileDeleteResponse> call, @NonNull Throwable t) {}
 				});
 	}
 
@@ -406,38 +422,39 @@ public class CreateFileActivity extends BaseActivity {
 
 						switch (response.code()) {
 							case 200:
-								enableProcessButton();
-								Toasty.info(ctx, getString(R.string.editFileMessage, branchName));
+								SnackBar.success(
+										ctx,
+										findViewById(android.R.id.content),
+										getString(R.string.editFileMessage, branchName));
 								Intent result = new Intent();
 								result.putExtra("fileModified", true);
 								result.putExtra("fileAction", fileAction);
 								setResult(200, result);
-								finish();
+								new Handler().postDelayed(() -> finish(), 3000);
 								break;
 
 							case 401:
-								enableProcessButton();
 								AlertDialogs.authorizationTokenRevokedDialog(ctx);
 								break;
 
 							case 404:
-								enableProcessButton();
-								Toasty.info(ctx, getString(R.string.apiNotFound));
+								SnackBar.error(
+										ctx,
+										findViewById(android.R.id.content),
+										getString(R.string.apiNotFound));
 								break;
 
 							default:
-								enableProcessButton();
-								Toasty.info(ctx, getString(R.string.genericError));
+								SnackBar.error(
+										ctx,
+										findViewById(android.R.id.content),
+										getString(R.string.genericError));
 								break;
 						}
 					}
 
 					@Override
-					public void onFailure(@NonNull Call<FileResponse> call, @NonNull Throwable t) {
-
-						Log.e("onFailure", t.toString());
-						enableProcessButton();
-					}
+					public void onFailure(@NonNull Call<FileResponse> call, @NonNull Throwable t) {}
 				});
 	}
 
@@ -468,25 +485,12 @@ public class CreateFileActivity extends BaseActivity {
 
 							binding.newFileBranches.setAdapter(adapter);
 							binding.newFileBranches.setText(repository.getBranchRef(), false);
-
-							enableProcessButton();
 						}
 					}
 
 					@Override
-					public void onFailure(@NonNull Call<List<Branch>> call, @NonNull Throwable t) {
-
-						Log.e("onFailure", t.toString());
-					}
+					public void onFailure(@NonNull Call<List<Branch>> call, @NonNull Throwable t) {}
 				});
-	}
-
-	private void disableProcessButton() {
-		binding.newFileCreate.setEnabled(false);
-	}
-
-	private void enableProcessButton() {
-		binding.newFileCreate.setEnabled(true);
 	}
 
 	@Override

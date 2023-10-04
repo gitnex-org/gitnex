@@ -12,8 +12,8 @@ import org.mian.gitnex.databinding.ActivitySettingsAppearanceBinding;
 import org.mian.gitnex.fragments.SettingsFragment;
 import org.mian.gitnex.helpers.AppUtil;
 import org.mian.gitnex.helpers.FontsOverride;
+import org.mian.gitnex.helpers.SnackBar;
 import org.mian.gitnex.helpers.TinyDB;
-import org.mian.gitnex.helpers.Toasty;
 
 /**
  * @author M M Arif
@@ -106,7 +106,10 @@ public class SettingsAppearanceActivity extends BaseActivity {
 		activitySettingsAppearanceBinding.switchCounterBadge.setOnCheckedChangeListener(
 				(buttonView, isChecked) -> {
 					tinyDB.putBoolean("enableCounterBadges", isChecked);
-					Toasty.success(appCtx, getResources().getString(R.string.settingsSave));
+					SnackBar.success(
+							ctx,
+							findViewById(android.R.id.content),
+							getString(R.string.settingsSave));
 				});
 		activitySettingsAppearanceBinding.counterBadgeFrame.setOnClickListener(
 				v ->
@@ -120,7 +123,10 @@ public class SettingsAppearanceActivity extends BaseActivity {
 		activitySettingsAppearanceBinding.switchLabelsInListBadge.setOnCheckedChangeListener(
 				(buttonView, isChecked) -> {
 					tinyDB.putBoolean("showLabelsInList", isChecked);
-					Toasty.success(appCtx, getResources().getString(R.string.settingsSave));
+					SnackBar.success(
+							ctx,
+							findViewById(android.R.id.content),
+							getString(R.string.settingsSave));
 				});
 		activitySettingsAppearanceBinding.labelsInListFrame.setOnClickListener(
 				v ->
@@ -147,10 +153,10 @@ public class SettingsAppearanceActivity extends BaseActivity {
 												this.recreate();
 												this.overridePendingTransition(0, 0);
 												dialogInterfaceTheme.dismiss();
-												Toasty.success(
-														appCtx,
-														getResources()
-																.getString(R.string.settingsSave));
+												SnackBar.success(
+														ctx,
+														findViewById(android.R.id.content),
+														getString(R.string.settingsSave));
 											});
 
 					materialAlertDialogBuilder.create().show();
@@ -184,10 +190,10 @@ public class SettingsAppearanceActivity extends BaseActivity {
 												this.recreate();
 												this.overridePendingTransition(0, 0);
 												dialogInterfaceCustomFont.dismiss();
-												Toasty.success(
-														appCtx,
-														appCtx.getResources()
-																.getString(R.string.settingsSave));
+												SnackBar.success(
+														ctx,
+														findViewById(android.R.id.content),
+														getString(R.string.settingsSave));
 											});
 
 					materialAlertDialogBuilder.create().show();
@@ -216,10 +222,10 @@ public class SettingsAppearanceActivity extends BaseActivity {
 												this.recreate();
 												this.overridePendingTransition(0, 0);
 												dialogInterfaceCustomFont.dismiss();
-												Toasty.success(
-														appCtx,
-														appCtx.getResources()
-																.getString(R.string.settingsSave));
+												SnackBar.success(
+														ctx,
+														findViewById(android.R.id.content),
+														getString(R.string.settingsSave));
 											});
 
 					materialAlertDialogBuilder.create().show();
@@ -255,10 +261,10 @@ public class SettingsAppearanceActivity extends BaseActivity {
 												SettingsFragment.refreshParent = true;
 												this.overridePendingTransition(0, 0);
 												dialogInterface.dismiss();
-												Toasty.success(
-														appCtx,
-														getResources()
-																.getString(R.string.settingsSave));
+												SnackBar.success(
+														ctx,
+														findViewById(android.R.id.content),
+														getString(R.string.settingsSave));
 												this.recreate();
 											});
 
@@ -282,7 +288,10 @@ public class SettingsAppearanceActivity extends BaseActivity {
 					db.putInt("lightThemeTimeMinute", materialTimePicker.getMinute());
 					SettingsFragment.refreshParent = true;
 					overridePendingTransition(0, 0);
-					Toasty.success(ctx, getString(R.string.settingsSave));
+					SnackBar.success(
+							ctx,
+							findViewById(android.R.id.content),
+							getString(R.string.settingsSave));
 					recreate();
 				});
 
@@ -305,7 +314,10 @@ public class SettingsAppearanceActivity extends BaseActivity {
 					db.putInt("darkThemeTimeMinute", materialTimePicker.getMinute());
 					SettingsFragment.refreshParent = true;
 					overridePendingTransition(0, 0);
-					Toasty.success(ctx, getString(R.string.settingsSave));
+					SnackBar.success(
+							ctx,
+							findViewById(android.R.id.content),
+							getString(R.string.settingsSave));
 					recreate();
 				});
 
