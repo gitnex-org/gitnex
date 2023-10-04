@@ -1,7 +1,6 @@
 package org.mian.gitnex.activities;
 
 import android.os.Bundle;
-import android.view.View;
 import com.google.android.material.dialog.MaterialAlertDialogBuilder;
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -18,7 +17,6 @@ public class SettingsGeneralActivity extends BaseActivity {
 	private static int homeScreenSelectedChoice = 0;
 	private static int defaultLinkHandlerScreenSelectedChoice = 0;
 	private ActivitySettingsGeneralBinding viewBinding;
-	private View.OnClickListener onClickListener;
 	private List<String> homeScreenList;
 	private List<String> linkHandlerDefaultScreen;
 
@@ -30,8 +28,7 @@ public class SettingsGeneralActivity extends BaseActivity {
 		viewBinding = ActivitySettingsGeneralBinding.inflate(getLayoutInflater());
 		setContentView(viewBinding.getRoot());
 
-		initCloseListener();
-		viewBinding.close.setOnClickListener(onClickListener);
+		viewBinding.topAppBar.setNavigationOnClickListener(v -> finish());
 
 		// home screen
 		String[] appHomeDefaultScreen = getResources().getStringArray(R.array.appDefaultHomeScreen);
@@ -204,9 +201,5 @@ public class SettingsGeneralActivity extends BaseActivity {
 						viewBinding.crashReportsSwitch.setChecked(
 								!viewBinding.crashReportsSwitch.isChecked()));
 		// crash reports switcher
-	}
-
-	private void initCloseListener() {
-		onClickListener = view -> finish();
 	}
 }

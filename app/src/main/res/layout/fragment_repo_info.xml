@@ -173,7 +173,7 @@
                                     style="?attr/materialButtonToggleGroupStyle"
                                     android:layout_width="wrap_content"
                                     android:layout_height="wrap_content"
-                                    android:textSize="@dimen/dimen12sp"
+                                    android:textSize="@dimen/dimen14sp"
                                     android:textStyle="bold"
                                     app:icon="@drawable/ic_star_unfilled"
                                     android:text="@string/repoStars" />
@@ -183,7 +183,7 @@
                                     style="?attr/materialButtonToggleGroupStyle"
                                     android:layout_width="wrap_content"
                                     android:layout_height="wrap_content"
-                                    android:textSize="@dimen/dimen12sp"
+                                    android:textSize="@dimen/dimen14sp"
                                     android:textStyle="bold"
                                     app:icon="@drawable/ic_pull_request"
                                     android:text="@string/repoStars" />
@@ -193,7 +193,7 @@
                                     style="?attr/materialButtonToggleGroupStyle"
                                     android:layout_width="wrap_content"
                                     android:layout_height="wrap_content"
-                                    android:textSize="@dimen/dimen12sp"
+                                    android:textSize="@dimen/dimen14sp"
                                     android:textStyle="bold"
                                     app:icon="@drawable/ic_fork"
                                     android:text="@string/repoStars" />
@@ -203,7 +203,7 @@
                                     style="?attr/materialButtonToggleGroupStyle"
                                     android:layout_width="wrap_content"
                                     android:layout_height="wrap_content"
-                                    android:textSize="@dimen/dimen12sp"
+                                    android:textSize="@dimen/dimen14sp"
                                     android:textStyle="bold"
                                     app:icon="@drawable/ic_watchers"
                                     android:text="@string/repoStars" />
@@ -383,7 +383,7 @@
                                     style="?attr/materialButtonToggleGroupStyle"
                                     android:layout_width="wrap_content"
                                     android:layout_height="wrap_content"
-                                    android:textSize="@dimen/dimen12sp"
+                                    android:textSize="@dimen/dimen14sp"
                                     android:textStyle="bold"
                                     app:icon="@drawable/ic_info"
                                     android:text="@string/infoMoreInformation" />

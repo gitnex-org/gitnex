@@ -1,14 +1,10 @@
 package org.mian.gitnex.activities;
 
-import android.app.Dialog;
-import android.app.TimePickerDialog;
 import android.os.Build;
 import android.os.Bundle;
 import android.view.View;
-import android.widget.TimePicker;
-import androidx.annotation.NonNull;
-import androidx.fragment.app.DialogFragment;
 import com.google.android.material.dialog.MaterialAlertDialogBuilder;
+import com.google.android.material.timepicker.MaterialTimePicker;
 import java.util.LinkedHashMap;
 import java.util.Locale;
 import org.mian.gitnex.R;
@@ -28,7 +24,6 @@ public class SettingsAppearanceActivity extends BaseActivity {
 	private static int customFontSelectedChoice = 0;
 	private static String[] themeList;
 	private static int themeSelectedChoice = 0;
-	private View.OnClickListener onClickListener;
 	private static int langSelectedChoice = 0;
 	private static String[] fragmentTabsAnimationList;
 	private static int fragmentTabsAnimationSelectedChoice = 0;
@@ -58,8 +53,7 @@ public class SettingsAppearanceActivity extends BaseActivity {
 			themeList = getResources().getStringArray(R.array.themes);
 		}
 
-		initCloseListener();
-		activitySettingsAppearanceBinding.close.setOnClickListener(onClickListener);
+		activitySettingsAppearanceBinding.topAppBar.setNavigationOnClickListener(v -> finish());
 
 		String lightMinute = String.valueOf(tinyDB.getInt("lightThemeTimeMinute"));
 		String lightHour = String.valueOf(tinyDB.getInt("lightThemeTimeHour"));
@@ -163,16 +157,10 @@ public class SettingsAppearanceActivity extends BaseActivity {
 				});
 
 		activitySettingsAppearanceBinding.lightThemeTimeSelectionFrame.setOnClickListener(
-				view -> {
-					LightTimePicker timePicker = new LightTimePicker();
-					timePicker.show(getSupportFragmentManager(), "timePicker");
-				});
+				view -> lightTimePicker());
 
 		activitySettingsAppearanceBinding.darkThemeTimeSelectionFrame.setOnClickListener(
-				view -> {
-					DarkTimePicker timePicker = new DarkTimePicker();
-					timePicker.show(getSupportFragmentManager(), "timePicker");
-				});
+				view -> darkTimePicker());
 
 		// custom font dialog
 		activitySettingsAppearanceBinding.customFontFrame.setOnClickListener(
@@ -239,9 +227,9 @@ public class SettingsAppearanceActivity extends BaseActivity {
 
 		// language selector dialog
 		activitySettingsAppearanceBinding.helpTranslate.setOnClickListener(
-				v12 -> {
-					AppUtil.openUrlInBrowser(this, getResources().getString(R.string.crowdInLink));
-				});
+				v12 ->
+						AppUtil.openUrlInBrowser(
+								this, getResources().getString(R.string.crowdInLink)));
 
 		langSelectedChoice = tinyDB.getInt("langId");
 		activitySettingsAppearanceBinding.tvLanguageSelected.setText(
@@ -278,62 +266,50 @@ public class SettingsAppearanceActivity extends BaseActivity {
 				});
 	}
 
-	private void initCloseListener() {
-		onClickListener = view -> finish();
+	public void lightTimePicker() {
+
+		TinyDB db = TinyDB.getInstance(ctx);
+
+		int hour = db.getInt("lightThemeTimeHour");
+		int minute = db.getInt("lightThemeTimeMinute");
+
+		MaterialTimePicker materialTimePicker =
+				new MaterialTimePicker.Builder().setHour(hour).setMinute(minute).build();
+
+		materialTimePicker.addOnPositiveButtonClickListener(
+				selection -> {
+					db.putInt("lightThemeTimeHour", materialTimePicker.getHour());
+					db.putInt("lightThemeTimeMinute", materialTimePicker.getMinute());
+					SettingsFragment.refreshParent = true;
+					overridePendingTransition(0, 0);
+					Toasty.success(ctx, getString(R.string.settingsSave));
+					recreate();
+				});
+
+		materialTimePicker.show(getSupportFragmentManager(), "fragmentManager");
 	}
 
-	public static class LightTimePicker extends DialogFragment
-			implements TimePickerDialog.OnTimeSetListener {
+	public void darkTimePicker() {
 
-		TinyDB db = TinyDB.getInstance(getContext());
+		TinyDB db = TinyDB.getInstance(ctx);
 
-		@NonNull @Override
-		public Dialog onCreateDialog(Bundle savedInstanceState) {
-			int hour = db.getInt("lightThemeTimeHour");
-			int minute = db.getInt("lightThemeTimeMinute");
+		int hour = db.getInt("darkThemeTimeHour");
+		int minute = db.getInt("darkThemeTimeMinute");
 
-			return new TimePickerDialog(getActivity(), this, hour, minute, true);
-		}
+		MaterialTimePicker materialTimePicker =
+				new MaterialTimePicker.Builder().setHour(hour).setMinute(minute).build();
 
-		@Override
-		public void onTimeSet(TimePicker view, int hourOfDay, int minute) {
-			db.putInt("lightThemeTimeHour", hourOfDay);
-			db.putInt("lightThemeTimeMinute", minute);
-			SettingsFragment.refreshParent = true;
-			requireActivity().overridePendingTransition(0, 0);
-			this.dismiss();
-			Toasty.success(
-					requireActivity().getApplicationContext(),
-					requireContext().getResources().getString(R.string.settingsSave));
-			requireActivity().recreate();
-		}
-	}
+		materialTimePicker.addOnPositiveButtonClickListener(
+				selection -> {
+					db.putInt("darkThemeTimeHour", materialTimePicker.getHour());
+					db.putInt("darkThemeTimeMinute", materialTimePicker.getMinute());
+					SettingsFragment.refreshParent = true;
+					overridePendingTransition(0, 0);
+					Toasty.success(ctx, getString(R.string.settingsSave));
+					recreate();
+				});
 
-	public static class DarkTimePicker extends DialogFragment
-			implements TimePickerDialog.OnTimeSetListener {
-
-		TinyDB db = TinyDB.getInstance(getContext());
-
-		@NonNull @Override
-		public Dialog onCreateDialog(Bundle savedInstanceState) {
-			int hour = db.getInt("darkThemeTimeHour");
-			int minute = db.getInt("darkThemeTimeMinute");
-
-			return new TimePickerDialog(getActivity(), this, hour, minute, true);
-		}
-
-		@Override
-		public void onTimeSet(TimePicker view, int hourOfDay, int minute) {
-			db.putInt("darkThemeTimeHour", hourOfDay);
-			db.putInt("darkThemeTimeMinute", minute);
-			SettingsFragment.refreshParent = true;
-			requireActivity().overridePendingTransition(0, 0);
-			this.dismiss();
-			Toasty.success(
-					requireActivity().getApplicationContext(),
-					requireContext().getResources().getString(R.string.settingsSave));
-			requireActivity().recreate();
-		}
+		materialTimePicker.show(getSupportFragmentManager(), "fragmentManager");
 	}
 
 	private static String getLanguageDisplayName(String langCode) {
