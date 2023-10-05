@@ -1,16 +1,12 @@
 package org.mian.gitnex.activities;
 
 import android.annotation.SuppressLint;
-import android.content.Context;
 import android.os.Bundle;
-import android.util.Log;
+import android.os.Handler;
+import android.view.MenuItem;
 import android.view.MotionEvent;
-import android.view.View;
-import android.view.inputmethod.InputMethodManager;
-import android.widget.Button;
-import android.widget.EditText;
-import android.widget.ImageView;
 import androidx.annotation.NonNull;
+import java.util.Objects;
 import org.gitnex.tea4j.v2.models.CreateOrgOption;
 import org.gitnex.tea4j.v2.models.Organization;
 import org.mian.gitnex.R;
@@ -19,7 +15,7 @@ import org.mian.gitnex.databinding.ActivityCreateOrganizationBinding;
 import org.mian.gitnex.fragments.OrganizationsFragment;
 import org.mian.gitnex.helpers.AlertDialogs;
 import org.mian.gitnex.helpers.AppUtil;
-import org.mian.gitnex.helpers.Toasty;
+import org.mian.gitnex.helpers.SnackBar;
 import retrofit2.Call;
 import retrofit2.Callback;
 
@@ -28,13 +24,7 @@ import retrofit2.Callback;
  */
 public class CreateOrganizationActivity extends BaseActivity {
 
-	public ImageView closeActivity;
-	private View.OnClickListener onClickListener;
-	private Button createOrganizationButton;
-
-	private EditText orgName;
-	private EditText orgDesc;
-	private final View.OnClickListener createOrgListener = v -> processNewOrganization();
+	private ActivityCreateOrganizationBinding activityCreateOrganizationBinding;
 
 	@SuppressLint("ClickableViewAccessibility")
 	@Override
@@ -42,24 +32,18 @@ public class CreateOrganizationActivity extends BaseActivity {
 
 		super.onCreate(savedInstanceState);
 
-		ActivityCreateOrganizationBinding activityCreateOrganizationBinding =
+		activityCreateOrganizationBinding =
 				ActivityCreateOrganizationBinding.inflate(getLayoutInflater());
 		setContentView(activityCreateOrganizationBinding.getRoot());
 
-		boolean connToInternet = AppUtil.hasNetworkConnection(appCtx);
+		MenuItem attachment = activityCreateOrganizationBinding.topAppBar.getMenu().getItem(0);
+		MenuItem markdown = activityCreateOrganizationBinding.topAppBar.getMenu().getItem(1);
+		attachment.setVisible(false);
+		markdown.setVisible(false);
 
-		InputMethodManager imm =
-				(InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
+		activityCreateOrganizationBinding.topAppBar.setNavigationOnClickListener(v -> finish());
 
-		closeActivity = activityCreateOrganizationBinding.close;
-		orgName = activityCreateOrganizationBinding.newOrganizationName;
-		orgDesc = activityCreateOrganizationBinding.newOrganizationDescription;
-
-		orgName.requestFocus();
-		assert imm != null;
-		imm.showSoftInput(orgName, InputMethodManager.SHOW_IMPLICIT);
-
-		orgDesc.setOnTouchListener(
+		activityCreateOrganizationBinding.newOrganizationDescription.setOnTouchListener(
 				(touchView, motionEvent) -> {
 					touchView.getParent().requestDisallowInterceptTouchEvent(true);
 
@@ -71,56 +55,53 @@ public class CreateOrganizationActivity extends BaseActivity {
 					return false;
 				});
 
-		initCloseListener();
-		closeActivity.setOnClickListener(onClickListener);
+		activityCreateOrganizationBinding.topAppBar.setOnMenuItemClickListener(
+				menuItem -> {
+					int id = menuItem.getItemId();
 
-		createOrganizationButton = activityCreateOrganizationBinding.createNewOrganizationButton;
-
-		if (!connToInternet) {
-
-			createOrganizationButton.setEnabled(false);
-		} else {
-
-			createOrganizationButton.setOnClickListener(createOrgListener);
-		}
-	}
-
-	private void initCloseListener() {
-
-		onClickListener = view -> finish();
+					if (id == R.id.create) {
+						processNewOrganization();
+						return true;
+					} else {
+						return super.onOptionsItemSelected(menuItem);
+					}
+				});
 	}
 
 	private void processNewOrganization() {
 
-		boolean connToInternet = AppUtil.hasNetworkConnection(appCtx);
-
-		String newOrgName = orgName.getText().toString();
-		String newOrgDesc = orgDesc.getText().toString();
-
-		if (!connToInternet) {
-
-			Toasty.error(ctx, getResources().getString(R.string.checkNetConnection));
-			return;
-		}
+		String newOrgName =
+				Objects.requireNonNull(
+								activityCreateOrganizationBinding.newOrganizationName.getText())
+						.toString();
+		String newOrgDesc =
+				Objects.requireNonNull(
+								activityCreateOrganizationBinding.newOrganizationDescription
+										.getText())
+						.toString();
 
 		if (!newOrgDesc.equals("")) {
 
 			if (newOrgDesc.length() > 255) {
 
-				Toasty.warning(ctx, getString(R.string.orgDescError));
+				SnackBar.error(
+						ctx, findViewById(android.R.id.content), getString(R.string.orgDescError));
 				return;
 			}
 		}
 
 		if (newOrgName.equals("")) {
 
-			Toasty.error(ctx, getString(R.string.orgNameErrorEmpty));
+			SnackBar.error(
+					ctx, findViewById(android.R.id.content), getString(R.string.orgNameErrorEmpty));
 		} else if (!AppUtil.checkStrings(newOrgName)) {
 
-			Toasty.warning(ctx, getString(R.string.orgNameErrorInvalid));
+			SnackBar.error(
+					ctx,
+					findViewById(android.R.id.content),
+					getString(R.string.orgNameErrorInvalid));
 		} else {
 
-			disableProcessButton();
 			createNewOrganization(newOrgName, newOrgDesc);
 		}
 	}
@@ -134,7 +115,7 @@ public class CreateOrganizationActivity extends BaseActivity {
 		Call<Organization> call = RetrofitClient.getApiInterface(ctx).orgCreate(createOrganization);
 
 		call.enqueue(
-				new Callback<Organization>() {
+				new Callback<>() {
 
 					@Override
 					public void onResponse(
@@ -143,51 +124,46 @@ public class CreateOrganizationActivity extends BaseActivity {
 
 						if (response.code() == 201) {
 							OrganizationsFragment.orgCreated = true;
-							enableProcessButton();
-							Toasty.success(ctx, getString(R.string.orgCreated));
-							finish();
+							SnackBar.success(
+									ctx,
+									findViewById(android.R.id.content),
+									getString(R.string.orgCreated));
+							new Handler().postDelayed(() -> finish(), 3000);
 						} else if (response.code() == 401) {
 
-							enableProcessButton();
 							AlertDialogs.authorizationTokenRevokedDialog(ctx);
 						} else if (response.code() == 409) {
 
-							enableProcessButton();
-							Toasty.warning(ctx, getString(R.string.orgExistsError));
+							SnackBar.error(
+									ctx,
+									findViewById(android.R.id.content),
+									getString(R.string.orgExistsError));
 						} else if (response.code() == 422) {
 
-							enableProcessButton();
-							Toasty.warning(ctx, getString(R.string.orgExistsError));
+							SnackBar.error(
+									ctx,
+									findViewById(android.R.id.content),
+									getString(R.string.orgExistsError));
 						} else {
 
 							if (response.code() == 404) {
 
-								enableProcessButton();
-								Toasty.warning(ctx, getString(R.string.apiNotFound));
+								SnackBar.error(
+										ctx,
+										findViewById(android.R.id.content),
+										getString(R.string.apiNotFound));
 							} else {
 
-								enableProcessButton();
-								Toasty.error(ctx, getString(R.string.genericError));
+								SnackBar.error(
+										ctx,
+										findViewById(android.R.id.content),
+										getString(R.string.genericError));
 							}
 						}
 					}
 
 					@Override
-					public void onFailure(@NonNull Call<Organization> call, @NonNull Throwable t) {
-
-						Log.e("onFailure", t.toString());
-						enableProcessButton();
-					}
+					public void onFailure(@NonNull Call<Organization> call, @NonNull Throwable t) {}
 				});
-	}
-
-	private void disableProcessButton() {
-
-		createOrganizationButton.setEnabled(false);
-	}
-
-	private void enableProcessButton() {
-
-		createOrganizationButton.setEnabled(true);
 	}
 }

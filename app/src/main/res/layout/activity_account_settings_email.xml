@@ -53,7 +53,6 @@
                 android:layout_marginBottom="@dimen/dimen8dp"
                 android:hint="@string/accountEmailTitle"
                 android:textColorHint="?attr/hintColor"
-                app:boxBackgroundColor="?attr/inputBackgroundColor"
                 app:boxStrokeErrorColor="@color/darkRed"
                 app:endIconMode="clear_text"
                 app:endIconTint="?attr/iconsColor"

@@ -180,6 +180,7 @@
                                             android:layout_height="wrap_content"
                                             android:ellipsize="middle"
                                             android:singleLine="true"
+                                            android:textIsSelectable="true"
                                             android:textColor="?attr/primaryTextColor"
                                             android:textSize="14sp"
                                             android:textStyle="bold" />
@@ -235,6 +236,7 @@
                                         android:layout_height="wrap_content"
                                         android:layout_marginStart="@dimen/dimen8dp"
                                         android:singleLine="true"
+                                        android:textIsSelectable="true"
                                         android:textColor="?attr/primaryTextColor"
                                         android:textSize="@dimen/dimen14sp" />
 

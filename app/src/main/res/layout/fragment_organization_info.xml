@@ -73,12 +73,11 @@
                         android:textColorLink="@color/lightBlue"
                         android:textSize="@dimen/dimen16sp"/>
 
-                    <View
+                    <com.google.android.material.divider.MaterialDivider
                         android:layout_width="match_parent"
-                        android:layout_height="1dp"
+                        android:layout_height="wrap_content"
                         android:layout_marginTop="@dimen/dimen24dp"
-                        android:layout_marginBottom="@dimen/dimen24dp"
-                        android:background="?attr/dividerColor"/>
+                        android:layout_marginBottom="@dimen/dimen24dp" />
 
                     <LinearLayout
                         android:layout_width="match_parent"

@@ -216,6 +216,7 @@ public class Markdown {
 												}
 											}
 											textView.setTypeface(tf);
+											textView.setTextIsSelectable(true);
 											super.beforeSetText(textView, markdown);
 										}
 
@@ -382,6 +383,7 @@ public class Markdown {
 												}
 											}
 											textView.setTypeface(tf);
+											textView.setTextIsSelectable(true);
 											super.beforeSetText(textView, markdown);
 										}
 

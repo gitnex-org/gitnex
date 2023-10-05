@@ -468,7 +468,7 @@ public class CreateIssueActivity extends BaseActivity
 							RepoDetailActivity.updateRepo = true;
 							MainActivity.reloadRepos = true;
 
-							SnackBar.info(
+							SnackBar.success(
 									ctx,
 									findViewById(android.R.id.content),
 									getString(R.string.issueCreated));
