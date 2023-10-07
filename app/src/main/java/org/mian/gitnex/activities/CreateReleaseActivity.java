@@ -1,15 +1,10 @@
 package org.mian.gitnex.activities;
 
 import android.annotation.SuppressLint;
-import android.content.Context;
 import android.os.Bundle;
-import android.util.Log;
-import android.view.Menu;
-import android.view.MenuInflater;
-import android.view.MenuItem;
+import android.os.Handler;
 import android.view.MotionEvent;
 import android.view.View;
-import android.view.inputmethod.InputMethodManager;
 import android.widget.ArrayAdapter;
 import androidx.annotation.NonNull;
 import com.vdurmont.emoji.EmojiParser;
@@ -25,9 +20,8 @@ import org.mian.gitnex.R;
 import org.mian.gitnex.clients.RetrofitClient;
 import org.mian.gitnex.databinding.ActivityCreateReleaseBinding;
 import org.mian.gitnex.helpers.AlertDialogs;
-import org.mian.gitnex.helpers.AppUtil;
 import org.mian.gitnex.helpers.Markdown;
-import org.mian.gitnex.helpers.Toasty;
+import org.mian.gitnex.helpers.SnackBar;
 import org.mian.gitnex.helpers.contexts.RepositoryContext;
 import retrofit2.Call;
 import retrofit2.Callback;
@@ -39,10 +33,8 @@ public class CreateReleaseActivity extends BaseActivity {
 
 	private ActivityCreateReleaseBinding binding;
 	List<String> branchesList = new ArrayList<>();
-	private View.OnClickListener onClickListener;
 	private String selectedBranch;
 	private RepositoryContext repository;
-	private final View.OnClickListener createReleaseListener = v -> processNewRelease();
 	private boolean renderMd = false;
 
 	@SuppressLint("ClickableViewAccessibility")
@@ -53,18 +45,8 @@ public class CreateReleaseActivity extends BaseActivity {
 
 		binding = ActivityCreateReleaseBinding.inflate(getLayoutInflater());
 		setContentView(binding.getRoot());
-		setSupportActionBar(binding.toolbar);
-
-		boolean connToInternet = AppUtil.hasNetworkConnection(appCtx);
-
-		InputMethodManager imm =
-				(InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
 
 		repository = RepositoryContext.fromIntent(getIntent());
-
-		binding.releaseTitle.requestFocus();
-		assert imm != null;
-		imm.showSoftInput(binding.releaseTitle, InputMethodManager.SHOW_IMPLICIT);
 
 		binding.releaseContent.setOnTouchListener(
 				(touchView, motionEvent) -> {
@@ -78,89 +60,71 @@ public class CreateReleaseActivity extends BaseActivity {
 					return false;
 				});
 
-		initCloseListener();
-		binding.close.setOnClickListener(onClickListener);
+		binding.topAppBar.setNavigationOnClickListener(
+				v -> {
+					finish();
+				});
+
+		binding.topAppBar.setOnMenuItemClickListener(
+				menuItem -> {
+					int id = menuItem.getItemId();
+
+					if (id == R.id.markdown) {
+
+						if (!renderMd) {
+							Markdown.render(
+									ctx,
+									EmojiParser.parseToUnicode(
+											Objects.requireNonNull(
+													Objects.requireNonNull(
+																	binding.releaseContent
+																			.getText())
+															.toString())),
+									binding.markdownPreview);
+
+							binding.markdownPreview.setVisibility(View.VISIBLE);
+							binding.releaseContentLayout.setVisibility(View.GONE);
+							renderMd = true;
+						} else {
+							binding.markdownPreview.setVisibility(View.GONE);
+							binding.releaseContentLayout.setVisibility(View.VISIBLE);
+							renderMd = false;
+						}
+
+						return true;
+					} else if (id == R.id.create) {
+						processNewRelease();
+						return true;
+					} else if (id == R.id.create_tag) {
+						createNewTag();
+						return true;
+					} else {
+						return super.onOptionsItemSelected(menuItem);
+					}
+				});
 
 		getBranches(repository.getOwner(), repository.getName());
-
-		disableProcessButton();
-
-		if (!connToInternet) {
-
-			disableProcessButton();
-		} else {
-
-			binding.createNewRelease.setOnClickListener(createReleaseListener);
-		}
-
-		binding.createNewTag.setOnClickListener(v -> createNewTag());
-	}
-
-	@Override
-	public boolean onCreateOptionsMenu(@NonNull Menu menu) {
-
-		MenuInflater inflater = getMenuInflater();
-		inflater.inflate(R.menu.markdown_switcher, menu);
-
-		return true;
-	}
-
-	@Override
-	public boolean onOptionsItemSelected(MenuItem item) {
-
-		int id = item.getItemId();
-
-		if (id == R.id.markdown) {
-
-			if (!renderMd) {
-				Markdown.render(
-						ctx,
-						EmojiParser.parseToUnicode(
-								Objects.requireNonNull(
-										Objects.requireNonNull(binding.releaseContent.getText())
-												.toString())),
-						binding.markdownPreview);
-
-				binding.markdownPreview.setVisibility(View.VISIBLE);
-				binding.releaseContentLayout.setVisibility(View.GONE);
-				renderMd = true;
-			} else {
-				binding.markdownPreview.setVisibility(View.GONE);
-				binding.releaseContentLayout.setVisibility(View.VISIBLE);
-				renderMd = false;
-			}
-
-			return true;
-		} else {
-			return super.onOptionsItemSelected(item);
-		}
 	}
 
 	private void createNewTag() {
-		boolean connToInternet = AppUtil.hasNetworkConnection(appCtx);
 
 		String tagName = Objects.requireNonNull(binding.releaseTagName.getText()).toString();
 		String message =
-				Objects.requireNonNull(binding.releaseTitle.getText()).toString()
+				Objects.requireNonNull(binding.releaseTitle.getText())
 						+ "\n\n"
-						+ Objects.requireNonNull(binding.releaseContent.getText()).toString();
-
-		if (!connToInternet) {
-			Toasty.error(ctx, getResources().getString(R.string.checkNetConnection));
-			return;
-		}
+						+ Objects.requireNonNull(binding.releaseContent.getText());
 
 		if (tagName.equals("")) {
-			Toasty.error(ctx, getString(R.string.tagNameErrorEmpty));
+			SnackBar.error(
+					ctx, findViewById(android.R.id.content), getString(R.string.tagNameErrorEmpty));
 			return;
 		}
 
 		if (selectedBranch == null) {
-			Toasty.error(ctx, getString(R.string.selectBranchError));
+			SnackBar.error(
+					ctx, findViewById(android.R.id.content), getString(R.string.selectBranchError));
 			return;
 		}
-
-		disableProcessButton();
 
 		CreateTagOption createReleaseJson = new CreateTagOption();
 		createReleaseJson.setMessage(message);
@@ -173,7 +137,7 @@ public class CreateReleaseActivity extends BaseActivity {
 								repository.getOwner(), repository.getName(), createReleaseJson);
 
 		call.enqueue(
-				new Callback<Tag>() {
+				new Callback<>() {
 
 					@Override
 					public void onResponse(
@@ -182,34 +146,37 @@ public class CreateReleaseActivity extends BaseActivity {
 						if (response.code() == 201) {
 
 							RepoDetailActivity.updateFABActions = true;
-							Toasty.success(ctx, getString(R.string.tagCreated));
-							finish();
+							SnackBar.success(
+									ctx,
+									findViewById(android.R.id.content),
+									getString(R.string.tagCreated));
+							new Handler().postDelayed(() -> finish(), 3000);
 						} else if (response.code() == 401) {
-							enableProcessButton();
 							AlertDialogs.authorizationTokenRevokedDialog(ctx);
 						} else if (response.code() == 403) {
-							enableProcessButton();
-							Toasty.error(ctx, ctx.getString(R.string.authorizeError));
+							SnackBar.error(
+									ctx,
+									findViewById(android.R.id.content),
+									getString(R.string.authorizeError));
 						} else if (response.code() == 404) {
-							enableProcessButton();
-							Toasty.warning(ctx, ctx.getString(R.string.apiNotFound));
+							SnackBar.error(
+									ctx,
+									findViewById(android.R.id.content),
+									getString(R.string.apiNotFound));
 						} else {
-							enableProcessButton();
-							Toasty.error(ctx, ctx.getString(R.string.genericError));
+							SnackBar.error(
+									ctx,
+									findViewById(android.R.id.content),
+									getString(R.string.genericError));
 						}
 					}
 
 					@Override
-					public void onFailure(@NonNull Call<Tag> call, @NonNull Throwable t) {
-						Log.e("onFailure", t.toString());
-						enableProcessButton();
-					}
+					public void onFailure(@NonNull Call<Tag> call, @NonNull Throwable t) {}
 				});
 	}
 
 	private void processNewRelease() {
-
-		boolean connToInternet = AppUtil.hasNetworkConnection(appCtx);
 
 		String newReleaseTagName =
 				Objects.requireNonNull(binding.releaseTagName.getText()).toString();
@@ -220,31 +187,24 @@ public class CreateReleaseActivity extends BaseActivity {
 		boolean newReleaseType = binding.releaseType.isChecked();
 		boolean newReleaseDraft = binding.releaseDraft.isChecked();
 
-		if (!connToInternet) {
-
-			Toasty.error(ctx, getResources().getString(R.string.checkNetConnection));
-			return;
-		}
-
 		if (newReleaseTitle.equals("")) {
-
-			Toasty.error(ctx, getString(R.string.titleErrorEmpty));
+			SnackBar.error(
+					ctx, findViewById(android.R.id.content), getString(R.string.titleErrorEmpty));
 			return;
 		}
 
 		if (newReleaseTagName.equals("")) {
-
-			Toasty.error(ctx, getString(R.string.tagNameErrorEmpty));
+			SnackBar.error(
+					ctx, findViewById(android.R.id.content), getString(R.string.tagNameErrorEmpty));
 			return;
 		}
 
 		if (checkBranch == null) {
-
-			Toasty.error(ctx, getString(R.string.selectBranchError));
+			SnackBar.error(
+					ctx, findViewById(android.R.id.content), getString(R.string.selectBranchError));
 			return;
 		}
 
-		disableProcessButton();
 		createNewReleaseFunc(
 				repository.getOwner(),
 				repository.getName(),
@@ -289,31 +249,37 @@ public class CreateReleaseActivity extends BaseActivity {
 						if (response.code() == 201) {
 
 							RepoDetailActivity.updateFABActions = true;
-							Toasty.success(ctx, getString(R.string.releaseCreatedText));
-							finish();
+							SnackBar.success(
+									ctx,
+									findViewById(android.R.id.content),
+									getString(R.string.releaseCreatedText));
+							new Handler().postDelayed(() -> finish(), 3000);
 						} else if (response.code() == 401) {
 
-							enableProcessButton();
 							AlertDialogs.authorizationTokenRevokedDialog(ctx);
 						} else if (response.code() == 403) {
 
-							enableProcessButton();
-							Toasty.error(ctx, ctx.getString(R.string.authorizeError));
+							SnackBar.error(
+									ctx,
+									findViewById(android.R.id.content),
+									getString(R.string.authorizeError));
 						} else if (response.code() == 404) {
 
-							enableProcessButton();
-							Toasty.warning(ctx, ctx.getString(R.string.apiNotFound));
+							SnackBar.error(
+									ctx,
+									findViewById(android.R.id.content),
+									getString(R.string.apiNotFound));
 						} else {
 
-							enableProcessButton();
-							Toasty.error(ctx, ctx.getString(R.string.genericError));
+							SnackBar.error(
+									ctx,
+									findViewById(android.R.id.content),
+									getString(R.string.genericError));
 						}
 					}
 
 					@Override
-					public void onFailure(@NonNull Call<Release> call, @NonNull Throwable t) {
-						enableProcessButton();
-					}
+					public void onFailure(@NonNull Call<Release> call, @NonNull Throwable t) {}
 				});
 	}
 
@@ -349,7 +315,6 @@ public class CreateReleaseActivity extends BaseActivity {
 												branchesList);
 
 								binding.releaseBranch.setAdapter(adapter);
-								enableProcessButton();
 
 								binding.releaseBranch.setOnItemClickListener(
 										(parent, view, position, id) ->
@@ -364,21 +329,6 @@ public class CreateReleaseActivity extends BaseActivity {
 					@Override
 					public void onFailure(@NonNull Call<List<Branch>> call, @NonNull Throwable t) {}
 				});
-	}
-
-	private void initCloseListener() {
-
-		onClickListener = view -> finish();
-	}
-
-	private void disableProcessButton() {
-		binding.createNewTag.setEnabled(false);
-		binding.createNewRelease.setEnabled(false);
-	}
-
-	private void enableProcessButton() {
-		binding.createNewTag.setEnabled(true);
-		binding.createNewRelease.setEnabled(true);
 	}
 
 	@Override
