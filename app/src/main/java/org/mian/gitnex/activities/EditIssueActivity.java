@@ -1,22 +1,18 @@
 package org.mian.gitnex.activities;
 
 import android.annotation.SuppressLint;
-import android.app.DatePickerDialog;
-import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Looper;
 import android.util.Log;
-import android.view.Menu;
-import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.MotionEvent;
 import android.view.View;
-import android.view.inputmethod.InputMethodManager;
 import android.widget.ArrayAdapter;
 import android.widget.TextView;
 import androidx.annotation.NonNull;
+import com.google.android.material.datepicker.MaterialDatePicker;
 import com.vdurmont.emoji.EmojiParser;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
@@ -25,7 +21,9 @@ import java.util.Calendar;
 import java.util.Date;
 import java.util.LinkedHashMap;
 import java.util.List;
+import java.util.Locale;
 import java.util.Objects;
+import java.util.TimeZone;
 import org.gitnex.tea4j.v2.models.EditIssueOption;
 import org.gitnex.tea4j.v2.models.Issue;
 import org.gitnex.tea4j.v2.models.Milestone;
@@ -35,10 +33,9 @@ import org.mian.gitnex.databinding.ActivityEditIssueBinding;
 import org.mian.gitnex.fragments.IssuesFragment;
 import org.mian.gitnex.fragments.PullRequestsFragment;
 import org.mian.gitnex.helpers.AlertDialogs;
-import org.mian.gitnex.helpers.AppUtil;
 import org.mian.gitnex.helpers.Constants;
 import org.mian.gitnex.helpers.Markdown;
-import org.mian.gitnex.helpers.Toasty;
+import org.mian.gitnex.helpers.SnackBar;
 import org.mian.gitnex.helpers.contexts.IssueContext;
 import retrofit2.Call;
 import retrofit2.Callback;
@@ -46,15 +43,12 @@ import retrofit2.Callback;
 /**
  * @author M M Arif
  */
-public class EditIssueActivity extends BaseActivity implements View.OnClickListener {
+public class EditIssueActivity extends BaseActivity {
 
 	private ActivityEditIssueBinding binding;
 	private final String msState = "open";
 	private final LinkedHashMap<String, Milestone> milestonesList = new LinkedHashMap<>();
-	private View.OnClickListener onClickListener;
-	private int resultLimit;
 	private int milestoneId = 0;
-	private Date currentDate = null;
 	private IssueContext issue;
 	private boolean renderMd = false;
 
@@ -66,17 +60,16 @@ public class EditIssueActivity extends BaseActivity implements View.OnClickListe
 
 		binding = ActivityEditIssueBinding.inflate(getLayoutInflater());
 		setContentView(binding.getRoot());
-		setSupportActionBar(binding.toolbar);
 
-		InputMethodManager imm =
-				(InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
-
-		resultLimit = Constants.getCurrentResultLimit(ctx);
+		int resultLimit = Constants.getCurrentResultLimit(ctx);
 		issue = IssueContext.fromIntent(getIntent());
 
-		binding.editIssueTitle.requestFocus();
-		assert imm != null;
-		imm.showSoftInput(binding.editIssueTitle, InputMethodManager.SHOW_IMPLICIT);
+		binding.topAppBar.setNavigationOnClickListener(v -> finish());
+
+		MenuItem attachment = binding.topAppBar.getMenu().getItem(0);
+		MenuItem create = binding.topAppBar.getMenu().getItem(2);
+		attachment.setVisible(false);
+		create.setTitle(getString(R.string.menuEditText));
 
 		binding.editIssueDescription.setOnTouchListener(
 				(touchView, motionEvent) -> {
@@ -90,23 +83,51 @@ public class EditIssueActivity extends BaseActivity implements View.OnClickListe
 					return false;
 				});
 
-		initCloseListener();
-		binding.close.setOnClickListener(onClickListener);
-
-		binding.editIssueDueDate.setOnClickListener(this);
-		binding.editIssueButton.setOnClickListener(this);
-
 		if (issue.getIssueType().equalsIgnoreCase("Pull")) {
-
-			binding.toolbarTitle.setText(
+			binding.topAppBar.setTitle(
 					getString(R.string.editPrNavHeader, String.valueOf(issue.getIssueIndex())));
 		} else {
-
-			binding.toolbarTitle.setText(
+			binding.topAppBar.setTitle(
 					getString(R.string.editIssueNavHeader, String.valueOf(issue.getIssueIndex())));
 		}
 
-		disableProcessButton();
+		showDatePickerDialog();
+
+		binding.topAppBar.setOnMenuItemClickListener(
+				menuItem -> {
+					int id = menuItem.getItemId();
+
+					if (id == R.id.markdown) {
+
+						if (!renderMd) {
+
+							Markdown.render(
+									ctx,
+									EmojiParser.parseToUnicode(
+											Objects.requireNonNull(
+															binding.editIssueDescription.getText())
+													.toString()),
+									binding.markdownPreview,
+									issue.getRepository());
+
+							binding.markdownPreview.setVisibility(View.VISIBLE);
+							binding.editIssueDescriptionLayout.setVisibility(View.GONE);
+							renderMd = true;
+						} else {
+							binding.markdownPreview.setVisibility(View.GONE);
+							binding.editIssueDescriptionLayout.setVisibility(View.VISIBLE);
+							renderMd = false;
+						}
+
+						return true;
+					} else if (id == R.id.create) {
+						processEditIssue();
+						return true;
+					} else {
+						return super.onOptionsItemSelected(menuItem);
+					}
+				});
+
 		getIssue(
 				issue.getRepository().getOwner(),
 				issue.getRepository().getName(),
@@ -119,81 +140,29 @@ public class EditIssueActivity extends BaseActivity implements View.OnClickListe
 		}
 	}
 
-	private void initCloseListener() {
-
-		onClickListener = view -> finish();
-	}
-
-	@Override
-	public boolean onCreateOptionsMenu(@NonNull Menu menu) {
-
-		MenuInflater inflater = getMenuInflater();
-		inflater.inflate(R.menu.markdown_switcher, menu);
-
-		return true;
-	}
-
-	@Override
-	public boolean onOptionsItemSelected(MenuItem item) {
-
-		int id = item.getItemId();
-
-		if (id == R.id.markdown) {
-
-			if (!renderMd) {
-
-				Markdown.render(
-						ctx,
-						EmojiParser.parseToUnicode(
-								Objects.requireNonNull(binding.editIssueDescription.getText())
-										.toString()),
-						binding.markdownPreview,
-						issue.getRepository());
-
-				binding.markdownPreview.setVisibility(View.VISIBLE);
-				binding.editIssueDescriptionLayout.setVisibility(View.GONE);
-				renderMd = true;
-			} else {
-				binding.markdownPreview.setVisibility(View.GONE);
-				binding.editIssueDescriptionLayout.setVisibility(View.VISIBLE);
-				renderMd = false;
-			}
-
-			return true;
-		} else {
-			return super.onOptionsItemSelected(item);
-		}
-	}
-
 	private void processEditIssue() {
-
-		boolean connToInternet = AppUtil.hasNetworkConnection(appCtx);
 
 		String editIssueTitleForm =
 				Objects.requireNonNull(binding.editIssueTitle.getText()).toString();
 		String editIssueDescriptionForm =
 				Objects.requireNonNull(binding.editIssueDescription.getText()).toString();
-
-		if (!connToInternet) {
-
-			Toasty.error(ctx, getResources().getString(R.string.checkNetConnection));
-			return;
-		}
+		String dueDate = Objects.requireNonNull(binding.editIssueDueDate.getText()).toString();
 
 		if (editIssueTitleForm.equals("")) {
 
-			Toasty.error(ctx, getString(R.string.issueTitleEmpty));
+			SnackBar.error(
+					ctx, findViewById(android.R.id.content), getString(R.string.issueTitleEmpty));
 			return;
 		}
 
-		disableProcessButton();
 		editIssue(
 				issue.getRepository().getOwner(),
 				issue.getRepository().getName(),
 				issue.getIssueIndex(),
 				editIssueTitleForm,
 				editIssueDescriptionForm,
-				milestoneId);
+				milestoneId,
+				dueDate);
 	}
 
 	private void editIssue(
@@ -202,12 +171,21 @@ public class EditIssueActivity extends BaseActivity implements View.OnClickListe
 			int issueIndex,
 			String title,
 			String description,
-			int milestoneId) {
+			int milestoneId,
+			String dueDate) {
 
 		EditIssueOption issueData = new EditIssueOption();
 		issueData.setTitle(title);
 		issueData.setBody(description);
-		issueData.setDueDate(currentDate);
+		String[] date = dueDate.split("-");
+		if (!dueDate.equalsIgnoreCase("")) {
+			Calendar calendar = Calendar.getInstance();
+			calendar.set(Calendar.YEAR, Integer.parseInt(date[0]));
+			calendar.set(Calendar.MONTH, Integer.parseInt(date[1]));
+			calendar.set(Calendar.DATE, Integer.parseInt(date[2]));
+			Date dueDate_ = calendar.getTime();
+			issueData.setDueDate(dueDate_);
+		}
 		issueData.setMilestone((long) milestoneId);
 
 		Call<Issue> call =
@@ -215,7 +193,7 @@ public class EditIssueActivity extends BaseActivity implements View.OnClickListe
 						.issueEditIssue(repoOwner, repoName, (long) issueIndex, issueData);
 
 		call.enqueue(
-				new Callback<Issue>() {
+				new Callback<>() {
 
 					@Override
 					public void onResponse(
@@ -226,10 +204,16 @@ public class EditIssueActivity extends BaseActivity implements View.OnClickListe
 
 							if (issue.getIssueType().equalsIgnoreCase("Pull")) {
 
-								Toasty.success(ctx, getString(R.string.editPrSuccessMessage));
+								SnackBar.success(
+										ctx,
+										findViewById(android.R.id.content),
+										getString(R.string.editPrSuccessMessage));
 							} else {
 
-								Toasty.success(ctx, getString(R.string.editIssueSuccessMessage));
+								SnackBar.success(
+										ctx,
+										findViewById(android.R.id.content),
+										getString(R.string.editIssueSuccessMessage));
 							}
 
 							Intent result = new Intent();
@@ -238,57 +222,44 @@ public class EditIssueActivity extends BaseActivity implements View.OnClickListe
 							PullRequestsFragment.resumePullRequests =
 									issue.getIssue().getPullRequest() != null;
 							setResult(200, result);
-							finish();
+							new Handler().postDelayed(() -> finish(), 3000);
 						} else if (response.code() == 401) {
 
-							enableProcessButton();
 							AlertDialogs.authorizationTokenRevokedDialog(ctx);
 						} else {
 
-							enableProcessButton();
-							Toasty.error(ctx, getString(R.string.genericError));
+							SnackBar.error(
+									ctx,
+									findViewById(android.R.id.content),
+									getString(R.string.genericError));
 						}
 					}
 
 					@Override
-					public void onFailure(@NonNull Call<Issue> call, @NonNull Throwable t) {
-
-						Log.e("onFailure", t.toString());
-						enableProcessButton();
-					}
+					public void onFailure(@NonNull Call<Issue> call, @NonNull Throwable t) {}
 				});
 	}
 
-	@Override
-	public void onClick(View v) {
+	private void showDatePickerDialog() {
 
-		if (v == binding.editIssueDueDate) {
+		MaterialDatePicker.Builder<Long> builder = MaterialDatePicker.Builder.datePicker();
+		builder.setSelection(Calendar.getInstance().getTimeInMillis());
+		builder.setTitleText(R.string.newIssueDueDateTitle);
+		MaterialDatePicker<Long> materialDatePicker = builder.build();
 
-			final Calendar c = Calendar.getInstance();
-			int mYear = c.get(Calendar.YEAR);
-			final int mMonth = c.get(Calendar.MONTH);
-			final int mDay = c.get(Calendar.DAY_OF_MONTH);
+		binding.editIssueDueDate.setOnClickListener(
+				v -> materialDatePicker.show(getSupportFragmentManager(), "DATE_PICKER"));
 
-			DatePickerDialog datePickerDialog =
-					new DatePickerDialog(
-							this,
-							(view, year, monthOfYear, dayOfMonth) -> {
-								binding.editIssueDueDate.setText(
-										getString(
-												R.string.setDueDate,
-												year,
-												(monthOfYear + 1),
-												dayOfMonth));
-								currentDate = new Date(year - 1900, monthOfYear, dayOfMonth);
-							},
-							mYear,
-							mMonth,
-							mDay);
-			datePickerDialog.show();
-		} else if (v == binding.editIssueButton) {
-
-			processEditIssue();
-		}
+		materialDatePicker.addOnPositiveButtonClickListener(
+				selection -> {
+					Calendar calendar = Calendar.getInstance(TimeZone.getTimeZone("UTC"));
+					calendar.setTimeInMillis(selection);
+					SimpleDateFormat format =
+							new SimpleDateFormat(
+									"yyyy-MM-dd", new Locale(tinyDB.getString("locale")));
+					String formattedDate = format.format(calendar.getTime());
+					binding.editIssueDueDate.setText(formattedDate);
+				});
 	}
 
 	private void getIssue(
@@ -431,8 +402,6 @@ public class EditIssueActivity extends BaseActivity implements View.OnClickListe
 																		}
 																	},
 																	500);
-
-													enableProcessButton();
 												}
 											}
 
@@ -454,33 +423,25 @@ public class EditIssueActivity extends BaseActivity implements View.OnClickListe
 								String dueDate = formatter.format(response.body().getDueDate());
 								binding.editIssueDueDate.setText(dueDate);
 							}
-							// enableProcessButton();
 
 						} else if (response.code() == 401) {
 
 							AlertDialogs.authorizationTokenRevokedDialog(ctx);
 						} else {
 
-							Toasty.error(ctx, getString(R.string.genericError));
+							SnackBar.error(
+									ctx,
+									findViewById(android.R.id.content),
+									getString(R.string.genericError));
 						}
 					}
 
 					@Override
 					public void onFailure(@NonNull Call<Issue> call, @NonNull Throwable t) {
 
-						Log.e("onFailure", t.toString());
+						// Log.e("onFailure", t.toString());
 					}
 				});
-	}
-
-	private void disableProcessButton() {
-
-		binding.editIssueButton.setEnabled(false);
-	}
-
-	private void enableProcessButton() {
-
-		binding.editIssueButton.setEnabled(true);
 	}
 
 	@Override

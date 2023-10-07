@@ -76,7 +76,6 @@
                             android:textAlignment="gravity"
                             android:text="@string/newIssueTitle"
                             android:textColor="?attr/primaryTextColor"
-                            android:textIsSelectable="true"
                             android:textSize="@dimen/dimen16sp" />
 
                     </LinearLayout>

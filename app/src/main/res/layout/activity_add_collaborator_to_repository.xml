@@ -67,7 +67,6 @@
             android:id="@+id/addCollaboratorSearchLayout"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            app:boxBackgroundColor="?attr/inputBackgroundColor"
             android:textColorHint="?attr/hintColor"
             app:hintTextColor="?attr/hintColor"
             app:boxStrokeErrorColor="@color/darkRed"

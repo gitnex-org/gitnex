@@ -53,7 +53,6 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:textColor="?attr/primaryTextColor"
-                    android:textIsSelectable="true"
                     android:textSize="@dimen/dimen14sp"
                     tools:text="@string/orgName"/>
 
@@ -65,7 +64,6 @@
                 android:layout_height="wrap_content"
                 android:text="@string/repoName"
                 android:textColor="?attr/primaryTextColor"
-                android:textIsSelectable="true"
                 android:textSize="@dimen/dimen18sp"
                 android:textStyle="bold"/>
 
@@ -75,7 +73,6 @@
                 android:layout_height="wrap_content"
                 android:layout_marginBottom="@dimen/dimen8dp"
                 android:textColor="?attr/primaryTextColor"
-                android:textIsSelectable="true"
                 android:textSize="@dimen/dimen16sp"
                 android:visibility="gone"
                 android:text="@string/noDataDescription"/>

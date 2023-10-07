@@ -61,7 +61,6 @@
                         android:text="@string/newIssueTitle"
                         android:textAlignment="gravity"
                         android:textColor="?attr/primaryTextColor"
-                        android:textIsSelectable="true"
                         android:textSize="@dimen/dimen16sp"
                         tools:text="Id illum odio repellat omnis fuga deserunt aut. Ut est aut similique qui incidunt quia et." />
 

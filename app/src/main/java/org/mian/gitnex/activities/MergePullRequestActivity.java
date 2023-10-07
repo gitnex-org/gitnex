@@ -1,11 +1,11 @@
 package org.mian.gitnex.activities;
 
 import android.annotation.SuppressLint;
-import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
+import android.os.Handler;
+import android.view.MenuItem;
 import android.view.View;
-import android.view.inputmethod.InputMethodManager;
 import android.widget.ArrayAdapter;
 import androidx.annotation.NonNull;
 import java.util.ArrayList;
@@ -17,9 +17,8 @@ import org.mian.gitnex.clients.RetrofitClient;
 import org.mian.gitnex.databinding.ActivityMergePullRequestBinding;
 import org.mian.gitnex.fragments.PullRequestsFragment;
 import org.mian.gitnex.helpers.AlertDialogs;
-import org.mian.gitnex.helpers.AppUtil;
 import org.mian.gitnex.helpers.MergePullRequestSpinner;
-import org.mian.gitnex.helpers.Toasty;
+import org.mian.gitnex.helpers.SnackBar;
 import org.mian.gitnex.helpers.contexts.IssueContext;
 import retrofit2.Call;
 import retrofit2.Callback;
@@ -29,11 +28,9 @@ import retrofit2.Callback;
  */
 public class MergePullRequestActivity extends BaseActivity {
 
-	private View.OnClickListener onClickListener;
 	private IssueContext issue;
 	private ActivityMergePullRequestBinding viewBinding;
 	private String Do;
-	private final View.OnClickListener mergePullRequest = v -> processMergePullRequest();
 
 	@SuppressLint("SetTextI18n")
 	@Override
@@ -46,26 +43,22 @@ public class MergePullRequestActivity extends BaseActivity {
 
 		issue = IssueContext.fromIntent(getIntent());
 
-		boolean connToInternet = AppUtil.hasNetworkConnection(appCtx);
-
-		InputMethodManager imm =
-				(InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
-
-		viewBinding.mergeTitle.requestFocus();
-		assert imm != null;
-		imm.showSoftInput(viewBinding.mergeTitle, InputMethodManager.SHOW_IMPLICIT);
-
 		setMergeAdapter();
 
 		if (!issue.getPullRequest().getTitle().isEmpty()) {
-
-			viewBinding.toolbarTitle.setText(issue.getPullRequest().getTitle());
+			viewBinding.topAppBar.setTitle(issue.getPullRequest().getTitle());
 			viewBinding.mergeTitle.setText(
 					issue.getPullRequest().getTitle() + " (#" + issue.getIssueIndex() + ")");
 		}
 
-		initCloseListener();
-		viewBinding.close.setOnClickListener(onClickListener);
+		viewBinding.topAppBar.setNavigationOnClickListener(v -> finish());
+
+		MenuItem attachment = viewBinding.topAppBar.getMenu().getItem(0);
+		MenuItem markdown = viewBinding.topAppBar.getMenu().getItem(1);
+		MenuItem create = viewBinding.topAppBar.getMenu().getItem(2);
+		attachment.setVisible(false);
+		markdown.setVisible(false);
+		create.setTitle(getString(R.string.mergePullRequestButtonText));
 
 		// if gitea version is greater/equal(1.12.0) than user installed version
 		// (installed.higherOrEqual(compareVer))
@@ -75,28 +68,17 @@ public class MergePullRequestActivity extends BaseActivity {
 		}
 
 		if (!issue.getPullRequest().isMergeable()) {
-
-			disableProcessButton();
 			viewBinding.mergeInfoDisabledMessage.setVisibility(View.VISIBLE);
+			create.setVisible(false);
 		} else {
-
 			viewBinding.mergeInfoDisabledMessage.setVisibility(View.GONE);
+			create.setVisible(true);
 		}
 
 		if (issue.prIsFork()) {
-
 			viewBinding.deleteBranchForkInfo.setVisibility(View.VISIBLE);
 		} else {
-
 			viewBinding.deleteBranchForkInfo.setVisibility(View.GONE);
-		}
-
-		if (!connToInternet) {
-
-			disableProcessButton();
-		} else {
-
-			viewBinding.mergeButton.setOnClickListener(mergePullRequest);
 		}
 
 		if (!(issue.getPullRequest().getHead().getRepo() != null
@@ -105,6 +87,18 @@ public class MergePullRequestActivity extends BaseActivity {
 			viewBinding.deleteBranch.setVisibility(View.GONE);
 			viewBinding.deleteBranchForkInfo.setVisibility(View.GONE);
 		}
+
+		viewBinding.topAppBar.setOnMenuItemClickListener(
+				menuItem -> {
+					int id = menuItem.getItemId();
+
+					if (id == R.id.create) {
+						processMergePullRequest();
+						return true;
+					} else {
+						return super.onOptionsItemSelected(menuItem);
+					}
+				});
 	}
 
 	private void setMergeAdapter() {
@@ -140,11 +134,6 @@ public class MergePullRequestActivity extends BaseActivity {
 				});
 	}
 
-	private void initCloseListener() {
-
-		onClickListener = view -> finish();
-	}
-
 	private void processMergePullRequest() {
 
 		String mergePRDesc =
@@ -152,20 +141,14 @@ public class MergePullRequestActivity extends BaseActivity {
 		String mergePRTitle = Objects.requireNonNull(viewBinding.mergeTitle.getText()).toString();
 		boolean deleteBranch = viewBinding.deleteBranch.isChecked();
 
-		boolean connToInternet = AppUtil.hasNetworkConnection(appCtx);
-
-		if (!connToInternet) {
-
-			Toasty.error(ctx, getResources().getString(R.string.checkNetConnection));
-			return;
-		}
-
 		if (Do == null) {
 
-			Toasty.error(ctx, getResources().getString(R.string.selectMergeStrategy));
+			SnackBar.error(
+					ctx,
+					findViewById(android.R.id.content),
+					getString(R.string.selectMergeStrategy));
 		} else {
 
-			disableProcessButton();
 			mergeFunction(Do, mergePRDesc, mergePRTitle, deleteBranch);
 		}
 	}
@@ -237,47 +220,44 @@ public class MergePullRequestActivity extends BaseActivity {
 								}
 							}
 
-							Toasty.success(ctx, getString(R.string.mergePRSuccessMsg));
+							SnackBar.success(
+									ctx,
+									findViewById(android.R.id.content),
+									getString(R.string.mergePRSuccessMsg));
+
 							Intent result = new Intent();
 							PullRequestsFragment.resumePullRequests = true;
 							IssueDetailActivity.singleIssueUpdate = true;
 							RepoDetailActivity.updateRepo = true;
 							setResult(200, result);
-							finish();
+							new Handler().postDelayed(() -> finish(), 3000);
 						} else if (response.code() == 401) {
 
-							enableProcessButton();
 							AlertDialogs.authorizationTokenRevokedDialog(ctx);
 						} else if (response.code() == 404) {
 
-							enableProcessButton();
-							Toasty.warning(ctx, getString(R.string.mergePR404ErrorMsg));
+							SnackBar.error(
+									ctx,
+									findViewById(android.R.id.content),
+									getString(R.string.mergePR404ErrorMsg));
 						} else if (response.code() == 405) {
 
-							enableProcessButton();
-							Toasty.warning(ctx, getString(R.string.mergeNotAllowed));
+							SnackBar.error(
+									ctx,
+									findViewById(android.R.id.content),
+									getString(R.string.mergeNotAllowed));
 						} else {
 
-							enableProcessButton();
-							Toasty.error(ctx, getString(R.string.genericError));
+							SnackBar.error(
+									ctx,
+									findViewById(android.R.id.content),
+									getString(R.string.genericError));
 						}
 					}
 
 					@Override
-					public void onFailure(@NonNull Call<Void> call, @NonNull Throwable t) {
-						enableProcessButton();
-					}
+					public void onFailure(@NonNull Call<Void> call, @NonNull Throwable t) {}
 				});
-	}
-
-	private void disableProcessButton() {
-
-		viewBinding.mergeButton.setEnabled(false);
-	}
-
-	private void enableProcessButton() {
-
-		viewBinding.mergeButton.setEnabled(true);
 	}
 
 	@Override
