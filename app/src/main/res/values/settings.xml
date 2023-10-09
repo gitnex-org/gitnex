@@ -119,6 +119,13 @@
         <item>@string/none</item>
     </string-array>
 
+    <string-array name="notificationsPollingDelay">
+        <item>@string/pollingDelay15Minutes</item>
+        <item>@string/pollingDelay30Minutes</item>
+        <item>@string/pollingDelay45Minutes</item>
+        <item>@string/pollingDelay1Hour</item>
+    </string-array>
+
     <string-array name="licenses">
         <item>0BSD</item>
         <item>AAL</item>

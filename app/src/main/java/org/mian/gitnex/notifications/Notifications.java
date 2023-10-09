@@ -3,7 +3,6 @@ package org.mian.gitnex.notifications;
 import android.app.NotificationChannel;
 import android.app.NotificationManager;
 import android.content.Context;
-import android.graphics.Color;
 import android.os.Build;
 import androidx.work.Constraints;
 import androidx.work.ExistingPeriodicWorkPolicy;
@@ -34,15 +33,10 @@ public class Notifications {
 
 	public static void createChannels(Context context) {
 
-		TinyDB tinyDB = TinyDB.getInstance(context);
 		NotificationManager notificationManager =
 				(NotificationManager) context.getSystemService(Context.NOTIFICATION_SERVICE);
 
 		if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
-
-			// Delete old notification channels
-			notificationManager.deleteNotificationChannel(
-					context.getPackageName()); // TODO Can be removed in future versions
 
 			// Create new notification channels
 			NotificationChannel mainChannel =
@@ -52,20 +46,6 @@ public class Notifications {
 							NotificationManager.IMPORTANCE_DEFAULT);
 			mainChannel.setDescription(
 					context.getString(R.string.mainNotificationChannelDescription));
-
-			if (tinyDB.getBoolean("notificationsEnableVibration", true)) {
-				mainChannel.setVibrationPattern(Constants.defaultVibrationPattern);
-				mainChannel.enableVibration(true);
-			} else {
-				mainChannel.enableVibration(false);
-			}
-
-			if (tinyDB.getBoolean("notificationsEnableLights", true)) {
-				mainChannel.setLightColor(tinyDB.getInt("notificationsLightColor", Color.GREEN));
-				mainChannel.enableLights(true);
-			} else {
-				mainChannel.enableLights(false);
-			}
 
 			NotificationChannel downloadChannel =
 					new NotificationChannel(
@@ -89,6 +69,19 @@ public class Notifications {
 
 		TinyDB tinyDB = TinyDB.getInstance(context);
 
+		int delay;
+		if (tinyDB.getInt("notificationsPollingDelayId") == 0) {
+			delay = 15;
+		} else if (tinyDB.getInt("notificationsPollingDelayId") == 1) {
+			delay = 30;
+		} else if (tinyDB.getInt("notificationsPollingDelayId") == 2) {
+			delay = 45;
+		} else if (tinyDB.getInt("notificationsPollingDelayId") == 3) {
+			delay = 60;
+		} else {
+			delay = Constants.defaultPollingDelay;
+		}
+
 		if (tinyDB.getBoolean("notificationsEnabled", true)) {
 
 			Constraints.Builder constraints =
@@ -98,20 +91,11 @@ public class Notifications {
 							.setRequiresStorageNotLow(false)
 							.setRequiresCharging(false);
 
-			if (android.os.Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
-				constraints.setRequiresDeviceIdle(false);
-			}
-
-			int pollingDelayMinutes =
-					Math.max(
-							tinyDB.getInt("pollingDelayMinutes", Constants.defaultPollingDelay),
-							15);
+			constraints.setRequiresDeviceIdle(false);
 
 			PeriodicWorkRequest periodicWorkRequest =
 					new PeriodicWorkRequest.Builder(
-									NotificationsWorker.class,
-									pollingDelayMinutes,
-									TimeUnit.MINUTES)
+									NotificationsWorker.class, delay, TimeUnit.MINUTES)
 							.setConstraints(constraints.build())
 							.addTag(Constants.notificationsWorkerId)
 							.build();
@@ -119,7 +103,7 @@ public class Notifications {
 			WorkManager.getInstance(context)
 					.enqueueUniquePeriodicWork(
 							Constants.notificationsWorkerId,
-							ExistingPeriodicWorkPolicy.KEEP,
+							ExistingPeriodicWorkPolicy.CANCEL_AND_REENQUEUE,
 							periodicWorkRequest);
 		}
 	}

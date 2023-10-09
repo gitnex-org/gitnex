@@ -1,17 +1,23 @@
 package org.mian.gitnex.notifications;
 
+import android.Manifest;
 import android.app.Notification;
 import android.app.PendingIntent;
 import android.content.Context;
 import android.content.Intent;
-import android.graphics.Color;
+import android.content.pm.PackageManager;
 import android.media.RingtoneManager;
+import android.net.Uri;
+import android.provider.Settings;
 import androidx.annotation.NonNull;
+import androidx.core.app.ActivityCompat;
 import androidx.core.app.NotificationCompat;
 import androidx.core.app.NotificationManagerCompat;
+import androidx.core.app.TaskStackBuilder;
 import androidx.work.Worker;
 import androidx.work.WorkerParameters;
-import java.util.Date;
+import com.google.android.material.dialog.MaterialAlertDialogBuilder;
+import java.time.ZonedDateTime;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -22,7 +28,6 @@ import org.mian.gitnex.clients.RetrofitClient;
 import org.mian.gitnex.database.api.BaseApi;
 import org.mian.gitnex.database.api.UserAccountsApi;
 import org.mian.gitnex.database.models.UserAccount;
-import org.mian.gitnex.helpers.AppUtil;
 import org.mian.gitnex.helpers.Constants;
 import org.mian.gitnex.helpers.TinyDB;
 import org.mian.gitnex.helpers.Version;
@@ -35,7 +40,6 @@ import retrofit2.Response;
 public class NotificationsWorker extends Worker {
 
 	private final Context context;
-	private final TinyDB tinyDB;
 	private final Map<UserAccount, Map<String, String>> userAccounts;
 
 	public NotificationsWorker(@NonNull Context context, @NonNull WorkerParameters workerParams) {
@@ -45,8 +49,26 @@ public class NotificationsWorker extends Worker {
 		UserAccountsApi userAccountsApi = BaseApi.getInstance(context, UserAccountsApi.class);
 
 		this.context = context;
-		this.tinyDB = TinyDB.getInstance(context);
+		TinyDB tinyDB = TinyDB.getInstance(context);
+		assert userAccountsApi != null;
 		this.userAccounts = new HashMap<>(userAccountsApi.getCount());
+
+		int delay;
+		if (tinyDB.getInt("notificationsPollingDelayId") == 0) {
+			delay = 15;
+		} else if (tinyDB.getInt("notificationsPollingDelayId") == 1) {
+			delay = 30;
+		} else if (tinyDB.getInt("notificationsPollingDelayId") == 2) {
+			delay = 45;
+		} else if (tinyDB.getInt("notificationsPollingDelayId") == 3) {
+			delay = 60;
+		} else {
+			delay = Constants.defaultPollingDelay;
+		}
+
+		ZonedDateTime zdt = ZonedDateTime.now();
+		zdt = zdt.minusMinutes(delay);
+		String previousTimestamp = String.valueOf(zdt.toOffsetDateTime());
 
 		for (UserAccount userAccount : userAccountsApi.loggedInUserAccounts()) {
 
@@ -57,8 +79,7 @@ public class NotificationsWorker extends Worker {
 					|| new Version(userAccount.getServerVersion()).higherOrEqual("1.12.3")) {
 
 				Map<String, String> userAccountParameters = new HashMap<>();
-				userAccountParameters.put(
-						"previousTimestamp", AppUtil.getTimestampFromDate(context, new Date()));
+				userAccountParameters.put("previousTimestamp", previousTimestamp);
 
 				userAccounts.put(userAccount, userAccountParameters);
 			}
@@ -67,56 +88,31 @@ public class NotificationsWorker extends Worker {
 
 	@NonNull @Override
 	public Result doWork() {
-		pollingLoops();
+		startPolling();
 		return Result.success();
 	}
 
-	/** Used to bypass the 15-minute limit of {@code WorkManager}. */
-	private void pollingLoops() {
-		int notificationLoops =
-				tinyDB.getInt("pollingDelayMinutes", Constants.defaultPollingDelay) < 15
-						? Math.min(
-								15
-										- tinyDB.getInt(
-												"pollingDelayMinutes",
-												Constants.defaultPollingDelay),
-								10)
-						: 1;
-
-		for (int i = 0; i < notificationLoops; i++) {
-			long startPollingTime = System.currentTimeMillis();
-
-			startPolling();
-
-			try {
-				if (notificationLoops > 1 && i < (notificationLoops - 1)) {
-					Thread.sleep(60000 - (System.currentTimeMillis() - startPollingTime));
-				}
-			} catch (InterruptedException ignored) {
-			}
-		}
-	}
-
 	private void startPolling() {
+
 		for (UserAccount userAccount : userAccounts.keySet()) {
 			Map<String, String> userAccountParameters = userAccounts.get(userAccount);
+			assert userAccountParameters != null;
 
 			try {
-				assert userAccountParameters != null;
 				Call<List<NotificationThread>> call =
 						RetrofitClient.getApiInterface(
 										context,
 										userAccount.getInstanceUrl(),
-										userAccount.getToken(),
+										"token " + userAccount.getToken(),
 										null)
-								.notifyGetList(
+								.notifyGetList2(
 										false,
 										List.of("unread"),
 										null,
-										new Date(userAccountParameters.get("previousTimestamp")),
+										userAccountParameters.get("previousTimestamp"),
 										null,
-										null,
-										1);
+										1,
+										25);
 
 				Response<List<NotificationThread>> response = call.execute();
 
@@ -125,8 +121,6 @@ public class NotificationsWorker extends Worker {
 					if (!notificationThreads.isEmpty()) {
 						sendNotifications(userAccount, notificationThreads);
 					}
-					userAccountParameters.put(
-							"previousTimestamp", AppUtil.getTimestampFromDate(context, new Date()));
 				}
 			} catch (Exception ignored) {
 			}
@@ -153,9 +147,36 @@ public class NotificationsWorker extends Worker {
 						.setSmallIcon(R.drawable.gitnex_transparent)
 						.setGroup(userAccount.getUserName())
 						.setGroupSummary(true)
-						.setAutoCancel(true)
 						.setContentIntent(pendingIntent)
+						.setAutoCancel(true)
 						.build();
+
+		if (ActivityCompat.checkSelfPermission(
+						getApplicationContext(), Manifest.permission.POST_NOTIFICATIONS)
+				!= PackageManager.PERMISSION_GRANTED) {
+			MaterialAlertDialogBuilder materialAlertDialogBuilder =
+					new MaterialAlertDialogBuilder(context)
+							.setTitle(R.string.pageTitleNotifications)
+							.setMessage(context.getString(R.string.openAppSettings))
+							.setNeutralButton(
+									R.string.cancelButton, (dialog, which) -> dialog.dismiss())
+							.setPositiveButton(
+									R.string.isOpen,
+									(dialog, which) -> {
+										Intent intent =
+												new Intent(
+														Settings
+																.ACTION_APPLICATION_DETAILS_SETTINGS);
+										Uri uri =
+												Uri.fromParts(
+														"package", context.getPackageName(), null);
+										intent.setData(uri);
+										context.startActivity(intent);
+									});
+
+			materialAlertDialogBuilder.create().show();
+			return;
+		}
 
 		notificationManagerCompat.notify(userAccount.getAccountId(), summaryNotification);
 
@@ -189,25 +210,12 @@ public class NotificationsWorker extends Worker {
 
 	private NotificationCompat.Builder getBaseNotificationBuilder() {
 
-		NotificationCompat.Builder builder =
-				new NotificationCompat.Builder(context, Constants.mainNotificationChannelId)
-						.setSmallIcon(R.drawable.gitnex_transparent)
-						.setSound(RingtoneManager.getDefaultUri(RingtoneManager.TYPE_NOTIFICATION))
-						.setCategory(NotificationCompat.CATEGORY_MESSAGE)
-						.setPriority(NotificationCompat.PRIORITY_DEFAULT)
-						.setAutoCancel(true);
-
-		if (tinyDB.getBoolean("notificationsEnableLights", true)) {
-			builder.setLights(tinyDB.getInt("notificationsLightColor", Color.GREEN), 1500, 1500);
-		}
-
-		if (tinyDB.getBoolean("notificationsEnableVibration", true)) {
-			builder.setVibrate(Constants.defaultVibrationPattern);
-		} else {
-			builder.setVibrate(null);
-		}
-
-		return builder;
+		return new NotificationCompat.Builder(context, Constants.mainNotificationChannelId)
+				.setSmallIcon(R.drawable.gitnex_transparent)
+				.setSound(RingtoneManager.getDefaultUri(RingtoneManager.TYPE_NOTIFICATION))
+				.setCategory(NotificationCompat.CATEGORY_MESSAGE)
+				.setPriority(NotificationCompat.PRIORITY_DEFAULT)
+				.setAutoCancel(true);
 	}
 
 	private PendingIntent getPendingIntent(@NonNull UserAccount userAccount) {
@@ -218,7 +226,10 @@ public class NotificationsWorker extends Worker {
 		intent.putExtra("switchAccountId", userAccount.getAccountId());
 		intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
 
-		return PendingIntent.getActivity(
-				context, userAccount.getAccountId(), intent, PendingIntent.FLAG_UPDATE_CURRENT);
+		TaskStackBuilder stackBuilder = TaskStackBuilder.create(context);
+		stackBuilder.addNextIntentWithParentStack(intent);
+
+		return stackBuilder.getPendingIntent(
+				1, PendingIntent.FLAG_UPDATE_CURRENT | PendingIntent.FLAG_IMMUTABLE);
 	}
 }

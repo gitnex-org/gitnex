@@ -89,90 +89,9 @@
                     android:id="@+id/pollingDelaySelected"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="@string/pollingDelaySelectedText"
+                    android:text="@string/pollingDelay15Minutes"
                     android:textColor="?attr/selectedTextColor"
                     android:textSize="@dimen/dimen16sp" />
-
-            </LinearLayout>
-
-            <LinearLayout
-                android:id="@+id/enableLightsFrame"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="@dimen/dimen24dp"
-                android:orientation="horizontal">
-
-                <TextView
-                    android:id="@+id/enableLightsHeader"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_weight=".90"
-                    android:text="@string/enableLightsHeaderText"
-                    android:textColor="?attr/primaryTextColor"
-                    android:layout_marginTop="@dimen/dimen4dp"
-                    android:textSize="@dimen/dimen18sp" />
-
-                <com.google.android.material.materialswitch.MaterialSwitch
-                    android:id="@+id/enableLightsMode"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:contentDescription="@string/enableLightsHeaderText"
-                    android:layout_weight=".10" />
-
-            </LinearLayout>
-
-            <LinearLayout
-                android:id="@+id/chooseColorFrame"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="@dimen/dimen24dp"
-                android:orientation="horizontal">
-
-                <TextView
-                    android:id="@+id/chooseColorHeader"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_weight=".90"
-                    android:text="@string/chooseColorSelectorHeader"
-                    android:textColor="?attr/primaryTextColor"
-                    android:layout_marginTop="@dimen/dimen4dp"
-                    android:textSize="@dimen/dimen18sp" />
-
-                <com.google.android.material.card.MaterialCardView
-                    android:id="@+id/chooseColorState"
-                    style="?attr/materialCardViewFilledStyle"
-                    android:layout_width="@dimen/dimen24dp"
-                    android:layout_height="@dimen/dimen32dp"
-                    android:layout_weight=".10"
-                    android:gravity="end"
-                    app:cardCornerRadius="@dimen/dimen16dp"
-                    app:cardElevation="@dimen/dimen0dp" />
-
-            </LinearLayout>
-
-            <LinearLayout
-                android:id="@+id/enableVibrationFrame"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="@dimen/dimen24dp"
-                android:orientation="horizontal">
-
-                <TextView
-                    android:id="@+id/enableVibrationHeader"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_weight=".90"
-                    android:text="@string/enableVibrationHeaderText"
-                    android:textColor="?attr/primaryTextColor"
-                    android:layout_marginTop="@dimen/dimen4dp"
-                    android:textSize="@dimen/dimen18sp" />
-
-                <com.google.android.material.materialswitch.MaterialSwitch
-                    android:id="@+id/enableVibrationMode"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:contentDescription="@string/enableVibrationHeaderText"
-                    android:layout_weight=".10" />
 
             </LinearLayout>
 

@@ -666,14 +666,17 @@
     <string name="pageTitleNotifications">Notifications</string>
     <string name="noDataNotifications">All caught up 🚀</string>
     <string name="notificationsPollingHeaderText">Notifications Polling Delay</string>
-    <string name="pollingDelaySelectedText">%d Minutes</string>
+    <string name="pollingDelay15Minutes">15 Minutes</string>
+    <string name="pollingDelay30Minutes">30 Minutes</string>
+    <string name="pollingDelay45Minutes">45 Minutes</string>
+    <string name="pollingDelay1Hour">1 Hour</string>
     <string name="pollingDelayDialogHeaderText">Select Polling Delay</string>
     <string name="pollingDelayDialogDescriptionText">Choose a minutely delay in which GitNex tries to poll new notifications</string>
     <string name="markAsRead">Mark Read</string>
     <string name="markAsUnread">Mark Unread</string>
     <string name="pinNotification">Pin</string>
     <string name="markedNotificationsAsRead">Successfully marked all notifications as read</string>
-    <string name="notificationsHintText">Polling delay, light, vibration</string>
+    <string name="notificationsHintText">Polling delay</string>
     <string name="enableNotificationsHeaderText">Enable Notifications</string>
     <string name="enableLightsHeaderText">Enable Light</string>
     <string name="enableVibrationHeaderText">Enable Vibration</string>
@@ -687,6 +690,7 @@
         <item quantity="one">You have %s new notification</item>
         <item quantity="other">You have %s new notifications</item>
     </plurals>
+    <string name="openAppSettings">To receive notifications, you must enable notifications for GitNex. Tap Open to access your phone settings and enable notifications.</string>
 
     <string name="isRead">Read</string>
     <string name="isUnread">Unread</string>
