@@ -885,6 +885,31 @@
     <string name="lang_percentage" translatable="false">%s%%</string>
 
     <string name="dashboard">Dashboard</string>
+    <string name="createdRepository">created repository</string>
+    <string name="renamedRepository">renamed repository from %1$s to</string>
+    <string name="starredRepository">starred</string>
+    <string name="transferredRepository">transferred repository %1$s to</string>
+    <string name="createdBranch">created branch %1$s in</string>
+    <string name="pushedTo">pushed to %1$s at</string>
+    <string name="openedIssue">opened issue</string>
+    <string name="commentedOnIssue">commented on issue</string>
+    <string name="closedIssue">closed issue</string>
+    <string name="reopenedIssue">reopened issue</string>
+    <string name="createdPR">created pull request</string>
+    <string name="closedPR">closed pull request</string>
+    <string name="reopenedPR">reopened pull request</string>
+    <string name="mergedPR">merged pull request</string>
+    <string name="approved">approved</string>
+    <string name="suggestedChanges">suggested changes for</string>
+    <string name="commentedOnPR">commented on pull request</string>
+    <string name="autoMergePR">automatically merged pull request</string>
+    <string name="deletedBranch">deleted branch %1$s at</string>
+    <string name="pushedTag">pushed tag %1$s to</string>
+    <string name="deletedTag">deleted tag %1$s from</string>
+    <string name="releasedBranch">released %1$s at</string>
+    <string name="syncedCommits">synced commits to %1$s at</string>
+    <string name="syncedRefs">synced new reference %1$s to</string>
+    <string name="syncedDeletedRefs">synced and deleted reference %1$s at</string>
 
     <string name="attachment">Attachment</string>
     <string name="attachments">Attachments</string>
