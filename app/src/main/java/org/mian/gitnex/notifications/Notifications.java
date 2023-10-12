@@ -3,12 +3,17 @@ package org.mian.gitnex.notifications;
 import android.app.NotificationChannel;
 import android.app.NotificationManager;
 import android.content.Context;
+import android.content.Intent;
+import android.net.Uri;
 import android.os.Build;
+import android.provider.Settings;
+import androidx.core.app.NotificationManagerCompat;
 import androidx.work.Constraints;
 import androidx.work.ExistingPeriodicWorkPolicy;
 import androidx.work.NetworkType;
 import androidx.work.PeriodicWorkRequest;
 import androidx.work.WorkManager;
+import com.google.android.material.dialog.MaterialAlertDialogBuilder;
 import java.util.concurrent.TimeUnit;
 import org.mian.gitnex.R;
 import org.mian.gitnex.helpers.Constants;
@@ -83,6 +88,33 @@ public class Notifications {
 		}
 
 		if (tinyDB.getBoolean("notificationsEnabled", true)) {
+
+			if (!NotificationManagerCompat.from(context).areNotificationsEnabled()) {
+				MaterialAlertDialogBuilder materialAlertDialogBuilder =
+						new MaterialAlertDialogBuilder(context)
+								.setTitle(R.string.pageTitleNotifications)
+								.setMessage(context.getString(R.string.openAppSettings))
+								.setNeutralButton(
+										R.string.cancelButton, (dialog, which) -> dialog.dismiss())
+								.setPositiveButton(
+										R.string.isOpen,
+										(dialog, which) -> {
+											Intent intent =
+													new Intent(
+															Settings
+																	.ACTION_APPLICATION_DETAILS_SETTINGS);
+											Uri uri =
+													Uri.fromParts(
+															"package",
+															context.getPackageName(),
+															null);
+											intent.setData(uri);
+											context.startActivity(intent);
+										});
+
+				materialAlertDialogBuilder.create().show();
+				return;
+			}
 
 			Constraints.Builder constraints =
 					new Constraints.Builder()

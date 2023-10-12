@@ -30,7 +30,7 @@ import org.mian.gitnex.databinding.FragmentNotificationsBinding;
 import org.mian.gitnex.helpers.AppUtil;
 import org.mian.gitnex.helpers.Constants;
 import org.mian.gitnex.helpers.SimpleCallback;
-import org.mian.gitnex.helpers.Toasty;
+import org.mian.gitnex.helpers.SnackBar;
 import org.mian.gitnex.helpers.contexts.IssueContext;
 import org.mian.gitnex.helpers.contexts.RepositoryContext;
 
@@ -53,6 +53,7 @@ public class NotificationsFragment extends Fragment
 	private int pageCurrentIndex = 1;
 	private int pageResultLimit;
 	private String currentFilterMode = "unread";
+	public static String emptyErrorResponse;
 
 	@Override
 	public void onCreate(@Nullable Bundle savedInstanceState) {
@@ -119,21 +120,51 @@ public class NotificationsFragment extends Fragment
 												(call, voidResponse) -> {
 													if (voidResponse.isPresent()
 															&& voidResponse.get().isSuccessful()) {
-														Toasty.success(
+														SnackBar.success(
 																context,
+																requireActivity()
+																		.findViewById(
+																				android.R.id
+																						.content),
 																getString(
 																		R.string
 																				.markedNotificationsAsRead));
 														pageCurrentIndex = 1;
 														loadNotifications(false);
 													} else {
-														activity.runOnUiThread(
-																() ->
-																		Toasty.error(
-																				context,
-																				getString(
-																						R.string
-																								.genericError)));
+
+														if (!emptyErrorResponse.isEmpty()) {
+															if (emptyErrorResponse.contains(
+																	"205")) {
+
+																SnackBar.success(
+																		context,
+																		requireActivity()
+																				.findViewById(
+																						android.R.id
+																								.content),
+																		getString(
+																				R.string
+																						.markedNotificationsAsRead));
+																pageCurrentIndex = 1;
+																loadNotifications(false);
+															}
+														} else {
+
+															activity.runOnUiThread(
+																	() ->
+																			SnackBar.error(
+																					context,
+																					requireActivity()
+																							.findViewById(
+																									android
+																											.R
+																											.id
+																											.content),
+																					getString(
+																							R.string
+																									.genericError)));
+														}
 													}
 												}));
 
