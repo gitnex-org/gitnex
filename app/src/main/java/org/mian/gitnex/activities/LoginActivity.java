@@ -30,7 +30,7 @@ import org.mian.gitnex.databinding.ActivityLoginBinding;
 import org.mian.gitnex.helpers.AppUtil;
 import org.mian.gitnex.helpers.NetworkStatusObserver;
 import org.mian.gitnex.helpers.PathsHelper;
-import org.mian.gitnex.helpers.Toasty;
+import org.mian.gitnex.helpers.SnackBar;
 import org.mian.gitnex.helpers.UrlHelper;
 import org.mian.gitnex.helpers.Version;
 import org.mian.gitnex.structs.Protocol;
@@ -88,7 +88,10 @@ public class LoginActivity extends BaseActivity {
 					selectedProtocol = String.valueOf(parent.getItemAtPosition(position));
 
 					if (selectedProtocol.equals(String.valueOf(Protocol.HTTP))) {
-						Toasty.warning(ctx, getResources().getString(R.string.protocolError));
+						SnackBar.warning(
+								ctx,
+								findViewById(android.R.id.content),
+								getString(R.string.protocolError));
 					}
 				});
 
@@ -137,10 +140,10 @@ public class LoginActivity extends BaseActivity {
 										disableProcessButton();
 										loginButton.setText(
 												getResources().getString(R.string.btnLogin));
-										Toasty.error(
+										SnackBar.error(
 												ctx,
-												getResources()
-														.getString(R.string.checkNetConnection));
+												findViewById(android.R.id.content),
+												getString(R.string.checkNetConnection));
 									}
 								}));
 
@@ -159,7 +162,10 @@ public class LoginActivity extends BaseActivity {
 
 			if (selectedProtocol == null) {
 
-				Toasty.error(ctx, getResources().getString(R.string.protocolEmptyError));
+				SnackBar.error(
+						ctx,
+						findViewById(android.R.id.content),
+						getString(R.string.protocolEmptyError));
 				enableProcessButton();
 				return;
 			}
@@ -197,7 +203,8 @@ public class LoginActivity extends BaseActivity {
 
 			if (instanceUrlET.getText().toString().equals("")) {
 
-				Toasty.error(ctx, getResources().getString(R.string.emptyFieldURL));
+				SnackBar.error(
+						ctx, findViewById(android.R.id.content), getString(R.string.emptyFieldURL));
 				enableProcessButton();
 				return;
 			}
@@ -206,19 +213,28 @@ public class LoginActivity extends BaseActivity {
 
 				if (otpCode.length() != 0 && otpCode.length() != 6) {
 
-					Toasty.warning(ctx, getResources().getString(R.string.loginOTPTypeError));
+					SnackBar.error(
+							ctx,
+							findViewById(android.R.id.content),
+							getString(R.string.loginOTPTypeError));
 					enableProcessButton();
 					return;
 				}
 
 				if (loginUid.equals("")) {
-					Toasty.error(ctx, getResources().getString(R.string.emptyFieldUsername));
+					SnackBar.error(
+							ctx,
+							findViewById(android.R.id.content),
+							getString(R.string.emptyFieldUsername));
 					enableProcessButton();
 					return;
 				}
 
 				if (loginPass.equals("")) {
-					Toasty.error(ctx, getResources().getString(R.string.emptyFieldPassword));
+					SnackBar.error(
+							ctx,
+							findViewById(android.R.id.content),
+							getString(R.string.emptyFieldPassword));
 					enableProcessButton();
 					return;
 				}
@@ -234,7 +250,10 @@ public class LoginActivity extends BaseActivity {
 
 				if (loginToken.equals("")) {
 
-					Toasty.error(ctx, getResources().getString(R.string.loginTokenError));
+					SnackBar.error(
+							ctx,
+							findViewById(android.R.id.content),
+							getString(R.string.loginTokenError));
 					enableProcessButton();
 					return;
 				}
@@ -245,7 +264,8 @@ public class LoginActivity extends BaseActivity {
 
 		} catch (Exception e) {
 
-			Toasty.error(ctx, getResources().getString(R.string.malformedUrl));
+			SnackBar.error(
+					ctx, findViewById(android.R.id.content), getString(R.string.malformedUrl));
 			enableProcessButton();
 		}
 	}
@@ -331,8 +351,10 @@ public class LoginActivity extends BaseActivity {
 
 							if (!Version.valid(version.getVersion())) {
 
-								Toasty.error(
-										ctx, getResources().getString(R.string.versionUnknown));
+								SnackBar.error(
+										ctx,
+										findViewById(android.R.id.content),
+										getString(R.string.versionUnknown));
 								enableProcessButton();
 								return;
 							}
@@ -376,9 +398,10 @@ public class LoginActivity extends BaseActivity {
 								login(loginType, loginUid, loginPass, loginOTP, loginToken);
 							} else {
 
-								Toasty.warning(
+								SnackBar.warning(
 										ctx,
-										getResources().getString(R.string.versionUnsupportedNew));
+										findViewById(android.R.id.content),
+										getString(R.string.versionUnsupportedNew));
 								login(loginType, loginUid, loginPass, loginOTP, loginToken);
 							}
 
@@ -412,8 +435,10 @@ public class LoginActivity extends BaseActivity {
 					public void onFailure(
 							@NonNull Call<ServerVersion> callVersion, @NonNull Throwable t) {
 
-						Toasty.error(
-								ctx, getResources().getString(R.string.genericServerResponseError));
+						SnackBar.error(
+								ctx,
+								findViewById(android.R.id.content),
+								getString(R.string.genericServerResponseError));
 						enableProcessButton();
 					}
 				});
@@ -475,17 +500,17 @@ public class LoginActivity extends BaseActivity {
 								finish();
 								break;
 							case 401:
-								Toasty.error(
+								SnackBar.error(
 										ctx,
-										getResources().getString(R.string.unauthorizedApiError));
+										findViewById(android.R.id.content),
+										getString(R.string.unauthorizedApiError));
 								enableProcessButton();
 								break;
 							default:
-								Toasty.error(
+								SnackBar.error(
 										ctx,
-										getResources()
-												.getString(
-														R.string.genericApiError, response.code()));
+										findViewById(android.R.id.content),
+										getString(R.string.genericApiError, response.code()));
 								enableProcessButton();
 						}
 					}
@@ -493,7 +518,10 @@ public class LoginActivity extends BaseActivity {
 					@Override
 					public void onFailure(@NonNull Call<User> call, @NonNull Throwable t) {
 
-						Toasty.error(ctx, ctx.getString(R.string.genericServerResponseError));
+						SnackBar.error(
+								ctx,
+								findViewById(android.R.id.content),
+								getString(R.string.genericServerResponseError));
 						enableProcessButton();
 					}
 				});
@@ -580,13 +608,12 @@ public class LoginActivity extends BaseActivity {
 																tokenName);
 													} else {
 
-														Toasty.error(
+														SnackBar.error(
 																ctx,
-																getResources()
-																		.getString(
-																				R.string
-																						.genericApiError,
-																				response.code()));
+																findViewById(android.R.id.content),
+																getString(
+																		R.string.genericApiError,
+																		response.code()));
 														enableProcessButton();
 													}
 												}
@@ -596,12 +623,10 @@ public class LoginActivity extends BaseActivity {
 														@NonNull Call<Void> delToken,
 														@NonNull Throwable t) {
 
-													Toasty.error(
+													SnackBar.error(
 															ctx,
-															getResources()
-																	.getString(
-																			R.string
-																					.malformedJson));
+															findViewById(android.R.id.content),
+															getString(R.string.malformedJson));
 													enableProcessButton();
 												}
 											});
@@ -612,10 +637,10 @@ public class LoginActivity extends BaseActivity {
 							setupToken(loginUid, loginPass, loginOTP, tokenName);
 						} else {
 
-							Toasty.error(
+							SnackBar.error(
 									ctx,
-									getResources()
-											.getString(R.string.genericApiError, response.code()));
+									findViewById(android.R.id.content),
+									getString(R.string.genericApiError, response.code()));
 							enableProcessButton();
 						}
 					}
@@ -624,7 +649,10 @@ public class LoginActivity extends BaseActivity {
 					public void onFailure(
 							@NonNull Call<List<AccessToken>> call, @NonNull Throwable t) {
 
-						Toasty.error(ctx, getResources().getString(R.string.malformedJson));
+						SnackBar.error(
+								ctx,
+								findViewById(android.R.id.content),
+								getString(R.string.malformedJson));
 						enableProcessButton();
 					}
 				});
@@ -750,22 +778,21 @@ public class LoginActivity extends BaseActivity {
 														finish();
 														break;
 													case 401:
-														Toasty.error(
+														SnackBar.error(
 																ctx,
-																getResources()
-																		.getString(
-																				R.string
-																						.unauthorizedApiError));
+																findViewById(android.R.id.content),
+																getString(
+																		R.string
+																				.unauthorizedApiError));
 														enableProcessButton();
 														break;
 													default:
-														Toasty.error(
+														SnackBar.error(
 																ctx,
-																getResources()
-																		.getString(
-																				R.string
-																						.genericApiError,
-																				response.code()));
+																findViewById(android.R.id.content),
+																getString(
+																		R.string.genericApiError,
+																		response.code()));
 														enableProcessButton();
 												}
 											}
@@ -775,22 +802,20 @@ public class LoginActivity extends BaseActivity {
 													@NonNull Call<User> call,
 													@NonNull Throwable t) {
 
-												Toasty.error(
+												SnackBar.error(
 														ctx,
-														getResources()
-																.getString(R.string.genericError));
+														findViewById(android.R.id.content),
+														getString(R.string.genericError));
 												enableProcessButton();
 											}
 										});
 							}
 						} else if (responseCreate.code() == 500) {
 
-							Toasty.error(
+							SnackBar.error(
 									ctx,
-									getResources()
-											.getString(
-													R.string.genericApiError,
-													responseCreate.code()));
+									findViewById(android.R.id.content),
+									getString(R.string.genericApiError, responseCreate.code()));
 							enableProcessButton();
 						}
 					}
@@ -799,7 +824,10 @@ public class LoginActivity extends BaseActivity {
 					public void onFailure(
 							@NonNull Call<AccessToken> createUserToken, @NonNull Throwable t) {
 
-						Toasty.error(ctx, ctx.getString(R.string.genericServerResponseError));
+						SnackBar.error(
+								ctx,
+								findViewById(android.R.id.content),
+								getString(R.string.genericServerResponseError));
 					}
 				});
 	}
