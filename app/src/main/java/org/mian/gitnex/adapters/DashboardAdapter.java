@@ -14,6 +14,7 @@ import androidx.annotation.NonNull;
 import androidx.core.content.res.ResourcesCompat;
 import androidx.core.text.HtmlCompat;
 import androidx.recyclerview.widget.RecyclerView;
+import com.google.android.material.card.MaterialCardView;
 import com.vdurmont.emoji.EmojiParser;
 import java.util.List;
 import java.util.Locale;
@@ -72,7 +73,7 @@ public class DashboardAdapter extends RecyclerView.Adapter<RecyclerView.ViewHold
 			loadMoreListener.onLoadMore();
 		}
 
-		((DashboardAdapter.DashboardHolder) holder).bindData(activityList.get(position));
+		((DashboardAdapter.DashboardHolder) holder).bindData(activityList.get(position), position);
 	}
 
 	@Override
@@ -123,6 +124,8 @@ public class DashboardAdapter extends RecyclerView.Adapter<RecyclerView.ViewHold
 		private final ImageView typeIcon;
 		private final TextView dashText;
 		private final LinearLayout dashTextFrame;
+		private LinearLayout dashboardLayoutCardsFrame;
+		private MaterialCardView cardLayout;
 
 		private Activity activityObject;
 
@@ -135,6 +138,8 @@ public class DashboardAdapter extends RecyclerView.Adapter<RecyclerView.ViewHold
 			createdTime = itemView.findViewById(R.id.created_time);
 			dashText = itemView.findViewById(R.id.text);
 			dashTextFrame = itemView.findViewById(R.id.dash_text_frame);
+			dashboardLayoutCardsFrame = itemView.findViewById(R.id.dashboardLayoutCardsFrame);
+			cardLayout = itemView.findViewById(R.id.cardLayout);
 
 			new Handler()
 					.postDelayed(
@@ -353,7 +358,7 @@ public class DashboardAdapter extends RecyclerView.Adapter<RecyclerView.ViewHold
 							200);
 		}
 
-		void bindData(Activity activity) {
+		void bindData(Activity activity, int position) {
 
 			this.activityObject = activity;
 			Locale locale = context.getResources().getConfiguration().locale;

@@ -29,6 +29,7 @@
                  app:title="@string/createRelease"
                  app:layout_collapseMode="pin"
                  app:menu="@menu/create_release_tag_menu"
+                 app:popupTheme="@style/Widget.Material3.PopupMenu"
                  app:navigationIcon="@drawable/ic_close" />
 
         </com.google.android.material.appbar.CollapsingToolbarLayout>
