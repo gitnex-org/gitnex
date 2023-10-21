@@ -6,6 +6,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.graphics.Typeface;
 import android.text.Spanned;
+import android.text.method.LinkMovementMethod;
 import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.core.content.res.ResourcesCompat;
@@ -217,6 +218,8 @@ public class Markdown {
 											}
 											textView.setTypeface(tf);
 											textView.setTextIsSelectable(true);
+											textView.setMovementMethod(
+													LinkMovementMethod.getInstance());
 											super.beforeSetText(textView, markdown);
 										}
 
@@ -384,6 +387,8 @@ public class Markdown {
 											}
 											textView.setTypeface(tf);
 											textView.setTextIsSelectable(true);
+											textView.setMovementMethod(
+													LinkMovementMethod.getInstance());
 											super.beforeSetText(textView, markdown);
 										}
 
