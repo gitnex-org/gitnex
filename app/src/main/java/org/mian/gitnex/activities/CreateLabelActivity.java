@@ -168,7 +168,7 @@ public class CreateLabelActivity extends BaseActivity {
 			return;
 		}
 
-		if (!AppUtil.checkStrings(updateLabelName)) {
+		if (!AppUtil.checkLabel(updateLabelName)) {
 
 			SnackBar.error(
 					ctx, findViewById(android.R.id.content), getString(R.string.labelNameError));
@@ -205,7 +205,7 @@ public class CreateLabelActivity extends BaseActivity {
 			return;
 		}
 
-		if (!AppUtil.checkStrings(newLabelName)) {
+		if (!AppUtil.checkLabel(newLabelName)) {
 
 			SnackBar.error(
 					ctx, findViewById(android.R.id.content), getString(R.string.labelNameError));

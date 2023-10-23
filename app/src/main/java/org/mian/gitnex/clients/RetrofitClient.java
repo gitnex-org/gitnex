@@ -161,6 +161,15 @@ public class RetrofitClient {
 				((BaseActivity) context).getAccount().getCacheDir(context));
 	}
 
+	public static WebApi getWebInterface(Context context, String url) {
+
+		return getWebInterface(
+				context,
+				url,
+				((BaseActivity) context).getAccount().getAuthorization(),
+				((BaseActivity) context).getAccount().getCacheDir(context));
+	}
+
 	public static ApiInterface getApiInterface(
 			Context context, String url, String token, File cacheFile) {
 

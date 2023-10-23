@@ -1,5 +1,8 @@
 package org.mian.gitnex.activities;
 
+import android.app.Activity;
+import android.app.NotificationManager;
+import android.content.Context;
 import android.content.Intent;
 import android.content.res.ColorStateList;
 import android.graphics.Color;
@@ -21,6 +24,7 @@ import android.widget.ScrollView;
 import androidx.activity.result.ActivityResultLauncher;
 import androidx.activity.result.contract.ActivityResultContracts;
 import androidx.annotation.NonNull;
+import androidx.core.app.NotificationCompat;
 import androidx.core.content.res.ResourcesCompat;
 import androidx.core.text.HtmlCompat;
 import androidx.core.widget.ImageViewCompat;
@@ -30,6 +34,8 @@ import com.amulyakhare.textdrawable.TextDrawable;
 import com.google.android.material.card.MaterialCardView;
 import com.google.android.material.dialog.MaterialAlertDialogBuilder;
 import com.vdurmont.emoji.EmojiParser;
+import java.io.IOException;
+import java.io.OutputStream;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -39,6 +45,7 @@ import java.util.LinkedHashSet;
 import java.util.List;
 import java.util.Locale;
 import java.util.Objects;
+import okhttp3.ResponseBody;
 import org.apache.commons.io.FilenameUtils;
 import org.gitnex.tea4j.v2.models.Attachment;
 import org.gitnex.tea4j.v2.models.EditIssueOption;
@@ -69,14 +76,14 @@ import org.mian.gitnex.helpers.AlertDialogs;
 import org.mian.gitnex.helpers.AppUtil;
 import org.mian.gitnex.helpers.ClickListener;
 import org.mian.gitnex.helpers.ColorInverter;
-import org.mian.gitnex.helpers.DownloadService;
+import org.mian.gitnex.helpers.Constants;
 import org.mian.gitnex.helpers.LabelWidthCalculator;
 import org.mian.gitnex.helpers.Markdown;
 import org.mian.gitnex.helpers.RoundedTransformation;
 import org.mian.gitnex.helpers.TimeHelper;
 import org.mian.gitnex.helpers.Toasty;
-import org.mian.gitnex.helpers.UrlHelper;
 import org.mian.gitnex.helpers.contexts.IssueContext;
+import org.mian.gitnex.notifications.Notifications;
 import org.mian.gitnex.structs.BottomSheetListener;
 import org.mian.gitnex.viewmodels.IssueCommentsViewModel;
 import org.mian.gitnex.views.ReactionList;
@@ -117,6 +124,13 @@ public class IssueDetailActivity extends BaseActivity
 	private boolean loadingFinishedIssue = false;
 	private boolean loadingFinishedPr = false;
 	private boolean loadingFinishedRepo = false;
+	private String filename;
+	private Long filesize;
+	private String filehash;
+	private String instanceUrlOnly;
+	private String token;
+	private int page = 1;
+
 	public ActivityResultLauncher<Intent> editIssueLauncher =
 			registerForActivityResult(
 					new ActivityResultContracts.StartActivityForResult(),
@@ -136,7 +150,116 @@ public class IssueDetailActivity extends BaseActivity
 							}
 						}
 					});
-	private int page = 1;
+
+	ActivityResultLauncher<Intent> downloadAttachmentLauncher =
+			registerForActivityResult(
+					new ActivityResultContracts.StartActivityForResult(),
+					result -> {
+						if (result.getResultCode() == Activity.RESULT_OK) {
+
+							assert result.getData() != null;
+
+							try {
+
+								OutputStream outputStream =
+										getContentResolver()
+												.openOutputStream(
+														Objects.requireNonNull(
+																result.getData().getData()));
+
+								NotificationCompat.Builder builder =
+										new NotificationCompat.Builder(ctx, ctx.getPackageName())
+												.setContentTitle(
+														getString(
+																R.string
+																		.fileViewerNotificationTitleStarted))
+												.setContentText(
+														getString(
+																R.string
+																		.fileViewerNotificationDescriptionStarted,
+																filename))
+												.setSmallIcon(R.drawable.gitnex_transparent)
+												.setPriority(NotificationCompat.PRIORITY_LOW)
+												.setChannelId(
+														Constants.downloadNotificationChannelId)
+												.setProgress(100, 0, false)
+												.setOngoing(true);
+
+								int notificationId = Notifications.uniqueNotificationId(ctx);
+
+								NotificationManager notificationManager =
+										(NotificationManager)
+												getSystemService(Context.NOTIFICATION_SERVICE);
+								notificationManager.notify(notificationId, builder.build());
+
+								Thread thread =
+										new Thread(
+												() -> {
+													try {
+
+														Call<ResponseBody> call =
+																RetrofitClient.getWebInterface(
+																				ctx,
+																				instanceUrlOnly)
+																		.getAttachment(filehash);
+
+														Response<ResponseBody> response =
+																call.execute();
+
+														assert response.body() != null;
+
+														builder.setOngoing(false)
+																.setContentTitle(
+																		getString(
+																				R.string
+																						.fileViewerNotificationTitleFinished))
+																.setContentText(
+																		getString(
+																				R.string
+																						.fileViewerNotificationDescriptionFinished,
+																				filename));
+
+														AppUtil.copyProgress(
+																response.body().byteStream(),
+																outputStream,
+																filesize,
+																progress -> {
+																	builder.setProgress(
+																			100, progress, false);
+																	notificationManager.notify(
+																			notificationId,
+																			builder.build());
+																});
+
+													} catch (IOException ignored) {
+
+														builder.setOngoing(false)
+																.setContentTitle(
+																		getString(
+																				R.string
+																						.fileViewerNotificationTitleFailed))
+																.setContentText(
+																		getString(
+																				R.string
+																						.fileViewerNotificationDescriptionFailed,
+																				filename));
+
+													} finally {
+
+														builder.setProgress(0, 0, false)
+																.setOngoing(false);
+
+														notificationManager.notify(
+																notificationId, builder.build());
+													}
+												});
+
+								thread.start();
+
+							} catch (IOException ignored) {
+							}
+						}
+					});
 
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
@@ -154,6 +277,11 @@ public class IssueDetailActivity extends BaseActivity
 		setSupportActionBar(viewBinding.toolbar);
 		Objects.requireNonNull(getSupportActionBar()).setTitle(repoName);
 		getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+
+		String instanceUrl = ((BaseActivity) ctx).getAccount().getAccount().getInstanceUrl();
+		instanceUrlOnly = instanceUrl.substring(0, instanceUrl.lastIndexOf("api/v1/"));
+
+		token = ((BaseActivity) ctx).getAccount().getAccount().getToken();
 
 		materialAlertDialogBuilder =
 				new MaterialAlertDialogBuilder(ctx, R.style.ThemeOverlay_Material3_Dialog_Alert);
@@ -201,7 +329,7 @@ public class IssueDetailActivity extends BaseActivity
 		fetchDataAsync(repoOwner, repoName, issueIndex);
 
 		if (getIntent().getStringExtra("openPrDiff") != null
-				&& getIntent().getStringExtra("openPrDiff").equals("true")) {
+				&& Objects.equals(getIntent().getStringExtra("openPrDiff"), "true")) {
 			startActivity(issue.getIntent(ctx, DiffActivity.class));
 		}
 	}
@@ -463,7 +591,7 @@ public class IssueDetailActivity extends BaseActivity
 
 			if (issue.hasIssue()
 					&& getIntent().getStringExtra("openedFromLink") != null
-					&& getIntent().getStringExtra("openedFromLink").equals("true")) {
+					&& Objects.equals(getIntent().getStringExtra("openedFromLink"), "true")) {
 				Intent intent = issue.getRepository().getIntent(ctx, RepoDetailActivity.class);
 				intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
 				startActivity(intent);
@@ -1160,12 +1288,9 @@ public class IssueDetailActivity extends BaseActivity
 										PicassoService.getInstance(ctx)
 												.get()
 												.load(
-														UrlHelper.appendPath(
-																		getAccount()
-																				.getAccount()
-																				.getInstanceUrl(),
-																		"/attachments/")
-																+ attachment.get(i).getUuid())
+														attachment.get(i).getBrowserDownloadUrl()
+																+ "?token="
+																+ token)
 												.placeholder(R.drawable.loader_animated)
 												.resize(120, 120)
 												.centerCrop()
@@ -1178,38 +1303,11 @@ public class IssueDetailActivity extends BaseActivity
 
 										int finalI1 = i;
 										materialCardView.setOnClickListener(
-												v1 -> {
-													CustomImageViewDialogBinding
-															imageViewDialogBinding =
-																	CustomImageViewDialogBinding
-																			.inflate(
-																					LayoutInflater
-																							.from(
-																									ctx));
-													View view = imageViewDialogBinding.getRoot();
-													materialAlertDialogBuilder.setView(view);
-
-													materialAlertDialogBuilder.setNeutralButton(
-															getString(R.string.close), null);
-													PicassoService.getInstance(ctx)
-															.get()
-															.load(
-																	UrlHelper.appendPath(
-																					getAccount()
-																							.getAccount()
-																							.getInstanceUrl(),
-																					"/attachments/")
-																			+ attachment
-																					.get(finalI1)
-																					.getUuid())
-															.placeholder(R.drawable.loader_animated)
-															.resize(0, 1600)
-															.onlyScaleDown()
-															.centerCrop()
-															.error(R.drawable.ic_close)
-															.into(imageViewDialogBinding.imageView);
-													materialAlertDialogBuilder.create().show();
-												});
+												v1 ->
+														imageViewDialog(
+																attachment
+																		.get(finalI1)
+																		.getBrowserDownloadUrl()));
 
 									} else {
 
@@ -1223,19 +1321,10 @@ public class IssueDetailActivity extends BaseActivity
 										int finalI = i;
 										materialCardView.setOnClickListener(
 												v1 -> {
-													DownloadService downloadService =
-															new DownloadService();
-													downloadService.downloadFile(
-															ctx,
-															UrlHelper.appendPath(
-																			getAccount()
-																					.getAccount()
-																					.getInstanceUrl(),
-																			"/attachments/")
-																	+ attachment
-																			.get(finalI)
-																			.getUuid(),
-															attachment.get(finalI).getName());
+													filesize = attachment.get(finalI).getSize();
+													filename = attachment.get(finalI).getName();
+													filehash = attachment.get(finalI).getUuid();
+													requestFileDownload();
 												});
 									}
 								}
@@ -1249,5 +1338,36 @@ public class IssueDetailActivity extends BaseActivity
 					public void onFailure(
 							@NonNull Call<List<Attachment>> call, @NonNull Throwable t) {}
 				});
+	}
+
+	private void requestFileDownload() {
+
+		Intent intent = new Intent(Intent.ACTION_CREATE_DOCUMENT);
+
+		intent.addCategory(Intent.CATEGORY_OPENABLE);
+		intent.putExtra(Intent.EXTRA_TITLE, filename);
+		intent.setType("*/*");
+
+		downloadAttachmentLauncher.launch(intent);
+	}
+
+	private void imageViewDialog(String url) {
+
+		CustomImageViewDialogBinding imageViewDialogBinding =
+				CustomImageViewDialogBinding.inflate(LayoutInflater.from(ctx));
+		View view = imageViewDialogBinding.getRoot();
+		materialAlertDialogBuilder.setView(view);
+
+		materialAlertDialogBuilder.setNeutralButton(getString(R.string.close), null);
+		PicassoService.getInstance(ctx)
+				.get()
+				.load(url + "?token=" + token)
+				.placeholder(R.drawable.loader_animated)
+				.resize(0, 1600)
+				.onlyScaleDown()
+				.centerCrop()
+				.error(R.drawable.ic_close)
+				.into(imageViewDialogBinding.imageView);
+		materialAlertDialogBuilder.create().show();
 	}
 }
