@@ -6,7 +6,7 @@
 Favorisierer und Beobachter durchsuchen
 - Profilrepositories im Nutzerprofil
 - Neue Account-Einstellungsseite
-- Beobachtete Repository
+- Beobachtete Repositories
 - SSH-Schlüssel-Liste
 - Codeberg-Thema
 - Adaptives Icon für Android 13

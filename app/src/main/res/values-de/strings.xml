@@ -15,7 +15,7 @@
     <string name="navMostVisited">Meistbesuchte Repositories</string>
     <string name="navNotes">Notizen</string>
     <string name="navAccount">Kontoeinstellungen</string>
-    <string name="navWatchedRepositories">Beobachtete Repository</string>
+    <string name="navWatchedRepositories">Beobachtete Repositories</string>
     <!-- menu items -->
     <!-- page titles -->
     <string name="pageTitleNewRepo">Repository erstellen</string>

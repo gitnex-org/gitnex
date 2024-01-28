@@ -14,6 +14,8 @@
     <string name="navMyIssues">Mis incidencias</string>
     <string name="navMostVisited">Repositorios más visitados</string>
     <string name="navNotes">Notas</string>
+    <string name="navAccount">Configuración de la cuenta</string>
+    <string name="navWatchedRepositories">Repositorios favoritos</string>
     <!-- menu items -->
     <!-- page titles -->
     <string name="pageTitleNewRepo">Nuevo repositorio</string>
@@ -61,6 +63,7 @@
     <string name="emptyFieldUsername">Se requiere el nombre de usuario</string>
     <string name="emptyFieldPassword">Se requiere la contraseña</string>
     <string name="protocolEmptyError">Se requiere un protocolo</string>
+    <string name="instanceHelperText">Introduce URL con o sin https/http. Ejemplo: codeberg.org</string>
     <string name="checkNetConnection">No se puede acceder a la red, por favor comprueba tu conexión a internet</string>
     <string name="repoNameErrorEmpty">El nombre del repositorio está vacío</string>
     <string name="repoNameErrorInvalid">El nombre del repositorio es inválido. [a&#8211;z A&#8211;Z 0&#8211;9 &#8211; _]</string>
@@ -181,14 +184,20 @@
     <string name="settingsEnableCommentsDeletionText">Activar el borrado de borradores</string>
     <string name="settingsEnableCommentsDeletionHintText">Borrar el borrador del comentario cuando se publica el comentario</string>
     <string name="settingsGeneralHeader">General</string>
-    <string name="generalHintText">Pantalla de inicio, gestor de enlaces por defecto</string>
+    <string name="generalHintText">Página de inicio, borradores, reportes de error</string>
     <string name="generalDeepLinkDefaultScreen">Gestor de enlaces por defecto</string>
     <string name="generalDeepLinkDefaultScreenHintText">Elija qué pantalla debe cargarse si la aplicación no puede manejar los enlaces externos. Te redirigirá automáticamente.</string>
-    <string name="generalDeepLinkSelectedText">N/D</string>
     <string name="linkSelectorDialogTitle">Seleccione la pantalla del gestor de enlaces por defecto</string>
     <string name="settingsBiometricHeader">Desbloqueo biométrico</string>
     <string name="settingsLabelsInListHeader">Etiquetas con soporte de texto</string>
     <string name="settingsLabelsInListHint">Activar esto mostrará etiquetas con texto en las incidencias y PR. Por defecto son puntos de colores</string>
+    <string name="ceSyntaxHighlightColor">Color de resaltado de sintaxis</string>
+    <string name="ceIndentation">Indentación</string>
+    <string name="ceIndentationTabsWidth">Ancho de pestañas</string>
+    <string name="system_font">Fuente predeterminada del sistema</string>
+    <string name="fragmentTabsAnimationHeader">Animación de las pestañas</string>
+    <string name="fadeOut">Desvanecer</string>
+    <string name="zoomOut">Reducir</string>
     <!-- settings -->
     <string name="noMoreData">No hay más datos disponibles</string>
     <string name="createLabel">Nueva etiqueta</string>
@@ -264,15 +273,17 @@
     <!-- profile section -->
     <string name="profileTabFollowers">Seguidores</string>
     <string name="profileTabFollowing">Siguiendo</string>
-    <string name="profileCreateNewEmailAddress">Añadir correo electrónico</string>
-    <string name="profileEmailTitle">Dirección de correo electrónico</string>
+    <!-- profile section -->
+    <!-- account settings -->
+    <string name="accountEmails">Correos electrónicos</string>
+    <string name="accountEmailTitle">Direccion de email</string>
     <string name="emailAddedText">Nuevo correo electrónico añadido con éxito</string>
     <string name="emailErrorEmpty">Correo electrónico está vacío</string>
     <string name="emailErrorInvalid">El correo electrónico no es válido</string>
     <string name="emailErrorInUse">La dirección de correo electrónico ya está en uso</string>
     <string name="emailTypeText">Principal</string>
-    <string name="profileTabEmails">Emails</string>
-    <!-- profile section -->
+    <string name="sshKeys">Claves SSH</string>
+    <!-- account settings -->
     <!-- single issue section -->
     <string name="singleIssueEditLabels">Añadir / Eliminar etiquetas</string>
     <string name="labelsUpdated">Etiquetas actualizadas</string>
@@ -414,6 +425,8 @@
     <string name="openInBrowser">Abrir en el navegador</string>
     <string name="deleteGenericTitle">Eliminar %s</string>
     <string name="reset">Restablecer</string>
+    <string name="beta">BETA</string>
+    <string name="none">Ninguno</string>
     <!-- generic copy -->
     <string name="exploreUsers">Explorar usuarios</string>
     <string name="exploreIssues">Explorar incidencias</string>
@@ -510,12 +523,13 @@
     <string name="resetMostReposCounter">Contador restablecido correctamente</string>
     <string name="resetCounterDialogMessage">¿Estás seguro de que quieres restablecer el contador para el repositorio %s?</string>
     <string name="resetCounterAllDialogMessage">Eso restablecerá los contadores para los repositorios de esta cuenta.</string>
-    <string name="appearanceHintText">Temas, tipos de letra, insignias</string>
+    <string name="appearanceHintText">Temas, fuentes, medallas, traducción</string>
     <string name="securityHintText">Autentificación biométrica, certificados SSL, caché</string>
     <string name="languagesHintText">Idiomas</string>
     <string name="reportsHintText">Reportes de errores</string>
     <string name="rateAppHintText">Si te gusta GitNex, ¡deja una valoración positiva!</string>
     <string name="aboutAppHintText">Versión de la aplicación, build, versión de Gitea</string>
+    <string name="codeEditorHintText">Color de sintaxis, indentación</string>
     <string name="archivedRepository">Archivado</string>
     <string name="archivedRepositoryMessage">Este repositorio está archivado. Puedes ver los archivos, pero no puedes hacer push, abrir incidencias o pull requests.</string>
     <string name="accountDeletedMessage">Cuenta eliminada con éxito</string>
@@ -643,6 +657,7 @@
     <string name="followSystem">Sistema (Claro / Oscuro)</string>
     <string name="followSystemBlack">Sistema (Claro / Pitch Black)</string>
     <string name="dynamicColorsFollowSystem">Colores dinámicos - Según sistema (Claro/Oscuro)</string>
+    <string name="codebergDark">Codeberg (oscuro)</string>
     <string name="repoForkOf">Rama de: %s</string>
     <string name="adoptRepo">Adoptar</string>
     <string name="repoAdopted">Repositorio adoptado %s</string>
@@ -666,7 +681,7 @@
     <string name="newNoteContentHint">Empieza a tomar tus notas aquí</string>
     <string name="noteDateTime">Creado %s</string>
     <string name="noteTimeModified">Actualizado %s</string>
-    <string name="noteDeleteDialoMessage">¿Realmente quieres eliminar esta nota?</string>
+    <string name="noteDeleteDialogMessage">¿Realmente quieres eliminar esta nota?</string>
     <plurals name="noteDeleteMessage">
         <item quantity="one">Nota eliminada correctamente</item>
         <item quantity="other">Notas eliminadas correctamente</item>
@@ -718,4 +733,6 @@
     <string name="commitStatuses">Estados</string>
     <string name="statusNoUrl">Este estado no tiene una URL de destino asociada.</string>
     <string name="starredRepos">Repositorios favoritos</string>
+    <string name="lang_statistics">Estadísticas del lenguaje</string>
+    <string name="dashboard">Panel de Control</string>
 </resources>
