@@ -35,8 +35,15 @@
             android:layout_height="wrap_content"
             android:background="?attr/materialCardBackgroundColor"
             android:foreground="?android:attr/selectableItemBackground"
-            android:orientation="vertical"
-            android:padding="@dimen/dimen12dp">
+            android:orientation="vertical">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="?attr/materialCardBackgroundColor"
+                android:foreground="?android:attr/selectableItemBackground"
+                android:orientation="vertical"
+                android:padding="@dimen/dimen12dp">
 
             <LinearLayout
                 android:layout_width="match_parent"
@@ -64,8 +71,8 @@
                 <LinearLayout
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_marginLeft="15dp"
-                    android:layout_marginRight="15dp"
+                    android:layout_marginLeft="@dimen/dimen16dp"
+                    android:layout_marginRight="@dimen/dimen16dp"
                     android:layout_weight="1"
                     android:gravity="center_vertical"
                     android:orientation="vertical">
@@ -77,7 +84,7 @@
                         android:ellipsize="middle"
                         android:singleLine="true"
                         android:textColor="?attr/primaryTextColor"
-                        android:textSize="14sp"
+                        android:textSize="@dimen/dimen14sp"
                         android:textStyle="bold" />
 
                     <TextView
@@ -87,7 +94,8 @@
                         android:ellipsize="end"
                         android:singleLine="true"
                         android:textColor="?attr/hintColor"
-                        android:textSize="12sp" />
+                        android:textSize="@dimen/dimen12sp" />
+
                 </LinearLayout>
 
                 <ImageView
@@ -111,15 +119,42 @@
                 android:textColor="?attr/primaryTextColor"
                 android:textColorLink="@color/lightBlue"
                 android:textIsSelectable="true"
-                android:textSize="14sp" />
+                android:textSize="@dimen/dimen14sp" />
 
             <LinearLayout
                 android:id="@+id/commentReactionBadges"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="16dp"
+                android:layout_marginTop="@dimen/dimen16dp"
                 android:orientation="horizontal"
                 android:visibility="gone" />
+
+            </LinearLayout>
+
+            <LinearLayout
+            android:id="@+id/attachmentFrame"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="?attr/materialCardBackgroundColor"
+            android:foreground="?android:attr/selectableItemBackground"
+            android:visibility="gone"
+            android:orientation="vertical">
+
+                <com.google.android.material.divider.MaterialDivider
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="@dimen/dimen4dp" />
+
+                <LinearLayout
+                    android:id="@+id/attachmentsView"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:padding="@dimen/dimen12dp"
+                    android:orientation="horizontal">
+
+                </LinearLayout>
+
+            </LinearLayout>
 
         </LinearLayout>
 

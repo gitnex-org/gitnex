@@ -57,13 +57,13 @@ dependencies {
 
     implementation fileTree(include: ['*.jar'], dir: 'libs')
     implementation 'androidx.appcompat:appcompat:1.6.1'
-    implementation 'com.google.android.material:material:1.11.0-beta01'
-    implementation 'androidx.compose.material3:material3:1.2.0-alpha10'
-    implementation 'androidx.compose.material3:material3-window-size-class:1.2.0-alpha10'
+    implementation 'com.google.android.material:material:1.11.0'
+    implementation 'androidx.compose.material3:material3:1.2.0-beta02'
+    implementation 'androidx.compose.material3:material3-window-size-class:1.2.0-beta02'
     implementation 'androidx.viewpager2:viewpager2:1.1.0-beta02'
     implementation 'androidx.constraintlayout:constraintlayout:2.1.4'
     implementation "androidx.legacy:legacy-support-v4:1.0.0"
-    implementation "androidx.lifecycle:lifecycle-viewmodel:2.6.2"
+    implementation "androidx.lifecycle:lifecycle-viewmodel:2.7.0"
     testImplementation 'junit:junit:4.13.2'
     androidTestImplementation 'androidx.test.ext:junit:1.1.5'
     androidTestImplementation 'androidx.test.espresso:espresso-core:3.5.1'
@@ -99,16 +99,16 @@ dependencies {
     implementation 'ch.acra:acra-mail:5.11.2'
     implementation 'ch.acra:acra-limiter:5.11.2'
     implementation 'ch.acra:acra-notification:5.11.2'
-    implementation 'androidx.room:room-runtime:2.6.0'
-    annotationProcessor 'androidx.room:room-compiler:2.6.0'
-    implementation "androidx.work:work-runtime:2.8.1"
+    implementation 'androidx.room:room-runtime:2.6.1'
+    annotationProcessor 'androidx.room:room-compiler:2.6.1'
+    implementation "androidx.work:work-runtime:2.9.0"
     implementation "io.mikael:urlbuilder:2.0.9"
     implementation "org.codeberg.gitnex-garage:emoji-java:v5.1.2"
     //noinspection GradleDependency
     coreLibraryDesugaring "com.android.tools:desugar_jdk_libs:1.1.5"
     implementation 'androidx.biometric:biometric:1.1.0'
     implementation 'com.github.chrisvest:stormpot:2.4.2'
-    implementation 'androidx.browser:browser:1.6.0'
+    implementation 'androidx.browser:browser:1.7.0'
     implementation 'com.google.android.flexbox:flexbox:3.0.0'
     implementation('org.codeberg.gitnex:tea4j-autodeploy:4646f53557') {
         exclude module: 'org.apache.oltu.oauth2.common'

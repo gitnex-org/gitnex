@@ -151,7 +151,7 @@ public class IssueDetailActivity extends BaseActivity
 						}
 					});
 
-	ActivityResultLauncher<Intent> downloadAttachmentLauncher =
+	public ActivityResultLauncher<Intent> downloadAttachmentLauncher =
 			registerForActivityResult(
 					new ActivityResultContracts.StartActivityForResult(),
 					result -> {
@@ -326,6 +326,7 @@ public class IssueDetailActivity extends BaseActivity
 		viewBinding.toolbarTitle.setText(repoName);
 
 		getSingleIssue(repoOwner, repoName, issueIndex);
+		getAttachments();
 		fetchDataAsync(repoOwner, repoName, issueIndex);
 
 		if (getIntent().getStringExtra("openPrDiff") != null
@@ -729,8 +730,6 @@ public class IssueDetailActivity extends BaseActivity
 
 	private void getSingleIssue(String repoOwner, String repoName, int issueIndex) {
 
-		getAttachments();
-
 		if (issue.hasIssue()) {
 			viewBinding.progressBar.setVisibility(View.GONE);
 			getSubscribed();
@@ -761,7 +760,6 @@ public class IssueDetailActivity extends BaseActivity
 						} else if (response.code() == 401) {
 
 							AlertDialogs.authorizationTokenRevokedDialog(ctx);
-
 						} else if (response.code() == 404) {
 
 							Toasty.warning(ctx, getResources().getString(R.string.noDataFound));
@@ -773,7 +771,6 @@ public class IssueDetailActivity extends BaseActivity
 					public void onFailure(@NonNull Call<Issue> call, @NonNull Throwable t) {
 
 						viewBinding.progressBar.setVisibility(View.GONE);
-						Log.e("onFailure", t.toString());
 					}
 				});
 
@@ -1243,12 +1240,14 @@ public class IssueDetailActivity extends BaseActivity
 	}
 
 	private void getAttachments() {
+
 		Call<List<Attachment>> call =
 				RetrofitClient.getApiInterface(ctx)
 						.issueListIssueAttachments(
 								issue.getRepository().getOwner(),
 								issue.getRepository().getName(),
 								(long) issueIndex);
+
 		call.enqueue(
 				new Callback<>() {
 

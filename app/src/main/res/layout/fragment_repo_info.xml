@@ -134,25 +134,17 @@
                             android:textColorLink="@color/lightBlue"
                             android:textSize="@dimen/dimen16sp"/>
 
-                        <com.google.android.material.card.MaterialCardView
+                        <org.mian.gitnex.helpers.languagestatistics.LanguageStatisticsBar
+                            android:id="@+id/languages_statistic"
                             android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            style="?attr/materialCardViewElevatedStyle"
-                            android:backgroundTint="@android:color/transparent"
-                            app:cardElevation="@dimen/dimen0dp">
-
-                            <org.mian.gitnex.helpers.languagestatistics.LanguageStatisticsBar
-                                android:id="@+id/languages_statistic"
-                                android:layout_width="match_parent"
-                                android:layout_height="wrap_content"
-                                android:thumbTint="@android:color/transparent"
-                                android:clickable="false"
-                                android:focusable="false"
-                                android:enabled="false"
-                                android:progressDrawable="@android:color/transparent"
-                                android:visibility="gone" />
-
-                        </com.google.android.material.card.MaterialCardView>
+                            android:layout_height="@dimen/dimen22dp"
+                            android:layout_marginTop="@dimen/dimen4dp"
+                            android:thumbTint="@android:color/transparent"
+                            android:clickable="false"
+                            android:focusable="false"
+                            android:enabled="false"
+                            android:progressDrawable="@android:color/transparent"
+                            android:visibility="gone" />
 
                         <LinearLayout
                             android:layout_width="match_parent"
