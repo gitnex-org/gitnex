@@ -21,6 +21,7 @@ import com.vdurmont.emoji.EmojiParser;
 import java.io.IOException;
 import java.io.OutputStream;
 import java.util.Arrays;
+import java.util.Objects;
 import okhttp3.ResponseBody;
 import org.apache.commons.io.FilenameUtils;
 import org.gitnex.tea4j.v2.models.ContentsResponse;
@@ -60,7 +61,9 @@ public class FileViewActivity extends BaseActivity implements BottomSheetListene
 
 								OutputStream outputStream =
 										getContentResolver()
-												.openOutputStream(result.getData().getData());
+												.openOutputStream(
+														Objects.requireNonNull(
+																result.getData().getData()));
 
 								NotificationCompat.Builder builder =
 										new NotificationCompat.Builder(ctx, ctx.getPackageName())
@@ -108,6 +111,17 @@ public class FileViewActivity extends BaseActivity implements BottomSheetListene
 
 														assert response.body() != null;
 
+														builder.setOngoing(false)
+																.setContentTitle(
+																		getString(
+																				R.string
+																						.fileViewerNotificationTitleFinished))
+																.setContentText(
+																		getString(
+																				R.string
+																						.fileViewerNotificationDescriptionFinished,
+																				file.getName()));
+
 														AppUtil.copyProgress(
 																response.body().byteStream(),
 																outputStream,
@@ -120,19 +134,10 @@ public class FileViewActivity extends BaseActivity implements BottomSheetListene
 																			builder.build());
 																});
 
-														builder.setContentTitle(
-																		getString(
-																				R.string
-																						.fileViewerNotificationTitleFinished))
-																.setContentText(
-																		getString(
-																				R.string
-																						.fileViewerNotificationDescriptionFinished,
-																				file.getName()));
-
 													} catch (IOException ignored) {
 
-														builder.setContentTitle(
+														builder.setOngoing(false)
+																.setContentTitle(
 																		getString(
 																				R.string
 																						.fileViewerNotificationTitleFailed))

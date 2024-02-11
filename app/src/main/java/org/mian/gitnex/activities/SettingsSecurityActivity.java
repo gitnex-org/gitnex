@@ -6,11 +6,6 @@ import static androidx.biometric.BiometricManager.Authenticators.DEVICE_CREDENTI
 import android.app.KeyguardManager;
 import android.content.Context;
 import android.os.Bundle;
-import android.util.Log;
-import android.view.View;
-import android.widget.ImageView;
-import android.widget.LinearLayout;
-import android.widget.TextView;
 import androidx.biometric.BiometricManager;
 import com.google.android.material.dialog.MaterialAlertDialogBuilder;
 import java.io.File;
@@ -19,7 +14,7 @@ import org.apache.commons.io.FileUtils;
 import org.mian.gitnex.R;
 import org.mian.gitnex.databinding.ActivitySettingsSecurityBinding;
 import org.mian.gitnex.helpers.AppUtil;
-import org.mian.gitnex.helpers.Toasty;
+import org.mian.gitnex.helpers.SnackBar;
 import org.mian.gitnex.helpers.ssl.MemorizingTrustManager;
 
 /**
@@ -31,7 +26,6 @@ public class SettingsSecurityActivity extends BaseActivity {
 	private static int cacheSizeDataSelectedChoice = 0;
 	private static String[] cacheSizeImagesList;
 	private static int cacheSizeImagesSelectedChoice = 0;
-	private View.OnClickListener onClickListener;
 
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
@@ -42,33 +36,15 @@ public class SettingsSecurityActivity extends BaseActivity {
 				ActivitySettingsSecurityBinding.inflate(getLayoutInflater());
 		setContentView(activitySettingsSecurityBinding.getRoot());
 
-		ImageView closeActivity = activitySettingsSecurityBinding.close;
-
-		initCloseListener();
-		closeActivity.setOnClickListener(onClickListener);
-
-		TextView cacheSizeDataSelected =
-				activitySettingsSecurityBinding.cacheSizeDataSelected; // setter for data cache size
-		TextView cacheSizeImagesSelected =
-				activitySettingsSecurityBinding
-						.cacheSizeImagesSelected; // setter for images cache size
-		TextView clearCacheSelected =
-				activitySettingsSecurityBinding.clearCacheSelected; // setter for clear cache
-
-		LinearLayout certsFrame = activitySettingsSecurityBinding.certsFrame;
-		LinearLayout cacheSizeDataFrame =
-				activitySettingsSecurityBinding.cacheSizeDataSelectionFrame;
-		LinearLayout cacheSizeImagesFrame =
-				activitySettingsSecurityBinding.cacheSizeImagesSelectionFrame;
-		LinearLayout clearCacheFrame = activitySettingsSecurityBinding.clearCacheSelectionFrame;
+		activitySettingsSecurityBinding.topAppBar.setNavigationOnClickListener(v -> finish());
 
 		cacheSizeDataList = getResources().getStringArray(R.array.cacheSizeList);
 		cacheSizeImagesList = getResources().getStringArray(R.array.cacheSizeList);
 
-		cacheSizeDataSelected.setText(
+		activitySettingsSecurityBinding.cacheSizeDataSelected.setText(
 				tinyDB.getString(
 						"cacheSizeStr", getString(R.string.cacheSizeDataSelectionSelectedText)));
-		cacheSizeImagesSelected.setText(
+		activitySettingsSecurityBinding.cacheSizeImagesSelected.setText(
 				tinyDB.getString(
 						"cacheSizeImagesStr",
 						getString(R.string.cacheSizeImagesSelectionSelectedText)));
@@ -101,9 +77,10 @@ public class SettingsSecurityActivity extends BaseActivity {
 									BIOMETRIC_STRONG | DEVICE_CREDENTIAL)) {
 								case BiometricManager.BIOMETRIC_SUCCESS:
 									tinyDB.putBoolean("biometricStatus", true);
-									Toasty.success(
-											appCtx,
-											getResources().getString(R.string.settingsSave));
+									SnackBar.success(
+											ctx,
+											findViewById(android.R.id.content),
+											getString(R.string.settingsSave));
 									break;
 								case BiometricManager.BIOMETRIC_ERROR_NO_HARDWARE:
 								case BiometricManager.BIOMETRIC_ERROR_SECURITY_UPDATE_REQUIRED:
@@ -112,38 +89,45 @@ public class SettingsSecurityActivity extends BaseActivity {
 									tinyDB.putBoolean("biometricStatus", false);
 									activitySettingsSecurityBinding.switchBiometric.setChecked(
 											false);
-									Toasty.error(
-											appCtx,
-											getResources()
-													.getString(R.string.biometricNotSupported));
+									SnackBar.error(
+											ctx,
+											findViewById(android.R.id.content),
+											getString(R.string.biometricNotSupported));
 									break;
 								case BiometricManager.BIOMETRIC_ERROR_HW_UNAVAILABLE:
 									tinyDB.putBoolean("biometricStatus", false);
 									activitySettingsSecurityBinding.switchBiometric.setChecked(
 											false);
-									Toasty.error(
-											appCtx,
-											getResources()
-													.getString(R.string.biometricNotAvailable));
+									SnackBar.error(
+											ctx,
+											findViewById(android.R.id.content),
+											getString(R.string.biometricNotAvailable));
 									break;
 								case BiometricManager.BIOMETRIC_ERROR_NONE_ENROLLED:
 									tinyDB.putBoolean("biometricStatus", false);
 									activitySettingsSecurityBinding.switchBiometric.setChecked(
 											false);
-									Toasty.info(
-											appCtx,
-											getResources().getString(R.string.enrollBiometric));
+									SnackBar.info(
+											ctx,
+											findViewById(android.R.id.content),
+											getString(R.string.enrollBiometric));
 									break;
 							}
 						} else {
 
 							tinyDB.putBoolean("biometricStatus", true);
-							Toasty.success(appCtx, getResources().getString(R.string.settingsSave));
+							SnackBar.success(
+									ctx,
+									findViewById(android.R.id.content),
+									getString(R.string.settingsSave));
 						}
 					} else {
 
 						tinyDB.putBoolean("biometricStatus", false);
-						Toasty.success(appCtx, getResources().getString(R.string.settingsSave));
+						SnackBar.success(
+								ctx,
+								findViewById(android.R.id.content),
+								getString(R.string.settingsSave));
 					}
 				});
 
@@ -154,11 +138,11 @@ public class SettingsSecurityActivity extends BaseActivity {
 
 		// clear cache setter
 		File cacheDir = appCtx.getCacheDir();
-		clearCacheSelected.setText(
+		activitySettingsSecurityBinding.clearCacheSelected.setText(
 				FileUtils.byteCountToDisplaySize((int) FileUtils.sizeOfDirectory(cacheDir)));
 
 		// clear cache
-		clearCacheFrame.setOnClickListener(
+		activitySettingsSecurityBinding.clearCacheSelectionFrame.setOnClickListener(
 				v1 -> {
 					MaterialAlertDialogBuilder materialAlertDialogBuilder =
 							new MaterialAlertDialogBuilder(ctx)
@@ -180,7 +164,7 @@ public class SettingsSecurityActivity extends BaseActivity {
 													this.overridePendingTransition(0, 0);
 												} catch (IOException e) {
 
-													Log.e("SettingsSecurity", e.toString());
+													// Log.e("SettingsSecurity", e.toString());
 												}
 											});
 
@@ -188,7 +172,7 @@ public class SettingsSecurityActivity extends BaseActivity {
 				});
 
 		// cache size images selection dialog
-		cacheSizeImagesFrame.setOnClickListener(
+		activitySettingsSecurityBinding.cacheSizeImagesSelectionFrame.setOnClickListener(
 				view -> {
 					MaterialAlertDialogBuilder materialAlertDialogBuilder =
 							new MaterialAlertDialogBuilder(ctx)
@@ -199,7 +183,8 @@ public class SettingsSecurityActivity extends BaseActivity {
 											cacheSizeImagesSelectedChoice,
 											(dialogInterfaceTheme, i) -> {
 												cacheSizeImagesSelectedChoice = i;
-												cacheSizeImagesSelected.setText(
+												activitySettingsSecurityBinding
+														.cacheSizeImagesSelected.setText(
 														cacheSizeImagesList[i]);
 												tinyDB.putString(
 														"cacheSizeImagesStr",
@@ -207,17 +192,17 @@ public class SettingsSecurityActivity extends BaseActivity {
 												tinyDB.putInt("cacheSizeImagesId", i);
 
 												dialogInterfaceTheme.dismiss();
-												Toasty.success(
-														appCtx,
-														getResources()
-																.getString(R.string.settingsSave));
+												SnackBar.success(
+														ctx,
+														findViewById(android.R.id.content),
+														getString(R.string.settingsSave));
 											});
 
 					materialAlertDialogBuilder.create().show();
 				});
 
 		// cache size data selection dialog
-		cacheSizeDataFrame.setOnClickListener(
+		activitySettingsSecurityBinding.cacheSizeDataSelectionFrame.setOnClickListener(
 				view -> {
 					MaterialAlertDialogBuilder materialAlertDialogBuilder =
 							new MaterialAlertDialogBuilder(ctx)
@@ -228,23 +213,25 @@ public class SettingsSecurityActivity extends BaseActivity {
 											cacheSizeDataSelectedChoice,
 											(dialogInterfaceTheme, i) -> {
 												cacheSizeDataSelectedChoice = i;
-												cacheSizeDataSelected.setText(cacheSizeDataList[i]);
+												activitySettingsSecurityBinding
+														.cacheSizeDataSelected.setText(
+														cacheSizeDataList[i]);
 												tinyDB.putString(
 														"cacheSizeStr", cacheSizeDataList[i]);
 												tinyDB.putInt("cacheSizeId", i);
 
 												dialogInterfaceTheme.dismiss();
-												Toasty.success(
-														appCtx,
-														getResources()
-																.getString(R.string.settingsSave));
+												SnackBar.success(
+														ctx,
+														findViewById(android.R.id.content),
+														getString(R.string.settingsSave));
 											});
 
 					materialAlertDialogBuilder.create().show();
 				});
 
 		// certs deletion
-		certsFrame.setOnClickListener(
+		activitySettingsSecurityBinding.certsFrame.setOnClickListener(
 				v1 -> {
 					MaterialAlertDialogBuilder materialAlertDialogBuilder =
 							new MaterialAlertDialogBuilder(ctx)
@@ -270,10 +257,5 @@ public class SettingsSecurityActivity extends BaseActivity {
 
 					materialAlertDialogBuilder.create().show();
 				});
-	}
-
-	private void initCloseListener() {
-
-		onClickListener = view -> finish();
 	}
 }

@@ -101,18 +101,18 @@ public class RepoInfoFragment extends Fragment {
 		binding.fileContentsFrameHeader.setOnClickListener(v1 -> toggleExpandView());
 		binding.repoMetaFrameHeader.setOnClickListener(v12 -> toggleExpandViewMeta());
 
-		binding.repoMetaStarsFrame.setOnClickListener(
+		binding.repoMetaStars.setOnClickListener(
 				metaStars ->
 						ctx.startActivity(repository.getIntent(ctx, RepoStargazersActivity.class)));
 
-		binding.repoMetaWatchersFrame.setOnClickListener(
+		binding.repoMetaWatchers.setOnClickListener(
 				metaWatchers ->
 						ctx.startActivity(repository.getIntent(ctx, RepoWatchersActivity.class)));
 
-		binding.repoMetaForksFrame.setOnClickListener(
+		binding.repoMetaForks.setOnClickListener(
 				metaForks -> ctx.startActivity(repository.getIntent(ctx, RepoForksActivity.class)));
 
-		binding.repoMetaPullRequestsFrame.setOnClickListener(
+		binding.repoMetaPullRequests.setOnClickListener(
 				metaPR -> ((RepoDetailActivity) requireActivity()).viewPager.setCurrentItem(3));
 
 		setLanguageStatistics();
@@ -405,7 +405,7 @@ public class RepoInfoFragment extends Fragment {
 			if (repoInfo.getOpenPrCounter() != null) {
 				binding.repoMetaPullRequests.setText(String.valueOf(repoInfo.getOpenPrCounter()));
 			} else {
-				binding.repoMetaPullRequestsFrame.setVisibility(View.GONE);
+				binding.repoMetaPullRequests.setVisibility(View.GONE);
 			}
 
 			binding.repoMetaForks.setText(String.valueOf(repoInfo.getForksCount()));

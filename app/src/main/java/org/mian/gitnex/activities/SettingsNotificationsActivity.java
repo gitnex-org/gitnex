@@ -1,16 +1,13 @@
 package org.mian.gitnex.activities;
 
-import android.graphics.Color;
 import android.os.Bundle;
 import android.view.View;
-import android.widget.NumberPicker;
 import com.google.android.material.dialog.MaterialAlertDialogBuilder;
-import com.pes.androidmaterialcolorpickerdialog.ColorPicker;
 import org.mian.gitnex.R;
 import org.mian.gitnex.databinding.ActivitySettingsNotificationsBinding;
+import org.mian.gitnex.fragments.SettingsFragment;
 import org.mian.gitnex.helpers.AppUtil;
-import org.mian.gitnex.helpers.Constants;
-import org.mian.gitnex.helpers.Toasty;
+import org.mian.gitnex.helpers.SnackBar;
 import org.mian.gitnex.notifications.Notifications;
 
 /**
@@ -20,6 +17,8 @@ import org.mian.gitnex.notifications.Notifications;
 public class SettingsNotificationsActivity extends BaseActivity {
 
 	private ActivitySettingsNotificationsBinding viewBinding;
+	private static String[] pollingDelayList;
+	private static int pollingDelayListSelectedChoice = 0;
 
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
@@ -29,35 +28,13 @@ public class SettingsNotificationsActivity extends BaseActivity {
 		viewBinding = ActivitySettingsNotificationsBinding.inflate(getLayoutInflater());
 		setContentView(viewBinding.getRoot());
 
-		View.OnClickListener onClickListener = viewClose -> finish();
-
-		viewBinding.close.setOnClickListener(onClickListener);
-
-		viewBinding.pollingDelaySelected.setText(
-				String.format(
-						getString(R.string.pollingDelaySelectedText),
-						tinyDB.getInt("pollingDelayMinutes", Constants.defaultPollingDelay)));
-		viewBinding.chooseColorState.setCardBackgroundColor(
-				tinyDB.getInt("notificationsLightColor", Color.GREEN));
+		viewBinding.topAppBar.setNavigationOnClickListener(v -> finish());
 
 		viewBinding.enableNotificationsMode.setChecked(
 				tinyDB.getBoolean("notificationsEnabled", true));
-		viewBinding.enableLightsMode.setChecked(
-				tinyDB.getBoolean("notificationsEnableLights", true));
-		viewBinding.enableVibrationMode.setChecked(
-				tinyDB.getBoolean("notificationsEnableVibration", true));
 
 		if (!viewBinding.enableNotificationsMode.isChecked()) {
-			AppUtil.setMultiVisibility(
-					View.GONE,
-					viewBinding.chooseColorFrame,
-					viewBinding.enableLightsFrame,
-					viewBinding.enableVibrationFrame,
-					viewBinding.pollingDelayFrame);
-		}
-
-		if (!viewBinding.enableLightsMode.isChecked()) {
-			viewBinding.chooseColorFrame.setVisibility(View.GONE);
+			AppUtil.setMultiVisibility(View.GONE, viewBinding.pollingDelayFrame);
 		}
 
 		viewBinding.enableNotificationsMode.setOnCheckedChangeListener(
@@ -66,23 +43,16 @@ public class SettingsNotificationsActivity extends BaseActivity {
 
 					if (isChecked) {
 						Notifications.startWorker(ctx);
-						AppUtil.setMultiVisibility(
-								View.VISIBLE,
-								viewBinding.chooseColorFrame,
-								viewBinding.enableLightsFrame,
-								viewBinding.enableVibrationFrame,
-								viewBinding.pollingDelayFrame);
+						AppUtil.setMultiVisibility(View.VISIBLE, viewBinding.pollingDelayFrame);
 					} else {
 						Notifications.stopWorker(ctx);
-						AppUtil.setMultiVisibility(
-								View.GONE,
-								viewBinding.chooseColorFrame,
-								viewBinding.enableLightsFrame,
-								viewBinding.enableVibrationFrame,
-								viewBinding.pollingDelayFrame);
+						AppUtil.setMultiVisibility(View.GONE, viewBinding.pollingDelayFrame);
 					}
 
-					Toasty.success(appCtx, getResources().getString(R.string.settingsSave));
+					SnackBar.success(
+							ctx,
+							findViewById(android.R.id.content),
+							getString(R.string.settingsSave));
 				});
 		viewBinding.enableNotificationsFrame.setOnClickListener(
 				v ->
@@ -90,93 +60,39 @@ public class SettingsNotificationsActivity extends BaseActivity {
 								!viewBinding.enableNotificationsMode.isChecked()));
 
 		// polling delay
-		viewBinding.pollingDelayFrame.setOnClickListener(
-				v -> {
-					NumberPicker numberPicker = new NumberPicker(ctx);
-					numberPicker.setMinValue(Constants.minimumPollingDelay);
-					numberPicker.setMaxValue(Constants.maximumPollingDelay);
-					numberPicker.setValue(
-							tinyDB.getInt("pollingDelayMinutes", Constants.defaultPollingDelay));
-					numberPicker.setWrapSelectorWheel(true);
+		pollingDelayList = getResources().getStringArray(R.array.notificationsPollingDelay);
+		pollingDelayListSelectedChoice = tinyDB.getInt("notificationsPollingDelayId");
+		viewBinding.pollingDelaySelected.setText(pollingDelayList[pollingDelayListSelectedChoice]);
 
+		viewBinding.pollingDelayFrame.setOnClickListener(
+				view -> {
 					MaterialAlertDialogBuilder materialAlertDialogBuilder =
 							new MaterialAlertDialogBuilder(ctx)
 									.setTitle(R.string.pollingDelayDialogHeaderText)
-									.setMessage(
-											getString(R.string.pollingDelayDialogDescriptionText))
-									.setCancelable(true)
-									.setNeutralButton(
-											R.string.cancelButton,
-											(dialog, which) -> dialog.dismiss())
-									.setPositiveButton(
-											getString(R.string.okButton),
-											(dialog, which) -> {
-												tinyDB.putInt(
-														"pollingDelayMinutes",
-														numberPicker.getValue());
+									.setSingleChoiceItems(
+											pollingDelayList,
+											pollingDelayListSelectedChoice,
+											(dialogInterfaceColor, i) -> {
+												pollingDelayListSelectedChoice = i;
+												viewBinding.pollingDelaySelected.setText(
+														pollingDelayList[
+																pollingDelayListSelectedChoice]);
+												tinyDB.putInt("notificationsPollingDelayId", i);
 
 												Notifications.stopWorker(ctx);
 												Notifications.startWorker(ctx);
 
-												viewBinding.pollingDelaySelected.setText(
-														String.format(
-																getString(
-																		R.string
-																				.pollingDelaySelectedText),
-																numberPicker.getValue()));
-												Toasty.success(
-														appCtx,
-														getResources()
-																.getString(R.string.settingsSave));
+												SettingsFragment.refreshParent = true;
+												this.recreate();
+												this.overridePendingTransition(0, 0);
+												dialogInterfaceColor.dismiss();
+												SnackBar.success(
+														ctx,
+														findViewById(android.R.id.content),
+														getString(R.string.settingsSave));
 											});
 
-					materialAlertDialogBuilder.setView(numberPicker);
 					materialAlertDialogBuilder.create().show();
 				});
-
-		// lights switcher
-		viewBinding.enableLightsMode.setOnCheckedChangeListener(
-				(buttonView, isChecked) -> {
-					if (!isChecked) {
-						viewBinding.chooseColorFrame.setVisibility(View.GONE);
-					} else {
-						viewBinding.chooseColorFrame.setVisibility(View.VISIBLE);
-					}
-
-					tinyDB.putBoolean("notificationsEnableLights", isChecked);
-					Toasty.success(appCtx, getResources().getString(R.string.settingsSave));
-				});
-		viewBinding.enableLightsFrame.setOnClickListener(
-				v ->
-						viewBinding.enableLightsMode.setChecked(
-								!viewBinding.enableLightsMode.isChecked()));
-
-		// lights color chooser
-		viewBinding.chooseColorFrame.setOnClickListener(
-				v -> {
-					ColorPicker colorPicker = new ColorPicker(SettingsNotificationsActivity.this);
-					colorPicker.setColor(tinyDB.getInt("notificationsLightColor", Color.GREEN));
-					colorPicker.setCallback(
-							color -> {
-								tinyDB.putInt("notificationsLightColor", color);
-								viewBinding.chooseColorState.setCardBackgroundColor(color);
-								colorPicker.dismiss();
-								Toasty.success(
-										appCtx, getResources().getString(R.string.settingsSave));
-							});
-
-					colorPicker.show();
-				});
-
-		// vibration switcher
-		viewBinding.enableVibrationMode.setOnCheckedChangeListener(
-				(buttonView, isChecked) -> {
-					tinyDB.putBoolean("notificationsEnableVibration", isChecked);
-					Toasty.success(appCtx, getResources().getString(R.string.settingsSave));
-				});
-		viewBinding.enableVibrationFrame.setOnClickListener(
-				v ->
-						viewBinding.enableVibrationMode.setChecked(
-								!viewBinding.enableVibrationMode.isChecked()));
 	}
 }

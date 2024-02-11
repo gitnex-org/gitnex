@@ -3,13 +3,17 @@ package org.mian.gitnex.notifications;
 import android.app.NotificationChannel;
 import android.app.NotificationManager;
 import android.content.Context;
-import android.graphics.Color;
+import android.content.Intent;
+import android.net.Uri;
 import android.os.Build;
+import android.provider.Settings;
+import androidx.core.app.NotificationManagerCompat;
 import androidx.work.Constraints;
 import androidx.work.ExistingPeriodicWorkPolicy;
 import androidx.work.NetworkType;
 import androidx.work.PeriodicWorkRequest;
 import androidx.work.WorkManager;
+import com.google.android.material.dialog.MaterialAlertDialogBuilder;
 import java.util.concurrent.TimeUnit;
 import org.mian.gitnex.R;
 import org.mian.gitnex.helpers.Constants;
@@ -34,15 +38,10 @@ public class Notifications {
 
 	public static void createChannels(Context context) {
 
-		TinyDB tinyDB = TinyDB.getInstance(context);
 		NotificationManager notificationManager =
 				(NotificationManager) context.getSystemService(Context.NOTIFICATION_SERVICE);
 
 		if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
-
-			// Delete old notification channels
-			notificationManager.deleteNotificationChannel(
-					context.getPackageName()); // TODO Can be removed in future versions
 
 			// Create new notification channels
 			NotificationChannel mainChannel =
@@ -52,20 +51,6 @@ public class Notifications {
 							NotificationManager.IMPORTANCE_DEFAULT);
 			mainChannel.setDescription(
 					context.getString(R.string.mainNotificationChannelDescription));
-
-			if (tinyDB.getBoolean("notificationsEnableVibration", true)) {
-				mainChannel.setVibrationPattern(Constants.defaultVibrationPattern);
-				mainChannel.enableVibration(true);
-			} else {
-				mainChannel.enableVibration(false);
-			}
-
-			if (tinyDB.getBoolean("notificationsEnableLights", true)) {
-				mainChannel.setLightColor(tinyDB.getInt("notificationsLightColor", Color.GREEN));
-				mainChannel.enableLights(true);
-			} else {
-				mainChannel.enableLights(false);
-			}
 
 			NotificationChannel downloadChannel =
 					new NotificationChannel(
@@ -89,7 +74,47 @@ public class Notifications {
 
 		TinyDB tinyDB = TinyDB.getInstance(context);
 
+		int delay;
+		if (tinyDB.getInt("notificationsPollingDelayId") == 0) {
+			delay = 15;
+		} else if (tinyDB.getInt("notificationsPollingDelayId") == 1) {
+			delay = 30;
+		} else if (tinyDB.getInt("notificationsPollingDelayId") == 2) {
+			delay = 45;
+		} else if (tinyDB.getInt("notificationsPollingDelayId") == 3) {
+			delay = 60;
+		} else {
+			delay = Constants.defaultPollingDelay;
+		}
+
 		if (tinyDB.getBoolean("notificationsEnabled", true)) {
+
+			if (!NotificationManagerCompat.from(context).areNotificationsEnabled()) {
+				MaterialAlertDialogBuilder materialAlertDialogBuilder =
+						new MaterialAlertDialogBuilder(context)
+								.setTitle(R.string.pageTitleNotifications)
+								.setMessage(context.getString(R.string.openAppSettings))
+								.setNeutralButton(
+										R.string.cancelButton, (dialog, which) -> dialog.dismiss())
+								.setPositiveButton(
+										R.string.isOpen,
+										(dialog, which) -> {
+											Intent intent =
+													new Intent(
+															Settings
+																	.ACTION_APPLICATION_DETAILS_SETTINGS);
+											Uri uri =
+													Uri.fromParts(
+															"package",
+															context.getPackageName(),
+															null);
+											intent.setData(uri);
+											context.startActivity(intent);
+										});
+
+				materialAlertDialogBuilder.create().show();
+				return;
+			}
 
 			Constraints.Builder constraints =
 					new Constraints.Builder()
@@ -98,20 +123,11 @@ public class Notifications {
 							.setRequiresStorageNotLow(false)
 							.setRequiresCharging(false);
 
-			if (android.os.Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
-				constraints.setRequiresDeviceIdle(false);
-			}
-
-			int pollingDelayMinutes =
-					Math.max(
-							tinyDB.getInt("pollingDelayMinutes", Constants.defaultPollingDelay),
-							15);
+			constraints.setRequiresDeviceIdle(false);
 
 			PeriodicWorkRequest periodicWorkRequest =
 					new PeriodicWorkRequest.Builder(
-									NotificationsWorker.class,
-									pollingDelayMinutes,
-									TimeUnit.MINUTES)
+									NotificationsWorker.class, delay, TimeUnit.MINUTES)
 							.setConstraints(constraints.build())
 							.addTag(Constants.notificationsWorkerId)
 							.build();
@@ -119,7 +135,7 @@ public class Notifications {
 			WorkManager.getInstance(context)
 					.enqueueUniquePeriodicWork(
 							Constants.notificationsWorkerId,
-							ExistingPeriodicWorkPolicy.KEEP,
+							ExistingPeriodicWorkPolicy.CANCEL_AND_REENQUEUE,
 							periodicWorkRequest);
 		}
 	}

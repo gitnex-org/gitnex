@@ -553,7 +553,6 @@ public class MainActivity extends BaseActivity
 
 						giteaVersion();
 						serverPageLimitSettings();
-						noConnection = false;
 					}
 				},
 				1500);

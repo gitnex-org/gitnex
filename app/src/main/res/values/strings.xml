@@ -72,6 +72,10 @@
     <string name="newRepoDescTintCopy">Repository Description</string>
     <string name="newRepoPrivateCopy">Private</string>
     <string name="newRepoOwner">Owner</string>
+    <string name="newRepoIssueLabels">Issue Labels</string>
+    <string name="advanced" translatable="false">Advanced</string>
+    <string name="defaultText" translatable="false">Default</string>
+    <string name="setAsTemplate">Make repository a template</string>
 
     <string name="newOrgTintCopy">Organization Name</string>
     <string name="newOrgDescTintCopy">Organization Description</string>
@@ -103,6 +107,7 @@
     <string name="repoCreated">Repository created successfully</string>
     <string name="repoExistsError">Repository of this name already exists under selected Owner</string>
     <string name="repoOwnerError">Select owner for the repository</string>
+    <string name="repoDefaultBranchError">The default branch must not be empty</string>
 
     <string name="orgNameErrorEmpty">Organization name is empty</string>
     <string name="orgNameErrorInvalid">Organization name is not valid, [a&#8211;z A&#8211;Z 0&#8211;9 &#8211; _]</string>
@@ -144,7 +149,6 @@
     <string name="infoTabRepoUpdatedAt">Last Updated</string>
     <string name="infoTabRepoZero" translatable="false">0</string>
 
-    <string name="infoShowMoreInformation">Show More Information</string>
     <string name="infoMoreInformation">More Information</string>
 
     <string name="timeAtText">at</string>
@@ -524,6 +528,8 @@
     <string name="reset">Reset</string>
     <string name="beta">BETA</string>
     <string name="none">None</string>
+    <string name="main">main</string>
+    <string name="license">License</string>
     <!-- generic copy -->
 
     <string name="exploreUsers">Explore users</string>
@@ -541,8 +547,7 @@
     <string name="versionUnknown">No Gitea detected!</string>
     <string name="versionAlertDialogHeader">Unsupported Version of Gitea</string>
 
-    <string name="loginViaPassword">Username / Password</string>
-    <string name="loginMethodText">Choose your preferred login method to access your account. Token is more secure!</string>
+    <string name="loginViaPassword">Basic Auth</string>
     <string name="unauthorizedApiError">Instance has returned an error - Unauthorized. Check your credentials and try again</string>
     <string name="loginTokenError">Token is required</string>
 
@@ -651,7 +656,7 @@
     <string name="removeAccountPopupTitle">Remove Account</string>
     <string name="removeAccountPopupMessage">Are you sure you want to remove this account from the app?\n\nThis will remove all the data related to this account on the app only.</string>
     <string name="addNewAccount">New Account</string>
-    <string name="addNewAccountText">Add New Account</string>
+    <string name="addNewAccountText">Add Account</string>
     <string name="accountAlreadyExistsError">Account already exists in the app</string>
     <string name="accountAddedMessage">Account added successfully</string>
     <string name="switchAccountSuccess">Switched to account : %1$s@%2$s</string>
@@ -660,14 +665,17 @@
     <string name="pageTitleNotifications">Notifications</string>
     <string name="noDataNotifications">All caught up 🚀</string>
     <string name="notificationsPollingHeaderText">Notifications Polling Delay</string>
-    <string name="pollingDelaySelectedText">%d Minutes</string>
+    <string name="pollingDelay15Minutes">15 Minutes</string>
+    <string name="pollingDelay30Minutes">30 Minutes</string>
+    <string name="pollingDelay45Minutes">45 Minutes</string>
+    <string name="pollingDelay1Hour">1 Hour</string>
     <string name="pollingDelayDialogHeaderText">Select Polling Delay</string>
     <string name="pollingDelayDialogDescriptionText">Choose a minutely delay in which GitNex tries to poll new notifications</string>
     <string name="markAsRead">Mark Read</string>
     <string name="markAsUnread">Mark Unread</string>
     <string name="pinNotification">Pin</string>
     <string name="markedNotificationsAsRead">Successfully marked all notifications as read</string>
-    <string name="notificationsHintText">Polling delay, light, vibration</string>
+    <string name="notificationsHintText">Polling delay</string>
     <string name="enableNotificationsHeaderText">Enable Notifications</string>
     <string name="enableLightsHeaderText">Enable Light</string>
     <string name="enableVibrationHeaderText">Enable Vibration</string>
@@ -681,6 +689,7 @@
         <item quantity="one">You have %s new notification</item>
         <item quantity="other">You have %s new notifications</item>
     </plurals>
+    <string name="openAppSettings">To receive notifications, you must enable notifications for GitNex. Tap Open to access your phone settings and enable notifications.</string>
 
     <string name="isRead">Read</string>
     <string name="isUnread">Unread</string>
@@ -865,6 +874,7 @@
     <string name="timelineRefIssue">%1$s referenced this issue in #%2$d %3$s</string>
     <string name="timelineRefPr">%1$s referenced this pull request in #%2$d %3$s</string>
     <string name="timelineStatusRefIssue"><![CDATA[%1$s referenced this issue from a <font color=\'%2$d\'>%3$s</font> %4$s]]></string>
+    <string name="timelineReviewLeftComment">%1$s left a comment: %2$s %3$s</string>
 
     <string name="commitStatuses">Statuses</string>
     <string name="statusNoUrl">This status has no linked target URL.</string>
@@ -875,4 +885,33 @@
     <string name="lang_percentage" translatable="false">%s%%</string>
 
     <string name="dashboard">Dashboard</string>
+    <string name="createdRepository">created repository</string>
+    <string name="renamedRepository">renamed repository from %1$s to</string>
+    <string name="starredRepository">starred</string>
+    <string name="transferredRepository">transferred repository %1$s to</string>
+    <string name="createdBranch">created branch %1$s in</string>
+    <string name="pushedTo">pushed to %1$s at</string>
+    <string name="openedIssue">opened issue</string>
+    <string name="commentedOnIssue">commented on issue</string>
+    <string name="closedIssue">closed issue</string>
+    <string name="reopenedIssue">reopened issue</string>
+    <string name="createdPR">created pull request</string>
+    <string name="closedPR">closed pull request</string>
+    <string name="reopenedPR">reopened pull request</string>
+    <string name="mergedPR">merged pull request</string>
+    <string name="approved">approved</string>
+    <string name="suggestedChanges">suggested changes for</string>
+    <string name="commentedOnPR">commented on pull request</string>
+    <string name="autoMergePR">automatically merged pull request</string>
+    <string name="deletedBranch">deleted branch %1$s at</string>
+    <string name="pushedTag">pushed tag %1$s to</string>
+    <string name="deletedTag">deleted tag %1$s from</string>
+    <string name="releasedBranch">released %1$s at</string>
+    <string name="syncedCommits">synced commits to %1$s at</string>
+    <string name="syncedRefs">synced new reference %1$s to</string>
+    <string name="syncedDeletedRefs">synced and deleted reference %1$s at</string>
+
+    <string name="attachment">Attachment</string>
+    <string name="attachments">Attachments</string>
+    <string name="attachmentsSaveError">An issue was created but cannot process attachments at this time. Check the server logs for more details.</string>
 </resources>

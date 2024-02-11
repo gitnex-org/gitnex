@@ -94,7 +94,7 @@ public abstract class BaseActivity extends AppCompatActivity {
 			AppUtil.setAppLocale(getResources(), locale);
 		}
 
-		Notifications.startWorker(appCtx);
+		Notifications.startWorker(ctx);
 	}
 
 	public void onResume() {

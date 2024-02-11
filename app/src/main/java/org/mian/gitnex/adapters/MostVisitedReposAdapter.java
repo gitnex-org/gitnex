@@ -8,6 +8,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
@@ -41,7 +42,6 @@ public class MostVisitedReposAdapter
 		private final TextView repoName;
 		private final TextView orgName;
 		private final TextView mostVisited;
-		private final ImageView resetCounter;
 
 		private MostVisitedViewHolder(View itemView) {
 
@@ -51,7 +51,7 @@ public class MostVisitedReposAdapter
 			repoName = itemView.findViewById(R.id.repo_name);
 			orgName = itemView.findViewById(R.id.org_name);
 			mostVisited = itemView.findViewById(R.id.most_visited);
-			resetCounter = itemView.findViewById(R.id.reset_counter);
+			LinearLayout repoInfoEndFrame = itemView.findViewById(R.id.repo_info_end_frame);
 
 			itemView.setOnClickListener(
 					v -> {
@@ -66,7 +66,7 @@ public class MostVisitedReposAdapter
 						context.startActivity(intent);
 					});
 
-			resetCounter.setOnClickListener(
+			repoInfoEndFrame.setOnClickListener(
 					itemDelete -> {
 						MaterialAlertDialogBuilder materialAlertDialogBuilder =
 								new MaterialAlertDialogBuilder(

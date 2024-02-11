@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <item
+        android:id="@+id/create"
+        android:title="@string/newCreateButtonCopy"
+        android:orderInCategory="0"
+        android:contentDescription="@string/newCreateButtonCopy"
+        app:showAsAction="ifRoom" />
+
+    <item
+        android:id="@+id/update"
+        android:title="@string/menuEditText"
+        android:orderInCategory="1"
+        android:contentDescription="@string/newCreateButtonCopy"
+        app:showAsAction="ifRoom" />
+
+    <item
+        android:id="@+id/delete"
+        android:title="@string/menuDeleteText"
+        android:orderInCategory="2"
+        android:contentDescription="@string/menuDeleteText"
+        app:showAsAction="ifRoom" />
+
+</menu>

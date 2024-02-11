@@ -1,268 +1,269 @@
 <?xml version="1.0" encoding="utf-8"?>
-<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    android:id="@+id/loginForm"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="?attr/primaryBackgroundColor"
-    android:gravity="center"
-    android:orientation="vertical">
+    android:background="@drawable/login_bg">
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="@color/colorPrimary"
+        android:alpha="0.6" />
 
     <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:fitsSystemWindows="true"
+        android:layout_height="match_parent"
         android:orientation="vertical"
-        android:padding="@dimen/dimen16dp">
+        android:gravity="center"
+        android:layout_above="@id/card_view">
 
         <ImageView
-            android:layout_width="@dimen/dimen100dp"
-            android:layout_height="@dimen/dimen100dp"
-            android:layout_gravity="center_horizontal"
-            android:layout_marginTop="@dimen/dimen20dp"
-            android:layout_marginBottom="@dimen/dimen20dp"
+            android:layout_width="@dimen/dimen80dp"
+            android:layout_height="@dimen/dimen80dp"
             android:baselineAligned="false"
             android:contentDescription="@string/appName"
-            android:src="@mipmap/app_logo"/>
+            android:src="@mipmap/app_logo" />
 
         <TextView
-            android:layout_width="match_parent"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginBottom="@dimen/dimen10dp"
-            android:gravity="start"
-            android:text="@string/loginMethodText"
-            android:textColor="?attr/primaryTextColor"
-            android:textSize="@dimen/dimen12sp"/>
-
-        <RadioGroup
-            android:id="@+id/loginMethod"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="@dimen/dimen8dp"
-            android:layout_marginBottom="@dimen/dimen8dp"
-            android:orientation="vertical">
-
-            <RadioButton
-                android:id="@+id/loginToken"
-                android:layout_width="wrap_content"
-                android:layout_height="@dimen/dimen36dp"
-                android:checked="true"
-                android:text="@string/copyToken"
-                android:textColor="?attr/primaryTextColor"/>
-
-            <RadioButton
-                android:id="@+id/loginUsernamePassword"
-                android:layout_width="wrap_content"
-                android:layout_height="@dimen/dimen36dp"
-                android:text="@string/loginViaPassword"
-                android:textColor="?attr/primaryTextColor"/>
-
-        </RadioGroup>
-
-        <com.google.android.material.textfield.TextInputLayout
-            android:id="@+id/httpsSpinnerLayout"
-            style="@style/Widget.Material3.TextInputLayout.OutlinedBox.ExposedDropdownMenu"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="@dimen/dimen8dp"
-            android:layout_marginBottom="@dimen/dimen8dp"
-            android:hint="@string/protocol"
-            android:textColorHint="?attr/hintColor"
-            app:boxBackgroundColor="?attr/inputBackgroundColor"
-            app:endIconTint="?attr/iconsColor"
-            app:hintTextColor="?attr/hintColor">
-
-            <AutoCompleteTextView
-                android:id="@+id/httpsSpinner"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:inputType="none"
-                android:labelFor="@+id/httpsSpinner"
-                android:textColor="?attr/inputTextColor"
-                android:textSize="@dimen/dimen16sp"/>
-
-        </com.google.android.material.textfield.TextInputLayout>
-
-        <com.google.android.material.textfield.TextInputLayout
-            android:id="@+id/instance_urlLayout"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="@dimen/dimen8dp"
-            android:layout_marginBottom="@dimen/dimen8dp"
-            android:hint="@string/instanceUrl"
-            android:textColorHint="?attr/hintColor"
-            app:boxBackgroundColor="?attr/inputBackgroundColor"
-            app:boxStrokeErrorColor="@color/darkRed"
-            app:endIconMode="clear_text"
-            app:endIconTint="?attr/iconsColor"
-            app:hintTextColor="?attr/hintColor"
-            app:startIconDrawable="@drawable/ic_link"
-            app:startIconTint="?attr/iconsColor"
-            app:helperText="@string/instanceHelperText">
-
-            <com.google.android.material.textfield.TextInputEditText
-                android:id="@+id/instance_url"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:inputType="textUri"
-                android:singleLine="true"
-                android:textColor="?attr/inputTextColor"
-                android:textColorHighlight="?attr/hintColor"
-                android:textColorHint="?attr/hintColor"
-                android:textSize="@dimen/dimen16sp"/>
-
-        </com.google.android.material.textfield.TextInputLayout>
-
-        <com.google.android.material.textfield.TextInputLayout
-            android:id="@+id/login_uidLayout"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="@dimen/dimen8dp"
-            android:layout_marginBottom="@dimen/dimen8dp"
-            android:hint="@string/userName"
-            android:textColorHint="?attr/hintColor"
-            app:boxBackgroundColor="?attr/inputBackgroundColor"
-            app:boxStrokeErrorColor="@color/darkRed"
-            app:endIconMode="clear_text"
-            app:endIconTint="?attr/iconsColor"
-            app:hintTextColor="?attr/hintColor"
-            app:startIconDrawable="@drawable/ic_person"
-            app:startIconTint="?attr/iconsColor">
-
-            <com.google.android.material.textfield.TextInputEditText
-                android:id="@+id/login_uid"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:singleLine="true"
-                android:textColor="?attr/inputTextColor"
-                android:textColorHighlight="?attr/hintColor"
-                android:textColorHint="?attr/hintColor"
-                android:textSize="@dimen/dimen16sp"/>
-
-        </com.google.android.material.textfield.TextInputLayout>
-
-        <com.google.android.material.textfield.TextInputLayout
-            android:id="@+id/login_passwdLayout"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="@dimen/dimen8dp"
-            android:layout_marginBottom="@dimen/dimen8dp"
-            android:hint="@string/passWord"
-            android:textColorHint="?attr/hintColor"
-            app:boxBackgroundColor="?attr/inputBackgroundColor"
-            app:boxStrokeErrorColor="@color/darkRed"
-            app:endIconMode="password_toggle"
-            app:endIconTint="?attr/iconsColor"
-            app:hintTextColor="?attr/hintColor"
-            app:startIconDrawable="@drawable/ic_lock"
-            app:startIconTint="?attr/iconsColor">
-
-            <com.google.android.material.textfield.TextInputEditText
-                android:id="@+id/login_passwd"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:inputType="textPassword"
-                android:singleLine="true"
-                android:textColor="?attr/inputTextColor"
-                android:textColorHighlight="?attr/hintColor"
-                android:textColorHint="?attr/hintColor"
-                android:textSize="@dimen/dimen16sp"/>
-
-        </com.google.android.material.textfield.TextInputLayout>
-
-        <com.google.android.material.textfield.TextInputLayout
-            android:id="@+id/otpCodeLayout"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="@dimen/dimen8dp"
-            android:layout_marginBottom="@dimen/dimen8dp"
-            android:hint="@string/loginOTP"
-            android:textColorHint="?attr/hintColor"
-            app:boxBackgroundColor="?attr/inputBackgroundColor"
-            app:boxStrokeErrorColor="@color/darkRed"
-            app:endIconMode="clear_text"
-            app:endIconTint="?attr/iconsColor"
-            app:helperText="@string/otpMessage"
-            app:helperTextEnabled="true"
-            app:helperTextTextColor="?attr/inputTextColor"
-            app:hintTextColor="?attr/hintColor"
-            app:startIconDrawable="@drawable/ic_otp"
-            app:startIconTint="?attr/iconsColor">
-
-            <com.google.android.material.textfield.TextInputEditText
-                android:id="@+id/otpCode"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:inputType="number"
-                android:singleLine="true"
-                android:textColor="?attr/inputTextColor"
-                android:textColorHighlight="?attr/hintColor"
-                android:textColorHint="?attr/hintColor"
-                android:textSize="@dimen/dimen16sp"/>
-
-        </com.google.android.material.textfield.TextInputLayout>
-
-        <com.google.android.material.textfield.TextInputLayout
-            android:id="@+id/loginTokenCodeLayout"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="@dimen/dimen8dp"
-            android:layout_marginBottom="@dimen/dimen8dp"
-            android:hint="@string/copyToken"
-            android:textColorHint="?attr/hintColor"
-            app:boxBackgroundColor="?attr/inputBackgroundColor"
-            app:boxStrokeErrorColor="@color/darkRed"
-            app:endIconMode="clear_text"
-            app:endIconTint="?attr/iconsColor"
-            app:hintTextColor="?attr/hintColor"
-            app:startIconDrawable="@drawable/ic_lock"
-            app:startIconTint="?attr/iconsColor">
-
-            <com.google.android.material.textfield.TextInputEditText
-                android:id="@+id/loginTokenCode"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:singleLine="true"
-                android:textColor="?attr/inputTextColor"
-                android:textColorHighlight="?attr/hintColor"
-                android:textColorHint="?attr/hintColor"
-                android:textSize="@dimen/dimen16sp"/>
-
-        </com.google.android.material.textfield.TextInputLayout>
-
-        <com.google.android.material.button.MaterialButton
-            android:id="@+id/login_button"
-            android:layout_width="match_parent"
-            android:layout_height="@dimen/dimen54dp"
-            android:layout_marginTop="@dimen/dimen8dp"
-            android:text="@string/btnLogin"
-            android:textColor="?attr/materialCardBackgroundColor"
-            android:textStyle="bold"/>
-
-        <TextView
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="@dimen/dimen10dp"
-            android:layout_marginTop="@dimen/dimen20dp"
-            android:layout_marginEnd="@dimen/dimen10dp"
-            android:autoLink="web"
-            android:gravity="center"
-            android:text="@string/appRepoLink"
-            android:textColor="?attr/primaryTextColor"
-            android:textColorLink="@color/lightBlue"
-            android:textSize="@dimen/dimen14sp"/>
+            android:text="@string/appName"
+            android:textStyle="bold"
+            android:textSize="@dimen/dimen24sp"
+            android:textColor="@color/colorWhite"
+            android:layout_marginTop="@dimen/dimen8dp" />
 
         <TextView
             android:id="@+id/appVersion"
             android:layout_width="wrap_content"
-            android:layout_height="0dp"
-            android:layout_gravity="center_horizontal"
+            android:layout_height="wrap_content"
             android:layout_marginTop="@dimen/dimen6dp"
-            android:layout_weight="1"
-            android:maxLines="1"
-            android:textColor="?attr/primaryTextColor"
-            android:textSize="@dimen/dimen14sp"/>
+            android:textColor="@color/colorWhite"
+            android:textSize="@dimen/dimen12sp" />
 
     </LinearLayout>
 
-</ScrollView>
+    <com.google.android.material.card.MaterialCardView
+        android:id="@+id/card_view"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:layout_marginBottom="-28dp"
+        android:alpha="0.9"
+        app:cardCornerRadius="@dimen/dimen32dp"
+        app:strokeWidth="@dimen/dimen0dp">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:padding="@dimen/dimen28dp">
+
+            <RadioGroup
+                android:id="@+id/loginMethod"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/dimen8dp"
+                android:layout_marginBottom="@dimen/dimen8dp"
+                android:orientation="horizontal">
+
+                <RadioButton
+                    android:id="@+id/loginToken"
+                    android:layout_width="wrap_content"
+                    android:layout_height="@dimen/dimen36dp"
+                    android:checked="true"
+                    android:text="@string/copyToken"
+                    android:layout_marginEnd="@dimen/dimen8dp"
+                    android:textColor="?attr/inputTextColor" />
+
+                <RadioButton
+                    android:id="@+id/loginUsernamePassword"
+                    android:layout_width="wrap_content"
+                    android:layout_height="@dimen/dimen36dp"
+                    android:text="@string/loginViaPassword"
+                    android:textColor="?attr/inputTextColor" />
+
+            </RadioGroup>
+
+            <com.google.android.material.textfield.TextInputLayout
+                android:id="@+id/httpsSpinnerLayout"
+                style="@style/Widget.Material3.TextInputLayout.OutlinedBox.ExposedDropdownMenu"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/dimen8dp"
+                android:layout_marginBottom="@dimen/dimen8dp"
+                android:hint="@string/protocol"
+                android:textColorHint="?attr/hintColor"
+                app:endIconTint="?attr/iconsColor"
+                app:hintTextColor="?attr/hintColor">
+
+                <AutoCompleteTextView
+                    android:id="@+id/httpsSpinner"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:inputType="none"
+                    android:labelFor="@+id/httpsSpinner"
+                    android:textColor="?attr/inputTextColor"
+                    android:textSize="@dimen/dimen16sp" />
+
+            </com.google.android.material.textfield.TextInputLayout>
+
+            <com.google.android.material.textfield.TextInputLayout
+                android:id="@+id/instance_urlLayout"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/dimen8dp"
+                android:layout_marginBottom="@dimen/dimen8dp"
+                android:hint="@string/instanceUrl"
+                android:textColorHint="?attr/hintColor"
+                app:boxStrokeErrorColor="@color/darkRed"
+                app:endIconMode="clear_text"
+                app:endIconTint="?attr/iconsColor"
+                app:hintTextColor="?attr/hintColor"
+                app:startIconDrawable="@drawable/ic_link"
+                app:startIconTint="?attr/iconsColor"
+                app:helperText="@string/instanceHelperText">
+
+                <com.google.android.material.textfield.TextInputEditText
+                    android:id="@+id/instance_url"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:inputType="textUri"
+                    android:singleLine="true"
+                    android:textColor="?attr/inputTextColor"
+                    android:textColorHighlight="?attr/hintColor"
+                    android:textColorHint="?attr/hintColor"
+                    android:textSize="@dimen/dimen16sp" />
+
+            </com.google.android.material.textfield.TextInputLayout>
+
+            <com.google.android.material.textfield.TextInputLayout
+                android:id="@+id/login_uidLayout"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/dimen8dp"
+                android:layout_marginBottom="@dimen/dimen8dp"
+                android:hint="@string/userName"
+                android:textColorHint="?attr/hintColor"
+                app:boxStrokeErrorColor="@color/darkRed"
+                app:endIconMode="clear_text"
+                app:endIconTint="?attr/iconsColor"
+                app:hintTextColor="?attr/hintColor"
+                app:startIconDrawable="@drawable/ic_person"
+                app:startIconTint="?attr/iconsColor">
+
+                <com.google.android.material.textfield.TextInputEditText
+                    android:id="@+id/login_uid"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:singleLine="true"
+                    android:textColor="?attr/inputTextColor"
+                    android:textColorHighlight="?attr/hintColor"
+                    android:textColorHint="?attr/hintColor"
+                    android:textSize="@dimen/dimen16sp" />
+
+            </com.google.android.material.textfield.TextInputLayout>
+
+            <com.google.android.material.textfield.TextInputLayout
+                android:id="@+id/login_passwdLayout"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/dimen8dp"
+                android:layout_marginBottom="@dimen/dimen8dp"
+                android:hint="@string/passWord"
+                android:textColorHint="?attr/hintColor"
+                app:boxStrokeErrorColor="@color/darkRed"
+                app:endIconMode="password_toggle"
+                app:endIconTint="?attr/iconsColor"
+                app:hintTextColor="?attr/hintColor"
+                app:startIconDrawable="@drawable/ic_lock"
+                app:startIconTint="?attr/iconsColor">
+
+                <com.google.android.material.textfield.TextInputEditText
+                    android:id="@+id/login_passwd"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:inputType="textPassword"
+                    android:singleLine="true"
+                    android:textColor="?attr/inputTextColor"
+                    android:textColorHighlight="?attr/hintColor"
+                    android:textColorHint="?attr/hintColor"
+                    android:textSize="@dimen/dimen16sp" />
+
+            </com.google.android.material.textfield.TextInputLayout>
+
+            <com.google.android.material.textfield.TextInputLayout
+                android:id="@+id/otpCodeLayout"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/dimen8dp"
+                android:layout_marginBottom="@dimen/dimen8dp"
+                android:hint="@string/loginOTP"
+                android:textColorHint="?attr/hintColor"
+                app:boxStrokeErrorColor="@color/darkRed"
+                app:endIconMode="clear_text"
+                app:endIconTint="?attr/iconsColor"
+                app:helperText="@string/otpMessage"
+                app:helperTextEnabled="true"
+                app:helperTextTextColor="?attr/inputTextColor"
+                app:hintTextColor="?attr/hintColor"
+                app:startIconDrawable="@drawable/ic_otp"
+                app:startIconTint="?attr/iconsColor">
+
+                <com.google.android.material.textfield.TextInputEditText
+                    android:id="@+id/otpCode"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:inputType="number"
+                    android:singleLine="true"
+                    android:textColor="?attr/inputTextColor"
+                    android:textColorHighlight="?attr/hintColor"
+                    android:textColorHint="?attr/hintColor"
+                    android:textSize="@dimen/dimen16sp" />
+
+            </com.google.android.material.textfield.TextInputLayout>
+
+            <com.google.android.material.textfield.TextInputLayout
+                android:id="@+id/loginTokenCodeLayout"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/dimen8dp"
+                android:layout_marginBottom="@dimen/dimen8dp"
+                android:hint="@string/copyToken"
+                android:textColorHint="?attr/hintColor"
+                app:boxStrokeErrorColor="@color/darkRed"
+                app:endIconMode="clear_text"
+                app:endIconTint="?attr/iconsColor"
+                app:hintTextColor="?attr/hintColor"
+                app:startIconDrawable="@drawable/ic_lock"
+                app:startIconTint="?attr/iconsColor">
+
+                <com.google.android.material.textfield.TextInputEditText
+                    android:id="@+id/loginTokenCode"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:singleLine="true"
+                    android:textColor="?attr/inputTextColor"
+                    android:textColorHighlight="?attr/hintColor"
+                    android:textColorHint="?attr/hintColor"
+                    android:textSize="@dimen/dimen16sp" />
+
+            </com.google.android.material.textfield.TextInputLayout>
+
+            <com.google.android.material.button.MaterialButton
+                android:id="@+id/login_button"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/dimen8dp"
+                android:layout_marginBottom="@dimen/dimen16dp"
+                android:text="@string/btnLogin"
+                android:textColor="?attr/materialCardBackgroundColor"
+                android:letterSpacing="0.1"
+                android:textStyle="bold" />
+
+        </LinearLayout>
+
+    </com.google.android.material.card.MaterialCardView>
+
+</RelativeLayout>

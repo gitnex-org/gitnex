@@ -14,6 +14,7 @@ import androidx.annotation.NonNull;
 import androidx.core.content.res.ResourcesCompat;
 import androidx.core.text.HtmlCompat;
 import androidx.recyclerview.widget.RecyclerView;
+import com.google.android.material.card.MaterialCardView;
 import com.vdurmont.emoji.EmojiParser;
 import java.util.List;
 import java.util.Locale;
@@ -72,7 +73,7 @@ public class DashboardAdapter extends RecyclerView.Adapter<RecyclerView.ViewHold
 			loadMoreListener.onLoadMore();
 		}
 
-		((DashboardAdapter.DashboardHolder) holder).bindData(activityList.get(position));
+		((DashboardAdapter.DashboardHolder) holder).bindData(activityList.get(position), position);
 	}
 
 	@Override
@@ -123,6 +124,8 @@ public class DashboardAdapter extends RecyclerView.Adapter<RecyclerView.ViewHold
 		private final ImageView typeIcon;
 		private final TextView dashText;
 		private final LinearLayout dashTextFrame;
+		private LinearLayout dashboardLayoutCardsFrame;
+		private MaterialCardView cardLayout;
 
 		private Activity activityObject;
 
@@ -135,6 +138,8 @@ public class DashboardAdapter extends RecyclerView.Adapter<RecyclerView.ViewHold
 			createdTime = itemView.findViewById(R.id.created_time);
 			dashText = itemView.findViewById(R.id.text);
 			dashTextFrame = itemView.findViewById(R.id.dash_text_frame);
+			dashboardLayoutCardsFrame = itemView.findViewById(R.id.dashboardLayoutCardsFrame);
+			cardLayout = itemView.findViewById(R.id.cardLayout);
 
 			new Handler()
 					.postDelayed(
@@ -353,7 +358,7 @@ public class DashboardAdapter extends RecyclerView.Adapter<RecyclerView.ViewHold
 							200);
 		}
 
-		void bindData(Activity activity) {
+		void bindData(Activity activity, int position) {
 
 			this.activityObject = activity;
 			Locale locale = context.getResources().getConfiguration().locale;
@@ -391,7 +396,7 @@ public class DashboardAdapter extends RecyclerView.Adapter<RecyclerView.ViewHold
 									+ "'>"
 									+ activity.getRepo().getFullName()
 									+ "</font>";
-					typeString = "created repository";
+					typeString = context.getString(R.string.createdRepository);
 					typeIcon.setImageResource(R.drawable.ic_repo);
 				} else if (activity.getOpType().equalsIgnoreCase("rename_repo")) {
 
@@ -402,7 +407,10 @@ public class DashboardAdapter extends RecyclerView.Adapter<RecyclerView.ViewHold
 									+ "'>"
 									+ activity.getRepo().getFullName()
 									+ "</font>";
-					typeString = "renamed repository from " + activity.getContent() + " to";
+					typeString =
+							String.format(
+									context.getString(R.string.renamedRepository),
+									activity.getContent());
 					typeIcon.setImageResource(R.drawable.ic_repo);
 				} else if (activity.getOpType().equalsIgnoreCase("star_repo")) {
 
@@ -413,7 +421,7 @@ public class DashboardAdapter extends RecyclerView.Adapter<RecyclerView.ViewHold
 									+ "'>"
 									+ activity.getRepo().getFullName()
 									+ "</font>";
-					typeString = "starred";
+					typeString = context.getString(R.string.starredRepository);
 					typeIcon.setImageResource(R.drawable.ic_star);
 				} else if (activity.getOpType().equalsIgnoreCase("transfer_repo")) {
 
@@ -424,7 +432,10 @@ public class DashboardAdapter extends RecyclerView.Adapter<RecyclerView.ViewHold
 									+ "'>"
 									+ activity.getRepo().getFullName()
 									+ "</font>";
-					typeString = "transferred repository " + activity.getContent() + " to";
+					typeString =
+							String.format(
+									context.getString(R.string.transferredRepository),
+									activity.getContent());
 					typeIcon.setImageResource(R.drawable.ic_arrow_up);
 				} else if (activity.getOpType().equalsIgnoreCase("commit_repo")) {
 
@@ -447,7 +458,8 @@ public class DashboardAdapter extends RecyclerView.Adapter<RecyclerView.ViewHold
 														activity.getRefName().lastIndexOf("/") + 1)
 												.trim()
 										+ "</font>";
-						typeString = "created branch " + branch + " in";
+						typeString =
+								String.format(context.getString(R.string.createdBranch), branch);
 					} else {
 						String branch =
 								"<font color='"
@@ -459,7 +471,7 @@ public class DashboardAdapter extends RecyclerView.Adapter<RecyclerView.ViewHold
 														activity.getRefName().lastIndexOf("/") + 1)
 												.trim()
 										+ "</font>";
-						typeString = "pushed to " + branch + " at";
+						typeString = String.format(context.getString(R.string.pushedTo), branch);
 
 						JSONObject commitsObj = null;
 						try {
@@ -567,7 +579,7 @@ public class DashboardAdapter extends RecyclerView.Adapter<RecyclerView.ViewHold
 									+ context.getResources().getString(R.string.hash)
 									+ id
 									+ "</font>";
-					typeString = "opened issue";
+					typeString = context.getString(R.string.openedIssue);
 					typeIcon.setImageResource(R.drawable.ic_issue);
 				} else if (activity.getOpType().equalsIgnoreCase("comment_issue")) {
 
@@ -580,7 +592,7 @@ public class DashboardAdapter extends RecyclerView.Adapter<RecyclerView.ViewHold
 									+ context.getResources().getString(R.string.hash)
 									+ id
 									+ "</font>";
-					typeString = "commented on issue";
+					typeString = context.getString(R.string.commentedOnIssue);
 					typeIcon.setImageResource(R.drawable.ic_comment);
 				} else if (activity.getOpType().equalsIgnoreCase("close_issue")) {
 
@@ -593,7 +605,7 @@ public class DashboardAdapter extends RecyclerView.Adapter<RecyclerView.ViewHold
 									+ context.getResources().getString(R.string.hash)
 									+ id
 									+ "</font>";
-					typeString = "closed issue";
+					typeString = context.getString(R.string.closedIssue);
 					typeIcon.setImageResource(R.drawable.ic_issue_closed);
 				} else if (activity.getOpType().equalsIgnoreCase("reopen_issue")) {
 
@@ -606,7 +618,7 @@ public class DashboardAdapter extends RecyclerView.Adapter<RecyclerView.ViewHold
 									+ context.getResources().getString(R.string.hash)
 									+ id
 									+ "</font>";
-					typeString = "reopened issue";
+					typeString = context.getString(R.string.reopenedIssue);
 					typeIcon.setImageResource(R.drawable.ic_reopen);
 				}
 			} else if (activity.getOpType().contains("pull")) {
@@ -634,7 +646,7 @@ public class DashboardAdapter extends RecyclerView.Adapter<RecyclerView.ViewHold
 									+ context.getResources().getString(R.string.hash)
 									+ id
 									+ "</font>";
-					typeString = "created pull request";
+					typeString = context.getString(R.string.createdPR);
 					typeIcon.setImageResource(R.drawable.ic_pull_request);
 				} else if (activity.getOpType().equalsIgnoreCase("close_pull_request")) {
 
@@ -647,7 +659,7 @@ public class DashboardAdapter extends RecyclerView.Adapter<RecyclerView.ViewHold
 									+ context.getResources().getString(R.string.hash)
 									+ id
 									+ "</font>";
-					typeString = "closed pull request";
+					typeString = context.getString(R.string.closedPR);
 					typeIcon.setImageResource(R.drawable.ic_issue_closed);
 				} else if (activity.getOpType().equalsIgnoreCase("reopen_pull_request")) {
 
@@ -660,7 +672,7 @@ public class DashboardAdapter extends RecyclerView.Adapter<RecyclerView.ViewHold
 									+ context.getResources().getString(R.string.hash)
 									+ id
 									+ "</font>";
-					typeString = "reopened pull request";
+					typeString = context.getString(R.string.reopenedPR);
 					typeIcon.setImageResource(R.drawable.ic_reopen);
 				} else if (activity.getOpType().equalsIgnoreCase("merge_pull_request")) {
 
@@ -673,7 +685,7 @@ public class DashboardAdapter extends RecyclerView.Adapter<RecyclerView.ViewHold
 									+ context.getResources().getString(R.string.hash)
 									+ id
 									+ "</font>";
-					typeString = "merged pull request";
+					typeString = context.getString(R.string.mergedPR);
 					typeIcon.setImageResource(R.drawable.ic_pull_request);
 				} else if (activity.getOpType().equalsIgnoreCase("approve_pull_request")) {
 
@@ -686,7 +698,7 @@ public class DashboardAdapter extends RecyclerView.Adapter<RecyclerView.ViewHold
 									+ context.getResources().getString(R.string.hash)
 									+ id
 									+ "</font>";
-					typeString = "approved";
+					typeString = context.getString(R.string.approved);
 					typeIcon.setImageResource(R.drawable.ic_done);
 				} else if (activity.getOpType().equalsIgnoreCase("reject_pull_request")) {
 
@@ -699,7 +711,7 @@ public class DashboardAdapter extends RecyclerView.Adapter<RecyclerView.ViewHold
 									+ context.getResources().getString(R.string.hash)
 									+ id
 									+ "</font>";
-					typeString = "suggested changes for";
+					typeString = context.getString(R.string.suggestedChanges);
 					typeIcon.setImageResource(R.drawable.ic_diff);
 				} else if (activity.getOpType().equalsIgnoreCase("comment_pull")) {
 
@@ -712,7 +724,7 @@ public class DashboardAdapter extends RecyclerView.Adapter<RecyclerView.ViewHold
 									+ context.getResources().getString(R.string.hash)
 									+ id
 									+ "</font>";
-					typeString = "commented on pull request";
+					typeString = context.getString(R.string.commentedOnPR);
 					typeIcon.setImageResource(R.drawable.ic_comment);
 				} else if (activity.getOpType().equalsIgnoreCase("auto_merge_pull_request")) {
 
@@ -725,7 +737,7 @@ public class DashboardAdapter extends RecyclerView.Adapter<RecyclerView.ViewHold
 									+ context.getResources().getString(R.string.hash)
 									+ id
 									+ "</font>";
-					typeString = "automatically merged pull request";
+					typeString = context.getString(R.string.autoMergePR);
 					typeIcon.setImageResource(R.drawable.ic_issue_closed);
 				}
 			} else if (activity.getOpType().contains("branch")) {
@@ -758,7 +770,7 @@ public class DashboardAdapter extends RecyclerView.Adapter<RecyclerView.ViewHold
 											.trim()
 									+ "</font>";
 
-					typeString = "deleted branch " + branch + " at";
+					typeString = String.format(context.getString(R.string.deletedBranch), branch);
 					typeIcon.setImageResource(R.drawable.ic_commit);
 				}
 			} else if (activity.getOpType().contains("tag")) {
@@ -783,7 +795,7 @@ public class DashboardAdapter extends RecyclerView.Adapter<RecyclerView.ViewHold
 											.trim()
 									+ "</font>";
 
-					typeString = "pushed tag " + branch + " to";
+					typeString = String.format(context.getString(R.string.pushedTag), branch);
 					typeIcon.setImageResource(R.drawable.ic_commit);
 				} else if (activity.getOpType().equalsIgnoreCase("delete_tag")) {
 
@@ -805,7 +817,7 @@ public class DashboardAdapter extends RecyclerView.Adapter<RecyclerView.ViewHold
 											.trim()
 									+ "</font>";
 
-					typeString = "deleted tag " + branch + " from";
+					typeString = String.format(context.getString(R.string.deletedTag), branch);
 					typeIcon.setImageResource(R.drawable.ic_commit);
 				}
 			} else if (activity.getOpType().contains("release")) {
@@ -830,7 +842,7 @@ public class DashboardAdapter extends RecyclerView.Adapter<RecyclerView.ViewHold
 											.trim()
 									+ "</font>";
 
-					typeString = "released " + branch + " at";
+					typeString = String.format(context.getString(R.string.releasedBranch), branch);
 					typeIcon.setImageResource(R.drawable.ic_tag);
 				}
 			} else if (activity.getOpType().contains("mirror")) {
@@ -845,7 +857,8 @@ public class DashboardAdapter extends RecyclerView.Adapter<RecyclerView.ViewHold
 									+ activity.getRepo().getFullName()
 									+ "</font>";
 
-					typeString = "synced commits to " + headerString + " at";
+					typeString =
+							String.format(context.getString(R.string.syncedCommits), headerString);
 					typeIcon.setImageResource(R.drawable.ic_tag);
 				} else if (activity.getOpType().equalsIgnoreCase("mirror_sync_create")) {
 
@@ -857,7 +870,8 @@ public class DashboardAdapter extends RecyclerView.Adapter<RecyclerView.ViewHold
 									+ activity.getRepo().getFullName()
 									+ "</font>";
 
-					typeString = "synced new reference " + headerString + " to";
+					typeString =
+							String.format(context.getString(R.string.syncedRefs), headerString);
 					typeIcon.setImageResource(R.drawable.ic_tag);
 				} else if (activity.getOpType().equalsIgnoreCase("mirror_sync_delete")) {
 
@@ -869,7 +883,9 @@ public class DashboardAdapter extends RecyclerView.Adapter<RecyclerView.ViewHold
 									+ activity.getRepo().getFullName()
 									+ "</font>";
 
-					typeString = "synced and deleted reference " + headerString + " at";
+					typeString =
+							String.format(
+									context.getString(R.string.syncedDeletedRefs), headerString);
 					typeIcon.setImageResource(R.drawable.ic_tag);
 				}
 			} else {

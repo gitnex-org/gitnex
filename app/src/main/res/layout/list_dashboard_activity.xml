@@ -2,7 +2,7 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
-    android:id="@+id/relativeLayoutFrameIssuesList"
+    android:id="@+id/dashboardLayoutCardsFrame"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:paddingTop="@dimen/dimen4dp"
@@ -10,6 +10,7 @@
     android:orientation="vertical">
 
     <com.google.android.material.card.MaterialCardView
+        android:id="@+id/cardLayout"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         style="?attr/materialCardViewElevatedStyle"

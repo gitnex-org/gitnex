@@ -32,11 +32,15 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.amulyakhare.textdrawable.TextDrawable;
 import com.google.android.material.bottomsheet.BottomSheetDialog;
 import com.google.android.material.card.MaterialCardView;
+import com.google.android.material.dialog.MaterialAlertDialogBuilder;
 import com.vdurmont.emoji.EmojiParser;
+import java.util.Arrays;
 import java.util.List;
 import java.util.Locale;
 import java.util.Objects;
+import org.apache.commons.io.FilenameUtils;
 import org.apache.commons.lang3.StringUtils;
+import org.gitnex.tea4j.v2.models.Attachment;
 import org.gitnex.tea4j.v2.models.TimelineComment;
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -48,6 +52,7 @@ import org.mian.gitnex.activities.IssueDetailActivity;
 import org.mian.gitnex.activities.ProfileActivity;
 import org.mian.gitnex.clients.PicassoService;
 import org.mian.gitnex.clients.RetrofitClient;
+import org.mian.gitnex.databinding.CustomImageViewDialogBinding;
 import org.mian.gitnex.fragments.BottomSheetReplyFragment;
 import org.mian.gitnex.fragments.IssuesFragment;
 import org.mian.gitnex.helpers.AlertDialogs;
@@ -256,6 +261,15 @@ public class IssueCommentsAdapter extends RecyclerView.Adapter<RecyclerView.View
 			timelineIcon = view.findViewById(R.id.timeline_icon);
 			timelineDividerView = view.findViewById(R.id.timeline_divider_view);
 			timelineLine2 = view.findViewById(R.id.timeline_line_2);
+
+			String token = ((BaseActivity) context).getAccount().getAccount().getToken();
+
+			new Handler()
+					.postDelayed(
+							() -> {
+								getAttachments(issueComment.getId(), view, token);
+							},
+							250);
 
 			menu.setOnClickListener(
 					v -> {
@@ -888,20 +902,42 @@ public class IssueCommentsAdapter extends RecyclerView.Adapter<RecyclerView.View
 				}
 
 				if (issueComment.getType().equalsIgnoreCase("review")) {
-					timelineView.setVisibility(View.GONE);
-					timelineDividerView.setVisibility(View.GONE);
+					if (!issueComment.getBody().equalsIgnoreCase("")) {
+
+						start.setText(
+								context.getString(
+										R.string.timelineReviewLeftComment,
+										issueComment.getUser().getLogin(),
+										issueComment.getBody(),
+										info));
+						timelineIcon.setImageDrawable(
+								ContextCompat.getDrawable(context, R.drawable.ic_comment));
+					} else {
+						timelineView.setVisibility(View.GONE);
+						timelineDividerView.setVisibility(View.GONE);
+					}
 				} else if (issueComment.getType().equalsIgnoreCase("dismiss_review")) {
 					timelineView.setVisibility(View.GONE);
 					timelineDividerView.setVisibility(View.GONE);
 				} else if (issueComment.getType().equalsIgnoreCase("review_request")) {
+					String reviewer;
+					if (issueComment.getAssignee() != null) {
+						reviewer = issueComment.getAssignee().getLogin();
+					} else {
+						if (issueComment.getAssigneeTeam() != null) {
+							reviewer = issueComment.getAssigneeTeam().getName();
+						} else {
+							reviewer = "";
+						}
+					}
 					start.setText(
 							context.getString(
 									R.string.timelineReviewRequest,
 									issueComment.getUser().getLogin(),
-									issueComment.getAssignee().getLogin(),
+									reviewer,
 									info));
 					timelineIcon.setImageDrawable(
-							ContextCompat.getDrawable(context, R.drawable.ic_unwatch));
+							ContextCompat.getDrawable(context, R.drawable.ic_watchers));
 				}
 				start.setTextSize(fontSize);
 
@@ -1285,5 +1321,134 @@ public class IssueCommentsAdapter extends RecyclerView.Adapter<RecyclerView.View
 				commentView.setVisibility(View.GONE);
 			}
 		}
+	}
+
+	private void getAttachments(Long issueIndex, View view, String token) {
+
+		LinearLayout attachmentFrame = view.findViewById(R.id.attachmentFrame);
+		LinearLayout attachmentsView = view.findViewById(R.id.attachmentsView);
+
+		Call<List<Attachment>> call =
+				RetrofitClient.getApiInterface(context)
+						.issueListIssueCommentAttachments(
+								issue.getRepository().getOwner(),
+								issue.getRepository().getName(),
+								issueIndex);
+
+		call.enqueue(
+				new Callback<>() {
+
+					@Override
+					public void onResponse(
+							@NonNull Call<List<Attachment>> call,
+							@NonNull retrofit2.Response<List<Attachment>> response) {
+
+						List<Attachment> attachment = response.body();
+
+						if (response.code() == 200) {
+							assert attachment != null;
+
+							if (attachment.size() > 0) {
+
+								attachmentFrame.setVisibility(View.VISIBLE);
+								LinearLayout.LayoutParams paramsAttachment =
+										new LinearLayout.LayoutParams(96, 96);
+								paramsAttachment.setMargins(0, 0, 48, 0);
+
+								for (int i = 0; i < attachment.size(); i++) {
+
+									ImageView attachmentView = new ImageView(context);
+									MaterialCardView materialCardView =
+											new MaterialCardView(context);
+									materialCardView.setLayoutParams(paramsAttachment);
+									materialCardView.setStrokeWidth(0);
+									materialCardView.setCardBackgroundColor(Color.TRANSPARENT);
+
+									if (Arrays.asList(
+													"bmp", "gif", "jpg", "jpeg", "png", "webp",
+													"heic", "heif")
+											.contains(
+													FilenameUtils.getExtension(
+																	attachment.get(i).getName())
+															.toLowerCase())) {
+
+										PicassoService.getInstance(context)
+												.get()
+												.load(
+														attachment.get(i).getBrowserDownloadUrl()
+																+ "?token="
+																+ token)
+												.placeholder(R.drawable.loader_animated)
+												.resize(120, 120)
+												.centerCrop()
+												.error(R.drawable.ic_close)
+												.into(attachmentView);
+
+										attachmentsView.addView(materialCardView);
+										attachmentView.setLayoutParams(paramsAttachment);
+										materialCardView.addView(attachmentView);
+
+										int finalI1 = i;
+										materialCardView.setOnClickListener(
+												v1 ->
+														imageViewDialog(
+																attachment
+																		.get(finalI1)
+																		.getBrowserDownloadUrl(),
+																token));
+
+									} else {
+
+										attachmentView.setImageResource(
+												R.drawable.ic_file_download);
+										attachmentView.setPadding(4, 4, 4, 4);
+										attachmentsView.addView(materialCardView);
+										attachmentView.setLayoutParams(paramsAttachment);
+										materialCardView.addView(attachmentView);
+
+										int finalI = i;
+										materialCardView.setOnClickListener(
+												v1 -> {
+													// filesize = attachment.get(finalI).getSize();
+													// filename = attachment.get(finalI).getName();
+													// filehash = attachment.get(finalI).getUuid();
+													// requestFileDownload();
+												});
+									}
+								}
+							} else {
+								attachmentFrame.setVisibility(View.GONE);
+							}
+						}
+					}
+
+					@Override
+					public void onFailure(
+							@NonNull Call<List<Attachment>> call, @NonNull Throwable t) {}
+				});
+	}
+
+	private void imageViewDialog(String url, String token) {
+
+		MaterialAlertDialogBuilder materialAlertDialogBuilder =
+				new MaterialAlertDialogBuilder(
+						context, R.style.ThemeOverlay_Material3_Dialog_Alert);
+
+		CustomImageViewDialogBinding imageViewDialogBinding =
+				CustomImageViewDialogBinding.inflate(LayoutInflater.from(context));
+		View view = imageViewDialogBinding.getRoot();
+		materialAlertDialogBuilder.setView(view);
+
+		materialAlertDialogBuilder.setNeutralButton(context.getString(R.string.close), null);
+		PicassoService.getInstance(context)
+				.get()
+				.load(url + "?token=" + token)
+				.placeholder(R.drawable.loader_animated)
+				.resize(0, 1600)
+				.onlyScaleDown()
+				.centerCrop()
+				.error(R.drawable.ic_close)
+				.into(imageViewDialogBinding.imageView);
+		materialAlertDialogBuilder.create().show();
 	}
 }

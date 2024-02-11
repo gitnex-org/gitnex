@@ -6,7 +6,7 @@ import com.google.android.material.dialog.MaterialAlertDialogBuilder;
 import org.mian.gitnex.R;
 import org.mian.gitnex.databinding.ActivitySettingsCodeEditorBinding;
 import org.mian.gitnex.fragments.SettingsFragment;
-import org.mian.gitnex.helpers.Toasty;
+import org.mian.gitnex.helpers.SnackBar;
 
 /**
  * @author M M Arif
@@ -15,7 +15,6 @@ public class SettingsCodeEditorActivity extends BaseActivity {
 
 	private static String[] colorList;
 	private static int colorSelectedChoice = 0;
-	private View.OnClickListener onClickListener;
 	private static String[] indentationList;
 	private static int indentationSelectedChoice = 0;
 	private static String[] indentationTabsList;
@@ -30,8 +29,7 @@ public class SettingsCodeEditorActivity extends BaseActivity {
 				ActivitySettingsCodeEditorBinding.inflate(getLayoutInflater());
 		setContentView(activitySettingsCodeEditorBinding.getRoot());
 
-		initCloseListener();
-		activitySettingsCodeEditorBinding.close.setOnClickListener(onClickListener);
+		activitySettingsCodeEditorBinding.topAppBar.setNavigationOnClickListener(v -> finish());
 
 		// color selector dialog
 		colorList = getResources().getStringArray(R.array.ceColors);
@@ -56,10 +54,10 @@ public class SettingsCodeEditorActivity extends BaseActivity {
 												this.recreate();
 												this.overridePendingTransition(0, 0);
 												dialogInterfaceColor.dismiss();
-												Toasty.success(
-														appCtx,
-														getResources()
-																.getString(R.string.settingsSave));
+												SnackBar.success(
+														ctx,
+														findViewById(android.R.id.content),
+														getString(R.string.settingsSave));
 											});
 
 					materialAlertDialogBuilder.create().show();
@@ -90,10 +88,10 @@ public class SettingsCodeEditorActivity extends BaseActivity {
 												this.recreate();
 												this.overridePendingTransition(0, 0);
 												dialogInterfaceColor.dismiss();
-												Toasty.success(
-														appCtx,
-														getResources()
-																.getString(R.string.settingsSave));
+												SnackBar.success(
+														ctx,
+														findViewById(android.R.id.content),
+														getString(R.string.settingsSave));
 											});
 
 					materialAlertDialogBuilder.create().show();
@@ -132,17 +130,13 @@ public class SettingsCodeEditorActivity extends BaseActivity {
 												this.recreate();
 												this.overridePendingTransition(0, 0);
 												dialogInterfaceColor.dismiss();
-												Toasty.success(
-														appCtx,
-														getResources()
-																.getString(R.string.settingsSave));
+												SnackBar.success(
+														ctx,
+														findViewById(android.R.id.content),
+														getString(R.string.settingsSave));
 											});
 
 					materialAlertDialogBuilder.create().show();
 				});
-	}
-
-	private void initCloseListener() {
-		onClickListener = view -> finish();
 	}
 }

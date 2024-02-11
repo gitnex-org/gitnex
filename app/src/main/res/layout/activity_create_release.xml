@@ -1,61 +1,51 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
+<androidx.coordinatorlayout.widget.CoordinatorLayout
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="?attr/primaryBackgroundColor"
-    android:orientation="vertical">
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
 
     <com.google.android.material.appbar.AppBarLayout
-        android:id="@+id/appbar"
+        android:id="@+id/appBarLayout"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:theme="@style/Widget.AppCompat.SearchView"
-        app:elevation="@dimen/dimen0dp">
+        android:background="?attr/primaryBackgroundColor"
+        android:fitsSystemWindows="true">
 
-        <com.google.android.material.appbar.MaterialToolbar
-            android:id="@+id/toolbar"
+        <com.google.android.material.appbar.CollapsingToolbarLayout
+            style="?attr/collapsingToolbarLayoutLargeStyle"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:background="?attr/primaryBackgroundColor">
+            app:layout_scrollFlags="scroll|exitUntilCollapsed|snap"
+            android:background="?attr/primaryBackgroundColor"
+            app:contentScrim="?attr/primaryBackgroundColor"
+            android:layout_height="?attr/collapsingToolbarLayoutLargeSize">
 
-            <ImageView
-                android:id="@+id/close"
-                android:layout_width="@dimen/dimen26dp"
-                android:layout_height="@dimen/dimen26dp"
-                android:layout_marginStart="@dimen/dimen16dp"
-                android:layout_marginEnd="@dimen/dimen16dp"
-                android:background="?android:attr/selectableItemBackgroundBorderless"
-                android:clickable="true"
-                android:contentDescription="@string/close"
-                android:focusable="true"
-                android:gravity="center_vertical"
-                android:src="@drawable/ic_close"/>
+             <com.google.android.material.appbar.MaterialToolbar
+                 android:id="@+id/topAppBar"
+                 android:layout_width="match_parent"
+                 android:elevation="0dp"
+                 android:layout_height="?attr/actionBarSize"
+                 app:title="@string/createRelease"
+                 app:layout_collapseMode="pin"
+                 app:menu="@menu/create_release_tag_menu"
+                 app:popupTheme="@style/Widget.Material3.PopupMenu"
+                 app:navigationIcon="@drawable/ic_close" />
 
-            <TextView
-                android:id="@+id/toolbar_title"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_gravity="center_vertical"
-                android:maxLines="1"
-                android:text="@string/createRelease"
-                android:textColor="?attr/primaryTextColor"
-                android:textSize="@dimen/dimen20sp"/>
-
-        </com.google.android.material.appbar.MaterialToolbar>
+        </com.google.android.material.appbar.CollapsingToolbarLayout>
 
     </com.google.android.material.appbar.AppBarLayout>
 
-    <ScrollView
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:background="?attr/primaryBackgroundColor">
+    <androidx.core.widget.NestedScrollView
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    app:layout_behavior="@string/appbar_scrolling_view_behavior">
 
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:orientation="vertical"
-            android:padding="@dimen/dimen16dp">
+       <LinearLayout
+           android:layout_width="match_parent"
+           android:layout_height="wrap_content"
+           android:orientation="vertical"
+           android:padding="@dimen/dimen16dp">
 
             <com.google.android.material.textfield.TextInputLayout
                 android:id="@+id/releaseTitleLayout"
@@ -65,7 +55,6 @@
                 android:layout_marginBottom="@dimen/dimen8dp"
                 android:hint="@string/releaseTitleText"
                 android:textColorHint="?attr/hintColor"
-                app:boxBackgroundColor="?attr/inputBackgroundColor"
                 app:boxStrokeErrorColor="@color/darkRed"
                 app:endIconMode="clear_text"
                 app:endIconTint="?attr/iconsColor"
@@ -93,7 +82,6 @@
                 android:layout_marginBottom="@dimen/dimen8dp"
                 android:hint="@string/releaseTagNameText"
                 android:textColorHint="?attr/hintColor"
-                app:boxBackgroundColor="?attr/inputBackgroundColor"
                 app:boxStrokeErrorColor="@color/darkRed"
                 app:endIconMode="clear_text"
                 app:endIconTint="?attr/iconsColor"
@@ -121,7 +109,6 @@
                 android:layout_marginBottom="@dimen/dimen8dp"
                 android:hint="@string/releaseContentText"
                 android:textColorHint="?attr/hintColor"
-                app:boxBackgroundColor="?attr/inputBackgroundColor"
                 app:boxStrokeErrorColor="@color/darkRed"
                 app:endIconMode="clear_text"
                 app:endIconTint="?attr/iconsColor"
@@ -162,7 +149,6 @@
                 android:layout_marginBottom="@dimen/dimen8dp"
                 android:hint="@string/releaseBranchText"
                 android:textColorHint="?attr/hintColor"
-                app:boxBackgroundColor="?attr/inputBackgroundColor"
                 app:endIconTint="?attr/iconsColor"
                 app:hintTextColor="?attr/hintColor">
 
@@ -197,26 +183,8 @@
                 android:textColor="?attr/primaryTextColor"
                 android:textSize="@dimen/dimen16sp"/>
 
-            <com.google.android.material.button.MaterialButton
-                android:id="@+id/createNewRelease"
-                android:layout_width="match_parent"
-                android:layout_height="@dimen/dimen54dp"
-                android:layout_marginTop="@dimen/dimen8dp"
-                android:text="@string/newCreateButtonCopy"
-                android:textColor="?attr/materialCardBackgroundColor"
-                android:textStyle="bold"/>
-
-            <com.google.android.material.button.MaterialButton
-                android:id="@+id/createNewTag"
-                android:layout_width="match_parent"
-                android:layout_height="@dimen/dimen54dp"
-                android:layout_marginTop="@dimen/dimen8dp"
-                android:text="@string/create_tag"
-                android:textColor="?attr/materialCardBackgroundColor"
-                android:textStyle="bold"/>
-
         </LinearLayout>
 
-    </ScrollView>
+    </androidx.core.widget.NestedScrollView>
 
-</LinearLayout>
+</androidx.coordinatorlayout.widget.CoordinatorLayout>

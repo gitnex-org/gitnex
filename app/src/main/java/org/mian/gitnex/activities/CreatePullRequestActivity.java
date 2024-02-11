@@ -1,26 +1,37 @@
 package org.mian.gitnex.activities;
 
 import android.annotation.SuppressLint;
-import android.app.DatePickerDialog;
+import android.app.Activity;
+import android.content.Intent;
+import android.net.Uri;
 import android.os.Bundle;
+import android.os.Handler;
 import android.view.LayoutInflater;
-import android.view.Menu;
-import android.view.MenuInflater;
-import android.view.MenuItem;
 import android.view.MotionEvent;
 import android.view.View;
 import android.widget.ArrayAdapter;
-import android.widget.ImageView;
 import android.widget.TextView;
+import androidx.activity.result.ActivityResultLauncher;
+import androidx.activity.result.contract.ActivityResultContracts;
 import androidx.annotation.NonNull;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import com.google.android.material.bottomsheet.BottomSheetDialog;
+import com.google.android.material.datepicker.MaterialDatePicker;
 import com.google.android.material.dialog.MaterialAlertDialogBuilder;
 import com.vdurmont.emoji.EmojiParser;
+import java.io.File;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.LinkedHashMap;
 import java.util.List;
+import java.util.Locale;
 import java.util.Objects;
+import java.util.TimeZone;
+import okhttp3.MediaType;
+import okhttp3.RequestBody;
+import org.gitnex.tea4j.v2.models.Attachment;
 import org.gitnex.tea4j.v2.models.Branch;
 import org.gitnex.tea4j.v2.models.CreatePullRequestOption;
 import org.gitnex.tea4j.v2.models.Label;
@@ -28,14 +39,19 @@ import org.gitnex.tea4j.v2.models.Milestone;
 import org.gitnex.tea4j.v2.models.PullRequest;
 import org.mian.gitnex.R;
 import org.mian.gitnex.actions.LabelsActions;
+import org.mian.gitnex.adapters.AttachmentsAdapter;
 import org.mian.gitnex.adapters.LabelsListAdapter;
 import org.mian.gitnex.clients.RetrofitClient;
 import org.mian.gitnex.databinding.ActivityCreatePrBinding;
+import org.mian.gitnex.databinding.BottomSheetAttachmentsBinding;
 import org.mian.gitnex.databinding.CustomLabelsSelectionDialogBinding;
 import org.mian.gitnex.fragments.PullRequestsFragment;
+import org.mian.gitnex.helpers.AlertDialogs;
 import org.mian.gitnex.helpers.Constants;
 import org.mian.gitnex.helpers.Markdown;
-import org.mian.gitnex.helpers.Toasty;
+import org.mian.gitnex.helpers.SnackBar;
+import org.mian.gitnex.helpers.attachments.AttachmentUtils;
+import org.mian.gitnex.helpers.attachments.AttachmentsModel;
 import org.mian.gitnex.helpers.contexts.RepositoryContext;
 import retrofit2.Call;
 import retrofit2.Callback;
@@ -44,22 +60,24 @@ import retrofit2.Callback;
  * @author M M Arif
  */
 public class CreatePullRequestActivity extends BaseActivity
-		implements LabelsListAdapter.LabelsListAdapterListener {
+		implements LabelsListAdapter.LabelsListAdapterListener,
+				AttachmentsAdapter.AttachmentsReceiverListener {
 
 	private final List<String> assignees = new ArrayList<>();
 	LinkedHashMap<String, Milestone> milestonesList = new LinkedHashMap<>();
 	List<String> branchesList = new ArrayList<>();
 	List<Label> labelsList = new ArrayList<>();
-	private View.OnClickListener onClickListener;
 	private ActivityCreatePrBinding viewBinding;
 	private List<Integer> labelsIds = new ArrayList<>();
 	private int milestoneId;
-	private Date currentDate = null;
 	private RepositoryContext repository;
 	private LabelsListAdapter labelsAdapter;
 	private MaterialAlertDialogBuilder materialAlertDialogBuilder;
 	private boolean renderMd = false;
 	private RepositoryContext repositoryContext;
+	private static List<AttachmentsModel> attachmentsList;
+	private AttachmentsAdapter attachmentsAdapter;
+	private static final List<Uri> contentUri = new ArrayList<>();
 
 	@SuppressLint("ClickableViewAccessibility")
 	@Override
@@ -69,7 +87,6 @@ public class CreatePullRequestActivity extends BaseActivity
 
 		viewBinding = ActivityCreatePrBinding.inflate(getLayoutInflater());
 		setContentView(viewBinding.getRoot());
-		setSupportActionBar(viewBinding.toolbar);
 
 		repositoryContext = RepositoryContext.fromIntent(getIntent());
 
@@ -77,6 +94,11 @@ public class CreatePullRequestActivity extends BaseActivity
 				new MaterialAlertDialogBuilder(ctx, R.style.ThemeOverlay_Material3_Dialog_Alert);
 
 		repository = RepositoryContext.fromIntent(getIntent());
+
+		attachmentsList = new ArrayList<>();
+		attachmentsAdapter = new AttachmentsAdapter(attachmentsList, ctx);
+
+		AttachmentsAdapter.setAttachmentsReceiveListener(this);
 
 		int resultLimit = Constants.getCurrentResultLimit(ctx);
 
@@ -95,21 +117,54 @@ public class CreatePullRequestActivity extends BaseActivity
 		labelsAdapter =
 				new LabelsListAdapter(labelsList, CreatePullRequestActivity.this, labelsIds);
 
-		ImageView closeActivity = findViewById(R.id.close);
+		showDatePickerDialog();
 
-		initCloseListener();
-		closeActivity.setOnClickListener(onClickListener);
+		viewBinding.topAppBar.setNavigationOnClickListener(
+				v -> {
+					finish();
+					contentUri.clear();
+				});
 
-		viewBinding.prDueDate.setOnClickListener(dueDate -> setDueDate());
+		viewBinding.topAppBar.setOnMenuItemClickListener(
+				menuItem -> {
+					int id = menuItem.getItemId();
 
-		disableProcessButton();
+					if (id == R.id.markdown) {
+
+						if (!renderMd) {
+							Markdown.render(
+									ctx,
+									EmojiParser.parseToUnicode(
+											Objects.requireNonNull(viewBinding.prBody.getText())
+													.toString()),
+									viewBinding.markdownPreview,
+									repositoryContext);
+
+							viewBinding.markdownPreview.setVisibility(View.VISIBLE);
+							viewBinding.prBodyLayout.setVisibility(View.GONE);
+							renderMd = true;
+						} else {
+							viewBinding.markdownPreview.setVisibility(View.GONE);
+							viewBinding.prBodyLayout.setVisibility(View.VISIBLE);
+							renderMd = false;
+						}
+
+						return true;
+					} else if (id == R.id.create) {
+						processPullRequest();
+						return true;
+					} else if (id == R.id.attachment) {
+						checkForAttachments();
+						return true;
+					} else {
+						return super.onOptionsItemSelected(menuItem);
+					}
+				});
 
 		getMilestones(repository.getOwner(), repository.getName(), resultLimit);
 		getBranches(repository.getOwner(), repository.getName());
 
 		viewBinding.prLabels.setOnClickListener(prLabels -> showLabels());
-
-		viewBinding.createPr.setOnClickListener(createPr -> processPullRequest());
 
 		if (!repository.getPermissions().isPush()) {
 			viewBinding.prDueDateLayout.setVisibility(View.GONE);
@@ -118,43 +173,121 @@ public class CreatePullRequestActivity extends BaseActivity
 		}
 	}
 
-	@Override
-	public boolean onCreateOptionsMenu(@NonNull Menu menu) {
+	ActivityResultLauncher<Intent> startActivityForResult =
+			registerForActivityResult(
+					new ActivityResultContracts.StartActivityForResult(),
+					result -> {
+						if (result.getResultCode() == Activity.RESULT_OK) {
+							Intent data = result.getData();
+							assert data != null;
+							contentUri.add(data.getData());
+							attachmentsList.add(
+									new AttachmentsModel(
+											AttachmentUtils.queryName(ctx, data.getData()),
+											data.getData()));
+							attachmentsAdapter.updateList(attachmentsList);
+						}
+					});
 
-		MenuInflater inflater = getMenuInflater();
-		inflater.inflate(R.menu.markdown_switcher, menu);
-
-		return true;
+	public void onDestroy() {
+		AttachmentsAdapter.setAttachmentsReceiveListener(null);
+		super.onDestroy();
 	}
 
 	@Override
-	public boolean onOptionsItemSelected(MenuItem item) {
+	public void setAttachmentsData(Uri filename) {
+		contentUri.remove(filename);
+	}
 
-		int id = item.getItemId();
+	private void checkForAttachments() {
 
-		if (id == R.id.markdown) {
+		if (contentUri.size() > 0) {
 
-			if (!renderMd) {
-				Markdown.render(
-						ctx,
-						EmojiParser.parseToUnicode(
-								Objects.requireNonNull(viewBinding.prBody.getText()).toString()),
-						viewBinding.markdownPreview,
-						repositoryContext);
+			BottomSheetAttachmentsBinding bottomSheetAttachmentsBinding =
+					BottomSheetAttachmentsBinding.inflate(getLayoutInflater());
 
-				viewBinding.markdownPreview.setVisibility(View.VISIBLE);
-				viewBinding.prBodyLayout.setVisibility(View.GONE);
-				renderMd = true;
-			} else {
-				viewBinding.markdownPreview.setVisibility(View.GONE);
-				viewBinding.prBodyLayout.setVisibility(View.VISIBLE);
-				renderMd = false;
-			}
+			BottomSheetDialog bottomSheetDialog = new BottomSheetDialog(ctx);
 
-			return true;
+			bottomSheetAttachmentsBinding.addAttachment.setOnClickListener(
+					v1 -> openFileAttachmentActivity());
+
+			bottomSheetAttachmentsBinding.recyclerViewAttachments.setHasFixedSize(true);
+			bottomSheetAttachmentsBinding.recyclerViewAttachments.setLayoutManager(
+					new LinearLayoutManager(ctx));
+			bottomSheetAttachmentsBinding.recyclerViewAttachments.setAdapter(attachmentsAdapter);
+
+			bottomSheetDialog.setContentView(bottomSheetAttachmentsBinding.getRoot());
+			bottomSheetDialog.show();
 		} else {
-			return super.onOptionsItemSelected(item);
+			openFileAttachmentActivity();
 		}
+	}
+
+	private void openFileAttachmentActivity() {
+
+		Intent data = new Intent(Intent.ACTION_GET_CONTENT);
+		data.addCategory(Intent.CATEGORY_OPENABLE);
+		data.setType("*/*");
+		Intent intent = Intent.createChooser(data, "Choose a file");
+		startActivityForResult.launch(intent);
+	}
+
+	private void processAttachments(long issueIndex) {
+
+		for (int i = 0; i < contentUri.size(); i++) {
+
+			File file = AttachmentUtils.getFile(ctx, contentUri.get(i));
+
+			RequestBody requestFile =
+					RequestBody.create(
+							file, MediaType.parse(getContentResolver().getType(contentUri.get(i))));
+
+			uploadAttachments(requestFile, issueIndex, file.getName());
+		}
+	}
+
+	private void uploadAttachments(RequestBody requestFile, long issueIndex, String filename1) {
+
+		Call<Attachment> call3 =
+				RetrofitClient.getApiInterface(ctx)
+						.issueCreateIssueAttachment(
+								requestFile,
+								repository.getOwner(),
+								repository.getName(),
+								issueIndex,
+								filename1);
+
+		call3.enqueue(
+				new Callback<>() {
+
+					@Override
+					public void onResponse(
+							@NonNull Call<Attachment> call,
+							@NonNull retrofit2.Response<Attachment> response2) {
+
+						if (response2.code() == 201) {
+							new Handler().postDelayed(() -> finish(), 3000);
+						} else if (response2.code() == 401) {
+
+							AlertDialogs.authorizationTokenRevokedDialog(ctx);
+						} else {
+
+							SnackBar.error(
+									ctx,
+									findViewById(android.R.id.content),
+									getString(R.string.attachmentsSaveError));
+						}
+					}
+
+					@Override
+					public void onFailure(@NonNull Call<Attachment> call, @NonNull Throwable t) {
+
+						SnackBar.error(
+								ctx,
+								findViewById(android.R.id.content),
+								getString(R.string.genericServerResponseError));
+					}
+				});
 	}
 
 	private void processPullRequest() {
@@ -163,6 +296,7 @@ public class CreatePullRequestActivity extends BaseActivity
 		String prDescription = String.valueOf(viewBinding.prBody.getText());
 		String mergeInto = viewBinding.mergeIntoBranchSpinner.getText().toString();
 		String pullFrom = viewBinding.pullFromBranchSpinner.getText().toString();
+		String prDueDate = Objects.requireNonNull(viewBinding.prDueDate.getText()).toString();
 
 		assignees.add("");
 
@@ -173,19 +307,23 @@ public class CreatePullRequestActivity extends BaseActivity
 
 		if (prTitle.matches("")) {
 
-			Toasty.error(ctx, getString(R.string.titleError));
+			SnackBar.error(ctx, findViewById(android.R.id.content), getString(R.string.titleError));
 		} else if (mergeInto.matches("")) {
 
-			Toasty.error(ctx, getString(R.string.mergeIntoError));
+			SnackBar.error(
+					ctx, findViewById(android.R.id.content), getString(R.string.mergeIntoError));
 		} else if (pullFrom.matches("")) {
 
-			Toasty.error(ctx, getString(R.string.pullFromError));
+			SnackBar.error(
+					ctx, findViewById(android.R.id.content), getString(R.string.pullFromError));
 		} else if (pullFrom.equals(mergeInto)) {
 
-			Toasty.error(ctx, getString(R.string.sameBranchesError));
+			SnackBar.error(
+					ctx, findViewById(android.R.id.content), getString(R.string.sameBranchesError));
 		} else {
 
-			createPullRequest(prTitle, prDescription, mergeInto, pullFrom, milestoneId, assignees);
+			createPullRequest(
+					prTitle, prDescription, mergeInto, pullFrom, milestoneId, assignees, prDueDate);
 		}
 	}
 
@@ -195,7 +333,8 @@ public class CreatePullRequestActivity extends BaseActivity
 			String mergeInto,
 			String pullFrom,
 			int milestoneId,
-			List<String> assignees) {
+			List<String> assignees,
+			String prDueDate) {
 
 		ArrayList<Long> labelIds = new ArrayList<>();
 		for (Integer i : labelsIds) {
@@ -210,7 +349,15 @@ public class CreatePullRequestActivity extends BaseActivity
 		createPullRequest.setBase(mergeInto);
 		createPullRequest.setHead(pullFrom);
 		createPullRequest.setLabels(labelIds);
-		createPullRequest.setDueDate(currentDate);
+		String[] date = prDueDate.split("-");
+		if (!prDueDate.equalsIgnoreCase("")) {
+			Calendar calendar = Calendar.getInstance();
+			calendar.set(Calendar.YEAR, Integer.parseInt(date[0]));
+			calendar.set(Calendar.MONTH, Integer.parseInt(date[1]));
+			calendar.set(Calendar.DATE, Integer.parseInt(date[2]));
+			Date dueDate = calendar.getTime();
+			createPullRequest.setDueDate(dueDate);
+		}
 
 		Call<PullRequest> transferCall =
 				RetrofitClient.getApiInterface(ctx)
@@ -225,37 +372,75 @@ public class CreatePullRequestActivity extends BaseActivity
 							@NonNull Call<PullRequest> call,
 							@NonNull retrofit2.Response<PullRequest> response) {
 
-						disableProcessButton();
-
 						if (response.code() == 201) {
 
-							Toasty.success(ctx, getString(R.string.prCreateSuccess));
+							SnackBar.success(
+									ctx,
+									findViewById(android.R.id.content),
+									getString(R.string.prCreateSuccess));
 							RepoDetailActivity.updateRepo = true;
 							PullRequestsFragment.resumePullRequests = true;
 							MainActivity.reloadRepos = true;
-							finish();
+
+							if (contentUri.size() > 0) {
+								assert response.body() != null;
+								processAttachments(response.body().getNumber());
+								contentUri.clear();
+							} else {
+								new Handler().postDelayed(() -> finish(), 3000);
+							}
 						} else if (response.code() == 409
 								|| response.message().equals("Conflict")) {
 
-							enableProcessButton();
-							Toasty.error(ctx, getString(R.string.prAlreadyExists));
+							SnackBar.error(
+									ctx,
+									findViewById(android.R.id.content),
+									getString(R.string.prAlreadyExists));
 						} else if (response.code() == 404) {
 
-							enableProcessButton();
-							Toasty.error(ctx, getString(R.string.apiNotFound));
+							SnackBar.error(
+									ctx,
+									findViewById(android.R.id.content),
+									getString(R.string.apiNotFound));
 						} else {
 
-							enableProcessButton();
-							Toasty.error(ctx, getString(R.string.genericError));
+							SnackBar.error(
+									ctx,
+									findViewById(android.R.id.content),
+									getString(R.string.genericError));
 						}
 					}
 
 					@Override
 					public void onFailure(@NonNull Call<PullRequest> call, @NonNull Throwable t) {
 
-						enableProcessButton();
-						Toasty.error(ctx, getString(R.string.genericServerResponseError));
+						SnackBar.error(
+								ctx,
+								findViewById(android.R.id.content),
+								getString(R.string.genericServerResponseError));
 					}
+				});
+	}
+
+	private void showDatePickerDialog() {
+
+		MaterialDatePicker.Builder<Long> builder = MaterialDatePicker.Builder.datePicker();
+		builder.setSelection(Calendar.getInstance().getTimeInMillis());
+		builder.setTitleText(R.string.newIssueDueDateTitle);
+		MaterialDatePicker<Long> materialDatePicker = builder.build();
+
+		viewBinding.prDueDate.setOnClickListener(
+				v -> materialDatePicker.show(getSupportFragmentManager(), "DATE_PICKER"));
+
+		materialDatePicker.addOnPositiveButtonClickListener(
+				selection -> {
+					Calendar calendar = Calendar.getInstance(TimeZone.getTimeZone("UTC"));
+					calendar.setTimeInMillis(selection);
+					SimpleDateFormat format =
+							new SimpleDateFormat(
+									"yyyy-MM-dd", new Locale(tinyDB.getString("locale")));
+					String formattedDate = format.format(calendar.getTime());
+					viewBinding.prDueDate.setText(formattedDate);
 				});
 	}
 
@@ -325,7 +510,6 @@ public class CreatePullRequestActivity extends BaseActivity
 
 								viewBinding.mergeIntoBranchSpinner.setAdapter(adapter);
 								viewBinding.pullFromBranchSpinner.setAdapter(adapter);
-								enableProcessButton();
 							}
 						}
 					}
@@ -333,7 +517,10 @@ public class CreatePullRequestActivity extends BaseActivity
 					@Override
 					public void onFailure(@NonNull Call<List<Branch>> call, @NonNull Throwable t) {
 
-						Toasty.error(ctx, getString(R.string.genericServerResponseError));
+						SnackBar.error(
+								ctx,
+								findViewById(android.R.id.content),
+								getString(R.string.genericServerResponseError));
 					}
 				});
 	}
@@ -382,7 +569,6 @@ public class CreatePullRequestActivity extends BaseActivity
 											new ArrayList<>(milestonesList.keySet()));
 
 							viewBinding.milestonesSpinner.setAdapter(adapter);
-							enableProcessButton();
 
 							viewBinding.milestonesSpinner.setOnItemClickListener(
 									(parent, view, position, id) -> {
@@ -407,49 +593,12 @@ public class CreatePullRequestActivity extends BaseActivity
 					public void onFailure(
 							@NonNull Call<List<Milestone>> call, @NonNull Throwable t) {
 
-						Toasty.error(ctx, getString(R.string.genericServerResponseError));
+						SnackBar.error(
+								ctx,
+								findViewById(android.R.id.content),
+								getString(R.string.genericServerResponseError));
 					}
 				});
-	}
-
-	private void setDueDate() {
-
-		final Calendar c = Calendar.getInstance();
-		int mYear = c.get(Calendar.YEAR);
-		final int mMonth = c.get(Calendar.MONTH);
-		final int mDay = c.get(Calendar.DAY_OF_MONTH);
-
-		DatePickerDialog datePickerDialog =
-				new DatePickerDialog(
-						this,
-						(view, year, monthOfYear, dayOfMonth) -> {
-							viewBinding.prDueDate.setText(
-									getString(
-											R.string.setDueDate,
-											year,
-											(monthOfYear + 1),
-											dayOfMonth));
-							currentDate = new Date(year - 1900, monthOfYear, dayOfMonth);
-						},
-						mYear,
-						mMonth,
-						mDay);
-		datePickerDialog.show();
-	}
-
-	private void initCloseListener() {
-
-		onClickListener = view -> finish();
-	}
-
-	private void disableProcessButton() {
-
-		viewBinding.createPr.setEnabled(false);
-	}
-
-	private void enableProcessButton() {
-
-		viewBinding.createPr.setEnabled(true);
 	}
 
 	@Override

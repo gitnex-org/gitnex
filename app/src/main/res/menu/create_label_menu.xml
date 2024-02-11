@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <item
+        android:id="@+id/create"
+        android:orderInCategory="0"
+        android:title="@string/newCreateButtonCopy"
+        android:contentDescription="@string/newCreateButtonCopy"
+        app:showAsAction="ifRoom" />
+
+    <item
+        android:id="@+id/update"
+        android:orderInCategory="1"
+        android:title="@string/newUpdateButtonCopy"
+        android:contentDescription="@string/newUpdateButtonCopy"
+        app:showAsAction="ifRoom" />
+
+</menu>

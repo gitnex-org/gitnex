@@ -1,14 +1,13 @@
 package org.mian.gitnex.activities;
 
 import android.os.Bundle;
-import android.view.View;
 import com.google.android.material.dialog.MaterialAlertDialogBuilder;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 import org.mian.gitnex.R;
 import org.mian.gitnex.databinding.ActivitySettingsGeneralBinding;
-import org.mian.gitnex.helpers.Toasty;
+import org.mian.gitnex.helpers.SnackBar;
 
 /**
  * @author M M Arif
@@ -18,7 +17,6 @@ public class SettingsGeneralActivity extends BaseActivity {
 	private static int homeScreenSelectedChoice = 0;
 	private static int defaultLinkHandlerScreenSelectedChoice = 0;
 	private ActivitySettingsGeneralBinding viewBinding;
-	private View.OnClickListener onClickListener;
 	private List<String> homeScreenList;
 	private List<String> linkHandlerDefaultScreen;
 
@@ -30,8 +28,7 @@ public class SettingsGeneralActivity extends BaseActivity {
 		viewBinding = ActivitySettingsGeneralBinding.inflate(getLayoutInflater());
 		setContentView(viewBinding.getRoot());
 
-		initCloseListener();
-		viewBinding.close.setOnClickListener(onClickListener);
+		viewBinding.topAppBar.setNavigationOnClickListener(v -> finish());
 
 		// home screen
 		String[] appHomeDefaultScreen = getResources().getStringArray(R.array.appDefaultHomeScreen);
@@ -118,10 +115,10 @@ public class SettingsGeneralActivity extends BaseActivity {
 												tinyDB.putInt("homeScreenId", i);
 
 												dialogInterfaceHomeScreen.dismiss();
-												Toasty.success(
-														appCtx,
-														getResources()
-																.getString(R.string.settingsSave));
+												SnackBar.success(
+														ctx,
+														findViewById(android.R.id.content),
+														getString(R.string.settingsSave));
 											});
 
 					materialAlertDialogBuilder.create().show();
@@ -156,10 +153,10 @@ public class SettingsGeneralActivity extends BaseActivity {
 												tinyDB.putInt("defaultScreenId", i);
 
 												dialogInterfaceHomeScreen.dismiss();
-												Toasty.success(
-														appCtx,
-														getResources()
-																.getString(R.string.settingsSave));
+												SnackBar.success(
+														ctx,
+														findViewById(android.R.id.content),
+														getString(R.string.settingsSave));
 											});
 
 					materialAlertDialogBuilder.create().show();
@@ -171,7 +168,10 @@ public class SettingsGeneralActivity extends BaseActivity {
 		viewBinding.switchTabs.setOnCheckedChangeListener(
 				(buttonView, isChecked) -> {
 					tinyDB.putBoolean("useCustomTabs", isChecked);
-					Toasty.success(appCtx, getResources().getString(R.string.settingsSave));
+					SnackBar.success(
+							ctx,
+							findViewById(android.R.id.content),
+							getString(R.string.settingsSave));
 				});
 		viewBinding.customTabsFrame.setOnClickListener(
 				v -> viewBinding.switchTabs.setChecked(!viewBinding.switchTabs.isChecked()));
@@ -185,7 +185,10 @@ public class SettingsGeneralActivity extends BaseActivity {
 		viewBinding.commentsDeletionSwitch.setOnCheckedChangeListener(
 				(buttonView, isChecked) -> {
 					tinyDB.putBoolean("draftsCommentsDeletionEnabled", isChecked);
-					Toasty.success(appCtx, getResources().getString(R.string.settingsSave));
+					SnackBar.success(
+							ctx,
+							findViewById(android.R.id.content),
+							getString(R.string.settingsSave));
 				});
 		viewBinding.enableDraftsCommentsDeletion.setOnClickListener(
 				v ->
@@ -197,16 +200,15 @@ public class SettingsGeneralActivity extends BaseActivity {
 		viewBinding.crashReportsSwitch.setOnCheckedChangeListener(
 				(buttonView, isChecked) -> {
 					tinyDB.putBoolean("crashReportingEnabled", isChecked);
-					Toasty.success(appCtx, getResources().getString(R.string.settingsSave));
+					SnackBar.success(
+							ctx,
+							findViewById(android.R.id.content),
+							getString(R.string.settingsSave));
 				});
 		viewBinding.enableSendReports.setOnClickListener(
 				v ->
 						viewBinding.crashReportsSwitch.setChecked(
 								!viewBinding.crashReportsSwitch.isChecked()));
 		// crash reports switcher
-	}
-
-	private void initCloseListener() {
-		onClickListener = view -> finish();
 	}
 }

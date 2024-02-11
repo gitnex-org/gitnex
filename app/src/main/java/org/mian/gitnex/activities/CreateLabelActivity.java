@@ -1,15 +1,15 @@
 package org.mian.gitnex.activities;
 
-import android.content.Context;
 import android.graphics.Color;
 import android.os.Bundle;
-import android.util.Log;
-import android.view.View;
-import android.view.inputmethod.InputMethodManager;
-import android.widget.TextView;
+import android.os.Handler;
+import android.view.MenuItem;
 import androidx.annotation.NonNull;
 import androidx.core.content.ContextCompat;
-import com.pes.androidmaterialcolorpickerdialog.ColorPicker;
+import com.skydoves.colorpickerview.ColorPickerDialog;
+import com.skydoves.colorpickerview.flag.BubbleFlag;
+import com.skydoves.colorpickerview.listeners.ColorEnvelopeListener;
+import com.skydoves.colorpickerview.preference.ColorPickerPreferenceManager;
 import java.util.Objects;
 import org.gitnex.tea4j.v2.models.CreateLabelOption;
 import org.gitnex.tea4j.v2.models.EditLabelOption;
@@ -19,7 +19,7 @@ import org.mian.gitnex.clients.RetrofitClient;
 import org.mian.gitnex.databinding.ActivityCreateLabelBinding;
 import org.mian.gitnex.helpers.AlertDialogs;
 import org.mian.gitnex.helpers.AppUtil;
-import org.mian.gitnex.helpers.Toasty;
+import org.mian.gitnex.helpers.SnackBar;
 import org.mian.gitnex.helpers.contexts.RepositoryContext;
 import org.mian.gitnex.viewmodels.LabelsViewModel;
 import org.mian.gitnex.viewmodels.OrganizationLabelsViewModel;
@@ -32,15 +32,11 @@ import retrofit2.Callback;
 public class CreateLabelActivity extends BaseActivity {
 
 	public static boolean refreshLabels = false;
-
 	private ActivityCreateLabelBinding activityCreateLabelBinding;
-	private View.OnClickListener onClickListener;
-
 	private RepositoryContext repository;
 	private String labelColor = "";
-	private final View.OnClickListener createLabelListener = v -> processCreateLabel();
 	private String labelColorDefault = "";
-	private final View.OnClickListener updateLabelListener = v -> processUpdateLabel();
+	private ColorPickerPreferenceManager colorManager;
 
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
@@ -49,9 +45,6 @@ public class CreateLabelActivity extends BaseActivity {
 
 		activityCreateLabelBinding = ActivityCreateLabelBinding.inflate(getLayoutInflater());
 		setContentView(activityCreateLabelBinding.getRoot());
-
-		InputMethodManager imm =
-				(InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
 
 		repository = RepositoryContext.fromIntent(getIntent());
 
@@ -66,26 +59,18 @@ public class CreateLabelActivity extends BaseActivity {
 			return;
 		}
 
-		boolean connToInternet = AppUtil.hasNetworkConnection(appCtx);
+		activityCreateLabelBinding.topAppBar.setNavigationOnClickListener(v -> finish());
 
-		activityCreateLabelBinding.labelName.requestFocus();
-		assert imm != null;
-		imm.showSoftInput(activityCreateLabelBinding.labelName, InputMethodManager.SHOW_IMPLICIT);
+		colorManager = ColorPickerPreferenceManager.getInstance(this);
+		colorManager.clearSavedAllData();
+		activityCreateLabelBinding.colorPicker.setBackgroundColor(
+				colorManager.getColor("colorPickerDialogLabels", Color.RED));
 
-		final ColorPicker cp = new ColorPicker(CreateLabelActivity.this, 235, 113, 33);
+		MenuItem create = activityCreateLabelBinding.topAppBar.getMenu().getItem(0);
+		MenuItem update = activityCreateLabelBinding.topAppBar.getMenu().getItem(1);
+		update.setVisible(false);
 
-		initCloseListener();
-		activityCreateLabelBinding.close.setOnClickListener(onClickListener);
-		activityCreateLabelBinding.colorPicker.setOnClickListener(v -> cp.show());
-
-		cp.setCallback(
-				color -> {
-
-					// Log.i("#Hex no alpha", String.format("#%06X", (0xFFFFFF & color)));
-					activityCreateLabelBinding.colorPicker.setBackgroundColor(color);
-					labelColor = String.format("#%06X", (0xFFFFFF & color));
-					cp.dismiss();
-				});
+		activityCreateLabelBinding.colorPicker.setOnClickListener(v -> newColorPicker());
 
 		if (getIntent().getStringExtra("labelAction") != null
 				&& Objects.requireNonNull(getIntent().getStringExtra("labelAction"))
@@ -96,27 +81,73 @@ public class CreateLabelActivity extends BaseActivity {
 			activityCreateLabelBinding.colorPicker.setBackgroundColor(labelColor_);
 			labelColorDefault = "#" + getIntent().getStringExtra("labelColor");
 
-			TextView toolbar_title = activityCreateLabelBinding.toolbarTitle;
-			toolbar_title.setText(getResources().getString(R.string.pageTitleLabelUpdate));
-			activityCreateLabelBinding.createLabelButton.setText(
-					getResources().getString(R.string.newUpdateButtonCopy));
+			activityCreateLabelBinding.topAppBar.setTitle(getString(R.string.pageTitleLabelUpdate));
 
-			activityCreateLabelBinding.createLabelButton.setOnClickListener(updateLabelListener);
+			update.setVisible(true);
+			create.setVisible(false);
+
+			activityCreateLabelBinding.topAppBar.setOnMenuItemClickListener(
+					menuItem -> {
+						int id = menuItem.getItemId();
+
+						if (id == R.id.update) {
+							processUpdateLabel();
+							return true;
+						} else {
+							return super.onOptionsItemSelected(menuItem);
+						}
+					});
+
 			return;
 		}
 
-		if (!connToInternet) {
+		activityCreateLabelBinding.topAppBar.setOnMenuItemClickListener(
+				menuItem -> {
+					int id = menuItem.getItemId();
 
-			activityCreateLabelBinding.createLabelButton.setEnabled(false);
+					if (id == R.id.create) {
+						processCreateLabel();
+						return true;
+					} else {
+						return super.onOptionsItemSelected(menuItem);
+					}
+				});
+	}
+
+	private void newColorPicker() {
+
+		ColorPickerDialog.Builder builder =
+				new ColorPickerDialog.Builder(this)
+						.setPreferenceName("colorPickerDialogLabels")
+						.setPositiveButton(
+								getString(R.string.okButton),
+								(ColorEnvelopeListener)
+										(envelope, clicked) -> {
+											activityCreateLabelBinding.colorPicker
+													.setBackgroundColor(envelope.getColor());
+											labelColor =
+													String.format(
+															"#%06X",
+															(0xFFFFFF & envelope.getColor()));
+										})
+						.attachAlphaSlideBar(true)
+						.attachBrightnessSlideBar(true)
+						.setBottomSpace(16);
+
+		builder.getColorPickerView().setFlagView(new BubbleFlag(this));
+
+		if (!labelColorDefault.equalsIgnoreCase("")) {
+			int labelColorCurrent = Color.parseColor(labelColorDefault);
+			builder.getColorPickerView().setInitialColor(labelColorCurrent);
 		} else {
-
-			activityCreateLabelBinding.createLabelButton.setOnClickListener(createLabelListener);
+			colorManager.setColor("colorPickerDialogLabels", Color.RED);
 		}
+
+		builder.getColorPickerView().setLifecycleOwner(this);
+		builder.show();
 	}
 
 	private void processUpdateLabel() {
-
-		boolean connToInternet = AppUtil.hasNetworkConnection(appCtx);
 
 		String updateLabelName =
 				Objects.requireNonNull(activityCreateLabelBinding.labelName.getText()).toString();
@@ -130,25 +161,20 @@ public class CreateLabelActivity extends BaseActivity {
 			updateLabelColor = labelColor;
 		}
 
-		if (!connToInternet) {
-
-			Toasty.error(ctx, getResources().getString(R.string.checkNetConnection));
-			return;
-		}
-
 		if (updateLabelName.equals("")) {
 
-			Toasty.error(ctx, getString(R.string.labelEmptyError));
+			SnackBar.error(
+					ctx, findViewById(android.R.id.content), getString(R.string.labelEmptyError));
 			return;
 		}
 
-		if (!AppUtil.checkStrings(updateLabelName)) {
+		if (!AppUtil.checkLabel(updateLabelName)) {
 
-			Toasty.error(ctx, getString(R.string.labelNameError));
+			SnackBar.error(
+					ctx, findViewById(android.R.id.content), getString(R.string.labelNameError));
 			return;
 		}
 
-		disableProcessButton();
 		patchLabel(
 				repository,
 				updateLabelName,
@@ -157,8 +183,6 @@ public class CreateLabelActivity extends BaseActivity {
 	}
 
 	private void processCreateLabel() {
-
-		boolean connToInternet = AppUtil.hasNetworkConnection(appCtx);
 
 		String newLabelName =
 				Objects.requireNonNull(activityCreateLabelBinding.labelName.getText()).toString();
@@ -174,25 +198,20 @@ public class CreateLabelActivity extends BaseActivity {
 			newLabelColor = labelColor;
 		}
 
-		if (!connToInternet) {
-
-			Toasty.error(ctx, getResources().getString(R.string.checkNetConnection));
-			return;
-		}
-
 		if (newLabelName.equals("")) {
 
-			Toasty.error(ctx, getString(R.string.labelEmptyError));
+			SnackBar.error(
+					ctx, findViewById(android.R.id.content), getString(R.string.labelEmptyError));
 			return;
 		}
 
-		if (!AppUtil.checkStrings(newLabelName)) {
+		if (!AppUtil.checkLabel(newLabelName)) {
 
-			Toasty.error(ctx, getString(R.string.labelNameError));
+			SnackBar.error(
+					ctx, findViewById(android.R.id.content), getString(R.string.labelNameError));
 			return;
 		}
 
-		disableProcessButton();
 		createNewLabel(newLabelName, newLabelColor);
 	}
 
@@ -230,17 +249,21 @@ public class CreateLabelActivity extends BaseActivity {
 
 						if (response.code() == 201) {
 
-							Toasty.success(ctx, getString(R.string.labelCreated));
+							SnackBar.success(
+									ctx,
+									findViewById(android.R.id.content),
+									getString(R.string.labelCreated));
 							refreshLabels = true;
-							finish();
+							new Handler().postDelayed(() -> finish(), 3000);
 						} else if (response.code() == 401) {
 
-							enableProcessButton();
 							AlertDialogs.authorizationTokenRevokedDialog(ctx);
 						} else {
 
-							enableProcessButton();
-							Toasty.error(ctx, getString(R.string.genericError));
+							SnackBar.error(
+									ctx,
+									findViewById(android.R.id.content),
+									getString(R.string.genericError));
 						}
 					}
 
@@ -248,8 +271,6 @@ public class CreateLabelActivity extends BaseActivity {
 					public void onFailure(@NonNull Call<Label> call, @NonNull Throwable t) {
 
 						labelColor = "";
-						Log.e("onFailure", t.toString());
-						enableProcessButton();
 					}
 				});
 	}
@@ -298,18 +319,22 @@ public class CreateLabelActivity extends BaseActivity {
 
 							if (response.code() == 200) {
 
-								Toasty.success(ctx, getString(R.string.labelUpdated));
+								SnackBar.success(
+										ctx,
+										findViewById(android.R.id.content),
+										getString(R.string.labelUpdated));
 								refreshLabels = true;
-								finish();
+								new Handler().postDelayed(() -> finish(), 3000);
 							}
 						} else if (response.code() == 401) {
 
-							enableProcessButton();
 							AlertDialogs.authorizationTokenRevokedDialog(ctx);
 						} else {
 
-							enableProcessButton();
-							Toasty.error(ctx, getString(R.string.genericError));
+							SnackBar.error(
+									ctx,
+									findViewById(android.R.id.content),
+									getString(R.string.genericError));
 						}
 					}
 
@@ -318,15 +343,8 @@ public class CreateLabelActivity extends BaseActivity {
 
 						labelColor = "";
 						labelColorDefault = "";
-						Log.e("onFailure", t.toString());
-						enableProcessButton();
 					}
 				});
-	}
-
-	private void initCloseListener() {
-
-		onClickListener = view -> finish();
 	}
 
 	private void deleteLabel(int labelId) {
@@ -358,7 +376,11 @@ public class CreateLabelActivity extends BaseActivity {
 
 							if (response.code() == 204) {
 
-								Toasty.success(ctx, getString(R.string.labelDeleteText));
+								SnackBar.success(
+										ctx,
+										findViewById(android.R.id.content),
+										getString(R.string.labelDeleteText));
+
 								if (getIntent().getStringExtra("type") != null
 										&& Objects.requireNonNull(
 														getIntent().getStringExtra("type"))
@@ -377,25 +399,16 @@ public class CreateLabelActivity extends BaseActivity {
 							AlertDialogs.authorizationTokenRevokedDialog(ctx);
 						} else {
 
-							Toasty.error(ctx, getString(R.string.genericError));
+							SnackBar.error(
+									ctx,
+									findViewById(android.R.id.content),
+									getString(R.string.genericError));
 						}
 					}
 
 					@Override
-					public void onFailure(@NonNull Call<Void> call, @NonNull Throwable t) {
-						Log.e("onFailure", t.toString());
-					}
+					public void onFailure(@NonNull Call<Void> call, @NonNull Throwable t) {}
 				});
-	}
-
-	private void disableProcessButton() {
-
-		activityCreateLabelBinding.createLabelButton.setEnabled(false);
-	}
-
-	private void enableProcessButton() {
-
-		activityCreateLabelBinding.createLabelButton.setEnabled(true);
 	}
 
 	@Override

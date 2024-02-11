@@ -84,7 +84,7 @@ Thanks to all the open source libraries, contributors, and donors.
 - [ocpsoft/prettytime](https://github.com/ocpsoft/prettytime)
 - [ramseth001/TextDrawable](https://github.com/ramseth001/TextDrawable)
 - [vdurmont/emoji-java](https://github.com/vdurmont/emoji-java)
-- [Pes8/android-material-color-picker-dialog](https://github.com/Pes8/android-material-color-picker-dialog)
+- [skydoves/ColorPickerView](https://github.com/skydoves/ColorPickerView)
 - [HamidrezaAmz/BreadcrumbsView](https://github.com/HamidrezaAmz/BreadcrumbsView)
 - [Baseflow/PhotoView](https://github.com/Baseflow/PhotoView)
 - [apache/commons](https://github.com/apache/commons-io)

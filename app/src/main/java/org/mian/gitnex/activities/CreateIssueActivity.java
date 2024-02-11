@@ -1,27 +1,37 @@
 package org.mian.gitnex.activities;
 
 import android.annotation.SuppressLint;
-import android.app.DatePickerDialog;
-import android.content.Context;
+import android.app.Activity;
+import android.content.Intent;
+import android.net.Uri;
 import android.os.Bundle;
+import android.os.Handler;
 import android.view.LayoutInflater;
-import android.view.Menu;
-import android.view.MenuInflater;
-import android.view.MenuItem;
 import android.view.MotionEvent;
 import android.view.View;
-import android.view.inputmethod.InputMethodManager;
 import android.widget.ArrayAdapter;
 import android.widget.TextView;
+import androidx.activity.result.ActivityResultLauncher;
+import androidx.activity.result.contract.ActivityResultContracts;
 import androidx.annotation.NonNull;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import com.google.android.material.bottomsheet.BottomSheetDialog;
+import com.google.android.material.datepicker.MaterialDatePicker;
 import com.google.android.material.dialog.MaterialAlertDialogBuilder;
 import com.vdurmont.emoji.EmojiParser;
+import java.io.File;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.LinkedHashMap;
 import java.util.List;
+import java.util.Locale;
 import java.util.Objects;
+import java.util.TimeZone;
+import okhttp3.MediaType;
+import okhttp3.RequestBody;
+import org.gitnex.tea4j.v2.models.Attachment;
 import org.gitnex.tea4j.v2.models.CreateIssueOption;
 import org.gitnex.tea4j.v2.models.Issue;
 import org.gitnex.tea4j.v2.models.Label;
@@ -31,17 +41,20 @@ import org.mian.gitnex.R;
 import org.mian.gitnex.actions.AssigneesActions;
 import org.mian.gitnex.actions.LabelsActions;
 import org.mian.gitnex.adapters.AssigneesListAdapter;
+import org.mian.gitnex.adapters.AttachmentsAdapter;
 import org.mian.gitnex.adapters.LabelsListAdapter;
 import org.mian.gitnex.clients.RetrofitClient;
 import org.mian.gitnex.databinding.ActivityCreateIssueBinding;
+import org.mian.gitnex.databinding.BottomSheetAttachmentsBinding;
 import org.mian.gitnex.databinding.CustomAssigneesSelectionDialogBinding;
 import org.mian.gitnex.databinding.CustomLabelsSelectionDialogBinding;
 import org.mian.gitnex.fragments.IssuesFragment;
 import org.mian.gitnex.helpers.AlertDialogs;
-import org.mian.gitnex.helpers.AppUtil;
 import org.mian.gitnex.helpers.Constants;
 import org.mian.gitnex.helpers.Markdown;
-import org.mian.gitnex.helpers.Toasty;
+import org.mian.gitnex.helpers.SnackBar;
+import org.mian.gitnex.helpers.attachments.AttachmentUtils;
+import org.mian.gitnex.helpers.attachments.AttachmentsModel;
 import org.mian.gitnex.helpers.contexts.RepositoryContext;
 import retrofit2.Call;
 import retrofit2.Callback;
@@ -50,17 +63,15 @@ import retrofit2.Callback;
  * @author M M Arif
  */
 public class CreateIssueActivity extends BaseActivity
-		implements View.OnClickListener,
-				LabelsListAdapter.LabelsListAdapterListener,
-				AssigneesListAdapter.AssigneesListAdapterListener {
+		implements LabelsListAdapter.LabelsListAdapterListener,
+				AssigneesListAdapter.AssigneesListAdapterListener,
+				AttachmentsAdapter.AttachmentsReceiverListener {
 
 	private final List<Label> labelsList = new ArrayList<>();
 	private final LinkedHashMap<String, Milestone> milestonesList = new LinkedHashMap<>();
 	private final List<User> assigneesList = new ArrayList<>();
 	private ActivityCreateIssueBinding viewBinding;
-	private View.OnClickListener onClickListener;
 	private int milestoneId;
-	private Date currentDate = null;
 	private RepositoryContext repository;
 	private LabelsListAdapter labelsAdapter;
 	private AssigneesListAdapter assigneesAdapter;
@@ -69,6 +80,9 @@ public class CreateIssueActivity extends BaseActivity
 	private List<String> assigneesListData = new ArrayList<>();
 	private boolean renderMd = false;
 	private RepositoryContext repositoryContext;
+	private static List<AttachmentsModel> attachmentsList;
+	private AttachmentsAdapter attachmentsAdapter;
+	private static final List<Uri> contentUri = new ArrayList<>();
 
 	@SuppressLint("ClickableViewAccessibility")
 	@Override
@@ -78,14 +92,8 @@ public class CreateIssueActivity extends BaseActivity
 
 		viewBinding = ActivityCreateIssueBinding.inflate(getLayoutInflater());
 		setContentView(viewBinding.getRoot());
-		setSupportActionBar(viewBinding.toolbar);
 
 		repositoryContext = RepositoryContext.fromIntent(getIntent());
-
-		boolean connToInternet = AppUtil.hasNetworkConnection(appCtx);
-
-		InputMethodManager imm =
-				(InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
 
 		materialAlertDialogBuilder =
 				new MaterialAlertDialogBuilder(ctx, R.style.ThemeOverlay_Material3_Dialog_Alert);
@@ -94,9 +102,10 @@ public class CreateIssueActivity extends BaseActivity
 
 		int resultLimit = Constants.getCurrentResultLimit(ctx);
 
-		viewBinding.newIssueTitle.requestFocus();
-		assert imm != null;
-		imm.showSoftInput(viewBinding.newIssueTitle, InputMethodManager.SHOW_IMPLICIT);
+		attachmentsList = new ArrayList<>();
+		attachmentsAdapter = new AttachmentsAdapter(attachmentsList, ctx);
+
+		AttachmentsAdapter.setAttachmentsReceiveListener(this);
 
 		viewBinding.newIssueDescription.setOnTouchListener(
 				(touchView, motionEvent) -> {
@@ -115,29 +124,61 @@ public class CreateIssueActivity extends BaseActivity
 				new AssigneesListAdapter(
 						ctx, assigneesList, CreateIssueActivity.this, assigneesListData);
 
-		initCloseListener();
-		viewBinding.close.setOnClickListener(onClickListener);
+		showDatePickerDialog();
 
-		viewBinding.newIssueAssigneesList.setOnClickListener(this);
-		viewBinding.newIssueLabels.setOnClickListener(this);
-		viewBinding.newIssueDueDate.setOnClickListener(this);
+		viewBinding.newIssueDueDateLayout.setEndIconOnClickListener(
+				view -> viewBinding.newIssueDueDate.setText(""));
+
+		viewBinding.topAppBar.setNavigationOnClickListener(
+				v -> {
+					finish();
+					contentUri.clear();
+				});
+
+		viewBinding.topAppBar.setOnMenuItemClickListener(
+				menuItem -> {
+					int id = menuItem.getItemId();
+
+					if (id == R.id.markdown) {
+
+						if (!renderMd) {
+							Markdown.render(
+									ctx,
+									EmojiParser.parseToUnicode(
+											Objects.requireNonNull(
+															viewBinding.newIssueDescription
+																	.getText())
+													.toString()),
+									viewBinding.markdownPreview,
+									repositoryContext);
+
+							viewBinding.markdownPreview.setVisibility(View.VISIBLE);
+							viewBinding.newIssueDescriptionLayout.setVisibility(View.GONE);
+							renderMd = true;
+						} else {
+							viewBinding.markdownPreview.setVisibility(View.GONE);
+							viewBinding.newIssueDescriptionLayout.setVisibility(View.VISIBLE);
+							renderMd = false;
+						}
+
+						return true;
+					} else if (id == R.id.create) {
+						processNewIssue();
+						return true;
+					} else if (id == R.id.attachment) {
+						checkForAttachments();
+						return true;
+					} else {
+						return super.onOptionsItemSelected(menuItem);
+					}
+				});
 
 		getMilestones(repository.getOwner(), repository.getName(), resultLimit);
-
-		disableProcessButton();
 
 		viewBinding.newIssueLabels.setOnClickListener(newIssueLabels -> showLabels());
 
 		viewBinding.newIssueAssigneesList.setOnClickListener(
 				newIssueAssigneesList -> showAssignees());
-
-		if (!connToInternet) {
-
-			viewBinding.createNewIssueButton.setEnabled(false);
-		} else {
-
-			viewBinding.createNewIssueButton.setOnClickListener(this);
-		}
 
 		if (!repository.getPermissions().isPush()) {
 			viewBinding.newIssueAssigneesListLayout.setVisibility(View.GONE);
@@ -147,44 +188,146 @@ public class CreateIssueActivity extends BaseActivity
 		}
 	}
 
-	@Override
-	public boolean onCreateOptionsMenu(@NonNull Menu menu) {
+	ActivityResultLauncher<Intent> startActivityForResult =
+			registerForActivityResult(
+					new ActivityResultContracts.StartActivityForResult(),
+					result -> {
+						if (result.getResultCode() == Activity.RESULT_OK) {
+							Intent data = result.getData();
+							assert data != null;
+							contentUri.add(data.getData());
+							attachmentsList.add(
+									new AttachmentsModel(
+											AttachmentUtils.queryName(ctx, data.getData()),
+											data.getData()));
+							attachmentsAdapter.updateList(attachmentsList);
+						}
+					});
 
-		MenuInflater inflater = getMenuInflater();
-		inflater.inflate(R.menu.markdown_switcher, menu);
-
-		return true;
+	public void onDestroy() {
+		AttachmentsAdapter.setAttachmentsReceiveListener(null);
+		super.onDestroy();
 	}
 
 	@Override
-	public boolean onOptionsItemSelected(MenuItem item) {
+	public void setAttachmentsData(Uri filename) {
+		contentUri.remove(filename);
+	}
 
-		int id = item.getItemId();
+	private void checkForAttachments() {
 
-		if (id == R.id.markdown) {
+		if (contentUri.size() > 0) {
 
-			if (!renderMd) {
-				Markdown.render(
-						ctx,
-						EmojiParser.parseToUnicode(
-								Objects.requireNonNull(viewBinding.newIssueDescription.getText())
-										.toString()),
-						viewBinding.markdownPreview,
-						repositoryContext);
+			BottomSheetAttachmentsBinding bottomSheetAttachmentsBinding =
+					BottomSheetAttachmentsBinding.inflate(getLayoutInflater());
 
-				viewBinding.markdownPreview.setVisibility(View.VISIBLE);
-				viewBinding.newIssueDescriptionLayout.setVisibility(View.GONE);
-				renderMd = true;
-			} else {
-				viewBinding.markdownPreview.setVisibility(View.GONE);
-				viewBinding.newIssueDescriptionLayout.setVisibility(View.VISIBLE);
-				renderMd = false;
-			}
+			BottomSheetDialog bottomSheetDialog = new BottomSheetDialog(ctx);
 
-			return true;
+			bottomSheetAttachmentsBinding.addAttachment.setOnClickListener(
+					v1 -> openFileAttachmentActivity());
+
+			bottomSheetAttachmentsBinding.recyclerViewAttachments.setHasFixedSize(true);
+			bottomSheetAttachmentsBinding.recyclerViewAttachments.setLayoutManager(
+					new LinearLayoutManager(ctx));
+			bottomSheetAttachmentsBinding.recyclerViewAttachments.setAdapter(attachmentsAdapter);
+
+			bottomSheetDialog.setContentView(bottomSheetAttachmentsBinding.getRoot());
+			bottomSheetDialog.show();
 		} else {
-			return super.onOptionsItemSelected(item);
+			openFileAttachmentActivity();
 		}
+	}
+
+	private void openFileAttachmentActivity() {
+
+		Intent data = new Intent(Intent.ACTION_GET_CONTENT);
+		data.addCategory(Intent.CATEGORY_OPENABLE);
+		data.setType("*/*");
+		Intent intent = Intent.createChooser(data, "Choose a file");
+		startActivityForResult.launch(intent);
+	}
+
+	private void processAttachments(long issueIndex) {
+
+		for (int i = 0; i < contentUri.size(); i++) {
+
+			File file = AttachmentUtils.getFile(ctx, contentUri.get(i));
+
+			RequestBody requestFile =
+					RequestBody.create(
+							file,
+							MediaType.parse(
+									Objects.requireNonNull(
+											getContentResolver().getType(contentUri.get(i)))));
+
+			uploadAttachments(requestFile, issueIndex, file.getName());
+		}
+	}
+
+	private void uploadAttachments(RequestBody requestFile, long issueIndex, String filename1) {
+
+		Call<Attachment> call3 =
+				RetrofitClient.getApiInterface(ctx)
+						.issueCreateIssueAttachment(
+								requestFile,
+								repository.getOwner(),
+								repository.getName(),
+								issueIndex,
+								filename1);
+
+		call3.enqueue(
+				new Callback<>() {
+
+					@Override
+					public void onResponse(
+							@NonNull Call<Attachment> call,
+							@NonNull retrofit2.Response<Attachment> response2) {
+
+						if (response2.code() == 201) {
+							new Handler().postDelayed(() -> finish(), 3000);
+						} else if (response2.code() == 401) {
+
+							AlertDialogs.authorizationTokenRevokedDialog(ctx);
+						} else {
+
+							SnackBar.error(
+									ctx,
+									findViewById(android.R.id.content),
+									getString(R.string.attachmentsSaveError));
+						}
+					}
+
+					@Override
+					public void onFailure(@NonNull Call<Attachment> call, @NonNull Throwable t) {
+
+						SnackBar.error(
+								ctx,
+								findViewById(android.R.id.content),
+								getString(R.string.genericServerResponseError));
+					}
+				});
+	}
+
+	private void showDatePickerDialog() {
+
+		MaterialDatePicker.Builder<Long> builder = MaterialDatePicker.Builder.datePicker();
+		builder.setSelection(Calendar.getInstance().getTimeInMillis());
+		builder.setTitleText(R.string.newIssueDueDateTitle);
+		MaterialDatePicker<Long> materialDatePicker = builder.build();
+
+		viewBinding.newIssueDueDate.setOnClickListener(
+				v -> materialDatePicker.show(getSupportFragmentManager(), "DATE_PICKER"));
+
+		materialDatePicker.addOnPositiveButtonClickListener(
+				selection -> {
+					Calendar calendar = Calendar.getInstance(TimeZone.getTimeZone("UTC"));
+					calendar.setTimeInMillis(selection);
+					SimpleDateFormat format =
+							new SimpleDateFormat(
+									"yyyy-MM-dd", new Locale(tinyDB.getString("locale")));
+					String formattedDate = format.format(calendar.getTime());
+					viewBinding.newIssueDueDate.setText(formattedDate);
+				});
 	}
 
 	@Override
@@ -255,8 +398,6 @@ public class CreateIssueActivity extends BaseActivity
 
 	private void processNewIssue() {
 
-		boolean connToInternet = AppUtil.hasNetworkConnection(appCtx);
-
 		String newIssueTitleForm =
 				Objects.requireNonNull(viewBinding.newIssueTitle.getText()).toString();
 		String newIssueDescriptionForm =
@@ -264,25 +405,20 @@ public class CreateIssueActivity extends BaseActivity
 		String newIssueDueDateForm =
 				Objects.requireNonNull(viewBinding.newIssueDueDate.getText()).toString();
 
-		if (!connToInternet) {
-
-			Toasty.error(ctx, getResources().getString(R.string.checkNetConnection));
-			return;
-		}
-
 		if (newIssueTitleForm.equals("")) {
 
-			Toasty.error(ctx, getString(R.string.issueTitleEmpty));
+			SnackBar.error(
+					ctx, findViewById(android.R.id.content), getString(R.string.issueTitleEmpty));
 			return;
 		}
 
-		disableProcessButton();
 		createNewIssueFunc(
 				repository.getOwner(),
 				repository.getName(),
 				newIssueDescriptionForm,
 				milestoneId,
-				newIssueTitleForm);
+				newIssueTitleForm,
+				newIssueDueDateForm);
 	}
 
 	private void createNewIssueFunc(
@@ -290,7 +426,8 @@ public class CreateIssueActivity extends BaseActivity
 			String repoName,
 			String newIssueDescriptionForm,
 			int newIssueMilestoneIdForm,
-			String newIssueTitleForm) {
+			String newIssueTitleForm,
+			String newIssueDueDateForm) {
 
 		ArrayList<Long> labelIds = new ArrayList<>();
 		for (Integer i : labelsIds) {
@@ -300,7 +437,15 @@ public class CreateIssueActivity extends BaseActivity
 		CreateIssueOption createNewIssueJson = new CreateIssueOption();
 		createNewIssueJson.setBody(newIssueDescriptionForm);
 		createNewIssueJson.setMilestone((long) newIssueMilestoneIdForm);
-		createNewIssueJson.setDueDate(currentDate);
+		String[] date = newIssueDueDateForm.split("-");
+		if (!newIssueDueDateForm.equalsIgnoreCase("")) {
+			Calendar calendar = Calendar.getInstance();
+			calendar.set(Calendar.YEAR, Integer.parseInt(date[0]));
+			calendar.set(Calendar.MONTH, Integer.parseInt(date[1]));
+			calendar.set(Calendar.DATE, Integer.parseInt(date[2]));
+			Date dueDate = calendar.getTime();
+			createNewIssueJson.setDueDate(dueDate);
+		}
 		createNewIssueJson.setTitle(newIssueTitleForm);
 		createNewIssueJson.setAssignees(assigneesListData);
 		createNewIssueJson.setLabels(labelIds);
@@ -320,35 +465,44 @@ public class CreateIssueActivity extends BaseActivity
 						if (response2.code() == 201) {
 
 							IssuesFragment.resumeIssues = true;
-
-							Toasty.success(ctx, getString(R.string.issueCreated));
-							enableProcessButton();
 							RepoDetailActivity.updateRepo = true;
 							MainActivity.reloadRepos = true;
-							finish();
+
+							SnackBar.success(
+									ctx,
+									findViewById(android.R.id.content),
+									getString(R.string.issueCreated));
+
+							assert response2.body() != null;
+
+							if (contentUri.size() > 0) {
+								processAttachments(response2.body().getNumber());
+								contentUri.clear();
+							} else {
+								new Handler().postDelayed(() -> finish(), 3000);
+							}
+
 						} else if (response2.code() == 401) {
 
-							enableProcessButton();
 							AlertDialogs.authorizationTokenRevokedDialog(ctx);
 						} else {
 
-							Toasty.error(ctx, getString(R.string.genericError));
-							enableProcessButton();
+							SnackBar.error(
+									ctx,
+									findViewById(android.R.id.content),
+									getString(R.string.genericError));
 						}
 					}
 
 					@Override
 					public void onFailure(@NonNull Call<Issue> call, @NonNull Throwable t) {
 
-						Toasty.error(ctx, getString(R.string.genericServerResponseError));
-						enableProcessButton();
+						SnackBar.error(
+								ctx,
+								findViewById(android.R.id.content),
+								getString(R.string.genericServerResponseError));
 					}
 				});
-	}
-
-	private void initCloseListener() {
-
-		onClickListener = view -> finish();
 	}
 
 	private void getMilestones(String repoOwner, String repoName, int resultLimit) {
@@ -396,7 +550,7 @@ public class CreateIssueActivity extends BaseActivity
 												new ArrayList<>(milestonesList.keySet()));
 
 								viewBinding.newIssueMilestoneSpinner.setAdapter(adapter);
-								enableProcessButton();
+								// enableProcessButton();
 
 								viewBinding.newIssueMilestoneSpinner.setOnItemClickListener(
 										(parent, view, position, id) -> {
@@ -422,51 +576,12 @@ public class CreateIssueActivity extends BaseActivity
 					public void onFailure(
 							@NonNull Call<List<Milestone>> call, @NonNull Throwable t) {
 
-						Toasty.error(ctx, getString(R.string.genericServerResponseError));
+						SnackBar.error(
+								ctx,
+								findViewById(android.R.id.content),
+								getString(R.string.genericServerResponseError));
 					}
 				});
-	}
-
-	@Override
-	public void onClick(View v) {
-
-		if (v == viewBinding.newIssueDueDate) {
-
-			final Calendar c = Calendar.getInstance();
-			int mYear = c.get(Calendar.YEAR);
-			final int mMonth = c.get(Calendar.MONTH);
-			final int mDay = c.get(Calendar.DAY_OF_MONTH);
-
-			DatePickerDialog datePickerDialog =
-					new DatePickerDialog(
-							this,
-							(view, year, monthOfYear, dayOfMonth) -> {
-								viewBinding.newIssueDueDate.setText(
-										getString(
-												R.string.setDueDate,
-												year,
-												(monthOfYear + 1),
-												dayOfMonth));
-								currentDate = new Date(year - 1900, monthOfYear, dayOfMonth);
-							},
-							mYear,
-							mMonth,
-							mDay);
-			datePickerDialog.show();
-		} else if (v == viewBinding.createNewIssueButton) {
-
-			processNewIssue();
-		}
-	}
-
-	private void disableProcessButton() {
-
-		viewBinding.createNewIssueButton.setEnabled(false);
-	}
-
-	private void enableProcessButton() {
-
-		viewBinding.createNewIssueButton.setEnabled(true);
 	}
 
 	@Override
