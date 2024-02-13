@@ -46,6 +46,8 @@
     <string name="newRepoDescTintCopy">Beschreibung des Repositories</string>
     <string name="newRepoPrivateCopy">Privat</string>
     <string name="newRepoOwner">Eigentümer</string>
+    <string name="newRepoIssueLabels">Issue-Labels</string>
+    <string name="setAsTemplate">Repository in eine Vorlage umwandeln</string>
     <string name="newOrgTintCopy">Name der Organisation</string>
     <string name="newOrgDescTintCopy">Beschreibung der Organisation</string>
     <string name="userName">Benutzername</string>
@@ -73,6 +75,7 @@
     <string name="repoCreated">Repository erfolgreich erstellt!</string>
     <string name="repoExistsError">Ein Repository mit diesem Namen existiert bereits unter dem ausgewählten Besitzer</string>
     <string name="repoOwnerError">Wähle den Besitzer für das Repository aus</string>
+    <string name="repoDefaultBranchError">Der Standardbranch darf nicht leer sein</string>
     <string name="orgNameErrorEmpty">Name der Organisation ist leer</string>
     <string name="orgNameErrorInvalid">Organisationsname ist nicht gültig, [a&#8211;z A&#8211;Z 0&#8211;9 &#8211; _]</string>
     <string name="orgDescError">Organisationsbeschreibung überschreitet maximale Anzahl von 255 Zeichen</string>
@@ -104,7 +107,6 @@
     <string name="infoTabRepoForksCount">Forks</string>
     <string name="infoTabRepoCreatedAt">Erstellt</string>
     <string name="infoTabRepoUpdatedAt">Letzte Aktualisierung</string>
-    <string name="infoShowMoreInformation">Mehr Informationen anzeigen</string>
     <string name="infoMoreInformation">Mehr Informationen</string>
     <string name="timeAtText">um</string>
     <string name="issueMilestone">Meilenstein %1$s</string>
@@ -427,6 +429,8 @@
     <string name="reset">Zurücksetzen</string>
     <string name="beta">BETA</string>
     <string name="none">Keine</string>
+    <string name="main">main</string>
+    <string name="license">Lizenz</string>
     <!-- generic copy -->
     <string name="exploreUsers">Benutzer erkunden</string>
     <string name="exploreIssues">Issues erkunden</string>
@@ -440,8 +444,7 @@
     <string name="versionUnsupportedNew">Neue Gitea-Version erkannt! Bitte UPDATE GitNex!</string>
     <string name="versionUnknown">Keine Gitea-Instanz erkannt!</string>
     <string name="versionAlertDialogHeader">Nicht unterstützte Version von Gitea</string>
-    <string name="loginViaPassword">Benutzername/Passwort</string>
-    <string name="loginMethodText">Wähle deine bevorzugte Login-Methode, um auf deinen Account zuzugreifen. Token ist sicherer!</string>
+    <string name="loginViaPassword">Basisauthentifizierung</string>
     <string name="unauthorizedApiError">Gitea hat einen Fehler zurückgegeben - Nicht autorisiert. Überprüfe deine Anmeldeinformationen und versuche es erneut</string>
     <string name="loginTokenError">Token ist erforderlich</string>
     <string name="prDeletedFork">Gelöschter Fork</string>
@@ -536,7 +539,7 @@
     <string name="removeAccountPopupTitle">Konto entfernen</string>
     <string name="removeAccountPopupMessage">Bist du sicher, dieses Konto aus der App zu entfernen?\n\nDadurch werden alle mit diesem Konto in Verbindung stehenden Daten entfernt.</string>
     <string name="addNewAccount">Neues Konto</string>
-    <string name="addNewAccountText">Neues Konto hinzufügen</string>
+    <string name="addNewAccountText">Konto hinzufügen</string>
     <string name="accountAlreadyExistsError">Konto existiert bereits in der App</string>
     <string name="accountAddedMessage">Konto erfolgreich hinzugefügt</string>
     <string name="switchAccountSuccess">Auf Konto umgeschaltet: %1$s@%2$s</string>
@@ -544,14 +547,17 @@
     <string name="pageTitleNotifications">Benachrichtigungen</string>
     <string name="noDataNotifications">Keine Benachrichtigungen 🚀</string>
     <string name="notificationsPollingHeaderText">Benachrichtigungsverzögerung</string>
-    <string name="pollingDelaySelectedText">%d Minuten</string>
+    <string name="pollingDelay15Minutes">15 Minuten</string>
+    <string name="pollingDelay30Minutes">30 Minuten</string>
+    <string name="pollingDelay45Minutes">45 Minuten</string>
+    <string name="pollingDelay1Hour">1 Stunde</string>
     <string name="pollingDelayDialogHeaderText">Abfrageverzögerung auswählen</string>
     <string name="pollingDelayDialogDescriptionText">Wähle eine minütige Verzögerung, die GitNex wartet, bevor erneut nach neuen Benachrichtigungen abgefragt wird</string>
     <string name="markAsRead">Als gelesen markieren</string>
     <string name="markAsUnread">Als ungelesen markieren</string>
     <string name="pinNotification">Anheften</string>
     <string name="markedNotificationsAsRead">Alle Benachrichtigungen erfolgreich als gelesen markiert</string>
-    <string name="notificationsHintText">Intervall, Licht, Vibration</string>
+    <string name="notificationsHintText">Verzögerung für Polling</string>
     <string name="enableNotificationsHeaderText">Benachrichtigungen aktivieren</string>
     <string name="enableLightsHeaderText">Aktiviere Licht</string>
     <string name="enableVibrationHeaderText">Vibration aktivieren</string>
@@ -564,6 +570,7 @@
         <item quantity="one">Du hast %s neue Benachrichtigung</item>
         <item quantity="other">Du hast %s neue Benachrichtigungen</item>
     </plurals>
+    <string name="openAppSettings">Um Benachrichtigungen zu empfangen, musst du diese für GitNex aktivieren. Tippe „Öffnen”, um die Geräteeinstellungen zu öffnen und Benachrichtigungen zu aktivieren.</string>
     <string name="isRead">Gelesen</string>
     <string name="isUnread">Ungelesen</string>
     <string name="repoSettingsTitle">Repository Einstellungen</string>
@@ -730,9 +737,38 @@
     <string name="timelineRefIssue">%1$s hat diesen Issue %3$s in #%2$d erwähnt</string>
     <string name="timelineRefPr">%1$s hat diesen Pull-Request %3$s in #%2$d erwähnt</string>
     <string name="timelineStatusRefIssue"><![CDATA[%1$s hat diesen Issue von einem <font color=\'%2$d\'>%3$s</font> %4$s referenziert]]></string>
+    <string name="timelineReviewLeftComment">%1$s hat einen Kommentar hinterlassen: %2$s %3$s</string>
     <string name="commitStatuses">Status</string>
     <string name="statusNoUrl">Dieser Status hat keine Ziel-URL.</string>
     <string name="starredRepos">Favoriten</string>
     <string name="lang_statistics">Sprach-Statistik</string>
     <string name="dashboard">Dashboard</string>
+    <string name="createdRepository">Repository erstellt</string>
+    <string name="renamedRepository">Repository von %1$s umbenannt zu</string>
+    <string name="starredRepository">favorisiert</string>
+    <string name="transferredRepository">Repository %1$s übertragen zu</string>
+    <string name="createdBranch">Branch %1$s erstellt in</string>
+    <string name="pushedTo">gepusht auf %1$s in</string>
+    <string name="openedIssue">Issue geöffnet</string>
+    <string name="commentedOnIssue">kommentierte auf Issue</string>
+    <string name="closedIssue">Issue geschlossen</string>
+    <string name="reopenedIssue">Issue neu geöffnet</string>
+    <string name="createdPR">Pull-Request erstellt</string>
+    <string name="closedPR">Pull-Request geschlossen</string>
+    <string name="reopenedPR">Pull-Request wieder geöffnet</string>
+    <string name="mergedPR">Pull-Request zusammengeführt</string>
+    <string name="approved">genehmigt</string>
+    <string name="suggestedChanges">Änderungen vorgeschlagen für</string>
+    <string name="commentedOnPR">auf Pull-Request kommentiert</string>
+    <string name="autoMergePR">Pull-Request automatisch zusammengeführt</string>
+    <string name="deletedBranch">Branch %1$s gelöscht in</string>
+    <string name="pushedTag">Tag auf %1$s gepusht in</string>
+    <string name="deletedTag">Tag %1$s gelöscht in</string>
+    <string name="releasedBranch">veröffentlichte %1$s in</string>
+    <string name="syncedCommits">synchronisierte Commits auf %1$s in</string>
+    <string name="syncedRefs">synchronisierte neue Referenz %1$s in</string>
+    <string name="syncedDeletedRefs">synchronisierte und löschte Referenz %1$s in</string>
+    <string name="attachment">Anhang</string>
+    <string name="attachments">Anhänge</string>
+    <string name="attachmentsSaveError">Ein Issue wurde erstellt, aber die Anhänge konnten nicht verarbeitet werden. Prüfe die Server-Logs für mehr Details.</string>
 </resources>
