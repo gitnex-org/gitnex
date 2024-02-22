@@ -1,0 +1,16 @@
+5.3.0
+
+🎉 Features 🎉
+- Upload attachments to an issue and pr
+- Show/download attachments for issues/pr and comments
+- Redesigned most of the app layouts
+
+🚀 Improvements 🚀 
+- Make issue and pr text selectable
+- Ask to enable notifications if disabled
+- Make info tabs clickable in user profile detail screen
+- Improve version check crashes
+
+Release Notes: https://codeberg.org/gitnex/GitNex/releases
+
+Release Posts: https://najigram.com/category/gitnex
