@@ -50,6 +50,7 @@
     <string name="setAsTemplate">Repository in eine Vorlage umwandeln</string>
     <string name="newOrgTintCopy">Name der Organisation</string>
     <string name="newOrgDescTintCopy">Beschreibung der Organisation</string>
+    <string name="organizationFullname">%1$s - %2$s</string>
     <string name="userName">Benutzername</string>
     <string name="passWord">Passwort</string>
     <string name="btnLogin">ANMELDEN</string>

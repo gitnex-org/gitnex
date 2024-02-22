@@ -1,0 +1,16 @@
+5.3.0
+
+🎉 Funktionen 🎉
+- Anhänge für Issues und PRs hochladen
+- Anhänge für Issue-/PR-Kommentare anzeigen/herunterladen
+- Meisten App-Layouts neu gestaltet
+
+🚀 Verbesserungen 🚀 
+- Auswählbarer Issue- und PR-Text
+- Fragen, Benachrichtigungen zu aktivieren wenn deaktiviert
+- Info-Tags klickbar in Nutzerprofil-Details
+- Versions-Check-Fehler verbessert
+
+Release-Anmerkungen: https://codeberg.org/gitnex/GitNex/releases
+
+Release-Posts: https://najigram.com/category/gitnex
