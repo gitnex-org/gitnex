@@ -22,7 +22,6 @@ steps:
 
   upload:
     image: curlimages/curl:7.82.0
-    group: upload
     environment:
       WEBDAV_USERNAME: "GitNexBot"
       PLUGIN_FILE: "signed.apk"
@@ -37,7 +36,6 @@ steps:
 
   upload-release:
     image: curlimages/curl:7.82.0
-    group: upload
     environment:
       WEBDAV_USERNAME: "GitNexBot"
       PLUGIN_FILE: "signed.apk"

@@ -79,6 +79,7 @@
 
     <string name="newOrgTintCopy">Organization Name</string>
     <string name="newOrgDescTintCopy">Organization Description</string>
+    <string name="organizationFullname">%1$s - %2$s</string>
 
     <string name="userName">Username</string>
     <string name="passWord">Password</string>

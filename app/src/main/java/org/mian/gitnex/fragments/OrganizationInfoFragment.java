@@ -6,10 +6,6 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.ImageView;
-import android.widget.LinearLayout;
-import android.widget.ProgressBar;
-import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
 import org.gitnex.tea4j.v2.models.Organization;
@@ -27,15 +23,10 @@ import retrofit2.Callback;
  */
 public class OrganizationInfoFragment extends Fragment {
 
+	FragmentOrganizationInfoBinding fragmentOrganizationInfoBinding;
 	private static final String orgNameF = "param1";
 	private Context ctx;
-	private ProgressBar mProgressBar;
 	private String orgName;
-	private ImageView orgAvatar;
-	private TextView orgDescInfo;
-	private TextView orgWebsiteInfo;
-	private TextView orgLocationInfo;
-	private LinearLayout orgInfoLayout;
 
 	public OrganizationInfoFragment() {}
 
@@ -59,20 +50,10 @@ public class OrganizationInfoFragment extends Fragment {
 	public View onCreateView(
 			@NonNull LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
 
-		FragmentOrganizationInfoBinding fragmentOrganizationInfoBinding =
+		fragmentOrganizationInfoBinding =
 				FragmentOrganizationInfoBinding.inflate(inflater, container, false);
 
 		ctx = getContext();
-
-		mProgressBar = fragmentOrganizationInfoBinding.progressBar;
-		orgAvatar = fragmentOrganizationInfoBinding.orgAvatar;
-		TextView orgNameInfo = fragmentOrganizationInfoBinding.orgNameInfo;
-		orgDescInfo = fragmentOrganizationInfoBinding.orgDescInfo;
-		orgWebsiteInfo = fragmentOrganizationInfoBinding.orgWebsiteInfo;
-		orgLocationInfo = fragmentOrganizationInfoBinding.orgLocationInfo;
-		orgInfoLayout = fragmentOrganizationInfoBinding.orgInfoLayout;
-
-		orgNameInfo.setText(orgName);
 
 		getOrgInfo(orgName);
 
@@ -84,7 +65,7 @@ public class OrganizationInfoFragment extends Fragment {
 		Call<Organization> call = RetrofitClient.getApiInterface(getContext()).orgGet(owner);
 
 		call.enqueue(
-				new Callback<Organization>() {
+				new Callback<>() {
 
 					@Override
 					public void onResponse(
@@ -95,7 +76,8 @@ public class OrganizationInfoFragment extends Fragment {
 
 						if (response.code() == 200) {
 
-							orgInfoLayout.setVisibility(View.VISIBLE);
+							fragmentOrganizationInfoBinding.orgInfoLayout.setVisibility(
+									View.VISIBLE);
 
 							assert orgInfo != null;
 
@@ -106,31 +88,49 @@ public class OrganizationInfoFragment extends Fragment {
 									.transform(new RoundedTransformation(8, 0))
 									.resize(230, 230)
 									.centerCrop()
-									.into(orgAvatar);
+									.into(fragmentOrganizationInfoBinding.orgAvatar);
+
+							if (orgInfo.getFullName() != null && !orgInfo.getFullName().isEmpty()) {
+								fragmentOrganizationInfoBinding.orgNameInfo.setText(
+										getString(
+												R.string.organizationFullname,
+												orgInfo.getFullName(),
+												orgName));
+							} else {
+								fragmentOrganizationInfoBinding.orgNameInfo.setText(orgName);
+							}
 
 							if (!orgInfo.getDescription().isEmpty()) {
-								Markdown.render(ctx, orgInfo.getDescription(), orgDescInfo);
+								Markdown.render(
+										ctx,
+										orgInfo.getDescription(),
+										fragmentOrganizationInfoBinding.orgDescInfo);
 							} else {
-								orgDescInfo.setText(getString(R.string.noDataDescription));
+								fragmentOrganizationInfoBinding.orgDescInfo.setText(
+										getString(R.string.noDataDescription));
 							}
 
 							if (!orgInfo.getWebsite().isEmpty()) {
-								orgWebsiteInfo.setText(orgInfo.getWebsite());
+								fragmentOrganizationInfoBinding.orgWebsiteInfo.setText(
+										orgInfo.getWebsite());
 							} else {
-								orgWebsiteInfo.setText(getString(R.string.noDataWebsite));
+								fragmentOrganizationInfoBinding.orgWebsiteInfo.setText(
+										getString(R.string.noDataWebsite));
 							}
 
 							if (!orgInfo.getLocation().isEmpty()) {
-								orgLocationInfo.setText(orgInfo.getLocation());
+								fragmentOrganizationInfoBinding.orgLocationInfo.setText(
+										orgInfo.getLocation());
 							} else {
-								orgLocationInfo.setText(getString(R.string.noDataLocation));
+								fragmentOrganizationInfoBinding.orgLocationInfo.setText(
+										getString(R.string.noDataLocation));
 							}
 
-							mProgressBar.setVisibility(View.GONE);
+							fragmentOrganizationInfoBinding.progressBar.setVisibility(View.GONE);
 
 						} else if (response.code() == 404) {
 
-							mProgressBar.setVisibility(View.GONE);
+							fragmentOrganizationInfoBinding.progressBar.setVisibility(View.GONE);
 
 						} else {
 							Log.e("onFailure", String.valueOf(response.code()));
@@ -138,9 +138,7 @@ public class OrganizationInfoFragment extends Fragment {
 					}
 
 					@Override
-					public void onFailure(@NonNull Call<Organization> call, @NonNull Throwable t) {
-						Log.e("onFailure", t.toString());
-					}
+					public void onFailure(@NonNull Call<Organization> call, @NonNull Throwable t) {}
 				});
 	}
 }

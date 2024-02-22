@@ -400,7 +400,7 @@ public class RepoInfoFragment extends Fragment {
 				binding.repoMetaDescription.setText(getString(R.string.noDataDescription));
 			}
 
-			binding.repoMetaStars.setText(String.valueOf(repoInfo.getStarsCount()));
+			binding.repoMetaStars.setText(AppUtil.numberFormatter(repoInfo.getStarsCount()));
 
 			if (repoInfo.getOpenPrCounter() != null) {
 				binding.repoMetaPullRequests.setText(String.valueOf(repoInfo.getOpenPrCounter()));

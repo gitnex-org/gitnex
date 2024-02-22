@@ -124,7 +124,7 @@ public class MostVisitedReposFragment extends Fragment {
 
 		MenuItem searchItem = menu.findItem(R.id.action_search);
 		SearchView searchView = (SearchView) searchItem.getActionView();
-		searchView.setImeOptions(EditorInfo.IME_ACTION_DONE);
+		Objects.requireNonNull(searchView).setImeOptions(EditorInfo.IME_ACTION_DONE);
 
 		searchView.setOnQueryTextListener(
 				new SearchView.OnQueryTextListener() {

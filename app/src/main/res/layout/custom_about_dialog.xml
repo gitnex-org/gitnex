@@ -209,6 +209,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="@dimen/dimen12dp"
+                    android:visibility="gone"
                     android:orientation="horizontal">
 
                     <com.google.android.material.floatingactionbutton.ExtendedFloatingActionButton
@@ -226,7 +227,7 @@
                         app:iconTint="?attr/materialCardBackgroundColor"
                         android:backgroundTint="?attr/fabColor"
                         app:icon="@drawable/ic_feedback" />
-                    
+
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"

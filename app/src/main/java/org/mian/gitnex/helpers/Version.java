@@ -1,5 +1,6 @@
 package org.mian.gitnex.helpers;
 
+import android.util.Log;
 import androidx.annotation.NonNull;
 import java.util.ArrayList;
 import java.util.List;
@@ -55,7 +56,8 @@ public class Version {
 		}
 
 		if (!valid(raw)) {
-			throw new IllegalArgumentException("Invalid version format: " + raw);
+			// throw new IllegalArgumentException("Invalid version format: " + raw);
+			Log.e("Version", "Invalid version format: " + raw);
 		}
 		if (raw.equals("main")) {
 			dev = true;

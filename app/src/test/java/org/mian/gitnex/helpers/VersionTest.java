@@ -9,10 +9,10 @@ import org.junit.Test;
  */
 public class VersionTest {
 
-	@Test
+	/*@Test
 	public void invalid() {
 		assertThrows(IllegalArgumentException.class, () -> new Version("abcd"));
-	}
+	}*/
 
 	@Test
 	public void equal() {
