@@ -15,7 +15,7 @@ public class SnackBar {
 		Snackbar snackBar = Snackbar.make(view, message, Snackbar.LENGTH_LONG);
 		View sbView = snackBar.getView();
 		TextView textView = sbView.findViewById(R.id.snackbar_text);
-		snackBar.setBackgroundTint(context.getColor(R.color.material_dynamic_neutral10));
+		snackBar.setBackgroundTint(context.getColor(R.color.cardBackground));
 		textView.setTextColor(context.getColor(R.color.colorWhite));
 		snackBar.show();
 	}
@@ -24,7 +24,7 @@ public class SnackBar {
 		Snackbar snackBar = Snackbar.make(view, message, Snackbar.LENGTH_LONG);
 		View sbView = snackBar.getView();
 		TextView textView = sbView.findViewById(R.id.snackbar_text);
-		snackBar.setBackgroundTint(context.getColor(R.color.material_dynamic_neutral10));
+		snackBar.setBackgroundTint(context.getColor(R.color.cardBackground));
 		textView.setTextColor(context.getColor(R.color.colorWhite));
 		snackBar.show();
 	}
@@ -33,7 +33,7 @@ public class SnackBar {
 		Snackbar snackBar = Snackbar.make(view, message, Snackbar.LENGTH_LONG);
 		View sbView = snackBar.getView();
 		TextView textView = sbView.findViewById(R.id.snackbar_text);
-		snackBar.setBackgroundTint(context.getColor(R.color.material_dynamic_neutral10));
+		snackBar.setBackgroundTint(context.getColor(R.color.cardBackground));
 		textView.setTextColor(context.getColor(R.color.warningColor));
 		snackBar.show();
 	}
@@ -42,7 +42,7 @@ public class SnackBar {
 		Snackbar snackBar = Snackbar.make(view, message, Snackbar.LENGTH_LONG);
 		View sbView = snackBar.getView();
 		TextView textView = sbView.findViewById(R.id.snackbar_text);
-		snackBar.setBackgroundTint(context.getColor(R.color.material_dynamic_neutral10));
+		snackBar.setBackgroundTint(context.getColor(R.color.cardBackground));
 		textView.setTextColor(context.getColor(R.color.darkRed));
 		snackBar.show();
 	}
