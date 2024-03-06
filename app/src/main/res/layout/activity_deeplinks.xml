@@ -41,7 +41,7 @@
                     android:layout_height="wrap_content"
                     android:text="@string/accountDoesNotExist"
                     android:textColor="?attr/primaryTextColor"
-                    android:textSize="@dimen/dimen16sp"/>
+                    android:textSize="@dimen/dimen16sp" />
 
                 <com.google.android.material.button.MaterialButton
                     android:id="@+id/addNewAccount"
@@ -51,7 +51,7 @@
                     android:text="@string/addNewAccountText"
                     android:textColor="?attr/materialCardBackgroundColor"
                     android:textSize="@dimen/dimen16sp"
-                    android:textStyle="bold"/>
+                    android:textStyle="bold" />
 
                 <com.google.android.material.button.MaterialButton
                     android:id="@+id/openInBrowser"
@@ -60,7 +60,8 @@
                     android:layout_marginTop="@dimen/dimen8dp"
                     android:text="@string/openWebRepo"
                     android:textColor="?attr/materialCardBackgroundColor"
-                    android:textSize="@dimen/dimen16sp"/>
+                    android:textSize="@dimen/dimen16sp"
+                    android:textStyle="bold" />
 
                 <com.google.android.material.button.MaterialButton
                     android:id="@+id/launchApp"
@@ -70,7 +71,7 @@
                     android:text="@string/launchApp"
                     android:textColor="?attr/materialCardBackgroundColor"
                     android:textSize="@dimen/dimen16sp"
-                    android:textStyle="bold"/>
+                    android:textStyle="bold" />
 
             </LinearLayout>
 

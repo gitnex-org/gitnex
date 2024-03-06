@@ -8,8 +8,6 @@ import android.os.Looper;
 import android.util.Log;
 import android.view.View;
 import androidx.annotation.NonNull;
-import io.mikael.urlbuilder.UrlBuilder;
-import java.net.URI;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
@@ -26,7 +24,6 @@ import org.mian.gitnex.database.api.UserAccountsApi;
 import org.mian.gitnex.database.models.UserAccount;
 import org.mian.gitnex.databinding.ActivityDeeplinksBinding;
 import org.mian.gitnex.helpers.AppUtil;
-import org.mian.gitnex.helpers.UrlHelper;
 import org.mian.gitnex.helpers.contexts.IssueContext;
 import org.mian.gitnex.helpers.contexts.RepositoryContext;
 import retrofit2.Call;
@@ -40,7 +37,6 @@ public class DeepLinksActivity extends BaseActivity {
 
 	private ActivityDeeplinksBinding viewBinding;
 	private boolean accountFound = false;
-
 	private Intent mainIntent;
 	private Intent issueIntent;
 	private Intent repoIntent;
@@ -111,20 +107,21 @@ public class DeepLinksActivity extends BaseActivity {
 			// redirect to proper fragment/activity, if no action is there, show options where user
 			// to want to go like repos, profile, notifications etc
 			if (data.getPathSegments().size() == 1) {
-				if (data.getLastPathSegment().equals("notifications")) { // notifications
+				if (Objects.equals(data.getLastPathSegment(), "notifications")) { // notifications
 					mainIntent.putExtra("launchFragmentByLinkHandler", "notification");
 					ctx.startActivity(mainIntent);
 					finish();
-				} else if (data.getLastPathSegment().equals("explore")) { // explore
+				} else if (Objects.equals(data.getLastPathSegment(), "explore")) { // explore
 					mainIntent.putExtra("launchFragmentByLinkHandler", "explore");
 					ctx.startActivity(mainIntent);
 					finish();
-				} else if (data.getLastPathSegment()
-						.equals(getAccount().getAccount().getUserName())) { // your user profile
+				} else if (Objects.equals(
+						data.getLastPathSegment(),
+						getAccount().getAccount().getUserName())) { // your user profile
 					mainIntent.putExtra("launchFragmentByLinkHandler", "profile");
 					ctx.startActivity(mainIntent);
 					finish();
-				} else if (data.getLastPathSegment().equals("admin")) {
+				} else if (Objects.equals(data.getLastPathSegment(), "admin")) {
 					mainIntent.putExtra("launchFragmentByLinkHandler", "admin");
 					ctx.startActivity(mainIntent);
 					finish();
@@ -152,9 +149,10 @@ public class DeepLinksActivity extends BaseActivity {
 					mainIntent.putExtra("giteaAdminAction", data.getLastPathSegment());
 					ctx.startActivity(mainIntent);
 					finish();
-				} else if (!data.getPathSegments().get(0).equals("")
-						& !data.getLastPathSegment().equals("")) { // go to repo
+				} else if (!data.getPathSegments().get(0).isEmpty()
+						& !Objects.equals(data.getLastPathSegment(), "")) { // go to repo
 					String repo = data.getLastPathSegment();
+					assert repo != null;
 					if (repo.endsWith(".git")) { // Git clone URL
 						repo = repo.substring(0, repo.length() - 4);
 					}
@@ -300,7 +298,7 @@ public class DeepLinksActivity extends BaseActivity {
 													"commitsList"),
 									500);
 				} else if (data.getPathSegments().get(2).equals("milestones")
-						&& data.getLastPathSegment().equals("new")) { // new milestone
+						&& Objects.equals(data.getLastPathSegment(), "new")) { // new milestone
 					new Handler(Looper.getMainLooper())
 							.postDelayed(
 									() ->
@@ -329,7 +327,7 @@ public class DeepLinksActivity extends BaseActivity {
 													"milestones"),
 									500);
 				} else if (data.getPathSegments().get(2).equals("releases")
-						&& data.getLastPathSegment().equals("new")) { // new release
+						&& Objects.equals(data.getLastPathSegment(), "new")) { // new release
 					new Handler(Looper.getMainLooper())
 							.postDelayed(
 									() ->
@@ -371,7 +369,7 @@ public class DeepLinksActivity extends BaseActivity {
 													data.getPathSegments().get(1),
 													"settings"),
 									500);
-				} else if (data.getLastPathSegment().equals("branches")) { // branches list
+				} else if (Objects.equals(data.getLastPathSegment(), "branches")) { // branches list
 					new Handler(Looper.getMainLooper())
 							.postDelayed(
 									() ->
@@ -414,7 +412,8 @@ public class DeepLinksActivity extends BaseActivity {
 				} else if (data.getPathSegments().get(2).equals("wiki")) { // wiki
 
 					if (data.getQueryParameter("action") != null
-							&& data.getQueryParameter("action").equalsIgnoreCase("_new")) {
+							&& Objects.requireNonNull(data.getQueryParameter("action"))
+									.equalsIgnoreCase("_new")) {
 						new Handler(Looper.getMainLooper())
 								.postDelayed(
 										() ->
@@ -461,14 +460,7 @@ public class DeepLinksActivity extends BaseActivity {
 
 			viewBinding.openInBrowser.setOnClickListener(
 					addNewAccount -> {
-						Integer port = data.getPort() >= 0 ? data.getPort() : null;
-
-						URI host =
-								UrlBuilder.fromString(UrlHelper.fixScheme(data.getHost(), "https"))
-										.withPort(port)
-										.toUri();
-
-						AppUtil.openUrlInBrowser(this, String.valueOf(host));
+						AppUtil.openUrlInBrowser(this, String.valueOf(data));
 						finish();
 					});
 
