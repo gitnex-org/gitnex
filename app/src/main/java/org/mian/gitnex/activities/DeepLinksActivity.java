@@ -42,6 +42,7 @@ public class DeepLinksActivity extends BaseActivity {
 	private Intent repoIntent;
 	private Intent orgIntent;
 	private Intent userIntent;
+	private Uri data;
 
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
@@ -58,7 +59,7 @@ public class DeepLinksActivity extends BaseActivity {
 		userIntent = new Intent(ctx, ProfileActivity.class);
 
 		Intent intent = getIntent();
-		Uri data = intent.getData();
+		data = intent.getData();
 		assert data != null;
 
 		// check for login
@@ -698,6 +699,12 @@ public class DeepLinksActivity extends BaseActivity {
 			default: // show options
 				viewBinding.noActionFrame.setVisibility(View.VISIBLE);
 				viewBinding.addNewAccountFrame.setVisibility(View.GONE);
+
+				viewBinding.openInBrowserNoActionFrame.setOnClickListener(
+						noActionFrameOpenInBrowser -> {
+							AppUtil.openUrlInBrowser(this, String.valueOf(data));
+							finish();
+						});
 
 				viewBinding.repository.setOnClickListener(
 						repository -> {
