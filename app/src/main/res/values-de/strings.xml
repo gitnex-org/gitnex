@@ -620,7 +620,7 @@
     <string name="prMergeInfo">Pull-Request-Info</string>
     <string name="accountDoesNotExist">Es sieht so aus als würde das Konto für den Link %1$s nicht existieren. Du kannst es hinzufügen, indem du auf \"Neues Konto hinzufügen\" klickst.</string>
     <string name="launchApp">App aufrufen</string>
-    <string name="noActionText">GitNex kann den Link nicht handhaben, du kannst ein Issue im Projekt-Repository öffnen, so dass es ausgebessert werden kann. Bitte gebe alle nötigen Details an. Um die Standard-Ansicht zu öffnen, einfach den Button unten anklicken.</string>
+    <string name="noActionText">GitNex kann den Link nicht handhaben. Du kannst ein Issue im Projekt-Repository, mit allen nötigen Details, öffnen, so dass es ausgebessert werden kann. Bitte gebe alle nötigen Details an. Um die Standard-Ansicht zu öffnen, einfach den Button unten anklicken.</string>
     <string name="biometricAuthTitle">Biometrische Authentifizierung</string>
     <string name="biometricAuthSubTitle">Entsperre mittels Biometrie</string>
     <string name="biometricNotSupported">Keine biometrischen Funktionen verfügbar</string>
