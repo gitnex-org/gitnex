@@ -1,10 +1,10 @@
 5.0.0
 
 🎉 Fonctionnalités 🎉
-- Écran Historique pour les tickets et les demandes de fusion
+- Écran Historique pour les tickets et les demandes d’ajout
 - Notes [app seulement]
 - Intégration continue : statuts des révisions
-- Aperçu Markdown de la description des tickets et demandes de fusion
+- Aperçu Markdown de la description des tickets et demandes d’ajout
 - Écran Profil refondu en Material
 
 🚀 Améliorations 🚀

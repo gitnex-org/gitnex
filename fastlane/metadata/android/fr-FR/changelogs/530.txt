@@ -1,0 +1,16 @@
+5.3.0
+
+🎉 Fonctionnalités 🎉
+- Envoi de pièces jointes avec les tickets et demandes d’ajout
+- Aperçu et téléchargement de pièces jointes avec les tickets, demandes d’ajout et commentaires
+- Refonte de la plupart des écrans
+
+🚀 Améliorations 🚀 
+- Les tickets et les demandes d’ajout sont maintenant sélectionnables
+- Demande d’activer les notifications si désactivées
+- Les onglets de l’écran d’infos utilisateur sont maintenant cliquables
+- Version mieux détectée en cas de plantage
+
+Notes de version : https://codeberg.org/gitnex/GitNex/releases
+
+Billet : https://najigram.com/category/gitnex

@@ -2,7 +2,7 @@
   - Nouveau : Métadonnées et journal des changements dans la fiche de F-Droid
   
 1.0-rc5
-  - Nouveau : Noms d’utilisateur en surbrillance dans les tickets et les commentaires
+  - Nouveau : Utilisateurs en surbrillance dans les tickets et les commentaires
   - Corrigé : Bogue lors de la création d’étiquettes
   - Corrigé : Boucle infinie dans l’écran des réglages sur certains appareils
 
