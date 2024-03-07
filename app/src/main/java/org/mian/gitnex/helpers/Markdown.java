@@ -2,6 +2,7 @@ package org.mian.gitnex.helpers;
 
 import static org.mian.gitnex.helpers.AppUtil.isNightModeThemeDynamic;
 
+import android.annotation.SuppressLint;
 import android.content.Context;
 import android.content.Intent;
 import android.graphics.Typeface;
@@ -301,11 +302,6 @@ public class Markdown {
 
 			slot.release(this);
 		}
-
-		public void expire() {
-
-			slot.expire(this);
-		}
 	}
 
 	private static class RecyclerViewRenderer implements Runnable, Poolable {
@@ -567,6 +563,7 @@ public class Markdown {
 			}
 		}
 
+		@SuppressLint("NotifyDataSetChanged")
 		@Override
 		public void run() {
 
@@ -592,8 +589,8 @@ public class Markdown {
 									@Override
 									public boolean canScrollVertically() {
 
-										return false; // disable RecyclerView scrolling, handeled by
-										// seperate ScrollViews
+										return false; // disable RecyclerView scrolling, handled by
+										// separate ScrollViews
 									}
 								});
 						localReference.setAdapter(localAdapter);
@@ -615,11 +612,6 @@ public class Markdown {
 			repository = null;
 
 			slot.release(this);
-		}
-
-		public void expire() {
-
-			slot.expire(this);
 		}
 
 		private static class IssueInlineProcessor extends InlineProcessor {
@@ -696,7 +688,7 @@ public class Markdown {
 				instanceUrl =
 						instanceUrl
 								.substring(0, instanceUrl.lastIndexOf("api/v1/"))
-								.replaceAll("\\.", "\\.");
+								.replaceAll("\\.", ".");
 				this.instanceUrl = instanceUrl;
 			}
 
@@ -761,7 +753,7 @@ public class Markdown {
 							shortSha = shortSha.substring(0, 10);
 						}
 						String text;
-						if (matcherCommit.group(1).equals(repository.getFullName())) {
+						if (Objects.equals(matcherCommit.group(1), repository.getFullName())) {
 							text = shortSha;
 						} else {
 							text = matcherCommit.group(1) + "/" + shortSha;
@@ -772,6 +764,12 @@ public class Markdown {
 						lastNode = insertNode(linkNode, lastNode);
 
 						i = matcherCommit.start();
+						if (commitStart > matcherCommit.end()) {
+							lastNode =
+									insertNode(
+											new Text(literal.substring(matcherCommit.end())),
+											lastNode);
+						}
 					} else if (issueStart < literal.length()) {
 						// next one is an issue/comment
 						if (matcherIssue.start() > i) {
@@ -782,7 +780,7 @@ public class Markdown {
 						}
 
 						String text;
-						if (matcherIssue.group(1).equals(repository.getFullName())) {
+						if (Objects.equals(matcherIssue.group(1), repository.getFullName())) {
 							text = "#" + matcherIssue.group(2);
 						} else {
 							text = matcherIssue.group(1) + "#" + matcherIssue.group(2);
@@ -806,6 +804,9 @@ public class Markdown {
 						}
 
 						i = matcherIssue.end();
+						if (literal.length() > i) {
+							lastNode = insertNode(new Text(literal.substring(i)), lastNode);
+						}
 					}
 
 					// reset every time to make it usable in a "pure" state
