@@ -33,7 +33,6 @@ import com.amulyakhare.textdrawable.TextDrawable;
 import com.google.android.material.bottomsheet.BottomSheetDialog;
 import com.google.android.material.card.MaterialCardView;
 import com.google.android.material.dialog.MaterialAlertDialogBuilder;
-import com.vdurmont.emoji.EmojiParser;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Locale;
@@ -534,7 +533,7 @@ public class IssueCommentsAdapter extends RecyclerView.Adapter<RecyclerView.View
 				TextView textView = new TextView(context);
 				String text;
 
-				if (issueComment.getBody().equals("")) {
+				if (issueComment.getBody().isEmpty()) {
 					text =
 							context.getString(
 									R.string.timelineRemovedLabel,
@@ -1223,11 +1222,7 @@ public class IssueCommentsAdapter extends RecyclerView.Adapter<RecyclerView.View
 									issueComment.getUser().getLogin(),
 									issueComment.getNewRef(),
 									info);
-					Markdown.render(
-							context,
-							EmojiParser.parseToUnicode(text),
-							recyclerView,
-							issue.getRepository());
+					Markdown.render(context, text, recyclerView, issue.getRepository());
 					timelineIcon.setImageDrawable(
 							ContextCompat.getDrawable(context, R.drawable.ic_branch));
 				} else if (issueComment.getType().equalsIgnoreCase("comment_ref")
@@ -1241,11 +1236,7 @@ public class IssueCommentsAdapter extends RecyclerView.Adapter<RecyclerView.View
 										issueComment.getUser().getLogin(),
 										issueComment.getRefIssue().getNumber(),
 										info);
-						Markdown.render(
-								context,
-								EmojiParser.parseToUnicode(text),
-								recyclerView,
-								issue.getRepository());
+						Markdown.render(context, text, recyclerView, issue.getRepository());
 					} else if (issue.getIssueType().equalsIgnoreCase("Pull")) {
 						String text =
 								context.getString(
@@ -1253,11 +1244,7 @@ public class IssueCommentsAdapter extends RecyclerView.Adapter<RecyclerView.View
 										issueComment.getUser().getLogin(),
 										issueComment.getRefIssue().getNumber(),
 										info);
-						Markdown.render(
-								context,
-								EmojiParser.parseToUnicode(text),
-								recyclerView,
-								issue.getRepository());
+						Markdown.render(context, text, recyclerView, issue.getRepository());
 					}
 					timelineIcon.setImageDrawable(
 							ContextCompat.getDrawable(context, R.drawable.ic_bookmark));
@@ -1295,11 +1282,7 @@ public class IssueCommentsAdapter extends RecyclerView.Adapter<RecyclerView.View
 						.centerCrop()
 						.into(avatar);
 
-				Markdown.render(
-						context,
-						EmojiParser.parseToUnicode(issueComment.getBody()),
-						comment,
-						issue.getRepository());
+				Markdown.render(context, issueComment.getBody(), comment, issue.getRepository());
 
 				information.setText(info);
 
@@ -1348,7 +1331,7 @@ public class IssueCommentsAdapter extends RecyclerView.Adapter<RecyclerView.View
 						if (response.code() == 200) {
 							assert attachment != null;
 
-							if (attachment.size() > 0) {
+							if (!attachment.isEmpty()) {
 
 								attachmentFrame.setVisibility(View.VISIBLE);
 								LinearLayout.LayoutParams paramsAttachment =

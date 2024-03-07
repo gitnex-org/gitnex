@@ -995,11 +995,11 @@ public class IssueDetailActivity extends BaseActivity
 
 		viewBinding.author.setText(issue.getIssue().getUser().getLogin());
 
-		if (!cleanIssueDescription.equals("")) {
+		if (!cleanIssueDescription.isEmpty()) {
 			viewBinding.issueDescription.setVisibility(View.VISIBLE);
 			Markdown.render(
 					ctx,
-					EmojiParser.parseToUnicode(cleanIssueDescription),
+					cleanIssueDescription,
 					viewBinding.issueDescription,
 					issue.getRepository());
 		} else {
