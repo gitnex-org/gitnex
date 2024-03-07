@@ -1262,6 +1262,26 @@ public class IssueCommentsAdapter extends RecyclerView.Adapter<RecyclerView.View
 					|| issueComment.getType().equalsIgnoreCase("pull_cancel_scheduled_merge")) {
 				timelineView.setVisibility(View.GONE);
 				timelineDividerView.setVisibility(View.GONE);
+			}
+			// issue/pr pinned
+			else if (issueComment.getType().equalsIgnoreCase("pin")) {
+				TextView start = new TextView(context);
+
+				if (tinyDB.getInt("themeId") == 8) {
+					if (!isNightModeThemeDynamic(context)) {
+						start.setTextColor(AppUtil.dynamicColorResource(context));
+					}
+				}
+
+				start.setText(
+						context.getString(
+								R.string.timelinePinned, issueComment.getUser().getLogin(), info));
+
+				start.setTextSize(fontSize);
+
+				timelineIcon.setImageDrawable(
+						ContextCompat.getDrawable(context, R.drawable.ic_pin));
+				timelineData.addView(start);
 			} else {
 				timelineView.setVisibility(View.GONE);
 			}
