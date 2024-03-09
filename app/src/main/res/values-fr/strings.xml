@@ -46,9 +46,12 @@
     <string name="newRepoDescTintCopy">Description</string>
     <string name="newRepoPrivateCopy">Privé</string>
     <string name="newRepoOwner">Propriétaire</string>
+    <string name="newRepoIssueLabels">Pastilles sur les tickets</string>
+    <string name="setAsTemplate">Utiliser ce dépôt comme modèle</string>
     <string name="newOrgTintCopy">Nom</string>
     <string name="newOrgDescTintCopy">Description</string>
-    <string name="userName">Nom d’utilisateur</string>
+    <string name="organizationFullname">%1$s - %2$s</string>
+    <string name="userName">Utilisateur</string>
     <string name="passWord">Mot de passe</string>
     <string name="btnLogin">SE CONNECTER</string>
     <string name="instanceUrl">URL de l’instance</string>
@@ -60,10 +63,10 @@
     <string name="protocolError">Le protocole HTTP est déconseillé en dehors de tests sur un réseau local</string>
     <string name="malformedJson">JSON mal formé. Le serveur ne répond pas.</string>
     <string name="emptyFieldURL">URL de l’instance requise</string>
-    <string name="emptyFieldUsername">Nom d’utilisateur requis</string>
+    <string name="emptyFieldUsername">Utilisateur requis</string>
     <string name="emptyFieldPassword">Mot de passe requis</string>
     <string name="protocolEmptyError">Le protocole est requis</string>
-    <string name="instanceHelperText">Entrez une URL sans http ou https. Par exemple : codeberg.org</string>
+    <string name="instanceHelperText">URL sans http ou https. (Exemple : codeberg.org)</string>
     <string name="checkNetConnection">Impossible d’accéder au réseau, veuillez vérifier votre connexion Internet</string>
     <string name="repoNameErrorEmpty">Veuillez donner un nom à ce dépôt</string>
     <string name="repoNameErrorInvalid">Nom de dépôt invalide [a&#8211;z A&#8211;Z 0&#8211;9 &#8211; _]</string>
@@ -73,6 +76,7 @@
     <string name="repoCreated">Dépôt créé</string>
     <string name="repoExistsError">Le propriétaire possède déjà un dépôt du même nom</string>
     <string name="repoOwnerError">Veuillez choisir un propriétaire</string>
+    <string name="repoDefaultBranchError">La branche par défaut ne peut pas être vide</string>
     <string name="orgNameErrorEmpty">L’organisation doit avoir un nom</string>
     <string name="orgNameErrorInvalid">Nom de l’organisation invalide [a&#8211;z A&#8211;Z 0&#8211;9 &#8211; _]</string>
     <string name="orgDescError">La description dépasse la limite de 255 caractères</string>
@@ -104,14 +108,13 @@
     <string name="infoTabRepoForksCount">Bifurcations</string>
     <string name="infoTabRepoCreatedAt">Créé</string>
     <string name="infoTabRepoUpdatedAt">Dernière modification</string>
-    <string name="infoShowMoreInformation">Voir plus d’informations</string>
     <string name="infoMoreInformation">Plus d’informations</string>
     <string name="timeAtText">à</string>
     <string name="issueMilestone">Jalon %1$s</string>
     <string name="dueDate">Échéance au %1$s</string>
     <string name="assignedTo">Affecté à : %1$s</string>
     <string name="assignedToMe">Affecté à moi-même</string>
-    <string name="commentButtonText">Publier</string>
+    <string name="commentButtonText">Répondre</string>
     <string name="commentEmptyError">Veuillez saisir votre commentaire</string>
     <string name="commentSuccess">Commentaire publié</string>
     <string name="featureDeprecated">Cette fonction sera prochainement supprimée</string>
@@ -190,7 +193,7 @@
     <string name="linkSelectorDialogTitle">Écran par défaut</string>
     <string name="settingsBiometricHeader">Biométrie</string>
     <string name="settingsLabelsInListHeader">Notifications textuelles</string>
-    <string name="settingsLabelsInListHint">Affiche du texte dans les tickets et les demandes de fusion au lieu d’une simple pastille colorée</string>
+    <string name="settingsLabelsInListHint">Affiche du texte dans les tickets et les demandes d’ajout au lieu d’une simple pastille colorée</string>
     <string name="ceSyntaxHighlightColor">Coloration syntaxique</string>
     <string name="ceIndentation">Indentation</string>
     <string name="ceIndentationTabsWidth">Largeur des tabulations</string>
@@ -264,7 +267,7 @@
     <!-- issue comments -->
     <!-- add collaborator -->
     <string name="addCollaboratorSearchHint">Rechercher des utilisateurs</string>
-    <string name="addCollaboratorViewUserDesc">Nom d’utilisateur</string>
+    <string name="addCollaboratorViewUserDesc">Utilisateur</string>
     <string name="removeCollaboratorDialogTitle">Retirer %s ?</string>
     <string name="removeCollaboratorMessage">Retirer cet utilisateur du dépôt ?</string>
     <string name="removeCollaboratorToastText">Utilisateur retiré du dépôt</string>
@@ -281,7 +284,7 @@
     <string name="emailErrorEmpty">L’adresse courriel est requise</string>
     <string name="emailErrorInvalid">Adresse courriel invalide</string>
     <string name="emailErrorInUse">Adresse courriel déjà utilisée</string>
-    <string name="emailTypeText">Principale</string>
+    <string name="emailTypeText">Principal</string>
     <string name="sshKeys">Clés SSH</string>
     <!-- account settings -->
     <!-- single issue section -->
@@ -312,7 +315,7 @@
     <!-- create user -->
     <string name="userFullNameText">Nom complet</string>
     <string name="userEmail">Adresse courriel</string>
-    <string name="userUserName">Nom d’utilisateur</string>
+    <string name="userUserName">Utilisateur</string>
     <string name="userPassword">Mot de passe</string>
     <string name="userInvalidFullName">Nom complet invalide</string>
     <string name="userInvalidUserName">Nom d’utilisateur invalide</string>
@@ -340,7 +343,7 @@
     <!-- release -->
     <string name="loginOTPTypeError">Le code OTP est un nombre</string>
     <string name="loginOTP">Code OTP (si nécessaire)</string>
-    <string name="otpMessage">Entrez le code OTP si l’authentification à deux facteurs est activée</string>
+    <string name="otpMessage">Nécessaire si l’authentification à deux facteurs est activée</string>
     <string name="openWebRepo">Ouvrir dans le navigateur</string>
     <string name="repoStargazersInMenu">Fans</string>
     <string name="repoWatchersInMenu">Observateurs</string>
@@ -401,11 +404,11 @@
     <string name="textContinue">Continuer</string>
     <string name="copyToken">Jeton</string>
     <string name="viewInBrowser">Voir dans le navigateur</string>
-    <string name="isOpen">Ouvert</string>
+    <string name="isOpen">Ouvrir</string>
     <string name="isClosed">Fermé</string>
     <string name="genericServerResponseError">Impossible de se connecter au serveur pour le moment, veuillez vérifier son statut puis réessayer</string>
     <string name="genericCopyUrl">Copier l’URL</string>
-    <string name="genericWaitFor">Attendez un instant ☕</string>
+    <string name="genericWaitFor">Un instant… ☕</string>
     <string name="file">Fichier</string>
     <string name="issue">Ticket</string>
     <string name="labelTxt">Étiquette</string>
@@ -427,6 +430,8 @@
     <string name="reset">Remettre à zéro</string>
     <string name="beta">BÊTA</string>
     <string name="none">Aucun</string>
+    <string name="main">main</string>
+    <string name="license">Licence</string>
     <!-- generic copy -->
     <string name="exploreUsers">Rechercher des utilisateurs</string>
     <string name="exploreIssues">Rechercher des tickets</string>
@@ -440,8 +445,7 @@
     <string name="versionUnsupportedNew">Nouvelle version de Gitea détectée ! Veuillez mettre à jour GitNex !</string>
     <string name="versionUnknown">Aucun serveur Gitea détecté !</string>
     <string name="versionAlertDialogHeader">Version de Gitea non prise en charge</string>
-    <string name="loginViaPassword">Nom d’utilisateur / mot de passe</string>
-    <string name="loginMethodText">Choisissez une méthode de connexion à votre compte. Le jeton est plus sécurisé.</string>
+    <string name="loginViaPassword">Authentification simple</string>
     <string name="unauthorizedApiError">L\'instance a renvoyé une erreur « Autorisation refusée ». Vérifiez vos identifiants et réessayez.</string>
     <string name="loginTokenError">Le jeton est requis</string>
     <string name="prDeletedFork">Bifurcation supprimée</string>
@@ -451,13 +455,13 @@
     <string name="fileDiffViewHeaderSingle">%1$s fichier modifié</string>
     <string name="updatePullRequestText">Mettre à jour la demande d’ajout</string>
     <string name="openFileDiffText">Voir Fichiers modifiés</string>
-    <string name="mergePullRequestText">Fusionner la demande d’ajout</string>
+    <string name="mergePullRequestText">Intégrer la demande d’ajout</string>
     <string name="deleteBranchSuccess">Branche supprimée</string>
     <string name="deleteBranchError">Impossible de supprimer la branche</string>
     <string name="deleteBranchErrorNotFound">La branche n’existe pas</string>
-    <string name="mergePullRequestButtonText">Fusionner</string>
-    <string name="deleteBranchAfterMerge">Supprimer la branche après la fusion</string>
-    <string name="mergeNoteText">La fusion peut échouer si vous n’êtes pas autorisé à fusionner cette demande de tirage.</string>
+    <string name="mergePullRequestButtonText">Intégrer</string>
+    <string name="deleteBranchAfterMerge">Supprimer la branche après l’intégration</string>
+    <string name="mergeNoteText">La fusion peut échouer si vous n’êtes pas autorisé à fusionner cette demande d’ajout.</string>
     <string name="mergeInfoDisabledMessage">Le bouton Fusion désactivé signifie qu’il y a des conflits ou des choses à corriger au préalable</string>
     <string name="deleteBranchForkInfo">Cette branche appartient à un dépôt bifurqué</string>
     <string name="mergeCommentText">Commentaire de la fusion</string>
@@ -536,7 +540,7 @@
     <string name="removeAccountPopupTitle">Supprimer le compte</string>
     <string name="removeAccountPopupMessage">Êtes-vous certain de vouloir supprimer ce compte de l’application ?\n\nSeules les données de l’application seront supprimées.</string>
     <string name="addNewAccount">Nouveau compte</string>
-    <string name="addNewAccountText">Ajouter un nouveau compte</string>
+    <string name="addNewAccountText">Ajouter un compte</string>
     <string name="accountAlreadyExistsError">Ce compte existe déjà dans l’application</string>
     <string name="accountAddedMessage">Compte ajouté</string>
     <string name="switchAccountSuccess">Passé au compte : %1$s@%2$s</string>
@@ -544,14 +548,17 @@
     <string name="pageTitleNotifications">Notifications</string>
     <string name="noDataNotifications">C’est parti 🚀</string>
     <string name="notificationsPollingHeaderText">Période de scrutation</string>
-    <string name="pollingDelaySelectedText">%d minutes</string>
+    <string name="pollingDelay15Minutes">15 minutes</string>
+    <string name="pollingDelay30Minutes">30 minutes</string>
+    <string name="pollingDelay45Minutes">45 minutes</string>
+    <string name="pollingDelay1Hour">1 heure</string>
     <string name="pollingDelayDialogHeaderText">Période de scrutation</string>
     <string name="pollingDelayDialogDescriptionText">GitNex tentera de récupérer des notifications toutes les X minutes.</string>
     <string name="markAsRead">Marquer comme lu</string>
     <string name="markAsUnread">Marquer comme non lu</string>
     <string name="pinNotification">Épingler</string>
     <string name="markedNotificationsAsRead">Notifications marquées comme lues</string>
-    <string name="notificationsHintText">Délai d\'interrogation, témoin lumineux, vibreur</string>
+    <string name="notificationsHintText">Période de scrutation</string>
     <string name="enableNotificationsHeaderText">Notifications</string>
     <string name="enableLightsHeaderText">Témoin lumineux</string>
     <string name="enableVibrationHeaderText">Vibreur</string>
@@ -564,6 +571,7 @@
         <item quantity="one">Vous avez %s nouvelle notification</item>
         <item quantity="other">Vous avez %s nouvelles notifications</item>
     </plurals>
+    <string name="openAppSettings">Afin de recevoir les notifications, veuillez cliquer sur Ouvrir pour accéder aux paramètres de GitNex, puis activer les notifications.</string>
     <string name="isRead">Lu</string>
     <string name="isUnread">Non lu</string>
     <string name="repoSettingsTitle">Paramètres du dépôt</string>
@@ -612,7 +620,7 @@
     <string name="prMergeInfo">Infos sur la demande d’ajout</string>
     <string name="accountDoesNotExist">Aucun compte associé à l’URI %1$s ne semble exister dans l’application. Vous pouvez l’ajouter en appuyant sur Ajouter un nouveau compte.</string>
     <string name="launchApp">Lancer l’app</string>
-    <string name="noActionText">GitNex ne prend pas en charge cette ressource, vous pouvez signaler et détailler le problème dans le dépôt du projet. Pour le moment, vous pouvez revenir à l\'écran par défaut en cliquant sur le bouton ci-dessus.</string>
+    <string name="noActionText">GitNex ne prend pas en charge cette ressource, vous pouvez signaler et détailler le problème dans le dépôt du projet. Pour le moment, vous pouvez revenir à l\'écran par défaut en cliquant sur le bouton ci-dessous.</string>
     <string name="biometricAuthTitle">Authentification biométrique</string>
     <string name="biometricAuthSubTitle">Déverrouiller à l’aide de vos identifiants biométriques</string>
     <string name="biometricNotSupported">Cet appareil ne permet pas la biométrie</string>
@@ -689,7 +697,7 @@
     <string name="notesAllDeletionMessage">Toutes vos notes seront supprimées. Cette action est irréversible.</string>
     <!-- timeline -->
     <string name="commitsText">une révision</string>
-    <string name="commitText">révision</string>
+    <string name="commitText">une révision</string>
     <string name="timelineAddedCommit">%1$s a ajouté %2$s %3$s</string>
     <!-- the | is replaced by the label -->
     <string name="timelineAddedLabel">%1$s a ajouté l’étiquette | %2$s</string>
@@ -704,10 +712,10 @@
     <string name="timelineMilestoneDeleted">%1$s a ajouté ceci à un jalon supprimé %2$s</string>
     <string name="timelineStatusClosedIssue">%1$s a fermé ce ticket %2$s</string>
     <string name="timelineStatusReopenedIssue">%1$s a rouvert ce ticket %2$s</string>
-    <string name="timelineStatusReopenedPr">%1$s a rouvert cette demande de fusion %2$s</string>
-    <string name="timelineStatusClosedPr">%1$s a fermé cette demande de fusion %2$s</string>
-    <string name="timelineStatusMergedPr">%1$s a accepté cette demande de fusion %2$s</string>
-    <string name="timelineStatusRefPr"><![CDATA[%1$s a mentionné cette demande de fusion dans une <font color=\'%2$d\'>%3$s</font> %4$s]]></string>
+    <string name="timelineStatusReopenedPr">%1$s a rouvert cette demande d’ajout %2$s</string>
+    <string name="timelineStatusClosedPr">%1$s a fermé cette demande d’ajout %2$s</string>
+    <string name="timelineStatusMergedPr">%1$s a accepté cette demande d’ajout %2$s</string>
+    <string name="timelineStatusRefPr"><![CDATA[%1$s a mentionné cette demande d’ajout dans une <font color=\'%2$d\'>%3$s</font> %4$s]]></string>
     <string name="timelineReviewRequest">%1$s a demandé l’avis de %2$s %3$s</string>
     <string name="timelineChangeTitle">%1$s a renommé %2$s en %3$s %4$s</string>
     <string name="timelineLocked">%1$s a verrouillé en raison de %2$s et limité la discussion aux collaborateurs %3$s</string>
@@ -728,11 +736,40 @@
     <string name="timelineTimeTrackingDeleteManualTime">%1$s a supprimé le temps passé %2$s %3$s</string>
     <string name="timelineChangeIssueRef">%1$s a ajouté la référence %2$s %3$s</string>
     <string name="timelineRefIssue">%1$s mentionné ce ticket dans #%2$d %3$s</string>
-    <string name="timelineRefPr">%1$s a mentionné cette demande de fusion dans #%2$d %3$s</string>
+    <string name="timelineRefPr">%1$s a mentionné cette demande d’ajout dans #%2$d %3$s</string>
     <string name="timelineStatusRefIssue"><![CDATA[%1$s mentionné ce ticket dans une <font color=\'%2$d\'>%3$s</font> %4$s]]></string>
+    <string name="timelineReviewLeftComment">%1$s a ajouté un commentaire : %2$s %3$s</string>
     <string name="commitStatuses">Statuts</string>
     <string name="statusNoUrl">Ce statut n’a pas d’URL.</string>
     <string name="starredRepos">Dépôts favoris</string>
     <string name="lang_statistics">Statistiques du langage</string>
     <string name="dashboard">Tableau de bord</string>
+    <string name="createdRepository">a créé le dépôt</string>
+    <string name="renamedRepository">a renommé le dépôt %1$s en</string>
+    <string name="starredRepository">a commencé à suivre</string>
+    <string name="transferredRepository">a transféré le dépôt %1$s à</string>
+    <string name="createdBranch">a créé la branche %1$s dans</string>
+    <string name="pushedTo">a poussé dans %1$s à</string>
+    <string name="openedIssue">a ouvert le ticket</string>
+    <string name="commentedOnIssue">a commenté le ticket</string>
+    <string name="closedIssue">a fermé le ticket</string>
+    <string name="reopenedIssue">a rouvert le ticket</string>
+    <string name="createdPR">a créé la demande d’ajout</string>
+    <string name="closedPR">a fermé la demande d’ajout</string>
+    <string name="reopenedPR">a rouvert la demande d’ajout</string>
+    <string name="mergedPR">a intégré la demande d’ajout</string>
+    <string name="approved">a approuvé</string>
+    <string name="suggestedChanges">a suggéré des modifications pour</string>
+    <string name="commentedOnPR">a commenté la demande d’ajout</string>
+    <string name="autoMergePR">a automatiquement intégré la demande d’ajout</string>
+    <string name="deletedBranch">a supprimé la branche %1$s de</string>
+    <string name="pushedTag">a ajouté l’étiquette %1$s à</string>
+    <string name="deletedTag">a retiré l’étiquette %1$s de</string>
+    <string name="releasedBranch">a publié %1$s sur</string>
+    <string name="syncedCommits">a synchronisé les révisions avec %1$s à</string>
+    <string name="syncedRefs">a synchronisé la nouvelle référence %1$s avec</string>
+    <string name="syncedDeletedRefs">a synchronisé et supprimé la %1$s à</string>
+    <string name="attachment">Fichier joint</string>
+    <string name="attachments">Fichiers joints</string>
+    <string name="attachmentsSaveError">Le ticket a été créé, mais les fichiers n’ont pu être joints. Consultez les journaux du serveur pour plus de détails.</string>
 </resources>
