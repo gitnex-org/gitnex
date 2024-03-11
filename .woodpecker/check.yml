@@ -1,6 +1,6 @@
 steps:
   author-header:
-    image: qwerty287/woodpecker-regex-check
+    image: codeberg.org/qwerty287/woodpecker-regex-check
     settings:
       pattern: "*.java"
       regex: " \\\\* \\\\@author [\\\\S\\\\s]+"
