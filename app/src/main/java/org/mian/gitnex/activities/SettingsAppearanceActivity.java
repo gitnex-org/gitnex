@@ -326,7 +326,17 @@ public class SettingsAppearanceActivity extends BaseActivity {
 
 	private static String getLanguageDisplayName(String langCode) {
 		Locale english = new Locale("en");
-		Locale translated = new Locale(langCode);
+
+		String[] multiCodeLang = langCode.split("-");
+		String countryCode;
+		if (langCode.contains("-")) {
+			langCode = multiCodeLang[0];
+			countryCode = multiCodeLang[1];
+		} else {
+			countryCode = "";
+		}
+
+		Locale translated = new Locale(langCode, countryCode);
 		return String.format(
 				"%s (%s)",
 				translated.getDisplayName(translated), translated.getDisplayName(english));

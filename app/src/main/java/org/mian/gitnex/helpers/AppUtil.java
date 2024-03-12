@@ -316,9 +316,18 @@ public class AppUtil {
 
 	public static void setAppLocale(Resources resource, String locCode) {
 
+		String[] multiCodeLang = locCode.split("-");
+		String countryCode;
+		if (locCode.contains("-")) {
+			locCode = multiCodeLang[0];
+			countryCode = multiCodeLang[1];
+		} else {
+			countryCode = "";
+		}
+
 		DisplayMetrics dm = resource.getDisplayMetrics();
 		Configuration config = resource.getConfiguration();
-		config.setLocale(new Locale(locCode.toLowerCase()));
+		config.setLocale(new Locale(locCode.toLowerCase(), countryCode));
 		resource.updateConfiguration(config, dm);
 	}
 
