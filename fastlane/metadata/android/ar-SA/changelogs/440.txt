@@ -1,17 +1,17 @@
 4.4.0
 
-🎉 Features 🎉
-- List/view wiki pages
-- Create/edit/delete wiki page
-- Add support for pull request commits
+🎉 الميزات 🎉
+- قائمة/عرض صفحات الويكي
+- إنشاء/تعديل/حذف صفحات الويكي
+- دعم إيداعات طلبات الدمج
 
-🐛 Bug Fixes 🐛
-- Fix crashes on login with spaces, new lines and unwanted characters
-- Fix crash on repository info view in some cases
-- Fix crash on commenting on PR when coming from notification
+🐛 إصلاح أخطاء 🐛
+- إصلاح الإغلاق المفاجئ في أثناء تسجيل الدخول مع المسافات، الأسطر الجديدة والأحرف غير المرغوب بها
+- إصلاح الإغلاق المفاجئ عند عرض معلومات المستودع في بعض الحالات
+- إصلاح الإغلاق المفاجئ عند التعليق على طلب دمج عند القدوم من الإشعارات
 
-Release Notes: https://codeberg.org/gitnex/GitNex/releases
+ملاحظات الإصدار: https://codeberg.org/gitnex/GitNex/releases
 
-Release Video: https://youtu.be/VGjKRpRVvSc
+مرئيّ الإصدار: https://youtu.be/VGjKRpRVvSc
 
-Release Blog: https://gitnex.codeberg.page/posts/440.html
+مدونة الإصدار: https://gitnex.codeberg.page/posts/440.html

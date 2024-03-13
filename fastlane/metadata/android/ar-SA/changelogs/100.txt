@@ -1,6 +1,6 @@
 2.5.0-rc1
 
-Release notes will be published with the stable release.
-In the mean time check the milestone for pull requests and issues that are merged/closed.
+ملاحظات الإصدار ستنشر مع الإصدار المستقر.
+في غضون ذلك، تحقق المرحلة لطلبات الدمج والقضايا التي دُمجت / أُغلقت.
 
 https://codeberg.org/gitnex/GitNex/milestone/296?type=all&state=closed

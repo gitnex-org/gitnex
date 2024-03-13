@@ -1,5 +1,5 @@
 3.3.0-rc2
 
-A lot of bugs are squashed in this release including many UI improvements.
+إصلاح الكثير من الأخطاء في هذا الإصدار بما في ذلك العديد من تحسينات واجهة المستخدم.
 
-Detail release notes will be published with stable release.
+ملاحظات الإصدار المفصلة ستنشر مع الإصدار المستقر.

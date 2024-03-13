@@ -1,13 +1,13 @@
 3.1.0
 
-New: Multiple accounts support
-New: New Retro theme
-New: Delete OR Edit a file
-New: Repository forks
-New: Markdown support in file viewer
-New: New Progress indicators
-New: Copy repo / org / issue comment url to clipboard
-New: Create drafts per edit and improve it's UI
-New: Enhance App UI across all screens
+دعم الحسابات المتعددة
+جديد: سمة كلاسيكية جديدة
+جديد: حذف أو تعديل ملف
+جديد: اشتقاقات المستودع
+جديد: دعم الماركداون في عارض المِلفات
+جديد: مؤشر تقدم جديد
+جديد: نسخ رابط المستودع/المنظمة/التعليق على القضية إلى الحافظة
+جديد: إنشاء مسودات لكل تعديل وتحسين واجهتها
+جديد: تحسين واجهة التطبيق على مختلف الشاشات
 
-Release Notes: https://codeberg.org/gitnex/GitNex/releases
+ملاحظات الإصدار: https://codeberg.org/gitnex/GitNex/releases

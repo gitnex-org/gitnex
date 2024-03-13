@@ -1,5 +1,5 @@
 3.2.0-rc1
 
-3.2.0 RC1 release brings create pr, repository settings for admins and many more new features.
+إصدار 3.2.0 RC1 يجلب إنشاء طلب دمج، إعدادات المستودع للمسؤولين والمزيد من المزايا.
 
-Detailed release notes will be published with stable release.
+ملاحظات الإصدار المفصلة ستنشر مع الإصدار المستقر.

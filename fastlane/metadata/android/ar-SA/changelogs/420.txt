@@ -1,15 +1,15 @@
 4.2.0
 
-New: Create/delete/list tags
-New: Hide repository actions for non admins
-New: New files diff viewer
-New: Show users who reacted to issue/pr/comment
-New: Redesigned organization Teams
-Improvement: Enhance account manager
-⚠️ Notice: GitNex 4.3.0 will drop support for Android 5. Going forward 5.0.0 will drop for Android 6 ⚠️
+جديد: إنشاء/حذف/عرض الوسوم
+جديد: إخفاء إجراءات المستودع لغير المسؤولين
+جديد: عارض فروق مِلفات جديد
+جديد: عرض المستخدمين الذين تفاعلوا مع القضية/طلب الدمج/التعليق
+جديد: إعادة تصميم فِرق المنظمة
+تحسين: تحسين مدير الحسابات
+⚠️ ملاحظة: سيُلغي GitNex 4.3.0 دعم أندرويد 5. ⚠️ سيُلغي GitNex 5.0.0 دعم أندرويد 6
 
-Release Notes: https://codeberg.org/gitnex/GitNex/releases
+ملاحظات الإصدار: https://codeberg.org/gitnex/GitNex/releases
 
-Release Video: https://youtu.be/mxkE-x64iXs
+مرئيّ الإصدار: https://youtu.be/mxkE-x64iXs
 
-Release Blog: https://gitnex.codeberg.page/posts/420.html
+مدونة الإصدار: https://gitnex.codeberg.page/posts/420.html

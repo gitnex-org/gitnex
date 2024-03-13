@@ -1,7 +1,7 @@
-- New: Edit issue
-- New: Tabs for open and closed issues
-- Enhancement: German translation
-- Fixed: Layout fixes across the app
+- Nuevo: Editar incidencias
+- Nuevo: Pestañas para las incidencias abiertas y cerradas
+- Mejora: Traducción al alemán
+- Corregido: Corregidos de diseño en toda la aplicación
 
-And many more, check the release notes.
+Y mucho más, revisa las notas de lanzamiento.
 https://codeberg.org/gitnex/GitNex/releases
