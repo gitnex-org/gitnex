@@ -1,1 +1,1 @@
-Natywna aplikacja dla Gitea
+Natywny klient dla Forgejo i Gitea

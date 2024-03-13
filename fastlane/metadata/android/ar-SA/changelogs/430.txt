@@ -1,17 +1,17 @@
 4.3.0
 
-New: Show labels in issues and pr lists
-New: My issues with remote search and filters
-New: Single commit screen with diff view
-New: Unadopted repository management for Admins
-New: Delete a release
-New: UI enhancements and improvements
-New: Assign repository to a team in an org
+جديد: عرض الوسوم في قائمة القضايا وطلبات الدمج
+جديد: قضاياي مع البحث عن بعد والتصفية
+جديد: شاشة إيداع مفردة مع عرض الفروق
+جديد: إدارة المستودعات غير المعتمدة للمسؤولين
+جديد: حذف الإصدار
+جديد: تحسينات عامة وعلى واجهة التطبيق
+جديد: توكيل فريق في المنظمة على المستودع
 
-⚠️ Notice: Drop support for Android 5 ⚠️
+⚠️ملاحظة: أُلغي دعم أندرويد 5⚠️
 
-Release Notes: https://codeberg.org/gitnex/GitNex/releases
+ملاحظات الإصدار: https://codeberg.org/gitnex/GitNex/releases
 
-Release Video: https://youtu.be/DzJEm00V4qA
+مرئيّ الإصدار: https://youtu.be/DzJEm00V4qA
 
-Release Blog: https://gitnex.codeberg.page/posts/430.html
+مدونة الإصدار: https://gitnex.codeberg.page/posts/430.html

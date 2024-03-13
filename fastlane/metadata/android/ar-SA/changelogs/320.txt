@@ -1,14 +1,14 @@
 3.2.0
 
-New: Create pull request
-New: Edit repository properties (Admins only)
-New: Delete repository (Admins only)
-New: Transfer repository ownership (Admins only)
-New: Notification badge in navigation menu
-New: Search issues across all repositories
-New: Show issues/pr states in single view mode
-New: Explore repositories filters
-New: Android 11 support
-New: Commits under Files branches
+جديد: إنشاء طلب دمج
+جديد: تعديل خصائص المستودع (للمسؤولين فقط)
+جديد: حذف المستودع (للمسؤولين فقط)
+جديد: نقل ملكية المستودع (للمسؤولين فقط)
+جديد: شارة إشعارات في قائمة التنقل
+جديد: البحث عن القضايا على مستوى كل المستودعات
+جديد: عرض حالات القضايا/طلبات الدمج في وضع الرؤية المفردة
+جديد: اكتشف تصفيات المستودعات
+جديد: دعم أندرويد 11
+جديد: الإيداعات تحت فروع المِلفات
 
-Release Notes: https://codeberg.org/gitnex/GitNex/releases
+ملاحظات الإصدار: https://codeberg.org/gitnex/GitNex/releases

@@ -1,5 +1,5 @@
 3.1.0-rc1
 
-1st RC of 3.1.0 which brings features like Multi Account support, forks list etc.
+أول إصدار شبه مُعدّ من 3.1.0 الذي يجلب مزايا كتعدد الحسابات، قائمة الاشتقاقات إلخ.
 
-Detailed release notes will be published with stable release.
+ملاحظات الإصدار المفصلة ستنشر مع الإصدار المستقر.

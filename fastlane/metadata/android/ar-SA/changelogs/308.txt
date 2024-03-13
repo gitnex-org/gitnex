@@ -1,5 +1,5 @@
 3.1.0-rc2
 
-3.1.0 RC2 release brings enhanced multi accounts, delete and edit files, new progress indicators etc.
+الإصدار 3.1.0 RC2 يجلب تحسينات على تهدد الحسابات، حذف وتحرير الملفات ومؤشرات تقدم جديدة إلخ.
 
-Detailed release notes will be published with stable release.
+ملاحظات الإصدار المفصلة ستنشر مع الإصدار المستقر.

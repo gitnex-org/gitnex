@@ -1,6 +1,6 @@
 2.5.0-rc4
 
-Release notes will be published with the stable release.
-In the mean time check the milestone for pull requests and issues that are merged/closed.
+在稳定版本发布时将会有相关日志。
+同时检查被合并/关闭的 pull requests 和 issues 的里程碑
 
 https://codeberg.org/gitnex/GitNex/milestone/296?type=all&state=closed
