@@ -540,10 +540,10 @@ public class AppUtil {
 
 	public static void openUrlInBrowser(Context context, String url) {
 
-		TinyDB tinyDB = TinyDB.getInstance(context);
-
 		Intent i;
-		if (tinyDB.getBoolean("useCustomTabs")) {
+		if (Boolean.parseBoolean(
+				AppDatabaseSettings.getSettingsValue(
+						context, AppDatabaseSettings.APP_CUSTOM_BROWSER_KEY))) {
 			i =
 					new CustomTabsIntent.Builder()
 							.setDefaultColorSchemeParams(

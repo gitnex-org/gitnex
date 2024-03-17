@@ -31,6 +31,7 @@ import org.mian.gitnex.activities.MainActivity;
 import org.mian.gitnex.database.api.BaseApi;
 import org.mian.gitnex.database.api.DraftsApi;
 import org.mian.gitnex.databinding.BottomSheetReplyLayoutBinding;
+import org.mian.gitnex.helpers.AppDatabaseSettings;
 import org.mian.gitnex.helpers.Constants;
 import org.mian.gitnex.helpers.TinyDB;
 import org.mian.gitnex.helpers.Toasty;
@@ -202,9 +203,12 @@ public class BottomSheetReplyFragment extends BottomSheetDialogFragment {
 														getString(R.string.commentSuccess));
 
 												if (draftId != 0
-														&& tinyDB.getBoolean(
-																"draftsCommentsDeletionEnabled",
-																true)) {
+														&& Boolean.parseBoolean(
+																AppDatabaseSettings
+																		.getSettingsValue(
+																				getContext(),
+																				AppDatabaseSettings
+																						.APP_DRAFTS_DELETION_KEY))) {
 													draftsApi.deleteSingleDraft((int) draftId);
 												}
 
@@ -238,9 +242,12 @@ public class BottomSheetReplyFragment extends BottomSheetDialogFragment {
 											if (status == ActionResult.Status.SUCCESS) {
 
 												if (draftId != 0
-														&& tinyDB.getBoolean(
-																"draftsCommentsDeletionEnabled",
-																true)) {
+														&& Boolean.parseBoolean(
+																AppDatabaseSettings
+																		.getSettingsValue(
+																				getContext(),
+																				AppDatabaseSettings
+																						.APP_DRAFTS_DELETION_KEY))) {
 													draftsApi.deleteSingleDraft((int) draftId);
 												}
 

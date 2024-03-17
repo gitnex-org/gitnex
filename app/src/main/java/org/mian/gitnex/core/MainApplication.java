@@ -56,7 +56,9 @@ public class MainApplication extends Application {
 
 		tinyDB = TinyDB.getInstance(context);
 
-		if (tinyDB.getBoolean("crashReportingEnabled", true)) {
+		if (Boolean.parseBoolean(
+				AppDatabaseSettings.getSettingsValue(
+						context, AppDatabaseSettings.APP_CRASH_REPORTS_KEY))) {
 
 			CoreConfigurationBuilder ACRABuilder = new CoreConfigurationBuilder();
 

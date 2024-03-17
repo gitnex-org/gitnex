@@ -7,6 +7,7 @@ import java.util.Arrays;
 import java.util.List;
 import org.mian.gitnex.R;
 import org.mian.gitnex.databinding.ActivitySettingsGeneralBinding;
+import org.mian.gitnex.helpers.AppDatabaseSettings;
 import org.mian.gitnex.helpers.SnackBar;
 
 /**
@@ -14,11 +15,9 @@ import org.mian.gitnex.helpers.SnackBar;
  */
 public class SettingsGeneralActivity extends BaseActivity {
 
-	private static int homeScreenSelectedChoice = 0;
-	private static int defaultLinkHandlerScreenSelectedChoice = 0;
+	private static int homeScreenSelectedChoice;
+	private static int defaultLinkHandlerScreenSelectedChoice;
 	private ActivitySettingsGeneralBinding viewBinding;
-	private List<String> homeScreenList;
-	private List<String> linkHandlerDefaultScreen;
 
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
@@ -31,73 +30,15 @@ public class SettingsGeneralActivity extends BaseActivity {
 		viewBinding.topAppBar.setNavigationOnClickListener(v -> finish());
 
 		// home screen
-		String[] appHomeDefaultScreen = getResources().getStringArray(R.array.appDefaultHomeScreen);
-
-		String[] appHomeDefaultScreenNew =
+		String[] appHomeDefaultScreen =
 				getResources().getStringArray(R.array.appDefaultHomeScreenNew);
 
-		if (getAccount().requiresVersion("1.12.3")) {
+		homeScreenSelectedChoice =
+				Integer.parseInt(
+						AppDatabaseSettings.getSettingsValue(
+								ctx, AppDatabaseSettings.APP_HOME_SCREEN_KEY));
 
-			appHomeDefaultScreen = appHomeDefaultScreenNew;
-		}
-
-		homeScreenList = new ArrayList<>(Arrays.asList(appHomeDefaultScreen));
-
-		if (!getAccount().requiresVersion("1.14.0")) {
-			homeScreenList.remove(8);
-		}
-
-		String[] homeScreenArray = new String[homeScreenList.size()];
-		homeScreenList.toArray(homeScreenArray);
-
-		if (homeScreenSelectedChoice == 0) {
-
-			homeScreenSelectedChoice = tinyDB.getInt("homeScreenId", 0);
-			viewBinding.homeScreenSelected.setText(getResources().getString(R.string.navMyRepos));
-		}
-
-		if (homeScreenSelectedChoice == 1) {
-
-			viewBinding.homeScreenSelected.setText(
-					getResources().getString(R.string.pageTitleStarredRepos));
-		} else if (homeScreenSelectedChoice == 2) {
-
-			viewBinding.homeScreenSelected.setText(getResources().getString(R.string.navOrg));
-		} else if (homeScreenSelectedChoice == 3) {
-
-			viewBinding.homeScreenSelected.setText(getResources().getString(R.string.navRepos));
-		} else if (homeScreenSelectedChoice == 4) {
-
-			viewBinding.homeScreenSelected.setText(getResources().getString(R.string.navAccount));
-		} else if (homeScreenSelectedChoice == 5) {
-
-			viewBinding.homeScreenSelected.setText(
-					getResources().getString(R.string.pageTitleExplore));
-		} else if (homeScreenSelectedChoice == 6) {
-
-			viewBinding.homeScreenSelected.setText(getResources().getString(R.string.titleDrafts));
-		} else if (homeScreenSelectedChoice == 7) {
-
-			viewBinding.homeScreenSelected.setText(
-					getResources().getString(R.string.pageTitleNotifications));
-		} else if (homeScreenSelectedChoice == 8) {
-
-			viewBinding.homeScreenSelected.setText(getResources().getString(R.string.navMyIssues));
-		} else if (homeScreenSelectedChoice == 9) {
-
-			viewBinding.homeScreenSelected.setText(
-					getResources().getString(R.string.navMostVisited));
-		} else if (homeScreenSelectedChoice == 10) {
-
-			viewBinding.homeScreenSelected.setText(getResources().getString(R.string.navNotes));
-		} else if (homeScreenSelectedChoice == 11) {
-
-			viewBinding.homeScreenSelected.setText(getResources().getString(R.string.dashboard));
-		} else if (homeScreenSelectedChoice == 12) {
-
-			viewBinding.homeScreenSelected.setText(
-					getResources().getString(R.string.navWatchedRepositories));
-		}
+		viewBinding.homeScreenSelected.setText(appHomeDefaultScreen[homeScreenSelectedChoice]);
 
 		viewBinding.homeScreenFrame.setOnClickListener(
 				setDefaultHomeScreen -> {
@@ -106,13 +47,17 @@ public class SettingsGeneralActivity extends BaseActivity {
 									.setTitle(R.string.settingsHomeScreenSelectorDialogTitle)
 									.setCancelable(homeScreenSelectedChoice != -1)
 									.setSingleChoiceItems(
-											homeScreenArray,
+											appHomeDefaultScreen,
 											homeScreenSelectedChoice,
 											(dialogInterfaceHomeScreen, i) -> {
 												homeScreenSelectedChoice = i;
 												viewBinding.homeScreenSelected.setText(
-														homeScreenArray[i]);
-												tinyDB.putInt("homeScreenId", i);
+														appHomeDefaultScreen[i]);
+
+												AppDatabaseSettings.updateSettingsValue(
+														ctx,
+														String.valueOf(i),
+														AppDatabaseSettings.APP_HOME_SCREEN_KEY);
 
 												dialogInterfaceHomeScreen.dismiss();
 												SnackBar.success(
@@ -128,12 +73,16 @@ public class SettingsGeneralActivity extends BaseActivity {
 		// link handler
 		String[] linkHandlerDefaultScreenList =
 				getResources().getStringArray(R.array.linkHandlerDefaultScreen);
-		linkHandlerDefaultScreen = new ArrayList<>(Arrays.asList(linkHandlerDefaultScreenList));
+		List<String> linkHandlerDefaultScreen =
+				new ArrayList<>(Arrays.asList(linkHandlerDefaultScreenList));
 
 		String[] linksArray = new String[linkHandlerDefaultScreen.size()];
 		linkHandlerDefaultScreen.toArray(linksArray);
 
-		defaultLinkHandlerScreenSelectedChoice = tinyDB.getInt("defaultScreenId");
+		defaultLinkHandlerScreenSelectedChoice =
+				Integer.parseInt(
+						AppDatabaseSettings.getSettingsValue(
+								ctx, AppDatabaseSettings.APP_LINK_HANDLER_KEY));
 		viewBinding.generalDeepLinkSelected.setText(
 				linksArray[defaultLinkHandlerScreenSelectedChoice]);
 
@@ -150,7 +99,11 @@ public class SettingsGeneralActivity extends BaseActivity {
 												defaultLinkHandlerScreenSelectedChoice = i;
 												viewBinding.generalDeepLinkSelected.setText(
 														linksArray[i]);
-												tinyDB.putInt("defaultScreenId", i);
+
+												AppDatabaseSettings.updateSettingsValue(
+														ctx,
+														String.valueOf(i),
+														AppDatabaseSettings.APP_LINK_HANDLER_KEY);
 
 												dialogInterfaceHomeScreen.dismiss();
 												SnackBar.success(
@@ -163,11 +116,17 @@ public class SettingsGeneralActivity extends BaseActivity {
 				});
 		// link handler
 
-		// custom tabs
-		viewBinding.switchTabs.setChecked(tinyDB.getBoolean("useCustomTabs"));
+		// custom tabs switcher
+		viewBinding.switchTabs.setChecked(
+				Boolean.parseBoolean(
+						AppDatabaseSettings.getSettingsValue(
+								ctx, AppDatabaseSettings.APP_CUSTOM_BROWSER_KEY)));
 		viewBinding.switchTabs.setOnCheckedChangeListener(
 				(buttonView, isChecked) -> {
-					tinyDB.putBoolean("useCustomTabs", isChecked);
+					AppDatabaseSettings.updateSettingsValue(
+							ctx,
+							String.valueOf(isChecked),
+							AppDatabaseSettings.APP_CUSTOM_BROWSER_KEY);
 					SnackBar.success(
 							ctx,
 							findViewById(android.R.id.content),
@@ -175,16 +134,19 @@ public class SettingsGeneralActivity extends BaseActivity {
 				});
 		viewBinding.customTabsFrame.setOnClickListener(
 				v -> viewBinding.switchTabs.setChecked(!viewBinding.switchTabs.isChecked()));
-		// custom tabs
+		// custom tabs switcher
 
-		// enable drafts deletion
+		// drafts deletion switcher
 		viewBinding.commentsDeletionSwitch.setChecked(
-				tinyDB.getBoolean("draftsCommentsDeletionEnabled", true));
-
-		// delete comments on submit switcher
+				Boolean.parseBoolean(
+						AppDatabaseSettings.getSettingsValue(
+								ctx, AppDatabaseSettings.APP_DRAFTS_DELETION_KEY)));
 		viewBinding.commentsDeletionSwitch.setOnCheckedChangeListener(
 				(buttonView, isChecked) -> {
-					tinyDB.putBoolean("draftsCommentsDeletionEnabled", isChecked);
+					AppDatabaseSettings.updateSettingsValue(
+							ctx,
+							String.valueOf(isChecked),
+							AppDatabaseSettings.APP_DRAFTS_DELETION_KEY);
 					SnackBar.success(
 							ctx,
 							findViewById(android.R.id.content),
@@ -194,12 +156,19 @@ public class SettingsGeneralActivity extends BaseActivity {
 				v ->
 						viewBinding.commentsDeletionSwitch.setChecked(
 								!viewBinding.commentsDeletionSwitch.isChecked()));
-		// enable drafts deletion
+		// drafts deletion switcher
 
 		// crash reports switcher
+		viewBinding.crashReportsSwitch.setChecked(
+				Boolean.parseBoolean(
+						AppDatabaseSettings.getSettingsValue(
+								ctx, AppDatabaseSettings.APP_CRASH_REPORTS_KEY)));
 		viewBinding.crashReportsSwitch.setOnCheckedChangeListener(
 				(buttonView, isChecked) -> {
-					tinyDB.putBoolean("crashReportingEnabled", isChecked);
+					AppDatabaseSettings.updateSettingsValue(
+							ctx,
+							String.valueOf(isChecked),
+							AppDatabaseSettings.APP_CRASH_REPORTS_KEY);
 					SnackBar.success(
 							ctx,
 							findViewById(android.R.id.content),
