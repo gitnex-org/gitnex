@@ -16,6 +16,7 @@ import androidx.work.WorkManager;
 import com.google.android.material.dialog.MaterialAlertDialogBuilder;
 import java.util.concurrent.TimeUnit;
 import org.mian.gitnex.R;
+import org.mian.gitnex.helpers.AppDatabaseSettings;
 import org.mian.gitnex.helpers.Constants;
 import org.mian.gitnex.helpers.TinyDB;
 
@@ -72,22 +73,34 @@ public class Notifications {
 
 	public static void startWorker(Context context) {
 
-		TinyDB tinyDB = TinyDB.getInstance(context);
-
 		int delay;
-		if (tinyDB.getInt("notificationsPollingDelayId") == 0) {
+		if (Integer.parseInt(
+						AppDatabaseSettings.getSettingsValue(
+								context, AppDatabaseSettings.APP_NOTIFICATIONS_DELAY_KEY))
+				== 0) {
 			delay = 15;
-		} else if (tinyDB.getInt("notificationsPollingDelayId") == 1) {
+		} else if (Integer.parseInt(
+						AppDatabaseSettings.getSettingsValue(
+								context, AppDatabaseSettings.APP_NOTIFICATIONS_DELAY_KEY))
+				== 1) {
 			delay = 30;
-		} else if (tinyDB.getInt("notificationsPollingDelayId") == 2) {
+		} else if (Integer.parseInt(
+						AppDatabaseSettings.getSettingsValue(
+								context, AppDatabaseSettings.APP_NOTIFICATIONS_DELAY_KEY))
+				== 2) {
 			delay = 45;
-		} else if (tinyDB.getInt("notificationsPollingDelayId") == 3) {
+		} else if (Integer.parseInt(
+						AppDatabaseSettings.getSettingsValue(
+								context, AppDatabaseSettings.APP_NOTIFICATIONS_DELAY_KEY))
+				== 3) {
 			delay = 60;
 		} else {
 			delay = Constants.defaultPollingDelay;
 		}
 
-		if (tinyDB.getBoolean("notificationsEnabled", true)) {
+		if (Boolean.parseBoolean(
+				AppDatabaseSettings.getSettingsValue(
+						context, AppDatabaseSettings.APP_NOTIFICATIONS_KEY))) {
 
 			if (!NotificationManagerCompat.from(context).areNotificationsEnabled()) {
 				MaterialAlertDialogBuilder materialAlertDialogBuilder =
