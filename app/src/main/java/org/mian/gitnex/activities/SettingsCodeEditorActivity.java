@@ -6,6 +6,7 @@ import com.google.android.material.dialog.MaterialAlertDialogBuilder;
 import org.mian.gitnex.R;
 import org.mian.gitnex.databinding.ActivitySettingsCodeEditorBinding;
 import org.mian.gitnex.fragments.SettingsFragment;
+import org.mian.gitnex.helpers.AppDatabaseSettings;
 import org.mian.gitnex.helpers.SnackBar;
 
 /**
@@ -33,7 +34,10 @@ public class SettingsCodeEditorActivity extends BaseActivity {
 
 		// color selector dialog
 		colorList = getResources().getStringArray(R.array.ceColors);
-		colorSelectedChoice = tinyDB.getInt("ceColorId");
+		colorSelectedChoice =
+				Integer.parseInt(
+						AppDatabaseSettings.getSettingsValue(
+								ctx, AppDatabaseSettings.APP_CE_SYNTAX_HIGHLIGHT_KEY));
 		activitySettingsCodeEditorBinding.ceColorSelected.setText(colorList[colorSelectedChoice]);
 
 		activitySettingsCodeEditorBinding.ceColorSelectionFrame.setOnClickListener(
@@ -48,7 +52,11 @@ public class SettingsCodeEditorActivity extends BaseActivity {
 												colorSelectedChoice = i;
 												activitySettingsCodeEditorBinding.ceColorSelected
 														.setText(colorList[i]);
-												tinyDB.putInt("ceColorId", i);
+												AppDatabaseSettings.updateSettingsValue(
+														ctx,
+														String.valueOf(i),
+														AppDatabaseSettings
+																.APP_CE_SYNTAX_HIGHLIGHT_KEY);
 
 												SettingsFragment.refreshParent = true;
 												this.recreate();
@@ -65,7 +73,10 @@ public class SettingsCodeEditorActivity extends BaseActivity {
 
 		// indentation selector dialog
 		indentationList = getResources().getStringArray(R.array.ceIndentation);
-		indentationSelectedChoice = tinyDB.getInt("ceIndentationId");
+		indentationSelectedChoice =
+				Integer.parseInt(
+						AppDatabaseSettings.getSettingsValue(
+								ctx, AppDatabaseSettings.APP_CE_INDENTATION_KEY));
 		activitySettingsCodeEditorBinding.indentationSelected.setText(
 				indentationList[indentationSelectedChoice]);
 
@@ -82,7 +93,10 @@ public class SettingsCodeEditorActivity extends BaseActivity {
 												activitySettingsCodeEditorBinding
 														.indentationSelected.setText(
 														indentationList[i]);
-												tinyDB.putInt("ceIndentationId", i);
+												AppDatabaseSettings.updateSettingsValue(
+														ctx,
+														String.valueOf(i),
+														AppDatabaseSettings.APP_CE_INDENTATION_KEY);
 
 												SettingsFragment.refreshParent = true;
 												this.recreate();
@@ -107,7 +121,10 @@ public class SettingsCodeEditorActivity extends BaseActivity {
 		}
 
 		indentationTabsList = getResources().getStringArray(R.array.ceIndentationTabsWidth);
-		indentationTabsSelectedChoice = tinyDB.getInt("ceIndentationTabsId");
+		indentationTabsSelectedChoice =
+				Integer.parseInt(
+						AppDatabaseSettings.getSettingsValue(
+								ctx, AppDatabaseSettings.APP_CE_TABS_WIDTH_KEY));
 		activitySettingsCodeEditorBinding.indentationTabsSelected.setText(
 				indentationTabsList[indentationTabsSelectedChoice]);
 
@@ -124,7 +141,10 @@ public class SettingsCodeEditorActivity extends BaseActivity {
 												activitySettingsCodeEditorBinding
 														.indentationTabsSelected.setText(
 														indentationTabsList[i]);
-												tinyDB.putInt("ceIndentationTabsId", i);
+												AppDatabaseSettings.updateSettingsValue(
+														ctx,
+														String.valueOf(i),
+														AppDatabaseSettings.APP_CE_TABS_WIDTH_KEY);
 
 												SettingsFragment.refreshParent = true;
 												this.recreate();

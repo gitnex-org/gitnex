@@ -3,8 +3,8 @@ package org.mian.gitnex.helpers.codeeditor.theme;
 import android.content.Context;
 import androidx.annotation.ColorRes;
 import org.mian.gitnex.R;
+import org.mian.gitnex.helpers.AppDatabaseSettings;
 import org.mian.gitnex.helpers.AppUtil;
-import org.mian.gitnex.helpers.TinyDB;
 import org.mian.gitnex.helpers.codeeditor.languages.LanguageElement;
 
 /**
@@ -19,8 +19,10 @@ public interface Theme {
 	BlueMoonDarkTheme BLUE_MOON_DARK_THEME = new BlueMoonDarkTheme();
 
 	static Theme getDefaultTheme(Context context) {
-		TinyDB tinyDB = TinyDB.getInstance(context);
-		if (tinyDB.getInt("ceColorId") == 0) {
+		if (Integer.parseInt(
+						AppDatabaseSettings.getSettingsValue(
+								context, AppDatabaseSettings.APP_CE_SYNTAX_HIGHLIGHT_KEY))
+				== 0) {
 			return AppUtil.getColorFromAttribute(context, R.attr.isDark) == 1
 					? FIVE_COLORS_DARK
 					: FIVE_COLORS;

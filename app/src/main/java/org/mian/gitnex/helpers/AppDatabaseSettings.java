@@ -59,54 +59,65 @@ public class AppDatabaseSettings {
 
 	public static void initDefaultSettings(Context ctx) {
 
+		TinyDB tinyDB = TinyDB.getInstance(ctx);
 		AppSettingsApi appSettingsApi = BaseApi.getInstance(ctx, AppSettingsApi.class);
 		assert appSettingsApi != null;
 
 		if (appSettingsApi.fetchSettingCountByKey(APP_THEME_KEY) == 0) {
-			appSettingsApi.insertNewSetting(APP_THEME_KEY, APP_THEME_DEFAULT, APP_THEME_DEFAULT);
+			appSettingsApi.insertNewSetting(
+					APP_THEME_KEY, String.valueOf(tinyDB.getInt("themeId")), APP_THEME_DEFAULT);
 		}
 		if (appSettingsApi.fetchSettingCountByKey(APP_THEME_AUTO_LIGHT_HOUR_KEY) == 0) {
 			appSettingsApi.insertNewSetting(
 					APP_THEME_AUTO_LIGHT_HOUR_KEY,
-					APP_THEME_AUTO_LIGHT_HOUR_DEFAULT,
+					String.valueOf(tinyDB.getInt("lightThemeTimeHour")),
 					APP_THEME_AUTO_LIGHT_HOUR_DEFAULT);
 		}
 		if (appSettingsApi.fetchSettingCountByKey(APP_THEME_AUTO_LIGHT_MIN_KEY) == 0) {
 			appSettingsApi.insertNewSetting(
 					APP_THEME_AUTO_LIGHT_MIN_KEY,
-					APP_THEME_AUTO_LIGHT_MIN_DEFAULT,
+					String.valueOf(tinyDB.getInt("lightThemeTimeMinute")),
 					APP_THEME_AUTO_LIGHT_MIN_DEFAULT);
 		}
 		if (appSettingsApi.fetchSettingCountByKey(APP_THEME_AUTO_DARK_HOUR_KEY) == 0) {
 			appSettingsApi.insertNewSetting(
 					APP_THEME_AUTO_DARK_HOUR_KEY,
-					APP_THEME_AUTO_DARK_HOUR_DEFAULT,
+					String.valueOf(tinyDB.getInt("darkThemeTimeHour")),
 					APP_THEME_AUTO_DARK_HOUR_DEFAULT);
 		}
 		if (appSettingsApi.fetchSettingCountByKey(APP_THEME_AUTO_DARK_MIN_KEY) == 0) {
 			appSettingsApi.insertNewSetting(
 					APP_THEME_AUTO_DARK_MIN_KEY,
-					APP_THEME_AUTO_DARK_MIN_DEFAULT,
+					String.valueOf(tinyDB.getInt("darkThemeTimeMinute")),
 					APP_THEME_AUTO_DARK_MIN_DEFAULT);
 		}
 		if (appSettingsApi.fetchSettingCountByKey(APP_FONT_KEY) == 0) {
-			appSettingsApi.insertNewSetting(APP_FONT_KEY, APP_FONT_DEFAULT, APP_FONT_DEFAULT);
+			appSettingsApi.insertNewSetting(
+					APP_FONT_KEY, String.valueOf(tinyDB.getInt("customFontId")), APP_FONT_DEFAULT);
 		}
 		if (appSettingsApi.fetchSettingCountByKey(APP_TABS_ANIMATION_KEY) == 0) {
 			appSettingsApi.insertNewSetting(
-					APP_TABS_ANIMATION_KEY, APP_TABS_ANIMATION_DEFAULT, APP_TABS_ANIMATION_DEFAULT);
+					APP_TABS_ANIMATION_KEY,
+					String.valueOf(tinyDB.getInt("fragmentTabsAnimationId")),
+					APP_TABS_ANIMATION_DEFAULT);
 		}
 		if (appSettingsApi.fetchSettingCountByKey(APP_LOCALE_KEY) == 0) {
 			appSettingsApi.insertNewSetting(
-					APP_LOCALE_KEY, APP_LOCALE_KEY_DEFAULT, APP_LOCALE_KEY_DEFAULT);
+					APP_LOCALE_KEY,
+					tinyDB.getInt("langId") + "|" + tinyDB.getString("locale"),
+					APP_LOCALE_KEY_DEFAULT);
 		}
 		if (appSettingsApi.fetchSettingCountByKey(APP_COUNTER_KEY) == 0) {
 			appSettingsApi.insertNewSetting(
-					APP_COUNTER_KEY, APP_COUNTER_DEFAULT, APP_COUNTER_DEFAULT);
+					APP_COUNTER_KEY,
+					String.valueOf(tinyDB.getBoolean("enableCounterBadges")),
+					APP_COUNTER_DEFAULT);
 		}
 		if (appSettingsApi.fetchSettingCountByKey(APP_LABELS_IN_LIST_KEY) == 0) {
 			appSettingsApi.insertNewSetting(
-					APP_LABELS_IN_LIST_KEY, APP_LABELS_IN_LIST_DEFAULT, APP_LABELS_IN_LIST_DEFAULT);
+					APP_LABELS_IN_LIST_KEY,
+					String.valueOf(tinyDB.getBoolean("showLabelsInList")),
+					APP_LABELS_IN_LIST_DEFAULT);
 		}
 		if (appSettingsApi.fetchSettingCountByKey(APP_LINK_HANDLER_KEY) == 0) {
 			appSettingsApi.insertNewSetting(
@@ -133,16 +144,20 @@ public class AppDatabaseSettings {
 		if (appSettingsApi.fetchSettingCountByKey(APP_CE_SYNTAX_HIGHLIGHT_KEY) == 0) {
 			appSettingsApi.insertNewSetting(
 					APP_CE_SYNTAX_HIGHLIGHT_KEY,
-					APP_CE_SYNTAX_HIGHLIGHT_DEFAULT,
+					String.valueOf(tinyDB.getInt("ceColorId")),
 					APP_CE_SYNTAX_HIGHLIGHT_DEFAULT);
 		}
 		if (appSettingsApi.fetchSettingCountByKey(APP_CE_INDENTATION_KEY) == 0) {
 			appSettingsApi.insertNewSetting(
-					APP_CE_INDENTATION_KEY, APP_CE_INDENTATION_DEFAULT, APP_CE_INDENTATION_DEFAULT);
+					APP_CE_INDENTATION_KEY,
+					String.valueOf(tinyDB.getInt("ceIndentationId")),
+					APP_CE_INDENTATION_DEFAULT);
 		}
 		if (appSettingsApi.fetchSettingCountByKey(APP_CE_TABS_WIDTH_KEY) == 0) {
 			appSettingsApi.insertNewSetting(
-					APP_CE_TABS_WIDTH_KEY, APP_CE_TABS_WIDTH_DEFAULT, APP_CE_TABS_WIDTH_DEFAULT);
+					APP_CE_TABS_WIDTH_KEY,
+					String.valueOf(tinyDB.getInt("ceIndentationTabsId")),
+					APP_CE_TABS_WIDTH_DEFAULT);
 		}
 		if (appSettingsApi.fetchSettingCountByKey(APP_NOTIFICATIONS_KEY) == 0) {
 			appSettingsApi.insertNewSetting(
