@@ -35,8 +35,6 @@ public abstract class BaseActivity extends AppCompatActivity {
 		this.appCtx = getApplicationContext();
 		this.tinyDB = TinyDB.getInstance(appCtx);
 
-		AppDatabaseSettings.initDefaultSettings(ctx);
-
 		switch (Integer.parseInt(
 				AppDatabaseSettings.getSettingsValue(ctx, AppDatabaseSettings.APP_THEME_KEY))) {
 			case 0:

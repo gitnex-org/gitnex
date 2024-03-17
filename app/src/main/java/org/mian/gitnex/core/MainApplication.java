@@ -13,6 +13,7 @@ import org.acra.config.NotificationConfigurationBuilder;
 import org.acra.data.StringFormat;
 import org.mian.gitnex.R;
 import org.mian.gitnex.database.models.UserAccount;
+import org.mian.gitnex.helpers.AppDatabaseSettings;
 import org.mian.gitnex.helpers.AppUtil;
 import org.mian.gitnex.helpers.FontsOverride;
 import org.mian.gitnex.helpers.TinyDB;
@@ -36,6 +37,8 @@ public class MainApplication extends Application {
 		tinyDB = TinyDB.getInstance(appCtx);
 
 		currentAccount = AccountContext.fromId(tinyDB.getInt("currentActiveAccountId", 0), appCtx);
+
+		AppDatabaseSettings.initDefaultSettings(getApplicationContext());
 
 		tinyDB.putBoolean("biometricLifeCycle", false);
 
