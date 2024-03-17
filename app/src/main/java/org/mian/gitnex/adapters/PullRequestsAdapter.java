@@ -31,6 +31,7 @@ import org.mian.gitnex.activities.IssueDetailActivity;
 import org.mian.gitnex.activities.ProfileActivity;
 import org.mian.gitnex.activities.RepoDetailActivity;
 import org.mian.gitnex.clients.PicassoService;
+import org.mian.gitnex.helpers.AppDatabaseSettings;
 import org.mian.gitnex.helpers.AppUtil;
 import org.mian.gitnex.helpers.ClickListener;
 import org.mian.gitnex.helpers.ColorInverter;
@@ -206,7 +207,9 @@ public class PullRequestsAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
 
 			if (pullRequest.getLabels() != null) {
 
-				if (!tinyDb.getBoolean("showLabelsInList", false)) { // default
+				if (!Boolean.parseBoolean(
+						AppDatabaseSettings.getSettingsValue(
+								context, AppDatabaseSettings.APP_LABELS_IN_LIST_KEY))) {
 
 					labelsScrollViewWithText.setVisibility(View.GONE);
 					labelsScrollViewDots.setVisibility(View.VISIBLE);

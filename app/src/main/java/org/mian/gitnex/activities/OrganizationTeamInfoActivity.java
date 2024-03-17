@@ -14,6 +14,7 @@ import org.mian.gitnex.databinding.ActivityOrgTeamInfoBinding;
 import org.mian.gitnex.fragments.OrganizationTeamInfoMembersFragment;
 import org.mian.gitnex.fragments.OrganizationTeamInfoPermissionsFragment;
 import org.mian.gitnex.fragments.OrganizationTeamInfoReposFragment;
+import org.mian.gitnex.helpers.AppDatabaseSettings;
 import org.mian.gitnex.helpers.ViewPager2Transformers;
 
 /**
@@ -37,6 +38,7 @@ public class OrganizationTeamInfoActivity extends BaseActivity {
 
 		team = (Team) getIntent().getSerializableExtra("team");
 
+		assert team != null;
 		if (team.getName() != null && !team.getName().isEmpty()) {
 			binding.toolbarTitle.setText(team.getName());
 		} else {
@@ -68,7 +70,10 @@ public class OrganizationTeamInfoActivity extends BaseActivity {
 				});
 
 		ViewPager2Transformers.returnSelectedTransformer(
-				binding.pager, tinyDB.getInt("fragmentTabsAnimationId", 0));
+				binding.pager,
+				Integer.parseInt(
+						AppDatabaseSettings.getSettingsValue(
+								ctx, AppDatabaseSettings.APP_TABS_ANIMATION_KEY)));
 
 		new TabLayoutMediator(
 						binding.tabs,

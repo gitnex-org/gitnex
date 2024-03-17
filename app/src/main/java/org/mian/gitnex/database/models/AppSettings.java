@@ -14,9 +14,9 @@ public class AppSettings implements Serializable {
 	@PrimaryKey(autoGenerate = true)
 	private int settingId;
 
-	@Nullable private String settingKey;
+	private String settingKey;
 	private String settingValue;
-	private String settingDefault;
+	@Nullable private String settingDefault;
 
 	public int getSettingId() {
 		return settingId;

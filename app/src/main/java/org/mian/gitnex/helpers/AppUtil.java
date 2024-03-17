@@ -403,7 +403,7 @@ public class AppUtil {
 	public static String encodeBase64(String str) {
 
 		String base64Str = str;
-		if (!str.equals("")) {
+		if (!str.isEmpty()) {
 			byte[] data = str.getBytes(StandardCharsets.UTF_8);
 			base64Str = Base64.encodeToString(data, Base64.DEFAULT);
 		}
@@ -602,8 +602,11 @@ public class AppUtil {
 	}
 
 	public static Typeface getTypeface(Context context) {
+
 		if (typeface == null) {
-			switch (TinyDB.getInstance(context).getInt("customFontId", -1)) {
+			switch (Integer.parseInt(
+					AppDatabaseSettings.getSettingsValue(
+							context, AppDatabaseSettings.APP_FONT_KEY))) {
 				case 0:
 					typeface = Typeface.createFromAsset(context.getAssets(), "fonts/roboto.ttf");
 					break;
