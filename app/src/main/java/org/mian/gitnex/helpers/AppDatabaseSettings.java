@@ -52,10 +52,16 @@ public class AppDatabaseSettings {
 	public static String APP_NOTIFICATIONS_DELAY_DEFAULT = "0";
 	public static String APP_BIOMETRIC_KEY = "app_biometric";
 	public static String APP_BIOMETRIC_DEFAULT = "false";
+	public static String APP_BIOMETRIC_LIFE_CYCLE_KEY = "app_biometric_life_cycle";
+	public static String APP_BIOMETRIC_LIFE_CYCLE_DEFAULT = "false";
 	public static String APP_DATA_CACHE_KEY = "app_data_cache";
 	public static String APP_DATA_CACHE_DEFAULT = "1";
+	public static String APP_DATA_CACHE_SIZE_KEY = "app_data_cache_size";
+	public static String APP_DATA_CACHE_SIZE_DEFAULT = "100 MB";
 	public static String APP_IMAGES_CACHE_KEY = "app_images_cache";
 	public static String APP_IMAGES_CACHE_DEFAULT = "1";
+	public static String APP_IMAGES_CACHE_SIZE_KEY = "app_images_cache_size";
+	public static String APP_IMAGES_CACHE_SIZE_DEFAULT = "100 MB";
 
 	public static void initDefaultSettings(Context ctx) {
 
@@ -158,13 +164,31 @@ public class AppDatabaseSettings {
 			appSettingsApi.insertNewSetting(
 					APP_BIOMETRIC_KEY, APP_BIOMETRIC_DEFAULT, APP_BIOMETRIC_DEFAULT);
 		}
+		if (appSettingsApi.fetchSettingCountByKey(APP_BIOMETRIC_LIFE_CYCLE_KEY) == 0) {
+			appSettingsApi.insertNewSetting(
+					APP_BIOMETRIC_LIFE_CYCLE_KEY,
+					APP_BIOMETRIC_LIFE_CYCLE_DEFAULT,
+					APP_BIOMETRIC_LIFE_CYCLE_DEFAULT);
+		}
 		if (appSettingsApi.fetchSettingCountByKey(APP_DATA_CACHE_KEY) == 0) {
 			appSettingsApi.insertNewSetting(
 					APP_DATA_CACHE_KEY, APP_DATA_CACHE_DEFAULT, APP_DATA_CACHE_DEFAULT);
 		}
+		if (appSettingsApi.fetchSettingCountByKey(APP_DATA_CACHE_SIZE_KEY) == 0) {
+			appSettingsApi.insertNewSetting(
+					APP_DATA_CACHE_SIZE_KEY,
+					APP_DATA_CACHE_SIZE_DEFAULT,
+					APP_DATA_CACHE_SIZE_DEFAULT);
+		}
 		if (appSettingsApi.fetchSettingCountByKey(APP_IMAGES_CACHE_KEY) == 0) {
 			appSettingsApi.insertNewSetting(
 					APP_IMAGES_CACHE_KEY, APP_IMAGES_CACHE_DEFAULT, APP_IMAGES_CACHE_DEFAULT);
+		}
+		if (appSettingsApi.fetchSettingCountByKey(APP_IMAGES_CACHE_SIZE_KEY) == 0) {
+			appSettingsApi.insertNewSetting(
+					APP_IMAGES_CACHE_SIZE_KEY,
+					APP_IMAGES_CACHE_SIZE_DEFAULT,
+					APP_IMAGES_CACHE_SIZE_DEFAULT);
 		}
 	}
 

@@ -121,8 +121,12 @@ public abstract class BaseActivity extends AppCompatActivity {
 	public void onResume() {
 		super.onResume();
 
-		if (tinyDB.getBoolean("biometricStatus", false)
-				&& !tinyDB.getBoolean("biometricLifeCycle")) {
+		if (Boolean.parseBoolean(
+						AppDatabaseSettings.getSettingsValue(
+								ctx, AppDatabaseSettings.APP_BIOMETRIC_KEY))
+				&& !Boolean.parseBoolean(
+						AppDatabaseSettings.getSettingsValue(
+								ctx, AppDatabaseSettings.APP_BIOMETRIC_LIFE_CYCLE_KEY))) {
 
 			Executor executor = ContextCompat.getMainExecutor(this);
 
@@ -147,7 +151,10 @@ public abstract class BaseActivity extends AppCompatActivity {
 								public void onAuthenticationSucceeded(
 										@NonNull BiometricPrompt.AuthenticationResult result) {
 									super.onAuthenticationSucceeded(result);
-									tinyDB.putBoolean("biometricLifeCycle", true);
+									AppDatabaseSettings.updateSettingsValue(
+											getApplicationContext(),
+											"true",
+											AppDatabaseSettings.APP_BIOMETRIC_LIFE_CYCLE_KEY);
 								}
 
 								// Authentication failed, close the app

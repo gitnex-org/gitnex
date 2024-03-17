@@ -15,7 +15,6 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.Objects;
 import java.util.UUID;
-import org.mian.gitnex.R;
 
 /**
  * @author opyale
@@ -34,14 +33,10 @@ public class PicassoCache implements Cache {
 
 	public PicassoCache(File cachePath, Context ctx) throws IOException, ClassNotFoundException {
 
-		TinyDB tinyDb = TinyDB.getInstance(ctx);
-
 		CACHE_SIZE =
 				FilesData.returnOnlyNumberFileSize(
-								tinyDb.getString(
-										"cacheSizeImagesStr",
-										ctx.getString(
-												R.string.cacheSizeImagesSelectionSelectedText)))
+								AppDatabaseSettings.getSettingsValue(
+										ctx, AppDatabaseSettings.APP_IMAGES_CACHE_SIZE_KEY))
 						* 1024
 						* 1024;
 		this.cachePath = cachePath;

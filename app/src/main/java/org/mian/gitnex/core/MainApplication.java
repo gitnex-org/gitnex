@@ -40,7 +40,8 @@ public class MainApplication extends Application {
 
 		AppDatabaseSettings.initDefaultSettings(getApplicationContext());
 
-		tinyDB.putBoolean("biometricLifeCycle", false);
+		AppDatabaseSettings.updateSettingsValue(
+				getApplicationContext(), "false", AppDatabaseSettings.APP_BIOMETRIC_LIFE_CYCLE_KEY);
 
 		FontsOverride.setDefaultFont(getBaseContext());
 

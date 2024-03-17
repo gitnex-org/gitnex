@@ -15,11 +15,11 @@ import org.mian.gitnex.helpers.SnackBar;
 public class SettingsCodeEditorActivity extends BaseActivity {
 
 	private static String[] colorList;
-	private static int colorSelectedChoice = 0;
+	private static int colorSelectedChoice;
 	private static String[] indentationList;
-	private static int indentationSelectedChoice = 0;
+	private static int indentationSelectedChoice;
 	private static String[] indentationTabsList;
-	private static int indentationTabsSelectedChoice = 0;
+	private static int indentationTabsSelectedChoice;
 
 	@Override
 	public void onCreate(Bundle savedInstanceState) {

@@ -19,7 +19,7 @@ public class SettingsNotificationsActivity extends BaseActivity {
 
 	private ActivitySettingsNotificationsBinding viewBinding;
 	private static String[] pollingDelayList;
-	private static int pollingDelayListSelectedChoice = 0;
+	private static int pollingDelayListSelectedChoice;
 
 	@Override
 	public void onCreate(Bundle savedInstanceState) {

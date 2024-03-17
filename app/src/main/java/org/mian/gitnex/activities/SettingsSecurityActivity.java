@@ -13,6 +13,7 @@ import java.io.IOException;
 import org.apache.commons.io.FileUtils;
 import org.mian.gitnex.R;
 import org.mian.gitnex.databinding.ActivitySettingsSecurityBinding;
+import org.mian.gitnex.helpers.AppDatabaseSettings;
 import org.mian.gitnex.helpers.AppUtil;
 import org.mian.gitnex.helpers.SnackBar;
 import org.mian.gitnex.helpers.ssl.MemorizingTrustManager;
@@ -23,9 +24,9 @@ import org.mian.gitnex.helpers.ssl.MemorizingTrustManager;
 public class SettingsSecurityActivity extends BaseActivity {
 
 	private static String[] cacheSizeDataList;
-	private static int cacheSizeDataSelectedChoice = 0;
+	private static int cacheSizeDataSelectedChoice;
 	private static String[] cacheSizeImagesList;
-	private static int cacheSizeImagesSelectedChoice = 0;
+	private static int cacheSizeImagesSelectedChoice;
 
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
@@ -41,26 +42,24 @@ public class SettingsSecurityActivity extends BaseActivity {
 		cacheSizeDataList = getResources().getStringArray(R.array.cacheSizeList);
 		cacheSizeImagesList = getResources().getStringArray(R.array.cacheSizeList);
 
+		cacheSizeDataSelectedChoice =
+				Integer.parseInt(
+						AppDatabaseSettings.getSettingsValue(
+								ctx, AppDatabaseSettings.APP_DATA_CACHE_KEY));
+		cacheSizeImagesSelectedChoice =
+				Integer.parseInt(
+						AppDatabaseSettings.getSettingsValue(
+								ctx, AppDatabaseSettings.APP_IMAGES_CACHE_KEY));
+
 		activitySettingsSecurityBinding.cacheSizeDataSelected.setText(
-				tinyDB.getString(
-						"cacheSizeStr", getString(R.string.cacheSizeDataSelectionSelectedText)));
+				cacheSizeDataList[cacheSizeDataSelectedChoice]);
 		activitySettingsSecurityBinding.cacheSizeImagesSelected.setText(
-				tinyDB.getString(
-						"cacheSizeImagesStr",
-						getString(R.string.cacheSizeImagesSelectionSelectedText)));
-
-		if (cacheSizeDataSelectedChoice == 0) {
-
-			cacheSizeDataSelectedChoice = tinyDB.getInt("cacheSizeId");
-		}
-
-		if (cacheSizeImagesSelectedChoice == 0) {
-
-			cacheSizeImagesSelectedChoice = tinyDB.getInt("cacheSizeImagesId");
-		}
+				cacheSizeImagesList[cacheSizeImagesSelectedChoice]);
 
 		activitySettingsSecurityBinding.switchBiometric.setChecked(
-				tinyDB.getBoolean("biometricStatus", false));
+				Boolean.parseBoolean(
+						AppDatabaseSettings.getSettingsValue(
+								ctx, AppDatabaseSettings.APP_BIOMETRIC_KEY)));
 
 		// biometric switcher
 		activitySettingsSecurityBinding.switchBiometric.setOnCheckedChangeListener(
@@ -76,7 +75,8 @@ public class SettingsSecurityActivity extends BaseActivity {
 							switch (biometricManager.canAuthenticate(
 									BIOMETRIC_STRONG | DEVICE_CREDENTIAL)) {
 								case BiometricManager.BIOMETRIC_SUCCESS:
-									tinyDB.putBoolean("biometricStatus", true);
+									AppDatabaseSettings.updateSettingsValue(
+											ctx, "true", AppDatabaseSettings.APP_BIOMETRIC_KEY);
 									SnackBar.success(
 											ctx,
 											findViewById(android.R.id.content),
@@ -86,7 +86,8 @@ public class SettingsSecurityActivity extends BaseActivity {
 								case BiometricManager.BIOMETRIC_ERROR_SECURITY_UPDATE_REQUIRED:
 								case BiometricManager.BIOMETRIC_ERROR_UNSUPPORTED:
 								case BiometricManager.BIOMETRIC_STATUS_UNKNOWN:
-									tinyDB.putBoolean("biometricStatus", false);
+									AppDatabaseSettings.updateSettingsValue(
+											ctx, "false", AppDatabaseSettings.APP_BIOMETRIC_KEY);
 									activitySettingsSecurityBinding.switchBiometric.setChecked(
 											false);
 									SnackBar.error(
@@ -95,7 +96,8 @@ public class SettingsSecurityActivity extends BaseActivity {
 											getString(R.string.biometricNotSupported));
 									break;
 								case BiometricManager.BIOMETRIC_ERROR_HW_UNAVAILABLE:
-									tinyDB.putBoolean("biometricStatus", false);
+									AppDatabaseSettings.updateSettingsValue(
+											ctx, "false", AppDatabaseSettings.APP_BIOMETRIC_KEY);
 									activitySettingsSecurityBinding.switchBiometric.setChecked(
 											false);
 									SnackBar.error(
@@ -104,7 +106,8 @@ public class SettingsSecurityActivity extends BaseActivity {
 											getString(R.string.biometricNotAvailable));
 									break;
 								case BiometricManager.BIOMETRIC_ERROR_NONE_ENROLLED:
-									tinyDB.putBoolean("biometricStatus", false);
+									AppDatabaseSettings.updateSettingsValue(
+											ctx, "false", AppDatabaseSettings.APP_BIOMETRIC_KEY);
 									activitySettingsSecurityBinding.switchBiometric.setChecked(
 											false);
 									SnackBar.info(
@@ -115,7 +118,8 @@ public class SettingsSecurityActivity extends BaseActivity {
 							}
 						} else {
 
-							tinyDB.putBoolean("biometricStatus", true);
+							AppDatabaseSettings.updateSettingsValue(
+									ctx, "true", AppDatabaseSettings.APP_BIOMETRIC_KEY);
 							SnackBar.success(
 									ctx,
 									findViewById(android.R.id.content),
@@ -123,7 +127,8 @@ public class SettingsSecurityActivity extends BaseActivity {
 						}
 					} else {
 
-						tinyDB.putBoolean("biometricStatus", false);
+						AppDatabaseSettings.updateSettingsValue(
+								ctx, "false", AppDatabaseSettings.APP_BIOMETRIC_KEY);
 						SnackBar.success(
 								ctx,
 								findViewById(android.R.id.content),
@@ -186,10 +191,16 @@ public class SettingsSecurityActivity extends BaseActivity {
 												activitySettingsSecurityBinding
 														.cacheSizeImagesSelected.setText(
 														cacheSizeImagesList[i]);
-												tinyDB.putString(
-														"cacheSizeImagesStr",
-														cacheSizeImagesList[i]);
-												tinyDB.putInt("cacheSizeImagesId", i);
+
+												AppDatabaseSettings.updateSettingsValue(
+														ctx,
+														cacheSizeImagesList[i],
+														AppDatabaseSettings
+																.APP_IMAGES_CACHE_SIZE_KEY);
+												AppDatabaseSettings.updateSettingsValue(
+														ctx,
+														String.valueOf(i),
+														AppDatabaseSettings.APP_IMAGES_CACHE_KEY);
 
 												dialogInterfaceTheme.dismiss();
 												SnackBar.success(
@@ -216,9 +227,16 @@ public class SettingsSecurityActivity extends BaseActivity {
 												activitySettingsSecurityBinding
 														.cacheSizeDataSelected.setText(
 														cacheSizeDataList[i]);
-												tinyDB.putString(
-														"cacheSizeStr", cacheSizeDataList[i]);
-												tinyDB.putInt("cacheSizeId", i);
+
+												AppDatabaseSettings.updateSettingsValue(
+														ctx,
+														cacheSizeDataList[i],
+														AppDatabaseSettings
+																.APP_DATA_CACHE_SIZE_KEY);
+												AppDatabaseSettings.updateSettingsValue(
+														ctx,
+														String.valueOf(i),
+														AppDatabaseSettings.APP_DATA_CACHE_KEY);
 
 												dialogInterfaceTheme.dismiss();
 												SnackBar.success(

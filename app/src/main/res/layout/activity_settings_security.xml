@@ -106,7 +106,7 @@
                     android:id="@+id/cacheSizeDataSelected"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="@string/cacheSizeDataSelectionSelectedText"
+                    android:text="@string/cacheSizeDataDialogHeader"
                     android:textColor="?attr/selectedTextColor"
                     android:textSize="@dimen/dimen16sp" />
 
@@ -131,7 +131,7 @@
                     android:id="@+id/cacheSizeImagesSelected"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="@string/cacheSizeImagesSelectionSelectedText"
+                    android:text="@string/cacheSizeImagesDialogHeader"
                     android:textColor="?attr/selectedTextColor"
                     android:textSize="@dimen/dimen16sp" />
 

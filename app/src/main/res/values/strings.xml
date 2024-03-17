@@ -237,10 +237,8 @@
     <string name="settingsFileViewerSourceCodeSelectedText" translatable="false">Sublime</string>
     <string name="cacheSizeDataDialogHeader">Data Cache Size</string>
     <string name="cacheSizeDataSelectionHeaderText">Data Cache Size</string>
-    <string name="cacheSizeDataSelectionSelectedText" translatable="false">50 MB</string>
     <string name="cacheSizeImagesDialogHeader">Images Cache Size</string>
     <string name="cacheSizeImagesSelectionHeaderText">Images Cache Size</string>
-    <string name="cacheSizeImagesSelectionSelectedText" translatable="false">50 MB</string>
     <string name="clearCacheSelectionHeaderText">Clear Cache</string>
     <string name="clearCacheSelectionSelectedText" translatable="false">0 B</string>
     <string name="clearCacheDialogHeader">Clear Cache?</string>
