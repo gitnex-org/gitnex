@@ -73,6 +73,7 @@ import org.mian.gitnex.fragments.BottomSheetReplyFragment;
 import org.mian.gitnex.fragments.BottomSheetSingleIssueFragment;
 import org.mian.gitnex.fragments.IssuesFragment;
 import org.mian.gitnex.helpers.AlertDialogs;
+import org.mian.gitnex.helpers.AppDatabaseSettings;
 import org.mian.gitnex.helpers.AppUtil;
 import org.mian.gitnex.helpers.ClickListener;
 import org.mian.gitnex.helpers.ColorInverter;
@@ -857,18 +858,34 @@ public class IssueDetailActivity extends BaseActivity
 			} else { // open
 
 				viewBinding.issuePrState.setImageResource(R.drawable.ic_pull_request);
-				if (tinyDB.getInt("themeId") == 3) {
+				if (Integer.parseInt(
+								AppDatabaseSettings.getSettingsValue(
+										ctx, AppDatabaseSettings.APP_THEME_KEY))
+						== 3) {
 					ImageViewCompat.setImageTintList(
 							viewBinding.issuePrState,
 							ColorStateList.valueOf(
 									ctx.getResources()
 											.getColor(R.color.retroThemeColorPrimary, null)));
-				} else if (tinyDB.getInt("themeId") == 4) {
+				} else if (Integer.parseInt(
+								AppDatabaseSettings.getSettingsValue(
+										ctx, AppDatabaseSettings.APP_THEME_KEY))
+						== 4) {
 					if (TimeHelper.timeBetweenHours(
-							tinyDB.getInt("darkThemeTimeHour", 18),
-							tinyDB.getInt("lightThemeTimeHour", 6),
-							tinyDB.getInt("darkThemeTimeMinute", 0),
-							tinyDB.getInt("lightThemeTimeMinute", 0))) {
+							Integer.parseInt(
+									AppDatabaseSettings.getSettingsValue(
+											ctx, AppDatabaseSettings.APP_THEME_AUTO_DARK_HOUR_KEY)),
+							Integer.parseInt(
+									AppDatabaseSettings.getSettingsValue(
+											ctx,
+											AppDatabaseSettings.APP_THEME_AUTO_LIGHT_HOUR_KEY)),
+							Integer.parseInt(
+									AppDatabaseSettings.getSettingsValue(
+											ctx, AppDatabaseSettings.APP_THEME_AUTO_DARK_MIN_KEY)),
+							Integer.parseInt(
+									AppDatabaseSettings.getSettingsValue(
+											ctx,
+											AppDatabaseSettings.APP_THEME_AUTO_LIGHT_MIN_KEY)))) {
 						ImageViewCompat.setImageTintList(
 								viewBinding.issuePrState,
 								ColorStateList.valueOf(
@@ -880,7 +897,10 @@ public class IssueDetailActivity extends BaseActivity
 										ctx.getResources()
 												.getColor(R.color.retroThemeColorPrimary, null)));
 					}
-				} else if (tinyDB.getInt("themeId") == 8) {
+				} else if (Integer.parseInt(
+								AppDatabaseSettings.getSettingsValue(
+										ctx, AppDatabaseSettings.APP_THEME_KEY))
+						== 8) {
 					if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.S) {
 						ImageViewCompat.setImageTintList(
 								viewBinding.issuePrState,
@@ -908,17 +928,31 @@ public class IssueDetailActivity extends BaseActivity
 			loadingFinishedPr = true;
 			updateMenuState();
 			viewBinding.issuePrState.setImageResource(R.drawable.ic_issue);
-			if (tinyDB.getInt("themeId") == 3) {
+			if (Integer.parseInt(
+							AppDatabaseSettings.getSettingsValue(
+									ctx, AppDatabaseSettings.APP_THEME_KEY))
+					== 3) {
 				ImageViewCompat.setImageTintList(
 						viewBinding.issuePrState,
 						ColorStateList.valueOf(
 								ctx.getResources().getColor(R.color.retroThemeColorPrimary, null)));
-			} else if (tinyDB.getInt("themeId") == 4) {
+			} else if (Integer.parseInt(
+							AppDatabaseSettings.getSettingsValue(
+									ctx, AppDatabaseSettings.APP_THEME_KEY))
+					== 4) {
 				if (TimeHelper.timeBetweenHours(
-						tinyDB.getInt("darkThemeTimeHour", 18),
-						tinyDB.getInt("lightThemeTimeHour", 6),
-						tinyDB.getInt("darkThemeTimeMinute", 0),
-						tinyDB.getInt("lightThemeTimeMinute", 0))) {
+						Integer.parseInt(
+								AppDatabaseSettings.getSettingsValue(
+										ctx, AppDatabaseSettings.APP_THEME_AUTO_DARK_HOUR_KEY)),
+						Integer.parseInt(
+								AppDatabaseSettings.getSettingsValue(
+										ctx, AppDatabaseSettings.APP_THEME_AUTO_LIGHT_HOUR_KEY)),
+						Integer.parseInt(
+								AppDatabaseSettings.getSettingsValue(
+										ctx, AppDatabaseSettings.APP_THEME_AUTO_DARK_MIN_KEY)),
+						Integer.parseInt(
+								AppDatabaseSettings.getSettingsValue(
+										ctx, AppDatabaseSettings.APP_THEME_AUTO_LIGHT_MIN_KEY)))) {
 					ImageViewCompat.setImageTintList(
 							viewBinding.issuePrState,
 							ColorStateList.valueOf(
@@ -930,7 +964,10 @@ public class IssueDetailActivity extends BaseActivity
 									ctx.getResources()
 											.getColor(R.color.retroThemeColorPrimary, null)));
 				}
-			} else if (tinyDB.getInt("themeId") == 8) {
+			} else if (Integer.parseInt(
+							AppDatabaseSettings.getSettingsValue(
+									ctx, AppDatabaseSettings.APP_THEME_KEY))
+					== 8) {
 				if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.S) {
 					ImageViewCompat.setImageTintList(
 							viewBinding.issuePrState,

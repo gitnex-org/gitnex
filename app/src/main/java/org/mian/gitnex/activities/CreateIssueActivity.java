@@ -50,6 +50,7 @@ import org.mian.gitnex.databinding.CustomAssigneesSelectionDialogBinding;
 import org.mian.gitnex.databinding.CustomLabelsSelectionDialogBinding;
 import org.mian.gitnex.fragments.IssuesFragment;
 import org.mian.gitnex.helpers.AlertDialogs;
+import org.mian.gitnex.helpers.AppDatabaseSettings;
 import org.mian.gitnex.helpers.Constants;
 import org.mian.gitnex.helpers.Markdown;
 import org.mian.gitnex.helpers.SnackBar;
@@ -315,6 +316,10 @@ public class CreateIssueActivity extends BaseActivity
 		builder.setTitleText(R.string.newIssueDueDateTitle);
 		MaterialDatePicker<Long> materialDatePicker = builder.build();
 
+		String[] locale_ =
+				AppDatabaseSettings.getSettingsValue(ctx, AppDatabaseSettings.APP_LOCALE_KEY)
+						.split("\\|");
+
 		viewBinding.newIssueDueDate.setOnClickListener(
 				v -> materialDatePicker.show(getSupportFragmentManager(), "DATE_PICKER"));
 
@@ -323,8 +328,7 @@ public class CreateIssueActivity extends BaseActivity
 					Calendar calendar = Calendar.getInstance(TimeZone.getTimeZone("UTC"));
 					calendar.setTimeInMillis(selection);
 					SimpleDateFormat format =
-							new SimpleDateFormat(
-									"yyyy-MM-dd", new Locale(tinyDB.getString("locale")));
+							new SimpleDateFormat("yyyy-MM-dd", new Locale(locale_[1]));
 					String formattedDate = format.format(calendar.getTime());
 					viewBinding.newIssueDueDate.setText(formattedDate);
 				});

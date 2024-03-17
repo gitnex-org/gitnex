@@ -333,8 +333,10 @@ public class AppUtil {
 
 	public static String getTimestampFromDate(Context context, Date date) {
 
-		TinyDB tinyDB = TinyDB.getInstance(context);
-		Locale locale = new Locale(tinyDB.getString("locale"));
+		String[] locale_ =
+				AppDatabaseSettings.getSettingsValue(context, AppDatabaseSettings.APP_LOCALE_KEY)
+						.split("\\|");
+		Locale locale = new Locale(locale_[1]);
 
 		if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
 			return new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ssXXX", locale).format(date);

@@ -55,6 +55,7 @@ import org.mian.gitnex.databinding.CustomImageViewDialogBinding;
 import org.mian.gitnex.fragments.BottomSheetReplyFragment;
 import org.mian.gitnex.fragments.IssuesFragment;
 import org.mian.gitnex.helpers.AlertDialogs;
+import org.mian.gitnex.helpers.AppDatabaseSettings;
 import org.mian.gitnex.helpers.AppUtil;
 import org.mian.gitnex.helpers.ClickListener;
 import org.mian.gitnex.helpers.ColorInverter;
@@ -572,7 +573,11 @@ public class IssueCommentsAdapter extends RecyclerView.Adapter<RecyclerView.View
 												text.indexOf('|') + 1,
 												Spannable.SPAN_INCLUSIVE_EXCLUSIVE);
 
-										if (tinyDB.getInt("themeId") == 8) {
+										if (Integer.parseInt(
+														AppDatabaseSettings.getSettingsValue(
+																context,
+																AppDatabaseSettings.APP_THEME_KEY))
+												== 8) {
 											if (!isNightModeThemeDynamic(context)) {
 												textView.setTextColor(
 														AppUtil.dynamicColorResource(context));
@@ -612,7 +617,10 @@ public class IssueCommentsAdapter extends RecyclerView.Adapter<RecyclerView.View
 									issueComment.getUser().getLogin(),
 									commitText,
 									info);
-					if (tinyDB.getInt("themeId") == 8) {
+					if (Integer.parseInt(
+									AppDatabaseSettings.getSettingsValue(
+											context, AppDatabaseSettings.APP_THEME_KEY))
+							== 8) {
 						if (!isNightModeThemeDynamic(context)) {
 							start.setTextColor(AppUtil.dynamicColorResource(context));
 						}
@@ -678,7 +686,10 @@ public class IssueCommentsAdapter extends RecyclerView.Adapter<RecyclerView.View
 
 					TextView start = new TextView(context);
 
-					if (tinyDB.getInt("themeId") == 8) {
+					if (Integer.parseInt(
+									AppDatabaseSettings.getSettingsValue(
+											context, AppDatabaseSettings.APP_THEME_KEY))
+							== 8) {
 						if (!isNightModeThemeDynamic(context)) {
 							start.setTextColor(AppUtil.dynamicColorResource(context));
 						}
@@ -736,7 +747,10 @@ public class IssueCommentsAdapter extends RecyclerView.Adapter<RecyclerView.View
 
 					TextView start = new TextView(context);
 
-					if (tinyDB.getInt("themeId") == 8) {
+					if (Integer.parseInt(
+									AppDatabaseSettings.getSettingsValue(
+											context, AppDatabaseSettings.APP_THEME_KEY))
+							== 8) {
 						if (!isNightModeThemeDynamic(context)) {
 							start.setTextColor(AppUtil.dynamicColorResource(context));
 						}
@@ -781,7 +795,10 @@ public class IssueCommentsAdapter extends RecyclerView.Adapter<RecyclerView.View
 
 					TextView start = new TextView(context);
 
-					if (tinyDB.getInt("themeId") == 8) {
+					if (Integer.parseInt(
+									AppDatabaseSettings.getSettingsValue(
+											context, AppDatabaseSettings.APP_THEME_KEY))
+							== 8) {
 						if (!isNightModeThemeDynamic(context)) {
 							start.setTextColor(AppUtil.dynamicColorResource(context));
 						}
@@ -914,7 +931,10 @@ public class IssueCommentsAdapter extends RecyclerView.Adapter<RecyclerView.View
 
 					TextView start = new TextView(context);
 
-					if (tinyDB.getInt("themeId") == 8) {
+					if (Integer.parseInt(
+									AppDatabaseSettings.getSettingsValue(
+											context, AppDatabaseSettings.APP_THEME_KEY))
+							== 8) {
 						if (!isNightModeThemeDynamic(context)) {
 							start.setTextColor(AppUtil.dynamicColorResource(context));
 						}
@@ -967,7 +987,10 @@ public class IssueCommentsAdapter extends RecyclerView.Adapter<RecyclerView.View
 
 					TextView start = new TextView(context);
 
-					if (tinyDB.getInt("themeId") == 8) {
+					if (Integer.parseInt(
+									AppDatabaseSettings.getSettingsValue(
+											context, AppDatabaseSettings.APP_THEME_KEY))
+							== 8) {
 						if (!isNightModeThemeDynamic(context)) {
 							start.setTextColor(AppUtil.dynamicColorResource(context));
 						}
@@ -992,7 +1015,10 @@ public class IssueCommentsAdapter extends RecyclerView.Adapter<RecyclerView.View
 
 					TextView start = new TextView(context);
 
-					if (tinyDB.getInt("themeId") == 8) {
+					if (Integer.parseInt(
+									AppDatabaseSettings.getSettingsValue(
+											context, AppDatabaseSettings.APP_THEME_KEY))
+							== 8) {
 						if (!isNightModeThemeDynamic(context)) {
 							start.setTextColor(AppUtil.dynamicColorResource(context));
 						}
@@ -1026,7 +1052,10 @@ public class IssueCommentsAdapter extends RecyclerView.Adapter<RecyclerView.View
 
 					TextView start = new TextView(context);
 
-					if (tinyDB.getInt("themeId") == 8) {
+					if (Integer.parseInt(
+									AppDatabaseSettings.getSettingsValue(
+											context, AppDatabaseSettings.APP_THEME_KEY))
+							== 8) {
 						if (!isNightModeThemeDynamic(context)) {
 							start.setTextColor(AppUtil.dynamicColorResource(context));
 						}
@@ -1062,7 +1091,10 @@ public class IssueCommentsAdapter extends RecyclerView.Adapter<RecyclerView.View
 
 					TextView start = new TextView(context);
 
-					if (tinyDB.getInt("themeId") == 8) {
+					if (Integer.parseInt(
+									AppDatabaseSettings.getSettingsValue(
+											context, AppDatabaseSettings.APP_THEME_KEY))
+							== 8) {
 						if (!isNightModeThemeDynamic(context)) {
 							start.setTextColor(AppUtil.dynamicColorResource(context));
 						}
@@ -1097,7 +1129,10 @@ public class IssueCommentsAdapter extends RecyclerView.Adapter<RecyclerView.View
 
 					TextView start = new TextView(context);
 
-					if (tinyDB.getInt("themeId") == 8) {
+					if (Integer.parseInt(
+									AppDatabaseSettings.getSettingsValue(
+											context, AppDatabaseSettings.APP_THEME_KEY))
+							== 8) {
 						if (!isNightModeThemeDynamic(context)) {
 							start.setTextColor(AppUtil.dynamicColorResource(context));
 						}
@@ -1142,7 +1177,10 @@ public class IssueCommentsAdapter extends RecyclerView.Adapter<RecyclerView.View
 
 					TextView start = new TextView(context);
 
-					if (tinyDB.getInt("themeId") == 8) {
+					if (Integer.parseInt(
+									AppDatabaseSettings.getSettingsValue(
+											context, AppDatabaseSettings.APP_THEME_KEY))
+							== 8) {
 						if (!isNightModeThemeDynamic(context)) {
 							start.setTextColor(AppUtil.dynamicColorResource(context));
 						}
@@ -1182,7 +1220,10 @@ public class IssueCommentsAdapter extends RecyclerView.Adapter<RecyclerView.View
 
 					TextView start = new TextView(context);
 
-					if (tinyDB.getInt("themeId") == 8) {
+					if (Integer.parseInt(
+									AppDatabaseSettings.getSettingsValue(
+											context, AppDatabaseSettings.APP_THEME_KEY))
+							== 8) {
 						if (!isNightModeThemeDynamic(context)) {
 							start.setTextColor(AppUtil.dynamicColorResource(context));
 						}
@@ -1293,7 +1334,10 @@ public class IssueCommentsAdapter extends RecyclerView.Adapter<RecyclerView.View
 				else if (issueComment.getType().equalsIgnoreCase("pin")) {
 					TextView start = new TextView(context);
 
-					if (tinyDB.getInt("themeId") == 8) {
+					if (Integer.parseInt(
+									AppDatabaseSettings.getSettingsValue(
+											context, AppDatabaseSettings.APP_THEME_KEY))
+							== 8) {
 						if (!isNightModeThemeDynamic(context)) {
 							start.setTextColor(AppUtil.dynamicColorResource(context));
 						}
