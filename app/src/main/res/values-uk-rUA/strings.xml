@@ -14,6 +14,8 @@
     <string name="navMyIssues">My Issues</string>
     <string name="navMostVisited">Most Visited Repos</string>
     <string name="navNotes">Notes</string>
+    <string name="navAccount">Account Settings</string>
+    <string name="navWatchedRepositories">Watched Repositories</string>
     <!-- menu items -->
     <!-- page titles -->
     <string name="pageTitleNewRepo">Новий репозиторій</string>
@@ -33,6 +35,7 @@
     <string name="pageTitleAdministration">Administration</string>
     <string name="pageTitleNewPullRequest">New Pull Request</string>
     <string name="pageTitleUsers">Users</string>
+    <string name="pageTitleAddRepository">Add Repository</string>
     <!-- page titles -->
     <string name="repoName">Демо-репозиторій</string>
     <string name="repoDescription">Демо опис</string>
@@ -43,8 +46,11 @@
     <string name="newRepoDescTintCopy">Опис репозиторія</string>
     <string name="newRepoPrivateCopy">Приватний</string>
     <string name="newRepoOwner">Власник</string>
+    <string name="newRepoIssueLabels">Issue Labels</string>
+    <string name="setAsTemplate">Make repository a template</string>
     <string name="newOrgTintCopy">Назва організації</string>
     <string name="newOrgDescTintCopy">Опис організації</string>
+    <string name="organizationFullname">%1$s - %2$s</string>
     <string name="userName">Ім\'я користувача</string>
     <string name="passWord">Пароль</string>
     <string name="btnLogin">УВІЙТИ</string>
@@ -60,6 +66,7 @@
     <string name="emptyFieldUsername">Ім\'я користувача є обов\'язковим</string>
     <string name="emptyFieldPassword">Пароль є обов\'язковим</string>
     <string name="protocolEmptyError">Protocol is required</string>
+    <string name="instanceHelperText">Enter URL without http or https. Example: codeberg.org</string>
     <string name="checkNetConnection">Неможливо отримати доступ до мережі, будь ласка, перевірте підключення до Інтернету</string>
     <string name="repoNameErrorEmpty">Назва репозиторія порожня</string>
     <string name="repoNameErrorInvalid">Назва репозиторія некоректна. [a&#8211;z A&#8211;Z 0&#8211;9 &#8211; _]</string>
@@ -69,6 +76,7 @@
     <string name="repoCreated">Репозиторій створено успішно</string>
     <string name="repoExistsError">Репозиторій із такою назвою вже існує в обраного власника</string>
     <string name="repoOwnerError">Select owner for the repository</string>
+    <string name="repoDefaultBranchError">The default branch must not be empty</string>
     <string name="orgNameErrorEmpty">Назва організації порожня</string>
     <string name="orgNameErrorInvalid">Назва організації некоректна, [a&#8211;z A&#8211;Z 0&#8211;9 &#8211; _]</string>
     <string name="orgDescError">Довжина опису організації перевищує 255 символів</string>
@@ -100,7 +108,6 @@
     <string name="infoTabRepoForksCount">Форки</string>
     <string name="infoTabRepoCreatedAt">Створений</string>
     <string name="infoTabRepoUpdatedAt">Остання зміна</string>
-    <string name="infoShowMoreInformation">Докладніше</string>
     <string name="infoMoreInformation">Докладніше</string>
     <string name="timeAtText">о</string>
     <string name="issueMilestone">Етап %1$s</string>
@@ -180,14 +187,20 @@
     <string name="settingsEnableCommentsDeletionText">Enable Drafts Deletion</string>
     <string name="settingsEnableCommentsDeletionHintText">Delete comment draft when comment is posted</string>
     <string name="settingsGeneralHeader">General</string>
-    <string name="generalHintText">Home screen, default link handler</string>
+    <string name="generalHintText">Home screen, drafts, crash reports</string>
     <string name="generalDeepLinkDefaultScreen">Default Link Handler</string>
     <string name="generalDeepLinkDefaultScreenHintText">Choose what screen should be loaded if the app cannot handle external links. It will redirect you automatically.</string>
-    <string name="generalDeepLinkSelectedText">N/A</string>
     <string name="linkSelectorDialogTitle">Select Default Link Handler Screen</string>
     <string name="settingsBiometricHeader">Biometric Support</string>
     <string name="settingsLabelsInListHeader">Labels With Text Support</string>
     <string name="settingsLabelsInListHint">Enabling this will show labels with text in issues and pr lists, default are color dots</string>
+    <string name="ceSyntaxHighlightColor">Syntax Highlighting Color</string>
+    <string name="ceIndentation">Indentation</string>
+    <string name="ceIndentationTabsWidth">Tabs Width</string>
+    <string name="system_font">System Default Font</string>
+    <string name="fragmentTabsAnimationHeader">Tabs Animation</string>
+    <string name="fadeOut">Fade Out</string>
+    <string name="zoomOut">Zoom Out</string>
     <!-- settings -->
     <string name="noMoreData">Даних більше немає</string>
     <string name="createLabel">Створити мітку</string>
@@ -228,6 +241,7 @@
     <string name="repoRemovedMessage">Repository removed from the team successfully</string>
     <string name="repoAddToTeamMessage">Add repository %1$s to organization %2$s team %3$s</string>
     <string name="repoRemoveTeamMessage">Remove repository %1$s from team %2$s</string>
+    <string name="addRemoveMember">Add / Remove Member</string>
     <!-- org tabbed layout str -->
     <!-- create team -->
     <string name="newTeamTitle">Назва команди</string>
@@ -262,15 +276,17 @@
     <!-- profile section -->
     <string name="profileTabFollowers">Читачі</string>
     <string name="profileTabFollowing">Читає</string>
-    <string name="profileCreateNewEmailAddress">Додати адресу Email</string>
-    <string name="profileEmailTitle">Адреса Email</string>
+    <!-- profile section -->
+    <!-- account settings -->
+    <string name="accountEmails">Emails</string>
+    <string name="accountEmailTitle">Email Address</string>
     <string name="emailAddedText">New email added successfully</string>
     <string name="emailErrorEmpty">Email address is empty</string>
     <string name="emailErrorInvalid">Адреса Email некоректна</string>
     <string name="emailErrorInUse">Адреса Email вже використовується</string>
     <string name="emailTypeText">Основна</string>
-    <string name="profileTabEmails">Адреси Email</string>
-    <!-- profile section -->
+    <string name="sshKeys">SSH Keys</string>
+    <!-- account settings -->
     <!-- single issue section -->
     <string name="singleIssueEditLabels">Додати / Видалити мітки</string>
     <string name="labelsUpdated">Мітки оновлено</string>
@@ -412,6 +428,10 @@
     <string name="openInBrowser">Open in Browser</string>
     <string name="deleteGenericTitle">Delete %s</string>
     <string name="reset">Reset</string>
+    <string name="beta">BETA</string>
+    <string name="none">None</string>
+    <string name="main">main</string>
+    <string name="license">License</string>
     <!-- generic copy -->
     <string name="exploreUsers">Explore users</string>
     <string name="exploreIssues">Explore issues</string>
@@ -425,8 +445,7 @@
     <string name="versionUnsupportedNew">Виявлено нову версію Gitea! Будь ласка, ОНОВІТЬ GitNex!</string>
     <string name="versionUnknown">Gitea не виявлено!</string>
     <string name="versionAlertDialogHeader">Непідтримувана версія Gitea</string>
-    <string name="loginViaPassword">Ім\'я користувача / Пароль</string>
-    <string name="loginMethodText">Оберіть бажаний метод входу для доступу до облікового запису. Токен є більш безпечним!</string>
+    <string name="loginViaPassword">Basic Auth</string>
     <string name="unauthorizedApiError">Екземпляр повернув помилку - не авторизовано. Перевірте облікові дані та спробуйте знову</string>
     <string name="loginTokenError">Token is required</string>
     <string name="prDeletedFork">Deleted Fork</string>
@@ -508,19 +527,20 @@
     <string name="resetMostReposCounter">Counter is reset successfully</string>
     <string name="resetCounterDialogMessage">Do you want to reset counter for repository %s?</string>
     <string name="resetCounterAllDialogMessage">This will reset all the counters for this account repositories.</string>
-    <string name="appearanceHintText">Themes, fonts, badges</string>
+    <string name="appearanceHintText">Themes, fonts, badges, translation</string>
     <string name="securityHintText">Biometric authentication, SSL certificates, cache</string>
     <string name="languagesHintText">Мови</string>
     <string name="reportsHintText">Звіти про падіння</string>
     <string name="rateAppHintText">If you like GitNex you can give it a thumbs up</string>
     <string name="aboutAppHintText">App version, build, user instance version</string>
+    <string name="codeEditorHintText">Syntax color, indentation</string>
     <string name="archivedRepository">Архівовано</string>
     <string name="archivedRepositoryMessage">This repo is archived. You can view files, but cannot push or open issues/pull-requests.</string>
     <string name="accountDeletedMessage">Account deleted successfully</string>
     <string name="removeAccountPopupTitle">Remove Account</string>
     <string name="removeAccountPopupMessage">Are you sure you want to remove this account from the app?\n\nThis will remove all the data related to this account on the app only.</string>
     <string name="addNewAccount">New Account</string>
-    <string name="addNewAccountText">Add New Account</string>
+    <string name="addNewAccountText">Add Account</string>
     <string name="accountAlreadyExistsError">Account already exists in the app</string>
     <string name="accountAddedMessage">Account added successfully</string>
     <string name="switchAccountSuccess">Switched to account : %1$s@%2$s</string>
@@ -528,14 +548,17 @@
     <string name="pageTitleNotifications">Notifications</string>
     <string name="noDataNotifications">All caught up 🚀</string>
     <string name="notificationsPollingHeaderText">Notifications Polling Delay</string>
-    <string name="pollingDelaySelectedText">%d Minutes</string>
+    <string name="pollingDelay15Minutes">15 Minutes</string>
+    <string name="pollingDelay30Minutes">30 Minutes</string>
+    <string name="pollingDelay45Minutes">45 Minutes</string>
+    <string name="pollingDelay1Hour">1 Hour</string>
     <string name="pollingDelayDialogHeaderText">Select Polling Delay</string>
     <string name="pollingDelayDialogDescriptionText">Choose a minutely delay in which GitNex tries to poll new notifications</string>
     <string name="markAsRead">Mark Read</string>
     <string name="markAsUnread">Mark Unread</string>
     <string name="pinNotification">Pin</string>
     <string name="markedNotificationsAsRead">Successfully marked all notifications as read</string>
-    <string name="notificationsHintText">Polling delay, light, vibration</string>
+    <string name="notificationsHintText">Polling delay</string>
     <string name="enableNotificationsHeaderText">Enable Notifications</string>
     <string name="enableLightsHeaderText">Enable Light</string>
     <string name="enableVibrationHeaderText">Enable Vibration</string>
@@ -550,6 +573,7 @@
         <item quantity="many">You have %s new notifications</item>
         <item quantity="other">You have %s new notifications</item>
     </plurals>
+    <string name="openAppSettings">To receive notifications, you must enable notifications for GitNex. Tap Open to access your phone settings and enable notifications.</string>
     <string name="isRead">Read</string>
     <string name="isUnread">Unread</string>
     <string name="repoSettingsTitle">Repository Settings</string>
@@ -596,9 +620,9 @@
     <string name="prClosed">Pull Request closed</string>
     <string name="prReopened">Pull Request reopened</string>
     <string name="prMergeInfo">Pull Request Info</string>
-    <string name="accountDoesNotExist">It seems that account for URI %1$s does not exists in the app. You can add one by tapping on the Add New Account button.</string>
+    <string name="accountDoesNotExist">It seems that the account for URI %1$s does not exist in the app. You can add one by tapping on the Add New Account button.</string>
     <string name="launchApp">Go to App</string>
-    <string name="noActionText">GitNex cannot handle the requested resource, you can open an issue at the project repository as an improvement with providing details of the work. Just launch a default screen for now from the buttons below, it can be changed from settings.</string>
+    <string name="noActionText">GitNex cannot handle the requested resource. You can open an issue at the project repository as an improvement, providing details of the work. Just launch a default screen for now from the buttons below; it can be changed from settings.</string>
     <string name="biometricAuthTitle">Biometric Authentication</string>
     <string name="biometricAuthSubTitle">Unlock using your biometric credentials</string>
     <string name="biometricNotSupported">No biometric features available on this device</string>
@@ -642,6 +666,8 @@
     <string name="notLoggedIn">%s \u25CF not logged in</string>
     <string name="followSystem">Follow system (Light/Dark)</string>
     <string name="followSystemBlack">Follow system (Light/Pitch Black)</string>
+    <string name="dynamicColorsFollowSystem">Dynamic colors - Follow system (Light/Dark)</string>
+    <string name="codebergDark">Codeberg (Dark)</string>
     <string name="repoForkOf">Fork of: %s</string>
     <string name="adoptRepo">Adopt</string>
     <string name="repoAdopted">Adopted repository %s</string>
@@ -665,7 +691,7 @@
     <string name="newNoteContentHint">Start taking your notes here</string>
     <string name="noteDateTime">Created %s</string>
     <string name="noteTimeModified">Updated %s</string>
-    <string name="noteDeleteDialoMessage">Do you really want to delete this note?</string>
+    <string name="noteDeleteDialogMessage">Do you really want to delete this note?</string>
     <plurals name="noteDeleteMessage">
         <item quantity="one">Note deleted successfully</item>
         <item quantity="few">Notes deleted successfully</item>
@@ -674,6 +700,7 @@
     </plurals>
     <string name="notesAllDeletionMessage">This will delete all of your notes. This action cannot be undone.</string>
     <!-- timeline -->
+    <string name="commitsText">commit</string>
     <string name="commitText">commit</string>
     <string name="timelineAddedCommit">%1$s added %2$s %3$s</string>
     <!-- the | is replaced by the label -->
@@ -686,6 +713,7 @@
     <string name="timelineAssigneesAssigned">%1$s was assigned by %2$s %3$s</string>
     <string name="timelineMilestoneAdded">%1$s added this to the %2$s milestone %3$s</string>
     <string name="timelineMilestoneRemoved">%1$s removed this from the %2$s milestone %3$s</string>
+    <string name="timelineMilestoneDeleted">%1$s added this to a deleted milestone %2$s</string>
     <string name="timelineStatusClosedIssue">%1$s closed this issue %2$s</string>
     <string name="timelineStatusReopenedIssue">%1$s reopened this issue %2$s</string>
     <string name="timelineStatusReopenedPr">%1$s reopened this pull request %2$s</string>
@@ -714,7 +742,39 @@
     <string name="timelineRefIssue">%1$s referenced this issue in #%2$d %3$s</string>
     <string name="timelineRefPr">%1$s referenced this pull request in #%2$d %3$s</string>
     <string name="timelineStatusRefIssue"><![CDATA[%1$s referenced this issue from a <font color=\'%2$d\'>%3$s</font> %4$s]]></string>
+    <string name="timelineReviewLeftComment">%1$s left a comment: %2$s %3$s</string>
+    <string name="timelinePinned">%1$s pinned this %2$s</string>
     <string name="commitStatuses">Statuses</string>
     <string name="statusNoUrl">This status has no linked target URL.</string>
     <string name="starredRepos">Starred Repos</string>
+    <string name="lang_statistics">Language Statistics</string>
+    <string name="dashboard">Dashboard</string>
+    <string name="createdRepository">created repository</string>
+    <string name="renamedRepository">renamed repository from %1$s to</string>
+    <string name="starredRepository">starred</string>
+    <string name="transferredRepository">transferred repository %1$s to</string>
+    <string name="createdBranch">created branch %1$s in</string>
+    <string name="pushedTo">pushed to %1$s at</string>
+    <string name="openedIssue">opened issue</string>
+    <string name="commentedOnIssue">commented on issue</string>
+    <string name="closedIssue">closed issue</string>
+    <string name="reopenedIssue">reopened issue</string>
+    <string name="createdPR">created pull request</string>
+    <string name="closedPR">closed pull request</string>
+    <string name="reopenedPR">reopened pull request</string>
+    <string name="mergedPR">merged pull request</string>
+    <string name="approved">approved</string>
+    <string name="suggestedChanges">suggested changes for</string>
+    <string name="commentedOnPR">commented on pull request</string>
+    <string name="autoMergePR">automatically merged pull request</string>
+    <string name="deletedBranch">deleted branch %1$s at</string>
+    <string name="pushedTag">pushed tag %1$s to</string>
+    <string name="deletedTag">deleted tag %1$s from</string>
+    <string name="releasedBranch">released %1$s at</string>
+    <string name="syncedCommits">synced commits to %1$s at</string>
+    <string name="syncedRefs">synced new reference %1$s to</string>
+    <string name="syncedDeletedRefs">synced and deleted reference %1$s at</string>
+    <string name="attachment">Attachment</string>
+    <string name="attachments">Attachments</string>
+    <string name="attachmentsSaveError">An issue was created but cannot process attachments at this time. Check the server logs for more details.</string>
 </resources>

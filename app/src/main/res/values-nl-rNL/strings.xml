@@ -12,8 +12,10 @@
     <string name="navLogout">Uitloggen</string>
     <string name="navAdministration">Instance Administration</string>
     <string name="navMyIssues">My Issues</string>
-    <string name="navMostVisited">Most Visited Repos</string>
-    <string name="navNotes">Notes</string>
+    <string name="navMostVisited">Meest Bezochte Repos</string>
+    <string name="navNotes">Notities</string>
+    <string name="navAccount">Account Instellingen</string>
+    <string name="navWatchedRepositories">Watched Repositories</string>
     <!-- menu items -->
     <!-- page titles -->
     <string name="pageTitleNewRepo">Nieuwe Repository</string>
@@ -30,9 +32,10 @@
     <string name="pageTitleAddEmail">E-mailadres Toevoegen</string>
     <string name="pageTitleNewFile">Nieuw Bestand</string>
     <string name="pageTitleExplore">Ontdek</string>
-    <string name="pageTitleAdministration">Administration</string>
+    <string name="pageTitleAdministration">Administratie</string>
     <string name="pageTitleNewPullRequest">Nieuw Pull Request</string>
-    <string name="pageTitleUsers">Users</string>
+    <string name="pageTitleUsers">Gebruikers</string>
+    <string name="pageTitleAddRepository">Voeg Repository Toe</string>
     <!-- page titles -->
     <string name="repoName">Voorbeeld repo</string>
     <string name="repoDescription">Voorbeeld beschrijving</string>
@@ -43,8 +46,11 @@
     <string name="newRepoDescTintCopy">Repository Beschrijving</string>
     <string name="newRepoPrivateCopy">Privé</string>
     <string name="newRepoOwner">Eigenaar</string>
+    <string name="newRepoIssueLabels">Issue Labels</string>
+    <string name="setAsTemplate">Make repository a template</string>
     <string name="newOrgTintCopy">Naam Organisatie</string>
     <string name="newOrgDescTintCopy">Beschrijving Organisatie</string>
+    <string name="organizationFullname">%1$s - %2$s</string>
     <string name="userName">Gebruikersnaam</string>
     <string name="passWord">Wachtwoord</string>
     <string name="btnLogin">INLOGGEN</string>
@@ -60,6 +66,7 @@
     <string name="emptyFieldUsername">Gebruikersnaam is vereist</string>
     <string name="emptyFieldPassword">Wachtwoord is vereist</string>
     <string name="protocolEmptyError">Protocol is vereist</string>
+    <string name="instanceHelperText">Enter URL without http or https. Example: codeberg.org</string>
     <string name="checkNetConnection">Verbindingsfout, controleer uw internetverbinding</string>
     <string name="repoNameErrorEmpty">Repository naam is leeg</string>
     <string name="repoNameErrorInvalid">Repository naam is niet geldig. [a&#8211;z A&#8211;Z 0&#8211;9 &#8211; _]</string>
@@ -69,6 +76,7 @@
     <string name="repoCreated">Repository met succes aangemaakt</string>
     <string name="repoExistsError">Er bestaat al een Repository met deze naam voor de geselecteerde Eigenaar</string>
     <string name="repoOwnerError">Selecteer eigenaar van de repository</string>
+    <string name="repoDefaultBranchError">The default branch must not be empty</string>
     <string name="orgNameErrorEmpty">Organisatie naam is leeg</string>
     <string name="orgNameErrorInvalid">Organisatie naam is niet geldig. [a&#8211;z A&#8211;Z 0&#8211;9 &#8211; _]</string>
     <string name="orgDescError">Organisatie beschrijving overschrijdt het limiet van 255 karakters</string>
@@ -100,13 +108,12 @@
     <string name="infoTabRepoForksCount">Aantal Forks</string>
     <string name="infoTabRepoCreatedAt">Aangemaakt</string>
     <string name="infoTabRepoUpdatedAt">Laatst Bijgewerkt</string>
-    <string name="infoShowMoreInformation">Toon Meer Informatie</string>
     <string name="infoMoreInformation">Meer Informatie</string>
     <string name="timeAtText">om</string>
     <string name="issueMilestone">Mijlpaal %1$s</string>
     <string name="dueDate">Vervalt op %1$s</string>
     <string name="assignedTo">Toegewezen aan: %1$s</string>
-    <string name="assignedToMe">Assigned to Me</string>
+    <string name="assignedToMe">Toegewezen aan Mij</string>
     <string name="commentButtonText">Reactie</string>
     <string name="commentEmptyError">Voer uw reactie in</string>
     <string name="commentSuccess">Reactie geplaatst</string>
@@ -180,14 +187,20 @@
     <string name="settingsEnableCommentsDeletionText">Activeer concept verwijdering</string>
     <string name="settingsEnableCommentsDeletionHintText">Verwijder reactie concept wanneer reactie is geplaatst</string>
     <string name="settingsGeneralHeader">Algemeen</string>
-    <string name="generalHintText">Beginscherm, standaard URL afhandelaar</string>
+    <string name="generalHintText">Home screen, drafts, crash reports</string>
     <string name="generalDeepLinkDefaultScreen">Standaard URL Afhandelaar</string>
     <string name="generalDeepLinkDefaultScreenHintText">Choose what screen should be loaded if the app cannot handle external links. It will redirect you automatically.</string>
-    <string name="generalDeepLinkSelectedText">N.v.t.</string>
     <string name="linkSelectorDialogTitle">Selecteer Standaard URL Afhandelaar Scherm</string>
     <string name="settingsBiometricHeader">Ondersteuning voor Biometrie</string>
     <string name="settingsLabelsInListHeader">Labels With Text Support</string>
     <string name="settingsLabelsInListHint">Enabling this will show labels with text in issues and pr lists, default are color dots</string>
+    <string name="ceSyntaxHighlightColor">Syntax Highlighting Color</string>
+    <string name="ceIndentation">Inspringing</string>
+    <string name="ceIndentationTabsWidth">Tabs Width</string>
+    <string name="system_font">System Default Font</string>
+    <string name="fragmentTabsAnimationHeader">Tabs Animation</string>
+    <string name="fadeOut">Fade Out</string>
+    <string name="zoomOut">Zoom Out</string>
     <!-- settings -->
     <string name="noMoreData">Geen verdere gegevens beschikbaar</string>
     <string name="createLabel">Nieuw Label</string>
@@ -196,18 +209,18 @@
     <string name="labelColor">Label Kleur</string>
     <string name="labelEmptyError">Label naam is leeg</string>
     <string name="labelNameError">Label name is not valid</string>
-    <string name="labelCreated">Label created</string>
-    <string name="labelUpdated">Label updated</string>
+    <string name="labelCreated">Label aangemaakt</string>
+    <string name="labelUpdated">Label bijgewerkt</string>
     <string name="labelMenuContentDesc">Desc</string>
-    <string name="labelDeleteText">Label deleted</string>
+    <string name="labelDeleteText">Label verwijderd</string>
     <string name="selectBranchError">Select a branch for release</string>
     <string name="alertDialogTokenRevokedTitle">Authorization Error</string>
     <string name="alertDialogTokenRevokedMessage">It seems that the Access Token is revoked OR your are not allowed to see these contents.\n\nIn case of revoked Token, please logout and login again</string>
     <string name="labelDeleteMessage">Do you really want to delete this label?</string>
     <!-- org tabbed layout str -->
     <string name="orgTabTeams">Teams</string>
-    <string name="orgTabMembers">Members</string>
-    <string name="teamTitle">Team name</string>
+    <string name="orgTabMembers">Leden</string>
+    <string name="teamTitle">Teamnaam</string>
     <string name="teamDescription">Team desc</string>
     <string name="teamPermissions">Permissions</string>
     <string name="teamPermissionNone">• Members of this team do not have any permissions.</string>
@@ -215,19 +228,20 @@
     <string name="teamPermissionWrite">• Members of this team can view and push to team repositories.</string>
     <string name="teamPermissionAdmin">• Members of this team can push to and from team repositories and add collaborators.</string>
     <string name="teamPermissionOwner">• Members of this team have owner permissions.</string>
-    <string name="teamShowAll">show all</string>
+    <string name="teamShowAll">alles weergeven</string>
     <string name="orgMember">Org members</string>
     <string name="orgTeamMembers">Organization team members</string>
-    <string name="removeTeamMember">Remove %s</string>
-    <string name="addTeamMember">Add %s</string>
-    <string name="addTeamMemberMessage">Do you want to add this user to the team?</string>
-    <string name="removeTeamMemberMessage">Do you want to remove this user from the team?</string>
-    <string name="memberAddedMessage">Member added to the team successfully</string>
-    <string name="memberRemovedMessage">Member removed from the team successfully</string>
-    <string name="repoAddedMessage">Repository added to the team successfully</string>
-    <string name="repoRemovedMessage">Repository removed from the team successfully</string>
+    <string name="removeTeamMember">Verwijder %s</string>
+    <string name="addTeamMember">Voeg %s toe</string>
+    <string name="addTeamMemberMessage">Wilt u deze gebruiker toevoegen aan het team?</string>
+    <string name="removeTeamMemberMessage">Wilt u deze gebruiker verwijderen uit het team?</string>
+    <string name="memberAddedMessage">Gebruiker succesvol aan het team toegevoegd</string>
+    <string name="memberRemovedMessage">Gebruiker succesvol uit het team verwijderd</string>
+    <string name="repoAddedMessage">Repository succesvol aan het team toegevoegd</string>
+    <string name="repoRemovedMessage">Repository succesvol uit het team verwijderd</string>
     <string name="repoAddToTeamMessage">Add repository %1$s to organization %2$s team %3$s</string>
     <string name="repoRemoveTeamMessage">Remove repository %1$s from team %2$s</string>
+    <string name="addRemoveMember">Add / Remove Member</string>
     <!-- org tabbed layout str -->
     <!-- create team -->
     <string name="newTeamTitle">Team Name</string>
@@ -240,7 +254,7 @@
     <string name="teamNameEmpty">Please enter team name</string>
     <string name="teamNameError">Team name should contain only alphanumeric, dash (-), underscore (_) and dot (.) characters</string>
     <string name="teamPermissionEmpty">Please select permission</string>
-    <string name="teamDescError">Team description have illegal characters</string>
+    <string name="teamDescError">Team beschrijving heeft ongeldige tekens</string>
     <string name="teamDescLimit">Team beschrijving heeft meer dan 100 karakters</string>
     <string name="teamCreated">Team met succes aangemaakt</string>
     <!-- create team -->
@@ -254,7 +268,7 @@
     <!-- add collaborator -->
     <string name="addCollaboratorSearchHint">Zoek gebruikers</string>
     <string name="addCollaboratorViewUserDesc">Gebruikersnaam</string>
-    <string name="removeCollaboratorDialogTitle">Remove %s?</string>
+    <string name="removeCollaboratorDialogTitle">Verwijder %s?</string>
     <string name="removeCollaboratorMessage">Wilt u deze gebruiker verwijderen van deze repository?</string>
     <string name="removeCollaboratorToastText">Gebruiker verwijderd van repository.</string>
     <string name="addCollaboratorToastText">Gebruiker toegevoegd aan repository.</string>
@@ -262,15 +276,17 @@
     <!-- profile section -->
     <string name="profileTabFollowers">Volgers</string>
     <string name="profileTabFollowing">Volgend</string>
-    <string name="profileCreateNewEmailAddress">E-mailadres Toevoegen</string>
-    <string name="profileEmailTitle">E-mailadres</string>
+    <!-- profile section -->
+    <!-- account settings -->
+    <string name="accountEmails">E-mails</string>
+    <string name="accountEmailTitle">Email Address</string>
     <string name="emailAddedText">Nieuw e-mailadres met succes toegevoegd</string>
     <string name="emailErrorEmpty">E-mailadres is leeg</string>
     <string name="emailErrorInvalid">E-mailadres is niet geldig</string>
     <string name="emailErrorInUse">E-mailadres is reeds in gebruik</string>
     <string name="emailTypeText">Primair</string>
-    <string name="profileTabEmails">E-mailadressen</string>
-    <!-- profile section -->
+    <string name="sshKeys">SSH Keys</string>
+    <!-- account settings -->
     <!-- single issue section -->
     <string name="singleIssueEditLabels">Toevoegen / Verwijderen Label</string>
     <string name="labelsUpdated">Label bijgewerkt</string>
@@ -286,7 +302,7 @@
     <!-- single issue section -->
     <string name="repoMetaData">Repository Meta</string>
     <!-- admin -->
-    <string name="adminCreateNewUser">New User</string>
+    <string name="adminCreateNewUser">Nieuwe Gebruiker</string>
     <string name="adminUsers">Systeemgebruikers</string>
     <string name="userRoleAdmin">Administrator</string>
     <string name="adminCron">Cron-taken</string>
@@ -299,13 +315,13 @@
     <!-- create user -->
     <string name="userFullNameText">Volledige Naam</string>
     <string name="userEmail">E-mailadres</string>
-    <string name="userUserName">Username</string>
-    <string name="userPassword">Password</string>
-    <string name="userInvalidFullName">Invalid Full Name</string>
-    <string name="userInvalidUserName">Invalid Username</string>
-    <string name="userInvalidEmail">Invalid Email</string>
+    <string name="userUserName">Gebruikersnaam</string>
+    <string name="userPassword">Wachtwoord</string>
+    <string name="userInvalidFullName">Ongeldige Volledige Naam</string>
+    <string name="userInvalidUserName">Ongeldige Gebruikersnaam</string>
+    <string name="userInvalidEmail">Ongeldige E-mail</string>
     <string name="userCreatedText">New user added successfully</string>
-    <string name="userExistsError">User already exists</string>
+    <string name="userExistsError">Gebruiker bestaat al</string>
     <!-- create user -->
     <!-- edit issue -->
     <string name="editIssueNavHeader">Edit Issue #%1$s</string>
@@ -314,37 +330,37 @@
     <!-- release -->
     <string name="createRelease">New Release</string>
     <string name="releaseTagNameText">Tag Name</string>
-    <string name="releaseTitleText">Title</string>
-    <string name="releaseContentText">Content</string>
-    <string name="releaseTypeText">Mark as Pre-Release</string>
-    <string name="releaseBranchText">Select Branch</string>
+    <string name="releaseTitleText">Titel</string>
+    <string name="releaseContentText">Inhoud</string>
+    <string name="releaseTypeText">Markeer als Pre-Release</string>
+    <string name="releaseBranchText">Selecteer Branch</string>
     <string name="releaseDraftText">Draft</string>
-    <string name="tagNameErrorEmpty">Tag name is empty</string>
-    <string name="titleErrorEmpty">Title is empty</string>
+    <string name="tagNameErrorEmpty">Tag naam is leeg</string>
+    <string name="titleErrorEmpty">Titel is leeg</string>
     <string name="releaseCreatedText">New release created</string>
     <string name="deleteReleaseConfirmation">Do you really want to delete this release?</string>
     <string name="releaseDeleted">Release deleted</string>
     <!-- release -->
-    <string name="loginOTPTypeError">OTP code should be numbers</string>
-    <string name="loginOTP">OTP Code (Optional)</string>
-    <string name="otpMessage">Enter otp code if 2FA is enabled</string>
+    <string name="loginOTPTypeError">OTP code moeten nummers zijn</string>
+    <string name="loginOTP">OTP Code (Optioneel)</string>
+    <string name="otpMessage">Vul otp code in als 2FA is ingeschakeld</string>
     <string name="openWebRepo">Open in Browser</string>
     <string name="repoStargazersInMenu">Stargazers</string>
     <string name="repoWatchersInMenu">Watchers</string>
-    <string name="noDataWebsite">No website found</string>
-    <string name="noDataDescription">No description found</string>
-    <string name="noDataLocation">No location found</string>
-    <string name="starMember">Star</string>
+    <string name="noDataWebsite">Geen website gevonden</string>
+    <string name="noDataDescription">Geen beschrijving gevonden</string>
+    <string name="noDataLocation">Geen locatie gevonden</string>
+    <string name="starMember">Ster</string>
     <string name="watcherMember">Watcher</string>
     <string name="zipArchiveDownloadReleasesTab">Source code (ZIP)</string>
     <string name="tarArchiveDownloadReleasesTab">Source code (TAR.GZ)</string>
     <!-- new file -->
-    <string name="newFileNameTintCopy">File Name</string>
-    <string name="newFileBranchTintCopy">New Branch Name</string>
-    <string name="newFileContentTintCopy">File Content</string>
-    <string name="newFileButtonCopy">Create New File</string>
-    <string name="newFileNameHintMessage">with folder: app/test.md</string>
-    <string name="newFileMessageTintCopy">Commit Message</string>
+    <string name="newFileNameTintCopy">Bestandsnaam</string>
+    <string name="newFileBranchTintCopy">Nieuwe Branch Naam</string>
+    <string name="newFileContentTintCopy">Inhoud Bestand</string>
+    <string name="newFileButtonCopy">Maak Nieuw Bestand</string>
+    <string name="newFileNameHintMessage">met folder: app/test.md</string>
+    <string name="newFileMessageTintCopy">Commitbericht</string>
     <string name="newFileInvalidBranchName">Invalid branch name, may only contain &#8211;, a&#8211;z, 0&#8211;9</string>
     <string name="newFileCommitMessageError">Commit message is too long</string>
     <string name="newFileSuccessMessage">New file created</string>
@@ -412,6 +428,10 @@
     <string name="openInBrowser">Open in Browser</string>
     <string name="deleteGenericTitle">Delete %s</string>
     <string name="reset">Reset</string>
+    <string name="beta">BETA</string>
+    <string name="none">None</string>
+    <string name="main">main</string>
+    <string name="license">License</string>
     <!-- generic copy -->
     <string name="exploreUsers">Explore users</string>
     <string name="exploreIssues">Explore issues</string>
@@ -425,8 +445,7 @@
     <string name="versionUnsupportedNew">New Gitea version detected! Please UPDATE GitNex!</string>
     <string name="versionUnknown">No Gitea detected!</string>
     <string name="versionAlertDialogHeader">Unsupported Version of Gitea</string>
-    <string name="loginViaPassword">Username / Password</string>
-    <string name="loginMethodText">Choose your preferred login method to access your account. Token is more secure!</string>
+    <string name="loginViaPassword">Basic Auth</string>
     <string name="unauthorizedApiError">Instance has returned an error - Unauthorized. Check your credentials and try again</string>
     <string name="loginTokenError">Token is required</string>
     <string name="prDeletedFork">Deleted Fork</string>
@@ -508,19 +527,20 @@
     <string name="resetMostReposCounter">Counter is reset successfully</string>
     <string name="resetCounterDialogMessage">Do you want to reset counter for repository %s?</string>
     <string name="resetCounterAllDialogMessage">This will reset all the counters for this account repositories.</string>
-    <string name="appearanceHintText">Themes, fonts, badges</string>
+    <string name="appearanceHintText">Themes, fonts, badges, translation</string>
     <string name="securityHintText">Biometric authentication, SSL certificates, cache</string>
     <string name="languagesHintText">Languages</string>
     <string name="reportsHintText">Crash reports</string>
     <string name="rateAppHintText">If you like GitNex you can give it a thumbs up</string>
     <string name="aboutAppHintText">App version, build, user instance version</string>
+    <string name="codeEditorHintText">Syntax color, indentation</string>
     <string name="archivedRepository">Archived</string>
     <string name="archivedRepositoryMessage">This repo is archived. You can view files, but cannot push or open issues/pull-requests.</string>
     <string name="accountDeletedMessage">Account deleted successfully</string>
     <string name="removeAccountPopupTitle">Remove Account</string>
     <string name="removeAccountPopupMessage">Are you sure you want to remove this account from the app?\n\nThis will remove all the data related to this account on the app only.</string>
     <string name="addNewAccount">New Account</string>
-    <string name="addNewAccountText">Add New Account</string>
+    <string name="addNewAccountText">Add Account</string>
     <string name="accountAlreadyExistsError">Account already exists in the app</string>
     <string name="accountAddedMessage">Account added successfully</string>
     <string name="switchAccountSuccess">Switched to account : %1$s@%2$s</string>
@@ -528,14 +548,17 @@
     <string name="pageTitleNotifications">Notifications</string>
     <string name="noDataNotifications">All caught up 🚀</string>
     <string name="notificationsPollingHeaderText">Notifications Polling Delay</string>
-    <string name="pollingDelaySelectedText">%d Minutes</string>
+    <string name="pollingDelay15Minutes">15 Minutes</string>
+    <string name="pollingDelay30Minutes">30 Minutes</string>
+    <string name="pollingDelay45Minutes">45 Minutes</string>
+    <string name="pollingDelay1Hour">1 Hour</string>
     <string name="pollingDelayDialogHeaderText">Select Polling Delay</string>
     <string name="pollingDelayDialogDescriptionText">Choose a minutely delay in which GitNex tries to poll new notifications</string>
     <string name="markAsRead">Mark Read</string>
     <string name="markAsUnread">Mark Unread</string>
     <string name="pinNotification">Pin</string>
     <string name="markedNotificationsAsRead">Successfully marked all notifications as read</string>
-    <string name="notificationsHintText">Polling delay, light, vibration</string>
+    <string name="notificationsHintText">Polling delay</string>
     <string name="enableNotificationsHeaderText">Enable Notifications</string>
     <string name="enableLightsHeaderText">Enable Light</string>
     <string name="enableVibrationHeaderText">Enable Vibration</string>
@@ -548,6 +571,7 @@
         <item quantity="one">You have %s new notification</item>
         <item quantity="other">You have %s new notifications</item>
     </plurals>
+    <string name="openAppSettings">To receive notifications, you must enable notifications for GitNex. Tap Open to access your phone settings and enable notifications.</string>
     <string name="isRead">Read</string>
     <string name="isUnread">Unread</string>
     <string name="repoSettingsTitle">Repository Settings</string>
@@ -594,9 +618,9 @@
     <string name="prClosed">Pull Request closed</string>
     <string name="prReopened">Pull Request reopened</string>
     <string name="prMergeInfo">Pull Request Info</string>
-    <string name="accountDoesNotExist">It seems that account for URI %1$s does not exists in the app. You can add one by tapping on the Add New Account button.</string>
+    <string name="accountDoesNotExist">It seems that the account for URI %1$s does not exist in the app. You can add one by tapping on the Add New Account button.</string>
     <string name="launchApp">Go to App</string>
-    <string name="noActionText">GitNex cannot handle the requested resource, you can open an issue at the project repository as an improvement with providing details of the work. Just launch a default screen for now from the buttons below, it can be changed from settings.</string>
+    <string name="noActionText">GitNex cannot handle the requested resource. You can open an issue at the project repository as an improvement, providing details of the work. Just launch a default screen for now from the buttons below; it can be changed from settings.</string>
     <string name="biometricAuthTitle">Biometric Authentication</string>
     <string name="biometricAuthSubTitle">Unlock using your biometric credentials</string>
     <string name="biometricNotSupported">No biometric features available on this device</string>
@@ -640,6 +664,8 @@
     <string name="notLoggedIn">%s \u25CF not logged in</string>
     <string name="followSystem">Follow system (Light/Dark)</string>
     <string name="followSystemBlack">Follow system (Light/Pitch Black)</string>
+    <string name="dynamicColorsFollowSystem">Dynamic colors - Follow system (Light/Dark)</string>
+    <string name="codebergDark">Codeberg (Dark)</string>
     <string name="repoForkOf">Fork of: %s</string>
     <string name="adoptRepo">Adopt</string>
     <string name="repoAdopted">Adopted repository %s</string>
@@ -663,13 +689,14 @@
     <string name="newNoteContentHint">Start taking your notes here</string>
     <string name="noteDateTime">Created %s</string>
     <string name="noteTimeModified">Updated %s</string>
-    <string name="noteDeleteDialoMessage">Do you really want to delete this note?</string>
+    <string name="noteDeleteDialogMessage">Do you really want to delete this note?</string>
     <plurals name="noteDeleteMessage">
         <item quantity="one">Note deleted successfully</item>
         <item quantity="other">Notes deleted successfully</item>
     </plurals>
     <string name="notesAllDeletionMessage">This will delete all of your notes. This action cannot be undone.</string>
     <!-- timeline -->
+    <string name="commitsText">commit</string>
     <string name="commitText">commit</string>
     <string name="timelineAddedCommit">%1$s added %2$s %3$s</string>
     <!-- the | is replaced by the label -->
@@ -682,6 +709,7 @@
     <string name="timelineAssigneesAssigned">%1$s was assigned by %2$s %3$s</string>
     <string name="timelineMilestoneAdded">%1$s added this to the %2$s milestone %3$s</string>
     <string name="timelineMilestoneRemoved">%1$s removed this from the %2$s milestone %3$s</string>
+    <string name="timelineMilestoneDeleted">%1$s added this to a deleted milestone %2$s</string>
     <string name="timelineStatusClosedIssue">%1$s closed this issue %2$s</string>
     <string name="timelineStatusReopenedIssue">%1$s reopened this issue %2$s</string>
     <string name="timelineStatusReopenedPr">%1$s reopened this pull request %2$s</string>
@@ -710,7 +738,39 @@
     <string name="timelineRefIssue">%1$s referenced this issue in #%2$d %3$s</string>
     <string name="timelineRefPr">%1$s referenced this pull request in #%2$d %3$s</string>
     <string name="timelineStatusRefIssue"><![CDATA[%1$s referenced this issue from a <font color=\'%2$d\'>%3$s</font> %4$s]]></string>
+    <string name="timelineReviewLeftComment">%1$s left a comment: %2$s %3$s</string>
+    <string name="timelinePinned">%1$s pinned this %2$s</string>
     <string name="commitStatuses">Statuses</string>
     <string name="statusNoUrl">This status has no linked target URL.</string>
     <string name="starredRepos">Starred Repos</string>
+    <string name="lang_statistics">Language Statistics</string>
+    <string name="dashboard">Dashboard</string>
+    <string name="createdRepository">created repository</string>
+    <string name="renamedRepository">renamed repository from %1$s to</string>
+    <string name="starredRepository">starred</string>
+    <string name="transferredRepository">transferred repository %1$s to</string>
+    <string name="createdBranch">created branch %1$s in</string>
+    <string name="pushedTo">pushed to %1$s at</string>
+    <string name="openedIssue">opened issue</string>
+    <string name="commentedOnIssue">commented on issue</string>
+    <string name="closedIssue">closed issue</string>
+    <string name="reopenedIssue">reopened issue</string>
+    <string name="createdPR">created pull request</string>
+    <string name="closedPR">closed pull request</string>
+    <string name="reopenedPR">reopened pull request</string>
+    <string name="mergedPR">merged pull request</string>
+    <string name="approved">approved</string>
+    <string name="suggestedChanges">suggested changes for</string>
+    <string name="commentedOnPR">commented on pull request</string>
+    <string name="autoMergePR">automatically merged pull request</string>
+    <string name="deletedBranch">deleted branch %1$s at</string>
+    <string name="pushedTag">pushed tag %1$s to</string>
+    <string name="deletedTag">deleted tag %1$s from</string>
+    <string name="releasedBranch">released %1$s at</string>
+    <string name="syncedCommits">synced commits to %1$s at</string>
+    <string name="syncedRefs">synced new reference %1$s to</string>
+    <string name="syncedDeletedRefs">synced and deleted reference %1$s at</string>
+    <string name="attachment">Attachment</string>
+    <string name="attachments">Attachments</string>
+    <string name="attachmentsSaveError">An issue was created but cannot process attachments at this time. Check the server logs for more details.</string>
 </resources>

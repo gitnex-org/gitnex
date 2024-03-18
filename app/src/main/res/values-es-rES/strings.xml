@@ -46,8 +46,11 @@
     <string name="newRepoDescTintCopy">Descripción del repositorio</string>
     <string name="newRepoPrivateCopy">Privado</string>
     <string name="newRepoOwner">Propietario</string>
+    <string name="newRepoIssueLabels">Issue Labels</string>
+    <string name="setAsTemplate">Hacer el repositorio una plantilla</string>
     <string name="newOrgTintCopy">Nombre de la organización</string>
     <string name="newOrgDescTintCopy">Descripción de la organización</string>
+    <string name="organizationFullname">%1$s - %2$s</string>
     <string name="userName">Nombre de usuario</string>
     <string name="passWord">Contraseña</string>
     <string name="btnLogin">INICIAR SESIÓN</string>
@@ -73,6 +76,7 @@
     <string name="repoCreated">El repositorio se ha creado correctamente</string>
     <string name="repoExistsError">El nombre del repositorio ya existe en el propietario seleccionado</string>
     <string name="repoOwnerError">Seleccione el propietario del repositorio</string>
+    <string name="repoDefaultBranchError">La rama por defecto no puede estar vacía</string>
     <string name="orgNameErrorEmpty">El nombre de la organización está vacío</string>
     <string name="orgNameErrorInvalid">El nombre de la organización es inválido. [a&#8211;z A&#8211;Z 0&#8211;9 &#8211; _]</string>
     <string name="orgDescError">La descripción de la organización supera el límite de 255 caracteres</string>
@@ -104,7 +108,6 @@
     <string name="infoTabRepoForksCount">Bifurcaciones</string>
     <string name="infoTabRepoCreatedAt">Creado</string>
     <string name="infoTabRepoUpdatedAt">Última actualización</string>
-    <string name="infoShowMoreInformation">Mostrar más información</string>
     <string name="infoMoreInformation">Más información</string>
     <string name="timeAtText">a las</string>
     <string name="issueMilestone">Hito %1$s</string>
@@ -427,6 +430,8 @@
     <string name="reset">Restablecer</string>
     <string name="beta">BETA</string>
     <string name="none">Ninguno</string>
+    <string name="main">main</string>
+    <string name="license">Licencia</string>
     <!-- generic copy -->
     <string name="exploreUsers">Explorar usuarios</string>
     <string name="exploreIssues">Explorar incidencias</string>
@@ -440,8 +445,7 @@
     <string name="versionUnsupportedNew">¡Se ha detectado una nueva versión de Gitea! ¡Por favor, ACTUALICE GitNex!</string>
     <string name="versionUnknown">¡No se ha detectado instancia de Gitea!</string>
     <string name="versionAlertDialogHeader">Versión de Gitea no compatible</string>
-    <string name="loginViaPassword">Usuario / contraseña</string>
-    <string name="loginMethodText">Elige el método de inicio de sesión preferido. Por Token es la forma más segura.</string>
+    <string name="loginViaPassword">Basic Auth</string>
     <string name="unauthorizedApiError">La instancia ha respondido con un error - No autorizado. Verifique sus credenciales e inténtalo de nuevo</string>
     <string name="loginTokenError">Token necesario</string>
     <string name="prDeletedFork">Bifuración eliminada</string>
@@ -536,7 +540,7 @@
     <string name="removeAccountPopupTitle">Eliminar cuenta</string>
     <string name="removeAccountPopupMessage">¿Estás seguro que quieres eliminar esta cuenta de la aplicación?\n\nEsta acción va a eliminar todos los datos de la cuenta, pero sólo en esta aplicación.</string>
     <string name="addNewAccount">Nueva cuenta</string>
-    <string name="addNewAccountText">Añadir nueva cuenta</string>
+    <string name="addNewAccountText">Añadir Cuenta</string>
     <string name="accountAlreadyExistsError">La cuenta ya existe en la aplicación</string>
     <string name="accountAddedMessage">Cuenta añadida con éxito</string>
     <string name="switchAccountSuccess">Cambio de la cuenta: %1$s@%2$s</string>
@@ -544,14 +548,17 @@
     <string name="pageTitleNotifications">Notificaciones</string>
     <string name="noDataNotifications">Todo en orden 🚀</string>
     <string name="notificationsPollingHeaderText">Retraso de notificaciones</string>
-    <string name="pollingDelaySelectedText">%d minutos</string>
+    <string name="pollingDelay15Minutes">15 Minutos</string>
+    <string name="pollingDelay30Minutes">30 Minutos</string>
+    <string name="pollingDelay45Minutes">45 Minutos</string>
+    <string name="pollingDelay1Hour">1 Hora</string>
     <string name="pollingDelayDialogHeaderText">Seleccionar cantidad del retraso</string>
     <string name="pollingDelayDialogDescriptionText">Selecciona un retraso en minutos para que GitNex vuelva a consultar nuevas notificaciones</string>
     <string name="markAsRead">Marcar como leído</string>
     <string name="markAsUnread">Marcar como no leído</string>
     <string name="pinNotification">Fijar</string>
     <string name="markedNotificationsAsRead">Todas las notificaciones fueron marcadas como leídas con éxito</string>
-    <string name="notificationsHintText">Cantidad del retraso, luz, vibración</string>
+    <string name="notificationsHintText">Polling delay</string>
     <string name="enableNotificationsHeaderText">Activar notificaciones</string>
     <string name="enableLightsHeaderText">Activar luz</string>
     <string name="enableVibrationHeaderText">Activar vibración</string>
@@ -564,6 +571,7 @@
         <item quantity="one">Tienes %s nueva notificación</item>
         <item quantity="other">Tienes %s nuevas notificaciones</item>
     </plurals>
+    <string name="openAppSettings">Para recibir notificaciones, debe habilitar las notificaciones para GitNex. Presione Abrir para acceder a los ajustes del teléfono y habilitar las notificaciones.</string>
     <string name="isRead">Leer</string>
     <string name="isUnread">No leídos</string>
     <string name="repoSettingsTitle">Configuración del repositorio</string>
@@ -612,7 +620,7 @@
     <string name="prMergeInfo">Información de Pull Request</string>
     <string name="accountDoesNotExist">La cuenta %1$s no existe en la aplicación. Puedes añadirla pulsando \"Añadir nueva cuenta\".</string>
     <string name="launchApp">Ir a la aplicación</string>
-    <string name="noActionText">GitNex no puede gestionar el recurso solicitado, puede abrir una incidencia en el repositorio del proyecto aportando detalles del error. Por el momento, lanza una pantalla por defecto desde los botones de abajo, se puede cambiar desde la configuración.</string>
+    <string name="noActionText">GitNex no puede gestionar el recurso solicitado. Puede abrir una incidencia en el repositorio del proyecto aportando detalles del error. Por el momento, lanza una pantalla por defecto desde los botones de abajo; se puede cambiar desde la configuración.</string>
     <string name="biometricAuthTitle">Autenticación biométrica</string>
     <string name="biometricAuthSubTitle">Desbloquear usando tus credenciales biométricas</string>
     <string name="biometricNotSupported">No se ha encontrado función biométrica en el dispositivo</string>
@@ -730,9 +738,39 @@
     <string name="timelineRefIssue">%1$s ha hecho referencia a esta incidencia en #%2$d %3$s</string>
     <string name="timelineRefPr">%1$s ha hecho referencia a este Pull Request en #%2$d %3$s</string>
     <string name="timelineStatusRefIssue"><![CDATA[%1$s ha hecho referencia a esta incidencia desde <font color=\'%2$d\'>%3$s</font> %4$s]]></string>
+    <string name="timelineReviewLeftComment">%1$s dejó un comentario: %2$s %3$s</string>
+    <string name="timelinePinned">%1$s pinned this %2$s</string>
     <string name="commitStatuses">Estados</string>
     <string name="statusNoUrl">Este estado no tiene una URL de destino asociada.</string>
     <string name="starredRepos">Repositorios favoritos</string>
     <string name="lang_statistics">Estadísticas del lenguaje</string>
     <string name="dashboard">Panel de Control</string>
+    <string name="createdRepository">repositorio creado</string>
+    <string name="renamedRepository">nombre de repositorio cambiado de %1$s a </string>
+    <string name="starredRepository">destacado</string>
+    <string name="transferredRepository">repositorio %1$s transferido a</string>
+    <string name="createdBranch">rama %1$s creada en</string>
+    <string name="pushedTo">enviado de %1$s en</string>
+    <string name="openedIssue">incidencias abierta</string>
+    <string name="commentedOnIssue">commented on issue</string>
+    <string name="closedIssue">incidencia cerrada</string>
+    <string name="reopenedIssue">incidencia reabierta</string>
+    <string name="createdPR">solicitud de cambios creada</string>
+    <string name="closedPR">solicitud de cambios cerrada</string>
+    <string name="reopenedPR">solicitud de cambios reabierta</string>
+    <string name="mergedPR">merged pull request</string>
+    <string name="approved">approved</string>
+    <string name="suggestedChanges">suggested changes for</string>
+    <string name="commentedOnPR">commented on pull request</string>
+    <string name="autoMergePR">automatically merged pull request</string>
+    <string name="deletedBranch">deleted branch %1$s at</string>
+    <string name="pushedTag">pushed tag %1$s to</string>
+    <string name="deletedTag">deleted tag %1$s from</string>
+    <string name="releasedBranch">released %1$s at</string>
+    <string name="syncedCommits">synced commits to %1$s at</string>
+    <string name="syncedRefs">synced new reference %1$s to</string>
+    <string name="syncedDeletedRefs">synced and deleted reference %1$s at</string>
+    <string name="attachment">Attachment</string>
+    <string name="attachments">Attachments</string>
+    <string name="attachmentsSaveError">An issue was created but cannot process attachments at this time. Check the server logs for more details.</string>
 </resources>

@@ -739,6 +739,7 @@
     <string name="timelineRefPr">%1$s a mentionné cette demande d’ajout dans #%2$d %3$s</string>
     <string name="timelineStatusRefIssue"><![CDATA[%1$s mentionné ce ticket dans une <font color=\'%2$d\'>%3$s</font> %4$s]]></string>
     <string name="timelineReviewLeftComment">%1$s a ajouté un commentaire : %2$s %3$s</string>
+    <string name="timelinePinned">%1$s pinned this %2$s</string>
     <string name="commitStatuses">Statuts</string>
     <string name="statusNoUrl">Ce statut n’a pas d’URL.</string>
     <string name="starredRepos">Dépôts favoris</string>
