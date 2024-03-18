@@ -13,6 +13,7 @@ import java.util.Map;
 import org.mian.gitnex.R;
 import org.mian.gitnex.core.MainGrammarLocator;
 import org.mian.gitnex.databinding.ActivityCodeEditorBinding;
+import org.mian.gitnex.helpers.AppDatabaseSettings;
 import org.mian.gitnex.helpers.codeeditor.CustomCodeViewAdapter;
 import org.mian.gitnex.helpers.codeeditor.SourcePositionListener;
 import org.mian.gitnex.helpers.codeeditor.languages.Language;
@@ -73,9 +74,14 @@ public class CodeEditorActivity extends BaseActivity {
 		binding.codeView.setLineNumberTextSize(32f);
 
 		// Setup Auto indenting feature
-		if (tinyDB.getInt("ceIndentationId") == 0) {
+		if (Integer.parseInt(
+						AppDatabaseSettings.getSettingsValue(
+								ctx, AppDatabaseSettings.APP_CE_INDENTATION_KEY))
+				== 0) {
 			binding.codeView.setEnableAutoIndentation(true);
-			switch (tinyDB.getInt("ceIndentationTabsId")) {
+			switch (Integer.parseInt(
+					AppDatabaseSettings.getSettingsValue(
+							ctx, AppDatabaseSettings.APP_CE_TABS_WIDTH_KEY))) {
 				case 0:
 					binding.codeView.setTabLength(2);
 					break;

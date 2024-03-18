@@ -6,6 +6,7 @@ import com.google.android.material.dialog.MaterialAlertDialogBuilder;
 import org.mian.gitnex.R;
 import org.mian.gitnex.databinding.ActivitySettingsNotificationsBinding;
 import org.mian.gitnex.fragments.SettingsFragment;
+import org.mian.gitnex.helpers.AppDatabaseSettings;
 import org.mian.gitnex.helpers.AppUtil;
 import org.mian.gitnex.helpers.SnackBar;
 import org.mian.gitnex.notifications.Notifications;
@@ -18,7 +19,7 @@ public class SettingsNotificationsActivity extends BaseActivity {
 
 	private ActivitySettingsNotificationsBinding viewBinding;
 	private static String[] pollingDelayList;
-	private static int pollingDelayListSelectedChoice = 0;
+	private static int pollingDelayListSelectedChoice;
 
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
@@ -31,7 +32,9 @@ public class SettingsNotificationsActivity extends BaseActivity {
 		viewBinding.topAppBar.setNavigationOnClickListener(v -> finish());
 
 		viewBinding.enableNotificationsMode.setChecked(
-				tinyDB.getBoolean("notificationsEnabled", true));
+				Boolean.parseBoolean(
+						AppDatabaseSettings.getSettingsValue(
+								ctx, AppDatabaseSettings.APP_NOTIFICATIONS_KEY)));
 
 		if (!viewBinding.enableNotificationsMode.isChecked()) {
 			AppUtil.setMultiVisibility(View.GONE, viewBinding.pollingDelayFrame);
@@ -39,7 +42,10 @@ public class SettingsNotificationsActivity extends BaseActivity {
 
 		viewBinding.enableNotificationsMode.setOnCheckedChangeListener(
 				(buttonView, isChecked) -> {
-					tinyDB.putBoolean("notificationsEnabled", isChecked);
+					AppDatabaseSettings.updateSettingsValue(
+							ctx,
+							String.valueOf(isChecked),
+							AppDatabaseSettings.APP_NOTIFICATIONS_KEY);
 
 					if (isChecked) {
 						Notifications.startWorker(ctx);
@@ -61,7 +67,10 @@ public class SettingsNotificationsActivity extends BaseActivity {
 
 		// polling delay
 		pollingDelayList = getResources().getStringArray(R.array.notificationsPollingDelay);
-		pollingDelayListSelectedChoice = tinyDB.getInt("notificationsPollingDelayId");
+		pollingDelayListSelectedChoice =
+				Integer.parseInt(
+						AppDatabaseSettings.getSettingsValue(
+								ctx, AppDatabaseSettings.APP_NOTIFICATIONS_DELAY_KEY));
 		viewBinding.pollingDelaySelected.setText(pollingDelayList[pollingDelayListSelectedChoice]);
 
 		viewBinding.pollingDelayFrame.setOnClickListener(
@@ -77,7 +86,12 @@ public class SettingsNotificationsActivity extends BaseActivity {
 												viewBinding.pollingDelaySelected.setText(
 														pollingDelayList[
 																pollingDelayListSelectedChoice]);
-												tinyDB.putInt("notificationsPollingDelayId", i);
+
+												AppDatabaseSettings.updateSettingsValue(
+														ctx,
+														String.valueOf(i),
+														AppDatabaseSettings
+																.APP_NOTIFICATIONS_DELAY_KEY);
 
 												Notifications.stopWorker(ctx);
 												Notifications.startWorker(ctx);

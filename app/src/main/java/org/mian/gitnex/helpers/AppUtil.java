@@ -316,16 +316,27 @@ public class AppUtil {
 
 	public static void setAppLocale(Resources resource, String locCode) {
 
+		String[] multiCodeLang = locCode.split("-");
+		String countryCode;
+		if (locCode.contains("-")) {
+			locCode = multiCodeLang[0];
+			countryCode = multiCodeLang[1];
+		} else {
+			countryCode = "";
+		}
+
 		DisplayMetrics dm = resource.getDisplayMetrics();
 		Configuration config = resource.getConfiguration();
-		config.setLocale(new Locale(locCode.toLowerCase()));
+		config.setLocale(new Locale(locCode.toLowerCase(), countryCode));
 		resource.updateConfiguration(config, dm);
 	}
 
 	public static String getTimestampFromDate(Context context, Date date) {
 
-		TinyDB tinyDB = TinyDB.getInstance(context);
-		Locale locale = new Locale(tinyDB.getString("locale"));
+		String[] locale_ =
+				AppDatabaseSettings.getSettingsValue(context, AppDatabaseSettings.APP_LOCALE_KEY)
+						.split("\\|");
+		Locale locale = new Locale(locale_[1]);
 
 		if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
 			return new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ssXXX", locale).format(date);
@@ -394,7 +405,7 @@ public class AppUtil {
 	public static String encodeBase64(String str) {
 
 		String base64Str = str;
-		if (!str.equals("")) {
+		if (!str.isEmpty()) {
 			byte[] data = str.getBytes(StandardCharsets.UTF_8);
 			base64Str = Base64.encodeToString(data, Base64.DEFAULT);
 		}
@@ -529,10 +540,10 @@ public class AppUtil {
 
 	public static void openUrlInBrowser(Context context, String url) {
 
-		TinyDB tinyDB = TinyDB.getInstance(context);
-
 		Intent i;
-		if (tinyDB.getBoolean("useCustomTabs")) {
+		if (Boolean.parseBoolean(
+				AppDatabaseSettings.getSettingsValue(
+						context, AppDatabaseSettings.APP_CUSTOM_BROWSER_KEY))) {
 			i =
 					new CustomTabsIntent.Builder()
 							.setDefaultColorSchemeParams(
@@ -593,8 +604,11 @@ public class AppUtil {
 	}
 
 	public static Typeface getTypeface(Context context) {
+
 		if (typeface == null) {
-			switch (TinyDB.getInstance(context).getInt("customFontId", -1)) {
+			switch (Integer.parseInt(
+					AppDatabaseSettings.getSettingsValue(
+							context, AppDatabaseSettings.APP_FONT_KEY))) {
 				case 0:
 					typeface = Typeface.createFromAsset(context.getAssets(), "fonts/roboto.ttf");
 					break;

@@ -28,8 +28,8 @@ import org.mian.gitnex.clients.RetrofitClient;
 import org.mian.gitnex.database.api.BaseApi;
 import org.mian.gitnex.database.api.UserAccountsApi;
 import org.mian.gitnex.database.models.UserAccount;
+import org.mian.gitnex.helpers.AppDatabaseSettings;
 import org.mian.gitnex.helpers.Constants;
-import org.mian.gitnex.helpers.TinyDB;
 import org.mian.gitnex.helpers.Version;
 import retrofit2.Call;
 import retrofit2.Response;
@@ -49,18 +49,29 @@ public class NotificationsWorker extends Worker {
 		UserAccountsApi userAccountsApi = BaseApi.getInstance(context, UserAccountsApi.class);
 
 		this.context = context;
-		TinyDB tinyDB = TinyDB.getInstance(context);
 		assert userAccountsApi != null;
 		this.userAccounts = new HashMap<>(userAccountsApi.getCount());
 
 		int delay;
-		if (tinyDB.getInt("notificationsPollingDelayId") == 0) {
+		if (Integer.parseInt(
+						AppDatabaseSettings.getSettingsValue(
+								context, AppDatabaseSettings.APP_NOTIFICATIONS_DELAY_KEY))
+				== 0) {
 			delay = 15;
-		} else if (tinyDB.getInt("notificationsPollingDelayId") == 1) {
+		} else if (Integer.parseInt(
+						AppDatabaseSettings.getSettingsValue(
+								context, AppDatabaseSettings.APP_NOTIFICATIONS_DELAY_KEY))
+				== 1) {
 			delay = 30;
-		} else if (tinyDB.getInt("notificationsPollingDelayId") == 2) {
+		} else if (Integer.parseInt(
+						AppDatabaseSettings.getSettingsValue(
+								context, AppDatabaseSettings.APP_NOTIFICATIONS_DELAY_KEY))
+				== 2) {
 			delay = 45;
-		} else if (tinyDB.getInt("notificationsPollingDelayId") == 3) {
+		} else if (Integer.parseInt(
+						AppDatabaseSettings.getSettingsValue(
+								context, AppDatabaseSettings.APP_NOTIFICATIONS_DELAY_KEY))
+				== 3) {
 			delay = 60;
 		} else {
 			delay = Constants.defaultPollingDelay;

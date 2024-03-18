@@ -2,6 +2,7 @@ package org.mian.gitnex.activities;
 
 import android.os.Build;
 import android.os.Bundle;
+import android.os.Handler;
 import android.view.View;
 import com.google.android.material.dialog.MaterialAlertDialogBuilder;
 import com.google.android.material.timepicker.MaterialTimePicker;
@@ -10,10 +11,10 @@ import java.util.Locale;
 import org.mian.gitnex.R;
 import org.mian.gitnex.databinding.ActivitySettingsAppearanceBinding;
 import org.mian.gitnex.fragments.SettingsFragment;
+import org.mian.gitnex.helpers.AppDatabaseSettings;
 import org.mian.gitnex.helpers.AppUtil;
 import org.mian.gitnex.helpers.FontsOverride;
 import org.mian.gitnex.helpers.SnackBar;
-import org.mian.gitnex.helpers.TinyDB;
 
 /**
  * @author M M Arif
@@ -21,12 +22,12 @@ import org.mian.gitnex.helpers.TinyDB;
 public class SettingsAppearanceActivity extends BaseActivity {
 
 	private static String[] customFontList;
-	private static int customFontSelectedChoice = 0;
+	private static int customFontSelectedChoice;
 	private static String[] themeList;
-	private static int themeSelectedChoice = 0;
-	private static int langSelectedChoice = 0;
+	private static int themeSelectedChoice;
+	private static int langSelectedChoice;
 	private static String[] fragmentTabsAnimationList;
-	private static int fragmentTabsAnimationSelectedChoice = 0;
+	private static int fragmentTabsAnimationSelectedChoice;
 
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
@@ -38,7 +39,7 @@ public class SettingsAppearanceActivity extends BaseActivity {
 		setContentView(activitySettingsAppearanceBinding.getRoot());
 
 		LinkedHashMap<String, String> lang = new LinkedHashMap<>();
-		lang.put("", getString(R.string.settingsLanguageSystem));
+		lang.put("sys", getString(R.string.settingsLanguageSystem));
 		for (String langCode : getResources().getStringArray(R.array.languages)) {
 			lang.put(langCode, getLanguageDisplayName(langCode));
 		}
@@ -55,8 +56,14 @@ public class SettingsAppearanceActivity extends BaseActivity {
 
 		activitySettingsAppearanceBinding.topAppBar.setNavigationOnClickListener(v -> finish());
 
-		String lightMinute = String.valueOf(tinyDB.getInt("lightThemeTimeMinute"));
-		String lightHour = String.valueOf(tinyDB.getInt("lightThemeTimeHour"));
+		String lightMinute =
+				String.valueOf(
+						AppDatabaseSettings.getSettingsValue(
+								ctx, AppDatabaseSettings.APP_THEME_AUTO_LIGHT_MIN_KEY));
+		String lightHour =
+				String.valueOf(
+						AppDatabaseSettings.getSettingsValue(
+								ctx, AppDatabaseSettings.APP_THEME_AUTO_LIGHT_HOUR_KEY));
 		if (lightMinute.length() == 1) {
 			lightMinute = "0" + lightMinute;
 		}
@@ -64,8 +71,14 @@ public class SettingsAppearanceActivity extends BaseActivity {
 			lightHour = "0" + lightHour;
 		}
 
-		String darkMinute = String.valueOf(tinyDB.getInt("darkThemeTimeMinute"));
-		String darkHour = String.valueOf(tinyDB.getInt("darkThemeTimeHour"));
+		String darkMinute =
+				String.valueOf(
+						AppDatabaseSettings.getSettingsValue(
+								ctx, AppDatabaseSettings.APP_THEME_AUTO_DARK_MIN_KEY));
+		String darkHour =
+				String.valueOf(
+						AppDatabaseSettings.getSettingsValue(
+								ctx, AppDatabaseSettings.APP_THEME_AUTO_DARK_HOUR_KEY));
 		if (darkMinute.length() == 1) {
 			darkMinute = "0" + darkMinute;
 		}
@@ -73,9 +86,18 @@ public class SettingsAppearanceActivity extends BaseActivity {
 			darkHour = "0" + darkHour;
 		}
 
-		fragmentTabsAnimationSelectedChoice = tinyDB.getInt("fragmentTabsAnimationId", 0);
-		customFontSelectedChoice = tinyDB.getInt("customFontId", 1);
-		themeSelectedChoice = tinyDB.getInt("themeId", 6); // use system theme as default
+		fragmentTabsAnimationSelectedChoice =
+				Integer.parseInt(
+						AppDatabaseSettings.getSettingsValue(
+								ctx, AppDatabaseSettings.APP_TABS_ANIMATION_KEY));
+		customFontSelectedChoice =
+				Integer.parseInt(
+						AppDatabaseSettings.getSettingsValue(
+								ctx, AppDatabaseSettings.APP_FONT_KEY));
+		themeSelectedChoice =
+				Integer.parseInt(
+						AppDatabaseSettings.getSettingsValue(
+								ctx, AppDatabaseSettings.APP_THEME_KEY));
 
 		activitySettingsAppearanceBinding.lightThemeSelectedTime.setText(
 				ctx.getResources()
@@ -100,12 +122,15 @@ public class SettingsAppearanceActivity extends BaseActivity {
 		}
 
 		activitySettingsAppearanceBinding.switchCounterBadge.setChecked(
-				tinyDB.getBoolean("enableCounterBadges", true));
+				Boolean.parseBoolean(
+						AppDatabaseSettings.getSettingsValue(
+								ctx, AppDatabaseSettings.APP_COUNTER_KEY)));
 
 		// counter badge switcher
 		activitySettingsAppearanceBinding.switchCounterBadge.setOnCheckedChangeListener(
 				(buttonView, isChecked) -> {
-					tinyDB.putBoolean("enableCounterBadges", isChecked);
+					AppDatabaseSettings.updateSettingsValue(
+							ctx, String.valueOf(isChecked), AppDatabaseSettings.APP_COUNTER_KEY);
 					SnackBar.success(
 							ctx,
 							findViewById(android.R.id.content),
@@ -118,11 +143,16 @@ public class SettingsAppearanceActivity extends BaseActivity {
 
 		// show labels in lists(issues, pr) - default is color dots
 		activitySettingsAppearanceBinding.switchLabelsInListBadge.setChecked(
-				tinyDB.getBoolean("showLabelsInList", false));
+				Boolean.parseBoolean(
+						AppDatabaseSettings.getSettingsValue(
+								ctx, AppDatabaseSettings.APP_LABELS_IN_LIST_KEY)));
 
 		activitySettingsAppearanceBinding.switchLabelsInListBadge.setOnCheckedChangeListener(
 				(buttonView, isChecked) -> {
-					tinyDB.putBoolean("showLabelsInList", isChecked);
+					AppDatabaseSettings.updateSettingsValue(
+							ctx,
+							String.valueOf(isChecked),
+							AppDatabaseSettings.APP_LABELS_IN_LIST_KEY);
 					SnackBar.success(
 							ctx,
 							findViewById(android.R.id.content),
@@ -147,7 +177,10 @@ public class SettingsAppearanceActivity extends BaseActivity {
 												themeSelectedChoice = i;
 												activitySettingsAppearanceBinding.themeSelected
 														.setText(themeList[i]);
-												tinyDB.putInt("themeId", i);
+												AppDatabaseSettings.updateSettingsValue(
+														ctx,
+														String.valueOf(i),
+														AppDatabaseSettings.APP_THEME_KEY);
 
 												SettingsFragment.refreshParent = true;
 												this.recreate();
@@ -182,13 +215,26 @@ public class SettingsAppearanceActivity extends BaseActivity {
 												customFontSelectedChoice = i;
 												activitySettingsAppearanceBinding.customFontSelected
 														.setText(customFontList[i]);
-												tinyDB.putInt("customFontId", i);
-												AppUtil.typeface = null; // reset typeface
-												FontsOverride.setDefaultFont(this);
+												AppDatabaseSettings.updateSettingsValue(
+														ctx,
+														String.valueOf(i),
+														AppDatabaseSettings.APP_FONT_KEY);
 
-												SettingsFragment.refreshParent = true;
-												this.recreate();
-												this.overridePendingTransition(0, 0);
+												new Handler()
+														.postDelayed(
+																() -> {
+																	AppUtil.typeface =
+																			null; // reset typeface
+																	FontsOverride.setDefaultFont(
+																			this);
+																	SettingsFragment.refreshParent =
+																			true;
+																	this.recreate();
+																	this.overridePendingTransition(
+																			0, 0);
+																},
+																1000);
+
 												dialogInterfaceCustomFont.dismiss();
 												SnackBar.success(
 														ctx,
@@ -209,19 +255,20 @@ public class SettingsAppearanceActivity extends BaseActivity {
 									.setSingleChoiceItems(
 											fragmentTabsAnimationList,
 											fragmentTabsAnimationSelectedChoice,
-											(dialogInterfaceCustomFont, i) -> {
+											(dialogInterfaceTabsAnimation, i) -> {
 												fragmentTabsAnimationSelectedChoice = i;
 												activitySettingsAppearanceBinding
 														.fragmentTabsAnimationFrameSelected.setText(
 														fragmentTabsAnimationList[i]);
-												tinyDB.putInt("fragmentTabsAnimationId", i);
-												AppUtil.typeface = null; // reset typeface
-												FontsOverride.setDefaultFont(this);
+												AppDatabaseSettings.updateSettingsValue(
+														ctx,
+														String.valueOf(i),
+														AppDatabaseSettings.APP_TABS_ANIMATION_KEY);
 
 												SettingsFragment.refreshParent = true;
 												this.recreate();
 												this.overridePendingTransition(0, 0);
-												dialogInterfaceCustomFont.dismiss();
+												dialogInterfaceTabsAnimation.dismiss();
 												SnackBar.success(
 														ctx,
 														findViewById(android.R.id.content),
@@ -237,7 +284,10 @@ public class SettingsAppearanceActivity extends BaseActivity {
 						AppUtil.openUrlInBrowser(
 								this, getResources().getString(R.string.crowdInLink)));
 
-		langSelectedChoice = tinyDB.getInt("langId");
+		String[] locale =
+				AppDatabaseSettings.getSettingsValue(ctx, AppDatabaseSettings.APP_LOCALE_KEY)
+						.split("\\|");
+		langSelectedChoice = Integer.parseInt(locale[0]);
 		activitySettingsAppearanceBinding.tvLanguageSelected.setText(
 				lang.get(lang.keySet().toArray(new String[0])[langSelectedChoice]));
 
@@ -255,8 +305,10 @@ public class SettingsAppearanceActivity extends BaseActivity {
 											(dialogInterface, i) -> {
 												String selectedLanguage =
 														lang.keySet().toArray(new String[0])[i];
-												tinyDB.putInt("langId", i);
-												tinyDB.putString("locale", selectedLanguage);
+												AppDatabaseSettings.updateSettingsValue(
+														ctx,
+														i + "|" + selectedLanguage,
+														AppDatabaseSettings.APP_LOCALE_KEY);
 
 												SettingsFragment.refreshParent = true;
 												this.overridePendingTransition(0, 0);
@@ -274,18 +326,28 @@ public class SettingsAppearanceActivity extends BaseActivity {
 
 	public void lightTimePicker() {
 
-		TinyDB db = TinyDB.getInstance(ctx);
-
-		int hour = db.getInt("lightThemeTimeHour");
-		int minute = db.getInt("lightThemeTimeMinute");
+		int hour =
+				Integer.parseInt(
+						AppDatabaseSettings.getSettingsValue(
+								ctx, AppDatabaseSettings.APP_THEME_AUTO_LIGHT_HOUR_KEY));
+		int minute =
+				Integer.parseInt(
+						AppDatabaseSettings.getSettingsValue(
+								ctx, AppDatabaseSettings.APP_THEME_AUTO_LIGHT_MIN_KEY));
 
 		MaterialTimePicker materialTimePicker =
 				new MaterialTimePicker.Builder().setHour(hour).setMinute(minute).build();
 
 		materialTimePicker.addOnPositiveButtonClickListener(
 				selection -> {
-					db.putInt("lightThemeTimeHour", materialTimePicker.getHour());
-					db.putInt("lightThemeTimeMinute", materialTimePicker.getMinute());
+					AppDatabaseSettings.updateSettingsValue(
+							ctx,
+							String.valueOf(materialTimePicker.getHour()),
+							AppDatabaseSettings.APP_THEME_AUTO_LIGHT_HOUR_KEY);
+					AppDatabaseSettings.updateSettingsValue(
+							ctx,
+							String.valueOf(materialTimePicker.getMinute()),
+							AppDatabaseSettings.APP_THEME_AUTO_LIGHT_MIN_KEY);
 					SettingsFragment.refreshParent = true;
 					overridePendingTransition(0, 0);
 					SnackBar.success(
@@ -300,18 +362,28 @@ public class SettingsAppearanceActivity extends BaseActivity {
 
 	public void darkTimePicker() {
 
-		TinyDB db = TinyDB.getInstance(ctx);
-
-		int hour = db.getInt("darkThemeTimeHour");
-		int minute = db.getInt("darkThemeTimeMinute");
+		int hour =
+				Integer.parseInt(
+						AppDatabaseSettings.getSettingsValue(
+								ctx, AppDatabaseSettings.APP_THEME_AUTO_DARK_HOUR_KEY));
+		int minute =
+				Integer.parseInt(
+						AppDatabaseSettings.getSettingsValue(
+								ctx, AppDatabaseSettings.APP_THEME_AUTO_DARK_MIN_KEY));
 
 		MaterialTimePicker materialTimePicker =
 				new MaterialTimePicker.Builder().setHour(hour).setMinute(minute).build();
 
 		materialTimePicker.addOnPositiveButtonClickListener(
 				selection -> {
-					db.putInt("darkThemeTimeHour", materialTimePicker.getHour());
-					db.putInt("darkThemeTimeMinute", materialTimePicker.getMinute());
+					AppDatabaseSettings.updateSettingsValue(
+							ctx,
+							String.valueOf(materialTimePicker.getHour()),
+							AppDatabaseSettings.APP_THEME_AUTO_DARK_HOUR_KEY);
+					AppDatabaseSettings.updateSettingsValue(
+							ctx,
+							String.valueOf(materialTimePicker.getMinute()),
+							AppDatabaseSettings.APP_THEME_AUTO_DARK_MIN_KEY);
 					SettingsFragment.refreshParent = true;
 					overridePendingTransition(0, 0);
 					SnackBar.success(
@@ -326,7 +398,17 @@ public class SettingsAppearanceActivity extends BaseActivity {
 
 	private static String getLanguageDisplayName(String langCode) {
 		Locale english = new Locale("en");
-		Locale translated = new Locale(langCode);
+
+		String[] multiCodeLang = langCode.split("-");
+		String countryCode;
+		if (langCode.contains("-")) {
+			langCode = multiCodeLang[0];
+			countryCode = multiCodeLang[1];
+		} else {
+			countryCode = "";
+		}
+
+		Locale translated = new Locale(langCode, countryCode);
 		return String.format(
 				"%s (%s)",
 				translated.getDisplayName(translated), translated.getDisplayName(english));

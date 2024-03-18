@@ -327,4 +327,8 @@ public class TinyDB {
 			throw new NullPointerException();
 		}
 	}
+
+	public boolean checkForExistingPref(String key) {
+		return preferences.contains(key);
+	}
 }

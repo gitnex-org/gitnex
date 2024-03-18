@@ -211,7 +211,12 @@ public class Markdown {
 											if (tf == null) {
 												tf = AppUtil.getTypeface(textView.getContext());
 											}
-											if (tinyDB.getInt("themeId") == 8) {
+											if (Integer.parseInt(
+															AppDatabaseSettings.getSettingsValue(
+																	context,
+																	AppDatabaseSettings
+																			.APP_THEME_KEY))
+													== 8) {
 												if (!isNightModeThemeDynamic(context)) {
 													textView.setTextColor(
 															AppUtil.dynamicColorResource(context));
@@ -375,7 +380,12 @@ public class Markdown {
 											if (tf == null) {
 												tf = AppUtil.getTypeface(context);
 											}
-											if (tinyDB.getInt("themeId") == 8) {
+											if (Integer.parseInt(
+															AppDatabaseSettings.getSettingsValue(
+																	context,
+																	AppDatabaseSettings
+																			.APP_THEME_KEY))
+													== 8) {
 												if (!isNightModeThemeDynamic(context)) {
 													textView.setTextColor(
 															AppUtil.dynamicColorResource(context));

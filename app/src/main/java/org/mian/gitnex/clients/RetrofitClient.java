@@ -34,11 +34,10 @@ import org.gitnex.tea4j.v2.apis.custom.OTPApi;
 import org.gitnex.tea4j.v2.apis.custom.WebApi;
 import org.gitnex.tea4j.v2.auth.ApiKeyAuth;
 import org.jetbrains.annotations.NotNull;
-import org.mian.gitnex.R;
 import org.mian.gitnex.activities.BaseActivity;
+import org.mian.gitnex.helpers.AppDatabaseSettings;
 import org.mian.gitnex.helpers.AppUtil;
 import org.mian.gitnex.helpers.FilesData;
-import org.mian.gitnex.helpers.TinyDB;
 import org.mian.gitnex.helpers.ssl.MemorizingTrustManager;
 import retrofit2.Converter;
 import retrofit2.Retrofit;
@@ -59,8 +58,6 @@ public class RetrofitClient {
 			boolean cacheEnabled,
 			String token,
 			File cacheFile) {
-
-		TinyDB tinyDB = TinyDB.getInstance(context);
 
 		//		HttpLoggingInterceptor logging = new HttpLoggingInterceptor();
 		//		logging.setLevel(HttpLoggingInterceptor.Level.BODY);
@@ -88,11 +85,9 @@ public class RetrofitClient {
 
 				int cacheSize =
 						FilesData.returnOnlyNumberFileSize(
-										tinyDB.getString(
-												"cacheSizeStr",
-												context.getString(
-														R.string
-																.cacheSizeDataSelectionSelectedText)))
+										AppDatabaseSettings.getSettingsValue(
+												context,
+												AppDatabaseSettings.APP_DATA_CACHE_SIZE_KEY))
 								* 1024
 								* 1024;
 				Cache cache = new Cache(cacheFile, cacheSize);

@@ -10,6 +10,7 @@ import java.util.Locale;
 import java.util.concurrent.Executor;
 import org.mian.gitnex.R;
 import org.mian.gitnex.core.MainApplication;
+import org.mian.gitnex.helpers.AppDatabaseSettings;
 import org.mian.gitnex.helpers.AppUtil;
 import org.mian.gitnex.helpers.TimeHelper;
 import org.mian.gitnex.helpers.TinyDB;
@@ -34,7 +35,8 @@ public abstract class BaseActivity extends AppCompatActivity {
 		this.appCtx = getApplicationContext();
 		this.tinyDB = TinyDB.getInstance(appCtx);
 
-		switch (tinyDB.getInt("themeId", 6)) {
+		switch (Integer.parseInt(
+				AppDatabaseSettings.getSettingsValue(ctx, AppDatabaseSettings.APP_THEME_KEY))) {
 			case 0:
 				setTheme(R.style.AppTheme);
 				break;
@@ -43,10 +45,18 @@ public abstract class BaseActivity extends AppCompatActivity {
 				break;
 			case 2:
 				if (TimeHelper.timeBetweenHours(
-						tinyDB.getInt("darkThemeTimeHour", 18),
-						tinyDB.getInt("lightThemeTimeHour", 6),
-						tinyDB.getInt("darkThemeTimeMinute", 0),
-						tinyDB.getInt("lightThemeTimeMinute", 0))) {
+						Integer.parseInt(
+								AppDatabaseSettings.getSettingsValue(
+										ctx, AppDatabaseSettings.APP_THEME_AUTO_DARK_HOUR_KEY)),
+						Integer.parseInt(
+								AppDatabaseSettings.getSettingsValue(
+										ctx, AppDatabaseSettings.APP_THEME_AUTO_LIGHT_HOUR_KEY)),
+						Integer.parseInt(
+								AppDatabaseSettings.getSettingsValue(
+										ctx, AppDatabaseSettings.APP_THEME_AUTO_DARK_MIN_KEY)),
+						Integer.parseInt(
+								AppDatabaseSettings.getSettingsValue(
+										ctx, AppDatabaseSettings.APP_THEME_AUTO_LIGHT_MIN_KEY)))) {
 
 					setTheme(R.style.AppTheme);
 				} else {
@@ -59,10 +69,18 @@ public abstract class BaseActivity extends AppCompatActivity {
 				break;
 			case 4:
 				if (TimeHelper.timeBetweenHours(
-						tinyDB.getInt("darkThemeTimeHour", 18),
-						tinyDB.getInt("lightThemeTimeHour", 6),
-						tinyDB.getInt("darkThemeTimeMinute", 0),
-						tinyDB.getInt("lightThemeTimeMinute", 0))) {
+						Integer.parseInt(
+								AppDatabaseSettings.getSettingsValue(
+										ctx, AppDatabaseSettings.APP_THEME_AUTO_DARK_HOUR_KEY)),
+						Integer.parseInt(
+								AppDatabaseSettings.getSettingsValue(
+										ctx, AppDatabaseSettings.APP_THEME_AUTO_LIGHT_HOUR_KEY)),
+						Integer.parseInt(
+								AppDatabaseSettings.getSettingsValue(
+										ctx, AppDatabaseSettings.APP_THEME_AUTO_DARK_MIN_KEY)),
+						Integer.parseInt(
+								AppDatabaseSettings.getSettingsValue(
+										ctx, AppDatabaseSettings.APP_THEME_AUTO_LIGHT_MIN_KEY)))) {
 
 					setTheme(R.style.AppTheme);
 				} else {
@@ -87,11 +105,14 @@ public abstract class BaseActivity extends AppCompatActivity {
 				break;
 		}
 
-		String locale = tinyDB.getString("locale");
-		if (locale.isEmpty()) {
+		String[] locale =
+				AppDatabaseSettings.getSettingsValue(ctx, AppDatabaseSettings.APP_LOCALE_KEY)
+						.split("\\|");
+
+		if (locale[0].equals("0")) {
 			AppUtil.setAppLocale(getResources(), Locale.getDefault().getLanguage());
 		} else {
-			AppUtil.setAppLocale(getResources(), locale);
+			AppUtil.setAppLocale(getResources(), locale[1]);
 		}
 
 		Notifications.startWorker(ctx);
@@ -100,8 +121,12 @@ public abstract class BaseActivity extends AppCompatActivity {
 	public void onResume() {
 		super.onResume();
 
-		if (tinyDB.getBoolean("biometricStatus", false)
-				&& !tinyDB.getBoolean("biometricLifeCycle")) {
+		if (Boolean.parseBoolean(
+						AppDatabaseSettings.getSettingsValue(
+								ctx, AppDatabaseSettings.APP_BIOMETRIC_KEY))
+				&& !Boolean.parseBoolean(
+						AppDatabaseSettings.getSettingsValue(
+								ctx, AppDatabaseSettings.APP_BIOMETRIC_LIFE_CYCLE_KEY))) {
 
 			Executor executor = ContextCompat.getMainExecutor(this);
 
@@ -126,7 +151,10 @@ public abstract class BaseActivity extends AppCompatActivity {
 								public void onAuthenticationSucceeded(
 										@NonNull BiometricPrompt.AuthenticationResult result) {
 									super.onAuthenticationSucceeded(result);
-									tinyDB.putBoolean("biometricLifeCycle", true);
+									AppDatabaseSettings.updateSettingsValue(
+											getApplicationContext(),
+											"true",
+											AppDatabaseSettings.APP_BIOMETRIC_LIFE_CYCLE_KEY);
 								}
 
 								// Authentication failed, close the app

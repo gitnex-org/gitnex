@@ -16,6 +16,7 @@ import com.google.android.material.tabs.TabLayout;
 import com.google.android.material.tabs.TabLayoutMediator;
 import org.mian.gitnex.R;
 import org.mian.gitnex.activities.MainActivity;
+import org.mian.gitnex.helpers.AppDatabaseSettings;
 import org.mian.gitnex.helpers.AppUtil;
 import org.mian.gitnex.helpers.TinyDB;
 import org.mian.gitnex.helpers.ViewPager2Transformers;
@@ -49,7 +50,10 @@ public class ExploreFragment extends Fragment {
 		viewPager.setAdapter(new ViewPagerAdapter(this));
 
 		ViewPager2Transformers.returnSelectedTransformer(
-				viewPager, tinyDB.getInt("fragmentTabsAnimationId", 0));
+				viewPager,
+				Integer.parseInt(
+						AppDatabaseSettings.getSettingsValue(
+								ctx, AppDatabaseSettings.APP_TABS_ANIMATION_KEY)));
 
 		String[] tabTitles = {
 			getResources().getString(R.string.navRepos),

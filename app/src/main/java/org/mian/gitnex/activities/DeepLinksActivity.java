@@ -23,6 +23,7 @@ import org.mian.gitnex.database.api.BaseApi;
 import org.mian.gitnex.database.api.UserAccountsApi;
 import org.mian.gitnex.database.models.UserAccount;
 import org.mian.gitnex.databinding.ActivityDeeplinksBinding;
+import org.mian.gitnex.helpers.AppDatabaseSettings;
 import org.mian.gitnex.helpers.AppUtil;
 import org.mian.gitnex.helpers.contexts.IssueContext;
 import org.mian.gitnex.helpers.contexts.RepositoryContext;
@@ -675,7 +676,9 @@ public class DeepLinksActivity extends BaseActivity {
 	private void showNoActionButtons() {
 		viewBinding.progressBar.setVisibility(View.GONE);
 
-		switch (tinyDB.getInt("defaultScreenId")) {
+		switch (Integer.parseInt(
+				AppDatabaseSettings.getSettingsValue(
+						ctx, AppDatabaseSettings.APP_LINK_HANDLER_KEY))) {
 			case 1: // repos
 				mainIntent.putExtra("launchFragmentByLinkHandler", "repos");
 				ctx.startActivity(mainIntent);
@@ -708,7 +711,10 @@ public class DeepLinksActivity extends BaseActivity {
 
 				viewBinding.repository.setOnClickListener(
 						repository -> {
-							tinyDB.putInt("defaultScreenId", 1);
+							AppDatabaseSettings.updateSettingsValue(
+									ctx,
+									String.valueOf(1),
+									AppDatabaseSettings.APP_LINK_HANDLER_KEY);
 							mainIntent.putExtra("launchFragmentByLinkHandler", "repos");
 							ctx.startActivity(mainIntent);
 							finish();
@@ -716,7 +722,10 @@ public class DeepLinksActivity extends BaseActivity {
 
 				viewBinding.organization.setOnClickListener(
 						organization -> {
-							tinyDB.putInt("defaultScreenId", 2);
+							AppDatabaseSettings.updateSettingsValue(
+									ctx,
+									String.valueOf(2),
+									AppDatabaseSettings.APP_LINK_HANDLER_KEY);
 							mainIntent.putExtra("launchFragmentByLinkHandler", "org");
 							ctx.startActivity(mainIntent);
 							finish();
@@ -724,7 +733,10 @@ public class DeepLinksActivity extends BaseActivity {
 
 				viewBinding.notification.setOnClickListener(
 						notification -> {
-							tinyDB.putInt("defaultScreenId", 3);
+							AppDatabaseSettings.updateSettingsValue(
+									ctx,
+									String.valueOf(3),
+									AppDatabaseSettings.APP_LINK_HANDLER_KEY);
 							mainIntent.putExtra("launchFragmentByLinkHandler", "notification");
 							ctx.startActivity(mainIntent);
 							finish();
@@ -732,7 +744,10 @@ public class DeepLinksActivity extends BaseActivity {
 
 				viewBinding.explore.setOnClickListener(
 						explore -> {
-							tinyDB.putInt("defaultScreenId", 4);
+							AppDatabaseSettings.updateSettingsValue(
+									ctx,
+									String.valueOf(4),
+									AppDatabaseSettings.APP_LINK_HANDLER_KEY);
 							mainIntent.putExtra("launchFragmentByLinkHandler", "explore");
 							ctx.startActivity(mainIntent);
 							finish();
@@ -740,7 +755,10 @@ public class DeepLinksActivity extends BaseActivity {
 
 				viewBinding.launchApp2.setOnClickListener(
 						launchApp2 -> {
-							tinyDB.putInt("defaultScreenId", 0);
+							AppDatabaseSettings.updateSettingsValue(
+									ctx,
+									String.valueOf(0),
+									AppDatabaseSettings.APP_LINK_HANDLER_KEY);
 							ctx.startActivity(mainIntent);
 							finish();
 						});

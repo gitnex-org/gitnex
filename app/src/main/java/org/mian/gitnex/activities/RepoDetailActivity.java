@@ -50,6 +50,7 @@ import org.mian.gitnex.fragments.PullRequestsFragment;
 import org.mian.gitnex.fragments.ReleasesFragment;
 import org.mian.gitnex.fragments.RepoInfoFragment;
 import org.mian.gitnex.fragments.WikiFragment;
+import org.mian.gitnex.helpers.AppDatabaseSettings;
 import org.mian.gitnex.helpers.AppUtil;
 import org.mian.gitnex.helpers.Toasty;
 import org.mian.gitnex.helpers.ViewPager2Transformers;
@@ -539,7 +540,10 @@ public class RepoDetailActivity extends BaseActivity implements BottomSheetListe
 			viewPager.setAdapter(new ViewPagerAdapter(this));
 
 			ViewPager2Transformers.returnSelectedTransformer(
-					viewPager, tinyDB.getInt("fragmentTabsAnimationId", 0));
+					viewPager,
+					Integer.parseInt(
+							AppDatabaseSettings.getSettingsValue(
+									ctx, AppDatabaseSettings.APP_TABS_ANIMATION_KEY)));
 
 			String[] tabTitles = {
 				ctx.getResources().getString(R.string.tabTextInfo),
@@ -578,7 +582,8 @@ public class RepoDetailActivity extends BaseActivity implements BottomSheetListe
 			}
 		}
 
-		if (tinyDB.getBoolean("enableCounterBadges", true)) {
+		if (Boolean.parseBoolean(
+				AppDatabaseSettings.getSettingsValue(ctx, AppDatabaseSettings.APP_COUNTER_KEY))) {
 			@SuppressLint("InflateParams")
 			View tabHeader2 = LayoutInflater.from(ctx).inflate(R.layout.badge_issue, null);
 			if (textViewBadgeIssue == null) {

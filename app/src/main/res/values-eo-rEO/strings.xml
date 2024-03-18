@@ -1,92 +1,62 @@
+<?xml version="1.0" encoding="utf-8"?>
 <resources>
-
-    <string name="appName" translatable="false">GitNex</string>
-    <string name="appEmail" translatable="false">hello@gitnex.com</string>
-    <string name="appRepo" translatable="false">Source code</string>
-    <string name="appRepoLink" translatable="false">https://codeberg.org/gitnex/GitNex</string>
-    <string name="appWebsiteLink" translatable="false">https://gitnex.com/</string>
-    <string name="commitPage" translatable="false">Your Instance Version</string>
-    <string name="supportLinkPatreon" translatable="false">https://www.patreon.com/mmarif</string>
-    <string name="supportLinkBuyMeaCoffee" translatable="false">https://www.buymeacoffee.com/mmarif</string>
-    <string name="feedbackLink" translatable="false">https://cloud.swatian.com/apps/forms/s/xe7KekTNKgrj58EK6WHQyJDf</string>
-    <string name="appVersionBuild" translatable="false">%s / %d</string>
-    <string name="appDesc" translatable="false">GitNex is a free, open-source Android client for Git repository management tools Forgejo and Gitea. GitNex is Licensed under GPLv3.\n\nThanks to all the contributors and donators for your generous work and donations.</string>
-    <string name="crowdInLink" translatable="false">https://crowdin.com/project/gitnex</string>
-    <string name="crashReportEmailSubject" translatable="false">[GitNex] - Crash Report #%1$d</string>
-    <string name="translateWithCrowdin" translatable="false">Crowdin</string>
-    <string name="translateText" translatable="false">Translate</string>
-    <string name="supportText" translatable="false">Support</string>
-
-    <string name="supportTextPatreon" translatable="false">Patreon</string>
-    <string name="supportTextBuyMeaCoffee" translatable="false">BMC</string>
-    <string name="feedbackText" translatable="false">Feedback</string>
-
     <!-- menu items -->
-    <string name="navMyRepos">My Repositories</string>
-    <string name="navStarredRepos">Starred Repositories</string>
-    <string name="navRepos">Repositories</string>
-    <string name="navProfile">Profile</string>
-    <string name="navSettings">Settings</string>
-    <string name="navOrg">Organizations</string>
-    <string name="navAbout">About</string>
-    <string name="navRate">Rate GitNex</string>
-    <string name="navLogout">Logout</string>
-    <string name="navAdministration">Instance Administration</string>
-    <string name="navMyIssues">My Issues</string>
-    <string name="navMostVisited">Most Visited Repos</string>
-    <string name="navNotes">Notes</string>
-    <string name="navAccount">Account Settings</string>
-    <string name="navWatchedRepositories">Watched Repositories</string>
+    <string name="navMyRepos">Miaj Deponejoj</string>
+    <string name="navStarredRepos">Steligitaj Deponejoj</string>
+    <string name="navRepos">Deponejoj</string>
+    <string name="navProfile">Profilo</string>
+    <string name="navSettings">Agordoj</string>
+    <string name="navOrg">Organizoj</string>
+    <string name="navAbout">Pri</string>
+    <string name="navRate">Rangi GitNex</string>
+    <string name="navLogout">Elsaluti</string>
+    <string name="navAdministration">Administrado de Instanco</string>
+    <string name="navMyIssues">Miaj Problemoj</string>
+    <string name="navMostVisited">Plej Vizititaj Deponejoj</string>
+    <string name="navNotes">Notoj</string>
+    <string name="navAccount">Agordoj de Konto</string>
+    <string name="navWatchedRepositories">Rigarditajn Deponejojn</string>
     <!-- menu items -->
-
     <!-- page titles -->
-    <string name="pageTitleNewRepo">New Repository</string>
-    <string name="pageTitleIssues">Issues</string>
-    <string name="pageTitleCreateOrganization">New Organization</string>
-    <string name="pageTitleCreateMilestone">New Milestone</string>
-    <string name="pageTitleCreateNewIssue">New Issue</string>
-    <string name="pageTitleCreateLabel">New Label</string>
-    <string name="pageTitleCredits">Credits</string>
-    <string name="pageTitleChooseBranch">Select Branch</string>
-    <string name="pageTitleLabelUpdate">Update Label</string>
-    <string name="pageTitleStarredRepos">Starred Repositories</string>
-    <string name="pageTitleCreateTeam">New Team</string>
-    <string name="pageTitleAddEmail">Add Email Address</string>
-    <string name="pageTitleNewFile">New File</string>
-    <string name="pageTitleExplore">Explore</string>
-    <string name="pageTitleAdministration">Administration</string>
-    <string name="pageTitleNewPullRequest">New Pull Request</string>
-    <string name="pageTitleUsers">Users</string>
-    <string name="pageTitleAddRepository">Add Repository</string>
+    <string name="pageTitleNewRepo">Nova Deponejo</string>
+    <string name="pageTitleIssues">Problemoj</string>
+    <string name="pageTitleCreateOrganization">Nova Organizo</string>
+    <string name="pageTitleCreateMilestone">Nova Mejloŝtono</string>
+    <string name="pageTitleCreateNewIssue">Nova Problemo</string>
+    <string name="pageTitleCreateLabel">Nova Etikedo</string>
+    <string name="pageTitleCredits">Agnoskoj</string>
+    <string name="pageTitleChooseBranch">Elekti Branĉon</string>
+    <string name="pageTitleLabelUpdate">Ĝisdatigi Etikedon</string>
+    <string name="pageTitleStarredRepos">Steligitaj Deponejoj</string>
+    <string name="pageTitleCreateTeam">Nova Teamo</string>
+    <string name="pageTitleAddEmail">Aldoni Retpoŝtadreson</string>
+    <string name="pageTitleNewFile">Nova Dosiero</string>
+    <string name="pageTitleExplore">Esplori</string>
+    <string name="pageTitleAdministration">Administrado</string>
+    <string name="pageTitleNewPullRequest">Nova Tiro-Peto</string>
+    <string name="pageTitleUsers">Uzantoj</string>
+    <string name="pageTitleAddRepository">Aldoni Deponejon</string>
     <!-- page titles -->
-
-    <string name="repoName">Demo repo</string>
-    <string name="repoDescription">Demo description</string>
-
-    <string name="orgName">Demo organization</string>
-
-    <string name="newCreateButtonCopy">Create</string>
-    <string name="newUpdateButtonCopy">Update</string>
-
-    <string name="newRepoTintCopy">Repository Name</string>
-    <string name="newRepoDescTintCopy">Repository Description</string>
-    <string name="newRepoPrivateCopy">Private</string>
-    <string name="newRepoOwner">Owner</string>
+    <string name="repoName">Demonstra deponejo</string>
+    <string name="repoDescription">Demonstra priskribo</string>
+    <string name="orgName">Demonstra organizo</string>
+    <string name="newCreateButtonCopy">Krei</string>
+    <string name="newUpdateButtonCopy">Ĝisdatigi</string>
+    <string name="newRepoTintCopy">Nomo de la Deponejo</string>
+    <string name="newRepoDescTintCopy">Priskribo de la Deponejo</string>
+    <string name="newRepoPrivateCopy">Privata</string>
+    <string name="newRepoOwner">Proprulo</string>
     <string name="newRepoIssueLabels">Issue Labels</string>
-    <string name="advanced" translatable="false">Advanced</string>
-    <string name="defaultText" translatable="false">Default</string>
     <string name="setAsTemplate">Make repository a template</string>
-
-    <string name="newOrgTintCopy">Organization Name</string>
-    <string name="newOrgDescTintCopy">Organization Description</string>
+    <string name="newOrgTintCopy">Nomo de la Organizo</string>
+    <string name="newOrgDescTintCopy">Priskribo de la Organizo</string>
     <string name="organizationFullname">%1$s - %2$s</string>
-
-    <string name="userName">Username</string>
-    <string name="passWord">Password</string>
-    <string name="btnLogin">LOGIN</string>
-    <string name="instanceUrl">Instance URL</string>
-    <string name="navigationDrawerOpen">Open Navigation Drawer</string>
-    <string name="navigationDrawerClose">Close Navigation Drawer</string>
+    <string name="userName">Uzantnomo</string>
+    <string name="passWord">Pasvorto</string>
+    <string name="btnLogin">ENSALUTI</string>
+    <string name="instanceUrl">URL de la Instanco</string>
+    <string name="navigationDrawerOpen">Malfermi Navigan Tirkeston</string>
+    <string name="navigationDrawerClose">Fermi Navigan Tirkeston</string>
     <string name="protocol">Protocol</string>
     <string name="urlInfoTooltip">1- Choose the correct protocol(https or http). \n2- Enter instance url e.g: try.gitea.io. \n3- If you have enabled 2FA for your account, enter the code in the OTP Code field. \n4- For HTTP basic auth use USERNAME@DOMAIN.COM in the URL field.</string>
     <string name="malformedUrl">Couldn\'t connect to host. Please check your URL or port for any errors</string>
@@ -97,9 +67,7 @@
     <string name="emptyFieldPassword">Password is required</string>
     <string name="protocolEmptyError">Protocol is required</string>
     <string name="instanceHelperText">Enter URL without http or https. Example: codeberg.org</string>
-
     <string name="checkNetConnection">Cannot access network, please check your Internet connection</string>
-
     <string name="repoNameErrorEmpty">Repository name is empty</string>
     <string name="repoNameErrorInvalid">Repository name is not valid. [a&#8211;z A&#8211;Z 0&#8211;9 &#8211; _]</string>
     <string name="repoNameErrorReservedName">Repository name is reserved</string>
@@ -109,27 +77,20 @@
     <string name="repoExistsError">Repository of this name already exists under selected Owner</string>
     <string name="repoOwnerError">Select owner for the repository</string>
     <string name="repoDefaultBranchError">The default branch must not be empty</string>
-
     <string name="orgNameErrorEmpty">Organization name is empty</string>
     <string name="orgNameErrorInvalid">Organization name is not valid, [a&#8211;z A&#8211;Z 0&#8211;9 &#8211; _]</string>
     <string name="orgDescError">Organization description exceeds the max 255 characters limit</string>
     <string name="orgCreated">Organization created successfully</string>
     <string name="orgExistsError">Organization already exists</string>
-
     <string name="diffStatistics">%1$s addition(s) and %2$s deletion(s)</string>
-
     <string name="processingText">Processing</string>
     <string name="search">Search</string>
-
     <string name="close">Close</string>
     <string name="addNewContent">Add</string>
     <string name="orgContentAvatar">Org</string>
     <string name="repoContentAvatar">Repo</string>
     <string name="privateAvatar">Pri</string>
-    <string name="repoStars" translatable="false">12345</string>
-    <string name="repoWatchers" translatable="false">98324</string>
     <string name="removeContent">Remove</string>
-
     <string name="genericApiError">Instance has returned an error. Code %d</string>
     <string name="tabTextInfo">Details</string>
     <string name="tabTextFiles">Files</string>
@@ -139,7 +100,6 @@
     <string name="tabTextCollaborators">Collaborators</string>
     <string name="tabPullRequests">Pull Requests</string>
     <string name="pullRequest">Pull Request</string>
-
     <string name="infoTabRepoSize">Size</string>
     <string name="infoTabRepoDefaultBranch">Default Branch</string>
     <string name="infoTabRepoSshUrl">SSH URL</string>
@@ -148,37 +108,24 @@
     <string name="infoTabRepoForksCount">Forks</string>
     <string name="infoTabRepoCreatedAt">Created</string>
     <string name="infoTabRepoUpdatedAt">Last Updated</string>
-    <string name="infoTabRepoZero" translatable="false">0</string>
-
-    <string name="infoMoreInformation">More Information</string>
-
-    <string name="timeAtText">at</string>
-    <string name="hash" translatable="false">#</string>
-    <string name="issueMilestone">Milestone %1$s</string>
-    <string name="dueDate">Due on %1$s</string>
-    <string name="assignedTo">Assigned to: %1$s</string>
-    <string name="assignedToMe">Assigned to Me</string>
-    <string name="commentButtonText">Comment</string>
-    <string name="commentEmptyError">Please write your comment</string>
-    <string name="commentSuccess">Comment posted</string>
-
-    <string name="featureDeprecated">This function will be removed in the future</string>
-    <string name="screamingInFearEmoticon" translatable="false">😱</string>
-
-    <string name="generalImgContentText">Image</string>
-
-    <string name="commitAuthor">Commit author: %1$s</string>
-
-    <string name="releaseDownloadText">Downloads</string>
-    <string name="releaseTypePre" translatable="false">Pre-Release</string>
-    <string name="releaseTypeStable" translatable="false">Stable</string>
-    <string name="releasePublishedBy">Published by @%1$s</string>
-    <string name="noReleaseBodyContent">Release notes are not provided by the publisher.</string>
-
-    <string name="newMilestoneTitle">Title</string>
-    <string name="newMilestoneDescription">Description</string>
-    <string name="newMilestoneDueDate">Due Date</string>
-    <string name="setDueDate" translatable="false">%1$d-%2$d-%3$d</string>
+    <string name="infoMoreInformation">Pliaj Informoj</string>
+    <string name="timeAtText">ĉe</string>
+    <string name="issueMilestone">Mejloŝtono %1$s</string>
+    <string name="dueDate">Pagenda %1$s</string>
+    <string name="assignedTo">Asignita al: %1$s</string>
+    <string name="assignedToMe">Asignita al Mi</string>
+    <string name="commentButtonText">Komento</string>
+    <string name="commentEmptyError">Bonvolu skribi vian komenton</string>
+    <string name="commentSuccess">Komento afiŝita</string>
+    <string name="featureDeprecated">Ĉi tiu funkcio estos forigita estonte</string>
+    <string name="generalImgContentText">Bildo</string>
+    <string name="commitAuthor">Aŭtoro de la Enmeto: %1$s</string>
+    <string name="releaseDownloadText">Elŝutaĵoj</string>
+    <string name="releasePublishedBy">Eldonita de @%1$s</string>
+    <string name="noReleaseBodyContent">Eldonaj notoj ne estas provizitaj de la eldonisto.</string>
+    <string name="newMilestoneTitle">Titolo</string>
+    <string name="newMilestoneDescription">Priskribo</string>
+    <string name="newMilestoneDueDate">Limdato</string>
     <string name="milestoneNameErrorEmpty">Milestone title is empty</string>
     <string name="milestoneDescError">Milestone description exceeds the max 255 characters limit</string>
     <string name="milestoneCreated">Milestone created successfully</string>
@@ -188,7 +135,6 @@
     <string name="milestoneIssueStatusOpen">%1$d Open</string>
     <string name="milestoneIssueStatusClosed">%1$d Closed</string>
     <string name="selectMilestone">Select Milestone</string>
-
     <string name="newIssueSelectAssigneesListTitle">Select Assignees</string>
     <string name="newIssueSelectLabelsListTitle">Select Labels</string>
     <string name="newIssueTitle">Title</string>
@@ -202,7 +148,6 @@
     <string name="issueCreated">New issue created successfully</string>
     <string name="issueCreatedNoMilestone">No milestone</string>
     <string name="noAssigneesFound">No assignees found</string>
-
     <!-- settings -->
     <string name="settingsLanguageHeaderText">Translation</string>
     <string name="settingsLanguageSystem">System</string>
@@ -217,10 +162,8 @@
     <string name="settingsLanguageSelectorDialogTitle">Choose Language</string>
     <string name="settingsLightThemeTimeSelectorHeader">Light Theme Switch Time</string>
     <string name="settingsDarkThemeTimeSelectorHeader">Dark Theme Switch Time</string>
-    <string name="settingsThemeTimeSelectedHint" translatable="false">%s:%s</string>
     <string name="settingsTimeSelectorDialogTitle">Choose Time Format</string>
     <string name="settingsHelpTranslateText">Translate GitNex via Crowdin</string>
-    <string name="codeBlockSelectedText" translatable="false">Green - Black</string>
     <string name="codeBlockHeaderText">Code Block Color</string>
     <string name="settingsCodeBlockSelectorDialogTitle">Code Block Color Selector</string>
     <string name="settingsHomeScreenHeaderText">Home Screen</string>
@@ -228,19 +171,15 @@
     <string name="settingsHomeScreenSelectorDialogTitle">Select Home Screen</string>
     <string name="settingsCustomFontHeaderText">Font</string>
     <string name="settingsCustomFontSelectorDialogTitle">Choose Font</string>
-    <string name="settingsCustomFontDefault" translatable="false">Manrope</string>
     <string name="themeSelectorDialogTitle">Select App Theme</string>
     <string name="themeSelectionHeaderText">Theme</string>
-    <string name="themeSelectionSelectedText" translatable="false">Dark</string>
     <string name="settingsCounterBadges">Counter Badges</string>
     <string name="settingsFileViewerSourceCodeHeaderText">Source Code Theme</string>
-    <string name="settingsFileViewerSourceCodeSelectedText" translatable="false">Sublime</string>
     <string name="cacheSizeDataDialogHeader">Data Cache Size</string>
     <string name="cacheSizeDataSelectionHeaderText">Data Cache Size</string>
     <string name="cacheSizeImagesDialogHeader">Images Cache Size</string>
     <string name="cacheSizeImagesSelectionHeaderText">Images Cache Size</string>
     <string name="clearCacheSelectionHeaderText">Clear Cache</string>
-    <string name="clearCacheSelectionSelectedText" translatable="false">0 B</string>
     <string name="clearCacheDialogHeader">Clear Cache?</string>
     <string name="clearCacheDialogMessage">This will delete all the cache data including files and images.\n\nProceed with deletion?</string>
     <string name="draftsHeader">Drafts</string>
@@ -263,9 +202,7 @@
     <string name="fadeOut">Fade Out</string>
     <string name="zoomOut">Zoom Out</string>
     <!-- settings -->
-
     <string name="noMoreData">No more data available</string>
-
     <string name="createLabel">New Label</string>
     <string name="menuTitleText">Repo Menu</string>
     <string name="labelName">Label Name</string>
@@ -274,16 +211,12 @@
     <string name="labelNameError">Label name is not valid</string>
     <string name="labelCreated">Label created</string>
     <string name="labelUpdated">Label updated</string>
-
     <string name="labelMenuContentDesc">Desc</string>
     <string name="labelDeleteText">Label deleted</string>
-
     <string name="selectBranchError">Select a branch for release</string>
-
     <string name="alertDialogTokenRevokedTitle">Authorization Error</string>
     <string name="alertDialogTokenRevokedMessage">It seems that the Access Token is revoked OR your are not allowed to see these contents.\n\nIn case of revoked Token, please logout and login again</string>
     <string name="labelDeleteMessage">Do you really want to delete this label?</string>
-
     <!-- org tabbed layout str -->
     <string name="orgTabTeams">Teams</string>
     <string name="orgTabMembers">Members</string>
@@ -310,7 +243,6 @@
     <string name="repoRemoveTeamMessage">Remove repository %1$s from team %2$s</string>
     <string name="addRemoveMember">Add / Remove Member</string>
     <!-- org tabbed layout str -->
-
     <!-- create team -->
     <string name="newTeamTitle">Team Name</string>
     <string name="newTeamDesc">Description</string>
@@ -319,8 +251,6 @@
     <string name="newTeamPermissionRead">Members can view and clone team repositories</string>
     <string name="newTeamPermissionWrite">Members can read and push to team repositories</string>
     <string name="newTeamPermissionAdmin">Members can pull and push to team repositories and add collaborators to them</string>
-    <string name="newTeamPermissionValues" translatable="false">%1$s%2$s,\u0020</string>
-    <string name="newTeamPermissionValuesFinal" translatable="false">%1$s%2$s,\u0020</string>
     <string name="teamNameEmpty">Please enter team name</string>
     <string name="teamNameError">Team name should contain only alphanumeric, dash (-), underscore (_) and dot (.) characters</string>
     <string name="teamPermissionEmpty">Please select permission</string>
@@ -328,7 +258,6 @@
     <string name="teamDescLimit">Team description have more than 100 characters</string>
     <string name="teamCreated">Team created successfully</string>
     <!-- create team -->
-
     <!-- issue comments -->
     <string name="editCommentTitle">Edit Comment</string>
     <string name="editCommentUpdatedText">Comment updated</string>
@@ -336,7 +265,6 @@
     <string name="deleteCommentSuccess">Comment deleted successfully</string>
     <string name="copyCommentText">Copy Comment</string>
     <!-- issue comments -->
-
     <!-- add collaborator -->
     <string name="addCollaboratorSearchHint">Search users</string>
     <string name="addCollaboratorViewUserDesc">Username</string>
@@ -345,13 +273,10 @@
     <string name="removeCollaboratorToastText">User removed from the repository.</string>
     <string name="addCollaboratorToastText">User added to the repository.</string>
     <!-- add collaborator -->
-
     <!-- profile section -->
     <string name="profileTabFollowers">Followers</string>
     <string name="profileTabFollowing">Following</string>
-    <string name="usernameWithAt" translatable="false">\u0040%1$s</string>
     <!-- profile section -->
-
     <!-- account settings -->
     <string name="accountEmails">Emails</string>
     <string name="accountEmailTitle">Email Address</string>
@@ -362,7 +287,6 @@
     <string name="emailTypeText">Primary</string>
     <string name="sshKeys">SSH Keys</string>
     <!-- account settings -->
-
     <!-- single issue section -->
     <string name="singleIssueEditLabels">Add / Remove Labels</string>
     <string name="labelsUpdated">Labels updated</string>
@@ -376,9 +300,7 @@
     <string name="singleIssueSubscribe">Subscribe</string>
     <string name="singleIssueUnSubscribe">Unsubscribe</string>
     <!-- single issue section -->
-
     <string name="repoMetaData">Repository Meta</string>
-
     <!-- admin -->
     <string name="adminCreateNewUser">New User</string>
     <string name="adminUsers">System Users</string>
@@ -390,7 +312,6 @@
     <string name="adminCronExecutionHeader">Executions</string>
     <string name="adminCronTaskSuccessMsg">Task %1$s is initiated successfully</string>
     <!-- admin -->
-
     <!-- create user -->
     <string name="userFullNameText">Full Name</string>
     <string name="userEmail">Email</string>
@@ -402,12 +323,10 @@
     <string name="userCreatedText">New user added successfully</string>
     <string name="userExistsError">User already exists</string>
     <!-- create user -->
-
     <!-- edit issue -->
     <string name="editIssueNavHeader">Edit Issue #%1$s</string>
     <string name="editIssueSuccessMessage">Issue updated</string>
     <!-- edit issue -->
-
     <!-- release -->
     <string name="createRelease">New Release</string>
     <string name="releaseTagNameText">Tag Name</string>
@@ -422,13 +341,10 @@
     <string name="deleteReleaseConfirmation">Do you really want to delete this release?</string>
     <string name="releaseDeleted">Release deleted</string>
     <!-- release -->
-
     <string name="loginOTPTypeError">OTP code should be numbers</string>
     <string name="loginOTP">OTP Code (Optional)</string>
     <string name="otpMessage">Enter otp code if 2FA is enabled</string>
-
     <string name="openWebRepo">Open in Browser</string>
-
     <string name="repoStargazersInMenu">Stargazers</string>
     <string name="repoWatchersInMenu">Watchers</string>
     <string name="noDataWebsite">No website found</string>
@@ -436,10 +352,8 @@
     <string name="noDataLocation">No location found</string>
     <string name="starMember">Star</string>
     <string name="watcherMember">Watcher</string>
-
     <string name="zipArchiveDownloadReleasesTab">Source code (ZIP)</string>
     <string name="tarArchiveDownloadReleasesTab">Source code (TAR.GZ)</string>
-
     <!-- new file -->
     <string name="newFileNameTintCopy">File Name</string>
     <string name="newFileBranchTintCopy">New Branch Name</string>
@@ -454,24 +368,18 @@
     <string name="newFileRequiredFields">Fields like filename, content and commit message are required</string>
     <string name="newFileEmptyBranchMessage">Leave blank to push to the default branch</string>
     <string name="newFileRequiredFieldNewBranchName">New branch name cannot be empty if current branch is not selected</string>
-
     <string name="strFilter">Filter</string>
     <string name="strSwitchBranches">Branches</string>
     <string name="strMarkdown">Markdown</string>
-
     <string name="copyIssueUrl">Copy Issue URL</string>
     <string name="copyIssueUrlToastMsg">URL copied to clipboard</string>
     <string name="copyIssueCommentToastMsg">Comment copied to clipboard</string>
     <string name="copyShaToastMsg">SHA copied to clipboard</string>
-
     <string name="milestoneCompletion">%1$d\uFF05 completed</string>
-
     <!-- files -->
     <string name="filesGenericError">Sorry this file cannot be viewed as API returned an error</string>
-    <string name="colonDivider" translatable="false">\u0020:\u0020</string>
     <string name="fileTypeCannotBeEdited">Files of this type cannot be edited</string>
     <string name="notSupported">Not supported</string>
-
     <!-- generic copy -->
     <string name="okButton">OK</string>
     <string name="doneButton">Done</string>
@@ -487,19 +395,14 @@
     <string name="menuDeleteText">Delete</string>
     <string name="menuCopyText">Copy</string>
     <string name="menuQuoteText">Quote Reply</string>
-    <string name="colorfulBulletSpan" translatable="false">\u0020\u0020\u0020\u25CF\u0020\u0020\u0020</string>
     <string name="modifiedText">edited</string>
     <string name="saveButton">Save</string>
-    <string name="defaultFilename" translatable="false">README.md</string>
-    <string name="defaultFilenameText" translatable="false">README</string>
     <string name="websiteText">Website</string>
     <string name="locationText">Location</string>
     <string name="characters255Limit">Max 255 characters</string>
     <string name="emptyFields">All fields are required</string>
     <string name="textContinue">Continue</string>
     <string name="copyToken">Token</string>
-    <string name="strPrivate" translatable="false">private</string>
-    <string name="strPublic" translatable="false">public</string>
     <string name="viewInBrowser">View in Browser</string>
     <string name="isOpen">Open</string>
     <string name="isClosed">Closed</string>
@@ -530,7 +433,6 @@
     <string name="main">main</string>
     <string name="license">License</string>
     <!-- generic copy -->
-
     <string name="exploreUsers">Explore users</string>
     <string name="exploreIssues">Explore issues</string>
     <string name="exploreTextBoxHint">Explore repositories</string>
@@ -539,17 +441,13 @@
     <string name="watchRepositorySuccess">Repository added to watch list</string>
     <string name="unWatchRepositorySuccess">Repository removed from watch list</string>
     <string name="titleDrafts">Drafts</string>
-    <string name="filesBreadcrumbRoot" translatable="false">Root</string>
-
     <string name="versionUnsupportedOld">Unsupported old version(%1$s) of Gitea detected. Please update to latest stable version. If you continue, some features may not work.</string>
     <string name="versionUnsupportedNew">New Gitea version detected! Please UPDATE GitNex!</string>
     <string name="versionUnknown">No Gitea detected!</string>
     <string name="versionAlertDialogHeader">Unsupported Version of Gitea</string>
-
     <string name="loginViaPassword">Basic Auth</string>
     <string name="unauthorizedApiError">Instance has returned an error - Unauthorized. Check your credentials and try again</string>
     <string name="loginTokenError">Token is required</string>
-
     <string name="prDeletedFork">Deleted Fork</string>
     <string name="editPrNavHeader">Edit Pull Request #%1$s</string>
     <string name="editPrSuccessMessage">Pull Request updated</string>
@@ -577,7 +475,6 @@
     <string name="selectMergeStrategy">Select merge strategy</string>
     <string name="mergeNotAllowed">Not allowed to merge [Reason: Does not have enough approvals]</string>
     <string name="deleteBranch">Delete Branch</string>
-
     <string name="waitLoadingDownloadFile">Please wait for the file to load to memory</string>
     <string name="downloadFileSaved">File saved successfully</string>
     <string name="excludeFilesInFileViewer">This file type/size is not supported in file viewer. You can download it from the menu.</string>
@@ -586,7 +483,6 @@
     <string name="deleteFileMessage">File is set for deletion by branch %1$s</string>
     <string name="editFileText">Edit %1$s</string>
     <string name="editFileMessage">File is modified by branch %1$s</string>
-
     <string name="sizeCopy">Size</string>
     <string name="shareIssue">Share Issue</string>
     <string name="shareRepository">Share Repository</string>
@@ -595,8 +491,6 @@
     <string name="commitAuthoredByAndCommittedByWhen"><![CDATA[<b>%1$s</b> authored and <b>%2$s</b> committed %3$s]]></string>
     <string name="commitCommittedByWhen"><![CDATA[<b>%1$s</b> committed %2$s]]></string>
     <string name="viewCommits">View Commits</string>
-    <string name="changelogTitle" translatable="false">Changelog</string>
-
     <!-- Memorizing Trust Manager -->
     <string name="mtmNotification">Certificate Verification</string>
     <string name="mtmAcceptCert">Accept Unknown Certificate?</string>
@@ -608,38 +502,31 @@
     <string name="mtmCertDetails">Certificate details:</string>
     <string name="mtmDecisionAlways">Trust</string>
     <string name="mtmDecisionAbort">Abort</string>
-
     <string name="subscribedSuccessfully">Subscribed successfully</string>
     <string name="alreadySubscribed">You have already subscribed</string>
     <string name="subscriptionError">Subscription failed</string>
     <string name="unsubscribedSuccessfully">Unsubscribed successfully</string>
     <string name="alreadyUnsubscribed">You have already Unsubscribed</string>
     <string name="unSubscriptionError">Un-Subscription failed</string>
-
     <string name="closeMilestone">Close Milestone</string>
     <string name="openMilestone">Open Milestone</string>
     <string name="milestoneStatusUpdate">Milestone status updated successfully</string>
-
     <string name="reportViewerHeader">Crash Reports</string>
     <string name="settingsEnableReportsText">Enable Crash Reports</string>
     <string name="crashTitle">GitNex has stopped :(</string>
     <string name="setCrashReports">Crash reports</string>
     <string name="crashMessage">It is encouraged to open an issue at the project repository with how to reproduce this bug. It is easier to debug and fix the problem that way.\n\nTap the OK button to send the crash report by email instead. Additional content could be added in the email.\nThank you!</string>
-
     <string name="forceLogoutDialogHeader">Please sign in again</string>
     <string name="forceLogoutDialogDescription">Due to some major changes regarding the internal functioning of the app, we require you to login again. These changes allow us to make the app more flexible in the future.\n\nThank you for your patience and sorry for the inconvenience.</string>
-
     <string name="deleteAllDrafts">Delete All Drafts</string>
     <string name="draftsListEmpty">No drafts found</string>
     <string name="draftsDeleteSuccess">Drafts deleted successfully</string>
     <string name="draftsSingleDeleteSuccess">Draft deleted successfully</string>
     <string name="deleteAllDraftsDialogMessage">This will delete all the drafts for this account. \n\nProceed with deletion?</string>
     <string name="draftSaved">Draft was saved automatically.</string>
-
     <string name="resetMostReposCounter">Counter is reset successfully</string>
     <string name="resetCounterDialogMessage">Do you want to reset counter for repository %s?</string>
     <string name="resetCounterAllDialogMessage">This will reset all the counters for this account repositories.</string>
-
     <string name="appearanceHintText">Themes, fonts, badges, translation</string>
     <string name="securityHintText">Biometric authentication, SSL certificates, cache</string>
     <string name="languagesHintText">Languages</string>
@@ -647,10 +534,8 @@
     <string name="rateAppHintText">If you like GitNex you can give it a thumbs up</string>
     <string name="aboutAppHintText">App version, build, user instance version</string>
     <string name="codeEditorHintText">Syntax color, indentation</string>
-
     <string name="archivedRepository">Archived</string>
     <string name="archivedRepositoryMessage">This repo is archived. You can view files, but cannot push or open issues/pull-requests.</string>
-
     <string name="accountDeletedMessage">Account deleted successfully</string>
     <string name="removeAccountPopupTitle">Remove Account</string>
     <string name="removeAccountPopupMessage">Are you sure you want to remove this account from the app?\n\nThis will remove all the data related to this account on the app only.</string>
@@ -659,7 +544,6 @@
     <string name="accountAlreadyExistsError">Account already exists in the app</string>
     <string name="accountAddedMessage">Account added successfully</string>
     <string name="switchAccountSuccess">Switched to account : %1$s@%2$s</string>
-
     <!-- Notifications -->
     <string name="pageTitleNotifications">Notifications</string>
     <string name="noDataNotifications">All caught up 🚀</string>
@@ -683,16 +567,13 @@
     <string name="youHaveGotNewNotifications">You\'ve got %d new notifications.</string>
     <string name="mainNotificationChannelName">Notifications</string>
     <string name="mainNotificationChannelDescription">This is the main notification channel of GitNex.</string>
-    <string name="notificationExtraInfo" translatable="false">- %s (%s)</string>
     <plurals name="youHaveNewNotifications">
         <item quantity="one">You have %s new notification</item>
         <item quantity="other">You have %s new notifications</item>
     </plurals>
     <string name="openAppSettings">To receive notifications, you must enable notifications for GitNex. Tap Open to access your phone settings and enable notifications.</string>
-
     <string name="isRead">Read</string>
     <string name="isUnread">Unread</string>
-
     <string name="repoSettingsTitle">Repository Settings</string>
     <string name="repoSettingsEditProperties">Edit Properties</string>
     <string name="repoSettingsDelete">Delete Repository</string>
@@ -720,14 +601,12 @@
     <string name="repoTransferSuccess">Repository transferred successfully</string>
     <string name="repoTransferOwnerError">New owner is required</string>
     <string name="repoTransferError">There is a problem with the owner name. Make sure that the new owner exists</string>
-
     <string name="exploreFilterDialogTitle">Filter Repositories</string>
     <string name="exploreFilterIncludeTopic">Search ONLY in Topic</string>
     <string name="exploreFilterIncludeDesc">Search in Description</string>
     <string name="exploreFilterIncludeArchive">Only Archived Repositories</string>
     <string name="exploreFilterIncludePrivate">Only Private Repositories</string>
     <string name="exploreFilterIncludeTemplateRepos">Search in Template Repositories</string>
-
     <string name="mergeIntoBranch">Merge Into</string>
     <string name="pullFromBranch">Pull From</string>
     <string name="sameBranchesError">These branches are equal. There is no need to create a pull request</string>
@@ -739,19 +618,15 @@
     <string name="prClosed">Pull Request closed</string>
     <string name="prReopened">Pull Request reopened</string>
     <string name="prMergeInfo">Pull Request Info</string>
-
     <string name="accountDoesNotExist">It seems that the account for URI %1$s does not exist in the app. You can add one by tapping on the Add New Account button.</string>
     <string name="launchApp">Go to App</string>
     <string name="noActionText">GitNex cannot handle the requested resource. You can open an issue at the project repository as an improvement, providing details of the work. Just launch a default screen for now from the buttons below; it can be changed from settings.</string>
-
     <string name="biometricAuthTitle">Biometric Authentication</string>
     <string name="biometricAuthSubTitle">Unlock using your biometric credentials</string>
     <string name="biometricNotSupported">No biometric features available on this device</string>
     <string name="biometricNotAvailable">Biometric features are currently unavailable</string>
     <string name="enrollBiometric">Enroll biometric from phone settings</string>
-
     <string name="copyLoginIdToClipBoard">Login ID \'%s\' copied to clipboard</string>
-
     <!-- file viewer activity -->
     <string name="fileViewerNotificationTitleStarted">Download in progress</string>
     <string name="fileViewerNotificationDescriptionStarted">Downloading %s</string>
@@ -759,10 +634,8 @@
     <string name="fileViewerNotificationDescriptionFinished">Downloaded %s</string>
     <string name="fileViewerNotificationTitleFailed">Download failed</string>
     <string name="fileViewerNotificationDescriptionFailed">Couldn\'t download %s</string>
-
     <string name="fileViewerNotificationChannelName">Download manager</string>
     <string name="fileViewerNotificationChannelDescription">Indicates the progress of ongoing downloads</string>
-
     <string name="lastUpdatedAt">Updated %s</string>
     <string name="joined">Joined</string>
     <string name="userFollow">Follow</string>
@@ -776,7 +649,6 @@
     <string name="updateStrategyMerge">Merge</string>
     <string name="updateStrategyRebase">Rebase</string>
     <string name="selectUpdateStrategy">Select Update Strategy</string>
-
     <string name="userAvatar">Avatar</string>
     <string name="tags">Tags</string>
     <string name="releasesTags">Releases/Tags</string>
@@ -784,7 +656,6 @@
     <string name="tagCreated">Tag created</string>
     <string name="asRef">Use as reference</string>
     <string name="deleteTagConfirmation">Do you really want to delete this tag?</string>
-
     <string name="tagDeleted">Tag deleted</string>
     <string name="tagDeleteError">A tag attached to a release cannot be deleted directly</string>
     <string name="useCustomTabs">Use Custom Tabs</string>
@@ -801,7 +672,6 @@
     <string name="unadoptedRepos">Unadopted Repositories</string>
     <string name="unadoptedReposMessage">- Adopt will add repository %1$s to organization/user %2$s.\n- Delete will remove it from the system.</string>
     <string name="commits">Commits</string>
-
     <!-- wiki -->
     <string name="wiki">Wiki</string>
     <string name="wikiAuthor"><![CDATA[<b>%1$s</b> updated %2$s]]></string>
@@ -811,12 +681,8 @@
     <string name="createWikiPage">Create Wiki Page</string>
     <string name="wikiUpdated">Wiki page updated successfully</string>
     <string name="wikiCreated">Wiki page created successfully</string>
-
     <!-- code editor -->
-    <string name="sourcePosition" translatable="false">%1$d:%2$d</string>
-    <string name="codeEditor" translatable="false">Code Editor</string>
     <string name="openInCodeEditor">Open in Code Editor</string>
-
     <!-- notes -->
     <string name="newNote">New Note</string>
     <string name="editNote">Edit Note</string>
@@ -829,7 +695,6 @@
         <item quantity="other">Notes deleted successfully</item>
     </plurals>
     <string name="notesAllDeletionMessage">This will delete all of your notes. This action cannot be undone.</string>
-
     <!-- timeline -->
     <string name="commitsText">commit</string>
     <string name="commitText">commit</string>
@@ -874,16 +739,10 @@
     <string name="timelineRefPr">%1$s referenced this pull request in #%2$d %3$s</string>
     <string name="timelineStatusRefIssue"><![CDATA[%1$s referenced this issue from a <font color=\'%2$d\'>%3$s</font> %4$s]]></string>
     <string name="timelineReviewLeftComment">%1$s left a comment: %2$s %3$s</string>
-    <string name="timelinePinned">%1$s pinned this %2$s</string>
-
     <string name="commitStatuses">Statuses</string>
     <string name="statusNoUrl">This status has no linked target URL.</string>
-
     <string name="starredRepos">Starred Repos</string>
-
     <string name="lang_statistics">Language Statistics</string>
-    <string name="lang_percentage" translatable="false">%s%%</string>
-
     <string name="dashboard">Dashboard</string>
     <string name="createdRepository">created repository</string>
     <string name="renamedRepository">renamed repository from %1$s to</string>
@@ -910,7 +769,6 @@
     <string name="syncedCommits">synced commits to %1$s at</string>
     <string name="syncedRefs">synced new reference %1$s to</string>
     <string name="syncedDeletedRefs">synced and deleted reference %1$s at</string>
-
     <string name="attachment">Attachment</string>
     <string name="attachments">Attachments</string>
     <string name="attachmentsSaveError">An issue was created but cannot process attachments at this time. Check the server logs for more details.</string>

@@ -10,6 +10,7 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
+import androidx.activity.OnBackPressedCallback;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.ActionBarDrawerToggle;
 import androidx.appcompat.app.AppCompatActivity;
@@ -54,6 +55,7 @@ import org.mian.gitnex.fragments.SettingsFragment;
 import org.mian.gitnex.fragments.StarredRepositoriesFragment;
 import org.mian.gitnex.fragments.WatchedRepositoriesFragment;
 import org.mian.gitnex.helpers.AlertDialogs;
+import org.mian.gitnex.helpers.AppDatabaseSettings;
 import org.mian.gitnex.helpers.AppUtil;
 import org.mian.gitnex.helpers.ChangeLog;
 import org.mian.gitnex.helpers.RoundedTransformation;
@@ -228,7 +230,7 @@ public class MainActivity extends BaseActivity
 								.observe(
 										(AppCompatActivity) ctx,
 										userAccounts -> {
-											if (userAccounts.size() > 0) {
+											if (!userAccounts.isEmpty()) {
 												userAccountsList.clear();
 												userAccountsList.addAll(userAccounts);
 												navRecyclerViewUserAccounts.setAdapter(
@@ -246,15 +248,15 @@ public class MainActivity extends BaseActivity
 							String userFullNameNav = getAccount().getFullName();
 							String userAvatarNav = getAccount().getUserInfo().getAvatarUrl();
 
-							if (!userEmailNav.equals("")) {
+							if (!userEmailNav.isEmpty()) {
 								userEmail.setText(userEmailNav);
 							}
 
-							if (!userFullNameNav.equals("")) {
+							if (!userFullNameNav.isEmpty()) {
 								userFullName.setText(Html.fromHtml(userFullNameNav));
 							}
 
-							if (!userAvatarNav.equals("")) {
+							if (!userAvatarNav.isEmpty()) {
 
 								int avatarRadius = AppUtil.getPixelsFromDensity(ctx, 60);
 
@@ -400,13 +402,9 @@ public class MainActivity extends BaseActivity
 
 		if (savedInstanceState == null) {
 
-			if (!getAccount().requiresVersion("1.12.3")) {
-				if (tinyDB.getInt("homeScreenId", 0) == 7) {
-					tinyDB.putInt("homeScreenId", 0);
-				}
-			}
-
-			switch (tinyDB.getInt("homeScreenId", 0)) {
+			switch (Integer.parseInt(
+					AppDatabaseSettings.getSettingsValue(
+							ctx, AppDatabaseSettings.APP_HOME_SCREEN_KEY))) {
 				case 1:
 					toolbarTitle.setText(getResources().getString(R.string.pageTitleStarredRepos));
 					getSupportFragmentManager()
@@ -566,6 +564,17 @@ public class MainActivity extends BaseActivity
 			ChangeLog changelogDialog = new ChangeLog(this);
 			changelogDialog.showDialog();
 		}
+
+		OnBackPressedCallback onBackPressedCallback =
+				new OnBackPressedCallback(true) {
+					@Override
+					public void handleOnBackPressed() {
+						if (drawer.isDrawerOpen(GravityCompat.START)) {
+							drawer.closeDrawer(GravityCompat.START);
+						}
+					}
+				};
+		getOnBackPressedDispatcher().addCallback(this, onBackPressedCallback);
 	}
 
 	@Override
@@ -636,18 +645,6 @@ public class MainActivity extends BaseActivity
 					getFragmentRefreshListener().onRefresh("assignedToMe");
 				}
 				break;
-		}
-	}
-
-	@Override
-	public void onBackPressed() {
-
-		if (drawer.isDrawerOpen(GravityCompat.START)) {
-
-			drawer.closeDrawer(GravityCompat.START);
-		} else {
-
-			super.onBackPressed();
 		}
 	}
 

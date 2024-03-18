@@ -13,6 +13,7 @@ import org.acra.config.NotificationConfigurationBuilder;
 import org.acra.data.StringFormat;
 import org.mian.gitnex.R;
 import org.mian.gitnex.database.models.UserAccount;
+import org.mian.gitnex.helpers.AppDatabaseSettings;
 import org.mian.gitnex.helpers.AppUtil;
 import org.mian.gitnex.helpers.FontsOverride;
 import org.mian.gitnex.helpers.TinyDB;
@@ -37,7 +38,15 @@ public class MainApplication extends Application {
 
 		currentAccount = AccountContext.fromId(tinyDB.getInt("currentActiveAccountId", 0), appCtx);
 
-		tinyDB.putBoolean("biometricLifeCycle", false);
+		AppDatabaseSettings.initDefaultSettings(getApplicationContext());
+
+		if (Boolean.parseBoolean(
+				AppDatabaseSettings.getSettingsValue(getApplicationContext(), "prefsMigration"))) {
+			AppDatabaseSettings.prefsMigration(getApplicationContext());
+		}
+
+		AppDatabaseSettings.updateSettingsValue(
+				getApplicationContext(), "false", AppDatabaseSettings.APP_BIOMETRIC_LIFE_CYCLE_KEY);
 
 		FontsOverride.setDefaultFont(getBaseContext());
 
@@ -52,7 +61,9 @@ public class MainApplication extends Application {
 
 		tinyDB = TinyDB.getInstance(context);
 
-		if (tinyDB.getBoolean("crashReportingEnabled", true)) {
+		if (Boolean.parseBoolean(
+				AppDatabaseSettings.getSettingsValue(
+						context, AppDatabaseSettings.APP_CRASH_REPORTS_KEY))) {
 
 			CoreConfigurationBuilder ACRABuilder = new CoreConfigurationBuilder();
 

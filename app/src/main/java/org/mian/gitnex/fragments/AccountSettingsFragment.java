@@ -17,8 +17,8 @@ import com.google.android.material.tabs.TabLayoutMediator;
 import org.mian.gitnex.R;
 import org.mian.gitnex.activities.BaseActivity;
 import org.mian.gitnex.activities.MainActivity;
+import org.mian.gitnex.helpers.AppDatabaseSettings;
 import org.mian.gitnex.helpers.AppUtil;
-import org.mian.gitnex.helpers.TinyDB;
 import org.mian.gitnex.helpers.ViewPager2Transformers;
 import org.mian.gitnex.helpers.contexts.AccountContext;
 
@@ -31,7 +31,6 @@ public class AccountSettingsFragment extends Fragment {
 	private Context ctx;
 	private View view;
 	private Typeface myTypeface;
-	private TinyDB tinyDB;
 
 	@Nullable @Override
 	public View onCreateView(
@@ -40,7 +39,6 @@ public class AccountSettingsFragment extends Fragment {
 			@Nullable Bundle savedInstanceState) {
 
 		ctx = getContext();
-		tinyDB = TinyDB.getInstance(ctx);
 
 		view = inflater.inflate(R.layout.fragment_account_settings, container, false);
 		setHasOptionsMenu(false);
@@ -76,7 +74,10 @@ public class AccountSettingsFragment extends Fragment {
 			viewPager.setAdapter(new ViewPagerAdapter(this));
 
 			ViewPager2Transformers.returnSelectedTransformer(
-					viewPager, tinyDB.getInt("fragmentTabsAnimationId", 0));
+					viewPager,
+					Integer.parseInt(
+							AppDatabaseSettings.getSettingsValue(
+									ctx, AppDatabaseSettings.APP_TABS_ANIMATION_KEY)));
 
 			String[] tabTitles = {
 				ctx.getResources().getString(R.string.accountEmails),
