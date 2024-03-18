@@ -1,5 +1,8 @@
 package org.mian.gitnex.helpers.ssl;
 
+import static android.app.PendingIntent.FLAG_IMMUTABLE;
+
+import android.annotation.SuppressLint;
 import android.app.Notification;
 import android.app.NotificationManager;
 import android.app.PendingIntent;
@@ -7,6 +10,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.util.Base64;
+import android.util.Log;
 import android.util.SparseArray;
 import androidx.core.app.NotificationCompat;
 import com.google.android.material.dialog.MaterialAlertDialogBuilder;
@@ -31,6 +35,7 @@ import java.util.Collection;
 import java.util.Enumeration;
 import java.util.List;
 import java.util.Locale;
+import java.util.Objects;
 import javax.net.ssl.HostnameVerifier;
 import javax.net.ssl.SSLSession;
 import javax.net.ssl.TrustManager;
@@ -42,6 +47,7 @@ import org.mian.gitnex.activities.BaseActivity;
 /**
  * @author Georg Lukas, modified by opyale
  */
+@SuppressLint("CustomX509TrustManager")
 public class MemorizingTrustManager implements X509TrustManager {
 
 	public static final String KEYSTORE_NAME = "keystore";
@@ -295,7 +301,7 @@ public class MemorizingTrustManager implements X509TrustManager {
 				}
 			}
 		} catch (Exception e) {
-			e.printStackTrace();
+			Log.e("MemorizingTrustManager", Objects.requireNonNull(e.getMessage()));
 		}
 
 		return null;
@@ -308,14 +314,13 @@ public class MemorizingTrustManager implements X509TrustManager {
 		try {
 			keyStore = KeyStore.getInstance(KeyStore.getDefaultType());
 		} catch (KeyStoreException e) {
-			e.printStackTrace();
 			return null;
 		}
 
 		try {
 			keyStore.load(null, null);
 		} catch (NoSuchAlgorithmException | CertificateException | IOException e) {
-			e.printStackTrace();
+			e.getMessage();
 		}
 
 		String keystore = keyStoreStorage.getString(KEYSTORE_KEY, null);
@@ -328,7 +333,7 @@ public class MemorizingTrustManager implements X509TrustManager {
 				keyStore.load(inputStream, "MTM".toCharArray());
 				inputStream.close();
 			} catch (Exception e) {
-				e.printStackTrace();
+				Log.e("MemorizingTrustManager", Objects.requireNonNull(e.getMessage()));
 			}
 		}
 
@@ -340,7 +345,6 @@ public class MemorizingTrustManager implements X509TrustManager {
 		try {
 			appKeyStore.setCertificateEntry(alias, cert);
 		} catch (KeyStoreException e) {
-			e.printStackTrace();
 			return;
 		}
 
@@ -372,7 +376,7 @@ public class MemorizingTrustManager implements X509TrustManager {
 									byteArrayOutputStream.toByteArray(), Base64.DEFAULT))
 					.apply();
 		} catch (Exception e) {
-			e.printStackTrace();
+			Log.e("MemorizingTrustManager", Objects.requireNonNull(e.getMessage()));
 		}
 	}
 
@@ -396,7 +400,7 @@ public class MemorizingTrustManager implements X509TrustManager {
 				appTrustManager.checkClientTrusted(chain, authType);
 			}
 		} catch (CertificateException ae) {
-			// if the cert is stored in our appTrustManager, we ignore expiredness
+			// if the cert is stored in our appTrustManager, we ignore expired ones
 			if (isExpiredException(ae) || isCertKnown(chain[0])) {
 				return;
 			}
@@ -522,7 +526,7 @@ public class MemorizingTrustManager implements X509TrustManager {
 				}
 			}
 		} catch (CertificateParsingException e) {
-			e.printStackTrace();
+			Log.e("MemorizingTrustManager", Objects.requireNonNull(e.getMessage()));
 			stringBuilder.append("<Parsing error: ");
 			stringBuilder.append(e.getLocalizedMessage());
 			stringBuilder.append(">\n");
@@ -538,7 +542,7 @@ public class MemorizingTrustManager implements X509TrustManager {
 
 	private void startActivityNotification(Intent intent, int decisionId, String certName) {
 
-		final PendingIntent call = PendingIntent.getActivity(context, 0, intent, 0);
+		final PendingIntent call = PendingIntent.getActivity(context, 0, intent, FLAG_IMMUTABLE);
 		final String mtmNotification = context.getString(R.string.mtmNotification);
 
 		NotificationCompat.Builder builder =
@@ -591,7 +595,7 @@ public class MemorizingTrustManager implements X509TrustManager {
 				choice.wait();
 			}
 		} catch (InterruptedException e) {
-			e.printStackTrace();
+			Log.e("MemorizingTrustManager", Objects.requireNonNull(e.getMessage()));
 		}
 
 		return choice.state;
@@ -665,7 +669,6 @@ public class MemorizingTrustManager implements X509TrustManager {
 					return interactHostname(cert, hostname);
 				}
 			} catch (Exception e) {
-				e.printStackTrace();
 				return false;
 			}
 		}
