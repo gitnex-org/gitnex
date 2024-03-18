@@ -40,6 +40,11 @@ public class MainApplication extends Application {
 
 		AppDatabaseSettings.initDefaultSettings(getApplicationContext());
 
+		if (Boolean.parseBoolean(
+				AppDatabaseSettings.getSettingsValue(getApplicationContext(), "prefsMigration"))) {
+			AppDatabaseSettings.prefsMigration(getApplicationContext());
+		}
+
 		AppDatabaseSettings.updateSettingsValue(
 				getApplicationContext(), "false", AppDatabaseSettings.APP_BIOMETRIC_LIFE_CYCLE_KEY);
 
