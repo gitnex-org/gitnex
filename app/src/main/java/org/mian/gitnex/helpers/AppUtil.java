@@ -290,7 +290,7 @@ public class AppUtil {
 	}
 
 	public static Boolean checkStringsWithAlphaNumeric(String str) { // [a-zA-Z0-9]
-		return str.matches("^[\\w]+$");
+		return str.matches("^\\w+$");
 	}
 
 	public static Boolean checkStrings(String str) { // [a-zA-Z0-9-_. ]
@@ -416,7 +416,7 @@ public class AppUtil {
 	public static String decodeBase64(String str) {
 
 		String base64Str = str;
-		if (!str.equals("")) {
+		if (!str.isEmpty()) {
 			byte[] data = Base64.decode(base64Str, Base64.DEFAULT);
 			base64Str = new String(data, StandardCharsets.UTF_8);
 		}
@@ -444,7 +444,7 @@ public class AppUtil {
 
 	public static long getLineCount(String s) {
 
-		if (s.length() < 1) {
+		if (s.isEmpty()) {
 			return 0;
 		}
 
@@ -476,9 +476,8 @@ public class AppUtil {
 				.switchToAccount(userAccount, false);
 	}
 
-	public static boolean switchToAccount(Context context, UserAccount userAccount, boolean tmp) {
-		return ((MainApplication) context.getApplicationContext())
-				.switchToAccount(userAccount, tmp);
+	public static void switchToAccount(Context context, UserAccount userAccount, boolean tmp) {
+		((MainApplication) context.getApplicationContext()).switchToAccount(userAccount, tmp);
 	}
 
 	public static void sharingIntent(Context ctx, String url) {
@@ -497,7 +496,7 @@ public class AppUtil {
 				pm.queryIntentActivities(
 						new Intent(intent)
 								.setData(
-										intent.getData()
+										Objects.requireNonNull(intent.getData())
 												.buildUpon()
 												.authority("example.com")
 												.scheme("https")

@@ -262,6 +262,16 @@
     <string name="fragmentTabsAnimationHeader">Tabs Animation</string>
     <string name="fadeOut">Fade Out</string>
     <string name="zoomOut">Zoom Out</string>
+    <string name="backupRestore" translatable="false">%1$s / %2$s</string>
+    <string name="backup">Backup</string>
+    <string name="restore">Restore</string>
+    <string name="backupFileSuccess">The backup was successfully created</string>
+    <string name="backupFileError">An error occurred while creating a data backup</string>
+    <string name="backupFilePopupText">This action will backup your accounts, settings, drafts, notes, and data related to repositories.\n\nClick the Backup button to download the backup file.</string>
+    <string name="restoreFilePopupText">You are about to restore from a GitNex-generated backup file. This will restore user accounts, settings, drafts, notes, and data related to repositories.\n\nPlease note this action will overwrite the current database data. Proceed with caution.\n\nClick Restore to start the process.</string>
+    <string name="restoreError">An error occurred while restoring from the backup file.</string>
+    <string name="restoreFromBackup">Restore from Backup</string>
+    <string name="restoreFromBackupPopupText">You are about to restore from a GitNex-generated backup file. This will restore user accounts, settings, drafts, notes, and data related to repositories.\n\nClick Restore to start the process.</string>
     <!-- settings -->
 
     <string name="noMoreData">No more data available</string>
@@ -647,6 +657,9 @@
     <string name="rateAppHintText">If you like GitNex you can give it a thumbs up</string>
     <string name="aboutAppHintText">App version, build, user instance version</string>
     <string name="codeEditorHintText">Syntax color, indentation</string>
+    <string name="backupRestoreHintText">Backup and restore accounts, settings and more</string>
+    <string name="backupDataHintText">Backup accounts, settings, notes and more</string>
+    <string name="restoreDataHintText">Restore accounts, settings, notes and more</string>
 
     <string name="archivedRepository">Archived</string>
     <string name="archivedRepositoryMessage">This repo is archived. You can view files, but cannot push or open issues/pull-requests.</string>

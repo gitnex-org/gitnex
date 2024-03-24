@@ -217,7 +217,7 @@ public class CreateIssueActivity extends BaseActivity
 
 	private void checkForAttachments() {
 
-		if (contentUri.size() > 0) {
+		if (!contentUri.isEmpty()) {
 
 			BottomSheetAttachmentsBinding bottomSheetAttachmentsBinding =
 					BottomSheetAttachmentsBinding.inflate(getLayoutInflater());
@@ -409,7 +409,7 @@ public class CreateIssueActivity extends BaseActivity
 		String newIssueDueDateForm =
 				Objects.requireNonNull(viewBinding.newIssueDueDate.getText()).toString();
 
-		if (newIssueTitleForm.equals("")) {
+		if (newIssueTitleForm.isEmpty()) {
 
 			SnackBar.error(
 					ctx, findViewById(android.R.id.content), getString(R.string.issueTitleEmpty));
@@ -479,7 +479,7 @@ public class CreateIssueActivity extends BaseActivity
 
 							assert response2.body() != null;
 
-							if (contentUri.size() > 0) {
+							if (!contentUri.isEmpty()) {
 								processAttachments(response2.body().getNumber());
 								contentUri.clear();
 							} else {
@@ -536,7 +536,7 @@ public class CreateIssueActivity extends BaseActivity
 								milestonesList.put(ms.getTitle(), ms);
 								assert milestonesList_ != null;
 
-								if (milestonesList_.size() > 0) {
+								if (!milestonesList_.isEmpty()) {
 
 									for (Milestone milestone : milestonesList_) {
 

@@ -14,6 +14,8 @@
     <string name="navMyIssues">我的问题</string>
     <string name="navMostVisited">访问最多的代码库</string>
     <string name="navNotes">备注</string>
+    <string name="navAccount">账户设置</string>
+    <string name="navWatchedRepositories">关注的仓库</string>
     <!-- menu items -->
     <!-- page titles -->
     <string name="pageTitleNewRepo">创建仓库</string>
@@ -33,6 +35,7 @@
     <string name="pageTitleAdministration">管理</string>
     <string name="pageTitleNewPullRequest">新拉取请求</string>
     <string name="pageTitleUsers">用户</string>
+    <string name="pageTitleAddRepository">添加仓库</string>
     <!-- page titles -->
     <string name="repoName">演示仓库</string>
     <string name="repoDescription">演示描述</string>
@@ -43,8 +46,11 @@
     <string name="newRepoDescTintCopy">仓库描述</string>
     <string name="newRepoPrivateCopy">私有</string>
     <string name="newRepoOwner">所有者</string>
+    <string name="newRepoIssueLabels">Issue Labels</string>
+    <string name="setAsTemplate">设置仓库为模板仓库</string>
     <string name="newOrgTintCopy">组织名称</string>
     <string name="newOrgDescTintCopy">组织描述</string>
+    <string name="organizationFullname">%1$s - %2$s</string>
     <string name="userName">用户名</string>
     <string name="passWord">密码</string>
     <string name="btnLogin">登录</string>
@@ -52,8 +58,7 @@
     <string name="navigationDrawerOpen">打开导航栏</string>
     <string name="navigationDrawerClose">关闭导航栏</string>
     <string name="protocol">协议</string>
-    <string name="urlInfoTooltip">1- 选择正确协议(https or http). \n2- 输入实例 url 如: try.gitea.io. \n3- 如果你为账户启用了 2FA
- ，请在 OTP 码字段输入代码。 \n4- 对 HTTP basic auth， 请在 URL 字段中使用 USERNAME@DOMAIN.COM。</string>
+    <string name="urlInfoTooltip">1- 选择正确的协议（https 或 http）。\n2- 输入实例网址，例如：try.gitea.io。\n3- 如果您已为您的账户启用了两步验证（2FA），请在OTP代码字段中输入验证码。\n4- 对于 HTTP basic auth，请在URL字段中使用 USERNAME@DOMAIN.COM。</string>
     <string name="malformedUrl">无法连接到主机。请检查您的 URL 或端口是否有任何错误</string>
     <string name="protocolError">除非您正在本地网络上测试，否则不建议使用 HTTP 协议</string>
     <string name="malformedJson">收到格式错误的 JSON 。服务器响应不成功</string>
@@ -61,6 +66,7 @@
     <string name="emptyFieldUsername">未填写 用户名</string>
     <string name="emptyFieldPassword">未填写 密码</string>
     <string name="protocolEmptyError">协议是必需的</string>
+    <string name="instanceHelperText">输入不含 http 或者 https 的 URL。 例如：codeberg.org</string>
     <string name="checkNetConnection">无法连接，请检查您的网络情况</string>
     <string name="repoNameErrorEmpty">仓库名称为空</string>
     <string name="repoNameErrorInvalid">仓库名称无效。[a&#8211;z A&#8211;Z 0&#8211;9 &#8211; _]</string>
@@ -70,6 +76,7 @@
     <string name="repoCreated">仓库创建成功</string>
     <string name="repoExistsError">当前所有者已拥有同名仓库</string>
     <string name="repoOwnerError">选择仓库所有者</string>
+    <string name="repoDefaultBranchError">默认分支必须是非空的</string>
     <string name="orgNameErrorEmpty">组织名称为空</string>
     <string name="orgNameErrorInvalid">组织名称无效, [a&#8211;z A&#8211;Z 0&#8211;9 &#8211; _]</string>
     <string name="orgDescError">组织描述超过最大255个字符限制</string>
@@ -101,7 +108,6 @@
     <string name="infoTabRepoForksCount">派生仓库</string>
     <string name="infoTabRepoCreatedAt">已创建</string>
     <string name="infoTabRepoUpdatedAt">最后更新</string>
-    <string name="infoShowMoreInformation">显示更多信息</string>
     <string name="infoMoreInformation">更多信息</string>
     <string name="timeAtText">在</string>
     <string name="issueMilestone">里程碑 %1$s</string>
@@ -124,15 +130,15 @@
     <string name="milestoneDescError">里程碑描述超过最大255个字符限制</string>
     <string name="milestoneCreated">里程碑创建成功</string>
     <string name="milestoneDateEmpty">请选择截止日期</string>
-    <string name="milestoneNoDueDate">没有到期日</string>
+    <string name="milestoneNoDueDate">无截止日期</string>
     <string name="milestoneNoDescription">无描述</string>
-    <string name="milestoneIssueStatusOpen">%1$d开启</string>
+    <string name="milestoneIssueStatusOpen">%1$d 开启</string>
     <string name="milestoneIssueStatusClosed">%1$d 已关闭</string>
     <string name="selectMilestone">选择里程碑</string>
     <string name="newIssueSelectAssigneesListTitle">选择受理人</string>
     <string name="newIssueSelectLabelsListTitle">选择标签</string>
     <string name="newIssueTitle">标题</string>
-    <string name="newIssueAssigneesListTitle">受理人</string>
+    <string name="newIssueAssigneesListTitle">指派人</string>
     <string name="newIssueDescriptionTitle">说明</string>
     <string name="newIssueDueDateTitle">到期日</string>
     <string name="newIssueMilestoneTitle">里程碑</string>
@@ -147,7 +153,7 @@
     <string name="settingsLanguageSystem">系统</string>
     <string name="settingsSecurityHeader">安全</string>
     <string name="settingsCertsSelectorHeader">删除信任的证书</string>
-    <string name="settingsCertsPopupTitle">删除信任的证书吗？</string>
+    <string name="settingsCertsPopupTitle">是否删除信任的证书？</string>
     <string name="settingsCertsPopupMessage">您确定要删除任何手动信任的证书或主机名吗？ \n\n您也将被注销。</string>
     <string name="settingsSave">设置已保存</string>
     <string name="settingsLanguageSelectorHeader">语言</string>
@@ -181,14 +187,20 @@
     <string name="settingsEnableCommentsDeletionText">启用草稿删除</string>
     <string name="settingsEnableCommentsDeletionHintText">发表评论时删除评论草稿</string>
     <string name="settingsGeneralHeader">常规​​​​​</string>
-    <string name="generalHintText">主屏幕、默认的链接处理程序</string>
+    <string name="generalHintText">主界面，草稿，崩溃报告</string>
     <string name="generalDeepLinkDefaultScreen">默认链接处理程序</string>
     <string name="generalDeepLinkDefaultScreenHintText">如果应用无法处理外部链接，请选择应加载的屏幕。 它会自动把你重定向。</string>
-    <string name="generalDeepLinkSelectedText">N/A</string>
     <string name="linkSelectorDialogTitle">选择默认链接处理程序屏幕</string>
     <string name="settingsBiometricHeader">生物识别支持</string>
     <string name="settingsLabelsInListHeader">带文本的标签</string>
     <string name="settingsLabelsInListHint">启用此功能将在问题和 pr 列表中显示带有文本的标签，默认是色点</string>
+    <string name="ceSyntaxHighlightColor">语法高亮</string>
+    <string name="ceIndentation">缩进</string>
+    <string name="ceIndentationTabsWidth">制表符宽度</string>
+    <string name="system_font">系统默认字体</string>
+    <string name="fragmentTabsAnimationHeader">标签页动画</string>
+    <string name="fadeOut">淡出</string>
+    <string name="zoomOut">缩小</string>
     <!-- settings -->
     <string name="noMoreData">没有更多可用数据</string>
     <string name="createLabel">创建标签</string>
@@ -229,6 +241,7 @@
     <string name="repoRemovedMessage">成功从团队中移除仓库</string>
     <string name="repoAddToTeamMessage">添加仓库 %1$s 到组织 %2$s 的团队 %3$s</string>
     <string name="repoRemoveTeamMessage">从团队 %2$s 处删除了仓库 %1$s</string>
+    <string name="addRemoveMember">添加/删除成员</string>
     <!-- org tabbed layout str -->
     <!-- create team -->
     <string name="newTeamTitle">团队名称</string>
@@ -263,15 +276,17 @@
     <!-- profile section -->
     <string name="profileTabFollowers">关注者</string>
     <string name="profileTabFollowing">正在关注</string>
-    <string name="profileCreateNewEmailAddress">添加电子邮件地址</string>
-    <string name="profileEmailTitle">電子郵件地址</string>
+    <!-- profile section -->
+    <!-- account settings -->
+    <string name="accountEmails">电子邮件</string>
+    <string name="accountEmailTitle">电子邮件地址</string>
     <string name="emailAddedText">成功添加新电子邮件。</string>
     <string name="emailErrorEmpty">电子邮件地址为空</string>
     <string name="emailErrorInvalid">电子邮件地址无效</string>
     <string name="emailErrorInUse">电子邮件地址已被使用</string>
     <string name="emailTypeText">主要</string>
-    <string name="profileTabEmails">电子邮件</string>
-    <!-- profile section -->
+    <string name="sshKeys">SSH 密钥</string>
+    <!-- account settings -->
     <!-- single issue section -->
     <string name="singleIssueEditLabels">添加/删除标签</string>
     <string name="labelsUpdated">标签已更新</string>
@@ -413,6 +428,10 @@
     <string name="openInBrowser">在浏览器中打开</string>
     <string name="deleteGenericTitle">删除 %s</string>
     <string name="reset">重置</string>
+    <string name="beta">测试</string>
+    <string name="none">无</string>
+    <string name="main">main</string>
+    <string name="license">许可证</string>
     <!-- generic copy -->
     <string name="exploreUsers">探索用户</string>
     <string name="exploreIssues">探索问题</string>
@@ -426,8 +445,7 @@
     <string name="versionUnsupportedNew">检测到新的 Gitea 版本！请更新 GitNex！</string>
     <string name="versionUnknown">未检测到Gitea！</string>
     <string name="versionAlertDialogHeader">不支持的 Gitea 版本</string>
-    <string name="loginViaPassword">用户名 / 密码</string>
-    <string name="loginMethodText">建议您使用更安全的令牌方式进行登录。</string>
+    <string name="loginViaPassword">Basic Auth</string>
     <string name="unauthorizedApiError">令牌可能已失效，请检查后重试</string>
     <string name="loginTokenError">令牌是必需的。</string>
     <string name="prDeletedFork">已删除分叉</string>
@@ -509,19 +527,20 @@
     <string name="resetMostReposCounter">成功重置计数</string>
     <string name="resetCounterDialogMessage">你要重置存储库 %s 的计数吗？</string>
     <string name="resetCounterAllDialogMessage">这会重置此账户存储库的所有计数</string>
-    <string name="appearanceHintText">主题、字体、徽章</string>
+    <string name="appearanceHintText">主题，字体，图标，翻译</string>
     <string name="securityHintText">生物特征认证、SSL证书、缓存</string>
     <string name="languagesHintText">语言</string>
     <string name="reportsHintText">崩溃报告</string>
     <string name="rateAppHintText">如果你喜欢GitNex，你可以给它点赞</string>
     <string name="aboutAppHintText">应用程序版本、构建、用户实例版本</string>
+    <string name="codeEditorHintText">语法高亮，缩进</string>
     <string name="archivedRepository">已存档</string>
     <string name="archivedRepositoryMessage">此代码库已存档。您可以查看文件，但不能推送或打开issues/合并请求。</string>
     <string name="accountDeletedMessage">帐户删除成功</string>
     <string name="removeAccountPopupTitle">删除账户</string>
     <string name="removeAccountPopupMessage">您确定要从应用中删除此帐户吗？\n\n 这将仅移除应用程序上与此账户相关的所有数据。</string>
     <string name="addNewAccount">新帐户</string>
-    <string name="addNewAccountText">添加新账户</string>
+    <string name="addNewAccountText">添加账号</string>
     <string name="accountAlreadyExistsError">帐户已经存在于应用程序中</string>
     <string name="accountAddedMessage">帐户添加成功</string>
     <string name="switchAccountSuccess">已切换到账户： %1$s@%2$s</string>
@@ -529,14 +548,17 @@
     <string name="pageTitleNotifications">通知</string>
     <string name="noDataNotifications">一切就绪 🚀</string>
     <string name="notificationsPollingHeaderText">通知轮询延迟</string>
-    <string name="pollingDelaySelectedText">%d 分钟</string>
+    <string name="pollingDelay15Minutes">15 分钟</string>
+    <string name="pollingDelay30Minutes">30 分钟</string>
+    <string name="pollingDelay45Minutes">45 分钟</string>
+    <string name="pollingDelay1Hour">1 小时</string>
     <string name="pollingDelayDialogHeaderText">选择轮询延迟</string>
     <string name="pollingDelayDialogDescriptionText">以分钟为单位，选择GitNex尝试轮询新通知的延迟。</string>
     <string name="markAsRead">标记为已读</string>
     <string name="markAsUnread">标记为未读</string>
     <string name="pinNotification">固定</string>
     <string name="markedNotificationsAsRead">成功将所有通知标记为已读</string>
-    <string name="notificationsHintText">轮询延迟、light、振动</string>
+    <string name="notificationsHintText">轮询延迟</string>
     <string name="enableNotificationsHeaderText">启用通知</string>
     <string name="enableLightsHeaderText">启用 Light</string>
     <string name="enableVibrationHeaderText">启用振动</string>
@@ -548,6 +570,7 @@
     <plurals name="youHaveNewNotifications">
         <item quantity="other">你有 %s 则新通知。</item>
     </plurals>
+    <string name="openAppSettings">为了接收通知，您需要为 GitNex 启用通知选项。点击访问您手机的设置界面，并且在设置中启用通知权限</string>
     <string name="isRead">已读</string>
     <string name="isUnread">未读</string>
     <string name="repoSettingsTitle">存储库设置</string>
@@ -594,9 +617,9 @@
     <string name="prClosed">拉取请求已关闭</string>
     <string name="prReopened">拉取请求已重新打开</string>
     <string name="prMergeInfo">合并请求信息</string>
-    <string name="accountDoesNotExist">似乎应用程序中并不存在URI%1$s的账户。您可以通过点击“添加新账户”按钮来添加一个。</string>
+    <string name="accountDoesNotExist">似乎应用程序中并不存在 URI %1$s 的账户。您可以通过点击 “添加新账户” 按钮来添加一个。</string>
     <string name="launchApp">前往应用</string>
-    <string name="noActionText">GitNex 无法处理所请求的资源，您可以在项目代码库中发起一个问题，最好提供工作细节。只需从下面的按钮启动一个默认屏幕，您可通过设置更改默认屏。</string>
+    <string name="noActionText">GitNex cannot handle the requested resource. You can open an issue at the project repository as an improvement, providing details of the work. Just launch a default screen for now from the buttons below; it can be changed from settings.</string>
     <string name="biometricAuthTitle">生物特征认证</string>
     <string name="biometricAuthSubTitle">使用你的生物特征凭证解锁</string>
     <string name="biometricNotSupported">此设备无可用的生物特征功能</string>
@@ -640,6 +663,8 @@
     <string name="notLoggedIn">%s \u25CF 未登录</string>
     <string name="followSystem">跟随系统 (浅色 / 深色)</string>
     <string name="followSystemBlack">跟随系统 (浅色/漆黑)</string>
+    <string name="dynamicColorsFollowSystem">动态颜色 - 跟随系统(浅色/神色)</string>
+    <string name="codebergDark">Codeberg (暗色)</string>
     <string name="repoForkOf">此仓库衍生自：%s</string>
     <string name="adoptRepo">采用</string>
     <string name="repoAdopted">已采用仓库 %s</string>
@@ -663,12 +688,13 @@
     <string name="newNoteContentHint">从此处开始记备注</string>
     <string name="noteDateTime">创建于 %s</string>
     <string name="noteTimeModified">更新于 %s</string>
-    <string name="noteDeleteDialoMessage">您真要删除此备注吗？</string>
+    <string name="noteDeleteDialogMessage">您真要删除此备注吗？</string>
     <plurals name="noteDeleteMessage">
         <item quantity="other">已成功删除备注</item>
     </plurals>
     <string name="notesAllDeletionMessage">这会删除您的所有备注。此操作无法撤消。</string>
     <!-- timeline -->
+    <string name="commitsText">提交</string>
     <string name="commitText">提交</string>
     <string name="timelineAddedCommit">%1$s 添加了 %2$s %3$s</string>
     <!-- the | is replaced by the label -->
@@ -681,6 +707,7 @@
     <string name="timelineAssigneesAssigned">%2$s %3$s 给 %1$s 分配了任务</string>
     <string name="timelineMilestoneAdded">%1$s 将此添加至 %2$s 里程碑 %3$s</string>
     <string name="timelineMilestoneRemoved">%1$s 将此从 %2$s 里程碑 %3$s 删除了</string>
+    <string name="timelineMilestoneDeleted">%1$s 将此添加至已删除的里程碑 %2$s</string>
     <string name="timelineStatusClosedIssue">%1$s 关闭了这张工单 %2$s</string>
     <string name="timelineStatusReopenedIssue">%1$s 重新打开了这张工单 %2$s</string>
     <string name="timelineStatusReopenedPr">%1$s 重新打开了此拉取请求 %2$s</string>
@@ -709,7 +736,39 @@
     <string name="timelineRefIssue">%1$s 在 #%2$d %3$s 中提到了这张工单</string>
     <string name="timelineRefPr">%1$s 在 #%2$d %3$s 中提到了这个拉取请求</string>
     <string name="timelineStatusRefIssue"><![CDATA[%1$s 引用了来自 <font color=\'%2$d\'>%3$s</font> %4$s 的工单]]></string>
+    <string name="timelineReviewLeftComment">%1$s 留下评论：%2$s %3$s</string>
+    <string name="timelinePinned">%1$s 置顶了 %2$s</string>
     <string name="commitStatuses">状态</string>
     <string name="statusNoUrl">此状态没有链接的目标 URL。</string>
     <string name="starredRepos">加星标的仓库</string>
+    <string name="lang_statistics">语言统计</string>
+    <string name="dashboard">仪表盘</string>
+    <string name="createdRepository">created repository</string>
+    <string name="renamedRepository">将仓库名从 %1$s 修改为</string>
+    <string name="starredRepository">已加星标</string>
+    <string name="transferredRepository">转移仓库 %1$s 到</string>
+    <string name="createdBranch">建立分支 %1$s 于</string>
+    <string name="pushedTo">pushed to %1$s at</string>
+    <string name="openedIssue">opened issue</string>
+    <string name="commentedOnIssue">commented on issue</string>
+    <string name="closedIssue">closed issue</string>
+    <string name="reopenedIssue">重新开启的工单</string>
+    <string name="createdPR">已创建的合并请求</string>
+    <string name="closedPR">已关闭的合并请求</string>
+    <string name="reopenedPR">重新开启的合并请求</string>
+    <string name="mergedPR">已合并的合并请求</string>
+    <string name="approved">已通过</string>
+    <string name="suggestedChanges">建议更改</string>
+    <string name="commentedOnPR">commented on pull request</string>
+    <string name="autoMergePR">自动合并的合并请求</string>
+    <string name="deletedBranch">deleted branch %1$s at</string>
+    <string name="pushedTag">推送标签 %1$s 到</string>
+    <string name="deletedTag">删除标签 %1$s 从</string>
+    <string name="releasedBranch">released %1$s at</string>
+    <string name="syncedCommits">synced commits to %1$s at</string>
+    <string name="syncedRefs">synced new reference %1$s to</string>
+    <string name="syncedDeletedRefs">synced and deleted reference %1$s at</string>
+    <string name="attachment">Attachment</string>
+    <string name="attachments">Attachments</string>
+    <string name="attachmentsSaveError">An issue was created but cannot process attachments at this time. Check the server logs for more details.</string>
 </resources>

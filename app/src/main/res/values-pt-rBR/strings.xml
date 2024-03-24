@@ -10,10 +10,12 @@
     <string name="navAbout">Sobre</string>
     <string name="navRate">Avalie o GitNex</string>
     <string name="navLogout">Sair</string>
-    <string name="navAdministration">Instance Administration</string>
+    <string name="navAdministration">Administração da Instância</string>
     <string name="navMyIssues">Meus Issues</string>
-    <string name="navMostVisited">Most Visited Repos</string>
-    <string name="navNotes">Notes</string>
+    <string name="navMostVisited">Repositórios Mais Visitados</string>
+    <string name="navNotes">Anotações</string>
+    <string name="navAccount">Account Settings</string>
+    <string name="navWatchedRepositories">Watched Repositories</string>
     <!-- menu items -->
     <!-- page titles -->
     <string name="pageTitleNewRepo">Novo repositório</string>
@@ -30,9 +32,10 @@
     <string name="pageTitleAddEmail">Adicionar endereço de E-mail</string>
     <string name="pageTitleNewFile">Novo arquivo</string>
     <string name="pageTitleExplore">Explorar</string>
-    <string name="pageTitleAdministration">Administration</string>
+    <string name="pageTitleAdministration">Administração</string>
     <string name="pageTitleNewPullRequest">Novo Pull Request</string>
     <string name="pageTitleUsers">Usuários</string>
+    <string name="pageTitleAddRepository">Adicionar Repositório</string>
     <!-- page titles -->
     <string name="repoName">Repo demo</string>
     <string name="repoDescription">Descrição demo</string>
@@ -43,8 +46,11 @@
     <string name="newRepoDescTintCopy">Descrição do repositório</string>
     <string name="newRepoPrivateCopy">Privado</string>
     <string name="newRepoOwner">Proprietário</string>
+    <string name="newRepoIssueLabels">Issue Labels</string>
+    <string name="setAsTemplate">Make repository a template</string>
     <string name="newOrgTintCopy">Nome da organização</string>
     <string name="newOrgDescTintCopy">Descrição da organização</string>
+    <string name="organizationFullname">%1$s - %2$s</string>
     <string name="userName">Usuário</string>
     <string name="passWord">Senha</string>
     <string name="btnLogin">ENTRAR</string>
@@ -52,7 +58,7 @@
     <string name="navigationDrawerOpen">Abrir painel de navegação</string>
     <string name="navigationDrawerClose">Fechar painel de navegação</string>
     <string name="protocol">Protocolo</string>
-    <string name="urlInfoTooltip">1- Choose the correct protocol(https or http). \n2- Enter instance url e.g: try.gitea.io. \n3- If you have enabled 2FA for your account, enter the code in the OTP Code field. \n4- For HTTP basic auth use USERNAME@DOMAIN.COM in the URL field.</string>
+    <string name="urlInfoTooltip">1- Selecione o protocolo correto (https ou http).\n2- Insira a URL da instância, p. ex.: try.gitea.io.\n3- Se você habilitou autenticação de dois fatores (2FA) na sua conta, insira o código no campo OTP.\n4- Para autenticação HTTP básica, use USERNAME@DOMAIN.COM no campo URL.</string>
     <string name="malformedUrl">Não foi possível conectar-se ao host. Por favor verifique sua URL ou porta para ver se há algum erro</string>
     <string name="protocolError">Não é recomendado usar o protocolo HTTP a menos que você esteja testando na rede local</string>
     <string name="malformedJson">JSON malformado foi recebido. A resposta do servidor não foi bem sucedida</string>
@@ -60,21 +66,24 @@
     <string name="emptyFieldUsername">Nome de usuário é necessário</string>
     <string name="emptyFieldPassword">A senha é necessária</string>
     <string name="protocolEmptyError">Necessário especificar o protocolo</string>
-    <string name="checkNetConnection">Não é possível acessar a rede, por favor, verifique sua conexão com a Internet</string>
+    <string name="instanceHelperText">Insira a URL, sem http ou https.
+Exemplo: codeberg.org</string>
+    <string name="checkNetConnection">Não é possível acessar a rede. Por favor, verifique sua conexão com a Internet</string>
     <string name="repoNameErrorEmpty">Nome do repositório está vazio</string>
-    <string name="repoNameErrorInvalid">O nome do repositório não é válido. [um&#8211;z A&#8211;Z 0&#8211;9 &#8211; _]</string>
+    <string name="repoNameErrorInvalid">O nome do repositório não é válido. [a&#8211;z A&#8211;Z 0&#8211;9 &#8211; _]</string>
     <string name="repoNameErrorReservedName">O nome do repositório está reservado</string>
     <string name="repoNameErrorReservedPatterns">Nome do repositório contém palavras-chave reservadas</string>
     <string name="repoDescError">Descrição do repositório excede o limite máximo de 255 caracteres</string>
     <string name="repoCreated">Repositório criado com êxito</string>
     <string name="repoExistsError">Um repositório com este nome já existe sob o proprietário selecionado</string>
     <string name="repoOwnerError">Selecione o proprietário do repositório</string>
+    <string name="repoDefaultBranchError">The default branch must not be empty</string>
     <string name="orgNameErrorEmpty">O nome da organização está vazio</string>
     <string name="orgNameErrorInvalid">O nome da organização não é válido, [&#8211;z A&#8211;Z 0&#8211;9 &#8211; _]</string>
     <string name="orgDescError">Descrição da organização excede o limite máximo de 255 caracteres</string>
     <string name="orgCreated">Organização criada com sucesso</string>
     <string name="orgExistsError">Organização já existe</string>
-    <string name="diffStatistics">%1$s addition(s) and %2$s deletion(s)</string>
+    <string name="diffStatistics">%1$s inclusão(ões) e %2$s exclusão(ões)</string>
     <string name="processingText">Processando</string>
     <string name="search">Pesquisar</string>
     <string name="close">Fechar</string>
@@ -100,7 +109,6 @@
     <string name="infoTabRepoForksCount">Forks</string>
     <string name="infoTabRepoCreatedAt">Criado</string>
     <string name="infoTabRepoUpdatedAt">Última atualização</string>
-    <string name="infoShowMoreInformation">Mostrar Mais Informações</string>
     <string name="infoMoreInformation">Mais informações</string>
     <string name="timeAtText">em</string>
     <string name="issueMilestone">Meta %1$s</string>
@@ -108,9 +116,9 @@
     <string name="assignedTo">Atribuído a: %1$s</string>
     <string name="assignedToMe">Atribuídos a mim</string>
     <string name="commentButtonText">Comentar</string>
-    <string name="commentEmptyError">Por favor escreva o seu comentário</string>
+    <string name="commentEmptyError">Por favor, deixe seu comentário</string>
     <string name="commentSuccess">Comentário publicado</string>
-    <string name="featureDeprecated">Esta funcionalidade será removida no futuro</string>
+    <string name="featureDeprecated">Esta funcionalidade será removida futuramente</string>
     <string name="generalImgContentText">Imagem</string>
     <string name="commitAuthor">Autor do commit: %1$s</string>
     <string name="releaseDownloadText">Downloads</string>
@@ -127,7 +135,7 @@
     <string name="milestoneNoDescription">Sem descrição</string>
     <string name="milestoneIssueStatusOpen">%1$d Aberto</string>
     <string name="milestoneIssueStatusClosed">%1$d Fechado</string>
-    <string name="selectMilestone">Selecionar marco (milestone)</string>
+    <string name="selectMilestone">Selecionar marco</string>
     <string name="newIssueSelectAssigneesListTitle">Selecionar designados</string>
     <string name="newIssueSelectLabelsListTitle">Selecionar marcadores</string>
     <string name="newIssueTitle">Título</string>
@@ -147,16 +155,16 @@
     <string name="settingsSecurityHeader">Segurança</string>
     <string name="settingsCertsSelectorHeader">Excluir Certificados Confiáveis</string>
     <string name="settingsCertsPopupTitle">Excluir Certificados Confiáveis?</string>
-    <string name="settingsCertsPopupMessage">Are you sure to delete any manually trusted certificate or hostname? \n\nYou will also be logged out.</string>
+    <string name="settingsCertsPopupMessage">Tem certeza que deseja excluir quaisquer dos certificados ou hostnames manualmente confiados? \n\nVocê também será desconectado.</string>
     <string name="settingsSave">Configurações salvas</string>
     <string name="settingsLanguageSelectorHeader">Idioma</string>
     <string name="settingsLanguageSelectedHeaderDefault">Português (Brasil)</string>
     <string name="settingsAppearanceHeader">Aparência</string>
     <string name="settingsLanguageSelectorDialogTitle">Escolha o idioma</string>
-    <string name="settingsLightThemeTimeSelectorHeader">Light Theme Switch Time</string>
-    <string name="settingsDarkThemeTimeSelectorHeader">Dark Theme Switch Time</string>
-    <string name="settingsTimeSelectorDialogTitle">Escolha o formato da hora</string>
-    <string name="settingsHelpTranslateText">Translate GitNex via Crowdin</string>
+    <string name="settingsLightThemeTimeSelectorHeader">Horário de Mudança para o Tema Claro</string>
+    <string name="settingsDarkThemeTimeSelectorHeader">Horário de Mudança para o Tema Escuro</string>
+    <string name="settingsTimeSelectorDialogTitle">Escolha o Formato de Hora</string>
+    <string name="settingsHelpTranslateText">Traduza o Gitnex com Crowdin</string>
     <string name="codeBlockHeaderText">Cor do bloco de código</string>
     <string name="settingsCodeBlockSelectorDialogTitle">Seletor de cores do bloco de código</string>
     <string name="settingsHomeScreenHeaderText">Tela inicial</string>
@@ -180,14 +188,20 @@
     <string name="settingsEnableCommentsDeletionText">Ativar exclusão de rascunhos</string>
     <string name="settingsEnableCommentsDeletionHintText">Excluir rascunho de comentário quando um comentário é postado</string>
     <string name="settingsGeneralHeader">Geral</string>
-    <string name="generalHintText">Home screen, default link handler</string>
-    <string name="generalDeepLinkDefaultScreen">Default Link Handler</string>
-    <string name="generalDeepLinkDefaultScreenHintText">Choose what screen should be loaded if the app cannot handle external links. It will redirect you automatically.</string>
-    <string name="generalDeepLinkSelectedText">N/A</string>
+    <string name="generalHintText">Tela inicial, rascunhos e relatórios de falha</string>
+    <string name="generalDeepLinkDefaultScreen">Manipulador de Links Padrão</string>
+    <string name="generalDeepLinkDefaultScreenHintText">Escolha a tela a ser carregada automaticamente caso o aplicativo não possa abrir links externos.</string>
     <string name="linkSelectorDialogTitle">Select Default Link Handler Screen</string>
     <string name="settingsBiometricHeader">Biometric Support</string>
     <string name="settingsLabelsInListHeader">Labels With Text Support</string>
     <string name="settingsLabelsInListHint">Enabling this will show labels with text in issues and pr lists, default are color dots</string>
+    <string name="ceSyntaxHighlightColor">Cor do Realce de Sintaxe</string>
+    <string name="ceIndentation">Indentação</string>
+    <string name="ceIndentationTabsWidth">Tabs Width</string>
+    <string name="system_font">Fonte Padrão</string>
+    <string name="fragmentTabsAnimationHeader">Tabs Animation</string>
+    <string name="fadeOut">Fade Out</string>
+    <string name="zoomOut">Zoom Out</string>
     <!-- settings -->
     <string name="noMoreData">Não há mais dados disponíveis</string>
     <string name="createLabel">Novo marcador</string>
@@ -196,22 +210,22 @@
     <string name="labelColor">Cor do marcador</string>
     <string name="labelEmptyError">Nome do marcador está vazio</string>
     <string name="labelNameError">Nome do marcador é inválido</string>
-    <string name="labelCreated">Label created</string>
-    <string name="labelUpdated">Label updated</string>
+    <string name="labelCreated">Rótulo criado</string>
+    <string name="labelUpdated">Rótulo atualizado</string>
     <string name="labelMenuContentDesc">Descrição</string>
     <string name="labelDeleteText">Marcador excluído</string>
     <string name="selectBranchError">Select a branch for release</string>
     <string name="alertDialogTokenRevokedTitle">Erro de autorização</string>
-    <string name="alertDialogTokenRevokedMessage">It seems that the Access Token is revoked OR your are not allowed to see these contents.\n\nIn case of revoked Token, please logout and login again</string>
+    <string name="alertDialogTokenRevokedMessage">Parece que o Token de Acesso foi revogado OU você não está autorizado a ver esses conteúdos.\n\nNo caso de Token revogado, faça o logout e login de novo</string>
     <string name="labelDeleteMessage">Você realmente deseja excluir este marcador?</string>
     <!-- org tabbed layout str -->
     <string name="orgTabTeams">Equipes</string>
     <string name="orgTabMembers">Membros</string>
     <string name="teamTitle">Nome da equipe</string>
     <string name="teamDescription">Descrição da equipe</string>
-    <string name="teamPermissions">Permissions</string>
+    <string name="teamPermissions">Permissões</string>
     <string name="teamPermissionNone">• Members of this team do not have any permissions.</string>
-    <string name="teamPermissionRead">• Members of this team can view team repositories.</string>
+    <string name="teamPermissionRead">Membros podem ver os repositórios da equipe.</string>
     <string name="teamPermissionWrite">• Members of this team can view and push to team repositories.</string>
     <string name="teamPermissionAdmin">• Members of this team can push to and from team repositories and add collaborators.</string>
     <string name="teamPermissionOwner">• Members of this team have owner permissions.</string>
@@ -228,6 +242,7 @@
     <string name="repoRemovedMessage">Repository removed from the team successfully</string>
     <string name="repoAddToTeamMessage">Add repository %1$s to organization %2$s team %3$s</string>
     <string name="repoRemoveTeamMessage">Remove repository %1$s from team %2$s</string>
+    <string name="addRemoveMember">Add / Remove Member</string>
     <!-- org tabbed layout str -->
     <!-- create team -->
     <string name="newTeamTitle">Nome da equipe</string>
@@ -262,15 +277,17 @@
     <!-- profile section -->
     <string name="profileTabFollowers">Seguidores</string>
     <string name="profileTabFollowing">Seguindo</string>
-    <string name="profileCreateNewEmailAddress">Adicionar endereço de e-mail</string>
-    <string name="profileEmailTitle">Endereço de e-mail</string>
+    <!-- profile section -->
+    <!-- account settings -->
+    <string name="accountEmails">Emails</string>
+    <string name="accountEmailTitle">Email Address</string>
     <string name="emailAddedText">Novo e-mail adicionado com êxito</string>
     <string name="emailErrorEmpty">O endereço de e-mail está vazio</string>
     <string name="emailErrorInvalid">Endereço de e-mail inválido</string>
     <string name="emailErrorInUse">O endereço de e-mail já está em uso</string>
     <string name="emailTypeText">Principal</string>
-    <string name="profileTabEmails">E-mails</string>
-    <!-- profile section -->
+    <string name="sshKeys">SSH Keys</string>
+    <!-- account settings -->
     <!-- single issue section -->
     <string name="singleIssueEditLabels">Adicionar/Remover marcadores</string>
     <string name="labelsUpdated">Marcadores atualizados</string>
@@ -327,7 +344,7 @@
     <!-- release -->
     <string name="loginOTPTypeError">O código OTP deve ter apenas números</string>
     <string name="loginOTP">Código OTP (Opcional)</string>
-    <string name="otpMessage">Insira o código de otp se a 2FA estiver ativada</string>
+    <string name="otpMessage">Insira o código OTP se a 2FA estiver ativada</string>
     <string name="openWebRepo">Abrir no Navegador</string>
     <string name="repoStargazersInMenu">Usuários que favoritaram</string>
     <string name="repoWatchersInMenu">Observadores</string>
@@ -412,6 +429,10 @@
     <string name="openInBrowser">Abrir no Navegador</string>
     <string name="deleteGenericTitle">Delete %s</string>
     <string name="reset">Reset</string>
+    <string name="beta">BETA</string>
+    <string name="none">None</string>
+    <string name="main">main</string>
+    <string name="license">License</string>
     <!-- generic copy -->
     <string name="exploreUsers">Explore users</string>
     <string name="exploreIssues">Explore issues</string>
@@ -425,8 +446,7 @@
     <string name="versionUnsupportedNew">Nova versão do Gitea detectada! Por favor, ATUALIZE o GitNex!</string>
     <string name="versionUnknown">Gitea não detectado!</string>
     <string name="versionAlertDialogHeader">Versão do Gitea não suportada</string>
-    <string name="loginViaPassword">Usuário e senha</string>
-    <string name="loginMethodText">Escolha seu método de login preferido para acessar sua conta. O token é mais seguro!</string>
+    <string name="loginViaPassword">Basic Auth</string>
     <string name="unauthorizedApiError">A instância retornou um erro - Não autorizado. Verifique suas credenciais e tente novamente</string>
     <string name="loginTokenError">Token é obrigatório</string>
     <string name="prDeletedFork">Fork excluído</string>
@@ -508,19 +528,20 @@
     <string name="resetMostReposCounter">Counter is reset successfully</string>
     <string name="resetCounterDialogMessage">Do you want to reset counter for repository %s?</string>
     <string name="resetCounterAllDialogMessage">This will reset all the counters for this account repositories.</string>
-    <string name="appearanceHintText">Themes, fonts, badges</string>
+    <string name="appearanceHintText">Themes, fonts, badges, translation</string>
     <string name="securityHintText">Biometric authentication, SSL certificates, cache</string>
     <string name="languagesHintText">Idiomas</string>
     <string name="reportsHintText">Relatórios de erros</string>
     <string name="rateAppHintText">Se você gosta do GitNex você pode dar um joinha</string>
     <string name="aboutAppHintText">App version, build, user instance version</string>
+    <string name="codeEditorHintText">Syntax color, indentation</string>
     <string name="archivedRepository">Arquivado</string>
     <string name="archivedRepositoryMessage">This repo is archived. You can view files, but cannot push or open issues/pull-requests.</string>
     <string name="accountDeletedMessage">Conta excluída com êxito</string>
     <string name="removeAccountPopupTitle">Excluir Conta</string>
     <string name="removeAccountPopupMessage">Are you sure you want to remove this account from the app?\n\nThis will remove all the data related to this account on the app only.</string>
     <string name="addNewAccount">Nova Conta</string>
-    <string name="addNewAccountText">Adicionar Nova Conta</string>
+    <string name="addNewAccountText">Add Account</string>
     <string name="accountAlreadyExistsError">Esta conta já existe no app</string>
     <string name="accountAddedMessage">Conta adicionada com êxito</string>
     <string name="switchAccountSuccess">Alterado para a conta : %1$s@%2$s</string>
@@ -528,14 +549,17 @@
     <string name="pageTitleNotifications">Notificações</string>
     <string name="noDataNotifications">All caught up 🚀</string>
     <string name="notificationsPollingHeaderText">Atraso da Enquete das Notificações</string>
-    <string name="pollingDelaySelectedText">%d Minutos</string>
+    <string name="pollingDelay15Minutes">15 Minutes</string>
+    <string name="pollingDelay30Minutes">30 Minutes</string>
+    <string name="pollingDelay45Minutes">45 Minutes</string>
+    <string name="pollingDelay1Hour">1 Hour</string>
     <string name="pollingDelayDialogHeaderText">Selecionar atraso da votação</string>
     <string name="pollingDelayDialogDescriptionText">Escolha um atraso no qual o GitNex tenta fazer pesquisa de novas notificações</string>
     <string name="markAsRead">Marcar como lido</string>
     <string name="markAsUnread">Marcar como não lido</string>
     <string name="pinNotification">Fixar</string>
     <string name="markedNotificationsAsRead">Todas as notificações marcadas como lidas</string>
-    <string name="notificationsHintText">Polling delay, light, vibration</string>
+    <string name="notificationsHintText">Polling delay</string>
     <string name="enableNotificationsHeaderText">Enable Notifications</string>
     <string name="enableLightsHeaderText">Enable Light</string>
     <string name="enableVibrationHeaderText">Enable Vibration</string>
@@ -548,6 +572,7 @@
         <item quantity="one">You have %s new notification</item>
         <item quantity="other">You have %s new notifications</item>
     </plurals>
+    <string name="openAppSettings">To receive notifications, you must enable notifications for GitNex. Tap Open to access your phone settings and enable notifications.</string>
     <string name="isRead">Lida</string>
     <string name="isUnread">Não Lida</string>
     <string name="repoSettingsTitle">Configurações do repositório</string>
@@ -594,9 +619,9 @@
     <string name="prClosed">Pull Request closed</string>
     <string name="prReopened">Pull Request reopened</string>
     <string name="prMergeInfo">Pull Request Info</string>
-    <string name="accountDoesNotExist">It seems that account for URI %1$s does not exists in the app. You can add one by tapping on the Add New Account button.</string>
+    <string name="accountDoesNotExist">It seems that the account for URI %1$s does not exist in the app. You can add one by tapping on the Add New Account button.</string>
     <string name="launchApp">Ir para o Aplicativo</string>
-    <string name="noActionText">GitNex cannot handle the requested resource, you can open an issue at the project repository as an improvement with providing details of the work. Just launch a default screen for now from the buttons below, it can be changed from settings.</string>
+    <string name="noActionText">GitNex cannot handle the requested resource. You can open an issue at the project repository as an improvement, providing details of the work. Just launch a default screen for now from the buttons below; it can be changed from settings.</string>
     <string name="biometricAuthTitle">Biometric Authentication</string>
     <string name="biometricAuthSubTitle">Unlock using your biometric credentials</string>
     <string name="biometricNotSupported">No biometric features available on this device</string>
@@ -640,6 +665,8 @@
     <string name="notLoggedIn">%s \u25CF not logged in</string>
     <string name="followSystem">Follow system (Light/Dark)</string>
     <string name="followSystemBlack">Follow system (Light/Pitch Black)</string>
+    <string name="dynamicColorsFollowSystem">Dynamic colors - Follow system (Light/Dark)</string>
+    <string name="codebergDark">Codeberg (Dark)</string>
     <string name="repoForkOf">Fork of: %s</string>
     <string name="adoptRepo">Adopt</string>
     <string name="repoAdopted">Adopted repository %s</string>
@@ -663,13 +690,14 @@
     <string name="newNoteContentHint">Start taking your notes here</string>
     <string name="noteDateTime">Created %s</string>
     <string name="noteTimeModified">Updated %s</string>
-    <string name="noteDeleteDialoMessage">Do you really want to delete this note?</string>
+    <string name="noteDeleteDialogMessage">Do you really want to delete this note?</string>
     <plurals name="noteDeleteMessage">
         <item quantity="one">Note deleted successfully</item>
         <item quantity="other">Notes deleted successfully</item>
     </plurals>
     <string name="notesAllDeletionMessage">This will delete all of your notes. This action cannot be undone.</string>
     <!-- timeline -->
+    <string name="commitsText">commit</string>
     <string name="commitText">commit</string>
     <string name="timelineAddedCommit">%1$s added %2$s %3$s</string>
     <!-- the | is replaced by the label -->
@@ -682,6 +710,7 @@
     <string name="timelineAssigneesAssigned">%1$s was assigned by %2$s %3$s</string>
     <string name="timelineMilestoneAdded">%1$s added this to the %2$s milestone %3$s</string>
     <string name="timelineMilestoneRemoved">%1$s removed this from the %2$s milestone %3$s</string>
+    <string name="timelineMilestoneDeleted">%1$s added this to a deleted milestone %2$s</string>
     <string name="timelineStatusClosedIssue">%1$s closed this issue %2$s</string>
     <string name="timelineStatusReopenedIssue">%1$s reopened this issue %2$s</string>
     <string name="timelineStatusReopenedPr">%1$s reopened this pull request %2$s</string>
@@ -710,7 +739,39 @@
     <string name="timelineRefIssue">%1$s referenced this issue in #%2$d %3$s</string>
     <string name="timelineRefPr">%1$s referenced this pull request in #%2$d %3$s</string>
     <string name="timelineStatusRefIssue"><![CDATA[%1$s referenced this issue from a <font color=\'%2$d\'>%3$s</font> %4$s]]></string>
+    <string name="timelineReviewLeftComment">%1$s left a comment: %2$s %3$s</string>
+    <string name="timelinePinned">%1$s pinned this %2$s</string>
     <string name="commitStatuses">Statuses</string>
     <string name="statusNoUrl">This status has no linked target URL.</string>
     <string name="starredRepos">Starred Repos</string>
+    <string name="lang_statistics">Language Statistics</string>
+    <string name="dashboard">Dashboard</string>
+    <string name="createdRepository">created repository</string>
+    <string name="renamedRepository">renamed repository from %1$s to</string>
+    <string name="starredRepository">starred</string>
+    <string name="transferredRepository">transferred repository %1$s to</string>
+    <string name="createdBranch">created branch %1$s in</string>
+    <string name="pushedTo">pushed to %1$s at</string>
+    <string name="openedIssue">opened issue</string>
+    <string name="commentedOnIssue">commented on issue</string>
+    <string name="closedIssue">closed issue</string>
+    <string name="reopenedIssue">reopened issue</string>
+    <string name="createdPR">created pull request</string>
+    <string name="closedPR">closed pull request</string>
+    <string name="reopenedPR">reopened pull request</string>
+    <string name="mergedPR">merged pull request</string>
+    <string name="approved">approved</string>
+    <string name="suggestedChanges">suggested changes for</string>
+    <string name="commentedOnPR">commented on pull request</string>
+    <string name="autoMergePR">automatically merged pull request</string>
+    <string name="deletedBranch">deleted branch %1$s at</string>
+    <string name="pushedTag">pushed tag %1$s to</string>
+    <string name="deletedTag">deleted tag %1$s from</string>
+    <string name="releasedBranch">released %1$s at</string>
+    <string name="syncedCommits">synced commits to %1$s at</string>
+    <string name="syncedRefs">synced new reference %1$s to</string>
+    <string name="syncedDeletedRefs">synced and deleted reference %1$s at</string>
+    <string name="attachment">Attachment</string>
+    <string name="attachments">Attachments</string>
+    <string name="attachmentsSaveError">An issue was created but cannot process attachments at this time. Check the server logs for more details.</string>
 </resources>

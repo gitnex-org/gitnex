@@ -99,6 +99,7 @@ Thanks to all the open source libraries, contributors, and donors.
 - [lucide-icons/lucide](https://github.com/lucide-icons/lucide)
 - [primer/octicons](https://github.com/primer/octicons)
 - [google/material-design-icons](https://github.com/google/material-design-icons)
+- [tabler/tabler-icons](https://github.com/tabler/tabler-icons)
 
 [Follow me on Fediverse - mastodon.social/@mmarif](https://mastodon.social/@mmarif)
 

@@ -16,17 +16,17 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="vertical"
-            android:paddingTop="10dp">
+            android:paddingTop="@dimen/dimen10dp">
 
             <LinearLayout
                 android:id="@+id/generalFrame"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginBottom="5dp"
+                android:layout_marginBottom="@dimen/dimen6dp"
                 android:background="?android:attr/selectableItemBackground"
                 android:gravity="center_vertical"
                 android:orientation="horizontal"
-                android:padding="15dp">
+                android:padding="@dimen/dimen16dp">
 
                 <ImageView
                     android:layout_width="wrap_content"
@@ -37,8 +37,8 @@
                 <LinearLayout
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
-                    android:layout_marginStart="10dp"
-                    android:layout_marginEnd="10dp"
+                    android:layout_marginStart="@dimen/dimen10dp"
+                    android:layout_marginEnd="@dimen/dimen10dp"
                     android:layout_weight="1"
                     android:orientation="vertical">
 
@@ -46,22 +46,22 @@
                         android:id="@+id/tvGeneral"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:paddingStart="12dp"
-                        android:paddingEnd="12dp"
+                        android:paddingStart="@dimen/dimen12dp"
+                        android:paddingEnd="@dimen/dimen12dp"
                         android:text="@string/settingsGeneralHeader"
                         android:textColor="?attr/primaryTextColor"
-                        android:textSize="18sp"/>
+                        android:textSize="@dimen/dimen18sp" />
 
                     <TextView
                         android:id="@+id/generalHintText"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:layout_gravity="center_vertical"
-                        android:paddingStart="12dp"
-                        android:paddingEnd="12dp"
+                        android:paddingStart="@dimen/dimen12dp"
+                        android:paddingEnd="@dimen/dimen12dp"
                         android:text="@string/generalHintText"
                         android:textColor="?attr/primaryTextColor"
-                        android:textSize="12sp"/>
+                        android:textSize="@dimen/dimen12sp" />
 
                 </LinearLayout>
 
@@ -77,11 +77,11 @@
                 android:id="@+id/appearanceFrame"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginBottom="5dp"
+                android:layout_marginBottom="@dimen/dimen6dp"
                 android:background="?android:attr/selectableItemBackground"
                 android:gravity="center_vertical"
                 android:orientation="horizontal"
-                android:padding="15dp">
+                android:padding="@dimen/dimen16dp">
 
                 <ImageView
                     android:layout_width="wrap_content"
@@ -92,8 +92,8 @@
                 <LinearLayout
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
-                    android:layout_marginStart="10dp"
-                    android:layout_marginEnd="10dp"
+                    android:layout_marginStart="@dimen/dimen10dp"
+                    android:layout_marginEnd="@dimen/dimen10dp"
                     android:layout_weight="1"
                     android:orientation="vertical">
 
@@ -101,22 +101,22 @@
                         android:id="@+id/tvAppearance"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:paddingStart="12dp"
-                        android:paddingEnd="12dp"
+                        android:paddingStart="@dimen/dimen12dp"
+                        android:paddingEnd="@dimen/dimen12dp"
                         android:text="@string/settingsAppearanceHeader"
                         android:textColor="?attr/primaryTextColor"
-                        android:textSize="18sp"/>
+                        android:textSize="@dimen/dimen18sp" />
 
                     <TextView
                         android:id="@+id/appearanceHintText"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:layout_gravity="center_vertical"
-                        android:paddingStart="12dp"
-                        android:paddingEnd="12dp"
+                        android:paddingStart="@dimen/dimen12dp"
+                        android:paddingEnd="@dimen/dimen12dp"
                         android:text="@string/appearanceHintText"
                         android:textColor="?attr/primaryTextColor"
-                        android:textSize="12sp"/>
+                        android:textSize="@dimen/dimen12sp" />
 
                 </LinearLayout>
 
@@ -132,11 +132,11 @@
                 android:id="@+id/codeEditorFrame"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginBottom="5dp"
+                android:layout_marginBottom="@dimen/dimen6dp"
                 android:background="?android:attr/selectableItemBackground"
                 android:gravity="center_vertical"
                 android:orientation="horizontal"
-                android:padding="15dp">
+                android:padding="@dimen/dimen16dp">
 
                 <ImageView
                     android:layout_width="wrap_content"
@@ -147,8 +147,8 @@
                 <LinearLayout
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
-                    android:layout_marginStart="10dp"
-                    android:layout_marginEnd="10dp"
+                    android:layout_marginStart="@dimen/dimen10dp"
+                    android:layout_marginEnd="@dimen/dimen10dp"
                     android:layout_weight="1"
                     android:orientation="vertical">
 
@@ -156,22 +156,22 @@
                         android:id="@+id/codeEditor"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:paddingStart="12dp"
-                        android:paddingEnd="12dp"
+                        android:paddingStart="@dimen/dimen12dp"
+                        android:paddingEnd="@dimen/dimen12dp"
                         android:text="@string/codeEditor"
                         android:textColor="?attr/primaryTextColor"
-                        android:textSize="18sp"/>
+                        android:textSize="@dimen/dimen18sp" />
 
                     <TextView
                         android:id="@+id/codeEditorHintText"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:layout_gravity="center_vertical"
-                        android:paddingStart="12dp"
-                        android:paddingEnd="12dp"
+                        android:paddingStart="@dimen/dimen12dp"
+                        android:paddingEnd="@dimen/dimen12dp"
                         android:text="@string/codeEditorHintText"
                         android:textColor="?attr/primaryTextColor"
-                        android:textSize="12sp"/>
+                        android:textSize="@dimen/dimen12sp" />
 
                 </LinearLayout>
 
@@ -179,7 +179,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:contentDescription="@string/generalImgContentText"
-                    app:srcCompat="@drawable/ic_chevron_right"/>
+                    app:srcCompat="@drawable/ic_chevron_right" />
 
             </LinearLayout>
 
@@ -187,23 +187,23 @@
                 android:id="@+id/securityFrame"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginBottom="5dp"
+                android:layout_marginBottom="@dimen/dimen6dp"
                 android:background="?android:attr/selectableItemBackground"
                 android:gravity="center_vertical"
                 android:orientation="horizontal"
-                android:padding="15dp">
+                android:padding="@dimen/dimen16dp">
 
                 <ImageView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:contentDescription="@string/generalImgContentText"
-                    app:srcCompat="@drawable/ic_security"/>
+                    app:srcCompat="@drawable/ic_security" />
 
                 <LinearLayout
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
-                    android:layout_marginStart="10dp"
-                    android:layout_marginEnd="10dp"
+                    android:layout_marginStart="@dimen/dimen10dp"
+                    android:layout_marginEnd="@dimen/dimen10dp"
                     android:layout_weight="1"
                     android:orientation="vertical">
 
@@ -211,22 +211,22 @@
                         android:id="@+id/tvSecurity"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:paddingStart="12dp"
-                        android:paddingEnd="12dp"
+                        android:paddingStart="@dimen/dimen12dp"
+                        android:paddingEnd="@dimen/dimen12dp"
                         android:text="@string/settingsSecurityHeader"
                         android:textColor="?attr/primaryTextColor"
-                        android:textSize="18sp"/>
+                        android:textSize="@dimen/dimen18sp" />
 
                     <TextView
                         android:id="@+id/securityHintText"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:layout_gravity="center_vertical"
-                        android:paddingStart="12dp"
-                        android:paddingEnd="12dp"
+                        android:paddingStart="@dimen/dimen12dp"
+                        android:paddingEnd="@dimen/dimen12dp"
                         android:text="@string/securityHintText"
                         android:textColor="?attr/primaryTextColor"
-                        android:textSize="12sp"/>
+                        android:textSize="@dimen/dimen12sp" />
 
                 </LinearLayout>
 
@@ -234,7 +234,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:contentDescription="@string/generalImgContentText"
-                    app:srcCompat="@drawable/ic_chevron_right"/>
+                    app:srcCompat="@drawable/ic_chevron_right" />
 
             </LinearLayout>
 
@@ -242,23 +242,23 @@
                 android:id="@+id/notificationsFrame"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginBottom="5dp"
+                android:layout_marginBottom="@dimen/dimen6dp"
                 android:background="?android:attr/selectableItemBackground"
                 android:gravity="center_vertical"
                 android:orientation="horizontal"
-                android:padding="15dp">
+                android:padding="@dimen/dimen16dp">
 
                 <ImageView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:contentDescription="@string/generalImgContentText"
-                    app:srcCompat="@drawable/ic_notifications"/>
+                    app:srcCompat="@drawable/ic_notifications" />
 
                 <LinearLayout
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
-                    android:layout_marginStart="10dp"
-                    android:layout_marginEnd="10dp"
+                    android:layout_marginStart="@dimen/dimen10dp"
+                    android:layout_marginEnd="@dimen/dimen10dp"
                     android:layout_weight="1"
                     android:orientation="vertical">
 
@@ -266,22 +266,22 @@
                         android:id="@+id/notificationsHeader"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:paddingStart="12dp"
-                        android:paddingEnd="12dp"
+                        android:paddingStart="@dimen/dimen12dp"
+                        android:paddingEnd="@dimen/dimen12dp"
                         android:text="@string/pageTitleNotifications"
                         android:textColor="?attr/primaryTextColor"
-                        android:textSize="18sp"/>
+                        android:textSize="@dimen/dimen18sp" />
 
                     <TextView
                         android:id="@+id/notificationsHintText"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:layout_gravity="center_vertical"
-                        android:paddingStart="12dp"
-                        android:paddingEnd="12dp"
+                        android:paddingStart="@dimen/dimen12dp"
+                        android:paddingEnd="@dimen/dimen12dp"
                         android:text="@string/notificationsHintText"
                         android:textColor="?attr/primaryTextColor"
-                        android:textSize="12sp"/>
+                        android:textSize="@dimen/dimen12sp" />
 
                 </LinearLayout>
 
@@ -289,7 +289,62 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:contentDescription="@string/generalImgContentText"
-                    app:srcCompat="@drawable/ic_chevron_right"/>
+                    app:srcCompat="@drawable/ic_chevron_right" />
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:id="@+id/backupFrame"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="@dimen/dimen6dp"
+                android:background="?android:attr/selectableItemBackground"
+                android:gravity="center_vertical"
+                android:orientation="horizontal"
+                android:padding="@dimen/dimen16dp">
+
+                <ImageView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:contentDescription="@string/generalImgContentText"
+                    app:srcCompat="@drawable/ic_export" />
+
+                <LinearLayout
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="@dimen/dimen10dp"
+                    android:layout_marginEnd="@dimen/dimen10dp"
+                    android:layout_weight="1"
+                    android:orientation="vertical">
+
+                    <TextView
+                        android:id="@+id/backupData"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:paddingStart="@dimen/dimen12dp"
+                        android:paddingEnd="@dimen/dimen12dp"
+                        android:text="@string/backup"
+                        android:textColor="?attr/primaryTextColor"
+                        android:textSize="@dimen/dimen18sp" />
+
+                    <TextView
+                        android:id="@+id/backupDataHintText"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center_vertical"
+                        android:paddingStart="@dimen/dimen12dp"
+                        android:paddingEnd="@dimen/dimen12dp"
+                        android:text="@string/backupRestoreHintText"
+                        android:textColor="?attr/primaryTextColor"
+                        android:textSize="@dimen/dimen12sp" />
+
+                </LinearLayout>
+
+                <ImageView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:contentDescription="@string/generalImgContentText"
+                    app:srcCompat="@drawable/ic_chevron_right" />
 
             </LinearLayout>
 
@@ -297,23 +352,23 @@
                 android:id="@+id/rateAppFrame"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginBottom="5dp"
+                android:layout_marginBottom="@dimen/dimen6dp"
                 android:background="?android:attr/selectableItemBackground"
                 android:gravity="center_vertical"
                 android:orientation="horizontal"
-                android:padding="15dp">
+                android:padding="@dimen/dimen16dp">
 
                 <ImageView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:contentDescription="@string/generalImgContentText"
-                    app:srcCompat="@drawable/ic_like"/>
+                    app:srcCompat="@drawable/ic_like" />
 
                 <LinearLayout
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
-                    android:layout_marginStart="10dp"
-                    android:layout_marginEnd="10dp"
+                    android:layout_marginStart="@dimen/dimen10dp"
+                    android:layout_marginEnd="@dimen/dimen10dp"
                     android:layout_weight="1"
                     android:orientation="vertical">
 
@@ -321,22 +376,22 @@
                         android:id="@+id/rateApp"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:paddingStart="12dp"
-                        android:paddingEnd="12dp"
+                        android:paddingStart="@dimen/dimen12dp"
+                        android:paddingEnd="@dimen/dimen12dp"
                         android:text="@string/navRate"
                         android:textColor="?attr/primaryTextColor"
-                        android:textSize="18sp"/>
+                        android:textSize="@dimen/dimen18sp" />
 
                     <TextView
                         android:id="@+id/rateAppHintText"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:layout_gravity="center_vertical"
-                        android:paddingStart="12dp"
-                        android:paddingEnd="12dp"
+                        android:paddingStart="@dimen/dimen12dp"
+                        android:paddingEnd="@dimen/dimen12dp"
                         android:text="@string/rateAppHintText"
                         android:textColor="?attr/primaryTextColor"
-                        android:textSize="12sp"/>
+                        android:textSize="@dimen/dimen12sp" />
 
                 </LinearLayout>
 
@@ -356,7 +411,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:contentDescription="@string/generalImgContentText"
-                    app:srcCompat="@drawable/ic_info"/>
+                    app:srcCompat="@drawable/ic_info" />
 
                 <LinearLayout
                     android:layout_width="0dp"
@@ -374,7 +429,7 @@
                         android:paddingEnd="@dimen/dimen12dp"
                         android:text="@string/navAbout"
                         android:textColor="?attr/primaryTextColor"
-                        android:textSize="@dimen/dimen18sp"/>
+                        android:textSize="@dimen/dimen18sp" />
 
                     <TextView
                         android:id="@+id/aboutAppHintText"
@@ -385,7 +440,7 @@
                         android:paddingEnd="@dimen/dimen12dp"
                         android:text="@string/aboutAppHintText"
                         android:textColor="?attr/primaryTextColor"
-                        android:textSize="@dimen/dimen12sp"/>
+                        android:textSize="@dimen/dimen12sp" />
 
                 </LinearLayout>
 
@@ -405,7 +460,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:contentDescription="@string/generalImgContentText"
-                    app:srcCompat="@drawable/ic_logout"/>
+                    app:srcCompat="@drawable/ic_logout" />
 
                 <LinearLayout
                     android:layout_width="0dp"
@@ -423,7 +478,7 @@
                         android:paddingEnd="@dimen/dimen12dp"
                         android:text="@string/navLogout"
                         android:textColor="?attr/primaryTextColor"
-                        android:textSize="@dimen/dimen18sp"/>
+                        android:textSize="@dimen/dimen18sp" />
 
                 </LinearLayout>
 

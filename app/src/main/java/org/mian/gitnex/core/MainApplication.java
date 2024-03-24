@@ -52,18 +52,10 @@ public class MainApplication extends Application {
 
 		Notifications.createChannels(appCtx);
 		DynamicColors.applyToActivitiesIfAvailable(this);
-	}
-
-	@Override
-	protected void attachBaseContext(Context context) {
-
-		super.attachBaseContext(context);
-
-		tinyDB = TinyDB.getInstance(context);
 
 		if (Boolean.parseBoolean(
 				AppDatabaseSettings.getSettingsValue(
-						context, AppDatabaseSettings.APP_CRASH_REPORTS_KEY))) {
+						getApplicationContext(), AppDatabaseSettings.APP_CRASH_REPORTS_KEY))) {
 
 			CoreConfigurationBuilder ACRABuilder = new CoreConfigurationBuilder();
 
@@ -91,7 +83,7 @@ public class MainApplication extends Application {
 									getResources()
 											.getString(
 													R.string.crashReportEmailSubject,
-													AppUtil.getAppBuildNo(context)))
+													AppUtil.getAppBuildNo(getApplicationContext())))
 							.withReportAsFile(true)
 							.build());
 
@@ -100,6 +92,14 @@ public class MainApplication extends Application {
 
 			ACRA.init(this, ACRABuilder);
 		}
+	}
+
+	@Override
+	protected void attachBaseContext(Context context) {
+
+		super.attachBaseContext(context);
+
+		tinyDB = TinyDB.getInstance(context);
 	}
 
 	public boolean switchToAccount(UserAccount userAccount, boolean tmp) {

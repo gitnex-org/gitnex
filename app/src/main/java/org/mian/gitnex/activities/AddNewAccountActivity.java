@@ -107,14 +107,14 @@ public class AddNewAccountActivity extends BaseActivity {
 				return;
 			}
 
-			if (instanceUrlET.equals("")) {
+			if (instanceUrlET.isEmpty()) {
 
 				SnackBar.error(
 						ctx, findViewById(android.R.id.content), getString(R.string.emptyFieldURL));
 				return;
 			}
 
-			if (loginToken.equals("")) {
+			if (loginToken.isEmpty()) {
 
 				SnackBar.error(
 						ctx,

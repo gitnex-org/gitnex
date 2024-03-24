@@ -16,6 +16,7 @@ import org.mian.gitnex.R;
 import org.mian.gitnex.activities.BaseActivity;
 import org.mian.gitnex.activities.MainActivity;
 import org.mian.gitnex.activities.SettingsAppearanceActivity;
+import org.mian.gitnex.activities.SettingsBackupRestoreActivity;
 import org.mian.gitnex.activities.SettingsCodeEditorActivity;
 import org.mian.gitnex.activities.SettingsGeneralActivity;
 import org.mian.gitnex.activities.SettingsNotificationsActivity;
@@ -44,16 +45,14 @@ public class SettingsFragment extends Fragment {
 				FragmentSettingsBinding.inflate(inflater, container, false);
 
 		ctx = getContext();
+		assert ctx != null;
 		materialAlertDialogBuilder =
 				new MaterialAlertDialogBuilder(ctx, R.style.ThemeOverlay_Material3_Dialog_Alert);
 
 		((MainActivity) requireActivity())
 				.setActionBarTitle(getResources().getString(R.string.navSettings));
 
-		if (((BaseActivity) requireActivity()).getAccount().requiresVersion("1.12.3")) {
-
-			fragmentSettingsBinding.notificationsFrame.setVisibility(View.VISIBLE);
-		}
+		fragmentSettingsBinding.notificationsFrame.setVisibility(View.VISIBLE);
 
 		fragmentSettingsBinding.generalFrame.setOnClickListener(
 				generalFrameCall -> startActivity(new Intent(ctx, SettingsGeneralActivity.class)));
@@ -69,6 +68,14 @@ public class SettingsFragment extends Fragment {
 
 		fragmentSettingsBinding.notificationsFrame.setOnClickListener(
 				v1 -> startActivity(new Intent(ctx, SettingsNotificationsActivity.class)));
+
+		fragmentSettingsBinding.backupData.setText(
+				getString(
+						R.string.backupRestore,
+						getString(R.string.backup),
+						getString(R.string.restore)));
+		fragmentSettingsBinding.backupFrame.setOnClickListener(
+				v1 -> startActivity(new Intent(ctx, SettingsBackupRestoreActivity.class)));
 
 		fragmentSettingsBinding.rateAppFrame.setOnClickListener(rateApp -> rateThisApp());
 
@@ -102,36 +109,32 @@ public class SettingsFragment extends Fragment {
 				((BaseActivity) requireActivity()).getAccount().getServerVersion().toString());
 
 		aboutAppDialogBinding.donationLinkPatreon.setOnClickListener(
-				v12 -> {
-					AppUtil.openUrlInBrowser(
-							requireContext(),
-							getResources().getString(R.string.supportLinkPatreon));
-				});
+				v12 ->
+						AppUtil.openUrlInBrowser(
+								requireContext(),
+								getResources().getString(R.string.supportLinkPatreon)));
 
 		aboutAppDialogBinding.donationLinkBuyMeaCoffee.setOnClickListener(
-				v11 -> {
-					AppUtil.openUrlInBrowser(
-							requireContext(),
-							getResources().getString(R.string.supportLinkBuyMeaCoffee));
-				});
+				v11 ->
+						AppUtil.openUrlInBrowser(
+								requireContext(),
+								getResources().getString(R.string.supportLinkBuyMeaCoffee)));
 
 		aboutAppDialogBinding.translateLink.setOnClickListener(
-				v13 -> {
-					AppUtil.openUrlInBrowser(
-							requireContext(), getResources().getString(R.string.crowdInLink));
-				});
+				v13 ->
+						AppUtil.openUrlInBrowser(
+								requireContext(), getResources().getString(R.string.crowdInLink)));
 
 		aboutAppDialogBinding.appWebsite.setOnClickListener(
-				v14 -> {
-					AppUtil.openUrlInBrowser(
-							requireContext(), getResources().getString(R.string.appWebsiteLink));
-				});
+				v14 ->
+						AppUtil.openUrlInBrowser(
+								requireContext(),
+								getResources().getString(R.string.appWebsiteLink)));
 
 		aboutAppDialogBinding.feedback.setOnClickListener(
-				v14 -> {
-					AppUtil.openUrlInBrowser(
-							requireContext(), getResources().getString(R.string.feedbackLink));
-				});
+				v14 ->
+						AppUtil.openUrlInBrowser(
+								requireContext(), getResources().getString(R.string.feedbackLink)));
 
 		if (AppUtil.isPro(requireContext())) {
 			aboutAppDialogBinding.layoutFrame1.setVisibility(View.GONE);

@@ -1,7 +1,6 @@
 package org.mian.gitnex.helpers;
 
 import android.content.Context;
-import android.util.Log;
 import org.mian.gitnex.database.api.AppSettingsApi;
 import org.mian.gitnex.database.api.BaseApi;
 import org.mian.gitnex.database.models.AppSettings;
@@ -216,8 +215,6 @@ public class AppDatabaseSettings {
 	public static void prefsMigration(Context ctx) {
 
 		TinyDB tinyDB = TinyDB.getInstance(ctx);
-
-		Log.e("TestVal", "prefsMigration-ran");
 
 		if (tinyDB.checkForExistingPref("themeId")) {
 			AppDatabaseSettings.updateSettingsValue(

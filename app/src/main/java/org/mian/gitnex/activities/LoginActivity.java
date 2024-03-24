@@ -1,19 +1,30 @@
 package org.mian.gitnex.activities;
 
+import static org.mian.gitnex.helpers.BackupUtil.checkpointIfWALEnabled;
+import static org.mian.gitnex.helpers.BackupUtil.copyFile;
+import static org.mian.gitnex.helpers.BackupUtil.getTempDir;
+import static org.mian.gitnex.helpers.BackupUtil.unzip;
+
+import android.app.Activity;
+import android.content.Context;
 import android.content.Intent;
+import android.net.Uri;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.ArrayAdapter;
-import android.widget.AutoCompleteTextView;
-import android.widget.Button;
-import android.widget.EditText;
-import android.widget.RadioGroup;
+import androidx.activity.result.ActivityResultLauncher;
+import androidx.activity.result.contract.ActivityResultContracts;
 import androidx.annotation.NonNull;
 import com.google.android.material.dialog.MaterialAlertDialogBuilder;
 import io.mikael.urlbuilder.UrlBuilder;
+import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.IOException;
+import java.io.InputStream;
 import java.net.URI;
 import java.nio.charset.StandardCharsets;
 import java.util.List;
+import java.util.Objects;
 import java.util.UUID;
 import okhttp3.Credentials;
 import org.gitnex.tea4j.v2.models.AccessToken;
@@ -42,36 +53,24 @@ import retrofit2.Callback;
  */
 public class LoginActivity extends BaseActivity {
 
-	private Button loginButton;
-	private EditText instanceUrlET, loginUidET, loginPassword, otpCode, loginTokenCode;
-	private AutoCompleteTextView protocolSpinner;
-	private RadioGroup loginMethod;
+	private ActivityLoginBinding activityLoginBinding;
 	private String device_id = "token";
 	private String selectedProtocol;
 	private URI instanceUrl;
 	private Version giteaVersion;
 	private int maxResponseItems = 50;
 	private int defaultPagingNumber = 25;
+	private final String DATABASE_NAME = "gitnex";
 
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
 
 		super.onCreate(savedInstanceState);
 
-		ActivityLoginBinding activityLoginBinding =
-				ActivityLoginBinding.inflate(getLayoutInflater());
+		activityLoginBinding = ActivityLoginBinding.inflate(getLayoutInflater());
 		setContentView(activityLoginBinding.getRoot());
 
 		NetworkStatusObserver networkStatusObserver = NetworkStatusObserver.getInstance(ctx);
-
-		loginButton = activityLoginBinding.loginButton;
-		instanceUrlET = activityLoginBinding.instanceUrl;
-		loginUidET = activityLoginBinding.loginUid;
-		loginPassword = activityLoginBinding.loginPasswd;
-		otpCode = activityLoginBinding.otpCode;
-		protocolSpinner = activityLoginBinding.httpsSpinner;
-		loginMethod = activityLoginBinding.loginMethod;
-		loginTokenCode = activityLoginBinding.loginTokenCode;
 
 		activityLoginBinding.appVersion.setText(AppUtil.getAppVersion(appCtx));
 
@@ -79,11 +78,11 @@ public class LoginActivity extends BaseActivity {
 				new ArrayAdapter<>(
 						LoginActivity.this, R.layout.list_spinner_items, Protocol.values());
 
-		instanceUrlET.setText(getIntent().getStringExtra("instanceUrl"));
+		activityLoginBinding.instanceUrl.setText(getIntent().getStringExtra("instanceUrl"));
 
-		protocolSpinner.setAdapter(adapterProtocols);
-		protocolSpinner.setSelection(0);
-		protocolSpinner.setOnItemClickListener(
+		activityLoginBinding.httpsSpinner.setAdapter(adapterProtocols);
+		activityLoginBinding.httpsSpinner.setSelection(0);
+		activityLoginBinding.httpsSpinner.setOnItemClickListener(
 				(parent, view, position, id) -> {
 					selectedProtocol = String.valueOf(parent.getItemAtPosition(position));
 
@@ -95,7 +94,7 @@ public class LoginActivity extends BaseActivity {
 					}
 				});
 
-		if (R.id.loginToken == loginMethod.getCheckedRadioButtonId()) {
+		if (R.id.loginToken == activityLoginBinding.loginMethod.getCheckedRadioButtonId()) {
 			AppUtil.setMultiVisibility(
 					View.GONE,
 					findViewById(R.id.login_uidLayout),
@@ -111,7 +110,7 @@ public class LoginActivity extends BaseActivity {
 			findViewById(R.id.loginTokenCodeLayout).setVisibility(View.GONE);
 		}
 
-		loginMethod.setOnCheckedChangeListener(
+		activityLoginBinding.loginMethod.setOnCheckedChangeListener(
 				(group, checkedId) -> {
 					if (checkedId == R.id.loginToken) {
 						AppUtil.setMultiVisibility(
@@ -138,7 +137,7 @@ public class LoginActivity extends BaseActivity {
 										enableProcessButton();
 									} else {
 										disableProcessButton();
-										loginButton.setText(
+										activityLoginBinding.loginButton.setText(
 												getResources().getString(R.string.btnLogin));
 										SnackBar.error(
 												ctx,
@@ -149,10 +148,28 @@ public class LoginActivity extends BaseActivity {
 
 		loadDefaults();
 
-		loginButton.setOnClickListener(
+		activityLoginBinding.loginButton.setOnClickListener(
 				view -> {
 					disableProcessButton();
 					login();
+				});
+
+		activityLoginBinding.restoreFromBackup.setOnClickListener(
+				restoreDb -> {
+					MaterialAlertDialogBuilder materialAlertDialogBuilder =
+							new MaterialAlertDialogBuilder(ctx)
+									.setTitle(R.string.restore)
+									.setMessage(
+											getResources()
+													.getString(R.string.restoreFromBackupPopupText))
+									.setNeutralButton(
+											R.string.cancelButton,
+											(dialog, which) -> dialog.dismiss())
+									.setPositiveButton(
+											R.string.restore,
+											(dialog, which) -> requestRestoreFile());
+
+					materialAlertDialogBuilder.create().show();
 				});
 	}
 
@@ -170,21 +187,33 @@ public class LoginActivity extends BaseActivity {
 				return;
 			}
 
-			String loginUid = loginUidET.getText().toString().replaceAll("[\\uFEFF]", "").trim();
-			String loginPass = loginPassword.getText().toString().trim();
+			String loginUid =
+					Objects.requireNonNull(activityLoginBinding.loginUid.getText())
+							.toString()
+							.replaceAll("[\\uFEFF]", "")
+							.trim();
+			String loginPass =
+					Objects.requireNonNull(activityLoginBinding.loginPasswd.getText())
+							.toString()
+							.trim();
 			String loginToken =
-					loginTokenCode.getText().toString().replaceAll("[\\uFEFF|#]", "").trim();
+					Objects.requireNonNull(activityLoginBinding.loginTokenCode.getText())
+							.toString()
+							.replaceAll("[\\uFEFF|#]", "")
+							.trim();
 
 			LoginType loginType =
-					(loginMethod.getCheckedRadioButtonId() == R.id.loginUsernamePassword)
+					(activityLoginBinding.loginMethod.getCheckedRadioButtonId()
+									== R.id.loginUsernamePassword)
 							? LoginType.BASIC
 							: LoginType.TOKEN;
 
 			URI rawInstanceUrl =
 					UrlBuilder.fromString(
 									UrlHelper.fixScheme(
-											instanceUrlET
-													.getText()
+											Objects.requireNonNull(
+															activityLoginBinding.instanceUrl
+																	.getText())
 													.toString()
 													.replaceAll("[\\uFEFF|#]", "")
 													.trim(),
@@ -199,9 +228,10 @@ public class LoginActivity extends BaseActivity {
 
 			// cache values to make them available the next time the user wants to log in
 			tinyDB.putString("loginType", loginType.name().toLowerCase());
-			tinyDB.putString("instanceUrlRaw", instanceUrlET.getText().toString());
+			tinyDB.putString(
+					"instanceUrlRaw", activityLoginBinding.instanceUrl.getText().toString());
 
-			if (instanceUrlET.getText().toString().equals("")) {
+			if (activityLoginBinding.instanceUrl.getText().toString().isEmpty()) {
 
 				SnackBar.error(
 						ctx, findViewById(android.R.id.content), getString(R.string.emptyFieldURL));
@@ -211,7 +241,8 @@ public class LoginActivity extends BaseActivity {
 
 			if (loginType == LoginType.BASIC) {
 
-				if (otpCode.length() != 0 && otpCode.length() != 6) {
+				if (activityLoginBinding.otpCode.length() != 0
+						&& activityLoginBinding.otpCode.length() != 6) {
 
 					SnackBar.error(
 							ctx,
@@ -221,7 +252,7 @@ public class LoginActivity extends BaseActivity {
 					return;
 				}
 
-				if (loginUid.equals("")) {
+				if (loginUid.isEmpty()) {
 					SnackBar.error(
 							ctx,
 							findViewById(android.R.id.content),
@@ -230,7 +261,7 @@ public class LoginActivity extends BaseActivity {
 					return;
 				}
 
-				if (loginPass.equals("")) {
+				if (loginPass.isEmpty()) {
 					SnackBar.error(
 							ctx,
 							findViewById(android.R.id.content),
@@ -240,15 +271,19 @@ public class LoginActivity extends BaseActivity {
 				}
 
 				int loginOTP =
-						(otpCode.length() > 0)
-								? Integer.parseInt(otpCode.getText().toString().trim())
+						(activityLoginBinding.otpCode.length() > 0)
+								? Integer.parseInt(
+										Objects.requireNonNull(
+														activityLoginBinding.otpCode.getText())
+												.toString()
+												.trim())
 								: 0;
 
 				versionCheck(loginUid, loginPass, loginOTP, loginToken, loginType);
 
 			} else {
 
-				if (loginToken.equals("")) {
+				if (loginToken.isEmpty()) {
 
 					SnackBar.error(
 							ctx,
@@ -311,7 +346,7 @@ public class LoginActivity extends BaseActivity {
 
 		Call<ServerVersion> callVersion;
 
-		if (!loginToken.equals("")) {
+		if (!loginToken.isEmpty()) {
 
 			callVersion =
 					RetrofitClient.getApiInterface(
@@ -700,7 +735,7 @@ public class LoginActivity extends BaseActivity {
 							AccessToken newToken = responseCreate.body();
 							assert newToken != null;
 
-							if (!newToken.getSha1().equals("")) {
+							if (!newToken.getSha1().isEmpty()) {
 
 								Call<User> call =
 										RetrofitClient.getApiInterface(
@@ -836,20 +871,20 @@ public class LoginActivity extends BaseActivity {
 
 		if (tinyDB.getString("loginType").equals(LoginType.BASIC.name().toLowerCase())) {
 
-			loginMethod.check(R.id.loginUsernamePassword);
+			activityLoginBinding.loginMethod.check(R.id.loginUsernamePassword);
 		} else {
 
-			loginMethod.check(R.id.loginToken);
+			activityLoginBinding.loginMethod.check(R.id.loginToken);
 		}
 
-		if (!tinyDB.getString("instanceUrlRaw").equals("")) {
+		if (!tinyDB.getString("instanceUrlRaw").isEmpty()) {
 
-			instanceUrlET.setText(tinyDB.getString("instanceUrlRaw"));
+			activityLoginBinding.instanceUrl.setText(tinyDB.getString("instanceUrlRaw"));
 		}
 
 		if (getAccount() != null && getAccount().getAccount() != null) {
 
-			loginUidET.setText(getAccount().getAccount().getUserName());
+			activityLoginBinding.loginUid.setText(getAccount().getAccount().getUserName());
 		}
 
 		if (!tinyDB.getString("uniqueAppId").isEmpty()) {
@@ -863,18 +898,109 @@ public class LoginActivity extends BaseActivity {
 
 	private void disableProcessButton() {
 
-		loginButton.setText(R.string.processingText);
-		loginButton.setEnabled(false);
+		activityLoginBinding.loginButton.setText(R.string.processingText);
+		activityLoginBinding.loginButton.setEnabled(false);
 	}
 
 	private void enableProcessButton() {
 
-		loginButton.setText(R.string.btnLogin);
-		loginButton.setEnabled(true);
+		activityLoginBinding.loginButton.setText(R.string.btnLogin);
+		activityLoginBinding.loginButton.setEnabled(true);
 	}
 
 	private enum LoginType {
 		BASIC,
 		TOKEN
+	}
+
+	private void requestRestoreFile() {
+
+		Intent intentRestore = new Intent(Intent.ACTION_OPEN_DOCUMENT);
+		intentRestore.addCategory(Intent.CATEGORY_OPENABLE);
+		intentRestore.setType("*/*");
+		String[] mimeTypes = {"application/octet-stream", "application/x-zip"};
+		intentRestore.putExtra(Intent.EXTRA_MIME_TYPES, mimeTypes);
+
+		activityRestoreFileLauncher.launch(intentRestore);
+	}
+
+	ActivityResultLauncher<Intent> activityRestoreFileLauncher =
+			registerForActivityResult(
+					new ActivityResultContracts.StartActivityForResult(),
+					result -> {
+						if (result.getResultCode() == Activity.RESULT_OK) {
+
+							assert result.getData() != null;
+
+							Uri restoreFileUri = result.getData().getData();
+							assert restoreFileUri != null;
+
+							try {
+								InputStream inputStream =
+										getContentResolver().openInputStream(restoreFileUri);
+								restoreDatabaseThread(inputStream);
+							} catch (FileNotFoundException e) {
+								SnackBar.error(
+										ctx,
+										findViewById(android.R.id.content),
+										getString(R.string.restoreError));
+							}
+						}
+					});
+
+	private void restoreDatabaseThread(InputStream inputStream) {
+
+		Thread restoreDatabaseThread =
+				new Thread(
+						() -> {
+							boolean exceptionOccurred = false;
+
+							try {
+
+								String tempDir = getTempDir(ctx).getPath();
+
+								unzip(inputStream, tempDir);
+								checkpointIfWALEnabled(ctx, DATABASE_NAME);
+								restoreDatabaseFile(ctx, tempDir, DATABASE_NAME);
+
+								UserAccountsApi userAccountsApi =
+										BaseApi.getInstance(ctx, UserAccountsApi.class);
+								assert userAccountsApi != null;
+								UserAccount account = userAccountsApi.getAccountById(1);
+								AppUtil.switchToAccount(ctx, account);
+							} catch (final Exception e) {
+
+								exceptionOccurred = true;
+								SnackBar.error(
+										ctx,
+										findViewById(android.R.id.content),
+										getString(R.string.restoreError));
+							} finally {
+								if (!exceptionOccurred) {
+
+									runOnUiThread(this::restartApp);
+								}
+							}
+						});
+
+		restoreDatabaseThread.setDaemon(false);
+		restoreDatabaseThread.start();
+	}
+
+	public void restoreDatabaseFile(Context context, String tempDir, String nameOfFileToRestore)
+			throws IOException {
+
+		File currentDbFile = new File(context.getDatabasePath(DATABASE_NAME).getPath());
+		File newDbFile = new File(tempDir + "/" + nameOfFileToRestore);
+		if (newDbFile.exists()) {
+			copyFile(newDbFile, currentDbFile, false);
+		}
+	}
+
+	public void restartApp() {
+		Intent i = ctx.getPackageManager().getLaunchIntentForPackage(ctx.getPackageName());
+		assert i != null;
+		startActivity(Intent.makeRestartActivityTask(i.getComponent()));
+		Runtime.getRuntime().exit(0);
 	}
 }

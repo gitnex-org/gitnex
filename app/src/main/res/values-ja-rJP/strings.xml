@@ -14,6 +14,8 @@
     <string name="navMyIssues">自分の課題</string>
     <string name="navMostVisited">訪問者の多いリポジトリ</string>
     <string name="navNotes">注記</string>
+    <string name="navAccount">Account Settings</string>
+    <string name="navWatchedRepositories">Watched Repositories</string>
     <!-- menu items -->
     <!-- page titles -->
     <string name="pageTitleNewRepo">新しいリポジトリ</string>
@@ -33,6 +35,7 @@
     <string name="pageTitleAdministration">Administration</string>
     <string name="pageTitleNewPullRequest">新規プルリクエスト</string>
     <string name="pageTitleUsers">ユーザー</string>
+    <string name="pageTitleAddRepository">Add Repository</string>
     <!-- page titles -->
     <string name="repoName">デモ・リポジトリ</string>
     <string name="repoDescription">デモの説明</string>
@@ -43,8 +46,11 @@
     <string name="newRepoDescTintCopy">リポジトリの説明</string>
     <string name="newRepoPrivateCopy">プライベート</string>
     <string name="newRepoOwner">所有者</string>
+    <string name="newRepoIssueLabels">Issue Labels</string>
+    <string name="setAsTemplate">Make repository a template</string>
     <string name="newOrgTintCopy">組織名</string>
     <string name="newOrgDescTintCopy">組織の説明</string>
+    <string name="organizationFullname">%1$s - %2$s</string>
     <string name="userName">ユーザ名</string>
     <string name="passWord">パスワード</string>
     <string name="btnLogin">ログイン</string>
@@ -60,6 +66,7 @@
     <string name="emptyFieldUsername">ユーザー名が必要です</string>
     <string name="emptyFieldPassword">パスワードが必要です</string>
     <string name="protocolEmptyError">プロトコルが必要です</string>
+    <string name="instanceHelperText">Enter URL without http or https. Example: codeberg.org</string>
     <string name="checkNetConnection">ネットワークにアクセスできません。インターネット接続を確認してください</string>
     <string name="repoNameErrorEmpty">リポジトリ名が空です</string>
     <string name="repoNameErrorInvalid">リポジトリ名が無効です。[a&#8211;z A&#8211;Z 0&#8211;9 &#8211; _]</string>
@@ -69,6 +76,7 @@
     <string name="repoCreated">リポジトリが正常に作成されました</string>
     <string name="repoExistsError">この名前のリポジトリは、選択した所有者の下にすでに存在します</string>
     <string name="repoOwnerError">リポジトリの所有者を選択します</string>
+    <string name="repoDefaultBranchError">The default branch must not be empty</string>
     <string name="orgNameErrorEmpty">組織名が空です</string>
     <string name="orgNameErrorInvalid">組織名が無効です。[a&#8211;z A&#8211;Z 0&#8211;9&#8211;_]</string>
     <string name="orgDescError">組織の説明が最大255文字の制限を超えています</string>
@@ -100,7 +108,6 @@
     <string name="infoTabRepoForksCount">フォーク</string>
     <string name="infoTabRepoCreatedAt">作成済み</string>
     <string name="infoTabRepoUpdatedAt">最終更新日</string>
-    <string name="infoShowMoreInformation">詳細情報を表示</string>
     <string name="infoMoreInformation">詳細情報</string>
     <string name="timeAtText">at</string>
     <string name="issueMilestone">マイルストーン %1Ss</string>
@@ -180,14 +187,20 @@
     <string name="settingsEnableCommentsDeletionText">下書き削除の有効化</string>
     <string name="settingsEnableCommentsDeletionHintText">コメントが投稿されたときにコメントドラフトを削除する</string>
     <string name="settingsGeneralHeader">一般</string>
-    <string name="generalHintText">ホーム画面、既定のリンクハンドラ</string>
+    <string name="generalHintText">Home screen, drafts, crash reports</string>
     <string name="generalDeepLinkDefaultScreen">既定のリンクハンドラ</string>
     <string name="generalDeepLinkDefaultScreenHintText">アプリケーションが外部リンクを処理できない場合にロードする画面を選択します。自動的にリダイレクトされます。</string>
-    <string name="generalDeepLinkSelectedText">N/A</string>
     <string name="linkSelectorDialogTitle">デフォルトリンクハンドラの選択画面</string>
     <string name="settingsBiometricHeader">生体認証のサポート</string>
     <string name="settingsLabelsInListHeader">テキストサポート付きラベル</string>
     <string name="settingsLabelsInListHint">これを有効にすると、問題とPRリストにテキスト付きのラベルが表示されます。デフォルトはカラードットです。</string>
+    <string name="ceSyntaxHighlightColor">Syntax Highlighting Color</string>
+    <string name="ceIndentation">Indentation</string>
+    <string name="ceIndentationTabsWidth">Tabs Width</string>
+    <string name="system_font">System Default Font</string>
+    <string name="fragmentTabsAnimationHeader">Tabs Animation</string>
+    <string name="fadeOut">Fade Out</string>
+    <string name="zoomOut">Zoom Out</string>
     <!-- settings -->
     <string name="noMoreData">これ以上のデータはありません</string>
     <string name="createLabel">新規ラベル</string>
@@ -228,6 +241,7 @@
     <string name="repoRemovedMessage">リポジトリがチームから正常に削除されました</string>
     <string name="repoAddToTeamMessage">リポジトリ%1$sを組織%2$sチーム%3$sに追加</string>
     <string name="repoRemoveTeamMessage">リポジトリ%1$sをチーム%2$sから削除</string>
+    <string name="addRemoveMember">Add / Remove Member</string>
     <!-- org tabbed layout str -->
     <!-- create team -->
     <string name="newTeamTitle">チーム名</string>
@@ -262,15 +276,17 @@
     <!-- profile section -->
     <string name="profileTabFollowers">フォロワー</string>
     <string name="profileTabFollowing">フォロー中</string>
-    <string name="profileCreateNewEmailAddress">電子メールアドレスの追加</string>
-    <string name="profileEmailTitle">電子メールアドレス</string>
+    <!-- profile section -->
+    <!-- account settings -->
+    <string name="accountEmails">Emails</string>
+    <string name="accountEmailTitle">Email Address</string>
     <string name="emailAddedText">新しい電子メールが正常に追加されました</string>
     <string name="emailErrorEmpty">電子メールアドレスが空です</string>
     <string name="emailErrorInvalid">電子メールアドレスが無効です</string>
     <string name="emailErrorInUse">電子メールアドレスは既に使用されています</string>
     <string name="emailTypeText">プライマリ</string>
-    <string name="profileTabEmails">電子メール</string>
-    <!-- profile section -->
+    <string name="sshKeys">SSH Keys</string>
+    <!-- account settings -->
     <!-- single issue section -->
     <string name="singleIssueEditLabels">ラベルを追加/削除</string>
     <string name="labelsUpdated">ラベルが更新されました</string>
@@ -412,6 +428,10 @@
     <string name="openInBrowser">ブラウザで開く</string>
     <string name="deleteGenericTitle">%sを削除</string>
     <string name="reset">リセット</string>
+    <string name="beta">BETA</string>
+    <string name="none">None</string>
+    <string name="main">main</string>
+    <string name="license">License</string>
     <!-- generic copy -->
     <string name="exploreUsers">ユーザーの表示</string>
     <string name="exploreIssues">課題の表示</string>
@@ -425,8 +445,7 @@
     <string name="versionUnsupportedNew">新しいGiteaバージョンが検出されました!GitNex最新情報をお知らせください!</string>
     <string name="versionUnknown">Giteaが検出されませんでした!</string>
     <string name="versionAlertDialogHeader">サポートされていないバージョンのGitea</string>
-    <string name="loginViaPassword">ユーザー名/パスワード</string>
-    <string name="loginMethodText">アカウントにアクセスするためのログイン方法を選択します。トークンはより安全です!</string>
+    <string name="loginViaPassword">Basic Auth</string>
     <string name="unauthorizedApiError">インスタンスから認証エラーが返されました。資格情報を確認して、再試行してください</string>
     <string name="loginTokenError">トークンが必要です</string>
     <string name="prDeletedFork">削除されたフォーク</string>
@@ -508,19 +527,20 @@
     <string name="resetMostReposCounter">カウンタが正常にリセットされました</string>
     <string name="resetCounterDialogMessage">リポジトリ%sのカウンタをリセットしますか?</string>
     <string name="resetCounterAllDialogMessage">これにより、このアカウントリポジトリのすべてのカウンタがリセットされます。</string>
-    <string name="appearanceHintText">テーマ、フォント、バッジ</string>
+    <string name="appearanceHintText">Themes, fonts, badges, translation</string>
     <string name="securityHintText">生体認証、SSL証明書、キャッシュ</string>
     <string name="languagesHintText">言語</string>
     <string name="reportsHintText">クラッシュレポート</string>
     <string name="rateAppHintText">あなたがGitNexが好きなら、それを称賛してもいいですよ。</string>
     <string name="aboutAppHintText">App version, build, user instance version</string>
+    <string name="codeEditorHintText">Syntax color, indentation</string>
     <string name="archivedRepository">アーカイブ済み</string>
     <string name="archivedRepositoryMessage">このリポジトリはアーカイブされます。ファイルを表示することはできますが、問題/プルリクエストをプッシュまたはオープンすることはできません。</string>
     <string name="accountDeletedMessage">アカウントは正常に削除されました</string>
     <string name="removeAccountPopupTitle">アカウントの削除</string>
     <string name="removeAccountPopupMessage">このアカウントをアプリから削除してよろしいですか?\n\nこれにより、このアカウントに関連するすべてのデータがアプリケーションからのみ削除されます。</string>
     <string name="addNewAccount">新規アカウント</string>
-    <string name="addNewAccountText">新規アカウントの追加</string>
+    <string name="addNewAccountText">Add Account</string>
     <string name="accountAlreadyExistsError">アカウントは既にアプリケーションに存在します</string>
     <string name="accountAddedMessage">アカウントが正常に追加されました</string>
     <string name="switchAccountSuccess">アカウントに切り替え: %1$s@%2$s</string>
@@ -528,14 +548,17 @@
     <string name="pageTitleNotifications">通知</string>
     <string name="noDataNotifications">すべて確保🚀</string>
     <string name="notificationsPollingHeaderText">通知確認の間隔</string>
-    <string name="pollingDelaySelectedText">%d分</string>
+    <string name="pollingDelay15Minutes">15 Minutes</string>
+    <string name="pollingDelay30Minutes">30 Minutes</string>
+    <string name="pollingDelay45Minutes">45 Minutes</string>
+    <string name="pollingDelay1Hour">1 Hour</string>
     <string name="pollingDelayDialogHeaderText">通知確認の間隔を選択</string>
     <string name="pollingDelayDialogDescriptionText">GitNexが新しい通知を確認する時間間隔を選択します。</string>
     <string name="markAsRead">既読にマーク</string>
     <string name="markAsUnread">未読にマーク</string>
     <string name="pinNotification">ピン止め</string>
     <string name="markedNotificationsAsRead">すべての通知を既読としてマークしました</string>
-    <string name="notificationsHintText">ポーリング遅延、光、振動</string>
+    <string name="notificationsHintText">Polling delay</string>
     <string name="enableNotificationsHeaderText">通知を有効にする</string>
     <string name="enableLightsHeaderText">ライトを有効化</string>
     <string name="enableVibrationHeaderText">バイブレーションを有効にする</string>
@@ -547,6 +570,7 @@
     <plurals name="youHaveNewNotifications">
         <item quantity="other">%s件の新しい通知があります</item>
     </plurals>
+    <string name="openAppSettings">To receive notifications, you must enable notifications for GitNex. Tap Open to access your phone settings and enable notifications.</string>
     <string name="isRead">既読</string>
     <string name="isUnread">未読</string>
     <string name="repoSettingsTitle">リポジトリ設定</string>
@@ -593,9 +617,9 @@
     <string name="prClosed">プルリクエストがクローズされました</string>
     <string name="prReopened">プルリクエストが再オープンされました</string>
     <string name="prMergeInfo">プルリクエスト情報</string>
-    <string name="accountDoesNotExist">URI%1$sのアカウントがアプリに存在しないようです。[新規アカウントの追加]ボタンをタップすると追加できます。</string>
+    <string name="accountDoesNotExist">It seems that the account for URI %1$s does not exist in the app. You can add one by tapping on the Add New Account button.</string>
     <string name="launchApp">アプリケーションに移動</string>
-    <string name="noActionText">GitNexは要求されたリソースを処理できません。作業の詳細を提供して、プロジェクトリポジトリで改善提案として課題の登録をおねがいします。下のボタンからデフォルト画面を起動するだけで、設定から変更できます。</string>
+    <string name="noActionText">GitNex cannot handle the requested resource. You can open an issue at the project repository as an improvement, providing details of the work. Just launch a default screen for now from the buttons below; it can be changed from settings.</string>
     <string name="biometricAuthTitle">生体認証</string>
     <string name="biometricAuthSubTitle">生体認証の資格情報を使用してロック解除する</string>
     <string name="biometricNotSupported">このデバイスで利用できる生体認証機能はありません</string>
@@ -639,6 +663,8 @@
     <string name="notLoggedIn">%s\u25CFはログインしていません</string>
     <string name="followSystem">システム設定に従う(ライト/ダーク)</string>
     <string name="followSystemBlack">システム設定に従う(ライト/ピッチブラック)</string>
+    <string name="dynamicColorsFollowSystem">Dynamic colors - Follow system (Light/Dark)</string>
+    <string name="codebergDark">Codeberg (Dark)</string>
     <string name="repoForkOf">次のフォーク:%s</string>
     <string name="adoptRepo">登録</string>
     <string name="repoAdopted">リポジトリ%sを登録しました</string>
@@ -662,12 +688,13 @@
     <string name="newNoteContentHint">ここからノートを取り始める</string>
     <string name="noteDateTime">%sを作成しました</string>
     <string name="noteTimeModified">%sを更新しました</string>
-    <string name="noteDeleteDialoMessage">本当にこのノートを削除しますか?</string>
+    <string name="noteDeleteDialogMessage">Do you really want to delete this note?</string>
     <plurals name="noteDeleteMessage">
         <item quantity="other">ノートは正常に削除されました</item>
     </plurals>
     <string name="notesAllDeletionMessage">すべてのノートが削除されます。この操作は元に戻せません。</string>
     <!-- timeline -->
+    <string name="commitsText">commit</string>
     <string name="commitText">コミット</string>
     <string name="timelineAddedCommit">%1$s が %2$s %3$sを追加</string>
     <!-- the | is replaced by the label -->
@@ -680,6 +707,7 @@
     <string name="timelineAssigneesAssigned">%1$s は、%2$s から%3$sに割り当てられました。</string>
     <string name="timelineMilestoneAdded">%1$s は、これを マイルストーン %3$sの %2$s に追加しました。</string>
     <string name="timelineMilestoneRemoved">%1$s はこれをマイルストーン%3$s の %2$s から 削除しました</string>
+    <string name="timelineMilestoneDeleted">%1$s added this to a deleted milestone %2$s</string>
     <string name="timelineStatusClosedIssue">%1$s は、この課題 %2$s をクローズしました。</string>
     <string name="timelineStatusReopenedIssue">%1$s は、課題 %2$s を再オープンしました。</string>
     <string name="timelineStatusReopenedPr">%1$s は、プルリクエスト %2$s を再オープンしました。</string>
@@ -708,7 +736,39 @@
     <string name="timelineRefIssue">%1$s referenced this issue in #%2$d %3$s</string>
     <string name="timelineRefPr">%1$s referenced this pull request in #%2$d %3$s</string>
     <string name="timelineStatusRefIssue"><![CDATA[%1$s referenced this issue from a <font color=\'%2$d\'>%3$s</font> %4$s]]></string>
+    <string name="timelineReviewLeftComment">%1$s left a comment: %2$s %3$s</string>
+    <string name="timelinePinned">%1$s pinned this %2$s</string>
     <string name="commitStatuses">Statuses</string>
     <string name="statusNoUrl">This status has no linked target URL.</string>
     <string name="starredRepos">Starred Repos</string>
+    <string name="lang_statistics">Language Statistics</string>
+    <string name="dashboard">Dashboard</string>
+    <string name="createdRepository">created repository</string>
+    <string name="renamedRepository">renamed repository from %1$s to</string>
+    <string name="starredRepository">starred</string>
+    <string name="transferredRepository">transferred repository %1$s to</string>
+    <string name="createdBranch">created branch %1$s in</string>
+    <string name="pushedTo">pushed to %1$s at</string>
+    <string name="openedIssue">opened issue</string>
+    <string name="commentedOnIssue">commented on issue</string>
+    <string name="closedIssue">closed issue</string>
+    <string name="reopenedIssue">reopened issue</string>
+    <string name="createdPR">created pull request</string>
+    <string name="closedPR">closed pull request</string>
+    <string name="reopenedPR">reopened pull request</string>
+    <string name="mergedPR">merged pull request</string>
+    <string name="approved">approved</string>
+    <string name="suggestedChanges">suggested changes for</string>
+    <string name="commentedOnPR">commented on pull request</string>
+    <string name="autoMergePR">automatically merged pull request</string>
+    <string name="deletedBranch">deleted branch %1$s at</string>
+    <string name="pushedTag">pushed tag %1$s to</string>
+    <string name="deletedTag">deleted tag %1$s from</string>
+    <string name="releasedBranch">released %1$s at</string>
+    <string name="syncedCommits">synced commits to %1$s at</string>
+    <string name="syncedRefs">synced new reference %1$s to</string>
+    <string name="syncedDeletedRefs">synced and deleted reference %1$s at</string>
+    <string name="attachment">Attachment</string>
+    <string name="attachments">Attachments</string>
+    <string name="attachmentsSaveError">An issue was created but cannot process attachments at this time. Check the server logs for more details.</string>
 </resources>

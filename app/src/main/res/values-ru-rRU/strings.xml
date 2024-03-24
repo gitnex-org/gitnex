@@ -10,10 +10,12 @@
     <string name="navAbout">О программе</string>
     <string name="navRate">Оценить GitNex</string>
     <string name="navLogout">Выход</string>
-    <string name="navAdministration">Instance Administration</string>
+    <string name="navAdministration">Администрирование экземпляра</string>
     <string name="navMyIssues">Мои вопросы</string>
-    <string name="navMostVisited">Most Visited Repos</string>
-    <string name="navNotes">Notes</string>
+    <string name="navMostVisited">Самые посещаемые репозитории</string>
+    <string name="navNotes">Примечания</string>
+    <string name="navAccount">Настройки учетной записи</string>
+    <string name="navWatchedRepositories">Просматриваемые репозитории</string>
     <!-- menu items -->
     <!-- page titles -->
     <string name="pageTitleNewRepo">Создать репозиторий</string>
@@ -30,9 +32,10 @@
     <string name="pageTitleAddEmail">Добавить адрес эл. почты</string>
     <string name="pageTitleNewFile">Новый файл</string>
     <string name="pageTitleExplore">Обзор</string>
-    <string name="pageTitleAdministration">Administration</string>
+    <string name="pageTitleAdministration">Администрация</string>
     <string name="pageTitleNewPullRequest">Новый запрос на слияние</string>
     <string name="pageTitleUsers">Пользователи</string>
+    <string name="pageTitleAddRepository">Добавить репозиторий</string>
     <!-- page titles -->
     <string name="repoName">Демо репозиторий</string>
     <string name="repoDescription">Демо описание</string>
@@ -43,8 +46,11 @@
     <string name="newRepoDescTintCopy">Описание репозитория</string>
     <string name="newRepoPrivateCopy">Приватный</string>
     <string name="newRepoOwner">Владелец</string>
+    <string name="newRepoIssueLabels">Тикеты</string>
+    <string name="setAsTemplate">Сделать репозиторий шаблоном</string>
     <string name="newOrgTintCopy">Имя организации</string>
     <string name="newOrgDescTintCopy">Описание организации</string>
+    <string name="organizationFullname">%1$s - %2$s</string>
     <string name="userName">Имя пользователя</string>
     <string name="passWord">Пароль</string>
     <string name="btnLogin">Войти</string>
@@ -52,7 +58,7 @@
     <string name="navigationDrawerOpen">Открыть навигацию</string>
     <string name="navigationDrawerClose">Закрыть навигацию</string>
     <string name="protocol">Протокол</string>
-    <string name="urlInfoTooltip">1- Choose the correct protocol(https or http). \n2- Enter instance url e.g: try.gitea.io. \n3- If you have enabled 2FA for your account, enter the code in the OTP Code field. \n4- For HTTP basic auth use USERNAME@DOMAIN.COM in the URL field.</string>
+    <string name="urlInfoTooltip">1. Выберите протокол (https или http) \n2. Укажите URL Gitea, например: try.gitea.io \n3. Если для учетной записи включена 2FA, введите код OTP в соответствующее поле. \n4. Для базовой аутентификации HTTP укажите USERNAME@DOMAIN.COM в поле URL.</string>
     <string name="malformedUrl">Не удалось подключиться к хосту. Пожалуйста, проверьте URL-адрес или порт на наличие ошибок</string>
     <string name="protocolError">Не рекомендуется использовать протокол HTTP, если вы не тестируете в локальной сети</string>
     <string name="malformedJson">Получен искаженный JSON. Ответ сервера не был успешным</string>
@@ -60,6 +66,7 @@
     <string name="emptyFieldUsername">Требуется имя пользователя</string>
     <string name="emptyFieldPassword">Требуется пароль</string>
     <string name="protocolEmptyError">Требуется протокол</string>
+    <string name="instanceHelperText">Введите URL без http или https. Пример: codeberg.org</string>
     <string name="checkNetConnection">Нет подключения к интернету, проверьте наличие связи.</string>
     <string name="repoNameErrorEmpty">Название репозитория пустое.</string>
     <string name="repoNameErrorInvalid">Недоступное название репозитория. [a&#8211;z A&#8211;Z 0&#8211;9 &#8211; _]</string>
@@ -69,12 +76,13 @@
     <string name="repoCreated">Репозиторий успешно создан!</string>
     <string name="repoExistsError">Репозиторий с таким именему уже существует у выбранного владельца</string>
     <string name="repoOwnerError">Выбрать владельца репозитория</string>
+    <string name="repoDefaultBranchError">Ветка по умолчанию не должна быть пустой</string>
     <string name="orgNameErrorEmpty">Название организации пустое.</string>
     <string name="orgNameErrorInvalid">Недоступное название организации. [a&#8211;z A&#8211;Z 0&#8211;9 &#8211; _]</string>
     <string name="orgDescError">Описание организации превышает 255 символов.</string>
     <string name="orgCreated">Организация успешно создана!</string>
     <string name="orgExistsError">Организация уже существует</string>
-    <string name="diffStatistics">%1$s addition(s) and %2$s deletion(s)</string>
+    <string name="diffStatistics">%1$s добавлен(о) и %2$s удален(о)</string>
     <string name="processingText">Обработка</string>
     <string name="search">Поиск</string>
     <string name="close">Закрыть</string>
@@ -83,7 +91,7 @@
     <string name="repoContentAvatar">Реп.</string>
     <string name="privateAvatar">Лич.</string>
     <string name="removeContent">Удалить</string>
-    <string name="genericApiError">Instance has returned an error. Code %d</string>
+    <string name="genericApiError">Экземпляр вернул ошибку. Код %d</string>
     <string name="tabTextInfo">Информация</string>
     <string name="tabTextFiles">Файлы</string>
     <string name="tabTextMl">Этапы</string>
@@ -91,7 +99,7 @@
     <string name="tabTextBranches">Ветки</string>
     <string name="tabTextCollaborators">Соавторы</string>
     <string name="tabPullRequests">Запросы на слияние</string>
-    <string name="pullRequest">Pull Request</string>
+    <string name="pullRequest">Запрос на извлечение</string>
     <string name="infoTabRepoSize">Размер</string>
     <string name="infoTabRepoDefaultBranch">Ветка по умолчанию</string>
     <string name="infoTabRepoSshUrl">SSH/URL</string>
@@ -100,13 +108,12 @@
     <string name="infoTabRepoForksCount">Кол-во форков</string>
     <string name="infoTabRepoCreatedAt">Создан</string>
     <string name="infoTabRepoUpdatedAt">Последнее обновление</string>
-    <string name="infoShowMoreInformation">Показать больше информации</string>
     <string name="infoMoreInformation">Больше информации</string>
     <string name="timeAtText">в</string>
     <string name="issueMilestone">Вехи %1$s</string>
     <string name="dueDate">Срок до %1$s</string>
     <string name="assignedTo">Назначено: %1$s</string>
-    <string name="assignedToMe">Assigned to Me</string>
+    <string name="assignedToMe">Назначено мне</string>
     <string name="commentButtonText">Комментарий</string>
     <string name="commentEmptyError">Введите свой комментарий.</string>
     <string name="commentSuccess">Комментарий отправлен!</string>
@@ -147,7 +154,7 @@
     <string name="settingsSecurityHeader">Безопасность</string>
     <string name="settingsCertsSelectorHeader">Удалить доверенные сертификаты</string>
     <string name="settingsCertsPopupTitle">Удалить доверенные сертификаты?</string>
-    <string name="settingsCertsPopupMessage">Are you sure to delete any manually trusted certificate or hostname? \n\nYou will also be logged out.</string>
+    <string name="settingsCertsPopupMessage">Вы уверены, что хотите удалить любой вручную доверенный сертификат или имя хоста? \n\nВы также выйдите из системы.</string>
     <string name="settingsSave">Сохранено</string>
     <string name="settingsLanguageSelectorHeader">Язык</string>
     <string name="settingsLanguageSelectedHeaderDefault">Английский</string>
@@ -180,14 +187,20 @@
     <string name="settingsEnableCommentsDeletionText">Включить удаление черновиков</string>
     <string name="settingsEnableCommentsDeletionHintText">Удалить черновик комментария при публикации комментария</string>
     <string name="settingsGeneralHeader">Общее</string>
-    <string name="generalHintText">Домашний экран, обработчик ссылок по умолчанию</string>
+    <string name="generalHintText">Главный экран, черновики, отчеты о сбоях</string>
     <string name="generalDeepLinkDefaultScreen">Обработчик ссылок по умолчанию</string>
-    <string name="generalDeepLinkDefaultScreenHintText">Choose what screen should be loaded if the app cannot handle external links. It will redirect you automatically.</string>
-    <string name="generalDeepLinkSelectedText">Н/Д</string>
+    <string name="generalDeepLinkDefaultScreenHintText">Выберите, какой экран следует загрузить, если приложение не может обрабатывать внешние ссылки. Он автоматически перенаправит вас.</string>
     <string name="linkSelectorDialogTitle">Выбрать экран обработчика ссылок по умолчанию</string>
     <string name="settingsBiometricHeader">Поддержка биометрии</string>
-    <string name="settingsLabelsInListHeader">Labels With Text Support</string>
-    <string name="settingsLabelsInListHint">Enabling this will show labels with text in issues and pr lists, default are color dots</string>
+    <string name="settingsLabelsInListHeader">Ярлыки с поддержкой текста</string>
+    <string name="settingsLabelsInListHint">Включение этого параметра будет показывать метки с текстом в списках задач и списках запросов на слияние, по умолчанию — это цветовые точки</string>
+    <string name="ceSyntaxHighlightColor">Цвет выделения синтаксиса</string>
+    <string name="ceIndentation">Отступы</string>
+    <string name="ceIndentationTabsWidth">Ширина вкладок</string>
+    <string name="system_font">Системный шрифт по умолчанию</string>
+    <string name="fragmentTabsAnimationHeader">Анимация вкладок</string>
+    <string name="fadeOut">Затухание</string>
+    <string name="zoomOut">Отдалить</string>
     <!-- settings -->
     <string name="noMoreData">Больше даных нет</string>
     <string name="createLabel">Создание метки</string>
@@ -196,38 +209,39 @@
     <string name="labelColor">Цвет метки</string>
     <string name="labelEmptyError">Имя метки не указано</string>
     <string name="labelNameError">Недопустимое имя метки</string>
-    <string name="labelCreated">Label created</string>
-    <string name="labelUpdated">Label updated</string>
+    <string name="labelCreated">Метка создана</string>
+    <string name="labelUpdated">Метка обновлена</string>
     <string name="labelMenuContentDesc">Описание</string>
     <string name="labelDeleteText">Метка удалена!</string>
     <string name="selectBranchError">Выберите ветку для релиза</string>
     <string name="alertDialogTokenRevokedTitle">Ошибка авторизации</string>
-    <string name="alertDialogTokenRevokedMessage">It seems that the Access Token is revoked OR your are not allowed to see these contents.\n\nIn case of revoked Token, please logout and login again</string>
+    <string name="alertDialogTokenRevokedMessage">Похоже, токен доступа отозван, либо вам не разрешено просматривать это содержимое.\n\nВ случае отзыва токена, пожалуйста, выйдите из системы и войдите снова</string>
     <string name="labelDeleteMessage">Вы действительно хотите удалить эту метку?</string>
     <!-- org tabbed layout str -->
     <string name="orgTabTeams">Команды</string>
     <string name="orgTabMembers">Участники</string>
     <string name="teamTitle">Имя команды</string>
     <string name="teamDescription">Описание команды</string>
-    <string name="teamPermissions">Permissions</string>
-    <string name="teamPermissionNone">• Members of this team do not have any permissions.</string>
-    <string name="teamPermissionRead">• Members of this team can view team repositories.</string>
-    <string name="teamPermissionWrite">• Members of this team can view and push to team repositories.</string>
-    <string name="teamPermissionAdmin">• Members of this team can push to and from team repositories and add collaborators.</string>
-    <string name="teamPermissionOwner">• Members of this team have owner permissions.</string>
-    <string name="teamShowAll">show all</string>
+    <string name="teamPermissions">Разрешения</string>
+    <string name="teamPermissionNone">• Члены этой команды не имеют никаких разрешений.</string>
+    <string name="teamPermissionRead">• Члены этой команды могут просматривать репозитории команды.</string>
+    <string name="teamPermissionWrite">• Участники могут читать и изменять репозитории команды.</string>
+    <string name="teamPermissionAdmin">• Члены этой команды могут заливать свои коммиты в и из командного репозитория и добавлять соавторов.</string>
+    <string name="teamPermissionOwner">• Члены этой команды имеют права владельца.</string>
+    <string name="teamShowAll">показать все</string>
     <string name="orgMember">Участники организации</string>
     <string name="orgTeamMembers">Участники команд организации</string>
-    <string name="removeTeamMember">Remove %s</string>
-    <string name="addTeamMember">Add %s</string>
+    <string name="removeTeamMember">Удалить %s</string>
+    <string name="addTeamMember">Добавить %s</string>
     <string name="addTeamMemberMessage">Вы хотите добавить этого пользователя в команду?</string>
     <string name="removeTeamMemberMessage">Вы хотите удалить этого пользователя из команды?</string>
     <string name="memberAddedMessage">Участник успешно добавлен в команду</string>
     <string name="memberRemovedMessage">Участник успешно удалён из команды</string>
-    <string name="repoAddedMessage">Repository added to the team successfully</string>
-    <string name="repoRemovedMessage">Repository removed from the team successfully</string>
-    <string name="repoAddToTeamMessage">Add repository %1$s to organization %2$s team %3$s</string>
-    <string name="repoRemoveTeamMessage">Remove repository %1$s from team %2$s</string>
+    <string name="repoAddedMessage">Репозиторий успешно добавлен в команду</string>
+    <string name="repoRemovedMessage">Репозиторий успешно удален из команды</string>
+    <string name="repoAddToTeamMessage">Добавить репозиторий %1$s в организацию %2$s команды %3$s</string>
+    <string name="repoRemoveTeamMessage">Удалить репозиторий %1$s из команды %2$s</string>
+    <string name="addRemoveMember">Добавить / Удалить участника</string>
     <!-- org tabbed layout str -->
     <!-- create team -->
     <string name="newTeamTitle">Имя команды</string>
@@ -254,7 +268,7 @@
     <!-- add collaborator -->
     <string name="addCollaboratorSearchHint">Поиск</string>
     <string name="addCollaboratorViewUserDesc">Имя пользователя</string>
-    <string name="removeCollaboratorDialogTitle">Remove %s?</string>
+    <string name="removeCollaboratorDialogTitle">Удалить %s?</string>
     <string name="removeCollaboratorMessage">Вы точно хотите снять права сотрудника с этого пользователя?</string>
     <string name="removeCollaboratorToastText">С пользователя были сняты права сотрудника.</string>
     <string name="addCollaboratorToastText">Пользователь получает права сотрудника!</string>
@@ -262,15 +276,17 @@
     <!-- profile section -->
     <string name="profileTabFollowers">Подписчики</string>
     <string name="profileTabFollowing">Подписки</string>
-    <string name="profileCreateNewEmailAddress">Добавить адрес эл. почты</string>
-    <string name="profileEmailTitle">Адрес эл. почты</string>
+    <!-- profile section -->
+    <!-- account settings -->
+    <string name="accountEmails">Электронная почта</string>
+    <string name="accountEmailTitle">Адрес электронной почты</string>
     <string name="emailAddedText">Новая электронная почта успешно добавлена</string>
     <string name="emailErrorEmpty">Адрес электронной почты пустой</string>
     <string name="emailErrorInvalid">Некорректный адрес электронной почты</string>
     <string name="emailErrorInUse">Адрес электронной почты уже используется</string>
     <string name="emailTypeText">Основной</string>
-    <string name="profileTabEmails">Адреса эл. почты</string>
-    <!-- profile section -->
+    <string name="sshKeys">SSH ключи</string>
+    <!-- account settings -->
     <!-- single issue section -->
     <string name="singleIssueEditLabels">Добавить/удалить метку</string>
     <string name="labelsUpdated">Метки обновлены</string>
@@ -286,7 +302,7 @@
     <!-- single issue section -->
     <string name="repoMetaData">Метаинформация репозитория</string>
     <!-- admin -->
-    <string name="adminCreateNewUser">New User</string>
+    <string name="adminCreateNewUser">Новый пользователь</string>
     <string name="adminUsers">Пользователи системы</string>
     <string name="userRoleAdmin">Админ</string>
     <string name="adminCron">Задачи cron</string>
@@ -412,6 +428,10 @@
     <string name="openInBrowser">Open in Browser</string>
     <string name="deleteGenericTitle">Delete %s</string>
     <string name="reset">Reset</string>
+    <string name="beta">BETA</string>
+    <string name="none">None</string>
+    <string name="main">main</string>
+    <string name="license">License</string>
     <!-- generic copy -->
     <string name="exploreUsers">Обзор пользователей</string>
     <string name="exploreIssues">Обзор задач</string>
@@ -425,8 +445,7 @@
     <string name="versionUnsupportedNew">Обнаружена новая версия Gitea! Пожалуйста, ОБНОВИТЕ GitNex!</string>
     <string name="versionUnknown">Gitea не обнаружен!</string>
     <string name="versionAlertDialogHeader">Неподдерживаемая версия Gitea</string>
-    <string name="loginViaPassword">Имя пользователя / Пароль</string>
-    <string name="loginMethodText">Выберите предпочтительный метод входа для доступа к вашей учетной записи. Токен более безопасный!</string>
+    <string name="loginViaPassword">Basic Auth</string>
     <string name="unauthorizedApiError">Экземпляр вернул ошибку - не авторизовано. Проверьте ваши учетные данные и повторите попытку</string>
     <string name="loginTokenError">Требуется токен</string>
     <string name="prDeletedFork">Удалённый Форк</string>
@@ -508,19 +527,20 @@
     <string name="resetMostReposCounter">Counter is reset successfully</string>
     <string name="resetCounterDialogMessage">Do you want to reset counter for repository %s?</string>
     <string name="resetCounterAllDialogMessage">This will reset all the counters for this account repositories.</string>
-    <string name="appearanceHintText">Темы, шрифты, значки</string>
+    <string name="appearanceHintText">Themes, fonts, badges, translation</string>
     <string name="securityHintText">Биометрическая аутентификация, SSL-сертификаты, кеш</string>
     <string name="languagesHintText">Языки</string>
     <string name="reportsHintText">Отчёты об ошибках</string>
     <string name="rateAppHintText">Если вам нравится GitNex, вы можете поставить ему палец вверх</string>
     <string name="aboutAppHintText">App version, build, user instance version</string>
+    <string name="codeEditorHintText">Syntax color, indentation</string>
     <string name="archivedRepository">Архивировано</string>
     <string name="archivedRepositoryMessage">Этот репозиторий находится в архиве. Вы можете просматривать файлы, но не можете отправлять или открывать проблемы/запросы на слияние.</string>
     <string name="accountDeletedMessage">Учётная запись успешно удалена</string>
     <string name="removeAccountPopupTitle">Удалить учётную запись</string>
     <string name="removeAccountPopupMessage">Are you sure you want to remove this account from the app?\n\nThis will remove all the data related to this account on the app only.</string>
     <string name="addNewAccount">Новая учётная запись</string>
-    <string name="addNewAccountText">Добавить новую учётную запись</string>
+    <string name="addNewAccountText">Add Account</string>
     <string name="accountAlreadyExistsError">Учётная запись уже существует в приложении</string>
     <string name="accountAddedMessage">Учётная запись успешно добавлена</string>
     <string name="switchAccountSuccess">Переключено на аккаунт: %1$s@%2$s</string>
@@ -528,14 +548,17 @@
     <string name="pageTitleNotifications">Уведомления</string>
     <string name="noDataNotifications">All caught up 🚀</string>
     <string name="notificationsPollingHeaderText">Задержка опроса уведомлений</string>
-    <string name="pollingDelaySelectedText">%d Минут</string>
+    <string name="pollingDelay15Minutes">15 Minutes</string>
+    <string name="pollingDelay30Minutes">30 Minutes</string>
+    <string name="pollingDelay45Minutes">45 Minutes</string>
+    <string name="pollingDelay1Hour">1 час</string>
     <string name="pollingDelayDialogHeaderText">Выбрать задержку опроса</string>
     <string name="pollingDelayDialogDescriptionText">Выберите минутную задержку, при которой GitNex пытается опрашивать новые уведомления</string>
-    <string name="markAsRead">Mark Read</string>
-    <string name="markAsUnread">Mark Unread</string>
-    <string name="pinNotification">Pin</string>
+    <string name="markAsRead">Пометить прочитанным</string>
+    <string name="markAsUnread">Снять отметку о прочтении</string>
+    <string name="pinNotification">Прикрепить</string>
     <string name="markedNotificationsAsRead">Все уведомления успешно помечены как прочитанные</string>
-    <string name="notificationsHintText">Задержка опроса, световой индикатор, вибрация</string>
+    <string name="notificationsHintText">Задержка опроса</string>
     <string name="enableNotificationsHeaderText">Включить уведомления</string>
     <string name="enableLightsHeaderText">Включите световой индикатор</string>
     <string name="enableVibrationHeaderText">Включить вибрацию</string>
@@ -548,8 +571,9 @@
         <item quantity="one">You have %s new notification</item>
         <item quantity="few">You have %s new notifications</item>
         <item quantity="many">You have %s new notifications</item>
-        <item quantity="other">You have %s new notifications</item>
+        <item quantity="other">У вас %s новые уведомления</item>
     </plurals>
+    <string name="openAppSettings">Чтобы получать уведомления вы должно включить уведомления для GitNex. Нажмите «Открыть» чтобы получить доступ к настройкам телефона, и включить уведомления.</string>
     <string name="isRead">Прочитано</string>
     <string name="isUnread">Непрочитано</string>
     <string name="repoSettingsTitle">Настройки репозитория</string>
@@ -568,12 +592,12 @@
     <string name="repoPropertiesEnableSquash">Включить объединение и слияние</string>
     <string name="repoPropertiesEnableForceMerge">Включить rebase с коммитом слияния (&#8212;&#8212;no-ff)</string>
     <string name="repoPropertiesSaveSuccess">Свойства репозитория успешно обновлены</string>
-    <string name="repoSettingsDeleteDescription">Things to know before deletion:\n\n- This operation CANNOT be undone.\n- This operation will permanently delete the repository including code, issues, comments, wiki data and collaborator settings.\n\nEnter the repository name as confirmation</string>
+    <string name="repoSettingsDeleteDescription">Что нужно знать перед удалением:\n\n- Эту операцию НЕЛЬЗЯ отменить.\n- Эта операция навсегда удалит репозиторий, включая код, задачи, комментарии, данные вики и настройки соавтора.\n\nВведите имя репозитория в качестве подтверждения</string>
     <string name="repoSettingsDeleteError">Имя репозитория не совпадает</string>
     <string name="repoDeletionSuccess">Репозиторий успешно удалён</string>
     <string name="repoSettingsTransferOwnership">Передать права собственности</string>
-    <string name="repoSettingsTransferOwnershipHint">Transfer this repository to a user or to an organization for which you have administrator rights</string>
-    <string name="repoSettingsTransferOwnershipDescription">Things to know before transfer:\n\n- You will lose access to the repository if you transfer it to an individual user.\n- You will keep access to the repository if you transfer it to an organization that you (co-)own.\n\nEnter the repository name as confirmation</string>
+    <string name="repoSettingsTransferOwnershipHint">Передать репозиторий другому пользователю или организации где у вас есть права администратора</string>
+    <string name="repoSettingsTransferOwnershipDescription">Что нужно знать перед передачей:\n\n- Вы потеряете доступ к репозиторию, если передадите его отдельному пользователю.\n- Вы сохраните доступ к репозиторию, если передадите его организации, которой вы (со)владеете.\n\nВведите имя репозитория в качестве подтверждения</string>
     <string name="repoTransferText">Выполнить передачу</string>
     <string name="repoTransferOwnerText">Новый владелец</string>
     <string name="repoTransferSuccess">Репозиторий успешно перенесён</string>
@@ -593,12 +617,12 @@
     <string name="titleError">Требуется заголовок</string>
     <string name="prCreateSuccess">Запрос на слияние успешно создан</string>
     <string name="prAlreadyExists">Запрос на слияние между этими ветками уже существует</string>
-    <string name="prClosed">Pull Request closed</string>
-    <string name="prReopened">Pull Request reopened</string>
-    <string name="prMergeInfo">Pull Request Info</string>
-    <string name="accountDoesNotExist">It seems that account for URI %1$s does not exists in the app. You can add one by tapping on the Add New Account button.</string>
+    <string name="prClosed">Запрос на слияние закрыт</string>
+    <string name="prReopened">Запрос на слияние переоткрыт</string>
+    <string name="prMergeInfo">Информация о запросе на слияние</string>
+    <string name="accountDoesNotExist">Похоже, что учётная запись для URI %1$s не существует в приложении. Вы можете добавить её, нажав кнопку «Добавить новую учётную запись».</string>
     <string name="launchApp">Перейти к приложению</string>
-    <string name="noActionText">GitNex cannot handle the requested resource, you can open an issue at the project repository as an improvement with providing details of the work. Just launch a default screen for now from the buttons below, it can be changed from settings.</string>
+    <string name="noActionText">GitNex не может обработать запрошенный ресурс. Вы можете открыть задачу в репозитории проекта в качестве улучшения, предоставив подробную информацию о работе. Просто запустите экран по умолчанию, используя кнопки ниже, его можно изменить в настройках.</string>
     <string name="biometricAuthTitle">Биометрическая Aутентификация</string>
     <string name="biometricAuthSubTitle">Разблокируйте с помощью биометрических данных</string>
     <string name="biometricNotSupported">На этом устройстве нет биометрических функций</string>
@@ -627,45 +651,47 @@
     <string name="updateStrategyMerge">Слить</string>
     <string name="updateStrategyRebase">Rebase</string>
     <string name="selectUpdateStrategy">Выберите стратегию обновления</string>
-    <string name="userAvatar">Avatar</string>
-    <string name="tags">Tags</string>
-    <string name="releasesTags">Releases/Tags</string>
-    <string name="create_tag">Create Tag Only</string>
-    <string name="tagCreated">Tag created</string>
-    <string name="asRef">Use as reference</string>
-    <string name="deleteTagConfirmation">Do you really want to delete this tag?</string>
-    <string name="tagDeleted">Tag deleted</string>
-    <string name="tagDeleteError">A tag attached to a release cannot be deleted directly</string>
-    <string name="useCustomTabs">Use Custom Tabs</string>
-    <string name="browserOpenFailed">No application found to open this link. SSH URLs and URLs with another prefix the http:// or https:// are not supported by most browser</string>
-    <string name="logInAgain">Log in again</string>
-    <string name="notLoggedIn">%s \u25CF not logged in</string>
-    <string name="followSystem">Follow system (Light/Dark)</string>
-    <string name="followSystemBlack">Follow system (Light/Pitch Black)</string>
-    <string name="repoForkOf">Fork of: %s</string>
-    <string name="adoptRepo">Adopt</string>
-    <string name="repoAdopted">Adopted repository %s</string>
-    <string name="unadoptedRepos">Unadopted Repositories</string>
-    <string name="unadoptedReposMessage">- Adopt will add repository %1$s to organization/user %2$s.\n- Delete will remove it from the system.</string>
-    <string name="commits">Commits</string>
+    <string name="userAvatar">Аватар</string>
+    <string name="tags">Метки</string>
+    <string name="releasesTags">Выпуски/Метки</string>
+    <string name="create_tag">Создать только метку</string>
+    <string name="tagCreated">Метка создана</string>
+    <string name="asRef">Использовать в качестве ссылки</string>
+    <string name="deleteTagConfirmation">Вы действительно хотите удалить эту метку?</string>
+    <string name="tagDeleted">Метка удалена</string>
+    <string name="tagDeleteError">Метка прикрепленная к выпуску не может быть удалена напрямую</string>
+    <string name="useCustomTabs">Использовать пользовательские вкладки</string>
+    <string name="browserOpenFailed">Не найдено приложения для открытия этой ссылки. SSH URL и URL с другим префиксом the http:// или https:// не поддерживаются большинством браузеров</string>
+    <string name="logInAgain">Войти заново</string>
+    <string name="notLoggedIn">%s \u25CF не вошел в систему</string>
+    <string name="followSystem">Как в системе (Светлый/Темный)</string>
+    <string name="followSystemBlack">Как в системе (Светлый/Темный)</string>
+    <string name="dynamicColorsFollowSystem">Динамические цвета ­— Как в системе (Светлый/Темный)</string>
+    <string name="codebergDark">Codeberg (Темный)</string>
+    <string name="repoForkOf">Форк: %s</string>
+    <string name="adoptRepo">Заимствовать</string>
+    <string name="repoAdopted">Заимствованный репозиторий %s</string>
+    <string name="unadoptedRepos">Непринятые репозитории</string>
+    <string name="unadoptedReposMessage">- Заимствование добавит репозиторий %1$s к организации/пользователю %2$s.\n- Удаление удалит его из системы.</string>
+    <string name="commits">Коммиты</string>
     <!-- wiki -->
-    <string name="wiki">Wiki</string>
-    <string name="wikiAuthor"><![CDATA[<b>%1$s</b> updated %2$s]]></string>
-    <string name="deleteWikiPageMessage">Do you really want to delete %s?</string>
-    <string name="wikiPageDeleted">Wiki page deleted successfully</string>
-    <string name="wikiPageNameAndContentError">Page name and page content can\'t be empty</string>
-    <string name="createWikiPage">Create Wiki Page</string>
-    <string name="wikiUpdated">Wiki page updated successfully</string>
-    <string name="wikiCreated">Wiki page created successfully</string>
+    <string name="wiki">Вики</string>
+    <string name="wikiAuthor"><![CDATA[<b>%1$s</b> обновлен %2$s]]></string>
+    <string name="deleteWikiPageMessage">Вы действительно хотите удалить %s?</string>
+    <string name="wikiPageDeleted">Страница вики успешно удалена</string>
+    <string name="wikiPageNameAndContentError">Название и содержание страницы не могут быть пустыми</string>
+    <string name="createWikiPage">Создать страницу вики</string>
+    <string name="wikiUpdated">Страница вики успешно обновлена</string>
+    <string name="wikiCreated">Страница вики успешно создана</string>
     <!-- code editor -->
-    <string name="openInCodeEditor">Open in Code Editor</string>
+    <string name="openInCodeEditor">Открыть в текстовом редакторе</string>
     <!-- notes -->
-    <string name="newNote">New Note</string>
-    <string name="editNote">Edit Note</string>
-    <string name="newNoteContentHint">Start taking your notes here</string>
+    <string name="newNote">Новая заметка</string>
+    <string name="editNote">Редактировать Заметку</string>
+    <string name="newNoteContentHint">Начните делать заметки здесь</string>
     <string name="noteDateTime">Created %s</string>
     <string name="noteTimeModified">Updated %s</string>
-    <string name="noteDeleteDialoMessage">Do you really want to delete this note?</string>
+    <string name="noteDeleteDialogMessage">Do you really want to delete this note?</string>
     <plurals name="noteDeleteMessage">
         <item quantity="one">Note deleted successfully</item>
         <item quantity="few">Notes deleted successfully</item>
@@ -674,6 +700,7 @@
     </plurals>
     <string name="notesAllDeletionMessage">This will delete all of your notes. This action cannot be undone.</string>
     <!-- timeline -->
+    <string name="commitsText">commit</string>
     <string name="commitText">commit</string>
     <string name="timelineAddedCommit">%1$s added %2$s %3$s</string>
     <!-- the | is replaced by the label -->
@@ -686,6 +713,7 @@
     <string name="timelineAssigneesAssigned">%1$s was assigned by %2$s %3$s</string>
     <string name="timelineMilestoneAdded">%1$s added this to the %2$s milestone %3$s</string>
     <string name="timelineMilestoneRemoved">%1$s removed this from the %2$s milestone %3$s</string>
+    <string name="timelineMilestoneDeleted">%1$s added this to a deleted milestone %2$s</string>
     <string name="timelineStatusClosedIssue">%1$s closed this issue %2$s</string>
     <string name="timelineStatusReopenedIssue">%1$s reopened this issue %2$s</string>
     <string name="timelineStatusReopenedPr">%1$s reopened this pull request %2$s</string>
@@ -714,7 +742,39 @@
     <string name="timelineRefIssue">%1$s referenced this issue in #%2$d %3$s</string>
     <string name="timelineRefPr">%1$s referenced this pull request in #%2$d %3$s</string>
     <string name="timelineStatusRefIssue"><![CDATA[%1$s referenced this issue from a <font color=\'%2$d\'>%3$s</font> %4$s]]></string>
+    <string name="timelineReviewLeftComment">%1$s left a comment: %2$s %3$s</string>
+    <string name="timelinePinned">%1$s pinned this %2$s</string>
     <string name="commitStatuses">Statuses</string>
     <string name="statusNoUrl">This status has no linked target URL.</string>
     <string name="starredRepos">Starred Repos</string>
+    <string name="lang_statistics">Language Statistics</string>
+    <string name="dashboard">Панель управления</string>
+    <string name="createdRepository">созданный репозиторий</string>
+    <string name="renamedRepository">репозиторий переименован с %1$s на</string>
+    <string name="starredRepository">звезды</string>
+    <string name="transferredRepository">репозиторий перенесен %1$s в</string>
+    <string name="createdBranch">создал ветку %1$s в</string>
+    <string name="pushedTo">толкнул из %1$s на</string>
+    <string name="openedIssue">открытая проблема</string>
+    <string name="commentedOnIssue">прокомментировал проблему</string>
+    <string name="closedIssue">закрытая проблема</string>
+    <string name="reopenedIssue">переоткрытая проблема</string>
+    <string name="createdPR">создал запрос на включение</string>
+    <string name="closedPR">закрыл запрос на включение</string>
+    <string name="reopenedPR">переоткрыл запрос на включение</string>
+    <string name="mergedPR">объеденил запрос на принятие изменений</string>
+    <string name="approved">утвержден</string>
+    <string name="suggestedChanges">предложенные изменения для</string>
+    <string name="commentedOnPR">прокомментировал запрос на включение</string>
+    <string name="autoMergePR">автоматически объедененный запрос на включение</string>
+    <string name="deletedBranch">удалена ветка %1$s в</string>
+    <string name="pushedTag">отправил метку %1$s в</string>
+    <string name="deletedTag">удалил метку %1$s из</string>
+    <string name="releasedBranch">выпущен %1$s в</string>
+    <string name="syncedCommits">синхронизировал коммит с %1$s к</string>
+    <string name="syncedRefs">синхронизированна новая ссылка %1$s с</string>
+    <string name="syncedDeletedRefs">ссылка синхронизирована и удалена %1$s на</string>
+    <string name="attachment">Вложение</string>
+    <string name="attachments">Вложения</string>
+    <string name="attachmentsSaveError">Проблема была создана, но в настоящее время обработка вложений невозможна. Проверьте журналы сервера для более подробной информации.</string>
 </resources>

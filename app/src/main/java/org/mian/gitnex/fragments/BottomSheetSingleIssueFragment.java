@@ -279,7 +279,11 @@ public class BottomSheetSingleIssueFragment extends BottomSheetDialogFragment {
 			if (issue.getIssueType().equalsIgnoreCase("issue")) {
 				binding.issuePrDivider.setVisibility(View.GONE);
 			}
-		} else if (!canPush) {
+		}
+		if (isRepoAdmin || canPush) {
+			binding.addRemoveAssignees.setVisibility(View.VISIBLE);
+			binding.editLabels.setVisibility(View.VISIBLE);
+		} else {
 			binding.addRemoveAssignees.setVisibility(View.GONE);
 			binding.editLabels.setVisibility(View.GONE);
 		}
