@@ -371,6 +371,8 @@
     <string name="emailErrorInUse">Email address is already in use</string>
     <string name="emailTypeText">Primary</string>
     <string name="sshKeys">SSH Keys</string>
+    <string name="deleteEmailPopupText">This action will permanently delete email %s from your account.</string>
+    <string name="deleteEmailSuccess">Email deleted successfully</string>
     <!-- account settings -->
 
     <!-- single issue section -->

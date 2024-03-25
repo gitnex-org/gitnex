@@ -191,7 +191,7 @@ public class MilestonesAdapter extends RecyclerView.Adapter<RecyclerView.ViewHol
 
 			Markdown.render(context, dataModel.getTitle(), msTitle);
 
-			if (!dataModel.getDescription().equals("")) {
+			if (!dataModel.getDescription().isEmpty()) {
 
 				Markdown.render(
 						context,
