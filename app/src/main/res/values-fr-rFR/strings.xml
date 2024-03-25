@@ -201,6 +201,15 @@
     <string name="fragmentTabsAnimationHeader">Animation des onglets</string>
     <string name="fadeOut">Fondu</string>
     <string name="zoomOut">Zoom</string>
+    <string name="backup">Sauvegarder</string>
+    <string name="restore">Restaurer</string>
+    <string name="backupFileSuccess">Sauvegarde créée avec succès</string>
+    <string name="backupFileError">Une erreur s’est produite durant la sauvegarde</string>
+    <string name="backupFilePopupText">Vous allez sauvegarder vos comptes, réglages, brouillons, notes et données liées aux dépôts.\n\nCliquez sur Sauvegarder pour lancer le processus.</string>
+    <string name="restoreFilePopupText">Vous allez restaurer vos données à partir d’une sauvegarde GitNex. Vos comptes, réglages, brouillons, notes et données liées aux dépôts seront restaurés.\n\nSoyez prudent, car vous allez effacer la base de données actuelle.\n\nCliquez sur Restaurer pour lancer le processus.</string>
+    <string name="restoreError">Une erreur s’est produite durant la restauration.</string>
+    <string name="restoreFromBackup">Restaurer depuis la sauvegarde</string>
+    <string name="restoreFromBackupPopupText">Vous allez restaurer vos données à partir d’une sauvegarde GitNex. Vos comptes, réglages, brouillons, notes et données liées aux dépôts seront restaurés.\n\nCliquez sur Restaurer pour lancer le processus.</string>
     <!-- settings -->
     <string name="noMoreData">Aucune donnée</string>
     <string name="createLabel">Nouvelle étiquette</string>
@@ -534,6 +543,9 @@
     <string name="rateAppHintText">Vous aimez GitNex ? Mettez-lui un pouce !</string>
     <string name="aboutAppHintText">Version de l’application, version de l’instance</string>
     <string name="codeEditorHintText">Coloration syntaxique, indentation</string>
+    <string name="backupRestoreHintText">Sauvegarde ou restaure les comptes, les réglages et autres</string>
+    <string name="backupDataHintText">Sauvegarde les comptes, les réglages, les notes et autres</string>
+    <string name="restoreDataHintText">Restaure les comptes, les réglages, les notes et autres</string>
     <string name="archivedRepository">Archivé</string>
     <string name="archivedRepositoryMessage">Ce dépôt est archivé. Les fichiers sont accessibles, mais aucune modification n’est possible.</string>
     <string name="accountDeletedMessage">Compte supprimé</string>

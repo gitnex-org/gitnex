@@ -201,6 +201,15 @@
     <string name="fragmentTabsAnimationHeader">Tab-Animation</string>
     <string name="fadeOut">Ausblenden</string>
     <string name="zoomOut">Herauszoomen</string>
+    <string name="backup">Sichern</string>
+    <string name="restore">Wiederherstellen</string>
+    <string name="backupFileSuccess">Sicherung wurde erfolgreich erstellt</string>
+    <string name="backupFileError">Beim Anlegen der Sicherung ist ein Fehler aufgetreten</string>
+    <string name="backupFilePopupText">Dies wird deine Accounts, Einstellungen, Entwürfe, Notizen und mit Repositories verbundenen Daten sichern.\n\nKlicke den Sichern-Button, um die Datei herunterzuladen.</string>
+    <string name="restoreFilePopupText">Du bist dabei, eine GitNex-generiertes Sicherung wiederherzustellen. Dies wird Accounts, Einstellungen, Entwürfe, Notizen und mit Repositories verbundenen Daten wiederherstellen.\n\nBitte bedenke, dass diese Aktion die aktuelle Datenbank überschreiben wird. Mit Vorsicht fortfahren.\n\nKlicke Wiederherstellen, um den Prozess zu starten.</string>
+    <string name="restoreError">Fehler beim Wiederherstellen der Sicherung.</string>
+    <string name="restoreFromBackup">Aus Sicherung wiederherstellen</string>
+    <string name="restoreFromBackupPopupText">Du bist dabei, eine GitNex-generiertes Sicherung wiederherzustellen. Dies wird Accounts, Einstellungen, Entwürfe, Notizen und mit Repositories verbundenen Daten wiederherstellen.\n\nKlicke Wiederherstellen, um den Prozess zu starten.</string>
     <!-- settings -->
     <string name="noMoreData">Keine weiteren Daten verfügbar.</string>
     <string name="createLabel">Label erstellen</string>
@@ -534,6 +543,9 @@
     <string name="rateAppHintText">Wenn dir GitNex gefällt, hinterlasse Feedback</string>
     <string name="aboutAppHintText">App-Version, Build, Instanz-Version</string>
     <string name="codeEditorHintText">Syntax-Farbe, Einrückung</string>
+    <string name="backupRestoreHintText">Accounts, Einstellungen und mehr sichern und wiederherstellen</string>
+    <string name="backupDataHintText">Accounts, Einstellungen, Notizen und mehr sichern</string>
+    <string name="restoreDataHintText">Accounts, Einstellungen, Notizen und mehr wiederherstellen</string>
     <string name="archivedRepository">Archiviert</string>
     <string name="archivedRepositoryMessage">Dieses Repo ist archiviert. Du kannst Dateien anschauen, aber nichts verändern oder erstellen.</string>
     <string name="accountDeletedMessage">Konto erfolgreich gelöscht</string>
