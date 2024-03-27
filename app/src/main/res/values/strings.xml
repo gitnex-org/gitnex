@@ -373,6 +373,12 @@
     <string name="sshKeys">SSH Keys</string>
     <string name="deleteEmailPopupText">This action will permanently delete email %s from your account.</string>
     <string name="deleteEmailSuccess">Email deleted successfully</string>
+    <string name="addSSHKey">Add SSH Key</string>
+    <string name="sshKeyStatusReadOnly">Read-only Access</string>
+    <string name="sshKeyStatusReadWrite">Read-write Access</string>
+    <string name="sshKey">SSH Key</string>
+    <string name="sshKeySuccess">New SSH key added successfully</string>
+    <string name="sshKeyError">Invalid SSH key or SSH key already exists</string>
     <!-- account settings -->
 
     <!-- single issue section -->
@@ -541,6 +547,7 @@
     <string name="none">None</string>
     <string name="main">main</string>
     <string name="license">License</string>
+    <string name="title">Title</string>
     <!-- generic copy -->
 
     <string name="exploreUsers">Explore users</string>
