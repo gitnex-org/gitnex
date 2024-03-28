@@ -176,7 +176,6 @@
     <string name="noReleaseBodyContent">Release notes are not provided by the publisher.</string>
 
     <string name="newMilestoneTitle">Title</string>
-    <string name="newMilestoneDescription">Description</string>
     <string name="newMilestoneDueDate">Due Date</string>
     <string name="setDueDate" translatable="false">%1$d-%2$d-%3$d</string>
     <string name="milestoneNameErrorEmpty">Milestone title is empty</string>
@@ -193,7 +192,6 @@
     <string name="newIssueSelectLabelsListTitle">Select Labels</string>
     <string name="newIssueTitle">Title</string>
     <string name="newIssueAssigneesListTitle">Assignees</string>
-    <string name="newIssueDescriptionTitle">Description</string>
     <string name="newIssueDueDateTitle">Due Date</string>
     <string name="newIssueMilestoneTitle">Milestone</string>
     <string name="newIssueLabelsTitle">Labels</string>
@@ -323,7 +321,6 @@
 
     <!-- create team -->
     <string name="newTeamTitle">Team Name</string>
-    <string name="newTeamDesc">Description</string>
     <string name="newTeamPermission">Permission</string>
     <string name="newTeamAccessControls">Access Controls</string>
     <string name="newTeamPermissionRead">Members can view and clone team repositories</string>
@@ -360,6 +357,9 @@
     <string name="profileTabFollowers">Followers</string>
     <string name="profileTabFollowing">Following</string>
     <string name="usernameWithAt" translatable="false">\u0040%1$s</string>
+    <string name="editSettings">Edit Profile</string>
+    <string name="hideActivity">Hide Activity from profile page</string>
+    <string name="hideEmail">Hide Email</string>
     <!-- profile section -->
 
     <!-- account settings -->
@@ -548,6 +548,7 @@
     <string name="main">main</string>
     <string name="license">License</string>
     <string name="title">Title</string>
+    <string name="description">Description</string>
     <!-- generic copy -->
 
     <string name="exploreUsers">Explore users</string>

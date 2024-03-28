@@ -2,6 +2,7 @@ package org.mian.gitnex.clients;
 
 import android.content.Context;
 import android.util.Log;
+import androidx.annotation.NonNull;
 import com.google.gson.GsonBuilder;
 import java.io.File;
 import java.lang.annotation.Annotation;
@@ -230,7 +231,9 @@ public class RetrofitClient {
 
 		@Override
 		public Converter<?, String> stringConverter(
-				@NotNull Type type, @NotNull Annotation[] annotations, @NotNull Retrofit retrofit) {
+				@NotNull Type type,
+				@NonNull @NotNull Annotation[] annotations,
+				@NotNull Retrofit retrofit) {
 			if (type == Date.class) {
 				return DateQueryConverter.INSTANCE;
 			}
