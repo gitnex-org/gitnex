@@ -50,7 +50,7 @@ public class MembersByOrgViewModel extends ViewModel {
 					}
 
 					@Override
-					public void onFailure(@NonNull Call<List<User>> call, Throwable t) {
+					public void onFailure(@NonNull Call<List<User>> call, @NonNull Throwable t) {
 
 						Toasty.error(ctx, ctx.getString(R.string.genericServerResponseError));
 					}

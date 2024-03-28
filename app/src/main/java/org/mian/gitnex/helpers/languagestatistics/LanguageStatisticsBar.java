@@ -38,7 +38,7 @@ public class LanguageStatisticsBar extends androidx.appcompat.widget.AppCompatSe
 
 	protected void onDraw(Canvas canvas) {
 
-		if (progressItemsList.size() > 0) {
+		if (!progressItemsList.isEmpty()) {
 
 			int progressBarWidth = getWidth();
 			int progressBarHeight = getHeight();

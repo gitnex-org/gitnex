@@ -170,7 +170,6 @@ public class Markdown {
 		private Context context;
 		private String markdown;
 		private TextView textView;
-		TinyDB tinyDB = TinyDB.getInstance(null);
 
 		public Renderer(Slot slot) {
 
@@ -320,7 +319,6 @@ public class Markdown {
 		private RecyclerView recyclerView;
 		private MarkwonAdapter adapter;
 		private RepositoryContext repository;
-		TinyDB tinyDB = TinyDB.getInstance(null);
 
 		private LinkPostProcessor linkPostProcessor;
 

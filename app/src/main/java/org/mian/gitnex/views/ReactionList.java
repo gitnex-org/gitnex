@@ -20,6 +20,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Objects;
 import java.util.stream.Collectors;
 import org.gitnex.tea4j.v2.models.Reaction;
 import org.gitnex.tea4j.v2.models.User;
@@ -108,8 +109,9 @@ public class ReactionList extends HorizontalScrollView {
 
 										if (sortedReactions.containsKey(
 												issueReaction.getContent())) {
-											sortedReactions
-													.get(issueReaction.getContent())
+											Objects.requireNonNull(
+															sortedReactions.get(
+																	issueReaction.getContent()))
 													.add(issueReaction);
 										} else {
 											List<Reaction> issueReactions = new ArrayList<>();
@@ -135,6 +137,7 @@ public class ReactionList extends HorizontalScrollView {
 																		this,
 																		false);
 
+										assert issueReactions != null;
 										for (Reaction issueReaction : issueReactions) {
 											if (issueReaction
 													.getUser()

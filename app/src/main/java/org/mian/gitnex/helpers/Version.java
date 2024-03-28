@@ -28,8 +28,8 @@ public class Version {
 	/**
 	 * valid return true if string is a valid version
 	 *
-	 * @param value
-	 * @return
+	 * @param value String
+	 * @return true/false
 	 */
 	public static boolean valid(String value) {
 
@@ -37,15 +37,13 @@ public class Version {
 			return false;
 		}
 		final Pattern patternValid =
-				Pattern.compile("^[vV]?(\\d+)+(\\.(\\d+))*([_\\-+][\\w\\-+\\.]*)?$");
+				Pattern.compile("^[vV]?(\\d+)+(\\.(\\d+))*([_\\-+][\\w\\-+.]*)?$");
 		return value.equals("main") || patternValid.matcher(value).find();
 	}
 
 	/**
 	 * init parse and store values for other functions of an Version instance it use the raw
 	 * variable as base
-	 *
-	 * @return if parse was successfully
 	 */
 	private void init() {
 
@@ -84,7 +82,7 @@ public class Version {
 	/**
 	 * equal return true if version is the same
 	 *
-	 * @param value
+	 * @param value String
 	 * @return true/false
 	 */
 	public boolean equal(String value) {
@@ -95,8 +93,8 @@ public class Version {
 	/**
 	 * equal return true if version is the same
 	 *
-	 * @param v
-	 * @return
+	 * @param v Version
+	 * @return true/false
 	 */
 	public boolean equal(@NonNull Version v) {
 
@@ -116,7 +114,7 @@ public class Version {
 	/**
 	 * less return true if version is less
 	 *
-	 * @param value
+	 * @param value String
 	 * @return true/false
 	 */
 	public boolean less(String value) {
@@ -127,8 +125,8 @@ public class Version {
 	/**
 	 * less return true if version is less
 	 *
-	 * @param v
-	 * @return
+	 * @param v Version
+	 * @return true/false
 	 */
 	public boolean less(@NonNull Version v) {
 
@@ -138,7 +136,7 @@ public class Version {
 	/**
 	 * higher return true if version is higher
 	 *
-	 * @param value
+	 * @param value String
 	 * @return true/false
 	 */
 	public boolean higher(String value) {
@@ -149,8 +147,8 @@ public class Version {
 	/**
 	 * higher return true if version is higher
 	 *
-	 * @param v
-	 * @return
+	 * @param v Version
+	 * @return true/false
 	 */
 	public boolean higher(@NonNull Version v) {
 
@@ -180,7 +178,7 @@ public class Version {
 	/**
 	 * lessOrEqual return true if version is less or equal
 	 *
-	 * @param value
+	 * @param value String
 	 * @return true/false
 	 */
 	public boolean lessOrEqual(String value) {
@@ -191,8 +189,8 @@ public class Version {
 	/**
 	 * lessOrEqual return true if version is less or equal
 	 *
-	 * @param v
-	 * @return
+	 * @param v Version
+	 * @return true/false
 	 */
 	public boolean lessOrEqual(@NonNull Version v) {
 
@@ -202,7 +200,7 @@ public class Version {
 	/**
 	 * higherOrEqual return true if version is higher or equal
 	 *
-	 * @param value
+	 * @param value String
 	 * @return true/false
 	 */
 	public boolean higherOrEqual(String value) {
@@ -213,8 +211,8 @@ public class Version {
 	/**
 	 * higherOrEqual return true if version is higher or equal
 	 *
-	 * @param v
-	 * @return
+	 * @param v Version
+	 * @return true/false
 	 */
 	public boolean higherOrEqual(@NonNull Version v) {
 

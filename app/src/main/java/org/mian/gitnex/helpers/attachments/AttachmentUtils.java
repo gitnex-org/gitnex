@@ -4,10 +4,12 @@ import android.content.Context;
 import android.database.Cursor;
 import android.net.Uri;
 import android.provider.OpenableColumns;
+import android.util.Log;
 import java.io.File;
 import java.io.FileOutputStream;
 import java.io.InputStream;
 import java.io.OutputStream;
+import java.util.Objects;
 
 /**
  * @author M M Arif
@@ -22,13 +24,13 @@ public class AttachmentUtils {
 					new File(
 							ctx.getFilesDir().getPath() + File.separatorChar + queryName(ctx, uri));
 		} catch (AssertionError e) {
-			destinationFilename = new File(uri.getPath());
+			destinationFilename = new File(Objects.requireNonNull(uri.getPath()));
 		}
 
 		try (InputStream ins = ctx.getContentResolver().openInputStream(uri)) {
 			createFileFromStream(ins, destinationFilename);
 		} catch (Exception ex) {
-			ex.printStackTrace();
+			Log.e("AttachmentUtils", Objects.requireNonNull(ex.getMessage()));
 		}
 		return destinationFilename;
 	}
@@ -54,7 +56,7 @@ public class AttachmentUtils {
 			}
 			os.flush();
 		} catch (Exception ex) {
-			ex.printStackTrace();
+			Log.e("AttachmentUtils", Objects.requireNonNull(ex.getMessage()));
 		}
 	}
 }

@@ -91,7 +91,7 @@ public class DashboardViewModel extends ViewModel {
 							assert list != null;
 							assert response.body() != null;
 
-							if (response.body().size() != 0) {
+							if (!response.body().isEmpty()) {
 								list.addAll(response.body());
 								adapter.updateList(list);
 							} else {
