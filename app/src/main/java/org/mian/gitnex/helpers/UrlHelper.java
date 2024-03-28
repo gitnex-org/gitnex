@@ -1,7 +1,9 @@
 package org.mian.gitnex.helpers;
 
+import android.util.Log;
 import java.net.URI;
 import java.net.URISyntaxException;
+import java.util.Objects;
 
 /**
  * @author M M Arif
@@ -14,7 +16,7 @@ public class UrlHelper {
 		try {
 			uri = new URI(url);
 		} catch (URISyntaxException e) {
-			e.printStackTrace();
+			Log.e("UrlHelper", Objects.requireNonNull(e.getMessage()));
 		}
 
 		assert uri != null;

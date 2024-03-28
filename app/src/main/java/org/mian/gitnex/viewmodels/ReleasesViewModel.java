@@ -39,7 +39,7 @@ public class ReleasesViewModel extends ViewModel {
 
 		Call<List<Release>> call =
 				RetrofitClient.getApiInterface(ctx)
-						.repoListReleases(owner, repo, null, null, null, 1, resultLimit);
+						.repoListReleases(owner, repo, null, null, 1, resultLimit);
 
 		call.enqueue(
 				new Callback<>() {
@@ -69,7 +69,7 @@ public class ReleasesViewModel extends ViewModel {
 
 		Call<List<Release>> call =
 				RetrofitClient.getApiInterface(ctx)
-						.repoListReleases(owner, repo, null, null, null, page, resultLimit);
+						.repoListReleases(owner, repo, null, null, page, resultLimit);
 
 		call.enqueue(
 				new Callback<>() {
@@ -84,7 +84,7 @@ public class ReleasesViewModel extends ViewModel {
 							assert list != null;
 							assert response.body() != null;
 
-							if (response.body().size() != 0) {
+							if (!response.body().isEmpty()) {
 								list.addAll(response.body());
 								adapter.updateList(list);
 							} else {
@@ -157,7 +157,7 @@ public class ReleasesViewModel extends ViewModel {
 							assert list != null;
 							assert response.body() != null;
 
-							if (response.body().size() != 0) {
+							if (!response.body().isEmpty()) {
 								list.addAll(response.body());
 								adapter.updateList(list);
 							} else {

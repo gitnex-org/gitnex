@@ -29,7 +29,6 @@ public class PicassoCache implements Cache {
 	private final int CACHE_SIZE;
 	private final File cachePath;
 	private final HashMap<String, String> cacheMap;
-	private final Context ctx;
 
 	public PicassoCache(File cachePath, Context ctx) throws IOException, ClassNotFoundException {
 
@@ -41,7 +40,6 @@ public class PicassoCache implements Cache {
 						* 1024;
 		this.cachePath = cachePath;
 		cacheMap = new HashMap<>();
-		this.ctx = ctx;
 
 		if (cacheMapExists(cachePath)) {
 
@@ -104,7 +102,8 @@ public class PicassoCache implements Cache {
 
 		for (String key : cacheMap.keySet()) {
 
-			currentSize += new File(cachePath, Objects.requireNonNull(cacheMap.get(key))).length();
+			currentSize +=
+					(int) new File(cachePath, Objects.requireNonNull(cacheMap.get(key))).length();
 		}
 
 		return currentSize;

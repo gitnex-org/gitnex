@@ -44,4 +44,17 @@
         android:textSize="@dimen/dimen20sp"
         android:visibility="gone" />
 
+    <com.google.android.material.floatingactionbutton.ExtendedFloatingActionButton
+        android:id="@+id/addNewSSHKey"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="end|bottom"
+        android:layout_margin="@dimen/dimen16dp"
+        android:text="@string/addSSHKey"
+        android:contentDescription="@string/addSSHKey"
+        android:textColor="?attr/materialCardBackgroundColor"
+        app:iconTint="?attr/materialCardBackgroundColor"
+        android:backgroundTint="?attr/fabColor"
+        app:icon="@drawable/ic_add" />
+
 </androidx.coordinatorlayout.widget.CoordinatorLayout>

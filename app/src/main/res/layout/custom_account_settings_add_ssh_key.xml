@@ -13,7 +13,7 @@
 
         <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
+            android:layout_height="wrap_content"
             android:layout_margin="@dimen/dimen16dp"
             android:orientation="vertical">
 
@@ -22,96 +22,76 @@
                 android:layout_height="wrap_content"
                 android:orientation="vertical">
 
-                <TextView
-                    android:id="@+id/title"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_marginBottom="16dp"
-                    android:text="@string/repoSettingsTransferOwnership"
-                    android:textColor="?attr/primaryTextColor"
-                    android:textSize="20sp"
-                    android:textStyle="bold"/>
-
-                <TextView
-                    android:id="@+id/description"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_marginBottom="16dp"
-                    android:text="@string/repoSettingsTransferOwnershipDescription"
-                    android:textColor="?attr/primaryTextColor"
-                    android:textSize="16sp"/>
-
                 <com.google.android.material.textfield.TextInputLayout
-                    android:id="@+id/repoNameForTransferLayout"
+                    android:id="@+id/keyTitleLayout"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_marginTop="8dp"
                     android:layout_marginBottom="8dp"
-                    android:hint="@string/newRepoTintCopy"
+                    android:hint="@string/title"
                     android:textColorHint="?attr/hintColor"
                     app:boxBackgroundColor="?attr/inputBackgroundColor"
                     app:boxStrokeErrorColor="@color/darkRed"
                     app:hintTextColor="?attr/hintColor">
 
                     <com.google.android.material.textfield.TextInputEditText
-                        android:id="@+id/repoNameForTransfer"
+                        android:id="@+id/keyTitle"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:textColor="?attr/inputTextColor"
                         android:textColorHighlight="?attr/hintColor"
                         android:textColorHint="?attr/hintColor"
-                        android:textSize="16sp"/>
+                        android:textSize="16sp" />
 
                 </com.google.android.material.textfield.TextInputLayout>
 
                 <com.google.android.material.textfield.TextInputLayout
-                    android:id="@+id/ownerNameForTransferLayout"
+                    android:id="@+id/keyLayout"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="8dp"
                     android:layout_marginBottom="8dp"
-                    android:hint="@string/repoTransferOwnerText"
+                    android:hint="@string/sshKey"
                     android:textColorHint="?attr/hintColor"
                     app:boxBackgroundColor="?attr/inputBackgroundColor"
                     app:boxStrokeErrorColor="@color/darkRed"
                     app:hintTextColor="?attr/hintColor">
 
                     <com.google.android.material.textfield.TextInputEditText
-                        android:id="@+id/ownerNameForTransfer"
+                        android:id="@+id/key"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
+                        android:gravity="top|start"
+                        android:minHeight="@dimen/dimen180dp"
+                        android:singleLine="false"
                         android:textColor="?attr/inputTextColor"
                         android:textColorHighlight="?attr/hintColor"
                         android:textColorHint="?attr/hintColor"
-                        android:textSize="16sp"/>
+                        android:textSize="16sp" />
 
                 </com.google.android.material.textfield.TextInputLayout>
+
+                <com.google.android.material.materialswitch.MaterialSwitch
+                    android:id="@+id/keyStatus"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:checked="false"
+                    android:text="@string/sshKeyStatusReadOnly"
+                    android:textColor="?attr/primaryTextColor" />
 
             </LinearLayout>
 
-            <com.google.android.material.progressindicator.LinearProgressIndicator
-                android:id="@+id/processingRequest"
-                style="@style/Widget.Material3.LinearProgressIndicator"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:indeterminate="true"
-                android:visibility="gone"
-                app:indicatorColor="?attr/progressIndicatorColor"/>
-
             <com.google.android.material.button.MaterialButton
-                android:id="@+id/transfer"
+                android:id="@+id/save"
                 android:layout_width="match_parent"
                 android:layout_height="@dimen/dimen54dp"
                 android:layout_marginTop="@dimen/dimen16dp"
-                android:backgroundTint="@color/darkRed"
-                android:text="@string/repoTransferText"
-                android:textColor="@color/colorWhite"
+                android:text="@string/saveButton"
+                android:textColor="?attr/materialCardBackgroundColor"
                 android:textSize="16sp"
-                android:textStyle="bold"/>
+                android:textStyle="bold" />
 
         </LinearLayout>
 
     </androidx.core.widget.NestedScrollView>
 
 </LinearLayout>
-

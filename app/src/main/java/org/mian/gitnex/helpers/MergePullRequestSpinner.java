@@ -1,5 +1,6 @@
 package org.mian.gitnex.helpers;
 
+import androidx.annotation.NonNull;
 import java.io.Serializable;
 
 /**
@@ -31,7 +32,7 @@ public class MergePullRequestSpinner implements Serializable {
 		this.mergerMethod = mergerMethod;
 	}
 
-	@Override
+	@NonNull @Override
 	public String toString() {
 		return mergerMethod;
 	}

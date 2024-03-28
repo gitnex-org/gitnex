@@ -274,6 +274,7 @@ public class IssueDetailActivity extends BaseActivity
 		repoOwner = issue.getRepository().getOwner();
 		repoName = issue.getRepository().getName();
 		issueIndex = issue.getIssueIndex();
+		Boolean isLocked = issue.getIssue().isIsLocked();
 
 		setSupportActionBar(viewBinding.toolbar);
 		Objects.requireNonNull(getSupportActionBar()).setTitle(repoName);
@@ -292,6 +293,12 @@ public class IssueDetailActivity extends BaseActivity
 		viewBinding.recyclerView.setHasFixedSize(true);
 		viewBinding.recyclerView.setNestedScrollingEnabled(false);
 		viewBinding.recyclerView.setLayoutManager(new LinearLayoutManager(ctx));
+
+		if (isLocked && !issue.getRepository().getPermissions().isAdmin()) {
+			viewBinding.addNewComment.setVisibility(View.GONE);
+		} else {
+			viewBinding.addNewComment.setVisibility(View.VISIBLE);
+		}
 
 		viewBinding.addNewComment.setOnClickListener(
 				v -> {
@@ -1106,7 +1113,7 @@ public class IssueDetailActivity extends BaseActivity
 						LinearLayout.LayoutParams.WRAP_CONTENT);
 		paramsLabels.setMargins(0, 0, 15, 0);
 
-		if (issue.getIssue().getLabels().size() > 0) {
+		if (!issue.getIssue().getLabels().isEmpty()) {
 
 			viewBinding.labelsScrollView.setVisibility(View.VISIBLE);
 
@@ -1298,7 +1305,7 @@ public class IssueDetailActivity extends BaseActivity
 						if (response.code() == 200) {
 							assert attachment != null;
 
-							if (attachment.size() > 0) {
+							if (!attachment.isEmpty()) {
 
 								viewBinding.attachmentFrame.setVisibility(View.VISIBLE);
 								LinearLayout.LayoutParams paramsAttachment =

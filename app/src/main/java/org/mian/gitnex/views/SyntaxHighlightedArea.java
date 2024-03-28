@@ -100,7 +100,7 @@ public class SyntaxHighlightedArea extends LinearLayout {
 
 	public void setContent(@NonNull String source, @NonNull String extension) {
 
-		if (source.length() > 0) {
+		if (!source.isEmpty()) {
 
 			Thread highlightingThread =
 					new Thread(

@@ -31,7 +31,6 @@ import retrofit2.Callback;
  */
 public class RepositorySettingsActivity extends BaseActivity {
 
-	private ActivityRepositorySettingsBinding viewBinding;
 	private CustomRepositoryEditPropertiesDialogBinding propBinding;
 	private CustomRepositoryDeleteDialogBinding deleteRepoBinding;
 	private CustomRepositoryTransferDialogBinding transferRepoBinding;
@@ -49,11 +48,11 @@ public class RepositorySettingsActivity extends BaseActivity {
 
 		super.onCreate(savedInstanceState);
 
-		viewBinding = ActivityRepositorySettingsBinding.inflate(getLayoutInflater());
+		org.mian.gitnex.databinding.ActivityRepositorySettingsBinding viewBinding =
+				ActivityRepositorySettingsBinding.inflate(getLayoutInflater());
 		setContentView(viewBinding.getRoot());
 
 		repository = RepositoryContext.fromIntent(getIntent());
-		;
 
 		ImageView closeActivity = findViewById(R.id.close);
 

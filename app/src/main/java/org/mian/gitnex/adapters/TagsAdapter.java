@@ -69,7 +69,7 @@ public class TagsAdapter extends RecyclerView.Adapter<TagsAdapter.TagsViewHolder
 
 		holder.tagName.setText(currentItem.getName());
 
-		if (!currentItem.getMessage().equals("")) {
+		if (!currentItem.getMessage().isEmpty()) {
 			Markdown.render(context, currentItem.getMessage(), holder.tagBody);
 		} else {
 			holder.tagBody.setVisibility(View.GONE);
@@ -228,7 +228,7 @@ public class TagsAdapter extends RecyclerView.Adapter<TagsAdapter.TagsViewHolder
 		void onLoadFinished();
 	}
 
-	protected class TagsViewHolder extends RecyclerView.ViewHolder {
+	public class TagsViewHolder extends RecyclerView.ViewHolder {
 
 		private final TextView tagName;
 		private final TextView tagBody;

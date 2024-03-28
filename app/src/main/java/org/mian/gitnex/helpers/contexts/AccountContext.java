@@ -74,7 +74,7 @@ public class AccountContext implements Serializable {
 
 	public String getFullName() {
 		return userInfo != null
-				? !userInfo.getFullName().equals("") ? userInfo.getFullName() : userInfo.getLogin()
+				? !userInfo.getFullName().isEmpty() ? userInfo.getFullName() : userInfo.getLogin()
 				: account.getUserName();
 	}
 

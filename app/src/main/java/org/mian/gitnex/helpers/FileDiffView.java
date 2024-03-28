@@ -41,7 +41,7 @@ public class FileDiffView implements Serializable {
 
 	public String getFileName() {
 
-		if (fileOldName.length() != 0 && !fileOldName.equals(fileNewName)) {
+		if (!fileOldName.isEmpty() && !fileOldName.equals(fileNewName)) {
 			return fileOldName + " -> " + fileNewName;
 		}
 		return fileNewName;

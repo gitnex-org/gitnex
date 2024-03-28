@@ -4,6 +4,7 @@ import android.text.Layout;
 import android.view.View;
 import android.view.accessibility.AccessibilityEvent;
 import android.widget.EditText;
+import androidx.annotation.NonNull;
 
 /**
  * @author AmrDeveloper
@@ -18,7 +19,7 @@ public class SourcePositionListener {
 				new View.AccessibilityDelegate() {
 
 					@Override
-					public void sendAccessibilityEvent(View host, int eventType) {
+					public void sendAccessibilityEvent(@NonNull View host, int eventType) {
 						super.sendAccessibilityEvent(host, eventType);
 						if (eventType == AccessibilityEvent.TYPE_VIEW_TEXT_SELECTION_CHANGED
 								&& onPositionChanged != null) {

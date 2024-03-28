@@ -127,7 +127,9 @@ public class PullRequestCommitsFragment extends Fragment {
 								issue.getRepository().getName(),
 								(long) issue.getIssueIndex(),
 								1,
-								resultLimit);
+								resultLimit,
+								null,
+								null);
 
 		call.enqueue(
 				new Callback<>() {
@@ -184,7 +186,9 @@ public class PullRequestCommitsFragment extends Fragment {
 								issue.getRepository().getName(),
 								(long) issue.getIssueIndex(),
 								page,
-								resultLimit);
+								resultLimit,
+								null,
+								null);
 
 		call.enqueue(
 				new Callback<>() {

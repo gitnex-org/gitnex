@@ -91,7 +91,7 @@
                 android:layout_height="wrap_content"
                 android:layout_marginTop="@dimen/dimen8dp"
                 android:layout_marginBottom="@dimen/dimen8dp"
-                android:hint="@string/newIssueDescriptionTitle"
+                android:hint="@string/description"
                 android:textColorHint="?attr/hintColor"
                 app:boxStrokeErrorColor="@color/darkRed"
                 app:endIconMode="clear_text"

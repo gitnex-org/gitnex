@@ -91,6 +91,18 @@
                                 android:textIsSelectable="true"
                                 android:textSize="@dimen/dimen14sp" />
 
+                            <com.google.android.material.button.MaterialButton
+                                android:id="@+id/editProfile"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:text="@string/editSettings"
+                                android:textColor="?attr/materialCardBackgroundColor"
+                                android:backgroundTint="?attr/fabColor"
+                                app:iconTint="?attr/materialCardBackgroundColor"
+                                app:icon="@drawable/ic_edit"
+                                android:textSize="14sp"
+                                android:visibility="gone" />
+
                         </LinearLayout>
 
                     </LinearLayout>
