@@ -10,7 +10,6 @@ import android.text.Spanned;
 import android.text.method.LinkMovementMethod;
 import android.widget.TextView;
 import androidx.annotation.NonNull;
-import androidx.core.content.res.ResourcesCompat;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 import io.noties.markwon.AbstractMarkwonPlugin;
@@ -232,42 +231,25 @@ public class Markdown {
 										public void configureTheme(
 												@NonNull MarkwonTheme.Builder builder) {
 
-											builder.codeBlockTypeface(
-													Typeface.createFromAsset(
-															context.getAssets(),
-															"fonts/sourcecodeproregular.ttf"));
 											builder.codeBlockMargin(
 													(int)
 															(context.getResources()
 																			.getDisplayMetrics()
 																			.density
 																	* 10));
-											builder.blockMargin(
-													(int)
-															(context.getResources()
-																			.getDisplayMetrics()
-																			.density
-																	* 10));
+
 											builder.codeTextSize(
 													(int)
 															(context.getResources()
 																			.getDisplayMetrics()
 																			.scaledDensity
 																	* 13));
-											builder.codeTypeface(
-													Typeface.createFromAsset(
-															context.getAssets(),
-															"fonts/sourcecodeproregular.ttf"));
-											builder.linkColor(
-													ResourcesCompat.getColor(
-															context.getResources(),
-															R.color.lightBlue,
-															null));
 
 											if (tf == null) {
 												tf = AppUtil.getTypeface(context);
 											}
-											builder.headingTypeface(tf);
+											builder.headingTypeface(
+													Typeface.create(tf, Typeface.BOLD));
 										}
 									});
 
@@ -348,7 +330,7 @@ public class Markdown {
 					Markwon.builder(context)
 							.usePlugin(CorePlugin.create())
 							.usePlugin(HtmlPlugin.create())
-							.usePlugin(LinkifyPlugin.create(true)) // TODO not working
+							.usePlugin(LinkifyPlugin.create(true))
 							.usePlugin(SoftBreakAddsNewLinePlugin.create())
 							.usePlugin(TableEntryPlugin.create(context))
 							.usePlugin(
@@ -408,37 +390,19 @@ public class Markdown {
 										public void configureTheme(
 												@NonNull MarkwonTheme.Builder builder) {
 
-											builder.codeBlockTypeface(
-													Typeface.createFromAsset(
-															context.getAssets(),
-															"fonts/sourcecodeproregular.ttf"));
 											builder.codeBlockMargin(
 													(int)
 															(context.getResources()
 																			.getDisplayMetrics()
 																			.density
 																	* 10));
-											builder.blockMargin(
-													(int)
-															(context.getResources()
-																			.getDisplayMetrics()
-																			.density
-																	* 10));
+
 											builder.codeTextSize(
 													(int)
 															(context.getResources()
 																			.getDisplayMetrics()
 																			.scaledDensity
 																	* 13));
-											builder.codeTypeface(
-													Typeface.createFromAsset(
-															context.getAssets(),
-															"fonts/sourcecodeproregular.ttf"));
-											builder.linkColor(
-													ResourcesCompat.getColor(
-															context.getResources(),
-															R.color.lightBlue,
-															null));
 
 											if (tf == null) {
 												tf = AppUtil.getTypeface(context);
