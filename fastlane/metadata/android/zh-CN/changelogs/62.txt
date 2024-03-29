@@ -1,4 +1,4 @@
-Bugfix: crash when my repo, starred repos are accessed without repo avatar. old Gitea instances
+错误修正：访问我的仓库和星标仓库时，没有仓库头像会崩溃。 旧 Gitea 实例
 
-For more, check the release notes.
+查看发布日志，了解更多
 https://codeberg.org/gitnex/GitNex/releases

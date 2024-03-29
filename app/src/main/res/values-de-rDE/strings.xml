@@ -124,7 +124,6 @@
     <string name="releasePublishedBy">Veröffentlicht von @%1$s</string>
     <string name="noReleaseBodyContent">Veröffentlichungshinweise werden vom Herausgeber nicht zur Verfügung gestellt.</string>
     <string name="newMilestoneTitle">Titel</string>
-    <string name="newMilestoneDescription">Beschreibung</string>
     <string name="newMilestoneDueDate">Fälligkeitsdatum</string>
     <string name="milestoneNameErrorEmpty">Titel des Meilensteins ist leer</string>
     <string name="milestoneDescError">Die Beschreibung des Meilensteins überschreitet die maximale Anzahl von 255 Zeichen</string>
@@ -139,7 +138,6 @@
     <string name="newIssueSelectLabelsListTitle">Labels auswählen</string>
     <string name="newIssueTitle">Titel</string>
     <string name="newIssueAssigneesListTitle">Zuständiger</string>
-    <string name="newIssueDescriptionTitle">Beschreibung</string>
     <string name="newIssueDueDateTitle">Fälligkeitsdatum</string>
     <string name="newIssueMilestoneTitle">Meilenstein</string>
     <string name="newIssueLabelsTitle">Labels</string>
@@ -254,7 +252,6 @@
     <!-- org tabbed layout str -->
     <!-- create team -->
     <string name="newTeamTitle">Name des Teams</string>
-    <string name="newTeamDesc">Beschreibung des Teams</string>
     <string name="newTeamPermission">Berechtigung</string>
     <string name="newTeamAccessControls">Zugriffsrechte</string>
     <string name="newTeamPermissionRead">Mitglieder können Team-Repositorys einsehen und klonen</string>
@@ -285,6 +282,9 @@
     <!-- profile section -->
     <string name="profileTabFollowers">Folgen mir</string>
     <string name="profileTabFollowing">Folge ich</string>
+    <string name="editSettings">Profil bearbeiten</string>
+    <string name="hideActivity">Aktivität im Profil ausblenden</string>
+    <string name="hideEmail">E-Mail Adresse verstecken</string>
     <!-- profile section -->
     <!-- account settings -->
     <string name="accountEmails">E-Mails</string>
@@ -295,6 +295,14 @@
     <string name="emailErrorInUse">E-Mail Adresse ist bereits in Benutzung.</string>
     <string name="emailTypeText">Primär</string>
     <string name="sshKeys">SSH-Schlüssel</string>
+    <string name="deleteEmailPopupText">Dies wird die E-Mail %s permanent von deinem Account löschen.</string>
+    <string name="deleteEmailSuccess">E-Mail erfolgreich gelöscht</string>
+    <string name="addSSHKey">SSH-Schlüssel hinzufügen</string>
+    <string name="sshKeyStatusReadOnly">Nur Lesezugriff</string>
+    <string name="sshKeyStatusReadWrite">Lese-/Schreibzugriff</string>
+    <string name="sshKey">SSH-Schlüssel</string>
+    <string name="sshKeySuccess">Neuer SSH-Schlüssel erfolgreich hinzugefügt</string>
+    <string name="sshKeyError">Ungültiger SSH-Schlüssel oder SSH-Schlüssel existiert bereits</string>
     <!-- account settings -->
     <!-- single issue section -->
     <string name="singleIssueEditLabels">Labels hinzufügen/entfernen</string>
@@ -441,6 +449,8 @@
     <string name="none">Keine</string>
     <string name="main">main</string>
     <string name="license">Lizenz</string>
+    <string name="title">Titel</string>
+    <string name="description">Beschreibung</string>
     <!-- generic copy -->
     <string name="exploreUsers">Benutzer erkunden</string>
     <string name="exploreIssues">Issues erkunden</string>

@@ -124,7 +124,6 @@
     <string name="releasePublishedBy">Publié par @%1$s</string>
     <string name="noReleaseBodyContent">Les notes de version ne sont pas fournies.</string>
     <string name="newMilestoneTitle">Titre</string>
-    <string name="newMilestoneDescription">Description</string>
     <string name="newMilestoneDueDate">Échéance</string>
     <string name="milestoneNameErrorEmpty">Titre du jalon requis</string>
     <string name="milestoneDescError">La description du jalon dépasse la limite de 255 caractères</string>
@@ -139,7 +138,6 @@
     <string name="newIssueSelectLabelsListTitle">Étiquettes</string>
     <string name="newIssueTitle">Titre</string>
     <string name="newIssueAssigneesListTitle">Affectation</string>
-    <string name="newIssueDescriptionTitle">Description</string>
     <string name="newIssueDueDateTitle">Échéance</string>
     <string name="newIssueMilestoneTitle">Jalon</string>
     <string name="newIssueLabelsTitle">Étiquettes</string>
@@ -254,7 +252,6 @@
     <!-- org tabbed layout str -->
     <!-- create team -->
     <string name="newTeamTitle">Nom</string>
-    <string name="newTeamDesc">Description</string>
     <string name="newTeamPermission">Permission</string>
     <string name="newTeamAccessControls">Accès</string>
     <string name="newTeamPermissionRead">Les membres peuvent voir et cloner les dépôts de l’équipe.</string>
@@ -285,6 +282,9 @@
     <!-- profile section -->
     <string name="profileTabFollowers">Abonnés</string>
     <string name="profileTabFollowing">Abonnements</string>
+    <string name="editSettings">Modifier profil</string>
+    <string name="hideActivity">Masquer l\'activité sur la page de profil</string>
+    <string name="hideEmail">Masquer l’e-mail</string>
     <!-- profile section -->
     <!-- account settings -->
     <string name="accountEmails">Courriels</string>
@@ -295,6 +295,14 @@
     <string name="emailErrorInUse">Adresse courriel déjà utilisée</string>
     <string name="emailTypeText">Principal</string>
     <string name="sshKeys">Clés SSH</string>
+    <string name="deleteEmailPopupText">Cette action supprimera définitivement l’e-mail %s de votre compte.</string>
+    <string name="deleteEmailSuccess">E-mail supprimé avec succès</string>
+    <string name="addSSHKey">Ajouter clé SSH</string>
+    <string name="sshKeyStatusReadOnly">Accès en lecture seule</string>
+    <string name="sshKeyStatusReadWrite">Accès en lecture/écriture</string>
+    <string name="sshKey">Clé SSH</string>
+    <string name="sshKeySuccess">Clé SSH ajoutée</string>
+    <string name="sshKeyError">Clé SSH invalide ou déjà enregistrée</string>
     <!-- account settings -->
     <!-- single issue section -->
     <string name="singleIssueEditLabels">Gérer les étiquettes</string>
@@ -441,6 +449,8 @@
     <string name="none">Aucun</string>
     <string name="main">main</string>
     <string name="license">Licence</string>
+    <string name="title">Titre</string>
+    <string name="description">Description</string>
     <!-- generic copy -->
     <string name="exploreUsers">Rechercher des utilisateurs</string>
     <string name="exploreIssues">Rechercher des tickets</string>
