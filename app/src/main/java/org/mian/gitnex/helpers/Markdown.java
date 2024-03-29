@@ -23,7 +23,8 @@ import io.noties.markwon.ext.tables.TableAwareMovementMethod;
 import io.noties.markwon.ext.tables.TablePlugin;
 import io.noties.markwon.ext.tasklist.TaskListPlugin;
 import io.noties.markwon.html.HtmlPlugin;
-import io.noties.markwon.image.picasso.PicassoImagesPlugin;
+import io.noties.markwon.image.ImagesPlugin;
+import io.noties.markwon.image.network.OkHttpNetworkSchemeHandler;
 import io.noties.markwon.inlineparser.InlineProcessor;
 import io.noties.markwon.inlineparser.MarkwonInlineParser;
 import io.noties.markwon.linkify.LinkifyPlugin;
@@ -39,6 +40,7 @@ import java.util.concurrent.ThreadPoolExecutor;
 import java.util.concurrent.TimeUnit;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
+import okhttp3.OkHttpClient;
 import org.commonmark.ext.gfm.tables.TableBlock;
 import org.commonmark.node.AbstractVisitor;
 import org.commonmark.node.FencedCodeBlock;
@@ -54,7 +56,6 @@ import org.mian.gitnex.activities.BaseActivity;
 import org.mian.gitnex.activities.CommitDetailActivity;
 import org.mian.gitnex.activities.IssueDetailActivity;
 import org.mian.gitnex.activities.ProfileActivity;
-import org.mian.gitnex.clients.PicassoService;
 import org.mian.gitnex.core.MainGrammarLocator;
 import org.mian.gitnex.helpers.codeeditor.markwon.MarkwonHighlighter;
 import org.mian.gitnex.helpers.codeeditor.theme.Theme;
@@ -188,9 +189,20 @@ public class Markdown {
 									MovementMethodPlugin.create(TableAwareMovementMethod.create()))
 							.usePlugin(TaskListPlugin.create(context))
 							.usePlugin(StrikethroughPlugin.create())
+							.usePlugin(ImagesPlugin.create())
 							.usePlugin(
-									PicassoImagesPlugin.create(
-											PicassoService.getInstance(context).get()))
+									new AbstractMarkwonPlugin() {
+										@Override
+										public void configure(@NonNull Registry registry) {
+											registry.require(
+													ImagesPlugin.class,
+													imagesPlugin ->
+															imagesPlugin.addSchemeHandler(
+																	OkHttpNetworkSchemeHandler
+																			.create(
+																					new OkHttpClient())));
+										}
+									})
 							.usePlugin(
 									MarkwonHighlighter.create(
 											context,
@@ -237,13 +249,6 @@ public class Markdown {
 																			.getDisplayMetrics()
 																			.density
 																	* 10));
-
-											builder.codeTextSize(
-													(int)
-															(context.getResources()
-																			.getDisplayMetrics()
-																			.scaledDensity
-																	* 13));
 
 											if (tf == null) {
 												tf = AppUtil.getTypeface(context);
@@ -337,9 +342,20 @@ public class Markdown {
 									MovementMethodPlugin.create(TableAwareMovementMethod.create()))
 							.usePlugin(TaskListPlugin.create(context))
 							.usePlugin(StrikethroughPlugin.create())
+							.usePlugin(ImagesPlugin.create())
 							.usePlugin(
-									PicassoImagesPlugin.create(
-											PicassoService.getInstance(context).get()))
+									new AbstractMarkwonPlugin() {
+										@Override
+										public void configure(@NonNull Registry registry) {
+											registry.require(
+													ImagesPlugin.class,
+													imagesPlugin ->
+															imagesPlugin.addSchemeHandler(
+																	OkHttpNetworkSchemeHandler
+																			.create(
+																					new OkHttpClient())));
+										}
+									})
 							.usePlugin(
 									MarkwonHighlighter.create(
 											context,
@@ -396,13 +412,6 @@ public class Markdown {
 																			.getDisplayMetrics()
 																			.density
 																	* 10));
-
-											builder.codeTextSize(
-													(int)
-															(context.getResources()
-																			.getDisplayMetrics()
-																			.scaledDensity
-																	* 13));
 
 											if (tf == null) {
 												tf = AppUtil.getTypeface(context);
