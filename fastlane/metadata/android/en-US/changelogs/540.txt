@@ -1,0 +1,19 @@
+5.4.0
+
+🎉 Features 🎉
+- Restore/import app data
+- Backup/export app data
+- Delete email from account
+- Update profile settings
+- Add SSH key to account
+
+🚀 Improvements 🚀 
+- Open specific URL in deep links
+- Show open in browser with other buttons in deep links
+- Show pinned messages in timeline
+- Hide Comment button if issue is locked
+- New languages and translation updates
+
+Release Notes: https://codeberg.org/gitnex/GitNex/releases
+
+Release Posts: https://najigram.com/category/gitnex

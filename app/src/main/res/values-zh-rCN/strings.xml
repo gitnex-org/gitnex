@@ -46,7 +46,7 @@
     <string name="newRepoDescTintCopy">仓库描述</string>
     <string name="newRepoPrivateCopy">私有</string>
     <string name="newRepoOwner">所有者</string>
-    <string name="newRepoIssueLabels">Issue Labels</string>
+    <string name="newRepoIssueLabels">问题标记</string>
     <string name="setAsTemplate">设置仓库为模板仓库</string>
     <string name="newOrgTintCopy">组织名称</string>
     <string name="newOrgDescTintCopy">组织描述</string>
@@ -124,7 +124,6 @@
     <string name="releasePublishedBy">由 @%1$s 发布</string>
     <string name="noReleaseBodyContent">发布者没有提供发行日志</string>
     <string name="newMilestoneTitle">标题</string>
-    <string name="newMilestoneDescription">描述</string>
     <string name="newMilestoneDueDate">截止日期</string>
     <string name="milestoneNameErrorEmpty">里程碑标题为空</string>
     <string name="milestoneDescError">里程碑描述超过最大255个字符限制</string>
@@ -139,7 +138,6 @@
     <string name="newIssueSelectLabelsListTitle">选择标签</string>
     <string name="newIssueTitle">标题</string>
     <string name="newIssueAssigneesListTitle">指派人</string>
-    <string name="newIssueDescriptionTitle">说明</string>
     <string name="newIssueDueDateTitle">到期日</string>
     <string name="newIssueMilestoneTitle">里程碑</string>
     <string name="newIssueLabelsTitle">标签</string>
@@ -201,6 +199,15 @@
     <string name="fragmentTabsAnimationHeader">标签页动画</string>
     <string name="fadeOut">淡出</string>
     <string name="zoomOut">缩小</string>
+    <string name="backup">备份</string>
+    <string name="restore">恢复</string>
+    <string name="backupFileSuccess">已成功创建备份</string>
+    <string name="backupFileError">创建数据备份时发生错误</string>
+    <string name="backupFilePopupText">此操作将备份与存储库相关的帐户、设置、草稿、注释和数据。\n\n单击 备份 按钮下载备份文件。</string>
+    <string name="restoreFilePopupText">您即将从 GitNex 生成的备份文件还原。这将恢复与存储库相关的用户帐户、设置、草稿、注释和数据。\n\n请注意，此操作将覆盖当前数据库数据。请谨慎操作。\n\n点击 恢复 按钮执行该操作。</string>
+    <string name="restoreError">从备份文件恢复时发生错误。</string>
+    <string name="restoreFromBackup">从备份中恢复</string>
+    <string name="restoreFromBackupPopupText">您即将从 GitNex 生成的备份文件还原。这将恢复与存储库相关的用户帐户、设置、草稿、注释和数据。\n\n点击 恢复 按钮执行该操作。</string>
     <!-- settings -->
     <string name="noMoreData">没有更多可用数据</string>
     <string name="createLabel">创建标签</string>
@@ -245,7 +252,6 @@
     <!-- org tabbed layout str -->
     <!-- create team -->
     <string name="newTeamTitle">团队名称</string>
-    <string name="newTeamDesc">说明</string>
     <string name="newTeamPermission">权限</string>
     <string name="newTeamAccessControls">访问控制</string>
     <string name="newTeamPermissionRead">成员可以查看并克隆团队仓库</string>
@@ -276,6 +282,9 @@
     <!-- profile section -->
     <string name="profileTabFollowers">关注者</string>
     <string name="profileTabFollowing">正在关注</string>
+    <string name="editSettings">编辑简介</string>
+    <string name="hideActivity">从简介页面隐藏活动</string>
+    <string name="hideEmail">隐藏电子邮箱地址</string>
     <!-- profile section -->
     <!-- account settings -->
     <string name="accountEmails">电子邮件</string>
@@ -286,6 +295,14 @@
     <string name="emailErrorInUse">电子邮件地址已被使用</string>
     <string name="emailTypeText">主要</string>
     <string name="sshKeys">SSH 密钥</string>
+    <string name="deleteEmailPopupText">此操作将永久删除您帐户中的电子邮箱 %s。</string>
+    <string name="deleteEmailSuccess">成功删除该电子邮箱地址</string>
+    <string name="addSSHKey">添加SSH密钥</string>
+    <string name="sshKeyStatusReadOnly">只读权限</string>
+    <string name="sshKeyStatusReadWrite">读/写权限</string>
+    <string name="sshKey">SSH 密钥</string>
+    <string name="sshKeySuccess">新 SSH 密钥添加成功</string>
+    <string name="sshKeyError">无效的 SSH 密钥或该 SSH 密钥已经存在</string>
     <!-- account settings -->
     <!-- single issue section -->
     <string name="singleIssueEditLabels">添加/删除标签</string>
@@ -430,8 +447,10 @@
     <string name="reset">重置</string>
     <string name="beta">测试</string>
     <string name="none">无</string>
-    <string name="main">main</string>
+    <string name="main">主分支</string>
     <string name="license">许可证</string>
+    <string name="title">标题</string>
+    <string name="description">描述</string>
     <!-- generic copy -->
     <string name="exploreUsers">探索用户</string>
     <string name="exploreIssues">探索问题</string>
@@ -445,7 +464,7 @@
     <string name="versionUnsupportedNew">检测到新的 Gitea 版本！请更新 GitNex！</string>
     <string name="versionUnknown">未检测到Gitea！</string>
     <string name="versionAlertDialogHeader">不支持的 Gitea 版本</string>
-    <string name="loginViaPassword">Basic Auth</string>
+    <string name="loginViaPassword">基本认证</string>
     <string name="unauthorizedApiError">令牌可能已失效，请检查后重试</string>
     <string name="loginTokenError">令牌是必需的。</string>
     <string name="prDeletedFork">已删除分叉</string>
@@ -534,6 +553,9 @@
     <string name="rateAppHintText">如果你喜欢GitNex，你可以给它点赞</string>
     <string name="aboutAppHintText">应用程序版本、构建、用户实例版本</string>
     <string name="codeEditorHintText">语法高亮，缩进</string>
+    <string name="backupRestoreHintText">备份并还原帐户、设置等</string>
+    <string name="backupDataHintText">备份帐户，设置，注释和更多</string>
+    <string name="restoreDataHintText">还原帐户、设置、注释等</string>
     <string name="archivedRepository">已存档</string>
     <string name="archivedRepositoryMessage">此代码库已存档。您可以查看文件，但不能推送或打开issues/合并请求。</string>
     <string name="accountDeletedMessage">帐户删除成功</string>
@@ -749,9 +771,9 @@
     <string name="transferredRepository">转移仓库 %1$s 到</string>
     <string name="createdBranch">建立分支 %1$s 于</string>
     <string name="pushedTo">pushed to %1$s at</string>
-    <string name="openedIssue">opened issue</string>
-    <string name="commentedOnIssue">commented on issue</string>
-    <string name="closedIssue">closed issue</string>
+    <string name="openedIssue">打开的问题</string>
+    <string name="commentedOnIssue">已评论问题</string>
+    <string name="closedIssue">已关闭问题</string>
     <string name="reopenedIssue">重新开启的工单</string>
     <string name="createdPR">已创建的合并请求</string>
     <string name="closedPR">已关闭的合并请求</string>
@@ -759,7 +781,7 @@
     <string name="mergedPR">已合并的合并请求</string>
     <string name="approved">已通过</string>
     <string name="suggestedChanges">建议更改</string>
-    <string name="commentedOnPR">commented on pull request</string>
+    <string name="commentedOnPR">已评论合并请求</string>
     <string name="autoMergePR">自动合并的合并请求</string>
     <string name="deletedBranch">deleted branch %1$s at</string>
     <string name="pushedTag">推送标签 %1$s 到</string>
@@ -768,7 +790,7 @@
     <string name="syncedCommits">synced commits to %1$s at</string>
     <string name="syncedRefs">synced new reference %1$s to</string>
     <string name="syncedDeletedRefs">synced and deleted reference %1$s at</string>
-    <string name="attachment">Attachment</string>
-    <string name="attachments">Attachments</string>
+    <string name="attachment">附件</string>
+    <string name="attachments">附件</string>
     <string name="attachmentsSaveError">An issue was created but cannot process attachments at this time. Check the server logs for more details.</string>
 </resources>

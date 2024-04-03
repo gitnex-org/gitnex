@@ -124,7 +124,6 @@
     <string name="releasePublishedBy">\@%1$sවිසින් ප්‍රකාශනය කරන ලදී</string>
     <string name="noReleaseBodyContent">නිකුතු සටහන් ප්‍රකාශකයා විසින් සපයනු නොලැබේ.</string>
     <string name="newMilestoneTitle">සිරැසිය</string>
-    <string name="newMilestoneDescription">සවිස්තරය</string>
     <string name="newMilestoneDueDate">ගෙවිය යුතු දිනය</string>
     <string name="milestoneNameErrorEmpty">සන්ධිස්ථානයේ මාතෘකාව හිස්ය</string>
     <string name="milestoneDescError">සන්ධිස්ථානයේ විස්තරය උපරිම අක්ෂර 255 සීමාව ඉක්මවයි</string>
@@ -139,7 +138,6 @@
     <string name="newIssueSelectLabelsListTitle">නම්පත් තෝරාගන්න</string>
     <string name="newIssueTitle">සිරැසිය</string>
     <string name="newIssueAssigneesListTitle">පැවරුණු අය</string>
-    <string name="newIssueDescriptionTitle">සවිස්තරය</string>
     <string name="newIssueDueDateTitle">ගෙවිය යුතු දිනය</string>
     <string name="newIssueMilestoneTitle">සන්ධිස්ථානය</string>
     <string name="newIssueLabelsTitle">නම්පත්</string>
@@ -201,6 +199,15 @@
     <string name="fragmentTabsAnimationHeader">Tabs Animation</string>
     <string name="fadeOut">Fade Out</string>
     <string name="zoomOut">Zoom Out</string>
+    <string name="backup">Backup</string>
+    <string name="restore">Restore</string>
+    <string name="backupFileSuccess">The backup was successfully created</string>
+    <string name="backupFileError">An error occurred while creating a data backup</string>
+    <string name="backupFilePopupText">This action will backup your accounts, settings, drafts, notes, and data related to repositories.\n\nClick the Backup button to download the backup file.</string>
+    <string name="restoreFilePopupText">You are about to restore from a GitNex-generated backup file. This will restore user accounts, settings, drafts, notes, and data related to repositories.\n\nPlease note this action will overwrite the current database data. Proceed with caution.\n\nClick Restore to start the process.</string>
+    <string name="restoreError">An error occurred while restoring from the backup file.</string>
+    <string name="restoreFromBackup">Restore from Backup</string>
+    <string name="restoreFromBackupPopupText">You are about to restore from a GitNex-generated backup file. This will restore user accounts, settings, drafts, notes, and data related to repositories.\n\nClick Restore to start the process.</string>
     <!-- settings -->
     <string name="noMoreData">තවත් දත්ත නොමැත</string>
     <string name="createLabel">නව ලේබලය</string>
@@ -245,7 +252,6 @@
     <!-- org tabbed layout str -->
     <!-- create team -->
     <string name="newTeamTitle">කණ්ඩායමේ නම</string>
-    <string name="newTeamDesc">සවිස්තරය</string>
     <string name="newTeamPermission">අවසරය</string>
     <string name="newTeamAccessControls">ප්රවේශය පාලනය</string>
     <string name="newTeamPermissionRead">සාමාජිකයින්ට කණ්ඩායම් ගබඩාවන් බැලීමට සහ ක්ලෝන කිරීමට හැකිය</string>
@@ -276,6 +282,9 @@
     <!-- profile section -->
     <string name="profileTabFollowers">අනුගාමිකයින්</string>
     <string name="profileTabFollowing">අනුගමනය</string>
+    <string name="editSettings">Edit Profile</string>
+    <string name="hideActivity">Hide Activity from profile page</string>
+    <string name="hideEmail">Hide Email</string>
     <!-- profile section -->
     <!-- account settings -->
     <string name="accountEmails">Emails</string>
@@ -286,6 +295,14 @@
     <string name="emailErrorInUse">ඊමේල් ලිපිනය දැනටමත් භාවිතයේ ඇත</string>
     <string name="emailTypeText">ප්රාථමික</string>
     <string name="sshKeys">SSH Keys</string>
+    <string name="deleteEmailPopupText">This action will permanently delete email %s from your account.</string>
+    <string name="deleteEmailSuccess">Email deleted successfully</string>
+    <string name="addSSHKey">Add SSH Key</string>
+    <string name="sshKeyStatusReadOnly">Read-only Access</string>
+    <string name="sshKeyStatusReadWrite">Read-write Access</string>
+    <string name="sshKey">SSH Key</string>
+    <string name="sshKeySuccess">New SSH key added successfully</string>
+    <string name="sshKeyError">Invalid SSH key or SSH key already exists</string>
     <!-- account settings -->
     <!-- single issue section -->
     <string name="singleIssueEditLabels">ලේබල් එකතු කරන්න / ඉවත් කරන්න</string>
@@ -432,6 +449,8 @@
     <string name="none">None</string>
     <string name="main">main</string>
     <string name="license">License</string>
+    <string name="title">Title</string>
+    <string name="description">Description</string>
     <!-- generic copy -->
     <string name="exploreUsers">පරිශීලකයන් ගවේෂණය කරන්න</string>
     <string name="exploreIssues">ගැටළු ගවේෂණය කරන්න</string>
@@ -534,6 +553,9 @@
     <string name="rateAppHintText">ඔබ GitNex වලට කැමති නම් ඔබට එය thumbs up ලබා දිය හැක</string>
     <string name="aboutAppHintText">App version, build, user instance version</string>
     <string name="codeEditorHintText">Syntax color, indentation</string>
+    <string name="backupRestoreHintText">Backup and restore accounts, settings and more</string>
+    <string name="backupDataHintText">Backup accounts, settings, notes and more</string>
+    <string name="restoreDataHintText">Restore accounts, settings, notes and more</string>
     <string name="archivedRepository">සංරක්ෂණය කර ඇත</string>
     <string name="archivedRepositoryMessage">මෙම රෙපෝව සංරක්ෂණය කර ඇත. ඔබට ගොනු බැලිය හැක, නමුත් ගැටළු/අදින්න-ඉල්ලීම් තල්ලු කිරීමට හෝ විවෘත කිරීමට නොහැක.</string>
     <string name="accountDeletedMessage">ගිණුම සාර්ථකව මකා ඇත</string>

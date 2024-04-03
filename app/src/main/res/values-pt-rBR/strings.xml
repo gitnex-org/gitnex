@@ -125,7 +125,6 @@ Exemplo: codeberg.org</string>
     <string name="releasePublishedBy">Publicado por @%1$s</string>
     <string name="noReleaseBodyContent">Notas de versão não são fornecidas pelo editor.</string>
     <string name="newMilestoneTitle">Título</string>
-    <string name="newMilestoneDescription">Descrição</string>
     <string name="newMilestoneDueDate">Data Limite</string>
     <string name="milestoneNameErrorEmpty">Título da meta está vazio</string>
     <string name="milestoneDescError">Descrição da meta excede o limite máximo de 255 caracteres</string>
@@ -140,7 +139,6 @@ Exemplo: codeberg.org</string>
     <string name="newIssueSelectLabelsListTitle">Selecionar marcadores</string>
     <string name="newIssueTitle">Título</string>
     <string name="newIssueAssigneesListTitle">Designados</string>
-    <string name="newIssueDescriptionTitle">Descrição</string>
     <string name="newIssueDueDateTitle">Data Limite</string>
     <string name="newIssueMilestoneTitle">Meta</string>
     <string name="newIssueLabelsTitle">Marcadores</string>
@@ -202,6 +200,15 @@ Exemplo: codeberg.org</string>
     <string name="fragmentTabsAnimationHeader">Tabs Animation</string>
     <string name="fadeOut">Fade Out</string>
     <string name="zoomOut">Zoom Out</string>
+    <string name="backup">Backup</string>
+    <string name="restore">Restore</string>
+    <string name="backupFileSuccess">The backup was successfully created</string>
+    <string name="backupFileError">An error occurred while creating a data backup</string>
+    <string name="backupFilePopupText">This action will backup your accounts, settings, drafts, notes, and data related to repositories.\n\nClick the Backup button to download the backup file.</string>
+    <string name="restoreFilePopupText">You are about to restore from a GitNex-generated backup file. This will restore user accounts, settings, drafts, notes, and data related to repositories.\n\nPlease note this action will overwrite the current database data. Proceed with caution.\n\nClick Restore to start the process.</string>
+    <string name="restoreError">An error occurred while restoring from the backup file.</string>
+    <string name="restoreFromBackup">Restore from Backup</string>
+    <string name="restoreFromBackupPopupText">You are about to restore from a GitNex-generated backup file. This will restore user accounts, settings, drafts, notes, and data related to repositories.\n\nClick Restore to start the process.</string>
     <!-- settings -->
     <string name="noMoreData">Não há mais dados disponíveis</string>
     <string name="createLabel">Novo marcador</string>
@@ -246,7 +253,6 @@ Exemplo: codeberg.org</string>
     <!-- org tabbed layout str -->
     <!-- create team -->
     <string name="newTeamTitle">Nome da equipe</string>
-    <string name="newTeamDesc">Descrição</string>
     <string name="newTeamPermission">Permissão</string>
     <string name="newTeamAccessControls">Controle de acessos</string>
     <string name="newTeamPermissionRead">Membros podem ver e clonar repositórios de equipe</string>
@@ -277,6 +283,9 @@ Exemplo: codeberg.org</string>
     <!-- profile section -->
     <string name="profileTabFollowers">Seguidores</string>
     <string name="profileTabFollowing">Seguindo</string>
+    <string name="editSettings">Edit Profile</string>
+    <string name="hideActivity">Hide Activity from profile page</string>
+    <string name="hideEmail">Hide Email</string>
     <!-- profile section -->
     <!-- account settings -->
     <string name="accountEmails">Emails</string>
@@ -287,6 +296,14 @@ Exemplo: codeberg.org</string>
     <string name="emailErrorInUse">O endereço de e-mail já está em uso</string>
     <string name="emailTypeText">Principal</string>
     <string name="sshKeys">SSH Keys</string>
+    <string name="deleteEmailPopupText">This action will permanently delete email %s from your account.</string>
+    <string name="deleteEmailSuccess">Email deleted successfully</string>
+    <string name="addSSHKey">Add SSH Key</string>
+    <string name="sshKeyStatusReadOnly">Read-only Access</string>
+    <string name="sshKeyStatusReadWrite">Read-write Access</string>
+    <string name="sshKey">SSH Key</string>
+    <string name="sshKeySuccess">New SSH key added successfully</string>
+    <string name="sshKeyError">Invalid SSH key or SSH key already exists</string>
     <!-- account settings -->
     <!-- single issue section -->
     <string name="singleIssueEditLabels">Adicionar/Remover marcadores</string>
@@ -433,6 +450,8 @@ Exemplo: codeberg.org</string>
     <string name="none">None</string>
     <string name="main">main</string>
     <string name="license">License</string>
+    <string name="title">Title</string>
+    <string name="description">Description</string>
     <!-- generic copy -->
     <string name="exploreUsers">Explore users</string>
     <string name="exploreIssues">Explore issues</string>
@@ -535,6 +554,9 @@ Exemplo: codeberg.org</string>
     <string name="rateAppHintText">Se você gosta do GitNex você pode dar um joinha</string>
     <string name="aboutAppHintText">App version, build, user instance version</string>
     <string name="codeEditorHintText">Syntax color, indentation</string>
+    <string name="backupRestoreHintText">Backup and restore accounts, settings and more</string>
+    <string name="backupDataHintText">Backup accounts, settings, notes and more</string>
+    <string name="restoreDataHintText">Restore accounts, settings, notes and more</string>
     <string name="archivedRepository">Arquivado</string>
     <string name="archivedRepositoryMessage">This repo is archived. You can view files, but cannot push or open issues/pull-requests.</string>
     <string name="accountDeletedMessage">Conta excluída com êxito</string>

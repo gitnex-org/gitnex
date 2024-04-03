@@ -124,7 +124,6 @@
     <string name="releasePublishedBy">発行者@%1$s</string>
     <string name="noReleaseBodyContent">リリースノートは発行元から提供されていません。</string>
     <string name="newMilestoneTitle">タイトル</string>
-    <string name="newMilestoneDescription">説明</string>
     <string name="newMilestoneDueDate">期限</string>
     <string name="milestoneNameErrorEmpty">マイルストーンのタイトルが空です</string>
     <string name="milestoneDescError">マイルストーンの説明が最大255文字の制限を超えています</string>
@@ -139,7 +138,6 @@
     <string name="newIssueSelectLabelsListTitle">ラベルを選択</string>
     <string name="newIssueTitle">タイトル</string>
     <string name="newIssueAssigneesListTitle">割当先</string>
-    <string name="newIssueDescriptionTitle">説明</string>
     <string name="newIssueDueDateTitle">期限</string>
     <string name="newIssueMilestoneTitle">マイルストーン</string>
     <string name="newIssueLabelsTitle">ラベル</string>
@@ -201,6 +199,15 @@
     <string name="fragmentTabsAnimationHeader">Tabs Animation</string>
     <string name="fadeOut">Fade Out</string>
     <string name="zoomOut">Zoom Out</string>
+    <string name="backup">Backup</string>
+    <string name="restore">Restore</string>
+    <string name="backupFileSuccess">The backup was successfully created</string>
+    <string name="backupFileError">An error occurred while creating a data backup</string>
+    <string name="backupFilePopupText">This action will backup your accounts, settings, drafts, notes, and data related to repositories.\n\nClick the Backup button to download the backup file.</string>
+    <string name="restoreFilePopupText">You are about to restore from a GitNex-generated backup file. This will restore user accounts, settings, drafts, notes, and data related to repositories.\n\nPlease note this action will overwrite the current database data. Proceed with caution.\n\nClick Restore to start the process.</string>
+    <string name="restoreError">An error occurred while restoring from the backup file.</string>
+    <string name="restoreFromBackup">Restore from Backup</string>
+    <string name="restoreFromBackupPopupText">You are about to restore from a GitNex-generated backup file. This will restore user accounts, settings, drafts, notes, and data related to repositories.\n\nClick Restore to start the process.</string>
     <!-- settings -->
     <string name="noMoreData">これ以上のデータはありません</string>
     <string name="createLabel">新規ラベル</string>
@@ -245,7 +252,6 @@
     <!-- org tabbed layout str -->
     <!-- create team -->
     <string name="newTeamTitle">チーム名</string>
-    <string name="newTeamDesc">説明</string>
     <string name="newTeamPermission">アクセス許可</string>
     <string name="newTeamAccessControls">アクセス制御</string>
     <string name="newTeamPermissionRead">メンバーはチームリポジトリを表示して複製できる</string>
@@ -276,6 +282,9 @@
     <!-- profile section -->
     <string name="profileTabFollowers">フォロワー</string>
     <string name="profileTabFollowing">フォロー中</string>
+    <string name="editSettings">Edit Profile</string>
+    <string name="hideActivity">Hide Activity from profile page</string>
+    <string name="hideEmail">Hide Email</string>
     <!-- profile section -->
     <!-- account settings -->
     <string name="accountEmails">Emails</string>
@@ -286,6 +295,14 @@
     <string name="emailErrorInUse">電子メールアドレスは既に使用されています</string>
     <string name="emailTypeText">プライマリ</string>
     <string name="sshKeys">SSH Keys</string>
+    <string name="deleteEmailPopupText">This action will permanently delete email %s from your account.</string>
+    <string name="deleteEmailSuccess">Email deleted successfully</string>
+    <string name="addSSHKey">Add SSH Key</string>
+    <string name="sshKeyStatusReadOnly">Read-only Access</string>
+    <string name="sshKeyStatusReadWrite">Read-write Access</string>
+    <string name="sshKey">SSH Key</string>
+    <string name="sshKeySuccess">New SSH key added successfully</string>
+    <string name="sshKeyError">Invalid SSH key or SSH key already exists</string>
     <!-- account settings -->
     <!-- single issue section -->
     <string name="singleIssueEditLabels">ラベルを追加/削除</string>
@@ -432,6 +449,8 @@
     <string name="none">None</string>
     <string name="main">main</string>
     <string name="license">License</string>
+    <string name="title">Title</string>
+    <string name="description">Description</string>
     <!-- generic copy -->
     <string name="exploreUsers">ユーザーの表示</string>
     <string name="exploreIssues">課題の表示</string>
@@ -534,6 +553,9 @@
     <string name="rateAppHintText">あなたがGitNexが好きなら、それを称賛してもいいですよ。</string>
     <string name="aboutAppHintText">App version, build, user instance version</string>
     <string name="codeEditorHintText">Syntax color, indentation</string>
+    <string name="backupRestoreHintText">Backup and restore accounts, settings and more</string>
+    <string name="backupDataHintText">Backup accounts, settings, notes and more</string>
+    <string name="restoreDataHintText">Restore accounts, settings, notes and more</string>
     <string name="archivedRepository">アーカイブ済み</string>
     <string name="archivedRepositoryMessage">このリポジトリはアーカイブされます。ファイルを表示することはできますが、問題/プルリクエストをプッシュまたはオープンすることはできません。</string>
     <string name="accountDeletedMessage">アカウントは正常に削除されました</string>

@@ -125,7 +125,6 @@ URL è richiesto</string>
     <string name="releasePublishedBy">Pubblicato da @%1$s</string>
     <string name="noReleaseBodyContent">Le note di rilascio non sono fornite dall\'editore.</string>
     <string name="newMilestoneTitle">Nome</string>
-    <string name="newMilestoneDescription">Descrizione</string>
     <string name="newMilestoneDueDate">Data Scadenza</string>
     <string name="milestoneNameErrorEmpty">Il titolo del milestone è vuoto</string>
     <string name="milestoneDescError">La descrizione del milestone supera il limite massimo di 255 caratteri</string>
@@ -140,7 +139,6 @@ URL è richiesto</string>
     <string name="newIssueSelectLabelsListTitle">Seleziona labels</string>
     <string name="newIssueTitle">Titolo</string>
     <string name="newIssueAssigneesListTitle">Assegnatari</string>
-    <string name="newIssueDescriptionTitle">Descrizione</string>
     <string name="newIssueDueDateTitle">Data Scadenza</string>
     <string name="newIssueMilestoneTitle">Milestone</string>
     <string name="newIssueLabelsTitle">Labels</string>
@@ -202,6 +200,15 @@ URL è richiesto</string>
     <string name="fragmentTabsAnimationHeader">Tabs Animation</string>
     <string name="fadeOut">Fade Out</string>
     <string name="zoomOut">Zoom Out</string>
+    <string name="backup">Backup</string>
+    <string name="restore">Restore</string>
+    <string name="backupFileSuccess">The backup was successfully created</string>
+    <string name="backupFileError">An error occurred while creating a data backup</string>
+    <string name="backupFilePopupText">This action will backup your accounts, settings, drafts, notes, and data related to repositories.\n\nClick the Backup button to download the backup file.</string>
+    <string name="restoreFilePopupText">You are about to restore from a GitNex-generated backup file. This will restore user accounts, settings, drafts, notes, and data related to repositories.\n\nPlease note this action will overwrite the current database data. Proceed with caution.\n\nClick Restore to start the process.</string>
+    <string name="restoreError">An error occurred while restoring from the backup file.</string>
+    <string name="restoreFromBackup">Restore from Backup</string>
+    <string name="restoreFromBackupPopupText">You are about to restore from a GitNex-generated backup file. This will restore user accounts, settings, drafts, notes, and data related to repositories.\n\nClick Restore to start the process.</string>
     <!-- settings -->
     <string name="noMoreData">Nessun altro dato disponibile</string>
     <string name="createLabel">Nuovo label</string>
@@ -246,7 +253,6 @@ URL è richiesto</string>
     <!-- org tabbed layout str -->
     <!-- create team -->
     <string name="newTeamTitle">Nome team</string>
-    <string name="newTeamDesc">Descrizione</string>
     <string name="newTeamPermission">Autorizzazione</string>
     <string name="newTeamAccessControls">Controlli Accesso</string>
     <string name="newTeamPermissionRead">I membri possono visualizzare e clonare i repository di team</string>
@@ -278,6 +284,9 @@ autorizzazione</string>
     <!-- profile section -->
     <string name="profileTabFollowers">Follower</string>
     <string name="profileTabFollowing">Seguendo</string>
+    <string name="editSettings">Edit Profile</string>
+    <string name="hideActivity">Hide Activity from profile page</string>
+    <string name="hideEmail">Hide Email</string>
     <!-- profile section -->
     <!-- account settings -->
     <string name="accountEmails">Emails</string>
@@ -288,6 +297,14 @@ autorizzazione</string>
     <string name="emailErrorInUse">Indirizzo email già in uso</string>
     <string name="emailTypeText">Primario</string>
     <string name="sshKeys">SSH Keys</string>
+    <string name="deleteEmailPopupText">This action will permanently delete email %s from your account.</string>
+    <string name="deleteEmailSuccess">Email deleted successfully</string>
+    <string name="addSSHKey">Add SSH Key</string>
+    <string name="sshKeyStatusReadOnly">Read-only Access</string>
+    <string name="sshKeyStatusReadWrite">Read-write Access</string>
+    <string name="sshKey">SSH Key</string>
+    <string name="sshKeySuccess">New SSH key added successfully</string>
+    <string name="sshKeyError">Invalid SSH key or SSH key already exists</string>
     <!-- account settings -->
     <!-- single issue section -->
     <string name="singleIssueEditLabels">Aggiungi/Rimuovi label</string>
@@ -434,6 +451,8 @@ autorizzazione</string>
     <string name="none">None</string>
     <string name="main">main</string>
     <string name="license">License</string>
+    <string name="title">Title</string>
+    <string name="description">Description</string>
     <!-- generic copy -->
     <string name="exploreUsers">Esplora utenti</string>
     <string name="exploreIssues">Esplora problemi</string>
@@ -536,6 +555,9 @@ autorizzazione</string>
     <string name="rateAppHintText">If you like GitNex you can give it a thumbs up</string>
     <string name="aboutAppHintText">App version, build, user instance version</string>
     <string name="codeEditorHintText">Syntax color, indentation</string>
+    <string name="backupRestoreHintText">Backup and restore accounts, settings and more</string>
+    <string name="backupDataHintText">Backup accounts, settings, notes and more</string>
+    <string name="restoreDataHintText">Restore accounts, settings, notes and more</string>
     <string name="archivedRepository">Archiviato</string>
     <string name="archivedRepositoryMessage">This repo is archived. You can view files, but cannot push or open issues/pull-requests.</string>
     <string name="accountDeletedMessage">Account eliminato con successo</string>

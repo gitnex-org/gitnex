@@ -274,7 +274,6 @@ public class IssueDetailActivity extends BaseActivity
 		repoOwner = issue.getRepository().getOwner();
 		repoName = issue.getRepository().getName();
 		issueIndex = issue.getIssueIndex();
-		Boolean isLocked = issue.getIssue().isIsLocked();
 
 		setSupportActionBar(viewBinding.toolbar);
 		Objects.requireNonNull(getSupportActionBar()).setTitle(repoName);
@@ -294,11 +293,31 @@ public class IssueDetailActivity extends BaseActivity
 		viewBinding.recyclerView.setNestedScrollingEnabled(false);
 		viewBinding.recyclerView.setLayoutManager(new LinearLayoutManager(ctx));
 
-		if (isLocked && !issue.getRepository().getPermissions().isAdmin()) {
-			viewBinding.addNewComment.setVisibility(View.GONE);
-		} else {
-			viewBinding.addNewComment.setVisibility(View.VISIBLE);
-		}
+		new Handler()
+				.postDelayed(
+						() -> {
+							if (issue.getIssue() != null) {
+								if (issue.getIssue().isIsLocked() != null) {
+									if (issue.getIssue().isIsLocked()) {
+										if (issue.getRepository().getPermissions() != null
+												&& issue.getRepository().getPermissions().isAdmin()
+														!= null) {
+											if (issue.getRepository().getPermissions().isAdmin()) {
+												viewBinding.addNewComment.setVisibility(
+														View.VISIBLE);
+											} else {
+												viewBinding.addNewComment.setVisibility(View.GONE);
+											}
+										} else {
+											viewBinding.addNewComment.setVisibility(View.GONE);
+										}
+									} else {
+										viewBinding.addNewComment.setVisibility(View.VISIBLE);
+									}
+								}
+							}
+						},
+						50);
 
 		viewBinding.addNewComment.setOnClickListener(
 				v -> {

@@ -124,7 +124,6 @@
     <string name="releasePublishedBy">Опубликовано @%1$s</string>
     <string name="noReleaseBodyContent">Примечания к релизу не предоставляются.</string>
     <string name="newMilestoneTitle">Заголовок</string>
-    <string name="newMilestoneDescription">Описание</string>
     <string name="newMilestoneDueDate">Дата исполнения</string>
     <string name="milestoneNameErrorEmpty">Заголовок вехи пустой.</string>
     <string name="milestoneDescError">Описание вехи превышает 255 символов.</string>
@@ -139,7 +138,6 @@
     <string name="newIssueSelectLabelsListTitle">Выбрать метки</string>
     <string name="newIssueTitle">Заголовок</string>
     <string name="newIssueAssigneesListTitle">Назначенные</string>
-    <string name="newIssueDescriptionTitle">Описание</string>
     <string name="newIssueDueDateTitle">Срок выполнения</string>
     <string name="newIssueMilestoneTitle">Вехи</string>
     <string name="newIssueLabelsTitle">Метки</string>
@@ -201,6 +199,15 @@
     <string name="fragmentTabsAnimationHeader">Анимация вкладок</string>
     <string name="fadeOut">Затухание</string>
     <string name="zoomOut">Отдалить</string>
+    <string name="backup">Backup</string>
+    <string name="restore">Restore</string>
+    <string name="backupFileSuccess">The backup was successfully created</string>
+    <string name="backupFileError">An error occurred while creating a data backup</string>
+    <string name="backupFilePopupText">This action will backup your accounts, settings, drafts, notes, and data related to repositories.\n\nClick the Backup button to download the backup file.</string>
+    <string name="restoreFilePopupText">You are about to restore from a GitNex-generated backup file. This will restore user accounts, settings, drafts, notes, and data related to repositories.\n\nPlease note this action will overwrite the current database data. Proceed with caution.\n\nClick Restore to start the process.</string>
+    <string name="restoreError">An error occurred while restoring from the backup file.</string>
+    <string name="restoreFromBackup">Restore from Backup</string>
+    <string name="restoreFromBackupPopupText">You are about to restore from a GitNex-generated backup file. This will restore user accounts, settings, drafts, notes, and data related to repositories.\n\nClick Restore to start the process.</string>
     <!-- settings -->
     <string name="noMoreData">Больше даных нет</string>
     <string name="createLabel">Создание метки</string>
@@ -245,7 +252,6 @@
     <!-- org tabbed layout str -->
     <!-- create team -->
     <string name="newTeamTitle">Имя команды</string>
-    <string name="newTeamDesc">Описание</string>
     <string name="newTeamPermission">Права</string>
     <string name="newTeamAccessControls">Контроль доступа</string>
     <string name="newTeamPermissionRead">Участники могут просматривать и клонировать репозитории команды</string>
@@ -276,6 +282,9 @@
     <!-- profile section -->
     <string name="profileTabFollowers">Подписчики</string>
     <string name="profileTabFollowing">Подписки</string>
+    <string name="editSettings">Edit Profile</string>
+    <string name="hideActivity">Hide Activity from profile page</string>
+    <string name="hideEmail">Hide Email</string>
     <!-- profile section -->
     <!-- account settings -->
     <string name="accountEmails">Электронная почта</string>
@@ -286,6 +295,14 @@
     <string name="emailErrorInUse">Адрес электронной почты уже используется</string>
     <string name="emailTypeText">Основной</string>
     <string name="sshKeys">SSH ключи</string>
+    <string name="deleteEmailPopupText">This action will permanently delete email %s from your account.</string>
+    <string name="deleteEmailSuccess">Email deleted successfully</string>
+    <string name="addSSHKey">Add SSH Key</string>
+    <string name="sshKeyStatusReadOnly">Read-only Access</string>
+    <string name="sshKeyStatusReadWrite">Read-write Access</string>
+    <string name="sshKey">SSH Key</string>
+    <string name="sshKeySuccess">New SSH key added successfully</string>
+    <string name="sshKeyError">Invalid SSH key or SSH key already exists</string>
     <!-- account settings -->
     <!-- single issue section -->
     <string name="singleIssueEditLabels">Добавить/удалить метку</string>
@@ -432,6 +449,8 @@
     <string name="none">None</string>
     <string name="main">main</string>
     <string name="license">License</string>
+    <string name="title">Title</string>
+    <string name="description">Description</string>
     <!-- generic copy -->
     <string name="exploreUsers">Обзор пользователей</string>
     <string name="exploreIssues">Обзор задач</string>
@@ -534,6 +553,9 @@
     <string name="rateAppHintText">Если вам нравится GitNex, вы можете поставить ему палец вверх</string>
     <string name="aboutAppHintText">App version, build, user instance version</string>
     <string name="codeEditorHintText">Syntax color, indentation</string>
+    <string name="backupRestoreHintText">Backup and restore accounts, settings and more</string>
+    <string name="backupDataHintText">Backup accounts, settings, notes and more</string>
+    <string name="restoreDataHintText">Restore accounts, settings, notes and more</string>
     <string name="archivedRepository">Архивировано</string>
     <string name="archivedRepositoryMessage">Этот репозиторий находится в архиве. Вы можете просматривать файлы, но не можете отправлять или открывать проблемы/запросы на слияние.</string>
     <string name="accountDeletedMessage">Учётная запись успешно удалена</string>
