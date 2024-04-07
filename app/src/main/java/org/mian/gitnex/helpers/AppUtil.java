@@ -12,6 +12,7 @@ import android.content.pm.PackageManager;
 import android.content.pm.ResolveInfo;
 import android.content.res.Configuration;
 import android.content.res.Resources;
+import android.graphics.Bitmap;
 import android.graphics.Typeface;
 import android.net.Uri;
 import android.os.Build;
@@ -24,6 +25,7 @@ import androidx.annotation.ColorInt;
 import androidx.browser.customtabs.CustomTabColorSchemeParams;
 import androidx.browser.customtabs.CustomTabsIntent;
 import androidx.core.content.pm.PackageInfoCompat;
+import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
@@ -411,6 +413,15 @@ public class AppUtil {
 		}
 
 		return base64Str;
+	}
+
+	public static String imageEncodeToBase64(Bitmap image) {
+
+		ByteArrayOutputStream byteArrayOutputStream = new ByteArrayOutputStream();
+		image.compress(Bitmap.CompressFormat.PNG, 100, byteArrayOutputStream);
+		byte[] bytes = byteArrayOutputStream.toByteArray();
+
+		return Base64.encodeToString(bytes, Base64.DEFAULT);
 	}
 
 	public static String decodeBase64(String str) {

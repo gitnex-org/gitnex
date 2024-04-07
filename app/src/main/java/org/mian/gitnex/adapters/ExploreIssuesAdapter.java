@@ -34,7 +34,6 @@ import org.mian.gitnex.helpers.ColorInverter;
 import org.mian.gitnex.helpers.LabelWidthCalculator;
 import org.mian.gitnex.helpers.RoundedTransformation;
 import org.mian.gitnex.helpers.TimeHelper;
-import org.mian.gitnex.helpers.TinyDB;
 import org.mian.gitnex.helpers.contexts.IssueContext;
 import org.mian.gitnex.helpers.contexts.RepositoryContext;
 
@@ -44,7 +43,6 @@ import org.mian.gitnex.helpers.contexts.RepositoryContext;
 public class ExploreIssuesAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
 
 	private final Context context;
-	private final TinyDB tinyDb;
 	private List<Issue> searchedList;
 	private OnLoadMoreListener loadMoreListener;
 	private boolean isLoading = false, isMoreDataAvailable = true;
@@ -52,7 +50,6 @@ public class ExploreIssuesAdapter extends RecyclerView.Adapter<RecyclerView.View
 	public ExploreIssuesAdapter(List<Issue> dataList, Context ctx) {
 		this.context = ctx;
 		this.searchedList = dataList;
-		this.tinyDb = TinyDB.getInstance(context);
 	}
 
 	@NonNull @Override

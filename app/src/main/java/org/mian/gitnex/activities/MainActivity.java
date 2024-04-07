@@ -54,6 +54,7 @@ import org.mian.gitnex.fragments.RepositoriesFragment;
 import org.mian.gitnex.fragments.SettingsFragment;
 import org.mian.gitnex.fragments.StarredRepositoriesFragment;
 import org.mian.gitnex.fragments.WatchedRepositoriesFragment;
+import org.mian.gitnex.fragments.profile.DetailFragment;
 import org.mian.gitnex.helpers.AlertDialogs;
 import org.mian.gitnex.helpers.AppDatabaseSettings;
 import org.mian.gitnex.helpers.AppUtil;
@@ -296,10 +297,6 @@ public class MainActivity extends BaseActivity
 									.getMenu()
 									.findItem(R.id.nav_administration)
 									.setVisible(false);
-						}
-
-						if (getAccount().requiresVersion("1.14.0")) {
-							navigationView.getMenu().findItem(R.id.nav_my_issues).setVisible(true);
 						}
 
 						if (getAccount().requiresVersion("1.20.0")) {
@@ -585,6 +582,10 @@ public class MainActivity extends BaseActivity
 			this.recreate();
 			this.overridePendingTransition(0, 0);
 			refActivity = false;
+		}
+		if (DetailFragment.refProfile) {
+			loadUserInfo();
+			DetailFragment.refProfile = false;
 		}
 	}
 

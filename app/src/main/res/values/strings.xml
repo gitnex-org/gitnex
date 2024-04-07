@@ -360,6 +360,7 @@
     <string name="editSettings">Edit Profile</string>
     <string name="hideActivity">Hide Activity from profile page</string>
     <string name="hideEmail">Hide Email</string>
+    <string name="profileUpdate">Profile updated</string>
     <!-- profile section -->
 
     <!-- account settings -->

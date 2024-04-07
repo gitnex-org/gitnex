@@ -71,7 +71,7 @@ public class AttachmentsAdapter extends RecyclerView.Adapter<AttachmentsAdapter.
 		}
 	}
 
-	class ViewHolder extends RecyclerView.ViewHolder {
+	public class ViewHolder extends RecyclerView.ViewHolder {
 
 		public TextView filename;
 		public ImageView delete;

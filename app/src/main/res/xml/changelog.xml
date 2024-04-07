@@ -1,25 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 <changelog>
 
-    <release version="5.4.0" versioncode="540">
-        <change>New: Restore/import app data</change>
-        <change>New: Backup/export app data</change>
-        <change>New: Delete email from account</change>
-        <change>New: Update profile settings</change>
-        <change>New: Add SSH key to account</change>
-        <change>Improvement: Open specific URL in deep links</change>
-        <change>Improvement: Show open in browser with other buttons in deep links</change>
-        <change>Improvement: Show pinned messages in timeline</change>
-        <change>Improvement: Hide Comment button if issue is locked</change>
-        <change>Improvement: New languages and translation updates</change>
-        <change>Bugfix: Fix crash on dynamic snackbar colors for older Android versions</change>
-        <change>Bugfix: Fix missing text after links in issue/pr</change>
-        <change>Bugfix: Fix emoji parsing in code blocks in issue/pr</change>
-        <change>Bugfix: Fix crash on null objects in timeline from API</change>
-        <change>Bugfix: Fix not seeing labels for repo admin when code option is disabled</change>
-        <change>Bugfix: Fix Task list in Markdown</change>
-        <change>Bugfix: Fix other issues related to Markdown</change>
-        <change>Bugfix: Fix crash on images with no path</change>
+    <release version="5.5.0-dev" versioncode="545">
+        <change>Under development</change>
     </release>
 
 </changelog>

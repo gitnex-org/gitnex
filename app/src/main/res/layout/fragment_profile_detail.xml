@@ -91,17 +91,35 @@
                                 android:textIsSelectable="true"
                                 android:textSize="@dimen/dimen14sp" />
 
-                            <com.google.android.material.button.MaterialButton
-                                android:id="@+id/editProfile"
+                            <com.google.android.material.button.MaterialButtonToggleGroup
+                                android:id="@+id/metaProfile"
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
-                                android:text="@string/editSettings"
-                                android:textColor="?attr/materialCardBackgroundColor"
-                                android:backgroundTint="?attr/fabColor"
-                                app:iconTint="?attr/materialCardBackgroundColor"
-                                app:icon="@drawable/ic_edit"
-                                android:textSize="14sp"
-                                android:visibility="gone" />
+                                android:visibility="gone">
+
+                                <Button
+                                    android:id="@+id/update_avatar"
+                                    style="?attr/materialButtonToggleGroupStyle"
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    app:iconTint="?attr/materialCardBackgroundColor"
+                                    app:icon="@drawable/ic_person"
+                                    android:textColor="?attr/materialCardBackgroundColor"
+                                    android:textSize="@dimen/dimen14sp"
+                                    android:text="@string/userAvatar" />
+
+                                <Button
+                                    android:id="@+id/update_profile"
+                                    style="?attr/materialButtonToggleGroupStyle"
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    app:iconTint="?attr/materialCardBackgroundColor"
+                                    app:icon="@drawable/ic_edit"
+                                    android:textColor="?attr/materialCardBackgroundColor"
+                                    android:textSize="@dimen/dimen14sp"
+                                    android:text="@string/navProfile" />
+
+                        </com.google.android.material.button.MaterialButtonToggleGroup>
 
                         </LinearLayout>
 

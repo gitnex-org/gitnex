@@ -1,18 +1,28 @@
 package org.mian.gitnex.fragments.profile;
 
+import android.app.Activity;
 import android.content.Context;
+import android.content.Intent;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
+import android.net.Uri;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import androidx.activity.result.ActivityResultLauncher;
+import androidx.activity.result.contract.ActivityResultContracts;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AlertDialog;
 import androidx.fragment.app.Fragment;
 import com.google.android.material.dialog.MaterialAlertDialogBuilder;
+import java.io.FileNotFoundException;
 import java.io.IOException;
+import java.io.InputStream;
 import java.util.Locale;
 import okhttp3.ResponseBody;
 import org.gitnex.tea4j.v2.models.Repository;
+import org.gitnex.tea4j.v2.models.UpdateUserAvatarOption;
 import org.gitnex.tea4j.v2.models.User;
 import org.gitnex.tea4j.v2.models.UserSettings;
 import org.gitnex.tea4j.v2.models.UserSettingsOptions;
@@ -21,6 +31,7 @@ import org.mian.gitnex.activities.BaseActivity;
 import org.mian.gitnex.activities.ProfileActivity;
 import org.mian.gitnex.clients.PicassoService;
 import org.mian.gitnex.clients.RetrofitClient;
+import org.mian.gitnex.databinding.CustomEditAvatarDialogBinding;
 import org.mian.gitnex.databinding.CustomEditProfileBinding;
 import org.mian.gitnex.databinding.FragmentProfileDetailBinding;
 import org.mian.gitnex.helpers.AlertDialogs;
@@ -29,7 +40,6 @@ import org.mian.gitnex.helpers.ClickListener;
 import org.mian.gitnex.helpers.Markdown;
 import org.mian.gitnex.helpers.RoundedTransformation;
 import org.mian.gitnex.helpers.TimeHelper;
-import org.mian.gitnex.helpers.TinyDB;
 import org.mian.gitnex.helpers.Toasty;
 import retrofit2.Call;
 import retrofit2.Callback;
@@ -41,13 +51,17 @@ public class DetailFragment extends Fragment {
 
 	private static final String usernameBundle = "";
 	Locale locale;
-	TinyDB tinyDb;
 	private Context context;
 	private FragmentProfileDetailBinding binding;
 	private String username;
 	private CustomEditProfileBinding customEditProfileBinding;
+	private CustomEditAvatarDialogBinding customEditAvatarDialogBinding;
 	private MaterialAlertDialogBuilder materialAlertDialogBuilder;
 	private AlertDialog dialogEditSettings;
+	private AlertDialog dialogEditAvatar;
+	private int imgRadius;
+	private static Uri avatarUri = null;
+	public static boolean refProfile = false;
 
 	public DetailFragment() {}
 
@@ -73,8 +87,8 @@ public class DetailFragment extends Fragment {
 
 		binding = FragmentProfileDetailBinding.inflate(inflater, container, false);
 		context = getContext();
-		tinyDb = TinyDB.getInstance(context);
 		locale = getResources().getConfiguration().locale;
+		imgRadius = AppUtil.getPixelsFromDensity(context, 3);
 
 		getProfileDetail(username);
 		getProfileRepository(username);
@@ -94,19 +108,119 @@ public class DetailFragment extends Fragment {
 						((ProfileActivity) requireActivity()).viewPager.setCurrentItem(2));
 
 		if (username.equals(((BaseActivity) context).getAccount().getAccount().getUserName())) {
-			binding.editProfile.setVisibility(View.VISIBLE);
+			binding.metaProfile.setVisibility(View.VISIBLE);
 		} else {
-			binding.editProfile.setVisibility(View.GONE);
+			binding.metaProfile.setVisibility(View.GONE);
 		}
 
-		binding.editProfile.setOnClickListener(
+		binding.updateProfile.setOnClickListener(
 				editProfileSettings -> {
 					customEditProfileBinding =
 							CustomEditProfileBinding.inflate(LayoutInflater.from(context));
 					showEditProfileDialog();
 				});
 
+		binding.updateAvatar.setOnClickListener(updateAvatar -> openFileAttachment());
+
 		return binding.getRoot();
+	}
+
+	public void onDestroy() {
+		avatarUri = null;
+		super.onDestroy();
+	}
+
+	ActivityResultLauncher<Intent> activityForAvatarUpdate =
+			registerForActivityResult(
+					new ActivityResultContracts.StartActivityForResult(),
+					result -> {
+						if (result.getResultCode() == Activity.RESULT_OK) {
+							Intent data = result.getData();
+							assert data != null;
+							avatarUri = data.getData();
+							if (avatarUri != null) {
+								customEditAvatarDialogBinding =
+										CustomEditAvatarDialogBinding.inflate(
+												LayoutInflater.from(context));
+								showUpdateAvatarDialog();
+							}
+						}
+					});
+
+	private void openFileAttachment() {
+
+		String[] mimeTypes = {"image/webp", "image/gif", "image/jpg", "image/jpeg", "image/png"};
+		Intent data = new Intent(Intent.ACTION_GET_CONTENT);
+		data.addCategory(Intent.CATEGORY_OPENABLE);
+		data.setType("image/*");
+		data.putExtra(Intent.EXTRA_MIME_TYPES, mimeTypes);
+		Intent intent = Intent.createChooser(data, "Choose an image");
+		activityForAvatarUpdate.launch(intent);
+	}
+
+	private void showUpdateAvatarDialog() {
+
+		View view = customEditAvatarDialogBinding.getRoot();
+		materialAlertDialogBuilder.setView(view);
+
+		PicassoService.getInstance(context)
+				.get()
+				.load(avatarUri)
+				.transform(new RoundedTransformation(imgRadius, 0))
+				.placeholder(R.drawable.loader_animated)
+				.resize(180, 180)
+				.centerCrop()
+				.into(customEditAvatarDialogBinding.userAvatar);
+
+		customEditAvatarDialogBinding.save.setOnClickListener(
+				saveUserAvatar -> saveUserAvatar(avatarUri));
+
+		dialogEditAvatar = materialAlertDialogBuilder.show();
+	}
+
+	private void saveUserAvatar(Uri avatar) {
+
+		InputStream imageStream = null;
+		try {
+			imageStream = context.getContentResolver().openInputStream(avatar);
+		} catch (FileNotFoundException e) {
+			e.getMessage();
+		}
+		Bitmap selectedImage = BitmapFactory.decodeStream(imageStream);
+
+		String encodedString = AppUtil.imageEncodeToBase64(selectedImage);
+
+		UpdateUserAvatarOption updateUserAvatarOption = new UpdateUserAvatarOption();
+		updateUserAvatarOption.setImage(encodedString);
+
+		Call<Void> saveUserAvatar =
+				RetrofitClient.getApiInterface(context).userUpdateAvatar(updateUserAvatarOption);
+
+		saveUserAvatar.enqueue(
+				new Callback<>() {
+
+					@Override
+					public void onResponse(
+							@NonNull Call<Void> call, @NonNull retrofit2.Response<Void> response) {
+
+						if (response.code() == 204) {
+
+							dialogEditAvatar.dismiss();
+							getProfileDetail(username);
+							Toasty.success(context, getString(R.string.profileUpdate));
+							refProfile = true;
+						} else {
+
+							Toasty.error(context, getString(R.string.genericError));
+						}
+					}
+
+					@Override
+					public void onFailure(@NonNull Call<Void> call, @NonNull Throwable t) {
+
+						Toasty.error(context, getString(R.string.genericServerResponseError));
+					}
+				});
 	}
 
 	private void showEditProfileDialog() {
@@ -160,7 +274,8 @@ public class DetailFragment extends Fragment {
 
 							dialogEditSettings.dismiss();
 							getProfileDetail(username);
-							Toasty.success(context, getString(R.string.settingsSave));
+							Toasty.success(context, getString(R.string.profileUpdate));
+							refProfile = true;
 						} else {
 
 							Toasty.error(context, getString(R.string.genericError));
@@ -245,8 +360,6 @@ public class DetailFragment extends Fragment {
 											!response.body().getEmail().isEmpty()
 													? response.body().getEmail()
 													: "";
-
-									int imgRadius = AppUtil.getPixelsFromDensity(context, 3);
 
 									binding.userFullName.setText(username);
 									binding.userLogin.setText(
