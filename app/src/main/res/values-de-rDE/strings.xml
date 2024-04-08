@@ -285,6 +285,7 @@
     <string name="editSettings">Profil bearbeiten</string>
     <string name="hideActivity">Aktivität im Profil ausblenden</string>
     <string name="hideEmail">E-Mail Adresse verstecken</string>
+    <string name="profileUpdate">Profil aktualisiert</string>
     <!-- profile section -->
     <!-- account settings -->
     <string name="accountEmails">E-Mails</string>
