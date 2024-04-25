@@ -53,6 +53,14 @@ public class UserAccountsApi extends BaseApi {
 								maxResponseItems, defaultPagingNumber, accountId));
 	}
 
+	public void updateGeneralAttachmentSettings(
+			final int maxAttachmentsSize, final int maxNumberOfAttachments, final int accountId) {
+		executorService.execute(
+				() ->
+						userAccountsDao.updateGeneralAttachmentSettings(
+								maxAttachmentsSize, maxNumberOfAttachments, accountId));
+	}
+
 	public void updateToken(final int accountId, final String token) {
 		executorService.execute(() -> userAccountsDao.updateAccountToken(accountId, token));
 	}

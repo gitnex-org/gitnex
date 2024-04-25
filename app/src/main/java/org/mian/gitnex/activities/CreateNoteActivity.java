@@ -67,6 +67,9 @@ public class CreateNoteActivity extends BaseActivity {
 			notes = notesApi.fetchNoteById(noteId);
 			binding.noteContent.setText(notes.getContent());
 
+			assert notes.getContent() != null;
+			binding.noteContent.setSelection(notes.getContent().length());
+
 			binding.markdownPreview.setVisibility(View.GONE);
 			binding.toolbarTitle.setText(R.string.editNote);
 

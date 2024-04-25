@@ -310,15 +310,15 @@ public class DetailFragment extends Fragment {
 											response.body().getFullName());
 								}
 								if (!response.body().getDescription().isEmpty()) {
-									customEditProfileBinding.fullname.setText(
+									customEditProfileBinding.description.setText(
 											response.body().getDescription());
 								}
 								if (!response.body().getLocation().isEmpty()) {
-									customEditProfileBinding.fullname.setText(
+									customEditProfileBinding.location.setText(
 											response.body().getLocation());
 								}
 								if (!response.body().getWebsite().isEmpty()) {
-									customEditProfileBinding.fullname.setText(
+									customEditProfileBinding.website.setText(
 											response.body().getWebsite());
 								}
 								customEditProfileBinding.hideEmail.setChecked(

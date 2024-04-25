@@ -22,6 +22,8 @@ public class UserAccount implements Serializable {
 	private boolean isLoggedIn;
 	private int maxResponseItems;
 	private int defaultPagingNumber;
+	private int maxAttachmentsSize;
+	private int maxNumberOfAttachments;
 
 	public int getAccountId() {
 		return accountId;
@@ -93,5 +95,21 @@ public class UserAccount implements Serializable {
 
 	public void setDefaultPagingNumber(int defaultPagingNumber) {
 		this.defaultPagingNumber = defaultPagingNumber;
+	}
+
+	public int getMaxAttachmentsSize() {
+		return maxAttachmentsSize;
+	}
+
+	public void setMaxAttachmentsSize(int maxAttachmentsSize) {
+		this.maxAttachmentsSize = maxAttachmentsSize;
+	}
+
+	public int getMaxNumberOfAttachments() {
+		return maxNumberOfAttachments;
+	}
+
+	public void setMaxNumberOfAttachments(int maxNumberOfAttachments) {
+		this.maxNumberOfAttachments = maxNumberOfAttachments;
 	}
 }

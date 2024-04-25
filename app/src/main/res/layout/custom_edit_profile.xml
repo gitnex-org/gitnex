@@ -38,7 +38,6 @@
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:textColor="?attr/inputTextColor"
-                        android:textColorHighlight="?attr/hintColor"
                         android:textColorHint="?attr/hintColor"
                         android:textSize="16sp" />
 
@@ -64,7 +63,6 @@
                         android:minHeight="@dimen/dimen80dp"
                         android:singleLine="false"
                         android:textColor="?attr/inputTextColor"
-                        android:textColorHighlight="?attr/hintColor"
                         android:textColorHint="?attr/hintColor"
                         android:textSize="16sp" />
 
@@ -86,7 +84,6 @@
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:textColor="?attr/inputTextColor"
-                        android:textColorHighlight="?attr/hintColor"
                         android:textColorHint="?attr/hintColor"
                         android:textSize="16sp" />
 
@@ -108,7 +105,6 @@
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:textColor="?attr/inputTextColor"
-                        android:textColorHighlight="?attr/hintColor"
                         android:textColorHint="?attr/hintColor"
                         android:textSize="16sp" />
 

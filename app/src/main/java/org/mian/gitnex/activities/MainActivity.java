@@ -26,6 +26,7 @@ import com.google.android.material.navigation.NavigationView;
 import java.util.ArrayList;
 import java.util.List;
 import org.gitnex.tea4j.v2.models.GeneralAPISettings;
+import org.gitnex.tea4j.v2.models.GeneralAttachmentSettings;
 import org.gitnex.tea4j.v2.models.NotificationCount;
 import org.gitnex.tea4j.v2.models.ServerVersion;
 import org.gitnex.tea4j.v2.models.User;
@@ -548,6 +549,7 @@ public class MainActivity extends BaseActivity
 
 						giteaVersion();
 						serverPageLimitSettings();
+						updateGeneralAttachmentSettings();
 					}
 				},
 				1500);
@@ -568,6 +570,8 @@ public class MainActivity extends BaseActivity
 					public void handleOnBackPressed() {
 						if (drawer.isDrawerOpen(GravityCompat.START)) {
 							drawer.closeDrawer(GravityCompat.START);
+						} else {
+							finish();
 						}
 					}
 				};
@@ -790,6 +794,46 @@ public class MainActivity extends BaseActivity
 		}
 
 		return super.onOptionsItemSelected(item);
+	}
+
+	private void updateGeneralAttachmentSettings() {
+
+		Call<GeneralAttachmentSettings> generalAttachmentSettings =
+				RetrofitClient.getApiInterface(ctx).getGeneralAttachmentSettings();
+
+		generalAttachmentSettings.enqueue(
+				new Callback<>() {
+
+					@Override
+					public void onResponse(
+							@NonNull final Call<GeneralAttachmentSettings> generalAPISettings,
+							@NonNull retrofit2.Response<GeneralAttachmentSettings> response) {
+
+						if (response.code() == 200 && response.body() != null) {
+
+							int max_size = 2;
+							int max_files = 5;
+
+							if (response.body().getMaxSize() != null) {
+								max_size = Math.toIntExact(response.body().getMaxSize());
+							}
+							if (response.body().getMaxFiles() != null) {
+								max_files = Math.toIntExact(response.body().getMaxFiles());
+							}
+
+							BaseApi.getInstance(ctx, UserAccountsApi.class)
+									.updateGeneralAttachmentSettings(
+											max_size,
+											max_files,
+											tinyDB.getInt("currentActiveAccountId"));
+						}
+					}
+
+					@Override
+					public void onFailure(
+							@NonNull Call<GeneralAttachmentSettings> generalAPISettings,
+							@NonNull Throwable t) {}
+				});
 	}
 
 	private void serverPageLimitSettings() {

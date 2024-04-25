@@ -69,7 +69,6 @@
                     android:imeOptions="actionNext"
                     android:singleLine="true"
                     android:textColor="?attr/inputTextColor"
-                    android:textColorHighlight="?attr/hintColor"
                     android:textColorHint="?attr/hintColor"
                     android:textSize="@dimen/dimen16sp"/>
 
@@ -96,7 +95,6 @@
                     android:inputType="textMultiLine"
                     android:scrollbars="vertical"
                     android:textColor="?attr/inputTextColor"
-                    android:textColorHighlight="?attr/hintColor"
                     android:textColorHint="?attr/hintColor"
                     android:textSize="@dimen/dimen14sp"/>
 
@@ -165,7 +163,6 @@
                     android:inputType="textMultiLine|textCapSentences"
                     android:singleLine="true"
                     android:textColor="?attr/inputTextColor"
-                    android:textColorHighlight="?attr/hintColor"
                     android:textColorHint="?attr/hintColor"
                     android:textSize="@dimen/dimen16sp"/>
 

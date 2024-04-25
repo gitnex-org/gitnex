@@ -16,6 +16,7 @@ import android.widget.LinearLayout;
 import android.widget.SeekBar;
 import android.widget.TextView;
 import androidx.annotation.NonNull;
+import androidx.core.content.ContextCompat;
 import androidx.fragment.app.Fragment;
 import com.amulyakhare.textdrawable.TextDrawable;
 import com.google.android.material.dialog.MaterialAlertDialogBuilder;
@@ -101,6 +102,14 @@ public class RepoInfoFragment extends Fragment {
 		binding.fileContentsFrameHeader.setOnClickListener(v1 -> toggleExpandView());
 		binding.repoMetaFrameHeader.setOnClickListener(v12 -> toggleExpandViewMeta());
 
+		if (repository.isStarred()) {
+			binding.repoMetaStars.setIcon(
+					ContextCompat.getDrawable(requireContext(), R.drawable.ic_star));
+		} else {
+			binding.repoMetaStars.setIcon(
+					ContextCompat.getDrawable(requireContext(), R.drawable.ic_star_unfilled));
+		}
+
 		binding.repoMetaStars.setOnClickListener(
 				metaStars ->
 						ctx.startActivity(repository.getIntent(ctx, RepoStargazersActivity.class)));
@@ -177,7 +186,7 @@ public class RepoInfoFragment extends Fragment {
 							switch (response.code()) {
 								case 200:
 									assert response.body() != null;
-									if (response.body().size() > 0) {
+									if (!response.body().isEmpty()) {
 
 										ArrayList<SeekbarItem> seekbarItemList = new ArrayList<>();
 

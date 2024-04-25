@@ -29,7 +29,7 @@ import org.mian.gitnex.database.models.UserAccount;
 			Notes.class,
 			AppSettings.class
 		},
-		version = 8,
+		version = 9,
 		exportSchema = false)
 public abstract class GitnexDatabase extends RoomDatabase {
 
@@ -97,6 +97,18 @@ public abstract class GitnexDatabase extends RoomDatabase {
 							"CREATE TABLE IF NOT EXISTS 'appSettings' ('settingId' INTEGER NOT NULL, 'settingKey' TEXT, 'settingValue' TEXT, 'settingDefault' TEXT, PRIMARY KEY('settingId'))");
 				}
 			};
+
+	private static final Migration MIGRATION_8_9 =
+			new Migration(8, 9) {
+
+				@Override
+				public void migrate(@NonNull SupportSQLiteDatabase database) {
+					database.execSQL(
+							"ALTER TABLE 'userAccounts' ADD COLUMN 'maxAttachmentsSize' INTEGER NOT NULL DEFAULT 2");
+					database.execSQL(
+							"ALTER TABLE 'userAccounts' ADD COLUMN 'maxNumberOfAttachments' INTEGER NOT NULL DEFAULT 5");
+				}
+			};
 	private static volatile GitnexDatabase gitnexDatabase;
 
 	public static GitnexDatabase getDatabaseInstance(Context context) {
@@ -116,7 +128,8 @@ public abstract class GitnexDatabase extends RoomDatabase {
 											MIGRATION_4_5,
 											MIGRATION_5_6,
 											MIGRATION_6_7,
-											MIGRATION_7_8)
+											MIGRATION_7_8,
+											MIGRATION_8_9)
 									.build();
 				}
 			}

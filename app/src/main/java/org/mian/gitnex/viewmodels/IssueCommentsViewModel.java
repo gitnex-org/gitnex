@@ -38,8 +38,7 @@ public class IssueCommentsViewModel extends ViewModel {
 
 		Call<List<TimelineComment>> call =
 				RetrofitClient.getApiInterface(ctx)
-						.issueGetCommentsAndTimeline(
-								owner, repo, (long) index, null, 1, resultLimit, null);
+						.issueGetCommentsAndTimeline(owner, repo, (long) index, null, 1, 50, null);
 
 		call.enqueue(
 				new Callback<>() {
@@ -83,7 +82,7 @@ public class IssueCommentsViewModel extends ViewModel {
 		Call<List<TimelineComment>> call =
 				RetrofitClient.getApiInterface(ctx)
 						.issueGetCommentsAndTimeline(
-								owner, repo, (long) index, null, page, resultLimit, null);
+								owner, repo, (long) index, null, page, 50, null);
 
 		call.enqueue(
 				new Callback<>() {

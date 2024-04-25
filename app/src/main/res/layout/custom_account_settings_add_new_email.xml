@@ -23,58 +23,27 @@
                 android:orientation="vertical">
 
                 <com.google.android.material.textfield.TextInputLayout
-                    android:id="@+id/keyTitleLayout"
+                    android:id="@+id/userEmailLayout"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_marginBottom="8dp"
-                    android:hint="@string/title"
+                    android:layout_marginTop="@dimen/dimen8dp"
+                    android:layout_marginBottom="@dimen/dimen8dp"
+                    android:hint="@string/accountEmailTitle"
                     android:textColorHint="?attr/hintColor"
-                    app:boxBackgroundColor="?attr/inputBackgroundColor"
                     app:boxStrokeErrorColor="@color/darkRed"
+                    app:endIconMode="clear_text"
+                    app:endIconTint="?attr/iconsColor"
                     app:hintTextColor="?attr/hintColor">
 
                     <com.google.android.material.textfield.TextInputEditText
-                        android:id="@+id/keyTitle"
+                        android:id="@+id/userEmail"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:textColor="?attr/inputTextColor"
                         android:textColorHint="?attr/hintColor"
-                        android:textSize="16sp" />
+                        android:textSize="@dimen/dimen16sp" />
 
                 </com.google.android.material.textfield.TextInputLayout>
-
-                <com.google.android.material.textfield.TextInputLayout
-                    android:id="@+id/keyLayout"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="8dp"
-                    android:layout_marginBottom="8dp"
-                    android:hint="@string/sshKey"
-                    android:textColorHint="?attr/hintColor"
-                    app:boxBackgroundColor="?attr/inputBackgroundColor"
-                    app:boxStrokeErrorColor="@color/darkRed"
-                    app:hintTextColor="?attr/hintColor">
-
-                    <com.google.android.material.textfield.TextInputEditText
-                        android:id="@+id/key"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:gravity="top|start"
-                        android:minHeight="@dimen/dimen180dp"
-                        android:singleLine="false"
-                        android:textColor="?attr/inputTextColor"
-                        android:textColorHint="?attr/hintColor"
-                        android:textSize="16sp" />
-
-                </com.google.android.material.textfield.TextInputLayout>
-
-                <com.google.android.material.materialswitch.MaterialSwitch
-                    android:id="@+id/keyStatus"
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent"
-                    android:checked="false"
-                    android:text="@string/sshKeyStatusReadOnly"
-                    android:textColor="?attr/primaryTextColor" />
 
             </LinearLayout>
 

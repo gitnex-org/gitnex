@@ -47,6 +47,11 @@ public interface UserAccountsDao {
 			"UPDATE UserAccounts SET maxResponseItems = :maxResponseItems, defaultPagingNumber = :defaultPagingNumber WHERE accountId = :accountId")
 	void updateServerPagingLimit(int maxResponseItems, int defaultPagingNumber, int accountId);
 
+	@Query(
+			"UPDATE UserAccounts SET maxAttachmentsSize = :maxAttachmentsSize, maxNumberOfAttachments = :maxNumberOfAttachments WHERE accountId = :accountId")
+	void updateGeneralAttachmentSettings(
+			int maxAttachmentsSize, int maxNumberOfAttachments, int accountId);
+
 	@Query("UPDATE UserAccounts SET accountName = :accountName WHERE accountId = :accountId")
 	void updateAccountName(String accountName, int accountId);
 

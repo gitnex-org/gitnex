@@ -22,6 +22,7 @@ import org.mian.gitnex.adapters.SSHKeysAdapter;
 import org.mian.gitnex.clients.RetrofitClient;
 import org.mian.gitnex.databinding.CustomAccountSettingsAddSshKeyBinding;
 import org.mian.gitnex.databinding.FragmentAccountSettingsSshKeysBinding;
+import org.mian.gitnex.helpers.AlertDialogs;
 import org.mian.gitnex.helpers.Toasty;
 import org.mian.gitnex.viewmodels.AccountSettingsSSHKeysViewModel;
 import retrofit2.Call;
@@ -137,6 +138,12 @@ public class SSHKeysFragment extends Fragment {
 							dialogSaveKey.dismiss();
 							accountSettingsSSHKeysViewModel.loadKeysList(context);
 							Toasty.success(context, getString(R.string.sshKeySuccess));
+						} else if (response.code() == 401) {
+
+							AlertDialogs.authorizationTokenRevokedDialog(context);
+						} else if (response.code() == 403) {
+
+							Toasty.error(context, getString(R.string.authorizeError));
 						} else if (response.code() == 422) {
 
 							Toasty.error(context, getString(R.string.sshKeyError));

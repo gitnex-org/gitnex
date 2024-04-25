@@ -67,7 +67,6 @@
                 android:background="?attr/primaryBackgroundColor"
                 android:textColor="?attr/inputTextColor"
                 android:hint="@string/newNoteContentHint"
-                android:textColorHighlight="?attr/hintColor"
                 android:textColorHint="?attr/hintColor"
                 android:textSize="@dimen/dimen16sp"
                 android:autofillHints="@string/newNoteContentHint" />

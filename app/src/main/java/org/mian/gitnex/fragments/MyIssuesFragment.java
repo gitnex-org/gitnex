@@ -149,6 +149,7 @@ public class MyIssuesFragment extends Fragment {
 		MenuItem searchItem = menu.findItem(R.id.action_search);
 		androidx.appcompat.widget.SearchView searchView =
 				(androidx.appcompat.widget.SearchView) searchItem.getActionView();
+		assert searchView != null;
 		searchView.setImeOptions(EditorInfo.IME_ACTION_DONE);
 
 		searchView.setOnQueryTextListener(

@@ -88,7 +88,6 @@
                     android:layout_height="wrap_content"
                     android:inputType="textCapSentences"
                     android:textColor="?attr/inputTextColor"
-                    android:textColorHighlight="?attr/hintColor"
                     android:textColorHint="?attr/hintColor"
                     android:textSize="@dimen/dimen16sp" />
 
@@ -113,7 +112,6 @@
                     android:layout_height="wrap_content"
                     android:inputType="textCapSentences"
                     android:textColor="?attr/inputTextColor"
-                    android:textColorHighlight="?attr/hintColor"
                     android:textColorHint="?attr/hintColor"
                     android:text="@string/main"
                     android:textSize="@dimen/dimen16sp" />
@@ -166,7 +164,6 @@
                     android:gravity="top|start"
                     android:inputType="textCapSentences|textMultiLine"
                     android:textColor="?attr/inputTextColor"
-                    android:textColorHighlight="?attr/hintColor"
                     android:textColorHint="?attr/hintColor"
                     android:textSize="@dimen/dimen16sp" />
 
