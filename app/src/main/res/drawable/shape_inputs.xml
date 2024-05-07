@@ -4,11 +4,11 @@
     android:shape="rectangle">
 
     <solid
-        android:color="?attr/inputBackgroundColor">
+        android:color="?attr/materialCardBackgroundColor">
     </solid>
 
     <corners
-        android:radius="3dp">
+        android:radius="8dp">
     </corners>
 
     <padding

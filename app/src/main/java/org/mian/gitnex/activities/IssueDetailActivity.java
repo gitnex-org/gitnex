@@ -303,16 +303,18 @@ public class IssueDetailActivity extends BaseActivity
 												&& issue.getRepository().getPermissions().isAdmin()
 														!= null) {
 											if (issue.getRepository().getPermissions().isAdmin()) {
-												viewBinding.addNewComment.setVisibility(
-														View.VISIBLE);
+												viewBinding.send.setAlpha(.9F);
+												// viewBinding.addNewComment.setVisibility(
+												//		View.GONE);
 											} else {
-												viewBinding.addNewComment.setVisibility(View.GONE);
+												viewBinding.send.setAlpha(.3F);
 											}
 										} else {
-											viewBinding.addNewComment.setVisibility(View.GONE);
+											viewBinding.send.setAlpha(.3F);
 										}
 									} else {
-										viewBinding.addNewComment.setVisibility(View.VISIBLE);
+										viewBinding.send.setAlpha(.9F);
+										// viewBinding.addNewComment.setVisibility(View.GONE);
 									}
 								}
 							}
