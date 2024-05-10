@@ -84,6 +84,17 @@
 
             </com.google.android.material.textfield.TextInputLayout>
 
+           <TextView
+               android:id="@+id/insertNote"
+               android:layout_width="wrap_content"
+               android:layout_height="wrap_content"
+               android:layout_gravity="end"
+               android:layout_marginTop="@dimen/dimen8dp"
+               android:layout_marginBottom="@dimen/dimen0dp"
+               android:text="@string/insertNote"
+               android:textColor="?attr/primaryTextColor"
+               android:textSize="@dimen/dimen14sp"/>
+
            <com.google.android.material.textfield.TextInputLayout
                 android:id="@+id/newIssueDescriptionLayout"
                 android:layout_width="match_parent"

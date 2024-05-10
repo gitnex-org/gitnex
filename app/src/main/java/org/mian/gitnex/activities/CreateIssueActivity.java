@@ -6,6 +6,7 @@ import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
 import android.os.Handler;
+import android.os.Looper;
 import android.view.LayoutInflater;
 import android.view.MotionEvent;
 import android.view.View;
@@ -14,6 +15,7 @@ import android.widget.TextView;
 import androidx.activity.result.ActivityResultLauncher;
 import androidx.activity.result.contract.ActivityResultContracts;
 import androidx.annotation.NonNull;
+import androidx.appcompat.app.AlertDialog;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import com.google.android.material.bottomsheet.BottomSheetDialog;
 import com.google.android.material.datepicker.MaterialDatePicker;
@@ -43,10 +45,15 @@ import org.mian.gitnex.actions.LabelsActions;
 import org.mian.gitnex.adapters.AssigneesListAdapter;
 import org.mian.gitnex.adapters.AttachmentsAdapter;
 import org.mian.gitnex.adapters.LabelsListAdapter;
+import org.mian.gitnex.adapters.NotesAdapter;
 import org.mian.gitnex.clients.RetrofitClient;
+import org.mian.gitnex.database.api.BaseApi;
+import org.mian.gitnex.database.api.NotesApi;
+import org.mian.gitnex.database.models.Notes;
 import org.mian.gitnex.databinding.ActivityCreateIssueBinding;
 import org.mian.gitnex.databinding.BottomSheetAttachmentsBinding;
 import org.mian.gitnex.databinding.CustomAssigneesSelectionDialogBinding;
+import org.mian.gitnex.databinding.CustomInsertNoteBinding;
 import org.mian.gitnex.databinding.CustomLabelsSelectionDialogBinding;
 import org.mian.gitnex.fragments.IssuesFragment;
 import org.mian.gitnex.helpers.AlertDialogs;
@@ -84,6 +91,11 @@ public class CreateIssueActivity extends BaseActivity
 	private static List<AttachmentsModel> attachmentsList;
 	private AttachmentsAdapter attachmentsAdapter;
 	private static final List<Uri> contentUri = new ArrayList<>();
+	private CustomInsertNoteBinding customInsertNoteBinding;
+	private NotesAdapter adapter;
+	private NotesApi notesApi;
+	private List<Notes> notesList;
+	public AlertDialog dialogNotes;
 
 	@SuppressLint("ClickableViewAccessibility")
 	@Override
@@ -174,6 +186,8 @@ public class CreateIssueActivity extends BaseActivity
 					}
 				});
 
+		viewBinding.insertNote.setOnClickListener(insertNote -> showAllNotes());
+
 		getMilestones(repository.getOwner(), repository.getName(), resultLimit);
 
 		viewBinding.newIssueLabels.setOnClickListener(newIssueLabels -> showLabels());
@@ -187,6 +201,58 @@ public class CreateIssueActivity extends BaseActivity
 			viewBinding.newIssueLabelsLayout.setVisibility(View.GONE);
 			viewBinding.newIssueDueDateLayout.setVisibility(View.GONE);
 		}
+	}
+
+	private void showAllNotes() {
+
+		notesList = new ArrayList<>();
+		notesApi = BaseApi.getInstance(ctx, NotesApi.class);
+
+		customInsertNoteBinding = CustomInsertNoteBinding.inflate(LayoutInflater.from(ctx));
+
+		View view = customInsertNoteBinding.getRoot();
+		materialAlertDialogBuilder.setView(view);
+
+		customInsertNoteBinding.recyclerView.setHasFixedSize(true);
+		customInsertNoteBinding.recyclerView.setLayoutManager(new LinearLayoutManager(ctx));
+
+		adapter = new NotesAdapter(ctx, notesList, "insert");
+
+		customInsertNoteBinding.pullToRefresh.setOnRefreshListener(
+				() ->
+						new Handler(Looper.getMainLooper())
+								.postDelayed(
+										() -> {
+											notesList.clear();
+											customInsertNoteBinding.pullToRefresh.setRefreshing(
+													false);
+											customInsertNoteBinding.progressBar.setVisibility(
+													View.VISIBLE);
+											fetchNotes();
+										},
+										250));
+
+		fetchNotes();
+		dialogNotes = materialAlertDialogBuilder.show();
+	}
+
+	private void fetchNotes() {
+
+		notesApi.fetchAllNotes()
+				.observe(
+						this,
+						allNotes -> {
+							assert allNotes != null;
+							if (!allNotes.isEmpty()) {
+
+								notesList.clear();
+
+								notesList.addAll(allNotes);
+								adapter.notifyDataChanged();
+								customInsertNoteBinding.recyclerView.setAdapter(adapter);
+							}
+							customInsertNoteBinding.progressBar.setVisibility(View.GONE);
+						});
 	}
 
 	ActivityResultLauncher<Intent> startActivityForResult =

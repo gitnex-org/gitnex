@@ -70,7 +70,7 @@ public class NotesFragment extends Fragment {
 		binding.recyclerView.setPadding(0, 0, 0, 220);
 		binding.recyclerView.setClipToPadding(false);
 
-		adapter = new NotesAdapter(ctx, notesList);
+		adapter = new NotesAdapter(ctx, notesList, "");
 
 		binding.pullToRefresh.setOnRefreshListener(
 				() ->
@@ -103,7 +103,7 @@ public class NotesFragment extends Fragment {
 						allNotes -> {
 							binding.pullToRefresh.setRefreshing(false);
 							assert allNotes != null;
-							if (allNotes.size() > 0) {
+							if (!allNotes.isEmpty()) {
 
 								notesList.clear();
 								binding.noData.setVisibility(View.GONE);
@@ -138,7 +138,7 @@ public class NotesFragment extends Fragment {
 
 	public void deleteAllNotes() {
 
-		if (notesList.size() > 0) {
+		if (!notesList.isEmpty()) {
 
 			notesApi.deleteAllNotes();
 			notesList.clear();
@@ -159,6 +159,7 @@ public class NotesFragment extends Fragment {
 
 		MenuItem searchItem = menu.findItem(R.id.action_search);
 		SearchView searchView = (SearchView) searchItem.getActionView();
+		assert searchView != null;
 		searchView.setImeOptions(EditorInfo.IME_ACTION_DONE);
 
 		searchView.setOnQueryTextListener(
@@ -184,7 +185,7 @@ public class NotesFragment extends Fragment {
 
 		if (item.getItemId() == R.id.reset_menu_item) {
 
-			if (notesList.size() == 0) {
+			if (notesList.isEmpty()) {
 				Toasty.warning(ctx, getResources().getString(R.string.noDataFound));
 			} else {
 				new MaterialAlertDialogBuilder(ctx)
