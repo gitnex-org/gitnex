@@ -42,7 +42,7 @@ public class NotesAdapter extends RecyclerView.Adapter<NotesAdapter.NotesViewHol
 		noteIntent = new Intent(ctx, CreateNoteActivity.class);
 	}
 
-	class NotesViewHolder extends RecyclerView.ViewHolder {
+	public class NotesViewHolder extends RecyclerView.ViewHolder {
 
 		private Notes notes;
 

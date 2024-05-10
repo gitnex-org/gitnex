@@ -29,7 +29,6 @@
                     android:layout_marginBottom="8dp"
                     android:hint="@string/title"
                     android:textColorHint="?attr/hintColor"
-                    app:boxBackgroundColor="?attr/inputBackgroundColor"
                     app:boxStrokeErrorColor="@color/darkRed"
                     app:hintTextColor="?attr/hintColor">
 
@@ -51,7 +50,6 @@
                     android:layout_marginBottom="8dp"
                     android:hint="@string/sshKey"
                     android:textColorHint="?attr/hintColor"
-                    app:boxBackgroundColor="?attr/inputBackgroundColor"
                     app:boxStrokeErrorColor="@color/darkRed"
                     app:hintTextColor="?attr/hintColor">
 

@@ -8,7 +8,7 @@
     </solid>
 
     <corners
-        android:radius="8dp">
+        android:radius="32dp">
     </corners>
 
     <padding

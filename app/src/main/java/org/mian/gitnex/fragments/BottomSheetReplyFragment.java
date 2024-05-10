@@ -33,7 +33,6 @@ import org.mian.gitnex.database.api.DraftsApi;
 import org.mian.gitnex.databinding.BottomSheetReplyLayoutBinding;
 import org.mian.gitnex.helpers.AppDatabaseSettings;
 import org.mian.gitnex.helpers.Constants;
-import org.mian.gitnex.helpers.TinyDB;
 import org.mian.gitnex.helpers.Toasty;
 import org.mian.gitnex.helpers.contexts.IssueContext;
 
@@ -43,7 +42,6 @@ import org.mian.gitnex.helpers.contexts.IssueContext;
 public class BottomSheetReplyFragment extends BottomSheetDialogFragment {
 
 	private Mode mode = Mode.SEND;
-	private TinyDB tinyDB;
 	private DraftsApi draftsApi;
 	private int currentActiveAccountId;
 	private IssueContext issue;
@@ -65,7 +63,6 @@ public class BottomSheetReplyFragment extends BottomSheetDialogFragment {
 
 		super.onAttach(context);
 
-		tinyDB = TinyDB.getInstance(context);
 		draftsApi = BaseApi.getInstance(context, DraftsApi.class);
 
 		currentActiveAccountId =
@@ -103,7 +100,7 @@ public class BottomSheetReplyFragment extends BottomSheetDialogFragment {
 
 		if (arguments.getString("draftId") != null) {
 
-			draftId = Long.parseLong(arguments.getString("draftId"));
+			draftId = Long.parseLong(Objects.requireNonNull(arguments.getString("draftId")));
 		}
 
 		if (issue.getIssue() != null && !issue.getIssue().getTitle().isEmpty()) {
@@ -235,8 +232,7 @@ public class BottomSheetReplyFragment extends BottomSheetDialogFragment {
 										(status, result) -> {
 											FragmentActivity activity = requireActivity();
 											if (activity instanceof IssueDetailActivity) {
-												((IssueDetailActivity) activity).commentEdited =
-														true;
+												IssueDetailActivity.commentEdited = true;
 											}
 
 											if (status == ActionResult.Status.SUCCESS) {
@@ -271,6 +267,7 @@ public class BottomSheetReplyFragment extends BottomSheetDialogFragment {
 
 	private void saveDraft(String text, boolean remove) {
 
+		@SuppressLint("Recycle")
 		ValueAnimator valueAnimator = ValueAnimator.ofFloat(0f, 1f);
 		valueAnimator.setDuration(500);
 		valueAnimator.addUpdateListener(
