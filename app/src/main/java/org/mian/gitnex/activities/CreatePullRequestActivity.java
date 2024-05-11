@@ -6,6 +6,7 @@ import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
 import android.os.Handler;
+import android.os.Looper;
 import android.view.LayoutInflater;
 import android.view.MotionEvent;
 import android.view.View;
@@ -14,6 +15,7 @@ import android.widget.TextView;
 import androidx.activity.result.ActivityResultLauncher;
 import androidx.activity.result.contract.ActivityResultContracts;
 import androidx.annotation.NonNull;
+import androidx.appcompat.app.AlertDialog;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import com.google.android.material.bottomsheet.BottomSheetDialog;
 import com.google.android.material.datepicker.MaterialDatePicker;
@@ -41,9 +43,14 @@ import org.mian.gitnex.R;
 import org.mian.gitnex.actions.LabelsActions;
 import org.mian.gitnex.adapters.AttachmentsAdapter;
 import org.mian.gitnex.adapters.LabelsListAdapter;
+import org.mian.gitnex.adapters.NotesAdapter;
 import org.mian.gitnex.clients.RetrofitClient;
+import org.mian.gitnex.database.api.BaseApi;
+import org.mian.gitnex.database.api.NotesApi;
+import org.mian.gitnex.database.models.Notes;
 import org.mian.gitnex.databinding.ActivityCreatePrBinding;
 import org.mian.gitnex.databinding.BottomSheetAttachmentsBinding;
+import org.mian.gitnex.databinding.CustomInsertNoteBinding;
 import org.mian.gitnex.databinding.CustomLabelsSelectionDialogBinding;
 import org.mian.gitnex.fragments.PullRequestsFragment;
 import org.mian.gitnex.helpers.AlertDialogs;
@@ -51,6 +58,7 @@ import org.mian.gitnex.helpers.AppDatabaseSettings;
 import org.mian.gitnex.helpers.Constants;
 import org.mian.gitnex.helpers.Markdown;
 import org.mian.gitnex.helpers.SnackBar;
+import org.mian.gitnex.helpers.Toasty;
 import org.mian.gitnex.helpers.attachments.AttachmentUtils;
 import org.mian.gitnex.helpers.attachments.AttachmentsModel;
 import org.mian.gitnex.helpers.contexts.RepositoryContext;
@@ -74,11 +82,17 @@ public class CreatePullRequestActivity extends BaseActivity
 	private RepositoryContext repository;
 	private LabelsListAdapter labelsAdapter;
 	private MaterialAlertDialogBuilder materialAlertDialogBuilder;
+	private MaterialAlertDialogBuilder materialAlertDialogBuilderNotes;
 	private boolean renderMd = false;
 	private RepositoryContext repositoryContext;
 	private static List<AttachmentsModel> attachmentsList;
 	private AttachmentsAdapter attachmentsAdapter;
 	private static final List<Uri> contentUri = new ArrayList<>();
+	private CustomInsertNoteBinding customInsertNoteBinding;
+	private NotesAdapter adapter;
+	private NotesApi notesApi;
+	private List<Notes> notesList;
+	public AlertDialog dialogNotes;
 
 	@SuppressLint("ClickableViewAccessibility")
 	@Override
@@ -92,6 +106,8 @@ public class CreatePullRequestActivity extends BaseActivity
 		repositoryContext = RepositoryContext.fromIntent(getIntent());
 
 		materialAlertDialogBuilder =
+				new MaterialAlertDialogBuilder(ctx, R.style.ThemeOverlay_Material3_Dialog_Alert);
+		materialAlertDialogBuilderNotes =
 				new MaterialAlertDialogBuilder(ctx, R.style.ThemeOverlay_Material3_Dialog_Alert);
 
 		repository = RepositoryContext.fromIntent(getIntent());
@@ -162,6 +178,8 @@ public class CreatePullRequestActivity extends BaseActivity
 					}
 				});
 
+		viewBinding.insertNote.setOnClickListener(insertNote -> showAllNotes());
+
 		getMilestones(repository.getOwner(), repository.getName(), resultLimit);
 		getBranches(repository.getOwner(), repository.getName());
 
@@ -190,6 +208,62 @@ public class CreatePullRequestActivity extends BaseActivity
 						}
 					});
 
+	private void showAllNotes() {
+
+		notesList = new ArrayList<>();
+		notesApi = BaseApi.getInstance(ctx, NotesApi.class);
+
+		customInsertNoteBinding = CustomInsertNoteBinding.inflate(LayoutInflater.from(ctx));
+
+		View view = customInsertNoteBinding.getRoot();
+		materialAlertDialogBuilderNotes.setView(view);
+
+		customInsertNoteBinding.recyclerView.setHasFixedSize(true);
+		customInsertNoteBinding.recyclerView.setLayoutManager(new LinearLayoutManager(ctx));
+
+		adapter = new NotesAdapter(ctx, notesList, "insert", "pr");
+
+		customInsertNoteBinding.pullToRefresh.setOnRefreshListener(
+				() ->
+						new Handler(Looper.getMainLooper())
+								.postDelayed(
+										() -> {
+											notesList.clear();
+											customInsertNoteBinding.pullToRefresh.setRefreshing(
+													false);
+											customInsertNoteBinding.progressBar.setVisibility(
+													View.VISIBLE);
+											fetchNotes();
+										},
+										250));
+
+		if (notesApi.getCount() > 0) {
+			fetchNotes();
+			dialogNotes = materialAlertDialogBuilderNotes.show();
+		} else {
+			Toasty.warning(ctx, getResources().getString(R.string.noNotes));
+		}
+	}
+
+	private void fetchNotes() {
+
+		notesApi.fetchAllNotes()
+				.observe(
+						this,
+						allNotes -> {
+							assert allNotes != null;
+							if (!allNotes.isEmpty()) {
+
+								notesList.clear();
+
+								notesList.addAll(allNotes);
+								adapter.notifyDataChanged();
+								customInsertNoteBinding.recyclerView.setAdapter(adapter);
+							}
+							customInsertNoteBinding.progressBar.setVisibility(View.GONE);
+						});
+	}
+
 	public void onDestroy() {
 		AttachmentsAdapter.setAttachmentsReceiveListener(null);
 		super.onDestroy();
@@ -202,7 +276,7 @@ public class CreatePullRequestActivity extends BaseActivity
 
 	private void checkForAttachments() {
 
-		if (contentUri.size() > 0) {
+		if (!contentUri.isEmpty()) {
 
 			BottomSheetAttachmentsBinding bottomSheetAttachmentsBinding =
 					BottomSheetAttachmentsBinding.inflate(getLayoutInflater());
@@ -241,7 +315,10 @@ public class CreatePullRequestActivity extends BaseActivity
 
 			RequestBody requestFile =
 					RequestBody.create(
-							file, MediaType.parse(getContentResolver().getType(contentUri.get(i))));
+							file,
+							MediaType.parse(
+									Objects.requireNonNull(
+											getContentResolver().getType(contentUri.get(i)))));
 
 			uploadAttachments(requestFile, issueIndex, file.getName());
 		}
@@ -301,7 +378,7 @@ public class CreatePullRequestActivity extends BaseActivity
 
 		assignees.add("");
 
-		if (labelsIds.size() == 0) {
+		if (labelsIds.isEmpty()) {
 
 			labelsIds.add(0);
 		}
@@ -383,7 +460,7 @@ public class CreatePullRequestActivity extends BaseActivity
 							PullRequestsFragment.resumePullRequests = true;
 							MainActivity.reloadRepos = true;
 
-							if (contentUri.size() > 0) {
+							if (!contentUri.isEmpty()) {
 								assert response.body() != null;
 								processAttachments(response.body().getNumber());
 								contentUri.clear();
@@ -555,7 +632,7 @@ public class CreatePullRequestActivity extends BaseActivity
 											.title(getString(R.string.issueCreatedNoMilestone)));
 							assert milestonesList_ != null;
 
-							if (milestonesList_.size() > 0) {
+							if (!milestonesList_.isEmpty()) {
 
 								for (Milestone milestone : milestonesList_) {
 

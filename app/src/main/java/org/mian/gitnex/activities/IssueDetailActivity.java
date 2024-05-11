@@ -11,6 +11,8 @@ import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Looper;
+import android.text.Editable;
+import android.text.TextWatcher;
 import android.util.Log;
 import android.view.Gravity;
 import android.view.LayoutInflater;
@@ -18,6 +20,8 @@ import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
+import android.view.WindowManager;
+import android.view.inputmethod.InputMethodManager;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.ScrollView;
@@ -57,7 +61,9 @@ import org.gitnex.tea4j.v2.models.Repository;
 import org.gitnex.tea4j.v2.models.User;
 import org.gitnex.tea4j.v2.models.WatchInfo;
 import org.mian.gitnex.R;
+import org.mian.gitnex.actions.ActionResult;
 import org.mian.gitnex.actions.AssigneesActions;
+import org.mian.gitnex.actions.IssueActions;
 import org.mian.gitnex.actions.LabelsActions;
 import org.mian.gitnex.adapters.AssigneesListAdapter;
 import org.mian.gitnex.adapters.IssueCommentsAdapter;
@@ -82,6 +88,7 @@ import org.mian.gitnex.helpers.LabelWidthCalculator;
 import org.mian.gitnex.helpers.Markdown;
 import org.mian.gitnex.helpers.RoundedTransformation;
 import org.mian.gitnex.helpers.TimeHelper;
+import org.mian.gitnex.helpers.TinyDB;
 import org.mian.gitnex.helpers.Toasty;
 import org.mian.gitnex.helpers.contexts.IssueContext;
 import org.mian.gitnex.notifications.Notifications;
@@ -105,7 +112,7 @@ public class IssueDetailActivity extends BaseActivity
 	public static boolean commentPosted = false;
 	private final List<Label> labelsList = new ArrayList<>();
 	private final List<User> assigneesList = new ArrayList<>();
-	public boolean commentEdited = false;
+	public static boolean commentEdited = false;
 	private IssueCommentsAdapter adapter;
 	private String repoOwner;
 	private String repoName;
@@ -131,6 +138,13 @@ public class IssueDetailActivity extends BaseActivity
 	private String instanceUrlOnly;
 	private String token;
 	private int page = 1;
+	private TinyDB tinyDB;
+	private Mode mode = Mode.SEND;
+
+	private enum Mode {
+		EDIT,
+		SEND
+	}
 
 	public ActivityResultLauncher<Intent> editIssueLauncher =
 			registerForActivityResult(
@@ -275,9 +289,14 @@ public class IssueDetailActivity extends BaseActivity
 		repoName = issue.getRepository().getName();
 		issueIndex = issue.getIssueIndex();
 
+		tinyDB = TinyDB.getInstance(ctx);
+
 		setSupportActionBar(viewBinding.toolbar);
 		Objects.requireNonNull(getSupportActionBar()).setTitle(repoName);
 		getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+
+		InputMethodManager imm =
+				(InputMethodManager) getSystemService(Activity.INPUT_METHOD_SERVICE);
 
 		String instanceUrl = ((BaseActivity) ctx).getAccount().getAccount().getInstanceUrl();
 		instanceUrlOnly = instanceUrl.substring(0, instanceUrl.lastIndexOf("api/v1/"));
@@ -293,31 +312,11 @@ public class IssueDetailActivity extends BaseActivity
 		viewBinding.recyclerView.setNestedScrollingEnabled(false);
 		viewBinding.recyclerView.setLayoutManager(new LinearLayoutManager(ctx));
 
-		new Handler()
-				.postDelayed(
-						() -> {
-							if (issue.getIssue() != null) {
-								if (issue.getIssue().isIsLocked() != null) {
-									if (issue.getIssue().isIsLocked()) {
-										if (issue.getRepository().getPermissions() != null
-												&& issue.getRepository().getPermissions().isAdmin()
-														!= null) {
-											if (issue.getRepository().getPermissions().isAdmin()) {
-												viewBinding.addNewComment.setVisibility(
-														View.VISIBLE);
-											} else {
-												viewBinding.addNewComment.setVisibility(View.GONE);
-											}
-										} else {
-											viewBinding.addNewComment.setVisibility(View.GONE);
-										}
-									} else {
-										viewBinding.addNewComment.setVisibility(View.VISIBLE);
-									}
-								}
-							}
-						},
-						50);
+		float buttonAlphaStatDisabled = .5F;
+		float buttonAlphaStatEnabled = 1F;
+
+		viewBinding.send.setAlpha(buttonAlphaStatDisabled);
+		viewBinding.send.setEnabled(false);
 
 		viewBinding.addNewComment.setOnClickListener(
 				v -> {
@@ -360,6 +359,166 @@ public class IssueDetailActivity extends BaseActivity
 				&& Objects.equals(getIntent().getStringExtra("openPrDiff"), "true")) {
 			startActivity(issue.getIntent(ctx, DiffActivity.class));
 		}
+
+		viewBinding.commentReply.addTextChangedListener(
+				new TextWatcher() {
+					@Override
+					public void beforeTextChanged(CharSequence chr, int i, int i1, int i2) {}
+
+					@Override
+					public void onTextChanged(CharSequence chr, int i, int i1, int i2) {
+						if (chr.length() > 0) {
+							viewBinding.commentReply.requestFocus();
+							getWindow()
+									.setSoftInputMode(
+											WindowManager.LayoutParams
+													.SOFT_INPUT_STATE_ALWAYS_VISIBLE);
+							viewBinding.commentReply.setSelection(
+									viewBinding.commentReply.length());
+							viewBinding.send.setAlpha(buttonAlphaStatEnabled);
+							viewBinding.send.setEnabled(true);
+						} else {
+							viewBinding.send.setAlpha(buttonAlphaStatDisabled);
+							viewBinding.send.setEnabled(false);
+						}
+					}
+
+					@Override
+					public void afterTextChanged(Editable editable) {
+
+						if (editable.length() > 0) {
+							new Handler()
+									.postDelayed(
+											() -> {
+												if (issue.getIssue() != null) {
+													if (issue.getIssue().isIsLocked() != null) {
+														if (issue.getIssue().isIsLocked()) {
+															if (issue.getRepository()
+																					.getPermissions()
+																			!= null
+																	&& issue.getRepository()
+																					.getPermissions()
+																					.isAdmin()
+																			!= null) {
+																if (issue.getRepository()
+																		.getPermissions()
+																		.isAdmin()) {
+																	viewBinding.send.setEnabled(
+																			true);
+																	viewBinding.send.setAlpha(
+																			buttonAlphaStatEnabled);
+																} else {
+																	viewBinding.send.setAlpha(
+																			buttonAlphaStatDisabled);
+																	viewBinding.send.setEnabled(
+																			false);
+																}
+															} else {
+																viewBinding.send.setAlpha(
+																		buttonAlphaStatDisabled);
+																viewBinding.send.setEnabled(false);
+															}
+														} else {
+															viewBinding.send.setEnabled(true);
+															viewBinding.send.setAlpha(
+																	buttonAlphaStatEnabled);
+														}
+													}
+												}
+											},
+											50);
+						}
+					}
+				});
+
+		viewBinding.send.setOnClickListener(
+				v -> {
+					if (Objects.requireNonNull(tinyDB.getString("commentAction"))
+							.equalsIgnoreCase("edit")) {
+						mode = Mode.EDIT;
+					} else {
+						mode = Mode.SEND;
+					}
+
+					if (mode == Mode.SEND) {
+
+						IssueActions.reply(
+										ctx, viewBinding.commentReply.getText().toString(), issue)
+								.accept(
+										(status, result) -> {
+											if (status == ActionResult.Status.SUCCESS) {
+
+												viewBinding.scrollViewComments.post(
+														() ->
+																issueCommentsModel
+																		.loadIssueComments(
+																				repoOwner,
+																				repoName,
+																				issueIndex,
+																				ctx,
+																				() ->
+																						viewBinding
+																								.scrollViewComments
+																								.fullScroll(
+																										ScrollView
+																												.FOCUS_DOWN)));
+
+												Toasty.success(
+														ctx, getString(R.string.commentSuccess));
+
+												viewBinding.send.setAlpha(buttonAlphaStatDisabled);
+												viewBinding.send.setEnabled(false);
+												viewBinding.commentReply.setText(null);
+												viewBinding.commentReply.clearFocus();
+												imm.toggleSoftInput(
+														InputMethodManager.HIDE_IMPLICIT_ONLY, 0);
+											} else {
+
+												Toasty.error(ctx, getString(R.string.genericError));
+											}
+										});
+					} else {
+
+						IssueActions.edit(
+										ctx,
+										viewBinding.commentReply.getText().toString(),
+										tinyDB.getInt("commentId"),
+										issue)
+								.accept(
+										(status, result) -> {
+											if (status == ActionResult.Status.SUCCESS) {
+
+												tinyDB.remove("commentId");
+												tinyDB.remove("commentAction");
+
+												viewBinding.scrollViewComments.post(
+														() ->
+																issueCommentsModel
+																		.loadIssueComments(
+																				repoOwner,
+																				repoName,
+																				issueIndex,
+																				ctx,
+																				null));
+
+												Toasty.success(
+														ctx,
+														getString(R.string.editCommentUpdatedText));
+
+												mode = Mode.SEND;
+												viewBinding.send.setAlpha(buttonAlphaStatDisabled);
+												viewBinding.send.setEnabled(false);
+												viewBinding.commentReply.setText(null);
+												viewBinding.commentReply.clearFocus();
+												imm.toggleSoftInput(
+														InputMethodManager.HIDE_IMPLICIT_ONLY, 0);
+											} else {
+
+												Toasty.error(ctx, getString(R.string.genericError));
+											}
+										});
+					}
+				});
 	}
 
 	@Override
@@ -708,6 +867,10 @@ public class IssueDetailActivity extends BaseActivity
 							},
 							500);
 		}
+
+		tinyDB.remove("commentId");
+		tinyDB.remove("commentAction");
+		mode = Mode.SEND;
 	}
 
 	private void fetchDataAsync(String owner, String repo, int index) {
@@ -724,12 +887,7 @@ public class IssueDetailActivity extends BaseActivity
 
 							adapter =
 									new IssueCommentsAdapter(
-											ctx,
-											bundle,
-											issueCommentsMain,
-											getSupportFragmentManager(),
-											this::onResume,
-											issue);
+											ctx, bundle, issueCommentsMain, this::onResume, issue);
 							adapter.setLoadMoreListener(
 									new IssueCommentsAdapter.OnLoadMoreListener() {
 

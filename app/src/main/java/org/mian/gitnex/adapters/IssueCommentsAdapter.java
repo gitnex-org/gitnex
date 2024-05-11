@@ -18,6 +18,7 @@ import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.EditText;
 import android.widget.FrameLayout;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
@@ -27,7 +28,6 @@ import androidx.annotation.NonNull;
 import androidx.core.content.ContextCompat;
 import androidx.core.content.res.ResourcesCompat;
 import androidx.core.text.HtmlCompat;
-import androidx.fragment.app.FragmentManager;
 import androidx.recyclerview.widget.RecyclerView;
 import com.amulyakhare.textdrawable.TextDrawable;
 import com.google.android.material.bottomsheet.BottomSheetDialog;
@@ -52,7 +52,6 @@ import org.mian.gitnex.activities.ProfileActivity;
 import org.mian.gitnex.clients.PicassoService;
 import org.mian.gitnex.clients.RetrofitClient;
 import org.mian.gitnex.databinding.CustomImageViewDialogBinding;
-import org.mian.gitnex.fragments.BottomSheetReplyFragment;
 import org.mian.gitnex.fragments.IssuesFragment;
 import org.mian.gitnex.helpers.AlertDialogs;
 import org.mian.gitnex.helpers.AppDatabaseSettings;
@@ -79,7 +78,6 @@ public class IssueCommentsAdapter extends RecyclerView.Adapter<RecyclerView.View
 	private final Context context;
 	private final TinyDB tinyDB;
 	private final Bundle bundle;
-	private final FragmentManager fragmentManager;
 	private final Runnable onInteractedListener;
 	private final Locale locale;
 	private final IssueContext issue;
@@ -92,14 +90,12 @@ public class IssueCommentsAdapter extends RecyclerView.Adapter<RecyclerView.View
 			Context ctx,
 			Bundle bundle,
 			List<TimelineComment> issuesCommentsMain,
-			FragmentManager fragmentManager,
 			Runnable onInteractedListener,
 			IssueContext issue) {
 
 		this.context = ctx;
 		this.bundle = bundle;
 		this.issuesComments = issuesCommentsMain;
-		this.fragmentManager = fragmentManager;
 		this.onInteractedListener = onInteractedListener;
 		tinyDB = TinyDB.getInstance(ctx);
 		locale = ctx.getResources().getConfiguration().locale;
@@ -266,11 +262,7 @@ public class IssueCommentsAdapter extends RecyclerView.Adapter<RecyclerView.View
 
 			if (issueComment != null) {
 				new Handler()
-						.postDelayed(
-								() -> {
-									getAttachments(issueComment.getId(), view, token);
-								},
-								250);
+						.postDelayed(() -> getAttachments(issueComment.getId(), view, token), 250);
 			}
 
 			menu.setOnClickListener(
@@ -343,18 +335,14 @@ public class IssueCommentsAdapter extends RecyclerView.Adapter<RecyclerView.View
 
 						commentMenuEdit.setOnClickListener(
 								v1 -> {
-									Bundle bundle = new Bundle();
-									bundle.putInt(
-											"commentId", Math.toIntExact(issueComment.getId()));
-									bundle.putString("commentAction", "edit");
-									bundle.putString("commentBody", issueComment.getBody());
+									IssueDetailActivity parentActivity =
+											(IssueDetailActivity) context;
+									EditText text = parentActivity.findViewById(R.id.comment_reply);
+									text.append(issueComment.getBody());
 
-									BottomSheetReplyFragment bottomSheetReplyFragment =
-											BottomSheetReplyFragment.newInstance(bundle, issue);
-									bottomSheetReplyFragment.setOnInteractedListener(
-											onInteractedListener);
-									bottomSheetReplyFragment.show(
-											fragmentManager, "replyBottomSheet");
+									tinyDB.putString("commentAction", "edit");
+									tinyDB.putInt(
+											"commentId", Math.toIntExact(issueComment.getId()));
 
 									dialog.dismiss();
 								});
@@ -402,15 +390,14 @@ public class IssueCommentsAdapter extends RecyclerView.Adapter<RecyclerView.View
 										stringBuilder.append(">").append(line).append("\n");
 									}
 
-									stringBuilder.append("\n");
+									String comment = String.valueOf(stringBuilder.append("\n"));
 
-									Bundle bundle = new Bundle();
-									bundle.putString("commentBody", stringBuilder.toString());
-									bundle.putBoolean("cursorToEnd", true);
+									IssueDetailActivity parentActivity =
+											(IssueDetailActivity) context;
+									EditText text = parentActivity.findViewById(R.id.comment_reply);
+									text.setText(comment);
 
 									dialog.dismiss();
-									BottomSheetReplyFragment.newInstance(bundle, issue)
-											.show(fragmentManager, "replyBottomSheet");
 								});
 
 						commentMenuCopy.setOnClickListener(
@@ -1489,7 +1476,7 @@ public class IssueCommentsAdapter extends RecyclerView.Adapter<RecyclerView.View
 										attachmentView.setLayoutParams(paramsAttachment);
 										materialCardView.addView(attachmentView);
 
-										int finalI = i;
+										// int finalI = i;
 										materialCardView.setOnClickListener(
 												v1 -> {
 													// filesize = attachment.get(finalI).getSize();

@@ -853,6 +853,8 @@
         <item quantity="other">Notes deleted successfully</item>
     </plurals>
     <string name="notesAllDeletionMessage">This will delete all of your notes. This action cannot be undone.</string>
+    <string name="insertNote">Insert a Note</string>
+    <string name="noNotes">No notes found</string>
 
     <!-- timeline -->
     <string name="commitsText">commit</string>

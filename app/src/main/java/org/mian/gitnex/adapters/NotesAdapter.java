@@ -6,6 +6,7 @@ import android.content.Intent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.TextView;
 import androidx.annotation.NonNull;
@@ -19,7 +20,10 @@ import java.util.Locale;
 import java.util.Objects;
 import org.apache.commons.lang3.StringUtils;
 import org.mian.gitnex.R;
+import org.mian.gitnex.activities.CreateIssueActivity;
 import org.mian.gitnex.activities.CreateNoteActivity;
+import org.mian.gitnex.activities.CreatePullRequestActivity;
+import org.mian.gitnex.activities.CreateReleaseActivity;
 import org.mian.gitnex.database.api.BaseApi;
 import org.mian.gitnex.database.api.NotesApi;
 import org.mian.gitnex.database.models.Notes;
@@ -35,14 +39,18 @@ public class NotesAdapter extends RecyclerView.Adapter<NotesAdapter.NotesViewHol
 	private List<Notes> notesList;
 	private final Context ctx;
 	private final Intent noteIntent;
+	private final String insert;
+	private final String source;
 
-	public NotesAdapter(Context ctx, List<Notes> notesListMain) {
+	public NotesAdapter(Context ctx, List<Notes> notesListMain, String insert, String source) {
 		this.ctx = ctx;
 		this.notesList = notesListMain;
 		noteIntent = new Intent(ctx, CreateNoteActivity.class);
+		this.insert = insert;
+		this.source = source;
 	}
 
-	class NotesViewHolder extends RecyclerView.ViewHolder {
+	public class NotesViewHolder extends RecyclerView.ViewHolder {
 
 		private Notes notes;
 
@@ -82,6 +90,49 @@ public class NotesAdapter extends RecyclerView.Adapter<NotesAdapter.NotesViewHol
 								.setNeutralButton(R.string.cancelButton, null)
 								.show();
 					});
+
+			if (insert.equalsIgnoreCase("insert") && source.equalsIgnoreCase("issue")) {
+
+				deleteNote.setVisibility(View.GONE);
+
+				itemView.setOnClickListener(
+						view -> {
+							CreateIssueActivity parentActivity = (CreateIssueActivity) ctx;
+							EditText text = parentActivity.findViewById(R.id.newIssueDescription);
+							text.append(notes.getContent());
+
+							parentActivity.dialogNotes.dismiss();
+						});
+			}
+
+			if (insert.equalsIgnoreCase("insert") && source.equalsIgnoreCase("release")) {
+
+				deleteNote.setVisibility(View.GONE);
+
+				itemView.setOnClickListener(
+						view -> {
+							CreateReleaseActivity parentActivity = (CreateReleaseActivity) ctx;
+							EditText text = parentActivity.findViewById(R.id.releaseContent);
+							text.append(notes.getContent());
+
+							parentActivity.dialogNotes.dismiss();
+						});
+			}
+
+			if (insert.equalsIgnoreCase("insert") && source.equalsIgnoreCase("pr")) {
+
+				deleteNote.setVisibility(View.GONE);
+
+				itemView.setOnClickListener(
+						view -> {
+							CreatePullRequestActivity parentActivity =
+									(CreatePullRequestActivity) ctx;
+							EditText text = parentActivity.findViewById(R.id.prBody);
+							text.append(notes.getContent());
+
+							parentActivity.dialogNotes.dismiss();
+						});
+			}
 		}
 	}
 

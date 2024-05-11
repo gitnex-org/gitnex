@@ -63,6 +63,7 @@
         android:text="@string/commentButtonText"
         android:textColor="?attr/materialCardBackgroundColor"
         app:iconTint="?attr/materialCardBackgroundColor"
+        android:visibility="gone"
         app:icon="@drawable/ic_reply" />
 
     <RelativeLayout
@@ -89,7 +90,7 @@
                     android:paddingStart="@dimen/dimen8dp"
                     android:paddingTop="@dimen/dimen2dp"
                     android:paddingEnd="@dimen/dimen8dp"
-                    android:paddingBottom="@dimen/dimen8dp">
+                    android:paddingBottom="@dimen/dimen104dp">
 
                     <com.google.android.material.card.MaterialCardView
                         android:id="@+id/titleCard"
@@ -153,7 +154,8 @@
                                         android:layout_width="@dimen/dimen24dp"
                                         android:layout_height="@dimen/dimen24dp"
                                         app:cardCornerRadius="@dimen/dimen12dp"
-                                        app:cardElevation="@dimen/dimen0dp">
+                                        app:cardElevation="@dimen/dimen0dp"
+                                        tools:ignore="TooDeepLayout">
 
                                         <ImageView
                                             android:id="@+id/assigneeAvatar"
@@ -371,9 +373,7 @@
                         <androidx.recyclerview.widget.RecyclerView
                             android:id="@+id/recyclerView"
                             android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            android:clipToPadding="false"
-                            android:paddingBottom="@dimen/dimen72dp" />
+                            android:layout_height="wrap_content" />
 
                     </FrameLayout>
 
@@ -382,6 +382,56 @@
             </androidx.core.widget.NestedScrollView>
 
         </androidx.swiperefreshlayout.widget.SwipeRefreshLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:layout_alignParentBottom="true"
+            android:background="?attr/primaryBackgroundColor"
+            android:padding="@dimen/dimen8dp">
+
+            <EditText
+                android:id="@+id/comment_reply"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:autofillHints="@string/commentButtonText"
+                android:background="@drawable/shape_inputs"
+                android:inputType="textMultiLine|textImeMultiLine|textCapSentences"
+                android:labelFor="@+id/comment_reply"
+                android:layout_weight="1"
+                android:maxLines="4"
+                android:paddingStart="@dimen/dimen16dp"
+                android:paddingEnd="@dimen/dimen16dp"
+                android:paddingTop="@dimen/dimen8dp"
+                android:paddingBottom="@dimen/dimen8dp"
+                android:textColor="?attr/inputTextColor"
+                android:layout_marginEnd="@dimen/dimen12dp"
+                android:textSize="@dimen/dimen14sp" />
+
+            <com.google.android.material.card.MaterialCardView
+                style="?attr/materialCardViewFilledStyle"
+                android:id="@+id/send_button"
+                android:layout_width="@dimen/dimen36dp"
+                android:layout_height="@dimen/dimen36dp"
+                android:layout_gravity="center_vertical"
+                android:backgroundTint="?attr/fabColor"
+                app:cardCornerRadius="@dimen/dimen36dp">
+
+               <ImageView
+                   android:id="@+id/send"
+                   android:layout_width="@dimen/dimen24dp"
+                   android:layout_height="@dimen/dimen24dp"
+                   android:layout_gravity="center_vertical|center_horizontal"
+                   android:contentDescription="@string/generalImgContentText"
+                   app:tint="?attr/materialCardBackgroundColor"
+                   android:clickable="true"
+                   android:src="@drawable/ic_send"
+                   android:focusable="true" />
+
+            </com.google.android.material.card.MaterialCardView>
+
+        </LinearLayout>
 
     </RelativeLayout>
 

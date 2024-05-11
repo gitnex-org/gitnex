@@ -3,10 +3,15 @@ package org.mian.gitnex.activities;
 import android.annotation.SuppressLint;
 import android.os.Bundle;
 import android.os.Handler;
+import android.os.Looper;
+import android.view.LayoutInflater;
 import android.view.MotionEvent;
 import android.view.View;
 import android.widget.ArrayAdapter;
 import androidx.annotation.NonNull;
+import androidx.appcompat.app.AlertDialog;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import com.google.android.material.dialog.MaterialAlertDialogBuilder;
 import com.vdurmont.emoji.EmojiParser;
 import java.util.ArrayList;
 import java.util.List;
@@ -17,11 +22,17 @@ import org.gitnex.tea4j.v2.models.CreateTagOption;
 import org.gitnex.tea4j.v2.models.Release;
 import org.gitnex.tea4j.v2.models.Tag;
 import org.mian.gitnex.R;
+import org.mian.gitnex.adapters.NotesAdapter;
 import org.mian.gitnex.clients.RetrofitClient;
+import org.mian.gitnex.database.api.BaseApi;
+import org.mian.gitnex.database.api.NotesApi;
+import org.mian.gitnex.database.models.Notes;
 import org.mian.gitnex.databinding.ActivityCreateReleaseBinding;
+import org.mian.gitnex.databinding.CustomInsertNoteBinding;
 import org.mian.gitnex.helpers.AlertDialogs;
 import org.mian.gitnex.helpers.Markdown;
 import org.mian.gitnex.helpers.SnackBar;
+import org.mian.gitnex.helpers.Toasty;
 import org.mian.gitnex.helpers.contexts.RepositoryContext;
 import retrofit2.Call;
 import retrofit2.Callback;
@@ -36,6 +47,12 @@ public class CreateReleaseActivity extends BaseActivity {
 	private String selectedBranch;
 	private RepositoryContext repository;
 	private boolean renderMd = false;
+	private MaterialAlertDialogBuilder materialAlertDialogBuilder;
+	private CustomInsertNoteBinding customInsertNoteBinding;
+	private NotesAdapter adapter;
+	private NotesApi notesApi;
+	private List<Notes> notesList;
+	public AlertDialog dialogNotes;
 
 	@SuppressLint("ClickableViewAccessibility")
 	@Override
@@ -47,6 +64,9 @@ public class CreateReleaseActivity extends BaseActivity {
 		setContentView(binding.getRoot());
 
 		repository = RepositoryContext.fromIntent(getIntent());
+
+		materialAlertDialogBuilder =
+				new MaterialAlertDialogBuilder(ctx, R.style.ThemeOverlay_Material3_Dialog_Alert);
 
 		binding.releaseContent.setOnTouchListener(
 				(touchView, motionEvent) -> {
@@ -60,10 +80,7 @@ public class CreateReleaseActivity extends BaseActivity {
 					return false;
 				});
 
-		binding.topAppBar.setNavigationOnClickListener(
-				v -> {
-					finish();
-				});
+		binding.topAppBar.setNavigationOnClickListener(v -> finish());
 
 		binding.topAppBar.setOnMenuItemClickListener(
 				menuItem -> {
@@ -103,7 +120,65 @@ public class CreateReleaseActivity extends BaseActivity {
 					}
 				});
 
+		binding.insertNote.setOnClickListener(insertNote -> showAllNotes());
+
 		getBranches(repository.getOwner(), repository.getName());
+	}
+
+	private void showAllNotes() {
+
+		notesList = new ArrayList<>();
+		notesApi = BaseApi.getInstance(ctx, NotesApi.class);
+
+		customInsertNoteBinding = CustomInsertNoteBinding.inflate(LayoutInflater.from(ctx));
+
+		View view = customInsertNoteBinding.getRoot();
+		materialAlertDialogBuilder.setView(view);
+
+		customInsertNoteBinding.recyclerView.setHasFixedSize(true);
+		customInsertNoteBinding.recyclerView.setLayoutManager(new LinearLayoutManager(ctx));
+
+		adapter = new NotesAdapter(ctx, notesList, "insert", "release");
+
+		customInsertNoteBinding.pullToRefresh.setOnRefreshListener(
+				() ->
+						new Handler(Looper.getMainLooper())
+								.postDelayed(
+										() -> {
+											notesList.clear();
+											customInsertNoteBinding.pullToRefresh.setRefreshing(
+													false);
+											customInsertNoteBinding.progressBar.setVisibility(
+													View.VISIBLE);
+											fetchNotes();
+										},
+										250));
+
+		if (notesApi.getCount() > 0) {
+			fetchNotes();
+			dialogNotes = materialAlertDialogBuilder.show();
+		} else {
+			Toasty.warning(ctx, getResources().getString(R.string.noNotes));
+		}
+	}
+
+	private void fetchNotes() {
+
+		notesApi.fetchAllNotes()
+				.observe(
+						this,
+						allNotes -> {
+							assert allNotes != null;
+							if (!allNotes.isEmpty()) {
+
+								notesList.clear();
+
+								notesList.addAll(allNotes);
+								adapter.notifyDataChanged();
+								customInsertNoteBinding.recyclerView.setAdapter(adapter);
+							}
+							customInsertNoteBinding.progressBar.setVisibility(View.GONE);
+						});
 	}
 
 	private void createNewTag() {
@@ -114,7 +189,7 @@ public class CreateReleaseActivity extends BaseActivity {
 						+ "\n\n"
 						+ Objects.requireNonNull(binding.releaseContent.getText());
 
-		if (tagName.equals("")) {
+		if (tagName.isEmpty()) {
 			SnackBar.error(
 					ctx, findViewById(android.R.id.content), getString(R.string.tagNameErrorEmpty));
 			return;
@@ -187,13 +262,13 @@ public class CreateReleaseActivity extends BaseActivity {
 		boolean newReleaseType = binding.releaseType.isChecked();
 		boolean newReleaseDraft = binding.releaseDraft.isChecked();
 
-		if (newReleaseTitle.equals("")) {
+		if (newReleaseTitle.isEmpty()) {
 			SnackBar.error(
 					ctx, findViewById(android.R.id.content), getString(R.string.titleErrorEmpty));
 			return;
 		}
 
-		if (newReleaseTagName.equals("")) {
+		if (newReleaseTagName.isEmpty()) {
 			SnackBar.error(
 					ctx, findViewById(android.R.id.content), getString(R.string.tagNameErrorEmpty));
 			return;

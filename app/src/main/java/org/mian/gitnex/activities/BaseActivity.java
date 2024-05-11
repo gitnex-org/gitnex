@@ -1,13 +1,10 @@
 package org.mian.gitnex.activities;
 
 import android.content.Context;
+import android.content.Intent;
 import android.os.Bundle;
-import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.biometric.BiometricPrompt;
-import androidx.core.content.ContextCompat;
 import java.util.Locale;
-import java.util.concurrent.Executor;
 import org.mian.gitnex.R;
 import org.mian.gitnex.core.MainApplication;
 import org.mian.gitnex.helpers.AppDatabaseSettings;
@@ -128,50 +125,8 @@ public abstract class BaseActivity extends AppCompatActivity {
 						AppDatabaseSettings.getSettingsValue(
 								ctx, AppDatabaseSettings.APP_BIOMETRIC_LIFE_CYCLE_KEY))) {
 
-			Executor executor = ContextCompat.getMainExecutor(this);
-
-			BiometricPrompt biometricPrompt =
-					new BiometricPrompt(
-							this,
-							executor,
-							new BiometricPrompt.AuthenticationCallback() {
-
-								@Override
-								public void onAuthenticationError(
-										int errorCode, @NonNull CharSequence errString) {
-
-									super.onAuthenticationError(errorCode, errString);
-
-									// Authentication error, close the app
-									finish();
-								}
-
-								// Authentication succeeded, continue to app
-								@Override
-								public void onAuthenticationSucceeded(
-										@NonNull BiometricPrompt.AuthenticationResult result) {
-									super.onAuthenticationSucceeded(result);
-									AppDatabaseSettings.updateSettingsValue(
-											getApplicationContext(),
-											"true",
-											AppDatabaseSettings.APP_BIOMETRIC_LIFE_CYCLE_KEY);
-								}
-
-								// Authentication failed, close the app
-								@Override
-								public void onAuthenticationFailed() {
-									super.onAuthenticationFailed();
-								}
-							});
-
-			BiometricPrompt.PromptInfo biometricPromptBuilder =
-					new BiometricPrompt.PromptInfo.Builder()
-							.setTitle(getString(R.string.biometricAuthTitle))
-							.setSubtitle(getString(R.string.biometricAuthSubTitle))
-							.setNegativeButtonText(getString(R.string.cancelButton))
-							.build();
-
-			biometricPrompt.authenticate(biometricPromptBuilder);
+			Intent unlockIntent = new Intent(ctx, BiometricUnlock.class);
+			ctx.startActivity(unlockIntent);
 		}
 	}
 
