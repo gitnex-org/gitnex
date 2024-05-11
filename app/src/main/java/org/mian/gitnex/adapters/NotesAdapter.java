@@ -22,6 +22,7 @@ import org.apache.commons.lang3.StringUtils;
 import org.mian.gitnex.R;
 import org.mian.gitnex.activities.CreateIssueActivity;
 import org.mian.gitnex.activities.CreateNoteActivity;
+import org.mian.gitnex.activities.CreatePullRequestActivity;
 import org.mian.gitnex.activities.CreateReleaseActivity;
 import org.mian.gitnex.database.api.BaseApi;
 import org.mian.gitnex.database.api.NotesApi;
@@ -112,6 +113,21 @@ public class NotesAdapter extends RecyclerView.Adapter<NotesAdapter.NotesViewHol
 						view -> {
 							CreateReleaseActivity parentActivity = (CreateReleaseActivity) ctx;
 							EditText text = parentActivity.findViewById(R.id.releaseContent);
+							text.append(notes.getContent());
+
+							parentActivity.dialogNotes.dismiss();
+						});
+			}
+
+			if (insert.equalsIgnoreCase("insert") && source.equalsIgnoreCase("pr")) {
+
+				deleteNote.setVisibility(View.GONE);
+
+				itemView.setOnClickListener(
+						view -> {
+							CreatePullRequestActivity parentActivity =
+									(CreatePullRequestActivity) ctx;
+							EditText text = parentActivity.findViewById(R.id.prBody);
 							text.append(notes.getContent());
 
 							parentActivity.dialogNotes.dismiss();

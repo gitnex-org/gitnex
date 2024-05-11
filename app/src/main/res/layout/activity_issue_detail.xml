@@ -412,16 +412,16 @@
             <com.google.android.material.card.MaterialCardView
                 style="?attr/materialCardViewFilledStyle"
                 android:id="@+id/send_button"
-                android:layout_width="@dimen/dimen40dp"
-                android:layout_height="@dimen/dimen40dp"
+                android:layout_width="@dimen/dimen36dp"
+                android:layout_height="@dimen/dimen36dp"
                 android:layout_gravity="center_vertical"
                 android:backgroundTint="?attr/fabColor"
                 app:cardCornerRadius="@dimen/dimen36dp">
 
                <ImageView
                    android:id="@+id/send"
-                   android:layout_width="@dimen/dimen28dp"
-                   android:layout_height="@dimen/dimen28dp"
+                   android:layout_width="@dimen/dimen24dp"
+                   android:layout_height="@dimen/dimen24dp"
                    android:layout_gravity="center_vertical|center_horizontal"
                    android:contentDescription="@string/generalImgContentText"
                    app:tint="?attr/materialCardBackgroundColor"
