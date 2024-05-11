@@ -61,6 +61,7 @@ import org.mian.gitnex.helpers.AppDatabaseSettings;
 import org.mian.gitnex.helpers.Constants;
 import org.mian.gitnex.helpers.Markdown;
 import org.mian.gitnex.helpers.SnackBar;
+import org.mian.gitnex.helpers.Toasty;
 import org.mian.gitnex.helpers.attachments.AttachmentUtils;
 import org.mian.gitnex.helpers.attachments.AttachmentsModel;
 import org.mian.gitnex.helpers.contexts.RepositoryContext;
@@ -232,8 +233,12 @@ public class CreateIssueActivity extends BaseActivity
 										},
 										250));
 
-		fetchNotes();
-		dialogNotes = materialAlertDialogBuilder.show();
+		if (notesApi.getCount() > 0) {
+			fetchNotes();
+			dialogNotes = materialAlertDialogBuilder.show();
+		} else {
+			Toasty.warning(ctx, getResources().getString(R.string.noNotes));
+		}
 	}
 
 	private void fetchNotes() {

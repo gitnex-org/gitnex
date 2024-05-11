@@ -8,7 +8,6 @@
     <FrameLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:background="?attr/primaryBackgroundColor"
         android:padding="@dimen/dimen16dp">
 
         <androidx.swiperefreshlayout.widget.SwipeRefreshLayout

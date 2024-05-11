@@ -35,6 +35,10 @@ public class NotesApi extends BaseApi {
 		return notesDao.fetchAllNotes();
 	}
 
+	public Integer getCount() {
+		return notesDao.getCount();
+	}
+
 	public Notes fetchNoteById(int noteId) {
 		return notesDao.fetchNoteById(noteId);
 	}
