@@ -36,7 +36,7 @@ Option 2 - Open the terminal (Linux) and navigate to the project directory. Then
 - Pull requests
 - Files diff for PRs
 - Notifications
-- Drafts
+- Notes
 - Repositories / issues list
 - [& more...](https://codeberg.org/gitnex/GitNex/wiki/Features)
 

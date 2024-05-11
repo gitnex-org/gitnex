@@ -22,6 +22,7 @@ import org.apache.commons.lang3.StringUtils;
 import org.mian.gitnex.R;
 import org.mian.gitnex.activities.CreateIssueActivity;
 import org.mian.gitnex.activities.CreateNoteActivity;
+import org.mian.gitnex.activities.CreateReleaseActivity;
 import org.mian.gitnex.database.api.BaseApi;
 import org.mian.gitnex.database.api.NotesApi;
 import org.mian.gitnex.database.models.Notes;
@@ -38,12 +39,14 @@ public class NotesAdapter extends RecyclerView.Adapter<NotesAdapter.NotesViewHol
 	private final Context ctx;
 	private final Intent noteIntent;
 	private final String insert;
+	private final String source;
 
-	public NotesAdapter(Context ctx, List<Notes> notesListMain, String insert) {
+	public NotesAdapter(Context ctx, List<Notes> notesListMain, String insert, String source) {
 		this.ctx = ctx;
 		this.notesList = notesListMain;
 		noteIntent = new Intent(ctx, CreateNoteActivity.class);
 		this.insert = insert;
+		this.source = source;
 	}
 
 	public class NotesViewHolder extends RecyclerView.ViewHolder {
@@ -87,7 +90,7 @@ public class NotesAdapter extends RecyclerView.Adapter<NotesAdapter.NotesViewHol
 								.show();
 					});
 
-			if (insert.equalsIgnoreCase("insert")) {
+			if (insert.equalsIgnoreCase("insert") && source.equalsIgnoreCase("issue")) {
 
 				deleteNote.setVisibility(View.GONE);
 
@@ -95,6 +98,20 @@ public class NotesAdapter extends RecyclerView.Adapter<NotesAdapter.NotesViewHol
 						view -> {
 							CreateIssueActivity parentActivity = (CreateIssueActivity) ctx;
 							EditText text = parentActivity.findViewById(R.id.newIssueDescription);
+							text.append(notes.getContent());
+
+							parentActivity.dialogNotes.dismiss();
+						});
+			}
+
+			if (insert.equalsIgnoreCase("insert") && source.equalsIgnoreCase("release")) {
+
+				deleteNote.setVisibility(View.GONE);
+
+				itemView.setOnClickListener(
+						view -> {
+							CreateReleaseActivity parentActivity = (CreateReleaseActivity) ctx;
+							EditText text = parentActivity.findViewById(R.id.releaseContent);
 							text.append(notes.getContent());
 
 							parentActivity.dialogNotes.dismiss();

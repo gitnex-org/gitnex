@@ -70,7 +70,7 @@ public class NotesFragment extends Fragment {
 		binding.recyclerView.setPadding(0, 0, 0, 220);
 		binding.recyclerView.setClipToPadding(false);
 
-		adapter = new NotesAdapter(ctx, notesList, "");
+		adapter = new NotesAdapter(ctx, notesList, "", "");
 
 		binding.pullToRefresh.setOnRefreshListener(
 				() ->

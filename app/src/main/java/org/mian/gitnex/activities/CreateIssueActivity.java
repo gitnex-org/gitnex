@@ -85,6 +85,7 @@ public class CreateIssueActivity extends BaseActivity
 	private LabelsListAdapter labelsAdapter;
 	private AssigneesListAdapter assigneesAdapter;
 	private MaterialAlertDialogBuilder materialAlertDialogBuilder;
+	private MaterialAlertDialogBuilder materialAlertDialogBuilderNotes;
 	private List<Integer> labelsIds = new ArrayList<>();
 	private List<String> assigneesListData = new ArrayList<>();
 	private boolean renderMd = false;
@@ -110,6 +111,8 @@ public class CreateIssueActivity extends BaseActivity
 		repositoryContext = RepositoryContext.fromIntent(getIntent());
 
 		materialAlertDialogBuilder =
+				new MaterialAlertDialogBuilder(ctx, R.style.ThemeOverlay_Material3_Dialog_Alert);
+		materialAlertDialogBuilderNotes =
 				new MaterialAlertDialogBuilder(ctx, R.style.ThemeOverlay_Material3_Dialog_Alert);
 
 		repository = RepositoryContext.fromIntent(getIntent());
@@ -212,12 +215,12 @@ public class CreateIssueActivity extends BaseActivity
 		customInsertNoteBinding = CustomInsertNoteBinding.inflate(LayoutInflater.from(ctx));
 
 		View view = customInsertNoteBinding.getRoot();
-		materialAlertDialogBuilder.setView(view);
+		materialAlertDialogBuilderNotes.setView(view);
 
 		customInsertNoteBinding.recyclerView.setHasFixedSize(true);
 		customInsertNoteBinding.recyclerView.setLayoutManager(new LinearLayoutManager(ctx));
 
-		adapter = new NotesAdapter(ctx, notesList, "insert");
+		adapter = new NotesAdapter(ctx, notesList, "insert", "issue");
 
 		customInsertNoteBinding.pullToRefresh.setOnRefreshListener(
 				() ->
@@ -235,7 +238,7 @@ public class CreateIssueActivity extends BaseActivity
 
 		if (notesApi.getCount() > 0) {
 			fetchNotes();
-			dialogNotes = materialAlertDialogBuilder.show();
+			dialogNotes = materialAlertDialogBuilderNotes.show();
 		} else {
 			Toasty.warning(ctx, getResources().getString(R.string.noNotes));
 		}
