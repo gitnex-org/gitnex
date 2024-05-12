@@ -718,6 +718,8 @@
         <item quantity="other">Notes supprimées</item>
     </plurals>
     <string name="notesAllDeletionMessage">Toutes vos notes seront supprimées. Cette action est irréversible.</string>
+    <string name="insertNote">Insérer une note</string>
+    <string name="noNotes">Aucune note</string>
     <!-- timeline -->
     <string name="commitsText">une révision</string>
     <string name="commitText">une révision</string>
