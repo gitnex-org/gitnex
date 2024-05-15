@@ -406,22 +406,22 @@
                 android:paddingTop="@dimen/dimen8dp"
                 android:paddingBottom="@dimen/dimen8dp"
                 android:textColor="?attr/inputTextColor"
-                android:layout_marginEnd="@dimen/dimen12dp"
-                android:textSize="@dimen/dimen14sp" />
+                android:layout_marginEnd="@dimen/dimen8dp"
+                android:textSize="@dimen/dimen16sp" />
 
             <com.google.android.material.card.MaterialCardView
                 style="?attr/materialCardViewFilledStyle"
                 android:id="@+id/send_button"
-                android:layout_width="@dimen/dimen36dp"
-                android:layout_height="@dimen/dimen36dp"
+                android:layout_width="@dimen/dimen38dp"
+                android:layout_height="@dimen/dimen38dp"
                 android:layout_gravity="center_vertical"
                 android:backgroundTint="?attr/fabColor"
                 app:cardCornerRadius="@dimen/dimen36dp">
 
                <ImageView
                    android:id="@+id/send"
-                   android:layout_width="@dimen/dimen24dp"
-                   android:layout_height="@dimen/dimen24dp"
+                   android:layout_width="@dimen/dimen26dp"
+                   android:layout_height="@dimen/dimen26dp"
                    android:layout_gravity="center_vertical|center_horizontal"
                    android:contentDescription="@string/generalImgContentText"
                    app:tint="?attr/materialCardBackgroundColor"

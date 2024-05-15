@@ -260,10 +260,14 @@ public class IssueCommentsAdapter extends RecyclerView.Adapter<RecyclerView.View
 
 			String token = ((BaseActivity) context).getAccount().getAccount().getToken();
 
-			if (issueComment != null) {
-				new Handler()
-						.postDelayed(() -> getAttachments(issueComment.getId(), view, token), 250);
-			}
+			new Handler()
+					.postDelayed(
+							() -> {
+								if (issueComment != null) {
+									getAttachments(issueComment.getId(), view, token);
+								}
+							},
+							250);
 
 			menu.setOnClickListener(
 					v -> {
