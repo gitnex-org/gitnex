@@ -282,9 +282,10 @@
     <!-- profile section -->
     <string name="profileTabFollowers">关注者</string>
     <string name="profileTabFollowing">正在关注</string>
-    <string name="editSettings">编辑简介</string>
-    <string name="hideActivity">从简介页面隐藏活动</string>
+    <string name="editSettings">编辑个人信息</string>
+    <string name="hideActivity">从个人信息页面隐藏活动</string>
     <string name="hideEmail">隐藏电子邮箱地址</string>
+    <string name="profileUpdate">个人信息已更新。</string>
     <!-- profile section -->
     <!-- account settings -->
     <string name="accountEmails">电子邮件</string>
@@ -641,7 +642,7 @@
     <string name="prMergeInfo">合并请求信息</string>
     <string name="accountDoesNotExist">似乎应用程序中并不存在 URI %1$s 的账户。您可以通过点击 “添加新账户” 按钮来添加一个。</string>
     <string name="launchApp">前往应用</string>
-    <string name="noActionText">GitNex cannot handle the requested resource. You can open an issue at the project repository as an improvement, providing details of the work. Just launch a default screen for now from the buttons below; it can be changed from settings.</string>
+    <string name="noActionText">GitNex 无法处理请求的资源。您可以在项目仓库中提交工单以帮助改进，请提供当前任务的详细信息。现在只需从下面的按钮启动一个默认屏幕; 它可以通过设置进行更改。</string>
     <string name="biometricAuthTitle">生物特征认证</string>
     <string name="biometricAuthSubTitle">使用你的生物特征凭证解锁</string>
     <string name="biometricNotSupported">此设备无可用的生物特征功能</string>
@@ -715,6 +716,8 @@
         <item quantity="other">已成功删除备注</item>
     </plurals>
     <string name="notesAllDeletionMessage">这会删除您的所有备注。此操作无法撤消。</string>
+    <string name="insertNote">插入备注</string>
+    <string name="noNotes">未找到备注</string>
     <!-- timeline -->
     <string name="commitsText">提交</string>
     <string name="commitText">提交</string>
@@ -765,12 +768,12 @@
     <string name="starredRepos">加星标的仓库</string>
     <string name="lang_statistics">语言统计</string>
     <string name="dashboard">仪表盘</string>
-    <string name="createdRepository">created repository</string>
+    <string name="createdRepository">已创建的仓库</string>
     <string name="renamedRepository">将仓库名从 %1$s 修改为</string>
     <string name="starredRepository">已加星标</string>
     <string name="transferredRepository">转移仓库 %1$s 到</string>
     <string name="createdBranch">建立分支 %1$s 于</string>
-    <string name="pushedTo">pushed to %1$s at</string>
+    <string name="pushedTo">推送到 %1$s 于</string>
     <string name="openedIssue">打开的问题</string>
     <string name="commentedOnIssue">已评论问题</string>
     <string name="closedIssue">已关闭问题</string>
@@ -783,14 +786,14 @@
     <string name="suggestedChanges">建议更改</string>
     <string name="commentedOnPR">已评论合并请求</string>
     <string name="autoMergePR">自动合并的合并请求</string>
-    <string name="deletedBranch">deleted branch %1$s at</string>
+    <string name="deletedBranch">删除分支 %1$s 于</string>
     <string name="pushedTag">推送标签 %1$s 到</string>
     <string name="deletedTag">删除标签 %1$s 从</string>
-    <string name="releasedBranch">released %1$s at</string>
-    <string name="syncedCommits">synced commits to %1$s at</string>
-    <string name="syncedRefs">synced new reference %1$s to</string>
-    <string name="syncedDeletedRefs">synced and deleted reference %1$s at</string>
+    <string name="releasedBranch">已发布的 %1$s 于</string>
+    <string name="syncedCommits">已同步的提交 %1$s 于</string>
+    <string name="syncedRefs">已同步的新参考 %1$s 到</string>
+    <string name="syncedDeletedRefs">同步和删除参考 %1$s 于</string>
     <string name="attachment">附件</string>
     <string name="attachments">附件</string>
-    <string name="attachmentsSaveError">An issue was created but cannot process attachments at this time. Check the server logs for more details.</string>
+    <string name="attachmentsSaveError">已创建工单，但此时无法处理附件。请检查服务器日志以获得更多详细信息。</string>
 </resources>
