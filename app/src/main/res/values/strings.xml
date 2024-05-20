@@ -246,7 +246,7 @@
     <string name="settingsEnableCommentsDeletionText">Enable Drafts Deletion</string>
     <string name="settingsEnableCommentsDeletionHintText">Delete comment draft when comment is posted</string>
     <string name="settingsGeneralHeader">General</string>
-    <string name="generalHintText">Home screen, drafts, crash reports</string>
+    <string name="generalHintText">Home screen, crash reports, custom tabs</string>
     <string name="generalDeepLinkDefaultScreen">Default Link Handler</string>
     <string name="generalDeepLinkDefaultScreenHintText">Choose what screen should be loaded if the app cannot handle external links. It will redirect you automatically.</string>
     <string name="linkSelectorDialogTitle">Select Default Link Handler Screen</string>
@@ -265,11 +265,11 @@
     <string name="restore">Restore</string>
     <string name="backupFileSuccess">The backup was successfully created</string>
     <string name="backupFileError">An error occurred while creating a data backup</string>
-    <string name="backupFilePopupText">This action will backup your accounts, settings, drafts, notes, and data related to repositories.\n\nClick the Backup button to download the backup file.</string>
-    <string name="restoreFilePopupText">You are about to restore from a GitNex-generated backup file. This will restore user accounts, settings, drafts, notes, and data related to repositories.\n\nPlease note this action will overwrite the current database data. Proceed with caution.\n\nClick Restore to start the process.</string>
+    <string name="backupFilePopupText">This action will backup your accounts, settings, notes, and data related to repositories.\n\nClick the Backup button to download the backup file.</string>
+    <string name="restoreFilePopupText">You are about to restore from a GitNex-generated backup file. This will restore user accounts, settings, notes, and data related to repositories.\n\nPlease note this action will overwrite the current database data. Proceed with caution.\n\nClick Restore to start the process.</string>
     <string name="restoreError">An error occurred while restoring from the backup file.</string>
     <string name="restoreFromBackup">Restore from Backup</string>
-    <string name="restoreFromBackupPopupText">You are about to restore from a GitNex-generated backup file. This will restore user accounts, settings, drafts, notes, and data related to repositories.\n\nClick Restore to start the process.</string>
+    <string name="restoreFromBackupPopupText">You are about to restore from a GitNex-generated backup file. This will restore user accounts, settings, notes, and data related to repositories.\n\nClick Restore to start the process.</string>
     <!-- settings -->
 
     <string name="noMoreData">No more data available</string>

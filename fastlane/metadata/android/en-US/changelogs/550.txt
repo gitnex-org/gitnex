@@ -1,0 +1,14 @@
+5.5.0
+
+🎉 Features 🎉
+- Update user avatar
+- New popup screen to add email
+- Insert note to issue/pr/release description
+- New reply/comment UI
+
+🚀 Improvements 🚀 
+- Hide app contents when biometric is enabled
+
+Release Notes: https://codeberg.org/gitnex/GitNex/releases
+
+Release Posts: https://najigram.com/category/gitnex
