@@ -1,0 +1,14 @@
+5.5.0
+
+🎉 Funktionen 🎉
+- Benutzer-Avatar aktualisieren
+- Neuer Popup-Bildschirm zum Hinzufügen von E-Mails
+- Notiz zu Issue-/PR-/Release-Beschreibung hinzufügen
+- Neue Antwort-/Kommentar-Oberfläche
+
+🚀 Verbesserungen 🚀 
+- App-Inhalte verstecken, wenn Biometrie aktiv ist
+
+Release-Anmerkungen: https://codeberg.org/gitnex/GitNex/releases
+
+Release-Posts: https://najigram.com/category/gitnex

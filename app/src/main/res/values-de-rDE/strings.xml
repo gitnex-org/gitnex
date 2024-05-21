@@ -185,7 +185,7 @@
     <string name="settingsEnableCommentsDeletionText">Entwürfe löschen aktivieren</string>
     <string name="settingsEnableCommentsDeletionHintText">Kommentar-Entwurf löschen, wenn Kommentar veröffentlicht wird</string>
     <string name="settingsGeneralHeader">Allgemein</string>
-    <string name="generalHintText">Startseite, Entwürfe, Absturzberichte</string>
+    <string name="generalHintText">Startbildschirm, Fehlerberichte, Custom Tabs</string>
     <string name="generalDeepLinkDefaultScreen">Standard-Link-Handhaber</string>
     <string name="generalDeepLinkDefaultScreenHintText">Wähle die Ansicht, welche geladen werden soll, wenn ein externer Link nicht handhabbar ist. Du wirst dann automatisch zu jener weitergeleitet.</string>
     <string name="linkSelectorDialogTitle">Wähle Standard-Link-Handhaber</string>
@@ -203,11 +203,11 @@
     <string name="restore">Wiederherstellen</string>
     <string name="backupFileSuccess">Sicherung wurde erfolgreich erstellt</string>
     <string name="backupFileError">Beim Anlegen der Sicherung ist ein Fehler aufgetreten</string>
-    <string name="backupFilePopupText">Dies wird deine Accounts, Einstellungen, Entwürfe, Notizen und mit Repositories verbundenen Daten sichern.\n\nKlicke den Sichern-Button, um die Datei herunterzuladen.</string>
-    <string name="restoreFilePopupText">Du bist dabei, eine GitNex-generiertes Sicherung wiederherzustellen. Dies wird Accounts, Einstellungen, Entwürfe, Notizen und mit Repositories verbundenen Daten wiederherstellen.\n\nBitte bedenke, dass diese Aktion die aktuelle Datenbank überschreiben wird. Mit Vorsicht fortfahren.\n\nKlicke Wiederherstellen, um den Prozess zu starten.</string>
+    <string name="backupFilePopupText">Dies wird deine Accounts, Einstellungen, Notizen und mit Repositories verbundenen Daten sichern.\n\nKlicke den Sichern-Button, um die Datei herunterzuladen.</string>
+    <string name="restoreFilePopupText">Du bist dabei, eine GitNex-generiertes Sicherung wiederherzustellen. Dies wird Accounts, Einstellungen, Notizen und mit Repositories verbundenen Daten wiederherstellen.\n\nBitte bedenke, dass diese Aktion die aktuelle Datenbank überschreiben wird. Mit Vorsicht fortfahren.\n\nKlicke Wiederherstellen, um den Prozess zu starten.</string>
     <string name="restoreError">Fehler beim Wiederherstellen der Sicherung.</string>
     <string name="restoreFromBackup">Aus Sicherung wiederherstellen</string>
-    <string name="restoreFromBackupPopupText">Du bist dabei, eine GitNex-generiertes Sicherung wiederherzustellen. Dies wird Accounts, Einstellungen, Entwürfe, Notizen und mit Repositories verbundenen Daten wiederherstellen.\n\nKlicke Wiederherstellen, um den Prozess zu starten.</string>
+    <string name="restoreFromBackupPopupText">Du bist dabei, eine GitNex-generiertes Sicherung wiederherzustellen. Dies wird Accounts, Einstellungen, Notizen und mit Repositories verbundenen Daten wiederherstellen.\n\nKlicke Wiederherstellen, um den Prozess zu starten.</string>
     <!-- settings -->
     <string name="noMoreData">Keine weiteren Daten verfügbar.</string>
     <string name="createLabel">Label erstellen</string>
@@ -718,6 +718,8 @@
         <item quantity="other">Notizen erfolgreich gelöscht</item>
     </plurals>
     <string name="notesAllDeletionMessage">Das wird alle deine Notizen entfernen. Dieser Vorgang kann nicht rückgängig gemacht werden.</string>
+    <string name="insertNote">Notiz hinzufügen</string>
+    <string name="noNotes">Keine Notizen gefunden</string>
     <!-- timeline -->
     <string name="commitsText">Commit</string>
     <string name="commitText">Commit</string>
