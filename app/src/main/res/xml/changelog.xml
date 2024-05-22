@@ -1,15 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 <changelog>
 
-    <release version="5.5.0" versioncode="550">
-        <change>New: Update user avatar</change>
-        <change>New: New popup screen to add email</change>
-        <change>New: Insert note to issue/pr/release description</change>
-        <change>New: New reply/comment UI</change>
-        <change>Improvement: Hide app contents when biometric is enabled</change>
-        <change>Bugfix: Fix back button closing the app</change>
-        <change>Bugfix: Fix profile fields data</change>
-        <change>Bugfix: Fix text color highlighting</change>
+    <release version="6.0.0-dev" versioncode="595">
+        <change>Under development</change>
     </release>
 
 </changelog>

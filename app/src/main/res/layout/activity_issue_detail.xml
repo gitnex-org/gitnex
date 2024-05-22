@@ -391,6 +391,29 @@
             android:background="?attr/primaryBackgroundColor"
             android:padding="@dimen/dimen8dp">
 
+            <com.google.android.material.card.MaterialCardView
+                style="?attr/materialCardViewFilledStyle"
+                android:id="@+id/attachmentsCard"
+                android:layout_width="@dimen/dimen38dp"
+                android:layout_height="@dimen/dimen38dp"
+                android:layout_gravity="center_vertical"
+                android:backgroundTint="?attr/fabColor"
+                android:layout_marginEnd="@dimen/dimen8dp"
+                app:cardCornerRadius="@dimen/dimen36dp">
+
+               <ImageView
+                   android:id="@+id/attachments"
+                   android:layout_width="@dimen/dimen24dp"
+                   android:layout_height="@dimen/dimen24dp"
+                   android:layout_gravity="center_vertical|center_horizontal"
+                   android:contentDescription="@string/generalImgContentText"
+                   app:tint="?attr/materialCardBackgroundColor"
+                   android:clickable="true"
+                   android:src="@drawable/ic_attachment"
+                   android:focusable="true" />
+
+            </com.google.android.material.card.MaterialCardView>
+
             <EditText
                 android:id="@+id/comment_reply"
                 android:layout_width="0dp"
@@ -420,8 +443,8 @@
 
                <ImageView
                    android:id="@+id/send"
-                   android:layout_width="@dimen/dimen26dp"
-                   android:layout_height="@dimen/dimen26dp"
+                   android:layout_width="@dimen/dimen24dp"
+                   android:layout_height="@dimen/dimen24dp"
                    android:layout_gravity="center_vertical|center_horizontal"
                    android:contentDescription="@string/generalImgContentText"
                    app:tint="?attr/materialCardBackgroundColor"

@@ -168,11 +168,11 @@ public class MainActivity extends BaseActivity
 
 		Menu menu = navigationView.getMenu();
 		navNotifications = menu.findItem(R.id.nav_notifications);
-		MenuItem navDashboard = menu.findItem(R.id.nav_dashboard);
+		/*MenuItem navDashboard = menu.findItem(R.id.nav_dashboard);
 
 		navDashboard.getActionView().findViewById(R.id.betaBadge).setVisibility(View.VISIBLE);
 		TextView dashboardBetaView = navDashboard.getActionView().findViewById(R.id.betaBadge);
-		dashboardBetaView.setText(R.string.beta);
+		dashboardBetaView.setText(R.string.beta);*/
 
 		navigationView
 				.getViewTreeObserver()

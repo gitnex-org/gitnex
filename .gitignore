@@ -10,6 +10,7 @@
 
 # Release dir
 app/release/*
+app/free/*
 
 # Pro dir
 app/pro/*
