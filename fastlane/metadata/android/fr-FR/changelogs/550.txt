@@ -1,0 +1,14 @@
+5.5.0
+
+🎉 Fonctionnalités 🎉
+- Mise à jour de l’avatar
+- Nouveau popup pour ajouter un courriel
+- Insertion de notes dans la description des tickets/demandes de fusion/versions
+- Nouvelle interface pour répondre/commenter
+
+🚀 Améliorations 🚀 
+- Contenu de l’appli caché lorsque la biométrie est activée
+
+Notes de version : https://codeberg.org/gitnex/GitNex/releases
+
+Billet : https://najigram.com/category/gitnex

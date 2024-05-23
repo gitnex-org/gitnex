@@ -185,7 +185,7 @@
     <string name="settingsEnableCommentsDeletionText">Supprimer les brouillons</string>
     <string name="settingsEnableCommentsDeletionHintText">Supprimer le brouillon d’un commentaire publié</string>
     <string name="settingsGeneralHeader">Général</string>
-    <string name="generalHintText">Écran d’accueil, brouillons, rapports d’erreur</string>
+    <string name="generalHintText">Écran d’accueil, rapports de plantage, onglets personnalisés</string>
     <string name="generalDeepLinkDefaultScreen">Écran par défaut</string>
     <string name="generalDeepLinkDefaultScreenHintText">Sélectionnez l’écran à afficher par défaut lorsque l’application ne parvient pas à ouvrir un lien externe.</string>
     <string name="linkSelectorDialogTitle">Écran par défaut</string>
