@@ -34,8 +34,7 @@
 
         <item android:id="@+id/nav_my_issues"
             android:icon="@drawable/ic_issue"
-            android:title="@string/navMyIssues"
-            android:visible="false"/>
+            android:title="@string/navMyIssues"/>
 
         <item
             android:id="@+id/nav_notifications"
