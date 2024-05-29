@@ -90,7 +90,7 @@
                     android:paddingStart="@dimen/dimen8dp"
                     android:paddingTop="@dimen/dimen2dp"
                     android:paddingEnd="@dimen/dimen8dp"
-                    android:paddingBottom="@dimen/dimen104dp">
+                    android:paddingBottom="@dimen/dimen120dp">
 
                     <com.google.android.material.card.MaterialCardView
                         android:id="@+id/titleCard"
