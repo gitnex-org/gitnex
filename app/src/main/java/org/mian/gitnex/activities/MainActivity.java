@@ -87,6 +87,7 @@ public class MainActivity extends BaseActivity
 	private BottomSheetListener profileInitListener;
 	private FragmentRefreshListener fragmentRefreshListenerMyIssues;
 	private String username;
+	public static boolean closeActivity = false;
 
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
@@ -581,6 +582,11 @@ public class MainActivity extends BaseActivity
 	@Override
 	public void onResume() {
 		super.onResume();
+
+		if (closeActivity) {
+			finishAndRemoveTask();
+			closeActivity = false;
+		}
 
 		if (refActivity) {
 			this.recreate();

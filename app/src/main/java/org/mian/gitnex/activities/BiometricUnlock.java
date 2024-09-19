@@ -45,7 +45,7 @@ public class BiometricUnlock extends AppCompatActivity {
 
 								super.onAuthenticationError(errorCode, errString);
 
-								// Authentication error, close the app
+								MainActivity.closeActivity = true;
 								finish();
 							}
 
