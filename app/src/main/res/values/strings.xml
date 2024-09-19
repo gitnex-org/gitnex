@@ -452,6 +452,7 @@
     <string name="repoWatchersInMenu">Watchers</string>
     <string name="noDataWebsite">No website found</string>
     <string name="noDataDescription">No description found</string>
+    <string name="noDataBio">No bio found</string>
     <string name="noDataLocation">No location found</string>
     <string name="starMember">Star</string>
     <string name="watcherMember">Watcher</string>
@@ -550,6 +551,7 @@
     <string name="license">License</string>
     <string name="title">Title</string>
     <string name="description">Description</string>
+    <string name="bioText">Bio</string>
     <!-- generic copy -->
 
     <string name="exploreUsers">Explore users</string>

@@ -415,6 +415,30 @@ public class DetailFragment extends Fragment {
 													TimeHelper.customDateFormatForToastDateFormat(
 															response.body().getCreated()),
 													context));
+									if (!response.body().getWebsite().isEmpty()) {
+										binding.website.setText(response.body().getWebsite());
+									} else {
+										binding.website.setText(R.string.noDataWebsite);
+										binding.website.setAlpha(.4F);
+									}
+
+									if (!response.body().getLocation().isEmpty()) {
+										binding.location.setText(response.body().getLocation());
+									} else {
+										binding.location.setText(R.string.noDataLocation);
+										binding.location.setAlpha(.4F);
+									}
+
+									if (!response.body().getDescription().isEmpty()) {
+										Markdown.render(
+												context,
+												response.body().getDescription(),
+												binding.bio);
+									} else {
+										binding.bio.setText(R.string.noDataBio);
+										binding.bio.setAlpha(.4F);
+									}
+
 									break;
 
 								case 401:

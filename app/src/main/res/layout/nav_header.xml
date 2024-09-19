@@ -30,7 +30,7 @@
                 style="?attr/materialCardViewElevatedStyle"
                 android:layout_width="@dimen/dimen60dp"
                 android:layout_height="@dimen/dimen60dp"
-                app:cardCornerRadius="@dimen/dimen32dp"
+                app:cardCornerRadius="@dimen/dimen16dp"
                 app:cardElevation="@dimen/dimen0dp">
 
                 <ImageView
@@ -57,7 +57,7 @@
                     android:layout_gravity="end"
                     android:visibility="gone"
                     app:cardBackgroundColor="?attr/materialCardBackgroundColor"
-                    app:cardCornerRadius="@dimen/dimen20dp"
+                    app:cardCornerRadius="@dimen/dimen12dp"
                     app:cardElevation="@dimen/dimen0dp"
                     app:contentPaddingLeft="@dimen/dimen8dp"
                     app:contentPaddingRight="@dimen/dimen8dp"

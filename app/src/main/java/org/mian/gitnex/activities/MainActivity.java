@@ -60,7 +60,6 @@ import org.mian.gitnex.helpers.AlertDialogs;
 import org.mian.gitnex.helpers.AppDatabaseSettings;
 import org.mian.gitnex.helpers.AppUtil;
 import org.mian.gitnex.helpers.ChangeLog;
-import org.mian.gitnex.helpers.RoundedTransformation;
 import org.mian.gitnex.helpers.Toasty;
 import org.mian.gitnex.structs.BottomSheetListener;
 import org.mian.gitnex.structs.FragmentRefreshListener;
@@ -261,13 +260,10 @@ public class MainActivity extends BaseActivity
 
 							if (!userAvatarNav.isEmpty()) {
 
-								int avatarRadius = AppUtil.getPixelsFromDensity(ctx, 60);
-
 								PicassoService.getInstance(ctx)
 										.get()
 										.load(userAvatarNav)
 										.placeholder(R.drawable.loader_animated)
-										.transform(new RoundedTransformation(avatarRadius, 0))
 										.resize(160, 160)
 										.centerCrop()
 										.into(userAvatar);

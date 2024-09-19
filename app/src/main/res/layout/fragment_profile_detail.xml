@@ -51,12 +51,12 @@
                         tools:ignore="UseCompoundDrawables">
 
                          <com.google.android.material.card.MaterialCardView
-                             android:layout_width="@dimen/dimen80dp"
-                             android:layout_height="@dimen/dimen80dp"
+                             android:layout_width="@dimen/dimen96dp"
+                             android:layout_height="@dimen/dimen96dp"
                              style="?attr/materialCardViewFilledStyle"
                              android:layout_marginBottom="@dimen/dimen8dp"
                              app:cardElevation="@dimen/dimen0dp"
-                             app:cardCornerRadius="@dimen/dimen40dp">
+                             app:cardCornerRadius="@dimen/dimen16dp">
 
                             <ImageView
                                 android:id="@+id/userAvatar"
@@ -178,8 +178,8 @@
 
                         <ImageView
                             android:layout_gravity="center"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
+                            android:layout_width="@dimen/dimen24dp"
+                            android:layout_height="@dimen/dimen24dp"
                             android:contentDescription="@string/generalImgContentText"
                             app:srcCompat="@drawable/ic_email" />
 
@@ -203,6 +203,7 @@
                                 android:layout_height="wrap_content"
                                 android:alpha="0.9"
                                 android:textColor="?attr/primaryTextColor"
+                                android:autoLink="email"
                                 android:textSize="@dimen/dimen14sp" />
                         </LinearLayout>
 
@@ -214,75 +215,190 @@
                         android:layout_marginTop="@dimen/dimen32dp"
                         android:orientation="horizontal">
 
-                            <ImageView
-                                android:layout_gravity="center"
-                                android:layout_width="wrap_content"
-                                android:layout_height="wrap_content"
-                                android:contentDescription="@string/generalImgContentText"
-                                app:srcCompat="@drawable/ic_language"/>
-
-                            <LinearLayout
-                                android:layout_width="match_parent"
-                                android:layout_height="wrap_content"
-                                android:layout_marginStart="@dimen/dimen16dp"
-                                android:gravity="center_vertical"
-                                android:orientation="vertical">
-
-                                <TextView
-                                    android:layout_width="wrap_content"
-                                    android:layout_height="wrap_content"
-                                    android:text="@string/settingsLanguageSelectorHeader"
-                                    android:textColor="?attr/primaryTextColor"
-                                    android:textSize="@dimen/dimen16sp" />
-
-                                <TextView
-                                    android:id="@+id/userLang"
-                                    android:layout_width="match_parent"
-                                    android:layout_height="wrap_content"
-                                    android:alpha="0.9"
-                                    android:textColor="?attr/primaryTextColor"
-                                    android:textSize="@dimen/dimen14sp" />
-                            </LinearLayout>
-
-                        </LinearLayout>
+                        <ImageView
+                            android:layout_gravity="center"
+                            android:layout_width="@dimen/dimen24dp"
+                            android:layout_height="@dimen/dimen24dp"
+                            android:contentDescription="@string/generalImgContentText"
+                            app:srcCompat="@drawable/ic_browser" />
 
                         <LinearLayout
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
-                            android:layout_marginTop="@dimen/dimen32dp"
-                            android:orientation="horizontal">
+                            android:layout_marginStart="@dimen/dimen16dp"
+                            android:gravity="center_vertical"
+                            android:orientation="vertical">
 
-                            <ImageView
-                                android:layout_gravity="center"
+                            <TextView
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
-                                android:contentDescription="@string/generalImgContentText"
-                                app:srcCompat="@drawable/ic_calendar"/>
+                                android:text="@string/websiteText"
+                                android:textColor="?attr/primaryTextColor"
+                                android:textSize="@dimen/dimen16sp" />
 
-                            <LinearLayout
+                            <TextView
+                                android:id="@+id/website"
                                 android:layout_width="match_parent"
                                 android:layout_height="wrap_content"
-                                android:layout_marginStart="@dimen/dimen16dp"
-                                android:gravity="center_vertical"
-                                android:orientation="vertical">
-
-                                <TextView
-                                    android:layout_width="wrap_content"
-                                    android:layout_height="wrap_content"
-                                    android:text="@string/joined"
-                                    android:textColor="?attr/primaryTextColor"
-                                    android:textSize="@dimen/dimen16sp" />
-
-                                <TextView
-                                    android:id="@+id/userJoinedOn"
-                                    android:layout_width="match_parent"
-                                    android:layout_height="wrap_content"
-                                    android:alpha="0.9"
-                                    android:textColor="?attr/primaryTextColor"
-                                    android:textSize="@dimen/dimen14sp" />
-                            </LinearLayout>
-
+                                android:alpha="0.9"
+                                android:textColor="?attr/primaryTextColor"
+                                android:autoLink="web"
+                                android:textSize="@dimen/dimen14sp" />
                         </LinearLayout>
+
+                    </LinearLayout>
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="@dimen/dimen32dp"
+                        android:orientation="horizontal">
+
+                        <ImageView
+                            android:layout_gravity="center"
+                            android:layout_width="@dimen/dimen24dp"
+                            android:layout_height="@dimen/dimen24dp"
+                            android:contentDescription="@string/generalImgContentText"
+                            app:srcCompat="@drawable/ic_location" />
+
+                        <LinearLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_marginStart="@dimen/dimen16dp"
+                            android:gravity="center_vertical"
+                            android:orientation="vertical">
+
+                            <TextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:text="@string/locationText"
+                                android:textColor="?attr/primaryTextColor"
+                                android:textSize="@dimen/dimen16sp" />
+
+                            <TextView
+                                android:id="@+id/location"
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:alpha="0.9"
+                                android:textColor="?attr/primaryTextColor"
+                                android:textSize="@dimen/dimen14sp" />
+                        </LinearLayout>
+
+                    </LinearLayout>
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="@dimen/dimen32dp"
+                        android:orientation="horizontal">
+
+                        <ImageView
+                            android:layout_gravity="center"
+                            android:layout_width="@dimen/dimen24dp"
+                            android:layout_height="@dimen/dimen24dp"
+                            android:contentDescription="@string/generalImgContentText"
+                            app:srcCompat="@drawable/ic_language"/>
+
+                        <LinearLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_marginStart="@dimen/dimen16dp"
+                            android:gravity="center_vertical"
+                            android:orientation="vertical">
+
+                            <TextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:text="@string/settingsLanguageSelectorHeader"
+                                android:textColor="?attr/primaryTextColor"
+                                android:textSize="@dimen/dimen16sp" />
+
+                            <TextView
+                                android:id="@+id/userLang"
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:alpha="0.9"
+                                android:textColor="?attr/primaryTextColor"
+                                android:textSize="@dimen/dimen14sp" />
+                        </LinearLayout>
+
+                    </LinearLayout>
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="@dimen/dimen32dp"
+                        android:orientation="horizontal">
+
+                        <ImageView
+                            android:layout_gravity="center"
+                            android:layout_width="@dimen/dimen24dp"
+                            android:layout_height="@dimen/dimen24dp"
+                            android:contentDescription="@string/generalImgContentText"
+                            app:srcCompat="@drawable/ic_file_description" />
+
+                        <LinearLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_marginStart="@dimen/dimen16dp"
+                            android:gravity="center_vertical"
+                            android:orientation="vertical">
+
+                            <TextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:text="@string/bioText"
+                                android:textColor="?attr/primaryTextColor"
+                                android:textSize="@dimen/dimen16sp" />
+
+                            <TextView
+                                android:id="@+id/bio"
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:alpha="0.9"
+                                android:textColor="?attr/primaryTextColor"
+                                android:textSize="@dimen/dimen14sp" />
+                        </LinearLayout>
+
+                    </LinearLayout>
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="@dimen/dimen32dp"
+                        android:orientation="horizontal">
+
+                        <ImageView
+                            android:layout_gravity="center"
+                            android:layout_width="@dimen/dimen24dp"
+                            android:layout_height="@dimen/dimen24dp"
+                            android:contentDescription="@string/generalImgContentText"
+                            app:srcCompat="@drawable/ic_calendar"/>
+
+                        <LinearLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_marginStart="@dimen/dimen16dp"
+                            android:gravity="center_vertical"
+                            android:orientation="vertical">
+
+                            <TextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:text="@string/joined"
+                                android:textColor="?attr/primaryTextColor"
+                                android:textSize="@dimen/dimen16sp" />
+
+                            <TextView
+                                android:id="@+id/userJoinedOn"
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:alpha="0.9"
+                                android:textColor="?attr/primaryTextColor"
+                                android:textSize="@dimen/dimen14sp" />
+                        </LinearLayout>
+
+                    </LinearLayout>
 
                 </LinearLayout>
 
