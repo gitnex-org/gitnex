@@ -61,7 +61,7 @@ public class AssigneesListAdapter
 		User currentItem = assigneesList.get(position);
 		int imgRadius = AppUtil.getPixelsFromDensity(context, 90);
 
-		if (currentItem.getFullName().equals("")) {
+		if (currentItem.getFullName().isEmpty()) {
 
 			holder.assigneesName.setText(currentItem.getLogin());
 		} else {
@@ -132,7 +132,7 @@ public class AssigneesListAdapter
 		void assigneesInterface(List<String> data);
 	}
 
-	static class AssigneesViewHolder extends RecyclerView.ViewHolder {
+	public static class AssigneesViewHolder extends RecyclerView.ViewHolder {
 
 		private final CheckBox assigneesSelection;
 		private final TextView assigneesName;

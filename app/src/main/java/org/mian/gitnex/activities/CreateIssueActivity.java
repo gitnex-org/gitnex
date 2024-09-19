@@ -507,6 +507,8 @@ public class CreateIssueActivity extends BaseActivity
 			String newIssueTitleForm,
 			String newIssueDueDateForm) {
 
+		viewBinding.topAppBar.getMenu().getItem(2).setVisible(false);
+
 		ArrayList<Long> labelIds = new ArrayList<>();
 		for (Integer i : labelsIds) {
 			labelIds.add((long) i);
@@ -562,9 +564,11 @@ public class CreateIssueActivity extends BaseActivity
 
 						} else if (response2.code() == 401) {
 
+							viewBinding.topAppBar.getMenu().getItem(2).setVisible(true);
 							AlertDialogs.authorizationTokenRevokedDialog(ctx);
 						} else {
 
+							viewBinding.topAppBar.getMenu().getItem(2).setVisible(true);
 							SnackBar.error(
 									ctx,
 									findViewById(android.R.id.content),
@@ -575,6 +579,7 @@ public class CreateIssueActivity extends BaseActivity
 					@Override
 					public void onFailure(@NonNull Call<Issue> call, @NonNull Throwable t) {
 
+						viewBinding.topAppBar.getMenu().getItem(2).setVisible(true);
 						SnackBar.error(
 								ctx,
 								findViewById(android.R.id.content),

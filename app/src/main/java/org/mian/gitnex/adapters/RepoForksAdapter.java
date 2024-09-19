@@ -155,7 +155,7 @@ public class RepoForksAdapter extends RecyclerView.Adapter<RecyclerView.ViewHold
 		void onLoadFinished();
 	}
 
-	class ForksHolder extends RecyclerView.ViewHolder {
+	public class ForksHolder extends RecyclerView.ViewHolder {
 
 		private final ImageView image;
 		private final TextView repoName;
@@ -206,7 +206,7 @@ public class RepoForksAdapter extends RecyclerView.Adapter<RecyclerView.ViewHold
 							.buildRoundRect(firstCharacter, color, 3);
 
 			if (forksModel.getAvatarUrl() != null) {
-				if (!forksModel.getAvatarUrl().equals("")) {
+				if (!forksModel.getAvatarUrl().isEmpty()) {
 					PicassoService.getInstance(context)
 							.get()
 							.load(forksModel.getAvatarUrl())
@@ -236,7 +236,7 @@ public class RepoForksAdapter extends RecyclerView.Adapter<RecyclerView.ViewHold
 				repoLastUpdated.setVisibility(View.GONE);
 			}
 
-			if (!forksModel.getDescription().equals("")) {
+			if (!forksModel.getDescription().isEmpty()) {
 				repoDescription.setText(forksModel.getDescription());
 			} else {
 				repoDescription.setText(context.getString(R.string.noDataDescription));

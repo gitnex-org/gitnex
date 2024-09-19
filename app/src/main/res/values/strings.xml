@@ -270,6 +270,10 @@
     <string name="restoreError">An error occurred while restoring from the backup file.</string>
     <string name="restoreFromBackup">Restore from Backup</string>
     <string name="restoreFromBackupPopupText">You are about to restore from a GitNex-generated backup file. This will restore user accounts, settings, notes, and data related to repositories.\n\nClick Restore to start the process.</string>
+    <string name="hideEmailLangInProfileHeader">Set Email and Language as Private</string>
+    <string name="hideEmailLangInProfileHint">You can set your email and language to private to hide them on your profile screen</string>
+    <string name="hideEmailNavDrawerHeader">Hide Email in Drawer</string>
+    <string name="hideEmailNavDrawerHint">You can enable this option to hide your email in the app navigation drawer</string>
     <!-- settings -->
 
     <string name="noMoreData">No more data available</string>
@@ -452,6 +456,7 @@
     <string name="repoWatchersInMenu">Watchers</string>
     <string name="noDataWebsite">No website found</string>
     <string name="noDataDescription">No description found</string>
+    <string name="noDataBio">No bio found</string>
     <string name="noDataLocation">No location found</string>
     <string name="starMember">Star</string>
     <string name="watcherMember">Watcher</string>
@@ -550,6 +555,7 @@
     <string name="license">License</string>
     <string name="title">Title</string>
     <string name="description">Description</string>
+    <string name="bioText">Bio</string>
     <!-- generic copy -->
 
     <string name="exploreUsers">Explore users</string>

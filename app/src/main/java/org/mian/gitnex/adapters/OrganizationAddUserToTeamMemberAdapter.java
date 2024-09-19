@@ -63,7 +63,7 @@ public class OrganizationAddUserToTeamMemberAdapter
 		holder.userInfo = currentItem;
 		int imgRadius = AppUtil.getPixelsFromDensity(context, 3);
 
-		if (!currentItem.getFullName().equals("")) {
+		if (!currentItem.getFullName().isEmpty()) {
 
 			holder.userFullName.setText(Html.fromHtml(currentItem.getFullName()));
 		} else {
@@ -76,7 +76,7 @@ public class OrganizationAddUserToTeamMemberAdapter
 		holder.userName.setText(
 				context.getResources().getString(R.string.usernameWithAt, currentItem.getLogin()));
 
-		if (!currentItem.getAvatarUrl().equals("")) {
+		if (!currentItem.getAvatarUrl().isEmpty()) {
 			PicassoService.getInstance(context)
 					.get()
 					.load(currentItem.getAvatarUrl())
@@ -142,7 +142,7 @@ public class OrganizationAddUserToTeamMemberAdapter
 		return usersSearchList.size();
 	}
 
-	class UserSearchViewHolder extends RecyclerView.ViewHolder {
+	public class UserSearchViewHolder extends RecyclerView.ViewHolder {
 
 		private final ImageView userAvatar;
 		private final TextView userFullName;

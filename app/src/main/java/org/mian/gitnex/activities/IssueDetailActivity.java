@@ -373,8 +373,6 @@ public class IssueDetailActivity extends BaseActivity
 									.setSoftInputMode(
 											WindowManager.LayoutParams
 													.SOFT_INPUT_STATE_ALWAYS_VISIBLE);
-							viewBinding.commentReply.setSelection(
-									viewBinding.commentReply.length());
 							viewBinding.send.setAlpha(buttonAlphaStatEnabled);
 							viewBinding.send.setEnabled(true);
 						} else {

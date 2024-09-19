@@ -4,6 +4,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.biometric.BiometricManager;
 import java.util.Locale;
 import org.mian.gitnex.R;
 import org.mian.gitnex.core.MainApplication;
@@ -118,15 +119,20 @@ public abstract class BaseActivity extends AppCompatActivity {
 	public void onResume() {
 		super.onResume();
 
-		if (Boolean.parseBoolean(
-						AppDatabaseSettings.getSettingsValue(
-								ctx, AppDatabaseSettings.APP_BIOMETRIC_KEY))
-				&& !Boolean.parseBoolean(
-						AppDatabaseSettings.getSettingsValue(
-								ctx, AppDatabaseSettings.APP_BIOMETRIC_LIFE_CYCLE_KEY))) {
+		if (BiometricManager.from(ctx)
+						.canAuthenticate(BiometricManager.Authenticators.BIOMETRIC_WEAK)
+				== BiometricManager.BIOMETRIC_SUCCESS) {
 
-			Intent unlockIntent = new Intent(ctx, BiometricUnlock.class);
-			ctx.startActivity(unlockIntent);
+			if (Boolean.parseBoolean(
+							AppDatabaseSettings.getSettingsValue(
+									ctx, AppDatabaseSettings.APP_BIOMETRIC_KEY))
+					&& !Boolean.parseBoolean(
+							AppDatabaseSettings.getSettingsValue(
+									ctx, AppDatabaseSettings.APP_BIOMETRIC_LIFE_CYCLE_KEY))) {
+
+				Intent unlockIntent = new Intent(ctx, BiometricUnlock.class);
+				ctx.startActivity(unlockIntent);
+			}
 		}
 	}
 

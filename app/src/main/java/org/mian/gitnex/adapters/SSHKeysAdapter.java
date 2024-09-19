@@ -44,7 +44,7 @@ public class SSHKeysAdapter extends RecyclerView.Adapter<SSHKeysAdapter.KeysView
 		return keysList.size();
 	}
 
-	static class KeysViewHolder extends RecyclerView.ViewHolder {
+	public static class KeysViewHolder extends RecyclerView.ViewHolder {
 
 		private final TextView keyName;
 		private final TextView key;

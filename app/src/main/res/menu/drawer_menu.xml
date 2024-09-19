@@ -10,7 +10,6 @@
         <item android:id="@+id/nav_dashboard"
             android:icon="@drawable/ic_dashboard"
             android:title="@string/dashboard"
-            app:actionLayout="@layout/badge_beta"
             android:visible="false"/>
 
         <item android:id="@+id/nav_home"
@@ -35,8 +34,7 @@
 
         <item android:id="@+id/nav_my_issues"
             android:icon="@drawable/ic_issue"
-            android:title="@string/navMyIssues"
-            android:visible="false"/>
+            android:title="@string/navMyIssues"/>
 
         <item
             android:id="@+id/nav_notifications"

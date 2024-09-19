@@ -147,7 +147,7 @@ public class DiffAdapter extends BaseAdapter {
 
 	private int getLineColor(String line) {
 
-		if (line.length() == 0) {
+		if (line.isEmpty()) {
 			return COLOR_NORMAL;
 		}
 

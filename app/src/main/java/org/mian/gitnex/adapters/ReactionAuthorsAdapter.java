@@ -64,7 +64,7 @@ public class ReactionAuthorsAdapter
 		return userInfos.size();
 	}
 
-	static class ViewHolder extends RecyclerView.ViewHolder {
+	public static class ViewHolder extends RecyclerView.ViewHolder {
 
 		private final ImageView authorAvatar;
 

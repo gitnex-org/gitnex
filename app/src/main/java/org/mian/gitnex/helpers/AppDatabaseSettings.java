@@ -62,6 +62,11 @@ public class AppDatabaseSettings {
 	public static String APP_IMAGES_CACHE_DEFAULT = "1";
 	public static String APP_IMAGES_CACHE_SIZE_KEY = "app_images_cache_size";
 	public static String APP_IMAGES_CACHE_SIZE_DEFAULT = "100 MB";
+	public static String APP_USER_PROFILE_HIDE_EMAIL_LANGUAGE_KEY =
+			"app_user_profile_hide_email_lang";
+	public static String APP_USER_PROFILE_HIDE_EMAIL_LANGUAGE_DEFAULT = "false";
+	public static String APP_USER_HIDE_EMAIL_IN_NAV_KEY = "app_user_hide_email_nav";
+	public static String APP_USER_HIDE_EMAIL_IN_NAV_DEFAULT = "false";
 
 	public static void initDefaultSettings(Context ctx) {
 
@@ -189,6 +194,18 @@ public class AppDatabaseSettings {
 					APP_IMAGES_CACHE_SIZE_KEY,
 					APP_IMAGES_CACHE_SIZE_DEFAULT,
 					APP_IMAGES_CACHE_SIZE_DEFAULT);
+		}
+		if (appSettingsApi.fetchSettingCountByKey(APP_USER_PROFILE_HIDE_EMAIL_LANGUAGE_KEY) == 0) {
+			appSettingsApi.insertNewSetting(
+					APP_USER_PROFILE_HIDE_EMAIL_LANGUAGE_KEY,
+					APP_USER_PROFILE_HIDE_EMAIL_LANGUAGE_DEFAULT,
+					APP_USER_PROFILE_HIDE_EMAIL_LANGUAGE_DEFAULT);
+		}
+		if (appSettingsApi.fetchSettingCountByKey(APP_USER_HIDE_EMAIL_IN_NAV_KEY) == 0) {
+			appSettingsApi.insertNewSetting(
+					APP_USER_HIDE_EMAIL_IN_NAV_KEY,
+					APP_USER_HIDE_EMAIL_IN_NAV_DEFAULT,
+					APP_USER_HIDE_EMAIL_IN_NAV_DEFAULT);
 		}
 
 		if (appSettingsApi.fetchSettingCountByKey("prefsMigration") == 0) {

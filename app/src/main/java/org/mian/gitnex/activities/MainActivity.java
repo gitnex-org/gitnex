@@ -60,7 +60,6 @@ import org.mian.gitnex.helpers.AlertDialogs;
 import org.mian.gitnex.helpers.AppDatabaseSettings;
 import org.mian.gitnex.helpers.AppUtil;
 import org.mian.gitnex.helpers.ChangeLog;
-import org.mian.gitnex.helpers.RoundedTransformation;
 import org.mian.gitnex.helpers.Toasty;
 import org.mian.gitnex.structs.BottomSheetListener;
 import org.mian.gitnex.structs.FragmentRefreshListener;
@@ -87,6 +86,7 @@ public class MainActivity extends BaseActivity
 	private BottomSheetListener profileInitListener;
 	private FragmentRefreshListener fragmentRefreshListenerMyIssues;
 	private String username;
+	public static boolean closeActivity = false;
 
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
@@ -168,11 +168,11 @@ public class MainActivity extends BaseActivity
 
 		Menu menu = navigationView.getMenu();
 		navNotifications = menu.findItem(R.id.nav_notifications);
-		MenuItem navDashboard = menu.findItem(R.id.nav_dashboard);
+		/*MenuItem navDashboard = menu.findItem(R.id.nav_dashboard);
 
 		navDashboard.getActionView().findViewById(R.id.betaBadge).setVisibility(View.VISIBLE);
 		TextView dashboardBetaView = navDashboard.getActionView().findViewById(R.id.betaBadge);
-		dashboardBetaView.setText(R.string.beta);
+		dashboardBetaView.setText(R.string.beta);*/
 
 		navigationView
 				.getViewTreeObserver()
@@ -250,8 +250,16 @@ public class MainActivity extends BaseActivity
 							String userFullNameNav = getAccount().getFullName();
 							String userAvatarNav = getAccount().getUserInfo().getAvatarUrl();
 
-							if (!userEmailNav.isEmpty()) {
-								userEmail.setText(userEmailNav);
+							if (Boolean.parseBoolean(
+									AppDatabaseSettings.getSettingsValue(
+											ctx,
+											AppDatabaseSettings.APP_USER_HIDE_EMAIL_IN_NAV_KEY))) {
+								userEmail.setVisibility(View.GONE);
+							} else {
+								userEmail.setVisibility(View.VISIBLE);
+								if (!userEmailNav.isEmpty()) {
+									userEmail.setText(userEmailNav);
+								}
 							}
 
 							if (!userFullNameNav.isEmpty()) {
@@ -260,13 +268,10 @@ public class MainActivity extends BaseActivity
 
 							if (!userAvatarNav.isEmpty()) {
 
-								int avatarRadius = AppUtil.getPixelsFromDensity(ctx, 60);
-
 								PicassoService.getInstance(ctx)
 										.get()
 										.load(userAvatarNav)
 										.placeholder(R.drawable.loader_animated)
-										.transform(new RoundedTransformation(avatarRadius, 0))
 										.resize(160, 160)
 										.centerCrop()
 										.into(userAvatar);
@@ -581,6 +586,11 @@ public class MainActivity extends BaseActivity
 	@Override
 	public void onResume() {
 		super.onResume();
+
+		if (closeActivity) {
+			finishAndRemoveTask();
+			closeActivity = false;
+		}
 
 		if (refActivity) {
 			this.recreate();

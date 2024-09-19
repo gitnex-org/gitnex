@@ -29,7 +29,7 @@ public class AdminCronTasksAdapter
 
 	private final List<Cron> tasksList;
 
-	static class CronTasksViewHolder extends RecyclerView.ViewHolder {
+	public static class CronTasksViewHolder extends RecyclerView.ViewHolder {
 
 		private Cron cronTasks;
 

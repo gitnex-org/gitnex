@@ -182,7 +182,7 @@ public class AdminUnadoptedReposAdapter
 		isLoading = false;
 	}
 
-	class UnadoptedViewHolder extends RecyclerView.ViewHolder {
+	public class UnadoptedViewHolder extends RecyclerView.ViewHolder {
 
 		private final TextView name;
 		private String repoName;

@@ -157,6 +157,7 @@
                         android:textColor="?attr/materialCardBackgroundColor"
                         app:iconTint="?attr/materialCardBackgroundColor"
                         android:backgroundTint="?attr/fabColor"
+                        android:visibility="gone"
                         app:icon="@drawable/ic_bmc" />
 
                 </LinearLayout>

@@ -34,7 +34,7 @@ public class SnackBar {
 		View sbView = snackBar.getView();
 		TextView textView = sbView.findViewById(R.id.snackbar_text);
 		snackBar.setBackgroundTint(context.getColor(R.color.cardBackground));
-		textView.setTextColor(context.getColor(R.color.warningColor));
+		textView.setTextColor(context.getColor(R.color.colorWhite));
 		snackBar.show();
 	}
 
@@ -43,7 +43,7 @@ public class SnackBar {
 		View sbView = snackBar.getView();
 		TextView textView = sbView.findViewById(R.id.snackbar_text);
 		snackBar.setBackgroundTint(context.getColor(R.color.cardBackground));
-		textView.setTextColor(context.getColor(R.color.darkRed));
+		textView.setTextColor(context.getColor(R.color.colorWhite));
 		snackBar.show();
 	}
 }

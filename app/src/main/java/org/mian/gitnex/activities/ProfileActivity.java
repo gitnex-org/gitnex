@@ -126,7 +126,7 @@ public class ProfileActivity extends BaseActivity implements BottomSheetListener
 		RetrofitClient.getApiInterface(this)
 				.userCurrentCheckFollowing(username)
 				.enqueue(
-						new Callback<Void>() {
+						new Callback<>() {
 
 							@Override
 							public void onResponse(

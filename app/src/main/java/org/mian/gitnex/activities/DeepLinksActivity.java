@@ -119,10 +119,9 @@ public class DeepLinksActivity extends BaseActivity {
 					finish();
 				} else if (Objects.equals(
 						data.getLastPathSegment(),
-						getAccount().getAccount().getUserName())) { // your user profile
-					mainIntent.putExtra("launchFragmentByLinkHandler", "profile");
-					ctx.startActivity(mainIntent);
-					finish();
+						getAccount().getAccount().getUserName())) { // user profile
+					new Handler(Looper.getMainLooper())
+							.postDelayed(() -> getUserOrOrg(data.getLastPathSegment()), 500);
 				} else if (Objects.equals(data.getLastPathSegment(), "admin")) {
 					mainIntent.putExtra("launchFragmentByLinkHandler", "admin");
 					ctx.startActivity(mainIntent);
@@ -577,7 +576,9 @@ public class DeepLinksActivity extends BaseActivity {
 					public void onResponse(
 							@NonNull Call<Organization> call,
 							@NonNull Response<Organization> response) {
-						if (response.code() == 404) { // org doesn't exist or it's a user user
+						if (response.code() == 404
+								|| response.code()
+										== 504) { // org doesn't exist or it's a user user
 							Log.d("getUserOrOrg-404", String.valueOf(response.code()));
 							getUser(userOrgName);
 						} else if (response.code() == 200) { // org

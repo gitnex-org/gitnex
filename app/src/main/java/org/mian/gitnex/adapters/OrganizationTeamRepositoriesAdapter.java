@@ -50,7 +50,7 @@ public class OrganizationTeamRepositoriesAdapter
 		reposArr = new ArrayList<>();
 	}
 
-	class TeamReposViewHolder extends RecyclerView.ViewHolder {
+	public class TeamReposViewHolder extends RecyclerView.ViewHolder {
 
 		private Repository repoInfo;
 
@@ -75,7 +75,7 @@ public class OrganizationTeamRepositoriesAdapter
 			new Handler(Looper.getMainLooper())
 					.postDelayed(
 							() -> {
-								if (reposArr.size() > 0) {
+								if (!reposArr.isEmpty()) {
 									for (int i = 0; i < reposArr.size(); i++) {
 										if (!reposArr.get(i).getName().equals(repoInfo.getName())) {
 											addRepoButtonAdd.setVisibility(View.VISIBLE);
@@ -144,7 +144,7 @@ public class OrganizationTeamRepositoriesAdapter
 										.getColor(currentItem.getName()),
 								14);
 
-		if (currentItem.getAvatarUrl() != null && !currentItem.getAvatarUrl().equals("")) {
+		if (currentItem.getAvatarUrl() != null && !currentItem.getAvatarUrl().isEmpty()) {
 			PicassoService.getInstance(context)
 					.get()
 					.load(currentItem.getAvatarUrl())

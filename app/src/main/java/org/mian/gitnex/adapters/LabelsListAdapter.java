@@ -1,5 +1,6 @@
 package org.mian.gitnex.adapters;
 
+import android.annotation.SuppressLint;
 import android.graphics.Color;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -103,6 +104,7 @@ public class LabelsListAdapter extends RecyclerView.Adapter<LabelsListAdapter.La
 		return labels.size();
 	}
 
+	@SuppressLint("NotifyDataSetChanged")
 	public void updateList(List<Integer> list) {
 
 		currentLabelsIds = list;
@@ -116,7 +118,7 @@ public class LabelsListAdapter extends RecyclerView.Adapter<LabelsListAdapter.La
 		void labelsIdsInterface(List<Integer> data);
 	}
 
-	static class LabelsViewHolder extends RecyclerView.ViewHolder {
+	public static class LabelsViewHolder extends RecyclerView.ViewHolder {
 
 		private final CheckBox labelSelection;
 		private final TextView labelText;

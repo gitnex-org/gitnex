@@ -1,5 +1,6 @@
 package org.mian.gitnex.adapters;
 
+import android.annotation.SuppressLint;
 import android.content.Context;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -57,6 +58,7 @@ public class FilesAdapter extends RecyclerView.Adapter<FilesAdapter.FilesViewHol
 					return results;
 				}
 
+				@SuppressLint("NotifyDataSetChanged")
 				@Override
 				protected void publishResults(CharSequence constraint, FilterResults results) {
 
@@ -77,6 +79,7 @@ public class FilesAdapter extends RecyclerView.Adapter<FilesAdapter.FilesViewHol
 		return originalFiles;
 	}
 
+	@SuppressLint("NotifyDataSetChanged")
 	public void notifyOriginalDataSetChanged() {
 
 		alteredFiles.clear();
@@ -150,7 +153,7 @@ public class FilesAdapter extends RecyclerView.Adapter<FilesAdapter.FilesViewHol
 		void onClickFile(ContentsResponse file);
 	}
 
-	class FilesViewHolder extends RecyclerView.ViewHolder {
+	public class FilesViewHolder extends RecyclerView.ViewHolder {
 
 		private final ImageView fileTypeIs;
 		private final TextView fileName;

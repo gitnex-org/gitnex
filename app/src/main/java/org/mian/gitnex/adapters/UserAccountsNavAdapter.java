@@ -101,7 +101,7 @@ public class UserAccountsNavAdapter
 		dialog.show();
 	}
 
-	class UserAccountsViewHolder extends RecyclerView.ViewHolder {
+	public class UserAccountsViewHolder extends RecyclerView.ViewHolder {
 
 		private final ImageView userAccountAvatar;
 

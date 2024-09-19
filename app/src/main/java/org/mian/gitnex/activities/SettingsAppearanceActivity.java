@@ -141,6 +141,53 @@ public class SettingsAppearanceActivity extends BaseActivity {
 						activitySettingsAppearanceBinding.switchCounterBadge.setChecked(
 								!activitySettingsAppearanceBinding.switchCounterBadge.isChecked()));
 
+		// hide email and language in user profile screen switcher
+		activitySettingsAppearanceBinding.switchHideEmailLangInProfile.setChecked(
+				Boolean.parseBoolean(
+						AppDatabaseSettings.getSettingsValue(
+								ctx,
+								AppDatabaseSettings.APP_USER_PROFILE_HIDE_EMAIL_LANGUAGE_KEY)));
+
+		activitySettingsAppearanceBinding.switchHideEmailLangInProfile.setOnCheckedChangeListener(
+				(buttonView, isChecked) -> {
+					AppDatabaseSettings.updateSettingsValue(
+							ctx,
+							String.valueOf(isChecked),
+							AppDatabaseSettings.APP_USER_PROFILE_HIDE_EMAIL_LANGUAGE_KEY);
+					SnackBar.success(
+							ctx,
+							findViewById(android.R.id.content),
+							getString(R.string.settingsSave));
+				});
+		activitySettingsAppearanceBinding.hideEmailLangInProfileFrame.setOnClickListener(
+				v ->
+						activitySettingsAppearanceBinding.switchHideEmailLangInProfile.setChecked(
+								!activitySettingsAppearanceBinding.switchHideEmailLangInProfile
+										.isChecked()));
+
+		// hide email in app navigation drawer switcher
+		activitySettingsAppearanceBinding.switchHideEmailNavDrawer.setChecked(
+				Boolean.parseBoolean(
+						AppDatabaseSettings.getSettingsValue(
+								ctx, AppDatabaseSettings.APP_USER_HIDE_EMAIL_IN_NAV_KEY)));
+
+		activitySettingsAppearanceBinding.switchHideEmailNavDrawer.setOnCheckedChangeListener(
+				(buttonView, isChecked) -> {
+					AppDatabaseSettings.updateSettingsValue(
+							ctx,
+							String.valueOf(isChecked),
+							AppDatabaseSettings.APP_USER_HIDE_EMAIL_IN_NAV_KEY);
+					SnackBar.success(
+							ctx,
+							findViewById(android.R.id.content),
+							getString(R.string.settingsSave));
+				});
+		activitySettingsAppearanceBinding.hideEmailNavDrawerFrame.setOnClickListener(
+				v ->
+						activitySettingsAppearanceBinding.switchHideEmailNavDrawer.setChecked(
+								!activitySettingsAppearanceBinding.switchHideEmailNavDrawer
+										.isChecked()));
+
 		// show labels in lists(issues, pr) - default is color dots
 		activitySettingsAppearanceBinding.switchLabelsInListBadge.setChecked(
 				Boolean.parseBoolean(
