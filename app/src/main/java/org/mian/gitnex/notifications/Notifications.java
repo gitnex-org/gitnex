@@ -106,9 +106,17 @@ public class Notifications {
 				MaterialAlertDialogBuilder materialAlertDialogBuilder =
 						new MaterialAlertDialogBuilder(context)
 								.setTitle(R.string.pageTitleNotifications)
+								.setCancelable(false)
 								.setMessage(context.getString(R.string.openAppSettings))
 								.setNeutralButton(
-										R.string.cancelButton, (dialog, which) -> dialog.dismiss())
+										R.string.cancelButton,
+										(dialog, which) -> {
+											dialog.dismiss();
+											AppDatabaseSettings.updateSettingsValue(
+													context,
+													"false",
+													AppDatabaseSettings.APP_NOTIFICATIONS_KEY);
+										})
 								.setPositiveButton(
 										R.string.isOpen,
 										(dialog, which) -> {
