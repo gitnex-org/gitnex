@@ -1,5 +1,6 @@
 package org.mian.gitnex.adapters;
 
+import android.annotation.SuppressLint;
 import android.content.Context;
 import android.content.Intent;
 import android.view.LayoutInflater;
@@ -38,7 +39,7 @@ public class OrganizationTeamsAdapter
 	private final OrganizationPermissions permissions;
 	private final String orgName;
 
-	static class OrgTeamsViewHolder extends RecyclerView.ViewHolder {
+	public static class OrgTeamsViewHolder extends RecyclerView.ViewHolder {
 
 		private Team team;
 
@@ -101,6 +102,7 @@ public class OrganizationTeamsAdapter
 		return new OrganizationTeamsAdapter.OrgTeamsViewHolder(v);
 	}
 
+	@SuppressLint("NotifyDataSetChanged")
 	@Override
 	public void onBindViewHolder(
 			@NonNull OrganizationTeamsAdapter.OrgTeamsViewHolder holder, int position) {
@@ -126,7 +128,7 @@ public class OrganizationTeamsAdapter
 									@NonNull Response<List<User>> response) {
 								if (response.isSuccessful()
 										&& response.body() != null
-										&& response.body().size() > 0) {
+										&& !response.body().isEmpty()) {
 
 									holder.membersPreviewFrame.setVisibility(View.VISIBLE);
 									holder.userInfos.addAll(
@@ -189,6 +191,7 @@ public class OrganizationTeamsAdapter
 					return results;
 				}
 
+				@SuppressLint("NotifyDataSetChanged")
 				@Override
 				protected void publishResults(CharSequence constraint, FilterResults results) {
 					teamList.clear();

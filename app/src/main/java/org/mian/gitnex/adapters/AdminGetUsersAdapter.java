@@ -181,7 +181,7 @@ public class AdminGetUsersAdapter extends RecyclerView.Adapter<RecyclerView.View
 
 			userLoginId = users.getLogin();
 
-			if (!users.getFullName().equals("")) {
+			if (!users.getFullName().isEmpty()) {
 
 				userFullName.setText(Html.fromHtml(users.getFullName()));
 				userName.setText(
@@ -195,7 +195,7 @@ public class AdminGetUsersAdapter extends RecyclerView.Adapter<RecyclerView.View
 				userName.setVisibility(View.GONE);
 			}
 
-			if (!users.getEmail().equals("")) {
+			if (!users.getEmail().isEmpty()) {
 				userEmail.setText(users.getEmail());
 			} else {
 				userEmail.setVisibility(View.GONE);

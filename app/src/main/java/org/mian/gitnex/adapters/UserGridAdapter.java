@@ -120,7 +120,7 @@ public class UserGridAdapter extends BaseAdapter implements Filterable {
 
 		viewHolder.userLoginId = currentItem.getLogin();
 
-		if (!currentItem.getFullName().equals("")) {
+		if (!currentItem.getFullName().isEmpty()) {
 
 			viewHolder.memberName.setText(Html.fromHtml(currentItem.getFullName()));
 			viewHolder.userName.setText(

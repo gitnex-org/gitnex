@@ -79,7 +79,7 @@ public class LabelsAdapter extends RecyclerView.Adapter<LabelsAdapter.LabelsView
 		notifyDataSetChanged();
 	}
 
-	class LabelsViewHolder extends RecyclerView.ViewHolder {
+	public class LabelsViewHolder extends RecyclerView.ViewHolder {
 
 		private final MaterialCardView labelView;
 		private final ImageView labelIcon;

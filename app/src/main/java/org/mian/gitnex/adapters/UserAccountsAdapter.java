@@ -99,8 +99,7 @@ public class UserAccountsAdapter
 	}
 
 	@NonNull @Override
-	public UserAccountsAdapter.UserAccountsViewHolder onCreateViewHolder(
-			@NonNull ViewGroup parent, int viewType) {
+	public UserAccountsViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
 
 		View v =
 				LayoutInflater.from(parent.getContext())
@@ -110,8 +109,7 @@ public class UserAccountsAdapter
 
 	@SuppressLint("DefaultLocale")
 	@Override
-	public void onBindViewHolder(
-			@NonNull UserAccountsAdapter.UserAccountsViewHolder holder, int position) {
+	public void onBindViewHolder(@NonNull UserAccountsViewHolder holder, int position) {
 
 		UserAccount currentItem = userAccountsList.get(position);
 
@@ -150,7 +148,7 @@ public class UserAccountsAdapter
 		return userAccountsList.size();
 	}
 
-	class UserAccountsViewHolder extends RecyclerView.ViewHolder {
+	public class UserAccountsViewHolder extends RecyclerView.ViewHolder {
 
 		private final TextView accountUrl;
 		private final TextView userId;

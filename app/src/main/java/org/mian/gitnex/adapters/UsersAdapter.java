@@ -129,7 +129,7 @@ public class UsersAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> 
 			this.userInfo = userInfo;
 			int imgRadius = AppUtil.getPixelsFromDensity(context, 3);
 
-			if (!userInfo.getFullName().equals("")) {
+			if (!userInfo.getFullName().isEmpty()) {
 				userFullName.setText(Html.fromHtml(userInfo.getFullName()));
 				userName.setText(
 						context.getResources()

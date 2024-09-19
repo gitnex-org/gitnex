@@ -64,7 +64,7 @@ public class CollaboratorSearchAdapter
 		int imgRadius = AppUtil.getPixelsFromDensity(context, 60);
 		holder.userInfo = currentItem;
 
-		if (!currentItem.getFullName().equals("")) {
+		if (!currentItem.getFullName().isEmpty()) {
 
 			holder.userFullName.setText(Html.fromHtml(currentItem.getFullName()));
 		} else {
@@ -77,7 +77,7 @@ public class CollaboratorSearchAdapter
 		holder.userName.setText(
 				context.getResources().getString(R.string.usernameWithAt, currentItem.getLogin()));
 
-		if (!currentItem.getAvatarUrl().equals("")) {
+		if (!currentItem.getAvatarUrl().isEmpty()) {
 			PicassoService.getInstance(context)
 					.get()
 					.load(currentItem.getAvatarUrl())
@@ -140,7 +140,7 @@ public class CollaboratorSearchAdapter
 		return usersSearchList.size();
 	}
 
-	class CollaboratorSearchViewHolder extends RecyclerView.ViewHolder {
+	public class CollaboratorSearchViewHolder extends RecyclerView.ViewHolder {
 
 		private final ImageView userAvatar;
 		private final TextView userFullName;

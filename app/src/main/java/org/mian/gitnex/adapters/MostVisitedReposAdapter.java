@@ -34,7 +34,7 @@ public class MostVisitedReposAdapter
 	private List<Repository> mostVisitedReposList;
 	private final Context ctx;
 
-	class MostVisitedViewHolder extends RecyclerView.ViewHolder {
+	public class MostVisitedViewHolder extends RecyclerView.ViewHolder {
 
 		private Repository repository;
 

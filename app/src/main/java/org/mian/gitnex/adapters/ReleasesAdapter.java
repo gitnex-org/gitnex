@@ -125,7 +125,7 @@ public class ReleasesAdapter extends RecyclerView.Adapter<ReleasesAdapter.Releas
 						TimeHelper.customDateFormatForToastDateFormat(currentItem.getPublishedAt()),
 						context));
 
-		if (!currentItem.getBody().equals("")) {
+		if (!currentItem.getBody().isEmpty()) {
 			Markdown.render(context, currentItem.getBody(), holder.releaseBodyContent);
 		} else {
 			holder.releaseBodyContent.setText(R.string.noReleaseBodyContent);
@@ -279,7 +279,7 @@ public class ReleasesAdapter extends RecyclerView.Adapter<ReleasesAdapter.Releas
 		void onLoadFinished();
 	}
 
-	protected class ReleasesViewHolder extends RecyclerView.ViewHolder {
+	public class ReleasesViewHolder extends RecyclerView.ViewHolder {
 
 		private final TextView releaseType;
 		private final TextView releaseName;

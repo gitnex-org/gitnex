@@ -152,7 +152,7 @@ public class ExploreRepositoriesAdapter extends RecyclerView.Adapter<RecyclerVie
 							.buildRoundRect(firstCharacter, color, 14);
 
 			if (userRepositories.getAvatarUrl() != null) {
-				if (!userRepositories.getAvatarUrl().equals("")) {
+				if (!userRepositories.getAvatarUrl().isEmpty()) {
 					PicassoService.getInstance(context)
 							.get()
 							.load(userRepositories.getAvatarUrl())
@@ -182,7 +182,7 @@ public class ExploreRepositoriesAdapter extends RecyclerView.Adapter<RecyclerVie
 				repoLastUpdated.setVisibility(View.GONE);
 			}
 
-			if (!userRepositories.getDescription().equals("")) {
+			if (!userRepositories.getDescription().isEmpty()) {
 				repoDescription.setVisibility(View.VISIBLE);
 				repoDescription.setText(userRepositories.getDescription());
 				spacerView.setVisibility(View.GONE);

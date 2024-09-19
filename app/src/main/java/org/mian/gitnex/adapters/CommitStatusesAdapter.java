@@ -24,7 +24,7 @@ public class CommitStatusesAdapter
 
 	private final List<CommitStatus> statuses;
 
-	static class CommitStatusesViewHolder extends RecyclerView.ViewHolder {
+	public static class CommitStatusesViewHolder extends RecyclerView.ViewHolder {
 
 		private CommitStatus status;
 
@@ -44,7 +44,7 @@ public class CommitStatusesAdapter
 		}
 
 		private void openUrl() {
-			if (status.getTargetUrl() != null && !status.getTargetUrl().equals("")) {
+			if (status.getTargetUrl() != null && !status.getTargetUrl().isEmpty()) {
 				AppUtil.openUrlInBrowser(itemView.getContext(), status.getTargetUrl());
 			} else {
 				Toasty.info(

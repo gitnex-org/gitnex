@@ -83,7 +83,7 @@ public class CollaboratorsAdapter extends BaseAdapter {
 
 		viewHolder.userLoginId = currentItem.getLogin();
 
-		if (!currentItem.getFullName().equals("")) {
+		if (!currentItem.getFullName().isEmpty()) {
 
 			viewHolder.collaboratorName.setText(Html.fromHtml(currentItem.getFullName()));
 			viewHolder.userName.setText(

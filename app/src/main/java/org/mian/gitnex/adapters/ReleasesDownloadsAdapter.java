@@ -55,7 +55,7 @@ public class ReleasesDownloadsAdapter
 		return releasesDownloadsList.size();
 	}
 
-	static class ReleasesDownloadsViewHolder extends RecyclerView.ViewHolder {
+	public static class ReleasesDownloadsViewHolder extends RecyclerView.ViewHolder {
 
 		private final TextView downloadName;
 

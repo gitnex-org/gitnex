@@ -113,7 +113,7 @@ public class DraftsAdapter extends RecyclerView.Adapter<DraftsAdapter.DraftsView
 		notifyDataChanged();
 	}
 
-	class DraftsViewHolder extends RecyclerView.ViewHolder {
+	public class DraftsViewHolder extends RecyclerView.ViewHolder {
 
 		private final TextView draftText;
 		private final TextView repoInfo;

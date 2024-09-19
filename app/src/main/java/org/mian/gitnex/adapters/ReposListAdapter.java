@@ -153,7 +153,7 @@ public class ReposListAdapter extends RecyclerView.Adapter<RecyclerView.ViewHold
 		void onLoadFinished();
 	}
 
-	class ReposHolder extends RecyclerView.ViewHolder {
+	public class ReposHolder extends RecyclerView.ViewHolder {
 
 		private final ImageView image;
 		private final TextView repoName;
@@ -217,7 +217,7 @@ public class ReposListAdapter extends RecyclerView.Adapter<RecyclerView.ViewHold
 							.buildRoundRect(firstCharacter, color, 14);
 
 			if (repositories.getAvatarUrl() != null) {
-				if (!repositories.getAvatarUrl().equals("")) {
+				if (!repositories.getAvatarUrl().isEmpty()) {
 					PicassoService.getInstance(context)
 							.get()
 							.load(repositories.getAvatarUrl())
@@ -244,7 +244,7 @@ public class ReposListAdapter extends RecyclerView.Adapter<RecyclerView.ViewHold
 				repoLastUpdated.setVisibility(View.GONE);
 			}
 
-			if (!repositories.getDescription().equals("")) {
+			if (!repositories.getDescription().isEmpty()) {
 				repoDescription.setVisibility(View.VISIBLE);
 				repoDescription.setText(repositories.getDescription());
 				spacerView.setVisibility(View.GONE);

@@ -182,7 +182,7 @@ public class OrganizationsListAdapter extends RecyclerView.Adapter<RecyclerView.
 					.centerCrop()
 					.into(image);
 
-			if (!org.getDescription().equals("")) {
+			if (!org.getDescription().isEmpty()) {
 				orgDescription.setVisibility(View.VISIBLE);
 				orgDescription.setText(org.getDescription());
 			} else {

@@ -55,7 +55,7 @@ public class OrganizationTeamMembersPreviewAdapter
 		return userData.size();
 	}
 
-	static class ViewHolder extends RecyclerView.ViewHolder {
+	public static class ViewHolder extends RecyclerView.ViewHolder {
 
 		private final ImageView avatar;
 
