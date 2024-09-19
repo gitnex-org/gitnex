@@ -414,6 +414,8 @@ public class CreatePullRequestActivity extends BaseActivity
 			List<String> assignees,
 			String prDueDate) {
 
+		viewBinding.topAppBar.getMenu().getItem(2).setVisible(false);
+
 		ArrayList<Long> labelIds = new ArrayList<>();
 		for (Integer i : labelsIds) {
 			labelIds.add((long) i);
@@ -470,18 +472,21 @@ public class CreatePullRequestActivity extends BaseActivity
 						} else if (response.code() == 409
 								|| response.message().equals("Conflict")) {
 
+							viewBinding.topAppBar.getMenu().getItem(2).setVisible(false);
 							SnackBar.error(
 									ctx,
 									findViewById(android.R.id.content),
 									getString(R.string.prAlreadyExists));
 						} else if (response.code() == 404) {
 
+							viewBinding.topAppBar.getMenu().getItem(2).setVisible(false);
 							SnackBar.error(
 									ctx,
 									findViewById(android.R.id.content),
 									getString(R.string.apiNotFound));
 						} else {
 
+							viewBinding.topAppBar.getMenu().getItem(2).setVisible(false);
 							SnackBar.error(
 									ctx,
 									findViewById(android.R.id.content),
@@ -492,6 +497,7 @@ public class CreatePullRequestActivity extends BaseActivity
 					@Override
 					public void onFailure(@NonNull Call<PullRequest> call, @NonNull Throwable t) {
 
+						viewBinding.topAppBar.getMenu().getItem(2).setVisible(false);
 						SnackBar.error(
 								ctx,
 								findViewById(android.R.id.content),
