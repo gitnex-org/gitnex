@@ -208,6 +208,10 @@
     <string name="restoreError">Fehler beim Wiederherstellen der Sicherung.</string>
     <string name="restoreFromBackup">Aus Sicherung wiederherstellen</string>
     <string name="restoreFromBackupPopupText">Du bist dabei, eine GitNex-generiertes Sicherung wiederherzustellen. Dies wird Accounts, Einstellungen, Notizen und mit Repositories verbundenen Daten wiederherstellen.\n\nKlicke Wiederherstellen, um den Prozess zu starten.</string>
+    <string name="hideEmailLangInProfileHeader">E-Mail und Sprache als privat markieren</string>
+    <string name="hideEmailLangInProfileHint">Du kannst deine E-Mail und Sprache als privat markieren, damit diese nicht auf dem Profilbildschirm angezeigt werden</string>
+    <string name="hideEmailNavDrawerHeader">E-Mail-Adresse im Drawer verstecken</string>
+    <string name="hideEmailNavDrawerHint">Du kannst diese Option aktivieren, um deine E-Mail im Navigations-Drawer der App zu verstecken</string>
     <!-- settings -->
     <string name="noMoreData">Keine weiteren Daten verfügbar.</string>
     <string name="createLabel">Label erstellen</string>
@@ -367,6 +371,7 @@
     <string name="repoWatchersInMenu">Beobachter</string>
     <string name="noDataWebsite">Keine Webseite gefunden</string>
     <string name="noDataDescription">Keine Beschreibung gefunden</string>
+    <string name="noDataBio">Keine Biographie gefunden</string>
     <string name="noDataLocation">Kein Ort gefunden</string>
     <string name="starMember">Favorisieren</string>
     <string name="watcherMember">Beobachter</string>
@@ -452,6 +457,7 @@
     <string name="license">Lizenz</string>
     <string name="title">Titel</string>
     <string name="description">Beschreibung</string>
+    <string name="bioText">Biografie</string>
     <!-- generic copy -->
     <string name="exploreUsers">Benutzer erkunden</string>
     <string name="exploreIssues">Issues erkunden</string>
