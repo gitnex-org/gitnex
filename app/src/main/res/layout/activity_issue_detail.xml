@@ -52,20 +52,6 @@
         android:indeterminate="true"
         app:indicatorColor="?attr/progressIndicatorColor" />
 
-    <com.google.android.material.floatingactionbutton.ExtendedFloatingActionButton
-        android:id="@+id/addNewComment"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_gravity="bottom|end"
-        android:layout_margin="@dimen/dimen16dp"
-        android:backgroundTint="?attr/fabColor"
-        android:contentDescription="@string/commentButtonText"
-        android:text="@string/commentButtonText"
-        android:textColor="?attr/materialCardBackgroundColor"
-        app:iconTint="?attr/materialCardBackgroundColor"
-        android:visibility="gone"
-        app:icon="@drawable/ic_reply" />
-
     <RelativeLayout
         android:id="@+id/relativeMainLayoutFrame"
         android:layout_width="match_parent"
@@ -151,9 +137,9 @@
 
                                     <com.google.android.material.card.MaterialCardView
                                         style="?attr/materialCardViewElevatedStyle"
-                                        android:layout_width="@dimen/dimen24dp"
-                                        android:layout_height="@dimen/dimen24dp"
-                                        app:cardCornerRadius="@dimen/dimen12dp"
+                                        android:layout_width="@dimen/dimen32dp"
+                                        android:layout_height="@dimen/dimen32dp"
+                                        app:cardCornerRadius="@dimen/dimen8dp"
                                         app:cardElevation="@dimen/dimen0dp"
                                         tools:ignore="TooDeepLayout">
 
@@ -399,10 +385,10 @@
                 android:layout_gravity="center_vertical"
                 android:backgroundTint="?attr/fabColor"
                 android:layout_marginEnd="@dimen/dimen8dp"
-                app:cardCornerRadius="@dimen/dimen36dp">
+                app:cardCornerRadius="@dimen/dimen12dp">
 
                <ImageView
-                   android:id="@+id/attachments"
+                   android:id="@+id/add_attachments"
                    android:layout_width="@dimen/dimen24dp"
                    android:layout_height="@dimen/dimen24dp"
                    android:layout_gravity="center_vertical|center_horizontal"
@@ -439,7 +425,7 @@
                 android:layout_height="@dimen/dimen38dp"
                 android:layout_gravity="center_vertical"
                 android:backgroundTint="?attr/fabColor"
-                app:cardCornerRadius="@dimen/dimen36dp">
+                app:cardCornerRadius="@dimen/dimen12dp">
 
                <ImageView
                    android:id="@+id/send"

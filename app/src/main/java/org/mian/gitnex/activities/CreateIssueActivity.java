@@ -309,6 +309,7 @@ public class CreateIssueActivity extends BaseActivity
 			bottomSheetDialog.setContentView(bottomSheetAttachmentsBinding.getRoot());
 			bottomSheetDialog.show();
 		} else {
+			attachmentsAdapter.clearAdapter();
 			openFileAttachmentActivity();
 		}
 	}
