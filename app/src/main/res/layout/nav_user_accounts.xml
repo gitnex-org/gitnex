@@ -7,6 +7,7 @@
     app:cardCornerRadius="@dimen/dimen8dp"
     android:layout_marginStart="4dp"
     android:layout_marginEnd="@dimen/dimen4dp"
+    android:backgroundTint="@android:color/transparent"
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto">
 

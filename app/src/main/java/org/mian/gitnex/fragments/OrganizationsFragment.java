@@ -12,7 +12,9 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.view.inputmethod.EditorInfo;
 import androidx.annotation.NonNull;
+import androidx.core.view.MenuProvider;
 import androidx.fragment.app.Fragment;
+import androidx.lifecycle.Lifecycle;
 import androidx.lifecycle.ViewModelProvider;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import org.mian.gitnex.R;
@@ -42,7 +44,50 @@ public class OrganizationsFragment extends Fragment {
 		fragmentOrganizationsBinding =
 				FragmentOrganizationsBinding.inflate(inflater, container, false);
 
-		setHasOptionsMenu(true);
+		requireActivity()
+				.addMenuProvider(
+						new MenuProvider() {
+							@Override
+							public void onCreateMenu(
+									@NonNull Menu menu, @NonNull MenuInflater menuInflater) {
+								menuInflater.inflate(R.menu.search_menu, menu);
+
+								MenuItem searchItem = menu.findItem(R.id.action_search);
+								androidx.appcompat.widget.SearchView searchView =
+										(androidx.appcompat.widget.SearchView)
+												searchItem.getActionView();
+								assert searchView != null;
+								searchView.setImeOptions(EditorInfo.IME_ACTION_DONE);
+
+								searchView.setOnQueryTextListener(
+										new androidx.appcompat.widget.SearchView
+												.OnQueryTextListener() {
+
+											@Override
+											public boolean onQueryTextSubmit(String query) {
+												return false;
+											}
+
+											@Override
+											public boolean onQueryTextChange(String newText) {
+												if (fragmentOrganizationsBinding.recyclerView
+																.getAdapter()
+														!= null) {
+													adapter.getFilter().filter(newText);
+												}
+												return false;
+											}
+										});
+							}
+
+							@Override
+							public boolean onMenuItemSelected(@NonNull MenuItem menuItem) {
+								return false;
+							}
+						},
+						getViewLifecycleOwner(),
+						Lifecycle.State.RESUMED);
+
 		((MainActivity) requireActivity())
 				.setActionBarTitle(getResources().getString(R.string.navOrg));
 		organizationsViewModel = new ViewModelProvider(this).get(OrganizationsViewModel.class);
@@ -131,34 +176,5 @@ public class OrganizationsFragment extends Fragment {
 			organizationsViewModel.loadOrgList(page, resultLimit, getContext());
 			orgCreated = false;
 		}
-	}
-
-	@Override
-	public void onCreateOptionsMenu(@NonNull Menu menu, @NonNull MenuInflater inflater) {
-
-		inflater.inflate(R.menu.search_menu, menu);
-		super.onCreateOptionsMenu(menu, inflater);
-
-		MenuItem searchItem = menu.findItem(R.id.action_search);
-		androidx.appcompat.widget.SearchView searchView =
-				(androidx.appcompat.widget.SearchView) searchItem.getActionView();
-		searchView.setImeOptions(EditorInfo.IME_ACTION_DONE);
-
-		searchView.setOnQueryTextListener(
-				new androidx.appcompat.widget.SearchView.OnQueryTextListener() {
-
-					@Override
-					public boolean onQueryTextSubmit(String query) {
-						return false;
-					}
-
-					@Override
-					public boolean onQueryTextChange(String newText) {
-						if (fragmentOrganizationsBinding.recyclerView.getAdapter() != null) {
-							adapter.getFilter().filter(newText);
-						}
-						return false;
-					}
-				});
 	}
 }

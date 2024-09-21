@@ -9,6 +9,7 @@ import android.graphics.Bitmap;
 import android.graphics.Color;
 import android.graphics.Typeface;
 import android.graphics.drawable.Drawable;
+import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
@@ -41,9 +42,11 @@ import com.bumptech.glide.Glide;
 import com.bumptech.glide.load.engine.DiskCacheStrategy;
 import com.bumptech.glide.request.target.CustomTarget;
 import com.bumptech.glide.request.transition.Transition;
+import com.google.android.material.bottomsheet.BottomSheetDialog;
 import com.google.android.material.card.MaterialCardView;
 import com.google.android.material.dialog.MaterialAlertDialogBuilder;
 import com.vdurmont.emoji.EmojiParser;
+import java.io.File;
 import java.io.IOException;
 import java.io.OutputStream;
 import java.text.DateFormat;
@@ -55,9 +58,13 @@ import java.util.LinkedHashSet;
 import java.util.List;
 import java.util.Locale;
 import java.util.Objects;
+import okhttp3.MediaType;
+import okhttp3.RequestBody;
 import okhttp3.ResponseBody;
 import org.apache.commons.io.FilenameUtils;
 import org.gitnex.tea4j.v2.models.Attachment;
+import org.gitnex.tea4j.v2.models.Comment;
+import org.gitnex.tea4j.v2.models.CreateIssueCommentOption;
 import org.gitnex.tea4j.v2.models.EditIssueOption;
 import org.gitnex.tea4j.v2.models.Issue;
 import org.gitnex.tea4j.v2.models.IssueLabelsOption;
@@ -72,17 +79,19 @@ import org.mian.gitnex.actions.AssigneesActions;
 import org.mian.gitnex.actions.IssueActions;
 import org.mian.gitnex.actions.LabelsActions;
 import org.mian.gitnex.adapters.AssigneesListAdapter;
+import org.mian.gitnex.adapters.AttachmentsAdapter;
 import org.mian.gitnex.adapters.IssueCommentsAdapter;
 import org.mian.gitnex.adapters.LabelsListAdapter;
 import org.mian.gitnex.clients.RetrofitClient;
 import org.mian.gitnex.databinding.ActivityIssueDetailBinding;
+import org.mian.gitnex.databinding.BottomSheetAttachmentsBinding;
 import org.mian.gitnex.databinding.CustomAssigneesSelectionDialogBinding;
 import org.mian.gitnex.databinding.CustomImageViewDialogBinding;
 import org.mian.gitnex.databinding.CustomLabelsSelectionDialogBinding;
 import org.mian.gitnex.databinding.CustomPrInfoDialogBinding;
-import org.mian.gitnex.fragments.BottomSheetReplyFragment;
 import org.mian.gitnex.fragments.BottomSheetSingleIssueFragment;
 import org.mian.gitnex.fragments.IssuesFragment;
+import org.mian.gitnex.fragments.PullRequestsFragment;
 import org.mian.gitnex.helpers.AlertDialogs;
 import org.mian.gitnex.helpers.AppDatabaseSettings;
 import org.mian.gitnex.helpers.AppUtil;
@@ -91,9 +100,12 @@ import org.mian.gitnex.helpers.ColorInverter;
 import org.mian.gitnex.helpers.Constants;
 import org.mian.gitnex.helpers.LabelWidthCalculator;
 import org.mian.gitnex.helpers.Markdown;
+import org.mian.gitnex.helpers.SnackBar;
 import org.mian.gitnex.helpers.TimeHelper;
 import org.mian.gitnex.helpers.TinyDB;
 import org.mian.gitnex.helpers.Toasty;
+import org.mian.gitnex.helpers.attachments.AttachmentUtils;
+import org.mian.gitnex.helpers.attachments.AttachmentsModel;
 import org.mian.gitnex.helpers.contexts.IssueContext;
 import org.mian.gitnex.notifications.Notifications;
 import org.mian.gitnex.structs.BottomSheetListener;
@@ -109,7 +121,8 @@ import retrofit2.Response;
 public class IssueDetailActivity extends BaseActivity
 		implements LabelsListAdapter.LabelsListAdapterListener,
 				AssigneesListAdapter.AssigneesListAdapterListener,
-				BottomSheetListener {
+				BottomSheetListener,
+				AttachmentsAdapter.AttachmentsReceiverListener {
 
 	private Typeface myTypeface;
 	public static boolean singleIssueUpdate = false;
@@ -144,11 +157,33 @@ public class IssueDetailActivity extends BaseActivity
 	private int page = 1;
 	private TinyDB tinyDB;
 	private Mode mode = Mode.SEND;
+	private static List<AttachmentsModel> attachmentsList;
+	private AttachmentsAdapter attachmentsAdapter;
+	private static final List<Uri> contentUri = new ArrayList<>();
+	private InputMethodManager imm;
+	private float buttonAlphaStatDisabled = .5F;
+	private float buttonAlphaStatEnabled = 1F;
 
 	private enum Mode {
 		EDIT,
 		SEND
 	}
+
+	ActivityResultLauncher<Intent> startActivityForResult =
+			registerForActivityResult(
+					new ActivityResultContracts.StartActivityForResult(),
+					result -> {
+						if (result.getResultCode() == Activity.RESULT_OK) {
+							Intent data = result.getData();
+							assert data != null;
+							contentUri.add(data.getData());
+							attachmentsList.add(
+									new AttachmentsModel(
+											AttachmentUtils.queryName(ctx, data.getData()),
+											data.getData()));
+							attachmentsAdapter.updateList(attachmentsList);
+						}
+					});
 
 	public ActivityResultLauncher<Intent> editIssueLauncher =
 			registerForActivityResult(
@@ -299,8 +334,7 @@ public class IssueDetailActivity extends BaseActivity
 		Objects.requireNonNull(getSupportActionBar()).setTitle(repoName);
 		getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
-		InputMethodManager imm =
-				(InputMethodManager) getSystemService(Activity.INPUT_METHOD_SERVICE);
+		imm = (InputMethodManager) getSystemService(Activity.INPUT_METHOD_SERVICE);
 
 		String instanceUrl = ((BaseActivity) ctx).getAccount().getAccount().getInstanceUrl();
 		instanceUrlOnly = instanceUrl.substring(0, instanceUrl.lastIndexOf("api/v1/"));
@@ -316,19 +350,15 @@ public class IssueDetailActivity extends BaseActivity
 		viewBinding.recyclerView.setNestedScrollingEnabled(false);
 		viewBinding.recyclerView.setLayoutManager(new LinearLayoutManager(ctx));
 
-		float buttonAlphaStatDisabled = .5F;
-		float buttonAlphaStatEnabled = 1F;
+		attachmentsList = new ArrayList<>();
+		attachmentsAdapter = new AttachmentsAdapter(attachmentsList, ctx);
+
+		AttachmentsAdapter.setAttachmentsReceiveListener(this);
 
 		viewBinding.send.setAlpha(buttonAlphaStatDisabled);
 		viewBinding.send.setEnabled(false);
 
-		viewBinding.addNewComment.setOnClickListener(
-				v -> {
-					BottomSheetReplyFragment bottomSheetReplyFragment =
-							BottomSheetReplyFragment.newInstance(new Bundle(), issue);
-					bottomSheetReplyFragment.setOnInteractedListener(this::onResume);
-					bottomSheetReplyFragment.show(getSupportFragmentManager(), "replyBottomSheet");
-				});
+		viewBinding.addAttachments.setOnClickListener(addAttachments -> checkForAttachments());
 
 		labelsAdapter =
 				new LabelsListAdapter(labelsList, IssueDetailActivity.this, currentLabelsIds);
@@ -442,43 +472,10 @@ public class IssueDetailActivity extends BaseActivity
 						mode = Mode.SEND;
 					}
 
+					Log.e("replyCommentId", String.valueOf(tinyDB.getInt("commentId")));
 					if (mode == Mode.SEND) {
 
-						IssueActions.reply(
-										ctx, viewBinding.commentReply.getText().toString(), issue)
-								.accept(
-										(status, result) -> {
-											if (status == ActionResult.Status.SUCCESS) {
-
-												viewBinding.scrollViewComments.post(
-														() ->
-																issueCommentsModel
-																		.loadIssueComments(
-																				repoOwner,
-																				repoName,
-																				issueIndex,
-																				ctx,
-																				() ->
-																						viewBinding
-																								.scrollViewComments
-																								.fullScroll(
-																										ScrollView
-																												.FOCUS_DOWN)));
-
-												Toasty.success(
-														ctx, getString(R.string.commentSuccess));
-
-												viewBinding.send.setAlpha(buttonAlphaStatDisabled);
-												viewBinding.send.setEnabled(false);
-												viewBinding.commentReply.setText(null);
-												viewBinding.commentReply.clearFocus();
-												imm.toggleSoftInput(
-														InputMethodManager.HIDE_IMPLICIT_ONLY, 0);
-											} else {
-
-												Toasty.error(ctx, getString(R.string.genericError));
-											}
-										});
+						createIssueComment(viewBinding.commentReply.getText().toString());
 					} else {
 
 						IssueActions.edit(
@@ -489,6 +486,13 @@ public class IssueDetailActivity extends BaseActivity
 								.accept(
 										(status, result) -> {
 											if (status == ActionResult.Status.SUCCESS) {
+
+												if (!contentUri.isEmpty()) {
+													processAttachments(tinyDB.getInt("commentId"));
+													contentUri.clear();
+													AttachmentsAdapter
+															.setAttachmentsReceiveListener(null);
+												}
 
 												tinyDB.remove("commentId");
 												tinyDB.remove("commentAction");
@@ -519,6 +523,103 @@ public class IssueDetailActivity extends BaseActivity
 												Toasty.error(ctx, getString(R.string.genericError));
 											}
 										});
+					}
+				});
+	}
+
+	public void onDestroy() {
+		AttachmentsAdapter.setAttachmentsReceiveListener(null);
+		super.onDestroy();
+	}
+
+	@Override
+	public void setAttachmentsData(Uri filename) {
+		contentUri.remove(filename);
+	}
+
+	private void checkForAttachments() {
+
+		if (!contentUri.isEmpty()) {
+
+			BottomSheetAttachmentsBinding bottomSheetAttachmentsBinding =
+					BottomSheetAttachmentsBinding.inflate(getLayoutInflater());
+
+			BottomSheetDialog bottomSheetDialog = new BottomSheetDialog(ctx);
+
+			bottomSheetAttachmentsBinding.addAttachment.setOnClickListener(
+					v1 -> openFileAttachmentActivity());
+
+			bottomSheetAttachmentsBinding.recyclerViewAttachments.setHasFixedSize(true);
+			bottomSheetAttachmentsBinding.recyclerViewAttachments.setLayoutManager(
+					new LinearLayoutManager(ctx));
+			bottomSheetAttachmentsBinding.recyclerViewAttachments.setAdapter(attachmentsAdapter);
+
+			bottomSheetDialog.setContentView(bottomSheetAttachmentsBinding.getRoot());
+			bottomSheetDialog.show();
+		} else {
+			attachmentsAdapter.clearAdapter();
+			openFileAttachmentActivity();
+		}
+	}
+
+	private void openFileAttachmentActivity() {
+
+		Intent data = new Intent(Intent.ACTION_GET_CONTENT);
+		data.addCategory(Intent.CATEGORY_OPENABLE);
+		data.setType("*/*");
+		Intent intent = Intent.createChooser(data, "Choose a file");
+		startActivityForResult.launch(intent);
+	}
+
+	public void processAttachments(long commentId) {
+
+		for (int i = 0; i < contentUri.size(); i++) {
+
+			File file = AttachmentUtils.getFile(ctx, contentUri.get(i));
+
+			RequestBody requestFile =
+					RequestBody.create(
+							file,
+							MediaType.parse(
+									Objects.requireNonNull(
+											getContentResolver().getType(contentUri.get(i)))));
+
+			uploadAttachments(requestFile, commentId, file.getName());
+		}
+	}
+
+	private void uploadAttachments(RequestBody requestFile, long commentId, String filename1) {
+
+		Call<Attachment> call3;
+		call3 =
+				RetrofitClient.getApiInterface(ctx)
+						.issueCreateIssueCommentAttachment(
+								requestFile, repoOwner, repoName, commentId, filename1);
+
+		call3.enqueue(
+				new Callback<>() {
+
+					@Override
+					public void onResponse(
+							@NonNull Call<Attachment> call,
+							@NonNull retrofit2.Response<Attachment> response2) {
+
+						if (response2.code() == 201) {
+							Log.e("Attachments", "Files uploaded");
+						}
+						if (response2.code() == 401) {
+
+							AlertDialogs.authorizationTokenRevokedDialog(ctx);
+						}
+					}
+
+					@Override
+					public void onFailure(@NonNull Call<Attachment> call, @NonNull Throwable t) {
+
+						SnackBar.error(
+								ctx,
+								findViewById(android.R.id.content),
+								getString(R.string.genericServerResponseError));
 					}
 				});
 	}
@@ -786,6 +887,7 @@ public class IssueDetailActivity extends BaseActivity
 				startActivity(intent);
 			}
 			finish();
+			contentUri.clear();
 			return true;
 		} else if (id == R.id.genericMenu) {
 
@@ -870,8 +972,8 @@ public class IssueDetailActivity extends BaseActivity
 							500);
 		}
 
-		tinyDB.remove("commentId");
-		tinyDB.remove("commentAction");
+		// tinyDB.remove("commentId");
+		// tinyDB.remove("commentAction");
 		mode = Mode.SEND;
 	}
 
@@ -1601,5 +1703,84 @@ public class IssueDetailActivity extends BaseActivity
 						});
 
 		materialAlertDialogBuilder.create().show();
+	}
+
+	private void createIssueComment(String comment) {
+
+		CreateIssueCommentOption issueComment = new CreateIssueCommentOption();
+		issueComment.setBody(comment);
+
+		Call<Comment> call =
+				RetrofitClient.getApiInterface(ctx)
+						.issueCreateComment(
+								issue.getRepository().getOwner(),
+								issue.getRepository().getName(),
+								(long) issue.getIssueIndex(),
+								issueComment);
+
+		call.enqueue(
+				new Callback<>() {
+
+					@Override
+					public void onResponse(
+							@NonNull Call<Comment> call,
+							@NonNull retrofit2.Response<Comment> response) {
+
+						if (response.code() == 201) {
+
+							assert response.body() != null;
+
+							if (issue.hasIssue()) {
+								IssuesFragment.resumeIssues =
+										issue.getIssue().getPullRequest() == null;
+								PullRequestsFragment.resumePullRequests =
+										issue.getIssue().getPullRequest() != null;
+							}
+
+							if (!contentUri.isEmpty()) {
+								processAttachments(response.body().getId());
+								contentUri.clear();
+								AttachmentsAdapter.setAttachmentsReceiveListener(null);
+							}
+
+							viewBinding.scrollViewComments.post(
+									() ->
+											issueCommentsModel.loadIssueComments(
+													repoOwner,
+													repoName,
+													issueIndex,
+													ctx,
+													() ->
+															viewBinding.scrollViewComments
+																	.fullScroll(
+																			ScrollView
+																					.FOCUS_DOWN)));
+
+							Toasty.success(ctx, getString(R.string.commentSuccess));
+
+							viewBinding.send.setAlpha(buttonAlphaStatDisabled);
+							viewBinding.send.setEnabled(false);
+							viewBinding.commentReply.setText(null);
+							viewBinding.commentReply.clearFocus();
+							imm.toggleSoftInput(InputMethodManager.HIDE_IMPLICIT_ONLY, 0);
+
+						} else if (response.code() == 401) {
+
+							AlertDialogs.authorizationTokenRevokedDialog(ctx);
+
+						} else {
+
+							Toasty.error(ctx, getString(R.string.genericError));
+						}
+					}
+
+					@Override
+					public void onFailure(@NonNull Call<Comment> call, @NonNull Throwable t) {
+
+						Toasty.error(
+								ctx,
+								ctx.getResources().getString(R.string.genericServerResponseError));
+					}
+				});
 	}
 }

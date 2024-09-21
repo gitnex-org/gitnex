@@ -12,7 +12,9 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.view.inputmethod.EditorInfo;
 import androidx.annotation.NonNull;
+import androidx.core.view.MenuProvider;
 import androidx.fragment.app.Fragment;
+import androidx.lifecycle.Lifecycle;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import java.util.ArrayList;
 import java.util.List;
@@ -48,12 +50,77 @@ public class ExploreUsersFragment extends Fragment {
 
 		viewBinding = FragmentExploreUsersBinding.inflate(inflater, container, false);
 		context = getContext();
-		setHasOptionsMenu(true);
 
 		resultLimit = Constants.getCurrentResultLimit(context);
 
 		usersList = new ArrayList<>();
 		adapter = new UsersAdapter(usersList, context);
+
+		requireActivity()
+				.addMenuProvider(
+						new MenuProvider() {
+							@Override
+							public void onCreateMenu(
+									@NonNull Menu menu, @NonNull MenuInflater menuInflater) {
+
+								menu.clear();
+								menuInflater.inflate(R.menu.search_menu, menu);
+
+								MenuItem searchItem = menu.findItem(R.id.action_search);
+								androidx.appcompat.widget.SearchView searchView =
+										(androidx.appcompat.widget.SearchView)
+												searchItem.getActionView();
+								assert searchView != null;
+								searchView.setImeOptions(EditorInfo.IME_ACTION_DONE);
+
+								searchView.setOnQueryTextListener(
+										new androidx.appcompat.widget.SearchView
+												.OnQueryTextListener() {
+
+											@Override
+											public boolean onQueryTextSubmit(String query) {
+												viewBinding.progressBar.setVisibility(View.VISIBLE);
+												loadInitial(query, resultLimit);
+												adapter.setLoadMoreListener(
+														() ->
+																viewBinding.recyclerViewExploreUsers
+																		.post(
+																				() -> {
+																					if (usersList
+																											.size()
+																									== resultLimit
+																							|| pageSize
+																									== resultLimit) {
+																						int page =
+																								(usersList
+																														.size()
+																												+ resultLimit)
+																										/ resultLimit;
+																						loadMore(
+																								query,
+																								resultLimit,
+																								page);
+																					}
+																				}));
+												searchView.setQuery(null, false);
+												searchItem.collapseActionView();
+												return false;
+											}
+
+											@Override
+											public boolean onQueryTextChange(String newText) {
+												return false;
+											}
+										});
+							}
+
+							@Override
+							public boolean onMenuItemSelected(@NonNull MenuItem menuItem) {
+								return false;
+							}
+						},
+						getViewLifecycleOwner(),
+						Lifecycle.State.RESUMED);
 
 		viewBinding.pullToRefresh.setOnRefreshListener(
 				() ->
@@ -99,7 +166,7 @@ public class ExploreUsersFragment extends Fragment {
 							@NonNull Call<InlineResponse2001> call,
 							@NonNull Response<InlineResponse2001> response) {
 						if (response.isSuccessful()) {
-							if (response.body() != null && response.body().getData().size() > 0) {
+							if (response.body() != null && !response.body().getData().isEmpty()) {
 								usersList.clear();
 								usersList.addAll(response.body().getData());
 								adapter.notifyDataChanged();
@@ -152,7 +219,7 @@ public class ExploreUsersFragment extends Fragment {
 							assert response.body() != null;
 							List<User> result = response.body().getData();
 							if (result != null) {
-								if (result.size() > 0) {
+								if (!result.isEmpty()) {
 									pageSize = result.size();
 									usersList.addAll(result);
 								} else {
@@ -183,49 +250,6 @@ public class ExploreUsersFragment extends Fragment {
 								requireActivity()
 										.getResources()
 										.getString(R.string.genericServerResponseError));
-					}
-				});
-	}
-
-	@Override
-	public void onCreateOptionsMenu(@NonNull Menu menu, @NonNull MenuInflater inflater) {
-
-		menu.clear();
-		inflater.inflate(R.menu.search_menu, menu);
-		super.onCreateOptionsMenu(menu, inflater);
-
-		MenuItem searchItem = menu.findItem(R.id.action_search);
-		androidx.appcompat.widget.SearchView searchView =
-				(androidx.appcompat.widget.SearchView) searchItem.getActionView();
-		searchView.setImeOptions(EditorInfo.IME_ACTION_DONE);
-
-		searchView.setOnQueryTextListener(
-				new androidx.appcompat.widget.SearchView.OnQueryTextListener() {
-
-					@Override
-					public boolean onQueryTextSubmit(String query) {
-						viewBinding.progressBar.setVisibility(View.VISIBLE);
-						loadInitial(query, resultLimit);
-						adapter.setLoadMoreListener(
-								() ->
-										viewBinding.recyclerViewExploreUsers.post(
-												() -> {
-													if (usersList.size() == resultLimit
-															|| pageSize == resultLimit) {
-														int page =
-																(usersList.size() + resultLimit)
-																		/ resultLimit;
-														loadMore(query, resultLimit, page);
-													}
-												}));
-						searchView.setQuery(null, false);
-						searchItem.collapseActionView();
-						return false;
-					}
-
-					@Override
-					public boolean onQueryTextChange(String newText) {
-						return false;
 					}
 				});
 	}

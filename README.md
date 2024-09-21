@@ -79,7 +79,7 @@ Thanks to all the open source libraries, contributors, and donors.
 - [square/retrofit](https://github.com/square/retrofit)
 - [google/gson](https://github.com/google/gson)
 - [square/okhttp](https://github.com/square/okhttp)
-- [square/picasso](https://github.com/square/picasso)
+- [bumptech/glide](https://github.com/bumptech/glide)
 - [noties/Markwon](https://github.com/noties/Markwon)
 - [ocpsoft/prettytime](https://github.com/ocpsoft/prettytime)
 - [ramseth001/TextDrawable](https://github.com/ramseth001/TextDrawable)

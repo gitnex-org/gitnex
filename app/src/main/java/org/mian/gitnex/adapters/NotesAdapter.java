@@ -200,4 +200,9 @@ public class NotesAdapter extends RecyclerView.Adapter<NotesAdapter.NotesViewHol
 		notesList = list;
 		notifyDataChanged();
 	}
+
+	public void clearAdapter() {
+		notesList.clear();
+		notifyDataChanged();
+	}
 }

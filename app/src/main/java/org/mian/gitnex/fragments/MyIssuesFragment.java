@@ -11,7 +11,9 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.view.inputmethod.EditorInfo;
 import androidx.annotation.NonNull;
+import androidx.core.view.MenuProvider;
 import androidx.fragment.app.Fragment;
+import androidx.lifecycle.Lifecycle;
 import androidx.lifecycle.ViewModelProvider;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import org.mian.gitnex.R;
@@ -38,7 +40,52 @@ public class MyIssuesFragment extends Fragment {
 			@NonNull LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
 
 		fragmentIssuesBinding = FragmentIssuesBinding.inflate(inflater, container, false);
-		setHasOptionsMenu(true);
+
+		requireActivity()
+				.addMenuProvider(
+						new MenuProvider() {
+							@Override
+							public void onCreateMenu(
+									@NonNull Menu menu1, @NonNull MenuInflater menuInflater) {
+
+								menu = menu1;
+								menuInflater.inflate(R.menu.search_menu, menu1);
+								menuInflater.inflate(R.menu.filter_menu, menu1);
+
+								MenuItem searchItem = menu1.findItem(R.id.action_search);
+								androidx.appcompat.widget.SearchView searchView =
+										(androidx.appcompat.widget.SearchView)
+												searchItem.getActionView();
+								assert searchView != null;
+								searchView.setImeOptions(EditorInfo.IME_ACTION_DONE);
+
+								searchView.setOnQueryTextListener(
+										new androidx.appcompat.widget.SearchView
+												.OnQueryTextListener() {
+
+											@Override
+											public boolean onQueryTextSubmit(String query) {
+												fetchDataAsync(query, state, assignedToMe);
+												searchView.setQuery(null, false);
+												searchItem.collapseActionView();
+												return false;
+											}
+
+											@Override
+											public boolean onQueryTextChange(String newText) {
+												return false;
+											}
+										});
+							}
+
+							@Override
+							public boolean onMenuItemSelected(@NonNull MenuItem menuItem) {
+								return false;
+							}
+						},
+						getViewLifecycleOwner(),
+						Lifecycle.State.RESUMED);
+
 		issuesViewModel = new ViewModelProvider(this).get(IssuesViewModel.class);
 
 		fragmentIssuesBinding.recyclerView.setHasFixedSize(true);
@@ -136,37 +183,5 @@ public class MyIssuesFragment extends Fragment {
 
 							fragmentIssuesBinding.progressBar.setVisibility(View.GONE);
 						});
-	}
-
-	@Override
-	public void onCreateOptionsMenu(@NonNull Menu menu, @NonNull MenuInflater inflater) {
-
-		this.menu = menu;
-		inflater.inflate(R.menu.search_menu, menu);
-		inflater.inflate(R.menu.filter_menu, menu);
-		super.onCreateOptionsMenu(menu, inflater);
-
-		MenuItem searchItem = menu.findItem(R.id.action_search);
-		androidx.appcompat.widget.SearchView searchView =
-				(androidx.appcompat.widget.SearchView) searchItem.getActionView();
-		assert searchView != null;
-		searchView.setImeOptions(EditorInfo.IME_ACTION_DONE);
-
-		searchView.setOnQueryTextListener(
-				new androidx.appcompat.widget.SearchView.OnQueryTextListener() {
-
-					@Override
-					public boolean onQueryTextSubmit(String query) {
-						fetchDataAsync(query, state, assignedToMe);
-						searchView.setQuery(null, false);
-						searchItem.collapseActionView();
-						return false;
-					}
-
-					@Override
-					public boolean onQueryTextChange(String newText) {
-						return false;
-					}
-				});
 	}
 }

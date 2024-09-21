@@ -14,7 +14,9 @@ import android.view.ViewGroup;
 import android.view.inputmethod.EditorInfo;
 import androidx.annotation.NonNull;
 import androidx.appcompat.widget.SearchView;
+import androidx.core.view.MenuProvider;
 import androidx.fragment.app.Fragment;
+import androidx.lifecycle.Lifecycle;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import com.google.android.material.dialog.MaterialAlertDialogBuilder;
 import java.util.ArrayList;
@@ -48,7 +50,68 @@ public class NotesFragment extends Fragment {
 		binding = FragmentNotesBinding.inflate(inflater, container, false);
 
 		ctx = getContext();
-		setHasOptionsMenu(true);
+
+		requireActivity()
+				.addMenuProvider(
+						new MenuProvider() {
+							@Override
+							public void onCreateMenu(
+									@NonNull Menu menu, @NonNull MenuInflater menuInflater) {
+
+								menuInflater.inflate(R.menu.reset_menu, menu);
+								menuInflater.inflate(R.menu.search_menu, menu);
+
+								MenuItem searchItem = menu.findItem(R.id.action_search);
+								SearchView searchView = (SearchView) searchItem.getActionView();
+								assert searchView != null;
+								searchView.setImeOptions(EditorInfo.IME_ACTION_DONE);
+
+								searchView.setOnQueryTextListener(
+										new SearchView.OnQueryTextListener() {
+
+											@Override
+											public boolean onQueryTextSubmit(String query) {
+
+												return false;
+											}
+
+											@Override
+											public boolean onQueryTextChange(String newText) {
+
+												filter(newText);
+												return false;
+											}
+										});
+							}
+
+							@Override
+							public boolean onMenuItemSelected(@NonNull MenuItem menuItem) {
+
+								if (menuItem.getItemId() == R.id.reset_menu_item) {
+
+									if (notesList.isEmpty()) {
+										Toasty.warning(
+												ctx,
+												getResources().getString(R.string.noDataFound));
+									} else {
+										new MaterialAlertDialogBuilder(ctx)
+												.setTitle(R.string.menuDeleteText)
+												.setMessage(R.string.notesAllDeletionMessage)
+												.setPositiveButton(
+														R.string.menuDeleteText,
+														(dialog, which) -> {
+															deleteAllNotes();
+															dialog.dismiss();
+														})
+												.setNeutralButton(R.string.cancelButton, null)
+												.show();
+									}
+								}
+								return false;
+							}
+						},
+						getViewLifecycleOwner(),
+						Lifecycle.State.RESUMED);
 
 		((MainActivity) requireActivity())
 				.setActionBarTitle(getResources().getString(R.string.navNotes));
@@ -142,66 +205,11 @@ public class NotesFragment extends Fragment {
 
 			notesApi.deleteAllNotes();
 			notesList.clear();
-			adapter.notifyDataChanged();
+			adapter.clearAdapter();
 			Toasty.success(
 					ctx, ctx.getResources().getQuantityString(R.plurals.noteDeleteMessage, 2));
 		} else {
 			Toasty.warning(ctx, getResources().getString(R.string.noDataFound));
 		}
-	}
-
-	@Override
-	public void onCreateOptionsMenu(@NonNull Menu menu, @NonNull MenuInflater inflater) {
-
-		inflater.inflate(R.menu.reset_menu, menu);
-		inflater.inflate(R.menu.search_menu, menu);
-		super.onCreateOptionsMenu(menu, inflater);
-
-		MenuItem searchItem = menu.findItem(R.id.action_search);
-		SearchView searchView = (SearchView) searchItem.getActionView();
-		assert searchView != null;
-		searchView.setImeOptions(EditorInfo.IME_ACTION_DONE);
-
-		searchView.setOnQueryTextListener(
-				new SearchView.OnQueryTextListener() {
-
-					@Override
-					public boolean onQueryTextSubmit(String query) {
-
-						return false;
-					}
-
-					@Override
-					public boolean onQueryTextChange(String newText) {
-
-						filter(newText);
-						return false;
-					}
-				});
-	}
-
-	@Override
-	public boolean onOptionsItemSelected(MenuItem item) {
-
-		if (item.getItemId() == R.id.reset_menu_item) {
-
-			if (notesList.isEmpty()) {
-				Toasty.warning(ctx, getResources().getString(R.string.noDataFound));
-			} else {
-				new MaterialAlertDialogBuilder(ctx)
-						.setTitle(R.string.menuDeleteText)
-						.setMessage(R.string.notesAllDeletionMessage)
-						.setPositiveButton(
-								R.string.menuDeleteText,
-								(dialog, which) -> {
-									deleteAllNotes();
-									dialog.dismiss();
-								})
-						.setNeutralButton(R.string.cancelButton, null)
-						.show();
-			}
-		}
-
-		return super.onOptionsItemSelected(item);
 	}
 }

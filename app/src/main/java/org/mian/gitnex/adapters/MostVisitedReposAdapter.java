@@ -159,4 +159,9 @@ public class MostVisitedReposAdapter
 		mostVisitedReposList = list;
 		notifyDataChanged();
 	}
+
+	public void clearAdapter() {
+		mostVisitedReposList.clear();
+		notifyDataChanged();
+	}
 }

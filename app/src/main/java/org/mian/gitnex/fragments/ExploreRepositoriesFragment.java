@@ -12,7 +12,9 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.view.inputmethod.EditorInfo;
 import androidx.annotation.NonNull;
+import androidx.core.view.MenuProvider;
 import androidx.fragment.app.Fragment;
+import androidx.lifecycle.Lifecycle;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import com.google.android.material.dialog.MaterialAlertDialogBuilder;
 import java.util.ArrayList;
@@ -60,13 +62,87 @@ public class ExploreRepositoriesFragment extends Fragment {
 			@NonNull LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
 
 		viewBinding = FragmentExploreRepoBinding.inflate(inflater, container, false);
-		setHasOptionsMenu(true);
 
 		context = getContext();
 		dataList = new ArrayList<>();
 		adapter = new ExploreRepositoriesAdapter(dataList, context);
 
 		resultLimit = Constants.getCurrentResultLimit(context);
+
+		requireActivity()
+				.addMenuProvider(
+						new MenuProvider() {
+							@Override
+							public void onCreateMenu(
+									@NonNull Menu menu, @NonNull MenuInflater menuInflater) {
+
+								menu.clear();
+								menuInflater.inflate(R.menu.search_menu, menu);
+								menuInflater.inflate(R.menu.filter_menu_explore, menu);
+								MenuItem filter = menu.findItem(R.id.filter_explore);
+
+								filter.setOnMenuItemClickListener(
+										filter_ -> {
+											showFilterOptions();
+											return false;
+										});
+
+								MenuItem searchItem = menu.findItem(R.id.action_search);
+								androidx.appcompat.widget.SearchView searchView =
+										(androidx.appcompat.widget.SearchView)
+												searchItem.getActionView();
+								assert searchView != null;
+								searchView.setImeOptions(EditorInfo.IME_ACTION_DONE);
+
+								searchView.setOnQueryTextListener(
+										new androidx.appcompat.widget.SearchView
+												.OnQueryTextListener() {
+
+											@Override
+											public boolean onQueryTextSubmit(String query) {
+												viewBinding.progressBar.setVisibility(View.VISIBLE);
+												loadInitial(query, resultLimit);
+												adapter.setLoadMoreListener(
+														() ->
+																viewBinding.recyclerViewReposSearch
+																		.post(
+																				() -> {
+																					if (dataList
+																											.size()
+																									== resultLimit
+																							|| pageSize
+																									== resultLimit) {
+																						int page =
+																								(dataList
+																														.size()
+																												+ resultLimit)
+																										/ resultLimit;
+																						loadMore(
+																								query,
+																								resultLimit,
+																								page);
+																					}
+																				}));
+												searchQuery = query;
+												searchView.setQuery(null, false);
+												searchItem.collapseActionView();
+												return false;
+											}
+
+											@Override
+											public boolean onQueryTextChange(String newText) {
+												return false;
+											}
+										});
+							}
+
+							@Override
+							public boolean onMenuItemSelected(@NonNull MenuItem menuItem) {
+								return false;
+							}
+						},
+						getViewLifecycleOwner(),
+						Lifecycle.State.RESUMED);
 
 		viewBinding.pullToRefresh.setOnRefreshListener(
 				() ->
@@ -127,7 +203,7 @@ public class ExploreRepositoriesFragment extends Fragment {
 							@NonNull Call<SearchResults> call,
 							@NonNull Response<SearchResults> response) {
 						if (response.isSuccessful()) {
-							if (response.body() != null && response.body().getData().size() > 0) {
+							if (response.body() != null && !response.body().getData().isEmpty()) {
 								dataList.clear();
 								dataList.addAll(response.body().getData());
 								adapter.notifyDataChanged();
@@ -195,7 +271,7 @@ public class ExploreRepositoriesFragment extends Fragment {
 						if (response.isSuccessful()) {
 							assert response.body() != null;
 							List<Repository> result = response.body().getData();
-							if (result.size() > 0) {
+							if (!result.isEmpty()) {
 								pageSize = result.size();
 								dataList.addAll(result);
 							} else {
@@ -224,58 +300,6 @@ public class ExploreRepositoriesFragment extends Fragment {
 								requireActivity()
 										.getResources()
 										.getString(R.string.genericServerResponseError));
-					}
-				});
-	}
-
-	@Override
-	public void onCreateOptionsMenu(@NonNull Menu menu, @NonNull MenuInflater inflater) {
-
-		menu.clear();
-		inflater.inflate(R.menu.search_menu, menu);
-		inflater.inflate(R.menu.filter_menu_explore, menu);
-		super.onCreateOptionsMenu(menu, inflater);
-		MenuItem filter = menu.findItem(R.id.filter_explore);
-
-		filter.setOnMenuItemClickListener(
-				filter_ -> {
-					showFilterOptions();
-					return false;
-				});
-
-		MenuItem searchItem = menu.findItem(R.id.action_search);
-		androidx.appcompat.widget.SearchView searchView =
-				(androidx.appcompat.widget.SearchView) searchItem.getActionView();
-		searchView.setImeOptions(EditorInfo.IME_ACTION_DONE);
-
-		searchView.setOnQueryTextListener(
-				new androidx.appcompat.widget.SearchView.OnQueryTextListener() {
-
-					@Override
-					public boolean onQueryTextSubmit(String query) {
-						viewBinding.progressBar.setVisibility(View.VISIBLE);
-						loadInitial(query, resultLimit);
-						adapter.setLoadMoreListener(
-								() ->
-										viewBinding.recyclerViewReposSearch.post(
-												() -> {
-													if (dataList.size() == resultLimit
-															|| pageSize == resultLimit) {
-														int page =
-																(dataList.size() + resultLimit)
-																		/ resultLimit;
-														loadMore(query, resultLimit, page);
-													}
-												}));
-						searchQuery = query;
-						searchView.setQuery(null, false);
-						searchItem.collapseActionView();
-						return false;
-					}
-
-					@Override
-					public boolean onQueryTextChange(String newText) {
-						return false;
 					}
 				});
 	}

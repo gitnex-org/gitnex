@@ -114,6 +114,11 @@ public class AttachmentsAdapter extends RecyclerView.Adapter<AttachmentsAdapter.
 		notifyItemRangeChanged(position, attachmentsList.size());
 	}
 
+	public void clearAdapter() {
+		attachmentsList.clear();
+		notifyDataChanged();
+	}
+
 	public interface AttachmentsReceiverListener {
 		void setAttachmentsData(Uri myData);
 	}

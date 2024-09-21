@@ -14,11 +14,15 @@ import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.load.engine.DiskCacheStrategy;
+import com.vdurmont.emoji.EmojiParser;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
+import org.apache.commons.lang3.StringUtils;
 import org.gitnex.tea4j.v2.models.Organization;
 import org.mian.gitnex.R;
 import org.mian.gitnex.activities.OrganizationDetailActivity;
+import org.mian.gitnex.helpers.Markdown;
 
 /**
  * @author M M Arif
@@ -179,7 +183,12 @@ public class OrganizationsListAdapter extends RecyclerView.Adapter<RecyclerView.
 
 			if (!org.getDescription().isEmpty()) {
 				orgDescription.setVisibility(View.VISIBLE);
-				orgDescription.setText(org.getDescription());
+				Markdown.render(
+						context,
+						EmojiParser.parseToUnicode(
+								Objects.requireNonNull(
+										StringUtils.substring(org.getDescription(), 0, 280))),
+						orgDescription);
 			} else {
 				orgDescription.setVisibility(View.GONE);
 			}

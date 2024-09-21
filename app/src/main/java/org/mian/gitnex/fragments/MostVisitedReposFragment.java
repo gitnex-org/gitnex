@@ -13,7 +13,9 @@ import android.view.ViewGroup;
 import android.view.inputmethod.EditorInfo;
 import androidx.annotation.NonNull;
 import androidx.appcompat.widget.SearchView;
+import androidx.core.view.MenuProvider;
 import androidx.fragment.app.Fragment;
+import androidx.lifecycle.Lifecycle;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import com.google.android.material.dialog.MaterialAlertDialogBuilder;
 import java.util.ArrayList;
@@ -48,7 +50,6 @@ public class MostVisitedReposFragment extends Fragment {
 		fragmentDraftsBinding = FragmentDraftsBinding.inflate(inflater, container, false);
 
 		ctx = getContext();
-		setHasOptionsMenu(true);
 
 		((MainActivity) requireActivity())
 				.setActionBarTitle(getResources().getString(R.string.navMostVisited));
@@ -75,6 +76,69 @@ public class MostVisitedReposFragment extends Fragment {
 
 		fetchDataAsync(currentActiveAccountId);
 
+		requireActivity()
+				.addMenuProvider(
+						new MenuProvider() {
+							@Override
+							public void onCreateMenu(
+									@NonNull Menu menu, @NonNull MenuInflater menuInflater) {
+
+								menuInflater.inflate(R.menu.reset_menu, menu);
+								menuInflater.inflate(R.menu.search_menu, menu);
+
+								MenuItem searchItem = menu.findItem(R.id.action_search);
+								SearchView searchView = (SearchView) searchItem.getActionView();
+								Objects.requireNonNull(searchView)
+										.setImeOptions(EditorInfo.IME_ACTION_DONE);
+
+								searchView.setOnQueryTextListener(
+										new SearchView.OnQueryTextListener() {
+
+											@Override
+											public boolean onQueryTextSubmit(String query) {
+
+												return false;
+											}
+
+											@Override
+											public boolean onQueryTextChange(String newText) {
+
+												filter(newText);
+												return false;
+											}
+										});
+							}
+
+							@Override
+							public boolean onMenuItemSelected(@NonNull MenuItem menuItem) {
+
+								if (menuItem.getItemId() == R.id.reset_menu_item) {
+
+									if (mostVisitedReposList.isEmpty()) {
+										Toasty.warning(
+												ctx,
+												getResources().getString(R.string.noDataFound));
+									} else {
+										new MaterialAlertDialogBuilder(ctx)
+												.setTitle(R.string.reset)
+												.setMessage(R.string.resetCounterAllDialogMessage)
+												.setPositiveButton(
+														R.string.reset,
+														(dialog, which) -> {
+															resetAllRepositoryCounter(
+																	currentActiveAccountId);
+															dialog.dismiss();
+														})
+												.setNeutralButton(R.string.cancelButton, null)
+												.show();
+									}
+								}
+								return false;
+							}
+						},
+						getViewLifecycleOwner(),
+						Lifecycle.State.RESUMED);
+
 		return fragmentDraftsBinding.getRoot();
 	}
 
@@ -87,7 +151,7 @@ public class MostVisitedReposFragment extends Fragment {
 						mostVisitedRepos -> {
 							fragmentDraftsBinding.pullToRefresh.setRefreshing(false);
 							assert mostVisitedRepos != null;
-							if (mostVisitedRepos.size() > 0) {
+							if (!mostVisitedRepos.isEmpty()) {
 
 								mostVisitedReposList.clear();
 								fragmentDraftsBinding.noData.setVisibility(View.GONE);
@@ -103,70 +167,16 @@ public class MostVisitedReposFragment extends Fragment {
 
 	public void resetAllRepositoryCounter(int accountId) {
 
-		if (mostVisitedReposList.size() > 0) {
+		if (!mostVisitedReposList.isEmpty()) {
 
 			Objects.requireNonNull(BaseApi.getInstance(ctx, RepositoriesApi.class))
 					.resetAllRepositoryMostVisited(accountId);
 			mostVisitedReposList.clear();
-			adapter.notifyDataChanged();
+			adapter.clearAdapter();
 			Toasty.success(ctx, getResources().getString(R.string.resetMostReposCounter));
 		} else {
 			Toasty.warning(ctx, getResources().getString(R.string.noDataFound));
 		}
-	}
-
-	@Override
-	public void onCreateOptionsMenu(@NonNull Menu menu, @NonNull MenuInflater inflater) {
-
-		inflater.inflate(R.menu.reset_menu, menu);
-		inflater.inflate(R.menu.search_menu, menu);
-		super.onCreateOptionsMenu(menu, inflater);
-
-		MenuItem searchItem = menu.findItem(R.id.action_search);
-		SearchView searchView = (SearchView) searchItem.getActionView();
-		Objects.requireNonNull(searchView).setImeOptions(EditorInfo.IME_ACTION_DONE);
-
-		searchView.setOnQueryTextListener(
-				new SearchView.OnQueryTextListener() {
-
-					@Override
-					public boolean onQueryTextSubmit(String query) {
-
-						return false;
-					}
-
-					@Override
-					public boolean onQueryTextChange(String newText) {
-
-						filter(newText);
-						return false;
-					}
-				});
-	}
-
-	@Override
-	public boolean onOptionsItemSelected(MenuItem item) {
-
-		if (item.getItemId() == R.id.reset_menu_item) {
-
-			if (mostVisitedReposList.size() == 0) {
-				Toasty.warning(ctx, getResources().getString(R.string.noDataFound));
-			} else {
-				new MaterialAlertDialogBuilder(ctx)
-						.setTitle(R.string.reset)
-						.setMessage(R.string.resetCounterAllDialogMessage)
-						.setPositiveButton(
-								R.string.reset,
-								(dialog, which) -> {
-									resetAllRepositoryCounter(currentActiveAccountId);
-									dialog.dismiss();
-								})
-						.setNeutralButton(R.string.cancelButton, null)
-						.show();
-			}
-		}
-
-		return super.onOptionsItemSelected(item);
 	}
 
 	private void filter(String text) {
