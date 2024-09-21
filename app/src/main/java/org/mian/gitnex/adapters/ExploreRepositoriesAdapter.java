@@ -14,14 +14,14 @@ import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 import com.amulyakhare.textdrawable.TextDrawable;
 import com.amulyakhare.textdrawable.util.ColorGenerator;
+import com.bumptech.glide.Glide;
+import com.bumptech.glide.load.engine.DiskCacheStrategy;
 import java.util.List;
 import java.util.Locale;
 import org.mian.gitnex.R;
 import org.mian.gitnex.activities.RepoDetailActivity;
-import org.mian.gitnex.clients.PicassoService;
 import org.mian.gitnex.helpers.AppUtil;
 import org.mian.gitnex.helpers.ClickListener;
-import org.mian.gitnex.helpers.RoundedTransformation;
 import org.mian.gitnex.helpers.TimeHelper;
 import org.mian.gitnex.helpers.TinyDB;
 import org.mian.gitnex.helpers.contexts.RepositoryContext;
@@ -129,7 +129,6 @@ public class ExploreRepositoriesAdapter extends RecyclerView.Adapter<RecyclerVie
 		void bindData(org.gitnex.tea4j.v2.models.Repository userRepositories) {
 			this.userRepositories = userRepositories;
 
-			int imgRadius = AppUtil.getPixelsFromDensity(context, 60);
 			Locale locale = context.getResources().getConfiguration().locale;
 
 			orgName.setText(userRepositories.getFullName().split("/")[0]);
@@ -144,21 +143,19 @@ public class ExploreRepositoriesAdapter extends RecyclerView.Adapter<RecyclerVie
 					TextDrawable.builder()
 							.beginConfig()
 							.useFont(Typeface.DEFAULT)
-							.fontSize(18)
+							.fontSize(28)
 							.toUpperCase()
-							.width(28)
-							.height(28)
+							.width(44)
+							.height(44)
 							.endConfig()
-							.buildRoundRect(firstCharacter, color, 14);
+							.buildRoundRect(firstCharacter, color, 12);
 
 			if (userRepositories.getAvatarUrl() != null) {
 				if (!userRepositories.getAvatarUrl().isEmpty()) {
-					PicassoService.getInstance(context)
-							.get()
+					Glide.with(context)
 							.load(userRepositories.getAvatarUrl())
+							.diskCacheStrategy(DiskCacheStrategy.ALL)
 							.placeholder(R.drawable.loader_animated)
-							.transform(new RoundedTransformation(imgRadius, 0))
-							.resize(120, 120)
 							.centerCrop()
 							.into(image);
 				} else {

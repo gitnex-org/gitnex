@@ -15,6 +15,8 @@ import androidx.activity.result.contract.ActivityResultContracts;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AlertDialog;
 import androidx.fragment.app.Fragment;
+import com.bumptech.glide.Glide;
+import com.bumptech.glide.load.engine.DiskCacheStrategy;
 import com.google.android.material.dialog.MaterialAlertDialogBuilder;
 import java.io.FileNotFoundException;
 import java.io.IOException;
@@ -29,7 +31,6 @@ import org.gitnex.tea4j.v2.models.UserSettingsOptions;
 import org.mian.gitnex.R;
 import org.mian.gitnex.activities.BaseActivity;
 import org.mian.gitnex.activities.ProfileActivity;
-import org.mian.gitnex.clients.PicassoService;
 import org.mian.gitnex.clients.RetrofitClient;
 import org.mian.gitnex.databinding.CustomEditAvatarDialogBinding;
 import org.mian.gitnex.databinding.CustomEditProfileBinding;
@@ -39,7 +40,6 @@ import org.mian.gitnex.helpers.AppDatabaseSettings;
 import org.mian.gitnex.helpers.AppUtil;
 import org.mian.gitnex.helpers.ClickListener;
 import org.mian.gitnex.helpers.Markdown;
-import org.mian.gitnex.helpers.RoundedTransformation;
 import org.mian.gitnex.helpers.TimeHelper;
 import org.mian.gitnex.helpers.Toasty;
 import retrofit2.Call;
@@ -60,7 +60,6 @@ public class DetailFragment extends Fragment {
 	private MaterialAlertDialogBuilder materialAlertDialogBuilder;
 	private AlertDialog dialogEditSettings;
 	private AlertDialog dialogEditAvatar;
-	private int imgRadius;
 	private static Uri avatarUri = null;
 	public static boolean refProfile = false;
 	public boolean itsMe = false;
@@ -90,7 +89,6 @@ public class DetailFragment extends Fragment {
 		binding = FragmentProfileDetailBinding.inflate(inflater, container, false);
 		context = getContext();
 		locale = getResources().getConfiguration().locale;
-		imgRadius = AppUtil.getPixelsFromDensity(context, 3);
 
 		getProfileDetail(username);
 		getProfileRepository(username);
@@ -166,12 +164,10 @@ public class DetailFragment extends Fragment {
 		View view = customEditAvatarDialogBinding.getRoot();
 		materialAlertDialogBuilder.setView(view);
 
-		PicassoService.getInstance(context)
-				.get()
+		Glide.with(context)
 				.load(avatarUri)
-				.transform(new RoundedTransformation(imgRadius, 0))
+				.diskCacheStrategy(DiskCacheStrategy.ALL)
 				.placeholder(R.drawable.loader_animated)
-				.resize(180, 180)
 				.centerCrop()
 				.into(customEditAvatarDialogBinding.userAvatar);
 
@@ -425,12 +421,10 @@ public class DetailFragment extends Fragment {
 										}
 									}
 
-									PicassoService.getInstance(context)
-											.get()
+									Glide.with(context)
 											.load(response.body().getAvatarUrl())
-											.transform(new RoundedTransformation(imgRadius, 0))
+											.diskCacheStrategy(DiskCacheStrategy.ALL)
 											.placeholder(R.drawable.loader_animated)
-											.resize(120, 120)
 											.centerCrop()
 											.into(binding.userAvatar);
 

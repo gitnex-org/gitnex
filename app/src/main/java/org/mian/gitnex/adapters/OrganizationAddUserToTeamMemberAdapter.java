@@ -11,16 +11,16 @@ import android.widget.ImageView;
 import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
+import com.bumptech.glide.Glide;
+import com.bumptech.glide.load.engine.DiskCacheStrategy;
 import java.util.List;
 import org.gitnex.tea4j.v2.models.User;
 import org.mian.gitnex.R;
 import org.mian.gitnex.activities.BaseActivity;
 import org.mian.gitnex.activities.ProfileActivity;
-import org.mian.gitnex.clients.PicassoService;
 import org.mian.gitnex.clients.RetrofitClient;
 import org.mian.gitnex.helpers.AlertDialogs;
 import org.mian.gitnex.helpers.AppUtil;
-import org.mian.gitnex.helpers.RoundedTransformation;
 import org.mian.gitnex.helpers.Toasty;
 import retrofit2.Call;
 import retrofit2.Callback;
@@ -61,7 +61,6 @@ public class OrganizationAddUserToTeamMemberAdapter
 
 		User currentItem = usersSearchList.get(position);
 		holder.userInfo = currentItem;
-		int imgRadius = AppUtil.getPixelsFromDensity(context, 3);
 
 		if (!currentItem.getFullName().isEmpty()) {
 
@@ -77,12 +76,10 @@ public class OrganizationAddUserToTeamMemberAdapter
 				context.getResources().getString(R.string.usernameWithAt, currentItem.getLogin()));
 
 		if (!currentItem.getAvatarUrl().isEmpty()) {
-			PicassoService.getInstance(context)
-					.get()
+			Glide.with(context)
 					.load(currentItem.getAvatarUrl())
+					.diskCacheStrategy(DiskCacheStrategy.ALL)
 					.placeholder(R.drawable.loader_animated)
-					.transform(new RoundedTransformation(imgRadius, 0))
-					.resize(120, 120)
 					.centerCrop()
 					.into(holder.userAvatar);
 		}

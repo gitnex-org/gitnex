@@ -13,6 +13,8 @@ import android.widget.ImageView;
 import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
+import com.bumptech.glide.Glide;
+import com.bumptech.glide.load.engine.DiskCacheStrategy;
 import com.google.android.material.dialog.MaterialAlertDialogBuilder;
 import io.mikael.urlbuilder.UrlBuilder;
 import java.util.List;
@@ -20,13 +22,11 @@ import java.util.Objects;
 import org.gitnex.tea4j.v2.models.NotificationCount;
 import org.mian.gitnex.R;
 import org.mian.gitnex.activities.AddNewAccountActivity;
-import org.mian.gitnex.clients.PicassoService;
 import org.mian.gitnex.clients.RetrofitClient;
 import org.mian.gitnex.database.api.BaseApi;
 import org.mian.gitnex.database.api.UserAccountsApi;
 import org.mian.gitnex.database.models.UserAccount;
 import org.mian.gitnex.helpers.AppUtil;
-import org.mian.gitnex.helpers.RoundedTransformation;
 import org.mian.gitnex.helpers.TinyDB;
 import org.mian.gitnex.helpers.Toasty;
 import org.mian.gitnex.helpers.UrlHelper;
@@ -125,14 +125,10 @@ public class UserAccountsAdapter
 			holder.accountUrl.setText(context.getString(R.string.notLoggedIn, url));
 		}
 
-		int imgRadius = AppUtil.getPixelsFromDensity(context, 60);
-
-		PicassoService.getInstance(context)
-				.get()
+		Glide.with(context)
 				.load(UrlHelper.appendPath(currentItem.getInstanceUrl(), "assets/img/favicon.png"))
+				.diskCacheStrategy(DiskCacheStrategy.ALL)
 				.placeholder(R.drawable.loader_animated)
-				.transform(new RoundedTransformation(imgRadius, 0))
-				.resize(120, 120)
 				.centerCrop()
 				.into(holder.repoAvatar);
 

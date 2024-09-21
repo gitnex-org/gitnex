@@ -24,6 +24,7 @@ import io.noties.markwon.ext.tables.TablePlugin;
 import io.noties.markwon.ext.tasklist.TaskListPlugin;
 import io.noties.markwon.html.HtmlPlugin;
 import io.noties.markwon.image.ImagesPlugin;
+import io.noties.markwon.image.glide.GlideImagesPlugin;
 import io.noties.markwon.image.network.OkHttpNetworkSchemeHandler;
 import io.noties.markwon.inlineparser.InlineProcessor;
 import io.noties.markwon.inlineparser.MarkwonInlineParser;
@@ -189,6 +190,7 @@ public class Markdown {
 									MovementMethodPlugin.create(TableAwareMovementMethod.create()))
 							.usePlugin(TaskListPlugin.create(context))
 							.usePlugin(StrikethroughPlugin.create())
+							.usePlugin(GlideImagesPlugin.create(context))
 							.usePlugin(ImagesPlugin.create())
 							.usePlugin(
 									new AbstractMarkwonPlugin() {
@@ -342,6 +344,7 @@ public class Markdown {
 									MovementMethodPlugin.create(TableAwareMovementMethod.create()))
 							.usePlugin(TaskListPlugin.create(context))
 							.usePlugin(StrikethroughPlugin.create())
+							.usePlugin(GlideImagesPlugin.create(context))
 							.usePlugin(ImagesPlugin.create())
 							.usePlugin(
 									new AbstractMarkwonPlugin() {

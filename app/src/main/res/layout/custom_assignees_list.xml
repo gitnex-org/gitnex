@@ -17,12 +17,12 @@
 
     <com.google.android.material.card.MaterialCardView
         style="?attr/materialCardViewFilledStyle"
-        android:layout_width="@dimen/dimen20dp"
-        android:layout_height="@dimen/dimen20dp"
+        android:layout_width="@dimen/dimen24dp"
+        android:layout_height="@dimen/dimen24dp"
         android:layout_marginStart="@dimen/dimen44dp"
         android:layout_marginTop="@dimen/dimen8dp"
         android:layout_marginEnd="@dimen/dimen4dp"
-        app:cardCornerRadius="@dimen/dimen24dp"
+        app:cardCornerRadius="@dimen/dimen6dp"
         app:cardElevation="@dimen/dimen0dp">
 
         <ImageView

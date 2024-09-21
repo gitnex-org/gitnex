@@ -301,12 +301,12 @@ public class WikiListAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
 					TextDrawable.builder()
 							.beginConfig()
 							.useFont(Typeface.DEFAULT)
-							.fontSize(18)
+							.fontSize(28)
 							.toUpperCase()
-							.width(28)
-							.height(28)
+							.width(44)
+							.height(44)
 							.endConfig()
-							.buildRoundRect(firstCharacter, color, 14);
+							.buildRoundRect(firstCharacter, color, 12);
 			avatar.setImageDrawable(drawable);
 
 			if (!((RepoDetailActivity) ctx).repository.getPermissions().isPush()) {

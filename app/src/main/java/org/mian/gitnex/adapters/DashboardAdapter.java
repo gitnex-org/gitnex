@@ -14,6 +14,8 @@ import androidx.annotation.NonNull;
 import androidx.core.content.res.ResourcesCompat;
 import androidx.core.text.HtmlCompat;
 import androidx.recyclerview.widget.RecyclerView;
+import com.bumptech.glide.Glide;
+import com.bumptech.glide.load.engine.DiskCacheStrategy;
 import com.google.android.material.card.MaterialCardView;
 import com.vdurmont.emoji.EmojiParser;
 import java.util.List;
@@ -28,10 +30,8 @@ import org.mian.gitnex.R;
 import org.mian.gitnex.activities.IssueDetailActivity;
 import org.mian.gitnex.activities.ProfileActivity;
 import org.mian.gitnex.activities.RepoDetailActivity;
-import org.mian.gitnex.clients.PicassoService;
 import org.mian.gitnex.helpers.AppUtil;
 import org.mian.gitnex.helpers.ClickListener;
-import org.mian.gitnex.helpers.RoundedTransformation;
 import org.mian.gitnex.helpers.TimeHelper;
 import org.mian.gitnex.helpers.TinyDB;
 import org.mian.gitnex.helpers.contexts.IssueContext;
@@ -363,14 +363,10 @@ public class DashboardAdapter extends RecyclerView.Adapter<RecyclerView.ViewHold
 			this.activityObject = activity;
 			Locale locale = context.getResources().getConfiguration().locale;
 
-			int imgRadius = AppUtil.getPixelsFromDensity(context, 3);
-
-			PicassoService.getInstance(context)
-					.get()
+			Glide.with(context)
 					.load(activity.getActUser().getAvatarUrl())
+					.diskCacheStrategy(DiskCacheStrategy.ALL)
 					.placeholder(R.drawable.loader_animated)
-					.transform(new RoundedTransformation(imgRadius, 0))
-					.resize(120, 120)
 					.centerCrop()
 					.into(userAvatar);
 

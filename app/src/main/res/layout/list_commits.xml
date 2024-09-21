@@ -49,12 +49,12 @@
 
                     <com.google.android.material.card.MaterialCardView
                         android:id="@+id/commitAuthorAvatarFrame"
-                        android:layout_width="@dimen/dimen24dp"
-                        android:layout_height="@dimen/dimen24dp"
+                        android:layout_width="@dimen/dimen32dp"
+                        android:layout_height="@dimen/dimen32dp"
                         style="?attr/materialCardViewElevatedStyle"
                         app:cardElevation="@dimen/dimen0dp"
                         android:layout_marginEnd="@dimen/dimen6dp"
-                        app:cardCornerRadius="@dimen/dimen12dp">
+                        app:cardCornerRadius="@dimen/dimen8dp">
 
                         <ImageView
                             android:id="@+id/commitAuthorAvatar"
@@ -67,12 +67,12 @@
 
                     <com.google.android.material.card.MaterialCardView
                         android:id="@+id/commitCommitterAvatarFrame"
-                        android:layout_width="@dimen/dimen24dp"
-                        android:layout_height="@dimen/dimen24dp"
+                        android:layout_width="@dimen/dimen32dp"
+                        android:layout_height="@dimen/dimen32dp"
                         style="?attr/materialCardViewElevatedStyle"
                         app:cardElevation="@dimen/dimen0dp"
                         android:layout_marginEnd="@dimen/dimen6dp"
-                        app:cardCornerRadius="@dimen/dimen12dp">
+                        app:cardCornerRadius="@dimen/dimen8dp">
 
                         <ImageView
                             android:id="@+id/commitCommitterAvatar"

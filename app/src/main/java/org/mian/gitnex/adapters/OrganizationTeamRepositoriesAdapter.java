@@ -13,16 +13,15 @@ import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 import com.amulyakhare.textdrawable.TextDrawable;
 import com.amulyakhare.textdrawable.util.ColorGenerator;
+import com.bumptech.glide.Glide;
+import com.bumptech.glide.load.engine.DiskCacheStrategy;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 import org.gitnex.tea4j.v2.models.Repository;
 import org.mian.gitnex.R;
-import org.mian.gitnex.clients.PicassoService;
 import org.mian.gitnex.clients.RetrofitClient;
 import org.mian.gitnex.helpers.AlertDialogs;
-import org.mian.gitnex.helpers.AppUtil;
-import org.mian.gitnex.helpers.RoundedTransformation;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
@@ -125,7 +124,6 @@ public class OrganizationTeamRepositoriesAdapter
 
 		Repository currentItem = reposList.get(position);
 		holder.repoInfo = currentItem;
-		int imgRadius = AppUtil.getPixelsFromDensity(context, 60);
 
 		holder.name.setText(currentItem.getName());
 
@@ -133,24 +131,22 @@ public class OrganizationTeamRepositoriesAdapter
 				TextDrawable.builder()
 						.beginConfig()
 						.useFont(Typeface.DEFAULT)
-						.fontSize(18)
+						.fontSize(28)
 						.toUpperCase()
-						.width(28)
-						.height(28)
+						.width(44)
+						.height(44)
 						.endConfig()
 						.buildRoundRect(
 								String.valueOf(currentItem.getFullName().charAt(0)),
 								ColorGenerator.Companion.getMATERIAL()
 										.getColor(currentItem.getName()),
-								14);
+								12);
 
 		if (currentItem.getAvatarUrl() != null && !currentItem.getAvatarUrl().isEmpty()) {
-			PicassoService.getInstance(context)
-					.get()
+			Glide.with(context)
 					.load(currentItem.getAvatarUrl())
+					.diskCacheStrategy(DiskCacheStrategy.ALL)
 					.placeholder(R.drawable.loader_animated)
-					.transform(new RoundedTransformation(imgRadius, 0))
-					.resize(120, 120)
 					.centerCrop()
 					.into(holder.repoAvatar);
 		} else {

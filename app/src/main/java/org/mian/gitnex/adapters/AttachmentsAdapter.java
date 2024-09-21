@@ -10,12 +10,13 @@ import android.widget.ImageView;
 import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
+import com.bumptech.glide.Glide;
+import com.bumptech.glide.load.engine.DiskCacheStrategy;
 import com.google.android.material.card.MaterialCardView;
 import java.util.Arrays;
 import java.util.List;
 import org.apache.commons.io.FilenameUtils;
 import org.mian.gitnex.R;
-import org.mian.gitnex.clients.PicassoService;
 import org.mian.gitnex.helpers.attachments.AttachmentsModel;
 
 /**
@@ -58,11 +59,10 @@ public class AttachmentsAdapter extends RecyclerView.Adapter<AttachmentsAdapter.
 
 			holder.attachmentViewFrame.setVisibility(View.VISIBLE);
 
-			PicassoService.getInstance(ctx)
-					.get()
+			Glide.with(ctx)
 					.load(currentItem.getUri())
+					.diskCacheStrategy(DiskCacheStrategy.ALL)
 					.placeholder(R.drawable.loader_animated)
-					.resize(120, 120)
 					.centerCrop()
 					.error(R.drawable.ic_close)
 					.into(holder.attachment);

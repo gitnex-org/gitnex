@@ -20,6 +20,8 @@ import androidx.drawerlayout.widget.DrawerLayout;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 import androidx.recyclerview.widget.RecyclerView;
+import com.bumptech.glide.Glide;
+import com.bumptech.glide.load.engine.DiskCacheStrategy;
 import com.google.android.material.card.MaterialCardView;
 import com.google.android.material.dialog.MaterialAlertDialogBuilder;
 import com.google.android.material.navigation.NavigationView;
@@ -32,7 +34,6 @@ import org.gitnex.tea4j.v2.models.ServerVersion;
 import org.gitnex.tea4j.v2.models.User;
 import org.mian.gitnex.R;
 import org.mian.gitnex.adapters.UserAccountsNavAdapter;
-import org.mian.gitnex.clients.PicassoService;
 import org.mian.gitnex.clients.RetrofitClient;
 import org.mian.gitnex.database.api.BaseApi;
 import org.mian.gitnex.database.api.UserAccountsApi;
@@ -268,11 +269,10 @@ public class MainActivity extends BaseActivity
 
 							if (!userAvatarNav.isEmpty()) {
 
-								PicassoService.getInstance(ctx)
-										.get()
+								Glide.with(ctx)
 										.load(userAvatarNav)
+										.diskCacheStrategy(DiskCacheStrategy.ALL)
 										.placeholder(R.drawable.loader_animated)
-										.resize(160, 160)
 										.centerCrop()
 										.into(userAvatar);
 							}

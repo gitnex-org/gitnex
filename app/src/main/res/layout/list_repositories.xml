@@ -39,14 +39,22 @@
                 android:orientation="horizontal"
                 tools:ignore="UseCompoundDrawables">
 
-                <ImageView
-                    android:id="@+id/imageAvatar"
-                    android:layout_width="@dimen/dimen24dp"
-                    android:layout_height="@dimen/dimen24dp"
-                    android:layout_marginStart="@dimen/dimen0dp"
-                    android:layout_marginEnd="@dimen/dimen10dp"
-                    android:contentDescription="@string/repoContentAvatar"
-                    android:src="@drawable/ic_android"/>
+                <com.google.android.material.card.MaterialCardView
+                    android:layout_width="@dimen/dimen32dp"
+                    android:layout_height="@dimen/dimen32dp"
+                    style="?attr/materialCardViewElevatedStyle"
+                    app:cardElevation="@dimen/dimen0dp"
+                    android:layout_marginEnd="@dimen/dimen12dp"
+                    app:cardCornerRadius="@dimen/dimen8dp">
+
+                    <ImageView
+                        android:id="@+id/imageAvatar"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:contentDescription="@string/repoContentAvatar"
+                        android:src="@drawable/ic_android"/>
+
+                </com.google.android.material.card.MaterialCardView>
 
                 <TextView
                     android:id="@+id/orgName"

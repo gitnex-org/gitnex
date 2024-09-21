@@ -15,14 +15,14 @@ import androidx.annotation.NonNull;
 import androidx.core.content.res.ResourcesCompat;
 import androidx.recyclerview.widget.RecyclerView;
 import com.amulyakhare.textdrawable.TextDrawable;
+import com.bumptech.glide.Glide;
+import com.bumptech.glide.load.engine.DiskCacheStrategy;
 import java.util.ArrayList;
 import java.util.List;
 import org.gitnex.tea4j.v2.models.User;
 import org.mian.gitnex.R;
 import org.mian.gitnex.activities.ProfileActivity;
-import org.mian.gitnex.clients.PicassoService;
 import org.mian.gitnex.helpers.AppUtil;
-import org.mian.gitnex.helpers.RoundedTransformation;
 
 /**
  * @author M M Arif
@@ -177,8 +177,6 @@ public class AdminGetUsersAdapter extends RecyclerView.Adapter<RecyclerView.View
 
 		void bindData(User users) {
 
-			int imgRadius = AppUtil.getPixelsFromDensity(context, 60);
-
 			userLoginId = users.getLogin();
 
 			if (!users.getFullName().isEmpty()) {
@@ -227,12 +225,10 @@ public class AdminGetUsersAdapter extends RecyclerView.Adapter<RecyclerView.View
 				userRole.setVisibility(View.GONE);
 			}
 
-			PicassoService.getInstance(context)
-					.get()
+			Glide.with(context)
 					.load(users.getAvatarUrl())
+					.diskCacheStrategy(DiskCacheStrategy.ALL)
 					.placeholder(R.drawable.loader_animated)
-					.transform(new RoundedTransformation(imgRadius, 0))
-					.resize(120, 120)
 					.centerCrop()
 					.into(userAvatar);
 		}

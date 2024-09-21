@@ -11,6 +11,8 @@ import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.core.text.HtmlCompat;
 import androidx.recyclerview.widget.RecyclerView;
+import com.bumptech.glide.Glide;
+import com.bumptech.glide.load.engine.DiskCacheStrategy;
 import com.google.android.material.card.MaterialCardView;
 import com.vdurmont.emoji.EmojiParser;
 import java.util.List;
@@ -20,9 +22,6 @@ import org.mian.gitnex.R;
 import org.mian.gitnex.activities.CommitDetailActivity;
 import org.mian.gitnex.activities.CommitsActivity;
 import org.mian.gitnex.activities.DiffActivity;
-import org.mian.gitnex.clients.PicassoService;
-import org.mian.gitnex.helpers.AppUtil;
-import org.mian.gitnex.helpers.RoundedTransformation;
 import org.mian.gitnex.helpers.TimeHelper;
 import org.mian.gitnex.helpers.contexts.IssueContext;
 
@@ -165,14 +164,10 @@ public class CommitsAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder
 
 				commitAuthorAvatarFrame.setVisibility(View.VISIBLE);
 
-				int imgRadius = AppUtil.getPixelsFromDensity(context, 60);
-
-				PicassoService.getInstance(context)
-						.get()
+				Glide.with(context)
 						.load(commitsModel.getAuthor().getAvatarUrl())
+						.diskCacheStrategy(DiskCacheStrategy.ALL)
 						.placeholder(R.drawable.loader_animated)
-						.transform(new RoundedTransformation(imgRadius, 0))
-						.resize(120, 120)
 						.centerCrop()
 						.into(commitAuthorAvatar);
 			} else {
@@ -191,14 +186,10 @@ public class CommitsAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder
 
 				commitCommitterAvatarFrame.setVisibility(View.VISIBLE);
 
-				int imgRadius = AppUtil.getPixelsFromDensity(context, 60);
-
-				PicassoService.getInstance(context)
-						.get()
+				Glide.with(context)
 						.load(commitsModel.getCommitter().getAvatarUrl())
+						.diskCacheStrategy(DiskCacheStrategy.ALL)
 						.placeholder(R.drawable.loader_animated)
-						.transform(new RoundedTransformation(imgRadius, 0))
-						.resize(120, 120)
 						.centerCrop()
 						.into(commitCommitterAvatar);
 			} else {

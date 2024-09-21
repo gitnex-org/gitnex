@@ -11,14 +11,13 @@ import android.widget.ImageView;
 import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
+import com.bumptech.glide.Glide;
+import com.bumptech.glide.load.engine.DiskCacheStrategy;
 import java.util.ArrayList;
 import java.util.LinkedHashSet;
 import java.util.List;
 import org.gitnex.tea4j.v2.models.User;
 import org.mian.gitnex.R;
-import org.mian.gitnex.clients.PicassoService;
-import org.mian.gitnex.helpers.AppUtil;
-import org.mian.gitnex.helpers.RoundedTransformation;
 
 /**
  * @author M M Arif
@@ -59,7 +58,6 @@ public class AssigneesListAdapter
 			@NonNull AssigneesListAdapter.AssigneesViewHolder holder, int position) {
 
 		User currentItem = assigneesList.get(position);
-		int imgRadius = AppUtil.getPixelsFromDensity(context, 90);
 
 		if (currentItem.getFullName().isEmpty()) {
 
@@ -68,12 +66,11 @@ public class AssigneesListAdapter
 
 			holder.assigneesName.setText(Html.fromHtml(currentItem.getFullName()));
 		}
-		PicassoService.getInstance(context)
-				.get()
+
+		Glide.with(context)
 				.load(currentItem.getAvatarUrl())
+				.diskCacheStrategy(DiskCacheStrategy.ALL)
 				.placeholder(R.drawable.loader_animated)
-				.transform(new RoundedTransformation(imgRadius, 0))
-				.resize(180, 180)
 				.centerCrop()
 				.into(holder.assigneesAvatar);
 

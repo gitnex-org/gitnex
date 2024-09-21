@@ -87,20 +87,7 @@ public class RepoInfoFragment extends Fragment {
 		pageContent = binding.repoInfoLayout;
 		pageContent.setVisibility(View.GONE);
 
-		binding.repoMetaFrame.setVisibility(View.GONE);
-
 		setRepoInfo(locale);
-
-		if (isExpandViewVisible()) {
-			toggleExpandView();
-		}
-
-		if (!isExpandViewMetaVisible()) {
-			toggleExpandViewMeta();
-		}
-
-		binding.fileContentsFrameHeader.setOnClickListener(v1 -> toggleExpandView());
-		binding.repoMetaFrameHeader.setOnClickListener(v12 -> toggleExpandViewMeta());
 
 		if (repository.isStarred()) {
 			binding.repoMetaStars.setIcon(
@@ -127,44 +114,6 @@ public class RepoInfoFragment extends Fragment {
 		setLanguageStatistics();
 
 		return binding.getRoot();
-	}
-
-	private void toggleExpandView() {
-
-		if (binding.repoFileContents.getVisibility() == View.GONE) {
-			binding.repoFilenameExpandCollapse.setImageResource(R.drawable.ic_chevron_up);
-			binding.repoFileContents.setVisibility(View.VISIBLE);
-			// Animation slide_down = AnimationUtils.loadAnimation(getContext(), R.anim.slide_down);
-			// binding.fileContentsFrame.startAnimation(slide_down);
-		} else {
-			binding.repoFilenameExpandCollapse.setImageResource(R.drawable.ic_chevron_down);
-			binding.repoFileContents.setVisibility(View.GONE);
-			// Animation slide_up = AnimationUtils.loadAnimation(getContext(), R.anim.slide_up);
-			// binding.fileContentsFrame.startAnimation(slide_up);
-		}
-	}
-
-	private boolean isExpandViewVisible() {
-		return binding.repoFileContents.getVisibility() == View.VISIBLE;
-	}
-
-	private void toggleExpandViewMeta() {
-
-		if (binding.repoMetaFrame.getVisibility() == View.GONE) {
-			binding.repoMetaDataExpandCollapse.setImageResource(R.drawable.ic_chevron_up);
-			binding.repoMetaFrame.setVisibility(View.VISIBLE);
-			// Animation slide_down = AnimationUtils.loadAnimation(getContext(), R.anim.slide_down);
-			// binding.repoMetaFrame.startAnimation(slide_down);
-		} else {
-			binding.repoMetaDataExpandCollapse.setImageResource(R.drawable.ic_chevron_down);
-			binding.repoMetaFrame.setVisibility(View.GONE);
-			// Animation slide_up = AnimationUtils.loadAnimation(getContext(), R.anim.slide_up);
-			// binding.repoMetaFrame.startAnimation(slide_up);
-		}
-	}
-
-	private boolean isExpandViewMetaVisible() {
-		return binding.repoMetaFrame.getVisibility() == View.VISIBLE;
 	}
 
 	private void setLanguageStatistics() {

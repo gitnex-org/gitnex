@@ -20,19 +20,19 @@ import androidx.core.content.res.ResourcesCompat;
 import androidx.core.text.HtmlCompat;
 import androidx.recyclerview.widget.RecyclerView;
 import com.amulyakhare.textdrawable.TextDrawable;
+import com.bumptech.glide.Glide;
+import com.bumptech.glide.load.engine.DiskCacheStrategy;
 import java.util.List;
 import java.util.Locale;
 import org.gitnex.tea4j.v2.models.Issue;
 import org.mian.gitnex.R;
 import org.mian.gitnex.activities.IssueDetailActivity;
 import org.mian.gitnex.activities.ProfileActivity;
-import org.mian.gitnex.clients.PicassoService;
 import org.mian.gitnex.helpers.AppDatabaseSettings;
 import org.mian.gitnex.helpers.AppUtil;
 import org.mian.gitnex.helpers.ClickListener;
 import org.mian.gitnex.helpers.ColorInverter;
 import org.mian.gitnex.helpers.LabelWidthCalculator;
-import org.mian.gitnex.helpers.RoundedTransformation;
 import org.mian.gitnex.helpers.TimeHelper;
 import org.mian.gitnex.helpers.contexts.IssueContext;
 import org.mian.gitnex.helpers.contexts.RepositoryContext;
@@ -198,16 +198,13 @@ public class ExploreIssuesAdapter extends RecyclerView.Adapter<RecyclerView.View
 		void bindData(Issue issue) {
 
 			this.issue = issue;
-			int imgRadius = AppUtil.getPixelsFromDensity(context, 60);
 
 			Locale locale = context.getResources().getConfiguration().locale;
 
-			PicassoService.getInstance(context)
-					.get()
+			Glide.with(context)
 					.load(issue.getUser().getAvatarUrl())
+					.diskCacheStrategy(DiskCacheStrategy.ALL)
 					.placeholder(R.drawable.loader_animated)
-					.transform(new RoundedTransformation(imgRadius, 0))
-					.resize(120, 120)
 					.centerCrop()
 					.into(issueAssigneeAvatar);
 

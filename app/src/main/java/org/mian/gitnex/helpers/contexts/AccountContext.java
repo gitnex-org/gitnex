@@ -83,10 +83,4 @@ public class AccountContext implements Serializable {
 		assert account.getAccountName() != null;
 		return new File(context.getCacheDir() + "responses", account.getAccountName());
 	}
-
-	public File getPicassoCacheDir(Context context) {
-
-		assert account.getAccountName() != null;
-		return new File(context.getCacheDir() + "/picasso_cache/", account.getAccountName());
-	}
 }

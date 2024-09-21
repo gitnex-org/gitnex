@@ -7,8 +7,10 @@ import android.content.ClipData;
 import android.content.ClipboardManager;
 import android.content.Context;
 import android.content.Intent;
+import android.graphics.Bitmap;
 import android.graphics.Color;
 import android.graphics.Typeface;
+import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.os.Handler;
 import android.text.Spannable;
@@ -30,6 +32,10 @@ import androidx.core.content.res.ResourcesCompat;
 import androidx.core.text.HtmlCompat;
 import androidx.recyclerview.widget.RecyclerView;
 import com.amulyakhare.textdrawable.TextDrawable;
+import com.bumptech.glide.Glide;
+import com.bumptech.glide.load.engine.DiskCacheStrategy;
+import com.bumptech.glide.request.target.CustomTarget;
+import com.bumptech.glide.request.transition.Transition;
 import com.google.android.material.bottomsheet.BottomSheetDialog;
 import com.google.android.material.card.MaterialCardView;
 import com.google.android.material.dialog.MaterialAlertDialogBuilder;
@@ -49,7 +55,6 @@ import org.mian.gitnex.activities.BaseActivity;
 import org.mian.gitnex.activities.CommitDetailActivity;
 import org.mian.gitnex.activities.IssueDetailActivity;
 import org.mian.gitnex.activities.ProfileActivity;
-import org.mian.gitnex.clients.PicassoService;
 import org.mian.gitnex.clients.RetrofitClient;
 import org.mian.gitnex.databinding.CustomImageViewDialogBinding;
 import org.mian.gitnex.fragments.IssuesFragment;
@@ -60,7 +65,6 @@ import org.mian.gitnex.helpers.ClickListener;
 import org.mian.gitnex.helpers.ColorInverter;
 import org.mian.gitnex.helpers.LabelWidthCalculator;
 import org.mian.gitnex.helpers.Markdown;
-import org.mian.gitnex.helpers.RoundedTransformation;
 import org.mian.gitnex.helpers.TimeHelper;
 import org.mian.gitnex.helpers.TinyDB;
 import org.mian.gitnex.helpers.Toasty;
@@ -468,7 +472,6 @@ public class IssueCommentsAdapter extends RecyclerView.Adapter<RecyclerView.View
 
 				Typeface typeface = AppUtil.getTypeface(context);
 				int fontSize = 14;
-				int imgRadius = AppUtil.getPixelsFromDensity(context, 3);
 
 				userLoginId = timelineComment.getUser().getLogin();
 
@@ -1354,14 +1357,10 @@ public class IssueCommentsAdapter extends RecyclerView.Adapter<RecyclerView.View
 
 					author.setText(issueComment.getUser().getLogin());
 
-					PicassoService.getInstance(context)
-							.get()
+					Glide.with(context)
 							.load(issueComment.getUser().getAvatarUrl())
+							.diskCacheStrategy(DiskCacheStrategy.ALL)
 							.placeholder(R.drawable.loader_animated)
-							.transform(new RoundedTransformation(imgRadius, 0))
-							.resize(
-									AppUtil.getPixelsFromDensity(context, 35),
-									AppUtil.getPixelsFromDensity(context, 35))
 							.centerCrop()
 							.into(avatar);
 
@@ -1436,6 +1435,7 @@ public class IssueCommentsAdapter extends RecyclerView.Adapter<RecyclerView.View
 											new MaterialCardView(context);
 									materialCardView.setLayoutParams(paramsAttachment);
 									materialCardView.setStrokeWidth(0);
+									materialCardView.setRadius(28);
 									materialCardView.setCardBackgroundColor(Color.TRANSPARENT);
 
 									if (Arrays.asList(
@@ -1446,14 +1446,13 @@ public class IssueCommentsAdapter extends RecyclerView.Adapter<RecyclerView.View
 																	attachment.get(i).getName())
 															.toLowerCase())) {
 
-										PicassoService.getInstance(context)
-												.get()
+										Glide.with(context)
 												.load(
 														attachment.get(i).getBrowserDownloadUrl()
 																+ "?token="
 																+ token)
+												.diskCacheStrategy(DiskCacheStrategy.ALL)
 												.placeholder(R.drawable.loader_animated)
-												.resize(120, 120)
 												.centerCrop()
 												.error(R.drawable.ic_close)
 												.into(attachmentView);
@@ -1514,15 +1513,29 @@ public class IssueCommentsAdapter extends RecyclerView.Adapter<RecyclerView.View
 		materialAlertDialogBuilder.setView(view);
 
 		materialAlertDialogBuilder.setNeutralButton(context.getString(R.string.close), null);
-		PicassoService.getInstance(context)
-				.get()
+
+		Glide.with(context)
+				.asBitmap()
 				.load(url + "?token=" + token)
+				.diskCacheStrategy(DiskCacheStrategy.ALL)
 				.placeholder(R.drawable.loader_animated)
-				.resize(0, 1600)
-				.onlyScaleDown()
 				.centerCrop()
 				.error(R.drawable.ic_close)
-				.into(imageViewDialogBinding.imageView);
+				.dontAnimate()
+				.into(
+						new CustomTarget<Bitmap>() {
+							@Override
+							public void onResourceReady(
+									@NonNull Bitmap resource,
+									Transition<? super Bitmap> transition) {
+								imageViewDialogBinding.imageView.setImageBitmap(resource);
+								imageViewDialogBinding.imageView.buildDrawingCache();
+							}
+
+							@Override
+							public void onLoadCleared(Drawable placeholder) {}
+						});
+
 		materialAlertDialogBuilder.create().show();
 	}
 }

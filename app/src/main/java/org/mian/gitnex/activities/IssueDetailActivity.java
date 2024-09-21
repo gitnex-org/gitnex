@@ -5,8 +5,10 @@ import android.app.NotificationManager;
 import android.content.Context;
 import android.content.Intent;
 import android.content.res.ColorStateList;
+import android.graphics.Bitmap;
 import android.graphics.Color;
 import android.graphics.Typeface;
+import android.graphics.drawable.Drawable;
 import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
@@ -35,6 +37,10 @@ import androidx.core.widget.ImageViewCompat;
 import androidx.lifecycle.ViewModelProvider;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import com.amulyakhare.textdrawable.TextDrawable;
+import com.bumptech.glide.Glide;
+import com.bumptech.glide.load.engine.DiskCacheStrategy;
+import com.bumptech.glide.request.target.CustomTarget;
+import com.bumptech.glide.request.transition.Transition;
 import com.google.android.material.card.MaterialCardView;
 import com.google.android.material.dialog.MaterialAlertDialogBuilder;
 import com.vdurmont.emoji.EmojiParser;
@@ -68,7 +74,6 @@ import org.mian.gitnex.actions.LabelsActions;
 import org.mian.gitnex.adapters.AssigneesListAdapter;
 import org.mian.gitnex.adapters.IssueCommentsAdapter;
 import org.mian.gitnex.adapters.LabelsListAdapter;
-import org.mian.gitnex.clients.PicassoService;
 import org.mian.gitnex.clients.RetrofitClient;
 import org.mian.gitnex.databinding.ActivityIssueDetailBinding;
 import org.mian.gitnex.databinding.CustomAssigneesSelectionDialogBinding;
@@ -86,7 +91,6 @@ import org.mian.gitnex.helpers.ColorInverter;
 import org.mian.gitnex.helpers.Constants;
 import org.mian.gitnex.helpers.LabelWidthCalculator;
 import org.mian.gitnex.helpers.Markdown;
-import org.mian.gitnex.helpers.RoundedTransformation;
 import org.mian.gitnex.helpers.TimeHelper;
 import org.mian.gitnex.helpers.TinyDB;
 import org.mian.gitnex.helpers.Toasty;
@@ -1168,14 +1172,13 @@ public class IssueDetailActivity extends BaseActivity
 		final Locale locale = getResources().getConfiguration().locale;
 		issueCreator = issue.getIssue().getUser().getLogin();
 
-		PicassoService.getInstance(ctx)
-				.get()
+		Glide.with(ctx)
 				.load(issue.getIssue().getUser().getAvatarUrl())
+				.diskCacheStrategy(DiskCacheStrategy.ALL)
 				.placeholder(R.drawable.loader_animated)
-				.transform(new RoundedTransformation(8, 0))
-				.resize(120, 120)
 				.centerCrop()
 				.into(viewBinding.assigneeAvatar);
+
 		String issueNumber_ =
 				"<font color='"
 						+ ResourcesCompat.getColor(getResources(), R.color.lightGray, null)
@@ -1236,12 +1239,10 @@ public class IssueDetailActivity extends BaseActivity
 
 				ImageView assigneesView = new ImageView(ctx);
 
-				PicassoService.getInstance(ctx)
-						.get()
+				Glide.with(ctx)
 						.load(issue.getIssue().getAssignees().get(i).getAvatarUrl())
+						.diskCacheStrategy(DiskCacheStrategy.ALL)
 						.placeholder(R.drawable.loader_animated)
-						.transform(new RoundedTransformation(36, 0))
-						.resize(72, 72)
 						.centerCrop()
 						.into(assigneesView);
 
@@ -1493,6 +1494,7 @@ public class IssueDetailActivity extends BaseActivity
 									MaterialCardView materialCardView = new MaterialCardView(ctx);
 									materialCardView.setLayoutParams(paramsAttachment);
 									materialCardView.setStrokeWidth(0);
+									materialCardView.setRadius(28);
 									materialCardView.setCardBackgroundColor(Color.TRANSPARENT);
 
 									if (Arrays.asList(
@@ -1503,14 +1505,13 @@ public class IssueDetailActivity extends BaseActivity
 																	attachment.get(i).getName())
 															.toLowerCase())) {
 
-										PicassoService.getInstance(ctx)
-												.get()
+										Glide.with(ctx)
 												.load(
 														attachment.get(i).getBrowserDownloadUrl()
 																+ "?token="
 																+ token)
+												.diskCacheStrategy(DiskCacheStrategy.ALL)
 												.placeholder(R.drawable.loader_animated)
-												.resize(120, 120)
 												.centerCrop()
 												.error(R.drawable.ic_close)
 												.into(attachmentView);
@@ -1577,15 +1578,28 @@ public class IssueDetailActivity extends BaseActivity
 		materialAlertDialogBuilder.setView(view);
 
 		materialAlertDialogBuilder.setNeutralButton(getString(R.string.close), null);
-		PicassoService.getInstance(ctx)
-				.get()
+
+		Glide.with(ctx)
+				.asBitmap()
 				.load(url + "?token=" + token)
+				.diskCacheStrategy(DiskCacheStrategy.ALL)
 				.placeholder(R.drawable.loader_animated)
-				.resize(0, 1600)
-				.onlyScaleDown()
 				.centerCrop()
 				.error(R.drawable.ic_close)
-				.into(imageViewDialogBinding.imageView);
+				.into(
+						new CustomTarget<Bitmap>() {
+							@Override
+							public void onResourceReady(
+									@NonNull Bitmap resource,
+									Transition<? super Bitmap> transition) {
+								imageViewDialogBinding.imageView.setImageBitmap(resource);
+								imageViewDialogBinding.imageView.buildDrawingCache();
+							}
+
+							@Override
+							public void onLoadCleared(Drawable placeholder) {}
+						});
+
 		materialAlertDialogBuilder.create().show();
 	}
 }

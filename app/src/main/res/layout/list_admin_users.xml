@@ -29,12 +29,12 @@
 
                 <com.google.android.material.card.MaterialCardView
                     android:id="@+id/userAccountAvatar"
-                    android:layout_width="@dimen/dimen24dp"
-                    android:layout_height="@dimen/dimen24dp"
+                    android:layout_width="@dimen/dimen32dp"
+                    android:layout_height="@dimen/dimen32dp"
                     style="?attr/materialCardViewElevatedStyle"
                     app:cardElevation="@dimen/dimen0dp"
                     android:layout_gravity="center"
-                    app:cardCornerRadius="@dimen/dimen12dp">
+                    app:cardCornerRadius="@dimen/dimen8dp">
 
                     <ImageView
                         android:id="@+id/userAvatar"

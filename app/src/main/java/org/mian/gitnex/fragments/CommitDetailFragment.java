@@ -13,6 +13,8 @@ import androidx.annotation.Nullable;
 import androidx.core.text.HtmlCompat;
 import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
+import com.bumptech.glide.Glide;
+import com.bumptech.glide.load.engine.DiskCacheStrategy;
 import com.vdurmont.emoji.EmojiParser;
 import java.util.ArrayList;
 import java.util.List;
@@ -24,14 +26,11 @@ import org.mian.gitnex.activities.BaseActivity;
 import org.mian.gitnex.activities.ProfileActivity;
 import org.mian.gitnex.adapters.CommitStatusesAdapter;
 import org.mian.gitnex.adapters.DiffFilesAdapter;
-import org.mian.gitnex.clients.PicassoService;
 import org.mian.gitnex.clients.RetrofitClient;
 import org.mian.gitnex.databinding.FragmentCommitDetailsBinding;
 import org.mian.gitnex.helpers.AlertDialogs;
-import org.mian.gitnex.helpers.AppUtil;
 import org.mian.gitnex.helpers.FileDiffView;
 import org.mian.gitnex.helpers.ParseDiff;
-import org.mian.gitnex.helpers.RoundedTransformation;
 import org.mian.gitnex.helpers.TimeHelper;
 import org.mian.gitnex.helpers.Toasty;
 import org.mian.gitnex.helpers.contexts.IssueContext;
@@ -272,15 +271,10 @@ public class CommitDetailFragment extends Fragment {
 
 									binding.commitAuthorAvatarFrame.setVisibility(View.VISIBLE);
 
-									int imgRadius =
-											AppUtil.getPixelsFromDensity(requireContext(), 3);
-
-									PicassoService.getInstance(requireContext())
-											.get()
+									Glide.with(requireContext())
 											.load(commitsModel.getAuthor().getAvatarUrl())
+											.diskCacheStrategy(DiskCacheStrategy.ALL)
 											.placeholder(R.drawable.loader_animated)
-											.transform(new RoundedTransformation(imgRadius, 0))
-											.resize(120, 120)
 											.centerCrop()
 											.into(binding.commitAuthorAvatar);
 
@@ -315,15 +309,10 @@ public class CommitDetailFragment extends Fragment {
 
 									binding.commitCommitterAvatarFrame.setVisibility(View.VISIBLE);
 
-									int imgRadius =
-											AppUtil.getPixelsFromDensity(requireContext(), 3);
-
-									PicassoService.getInstance(requireContext())
-											.get()
+									Glide.with(requireContext())
 											.load(commitsModel.getCommitter().getAvatarUrl())
+											.diskCacheStrategy(DiskCacheStrategy.ALL)
 											.placeholder(R.drawable.loader_animated)
-											.transform(new RoundedTransformation(imgRadius, 0))
-											.resize(120, 120)
 											.centerCrop()
 											.into(binding.commitCommitterAvatar);
 

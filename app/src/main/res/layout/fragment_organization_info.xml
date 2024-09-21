@@ -36,14 +36,14 @@
                     tools:visibility="visible">
 
                     <com.google.android.material.card.MaterialCardView
-                        android:layout_width="@dimen/dimen72dp"
-                        android:layout_height="@dimen/dimen72dp"
+                        android:layout_width="@dimen/dimen96dp"
+                        android:layout_height="@dimen/dimen96dp"
                         style="?attr/materialCardViewFilledStyle"
                         android:layout_gravity="center_horizontal"
                         app:cardElevation="@dimen/dimen0dp"
                         android:layout_marginTop="@dimen/dimen12dp"
                         android:layout_marginBottom="@dimen/dimen12dp"
-                        app:cardCornerRadius="@dimen/dimen36dp">
+                        app:cardCornerRadius="@dimen/dimen16dp">
 
                         <ImageView
                             android:id="@+id/orgAvatar"

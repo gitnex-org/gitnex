@@ -12,14 +12,14 @@ import android.widget.Filter;
 import android.widget.Filterable;
 import android.widget.ImageView;
 import android.widget.TextView;
+import com.bumptech.glide.Glide;
+import com.bumptech.glide.load.engine.DiskCacheStrategy;
 import java.util.ArrayList;
 import java.util.List;
 import org.gitnex.tea4j.v2.models.User;
 import org.mian.gitnex.R;
 import org.mian.gitnex.activities.ProfileActivity;
-import org.mian.gitnex.clients.PicassoService;
 import org.mian.gitnex.helpers.AppUtil;
-import org.mian.gitnex.helpers.RoundedTransformation;
 
 /**
  * @author M M Arif
@@ -107,14 +107,11 @@ public class UserGridAdapter extends BaseAdapter implements Filterable {
 	private void initData(UserGridAdapter.ViewHolder viewHolder, int position) {
 
 		User currentItem = membersList.get(position);
-		int imgRadius = AppUtil.getPixelsFromDensity(context, 0);
 
-		PicassoService.getInstance(context)
-				.get()
+		Glide.with(context)
 				.load(currentItem.getAvatarUrl())
+				.diskCacheStrategy(DiskCacheStrategy.ALL)
 				.placeholder(R.drawable.loader_animated)
-				.transform(new RoundedTransformation(imgRadius, 0))
-				.resize(120, 120)
 				.centerCrop()
 				.into(viewHolder.memberAvatar);
 

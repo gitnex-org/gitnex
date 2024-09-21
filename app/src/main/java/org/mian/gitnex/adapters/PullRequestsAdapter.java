@@ -22,6 +22,8 @@ import androidx.core.text.HtmlCompat;
 import androidx.core.widget.ImageViewCompat;
 import androidx.recyclerview.widget.RecyclerView;
 import com.amulyakhare.textdrawable.TextDrawable;
+import com.bumptech.glide.Glide;
+import com.bumptech.glide.load.engine.DiskCacheStrategy;
 import com.vdurmont.emoji.EmojiParser;
 import java.util.List;
 import java.util.Locale;
@@ -30,15 +32,12 @@ import org.mian.gitnex.R;
 import org.mian.gitnex.activities.IssueDetailActivity;
 import org.mian.gitnex.activities.ProfileActivity;
 import org.mian.gitnex.activities.RepoDetailActivity;
-import org.mian.gitnex.clients.PicassoService;
 import org.mian.gitnex.helpers.AppDatabaseSettings;
 import org.mian.gitnex.helpers.AppUtil;
 import org.mian.gitnex.helpers.ClickListener;
 import org.mian.gitnex.helpers.ColorInverter;
 import org.mian.gitnex.helpers.LabelWidthCalculator;
-import org.mian.gitnex.helpers.RoundedTransformation;
 import org.mian.gitnex.helpers.TimeHelper;
-import org.mian.gitnex.helpers.TinyDB;
 import org.mian.gitnex.helpers.contexts.IssueContext;
 
 /**
@@ -182,16 +181,12 @@ public class PullRequestsAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
 
 		void bindData(PullRequest pullRequest) {
 
-			TinyDB tinyDb = TinyDB.getInstance(context);
 			Locale locale = context.getResources().getConfiguration().locale;
-			int imgRadius = AppUtil.getPixelsFromDensity(context, 3);
 
-			PicassoService.getInstance(context)
-					.get()
+			Glide.with(context)
 					.load(pullRequest.getUser().getAvatarUrl())
+					.diskCacheStrategy(DiskCacheStrategy.ALL)
 					.placeholder(R.drawable.loader_animated)
-					.transform(new RoundedTransformation(imgRadius, 0))
-					.resize(120, 120)
 					.centerCrop()
 					.into(this.assigneeAvatar);
 
@@ -274,7 +269,7 @@ public class PullRequestsAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
 										.buildRoundRect(
 												labelName,
 												color,
-												AppUtil.getPixelsFromDensity(context, 18));
+												AppUtil.getPixelsFromDensity(context, 12));
 
 						labelsView.setImageDrawable(drawable);
 						frameLabels.addView(labelsView);

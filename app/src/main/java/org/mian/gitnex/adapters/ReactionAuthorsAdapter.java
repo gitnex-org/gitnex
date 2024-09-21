@@ -8,12 +8,11 @@ import android.widget.ImageView;
 import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
+import com.bumptech.glide.Glide;
+import com.bumptech.glide.load.engine.DiskCacheStrategy;
 import java.util.List;
 import org.gitnex.tea4j.v2.models.User;
 import org.mian.gitnex.R;
-import org.mian.gitnex.clients.PicassoService;
-import org.mian.gitnex.helpers.AppUtil;
-import org.mian.gitnex.helpers.RoundedTransformation;
 
 /**
  * @author opyale
@@ -40,12 +39,10 @@ public class ReactionAuthorsAdapter
 	public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
 		User userInfo = userInfos.get(position);
 
-		PicassoService.getInstance(context)
-				.get()
+		Glide.with(context)
 				.load(userInfo.getAvatarUrl())
+				.diskCacheStrategy(DiskCacheStrategy.ALL)
 				.placeholder(R.drawable.loader_animated)
-				.resize(240, 240)
-				.transform(new RoundedTransformation(AppUtil.getPixelsFromDensity(context, 6), 0))
 				.centerCrop()
 				.into(holder.authorAvatar);
 

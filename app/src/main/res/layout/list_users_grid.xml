@@ -27,7 +27,7 @@
                 style="?attr/materialCardViewElevatedStyle"
                 android:layout_gravity="center"
                 app:cardElevation="@dimen/dimen0dp"
-                app:cardCornerRadius="@dimen/dimen32dp">
+                app:cardCornerRadius="@dimen/dimen12dp">
 
                 <ImageView
                     android:id="@+id/userAvatarImageView"
