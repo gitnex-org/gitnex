@@ -1295,7 +1295,7 @@ public class IssueCommentsAdapter extends RecyclerView.Adapter<RecyclerView.View
 									context.getString(
 											R.string.timelineRefIssue,
 											issueComment.getUser().getLogin(),
-											issueComment.getRefIssue().getNumber(),
+											timelineComment.getRefIssue().getHtmlUrl(),
 											info);
 							Markdown.render(context, text, recyclerView, issue.getRepository());
 						} else if (issue.getIssueType().equalsIgnoreCase("Pull")) {
@@ -1303,7 +1303,7 @@ public class IssueCommentsAdapter extends RecyclerView.Adapter<RecyclerView.View
 									context.getString(
 											R.string.timelineRefPr,
 											issueComment.getUser().getLogin(),
-											issueComment.getRefIssue().getNumber(),
+											timelineComment.getRefIssue().getHtmlUrl(),
 											info);
 							Markdown.render(context, text, recyclerView, issue.getRepository());
 						}
