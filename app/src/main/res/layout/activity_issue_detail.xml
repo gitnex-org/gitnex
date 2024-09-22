@@ -322,6 +322,68 @@
                             </LinearLayout>
 
                             <LinearLayout
+                                android:id="@+id/statusesLvMain"
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:foreground="?android:attr/selectableItemBackground"
+                                android:background="?attr/materialCardBackgroundColor"
+                                android:paddingStart="@dimen/dimen12dp"
+                                android:paddingEnd="@dimen/dimen12dp"
+                                android:paddingBottom="@dimen/dimen12dp"
+                                android:visibility="gone"
+                                android:orientation="vertical">
+
+                                <LinearLayout
+                                    android:id="@+id/statuses"
+                                    android:layout_width="match_parent"
+                                    android:layout_height="wrap_content"
+                                    android:gravity="center"
+                                    android:minHeight="@dimen/dimen48dp"
+                                    android:orientation="horizontal">
+
+                                    <TextView
+                                        android:layout_width="0dp"
+                                        android:layout_height="wrap_content"
+                                        android:text="@string/commitStatuses"
+                                        android:textSize="@dimen/dimen16sp"
+                                        android:layout_weight="0.9"
+                                        android:gravity="center_vertical"
+                                        android:paddingBottom="@dimen/dimen12dp"
+                                        android:paddingStart="@dimen/dimen0dp"
+                                        android:paddingEnd="@dimen/dimen0dp"
+                                        android:textColor="?attr/primaryTextColor"/>
+
+                                    <ImageView
+                                        android:id="@+id/statusesExpandCollapse"
+                                        android:layout_width="0dp"
+                                        android:layout_height="wrap_content"
+                                        android:layout_weight="0.1"
+                                        android:layout_gravity="center_vertical|end"
+                                        android:background="?android:attr/selectableItemBackgroundBorderless"
+                                        android:contentDescription="@string/generalImgContentText"
+                                        app:srcCompat="@drawable/ic_chevron_down"/>
+
+                                </LinearLayout>
+
+                                <LinearLayout
+                                    android:visibility="gone"
+                                    android:id="@+id/statusesLv"
+                                    android:orientation="vertical"
+                                    android:layout_width="match_parent"
+                                    android:layout_height="wrap_content">
+
+                                    <androidx.recyclerview.widget.RecyclerView
+                                        android:id="@+id/statusesList"
+                                        android:layout_width="match_parent"
+                                        android:layout_height="wrap_content"
+                                        android:textSize="@dimen/dimen16sp"
+                                        android:textColor="?attr/primaryTextColor"/>
+
+                                </LinearLayout>
+
+                            </LinearLayout>
+
+                            <LinearLayout
                                 android:id="@+id/attachmentFrame"
                                 android:layout_width="match_parent"
                                 android:layout_height="wrap_content"

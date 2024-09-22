@@ -149,7 +149,7 @@ public class CommitsActivity extends BaseActivity {
 						if (response.code() == 200) {
 
 							assert response.body() != null;
-							if (response.body().size() > 0) {
+							if (!response.body().isEmpty()) {
 
 								commitsList.clear();
 								commitsList.addAll(response.body());
@@ -214,7 +214,7 @@ public class CommitsActivity extends BaseActivity {
 							List<Commit> result = response.body();
 							assert result != null;
 
-							if (result.size() > 0) {
+							if (!result.isEmpty()) {
 
 								pageSize = result.size();
 								commitsList.addAll(result);

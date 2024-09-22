@@ -66,6 +66,7 @@ import okhttp3.ResponseBody;
 import org.apache.commons.io.FilenameUtils;
 import org.gitnex.tea4j.v2.models.Attachment;
 import org.gitnex.tea4j.v2.models.Comment;
+import org.gitnex.tea4j.v2.models.CommitStatus;
 import org.gitnex.tea4j.v2.models.CreateIssueCommentOption;
 import org.gitnex.tea4j.v2.models.EditIssueOption;
 import org.gitnex.tea4j.v2.models.Issue;
@@ -82,6 +83,7 @@ import org.mian.gitnex.actions.IssueActions;
 import org.mian.gitnex.actions.LabelsActions;
 import org.mian.gitnex.adapters.AssigneesListAdapter;
 import org.mian.gitnex.adapters.AttachmentsAdapter;
+import org.mian.gitnex.adapters.CommitStatusesAdapter;
 import org.mian.gitnex.adapters.IssueCommentsAdapter;
 import org.mian.gitnex.adapters.LabelsListAdapter;
 import org.mian.gitnex.clients.RetrofitClient;
@@ -165,6 +167,7 @@ public class IssueDetailActivity extends BaseActivity
 	private InputMethodManager imm;
 	private final float buttonAlphaStatDisabled = .5F;
 	private final float buttonAlphaStatEnabled = 1F;
+	private int loadingFinished = 0;
 
 	private enum Mode {
 		EDIT,
@@ -390,6 +393,19 @@ public class IssueDetailActivity extends BaseActivity
 		getSingleIssue(repoOwner, repoName, issueIndex);
 		getAttachments();
 		fetchDataAsync(repoOwner, repoName, issueIndex);
+
+		viewBinding.statuses.setOnClickListener(
+				view -> {
+					if (viewBinding.statusesLv.getVisibility() == View.GONE) {
+						viewBinding.statusesExpandCollapse.setImageResource(
+								R.drawable.ic_chevron_up);
+						viewBinding.statusesLv.setVisibility(View.VISIBLE);
+					} else {
+						viewBinding.statusesExpandCollapse.setImageResource(
+								R.drawable.ic_chevron_down);
+						viewBinding.statusesLv.setVisibility(View.GONE);
+					}
+				});
 
 		if (getIntent().getStringExtra("openPrDiff") != null
 				&& Objects.equals(getIntent().getStringExtra("openPrDiff"), "true")) {
@@ -1109,6 +1125,10 @@ public class IssueDetailActivity extends BaseActivity
 		viewBinding.issuePrState.setVisibility(View.VISIBLE);
 
 		if (issue.getIssue().getPullRequest() != null) {
+
+			viewBinding.statusesLvMain.setVisibility(View.VISIBLE);
+
+			getStatuses();
 			getPullRequest();
 			if (issue.getIssue().getPullRequest().isMerged()) { // merged
 
@@ -1785,5 +1805,84 @@ public class IssueDetailActivity extends BaseActivity
 								ctx.getResources().getString(R.string.genericServerResponseError));
 					}
 				});
+	}
+
+	private void getStatuses() {
+
+		RetrofitClient.getApiInterface(ctx)
+				.repoListStatuses(
+						repoOwner,
+						repoName,
+						issue.getRepository().getBranchRef(),
+						null,
+						null,
+						null,
+						null)
+				.enqueue(
+						new Callback<>() {
+
+							@Override
+							public void onResponse(
+									@NonNull Call<List<CommitStatus>> call,
+									@NonNull Response<List<CommitStatus>> response) {
+
+								checkLoading();
+
+								if (!response.isSuccessful() || response.body() == null) {
+									onFailure(call, new Throwable());
+									return;
+								}
+
+								if (response.body().isEmpty()) {
+									viewBinding.statusesLvMain.setVisibility(View.GONE);
+									return;
+								}
+
+								// merge statuses: a status can be added multiple times with the
+								// same context, so we only use the newest one
+								ArrayList<CommitStatus> result = new ArrayList<>();
+								for (CommitStatus c : response.body()) {
+									CommitStatus statusInList = null;
+									for (CommitStatus s : result) {
+										if (Objects.equals(s.getContext(), c.getContext())) {
+											statusInList = s;
+											break;
+										}
+									}
+									if (statusInList != null) {
+										// if the status that's already in the list was created
+										// before this one, replace it
+										if (statusInList.getCreatedAt().before(c.getCreatedAt())) {
+											result.remove(statusInList);
+											result.add(c);
+										}
+									} else {
+										result.add(c);
+									}
+								}
+
+								viewBinding.statusesList.setLayoutManager(
+										new LinearLayoutManager(ctx));
+								viewBinding.statusesList.setAdapter(
+										new CommitStatusesAdapter(result));
+							}
+
+							@Override
+							public void onFailure(
+									@NonNull Call<List<CommitStatus>> call, @NonNull Throwable t) {
+
+								checkLoading();
+								if (ctx != null) {
+									Toasty.error(ctx, getString(R.string.genericError));
+								}
+							}
+						});
+	}
+
+	private void checkLoading() {
+		loadingFinished += 1;
+		if (loadingFinished >= 3) {
+			viewBinding.progressBar.setVisibility(View.GONE);
+		}
 	}
 }

@@ -392,7 +392,7 @@ public class CommitDetailFragment extends Fragment {
 									return;
 								}
 
-								if (response.body().size() < 1) {
+								if (response.body().isEmpty()) {
 									binding.statusesLvMain.setVisibility(View.GONE);
 									return;
 								}
