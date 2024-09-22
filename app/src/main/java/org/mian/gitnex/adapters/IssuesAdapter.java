@@ -276,7 +276,7 @@ public class IssuesAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder>
 										.buildRoundRect(
 												labelName,
 												color,
-												AppUtil.getPixelsFromDensity(context, 18));
+												AppUtil.getPixelsFromDensity(context, 6));
 
 						labelsView.setImageDrawable(drawable);
 						frameLabels.addView(labelsView);

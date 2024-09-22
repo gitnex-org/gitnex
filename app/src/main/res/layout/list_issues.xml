@@ -34,6 +34,7 @@
                     android:layout_width="@dimen/dimen32dp"
                     android:layout_height="@dimen/dimen32dp"
                     style="?attr/materialCardViewElevatedStyle"
+                    android:backgroundTint="@android:color/transparent"
                     app:cardElevation="@dimen/dimen0dp"
                     android:layout_marginEnd="@dimen/dimen12dp"
                     app:cardCornerRadius="@dimen/dimen8dp">

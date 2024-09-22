@@ -18,18 +18,29 @@
         android:gravity="center"
         android:layout_above="@id/card_view">
 
-        <ImageView
-            android:layout_width="@dimen/dimen80dp"
-            android:layout_height="@dimen/dimen80dp"
+        <com.google.android.material.card.MaterialCardView
+            style="?attr/materialCardViewFilledStyle"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_horizontal"
             android:baselineAligned="false"
-            android:contentDescription="@string/appName"
-            android:src="@mipmap/app_logo" />
+            app:cardCornerRadius="@dimen/dimen16dp">
+
+            <ImageView
+                android:id="@+id/appLogo"
+                android:layout_width="@dimen/dimen72dp"
+                android:layout_height="@dimen/dimen72dp"
+                android:layout_alignParentTop="true"
+                android:layout_centerHorizontal="true"
+                android:contentDescription="@string/appName"
+                android:src="@drawable/gitnex" />
+
+        </com.google.android.material.card.MaterialCardView>
 
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="@string/appName"
-            android:textStyle="bold"
             android:textSize="@dimen/dimen24sp"
             android:textColor="@color/colorWhite"
             android:layout_marginTop="@dimen/dimen8dp" />

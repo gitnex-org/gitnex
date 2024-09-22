@@ -269,7 +269,7 @@ public class PullRequestsAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
 										.buildRoundRect(
 												labelName,
 												color,
-												AppUtil.getPixelsFromDensity(context, 12));
+												AppUtil.getPixelsFromDensity(context, 6));
 
 						labelsView.setImageDrawable(drawable);
 						frameLabels.addView(labelsView);

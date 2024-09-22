@@ -47,7 +47,7 @@ public class AssigneesActions {
 
 							if (issueAssigneesList.getAssignees() != null) {
 
-								if (issueAssigneesList.getAssignees().size() > 0) {
+								if (!issueAssigneesList.getAssignees().isEmpty()) {
 
 									for (int i = 0;
 											i < issueAssigneesList.getAssignees().size();
@@ -105,7 +105,7 @@ public class AssigneesActions {
 
 							assert assigneesList_ != null;
 
-							if (assigneesList_.size() > 0) {
+							if (!assigneesList_.isEmpty()) {
 
 								assigneesList.addAll(assigneesList_);
 								materialAlertDialogBuilder.show();

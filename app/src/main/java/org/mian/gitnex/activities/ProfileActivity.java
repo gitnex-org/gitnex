@@ -60,6 +60,7 @@ public class ProfileActivity extends BaseActivity implements BottomSheetListener
 		} else {
 			Toasty.warning(ctx, ctx.getResources().getString(R.string.userInvalidUserName));
 			finish();
+			return;
 		}
 
 		setSupportActionBar(toolbar);

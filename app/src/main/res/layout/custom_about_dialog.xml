@@ -26,7 +26,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center_horizontal"
-                app:cardCornerRadius="@dimen/dimen36dp">
+                app:cardCornerRadius="@dimen/dimen16dp">
 
                 <ImageView
                     android:id="@+id/appLogo"
@@ -35,7 +35,7 @@
                     android:layout_alignParentTop="true"
                     android:layout_centerHorizontal="true"
                     android:contentDescription="@string/appName"
-                    android:src="@mipmap/app_logo" />
+                    android:src="@drawable/gitnex" />
 
             </com.google.android.material.card.MaterialCardView>
 
@@ -52,8 +52,7 @@
                     android:layout_marginTop="@dimen/dimen6dp"
                     android:text="@string/appName"
                     android:textColor="?attr/primaryTextColor"
-                    android:textSize="@dimen/dimen24sp"
-                    android:textStyle="bold" />
+                    android:textSize="@dimen/dimen24sp" />
 
                 <com.google.android.material.card.MaterialCardView
                     style="?attr/materialCardViewFilledStyle"

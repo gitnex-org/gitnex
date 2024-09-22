@@ -8,7 +8,7 @@
     android:layout_height="@dimen/dimen40dp"
     android:layout_marginEnd="@dimen/dimen8dp"
     app:cardBackgroundColor="?attr/inputBackgroundColor"
-    app:cardCornerRadius="@dimen/dimen20dp"
+    app:cardCornerRadius="@dimen/dimen10dp"
     app:cardElevation="@dimen/dimen0dp">
 
     <TextView

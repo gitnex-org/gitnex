@@ -527,7 +527,7 @@ public class IssueCommentsAdapter extends RecyclerView.Adapter<RecyclerView.View
 									.buildRoundRect(
 											issueComment.getLabel().getName(),
 											color,
-											AppUtil.getPixelsFromDensity(context, 18));
+											AppUtil.getPixelsFromDensity(context, 6));
 
 					TextView textView = new TextView(context);
 					String text;

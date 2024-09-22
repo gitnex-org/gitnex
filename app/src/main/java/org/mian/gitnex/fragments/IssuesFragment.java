@@ -292,7 +292,7 @@ public class IssuesFragment extends Fragment {
 
 						if (response.code() == 200) {
 							assert response.body() != null;
-							if (response.body().size() > 0) {
+							if (!response.body().isEmpty()) {
 								issuesList.clear();
 								issuesList.addAll(response.body());
 								adapter.notifyDataChanged();
@@ -357,7 +357,7 @@ public class IssuesFragment extends Fragment {
 						if (response.code() == 200) {
 							List<Issue> result = response.body();
 							assert result != null;
-							if (result.size() > 0) {
+							if (!result.isEmpty()) {
 								pageSize = result.size();
 								issuesList.addAll(result);
 							} else {

@@ -28,6 +28,7 @@
 
             <com.google.android.material.card.MaterialCardView
                 style="?attr/materialCardViewElevatedStyle"
+                android:backgroundTint="@android:color/transparent"
                 android:layout_width="@dimen/dimen60dp"
                 android:layout_height="@dimen/dimen60dp"
                 app:cardCornerRadius="@dimen/dimen16dp"
@@ -37,6 +38,7 @@
                     android:id="@+id/userAvatar"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
+                    android:src="@drawable/loader_animated"
                     android:contentDescription="@string/generalImgContentText"
                     tools:srcCompat="@tools:sample/avatars"/>
 

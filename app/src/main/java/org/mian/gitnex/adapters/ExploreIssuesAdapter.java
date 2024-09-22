@@ -301,7 +301,7 @@ public class ExploreIssuesAdapter extends RecyclerView.Adapter<RecyclerView.View
 										.buildRoundRect(
 												labelName,
 												color,
-												AppUtil.getPixelsFromDensity(context, 18));
+												AppUtil.getPixelsFromDensity(context, 6));
 
 						labelsView.setImageDrawable(drawable);
 						frameLabels.addView(labelsView);

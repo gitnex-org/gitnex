@@ -70,6 +70,7 @@
 
                         <com.google.android.material.card.MaterialCardView
                             style="?attr/materialCardViewElevatedStyle"
+                            android:backgroundTint="@android:color/transparent"
                             android:layout_width="@dimen/dimen32dp"
                             android:layout_height="@dimen/dimen32dp"
                             app:cardCornerRadius="@dimen/dimen8dp"

@@ -40,6 +40,8 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import com.amulyakhare.textdrawable.TextDrawable;
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.load.engine.DiskCacheStrategy;
+import com.bumptech.glide.load.resource.bitmap.RoundedCorners;
+import com.bumptech.glide.request.RequestOptions;
 import com.bumptech.glide.request.target.CustomTarget;
 import com.bumptech.glide.request.transition.Transition;
 import com.google.android.material.bottomsheet.BottomSheetDialog;
@@ -161,8 +163,8 @@ public class IssueDetailActivity extends BaseActivity
 	private AttachmentsAdapter attachmentsAdapter;
 	private static final List<Uri> contentUri = new ArrayList<>();
 	private InputMethodManager imm;
-	private float buttonAlphaStatDisabled = .5F;
-	private float buttonAlphaStatEnabled = 1F;
+	private final float buttonAlphaStatDisabled = .5F;
+	private final float buttonAlphaStatEnabled = 1F;
 
 	private enum Mode {
 		EDIT,
@@ -1346,6 +1348,7 @@ public class IssueDetailActivity extends BaseActivity
 						.diskCacheStrategy(DiskCacheStrategy.ALL)
 						.placeholder(R.drawable.loader_animated)
 						.centerCrop()
+						.apply(RequestOptions.bitmapTransform(new RoundedCorners(20)))
 						.into(assigneesView);
 
 				viewBinding.frameAssignees.addView(assigneesView);
@@ -1424,7 +1427,7 @@ public class IssueDetailActivity extends BaseActivity
 								.height(height)
 								.endConfig()
 								.buildRoundRect(
-										labelName, color, AppUtil.getPixelsFromDensity(ctx, 18));
+										labelName, color, AppUtil.getPixelsFromDensity(ctx, 6));
 
 				labelsView.setImageDrawable(drawable);
 				viewBinding.frameLabels.addView(labelsView);
