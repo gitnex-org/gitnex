@@ -1,0 +1,15 @@
+6.0.0
+
+🎉 Features 🎉
+- Add attachments to comments
+- Support SVG formats
+- Show CI statuses for a PR
+- Add location, website and bio to user profile
+
+🚀 Improvements 🚀 
+- Hide create button for issue and pr to avoid creating duplicate entries
+- Hide your email in navigation drawer (enable in settings)
+- Set your email and language as private in profile screen (enable in settings)
+- Render organization description with MD
+
+Release Notes: https://codeberg.org/gitnex/GitNex/releases

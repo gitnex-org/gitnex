@@ -185,7 +185,7 @@
     <string name="settingsEnableCommentsDeletionText">Activar el borrado de borradores</string>
     <string name="settingsEnableCommentsDeletionHintText">Borrar el borrador del comentario cuando se publica el comentario</string>
     <string name="settingsGeneralHeader">General</string>
-    <string name="generalHintText">Página de inicio, borradores, reportes de error</string>
+    <string name="generalHintText">Home screen, crash reports, custom tabs</string>
     <string name="generalDeepLinkDefaultScreen">Gestor de enlaces por defecto</string>
     <string name="generalDeepLinkDefaultScreenHintText">Elija qué pantalla debe cargarse si la aplicación no puede manejar los enlaces externos. Te redirigirá automáticamente.</string>
     <string name="linkSelectorDialogTitle">Seleccione la pantalla del gestor de enlaces por defecto</string>
@@ -203,11 +203,15 @@
     <string name="restore">Restore</string>
     <string name="backupFileSuccess">The backup was successfully created</string>
     <string name="backupFileError">An error occurred while creating a data backup</string>
-    <string name="backupFilePopupText">This action will backup your accounts, settings, drafts, notes, and data related to repositories.\n\nClick the Backup button to download the backup file.</string>
-    <string name="restoreFilePopupText">You are about to restore from a GitNex-generated backup file. This will restore user accounts, settings, drafts, notes, and data related to repositories.\n\nPlease note this action will overwrite the current database data. Proceed with caution.\n\nClick Restore to start the process.</string>
+    <string name="backupFilePopupText">This action will backup your accounts, settings, notes, and data related to repositories.\n\nClick the Backup button to download the backup file.</string>
+    <string name="restoreFilePopupText">You are about to restore from a GitNex-generated backup file. This will restore user accounts, settings, notes, and data related to repositories.\n\nPlease note this action will overwrite the current database data. Proceed with caution.\n\nClick Restore to start the process.</string>
     <string name="restoreError">An error occurred while restoring from the backup file.</string>
     <string name="restoreFromBackup">Restore from Backup</string>
-    <string name="restoreFromBackupPopupText">You are about to restore from a GitNex-generated backup file. This will restore user accounts, settings, drafts, notes, and data related to repositories.\n\nClick Restore to start the process.</string>
+    <string name="restoreFromBackupPopupText">You are about to restore from a GitNex-generated backup file. This will restore user accounts, settings, notes, and data related to repositories.\n\nClick Restore to start the process.</string>
+    <string name="hideEmailLangInProfileHeader">Set Email and Language as Private</string>
+    <string name="hideEmailLangInProfileHint">You can set your email and language to private to hide them on your profile screen</string>
+    <string name="hideEmailNavDrawerHeader">Hide Email in Drawer</string>
+    <string name="hideEmailNavDrawerHint">You can enable this option to hide your email in the app navigation drawer</string>
     <!-- settings -->
     <string name="noMoreData">No hay más datos disponibles</string>
     <string name="createLabel">Nueva etiqueta</string>
@@ -285,6 +289,7 @@
     <string name="editSettings">Edit Profile</string>
     <string name="hideActivity">Hide Activity from profile page</string>
     <string name="hideEmail">Hide Email</string>
+    <string name="profileUpdate">Profile updated</string>
     <!-- profile section -->
     <!-- account settings -->
     <string name="accountEmails">Correos electrónicos</string>
@@ -366,6 +371,7 @@
     <string name="repoWatchersInMenu">Observadores</string>
     <string name="noDataWebsite">No se encontró una página web</string>
     <string name="noDataDescription">No se encontró una descripción</string>
+    <string name="noDataBio">No bio found</string>
     <string name="noDataLocation">No se encontró una ubicación</string>
     <string name="starMember">Destacar</string>
     <string name="watcherMember">Monitorizar</string>
@@ -451,6 +457,7 @@
     <string name="license">Licencia</string>
     <string name="title">Title</string>
     <string name="description">Description</string>
+    <string name="bioText">Bio</string>
     <!-- generic copy -->
     <string name="exploreUsers">Explorar usuarios</string>
     <string name="exploreIssues">Explorar incidencias</string>
@@ -717,6 +724,8 @@
         <item quantity="other">Notas eliminadas correctamente</item>
     </plurals>
     <string name="notesAllDeletionMessage">Esto eliminará todas tus notas. Esta acción no puede deshacerse.</string>
+    <string name="insertNote">Insert a Note</string>
+    <string name="noNotes">No notes found</string>
     <!-- timeline -->
     <string name="commitsText">commit</string>
     <string name="commitText">commit</string>
@@ -757,8 +766,8 @@
     <string name="timelineTimeTrackingAddManualTime">%1$s ha añadido tiempo invertido %2$s %3$s</string>
     <string name="timelineTimeTrackingDeleteManualTime">%1$s ha elimnado tiempo invertido %2$s %3$s</string>
     <string name="timelineChangeIssueRef">%1$s ha añadido una referencia %2$s %3$s</string>
-    <string name="timelineRefIssue">%1$s ha hecho referencia a esta incidencia en #%2$d %3$s</string>
-    <string name="timelineRefPr">%1$s ha hecho referencia a este Pull Request en #%2$d %3$s</string>
+    <string name="timelineRefIssue">%1$s referenced this issue in %2$s %3$s</string>
+    <string name="timelineRefPr">%1$s referenced this pull request in %2$s %3$s</string>
     <string name="timelineStatusRefIssue"><![CDATA[%1$s ha hecho referencia a esta incidencia desde <font color=\'%2$d\'>%3$s</font> %4$s]]></string>
     <string name="timelineReviewLeftComment">%1$s dejó un comentario: %2$s %3$s</string>
     <string name="timelinePinned">%1$s pinned this %2$s</string>
