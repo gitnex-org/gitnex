@@ -186,7 +186,7 @@ Exemplo: codeberg.org</string>
     <string name="settingsEnableCommentsDeletionText">Ativar exclusão de rascunhos</string>
     <string name="settingsEnableCommentsDeletionHintText">Excluir rascunho de comentário quando um comentário é postado</string>
     <string name="settingsGeneralHeader">Geral</string>
-    <string name="generalHintText">Tela inicial, rascunhos e relatórios de falha</string>
+    <string name="generalHintText">Home screen, crash reports, custom tabs</string>
     <string name="generalDeepLinkDefaultScreen">Manipulador de Links Padrão</string>
     <string name="generalDeepLinkDefaultScreenHintText">Escolha a tela a ser carregada automaticamente caso o aplicativo não possa abrir links externos.</string>
     <string name="linkSelectorDialogTitle">Select Default Link Handler Screen</string>
@@ -204,11 +204,15 @@ Exemplo: codeberg.org</string>
     <string name="restore">Restore</string>
     <string name="backupFileSuccess">The backup was successfully created</string>
     <string name="backupFileError">An error occurred while creating a data backup</string>
-    <string name="backupFilePopupText">This action will backup your accounts, settings, drafts, notes, and data related to repositories.\n\nClick the Backup button to download the backup file.</string>
-    <string name="restoreFilePopupText">You are about to restore from a GitNex-generated backup file. This will restore user accounts, settings, drafts, notes, and data related to repositories.\n\nPlease note this action will overwrite the current database data. Proceed with caution.\n\nClick Restore to start the process.</string>
+    <string name="backupFilePopupText">This action will backup your accounts, settings, notes, and data related to repositories.\n\nClick the Backup button to download the backup file.</string>
+    <string name="restoreFilePopupText">You are about to restore from a GitNex-generated backup file. This will restore user accounts, settings, notes, and data related to repositories.\n\nPlease note this action will overwrite the current database data. Proceed with caution.\n\nClick Restore to start the process.</string>
     <string name="restoreError">An error occurred while restoring from the backup file.</string>
     <string name="restoreFromBackup">Restore from Backup</string>
-    <string name="restoreFromBackupPopupText">You are about to restore from a GitNex-generated backup file. This will restore user accounts, settings, drafts, notes, and data related to repositories.\n\nClick Restore to start the process.</string>
+    <string name="restoreFromBackupPopupText">You are about to restore from a GitNex-generated backup file. This will restore user accounts, settings, notes, and data related to repositories.\n\nClick Restore to start the process.</string>
+    <string name="hideEmailLangInProfileHeader">Set Email and Language as Private</string>
+    <string name="hideEmailLangInProfileHint">You can set your email and language to private to hide them on your profile screen</string>
+    <string name="hideEmailNavDrawerHeader">Hide Email in Drawer</string>
+    <string name="hideEmailNavDrawerHint">You can enable this option to hide your email in the app navigation drawer</string>
     <!-- settings -->
     <string name="noMoreData">Não há mais dados disponíveis</string>
     <string name="createLabel">Novo marcador</string>
@@ -286,6 +290,7 @@ Exemplo: codeberg.org</string>
     <string name="editSettings">Edit Profile</string>
     <string name="hideActivity">Hide Activity from profile page</string>
     <string name="hideEmail">Hide Email</string>
+    <string name="profileUpdate">Profile updated</string>
     <!-- profile section -->
     <!-- account settings -->
     <string name="accountEmails">Emails</string>
@@ -367,6 +372,7 @@ Exemplo: codeberg.org</string>
     <string name="repoWatchersInMenu">Observadores</string>
     <string name="noDataWebsite">Nenhum site encontrado</string>
     <string name="noDataDescription">Nenhuma descrição encontrada</string>
+    <string name="noDataBio">No bio found</string>
     <string name="noDataLocation">Nenhum local encontrado</string>
     <string name="starMember">Favorito</string>
     <string name="watcherMember">Observador</string>
@@ -452,6 +458,7 @@ Exemplo: codeberg.org</string>
     <string name="license">License</string>
     <string name="title">Title</string>
     <string name="description">Description</string>
+    <string name="bioText">Bio</string>
     <!-- generic copy -->
     <string name="exploreUsers">Explore users</string>
     <string name="exploreIssues">Explore issues</string>
@@ -718,6 +725,8 @@ Exemplo: codeberg.org</string>
         <item quantity="other">Notes deleted successfully</item>
     </plurals>
     <string name="notesAllDeletionMessage">This will delete all of your notes. This action cannot be undone.</string>
+    <string name="insertNote">Insert a Note</string>
+    <string name="noNotes">No notes found</string>
     <!-- timeline -->
     <string name="commitsText">commit</string>
     <string name="commitText">commit</string>
@@ -758,8 +767,8 @@ Exemplo: codeberg.org</string>
     <string name="timelineTimeTrackingAddManualTime">%1$s added spent time %2$s %3$s</string>
     <string name="timelineTimeTrackingDeleteManualTime">%1$s deleted spent time %2$s %3$s</string>
     <string name="timelineChangeIssueRef">%1$s added reference %2$s %3$s</string>
-    <string name="timelineRefIssue">%1$s referenced this issue in #%2$d %3$s</string>
-    <string name="timelineRefPr">%1$s referenced this pull request in #%2$d %3$s</string>
+    <string name="timelineRefIssue">%1$s referenced this issue in %2$s %3$s</string>
+    <string name="timelineRefPr">%1$s referenced this pull request in %2$s %3$s</string>
     <string name="timelineStatusRefIssue"><![CDATA[%1$s referenced this issue from a <font color=\'%2$d\'>%3$s</font> %4$s]]></string>
     <string name="timelineReviewLeftComment">%1$s left a comment: %2$s %3$s</string>
     <string name="timelinePinned">%1$s pinned this %2$s</string>
