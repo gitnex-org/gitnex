@@ -766,8 +766,8 @@
     <string name="timelineTimeTrackingAddManualTime">%1$s hat benötigte Zeit %2$s %3$s hinzugefügt</string>
     <string name="timelineTimeTrackingDeleteManualTime">%1$s hat benötigte Zeit %2$s %3$s entfernt</string>
     <string name="timelineChangeIssueRef">%1$s hat die Referenz %2$s %3$s hinzugefügt</string>
-    <string name="timelineRefIssue">%1$s referenced this issue in %2$s %3$s</string>
-    <string name="timelineRefPr">%1$s referenced this pull request in %2$s %3$s</string>
+    <string name="timelineRefIssue">%1$s hat diesen Issue %3$s in #%2$s erwähnt</string>
+    <string name="timelineRefPr">%1$s hat diesen Pull-Request %3$s in #%2$s erwähnt</string>
     <string name="timelineStatusRefIssue"><![CDATA[%1$s hat diesen Issue von einem <font color=\'%2$d\'>%3$s</font> %4$s referenziert]]></string>
     <string name="timelineReviewLeftComment">%1$s hat einen Kommentar hinterlassen: %2$s %3$s</string>
     <string name="timelinePinned">%1$s hat das %2$s angepinnt</string>
