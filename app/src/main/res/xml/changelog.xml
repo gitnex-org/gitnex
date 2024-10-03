@@ -1,23 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 <changelog>
 
-    <release version="6.0.0" versioncode="600">
-        <change>New - Add attachments to comments</change>
-        <change>New - Support SVG formats</change>
-        <change>New - Show CI statuses for a PR</change>
-        <change>New - Add location, website and bio to user profile</change>
-        <change>Improvement - Hide create button for issue and pr to avoid creating duplicate entries</change>
-        <change>Improvement - Hide your email in navigation drawer (enable in settings)</change>
-        <change>Improvement - Set your email and language as private in profile screen (enable in settings)</change>
-        <change>Improvement - Render organization description with MD</change>
-        <change>Improvement - Translation updates</change>
-        <change>Bugfix - Fix show My Issues in the navigation drawer</change>
-        <change>Bugfix - Fix jumping cursor when editing a comment</change>
-        <change>Bugfix - Fix biometric relaunching on cancel button</change>
-        <change>Bugfix - Fix notification popup on cancel button</change>
-        <change>Bugfix - Fix opening user profiles via links</change>
-        <change>Bugfix - Possible fix on crash after tapping on profile</change>
-        <change>Bugfix - Fix cross referencing issue and pr in timeline</change>
+    <release version="7.0.0-dev" versioncode="695">
+        <change>Under development</change>
     </release>
 
 </changelog>

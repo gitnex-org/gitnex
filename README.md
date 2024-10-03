@@ -1,6 +1,6 @@
 [![License: GPL v3](https://codeberg.org/gitnex/GitNex/raw/branch/main/assets/license.svg)](https://www.gnu.org/licenses/gpl-3.0) [![Pipeline status](https://ci.codeberg.org/api/badges/gitnex/GitNex/status.svg)](https://ci.codeberg.org/gitnex/GitNex) [![Release](https://img.shields.io/badge/dynamic/json.svg?label=release&url=https://codeberg.org/api/v1/repos/gitnex/GitNex/releases&query=$[0].tag_name)](https://codeberg.org/gitnex/GitNex/releases) [![Crowdin](https://badges.crowdin.net/gitnex/localized.svg)](https://crowdin.com/project/gitnex) [![Join the Discord chat at https://discord.gg/FbSS4rf](https://img.shields.io/discord/632219664587685908.svg)](https://discord.gg/FbSS4rf)
 
-[<img alt="Become a Patreon" src="https://codeberg.org/gitnex/GitNex/raw/branch/main/assets/patreon.png" height="40"/>](https://www.patreon.com/mmarif)
+[<img alt="Become a Patreon" src="https://codeberg.org/gitnex/GitNex/raw/branch/main/assets/patreon.png" height="80"/>](https://www.patreon.com/mmarif)
 
 # GitNex - Android client for Forgejo and Gitea
 
@@ -13,6 +13,7 @@ GitNex is licensed under the GPLv3 License. Please refer to the LICENSE file for
 [<img alt='Get it on F-Droid' src='https://codeberg.org/gitnex/GitNex/raw/branch/main/assets/fdroid.png' height="80"/>](https://f-droid.org/en/packages/org.mian.gitnex/)
 [<img alt='Get it on Google Play' src='https://codeberg.org/gitnex/GitNex/raw/branch/main/assets/google-play.png' height="80"/>](https://play.google.com/store/apps/details?id=org.mian.gitnex.pro)
 [<img alt='Download builds and releases' src='https://codeberg.org/gitnex/GitNex/raw/branch/main/assets/apk-badge.png' height="82"/>](https://cloud.swatian.com/s/WS4k3seXnmfQppo)
+[<img alt='Get it on OpenAPK' src='https://codeberg.org/gitnex/GitNex/raw/branch/main/assets/openapk.png' height="82"/>](https://www.openapk.net/gitnex-for-forgejo-and-gitea/org.mian.gitnex/)
 
 ## Note about Forgejo and Gitea version
 
