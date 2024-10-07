@@ -209,9 +209,9 @@
     <string name="restoreFromBackup">Restaurer depuis la sauvegarde</string>
     <string name="restoreFromBackupPopupText">Vous allez restaurer vos données à partir d’une sauvegarde GitNex. Vos comptes, réglages, brouillons, notes et données liées aux dépôts seront restaurés.\n\nCliquez sur Restaurer pour lancer le processus.</string>
     <string name="hideEmailLangInProfileHeader">Ne pas afficher l’adresse courriel et la langue</string>
-    <string name="hideEmailLangInProfileHint">You can set your email and language to private to hide them on your profile screen</string>
+    <string name="hideEmailLangInProfileHint">Définies comme privées, votre courriel et votre langue n’apparaitront pas sur votre profil.</string>
     <string name="hideEmailNavDrawerHeader">Masquer l’adresse courriel dans le menu latéral</string>
-    <string name="hideEmailNavDrawerHint">You can enable this option to hide your email in the app navigation drawer</string>
+    <string name="hideEmailNavDrawerHint">Activée, cette option masquera votre courriel dans le menu latéral</string>
     <!-- settings -->
     <string name="noMoreData">Aucune donnée</string>
     <string name="createLabel">Nouvelle étiquette</string>
@@ -766,8 +766,8 @@
     <string name="timelineTimeTrackingAddManualTime">%1$s a ajouté le temps passé %2$s %3$s</string>
     <string name="timelineTimeTrackingDeleteManualTime">%1$s a supprimé le temps passé %2$s %3$s</string>
     <string name="timelineChangeIssueRef">%1$s a ajouté la référence %2$s %3$s</string>
-    <string name="timelineRefIssue">%1$s referenced this issue in %2$s %3$s</string>
-    <string name="timelineRefPr">%1$s referenced this pull request in %2$s %3$s</string>
+    <string name="timelineRefIssue">%1$s a mentionné ce ticket dans #%2$s %3$s</string>
+    <string name="timelineRefPr">%1$s a mentionné cette demande d’ajout dans #%2$s %3$s</string>
     <string name="timelineStatusRefIssue"><![CDATA[%1$s mentionné ce ticket dans une <font color=\'%2$d\'>%3$s</font> %4$s]]></string>
     <string name="timelineReviewLeftComment">%1$s a ajouté un commentaire : %2$s %3$s</string>
     <string name="timelinePinned">%1$s a épinglé cette %2$s</string>

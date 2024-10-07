@@ -1,0 +1,15 @@
+6.0.0
+
+🎉 Fonctionnalités 🎉
+- Pièces jointes aux commentaires
+- Formats SVG
+- Statuts d’intégration continue des demandes d’ajout
+- Lieu, site web et bio dans le profil
+
+🚀 Améliorations 🚀 
+- Bouton de création masqué pour les tickets et les demandes d’ajout afin d'éviter la création d'entrées en double
+- Courriel masquable dans le menu latéral (activable dans les paramètres)
+- Courriel et langue masquables dans l'écran de profil (activable dans les paramètres)
+- Rendu Markdown de la description de l'organisation
+
+Notes de version : https://codeberg.org/gitnex/GitNex/releases
