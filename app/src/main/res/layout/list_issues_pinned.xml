@@ -3,10 +3,11 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/relativeLayoutFrameIssuesList"
-    android:layout_width="match_parent"
+    android:layout_width="@dimen/dimen320dp"
     android:layout_height="wrap_content"
     android:paddingTop="@dimen/dimen4dp"
     android:paddingBottom="@dimen/dimen4dp"
+    android:layout_marginEnd="@dimen/dimen12dp"
     android:orientation="vertical">
 
     <com.google.android.material.card.MaterialCardView
@@ -14,6 +15,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         style="?attr/materialCardViewElevatedStyle"
+        app:strokeWidth="@dimen/dimen1dp"
         app:cardElevation="@dimen/dimen0dp">
 
         <LinearLayout
@@ -64,7 +66,8 @@
                         android:textAlignment="gravity"
                         android:textColor="?attr/primaryTextColor"
                         android:textSize="@dimen/dimen16sp"
-                        tools:text="Id illum odio repellat omnis fuga deserunt aut. Ut est aut similique qui incidunt quia et." />
+                        android:maxLines="2"
+                        android:minLines="2" />
 
                     <HorizontalScrollView
                         android:id="@+id/labelsScrollViewDots"

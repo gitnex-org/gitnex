@@ -35,7 +35,9 @@ public abstract class Language {
 						new JsonLanguage(),
 						new CppLanguage(),
 						new CLanguage(),
-						new LispLanguage()
+						new LispLanguage(),
+						new DLanguage(),
+						new BashLanguage()
 					};
 			for (Language l : languagesArray) {
 				languages.put(l.getName().toUpperCase(), l);

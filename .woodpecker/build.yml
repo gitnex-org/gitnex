@@ -4,6 +4,7 @@ steps:
     commands:
       - ./gradlew assembleFreeRelease
     when:
+      event: [ push ]
       path: [ app/**, build.gradle ]
 
   sign:

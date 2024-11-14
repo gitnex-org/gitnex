@@ -556,6 +556,8 @@
     <string name="title">Title</string>
     <string name="description">Description</string>
     <string name="bioText">Bio</string>
+    <string name="pin">Pin</string>
+    <string name="unpin">Unpin</string>
     <!-- generic copy -->
 
     <string name="exploreUsers">Explore users</string>
@@ -642,6 +644,11 @@
     <string name="unsubscribedSuccessfully">Unsubscribed successfully</string>
     <string name="alreadyUnsubscribed">You have already Unsubscribed</string>
     <string name="unSubscriptionError">Un-Subscription failed</string>
+
+    <string name="issue_pinned">Issue pinned successfully</string>
+    <string name="issue_unpinned">Issue unpinned successfully</string>
+    <string name="pinning_failed">Pinning issue failed</string>
+    <string name="unpinning_failed">Unpinning issue failed</string>
 
     <string name="closeMilestone">Close Milestone</string>
     <string name="openMilestone">Open Milestone</string>

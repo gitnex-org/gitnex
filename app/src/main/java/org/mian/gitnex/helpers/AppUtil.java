@@ -94,6 +94,7 @@ public class AppUtil {
 					"c",
 					"cc",
 					"cpp",
+					"d",
 					"h",
 					"cxx",
 					"cyc",

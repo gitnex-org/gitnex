@@ -164,6 +164,33 @@
                     app:layout_alignSelf="flex_start" />
 
                 <TextView
+                    android:id="@+id/pin_issue"
+                    android:layout_width="@dimen/dimen132dp"
+                    android:layout_height="@dimen/dimen100dp"
+                    android:background="?android:attr/selectableItemBackgroundBorderless"
+                    android:gravity="center"
+                    android:padding="@dimen/dimen4dp"
+                    android:text="@string/pin"
+                    android:textColor="?attr/primaryTextColor"
+                    android:textSize="@dimen/dimen14sp"
+                    app:drawableTopCompat="@drawable/ic_pin"
+                    app:layout_alignSelf="flex_start" />
+
+                <TextView
+                    android:id="@+id/unpin_issue"
+                    android:layout_width="@dimen/dimen132dp"
+                    android:layout_height="@dimen/dimen100dp"
+                    android:background="?android:attr/selectableItemBackgroundBorderless"
+                    android:gravity="center"
+                    android:padding="@dimen/dimen4dp"
+                    android:text="@string/unpin"
+                    android:textColor="?attr/primaryTextColor"
+                    android:textSize="@dimen/dimen14sp"
+                    android:visibility="gone"
+                    app:drawableTopCompat="@drawable/ic_unpin"
+                    app:layout_alignSelf="flex_start" />
+
+                <TextView
                     android:id="@+id/subscribeIssue"
                     android:layout_width="@dimen/dimen132dp"
                     android:layout_height="@dimen/dimen100dp"

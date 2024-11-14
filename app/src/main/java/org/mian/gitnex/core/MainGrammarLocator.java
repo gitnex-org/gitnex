@@ -39,6 +39,14 @@ public class MainGrammarLocator {
 			case "csx":
 				return "csharp";
 
+			case "bash":
+			case "sh":
+			case "bsh":
+				return "sh";
+
+			case "d":
+				return "d";
+
 			case "groovy":
 			case "gradle":
 			case "gvy":

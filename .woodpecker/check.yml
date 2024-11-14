@@ -5,13 +5,22 @@ steps:
       pattern: "*.java"
       regex: " \\\\* \\\\@author [\\\\S\\\\s]+"
       must_contain: true
+    when:
+      event: [ push ]
+      path: [ app/**, build.gradle ]
 
   style:
     image: alvrme/alpine-android:android-32-jdk17
     commands:
       - ./gradlew :app:spotlessCheck
+    when:
+      event: [ push ]
+      path: [ app/**, build.gradle ]
 
   test:
     image: alvrme/alpine-android:android-32-jdk17
     commands:
       - ./gradlew test
+    when:
+      event: [ push ]
+      path: [ app/**, build.gradle ]
