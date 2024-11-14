@@ -19,6 +19,7 @@ public class IssueContext implements Serializable {
 	private Issue issue;
 	private PullRequest pullRequest;
 	private boolean isSubscribed;
+	private boolean isPinned;
 	private int issueIndex = 0;
 	private String issueType;
 
@@ -131,6 +132,16 @@ public class IssueContext implements Serializable {
 	public void setSubscribed(boolean subscribed) {
 
 		isSubscribed = subscribed;
+	}
+
+	public boolean isPinned() {
+
+		return isPinned;
+	}
+
+	public void setPinned(boolean pinned) {
+
+		isPinned = pinned;
 	}
 
 	public String getIssueType() {

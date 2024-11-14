@@ -22,6 +22,7 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.amulyakhare.textdrawable.TextDrawable;
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.load.engine.DiskCacheStrategy;
+import com.google.android.material.card.MaterialCardView;
 import com.vdurmont.emoji.EmojiParser;
 import java.util.List;
 import java.util.Locale;
@@ -49,18 +50,24 @@ public class IssuesAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder>
 	private List<Issue> issuesList;
 	private Runnable loadMoreListener;
 	private boolean isLoading = false, isMoreDataAvailable = true;
+	private final String type;
 
-	public IssuesAdapter(Context ctx, List<Issue> issuesListMain) {
+	public IssuesAdapter(Context ctx, List<Issue> issuesListMain, String type) {
 
 		this.context = ctx;
 		this.issuesList = issuesListMain;
 		tinyDb = TinyDB.getInstance(context);
+		this.type = type;
 	}
 
 	@NonNull @Override
 	public RecyclerView.ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
 		LayoutInflater inflater = LayoutInflater.from(context);
-		return new IssuesHolder(inflater.inflate(R.layout.list_issues, parent, false));
+		if (type.equalsIgnoreCase("pinned")) {
+			return new IssuesHolder(inflater.inflate(R.layout.list_issues_pinned, parent, false));
+		} else {
+			return new IssuesHolder(inflater.inflate(R.layout.list_issues, parent, false));
+		}
 	}
 
 	@Override
@@ -118,6 +125,7 @@ public class IssuesAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder>
 		private final HorizontalScrollView labelsScrollViewDots;
 		private final LinearLayout frameLabelsDots;
 		private final ImageView commentIcon;
+		private final MaterialCardView cardView;
 		private Issue issueObject;
 
 		IssuesHolder(View itemView) {
@@ -132,6 +140,7 @@ public class IssuesAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder>
 			labelsScrollViewDots = itemView.findViewById(R.id.labelsScrollViewDots);
 			frameLabelsDots = itemView.findViewById(R.id.frameLabelsDots);
 			commentIcon = itemView.findViewById(R.id.comment_icon);
+			cardView = itemView.findViewById(R.id.card_view);
 
 			new Handler()
 					.postDelayed(
@@ -289,6 +298,14 @@ public class IssuesAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder>
 						ContextCompat.getDrawable(context, R.drawable.ic_flame));
 				commentIcon.setColorFilter(
 						context.getResources().getColor(R.color.releasePre, null));
+			}
+
+			if (issue.getState().equalsIgnoreCase("open") && type.equalsIgnoreCase("pinned")) {
+				cardView.setStrokeColor(context.getResources().getColor(R.color.darkGreen, null));
+			}
+			if (issue.getState().equalsIgnoreCase("closed") && type.equalsIgnoreCase("pinned")) {
+				cardView.setStrokeColor(
+						context.getResources().getColor(R.color.iconIssuePrClosedColor, null));
 			}
 
 			this.issueCreatedTime.setText(TimeHelper.formatTime(issue.getCreatedAt(), locale));

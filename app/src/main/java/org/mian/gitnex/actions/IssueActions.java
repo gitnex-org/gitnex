@@ -254,6 +254,97 @@ public class IssueActions {
 				});
 	}
 
+	public static void pinIssue(final Context ctx, IssueContext issue) {
+
+		Call<Void> call;
+
+		call =
+				RetrofitClient.getApiInterface(ctx)
+						.pinIssue(
+								issue.getRepository().getOwner(),
+								issue.getRepository().getName(),
+								(long) issue.getIssueIndex());
+
+		call.enqueue(
+				new Callback<>() {
+
+					@Override
+					public void onResponse(
+							@NonNull Call<Void> call, @NonNull retrofit2.Response<Void> response) {
+
+						if (response.isSuccessful()) {
+
+							if (response.code() == 204) {
+
+								Toasty.success(ctx, ctx.getString(R.string.issue_pinned));
+								IssuesFragment.resumeIssues = true;
+								issue.setPinned(true);
+							}
+						} else if (response.code() == 401) {
+
+							AlertDialogs.authorizationTokenRevokedDialog(ctx);
+						} else {
+
+							Toasty.error(ctx, ctx.getString(R.string.pinning_failed));
+						}
+					}
+
+					@Override
+					public void onFailure(@NonNull Call<Void> call, @NonNull Throwable t) {
+
+						Toasty.error(
+								ctx,
+								ctx.getResources().getString(R.string.genericServerResponseError));
+					}
+				});
+	}
+
+	public static void unpinIssue(final Context ctx, IssueContext issue) {
+
+		Call<Void> call;
+
+		call =
+				RetrofitClient.getApiInterface(ctx)
+						.unpinIssue(
+								issue.getRepository().getOwner(),
+								issue.getRepository().getName(),
+								(long) issue.getIssueIndex());
+
+		call.enqueue(
+				new Callback<>() {
+
+					@Override
+					public void onResponse(
+							@NonNull Call<Void> call, @NonNull retrofit2.Response<Void> response) {
+
+						if (response.isSuccessful()) {
+
+							if (response.code() == 204) {
+
+								Toasty.success(ctx, ctx.getString(R.string.issue_unpinned));
+								IssuesFragment.resumeIssues = true;
+								issue.setPinned(false);
+								issue.getIssue().setPinOrder(0L);
+							}
+						} else if (response.code() == 401) {
+
+							AlertDialogs.authorizationTokenRevokedDialog(ctx);
+						} else {
+
+							Toasty.error(ctx, ctx.getString(R.string.unpinning_failed));
+						}
+					}
+
+					@Override
+					public void onFailure(@NonNull Call<Void> call, @NonNull Throwable t) {
+
+						Toasty.error(
+								ctx,
+								ctx.getResources().getString(R.string.genericServerResponseError));
+					}
+				});
+	}
+
 	public static ActionResult<ActionResult.None> reply(
 			Context context, String comment, IssueContext issue) {
 

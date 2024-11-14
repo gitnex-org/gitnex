@@ -45,7 +45,7 @@ public class LabelsActions {
 
 							assert issueLabelsList != null;
 
-							if (issueLabelsList.size() > 0) {
+							if (!issueLabelsList.isEmpty()) {
 
 								for (Label label : issueLabelsList) {
 

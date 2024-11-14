@@ -34,6 +34,7 @@ public class BottomSheetSingleIssueFragment extends BottomSheetDialogFragment {
 	private final IssueContext issue;
 	private final String issueCreator;
 	private BottomSheetListener bmListener;
+	private boolean issuePinStatus = false;
 
 	public BottomSheetSingleIssueFragment(IssueContext issue, String username) {
 		this.issue = issue;
@@ -286,6 +287,36 @@ public class BottomSheetSingleIssueFragment extends BottomSheetDialogFragment {
 		} else {
 			binding.addRemoveAssignees.setVisibility(View.GONE);
 			binding.editLabels.setVisibility(View.GONE);
+		}
+
+		binding.pinIssue.setOnClickListener(
+				pinIssue -> {
+					IssueActions.pinIssue(ctx, issue);
+					dismiss();
+				});
+
+		binding.unpinIssue.setOnClickListener(
+				unpinIssue -> {
+					IssueActions.unpinIssue(ctx, issue);
+					dismiss();
+				});
+
+		if (issue.getIssue().getPinOrder() > 0) {
+			binding.pinIssue.setVisibility(View.GONE);
+			binding.unpinIssue.setVisibility(View.VISIBLE);
+		} else {
+			binding.pinIssue.setVisibility(View.VISIBLE);
+			binding.unpinIssue.setVisibility(View.GONE);
+
+			if (issue.isPinned()) {
+				binding.pinIssue.setVisibility(View.GONE);
+				binding.unpinIssue.setVisibility(View.VISIBLE);
+			}
+		}
+
+		if (!isRepoAdmin) {
+			binding.pinIssue.setVisibility(View.GONE);
+			binding.unpinIssue.setVisibility(View.GONE);
 		}
 
 		return binding.getRoot();
