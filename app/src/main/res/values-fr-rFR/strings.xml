@@ -458,6 +458,8 @@
     <string name="title">Titre</string>
     <string name="description">Description</string>
     <string name="bioText">Bio</string>
+    <string name="pin">Épingler</string>
+    <string name="unpin">Désépingler</string>
     <!-- generic copy -->
     <string name="exploreUsers">Rechercher des utilisateurs</string>
     <string name="exploreIssues">Rechercher des tickets</string>
@@ -534,6 +536,10 @@
     <string name="unsubscribedSuccessfully">Vous ne suivez plus le dépôt</string>
     <string name="alreadyUnsubscribed">Vous êtes déjà désabonné</string>
     <string name="unSubscriptionError">Échec du désabonnement</string>
+    <string name="issue_pinned">Ticket épinglé</string>
+    <string name="issue_unpinned">Ticket désépinglé</string>
+    <string name="pinning_failed">Le ticket n’a pu être épinglé</string>
+    <string name="unpinning_failed">Le ticket n’a pu être désépinglé</string>
     <string name="closeMilestone">Fermer le jalon</string>
     <string name="openMilestone">Ouvrir le jalon</string>
     <string name="milestoneStatusUpdate">Jalon mis à jour</string>

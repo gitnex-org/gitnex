@@ -458,6 +458,8 @@
     <string name="title">Titel</string>
     <string name="description">Beschreibung</string>
     <string name="bioText">Biografie</string>
+    <string name="pin">Anheften</string>
+    <string name="unpin">Loslösen</string>
     <!-- generic copy -->
     <string name="exploreUsers">Benutzer erkunden</string>
     <string name="exploreIssues">Issues erkunden</string>
@@ -534,6 +536,10 @@
     <string name="unsubscribedSuccessfully">Erfolgreich abbestellt</string>
     <string name="alreadyUnsubscribed">Du hast bereits abbestellt</string>
     <string name="unSubscriptionError">Abbestellen fehlgeschlagen</string>
+    <string name="issue_pinned">Issue erfolgreich angeheftet</string>
+    <string name="issue_unpinned">Issue erfolgreich losgelöst</string>
+    <string name="pinning_failed">Anheften des Issues fehlgeschlagen</string>
+    <string name="unpinning_failed">Loslösen des Issues fehlgeschlagen</string>
     <string name="closeMilestone">Meilenstein schließen</string>
     <string name="openMilestone">Meilenstein wieder öffnen</string>
     <string name="milestoneStatusUpdate">Meilensteinstatus erfolgreich aktualisiert</string>
