@@ -1,6 +1,7 @@
 package org.mian.gitnex.fragments;
 
 import android.annotation.SuppressLint;
+import android.app.Dialog;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
@@ -17,17 +18,21 @@ import androidx.appcompat.widget.SearchView;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModelProvider;
 import androidx.recyclerview.widget.LinearLayoutManager;
+import com.google.android.material.dialog.MaterialAlertDialogBuilder;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
+import java.util.Objects;
 import moe.feng.common.view.breadcrumbs.DefaultBreadcrumbsCallback;
 import moe.feng.common.view.breadcrumbs.model.BreadcrumbItem;
+import org.gitnex.tea4j.v2.models.Branch;
 import org.gitnex.tea4j.v2.models.ContentsResponse;
 import org.mian.gitnex.R;
 import org.mian.gitnex.activities.CreateFileActivity;
 import org.mian.gitnex.activities.FileViewActivity;
 import org.mian.gitnex.activities.RepoDetailActivity;
 import org.mian.gitnex.adapters.FilesAdapter;
+import org.mian.gitnex.clients.RetrofitClient;
 import org.mian.gitnex.database.api.BaseApi;
 import org.mian.gitnex.database.api.UserAccountsApi;
 import org.mian.gitnex.database.models.UserAccount;
@@ -36,6 +41,9 @@ import org.mian.gitnex.helpers.AppUtil;
 import org.mian.gitnex.helpers.Path;
 import org.mian.gitnex.helpers.contexts.RepositoryContext;
 import org.mian.gitnex.viewmodels.FilesViewModel;
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
 
 /**
  * @author M M Arif
@@ -78,6 +86,8 @@ public class FilesFragment extends Fragment implements FilesAdapter.FilesAdapter
 		binding.recyclerView.setHasFixedSize(true);
 		binding.recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
 		binding.recyclerView.setAdapter(filesAdapter);
+
+		binding.branchTitle.setText(repository.getBranchRef());
 
 		binding.breadcrumbsView.setItems(
 				new ArrayList<>(
@@ -172,6 +182,8 @@ public class FilesFragment extends Fragment implements FilesAdapter.FilesAdapter
 		binding.newFile.setOnClickListener(
 				v17 -> startActivity(repository.getIntent(getContext(), CreateFileActivity.class)));
 
+		binding.switchBranch.setOnClickListener(switchBranch -> chooseBranch());
+
 		return binding.getRoot();
 	}
 
@@ -220,10 +232,10 @@ public class FilesFragment extends Fragment implements FilesAdapter.FilesAdapter
 
 				for (UserAccount userAccount : userAccounts) {
 					Uri instanceUri = Uri.parse(userAccount.getInstanceUrl());
-					if (instanceUri.getHost().toLowerCase().equals(host)) {
+					if (Objects.requireNonNull(instanceUri.getHost()).toLowerCase().equals(host)) {
 						account = userAccount;
 						// if scheme is wrong fix it
-						if (!url.getScheme().equals(instanceUri.getScheme())) {
+						if (!Objects.equals(url.getScheme(), instanceUri.getScheme())) {
 							url = AppUtil.changeScheme(url, instanceUri.getScheme());
 						}
 						break;
@@ -281,7 +293,7 @@ public class FilesFragment extends Fragment implements FilesAdapter.FilesAdapter
 							filesAdapter.getOriginalFiles().addAll(filesListMain);
 							filesAdapter.notifyOriginalDataSetChanged();
 
-							if (filesListMain.size() > 0) {
+							if (!filesListMain.isEmpty()) {
 
 								AppUtil.setMultiVisibility(
 										View.VISIBLE, binding.recyclerView, binding.filesFrame);
@@ -322,7 +334,7 @@ public class FilesFragment extends Fragment implements FilesAdapter.FilesAdapter
 							filesAdapter.getOriginalFiles().addAll(filesListMain2);
 							filesAdapter.notifyOriginalDataSetChanged();
 
-							if (filesListMain2.size() > 0) {
+							if (!filesListMain2.isEmpty()) {
 
 								AppUtil.setMultiVisibility(
 										View.VISIBLE, binding.recyclerView, binding.filesFrame);
@@ -340,6 +352,70 @@ public class FilesFragment extends Fragment implements FilesAdapter.FilesAdapter
 						});
 	}
 
+	private void chooseBranch() {
+
+		Dialog progressDialog = new Dialog(requireContext());
+		progressDialog.setCancelable(false);
+		progressDialog.setContentView(R.layout.custom_progress_loader);
+		progressDialog.show();
+
+		MaterialAlertDialogBuilder materialAlertDialogBuilder =
+				new MaterialAlertDialogBuilder(
+						requireContext(), R.style.ThemeOverlay_Material3_Dialog_Alert);
+
+		Call<List<Branch>> call =
+				RetrofitClient.getApiInterface(requireContext())
+						.repoListBranches(repository.getOwner(), repository.getName(), null, null);
+
+		call.enqueue(
+				new Callback<>() {
+
+					@Override
+					public void onResponse(
+							@NonNull Call<List<Branch>> call,
+							@NonNull Response<List<Branch>> response) {
+
+						progressDialog.hide();
+						if (response.code() == 200) {
+
+							List<String> branchesList = new ArrayList<>();
+							int selectedBranch = 0;
+							assert response.body() != null;
+
+							for (int i = 0; i < response.body().size(); i++) {
+
+								Branch branches = response.body().get(i);
+								branchesList.add(branches.getName());
+
+								if (repository.getBranchRef().equals(branches.getName())) {
+									selectedBranch = i;
+								}
+							}
+
+							materialAlertDialogBuilder
+									.setTitle(R.string.pageTitleChooseBranch)
+									.setSingleChoiceItems(
+											branchesList.toArray(new String[0]),
+											selectedBranch,
+											(dialogInterface, i) -> {
+												repository.setBranchRef(branchesList.get(i));
+												binding.branchTitle.setText(branchesList.get(i));
+
+												refresh();
+												dialogInterface.dismiss();
+											})
+									.setNeutralButton(R.string.cancelButton, null);
+							materialAlertDialogBuilder.create().show();
+						}
+					}
+
+					@Override
+					public void onFailure(@NonNull Call<List<Branch>> call, @NonNull Throwable t) {
+						progressDialog.hide();
+					}
+				});
+	}
+
 	@Override
 	public void onCreateOptionsMenu(@NonNull Menu menu, @NonNull MenuInflater inflater) {
 
@@ -353,6 +429,7 @@ public class FilesFragment extends Fragment implements FilesAdapter.FilesAdapter
 		MenuItem searchItem = menu.findItem(R.id.action_search);
 
 		SearchView searchView = (SearchView) searchItem.getActionView();
+		assert searchView != null;
 		searchView.setImeOptions(EditorInfo.IME_ACTION_DONE);
 		searchView.setOnQueryTextListener(
 				new SearchView.OnQueryTextListener() {

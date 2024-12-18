@@ -135,7 +135,6 @@
     <string name="tabTextFiles">Files</string>
     <string name="tabTextMl">Milestones</string>
     <string name="tabTextReleases">Releases</string>
-    <string name="tabTextBranches">Branches</string>
     <string name="tabTextCollaborators">Collaborators</string>
     <string name="tabPullRequests">Pull Requests</string>
     <string name="pullRequest">Pull Request</string>
@@ -480,7 +479,6 @@
     <string name="newFileRequiredFieldNewBranchName">New branch name cannot be empty if current branch is not selected</string>
 
     <string name="strFilter">Filter</string>
-    <string name="strSwitchBranches">Branches</string>
     <string name="strMarkdown">Markdown</string>
 
     <string name="copyIssueUrl">Copy Issue URL</string>
@@ -558,6 +556,8 @@
     <string name="bioText">Bio</string>
     <string name="pin">Pin</string>
     <string name="unpin">Unpin</string>
+    <string name="branch">Branch</string>
+    <string name="branches">Branches</string>
     <!-- generic copy -->
 
     <string name="exploreUsers">Explore users</string>
@@ -606,6 +606,7 @@
     <string name="selectMergeStrategy">Select merge strategy</string>
     <string name="mergeNotAllowed">Not allowed to merge [Reason: Does not have enough approvals]</string>
     <string name="deleteBranch">Delete Branch</string>
+    <string name="switch_branch">Switch Branch</string>
 
     <string name="waitLoadingDownloadFile">Please wait for the file to load to memory</string>
     <string name="downloadFileSaved">File saved successfully</string>

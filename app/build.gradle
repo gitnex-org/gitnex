@@ -7,12 +7,12 @@ android {
     defaultConfig {
         applicationId "org.mian.gitnex"
         minSdkVersion 23
-        targetSdkVersion 34
+        targetSdkVersion 35
         versionCode 695
         versionName "7.0.0-dev"
         multiDexEnabled true
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
-        compileSdk 34
+        compileSdk 35
     }
     flavorDimensions = ["default"]
     productFlavors {
@@ -106,7 +106,7 @@ dependencies {
     implementation 'ch.acra:acra-notification:5.11.3'
     implementation 'androidx.room:room-runtime:2.6.1'
     annotationProcessor 'androidx.room:room-compiler:2.6.1'
-    implementation "androidx.work:work-runtime:2.9.1"
+    implementation "androidx.work:work-runtime:2.10.0"
     implementation "io.mikael:urlbuilder:2.0.9"
     implementation "org.codeberg.gitnex-garage:emoji-java:v5.1.2"
     //noinspection GradleDependency
