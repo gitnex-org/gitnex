@@ -12,6 +12,8 @@
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
+        android:fitsSystemWindows="true"
+        android:background="?attr/primaryBackgroundColor"
         android:orientation="vertical">
 
         <com.google.android.material.appbar.MaterialToolbar
@@ -20,7 +22,6 @@
             android:background="?attr/primaryBackgroundColor"
             android:id="@+id/toolbar"
             app:titleTextColor="?attr/primaryTextColor"
-            android:theme="@style/Widget.AppCompat.SearchView"
             android:elevation="@dimen/dimen0dp">
 
             <TextView

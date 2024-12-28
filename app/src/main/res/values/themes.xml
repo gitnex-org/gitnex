@@ -3,7 +3,7 @@
 
     <!-- Dark theme - default -->
     <style name="AppTheme" parent="Theme.Material3.Dark.NoActionBar">
-        <item name="android:statusBarColor">@color/colorPrimary</item>
+        <item name="android:statusBarColor">@android:color/transparent</item>
         <item name="android:typeface">monospace</item>
         <item name="colorAccent">@color/colorAccent</item>
         <item name="android:textColorSecondary">@color/colorWhite</item>
@@ -49,7 +49,7 @@
 
     <!-- Light theme -->
     <style name="AppThemeLight" parent="Theme.Material3.Light.NoActionBar">
-        <item name="android:statusBarColor">@color/lightThemeBackground</item>
+        <item name="android:statusBarColor">@android:color/transparent</item>
         <item name="android:typeface">monospace</item>
         <item name="colorAccent">@color/colorAccent</item>
         <item name="android:textColorSecondary">@color/lightThemeTextColor</item>
@@ -94,7 +94,7 @@
 
     <!-- Retro theme -->
     <style name="AppThemeRetro" parent="Theme.Material3.Light.NoActionBar">
-        <item name="android:statusBarColor">@color/retroThemeBackground</item>
+        <item name="android:statusBarColor">@android:color/transparent</item>
         <item name="android:typeface">monospace</item>
         <item name="colorAccent">@color/colorAccent</item>
         <item name="android:textColorSecondary">@color/retroThemeTextColor</item>
@@ -138,7 +138,7 @@
 
     <!-- Pitch black theme -->
     <style name="AppThemePitchBlack" parent="Theme.Material3.Dark.NoActionBar">
-        <item name="android:statusBarColor">@color/pitchBlackThemeBackground</item>
+        <item name="android:statusBarColor">@android:color/transparent</item>
         <item name="android:typeface">monospace</item>
         <item name="colorAccent">@color/colorAccent</item>
         <item name="android:textColorSecondary">@color/pitchBlackThemeTextColor</item>
@@ -184,7 +184,7 @@
 
     <!-- Codeberg dark theme -->
     <style name="AppThemeCodebergDark" parent="Theme.Material3.Dark.NoActionBar">
-        <item name="android:statusBarColor">@color/codebergDarkThemeBackground</item>
+        <item name="android:statusBarColor">@android:color/transparent</item>
         <item name="android:typeface">monospace</item>
         <item name="colorAccent">@color/colorAccent</item>
         <item name="android:textColorSecondary">@color/codebergDarkThemeTextColor</item>

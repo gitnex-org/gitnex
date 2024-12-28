@@ -3,7 +3,7 @@
 
     <!-- Light theme -->
     <style name="AppThemeLight" parent="Theme.Material3.Light.NoActionBar">
-        <item name="android:statusBarColor">@color/lightThemeBackground</item>
+        <item name="android:statusBarColor">@android:color/transparent</item>
         <item name="android:windowLightStatusBar">true</item>
         <item name="android:typeface">monospace</item>
         <item name="colorAccent">@color/colorAccent</item>
@@ -48,7 +48,7 @@
 
     <!-- Retro theme -->
     <style name="AppThemeRetro" parent="Theme.Material3.Light.NoActionBar">
-        <item name="android:statusBarColor">@color/retroThemeBackground</item>
+        <item name="android:statusBarColor">@android:color/transparent</item>
         <item name="android:windowLightStatusBar">true</item>
         <item name="android:typeface">monospace</item>
         <item name="colorAccent">@color/colorAccent</item>
@@ -93,7 +93,7 @@
 
     <!-- Codeberg dark theme -->
     <style name="AppThemeCodebergDark" parent="Theme.Material3.Dark.NoActionBar">
-        <item name="android:statusBarColor">@color/codebergDarkThemeBackground</item>
+        <item name="android:statusBarColor">@android:color/transparent</item>
         <item name="android:typeface">monospace</item>
         <item name="colorAccent">@color/colorAccent</item>
         <item name="android:textColorSecondary">@color/codebergDarkThemeTextColor</item>
