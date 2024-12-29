@@ -1,5 +1,6 @@
 package org.mian.gitnex.adapters;
 
+import android.annotation.SuppressLint;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Handler;
@@ -99,7 +100,7 @@ public class CollaboratorSearchAdapter
 									currentItem.getLogin());
 
 			call.enqueue(
-					new Callback<Void>() {
+					new Callback<>() {
 
 						@Override
 						public void onResponse(
@@ -136,6 +137,12 @@ public class CollaboratorSearchAdapter
 	@Override
 	public int getItemCount() {
 		return usersSearchList.size();
+	}
+
+	@SuppressLint("NotifyDataSetChanged")
+	public void clearAdapter() {
+		usersSearchList.clear();
+		notifyDataSetChanged();
 	}
 
 	public class CollaboratorSearchViewHolder extends RecyclerView.ViewHolder {

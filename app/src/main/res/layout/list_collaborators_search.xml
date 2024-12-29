@@ -86,7 +86,8 @@
                     android:background="@drawable/shape_circle"
                     android:src="@drawable/ic_add"
                     android:padding="@dimen/dimen8dp"
-                    android:visibility="gone"/>
+                    android:visibility="gone"
+                    app:tint="@color/colorWhite" />
 
                 <ImageView
                     android:id="@+id/addCollaboratorButtonRemove"
@@ -97,7 +98,8 @@
                     android:background="@drawable/shape_circle_red"
                     android:src="@drawable/ic_remove"
                     android:padding="@dimen/dimen8dp"
-                    android:visibility="gone"/>
+                    app:tint="@color/colorWhite"
+                    android:visibility="gone" />
 
             </LinearLayout>
 
