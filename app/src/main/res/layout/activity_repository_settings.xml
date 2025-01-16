@@ -77,6 +77,10 @@
             <View
                 android:layout_width="match_parent"
                 android:layout_height="@dimen/dimen1dp"
+                android:layout_marginTop="@dimen/dimen4dp"
+                android:layout_marginBottom="@dimen/dimen4dp"
+                android:layout_marginStart="@dimen/dimen16dp"
+                android:layout_marginEnd="@dimen/dimen16dp"
                 android:background="?attr/dividerColor"/>
 
             <LinearLayout
@@ -117,6 +121,10 @@
                 <View
                     android:layout_width="match_parent"
                     android:layout_height="@dimen/dimen1dp"
+                    android:layout_marginTop="@dimen/dimen4dp"
+                    android:layout_marginBottom="@dimen/dimen4dp"
+                    android:layout_marginStart="@dimen/dimen16dp"
+                    android:layout_marginEnd="@dimen/dimen16dp"
                     android:background="?attr/dividerColor"/>
 
             </LinearLayout>
