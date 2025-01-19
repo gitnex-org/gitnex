@@ -4,7 +4,9 @@ steps:
     commands:
       - cp crowdin.example.yml crowdin.yml
       - sed -i 's/-removed-/'"$CROWDIN_TOKEN"'/' crowdin.yml
-    secrets: [ CROWDIN_TOKEN ]
+    environment:
+      CROWDIN_TOKEN:
+        from_secret: CROWDIN_TOKEN
     when:
       event: [ push, tag, cron ]
       branch: main
@@ -40,7 +42,8 @@ steps:
       - GITEA_BRANCH=main
       # Token that should be used to authenticate against the gitea instance
       # - BOT_TOKEN=secret
-    secrets: [ BOT_TOKEN ]
+      BOT_TOKEN:
+        from_secret: BOT_TOKEN
     commands:
       # Setup git credentials and checkout target branch
       - git config user.name  "$${GIT_AUTHOR_NAME}"

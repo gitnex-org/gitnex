@@ -13,9 +13,16 @@ steps:
       OUTPUT: "signed.apk"
       INSTANCE: "https://codeberg.org"
       KS_FILE: "gitnex_ci_keystore.jks"
+      BOT_TOKEN:
+        from_secret: BOT_TOKEN
+      KS_PASS:
+        from_secret: KS_PASS
+      KEY_PASS:
+        from_secret: KEY_PASS
+      KS_REPO:
+        from_secret: KS_REPO
     commands:
       - ./scripts/sign-build.sh
-    secrets: [ BOT_TOKEN, KS_PASS, KEY_PASS, KS_REPO ]
     when:
       event: [ push, tag ]
       branch: main
@@ -27,9 +34,10 @@ steps:
       WEBDAV_USERNAME: "GitNexBot"
       PLUGIN_FILE: "signed.apk"
       PLUGIN_DESTINATION: "https://cloud.swatian.com/remote.php/dav/files/GitNexBot/gitnex/builds/latest.apk"
+      WEBDAV_PASSWORD:
+        from_secret: WEBDAV_PASSWORD
     commands:
       - curl -T "$PLUGIN_FILE" -u "$WEBDAV_USERNAME":"$WEBDAV_PASSWORD" "$PLUGIN_DESTINATION"
-    secrets: [ WEBDAV_PASSWORD ]
     when:
       event: [ push, tag ]
       branch: main
@@ -40,9 +48,10 @@ steps:
     environment:
       WEBDAV_USERNAME: "GitNexBot"
       PLUGIN_FILE: "signed.apk"
+      WEBDAV_PASSWORD:
+        from_secret: WEBDAV_PASSWORD
     commands:
       - "[[ $CI_COMMIT_TAG == *'-rc'* ]] && echo 'Upload blocked. Build seems to be a release candidate.' && exit 0"
       - curl -T "$PLUGIN_FILE" -u "$WEBDAV_USERNAME":"$WEBDAV_PASSWORD" 'https://cloud.swatian.com/remote.php/dav/files/GitNexBot/gitnex/releases/'"$CI_COMMIT_TAG"'.apk'
-    secrets: [ WEBDAV_PASSWORD ]
     when:
       event: [ tag ]
