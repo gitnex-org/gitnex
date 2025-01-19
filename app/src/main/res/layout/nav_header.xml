@@ -4,6 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/navHeaderFrame"
     android:layout_width="match_parent"
+    android:layout_marginTop="@dimen/dimen24dp"
     android:layout_height="@dimen/dimen180dp">
 
     <ImageView

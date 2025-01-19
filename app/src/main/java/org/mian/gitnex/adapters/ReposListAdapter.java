@@ -18,6 +18,7 @@ import com.amulyakhare.textdrawable.TextDrawable;
 import com.amulyakhare.textdrawable.util.ColorGenerator;
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.load.engine.DiskCacheStrategy;
+import com.google.android.material.card.MaterialCardView;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Locale;
@@ -164,6 +165,7 @@ public class ReposListAdapter extends RecyclerView.Adapter<RecyclerView.ViewHold
 		private final View spacerView;
 		private org.gitnex.tea4j.v2.models.Repository userRepositories;
 		private CheckBox isRepoAdmin;
+		private MaterialCardView isRepoArchivedFrame;
 
 		ReposHolder(View itemView) {
 
@@ -176,6 +178,7 @@ public class ReposListAdapter extends RecyclerView.Adapter<RecyclerView.ViewHold
 			repoStars = itemView.findViewById(R.id.repoStars);
 			repoLastUpdated = itemView.findViewById(R.id.repoLastUpdated);
 			spacerView = itemView.findViewById(R.id.spacerView);
+			isRepoArchivedFrame = itemView.findViewById(R.id.repo_is_archived_frame);
 
 			itemView.setOnClickListener(
 					v -> {
@@ -254,6 +257,12 @@ public class ReposListAdapter extends RecyclerView.Adapter<RecyclerView.ViewHold
 				isRepoAdmin = new CheckBox(context);
 			}
 			isRepoAdmin.setChecked(repositories.getPermissions().isAdmin());
+
+			if (repositories.isArchived()) {
+				isRepoArchivedFrame.setVisibility(View.VISIBLE);
+			} else {
+				isRepoArchivedFrame.setVisibility(View.GONE);
+			}
 		}
 	}
 }

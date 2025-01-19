@@ -3,13 +3,6 @@
     xmlns:app="http://schemas.android.com/apk/res-auto">
 
     <item
-        android:id="@+id/switchBranches"
-        android:icon="@drawable/ic_branch"
-        android:orderInCategory="1"
-        android:title="@string/strSwitchBranches"
-        app:showAsAction="ifRoom" />
-
-    <item
         android:id="@+id/branchCommits"
         android:icon="@drawable/ic_commit"
         android:orderInCategory="2"

@@ -118,7 +118,7 @@ public class AddNewTeamMemberActivity extends BaseActivity {
 						if (response.isSuccessful()) {
 
 							assert response.body() != null;
-							if (response.body().getData().size() > 0) {
+							if (!response.body().getData().isEmpty()) {
 
 								dataList.clear();
 								dataList.addAll(response.body().getData());
@@ -126,7 +126,9 @@ public class AddNewTeamMemberActivity extends BaseActivity {
 								noData.setVisibility(View.GONE);
 							} else {
 
+								dataList.clear();
 								noData.setVisibility(View.VISIBLE);
+								mRecyclerView.setAdapter(null);
 							}
 
 							mProgressBar.setVisibility(View.GONE);

@@ -61,6 +61,7 @@ public class CreateNoteActivity extends BaseActivity {
 		binding.close.setOnClickListener(close -> finish());
 		binding.toolbarTitle.setMovementMethod(new ScrollingMovementMethod());
 
+		assert action != null;
 		if (action.equalsIgnoreCase("edit")) {
 
 			noteId = getIntent().getIntExtra("noteId", 0);

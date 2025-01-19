@@ -61,7 +61,7 @@ public class AddCollaboratorToRepositoryActivity extends BaseActivity {
 										activityAddCollaboratorToRepositoryBinding
 												.addCollaboratorSearch.getText())
 								.toString()
-								.equals("")) {
+								.isEmpty()) {
 
 							activityAddCollaboratorToRepositoryBinding.progressBar.setVisibility(
 									View.VISIBLE);
@@ -128,7 +128,9 @@ public class AddCollaboratorToRepositoryActivity extends BaseActivity {
 			activityAddCollaboratorToRepositoryBinding.noData.setVisibility(View.GONE);
 		} else {
 
+			activityAddCollaboratorToRepositoryBinding.recyclerViewUserSearch.setAdapter(null);
 			activityAddCollaboratorToRepositoryBinding.noData.setVisibility(View.VISIBLE);
+			adapter.clearAdapter();
 		}
 
 		activityAddCollaboratorToRepositoryBinding.progressBar.setVisibility(View.GONE);

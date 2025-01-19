@@ -222,11 +222,11 @@ public class RepoDetailActivity extends BaseActivity implements BottomSheetListe
 			filterMilestoneBottomSheet.show(
 					getSupportFragmentManager(), "repoFilterMenuMilestoneBottomSheet");
 			return true;
-		} else if (id == R.id.switchBranches) {
+		} /*else if (id == R.id.switchBranches) {
 
 			chooseBranch();
 			return true;
-		} else if (id == R.id.branchCommits) {
+		}*/ else if (id == R.id.branchCommits) {
 
 			Intent intent = repository.getIntent(ctx, CommitsActivity.class);
 

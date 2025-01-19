@@ -286,17 +286,7 @@ public class RepoInfoFragment extends Fragment {
 									AlertDialogs.authorizationTokenRevokedDialog(ctx);
 									break;
 
-								case 403:
-									Toasty.error(ctx, ctx.getString(R.string.authorizeError));
-									binding.languagesStatistic.setVisibility(View.GONE);
-									break;
-
 								case 404:
-									binding.languagesStatistic.setVisibility(View.GONE);
-									break;
-
-								default:
-									Toasty.error(getContext(), getString(R.string.genericError));
 									binding.languagesStatistic.setVisibility(View.GONE);
 									break;
 							}
@@ -529,19 +519,7 @@ public class RepoInfoFragment extends Fragment {
 									AlertDialogs.authorizationTokenRevokedDialog(ctx);
 									break;
 
-								case 403:
-									Toasty.error(ctx, ctx.getString(R.string.authorizeError));
-									binding.fileContentsFrameHeader.setVisibility(View.GONE);
-									binding.fileContentsFrame.setVisibility(View.GONE);
-									break;
-
 								case 404:
-									binding.fileContentsFrameHeader.setVisibility(View.GONE);
-									binding.fileContentsFrame.setVisibility(View.GONE);
-									break;
-
-								default:
-									Toasty.error(getContext(), getString(R.string.genericError));
 									binding.fileContentsFrameHeader.setVisibility(View.GONE);
 									binding.fileContentsFrame.setVisibility(View.GONE);
 									break;

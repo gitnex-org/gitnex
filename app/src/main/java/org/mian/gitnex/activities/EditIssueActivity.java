@@ -1,22 +1,47 @@
 package org.mian.gitnex.activities;
 
 import android.annotation.SuppressLint;
+import android.app.Activity;
+import android.app.NotificationManager;
+import android.content.Context;
 import android.content.Intent;
+import android.graphics.Bitmap;
+import android.graphics.Color;
+import android.graphics.drawable.Drawable;
+import android.net.Uri;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Looper;
 import android.util.Log;
+import android.view.LayoutInflater;
 import android.view.MenuItem;
 import android.view.MotionEvent;
 import android.view.View;
 import android.widget.ArrayAdapter;
+import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.TextView;
+import androidx.activity.result.ActivityResultLauncher;
+import androidx.activity.result.contract.ActivityResultContracts;
 import androidx.annotation.NonNull;
+import androidx.core.app.NotificationCompat;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import com.bumptech.glide.Glide;
+import com.bumptech.glide.load.engine.DiskCacheStrategy;
+import com.bumptech.glide.request.target.CustomTarget;
+import com.bumptech.glide.request.transition.Transition;
+import com.google.android.material.bottomsheet.BottomSheetDialog;
+import com.google.android.material.card.MaterialCardView;
 import com.google.android.material.datepicker.MaterialDatePicker;
+import com.google.android.material.dialog.MaterialAlertDialogBuilder;
 import com.vdurmont.emoji.EmojiParser;
+import java.io.File;
+import java.io.IOException;
+import java.io.OutputStream;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.LinkedHashMap;
@@ -24,27 +49,41 @@ import java.util.List;
 import java.util.Locale;
 import java.util.Objects;
 import java.util.TimeZone;
+import okhttp3.MediaType;
+import okhttp3.RequestBody;
+import okhttp3.ResponseBody;
+import org.apache.commons.io.FilenameUtils;
+import org.gitnex.tea4j.v2.models.Attachment;
 import org.gitnex.tea4j.v2.models.EditIssueOption;
 import org.gitnex.tea4j.v2.models.Issue;
 import org.gitnex.tea4j.v2.models.Milestone;
 import org.mian.gitnex.R;
+import org.mian.gitnex.adapters.AttachmentsAdapter;
 import org.mian.gitnex.clients.RetrofitClient;
 import org.mian.gitnex.databinding.ActivityEditIssueBinding;
+import org.mian.gitnex.databinding.BottomSheetAttachmentsBinding;
+import org.mian.gitnex.databinding.CustomImageViewDialogBinding;
 import org.mian.gitnex.fragments.IssuesFragment;
 import org.mian.gitnex.fragments.PullRequestsFragment;
 import org.mian.gitnex.helpers.AlertDialogs;
 import org.mian.gitnex.helpers.AppDatabaseSettings;
+import org.mian.gitnex.helpers.AppUtil;
 import org.mian.gitnex.helpers.Constants;
 import org.mian.gitnex.helpers.Markdown;
 import org.mian.gitnex.helpers.SnackBar;
+import org.mian.gitnex.helpers.attachments.AttachmentUtils;
+import org.mian.gitnex.helpers.attachments.AttachmentsModel;
 import org.mian.gitnex.helpers.contexts.IssueContext;
+import org.mian.gitnex.notifications.Notifications;
 import retrofit2.Call;
 import retrofit2.Callback;
+import retrofit2.Response;
 
 /**
  * @author M M Arif
  */
-public class EditIssueActivity extends BaseActivity {
+public class EditIssueActivity extends BaseActivity
+		implements AttachmentsAdapter.AttachmentsReceiverListener {
 
 	private ActivityEditIssueBinding binding;
 	private final String msState = "open";
@@ -52,6 +91,147 @@ public class EditIssueActivity extends BaseActivity {
 	private int milestoneId = 0;
 	private IssueContext issue;
 	private boolean renderMd = false;
+	private MaterialAlertDialogBuilder materialAlertDialogBuilder;
+	private String token;
+	private String filename;
+	private Long filesize;
+	private String filehash;
+	private String instanceUrlOnly;
+	private AttachmentsAdapter attachmentsAdapter;
+	private static List<AttachmentsModel> attachmentsList;
+	private static final List<Uri> contentUri = new ArrayList<>();
+	private MenuItem create;
+
+	public ActivityResultLauncher<Intent> downloadAttachmentLauncher =
+			registerForActivityResult(
+					new ActivityResultContracts.StartActivityForResult(),
+					result -> {
+						if (result.getResultCode() == Activity.RESULT_OK) {
+
+							assert result.getData() != null;
+
+							try {
+
+								OutputStream outputStream =
+										getContentResolver()
+												.openOutputStream(
+														Objects.requireNonNull(
+																result.getData().getData()));
+
+								NotificationCompat.Builder builder =
+										new NotificationCompat.Builder(ctx, ctx.getPackageName())
+												.setContentTitle(
+														getString(
+																R.string
+																		.fileViewerNotificationTitleStarted))
+												.setContentText(
+														getString(
+																R.string
+																		.fileViewerNotificationDescriptionStarted,
+																filename))
+												.setSmallIcon(R.drawable.gitnex_transparent)
+												.setPriority(NotificationCompat.PRIORITY_LOW)
+												.setChannelId(
+														Constants.downloadNotificationChannelId)
+												.setProgress(100, 0, false)
+												.setOngoing(true);
+
+								int notificationId = Notifications.uniqueNotificationId(ctx);
+
+								NotificationManager notificationManager =
+										(NotificationManager)
+												getSystemService(Context.NOTIFICATION_SERVICE);
+								notificationManager.notify(notificationId, builder.build());
+
+								Thread thread =
+										new Thread(
+												() -> {
+													try {
+
+														Call<ResponseBody> call =
+																RetrofitClient.getWebInterface(
+																				ctx,
+																				instanceUrlOnly)
+																		.getAttachment(filehash);
+
+														Response<ResponseBody> response =
+																call.execute();
+
+														assert response.body() != null;
+
+														builder.setOngoing(false)
+																.setContentTitle(
+																		getString(
+																				R.string
+																						.fileViewerNotificationTitleFinished))
+																.setContentText(
+																		getString(
+																				R.string
+																						.fileViewerNotificationDescriptionFinished,
+																				filename));
+
+														AppUtil.copyProgress(
+																response.body().byteStream(),
+																outputStream,
+																filesize,
+																progress -> {
+																	builder.setProgress(
+																			100, progress, false);
+																	notificationManager.notify(
+																			notificationId,
+																			builder.build());
+																});
+
+													} catch (IOException ignored) {
+
+														builder.setOngoing(false)
+																.setContentTitle(
+																		getString(
+																				R.string
+																						.fileViewerNotificationTitleFailed))
+																.setContentText(
+																		getString(
+																				R.string
+																						.fileViewerNotificationDescriptionFailed,
+																				filename));
+
+													} finally {
+
+														builder.setProgress(0, 0, false)
+																.setOngoing(false);
+
+														notificationManager.notify(
+																notificationId, builder.build());
+													}
+												});
+
+								thread.start();
+
+							} catch (IOException ignored) {
+							}
+						}
+					});
+
+	ActivityResultLauncher<Intent> startActivityForResult =
+			registerForActivityResult(
+					new ActivityResultContracts.StartActivityForResult(),
+					result -> {
+						if (result.getResultCode() == Activity.RESULT_OK) {
+							Intent data = result.getData();
+							assert data != null;
+							contentUri.add(data.getData());
+							attachmentsList.add(
+									new AttachmentsModel(
+											AttachmentUtils.queryName(ctx, data.getData()),
+											data.getData()));
+							attachmentsAdapter.updateList(attachmentsList);
+						}
+					});
+
+	public void onDestroy() {
+		AttachmentsAdapter.setAttachmentsReceiveListener(null);
+		super.onDestroy();
+	}
 
 	@SuppressLint("ClickableViewAccessibility")
 	@Override
@@ -65,12 +245,27 @@ public class EditIssueActivity extends BaseActivity {
 		int resultLimit = Constants.getCurrentResultLimit(ctx);
 		issue = IssueContext.fromIntent(getIntent());
 
-		binding.topAppBar.setNavigationOnClickListener(v -> finish());
+		binding.topAppBar.setNavigationOnClickListener(
+				v -> {
+					finish();
+					contentUri.clear();
+				});
 
-		MenuItem attachment = binding.topAppBar.getMenu().getItem(0);
-		MenuItem create = binding.topAppBar.getMenu().getItem(2);
-		attachment.setVisible(false);
-		create.setTitle(getString(R.string.menuEditText));
+		materialAlertDialogBuilder =
+				new MaterialAlertDialogBuilder(ctx, R.style.ThemeOverlay_Material3_Dialog_Alert);
+
+		token = ((BaseActivity) ctx).getAccount().getAccount().getToken();
+
+		String instanceUrl = ((BaseActivity) ctx).getAccount().getAccount().getInstanceUrl();
+		instanceUrlOnly = instanceUrl.substring(0, instanceUrl.lastIndexOf("api/v1/"));
+
+		attachmentsList = new ArrayList<>();
+		attachmentsAdapter = new AttachmentsAdapter(attachmentsList, ctx);
+
+		AttachmentsAdapter.setAttachmentsReceiveListener(this);
+
+		create = binding.topAppBar.getMenu().getItem(2);
+		create.setTitle(getString(R.string.saveButton));
 
 		binding.editIssueDescription.setOnTouchListener(
 				(touchView, motionEvent) -> {
@@ -122,7 +317,15 @@ public class EditIssueActivity extends BaseActivity {
 
 						return true;
 					} else if (id == R.id.create) {
+						create.setVisible(false);
 						processEditIssue();
+						if (!contentUri.isEmpty()) {
+							processAttachments();
+							contentUri.clear();
+						}
+						return true;
+					} else if (id == R.id.attachment) {
+						checkForAttachments();
 						return true;
 					} else {
 						return super.onOptionsItemSelected(menuItem);
@@ -135,10 +338,114 @@ public class EditIssueActivity extends BaseActivity {
 				issue.getIssueIndex(),
 				resultLimit);
 
+		getAttachments();
+
 		if (!issue.getRepository().getPermissions().isPush()) {
 			findViewById(R.id.editIssueMilestoneSpinnerLayout).setVisibility(View.GONE);
 			findViewById(R.id.editIssueDueDateLayout).setVisibility(View.GONE);
 		}
+	}
+
+	@Override
+	public void setAttachmentsData(Uri filename) {
+		contentUri.remove(filename);
+	}
+
+	private void checkForAttachments() {
+
+		if (!contentUri.isEmpty()) {
+
+			BottomSheetAttachmentsBinding bottomSheetAttachmentsBinding =
+					BottomSheetAttachmentsBinding.inflate(getLayoutInflater());
+
+			BottomSheetDialog bottomSheetDialog = new BottomSheetDialog(ctx);
+
+			bottomSheetAttachmentsBinding.addAttachment.setOnClickListener(
+					v1 -> openFileAttachmentActivity());
+
+			bottomSheetAttachmentsBinding.recyclerViewAttachments.setHasFixedSize(true);
+			bottomSheetAttachmentsBinding.recyclerViewAttachments.setLayoutManager(
+					new LinearLayoutManager(ctx));
+			bottomSheetAttachmentsBinding.recyclerViewAttachments.setAdapter(attachmentsAdapter);
+
+			bottomSheetDialog.setContentView(bottomSheetAttachmentsBinding.getRoot());
+			bottomSheetDialog.show();
+		} else {
+			attachmentsAdapter.clearAdapter();
+			openFileAttachmentActivity();
+		}
+	}
+
+	private void openFileAttachmentActivity() {
+
+		Intent data = new Intent(Intent.ACTION_GET_CONTENT);
+		data.addCategory(Intent.CATEGORY_OPENABLE);
+		data.setType("*/*");
+		Intent intent = Intent.createChooser(data, "Choose a file");
+		startActivityForResult.launch(intent);
+	}
+
+	private void processAttachments() {
+
+		for (int i = 0; i < contentUri.size(); i++) {
+
+			File file = AttachmentUtils.getFile(ctx, contentUri.get(i));
+
+			RequestBody requestFile =
+					RequestBody.create(
+							file,
+							MediaType.parse(
+									Objects.requireNonNull(
+											getContentResolver().getType(contentUri.get(i)))));
+
+			uploadAttachments(requestFile, file.getName());
+		}
+	}
+
+	private void uploadAttachments(RequestBody requestFile, String filename1) {
+
+		Call<Attachment> call3 =
+				RetrofitClient.getApiInterface(ctx)
+						.issueCreateIssueAttachment(
+								requestFile,
+								issue.getRepository().getOwner(),
+								issue.getRepository().getName(),
+								(long) issue.getIssueIndex(),
+								filename1);
+
+		call3.enqueue(
+				new Callback<>() {
+
+					@Override
+					public void onResponse(
+							@NonNull Call<Attachment> call,
+							@NonNull retrofit2.Response<Attachment> response2) {
+
+						if (response2.code() == 201) {
+							new Handler().postDelayed(() -> finish(), 3000);
+						} else if (response2.code() == 401) {
+
+							AlertDialogs.authorizationTokenRevokedDialog(ctx);
+						} else {
+
+							create.setVisible(true);
+							SnackBar.error(
+									ctx,
+									findViewById(android.R.id.content),
+									getString(R.string.attachmentsSaveError));
+						}
+					}
+
+					@Override
+					public void onFailure(@NonNull Call<Attachment> call, @NonNull Throwable t) {
+
+						create.setVisible(true);
+						SnackBar.error(
+								ctx,
+								findViewById(android.R.id.content),
+								getString(R.string.genericServerResponseError));
+					}
+				});
 	}
 
 	private void processEditIssue() {
@@ -149,7 +456,7 @@ public class EditIssueActivity extends BaseActivity {
 				Objects.requireNonNull(binding.editIssueDescription.getText()).toString();
 		String dueDate = Objects.requireNonNull(binding.editIssueDueDate.getText()).toString();
 
-		if (editIssueTitleForm.equals("")) {
+		if (editIssueTitleForm.isEmpty()) {
 
 			SnackBar.error(
 					ctx, findViewById(android.R.id.content), getString(R.string.issueTitleEmpty));
@@ -229,6 +536,7 @@ public class EditIssueActivity extends BaseActivity {
 							AlertDialogs.authorizationTokenRevokedDialog(ctx);
 						} else {
 
+							create.setVisible(true);
 							SnackBar.error(
 									ctx,
 									findViewById(android.R.id.content),
@@ -237,7 +545,9 @@ public class EditIssueActivity extends BaseActivity {
 					}
 
 					@Override
-					public void onFailure(@NonNull Call<Issue> call, @NonNull Throwable t) {}
+					public void onFailure(@NonNull Call<Issue> call, @NonNull Throwable t) {
+						create.setVisible(true);
+					}
 				});
 	}
 
@@ -326,7 +636,7 @@ public class EditIssueActivity extends BaseActivity {
 																			.issueCreatedNoMilestone));
 													milestonesList.put(ms.getTitle(), ms);
 
-													if (milestonesList_.size() > 0) {
+													if (!milestonesList_.isEmpty()) {
 
 														for (Milestone milestone :
 																milestonesList_) {
@@ -446,6 +756,150 @@ public class EditIssueActivity extends BaseActivity {
 						// Log.e("onFailure", t.toString());
 					}
 				});
+	}
+
+	private void getAttachments() {
+
+		Call<List<Attachment>> call =
+				RetrofitClient.getApiInterface(ctx)
+						.issueListIssueAttachments(
+								issue.getRepository().getOwner(),
+								issue.getRepository().getName(),
+								(long) issue.getIssueIndex());
+
+		call.enqueue(
+				new Callback<>() {
+
+					@Override
+					public void onResponse(
+							@NonNull Call<List<Attachment>> call,
+							@NonNull retrofit2.Response<List<Attachment>> response) {
+
+						List<Attachment> attachment = response.body();
+
+						if (response.code() == 200) {
+							assert attachment != null;
+
+							if (!attachment.isEmpty()) {
+
+								binding.attachmentFrame.setVisibility(View.VISIBLE);
+								LinearLayout.LayoutParams paramsAttachment =
+										new LinearLayout.LayoutParams(96, 96);
+								paramsAttachment.setMargins(0, 0, 48, 0);
+
+								for (int i = 0; i < attachment.size(); i++) {
+
+									ImageView attachmentView = new ImageView(ctx);
+									MaterialCardView materialCardView = new MaterialCardView(ctx);
+									materialCardView.setLayoutParams(paramsAttachment);
+									materialCardView.setStrokeWidth(0);
+									materialCardView.setRadius(28);
+									materialCardView.setCardBackgroundColor(Color.TRANSPARENT);
+
+									if (Arrays.asList(
+													"bmp", "gif", "jpg", "jpeg", "png", "webp",
+													"heic", "heif")
+											.contains(
+													FilenameUtils.getExtension(
+																	attachment.get(i).getName())
+															.toLowerCase())) {
+
+										Glide.with(ctx)
+												.load(
+														attachment.get(i).getBrowserDownloadUrl()
+																+ "?token="
+																+ token)
+												.diskCacheStrategy(DiskCacheStrategy.ALL)
+												.placeholder(R.drawable.loader_animated)
+												.centerCrop()
+												.error(R.drawable.ic_close)
+												.into(attachmentView);
+
+										binding.attachmentsView.addView(materialCardView);
+										attachmentView.setLayoutParams(paramsAttachment);
+										materialCardView.addView(attachmentView);
+
+										int finalI1 = i;
+										materialCardView.setOnClickListener(
+												v1 ->
+														imageViewDialog(
+																attachment
+																		.get(finalI1)
+																		.getBrowserDownloadUrl()));
+
+									} else {
+
+										attachmentView.setImageResource(
+												R.drawable.ic_file_download);
+										attachmentView.setPadding(4, 4, 4, 4);
+										binding.attachmentsView.addView(materialCardView);
+										attachmentView.setLayoutParams(paramsAttachment);
+										materialCardView.addView(attachmentView);
+
+										int finalI = i;
+										materialCardView.setOnClickListener(
+												v1 -> {
+													filesize = attachment.get(finalI).getSize();
+													filename = attachment.get(finalI).getName();
+													filehash = attachment.get(finalI).getUuid();
+													requestFileDownload();
+												});
+									}
+								}
+							} else {
+								binding.attachmentFrame.setVisibility(View.GONE);
+							}
+						}
+					}
+
+					@Override
+					public void onFailure(
+							@NonNull Call<List<Attachment>> call, @NonNull Throwable t) {}
+				});
+	}
+
+	private void requestFileDownload() {
+
+		Intent intent = new Intent(Intent.ACTION_CREATE_DOCUMENT);
+
+		intent.addCategory(Intent.CATEGORY_OPENABLE);
+		intent.putExtra(Intent.EXTRA_TITLE, filename);
+		intent.setType("*/*");
+
+		downloadAttachmentLauncher.launch(intent);
+	}
+
+	private void imageViewDialog(String url) {
+
+		CustomImageViewDialogBinding imageViewDialogBinding =
+				CustomImageViewDialogBinding.inflate(LayoutInflater.from(ctx));
+		View view = imageViewDialogBinding.getRoot();
+		materialAlertDialogBuilder.setView(view);
+
+		materialAlertDialogBuilder.setNeutralButton(getString(R.string.close), null);
+
+		Glide.with(ctx)
+				.asBitmap()
+				.load(url + "?token=" + token)
+				.diskCacheStrategy(DiskCacheStrategy.ALL)
+				.placeholder(R.drawable.loader_animated)
+				.centerCrop()
+				.error(R.drawable.ic_close)
+				.into(
+						new CustomTarget<Bitmap>() {
+							@Override
+							public void onResourceReady(
+									@NonNull Bitmap resource,
+									Transition<? super Bitmap> transition) {
+								imageViewDialogBinding.imageView.setImageBitmap(resource);
+								imageViewDialogBinding.imageView.buildDrawingCache();
+							}
+
+							@Override
+							public void onLoadCleared(Drawable placeholder) {}
+						});
+
+		materialAlertDialogBuilder.create().show();
 	}
 
 	@Override

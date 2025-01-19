@@ -3,7 +3,6 @@ depends_on:
   - locale
   - check
 
-run_on: [ success, failure ]
 skip_clone: true
 
 steps:

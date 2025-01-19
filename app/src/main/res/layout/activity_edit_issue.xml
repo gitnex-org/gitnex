@@ -4,14 +4,14 @@
     android:layout_height="match_parent"
     android:background="?attr/primaryBackgroundColor"
     xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto">
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:fitsSystemWindows="true">
 
     <com.google.android.material.appbar.AppBarLayout
         android:id="@+id/appBarLayout"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:background="?attr/primaryBackgroundColor"
-        android:fitsSystemWindows="true">
+        android:background="?attr/primaryBackgroundColor">
 
         <com.google.android.material.appbar.CollapsingToolbarLayout
             style="?attr/collapsingToolbarLayoutLargeStyle"
@@ -157,6 +157,24 @@
                     android:textSize="@dimen/dimen16sp"/>
 
             </com.google.android.material.textfield.TextInputLayout>
+
+           <LinearLayout
+               android:id="@+id/attachmentFrame"
+               android:layout_width="match_parent"
+               android:layout_height="wrap_content"
+               android:visibility="gone"
+               android:orientation="vertical">
+
+                <LinearLayout
+                    android:id="@+id/attachmentsView"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="@dimen/dimen12dp"
+                    android:orientation="horizontal">
+
+                </LinearLayout>
+
+            </LinearLayout>
 
         </LinearLayout>
 

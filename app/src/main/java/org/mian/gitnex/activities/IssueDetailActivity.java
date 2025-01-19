@@ -535,7 +535,7 @@ public class IssueDetailActivity extends BaseActivity
 												viewBinding.commentReply.setText(null);
 												viewBinding.commentReply.clearFocus();
 												imm.toggleSoftInput(
-														InputMethodManager.HIDE_IMPLICIT_ONLY, 0);
+														InputMethodManager.SHOW_IMPLICIT, 0);
 											} else {
 
 												Toasty.error(ctx, getString(R.string.genericError));
@@ -1785,7 +1785,7 @@ public class IssueDetailActivity extends BaseActivity
 							viewBinding.send.setEnabled(false);
 							viewBinding.commentReply.setText(null);
 							viewBinding.commentReply.clearFocus();
-							imm.toggleSoftInput(InputMethodManager.HIDE_IMPLICIT_ONLY, 0);
+							imm.toggleSoftInput(InputMethodManager.SHOW_IMPLICIT, 0);
 
 						} else if (response.code() == 401) {
 

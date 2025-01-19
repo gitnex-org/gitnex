@@ -10,6 +10,7 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
+import androidx.activity.EdgeToEdge;
 import androidx.activity.OnBackPressedCallback;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.ActionBarDrawerToggle;
@@ -93,6 +94,7 @@ public class MainActivity extends BaseActivity
 	public void onCreate(Bundle savedInstanceState) {
 
 		super.onCreate(savedInstanceState);
+		EdgeToEdge.enable(this);
 
 		ActivityMainBinding activityMainBinding = ActivityMainBinding.inflate(getLayoutInflater());
 		setContentView(activityMainBinding.getRoot());

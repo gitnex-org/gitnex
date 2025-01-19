@@ -1,18 +1,18 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout
-    xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.coordinatorlayout.widget.CoordinatorLayout
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:background="?attr/primaryBackgroundColor"
-    android:orientation="vertical">
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:fitsSystemWindows="true">
 
     <com.google.android.material.appbar.AppBarLayout
         android:id="@+id/appbar"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        app:elevation="@dimen/dimen0dp"
-        android:theme="@style/Widget.AppCompat.SearchView">
+        android:theme="@style/Widget.AppCompat.SearchView"
+        app:elevation="@dimen/dimen0dp">
 
         <com.google.android.material.appbar.MaterialToolbar
             android:id="@+id/toolbar"
@@ -46,32 +46,47 @@
 
     </com.google.android.material.appbar.AppBarLayout>
 
-    <GridView
-        android:id="@+id/gridView"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:scrollbars="none"
-        android:numColumns="2"
-        android:gravity="center"
-        android:background="?attr/primaryBackgroundColor"
-        android:padding="@dimen/dimen4dp"/>
-
-    <com.google.android.material.progressindicator.LinearProgressIndicator
-        android:id="@+id/progress_bar"
+    <androidx.core.widget.NestedScrollView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:indeterminate="true"
-        style="@style/Widget.MaterialComponents.LinearProgressIndicator"
-        app:indicatorColor="?attr/progressIndicatorColor"/>
+        app:layout_behavior="@string/appbar_scrolling_view_behavior"
+        android:background="?attr/primaryBackgroundColor">
 
-    <TextView
-        android:id="@+id/noDataStargazers"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:gravity="center"
-        android:text="@string/noDataFound"
-        android:textColor="?attr/primaryTextColor"
-        android:textSize="@dimen/dimen20sp"
-        android:visibility="gone"/>
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
 
-</LinearLayout>
+            <GridView
+                android:id="@+id/gridView"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:scrollbars="none"
+                android:numColumns="2"
+                android:gravity="center"
+                android:background="?attr/primaryBackgroundColor"
+                android:padding="@dimen/dimen4dp"/>
+
+            <com.google.android.material.progressindicator.LinearProgressIndicator
+                android:id="@+id/progress_bar"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:indeterminate="true"
+                style="@style/Widget.MaterialComponents.LinearProgressIndicator"
+                app:indicatorColor="?attr/progressIndicatorColor"/>
+
+        </LinearLayout>
+
+    </androidx.core.widget.NestedScrollView>
+
+     <TextView
+         android:id="@+id/noDataStargazers"
+         android:layout_width="match_parent"
+         android:layout_height="match_parent"
+         android:gravity="center"
+         android:text="@string/noDataFound"
+         android:textColor="?attr/primaryTextColor"
+         android:textSize="@dimen/dimen20sp"
+         android:visibility="gone"/>
+
+</androidx.coordinatorlayout.widget.CoordinatorLayout>

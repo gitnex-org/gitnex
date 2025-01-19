@@ -19,7 +19,10 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             style="?attr/materialCardViewElevatedStyle"
-            android:layout_margin="@dimen/dimen8dp"
+            android:layout_marginStart="@dimen/dimen8dp"
+            android:layout_marginEnd="@dimen/dimen8dp"
+            android:layout_marginTop="@dimen/dimen8dp"
+            android:visibility="gone"
             app:cardElevation="@dimen/dimen0dp">
 
             <LinearLayout
@@ -43,27 +46,98 @@
 
         </com.google.android.material.card.MaterialCardView>
 
-        <FrameLayout
+        <!-- branch section -->
+        <com.google.android.material.card.MaterialCardView
+            android:id="@+id/branch_section"
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:background="?attr/primaryBackgroundColor"
-            android:padding="@dimen/dimen8dp">
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/dimen8dp"
+            android:layout_marginBottom="@dimen/dimen0dp"
+            android:layout_marginStart="@dimen/dimen8dp"
+            android:layout_marginEnd="@dimen/dimen8dp"
+            style="?attr/materialCardViewElevatedStyle"
+            app:strokeWidth="@dimen/dimen0dp"
+            app:cardElevation="@dimen/dimen0dp">
 
-            <androidx.swiperefreshlayout.widget.SwipeRefreshLayout
-                android:id="@+id/pullToRefresh"
+            <LinearLayout
+                android:id="@+id/files_branches_main_frame"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content">
+                android:layout_height="wrap_content"
+                android:gravity="center_vertical"
+                android:orientation="horizontal"
+                android:background="?attr/materialCardBackgroundColor"
+                android:padding="@dimen/dimen12dp">
 
-                <androidx.recyclerview.widget.RecyclerView
-                    android:id="@+id/recyclerView"
+                <ImageView
+                    android:layout_width="@dimen/dimen24dp"
+                    android:layout_height="@dimen/dimen24dp"
+                    android:contentDescription="@string/branch"
+                    android:layout_marginEnd="@dimen/dimen16dp"
+                    app:tint="?attr/iconsColor"
+                    app:srcCompat="@drawable/ic_branch" />
+
+                <LinearLayout
+                    android:id="@+id/files_branches_frame"
                     android:layout_width="match_parent"
-                    android:layout_height="match_parent"
-                    android:clipToPadding="false"
-                    android:paddingBottom="@dimen/dimen72dp" />
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal"
+                    tools:ignore="UseCompoundDrawables">
 
-            </androidx.swiperefreshlayout.widget.SwipeRefreshLayout>
+                    <TextView
+                        android:id="@+id/branch_title"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:layout_marginEnd="@dimen/dimen16dp"
+                        android:text="@string/branch"
+                        android:textSize="@dimen/dimen16sp" />
 
-        </FrameLayout>
+                    <TextView
+                        android:id="@+id/switch_branch"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="@string/switch_branch"
+                        android:textAllCaps="true"
+                        android:textSize="@dimen/dimen14sp" />
+
+                </LinearLayout>
+
+            </LinearLayout>
+
+        </com.google.android.material.card.MaterialCardView>
+        <!-- branch section -->
+
+        <com.google.android.material.card.MaterialCardView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            style="?attr/materialCardViewElevatedStyle"
+            android:layout_margin="@dimen/dimen8dp"
+            app:cardElevation="@dimen/dimen0dp">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:foreground="?android:attr/selectableItemBackground"
+                android:background="?attr/materialCardBackgroundColor"
+                android:orientation="horizontal">
+
+                    <androidx.swiperefreshlayout.widget.SwipeRefreshLayout
+                        android:id="@+id/pullToRefresh"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content">
+
+                        <androidx.recyclerview.widget.RecyclerView
+                            android:id="@+id/recyclerView"
+                            android:layout_width="match_parent"
+                            android:layout_height="match_parent"
+                            android:clipToPadding="false"
+                            android:paddingBottom="@dimen/dimen72dp" />
+
+                    </androidx.swiperefreshlayout.widget.SwipeRefreshLayout>
+
+            </LinearLayout>
+
+        </com.google.android.material.card.MaterialCardView>
 
     </LinearLayout>
 

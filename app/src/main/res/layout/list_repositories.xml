@@ -59,11 +59,36 @@
 
                 <TextView
                     android:id="@+id/orgName"
-                    android:layout_width="match_parent"
+                    android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:textColor="?attr/primaryTextColor"
                     android:textSize="@dimen/dimen14sp"
+                    android:layout_weight="1"
                     tools:text="@string/orgName"/>
+
+                <com.google.android.material.card.MaterialCardView
+                    android:id="@+id/repo_is_archived_frame"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:backgroundTint="@android:color/transparent"
+                    android:layout_weight="0"
+                    app:strokeWidth="@dimen/dimen1dp"
+                    app:cardElevation="@dimen/dimen0dp"
+                    app:cardCornerRadius="@dimen/dimen6dp"
+                    android:visibility="gone">
+
+                    <TextView
+                        android:id="@+id/repo_is_archived"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:textSize="@dimen/dimen12sp"
+                        android:paddingStart="@dimen/dimen4dp"
+                        android:paddingEnd="@dimen/dimen4dp"
+                        android:paddingTop="@dimen/dimen2dp"
+                        android:paddingBottom="@dimen/dimen2dp"
+                        android:text="@string/archivedRepository" />
+
+                </com.google.android.material.card.MaterialCardView>
 
             </LinearLayout>
 
