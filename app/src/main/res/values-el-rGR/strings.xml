@@ -96,7 +96,6 @@
     <string name="tabTextFiles">Files</string>
     <string name="tabTextMl">Milestones</string>
     <string name="tabTextReleases">Releases</string>
-    <string name="tabTextBranches">Branches</string>
     <string name="tabTextCollaborators">Collaborators</string>
     <string name="tabPullRequests">Pull Requests</string>
     <string name="pullRequest">Pull Request</string>
@@ -392,7 +391,6 @@
     <string name="newFileEmptyBranchMessage">Αφήστε κενό για push στο προεπιλεγμένο branch</string>
     <string name="newFileRequiredFieldNewBranchName">Το νέο όνομα κλάδου δεν μπορεί να είναι κενό να ο παρόν κλάδος δεν είναι επιλεγμένος</string>
     <string name="strFilter">Φίλτρο</string>
-    <string name="strSwitchBranches">Κλάδοι</string>
     <string name="strMarkdown">Markdown</string>
     <string name="copyIssueUrl">Αντιγραφή URL ζητήματος</string>
     <string name="copyIssueUrlToastMsg">Η διεύθυνση URL αντιγράφηκε στο πρόχειρο</string>
@@ -458,6 +456,10 @@
     <string name="title">Title</string>
     <string name="description">Description</string>
     <string name="bioText">Bio</string>
+    <string name="pin">Pin</string>
+    <string name="unpin">Unpin</string>
+    <string name="branch">Branch</string>
+    <string name="branches">Branches</string>
     <!-- generic copy -->
     <string name="exploreUsers">Explore users</string>
     <string name="exploreIssues">Explore issues</string>
@@ -501,6 +503,7 @@
     <string name="selectMergeStrategy">Επιλογή στρατηγικής συγχώνευσης</string>
     <string name="mergeNotAllowed">Δεν επιτρέπεται συγχώνευση [Λόγος: Δεν υπάρχουν αρκετές εγκρίσεις]</string>
     <string name="deleteBranch">Διαγραφή κλάδου</string>
+    <string name="switch_branch">Switch Branch</string>
     <string name="waitLoadingDownloadFile">Παρακαλώ περιμένετε για το αρχείο να φορτώσει στην μνήμη</string>
     <string name="downloadFileSaved">Το αρχείο αποθηκεύτηκε επιτυχώς</string>
     <string name="excludeFilesInFileViewer">Ο τύπος/μέγεθος του αρχείου δεν υποστηρίζεται στον προβολέα αρχείων. Μπορείτε να το κατεβάσετε από το μενού.</string>
@@ -534,6 +537,10 @@
     <string name="unsubscribedSuccessfully">Unsubscribed successfully</string>
     <string name="alreadyUnsubscribed">You have already Unsubscribed</string>
     <string name="unSubscriptionError">Un-Subscription failed</string>
+    <string name="issue_pinned">Issue pinned successfully</string>
+    <string name="issue_unpinned">Issue unpinned successfully</string>
+    <string name="pinning_failed">Pinning issue failed</string>
+    <string name="unpinning_failed">Unpinning issue failed</string>
     <string name="closeMilestone">Close Milestone</string>
     <string name="openMilestone">Open Milestone</string>
     <string name="milestoneStatusUpdate">Milestone status updated successfully</string>

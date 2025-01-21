@@ -32,16 +32,18 @@ steps:
   push-git:
     image: alpine/git
     environment:
-      # Information that should be used when authoring a commit
-      - GIT_AUTHOR_NAME=gitnexbot
-      - GIT_AUTHOR_EMAIL=gitnexbot@noreply.codeberg.org
-      - GIT_COMMIT_MESSAGE=Translation updates from Crowdin [CI SKIP]
-      # Basic information concerning the repo that
-      - GITEA_HOST=codeberg.org
-      - GITEA_REPOSITORY=gitnex/GitNex
-      - GITEA_BRANCH=main
-      # Token that should be used to authenticate against the gitea instance
-      # - BOT_TOKEN=secret
+      GIT_AUTHOR_NAME:
+        from_secret: GIT_AUTHOR_NAME
+      GIT_AUTHOR_EMAIL:
+        from_secret: GIT_AUTHOR_EMAIL
+      GIT_COMMIT_MESSAGE:
+        from_secret: GIT_COMMIT_MESSAGE
+      GITEA_HOST:
+        from_secret: GITEA_HOST
+      GITEA_REPOSITORY:
+        from_secret: GITEA_REPOSITORY
+      GITEA_BRANCH:
+        from_secret: GITEA_BRANCH
       BOT_TOKEN:
         from_secret: BOT_TOKEN
     commands:

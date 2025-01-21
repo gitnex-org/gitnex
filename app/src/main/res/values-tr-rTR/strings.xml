@@ -10,7 +10,7 @@
     <string name="navAbout">Hakkında</string>
     <string name="navRate">GitNex\'i Puanla</string>
     <string name="navLogout">Çıkış Yap</string>
-    <string name="navAdministration"></string>
+    <string name="navAdministration">Örnek Yönetimi</string>
     <string name="navMyIssues">Konularım</string>
     <string name="navMostVisited">En çok ziyaret edilen depolar</string>
     <string name="navNotes">Notlar</string>
@@ -96,7 +96,6 @@
     <string name="tabTextFiles">Dosyalar</string>
     <string name="tabTextMl">Kilometre Taşları</string>
     <string name="tabTextReleases">Sürümler</string>
-    <string name="tabTextBranches">Dallar</string>
     <string name="tabTextCollaborators">İşbirlikçiler</string>
     <string name="tabPullRequests">İstekleri Çek</string>
     <string name="pullRequest">Pull Request</string>
@@ -392,7 +391,6 @@
     <string name="newFileEmptyBranchMessage">Leave blank to push to the default branch</string>
     <string name="newFileRequiredFieldNewBranchName">Geçerli dal seçilmemişse yeni dal adı boş bırakılamaz</string>
     <string name="strFilter">Filtre</string>
-    <string name="strSwitchBranches">Branches</string>
     <string name="strMarkdown">Markdown</string>
     <string name="copyIssueUrl">Konu Adresini Kopyala</string>
     <string name="copyIssueUrlToastMsg">URL panoya kopyalandı</string>
@@ -458,6 +456,10 @@
     <string name="title">Title</string>
     <string name="description">Description</string>
     <string name="bioText">Bio</string>
+    <string name="pin">Pin</string>
+    <string name="unpin">Unpin</string>
+    <string name="branch">Branch</string>
+    <string name="branches">Branches</string>
     <!-- generic copy -->
     <string name="exploreUsers">Kullanıcıları keşfet</string>
     <string name="exploreIssues">Konuları keşfet</string>
@@ -501,6 +503,7 @@
     <string name="selectMergeStrategy">Select merge strategy</string>
     <string name="mergeNotAllowed">Not allowed to merge [Reason: Does not have enough approvals]</string>
     <string name="deleteBranch">Delete Branch</string>
+    <string name="switch_branch">Switch Branch</string>
     <string name="waitLoadingDownloadFile">Please wait for the file to load to memory</string>
     <string name="downloadFileSaved">File saved successfully</string>
     <string name="excludeFilesInFileViewer">This file type/size is not supported in file viewer. You can download it from the menu.</string>
@@ -534,6 +537,10 @@
     <string name="unsubscribedSuccessfully">Unsubscribed successfully</string>
     <string name="alreadyUnsubscribed">You have already Unsubscribed</string>
     <string name="unSubscriptionError">Un-Subscription failed</string>
+    <string name="issue_pinned">Issue pinned successfully</string>
+    <string name="issue_unpinned">Issue unpinned successfully</string>
+    <string name="pinning_failed">Pinning issue failed</string>
+    <string name="unpinning_failed">Unpinning issue failed</string>
     <string name="closeMilestone">Close Milestone</string>
     <string name="openMilestone">Open Milestone</string>
     <string name="milestoneStatusUpdate">Milestone status updated successfully</string>

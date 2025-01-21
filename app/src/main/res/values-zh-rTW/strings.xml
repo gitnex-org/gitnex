@@ -96,7 +96,6 @@
     <string name="tabTextFiles">檔案</string>
     <string name="tabTextMl">里程碑</string>
     <string name="tabTextReleases">Releases</string>
-    <string name="tabTextBranches">分支</string>
     <string name="tabTextCollaborators">協作者</string>
     <string name="tabPullRequests">拉取請求</string>
     <string name="pullRequest">拉取請求</string>
@@ -392,7 +391,6 @@
     <string name="newFileEmptyBranchMessage">Leave blank to push to the default branch</string>
     <string name="newFileRequiredFieldNewBranchName">New branch name cannot be empty if current branch is not selected</string>
     <string name="strFilter">篩選器</string>
-    <string name="strSwitchBranches">分支</string>
     <string name="strMarkdown">Markdown</string>
     <string name="copyIssueUrl">Copy Issue URL</string>
     <string name="copyIssueUrlToastMsg">URL copied to clipboard</string>
@@ -458,6 +456,10 @@
     <string name="title">標題</string>
     <string name="description">描述</string>
     <string name="bioText">Bio</string>
+    <string name="pin">Pin</string>
+    <string name="unpin">Unpin</string>
+    <string name="branch">Branch</string>
+    <string name="branches">Branches</string>
     <!-- generic copy -->
     <string name="exploreUsers">探索使用者</string>
     <string name="exploreIssues">探索議題</string>
@@ -501,6 +503,7 @@
     <string name="selectMergeStrategy">Select merge strategy</string>
     <string name="mergeNotAllowed">Not allowed to merge [Reason: Does not have enough approvals]</string>
     <string name="deleteBranch">刪除分支</string>
+    <string name="switch_branch">Switch Branch</string>
     <string name="waitLoadingDownloadFile">Please wait for the file to load to memory</string>
     <string name="downloadFileSaved">File saved successfully</string>
     <string name="excludeFilesInFileViewer">This file type/size is not supported in file viewer. You can download it from the menu.</string>
@@ -534,6 +537,10 @@
     <string name="unsubscribedSuccessfully">成功取消訂閱</string>
     <string name="alreadyUnsubscribed">您已取消訂閱</string>
     <string name="unSubscriptionError">取消訂閱失敗</string>
+    <string name="issue_pinned">Issue pinned successfully</string>
+    <string name="issue_unpinned">Issue unpinned successfully</string>
+    <string name="pinning_failed">Pinning issue failed</string>
+    <string name="unpinning_failed">Unpinning issue failed</string>
     <string name="closeMilestone">關閉里程碑</string>
     <string name="openMilestone">開啓里程碑</string>
     <string name="milestoneStatusUpdate">成功更新里程碑狀態</string>

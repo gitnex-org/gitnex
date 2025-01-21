@@ -96,7 +96,6 @@
     <string name="tabTextFiles">Soubory</string>
     <string name="tabTextMl">Milníky</string>
     <string name="tabTextReleases">Vydání</string>
-    <string name="tabTextBranches">Větve</string>
     <string name="tabTextCollaborators">Spolupracovníci</string>
     <string name="tabPullRequests">Pull Requesty</string>
     <string name="pullRequest">Pull Request</string>
@@ -392,7 +391,6 @@
     <string name="newFileEmptyBranchMessage">Nechte prázdné pro push do výchozí větve</string>
     <string name="newFileRequiredFieldNewBranchName">Nová větev nemůže být prázdná pokud aktuální větev není vybrána</string>
     <string name="strFilter">Filtr</string>
-    <string name="strSwitchBranches">Větve</string>
     <string name="strMarkdown">Markdown</string>
     <string name="copyIssueUrl">Zkopírovat issue URL</string>
     <string name="copyIssueUrlToastMsg">URL zkopírováno do schránky</string>
@@ -458,6 +456,10 @@
     <string name="title">Název</string>
     <string name="description">Popis</string>
     <string name="bioText">Bio</string>
+    <string name="pin">Pin</string>
+    <string name="unpin">Unpin</string>
+    <string name="branch">Branch</string>
+    <string name="branches">Branches</string>
     <!-- generic copy -->
     <string name="exploreUsers">Prozkoumat uživatele</string>
     <string name="exploreIssues">Prozkoumat issues</string>
@@ -501,6 +503,7 @@
     <string name="selectMergeStrategy">Zvolit strategii pro sloučení</string>
     <string name="mergeNotAllowed">Nepovoleno slučovat [Důvod: Nemá dostatek schválení]</string>
     <string name="deleteBranch">Smazat větev</string>
+    <string name="switch_branch">Switch Branch</string>
     <string name="waitLoadingDownloadFile">Počkejte prosím, než se soubor načte do paměti</string>
     <string name="downloadFileSaved">Soubor byl úspěšně uložen</string>
     <string name="excludeFilesInFileViewer">Tento typ/velikost souboru není v prohlíčeči souborů podporován. Můžete ho stáhnout z menu.</string>
@@ -534,6 +537,10 @@
     <string name="unsubscribedSuccessfully">Odběr úspěšně odhlášen</string>
     <string name="alreadyUnsubscribed">Jste již odhlášeni</string>
     <string name="unSubscriptionError">Nepodařilo se zrušit odběr</string>
+    <string name="issue_pinned">Issue pinned successfully</string>
+    <string name="issue_unpinned">Issue unpinned successfully</string>
+    <string name="pinning_failed">Pinning issue failed</string>
+    <string name="unpinning_failed">Unpinning issue failed</string>
     <string name="closeMilestone">Zavřít milník</string>
     <string name="openMilestone">Otevřít milník</string>
     <string name="milestoneStatusUpdate">Stav milníku byl úspěšně aktualizován</string>

@@ -96,7 +96,6 @@
     <string name="tabTextFiles">Fichiers</string>
     <string name="tabTextMl">Jalons</string>
     <string name="tabTextReleases">Versions</string>
-    <string name="tabTextBranches">Branches</string>
     <string name="tabTextCollaborators">Participants</string>
     <string name="tabPullRequests">Demandes d’ajout</string>
     <string name="pullRequest">Demande d’ajout</string>
@@ -392,7 +391,6 @@
     <string name="newFileEmptyBranchMessage">Laisser vide pour pousser dans la branche par défaut</string>
     <string name="newFileRequiredFieldNewBranchName">Nom de la nouvelle branche requis si aucune branche n’est sélectionnée</string>
     <string name="strFilter">Filtrer</string>
-    <string name="strSwitchBranches">Branches</string>
     <string name="strMarkdown">Markdown</string>
     <string name="copyIssueUrl">Copier l’URL du ticket</string>
     <string name="copyIssueUrlToastMsg">URL copiée dans le presse-papier</string>
@@ -460,6 +458,8 @@
     <string name="bioText">Bio</string>
     <string name="pin">Épingler</string>
     <string name="unpin">Désépingler</string>
+    <string name="branch">Branch</string>
+    <string name="branches">Branches</string>
     <!-- generic copy -->
     <string name="exploreUsers">Rechercher des utilisateurs</string>
     <string name="exploreIssues">Rechercher des tickets</string>
@@ -503,6 +503,7 @@
     <string name="selectMergeStrategy">Politique de fusion</string>
     <string name="mergeNotAllowed">Fusion non permise [Raison : autorisations insuffisante]</string>
     <string name="deleteBranch">Supprimer la branche</string>
+    <string name="switch_branch">Switch Branch</string>
     <string name="waitLoadingDownloadFile">Chargement du fichier dans la mémoire</string>
     <string name="downloadFileSaved">Fichier sauvegardé</string>
     <string name="excludeFilesInFileViewer">Le fichier incompatible ou trop grand pour la visionneuse. Vous pouvez toutefois le télécharger depuis le menu.</string>

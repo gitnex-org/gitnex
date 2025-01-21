@@ -96,7 +96,6 @@
     <string name="tabTextFiles">Pliki</string>
     <string name="tabTextMl">Kamienie milowe</string>
     <string name="tabTextReleases">Wydania</string>
-    <string name="tabTextBranches">Oddziały</string>
     <string name="tabTextCollaborators">Współpracownicy</string>
     <string name="tabPullRequests">Pull Requesty</string>
     <string name="pullRequest">Pull Request</string>
@@ -392,7 +391,6 @@
     <string name="newFileEmptyBranchMessage">Leave blank to push to the default branch</string>
     <string name="newFileRequiredFieldNewBranchName">Nazwa nowej gałęzi nie może być pusta, jeśli nie wybrano bieżącej gałęzi</string>
     <string name="strFilter">Filtr</string>
-    <string name="strSwitchBranches">Branches</string>
     <string name="strMarkdown">Markdown</string>
     <string name="copyIssueUrl">Skopiuj adres URL zgłoszenia</string>
     <string name="copyIssueUrlToastMsg">Adres URL skopiowany do schowka</string>
@@ -458,6 +456,10 @@
     <string name="title">Title</string>
     <string name="description">Description</string>
     <string name="bioText">Bio</string>
+    <string name="pin">Pin</string>
+    <string name="unpin">Unpin</string>
+    <string name="branch">Branch</string>
+    <string name="branches">Branches</string>
     <!-- generic copy -->
     <string name="exploreUsers">Explore users</string>
     <string name="exploreIssues">Przeglądaj zgłoszenia</string>
@@ -501,6 +503,7 @@
     <string name="selectMergeStrategy">Select merge strategy</string>
     <string name="mergeNotAllowed">Not allowed to merge [Reason: Does not have enough approvals]</string>
     <string name="deleteBranch">Delete Branch</string>
+    <string name="switch_branch">Switch Branch</string>
     <string name="waitLoadingDownloadFile">Poczekaj aż plik załaduje się do pamięci</string>
     <string name="downloadFileSaved">Plik został zapisany</string>
     <string name="excludeFilesInFileViewer">This file type/size is not supported in file viewer. You can download it from the menu.</string>
@@ -534,6 +537,10 @@
     <string name="unsubscribedSuccessfully">Unsubscribed successfully</string>
     <string name="alreadyUnsubscribed">You have already Unsubscribed</string>
     <string name="unSubscriptionError">Un-Subscription failed</string>
+    <string name="issue_pinned">Issue pinned successfully</string>
+    <string name="issue_unpinned">Issue unpinned successfully</string>
+    <string name="pinning_failed">Pinning issue failed</string>
+    <string name="unpinning_failed">Unpinning issue failed</string>
     <string name="closeMilestone">Zamknij etap</string>
     <string name="openMilestone">Otwórz etap</string>
     <string name="milestoneStatusUpdate">Status etapu zaktualizowany pomyślnie</string>

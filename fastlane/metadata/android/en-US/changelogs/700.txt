@@ -1,0 +1,15 @@
+7.0.0
+
+🎉 Features 🎉
+- Pinned issues
+- Bash and D languages support
+- Pin/unpin an issue
+- Add attachments when editing an issue
+- Support Android 15 edge to edge feature
+
+🚀 Improvements 🚀 
+- Enhanced Files UI
+- Highlight archived repo in repositories list
+- Translation updates
+
+Release Notes: https://codeberg.org/gitnex/GitNex/releases

@@ -96,7 +96,6 @@
     <string name="tabTextFiles">Dateien</string>
     <string name="tabTextMl">Meilensteine</string>
     <string name="tabTextReleases">Releases</string>
-    <string name="tabTextBranches">Branches</string>
     <string name="tabTextCollaborators">Mitarbeiter</string>
     <string name="tabPullRequests">Pull Requests</string>
     <string name="pullRequest">Pull-Request</string>
@@ -392,7 +391,6 @@
     <string name="newFileEmptyBranchMessage">Leer lassen, um zum Standard-Branch zu pushen</string>
     <string name="newFileRequiredFieldNewBranchName">Neuer Branch-Name kann nicht leer sein, wenn der derzeitige Branch nicht ausgewählt ist</string>
     <string name="strFilter">Filter</string>
-    <string name="strSwitchBranches">Branches</string>
     <string name="strMarkdown">Markdown</string>
     <string name="copyIssueUrl">Issue-URL kopieren</string>
     <string name="copyIssueUrlToastMsg">URL in Zwischenablage kopiert</string>
@@ -460,6 +458,8 @@
     <string name="bioText">Biografie</string>
     <string name="pin">Anheften</string>
     <string name="unpin">Loslösen</string>
+    <string name="branch">Branch</string>
+    <string name="branches">Branches</string>
     <!-- generic copy -->
     <string name="exploreUsers">Benutzer erkunden</string>
     <string name="exploreIssues">Issues erkunden</string>
@@ -503,6 +503,7 @@
     <string name="selectMergeStrategy">Wähle eine Merge-Strategie</string>
     <string name="mergeNotAllowed">Mergen nicht erlaubt [Grund: Hat nicht genügend Genehmigungen]</string>
     <string name="deleteBranch">Branch löschen</string>
+    <string name="switch_branch">Switch Branch</string>
     <string name="waitLoadingDownloadFile">Bitte warte, bis die Datei in den Speicher geladen wurde</string>
     <string name="downloadFileSaved">Datei erfolgreich gespeichert</string>
     <string name="excludeFilesInFileViewer">Diese(r) Dateityp / Dateigröße wird vom Dateibetrachter nicht unterstützt. Du kannst es über das Menü herunterladen.</string>

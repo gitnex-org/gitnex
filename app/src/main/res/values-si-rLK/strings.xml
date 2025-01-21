@@ -96,7 +96,6 @@
     <string name="tabTextFiles">ගොනු</string>
     <string name="tabTextMl">සන්ධිස්ථාන</string>
     <string name="tabTextReleases">නිකුතු</string>
-    <string name="tabTextBranches">ශාඛා</string>
     <string name="tabTextCollaborators">සහයෝගිතාකරුවන්</string>
     <string name="tabPullRequests">අදින්න ඉල්ලීම්</string>
     <string name="pullRequest">අදින්න ඉල්ලීම</string>
@@ -392,7 +391,6 @@
     <string name="newFileEmptyBranchMessage">පෙරනිමි ශාඛාව වෙත තල්ලු කිරීමට හිස්ව තබන්න</string>
     <string name="newFileRequiredFieldNewBranchName">වත්මන් ශාඛාව තෝරා නොමැති නම් නව ශාඛාවේ නම හිස් විය නොහැක</string>
     <string name="strFilter">පෙරහන</string>
-    <string name="strSwitchBranches">ශාඛා</string>
     <string name="strMarkdown">සලකුණු කිරීම</string>
     <string name="copyIssueUrl">නිකුතුවේ URL පිටපත් කරන්න</string>
     <string name="copyIssueUrlToastMsg">URL එක පසුරු පුවරුවට පිටපත් කරන ලදී</string>
@@ -458,6 +456,10 @@
     <string name="title">Title</string>
     <string name="description">Description</string>
     <string name="bioText">Bio</string>
+    <string name="pin">Pin</string>
+    <string name="unpin">Unpin</string>
+    <string name="branch">Branch</string>
+    <string name="branches">Branches</string>
     <!-- generic copy -->
     <string name="exploreUsers">පරිශීලකයන් ගවේෂණය කරන්න</string>
     <string name="exploreIssues">ගැටළු ගවේෂණය කරන්න</string>
@@ -501,6 +503,7 @@
     <string name="selectMergeStrategy">ඒකාබද්ධ උපාය තෝරන්න</string>
     <string name="mergeNotAllowed">ඒකාබද්ධ කිරීමට ඉඩ නොදේ [හේතුව: ප්‍රමාණවත් අනුමැතියක් නොමැත]</string>
     <string name="deleteBranch">ශාඛාව මකන්න</string>
+    <string name="switch_branch">Switch Branch</string>
     <string name="waitLoadingDownloadFile">කරුණාකර ගොනුව මතකයට පූරණය වන තෙක් රැඳී සිටින්න</string>
     <string name="downloadFileSaved">ගොනුව සාර්ථකව සුරකින ලදී</string>
     <string name="excludeFilesInFileViewer">මෙම ගොනු වර්ගය/ප්‍රමාණය ගොනු නරඹන්නා තුළ සහාය නොදක්වයි. ඔබට එය මෙනුවෙන් බාගත හැකිය.</string>
@@ -534,6 +537,10 @@
     <string name="unsubscribedSuccessfully">සාර්ථකව දායකත්වයෙන් ඉවත් විය</string>
     <string name="alreadyUnsubscribed">ඔබ දැනටමත් දායකත්වයෙන් ඉවත් වී ඇත</string>
     <string name="unSubscriptionError">දායකත්වයෙන් ඉවත් වීම අසාර්ථක විය</string>
+    <string name="issue_pinned">Issue pinned successfully</string>
+    <string name="issue_unpinned">Issue unpinned successfully</string>
+    <string name="pinning_failed">Pinning issue failed</string>
+    <string name="unpinning_failed">Unpinning issue failed</string>
     <string name="closeMilestone">සන්ධිස්ථානය වසා දමන්න</string>
     <string name="openMilestone">විවෘත සන්ධිස්ථානය</string>
     <string name="milestoneStatusUpdate">සන්ධිස්ථානයේ තත්ත්වය සාර්ථකව යාවත්කාලීන කරන ලදී</string>

@@ -96,7 +96,6 @@
     <string name="tabTextFiles">ファイル</string>
     <string name="tabTextMl">マイルストーン</string>
     <string name="tabTextReleases">リリース</string>
-    <string name="tabTextBranches">ブランチ</string>
     <string name="tabTextCollaborators">協力者</string>
     <string name="tabPullRequests">プルリクエスト</string>
     <string name="pullRequest">プルリクエスト</string>
@@ -392,7 +391,6 @@
     <string name="newFileEmptyBranchMessage">空白のままにプッシュする場合は空白のままにします</string>
     <string name="newFileRequiredFieldNewBranchName">現在のブランが選択されていない場合、新しいブランチ名を空にすることはできません</string>
     <string name="strFilter">フィルタ</string>
-    <string name="strSwitchBranches">ブランチ</string>
     <string name="strMarkdown">Markdown 形式</string>
     <string name="copyIssueUrl">課題URLのコピー</string>
     <string name="copyIssueUrlToastMsg">URLがクリップボードにコピーされました</string>
@@ -458,6 +456,10 @@
     <string name="title">Title</string>
     <string name="description">Description</string>
     <string name="bioText">Bio</string>
+    <string name="pin">Pin</string>
+    <string name="unpin">Unpin</string>
+    <string name="branch">Branch</string>
+    <string name="branches">Branches</string>
     <!-- generic copy -->
     <string name="exploreUsers">ユーザーの表示</string>
     <string name="exploreIssues">課題の表示</string>
@@ -501,6 +503,7 @@
     <string name="selectMergeStrategy">マージ方法を選択してください</string>
     <string name="mergeNotAllowed">マージは許可されていません[理由:承認が不十分です]</string>
     <string name="deleteBranch">ブランチを削除</string>
+    <string name="switch_branch">Switch Branch</string>
     <string name="waitLoadingDownloadFile">ファイルがメモリにロードされるまでお待ちください</string>
     <string name="downloadFileSaved">ファイルは正常に保存されました</string>
     <string name="excludeFilesInFileViewer">このファイルタイプ/サイズは、ファイルビューアではサポートされていません。メニューからダウンロードできます。</string>
@@ -534,6 +537,10 @@
     <string name="unsubscribedSuccessfully">購読を解除しました</string>
     <string name="alreadyUnsubscribed">すでに登録解除されています</string>
     <string name="unSubscriptionError">購読解除に失敗しました</string>
+    <string name="issue_pinned">Issue pinned successfully</string>
+    <string name="issue_unpinned">Issue unpinned successfully</string>
+    <string name="pinning_failed">Pinning issue failed</string>
+    <string name="unpinning_failed">Unpinning issue failed</string>
     <string name="closeMilestone">マイルストーンを閉じる</string>
     <string name="openMilestone">マイルストーンを開く</string>
     <string name="milestoneStatusUpdate">マイルストーンのステータスが正常に更新されました</string>
