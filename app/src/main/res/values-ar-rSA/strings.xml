@@ -10,11 +10,11 @@
     <string name="navAbout">عن التطبيق</string>
     <string name="navRate">GitNex معدل</string>
     <string name="navLogout">تسجيل الخروج</string>
-    <string name="navAdministration">Instance Administration</string>
+    <string name="navAdministration">إدارة الجلسة</string>
     <string name="navMyIssues">قضاياي</string>
     <string name="navMostVisited">المستودعات الأكثر زيارة</string>
     <string name="navNotes">الملاحظات</string>
-    <string name="navAccount">Account Settings</string>
+    <string name="navAccount">إعدادات الحساب</string>
     <string name="navWatchedRepositories">Watched Repositories</string>
     <!-- menu items -->
     <!-- page titles -->
@@ -32,7 +32,7 @@
     <string name="pageTitleAddEmail">إضافة عنوان بريد الكتروني</string>
     <string name="pageTitleNewFile">مِلف جديد</string>
     <string name="pageTitleExplore">استكشف</string>
-    <string name="pageTitleAdministration">Administration</string>
+    <string name="pageTitleAdministration">الإدارة</string>
     <string name="pageTitleNewPullRequest">طلب دمج جديد</string>
     <string name="pageTitleUsers">المُستخدمون</string>
     <string name="pageTitleAddRepository">Add Repository</string>
@@ -66,7 +66,8 @@
     <string name="emptyFieldUsername">اسم المستخدم مطلوب</string>
     <string name="emptyFieldPassword">كلمة المرور مطلوبة</string>
     <string name="protocolEmptyError">البروتوكول مطلوب</string>
-    <string name="instanceHelperText">Enter URL without http or https. Example: codeberg.org</string>
+    <string name="instanceHelperText">أدخل العنوان بدون http أو https. مثل:
+Codeberg.org</string>
     <string name="checkNetConnection">لا يمكن الوصول إلى الشبكة، رجاءً تحقق اتصالك بالإنترنت</string>
     <string name="repoNameErrorEmpty">اسم المستودع فارغ</string>
     <string name="repoNameErrorInvalid">اسم المستودع غير صالح. [a&#8211;z A&#8211;Z 0&#8211;9 &#8211; _]</string>
@@ -96,7 +97,6 @@
     <string name="tabTextFiles">المِلفات</string>
     <string name="tabTextMl">المراحل</string>
     <string name="tabTextReleases">اﻹصدارات</string>
-    <string name="tabTextBranches">الفروع</string>
     <string name="tabTextCollaborators">المتعاونون</string>
     <string name="tabPullRequests">طلبات الدمج</string>
     <string name="pullRequest">طلب دمج</string>
@@ -199,17 +199,17 @@
     <string name="fragmentTabsAnimationHeader">Tabs Animation</string>
     <string name="fadeOut">Fade Out</string>
     <string name="zoomOut">Zoom Out</string>
-    <string name="backup">Backup</string>
-    <string name="restore">Restore</string>
+    <string name="backup">التخزين الإحتياطي</string>
+    <string name="restore">الإسترجاع</string>
     <string name="backupFileSuccess">The backup was successfully created</string>
     <string name="backupFileError">An error occurred while creating a data backup</string>
     <string name="backupFilePopupText">This action will backup your accounts, settings, notes, and data related to repositories.\n\nClick the Backup button to download the backup file.</string>
     <string name="restoreFilePopupText">You are about to restore from a GitNex-generated backup file. This will restore user accounts, settings, notes, and data related to repositories.\n\nPlease note this action will overwrite the current database data. Proceed with caution.\n\nClick Restore to start the process.</string>
-    <string name="restoreError">An error occurred while restoring from the backup file.</string>
-    <string name="restoreFromBackup">Restore from Backup</string>
+    <string name="restoreError">حدث خطأ اثناء عملية الإسترجاع من ملف التخزين الإحتياطي.</string>
+    <string name="restoreFromBackup">الإسترجاع من التخزين الإحتياطي</string>
     <string name="restoreFromBackupPopupText">You are about to restore from a GitNex-generated backup file. This will restore user accounts, settings, notes, and data related to repositories.\n\nClick Restore to start the process.</string>
-    <string name="hideEmailLangInProfileHeader">Set Email and Language as Private</string>
-    <string name="hideEmailLangInProfileHint">You can set your email and language to private to hide them on your profile screen</string>
+    <string name="hideEmailLangInProfileHeader">إعداد البريد الإلكتروني و اللغة إلى وضع الخصوصية</string>
+    <string name="hideEmailLangInProfileHint">يمكنكم إعداد البريد الإلكتروني و اللغة إلى وضع الخصوصية لإخفائهما من صفحة حسابكم</string>
     <string name="hideEmailNavDrawerHeader">Hide Email in Drawer</string>
     <string name="hideEmailNavDrawerHint">You can enable this option to hide your email in the app navigation drawer</string>
     <!-- settings -->
@@ -252,7 +252,7 @@
     <string name="repoRemovedMessage">أُزيل المستودع من الفريق بنجاح</string>
     <string name="repoAddToTeamMessage">إضافة المستودع %1$s لمنظمة %2$s فريق %3$s</string>
     <string name="repoRemoveTeamMessage">إزالة المستودع %1$s من الفريق %2$s</string>
-    <string name="addRemoveMember">Add / Remove Member</string>
+    <string name="addRemoveMember">إضافة \ إزالة فرد</string>
     <!-- org tabbed layout str -->
     <!-- create team -->
     <string name="newTeamTitle">اسم الفريق</string>
@@ -287,21 +287,21 @@
     <string name="profileTabFollowers">المتابِعون</string>
     <string name="profileTabFollowing">المتابَعون</string>
     <string name="editSettings">Edit Profile</string>
-    <string name="hideActivity">Hide Activity from profile page</string>
-    <string name="hideEmail">Hide Email</string>
-    <string name="profileUpdate">Profile updated</string>
+    <string name="hideActivity">إخفاء النشاطات من صفحة الحساب</string>
+    <string name="hideEmail">إخفاء البريد الإلكتروني</string>
+    <string name="profileUpdate">تم تحديث حسابكم بنجاح</string>
     <!-- profile section -->
     <!-- account settings -->
     <string name="accountEmails">Emails</string>
-    <string name="accountEmailTitle">Email Address</string>
+    <string name="accountEmailTitle">عنوان البريد الإلكتروني</string>
     <string name="emailAddedText">أُضيف البريد الإلكتروني الجديد بنجاح</string>
     <string name="emailErrorEmpty">عنوان البريد الإلكتروني فارغ</string>
     <string name="emailErrorInvalid">عنوان البريد الإلكتروني غير صالح</string>
     <string name="emailErrorInUse">عنوان البريد الإلكتروني مستخدم مسبقاً</string>
     <string name="emailTypeText">أساسي</string>
-    <string name="sshKeys">SSH Keys</string>
-    <string name="deleteEmailPopupText">This action will permanently delete email %s from your account.</string>
-    <string name="deleteEmailSuccess">Email deleted successfully</string>
+    <string name="sshKeys">مفاتيح SSH</string>
+    <string name="deleteEmailPopupText">ستؤدي هذه العملية إلى حذف البريد الإلكتروني %s نهائيا من حسابكم.</string>
+    <string name="deleteEmailSuccess">تم حذف البريد الإلكتروني بنجاح</string>
     <string name="addSSHKey">Add SSH Key</string>
     <string name="sshKeyStatusReadOnly">Read-only Access</string>
     <string name="sshKeyStatusReadWrite">Read-write Access</string>
@@ -392,7 +392,6 @@
     <string name="newFileEmptyBranchMessage">دعه فارغاً للدفع للفرع الافتراضي</string>
     <string name="newFileRequiredFieldNewBranchName">اسم الفرع الجديد لا يمكن أن يكون فارغاً إذا لم يُختر الفرع الحالي</string>
     <string name="strFilter">التصفية</string>
-    <string name="strSwitchBranches">الفروع</string>
     <string name="strMarkdown">ماركداون</string>
     <string name="copyIssueUrl">نسخ رابط القضية</string>
     <string name="copyIssueUrlToastMsg">نُسخ عنوان URL إلى الحافظة</string>
@@ -408,7 +407,7 @@
     <string name="doneButton">تمّ</string>
     <string name="cancelButton">إلغاء</string>
     <string name="genericError">حدث خطأ ما، رجاءً حاول مجدداً</string>
-    <string name="apiNotFound">This request needs higher version than the one installed. Please upgrade your instance to the latest version.</string>
+    <string name="apiNotFound">هذه العملية تتطلب نسخة أحدث من تلك التي تستعملونها حاليا. يرجى تحديث البرنامج لآخر اصدار.</string>
     <string name="noDataFound">🌟لا شيء هنا 🌟</string>
     <string name="addButton">أضف</string>
     <string name="removeButton">أزِل</string>
@@ -458,6 +457,10 @@
     <string name="title">Title</string>
     <string name="description">Description</string>
     <string name="bioText">Bio</string>
+    <string name="pin">Pin</string>
+    <string name="unpin">Unpin</string>
+    <string name="branch">Branch</string>
+    <string name="branches">Branches</string>
     <!-- generic copy -->
     <string name="exploreUsers">استكشاف المستخدمين</string>
     <string name="exploreIssues">استكشاف القضايا</string>
@@ -501,6 +504,7 @@
     <string name="selectMergeStrategy">اِختر استراتيجية الدمج</string>
     <string name="mergeNotAllowed">غير مسموح بالدمج [السبب: لا يملك ما يكفي من الموافقات]</string>
     <string name="deleteBranch">حذف الفرع</string>
+    <string name="switch_branch">Switch Branch</string>
     <string name="waitLoadingDownloadFile">رجاءً اِنتظر حتى يحمّل الملف للذاكرة</string>
     <string name="downloadFileSaved">حُفِظ المِلف بنجاح</string>
     <string name="excludeFilesInFileViewer">نوع/حجم المِلف غير مدعوم في عارض المِلفات.
@@ -535,6 +539,10 @@
     <string name="unsubscribedSuccessfully">أُلغي الاشتراك بنجاح</string>
     <string name="alreadyUnsubscribed">أنت غير مشترك مسبقاً</string>
     <string name="unSubscriptionError">فشل إلغاء الاشتراك</string>
+    <string name="issue_pinned">Issue pinned successfully</string>
+    <string name="issue_unpinned">Issue unpinned successfully</string>
+    <string name="pinning_failed">Pinning issue failed</string>
+    <string name="unpinning_failed">Unpinning issue failed</string>
     <string name="closeMilestone">إغلاق المرحلة</string>
     <string name="openMilestone">فتح مرحلة</string>
     <string name="milestoneStatusUpdate">حُدِّثت حالة المرحلة بنجاح</string>
@@ -599,11 +607,11 @@
     <string name="mainNotificationChannelDescription">هذه هي قناة الإشعارات الرئيسة ل GitNex.</string>
     <plurals name="youHaveNewNotifications">
         <item quantity="zero">ليس لديك أي إشعارات جديدة</item>
-        <item quantity="one">لديك إشعار جديد</item>
-        <item quantity="two">لديك إشعاران جديدان</item>
+        <item quantity="one">لديك %s إشعار / إشعارات جديدة</item>
+        <item quantity="two">لديك %s إشعار / إشعارات جديدة</item>
         <item quantity="few">لديك %s إشعارات جديدة</item>
-        <item quantity="many">You have %s new notifications</item>
-        <item quantity="other">You have %s new notifications</item>
+        <item quantity="many">لديك %s إشعار / إشعارات جديدة</item>
+        <item quantity="other">لديك %s إشعار / إشعارات جديدة</item>
     </plurals>
     <string name="openAppSettings">To receive notifications, you must enable notifications for GitNex. Tap Open to access your phone settings and enable notifications.</string>
     <string name="isRead">مقروء</string>

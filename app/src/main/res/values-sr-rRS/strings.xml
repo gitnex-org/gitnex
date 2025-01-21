@@ -96,7 +96,6 @@
     <string name="tabTextFiles">Фајлови</string>
     <string name="tabTextMl">Фазе</string>
     <string name="tabTextReleases">Издања</string>
-    <string name="tabTextBranches">Гране</string>
     <string name="tabTextCollaborators">Сарадници</string>
     <string name="tabPullRequests">Пул захтеви</string>
     <string name="pullRequest">Pull Request</string>
@@ -392,7 +391,6 @@
     <string name="newFileEmptyBranchMessage">Leave blank to push to the default branch</string>
     <string name="newFileRequiredFieldNewBranchName">Назив нове гране је обавезан ако тренутна грана није одабрана</string>
     <string name="strFilter">Филтер</string>
-    <string name="strSwitchBranches">Branches</string>
     <string name="strMarkdown">Markdown</string>
     <string name="copyIssueUrl">Копирај URL проблема</string>
     <string name="copyIssueUrlToastMsg">URL је копиран</string>
@@ -458,6 +456,10 @@
     <string name="title">Title</string>
     <string name="description">Description</string>
     <string name="bioText">Bio</string>
+    <string name="pin">Pin</string>
+    <string name="unpin">Unpin</string>
+    <string name="branch">Branch</string>
+    <string name="branches">Branches</string>
     <!-- generic copy -->
     <string name="exploreUsers">Explore users</string>
     <string name="exploreIssues">Explore issues</string>
@@ -501,6 +503,7 @@
     <string name="selectMergeStrategy">Select merge strategy</string>
     <string name="mergeNotAllowed">Not allowed to merge [Reason: Does not have enough approvals]</string>
     <string name="deleteBranch">Delete Branch</string>
+    <string name="switch_branch">Switch Branch</string>
     <string name="waitLoadingDownloadFile">Сачекај да се фајл учита у меморију</string>
     <string name="downloadFileSaved">File saved successfully</string>
     <string name="excludeFilesInFileViewer">This file type/size is not supported in file viewer. You can download it from the menu.</string>
@@ -534,6 +537,10 @@
     <string name="unsubscribedSuccessfully">Unsubscribed successfully</string>
     <string name="alreadyUnsubscribed">You have already Unsubscribed</string>
     <string name="unSubscriptionError">Un-Subscription failed</string>
+    <string name="issue_pinned">Issue pinned successfully</string>
+    <string name="issue_unpinned">Issue unpinned successfully</string>
+    <string name="pinning_failed">Pinning issue failed</string>
+    <string name="unpinning_failed">Unpinning issue failed</string>
     <string name="closeMilestone">Затвори фазу</string>
     <string name="openMilestone">Отвори фазу</string>
     <string name="milestoneStatusUpdate">Фаза је ажурирана</string>

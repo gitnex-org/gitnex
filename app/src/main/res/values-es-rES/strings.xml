@@ -96,7 +96,6 @@
     <string name="tabTextFiles">Archivos</string>
     <string name="tabTextMl">Hitos</string>
     <string name="tabTextReleases">Lanzamientos</string>
-    <string name="tabTextBranches">Ramas</string>
     <string name="tabTextCollaborators">Colaboradores</string>
     <string name="tabPullRequests">Pull Requests</string>
     <string name="pullRequest">Pull Request</string>
@@ -392,7 +391,6 @@
     <string name="newFileEmptyBranchMessage">Dejar en blanco para realizar push a la rama por defecto</string>
     <string name="newFileRequiredFieldNewBranchName">El nombre de la nueva rama no puede estar vacío si la rama actual no está seleccionada</string>
     <string name="strFilter">Filtro</string>
-    <string name="strSwitchBranches">Ramas</string>
     <string name="strMarkdown">Markdown</string>
     <string name="copyIssueUrl">Copiar URL de la incidencia</string>
     <string name="copyIssueUrlToastMsg">URL copiada al portapapeles</string>
@@ -458,6 +456,10 @@
     <string name="title">Title</string>
     <string name="description">Description</string>
     <string name="bioText">Bio</string>
+    <string name="pin">Pin</string>
+    <string name="unpin">Unpin</string>
+    <string name="branch">Branch</string>
+    <string name="branches">Branches</string>
     <!-- generic copy -->
     <string name="exploreUsers">Explorar usuarios</string>
     <string name="exploreIssues">Explorar incidencias</string>
@@ -501,6 +503,7 @@
     <string name="selectMergeStrategy">Seleccionar estrategia de fusión</string>
     <string name="mergeNotAllowed">Fusión no permitida [Causa: Aprobaciones insuficientes]</string>
     <string name="deleteBranch">Eliminar rama</string>
+    <string name="switch_branch">Switch Branch</string>
     <string name="waitLoadingDownloadFile">Por favor espere que el archivo está cargando en la memoria</string>
     <string name="downloadFileSaved">Archivo guardado con éxito</string>
     <string name="excludeFilesInFileViewer">Este tipo o tamaño de archivo no está soportado en el visor de archivos. Puedes descargar el archivo desde el menú.</string>
@@ -534,6 +537,10 @@
     <string name="unsubscribedSuccessfully">Suscripción cancelada con éxito</string>
     <string name="alreadyUnsubscribed">Tu suscripción ya estaba cancelada</string>
     <string name="unSubscriptionError">La cancelación de la suscripción ha fallado</string>
+    <string name="issue_pinned">Issue pinned successfully</string>
+    <string name="issue_unpinned">Issue unpinned successfully</string>
+    <string name="pinning_failed">Pinning issue failed</string>
+    <string name="unpinning_failed">Unpinning issue failed</string>
     <string name="closeMilestone">Cerrar hito</string>
     <string name="openMilestone">Abrir hito</string>
     <string name="milestoneStatusUpdate">Estado del hito fue actualizado con éxito</string>

@@ -96,7 +96,6 @@
     <string name="tabTextFiles">Файли</string>
     <string name="tabTextMl">Етапи</string>
     <string name="tabTextReleases">Релізи</string>
-    <string name="tabTextBranches">Гілки</string>
     <string name="tabTextCollaborators">Співавтори</string>
     <string name="tabPullRequests">Запити на злиття</string>
     <string name="pullRequest">Pull Request</string>
@@ -392,7 +391,6 @@
     <string name="newFileEmptyBranchMessage">Leave blank to push to the default branch</string>
     <string name="newFileRequiredFieldNewBranchName">Назва нової гілки не може бути пустою, якщо не обрано поточну гілку</string>
     <string name="strFilter">Фільтр</string>
-    <string name="strSwitchBranches">Branches</string>
     <string name="strMarkdown">Markdown</string>
     <string name="copyIssueUrl">Скопіювати URL проблеми</string>
     <string name="copyIssueUrlToastMsg">URL скопійовано до буфера обміну</string>
@@ -458,6 +456,10 @@
     <string name="title">Title</string>
     <string name="description">Description</string>
     <string name="bioText">Bio</string>
+    <string name="pin">Pin</string>
+    <string name="unpin">Unpin</string>
+    <string name="branch">Branch</string>
+    <string name="branches">Branches</string>
     <!-- generic copy -->
     <string name="exploreUsers">Explore users</string>
     <string name="exploreIssues">Explore issues</string>
@@ -501,6 +503,7 @@
     <string name="selectMergeStrategy">Select merge strategy</string>
     <string name="mergeNotAllowed">Not allowed to merge [Reason: Does not have enough approvals]</string>
     <string name="deleteBranch">Delete Branch</string>
+    <string name="switch_branch">Switch Branch</string>
     <string name="waitLoadingDownloadFile">Зачекайте, поки файл завантажиться</string>
     <string name="downloadFileSaved">Файл успішно збережений</string>
     <string name="excludeFilesInFileViewer">This file type/size is not supported in file viewer. You can download it from the menu.</string>
@@ -534,6 +537,10 @@
     <string name="unsubscribedSuccessfully">Підписку успішно відмінено</string>
     <string name="alreadyUnsubscribed">Ви вже відписалися</string>
     <string name="unSubscriptionError">Не вдалося відписатися</string>
+    <string name="issue_pinned">Issue pinned successfully</string>
+    <string name="issue_unpinned">Issue unpinned successfully</string>
+    <string name="pinning_failed">Pinning issue failed</string>
+    <string name="unpinning_failed">Unpinning issue failed</string>
     <string name="closeMilestone">Закрити етап</string>
     <string name="openMilestone">Відкрити етап</string>
     <string name="milestoneStatusUpdate">Статус етапу успішно оновлено</string>

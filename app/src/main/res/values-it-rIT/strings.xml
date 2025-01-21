@@ -97,7 +97,6 @@ URL è richiesto</string>
     <string name="tabTextFiles">File</string>
     <string name="tabTextMl">Traguardi</string>
     <string name="tabTextReleases">Rilasci</string>
-    <string name="tabTextBranches">Rami</string>
     <string name="tabTextCollaborators">Collaboratori</string>
     <string name="tabPullRequests">Pull Requests</string>
     <string name="pullRequest">Pull Request</string>
@@ -394,7 +393,6 @@ autorizzazione</string>
     <string name="newFileEmptyBranchMessage">Leave blank to push to the default branch</string>
     <string name="newFileRequiredFieldNewBranchName">Il nuovo nome del branch non può essere vuoto se il branch attuale non è selezionato</string>
     <string name="strFilter">Filtro</string>
-    <string name="strSwitchBranches">Branches</string>
     <string name="strMarkdown">Markdown</string>
     <string name="copyIssueUrl">Copia URL Problema</string>
     <string name="copyIssueUrlToastMsg">URL copiato negli appunti</string>
@@ -460,6 +458,10 @@ autorizzazione</string>
     <string name="title">Title</string>
     <string name="description">Description</string>
     <string name="bioText">Bio</string>
+    <string name="pin">Pin</string>
+    <string name="unpin">Unpin</string>
+    <string name="branch">Branch</string>
+    <string name="branches">Branches</string>
     <!-- generic copy -->
     <string name="exploreUsers">Esplora utenti</string>
     <string name="exploreIssues">Esplora problemi</string>
@@ -503,6 +505,7 @@ autorizzazione</string>
     <string name="selectMergeStrategy">Select merge strategy</string>
     <string name="mergeNotAllowed">Not allowed to merge [Reason: Does not have enough approvals]</string>
     <string name="deleteBranch">Delete Branch</string>
+    <string name="switch_branch">Switch Branch</string>
     <string name="waitLoadingDownloadFile">Attendere che il file venga caricato in memoria</string>
     <string name="downloadFileSaved">File salvato con successo</string>
     <string name="excludeFilesInFileViewer">Questo tipo/dimensione di file non è supportata nel visualizzatore. Puoi scaricarlo dal menu.</string>
@@ -536,6 +539,10 @@ autorizzazione</string>
     <string name="unsubscribedSuccessfully">Disiscritto con successo</string>
     <string name="alreadyUnsubscribed">Hai già annullato l\'iscrizione</string>
     <string name="unSubscriptionError">Disiscrizione fallita</string>
+    <string name="issue_pinned">Issue pinned successfully</string>
+    <string name="issue_unpinned">Issue unpinned successfully</string>
+    <string name="pinning_failed">Pinning issue failed</string>
+    <string name="unpinning_failed">Unpinning issue failed</string>
     <string name="closeMilestone">Chiudi Milestone</string>
     <string name="openMilestone">Apri Milestone</string>
     <string name="milestoneStatusUpdate">Stato del Milestone aggiornato con successo</string>

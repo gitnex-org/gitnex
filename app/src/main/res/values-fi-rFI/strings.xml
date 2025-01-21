@@ -96,7 +96,6 @@
     <string name="tabTextFiles">Files</string>
     <string name="tabTextMl">Milestones</string>
     <string name="tabTextReleases">Releases</string>
-    <string name="tabTextBranches">Branches</string>
     <string name="tabTextCollaborators">Collaborators</string>
     <string name="tabPullRequests">Pull Requests</string>
     <string name="pullRequest">Pull Request</string>
@@ -392,7 +391,6 @@
     <string name="newFileEmptyBranchMessage">Leave blank to push to the default branch</string>
     <string name="newFileRequiredFieldNewBranchName">New branch name cannot be empty if current branch is not selected</string>
     <string name="strFilter">Filter</string>
-    <string name="strSwitchBranches">Branches</string>
     <string name="strMarkdown">Markdown</string>
     <string name="copyIssueUrl">Copy Issue URL</string>
     <string name="copyIssueUrlToastMsg">URL copied to clipboard</string>
@@ -458,6 +456,10 @@
     <string name="title">Title</string>
     <string name="description">Description</string>
     <string name="bioText">Bio</string>
+    <string name="pin">Pin</string>
+    <string name="unpin">Unpin</string>
+    <string name="branch">Branch</string>
+    <string name="branches">Branches</string>
     <!-- generic copy -->
     <string name="exploreUsers">Explore users</string>
     <string name="exploreIssues">Explore issues</string>
@@ -501,6 +503,7 @@
     <string name="selectMergeStrategy">Select merge strategy</string>
     <string name="mergeNotAllowed">Not allowed to merge [Reason: Does not have enough approvals]</string>
     <string name="deleteBranch">Delete Branch</string>
+    <string name="switch_branch">Switch Branch</string>
     <string name="waitLoadingDownloadFile">Please wait for the file to load to memory</string>
     <string name="downloadFileSaved">File saved successfully</string>
     <string name="excludeFilesInFileViewer">This file type/size is not supported in file viewer. You can download it from the menu.</string>
@@ -534,6 +537,10 @@
     <string name="unsubscribedSuccessfully">Unsubscribed successfully</string>
     <string name="alreadyUnsubscribed">You have already Unsubscribed</string>
     <string name="unSubscriptionError">Un-Subscription failed</string>
+    <string name="issue_pinned">Issue pinned successfully</string>
+    <string name="issue_unpinned">Issue unpinned successfully</string>
+    <string name="pinning_failed">Pinning issue failed</string>
+    <string name="unpinning_failed">Unpinning issue failed</string>
     <string name="closeMilestone">Close Milestone</string>
     <string name="openMilestone">Open Milestone</string>
     <string name="milestoneStatusUpdate">Milestone status updated successfully</string>
