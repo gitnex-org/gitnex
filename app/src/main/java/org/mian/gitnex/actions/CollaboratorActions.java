@@ -75,7 +75,8 @@ public class CollaboratorActions {
 			RepositoryContext repository) {
 
 		AddCollaboratorOption permissionString = new AddCollaboratorOption();
-		permissionString.setPermission(permission);
+		permissionString.setPermission(
+				AddCollaboratorOption.PermissionEnum.valueOf(permission.toUpperCase()));
 
 		Call<Void> call =
 				RetrofitClient.getApiInterface(context)

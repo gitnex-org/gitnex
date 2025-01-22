@@ -802,7 +802,7 @@ public class IssueDetailActivity extends BaseActivity
 
 	private void updateIssueLabels() {
 
-		ArrayList<Long> labelIds = new ArrayList<>();
+		List<Object> labelIds = new ArrayList<>();
 		for (Integer i : labelsIds) {
 			labelIds.add((long) i);
 		}

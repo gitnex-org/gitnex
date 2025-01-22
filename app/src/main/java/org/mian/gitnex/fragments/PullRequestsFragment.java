@@ -205,7 +205,15 @@ public class PullRequestsFragment extends Fragment {
 		Call<List<PullRequest>> call =
 				RetrofitClient.getApiInterface(context)
 						.repoListPullRequests(
-								repoOwner, repoName, prState, null, null, null, page, resultLimit);
+								repoOwner,
+								repoName,
+								prState,
+								null,
+								null,
+								null,
+								null,
+								page,
+								resultLimit);
 
 		call.enqueue(
 				new Callback<>() {
@@ -252,7 +260,15 @@ public class PullRequestsFragment extends Fragment {
 		Call<List<PullRequest>> call =
 				RetrofitClient.getApiInterface(context)
 						.repoListPullRequests(
-								repoOwner, repoName, prState, null, null, null, page, resultLimit);
+								repoOwner,
+								repoName,
+								prState,
+								null,
+								null,
+								null,
+								null,
+								page,
+								resultLimit);
 
 		call.enqueue(
 				new Callback<>() {
