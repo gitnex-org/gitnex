@@ -170,13 +170,21 @@ public class DashboardAdapter extends RecyclerView.Adapter<RecyclerView.ViewHold
 											});
 								}
 
-								if (activityObject.getOpType().equalsIgnoreCase("create_repo")
+								if (activityObject
+												.getOpType()
+												.getValue()
+												.equalsIgnoreCase("create_repo")
 										|| activityObject
 												.getOpType()
+												.getValue()
 												.equalsIgnoreCase("rename_repo")
-										|| activityObject.getOpType().equalsIgnoreCase("star_repo")
 										|| activityObject
 												.getOpType()
+												.getValue()
+												.equalsIgnoreCase("star_repo")
+										|| activityObject
+												.getOpType()
+												.getValue()
 												.equalsIgnoreCase("transfer_repo")) {
 
 									itemView.setOnClickListener(
@@ -196,15 +204,21 @@ public class DashboardAdapter extends RecyclerView.Adapter<RecyclerView.ViewHold
 											});
 								}
 
-								if (activityObject.getOpType().equalsIgnoreCase("create_issue")
+								if (activityObject
+												.getOpType()
+												.getValue()
+												.equalsIgnoreCase("create_issue")
 										|| activityObject
 												.getOpType()
+												.getValue()
 												.equalsIgnoreCase("comment_issue")
 										|| activityObject
 												.getOpType()
+												.getValue()
 												.equalsIgnoreCase("close_issue")
 										|| activityObject
 												.getOpType()
+												.getValue()
 												.equalsIgnoreCase("reopen_issue")) {
 
 									String[] parts =
@@ -233,27 +247,35 @@ public class DashboardAdapter extends RecyclerView.Adapter<RecyclerView.ViewHold
 
 								if (activityObject
 												.getOpType()
+												.getValue()
 												.equalsIgnoreCase("create_pull_request")
 										|| activityObject
 												.getOpType()
+												.getValue()
 												.equalsIgnoreCase("close_pull_request")
 										|| activityObject
 												.getOpType()
+												.getValue()
 												.equalsIgnoreCase("reopen_pull_request")
 										|| activityObject
 												.getOpType()
+												.getValue()
 												.equalsIgnoreCase("approve_pull_request")
 										|| activityObject
 												.getOpType()
+												.getValue()
 												.equalsIgnoreCase("reject_pull_request")
 										|| activityObject
 												.getOpType()
+												.getValue()
 												.equalsIgnoreCase("comment_pull")
 										|| activityObject
 												.getOpType()
+												.getValue()
 												.equalsIgnoreCase("auto_merge_pull_request")
 										|| activityObject
 												.getOpType()
+												.getValue()
 												.equalsIgnoreCase("merge_pull_request")) {
 
 									String[] parts =
@@ -280,7 +302,10 @@ public class DashboardAdapter extends RecyclerView.Adapter<RecyclerView.ViewHold
 											});
 								}
 
-								if (activityObject.getOpType().equalsIgnoreCase("commit_repo")) {
+								if (activityObject
+										.getOpType()
+										.getValue()
+										.equalsIgnoreCase("commit_repo")) {
 
 									if (activityObject.getContent().isEmpty()) {
 
@@ -319,9 +344,13 @@ public class DashboardAdapter extends RecyclerView.Adapter<RecyclerView.ViewHold
 									}
 								}
 
-								if (activityObject.getOpType().equalsIgnoreCase("publish_release")
+								if (activityObject
+												.getOpType()
+												.getValue()
+												.equalsIgnoreCase("publish_release")
 										|| activityObject
 												.getOpType()
+												.getValue()
 												.equalsIgnoreCase("push_tag")) {
 
 									itemView.setOnClickListener(
@@ -381,9 +410,9 @@ public class DashboardAdapter extends RecyclerView.Adapter<RecyclerView.ViewHold
 			String headerString = "";
 			String typeString = "";
 
-			if (activity.getOpType().contains("repo")) {
+			if (activity.getOpType().getValue().contains("repo")) {
 
-				if (activity.getOpType().equalsIgnoreCase("create_repo")) {
+				if (activity.getOpType().getValue().equalsIgnoreCase("create_repo")) {
 
 					headerString =
 							"<font color='"
@@ -394,7 +423,7 @@ public class DashboardAdapter extends RecyclerView.Adapter<RecyclerView.ViewHold
 									+ "</font>";
 					typeString = context.getString(R.string.createdRepository);
 					typeIcon.setImageResource(R.drawable.ic_repo);
-				} else if (activity.getOpType().equalsIgnoreCase("rename_repo")) {
+				} else if (activity.getOpType().getValue().equalsIgnoreCase("rename_repo")) {
 
 					headerString =
 							"<font color='"
@@ -408,7 +437,7 @@ public class DashboardAdapter extends RecyclerView.Adapter<RecyclerView.ViewHold
 									context.getString(R.string.renamedRepository),
 									activity.getContent());
 					typeIcon.setImageResource(R.drawable.ic_repo);
-				} else if (activity.getOpType().equalsIgnoreCase("star_repo")) {
+				} else if (activity.getOpType().getValue().equalsIgnoreCase("star_repo")) {
 
 					headerString =
 							"<font color='"
@@ -419,7 +448,7 @@ public class DashboardAdapter extends RecyclerView.Adapter<RecyclerView.ViewHold
 									+ "</font>";
 					typeString = context.getString(R.string.starredRepository);
 					typeIcon.setImageResource(R.drawable.ic_star);
-				} else if (activity.getOpType().equalsIgnoreCase("transfer_repo")) {
+				} else if (activity.getOpType().getValue().equalsIgnoreCase("transfer_repo")) {
 
 					headerString =
 							"<font color='"
@@ -433,7 +462,7 @@ public class DashboardAdapter extends RecyclerView.Adapter<RecyclerView.ViewHold
 									context.getString(R.string.transferredRepository),
 									activity.getContent());
 					typeIcon.setImageResource(R.drawable.ic_arrow_up);
-				} else if (activity.getOpType().equalsIgnoreCase("commit_repo")) {
+				} else if (activity.getOpType().getValue().equalsIgnoreCase("commit_repo")) {
 
 					headerString =
 							"<font color='"
@@ -550,7 +579,7 @@ public class DashboardAdapter extends RecyclerView.Adapter<RecyclerView.ViewHold
 					}
 					typeIcon.setImageResource(R.drawable.ic_commit);
 				}
-			} else if (activity.getOpType().contains("issue")) {
+			} else if (activity.getOpType().getValue().contains("issue")) {
 
 				String id;
 				String content;
@@ -564,7 +593,7 @@ public class DashboardAdapter extends RecyclerView.Adapter<RecyclerView.ViewHold
 					id = contentParts[0];
 				}
 
-				if (activity.getOpType().equalsIgnoreCase("create_issue")) {
+				if (activity.getOpType().getValue().equalsIgnoreCase("create_issue")) {
 
 					headerString =
 							"<font color='"
@@ -577,7 +606,7 @@ public class DashboardAdapter extends RecyclerView.Adapter<RecyclerView.ViewHold
 									+ "</font>";
 					typeString = context.getString(R.string.openedIssue);
 					typeIcon.setImageResource(R.drawable.ic_issue);
-				} else if (activity.getOpType().equalsIgnoreCase("comment_issue")) {
+				} else if (activity.getOpType().getValue().equalsIgnoreCase("comment_issue")) {
 
 					headerString =
 							"<font color='"
@@ -590,7 +619,7 @@ public class DashboardAdapter extends RecyclerView.Adapter<RecyclerView.ViewHold
 									+ "</font>";
 					typeString = context.getString(R.string.commentedOnIssue);
 					typeIcon.setImageResource(R.drawable.ic_comment);
-				} else if (activity.getOpType().equalsIgnoreCase("close_issue")) {
+				} else if (activity.getOpType().getValue().equalsIgnoreCase("close_issue")) {
 
 					headerString =
 							"<font color='"
@@ -603,7 +632,7 @@ public class DashboardAdapter extends RecyclerView.Adapter<RecyclerView.ViewHold
 									+ "</font>";
 					typeString = context.getString(R.string.closedIssue);
 					typeIcon.setImageResource(R.drawable.ic_issue_closed);
-				} else if (activity.getOpType().equalsIgnoreCase("reopen_issue")) {
+				} else if (activity.getOpType().getValue().equalsIgnoreCase("reopen_issue")) {
 
 					headerString =
 							"<font color='"
@@ -617,7 +646,7 @@ public class DashboardAdapter extends RecyclerView.Adapter<RecyclerView.ViewHold
 					typeString = context.getString(R.string.reopenedIssue);
 					typeIcon.setImageResource(R.drawable.ic_reopen);
 				}
-			} else if (activity.getOpType().contains("pull")) {
+			} else if (activity.getOpType().getValue().contains("pull")) {
 
 				String id;
 				String content;
@@ -631,7 +660,7 @@ public class DashboardAdapter extends RecyclerView.Adapter<RecyclerView.ViewHold
 					id = contentParts[0];
 				}
 
-				if (activity.getOpType().equalsIgnoreCase("create_pull_request")) {
+				if (activity.getOpType().getValue().equalsIgnoreCase("create_pull_request")) {
 
 					headerString =
 							"<font color='"
@@ -644,7 +673,7 @@ public class DashboardAdapter extends RecyclerView.Adapter<RecyclerView.ViewHold
 									+ "</font>";
 					typeString = context.getString(R.string.createdPR);
 					typeIcon.setImageResource(R.drawable.ic_pull_request);
-				} else if (activity.getOpType().equalsIgnoreCase("close_pull_request")) {
+				} else if (activity.getOpType().getValue().equalsIgnoreCase("close_pull_request")) {
 
 					headerString =
 							"<font color='"
@@ -657,7 +686,9 @@ public class DashboardAdapter extends RecyclerView.Adapter<RecyclerView.ViewHold
 									+ "</font>";
 					typeString = context.getString(R.string.closedPR);
 					typeIcon.setImageResource(R.drawable.ic_issue_closed);
-				} else if (activity.getOpType().equalsIgnoreCase("reopen_pull_request")) {
+				} else if (activity.getOpType()
+						.getValue()
+						.equalsIgnoreCase("reopen_pull_request")) {
 
 					headerString =
 							"<font color='"
@@ -670,7 +701,7 @@ public class DashboardAdapter extends RecyclerView.Adapter<RecyclerView.ViewHold
 									+ "</font>";
 					typeString = context.getString(R.string.reopenedPR);
 					typeIcon.setImageResource(R.drawable.ic_reopen);
-				} else if (activity.getOpType().equalsIgnoreCase("merge_pull_request")) {
+				} else if (activity.getOpType().getValue().equalsIgnoreCase("merge_pull_request")) {
 
 					headerString =
 							"<font color='"
@@ -683,7 +714,9 @@ public class DashboardAdapter extends RecyclerView.Adapter<RecyclerView.ViewHold
 									+ "</font>";
 					typeString = context.getString(R.string.mergedPR);
 					typeIcon.setImageResource(R.drawable.ic_pull_request);
-				} else if (activity.getOpType().equalsIgnoreCase("approve_pull_request")) {
+				} else if (activity.getOpType()
+						.getValue()
+						.equalsIgnoreCase("approve_pull_request")) {
 
 					headerString =
 							"<font color='"
@@ -696,7 +729,9 @@ public class DashboardAdapter extends RecyclerView.Adapter<RecyclerView.ViewHold
 									+ "</font>";
 					typeString = context.getString(R.string.approved);
 					typeIcon.setImageResource(R.drawable.ic_done);
-				} else if (activity.getOpType().equalsIgnoreCase("reject_pull_request")) {
+				} else if (activity.getOpType()
+						.getValue()
+						.equalsIgnoreCase("reject_pull_request")) {
 
 					headerString =
 							"<font color='"
@@ -709,7 +744,7 @@ public class DashboardAdapter extends RecyclerView.Adapter<RecyclerView.ViewHold
 									+ "</font>";
 					typeString = context.getString(R.string.suggestedChanges);
 					typeIcon.setImageResource(R.drawable.ic_diff);
-				} else if (activity.getOpType().equalsIgnoreCase("comment_pull")) {
+				} else if (activity.getOpType().getValue().equalsIgnoreCase("comment_pull")) {
 
 					headerString =
 							"<font color='"
@@ -722,7 +757,9 @@ public class DashboardAdapter extends RecyclerView.Adapter<RecyclerView.ViewHold
 									+ "</font>";
 					typeString = context.getString(R.string.commentedOnPR);
 					typeIcon.setImageResource(R.drawable.ic_comment);
-				} else if (activity.getOpType().equalsIgnoreCase("auto_merge_pull_request")) {
+				} else if (activity.getOpType()
+						.getValue()
+						.equalsIgnoreCase("auto_merge_pull_request")) {
 
 					headerString =
 							"<font color='"
@@ -736,7 +773,7 @@ public class DashboardAdapter extends RecyclerView.Adapter<RecyclerView.ViewHold
 					typeString = context.getString(R.string.autoMergePR);
 					typeIcon.setImageResource(R.drawable.ic_issue_closed);
 				}
-			} else if (activity.getOpType().contains("branch")) {
+			} else if (activity.getOpType().getValue().contains("branch")) {
 
 				String content;
 				String[] contentParts = activity.getContent().split("\\|");
@@ -746,7 +783,7 @@ public class DashboardAdapter extends RecyclerView.Adapter<RecyclerView.ViewHold
 					dashText.setText(EmojiParser.parseToUnicode(content));
 				}
 
-				if (activity.getOpType().equalsIgnoreCase("delete_branch")) {
+				if (activity.getOpType().getValue().equalsIgnoreCase("delete_branch")) {
 
 					headerString =
 							"<font color='"
@@ -769,9 +806,9 @@ public class DashboardAdapter extends RecyclerView.Adapter<RecyclerView.ViewHold
 					typeString = String.format(context.getString(R.string.deletedBranch), branch);
 					typeIcon.setImageResource(R.drawable.ic_commit);
 				}
-			} else if (activity.getOpType().contains("tag")) {
+			} else if (activity.getOpType().getValue().contains("tag")) {
 
-				if (activity.getOpType().equalsIgnoreCase("push_tag")) {
+				if (activity.getOpType().getValue().equalsIgnoreCase("push_tag")) {
 
 					headerString =
 							"<font color='"
@@ -793,7 +830,7 @@ public class DashboardAdapter extends RecyclerView.Adapter<RecyclerView.ViewHold
 
 					typeString = String.format(context.getString(R.string.pushedTag), branch);
 					typeIcon.setImageResource(R.drawable.ic_commit);
-				} else if (activity.getOpType().equalsIgnoreCase("delete_tag")) {
+				} else if (activity.getOpType().getValue().equalsIgnoreCase("delete_tag")) {
 
 					headerString =
 							"<font color='"
@@ -816,9 +853,9 @@ public class DashboardAdapter extends RecyclerView.Adapter<RecyclerView.ViewHold
 					typeString = String.format(context.getString(R.string.deletedTag), branch);
 					typeIcon.setImageResource(R.drawable.ic_commit);
 				}
-			} else if (activity.getOpType().contains("release")) {
+			} else if (activity.getOpType().getValue().contains("release")) {
 
-				if (activity.getOpType().equalsIgnoreCase("publish_release")) {
+				if (activity.getOpType().getValue().equalsIgnoreCase("publish_release")) {
 
 					headerString =
 							"<font color='"
@@ -841,9 +878,9 @@ public class DashboardAdapter extends RecyclerView.Adapter<RecyclerView.ViewHold
 					typeString = String.format(context.getString(R.string.releasedBranch), branch);
 					typeIcon.setImageResource(R.drawable.ic_tag);
 				}
-			} else if (activity.getOpType().contains("mirror")) {
+			} else if (activity.getOpType().getValue().contains("mirror")) {
 
-				if (activity.getOpType().equalsIgnoreCase("mirror_sync_push")) {
+				if (activity.getOpType().getValue().equalsIgnoreCase("mirror_sync_push")) {
 
 					headerString =
 							"<font color='"
@@ -856,7 +893,7 @@ public class DashboardAdapter extends RecyclerView.Adapter<RecyclerView.ViewHold
 					typeString =
 							String.format(context.getString(R.string.syncedCommits), headerString);
 					typeIcon.setImageResource(R.drawable.ic_tag);
-				} else if (activity.getOpType().equalsIgnoreCase("mirror_sync_create")) {
+				} else if (activity.getOpType().getValue().equalsIgnoreCase("mirror_sync_create")) {
 
 					headerString =
 							"<font color='"
@@ -869,7 +906,7 @@ public class DashboardAdapter extends RecyclerView.Adapter<RecyclerView.ViewHold
 					typeString =
 							String.format(context.getString(R.string.syncedRefs), headerString);
 					typeIcon.setImageResource(R.drawable.ic_tag);
-				} else if (activity.getOpType().equalsIgnoreCase("mirror_sync_delete")) {
+				} else if (activity.getOpType().getValue().equalsIgnoreCase("mirror_sync_delete")) {
 
 					headerString =
 							"<font color='"
