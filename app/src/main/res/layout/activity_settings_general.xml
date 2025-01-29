@@ -133,54 +133,6 @@
 
             </LinearLayout>
 
-             <LinearLayout
-                 android:id="@+id/enableDraftsCommentsDeletion"
-                 android:layout_width="match_parent"
-                 android:layout_height="wrap_content"
-                 android:layout_marginTop="@dimen/dimen32dp"
-                 android:visibility="gone"
-                 android:orientation="vertical">
-
-                <LinearLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:orientation="horizontal">
-
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_weight=".90"
-                        android:text="@string/settingsEnableCommentsDeletionText"
-                        android:layout_marginTop="@dimen/dimen4dp"
-                        android:textColor="?attr/primaryTextColor"
-                        android:textSize="@dimen/dimen18sp" />
-
-                    <com.google.android.material.materialswitch.MaterialSwitch
-                        android:id="@+id/commentsDeletionSwitch"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:contentDescription="@string/settingsEnableCommentsDeletionText"
-                        android:layout_weight=".10" />
-
-                </LinearLayout>
-
-                <LinearLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:orientation="vertical">
-
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_marginEnd="@dimen/dimen96dp"
-                        android:text="@string/settingsEnableCommentsDeletionHintText"
-                        android:textColor="?attr/hintColor"
-                        android:textSize="@dimen/dimen12sp" />
-
-                </LinearLayout>
-
-            </LinearLayout>
-
             <LinearLayout
                 android:id="@+id/enableSendReports"
                 android:layout_width="match_parent"

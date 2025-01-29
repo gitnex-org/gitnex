@@ -240,10 +240,6 @@
     <string name="clearCacheSelectionSelectedText" translatable="false">0 B</string>
     <string name="clearCacheDialogHeader">Clear Cache?</string>
     <string name="clearCacheDialogMessage">This will delete all the cache data including files and images.\n\nProceed with deletion?</string>
-    <string name="draftsHeader">Drafts</string>
-    <string name="draftsHintText">Comments draft</string>
-    <string name="settingsEnableCommentsDeletionText">Enable Drafts Deletion</string>
-    <string name="settingsEnableCommentsDeletionHintText">Delete comment draft when comment is posted</string>
     <string name="settingsGeneralHeader">General</string>
     <string name="generalHintText">Home screen, crash reports, custom tabs</string>
     <string name="generalDeepLinkDefaultScreen">Default Link Handler</string>
@@ -567,7 +563,6 @@
     <string name="unStarRepositorySuccess">Repository removed from starred list</string>
     <string name="watchRepositorySuccess">Repository added to watch list</string>
     <string name="unWatchRepositorySuccess">Repository removed from watch list</string>
-    <string name="titleDrafts">Drafts</string>
     <string name="filesBreadcrumbRoot" translatable="false">Root</string>
 
     <string name="versionUnsupportedOld">Unsupported old version(%1$s) of Gitea detected. Please update to latest stable version. If you continue, some features may not work.</string>
@@ -663,13 +658,6 @@
 
     <string name="forceLogoutDialogHeader">Please sign in again</string>
     <string name="forceLogoutDialogDescription">Due to some major changes regarding the internal functioning of the app, we require you to login again. These changes allow us to make the app more flexible in the future.\n\nThank you for your patience and sorry for the inconvenience.</string>
-
-    <string name="deleteAllDrafts">Delete All Drafts</string>
-    <string name="draftsListEmpty">No drafts found</string>
-    <string name="draftsDeleteSuccess">Drafts deleted successfully</string>
-    <string name="draftsSingleDeleteSuccess">Draft deleted successfully</string>
-    <string name="deleteAllDraftsDialogMessage">This will delete all the drafts for this account. \n\nProceed with deletion?</string>
-    <string name="draftSaved">Draft was saved automatically.</string>
 
     <string name="resetMostReposCounter">Counter is reset successfully</string>
     <string name="resetCounterDialogMessage">Do you want to reset counter for repository %s?</string>

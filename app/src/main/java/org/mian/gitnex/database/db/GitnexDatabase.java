@@ -8,12 +8,10 @@ import androidx.room.RoomDatabase;
 import androidx.room.migration.Migration;
 import androidx.sqlite.db.SupportSQLiteDatabase;
 import org.mian.gitnex.database.dao.AppSettingsDao;
-import org.mian.gitnex.database.dao.DraftsDao;
 import org.mian.gitnex.database.dao.NotesDao;
 import org.mian.gitnex.database.dao.RepositoriesDao;
 import org.mian.gitnex.database.dao.UserAccountsDao;
 import org.mian.gitnex.database.models.AppSettings;
-import org.mian.gitnex.database.models.Draft;
 import org.mian.gitnex.database.models.Notes;
 import org.mian.gitnex.database.models.Repository;
 import org.mian.gitnex.database.models.UserAccount;
@@ -22,14 +20,8 @@ import org.mian.gitnex.database.models.UserAccount;
  * @author M M Arif
  */
 @Database(
-		entities = {
-			Draft.class,
-			Repository.class,
-			UserAccount.class,
-			Notes.class,
-			AppSettings.class
-		},
-		version = 9,
+		entities = {Repository.class, UserAccount.class, Notes.class, AppSettings.class},
+		version = 10,
 		exportSchema = false)
 public abstract class GitnexDatabase extends RoomDatabase {
 
@@ -109,6 +101,15 @@ public abstract class GitnexDatabase extends RoomDatabase {
 							"ALTER TABLE 'userAccounts' ADD COLUMN 'maxNumberOfAttachments' INTEGER NOT NULL DEFAULT 5");
 				}
 			};
+
+	private static final Migration MIGRATION_9_10 =
+			new Migration(9, 10) {
+
+				@Override
+				public void migrate(@NonNull SupportSQLiteDatabase database) {
+					database.execSQL("DROP table Drafts");
+				}
+			};
 	private static volatile GitnexDatabase gitnexDatabase;
 
 	public static GitnexDatabase getDatabaseInstance(Context context) {
@@ -129,7 +130,8 @@ public abstract class GitnexDatabase extends RoomDatabase {
 											MIGRATION_5_6,
 											MIGRATION_6_7,
 											MIGRATION_7_8,
-											MIGRATION_8_9)
+											MIGRATION_8_9,
+											MIGRATION_9_10)
 									.build();
 				}
 			}
@@ -137,8 +139,6 @@ public abstract class GitnexDatabase extends RoomDatabase {
 
 		return gitnexDatabase;
 	}
-
-	public abstract DraftsDao draftsDao();
 
 	public abstract RepositoriesDao repositoriesDao();
 

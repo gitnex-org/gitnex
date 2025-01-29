@@ -136,28 +136,6 @@ public class SettingsGeneralActivity extends BaseActivity {
 				v -> viewBinding.switchTabs.setChecked(!viewBinding.switchTabs.isChecked()));
 		// custom tabs switcher
 
-		// drafts deletion switcher
-		viewBinding.commentsDeletionSwitch.setChecked(
-				Boolean.parseBoolean(
-						AppDatabaseSettings.getSettingsValue(
-								ctx, AppDatabaseSettings.APP_DRAFTS_DELETION_KEY)));
-		viewBinding.commentsDeletionSwitch.setOnCheckedChangeListener(
-				(buttonView, isChecked) -> {
-					AppDatabaseSettings.updateSettingsValue(
-							ctx,
-							String.valueOf(isChecked),
-							AppDatabaseSettings.APP_DRAFTS_DELETION_KEY);
-					SnackBar.success(
-							ctx,
-							findViewById(android.R.id.content),
-							getString(R.string.settingsSave));
-				});
-		viewBinding.enableDraftsCommentsDeletion.setOnClickListener(
-				v ->
-						viewBinding.commentsDeletionSwitch.setChecked(
-								!viewBinding.commentsDeletionSwitch.isChecked()));
-		// drafts deletion switcher
-
 		// crash reports switcher
 		viewBinding.crashReportsSwitch.setChecked(
 				Boolean.parseBoolean(

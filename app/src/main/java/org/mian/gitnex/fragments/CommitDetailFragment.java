@@ -75,6 +75,7 @@ public class CommitDetailFragment extends Fragment {
 		repoOwner = repository.getOwner();
 		repoName = repository.getName();
 		sha = requireActivity().getIntent().getStringExtra("sha");
+		assert sha != null;
 		binding.toolbarTitle.setText(sha.substring(0, Math.min(sha.length(), 10)));
 
 		adapter = new DiffFilesAdapter(requireContext(), fileDiffViews, issue, "commit");

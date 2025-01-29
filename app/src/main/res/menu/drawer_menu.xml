@@ -54,11 +54,6 @@
             android:icon="@drawable/ic_notes"
             android:title="@string/navNotes" />
 
-        <item android:id="@+id/nav_comments_draft"
-            android:icon="@drawable/ic_drafts"
-            android:visible="false"
-            android:title="@string/titleDrafts"/>
-
         <item android:id="@+id/nav_profile"
             android:icon="@drawable/ic_person"
             android:title="@string/navProfile"/>
