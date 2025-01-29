@@ -7,15 +7,13 @@
     android:background="?attr/primaryBackgroundColor"
     android:orientation="vertical">
 
-    <GridView
+    <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/gridView"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:scrollbars="none"
-        android:numColumns="2"
+        android:padding="@dimen/dimen4dp"
         android:gravity="center"
-        android:background="?attr/primaryBackgroundColor"
-        android:padding="@dimen/dimen4dp"/>
+        android:background="?attr/primaryBackgroundColor" />
 
     <com.google.android.material.progressindicator.LinearProgressIndicator
         android:id="@+id/progress_bar"

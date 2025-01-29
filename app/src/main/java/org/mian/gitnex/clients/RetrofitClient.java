@@ -60,8 +60,8 @@ public class RetrofitClient {
 			String token,
 			File cacheFile) {
 
-		//		HttpLoggingInterceptor logging = new HttpLoggingInterceptor();
-		//		logging.setLevel(HttpLoggingInterceptor.Level.BODY);
+		// HttpLoggingInterceptor logging = new HttpLoggingInterceptor();
+		// logging.setLevel(HttpLoggingInterceptor.Level.BODY);
 
 		try {
 
@@ -75,7 +75,7 @@ public class RetrofitClient {
 			auth.setApiKey(token);
 			OkHttpClient.Builder okHttpClient =
 					new OkHttpClient.Builder()
-							//				.addInterceptor(logging)
+							// .addInterceptor(logging)
 							.addInterceptor(auth)
 							.sslSocketFactory(sslContext.getSocketFactory(), memorizingTrustManager)
 							.hostnameVerifier(

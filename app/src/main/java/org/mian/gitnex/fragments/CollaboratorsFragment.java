@@ -7,9 +7,11 @@ import android.view.ViewGroup;
 import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModelProvider;
+import androidx.recyclerview.widget.GridLayoutManager;
 import org.mian.gitnex.activities.AddCollaboratorToRepositoryActivity;
 import org.mian.gitnex.adapters.CollaboratorsAdapter;
 import org.mian.gitnex.databinding.FragmentCollaboratorsBinding;
+import org.mian.gitnex.helpers.Constants;
 import org.mian.gitnex.helpers.contexts.RepositoryContext;
 import org.mian.gitnex.viewmodels.CollaboratorsViewModel;
 
@@ -22,6 +24,9 @@ public class CollaboratorsFragment extends Fragment {
 	private FragmentCollaboratorsBinding fragmentCollaboratorsBinding;
 	private CollaboratorsAdapter adapter;
 	private RepositoryContext repository;
+	private CollaboratorsViewModel collaboratorsModel;
+	private int page = 1;
+	private int resultLimit;
 
 	public CollaboratorsFragment() {}
 
@@ -44,6 +49,9 @@ public class CollaboratorsFragment extends Fragment {
 		fragmentCollaboratorsBinding =
 				FragmentCollaboratorsBinding.inflate(inflater, container, false);
 
+		collaboratorsModel = new ViewModelProvider(this).get(CollaboratorsViewModel.class);
+		resultLimit = Constants.getCurrentResultLimit(requireContext());
+
 		if (repository.getPermissions().isAdmin()) {
 
 			fragmentCollaboratorsBinding.addCollaborator.setOnClickListener(
@@ -61,27 +69,57 @@ public class CollaboratorsFragment extends Fragment {
 		return fragmentCollaboratorsBinding.getRoot();
 	}
 
-	private void fetchDataAsync(String owner, String repo) {
-
-		CollaboratorsViewModel collaboratorsModel =
-				new ViewModelProvider(this).get(CollaboratorsViewModel.class);
+	private void fetchDataAsync(String repoOwner, String repoName) {
 
 		collaboratorsModel
-				.getCollaboratorsList(owner, repo, getContext())
+				.getCollaboratorsList(repoOwner, repoName, requireContext(), page, resultLimit)
 				.observe(
 						getViewLifecycleOwner(),
-						collaboratorsListMain -> {
-							adapter = new CollaboratorsAdapter(getContext(), collaboratorsListMain);
-							if (adapter.getCount() > 0) {
+						mainList -> {
+							adapter = new CollaboratorsAdapter(requireContext(), mainList);
+
+							adapter.setLoadMoreListener(
+									new CollaboratorsAdapter.OnLoadMoreListener() {
+
+										@Override
+										public void onLoadMore() {
+
+											page += 1;
+											collaboratorsModel.loadMore(
+													repoOwner,
+													repoName,
+													requireContext(),
+													page,
+													resultLimit,
+													adapter,
+													fragmentCollaboratorsBinding);
+											fragmentCollaboratorsBinding.progressBar.setVisibility(
+													View.VISIBLE);
+										}
+
+										@Override
+										public void onLoadFinished() {
+
+											fragmentCollaboratorsBinding.progressBar.setVisibility(
+													View.GONE);
+										}
+									});
+
+							GridLayoutManager layoutManager =
+									new GridLayoutManager(requireContext(), 2);
+							fragmentCollaboratorsBinding.gridView.setLayoutManager(layoutManager);
+
+							if (adapter.getItemCount() > 0) {
 								fragmentCollaboratorsBinding.gridView.setAdapter(adapter);
 								fragmentCollaboratorsBinding.noDataCollaborators.setVisibility(
 										View.GONE);
 							} else {
-								adapter.notifyDataSetChanged();
+								adapter.notifyDataChanged();
 								fragmentCollaboratorsBinding.gridView.setAdapter(adapter);
 								fragmentCollaboratorsBinding.noDataCollaborators.setVisibility(
 										View.VISIBLE);
 							}
+
 							fragmentCollaboratorsBinding.progressBar.setVisibility(View.GONE);
 						});
 	}

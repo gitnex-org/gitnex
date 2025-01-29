@@ -46,38 +46,29 @@
 
     </com.google.android.material.appbar.AppBarLayout>
 
-    <androidx.core.widget.NestedScrollView
+    <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        app:layout_behavior="@string/appbar_scrolling_view_behavior"
-        android:background="?attr/primaryBackgroundColor">
+        android:layout_marginTop="@dimen/dimen56dp"
+        android:orientation="vertical">
 
-        <LinearLayout
+        <com.google.android.material.progressindicator.LinearProgressIndicator
+            android:id="@+id/progress_bar"
+            style="@style/Widget.MaterialComponents.LinearProgressIndicator"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:orientation="vertical">
+            android:indeterminate="true"
+            app:indicatorColor="?attr/progressIndicatorColor"/>
 
-            <com.google.android.material.progressindicator.LinearProgressIndicator
-                android:id="@+id/progress_bar"
-                style="@style/Widget.MaterialComponents.LinearProgressIndicator"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:indeterminate="true"
-                app:indicatorColor="?attr/progressIndicatorColor"/>
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/gridView"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:gravity="center"
+            android:background="?attr/primaryBackgroundColor"
+            android:padding="@dimen/dimen4dp" />
 
-            <GridView
-                android:id="@+id/gridView"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:background="?attr/primaryBackgroundColor"
-                android:padding="@dimen/dimen4dp"
-                android:scrollbars="none"
-                android:numColumns="2"
-                android:gravity="center"/>
-
-        </LinearLayout>
-
-    </androidx.core.widget.NestedScrollView>
+    </LinearLayout>
 
     <TextView
         android:id="@+id/noDataWatchers"

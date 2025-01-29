@@ -1,16 +1,16 @@
 package org.mian.gitnex.activities;
 
 import android.os.Bundle;
-import android.view.Menu;
-import android.view.MenuInflater;
-import android.view.MenuItem;
 import android.view.View;
-import android.view.inputmethod.EditorInfo;
-import androidx.appcompat.widget.SearchView;
 import androidx.lifecycle.ViewModelProvider;
+import androidx.recyclerview.widget.GridLayoutManager;
+import java.util.ArrayList;
+import java.util.List;
+import org.gitnex.tea4j.v2.models.User;
 import org.mian.gitnex.R;
 import org.mian.gitnex.adapters.UserGridAdapter;
 import org.mian.gitnex.databinding.ActivityRepoStargazersBinding;
+import org.mian.gitnex.helpers.Constants;
 import org.mian.gitnex.helpers.contexts.RepositoryContext;
 import org.mian.gitnex.viewmodels.RepoStargazersViewModel;
 
@@ -23,6 +23,10 @@ public class RepoStargazersActivity extends BaseActivity {
 	private UserGridAdapter adapter;
 	private RepositoryContext repository;
 	private ActivityRepoStargazersBinding activityRepoStargazersBinding;
+	private RepoStargazersViewModel repoStargazersModel;
+	private List<User> dataList;
+	private int page = 1;
+	private int resultLimit;
 
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
@@ -33,6 +37,11 @@ public class RepoStargazersActivity extends BaseActivity {
 		setContentView(activityRepoStargazersBinding.getRoot());
 
 		setSupportActionBar(activityRepoStargazersBinding.toolbar);
+
+		resultLimit = Constants.getCurrentResultLimit(ctx);
+		repoStargazersModel = new ViewModelProvider(this).get(RepoStargazersViewModel.class);
+
+		dataList = new ArrayList<>();
 
 		repository = RepositoryContext.fromIntent(getIntent());
 		final String repoOwner = repository.getOwner();
@@ -48,24 +57,50 @@ public class RepoStargazersActivity extends BaseActivity {
 
 	private void fetchDataAsync(String repoOwner, String repoName) {
 
-		RepoStargazersViewModel repoStargazersModel =
-				new ViewModelProvider(this).get(RepoStargazersViewModel.class);
-
 		repoStargazersModel
-				.getRepoStargazers(repoOwner, repoName, ctx)
+				.getRepoStargazers(repoOwner, repoName, ctx, page, resultLimit)
 				.observe(
-						this,
-						stargazersListMain -> {
-							adapter = new UserGridAdapter(ctx, stargazersListMain);
+						RepoStargazersActivity.this,
+						mainList -> {
+							adapter = new UserGridAdapter(ctx, mainList);
 
-							if (adapter.getCount() > 0) {
+							adapter.setLoadMoreListener(
+									new UserGridAdapter.OnLoadMoreListener() {
 
+										@Override
+										public void onLoadMore() {
+
+											page += 1;
+											repoStargazersModel.loadMore(
+													repoOwner,
+													repoName,
+													ctx,
+													page,
+													resultLimit,
+													adapter,
+													activityRepoStargazersBinding);
+											activityRepoStargazersBinding.progressBar.setVisibility(
+													View.VISIBLE);
+										}
+
+										@Override
+										public void onLoadFinished() {
+
+											activityRepoStargazersBinding.progressBar.setVisibility(
+													View.GONE);
+										}
+									});
+
+							GridLayoutManager layoutManager = new GridLayoutManager(this, 2);
+							activityRepoStargazersBinding.gridView.setLayoutManager(layoutManager);
+
+							if (adapter.getItemCount() > 0) {
 								activityRepoStargazersBinding.gridView.setAdapter(adapter);
 								activityRepoStargazersBinding.noDataStargazers.setVisibility(
 										View.GONE);
+								dataList.addAll(mainList);
 							} else {
-
-								adapter.notifyDataSetChanged();
+								adapter.notifyDataChanged();
 								activityRepoStargazersBinding.gridView.setAdapter(adapter);
 								activityRepoStargazersBinding.noDataStargazers.setVisibility(
 										View.VISIBLE);
@@ -86,35 +121,21 @@ public class RepoStargazersActivity extends BaseActivity {
 		repository.checkAccountSwitch(this);
 	}
 
-	@Override
-	public boolean onCreateOptionsMenu(final Menu menu) {
+	private void filter(String text) {
 
-		final MenuInflater inflater = getMenuInflater();
-		inflater.inflate(R.menu.search_menu, menu);
+		List<User> arr = new ArrayList<>();
 
-		MenuItem searchItem = menu.findItem(R.id.action_search);
-		SearchView searchView = (SearchView) searchItem.getActionView();
-		searchView.setImeOptions(EditorInfo.IME_ACTION_DONE);
+		for (User d : dataList) {
+			if (d == null || d.getLogin() == null || d.getFullName() == null) {
+				continue;
+			}
+			if (d.getLogin().toLowerCase().contains(text)
+					|| d.getFullName().toLowerCase().contains(text)) {
+				arr.add(d);
+			}
+		}
 
-		searchView.setOnQueryTextListener(
-				new androidx.appcompat.widget.SearchView.OnQueryTextListener() {
-
-					@Override
-					public boolean onQueryTextSubmit(String query) {
-						return true;
-					}
-
-					@Override
-					public boolean onQueryTextChange(String newText) {
-
-						if (activityRepoStargazersBinding.gridView.getAdapter() != null) {
-							adapter.getFilter().filter(newText);
-						}
-
-						return false;
-					}
-				});
-
-		return true;
+		adapter.setMoreDataAvailable(false);
+		adapter.updateList(arr);
 	}
 }

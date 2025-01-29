@@ -7,9 +7,10 @@ import android.text.Html;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.BaseAdapter;
 import android.widget.ImageView;
 import android.widget.TextView;
+import androidx.annotation.NonNull;
+import androidx.recyclerview.widget.RecyclerView;
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.load.engine.DiskCacheStrategy;
 import java.util.List;
@@ -21,10 +22,12 @@ import org.mian.gitnex.helpers.AppUtil;
 /**
  * @author M M Arif
  */
-public class CollaboratorsAdapter extends BaseAdapter {
+public class CollaboratorsAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
 
-	private final List<User> collaboratorsList;
+	private List<User> collaboratorsList;
 	private final Context context;
+	private OnLoadMoreListener loadMoreListener;
+	private boolean isLoading = false, isMoreDataAvailable = true;
 
 	public CollaboratorsAdapter(Context ctx, List<User> collaboratorsListMain) {
 
@@ -32,75 +35,76 @@ public class CollaboratorsAdapter extends BaseAdapter {
 		this.collaboratorsList = collaboratorsListMain;
 	}
 
+	@NonNull @Override
+	public RecyclerView.ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
+		LayoutInflater inflater = LayoutInflater.from(context);
+		return new CollaboratorsAdapter.DataHolder(
+				inflater.inflate(R.layout.list_collaborators, parent, false));
+	}
+
 	@Override
-	public int getCount() {
+	public void onBindViewHolder(@NonNull RecyclerView.ViewHolder holder, int position) {
+
+		if (position >= getItemCount() - 1
+				&& isMoreDataAvailable
+				&& !isLoading
+				&& loadMoreListener != null) {
+
+			isLoading = true;
+			loadMoreListener.onLoadMore();
+		}
+		((CollaboratorsAdapter.DataHolder) holder).bindData(collaboratorsList.get(position));
+	}
+
+	@Override
+	public int getItemViewType(int position) {
+		return position;
+	}
+
+	@Override
+	public int getItemCount() {
 		return collaboratorsList.size();
 	}
 
-	@Override
-	public Object getItem(int position) {
-		return null;
-	}
-
-	@Override
-	public long getItemId(int position) {
-		return 0;
-	}
-
-	@SuppressLint("InflateParams")
-	@Override
-	public View getView(int position, View finalView, ViewGroup parent) {
-
-		ViewHolder viewHolder;
-
-		if (finalView == null) {
-
-			finalView = LayoutInflater.from(context).inflate(R.layout.list_collaborators, null);
-			viewHolder = new ViewHolder(finalView);
-			finalView.setTag(viewHolder);
-		} else {
-
-			viewHolder = (ViewHolder) finalView.getTag();
-		}
-
-		initData(viewHolder, position);
-		return finalView;
-	}
-
-	private void initData(ViewHolder viewHolder, int position) {
-
-		User currentItem = collaboratorsList.get(position);
-
-		Glide.with(context)
-				.load(currentItem.getAvatarUrl())
-				.diskCacheStrategy(DiskCacheStrategy.ALL)
-				.placeholder(R.drawable.loader_animated)
-				.centerCrop()
-				.into(viewHolder.collaboratorAvatar);
-
-		viewHolder.userLoginId = currentItem.getLogin();
-
-		if (!currentItem.getFullName().isEmpty()) {
-
-			viewHolder.collaboratorName.setText(Html.fromHtml(currentItem.getFullName()));
-			viewHolder.userName.setText(
-					context.getResources()
-							.getString(R.string.usernameWithAt, currentItem.getLogin()));
-		} else {
-
-			viewHolder.collaboratorName.setText(currentItem.getLogin());
-			viewHolder.userName.setVisibility(View.GONE);
+	public void setMoreDataAvailable(boolean moreDataAvailable) {
+		isMoreDataAvailable = moreDataAvailable;
+		if (!isMoreDataAvailable) {
+			loadMoreListener.onLoadFinished();
 		}
 	}
 
-	private class ViewHolder {
+	@SuppressLint("NotifyDataSetChanged")
+	public void notifyDataChanged() {
+		notifyDataSetChanged();
+		isLoading = false;
+		loadMoreListener.onLoadFinished();
+	}
+
+	public void setLoadMoreListener(OnLoadMoreListener loadMoreListener) {
+		this.loadMoreListener = loadMoreListener;
+	}
+
+	public void updateList(List<User> list) {
+		collaboratorsList = list;
+		notifyDataChanged();
+	}
+
+	public interface OnLoadMoreListener {
+
+		void onLoadMore();
+
+		void onLoadFinished();
+	}
+
+	class DataHolder extends RecyclerView.ViewHolder {
 
 		private final ImageView collaboratorAvatar;
 		private final TextView collaboratorName;
 		private final TextView userName;
 		private String userLoginId;
 
-		ViewHolder(View v) {
+		DataHolder(View v) {
+			super(v);
 
 			collaboratorAvatar = v.findViewById(R.id.collaboratorAvatar);
 			collaboratorName = v.findViewById(R.id.collaboratorName);
@@ -121,6 +125,30 @@ public class CollaboratorsAdapter extends BaseAdapter {
 								context.getString(R.string.copyLoginIdToClipBoard, userLoginId));
 						return true;
 					});
+		}
+
+		void bindData(User dataModel) {
+
+			Glide.with(context)
+					.load(dataModel.getAvatarUrl())
+					.diskCacheStrategy(DiskCacheStrategy.ALL)
+					.placeholder(R.drawable.loader_animated)
+					.centerCrop()
+					.into(collaboratorAvatar);
+
+			userLoginId = dataModel.getLogin();
+
+			if (!dataModel.getFullName().isEmpty()) {
+
+				collaboratorName.setText(Html.fromHtml(dataModel.getFullName()));
+				userName.setText(
+						context.getResources()
+								.getString(R.string.usernameWithAt, dataModel.getLogin()));
+			} else {
+
+				collaboratorName.setText(dataModel.getLogin());
+				userName.setVisibility(View.GONE);
+			}
 		}
 	}
 }
