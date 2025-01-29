@@ -6,17 +6,15 @@ import android.os.Looper;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.ProgressBar;
-import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModelProvider;
 import androidx.recyclerview.widget.LinearLayoutManager;
-import androidx.recyclerview.widget.RecyclerView;
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 import org.mian.gitnex.activities.CreateLabelActivity;
 import org.mian.gitnex.adapters.LabelsAdapter;
 import org.mian.gitnex.databinding.FragmentLabelsBinding;
+import org.mian.gitnex.helpers.Constants;
 import org.mian.gitnex.helpers.contexts.RepositoryContext;
 import org.mian.gitnex.viewmodels.LabelsViewModel;
 
@@ -25,11 +23,11 @@ import org.mian.gitnex.viewmodels.LabelsViewModel;
  */
 public class LabelsFragment extends Fragment {
 
-	private ProgressBar mProgressBar;
-	private RecyclerView mRecyclerView;
+	private FragmentLabelsBinding fragmentLabelsBinding;
+	private LabelsViewModel labelsViewModel;
 	private LabelsAdapter adapter;
-	private TextView noData;
-
+	private int page = 1;
+	private int resultLimit;
 	private RepositoryContext repository;
 
 	public LabelsFragment() {}
@@ -51,31 +49,35 @@ public class LabelsFragment extends Fragment {
 	public View onCreateView(
 			@NonNull LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
 
-		FragmentLabelsBinding fragmentLabelsBinding =
-				FragmentLabelsBinding.inflate(inflater, container, false);
+		fragmentLabelsBinding = FragmentLabelsBinding.inflate(inflater, container, false);
 
 		boolean canPush = repository.getPermissions().isPush();
 		boolean archived = repository.getRepository().isArchived();
 
 		final SwipeRefreshLayout swipeRefresh = fragmentLabelsBinding.pullToRefresh;
-		noData = fragmentLabelsBinding.noData;
 
-		mRecyclerView = fragmentLabelsBinding.recyclerView;
-		mRecyclerView.setHasFixedSize(true);
-		mRecyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
+		labelsViewModel = new ViewModelProvider(this).get(LabelsViewModel.class);
+		resultLimit = Constants.getCurrentResultLimit(requireContext());
 
-		mProgressBar = fragmentLabelsBinding.progressBar;
+		fragmentLabelsBinding.recyclerView.setHasFixedSize(true);
+		fragmentLabelsBinding.recyclerView.setLayoutManager(
+				new LinearLayoutManager(requireContext()));
 
 		swipeRefresh.setOnRefreshListener(
 				() ->
 						new Handler(Looper.getMainLooper())
 								.postDelayed(
 										() -> {
+											page = 1;
 											swipeRefresh.setRefreshing(false);
 											LabelsViewModel.loadLabelsList(
 													repository.getOwner(),
 													repository.getName(),
-													getContext());
+													"repo",
+													requireContext(),
+													null,
+													page,
+													resultLimit);
 										},
 										200));
 
@@ -87,7 +89,8 @@ public class LabelsFragment extends Fragment {
 
 		fragmentLabelsBinding.createLabel.setOnClickListener(
 				v112 -> {
-					startActivity(repository.getIntent(getContext(), CreateLabelActivity.class));
+					startActivity(
+							repository.getIntent(requireContext(), CreateLabelActivity.class));
 				});
 
 		return fragmentLabelsBinding.getRoot();
@@ -100,36 +103,72 @@ public class LabelsFragment extends Fragment {
 
 		if (CreateLabelActivity.refreshLabels) {
 
+			page = 1;
 			LabelsViewModel.loadLabelsList(
-					repository.getOwner(), repository.getName(), getContext());
+					repository.getOwner(),
+					repository.getName(),
+					"repo",
+					requireContext(),
+					null,
+					page,
+					resultLimit);
 			CreateLabelActivity.refreshLabels = false;
 		}
 	}
 
 	private void fetchDataAsync(String owner, String repo) {
 
-		LabelsViewModel labelsModel = new ViewModelProvider(this).get(LabelsViewModel.class);
-
-		labelsModel
-				.getLabelsList(owner, repo, getContext())
+		labelsViewModel
+				.getLabelsList(
+						owner,
+						repo,
+						"repo",
+						requireContext(),
+						fragmentLabelsBinding,
+						page,
+						resultLimit)
 				.observe(
 						getViewLifecycleOwner(),
-						labelsListMain -> {
-							adapter =
-									new LabelsAdapter(getContext(), labelsListMain, "repo", owner);
+						mainList -> {
+							adapter = new LabelsAdapter(requireContext(), mainList, "repo", owner);
+							adapter.setLoadMoreListener(
+									new LabelsAdapter.OnLoadMoreListener() {
+
+										@Override
+										public void onLoadMore() {
+
+											page += 1;
+											labelsViewModel.loadMore(
+													owner,
+													repo,
+													"repo",
+													requireContext(),
+													fragmentLabelsBinding,
+													page,
+													resultLimit,
+													adapter);
+											fragmentLabelsBinding.progressBar.setVisibility(
+													View.VISIBLE);
+										}
+
+										@Override
+										public void onLoadFinished() {
+
+											fragmentLabelsBinding.progressBar.setVisibility(
+													View.GONE);
+										}
+									});
 
 							if (adapter.getItemCount() > 0) {
-
-								mRecyclerView.setAdapter(adapter);
-								noData.setVisibility(View.GONE);
+								fragmentLabelsBinding.recyclerView.setAdapter(adapter);
+								fragmentLabelsBinding.noData.setVisibility(View.GONE);
 							} else {
-
 								adapter.notifyDataChanged();
-								mRecyclerView.setAdapter(adapter);
-								noData.setVisibility(View.VISIBLE);
+								fragmentLabelsBinding.recyclerView.setAdapter(adapter);
+								fragmentLabelsBinding.noData.setVisibility(View.VISIBLE);
 							}
 
-							mProgressBar.setVisibility(View.GONE);
+							fragmentLabelsBinding.progressBar.setVisibility(View.GONE);
 						});
 	}
 }

@@ -163,7 +163,7 @@ public class OrganizationTeamRepositoriesAdapter
 
 		if (getItemCount() > 0) {
 			Call<List<Repository>> call =
-					RetrofitClient.getApiInterface(context).orgListTeamRepos((long) teamId, 1, 50);
+					RetrofitClient.getApiInterface(context).orgListTeamRepos((long) teamId, 1, 100);
 
 			call.enqueue(
 					new Callback<>() {

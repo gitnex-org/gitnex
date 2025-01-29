@@ -172,7 +172,9 @@ public class MilestonesFragment extends Fragment {
 		super.onResume();
 
 		if (RepoDetailActivity.updateFABActions) {
-			fetchDataAsync(repository.getOwner(), repository.getName(), state);
+			page = 1;
+			MilestonesViewModel.loadMilestonesList(
+					repository.getOwner(), repository.getName(), state, requireContext());
 			RepoDetailActivity.updateFABActions = false;
 		}
 	}

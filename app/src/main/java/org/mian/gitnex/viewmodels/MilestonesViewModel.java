@@ -21,8 +21,8 @@ import retrofit2.Response;
  */
 public class MilestonesViewModel extends ViewModel {
 
-	private MutableLiveData<List<Milestone>> milestonesList;
-	private int resultLimit;
+	private static MutableLiveData<List<Milestone>> milestonesList;
+	private static int resultLimit;
 
 	public LiveData<List<Milestone>> getMilestonesList(
 			String repoOwner, String repoName, String milestoneState, Context ctx) {
@@ -33,7 +33,7 @@ public class MilestonesViewModel extends ViewModel {
 		return milestonesList;
 	}
 
-	public void loadMilestonesList(
+	public static void loadMilestonesList(
 			String repoOwner, String repoName, String milestoneState, Context ctx) {
 
 		Call<List<Milestone>> call =

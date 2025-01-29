@@ -490,48 +490,4 @@ public class IssuesFragment extends Fragment {
 					}
 				});
 	}
-
-	/*@Override
-	public void onCreateOptionsMenu(@NonNull Menu menu, @NonNull MenuInflater inflater) {
-
-		this.menu = menu;
-		inflater.inflate(R.menu.search_menu, menu);
-		inflater.inflate(R.menu.filter_menu, menu);
-		super.onCreateOptionsMenu(menu, inflater);
-
-		if (repository.getIssueState().toString().equals("closed")) {
-			menu.getItem(1).setIcon(R.drawable.ic_filter_closed);
-		} else {
-			menu.getItem(1).setIcon(R.drawable.ic_filter);
-		}
-
-		MenuItem searchItem = menu.findItem(R.id.action_search);
-		androidx.appcompat.widget.SearchView searchView =
-				(androidx.appcompat.widget.SearchView) searchItem.getActionView();
-		searchView.setImeOptions(EditorInfo.IME_ACTION_DONE);
-
-		searchView.setOnQueryTextListener(
-				new androidx.appcompat.widget.SearchView.OnQueryTextListener() {
-
-					@Override
-					public boolean onQueryTextSubmit(String query) {
-						loadInitial(
-								repository.getOwner(),
-								repository.getName(),
-								resultLimit,
-								requestType,
-								repository.getIssueState().toString(),
-								repository.getIssueMilestoneFilterName(),
-								query);
-						searchView.setQuery(null, false);
-						searchItem.collapseActionView();
-						return false;
-					}
-
-					@Override
-					public boolean onQueryTextChange(String newText) {
-						return false;
-					}
-				});
-	}*/
 }

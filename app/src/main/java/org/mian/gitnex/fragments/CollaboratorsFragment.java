@@ -129,7 +129,13 @@ public class CollaboratorsFragment extends Fragment {
 
 		super.onResume();
 		if (refreshCollaborators) {
-			fetchDataAsync(repository.getOwner(), repository.getName());
+			page = 1;
+			CollaboratorsViewModel.loadCollaboratorsListList(
+					repository.getOwner(),
+					repository.getName(),
+					requireContext(),
+					page,
+					resultLimit);
 			refreshCollaborators = false;
 		}
 	}
