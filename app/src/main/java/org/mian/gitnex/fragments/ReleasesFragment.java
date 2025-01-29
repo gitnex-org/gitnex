@@ -11,13 +11,16 @@ import android.os.Looper;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import androidx.activity.result.ActivityResultLauncher;
 import androidx.activity.result.contract.ActivityResultContracts;
 import androidx.annotation.NonNull;
 import androidx.core.app.NotificationCompat;
+import androidx.core.view.MenuProvider;
 import androidx.fragment.app.Fragment;
+import androidx.lifecycle.Lifecycle;
 import androidx.lifecycle.ViewModelProvider;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import java.io.IOException;
@@ -121,7 +124,6 @@ public class ReleasesFragment extends Fragment {
 
 		fetchDataAsync(repository.getOwner(), repository.getName());
 
-		setHasOptionsMenu(true);
 		((RepoDetailActivity) requireActivity())
 				.setFragmentRefreshListenerReleases(
 						type -> {
@@ -148,6 +150,25 @@ public class ReleasesFragment extends Fragment {
 				v14 ->
 						startActivity(
 								repository.getIntent(getContext(), CreateReleaseActivity.class)));
+
+		requireActivity()
+				.addMenuProvider(
+						new MenuProvider() {
+
+							@Override
+							public void onCreateMenu(
+									@NonNull Menu menu, @NonNull MenuInflater menuInflater) {
+
+								menuInflater.inflate(R.menu.filter_menu_releases, menu);
+							}
+
+							@Override
+							public boolean onMenuItemSelected(@NonNull MenuItem menuItem) {
+								return false;
+							}
+						},
+						getViewLifecycleOwner(),
+						Lifecycle.State.RESUMED);
 
 		return fragmentReleasesBinding.getRoot();
 	}
@@ -282,14 +303,14 @@ public class ReleasesFragment extends Fragment {
 		return -1;
 	}
 
-	@Override
+	/*@Override
 	public void onCreateOptionsMenu(@NonNull Menu menu, @NonNull MenuInflater inflater) {
 		if (!((BaseActivity) requireActivity()).getAccount().requiresVersion("1.15.0")) {
 			return;
 		}
 		inflater.inflate(R.menu.filter_menu_releases, menu);
 		super.onCreateOptionsMenu(menu, inflater);
-	}
+	}*/
 
 	private void requestFileDownload(String url) {
 		currentDownloadUrl = url;
@@ -400,8 +421,7 @@ public class ReleasesFragment extends Fragment {
 															@NonNull Response response)
 															throws IOException {
 
-														if (!response.isSuccessful()
-																|| response.body() == null) {
+														if (!response.isSuccessful()) {
 															onFailure(call, new IOException());
 															return;
 														}
@@ -410,8 +430,10 @@ public class ReleasesFragment extends Fragment {
 																requireContext()
 																		.getContentResolver()
 																		.openOutputStream(
-																				result.getData()
-																						.getData());
+																				Objects
+																						.requireNonNull(
+																								result.getData()
+																										.getData()));
 
 														AppUtil.copyProgress(
 																Objects.requireNonNull(

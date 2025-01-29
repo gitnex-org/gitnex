@@ -5,7 +5,7 @@
     <item
         android:id="@+id/branchCommits"
         android:icon="@drawable/ic_commit"
-        android:orderInCategory="2"
+        android:orderInCategory="0"
         android:title="@string/commitTitle"
         app:showAsAction="ifRoom" />
 

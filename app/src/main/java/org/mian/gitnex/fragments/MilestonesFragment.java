@@ -13,7 +13,9 @@ import android.view.ViewGroup;
 import android.view.inputmethod.EditorInfo;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.core.view.MenuProvider;
 import androidx.fragment.app.Fragment;
+import androidx.lifecycle.Lifecycle;
 import androidx.lifecycle.ViewModelProvider;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import java.util.ArrayList;
@@ -34,7 +36,6 @@ public class MilestonesFragment extends Fragment {
 
 	private MilestonesViewModel milestonesViewModel;
 	private FragmentMilestonesBinding viewBinding;
-	private Menu menu;
 	private List<Milestone> dataList;
 	private MilestonesAdapter adapter;
 	private RepositoryContext repository;
@@ -59,7 +60,6 @@ public class MilestonesFragment extends Fragment {
 			@NonNull LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
 
 		viewBinding = FragmentMilestonesBinding.inflate(inflater, container, false);
-		setHasOptionsMenu(true);
 		Context ctx = getContext();
 		milestonesViewModel = new ViewModelProvider(this).get(MilestonesViewModel.class);
 
@@ -96,11 +96,6 @@ public class MilestonesFragment extends Fragment {
 				.setFragmentRefreshListenerMilestone(
 						milestoneState -> {
 							state = milestoneState;
-							if (milestoneState.equals("open")) {
-								menu.getItem(1).setIcon(R.drawable.ic_filter);
-							} else {
-								menu.getItem(1).setIcon(R.drawable.ic_filter_closed);
-							}
 
 							page = 1;
 							dataList.clear();
@@ -119,6 +114,56 @@ public class MilestonesFragment extends Fragment {
 				v13 -> startActivity(repository.getIntent(ctx, CreateMilestoneActivity.class)));
 
 		fetchDataAsync(repository.getOwner(), repository.getName(), state);
+
+		requireActivity()
+				.addMenuProvider(
+						new MenuProvider() {
+
+							@Override
+							public void onCreateMenu(
+									@NonNull Menu menu, @NonNull MenuInflater menuInflater) {
+
+								menuInflater.inflate(R.menu.search_menu, menu);
+								menuInflater.inflate(R.menu.filter_menu_milestone, menu);
+
+								if (repository.getMilestoneState().toString().equals("open")) {
+									menu.getItem(1).setIcon(R.drawable.ic_filter);
+								} else {
+									menu.getItem(1).setIcon(R.drawable.ic_filter_closed);
+								}
+
+								MenuItem searchItem = menu.findItem(R.id.action_search);
+								androidx.appcompat.widget.SearchView searchView =
+										(androidx.appcompat.widget.SearchView)
+												searchItem.getActionView();
+								assert searchView != null;
+								searchView.setImeOptions(EditorInfo.IME_ACTION_DONE);
+
+								searchView.setOnQueryTextListener(
+										new androidx.appcompat.widget.SearchView
+												.OnQueryTextListener() {
+
+											@Override
+											public boolean onQueryTextSubmit(String query) {
+												return false;
+											}
+
+											@Override
+											public boolean onQueryTextChange(String newText) {
+												filter(newText);
+												return false;
+											}
+										});
+							}
+
+							@Override
+							public boolean onMenuItemSelected(@NonNull MenuItem menuItem) {
+								return false;
+							}
+						},
+						getViewLifecycleOwner(),
+						Lifecycle.State.RESUMED);
+
 		return viewBinding.getRoot();
 	}
 
@@ -193,37 +238,6 @@ public class MilestonesFragment extends Fragment {
 			}
 		}
 		return -1;
-	}
-
-	@Override
-	public void onCreateOptionsMenu(@NonNull Menu menu, @NonNull MenuInflater inflater) {
-
-		this.menu = menu;
-		inflater.inflate(R.menu.search_menu, menu);
-		inflater.inflate(R.menu.filter_menu_milestone, menu);
-		super.onCreateOptionsMenu(menu, inflater);
-
-		MenuItem searchItem = menu.findItem(R.id.action_search);
-		androidx.appcompat.widget.SearchView searchView =
-				(androidx.appcompat.widget.SearchView) searchItem.getActionView();
-		searchView.setImeOptions(EditorInfo.IME_ACTION_DONE);
-
-		searchView.setOnQueryTextListener(
-				new androidx.appcompat.widget.SearchView.OnQueryTextListener() {
-
-					@Override
-					public boolean onQueryTextSubmit(String query) {
-
-						return false;
-					}
-
-					@Override
-					public boolean onQueryTextChange(String newText) {
-
-						filter(newText);
-						return false;
-					}
-				});
 	}
 
 	private void filter(String text) {

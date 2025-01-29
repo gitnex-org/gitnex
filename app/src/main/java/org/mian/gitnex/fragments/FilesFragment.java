@@ -15,7 +15,9 @@ import android.view.inputmethod.EditorInfo;
 import androidx.activity.OnBackPressedCallback;
 import androidx.annotation.NonNull;
 import androidx.appcompat.widget.SearchView;
+import androidx.core.view.MenuProvider;
 import androidx.fragment.app.Fragment;
+import androidx.lifecycle.Lifecycle;
 import androidx.lifecycle.ViewModelProvider;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import com.google.android.material.dialog.MaterialAlertDialogBuilder;
@@ -76,7 +78,6 @@ public class FilesFragment extends Fragment implements FilesAdapter.FilesAdapter
 			@NonNull LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
 
 		binding = FragmentFilesBinding.inflate(inflater, container, false);
-		setHasOptionsMenu(true);
 
 		boolean canPush = repository.getPermissions().isPush();
 		boolean archived = repository.getRepository().isArchived();
@@ -183,6 +184,51 @@ public class FilesFragment extends Fragment implements FilesAdapter.FilesAdapter
 				v17 -> startActivity(repository.getIntent(getContext(), CreateFileActivity.class)));
 
 		binding.switchBranch.setOnClickListener(switchBranch -> chooseBranch());
+
+		requireActivity()
+				.addMenuProvider(
+						new MenuProvider() {
+							@Override
+							public void onCreateMenu(
+									@NonNull Menu menu, @NonNull MenuInflater menuInflater) {
+
+								menuInflater.inflate(R.menu.search_menu, menu);
+								menuInflater.inflate(R.menu.files_switch_branches_menu, menu);
+
+								MenuItem searchItem = menu.findItem(R.id.action_search);
+								androidx.appcompat.widget.SearchView searchView =
+										(androidx.appcompat.widget.SearchView)
+												searchItem.getActionView();
+								assert searchView != null;
+								searchView.setImeOptions(EditorInfo.IME_ACTION_DONE);
+
+								searchView.setOnQueryTextListener(
+										new SearchView.OnQueryTextListener() {
+
+											@Override
+											public boolean onQueryTextChange(String newText) {
+
+												if (binding.recyclerView.getAdapter() != null) {
+													filesAdapter.getFilter().filter(newText);
+												}
+
+												return false;
+											}
+
+											@Override
+											public boolean onQueryTextSubmit(String query) {
+												return false;
+											}
+										});
+							}
+
+							@Override
+							public boolean onMenuItemSelected(@NonNull MenuItem menuItem) {
+								return false;
+							}
+						},
+						getViewLifecycleOwner(),
+						Lifecycle.State.RESUMED);
 
 		return binding.getRoot();
 	}
@@ -412,41 +458,6 @@ public class FilesFragment extends Fragment implements FilesAdapter.FilesAdapter
 					@Override
 					public void onFailure(@NonNull Call<List<Branch>> call, @NonNull Throwable t) {
 						progressDialog.hide();
-					}
-				});
-	}
-
-	@Override
-	public void onCreateOptionsMenu(@NonNull Menu menu, @NonNull MenuInflater inflater) {
-
-		menu.clear();
-
-		inflater.inflate(R.menu.search_menu, menu);
-		inflater.inflate(R.menu.files_switch_branches_menu, menu);
-
-		super.onCreateOptionsMenu(menu, inflater);
-
-		MenuItem searchItem = menu.findItem(R.id.action_search);
-
-		SearchView searchView = (SearchView) searchItem.getActionView();
-		assert searchView != null;
-		searchView.setImeOptions(EditorInfo.IME_ACTION_DONE);
-		searchView.setOnQueryTextListener(
-				new SearchView.OnQueryTextListener() {
-
-					@Override
-					public boolean onQueryTextChange(String newText) {
-
-						if (binding.recyclerView.getAdapter() != null) {
-							filesAdapter.getFilter().filter(newText);
-						}
-
-						return false;
-					}
-
-					@Override
-					public boolean onQueryTextSubmit(String query) {
-						return false;
 					}
 				});
 	}

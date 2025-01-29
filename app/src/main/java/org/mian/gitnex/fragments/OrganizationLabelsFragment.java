@@ -65,7 +65,6 @@ public class OrganizationLabelsFragment extends Fragment {
 
 		FragmentLabelsBinding fragmentLabelsBinding =
 				FragmentLabelsBinding.inflate(inflater, container, false);
-		setHasOptionsMenu(true);
 		organizationLabelsViewModel =
 				new ViewModelProvider(this).get(OrganizationLabelsViewModel.class);
 

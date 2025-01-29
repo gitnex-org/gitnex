@@ -105,7 +105,7 @@ public class ExplorePublicOrganizationsFragment extends Fragment {
 							@NonNull Call<List<Organization>> call,
 							@NonNull Response<List<Organization>> response) {
 						if (response.isSuccessful()) {
-							if (response.body() != null && response.body().size() > 0) {
+							if (response.body() != null && !response.body().isEmpty()) {
 								organizationsList.clear();
 								organizationsList.addAll(response.body());
 								adapter.notifyDataChanged();
@@ -147,7 +147,7 @@ public class ExplorePublicOrganizationsFragment extends Fragment {
 						if (response.isSuccessful()) {
 							List<Organization> result = response.body();
 							if (result != null) {
-								if (result.size() > 0) {
+								if (!result.isEmpty()) {
 									pageSize = result.size();
 									organizationsList.addAll(result);
 								} else {

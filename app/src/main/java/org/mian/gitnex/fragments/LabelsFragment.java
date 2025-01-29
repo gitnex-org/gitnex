@@ -53,7 +53,6 @@ public class LabelsFragment extends Fragment {
 
 		FragmentLabelsBinding fragmentLabelsBinding =
 				FragmentLabelsBinding.inflate(inflater, container, false);
-		setHasOptionsMenu(true);
 
 		boolean canPush = repository.getPermissions().isPush();
 		boolean archived = repository.getRepository().isArchived();

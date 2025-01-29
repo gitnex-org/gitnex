@@ -12,9 +12,12 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.view.inputmethod.EditorInfo;
 import androidx.annotation.NonNull;
+import androidx.core.view.MenuProvider;
 import androidx.fragment.app.Fragment;
+import androidx.lifecycle.Lifecycle;
 import androidx.lifecycle.ViewModelProvider;
 import androidx.recyclerview.widget.LinearLayoutManager;
+import java.util.Objects;
 import org.gitnex.tea4j.v2.models.OrganizationPermissions;
 import org.gitnex.tea4j.v2.models.Team;
 import org.mian.gitnex.R;
@@ -58,7 +61,7 @@ public class OrganizationTeamInfoReposFragment extends Fragment {
 				FragmentRepositoriesBinding.inflate(inflater, container, false);
 
 		resultLimit = Constants.getCurrentResultLimit(getContext());
-		setHasOptionsMenu(true);
+
 		team = (Team) requireArguments().getSerializable("team");
 
 		repositoriesViewModel = new ViewModelProvider(this).get(RepositoriesViewModel.class);
@@ -89,7 +92,8 @@ public class OrganizationTeamInfoReposFragment extends Fragment {
 				(OrganizationPermissions)
 						requireActivity().getIntent().getSerializableExtra("permissions");
 
-		if (!requireArguments().getBoolean("showRepo") || !permissions.isIsOwner()) {
+		if (!requireArguments().getBoolean("showRepo")
+				|| !Objects.requireNonNull(permissions).isIsOwner()) {
 			fragmentRepositoriesBinding.addNewRepo.setVisibility(View.GONE);
 		}
 		fragmentRepositoriesBinding.addNewRepo.setOnClickListener(
@@ -101,6 +105,52 @@ public class OrganizationTeamInfoReposFragment extends Fragment {
 							"orgName", requireActivity().getIntent().getStringExtra("orgName"));
 					startActivity(intent);
 				});
+
+		requireActivity()
+				.addMenuProvider(
+						new MenuProvider() {
+
+							@Override
+							public void onCreateMenu(
+									@NonNull Menu menu, @NonNull MenuInflater menuInflater) {
+
+								menuInflater.inflate(R.menu.search_menu, menu);
+
+								MenuItem searchItem = menu.findItem(R.id.action_search);
+								androidx.appcompat.widget.SearchView searchView =
+										(androidx.appcompat.widget.SearchView)
+												searchItem.getActionView();
+								assert searchView != null;
+								searchView.setImeOptions(EditorInfo.IME_ACTION_DONE);
+
+								searchView.setOnQueryTextListener(
+										new androidx.appcompat.widget.SearchView
+												.OnQueryTextListener() {
+
+											@Override
+											public boolean onQueryTextSubmit(String query) {
+												return false;
+											}
+
+											@Override
+											public boolean onQueryTextChange(String newText) {
+												if (fragmentRepositoriesBinding.recyclerView
+																.getAdapter()
+														!= null) {
+													adapter.getFilter().filter(newText);
+												}
+												return false;
+											}
+										});
+							}
+
+							@Override
+							public boolean onMenuItemSelected(@NonNull MenuItem menuItem) {
+								return false;
+							}
+						},
+						getViewLifecycleOwner(),
+						Lifecycle.State.RESUMED);
 
 		return fragmentRepositoriesBinding.getRoot();
 	}
@@ -169,34 +219,5 @@ public class OrganizationTeamInfoReposFragment extends Fragment {
 			fetchDataAsync();
 			MainActivity.reloadRepos = false;
 		}
-	}
-
-	@Override
-	public void onCreateOptionsMenu(@NonNull Menu menu, @NonNull MenuInflater inflater) {
-
-		inflater.inflate(R.menu.search_menu, menu);
-		super.onCreateOptionsMenu(menu, inflater);
-
-		MenuItem searchItem = menu.findItem(R.id.action_search);
-		androidx.appcompat.widget.SearchView searchView =
-				(androidx.appcompat.widget.SearchView) searchItem.getActionView();
-		searchView.setImeOptions(EditorInfo.IME_ACTION_DONE);
-
-		searchView.setOnQueryTextListener(
-				new androidx.appcompat.widget.SearchView.OnQueryTextListener() {
-
-					@Override
-					public boolean onQueryTextSubmit(String query) {
-						return false;
-					}
-
-					@Override
-					public boolean onQueryTextChange(String newText) {
-						if (fragmentRepositoriesBinding.recyclerView.getAdapter() != null) {
-							adapter.getFilter().filter(newText);
-						}
-						return false;
-					}
-				});
 	}
 }

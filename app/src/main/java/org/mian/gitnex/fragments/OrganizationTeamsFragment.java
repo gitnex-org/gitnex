@@ -1,5 +1,6 @@
 package org.mian.gitnex.fragments;
 
+import android.annotation.SuppressLint;
 import android.content.Intent;
 import android.os.Bundle;
 import android.os.Handler;
@@ -14,11 +15,14 @@ import android.view.inputmethod.EditorInfo;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 import androidx.annotation.NonNull;
+import androidx.core.view.MenuProvider;
 import androidx.fragment.app.Fragment;
+import androidx.lifecycle.Lifecycle;
 import androidx.lifecycle.ViewModelProvider;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
+import java.util.Objects;
 import org.gitnex.tea4j.v2.models.OrganizationPermissions;
 import org.mian.gitnex.R;
 import org.mian.gitnex.activities.CreateTeamByOrgActivity;
@@ -69,7 +73,7 @@ public class OrganizationTeamsFragment extends Fragment {
 
 		FragmentOrganizationTeamsBinding fragmentTeamsByOrgBinding =
 				FragmentOrganizationTeamsBinding.inflate(inflater, container, false);
-		setHasOptionsMenu(true);
+
 		teamsByOrgViewModel = new ViewModelProvider(this).get(TeamsByOrgViewModel.class);
 
 		noDataTeams = fragmentTeamsByOrgBinding.noDataTeams;
@@ -105,9 +109,54 @@ public class OrganizationTeamsFragment extends Fragment {
 		fragmentTeamsByOrgBinding.createTeam.setOnClickListener(
 				v1 -> {
 					Intent intentTeam = new Intent(getContext(), CreateTeamByOrgActivity.class);
-					intentTeam.putExtras(requireActivity().getIntent().getExtras());
+					intentTeam.putExtras(
+							Objects.requireNonNull(requireActivity().getIntent().getExtras()));
 					startActivity(intentTeam);
 				});
+
+		requireActivity()
+				.addMenuProvider(
+						new MenuProvider() {
+
+							@Override
+							public void onCreateMenu(
+									@NonNull Menu menu, @NonNull MenuInflater menuInflater) {
+
+								menuInflater.inflate(R.menu.search_menu, menu);
+
+								MenuItem searchItem = menu.findItem(R.id.action_search);
+								androidx.appcompat.widget.SearchView searchView =
+										(androidx.appcompat.widget.SearchView)
+												searchItem.getActionView();
+								assert searchView != null;
+								searchView.setImeOptions(EditorInfo.IME_ACTION_DONE);
+
+								searchView.setOnQueryTextListener(
+										new androidx.appcompat.widget.SearchView
+												.OnQueryTextListener() {
+
+											@Override
+											public boolean onQueryTextSubmit(String query) {
+												return false;
+											}
+
+											@Override
+											public boolean onQueryTextChange(String newText) {
+												if (mRecyclerView.getAdapter() != null) {
+													adapter.getFilter().filter(newText);
+												}
+												return false;
+											}
+										});
+							}
+
+							@Override
+							public boolean onMenuItemSelected(@NonNull MenuItem menuItem) {
+								return false;
+							}
+						},
+						getViewLifecycleOwner(),
+						Lifecycle.State.RESUMED);
 
 		return fragmentTeamsByOrgBinding.getRoot();
 	}
@@ -122,6 +171,7 @@ public class OrganizationTeamsFragment extends Fragment {
 		}
 	}
 
+	@SuppressLint("NotifyDataSetChanged")
 	private void fetchDataAsync(String owner) {
 
 		teamsByOrgViewModel
@@ -142,33 +192,5 @@ public class OrganizationTeamsFragment extends Fragment {
 							}
 							mProgressBar.setVisibility(View.GONE);
 						});
-	}
-
-	@Override
-	public void onCreateOptionsMenu(@NonNull Menu menu, @NonNull MenuInflater inflater) {
-
-		inflater.inflate(R.menu.search_menu, menu);
-		super.onCreateOptionsMenu(menu, inflater);
-
-		MenuItem searchItem = menu.findItem(R.id.action_search);
-		androidx.appcompat.widget.SearchView searchView =
-				(androidx.appcompat.widget.SearchView) searchItem.getActionView();
-		searchView.setImeOptions(EditorInfo.IME_ACTION_DONE);
-
-		searchView.setOnQueryTextListener(
-				new androidx.appcompat.widget.SearchView.OnQueryTextListener() {
-					@Override
-					public boolean onQueryTextSubmit(String query) {
-						return false;
-					}
-
-					@Override
-					public boolean onQueryTextChange(String newText) {
-						if (mRecyclerView.getAdapter() != null) {
-							adapter.getFilter().filter(newText);
-						}
-						return false;
-					}
-				});
 	}
 }
