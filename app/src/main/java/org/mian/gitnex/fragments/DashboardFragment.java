@@ -42,7 +42,6 @@ public class DashboardFragment extends Fragment {
 		binding = FragmentDashboardBinding.inflate(inflater, container, false);
 
 		Context ctx = getContext();
-		setHasOptionsMenu(true);
 
 		((MainActivity) requireActivity())
 				.setActionBarTitle(getResources().getString(R.string.dashboard));

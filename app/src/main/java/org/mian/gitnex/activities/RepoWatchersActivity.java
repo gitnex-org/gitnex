@@ -1,16 +1,13 @@
 package org.mian.gitnex.activities;
 
 import android.os.Bundle;
-import android.view.Menu;
-import android.view.MenuInflater;
-import android.view.MenuItem;
 import android.view.View;
-import android.view.inputmethod.EditorInfo;
-import androidx.appcompat.widget.SearchView;
 import androidx.lifecycle.ViewModelProvider;
+import androidx.recyclerview.widget.GridLayoutManager;
 import org.mian.gitnex.R;
 import org.mian.gitnex.adapters.UserGridAdapter;
 import org.mian.gitnex.databinding.ActivityRepoWatchersBinding;
+import org.mian.gitnex.helpers.Constants;
 import org.mian.gitnex.helpers.contexts.RepositoryContext;
 import org.mian.gitnex.viewmodels.RepoWatchersViewModel;
 
@@ -23,6 +20,9 @@ public class RepoWatchersActivity extends BaseActivity {
 	private UserGridAdapter adapter;
 	private ActivityRepoWatchersBinding activityRepoWatchersBinding;
 	private RepositoryContext repository;
+	private RepoWatchersViewModel repoWatchersModel;
+	private int page = 1;
+	private int resultLimit;
 
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
@@ -33,6 +33,9 @@ public class RepoWatchersActivity extends BaseActivity {
 		setContentView(activityRepoWatchersBinding.getRoot());
 
 		setSupportActionBar(activityRepoWatchersBinding.toolbar);
+
+		resultLimit = Constants.getCurrentResultLimit(ctx);
+		repoWatchersModel = new ViewModelProvider(this).get(RepoWatchersViewModel.class);
 
 		repository = RepositoryContext.fromIntent(getIntent());
 		final String repoOwner = repository.getOwner();
@@ -48,23 +51,47 @@ public class RepoWatchersActivity extends BaseActivity {
 
 	private void fetchDataAsync(String repoOwner, String repoName) {
 
-		RepoWatchersViewModel repoWatchersModel =
-				new ViewModelProvider(this).get(RepoWatchersViewModel.class);
-
 		repoWatchersModel
-				.getRepoWatchers(repoOwner, repoName, ctx)
+				.getRepoWatchers(repoOwner, repoName, ctx, page, resultLimit)
 				.observe(
-						this,
-						watchersListMain -> {
-							adapter = new UserGridAdapter(ctx, watchersListMain);
+						RepoWatchersActivity.this,
+						mainList -> {
+							adapter = new UserGridAdapter(ctx, mainList);
+							adapter.setLoadMoreListener(
+									new UserGridAdapter.OnLoadMoreListener() {
 
-							if (adapter.getCount() > 0) {
+										@Override
+										public void onLoadMore() {
 
+											page += 1;
+											repoWatchersModel.loadMore(
+													repoOwner,
+													repoName,
+													ctx,
+													page,
+													resultLimit,
+													adapter,
+													activityRepoWatchersBinding);
+											activityRepoWatchersBinding.progressBar.setVisibility(
+													View.VISIBLE);
+										}
+
+										@Override
+										public void onLoadFinished() {
+
+											activityRepoWatchersBinding.progressBar.setVisibility(
+													View.GONE);
+										}
+									});
+
+							GridLayoutManager layoutManager = new GridLayoutManager(this, 2);
+							activityRepoWatchersBinding.gridView.setLayoutManager(layoutManager);
+
+							if (adapter.getItemCount() > 0) {
 								activityRepoWatchersBinding.gridView.setAdapter(adapter);
 								activityRepoWatchersBinding.noDataWatchers.setVisibility(View.GONE);
 							} else {
-
-								adapter.notifyDataSetChanged();
+								adapter.notifyDataChanged();
 								activityRepoWatchersBinding.gridView.setAdapter(adapter);
 								activityRepoWatchersBinding.noDataWatchers.setVisibility(
 										View.VISIBLE);
@@ -83,36 +110,5 @@ public class RepoWatchersActivity extends BaseActivity {
 	public void onResume() {
 		super.onResume();
 		repository.checkAccountSwitch(this);
-	}
-
-	@Override
-	public boolean onCreateOptionsMenu(final Menu menu) {
-
-		final MenuInflater inflater = getMenuInflater();
-		inflater.inflate(R.menu.search_menu, menu);
-
-		MenuItem searchItem = menu.findItem(R.id.action_search);
-		SearchView searchView = (SearchView) searchItem.getActionView();
-		searchView.setImeOptions(EditorInfo.IME_ACTION_DONE);
-
-		searchView.setOnQueryTextListener(
-				new androidx.appcompat.widget.SearchView.OnQueryTextListener() {
-
-					@Override
-					public boolean onQueryTextSubmit(String query) {
-						return true;
-					}
-
-					@Override
-					public boolean onQueryTextChange(String newText) {
-
-						if (activityRepoWatchersBinding.gridView.getAdapter() != null) {
-							adapter.getFilter().filter(newText);
-						}
-						return false;
-					}
-				});
-
-		return true;
 	}
 }

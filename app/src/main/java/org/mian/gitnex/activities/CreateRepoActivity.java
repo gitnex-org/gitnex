@@ -103,7 +103,7 @@ public class CreateRepoActivity extends BaseActivity {
 			}
 		}
 
-		if (newRepoName.equals("")) {
+		if (newRepoName.isEmpty()) {
 
 			SnackBar.error(
 					ctx,
@@ -251,7 +251,7 @@ public class CreateRepoActivity extends BaseActivity {
 	private void getOrganizations(final String userLogin) {
 
 		Call<List<Organization>> call =
-				RetrofitClient.getApiInterface(ctx).orgListCurrentUserOrgs(1, 50);
+				RetrofitClient.getApiInterface(ctx).orgListCurrentUserOrgs(1, 100);
 
 		call.enqueue(
 				new Callback<>() {
@@ -270,15 +270,15 @@ public class CreateRepoActivity extends BaseActivity {
 							organizationsList.add(userLogin);
 							assert organizationsList_ != null;
 
-							if (organizationsList_.size() > 0) {
+							if (!organizationsList_.isEmpty()) {
 
 								for (int i = 0; i < organizationsList_.size(); i++) {
 
 									if (getIntent().getStringExtra("orgName") != null
 											&& !"".equals(getIntent().getStringExtra("orgName"))) {
-										if (getIntent()
-												.getStringExtra("orgName")
-												.equals(organizationsList_.get(i).getUsername())) {
+										if (Objects.equals(
+												getIntent().getStringExtra("orgName"),
+												organizationsList_.get(i).getUsername())) {
 											organizationId = i + 1;
 										}
 									}

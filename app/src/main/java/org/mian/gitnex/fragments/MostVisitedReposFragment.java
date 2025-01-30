@@ -27,7 +27,7 @@ import org.mian.gitnex.adapters.MostVisitedReposAdapter;
 import org.mian.gitnex.database.api.BaseApi;
 import org.mian.gitnex.database.api.RepositoriesApi;
 import org.mian.gitnex.database.models.Repository;
-import org.mian.gitnex.databinding.FragmentDraftsBinding;
+import org.mian.gitnex.databinding.FragmentMostVisitedBinding;
 import org.mian.gitnex.helpers.TinyDB;
 import org.mian.gitnex.helpers.Toasty;
 
@@ -36,7 +36,7 @@ import org.mian.gitnex.helpers.Toasty;
  */
 public class MostVisitedReposFragment extends Fragment {
 
-	private FragmentDraftsBinding fragmentDraftsBinding;
+	private FragmentMostVisitedBinding fragmentDraftsBinding;
 	private Context ctx;
 	private MostVisitedReposAdapter adapter;
 	private RepositoriesApi repositoriesApi;
@@ -47,7 +47,7 @@ public class MostVisitedReposFragment extends Fragment {
 	public View onCreateView(
 			@NonNull LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
 
-		fragmentDraftsBinding = FragmentDraftsBinding.inflate(inflater, container, false);
+		fragmentDraftsBinding = FragmentMostVisitedBinding.inflate(inflater, container, false);
 
 		ctx = getContext();
 

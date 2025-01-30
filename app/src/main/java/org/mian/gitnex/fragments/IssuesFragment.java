@@ -13,7 +13,9 @@ import android.view.ViewGroup;
 import android.view.inputmethod.EditorInfo;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.core.view.MenuProvider;
 import androidx.fragment.app.Fragment;
+import androidx.lifecycle.Lifecycle;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import java.util.ArrayList;
 import java.util.List;
@@ -41,7 +43,6 @@ public class IssuesFragment extends Fragment {
 	private final String requestType = Constants.issuesRequestType;
 	private FragmentIssuesBinding fragmentIssuesBinding;
 	private Context context;
-	private Menu menu;
 	private List<Issue> issuesList;
 	private List<Issue> pinnedIssuesList;
 	private IssuesAdapter adapter;
@@ -63,7 +64,6 @@ public class IssuesFragment extends Fragment {
 			@Nullable Bundle savedInstanceState) {
 
 		fragmentIssuesBinding = FragmentIssuesBinding.inflate(inflater, container, false);
-		setHasOptionsMenu(true);
 		context = getContext();
 
 		repository = RepositoryContext.fromBundle(requireArguments());
@@ -126,12 +126,6 @@ public class IssuesFragment extends Fragment {
 		((RepoDetailActivity) requireActivity())
 				.setFragmentRefreshListener(
 						issueState -> {
-							if (issueState.equals("closed")) {
-								menu.getItem(1).setIcon(R.drawable.ic_filter_closed);
-							} else {
-								menu.getItem(1).setIcon(R.drawable.ic_filter);
-							}
-
 							issuesList.clear();
 
 							adapter = new IssuesAdapter(context, issuesList, "");
@@ -246,6 +240,64 @@ public class IssuesFragment extends Fragment {
 
 			fragmentIssuesBinding.createNewIssue.setVisibility(View.GONE);
 		}
+
+		requireActivity()
+				.addMenuProvider(
+						new MenuProvider() {
+
+							@Override
+							public void onCreateMenu(
+									@NonNull Menu menu, @NonNull MenuInflater menuInflater) {
+
+								menuInflater.inflate(R.menu.search_menu, menu);
+								menuInflater.inflate(R.menu.filter_menu, menu);
+
+								if (repository.getIssueState().toString().equals("closed")) {
+									menu.getItem(1).setIcon(R.drawable.ic_filter_closed);
+								} else {
+									menu.getItem(1).setIcon(R.drawable.ic_filter);
+								}
+
+								MenuItem searchItem = menu.findItem(R.id.action_search);
+								androidx.appcompat.widget.SearchView searchView =
+										(androidx.appcompat.widget.SearchView)
+												searchItem.getActionView();
+								assert searchView != null;
+								searchView.setImeOptions(EditorInfo.IME_ACTION_DONE);
+
+								searchView.setOnQueryTextListener(
+										new androidx.appcompat.widget.SearchView
+												.OnQueryTextListener() {
+
+											@Override
+											public boolean onQueryTextSubmit(String query) {
+												loadInitial(
+														repository.getOwner(),
+														repository.getName(),
+														resultLimit,
+														requestType,
+														repository.getIssueState().toString(),
+														repository.getIssueMilestoneFilterName(),
+														query);
+												searchView.setQuery(null, false);
+												searchItem.collapseActionView();
+												return false;
+											}
+
+											@Override
+											public boolean onQueryTextChange(String newText) {
+												return false;
+											}
+										});
+							}
+
+							@Override
+							public boolean onMenuItemSelected(@NonNull MenuItem menuItem) {
+								return false;
+							}
+						},
+						getViewLifecycleOwner(),
+						Lifecycle.State.RESUMED);
 
 		return fragmentIssuesBinding.getRoot();
 	}
@@ -435,50 +487,6 @@ public class IssuesFragment extends Fragment {
 					@Override
 					public void onFailure(@NonNull Call<List<Issue>> call, @NonNull Throwable t) {
 						Toasty.error(context, getString(R.string.genericServerResponseError));
-					}
-				});
-	}
-
-	@Override
-	public void onCreateOptionsMenu(@NonNull Menu menu, @NonNull MenuInflater inflater) {
-
-		this.menu = menu;
-		inflater.inflate(R.menu.search_menu, menu);
-		inflater.inflate(R.menu.filter_menu, menu);
-		super.onCreateOptionsMenu(menu, inflater);
-
-		if (repository.getIssueState().toString().equals("closed")) {
-			menu.getItem(1).setIcon(R.drawable.ic_filter_closed);
-		} else {
-			menu.getItem(1).setIcon(R.drawable.ic_filter);
-		}
-
-		MenuItem searchItem = menu.findItem(R.id.action_search);
-		androidx.appcompat.widget.SearchView searchView =
-				(androidx.appcompat.widget.SearchView) searchItem.getActionView();
-		searchView.setImeOptions(EditorInfo.IME_ACTION_DONE);
-
-		searchView.setOnQueryTextListener(
-				new androidx.appcompat.widget.SearchView.OnQueryTextListener() {
-
-					@Override
-					public boolean onQueryTextSubmit(String query) {
-						loadInitial(
-								repository.getOwner(),
-								repository.getName(),
-								resultLimit,
-								requestType,
-								repository.getIssueState().toString(),
-								repository.getIssueMilestoneFilterName(),
-								query);
-						searchView.setQuery(null, false);
-						searchItem.collapseActionView();
-						return false;
-					}
-
-					@Override
-					public boolean onQueryTextChange(String newText) {
-						return false;
 					}
 				});
 	}

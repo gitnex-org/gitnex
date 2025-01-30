@@ -2,7 +2,6 @@ package org.mian.gitnex.adapters;
 
 import android.content.Context;
 import android.graphics.Typeface;
-import android.os.Bundle;
 import android.util.TypedValue;
 import android.view.View;
 import android.view.ViewGroup;
@@ -11,9 +10,7 @@ import android.widget.TextView;
 import androidx.fragment.app.FragmentManager;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.stream.Collectors;
 import org.mian.gitnex.R;
-import org.mian.gitnex.fragments.BottomSheetReplyFragment;
 import org.mian.gitnex.helpers.AppUtil;
 import org.mian.gitnex.helpers.contexts.IssueContext;
 
@@ -106,32 +103,32 @@ public class DiffAdapter extends BaseAdapter {
 						}
 					});
 
-			convertView.setOnLongClickListener(
-					v -> {
-						if (selectedLines.contains(position)) {
+			/*convertView.setOnLongClickListener(
+			v -> {
+				if (selectedLines.contains(position)) {
 
-							StringBuilder stringBuilder = new StringBuilder();
-							stringBuilder.append("```\n");
+					StringBuilder stringBuilder = new StringBuilder();
+					stringBuilder.append("```\n");
 
-							for (Integer selectedLine :
-									selectedLines.stream().sorted().collect(Collectors.toList())) {
-								stringBuilder.append(lines.get(selectedLine));
-								stringBuilder.append("\n");
-							}
+					for (Integer selectedLine :
+							selectedLines.stream().sorted().collect(Collectors.toList())) {
+						stringBuilder.append(lines.get(selectedLine));
+						stringBuilder.append("\n");
+					}
 
-							stringBuilder.append("```\n\n");
-							selectedLines.clear();
+					stringBuilder.append("```\n\n");
+					selectedLines.clear();
 
-							Bundle bundle = new Bundle();
-							bundle.putString("commentBody", stringBuilder.toString());
-							bundle.putBoolean("cursorToEnd", true);
+					Bundle bundle = new Bundle();
+					bundle.putString("commentBody", stringBuilder.toString());
+					bundle.putBoolean("cursorToEnd", true);
 
-							BottomSheetReplyFragment.newInstance(bundle, issue)
-									.show(fragmentManager, "replyBottomSheet");
-						}
+					//BottomSheetReplyFragment.newInstance(bundle, issue)
+					//		.show(fragmentManager, "replyBottomSheet");
+				}
 
-						return true;
-					});
+				return true;
+			});*/
 		}
 
 		String line = lines.get(position);

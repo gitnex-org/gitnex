@@ -11,7 +11,7 @@ import org.gitnex.tea4j.v2.models.User;
 import org.mian.gitnex.R;
 import org.mian.gitnex.adapters.UserGridAdapter;
 import org.mian.gitnex.clients.RetrofitClient;
-import org.mian.gitnex.databinding.ActivityRepoStargazersBinding;
+import org.mian.gitnex.databinding.FragmentOrganizationTeamInfoMembersBinding;
 import org.mian.gitnex.helpers.Toasty;
 import retrofit2.Call;
 import retrofit2.Callback;
@@ -20,25 +20,23 @@ import retrofit2.Response;
 /**
  * @author M M Arif
  */
-public class RepoStargazersViewModel extends ViewModel {
+public class MembersByOrgTeamViewModel extends ViewModel {
 
-	private MutableLiveData<List<User>> stargazersList;
+	private MutableLiveData<List<User>> membersList;
 
-	public LiveData<List<User>> getRepoStargazers(
-			String repoOwner, String repoName, Context ctx, int page, int resultLimit) {
+	public LiveData<List<User>> getMembersList(
+			Long teamId, Context ctx, int page, int resultLimit) {
 
-		stargazersList = new MutableLiveData<>();
-		loadRepoStargazers(repoOwner, repoName, ctx, page, resultLimit);
+		membersList = new MutableLiveData<>();
+		loadMembersList(teamId, ctx, page, resultLimit);
 
-		return stargazersList;
+		return membersList;
 	}
 
-	private void loadRepoStargazers(
-			String repoOwner, String repoName, Context ctx, int page, int resultLimit) {
+	private void loadMembersList(Long teamId, Context ctx, int page, int resultLimit) {
 
 		Call<List<User>> call =
-				RetrofitClient.getApiInterface(ctx)
-						.repoListStargazers(repoOwner, repoName, page, resultLimit);
+				RetrofitClient.getApiInterface(ctx).orgListTeamMembers(teamId, page, resultLimit);
 
 		call.enqueue(
 				new Callback<>() {
@@ -49,7 +47,7 @@ public class RepoStargazersViewModel extends ViewModel {
 							@NonNull Response<List<User>> response) {
 
 						if (response.isSuccessful()) {
-							stargazersList.postValue(response.body());
+							membersList.postValue(response.body());
 						}
 					}
 
@@ -62,17 +60,15 @@ public class RepoStargazersViewModel extends ViewModel {
 	}
 
 	public void loadMore(
-			String repoOwner,
-			String repoName,
+			Long teamId,
 			Context ctx,
 			int page,
 			int resultLimit,
 			UserGridAdapter adapter,
-			ActivityRepoStargazersBinding activityRepoStargazersBinding) {
+			FragmentOrganizationTeamInfoMembersBinding binding) {
 
 		Call<List<User>> call =
-				RetrofitClient.getApiInterface(ctx)
-						.repoListStargazers(repoOwner, repoName, page, resultLimit);
+				RetrofitClient.getApiInterface(ctx).orgListTeamMembers(teamId, page, resultLimit);
 
 		call.enqueue(
 				new Callback<>() {
@@ -83,7 +79,7 @@ public class RepoStargazersViewModel extends ViewModel {
 							@NonNull Response<List<User>> response) {
 						assert response.body() != null;
 						if (response.isSuccessful()) {
-							List<User> list = stargazersList.getValue();
+							List<User> list = membersList.getValue();
 							assert list != null;
 							assert response.body() != null;
 
@@ -93,7 +89,7 @@ public class RepoStargazersViewModel extends ViewModel {
 							} else {
 								adapter.setMoreDataAvailable(false);
 							}
-							activityRepoStargazersBinding.progressBar.setVisibility(View.GONE);
+							binding.progressBar.setVisibility(View.GONE);
 						}
 					}
 

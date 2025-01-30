@@ -14,12 +14,13 @@ import android.view.ViewGroup;
 import android.view.inputmethod.EditorInfo;
 import android.widget.RelativeLayout;
 import androidx.annotation.NonNull;
+import androidx.core.view.MenuProvider;
 import androidx.fragment.app.Fragment;
+import androidx.lifecycle.Lifecycle;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import java.util.ArrayList;
 import java.util.List;
 import org.gitnex.tea4j.v2.models.Commit;
-import org.jetbrains.annotations.NotNull;
 import org.mian.gitnex.R;
 import org.mian.gitnex.adapters.CommitsAdapter;
 import org.mian.gitnex.clients.RetrofitClient;
@@ -108,6 +109,48 @@ public class PullRequestCommitsFragment extends Fragment {
 
 		loadInitial(issue, resultLimit);
 
+		requireActivity()
+				.addMenuProvider(
+						new MenuProvider() {
+
+							@Override
+							public void onCreateMenu(
+									@NonNull Menu menu, @NonNull MenuInflater menuInflater) {
+
+								menuInflater.inflate(R.menu.search_menu, menu);
+
+								MenuItem searchItem = menu.findItem(R.id.action_search);
+								androidx.appcompat.widget.SearchView searchView =
+										(androidx.appcompat.widget.SearchView)
+												searchItem.getActionView();
+								assert searchView != null;
+								searchView.setImeOptions(EditorInfo.IME_ACTION_DONE);
+
+								searchView.setOnQueryTextListener(
+										new androidx.appcompat.widget.SearchView
+												.OnQueryTextListener() {
+
+											@Override
+											public boolean onQueryTextSubmit(String query) {
+												return false;
+											}
+
+											@Override
+											public boolean onQueryTextChange(String newText) {
+												filter(newText);
+												return false;
+											}
+										});
+							}
+
+							@Override
+							public boolean onMenuItemSelected(@NonNull MenuItem menuItem) {
+								return false;
+							}
+						},
+						getViewLifecycleOwner(),
+						Lifecycle.State.RESUMED);
+
 		return binding.getRoot();
 	}
 
@@ -142,7 +185,7 @@ public class PullRequestCommitsFragment extends Fragment {
 						if (response.code() == 200) {
 
 							assert response.body() != null;
-							if (response.body().size() > 0) {
+							if (!response.body().isEmpty()) {
 
 								commitsList.clear();
 								commitsList.addAll(response.body());
@@ -203,7 +246,7 @@ public class PullRequestCommitsFragment extends Fragment {
 							List<Commit> result = response.body();
 							assert result != null;
 
-							if (result.size() > 0) {
+							if (!result.isEmpty()) {
 
 								pageSize = result.size();
 								commitsList.addAll(result);
@@ -226,34 +269,6 @@ public class PullRequestCommitsFragment extends Fragment {
 
 						Toasty.error(
 								ctx, getResources().getString(R.string.genericServerResponseError));
-					}
-				});
-	}
-
-	@Override
-	public void onCreateOptionsMenu(@NotNull Menu menu, MenuInflater inflater) {
-
-		inflater.inflate(R.menu.search_menu, menu);
-
-		MenuItem searchItem = menu.findItem(R.id.action_search);
-		androidx.appcompat.widget.SearchView searchView =
-				(androidx.appcompat.widget.SearchView) searchItem.getActionView();
-		searchView.setImeOptions(EditorInfo.IME_ACTION_DONE);
-
-		searchView.setOnQueryTextListener(
-				new androidx.appcompat.widget.SearchView.OnQueryTextListener() {
-
-					@Override
-					public boolean onQueryTextSubmit(String query) {
-
-						return false;
-					}
-
-					@Override
-					public boolean onQueryTextChange(String newText) {
-
-						filter(newText);
-						return true;
 					}
 				});
 	}

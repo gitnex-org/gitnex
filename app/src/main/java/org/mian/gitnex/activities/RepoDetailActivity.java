@@ -347,7 +347,7 @@ public class RepoDetailActivity extends BaseActivity implements BottomSheetListe
 		Call<List<Milestone>> call =
 				RetrofitClient.getApiInterface(ctx)
 						.issueGetMilestonesList(
-								repository.getOwner(), repository.getName(), "open", null, 1, 50);
+								repository.getOwner(), repository.getName(), "open", null, 1, 100);
 
 		call.enqueue(
 				new Callback<>() {

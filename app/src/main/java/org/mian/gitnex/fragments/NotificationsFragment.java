@@ -12,7 +12,9 @@ import android.view.View;
 import android.view.ViewGroup;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.core.view.MenuProvider;
 import androidx.fragment.app.Fragment;
+import androidx.lifecycle.Lifecycle;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 import java.util.ArrayList;
@@ -45,11 +47,8 @@ public class NotificationsFragment extends Fragment
 	private final List<NotificationThread> notificationThreads = new ArrayList<>();
 	private FragmentNotificationsBinding viewBinding;
 	private NotificationsAdapter notificationsAdapter;
-
 	private Activity activity;
 	private Context context;
-	private Menu menu;
-
 	private int pageCurrentIndex = 1;
 	private int pageResultLimit;
 	private String currentFilterMode = "unread";
@@ -68,7 +67,6 @@ public class NotificationsFragment extends Fragment
 			@Nullable Bundle savedInstanceState) {
 
 		viewBinding = FragmentNotificationsBinding.inflate(inflater, container, false);
-		setHasOptionsMenu(true);
 
 		activity = requireActivity();
 		context = getContext();
@@ -133,37 +131,42 @@ public class NotificationsFragment extends Fragment
 														loadNotifications(false);
 													} else {
 
-														if (!emptyErrorResponse.isEmpty()) {
-															if (emptyErrorResponse.contains(
-																	"205")) {
+														if (emptyErrorResponse != null) {
+															if (!emptyErrorResponse.isEmpty()) {
+																if (emptyErrorResponse.contains(
+																		"205")) {
 
-																SnackBar.success(
-																		context,
-																		requireActivity()
-																				.findViewById(
-																						android.R.id
-																								.content),
-																		getString(
-																				R.string
-																						.markedNotificationsAsRead));
-																pageCurrentIndex = 1;
-																loadNotifications(false);
+																	SnackBar.success(
+																			context,
+																			requireActivity()
+																					.findViewById(
+																							android
+																									.R
+																									.id
+																									.content),
+																			getString(
+																					R.string
+																							.markedNotificationsAsRead));
+																	pageCurrentIndex = 1;
+																	loadNotifications(false);
+																}
+															} else {
+
+																activity.runOnUiThread(
+																		() ->
+																				SnackBar.error(
+																						context,
+																						requireActivity()
+																								.findViewById(
+																										android
+																												.R
+																												.id
+																												.content),
+																						getString(
+																								R
+																										.string
+																										.genericError)));
 															}
-														} else {
-
-															activity.runOnUiThread(
-																	() ->
-																			SnackBar.error(
-																					context,
-																					requireActivity()
-																							.findViewById(
-																									android
-																											.R
-																											.id
-																											.content),
-																					getString(
-																							R.string
-																									.genericError)));
 														}
 													}
 												}));
@@ -176,6 +179,73 @@ public class NotificationsFragment extends Fragment
 				});
 
 		loadNotifications(true);
+
+		requireActivity()
+				.addMenuProvider(
+						new MenuProvider() {
+
+							Menu menu;
+
+							@Override
+							public void onCreateMenu(
+									@NonNull Menu menu, @NonNull MenuInflater menuInflater) {
+
+								this.menu = menu;
+								menuInflater.inflate(R.menu.filter_menu_notifications, menu);
+
+								int filterIcon =
+										currentFilterMode.equalsIgnoreCase("read")
+												? R.drawable.ic_filter_closed
+												: R.drawable.ic_filter;
+
+								menu.getItem(0).setIcon(filterIcon);
+
+								if (currentFilterMode.equalsIgnoreCase("read")) {
+									viewBinding.markAllAsRead.setVisibility(View.GONE);
+								} else {
+									viewBinding.markAllAsRead.setVisibility(View.VISIBLE);
+								}
+							}
+
+							@Override
+							public boolean onMenuItemSelected(@NonNull MenuItem menuItem) {
+
+								if (menu.getItem(0).getItemId() == R.id.filterNotifications) {
+
+									BottomSheetNotificationsFilterFragment
+											bottomSheetNotificationsFilterFragment =
+													new BottomSheetNotificationsFilterFragment();
+									bottomSheetNotificationsFilterFragment.show(
+											getChildFragmentManager(),
+											"notificationsFilterBottomSheet");
+									bottomSheetNotificationsFilterFragment.setOnClickListener(
+											(text) -> {
+												currentFilterMode = text;
+												pageCurrentIndex = 1;
+												loadNotifications(false);
+
+												int filterIcon =
+														currentFilterMode.equalsIgnoreCase("read")
+																? R.drawable.ic_filter_closed
+																: R.drawable.ic_filter;
+
+												menu.getItem(0).setIcon(filterIcon);
+
+												if (currentFilterMode.equalsIgnoreCase("read")) {
+													viewBinding.markAllAsRead.setVisibility(
+															View.GONE);
+												} else {
+													viewBinding.markAllAsRead.setVisibility(
+															View.VISIBLE);
+												}
+											});
+								}
+								return false;
+							}
+						},
+						getViewLifecycleOwner(),
+						Lifecycle.State.RESUMED);
+
 		return viewBinding.getRoot();
 	}
 
@@ -216,9 +286,9 @@ public class NotificationsFragment extends Fragment
 										}
 
 										if (!append
-												|| Objects.requireNonNull(listResponse.get().body())
-																.size()
-														> 0) {
+												|| !Objects.requireNonNull(
+																listResponse.get().body())
+														.isEmpty()) {
 											notificationsAdapter.notifyDataChanged();
 										}
 									}
@@ -239,53 +309,6 @@ public class NotificationsFragment extends Fragment
 										}
 									}
 								});
-	}
-
-	private void changeFilterMode() {
-
-		int filterIcon =
-				currentFilterMode.equalsIgnoreCase("read")
-						? R.drawable.ic_filter_closed
-						: R.drawable.ic_filter;
-
-		menu.getItem(0).setIcon(filterIcon);
-
-		if (currentFilterMode.equalsIgnoreCase("read")) {
-			viewBinding.markAllAsRead.setVisibility(View.GONE);
-		} else {
-			viewBinding.markAllAsRead.setVisibility(View.VISIBLE);
-		}
-	}
-
-	@Override
-	public void onCreateOptionsMenu(@NonNull Menu menu, @NonNull MenuInflater inflater) {
-
-		this.menu = menu;
-		inflater.inflate(R.menu.filter_menu_notifications, menu);
-		changeFilterMode();
-
-		super.onCreateOptionsMenu(menu, inflater);
-	}
-
-	@Override
-	public boolean onOptionsItemSelected(@NonNull MenuItem item) {
-
-		if (item.getItemId() == R.id.filterNotifications) {
-
-			BottomSheetNotificationsFilterFragment bottomSheetNotificationsFilterFragment =
-					new BottomSheetNotificationsFilterFragment();
-			bottomSheetNotificationsFilterFragment.show(
-					getChildFragmentManager(), "notificationsFilterBottomSheet");
-			bottomSheetNotificationsFilterFragment.setOnClickListener(
-					(text) -> {
-						currentFilterMode = text;
-						changeFilterMode();
-						pageCurrentIndex = 1;
-						loadNotifications(false);
-					});
-			return true;
-		}
-		return super.onOptionsItemSelected(item);
 	}
 
 	@Override

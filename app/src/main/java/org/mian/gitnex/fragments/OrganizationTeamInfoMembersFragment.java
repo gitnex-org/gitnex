@@ -8,20 +8,18 @@ import android.view.View;
 import android.view.ViewGroup;
 import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
+import androidx.lifecycle.ViewModelProvider;
+import androidx.recyclerview.widget.GridLayoutManager;
 import java.util.ArrayList;
 import java.util.List;
 import org.gitnex.tea4j.v2.models.OrganizationPermissions;
 import org.gitnex.tea4j.v2.models.Team;
 import org.gitnex.tea4j.v2.models.User;
-import org.mian.gitnex.R;
 import org.mian.gitnex.activities.AddNewTeamMemberActivity;
 import org.mian.gitnex.adapters.UserGridAdapter;
-import org.mian.gitnex.clients.RetrofitClient;
 import org.mian.gitnex.databinding.FragmentOrganizationTeamInfoMembersBinding;
-import org.mian.gitnex.helpers.Toasty;
-import retrofit2.Call;
-import retrofit2.Callback;
-import retrofit2.Response;
+import org.mian.gitnex.helpers.Constants;
+import org.mian.gitnex.viewmodels.MembersByOrgTeamViewModel;
 
 /**
  * @author opyale
@@ -31,9 +29,12 @@ public class OrganizationTeamInfoMembersFragment extends Fragment {
 	private final List<User> teamUserInfo = new ArrayList<>();
 	private Context ctx;
 	private FragmentOrganizationTeamInfoMembersBinding binding;
+	private MembersByOrgTeamViewModel membersByOrgTeamViewModel;
 	private Team team;
 	private UserGridAdapter adapter;
 	public static boolean refreshMembers = false;
+	private int page = 1;
+	private int resultLimit;
 
 	public OrganizationTeamInfoMembersFragment() {}
 
@@ -55,14 +56,19 @@ public class OrganizationTeamInfoMembersFragment extends Fragment {
 
 		team = (Team) requireArguments().getSerializable("team");
 
+		membersByOrgTeamViewModel =
+				new ViewModelProvider(this).get(MembersByOrgTeamViewModel.class);
+		resultLimit = Constants.getCurrentResultLimit(ctx);
+
 		adapter = new UserGridAdapter(ctx, teamUserInfo);
 		binding.members.setAdapter(adapter);
-		fetchMembersAsync();
+		fetchDataAsync();
 
 		OrganizationPermissions permissions =
 				(OrganizationPermissions)
 						requireActivity().getIntent().getSerializableExtra("permissions");
 
+		assert permissions != null;
 		if (!permissions.isIsOwner()) {
 			binding.addNewMember.setVisibility(View.GONE);
 		}
@@ -81,48 +87,58 @@ public class OrganizationTeamInfoMembersFragment extends Fragment {
 		super.onResume();
 
 		if (refreshMembers) {
-			fetchMembersAsync();
+			fetchDataAsync();
 			refreshMembers = false;
 		}
 	}
 
-	private void fetchMembersAsync() {
+	private void fetchDataAsync() {
 
-		Call<List<User>> call =
-				RetrofitClient.getApiInterface(ctx).orgListTeamMembers(team.getId(), null, null);
+		membersByOrgTeamViewModel
+				.getMembersList(team.getId(), ctx, page, resultLimit)
+				.observe(
+						getViewLifecycleOwner(),
+						mainList -> {
+							adapter = new UserGridAdapter(ctx, mainList);
 
-		binding.progressBar.setVisibility(View.VISIBLE);
+							adapter.setLoadMoreListener(
+									new UserGridAdapter.OnLoadMoreListener() {
 
-		call.enqueue(
-				new Callback<>() {
+										@Override
+										public void onLoadMore() {
 
-					@Override
-					public void onResponse(
-							@NonNull Call<List<User>> call,
-							@NonNull Response<List<User>> response) {
-						if (response.isSuccessful()
-								&& response.body() != null
-								&& response.body().size() > 0) {
-							teamUserInfo.clear();
-							teamUserInfo.addAll(response.body());
+											page += 1;
+											membersByOrgTeamViewModel.loadMore(
+													team.getId(),
+													ctx,
+													page,
+													resultLimit,
+													adapter,
+													binding);
+											binding.progressBar.setVisibility(View.VISIBLE);
+										}
 
-							adapter.notifyDataSetChanged();
+										@Override
+										public void onLoadFinished() {
 
-							binding.noDataMembers.setVisibility(View.GONE);
-							binding.members.setVisibility(View.VISIBLE);
-						} else {
-							binding.members.setVisibility(View.GONE);
-							binding.noDataMembers.setVisibility(View.VISIBLE);
-						}
+											binding.progressBar.setVisibility(View.GONE);
+										}
+									});
 
-						binding.progressBar.setVisibility(View.GONE);
-					}
+							GridLayoutManager layoutManager =
+									new GridLayoutManager(requireContext(), 2);
+							binding.members.setLayoutManager(layoutManager);
 
-					@Override
-					public void onFailure(@NonNull Call<List<User>> call, @NonNull Throwable t) {
+							if (adapter.getItemCount() > 0) {
+								binding.members.setAdapter(adapter);
+								binding.noDataMembers.setVisibility(View.GONE);
+							} else {
+								adapter.notifyDataChanged();
+								binding.members.setAdapter(adapter);
+								binding.noDataMembers.setVisibility(View.VISIBLE);
+							}
 
-						Toasty.error(ctx, ctx.getString(R.string.genericServerResponseError));
-					}
-				});
+							binding.progressBar.setVisibility(View.GONE);
+						});
 	}
 }

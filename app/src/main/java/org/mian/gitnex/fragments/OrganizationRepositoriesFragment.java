@@ -12,9 +12,12 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.view.inputmethod.EditorInfo;
 import androidx.annotation.NonNull;
+import androidx.core.view.MenuProvider;
 import androidx.fragment.app.Fragment;
+import androidx.lifecycle.Lifecycle;
 import androidx.lifecycle.ViewModelProvider;
 import androidx.recyclerview.widget.LinearLayoutManager;
+import java.util.Objects;
 import org.gitnex.tea4j.v2.models.OrganizationPermissions;
 import org.mian.gitnex.R;
 import org.mian.gitnex.activities.CreateRepoActivity;
@@ -65,7 +68,6 @@ public class OrganizationRepositoriesFragment extends Fragment {
 
 		fragmentRepositoriesBinding =
 				FragmentRepositoriesBinding.inflate(inflater, container, false);
-		setHasOptionsMenu(true);
 		repositoriesViewModel = new ViewModelProvider(this).get(RepositoriesViewModel.class);
 
 		resultLimit = Constants.getCurrentResultLimit(getContext());
@@ -102,9 +104,56 @@ public class OrganizationRepositoriesFragment extends Fragment {
 					Intent intentRepo = new Intent(getContext(), CreateRepoActivity.class);
 					intentRepo.putExtra("organizationAction", true);
 					intentRepo.putExtra("orgName", orgName);
-					intentRepo.putExtras(requireActivity().getIntent().getExtras());
+					intentRepo.putExtras(
+							Objects.requireNonNull(requireActivity().getIntent().getExtras()));
 					startActivity(intentRepo);
 				});
+
+		requireActivity()
+				.addMenuProvider(
+						new MenuProvider() {
+
+							@Override
+							public void onCreateMenu(
+									@NonNull Menu menu, @NonNull MenuInflater menuInflater) {
+
+								menuInflater.inflate(R.menu.search_menu, menu);
+
+								MenuItem searchItem = menu.findItem(R.id.action_search);
+								androidx.appcompat.widget.SearchView searchView =
+										(androidx.appcompat.widget.SearchView)
+												searchItem.getActionView();
+								assert searchView != null;
+								searchView.setImeOptions(EditorInfo.IME_ACTION_DONE);
+
+								searchView.setOnQueryTextListener(
+										new androidx.appcompat.widget.SearchView
+												.OnQueryTextListener() {
+
+											@Override
+											public boolean onQueryTextSubmit(String query) {
+												return false;
+											}
+
+											@Override
+											public boolean onQueryTextChange(String newText) {
+												if (fragmentRepositoriesBinding.recyclerView
+																.getAdapter()
+														!= null) {
+													adapter.getFilter().filter(newText);
+												}
+												return false;
+											}
+										});
+							}
+
+							@Override
+							public boolean onMenuItemSelected(@NonNull MenuItem menuItem) {
+								return false;
+							}
+						},
+						getViewLifecycleOwner(),
+						Lifecycle.State.RESUMED);
 
 		return fragmentRepositoriesBinding.getRoot();
 	}
@@ -175,33 +224,5 @@ public class OrganizationRepositoriesFragment extends Fragment {
 			fetchDataAsync();
 			OrganizationDetailActivity.updateOrgFABActions = false;
 		}
-	}
-
-	@Override
-	public void onCreateOptionsMenu(@NonNull Menu menu, @NonNull MenuInflater inflater) {
-
-		inflater.inflate(R.menu.search_menu, menu);
-		super.onCreateOptionsMenu(menu, inflater);
-
-		MenuItem searchItem = menu.findItem(R.id.action_search);
-		androidx.appcompat.widget.SearchView searchView =
-				(androidx.appcompat.widget.SearchView) searchItem.getActionView();
-		searchView.setImeOptions(EditorInfo.IME_ACTION_DONE);
-
-		searchView.setOnQueryTextListener(
-				new androidx.appcompat.widget.SearchView.OnQueryTextListener() {
-					@Override
-					public boolean onQueryTextSubmit(String query) {
-						return false;
-					}
-
-					@Override
-					public boolean onQueryTextChange(String newText) {
-						if (fragmentRepositoriesBinding.recyclerView.getAdapter() != null) {
-							adapter.getFilter().filter(newText);
-						}
-						return false;
-					}
-				});
 	}
 }

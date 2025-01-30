@@ -7,34 +7,32 @@ import android.os.Looper;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.ProgressBar;
-import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModelProvider;
 import androidx.recyclerview.widget.LinearLayoutManager;
-import androidx.recyclerview.widget.RecyclerView;
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 import org.gitnex.tea4j.v2.models.OrganizationPermissions;
 import org.mian.gitnex.activities.CreateLabelActivity;
 import org.mian.gitnex.adapters.LabelsAdapter;
 import org.mian.gitnex.databinding.FragmentLabelsBinding;
-import org.mian.gitnex.viewmodels.OrganizationLabelsViewModel;
+import org.mian.gitnex.helpers.Constants;
+import org.mian.gitnex.viewmodels.LabelsViewModel;
 
 /**
  * @author M M Arif
  */
 public class OrganizationLabelsFragment extends Fragment {
 
+	private FragmentLabelsBinding fragmentLabelsBinding;
 	private OrganizationPermissions permissions;
-	private OrganizationLabelsViewModel organizationLabelsViewModel;
-	private ProgressBar mProgressBar;
-	private RecyclerView mRecyclerView;
+	private LabelsViewModel labelsViewModel;
 	private LabelsAdapter adapter;
-	private TextView noData;
 	private static final String getOrgName = null;
 	private String repoOwner;
 	private final String type = "org";
+	private int page = 1;
+	private int resultLimit;
 
 	public static OrganizationLabelsFragment newInstance(
 			String repoOwner, OrganizationPermissions permissions) {
@@ -63,29 +61,32 @@ public class OrganizationLabelsFragment extends Fragment {
 	public View onCreateView(
 			@NonNull LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
 
-		FragmentLabelsBinding fragmentLabelsBinding =
-				FragmentLabelsBinding.inflate(inflater, container, false);
-		setHasOptionsMenu(true);
-		organizationLabelsViewModel =
-				new ViewModelProvider(this).get(OrganizationLabelsViewModel.class);
+		fragmentLabelsBinding = FragmentLabelsBinding.inflate(inflater, container, false);
+		labelsViewModel = new ViewModelProvider(this).get(LabelsViewModel.class);
 
 		final SwipeRefreshLayout swipeRefresh = fragmentLabelsBinding.pullToRefresh;
-		noData = fragmentLabelsBinding.noData;
 
-		mRecyclerView = fragmentLabelsBinding.recyclerView;
-		mRecyclerView.setHasFixedSize(true);
-		mRecyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
+		resultLimit = Constants.getCurrentResultLimit(requireContext());
 
-		mProgressBar = fragmentLabelsBinding.progressBar;
+		fragmentLabelsBinding.recyclerView.setHasFixedSize(true);
+		fragmentLabelsBinding.recyclerView.setLayoutManager(
+				new LinearLayoutManager(requireContext()));
 
 		swipeRefresh.setOnRefreshListener(
 				() ->
 						new Handler(Looper.getMainLooper())
 								.postDelayed(
 										() -> {
+											page = 1;
 											swipeRefresh.setRefreshing(false);
-											OrganizationLabelsViewModel.loadOrgLabelsList(
-													repoOwner, getContext(), mProgressBar, noData);
+											LabelsViewModel.loadLabelsList(
+													repoOwner,
+													null,
+													"org",
+													requireContext(),
+													fragmentLabelsBinding,
+													page,
+													resultLimit);
 										},
 										200));
 
@@ -97,7 +98,7 @@ public class OrganizationLabelsFragment extends Fragment {
 
 		fragmentLabelsBinding.createLabel.setOnClickListener(
 				v1 -> {
-					Intent intent = new Intent(getContext(), CreateLabelActivity.class);
+					Intent intent = new Intent(requireContext(), CreateLabelActivity.class);
 					intent.putExtra("orgName", repoOwner);
 					intent.putExtra("type", "org");
 					startActivity(intent);
@@ -113,33 +114,72 @@ public class OrganizationLabelsFragment extends Fragment {
 
 		if (CreateLabelActivity.refreshLabels) {
 
-			OrganizationLabelsViewModel.loadOrgLabelsList(
-					repoOwner, getContext(), mProgressBar, noData);
+			page = 1;
+			LabelsViewModel.loadLabelsList(
+					repoOwner,
+					null,
+					"org",
+					requireContext(),
+					fragmentLabelsBinding,
+					page,
+					resultLimit);
 			CreateLabelActivity.refreshLabels = false;
 		}
 	}
 
 	private void fetchDataAsync(String owner) {
 
-		organizationLabelsViewModel
-				.getOrgLabelsList(owner, getContext(), mProgressBar, noData)
+		labelsViewModel
+				.getLabelsList(
+						owner,
+						null,
+						"org",
+						requireContext(),
+						fragmentLabelsBinding,
+						page,
+						resultLimit)
 				.observe(
 						getViewLifecycleOwner(),
-						labelsListMain -> {
-							adapter = new LabelsAdapter(getContext(), labelsListMain, type, owner);
+						mainList -> {
+							adapter = new LabelsAdapter(requireContext(), mainList, type, owner);
+							adapter.setLoadMoreListener(
+									new LabelsAdapter.OnLoadMoreListener() {
+
+										@Override
+										public void onLoadMore() {
+
+											page += 1;
+											labelsViewModel.loadMore(
+													owner,
+													null,
+													"org",
+													requireContext(),
+													fragmentLabelsBinding,
+													page,
+													resultLimit,
+													adapter);
+											fragmentLabelsBinding.progressBar.setVisibility(
+													View.VISIBLE);
+										}
+
+										@Override
+										public void onLoadFinished() {
+
+											fragmentLabelsBinding.progressBar.setVisibility(
+													View.GONE);
+										}
+									});
 
 							if (adapter.getItemCount() > 0) {
-
-								mRecyclerView.setAdapter(adapter);
-								noData.setVisibility(View.GONE);
+								fragmentLabelsBinding.recyclerView.setAdapter(adapter);
+								fragmentLabelsBinding.noData.setVisibility(View.GONE);
 							} else {
-
 								adapter.notifyDataChanged();
-								mRecyclerView.setAdapter(adapter);
-								noData.setVisibility(View.VISIBLE);
+								fragmentLabelsBinding.recyclerView.setAdapter(adapter);
+								fragmentLabelsBinding.noData.setVisibility(View.VISIBLE);
 							}
 
-							mProgressBar.setVisibility(View.GONE);
+							fragmentLabelsBinding.progressBar.setVisibility(View.GONE);
 						});
 	}
 }

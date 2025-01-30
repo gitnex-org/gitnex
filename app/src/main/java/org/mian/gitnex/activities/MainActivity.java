@@ -24,7 +24,6 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.load.engine.DiskCacheStrategy;
 import com.google.android.material.card.MaterialCardView;
-import com.google.android.material.dialog.MaterialAlertDialogBuilder;
 import com.google.android.material.navigation.NavigationView;
 import java.util.ArrayList;
 import java.util.List;
@@ -42,10 +41,8 @@ import org.mian.gitnex.database.models.UserAccount;
 import org.mian.gitnex.databinding.ActivityMainBinding;
 import org.mian.gitnex.fragments.AccountSettingsFragment;
 import org.mian.gitnex.fragments.AdministrationFragment;
-import org.mian.gitnex.fragments.BottomSheetDraftsFragment;
 import org.mian.gitnex.fragments.BottomSheetMyIssuesFilterFragment;
 import org.mian.gitnex.fragments.DashboardFragment;
-import org.mian.gitnex.fragments.DraftsFragment;
 import org.mian.gitnex.fragments.ExploreFragment;
 import org.mian.gitnex.fragments.MostVisitedReposFragment;
 import org.mian.gitnex.fragments.MyIssuesFragment;
@@ -150,8 +147,6 @@ public class MainActivity extends BaseActivity
 			toolbarTitle.setText(getResources().getString(R.string.navMostVisited));
 		} else if (fragmentById instanceof NotesFragment) {
 			toolbarTitle.setText(getResources().getString(R.string.navNotes));
-		} else if (fragmentById instanceof DraftsFragment) {
-			toolbarTitle.setText(getResources().getString(R.string.titleDrafts));
 		} else if (fragmentById instanceof AdministrationFragment) {
 			toolbarTitle.setText(getResources().getString(R.string.pageTitleAdministration));
 		} else if (fragmentById instanceof MyIssuesFragment) {
@@ -329,15 +324,6 @@ public class MainActivity extends BaseActivity
 			mainIntent.removeExtra("launchFragment");
 
 			switch (launchFragment) {
-				case "drafts":
-					toolbarTitle.setText(getResources().getString(R.string.titleDrafts));
-					getSupportFragmentManager()
-							.beginTransaction()
-							.replace(R.id.fragment_container, new DraftsFragment())
-							.commit();
-					navigationView.setCheckedItem(R.id.nav_comments_draft);
-					return;
-
 				case "notifications":
 					toolbarTitle.setText(getResources().getString(R.string.pageTitleNotifications));
 					getSupportFragmentManager()
@@ -456,15 +442,6 @@ public class MainActivity extends BaseActivity
 					break;
 
 				case 6:
-					toolbarTitle.setText(getResources().getString(R.string.titleDrafts));
-					getSupportFragmentManager()
-							.beginTransaction()
-							.replace(R.id.fragment_container, new DraftsFragment())
-							.commit();
-					navigationView.setCheckedItem(R.id.nav_comments_draft);
-					break;
-
-				case 7:
 					toolbarTitle.setText(getResources().getString(R.string.pageTitleNotifications));
 					getSupportFragmentManager()
 							.beginTransaction()
@@ -473,7 +450,7 @@ public class MainActivity extends BaseActivity
 					navigationView.setCheckedItem(R.id.nav_notifications);
 					break;
 
-				case 8:
+				case 7:
 					toolbarTitle.setText(getResources().getString(R.string.navMyIssues));
 					getSupportFragmentManager()
 							.beginTransaction()
@@ -481,7 +458,7 @@ public class MainActivity extends BaseActivity
 							.commit();
 					navigationView.setCheckedItem(R.id.nav_my_issues);
 					break;
-				case 9:
+				case 8:
 					toolbarTitle.setText(getResources().getString(R.string.navMostVisited));
 					getSupportFragmentManager()
 							.beginTransaction()
@@ -489,7 +466,7 @@ public class MainActivity extends BaseActivity
 							.commit();
 					navigationView.setCheckedItem(R.id.nav_most_visited);
 					break;
-				case 10:
+				case 9:
 					toolbarTitle.setText(getResources().getString(R.string.navNotes));
 					getSupportFragmentManager()
 							.beginTransaction()
@@ -497,7 +474,7 @@ public class MainActivity extends BaseActivity
 							.commit();
 					navigationView.setCheckedItem(R.id.nav_notes);
 					break;
-				case 11:
+				case 10:
 					toolbarTitle.setText(getResources().getString(R.string.dashboard));
 					getSupportFragmentManager()
 							.beginTransaction()
@@ -505,7 +482,7 @@ public class MainActivity extends BaseActivity
 							.commit();
 					navigationView.setCheckedItem(R.id.nav_dashboard);
 					break;
-				case 12:
+				case 11:
 					toolbarTitle.setText(getResources().getString(R.string.navWatchedRepositories));
 					getSupportFragmentManager()
 							.beginTransaction()
@@ -612,41 +589,8 @@ public class MainActivity extends BaseActivity
 
 	@Override
 	public void onButtonClicked(String text) {
-		int currentActiveAccountId = tinyDB.getInt("currentActiveAccountId");
 
 		switch (text) {
-			case "deleteDrafts":
-				if (currentActiveAccountId > 0) {
-
-					FragmentManager fm = getSupportFragmentManager();
-					DraftsFragment frag =
-							(DraftsFragment) fm.findFragmentById(R.id.fragment_container);
-
-					if (frag != null) {
-
-						new MaterialAlertDialogBuilder(ctx)
-								.setTitle(R.string.deleteAllDrafts)
-								.setCancelable(false)
-								.setMessage(R.string.deleteAllDraftsDialogMessage)
-								.setPositiveButton(
-										R.string.menuDeleteText,
-										(dialog, which) -> {
-											frag.deleteAllDrafts(currentActiveAccountId);
-											dialog.dismiss();
-										})
-								.setNeutralButton(R.string.cancelButton, null)
-								.show();
-					} else {
-
-						Toasty.error(ctx, getResources().getString(R.string.genericError));
-					}
-
-				} else {
-
-					Toasty.error(ctx, getResources().getString(R.string.genericError));
-				}
-				break;
-
 			case "openMyIssues":
 				if (getFragmentRefreshListener() != null) {
 					getFragmentRefreshListener().onRefresh("open");
@@ -725,13 +669,6 @@ public class MainActivity extends BaseActivity
 					.beginTransaction()
 					.replace(R.id.fragment_container, new NotificationsFragment())
 					.commit();
-		} else if (id == R.id.nav_comments_draft) {
-
-			toolbarTitle.setText(getResources().getString(R.string.titleDrafts));
-			getSupportFragmentManager()
-					.beginTransaction()
-					.replace(R.id.fragment_container, new DraftsFragment())
-					.commit();
 		} else if (id == R.id.nav_administration) {
 
 			toolbarTitle.setText(getResources().getString(R.string.pageTitleAdministration));
@@ -792,12 +729,7 @@ public class MainActivity extends BaseActivity
 
 		int id = item.getItemId();
 
-		if (id == R.id.genericMenu) {
-
-			BottomSheetDraftsFragment bottomSheet = new BottomSheetDraftsFragment();
-			bottomSheet.show(getSupportFragmentManager(), "draftsBottomSheet");
-			return true;
-		} else if (id == R.id.filter) {
+		if (id == R.id.filter) {
 
 			BottomSheetMyIssuesFilterFragment filterBottomSheet =
 					new BottomSheetMyIssuesFilterFragment();

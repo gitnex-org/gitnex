@@ -14,7 +14,9 @@ import android.view.ViewGroup;
 import android.view.inputmethod.EditorInfo;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.core.view.MenuProvider;
 import androidx.fragment.app.Fragment;
+import androidx.lifecycle.Lifecycle;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 import java.util.ArrayList;
@@ -41,7 +43,6 @@ public class PullRequestsFragment extends Fragment {
 	public static boolean resumePullRequests = false;
 	private final String TAG = "PullRequestFragment";
 	private FragmentPullRequestsBinding fragmentPullRequestsBinding;
-	private Menu menu;
 	private List<PullRequest> prList;
 	private PullRequestsAdapter adapter;
 	private Context context;
@@ -64,7 +65,6 @@ public class PullRequestsFragment extends Fragment {
 
 		fragmentPullRequestsBinding =
 				FragmentPullRequestsBinding.inflate(inflater, container, false);
-		setHasOptionsMenu(true);
 		context = getContext();
 
 		final SwipeRefreshLayout swipeRefresh = fragmentPullRequestsBinding.pullToRefresh;
@@ -113,12 +113,6 @@ public class PullRequestsFragment extends Fragment {
 		((RepoDetailActivity) requireActivity())
 				.setFragmentRefreshListenerPr(
 						prState -> {
-							if (prState.equals("closed")) {
-								menu.getItem(1).setIcon(R.drawable.ic_filter_closed);
-							} else {
-								menu.getItem(1).setIcon(R.drawable.ic_filter);
-							}
-
 							prList.clear();
 
 							adapter = new PullRequestsAdapter(context, prList);
@@ -180,6 +174,55 @@ public class PullRequestsFragment extends Fragment {
 			fragmentPullRequestsBinding.createPullRequest.setVisibility(View.GONE);
 		}
 
+		requireActivity()
+				.addMenuProvider(
+						new MenuProvider() {
+
+							@Override
+							public void onCreateMenu(
+									@NonNull Menu menu, @NonNull MenuInflater menuInflater) {
+
+								menuInflater.inflate(R.menu.search_menu, menu);
+								menuInflater.inflate(R.menu.filter_menu_pr, menu);
+
+								if (repository.getPrState().toString().equals("closed")) {
+									menu.getItem(1).setIcon(R.drawable.ic_filter_closed);
+								} else {
+									menu.getItem(1).setIcon(R.drawable.ic_filter);
+								}
+
+								MenuItem searchItem = menu.findItem(R.id.action_search);
+								androidx.appcompat.widget.SearchView searchView =
+										(androidx.appcompat.widget.SearchView)
+												searchItem.getActionView();
+								assert searchView != null;
+								searchView.setImeOptions(EditorInfo.IME_ACTION_DONE);
+
+								searchView.setOnQueryTextListener(
+										new androidx.appcompat.widget.SearchView
+												.OnQueryTextListener() {
+
+											@Override
+											public boolean onQueryTextSubmit(String query) {
+												return false;
+											}
+
+											@Override
+											public boolean onQueryTextChange(String newText) {
+												filter(newText);
+												return false;
+											}
+										});
+							}
+
+							@Override
+							public boolean onMenuItemSelected(@NonNull MenuItem menuItem) {
+								return false;
+							}
+						},
+						getViewLifecycleOwner(),
+						Lifecycle.State.RESUMED);
+
 		return fragmentPullRequestsBinding.getRoot();
 	}
 
@@ -226,7 +269,7 @@ public class PullRequestsFragment extends Fragment {
 						if (response.code() == 200) {
 
 							assert response.body() != null;
-							if (response.body().size() > 0) {
+							if (!response.body().isEmpty()) {
 								prList.clear();
 								prList.addAll(response.body());
 								adapter.notifyDataChanged();
@@ -285,7 +328,7 @@ public class PullRequestsFragment extends Fragment {
 							List<PullRequest> result = response.body();
 
 							assert result != null;
-							if (result.size() > 0) {
+							if (!result.isEmpty()) {
 								pageSize = result.size();
 								prList.addAll(result);
 							} else {
@@ -302,41 +345,6 @@ public class PullRequestsFragment extends Fragment {
 					@Override
 					public void onFailure(
 							@NonNull Call<List<PullRequest>> call, @NonNull Throwable t) {}
-				});
-	}
-
-	@Override
-	public void onCreateOptionsMenu(@NonNull Menu menu, @NonNull MenuInflater inflater) {
-
-		this.menu = menu;
-		inflater.inflate(R.menu.search_menu, menu);
-		inflater.inflate(R.menu.filter_menu_pr, menu);
-		super.onCreateOptionsMenu(menu, inflater);
-
-		if (repository.getPrState().toString().equals("closed")) {
-			menu.getItem(1).setIcon(R.drawable.ic_filter_closed);
-		} else {
-			menu.getItem(1).setIcon(R.drawable.ic_filter);
-		}
-
-		MenuItem searchItem = menu.findItem(R.id.action_search);
-		androidx.appcompat.widget.SearchView searchView =
-				(androidx.appcompat.widget.SearchView) searchItem.getActionView();
-		searchView.setImeOptions(EditorInfo.IME_ACTION_DONE);
-
-		searchView.setOnQueryTextListener(
-				new androidx.appcompat.widget.SearchView.OnQueryTextListener() {
-
-					@Override
-					public boolean onQueryTextSubmit(String query) {
-						return false;
-					}
-
-					@Override
-					public boolean onQueryTextChange(String newText) {
-						filter(newText);
-						return false;
-					}
 				});
 	}
 

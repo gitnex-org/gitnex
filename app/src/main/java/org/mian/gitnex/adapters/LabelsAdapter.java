@@ -28,45 +28,46 @@ import org.mian.gitnex.helpers.contexts.RepositoryContext;
 /**
  * @author M M Arif
  */
-public class LabelsAdapter extends RecyclerView.Adapter<LabelsAdapter.LabelsViewHolder> {
+public class LabelsAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
 
-	private final List<Label> labelsList;
+	private final Context context;
+	private List<Label> labelsList;
 	private final String type;
 	private final String orgName;
+	private OnLoadMoreListener loadMoreListener;
+	private boolean isLoading = false, isMoreDataAvailable = true;
 
 	public LabelsAdapter(Context ctx, List<Label> labelsMain, String type, String orgName) {
 
+		this.context = ctx;
 		this.labelsList = labelsMain;
 		this.type = type;
 		this.orgName = orgName;
 	}
 
 	@NonNull @Override
-	public LabelsAdapter.LabelsViewHolder onCreateViewHolder(
-			@NonNull ViewGroup parent, int viewType) {
-		View v =
-				LayoutInflater.from(parent.getContext())
-						.inflate(R.layout.list_labels, parent, false);
-		return new LabelsAdapter.LabelsViewHolder(v);
+	public RecyclerView.ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
+		LayoutInflater inflater = LayoutInflater.from(context);
+		return new LabelsAdapter.DataHolder(inflater.inflate(R.layout.list_labels, parent, false));
 	}
 
 	@Override
-	public void onBindViewHolder(@NonNull LabelsAdapter.LabelsViewHolder holder, int position) {
+	public void onBindViewHolder(@NonNull RecyclerView.ViewHolder holder, int position) {
 
-		Label currentItem = labelsList.get(position);
-		holder.labels = currentItem;
+		if (position >= getItemCount() - 1
+				&& isMoreDataAvailable
+				&& !isLoading
+				&& loadMoreListener != null) {
 
-		String labelColor = currentItem.getColor();
-		String labelName = currentItem.getName();
+			isLoading = true;
+			loadMoreListener.onLoadMore();
+		}
+		((LabelsAdapter.DataHolder) holder).bindData(labelsList.get(position));
+	}
 
-		int color = Color.parseColor("#" + labelColor);
-		int contrastColor = new ColorInverter().getContrastColor(color);
-
-		ImageViewCompat.setImageTintList(holder.labelIcon, ColorStateList.valueOf(contrastColor));
-
-		holder.labelName.setTextColor(contrastColor);
-		holder.labelName.setText(labelName);
-		holder.labelView.setCardBackgroundColor(color);
+	@Override
+	public int getItemViewType(int position) {
+		return position;
 	}
 
 	@Override
@@ -74,19 +75,51 @@ public class LabelsAdapter extends RecyclerView.Adapter<LabelsAdapter.LabelsView
 		return labelsList.size();
 	}
 
+	private void updateAdapter(int position) {
+		labelsList.remove(position);
+		notifyItemRemoved(position);
+		notifyItemRangeChanged(position, labelsList.size());
+	}
+
+	public void setMoreDataAvailable(boolean moreDataAvailable) {
+		isMoreDataAvailable = moreDataAvailable;
+		if (!isMoreDataAvailable) {
+			loadMoreListener.onLoadFinished();
+		}
+	}
+
 	@SuppressLint("NotifyDataSetChanged")
 	public void notifyDataChanged() {
 		notifyDataSetChanged();
+		isLoading = false;
+		loadMoreListener.onLoadFinished();
 	}
 
-	public class LabelsViewHolder extends RecyclerView.ViewHolder {
+	public void setLoadMoreListener(OnLoadMoreListener loadMoreListener) {
+		this.loadMoreListener = loadMoreListener;
+	}
+
+	public void updateList(List<Label> list) {
+		labelsList = list;
+		notifyDataChanged();
+	}
+
+	public interface OnLoadMoreListener {
+
+		void onLoadMore();
+
+		void onLoadFinished();
+	}
+
+	class DataHolder extends RecyclerView.ViewHolder {
 
 		private final MaterialCardView labelView;
 		private final ImageView labelIcon;
 		private final TextView labelName;
 		private Label labels;
 
-		private LabelsViewHolder(View itemView) {
+		DataHolder(View itemView) {
+
 			super(itemView);
 
 			labelView = itemView.findViewById(R.id.labelView);
@@ -164,6 +197,24 @@ public class LabelsAdapter extends RecyclerView.Adapter<LabelsAdapter.LabelsView
 									dialog.dismiss();
 								});
 					});
+		}
+
+		@SuppressLint("SetTextI18n")
+		void bindData(Label dataModel) {
+
+			labels = dataModel;
+
+			String labelColor_ = dataModel.getColor();
+			String labelName_ = dataModel.getName();
+
+			int color = Color.parseColor("#" + labelColor_);
+			int contrastColor = new ColorInverter().getContrastColor(color);
+
+			ImageViewCompat.setImageTintList(labelIcon, ColorStateList.valueOf(contrastColor));
+
+			labelName.setTextColor(contrastColor);
+			labelName.setText(labelName_);
+			labelView.setCardBackgroundColor(color);
 		}
 	}
 }

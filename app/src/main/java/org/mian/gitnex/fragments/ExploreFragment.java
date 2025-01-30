@@ -18,7 +18,6 @@ import org.mian.gitnex.R;
 import org.mian.gitnex.activities.MainActivity;
 import org.mian.gitnex.helpers.AppDatabaseSettings;
 import org.mian.gitnex.helpers.AppUtil;
-import org.mian.gitnex.helpers.TinyDB;
 import org.mian.gitnex.helpers.ViewPager2Transformers;
 
 /**
@@ -35,7 +34,6 @@ public class ExploreFragment extends Fragment {
 		View view = inflater.inflate(R.layout.fragment_explore, container, false);
 
 		Context ctx = getContext();
-		TinyDB tinyDB = TinyDB.getInstance(ctx);
 
 		((MainActivity) requireActivity())
 				.setActionBarTitle(getResources().getString(R.string.pageTitleExplore));

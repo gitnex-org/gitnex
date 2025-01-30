@@ -19,10 +19,10 @@ import org.mian.gitnex.clients.RetrofitClient;
 import org.mian.gitnex.databinding.ActivityCreateLabelBinding;
 import org.mian.gitnex.helpers.AlertDialogs;
 import org.mian.gitnex.helpers.AppUtil;
+import org.mian.gitnex.helpers.Constants;
 import org.mian.gitnex.helpers.SnackBar;
 import org.mian.gitnex.helpers.contexts.RepositoryContext;
 import org.mian.gitnex.viewmodels.LabelsViewModel;
-import org.mian.gitnex.viewmodels.OrganizationLabelsViewModel;
 import retrofit2.Call;
 import retrofit2.Callback;
 
@@ -37,6 +37,8 @@ public class CreateLabelActivity extends BaseActivity {
 	private String labelColor = "";
 	private String labelColorDefault = "";
 	private ColorPickerPreferenceManager colorManager;
+	private int page = 1;
+	private int resultLimit;
 
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
@@ -60,6 +62,8 @@ public class CreateLabelActivity extends BaseActivity {
 		}
 
 		activityCreateLabelBinding.topAppBar.setNavigationOnClickListener(v -> finish());
+
+		resultLimit = Constants.getCurrentResultLimit(ctx);
 
 		colorManager = ColorPickerPreferenceManager.getInstance(this);
 		colorManager.clearSavedAllData();
@@ -161,7 +165,7 @@ public class CreateLabelActivity extends BaseActivity {
 			updateLabelColor = labelColor;
 		}
 
-		if (updateLabelName.equals("")) {
+		if (updateLabelName.isEmpty()) {
 
 			SnackBar.error(
 					ctx, findViewById(android.R.id.content), getString(R.string.labelEmptyError));
@@ -198,7 +202,7 @@ public class CreateLabelActivity extends BaseActivity {
 			newLabelColor = labelColor;
 		}
 
-		if (newLabelName.equals("")) {
+		if (newLabelName.isEmpty()) {
 
 			SnackBar.error(
 					ctx, findViewById(android.R.id.content), getString(R.string.labelEmptyError));
@@ -386,12 +390,24 @@ public class CreateLabelActivity extends BaseActivity {
 														getIntent().getStringExtra("type"))
 												.equals("org")) {
 
-									OrganizationLabelsViewModel.loadOrgLabelsList(
-											getIntent().getStringExtra("orgName"), ctx, null, null);
+									LabelsViewModel.loadLabelsList(
+											getIntent().getStringExtra("orgName"),
+											null,
+											"org",
+											ctx,
+											null,
+											page,
+											resultLimit);
 								} else {
 
 									LabelsViewModel.loadLabelsList(
-											repository.getOwner(), repository.getName(), ctx);
+											repository.getOwner(),
+											repository.getName(),
+											"repo",
+											ctx,
+											null,
+											page,
+											resultLimit);
 								}
 							}
 						} else if (response.code() == 401) {

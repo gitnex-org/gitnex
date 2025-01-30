@@ -51,7 +51,6 @@ public class WikiFragment extends Fragment {
 			@NonNull LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
 
 		fragmentWikiBinding = FragmentWikiBinding.inflate(inflater, container, false);
-		setHasOptionsMenu(true);
 
 		AccountContext account = ((BaseActivity) requireActivity()).getAccount();
 		boolean archived = repository.getRepository().isArchived();
