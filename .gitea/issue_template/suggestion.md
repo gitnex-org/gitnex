@@ -4,35 +4,32 @@ name: "Suggestion"
 about: "A general suggestion"
 labels:
 
-- Suggestion
+- "💡 Suggestion"
 
 ---
 
-## # Describe your matter briefly
+**I confirm that I have searched the issue tracker**  
+Before opening an issue, take a few minutes to search the issue tracker (both open and closed issues) for the question you are asking. This will reduce the need for issue triage and save time.
 
-<br><br>
+ - [ ] I confirm that I have searched the issue tracker
 
-##### What did you expect?
----
-<br><br>
+**Describe the suggestion**  
+A clear and concise description of the suggestion. (remove this line)
 
-##### Some additional details
----
+**Additional context**  
+Add any other context about the suggestion here. (remove this line)
 
-* The version of **Gitea** you are using:
-* The version of **GitNex** you are using:
-* Source of installation (Play Store, F-Droid, APK):
-* Current android version and phone model/manufacturer:
-* The type of certificate your instance is using (self-signed, signed):
-* How you used to log in (via password or token):
-  <br>
+**Versions (please complete the following information)**  
+ - GitNex:  
+ - Android:  
+ - Gitea/Forgejo:  
 
-##### We would appreciate some screenshots or stacktrace's, but this is also not required.
----
-<!-- Screenshots and stacktrace's can go here. -->
-<br><br>
+**Mode of installation**  
+ - [ ] Google Play Store
+ - [ ] F-droid
+ - [ ] APK
+ - [ ] Built from source
+ - [ ] OpenAPK
+ - [ ] Other stores (Name: )
 
 - [ ] I carefully read the [contribution guidelines](https://codeberg.org/gitnex/GitNex/wiki/Contributing).
-  <br>
-
-<!-- Thank you for your time. --> 
