@@ -110,7 +110,7 @@
                android:textColor="?attr/primaryTextColor"
                android:textSize="@dimen/dimen14sp"/>
 
-            <com.google.android.material.textfield.TextInputLayout
+           <com.google.android.material.textfield.TextInputLayout
                 android:id="@+id/releaseContentLayout"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -136,7 +136,7 @@
 
             </com.google.android.material.textfield.TextInputLayout>
 
-            <TextView
+           <TextView
                 android:id="@+id/markdown_preview"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -148,30 +148,28 @@
                 android:textSize="@dimen/dimen14sp"
                 android:visibility="gone" />
 
-            <com.google.android.material.textfield.TextInputLayout
-                android:id="@+id/releaseBranchLayout"
-                style="@style/Widget.Material3.TextInputLayout.OutlinedBox.ExposedDropdownMenu"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="@dimen/dimen8dp"
-                android:layout_marginBottom="@dimen/dimen8dp"
-                android:hint="@string/releaseBranchText"
-                android:textColorHint="?attr/hintColor"
-                app:endIconTint="?attr/iconsColor"
-                app:hintTextColor="?attr/hintColor">
+           <com.google.android.material.textfield.TextInputLayout
+               android:id="@+id/releaseBranchLayout"
+               android:layout_width="match_parent"
+               android:layout_height="wrap_content"
+               android:layout_marginTop="@dimen/dimen8dp"
+               android:layout_marginBottom="@dimen/dimen8dp"
+               android:hint="@string/releaseBranchText"
+               android:textColorHint="?attr/hintColor"
+               app:hintTextColor="?attr/hintColor">
 
-                <AutoCompleteTextView
+                <com.google.android.material.textfield.TextInputEditText
                     android:id="@+id/releaseBranch"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:inputType="none"
-                    android:labelFor="@+id/releaseBranch"
+                    android:singleLine="true"
                     android:textColor="?attr/inputTextColor"
+                    android:textColorHint="?attr/hintColor"
                     android:textSize="@dimen/dimen16sp"/>
 
             </com.google.android.material.textfield.TextInputLayout>
 
-            <CheckBox
+           <CheckBox
                 android:id="@+id/releaseType"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -181,7 +179,7 @@
                 android:textColor="?attr/primaryTextColor"
                 android:textSize="@dimen/dimen16sp"/>
 
-            <CheckBox
+           <CheckBox
                 android:id="@+id/releaseDraft"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -191,7 +189,7 @@
                 android:textColor="?attr/primaryTextColor"
                 android:textSize="@dimen/dimen16sp"/>
 
-        </LinearLayout>
+       </LinearLayout>
 
     </androidx.core.widget.NestedScrollView>
 

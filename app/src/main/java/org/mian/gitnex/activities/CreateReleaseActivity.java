@@ -1,16 +1,18 @@
 package org.mian.gitnex.activities;
 
 import android.annotation.SuppressLint;
+import android.app.Dialog;
+import android.graphics.Rect;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Looper;
 import android.view.LayoutInflater;
 import android.view.MotionEvent;
 import android.view.View;
-import android.widget.ArrayAdapter;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AlertDialog;
 import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 import com.google.android.material.dialog.MaterialAlertDialogBuilder;
 import com.vdurmont.emoji.EmojiParser;
 import java.util.ArrayList;
@@ -22,6 +24,7 @@ import org.gitnex.tea4j.v2.models.CreateTagOption;
 import org.gitnex.tea4j.v2.models.Release;
 import org.gitnex.tea4j.v2.models.Tag;
 import org.mian.gitnex.R;
+import org.mian.gitnex.adapters.BranchAdapter;
 import org.mian.gitnex.adapters.NotesAdapter;
 import org.mian.gitnex.clients.RetrofitClient;
 import org.mian.gitnex.database.api.BaseApi;
@@ -30,12 +33,14 @@ import org.mian.gitnex.database.models.Notes;
 import org.mian.gitnex.databinding.ActivityCreateReleaseBinding;
 import org.mian.gitnex.databinding.CustomInsertNoteBinding;
 import org.mian.gitnex.helpers.AlertDialogs;
+import org.mian.gitnex.helpers.Constants;
 import org.mian.gitnex.helpers.Markdown;
 import org.mian.gitnex.helpers.SnackBar;
 import org.mian.gitnex.helpers.Toasty;
 import org.mian.gitnex.helpers.contexts.RepositoryContext;
 import retrofit2.Call;
 import retrofit2.Callback;
+import retrofit2.Response;
 
 /**
  * @author M M Arif
@@ -122,7 +127,16 @@ public class CreateReleaseActivity extends BaseActivity {
 
 		binding.insertNote.setOnClickListener(insertNote -> showAllNotes());
 
-		getBranches(repository.getOwner(), repository.getName());
+		binding.releaseBranch.setKeyListener(null);
+		binding.releaseBranch.setCursorVisible(false);
+
+		binding.releaseBranch.setOnFocusChangeListener(
+				(v, hasFocus) -> {
+					if (hasFocus) {
+						getBranches();
+						binding.releaseBranch.clearFocus();
+					}
+				});
 	}
 
 	private void showAllNotes() {
@@ -358,52 +372,149 @@ public class CreateReleaseActivity extends BaseActivity {
 				});
 	}
 
-	private void getBranches(final String repoOwner, final String repoName) {
+	private void getBranches() {
 
-		Call<List<Branch>> call =
-				RetrofitClient.getApiInterface(ctx)
-						.repoListBranches(repoOwner, repoName, null, null);
+		Dialog progressDialog = new Dialog(ctx);
+		progressDialog.setCancelable(false);
+		progressDialog.setContentView(R.layout.custom_progress_loader);
+		progressDialog.show();
 
-		call.enqueue(
-				new Callback<>() {
+		MaterialAlertDialogBuilder dialogBuilder = new MaterialAlertDialogBuilder(ctx);
+		View dialogView = getLayoutInflater().inflate(R.layout.custom_branches_dialog, null);
+		dialogBuilder.setView(dialogView);
 
+		RecyclerView recyclerView = dialogView.findViewById(R.id.recyclerView);
+		recyclerView.setLayoutManager(new LinearLayoutManager(ctx));
+
+		recyclerView.addItemDecoration(
+				new RecyclerView.ItemDecoration() {
 					@Override
-					public void onResponse(
-							@NonNull Call<List<Branch>> call,
-							@NonNull retrofit2.Response<List<Branch>> response) {
+					public void getItemOffsets(
+							@NonNull Rect outRect,
+							@NonNull View view,
+							@NonNull RecyclerView parent,
+							@NonNull RecyclerView.State state) {
 
-						if (response.isSuccessful()) {
+						int position = parent.getChildAdapterPosition(view);
+						int spacing = (int) ctx.getResources().getDimension(R.dimen.dimen20dp);
 
-							if (response.code() == 200) {
+						outRect.right = spacing;
+						outRect.left = spacing;
 
-								List<Branch> branchesList_ = response.body();
-
-								assert branchesList_ != null;
-								for (Branch i : branchesList_) {
-									branchesList.add(i.getName());
-								}
-
-								ArrayAdapter<String> adapter =
-										new ArrayAdapter<>(
-												CreateReleaseActivity.this,
-												R.layout.list_spinner_items,
-												branchesList);
-
-								binding.releaseBranch.setAdapter(adapter);
-
-								binding.releaseBranch.setOnItemClickListener(
-										(parent, view, position, id) ->
-												selectedBranch = branchesList.get(position));
-							}
-						} else if (response.code() == 401) {
-
-							AlertDialogs.authorizationTokenRevokedDialog(ctx);
+						if (position > 0) {
+							outRect.top = spacing;
 						}
 					}
-
-					@Override
-					public void onFailure(@NonNull Call<List<Branch>> call, @NonNull Throwable t) {}
 				});
+
+		dialogBuilder.setNeutralButton(R.string.close, (dialog, which) -> dialog.dismiss());
+		AlertDialog dialog = dialogBuilder.create();
+		dialog.setCancelable(false);
+		dialog.setCanceledOnTouchOutside(false);
+
+		final int[] page = {1};
+		final int resultLimit = Constants.getCurrentResultLimit(ctx);
+		final boolean[] isLoading = {false};
+		final boolean[] isLastPage = {false};
+
+		BranchAdapter adapter =
+				new BranchAdapter(
+						branchName -> {
+							binding.releaseBranch.setText(branchName);
+							selectedBranch = branchName;
+							dialog.dismiss();
+						});
+		recyclerView.setAdapter(adapter);
+
+		Runnable fetchBranches =
+				() -> {
+					if (isLoading[0] || isLastPage[0]) return;
+					isLoading[0] = true;
+
+					Call<List<Branch>> call =
+							RetrofitClient.getApiInterface(ctx)
+									.repoListBranches(
+											repository.getOwner(),
+											repository.getName(),
+											page[0],
+											resultLimit);
+
+					call.enqueue(
+							new Callback<>() {
+								@Override
+								public void onResponse(
+										@NonNull Call<List<Branch>> call,
+										@NonNull Response<List<Branch>> response) {
+
+									isLoading[0] = false;
+
+									if (response.code() == 200 && response.body() != null) {
+										List<Branch> newBranches = response.body();
+										adapter.addBranches(newBranches);
+
+										String totalCountStr =
+												response.headers().get("X-Total-Count");
+
+										if (totalCountStr != null) {
+
+											int totalItems = Integer.parseInt(totalCountStr);
+											int totalPages =
+													(int)
+															Math.ceil(
+																	(double) totalItems
+																			/ resultLimit);
+											isLastPage[0] = page[0] >= totalPages;
+										} else {
+											isLastPage[0] = newBranches.size() < resultLimit;
+										}
+										page[0]++;
+
+										if (page[0] == 2 && !dialog.isShowing()) {
+											progressDialog.dismiss();
+											dialog.show();
+										}
+									} else {
+										progressDialog.dismiss();
+									}
+								}
+
+								@Override
+								public void onFailure(
+										@NonNull Call<List<Branch>> call, @NonNull Throwable t) {
+									isLoading[0] = false;
+									progressDialog.dismiss();
+								}
+							});
+				};
+
+		recyclerView.addOnScrollListener(
+				new RecyclerView.OnScrollListener() {
+					@Override
+					public void onScrolled(@NonNull RecyclerView recyclerView, int dx, int dy) {
+
+						super.onScrolled(recyclerView, dx, dy);
+						LinearLayoutManager layoutManager =
+								(LinearLayoutManager) recyclerView.getLayoutManager();
+
+						if (layoutManager != null) {
+
+							int visibleItemCount = layoutManager.getChildCount();
+							int totalItemCount = layoutManager.getItemCount();
+							int firstVisibleItemPosition =
+									layoutManager.findFirstVisibleItemPosition();
+
+							if (!isLoading[0]
+									&& !isLastPage[0]
+									&& (visibleItemCount + firstVisibleItemPosition)
+											>= totalItemCount - 5) {
+								fetchBranches.run();
+							}
+						}
+					}
+				});
+
+		adapter.clear();
+		fetchBranches.run();
 	}
 
 	@Override
