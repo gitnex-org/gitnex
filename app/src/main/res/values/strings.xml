@@ -7,7 +7,6 @@
     <string name="appWebsiteLink" translatable="false">https://gitnex.com/</string>
     <string name="commitPage" translatable="false">Your Instance Version</string>
     <string name="supportLinkPatreon" translatable="false">https://www.patreon.com/mmarif</string>
-    <string name="supportLinkBuyMeaCoffee" translatable="false">https://www.buymeacoffee.com/mmarif</string>
     <string name="feedbackLink" translatable="false">https://cloud.swatian.com/apps/forms/s/xe7KekTNKgrj58EK6WHQyJDf</string>
     <string name="appVersionBuild" translatable="false">%s / %d</string>
     <string name="appDesc" translatable="false">GitNex is a free, open-source Android client for Git repository management tools Forgejo and Gitea. GitNex is Licensed under GPLv3.\n\nThanks to all the contributors and donators for your generous work and donations.</string>
@@ -16,9 +15,7 @@
     <string name="translateWithCrowdin" translatable="false">Crowdin</string>
     <string name="translateText" translatable="false">Translate</string>
     <string name="supportText" translatable="false">Support</string>
-
     <string name="supportTextPatreon" translatable="false">Patreon</string>
-    <string name="supportTextBuyMeaCoffee" translatable="false">BMC</string>
     <string name="feedbackText" translatable="false">Feedback</string>
 
     <!-- menu items -->
@@ -30,7 +27,6 @@
     <string name="navOrg">Organizations</string>
     <string name="navAbout">About</string>
     <string name="navRate">Rate GitNex</string>
-    <string name="navLogout">Logout</string>
     <string name="navAdministration">Instance Administration</string>
     <string name="navMyIssues">My Issues</string>
     <string name="navMostVisited">Most Visited Repos</string>
@@ -88,7 +84,6 @@
     <string name="navigationDrawerOpen">Open Navigation Drawer</string>
     <string name="navigationDrawerClose">Close Navigation Drawer</string>
     <string name="protocol">Protocol</string>
-    <string name="urlInfoTooltip">1- Choose the correct protocol(https or http). \n2- Enter instance url e.g: try.gitea.io. \n3- If you have enabled 2FA for your account, enter the code in the OTP Code field. \n4- For HTTP basic auth use USERNAME@DOMAIN.COM in the URL field.</string>
     <string name="malformedUrl">Couldn\'t connect to host. Please check your URL or port for any errors</string>
     <string name="protocolError">It is not recommended to use HTTP protocol unless you are testing on local network</string>
     <string name="malformedJson">Malformed JSON was received. Server response was not successful</string>
@@ -288,7 +283,7 @@
     <string name="selectBranchError">Select a branch for release</string>
 
     <string name="alertDialogTokenRevokedTitle">Authorization Error</string>
-    <string name="alertDialogTokenRevokedMessage">It seems that the Access Token is revoked OR your are not allowed to see these contents.\n\nIn case of revoked Token, please logout and login again</string>
+    <string name="alertDialogTokenRevokedMessage">It seems that the Access Token is revoked OR your are not allowed to see these contents.\n\nIn case of revoked Token, please add the account again</string>
     <string name="labelDeleteMessage">Do you really want to delete this label?</string>
 
     <!-- org tabbed layout str -->
@@ -441,10 +436,6 @@
     <string name="releaseDeleted">Release deleted</string>
     <!-- release -->
 
-    <string name="loginOTPTypeError">OTP code should be numbers</string>
-    <string name="loginOTP">OTP Code (Optional)</string>
-    <string name="otpMessage">Enter otp code if 2FA is enabled</string>
-
     <string name="openWebRepo">Open in Browser</string>
 
     <string name="repoStargazersInMenu">Stargazers</string>
@@ -565,12 +556,11 @@
     <string name="unWatchRepositorySuccess">Repository removed from watch list</string>
     <string name="filesBreadcrumbRoot" translatable="false">Root</string>
 
-    <string name="versionUnsupportedOld">Unsupported old version(%1$s) of Gitea detected. Please update to latest stable version. If you continue, some features may not work.</string>
-    <string name="versionUnsupportedNew">New Gitea version detected! Please UPDATE GitNex!</string>
-    <string name="versionUnknown">No Gitea detected!</string>
-    <string name="versionAlertDialogHeader">Unsupported Version of Gitea</string>
+    <string name="versionUnsupportedOld">Unsupported old version(%1$s) of the server detected. Please update to latest stable version. If you continue, some features may not work.</string>
+    <string name="versionUnsupportedNew">New server version detected! Please UPDATE GitNex!</string>
+    <string name="versionUnknown">No server detected!</string>
+    <string name="versionAlertDialogHeader">Unsupported Version of server</string>
 
-    <string name="loginViaPassword">Basic Auth</string>
     <string name="unauthorizedApiError">Instance has returned an error - Unauthorized. Check your credentials and try again</string>
     <string name="loginTokenError">Token is required</string>
 
@@ -815,7 +805,7 @@
     <string name="tagDeleteError">A tag attached to a release cannot be deleted directly</string>
     <string name="useCustomTabs">Use Custom Tabs</string>
     <string name="browserOpenFailed">No application found to open this link. SSH URLs and URLs with another prefix the http:// or https:// are not supported by most browser</string>
-    <string name="logInAgain">Log in again</string>
+
     <string name="notLoggedIn">%s \u25CF not logged in</string>
     <string name="followSystem">Follow system (Light/Dark)</string>
     <string name="followSystemBlack">Follow system (Light/Pitch Black)</string>

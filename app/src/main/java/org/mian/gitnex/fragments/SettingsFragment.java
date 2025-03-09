@@ -81,14 +81,6 @@ public class SettingsFragment extends Fragment {
 
 		fragmentSettingsBinding.aboutAppFrame.setOnClickListener(aboutApp -> showAboutAppDialog());
 
-		fragmentSettingsBinding.navLogout.setOnClickListener(
-				logout -> {
-					AppUtil.logout(ctx);
-					requireActivity()
-							.overridePendingTransition(
-									android.R.anim.fade_in, android.R.anim.fade_out);
-				});
-
 		return fragmentSettingsBinding.getRoot();
 	}
 
@@ -113,12 +105,6 @@ public class SettingsFragment extends Fragment {
 						AppUtil.openUrlInBrowser(
 								requireContext(),
 								getResources().getString(R.string.supportLinkPatreon)));
-
-		aboutAppDialogBinding.donationLinkBuyMeaCoffee.setOnClickListener(
-				v11 ->
-						AppUtil.openUrlInBrowser(
-								requireContext(),
-								getResources().getString(R.string.supportLinkBuyMeaCoffee)));
 
 		aboutAppDialogBinding.translateLink.setOnClickListener(
 				v13 ->

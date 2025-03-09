@@ -105,6 +105,7 @@
             android:name=".activities.LoginActivity"
             android:configChanges="orientation|screenSize|smallestScreenSize|density|screenLayout|keyboard|keyboardHidden|navigation"
             android:launchMode="singleTask"
+            android:windowSoftInputMode="adjustResize"
             android:theme="@android:style/Theme.NoTitleBar"/>
         <activity
             android:name=".activities.CreateRepoActivity"

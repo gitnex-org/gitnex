@@ -142,23 +142,6 @@
                         android:backgroundTint="?attr/fabColor"
                         app:icon="@drawable/ic_patreon" />
 
-                    <com.google.android.material.floatingactionbutton.ExtendedFloatingActionButton
-                        android:id="@+id/donationLinkBuyMeaCoffee"
-                        android:layout_width="@dimen/dimen0dp"
-                        android:layout_height="@dimen/dimen60dp"
-                        android:layout_marginEnd="@dimen/dimen0dp"
-                        android:layout_marginStart="@dimen/dimen6dp"
-                        android:layout_weight=".5"
-                        android:stateListAnimator="@null"
-                        android:text="@string/supportTextBuyMeaCoffee"
-                        android:textStyle="bold"
-                        android:contentDescription="@string/supportTextBuyMeaCoffee"
-                        android:textColor="?attr/materialCardBackgroundColor"
-                        app:iconTint="?attr/materialCardBackgroundColor"
-                        android:backgroundTint="?attr/fabColor"
-                        android:visibility="gone"
-                        app:icon="@drawable/ic_bmc" />
-
                 </LinearLayout>
 
                 <!-- translate/website text -->
