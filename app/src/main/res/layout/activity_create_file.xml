@@ -113,29 +113,25 @@
 
             <com.google.android.material.textfield.TextInputLayout
                 android:id="@+id/newFileBranchesLayout"
-                style="@style/Widget.Material3.TextInputLayout.OutlinedBox.ExposedDropdownMenu"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="@dimen/dimen8dp"
                 android:layout_marginBottom="@dimen/dimen8dp"
                 android:hint="@string/newFileBranches"
-                android:textColorHint="?attr/hintColor"
                 app:endIconTint="?attr/iconsColor"
-                app:helperText="@string/newFileEmptyBranchMessage"
-                app:helperTextEnabled="true"
+                app:endIconMode="custom"
+                app:endIconDrawable="@drawable/ic_add"
                 app:helperTextTextColor="?attr/inputTextColor"
+                android:textColorHint="?attr/hintColor"
                 app:hintTextColor="?attr/hintColor">
 
-                <AutoCompleteTextView
+                <com.google.android.material.textfield.TextInputEditText
                     android:id="@+id/new_file_branches"
-                    style="@style/Widget.MaterialComponents.AutoCompleteTextView.FilledBox"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:imeOptions="actionNext"
-                    android:inputType="textCapSentences"
-                    android:labelFor="@id/new_file_branches"
                     android:singleLine="true"
                     android:textColor="?attr/inputTextColor"
+                    android:textColorHint="?attr/hintColor"
                     android:textSize="@dimen/dimen16sp"/>
 
             </com.google.android.material.textfield.TextInputLayout>

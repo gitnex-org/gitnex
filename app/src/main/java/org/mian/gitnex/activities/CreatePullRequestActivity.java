@@ -615,13 +615,14 @@ public class CreatePullRequestActivity extends BaseActivity
 							@NonNull RecyclerView.State state) {
 
 						int position = parent.getChildAdapterPosition(view);
-						int spacing = (int) ctx.getResources().getDimension(R.dimen.dimen20dp);
+						int spacingSides = (int) ctx.getResources().getDimension(R.dimen.dimen16dp);
+						int spacingTop = (int) ctx.getResources().getDimension(R.dimen.dimen12dp);
 
-						outRect.right = spacing;
-						outRect.left = spacing;
+						outRect.right = spacingSides;
+						outRect.left = spacingSides;
 
 						if (position > 0) {
-							outRect.top = spacing;
+							outRect.top = spacingTop;
 						}
 					}
 				});

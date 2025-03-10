@@ -427,17 +427,22 @@ public class FilesFragment extends Fragment implements FilesAdapter.FilesAdapter
 							@NonNull RecyclerView.State state) {
 
 						int position = parent.getChildAdapterPosition(view);
-						int spacing =
+						int spacingSides =
 								(int)
 										requireContext()
 												.getResources()
-												.getDimension(R.dimen.dimen20dp);
+												.getDimension(R.dimen.dimen16dp);
+						int spacingTop =
+								(int)
+										requireContext()
+												.getResources()
+												.getDimension(R.dimen.dimen12dp);
 
-						outRect.right = spacing;
-						outRect.left = spacing;
+						outRect.right = spacingSides;
+						outRect.left = spacingSides;
 
 						if (position > 0) {
-							outRect.top = spacing;
+							outRect.top = spacingTop;
 						}
 					}
 				});

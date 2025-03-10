@@ -2,35 +2,46 @@ package org.mian.gitnex.activities;
 
 import android.annotation.SuppressLint;
 import android.app.Activity;
+import android.app.Dialog;
 import android.content.Intent;
+import android.graphics.Rect;
 import android.os.Bundle;
 import android.os.Handler;
+import android.view.LayoutInflater;
 import android.view.MenuItem;
 import android.view.MotionEvent;
 import android.view.View;
-import android.widget.ArrayAdapter;
+import android.widget.Button;
 import androidx.activity.result.ActivityResultLauncher;
 import androidx.activity.result.contract.ActivityResultContracts;
 import androidx.annotation.NonNull;
-import java.util.ArrayList;
+import androidx.appcompat.app.AlertDialog;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
+import com.google.android.material.dialog.MaterialAlertDialogBuilder;
+import com.google.android.material.textfield.TextInputEditText;
 import java.util.List;
 import java.util.Objects;
 import org.apache.commons.io.FilenameUtils;
 import org.gitnex.tea4j.v2.models.Branch;
+import org.gitnex.tea4j.v2.models.CreateBranchRepoOption;
 import org.gitnex.tea4j.v2.models.CreateFileOptions;
 import org.gitnex.tea4j.v2.models.DeleteFileOptions;
 import org.gitnex.tea4j.v2.models.FileDeleteResponse;
 import org.gitnex.tea4j.v2.models.FileResponse;
 import org.gitnex.tea4j.v2.models.UpdateFileOptions;
 import org.mian.gitnex.R;
+import org.mian.gitnex.adapters.BranchAdapter;
 import org.mian.gitnex.clients.RetrofitClient;
 import org.mian.gitnex.databinding.ActivityCreateFileBinding;
 import org.mian.gitnex.helpers.AlertDialogs;
 import org.mian.gitnex.helpers.AppUtil;
+import org.mian.gitnex.helpers.Constants;
 import org.mian.gitnex.helpers.SnackBar;
 import org.mian.gitnex.helpers.contexts.RepositoryContext;
 import retrofit2.Call;
 import retrofit2.Callback;
+import retrofit2.Response;
 
 /**
  * @author M M Arif
@@ -40,7 +51,6 @@ public class CreateFileActivity extends BaseActivity {
 	public static final int FILE_ACTION_CREATE = 0;
 	public static final int FILE_ACTION_DELETE = 1;
 	public static final int FILE_ACTION_EDIT = 2;
-	private final List<String> branches = new ArrayList<>();
 	private ActivityCreateFileBinding binding;
 	ActivityResultLauncher<Intent> codeEditorActivityResultLauncher =
 			registerForActivityResult(
@@ -126,7 +136,16 @@ public class CreateFileActivity extends BaseActivity {
 			delete.setVisible(false);
 		}
 
-		getBranches(repository.getOwner(), repository.getName());
+		binding.newFileBranches.setKeyListener(null);
+		binding.newFileBranches.setCursorVisible(false);
+		binding.newFileBranches.setOnFocusChangeListener(
+				(v, hasFocus) -> {
+					if (hasFocus) {
+						getBranches();
+						binding.newFileBranches.clearFocus();
+					}
+				});
+		binding.newFileBranchesLayout.setEndIconOnClickListener(v -> showCreateBranchDialog());
 
 		binding.openCodeEditor.setOnClickListener(
 				v ->
@@ -248,6 +267,116 @@ public class CreateFileActivity extends BaseActivity {
 		}
 	}
 
+	private void showCreateBranchDialog() {
+
+		MaterialAlertDialogBuilder builder = new MaterialAlertDialogBuilder(ctx);
+		builder.setTitle(getString(R.string.create_branch));
+
+		LayoutInflater inflater = getLayoutInflater();
+		View dialogView = inflater.inflate(R.layout.custom_create_branch_dialog, null);
+		builder.setView(dialogView);
+
+		TextInputEditText branchName_ = dialogView.findViewById(R.id.branch_name);
+		TextInputEditText ref_ = dialogView.findViewById(R.id.ref);
+
+		ref_.setText(Objects.requireNonNull(binding.newFileBranches.getText()).toString());
+
+		builder.setPositiveButton(getString(R.string.newCreateButtonCopy), null);
+		builder.setNeutralButton(getString(R.string.close), (dialog, which) -> dialog.dismiss());
+
+		AlertDialog dialog = builder.create();
+		dialog.show();
+
+		Button positiveButton = dialog.getButton(AlertDialog.BUTTON_POSITIVE);
+		positiveButton.setOnClickListener(
+				v -> {
+					String branchName =
+							Objects.requireNonNull(branchName_.getText()).toString().trim();
+					String ref = Objects.requireNonNull(ref_.getText()).toString().trim();
+
+					if (branchName.isEmpty() || ref.isEmpty()) {
+						SnackBar.error(
+								ctx,
+								findViewById(android.R.id.content),
+								getString(R.string.create_branch_empty_fields));
+					} else {
+						createBranch(branchName, ref, dialog);
+					}
+				});
+	}
+
+	private void createBranch(String branchName, String ref, AlertDialog dialog) {
+
+		CreateBranchRepoOption createBranchRepoOption = new CreateBranchRepoOption();
+		createBranchRepoOption.setNewBranchName(branchName);
+		createBranchRepoOption.setOldRefName(ref);
+
+		Call<Branch> call =
+				RetrofitClient.getApiInterface(ctx)
+						.repoCreateBranch(
+								repository.getOwner(),
+								repository.getName(),
+								createBranchRepoOption);
+
+		call.enqueue(
+				new Callback<>() {
+					@Override
+					public void onResponse(
+							@NonNull Call<Branch> call, @NonNull Response<Branch> response) {
+						switch (response.code()) {
+							case 201:
+								binding.newFileBranches.setText(branchName);
+								SnackBar.success(
+										ctx,
+										findViewById(android.R.id.content),
+										getString(R.string.branch_created));
+								dialog.dismiss();
+								break;
+							case 401:
+								AlertDialogs.authorizationTokenRevokedDialog(ctx);
+								break;
+							case 403:
+								SnackBar.error(
+										ctx,
+										findViewById(android.R.id.content),
+										getString(R.string.branch_error_archive_mirror));
+								break;
+							case 404:
+								SnackBar.error(
+										ctx,
+										findViewById(android.R.id.content),
+										getString(R.string.branch_error_ref_not_found));
+								break;
+							case 409:
+								SnackBar.error(
+										ctx,
+										findViewById(android.R.id.content),
+										getString(R.string.branch_error_exists, branchName));
+								break;
+							case 423:
+								SnackBar.error(
+										ctx,
+										findViewById(android.R.id.content),
+										getString(R.string.branch_error_repo_locked));
+								break;
+							default:
+								SnackBar.error(
+										ctx,
+										findViewById(android.R.id.content),
+										getString(R.string.genericError));
+						}
+					}
+
+					@Override
+					public void onFailure(@NonNull Call<Branch> call, @NonNull Throwable t) {
+						SnackBar.error(
+								ctx,
+								findViewById(android.R.id.content),
+								getString(R.string.genericServerResponseError));
+					}
+				});
+	}
+
 	private void createNewFile(
 			String repoOwner,
 			String repoName,
@@ -259,12 +388,7 @@ public class CreateFileActivity extends BaseActivity {
 		CreateFileOptions createNewFileJsonStr = new CreateFileOptions();
 		createNewFileJsonStr.setContent(fileContent);
 		createNewFileJsonStr.setMessage(fileCommitMessage);
-
-		if (branches.contains(branchName)) {
-			createNewFileJsonStr.setBranch(branchName);
-		} else {
-			createNewFileJsonStr.setNewBranch(branchName);
-		}
+		createNewFileJsonStr.setBranch(branchName);
 
 		Call<FileResponse> call =
 				RetrofitClient.getApiInterface(ctx)
@@ -328,12 +452,7 @@ public class CreateFileActivity extends BaseActivity {
 		DeleteFileOptions deleteFileJsonStr = new DeleteFileOptions();
 		deleteFileJsonStr.setMessage(fileCommitMessage);
 		deleteFileJsonStr.setSha(fileSha);
-
-		if (branches.contains(branchName)) {
-			deleteFileJsonStr.setBranch(branchName);
-		} else {
-			deleteFileJsonStr.setNewBranch(branchName);
-		}
+		deleteFileJsonStr.setBranch(branchName);
 
 		Call<FileDeleteResponse> call =
 				RetrofitClient.getApiInterface(ctx)
@@ -401,12 +520,7 @@ public class CreateFileActivity extends BaseActivity {
 		editFileJsonStr.setContent(fileContent);
 		editFileJsonStr.setMessage(fileCommitMessage);
 		editFileJsonStr.setSha(fileSha);
-
-		if (branches.contains(branchName)) {
-			editFileJsonStr.setBranch(branchName);
-		} else {
-			editFileJsonStr.setNewBranch(branchName);
-		}
+		editFileJsonStr.setBranch(branchName);
 
 		Call<FileResponse> call =
 				RetrofitClient.getApiInterface(ctx)
@@ -458,39 +572,149 @@ public class CreateFileActivity extends BaseActivity {
 				});
 	}
 
-	private void getBranches(String repoOwner, String repoName) {
+	private void getBranches() {
 
-		Call<List<Branch>> call =
-				RetrofitClient.getApiInterface(ctx)
-						.repoListBranches(repoOwner, repoName, null, null);
+		Dialog progressDialog = new Dialog(ctx);
+		progressDialog.setCancelable(false);
+		progressDialog.setContentView(R.layout.custom_progress_loader);
+		progressDialog.show();
 
-		call.enqueue(
-				new Callback<>() {
+		MaterialAlertDialogBuilder dialogBuilder = new MaterialAlertDialogBuilder(ctx);
+		View dialogView = getLayoutInflater().inflate(R.layout.custom_branches_dialog, null);
+		dialogBuilder.setView(dialogView);
 
+		RecyclerView recyclerView = dialogView.findViewById(R.id.recyclerView);
+		recyclerView.setLayoutManager(new LinearLayoutManager(ctx));
+
+		recyclerView.addItemDecoration(
+				new RecyclerView.ItemDecoration() {
 					@Override
-					public void onResponse(
-							@NonNull Call<List<Branch>> call,
-							@NonNull retrofit2.Response<List<Branch>> response) {
+					public void getItemOffsets(
+							@NonNull Rect outRect,
+							@NonNull View view,
+							@NonNull RecyclerView parent,
+							@NonNull RecyclerView.State state) {
 
-						if (response.code() == 200) {
+						int position = parent.getChildAdapterPosition(view);
+						int spacingSides = (int) ctx.getResources().getDimension(R.dimen.dimen16dp);
+						int spacingTop = (int) ctx.getResources().getDimension(R.dimen.dimen12dp);
 
-							assert response.body() != null;
-							for (Branch branch : response.body()) branches.add(branch.getName());
+						outRect.right = spacingSides;
+						outRect.left = spacingSides;
 
-							ArrayAdapter<String> adapter =
-									new ArrayAdapter<>(
-											CreateFileActivity.this,
-											R.layout.list_spinner_items,
-											branches);
-
-							binding.newFileBranches.setAdapter(adapter);
-							binding.newFileBranches.setText(repository.getBranchRef(), false);
+						if (position > 0) {
+							outRect.top = spacingTop;
 						}
 					}
-
-					@Override
-					public void onFailure(@NonNull Call<List<Branch>> call, @NonNull Throwable t) {}
 				});
+
+		dialogBuilder.setNeutralButton(R.string.close, (dialog, which) -> dialog.dismiss());
+		AlertDialog dialog = dialogBuilder.create();
+		dialog.setCancelable(false);
+		dialog.setCanceledOnTouchOutside(false);
+
+		final int[] page = {1};
+		final int resultLimit = Constants.getCurrentResultLimit(ctx);
+		final boolean[] isLoading = {false};
+		final boolean[] isLastPage = {false};
+
+		BranchAdapter adapter =
+				new BranchAdapter(
+						branchName -> {
+							binding.newFileBranches.setText(branchName);
+							dialog.dismiss();
+						});
+		recyclerView.setAdapter(adapter);
+
+		Runnable fetchBranches =
+				() -> {
+					if (isLoading[0] || isLastPage[0]) return;
+					isLoading[0] = true;
+
+					Call<List<Branch>> call =
+							RetrofitClient.getApiInterface(ctx)
+									.repoListBranches(
+											repository.getOwner(),
+											repository.getName(),
+											page[0],
+											resultLimit);
+
+					call.enqueue(
+							new Callback<>() {
+								@Override
+								public void onResponse(
+										@NonNull Call<List<Branch>> call,
+										@NonNull Response<List<Branch>> response) {
+
+									isLoading[0] = false;
+
+									if (response.code() == 200 && response.body() != null) {
+										List<Branch> newBranches = response.body();
+										adapter.addBranches(newBranches);
+
+										String totalCountStr =
+												response.headers().get("X-Total-Count");
+
+										if (totalCountStr != null) {
+
+											int totalItems = Integer.parseInt(totalCountStr);
+											int totalPages =
+													(int)
+															Math.ceil(
+																	(double) totalItems
+																			/ resultLimit);
+											isLastPage[0] = page[0] >= totalPages;
+										} else {
+											isLastPage[0] = newBranches.size() < resultLimit;
+										}
+										page[0]++;
+
+										if (page[0] == 2 && !dialog.isShowing()) {
+											progressDialog.dismiss();
+											dialog.show();
+										}
+									} else {
+										progressDialog.dismiss();
+									}
+								}
+
+								@Override
+								public void onFailure(
+										@NonNull Call<List<Branch>> call, @NonNull Throwable t) {
+									isLoading[0] = false;
+									progressDialog.dismiss();
+								}
+							});
+				};
+
+		recyclerView.addOnScrollListener(
+				new RecyclerView.OnScrollListener() {
+					@Override
+					public void onScrolled(@NonNull RecyclerView recyclerView, int dx, int dy) {
+
+						super.onScrolled(recyclerView, dx, dy);
+						LinearLayoutManager layoutManager =
+								(LinearLayoutManager) recyclerView.getLayoutManager();
+
+						if (layoutManager != null) {
+
+							int visibleItemCount = layoutManager.getChildCount();
+							int totalItemCount = layoutManager.getItemCount();
+							int firstVisibleItemPosition =
+									layoutManager.findFirstVisibleItemPosition();
+
+							if (!isLoading[0]
+									&& !isLastPage[0]
+									&& (visibleItemCount + firstVisibleItemPosition)
+											>= totalItemCount - 5) {
+								fetchBranches.run();
+							}
+						}
+					}
+				});
+
+		adapter.clear();
+		fetchBranches.run();
 	}
 
 	@Override
