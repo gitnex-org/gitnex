@@ -87,7 +87,7 @@ public class IssueCommentsAdapter extends RecyclerView.Adapter<RecyclerView.View
 	private final IssueContext issue;
 	private List<TimelineComment> issuesComments;
 	private OnLoadMoreListener loadMoreListener;
-	private boolean isLoading = false, isMoreDataAvailable = true, timelineLastView = false;
+	private boolean isLoading = false, isMoreDataAvailable = true;
 	private Intent intent;
 
 	public IssueCommentsAdapter(
@@ -181,7 +181,6 @@ public class IssueCommentsAdapter extends RecyclerView.Adapter<RecyclerView.View
 				&& loadMoreListener != null) {
 			isLoading = true;
 			loadMoreListener.onLoadMore();
-			timelineLastView = true;
 		}
 
 		((IssueCommentsAdapter.IssueCommentViewHolder) holder)
@@ -477,9 +476,17 @@ public class IssueCommentsAdapter extends RecyclerView.Adapter<RecyclerView.View
 
 				this.issueComment = timelineComment;
 
-				// if (timelineLastView) {
-				// timelineLine2.setVisibility(View.GONE);
-				// }
+				/*if (getBindingAdapterPosition() == 0) {
+					timelineDividerView.setVisibility(View.GONE);
+				} else {
+					timelineDividerView.setVisibility(View.VISIBLE);
+				}
+
+				if (getBindingAdapterPosition() == getItemCount() - 1) {
+					timelineLine2.setVisibility(View.GONE);
+				} else {
+					timelineLine2.setVisibility(View.VISIBLE);
+				}*/
 
 				StringBuilder infoBuilder = null;
 				if (issueComment.getCreatedAt() != null) {

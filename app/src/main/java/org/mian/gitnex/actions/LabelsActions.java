@@ -76,8 +76,7 @@ public class LabelsActions {
 			ProgressBar progressBar) {
 
 		Call<List<Label>> call =
-				RetrofitClient.getApiInterface(ctx)
-						.issueListLabels(repoOwner, repoName, null, null);
+				RetrofitClient.getApiInterface(ctx).issueListLabels(repoOwner, repoName, 1, 100);
 
 		call.enqueue(
 				new Callback<>() {

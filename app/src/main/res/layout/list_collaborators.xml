@@ -55,7 +55,7 @@
                     android:paddingEnd="@dimen/dimen2dp"
                     android:text="@string/userName"
                     android:textColor="?attr/primaryTextColor"
-                    android:textSize="14sp"/>
+                    android:textSize="@dimen/dimen14sp"/>
 
                 <TextView
                     android:id="@+id/userName"

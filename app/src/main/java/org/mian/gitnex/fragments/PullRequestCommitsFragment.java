@@ -12,8 +12,8 @@ import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.inputmethod.EditorInfo;
-import android.widget.RelativeLayout;
 import androidx.annotation.NonNull;
+import androidx.coordinatorlayout.widget.CoordinatorLayout;
 import androidx.core.view.MenuProvider;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.Lifecycle;
@@ -77,16 +77,18 @@ public class PullRequestCommitsFragment extends Fragment {
 											adapter.notifyDataChanged();
 										},
 										200));
-		RelativeLayout.LayoutParams params =
-				new RelativeLayout.LayoutParams(
-						RelativeLayout.LayoutParams.MATCH_PARENT,
-						RelativeLayout.LayoutParams.WRAP_CONTENT);
+
+		CoordinatorLayout.LayoutParams params =
+				new CoordinatorLayout.LayoutParams(
+						CoordinatorLayout.LayoutParams.MATCH_PARENT,
+						CoordinatorLayout.LayoutParams.WRAP_CONTENT);
 		params.setMargins(0, 0, 0, 0);
 		binding.pullToRefresh.setLayoutParams(params);
-		RelativeLayout.LayoutParams paramsProgressBar =
-				new RelativeLayout.LayoutParams(
-						RelativeLayout.LayoutParams.MATCH_PARENT,
-						RelativeLayout.LayoutParams.WRAP_CONTENT);
+
+		CoordinatorLayout.LayoutParams paramsProgressBar =
+				new CoordinatorLayout.LayoutParams(
+						CoordinatorLayout.LayoutParams.MATCH_PARENT,
+						CoordinatorLayout.LayoutParams.WRAP_CONTENT);
 		paramsProgressBar.setMargins(0, 0, 0, 0);
 		binding.progressBar.setLayoutParams(paramsProgressBar);
 

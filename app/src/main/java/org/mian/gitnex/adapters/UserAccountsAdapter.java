@@ -4,7 +4,6 @@ import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.app.Dialog;
 import android.content.Context;
-import android.content.Intent;
 import android.os.Handler;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -21,7 +20,6 @@ import java.util.List;
 import java.util.Objects;
 import org.gitnex.tea4j.v2.models.NotificationCount;
 import org.mian.gitnex.R;
-import org.mian.gitnex.activities.AddNewAccountActivity;
 import org.mian.gitnex.clients.RetrofitClient;
 import org.mian.gitnex.database.api.BaseApi;
 import org.mian.gitnex.database.api.UserAccountsApi;
@@ -119,11 +117,7 @@ public class UserAccountsAdapter
 		holder.accountName = currentItem.getAccountName();
 
 		holder.userId.setText(currentItem.getUserName());
-		if (currentItem.isLoggedIn()) {
-			holder.accountUrl.setText(url);
-		} else {
-			holder.accountUrl.setText(context.getString(R.string.notLoggedIn, url));
-		}
+		holder.accountUrl.setText(url);
 
 		Glide.with(context)
 				.load(UrlHelper.appendPath(currentItem.getInstanceUrl(), "assets/img/favicon.png"))
@@ -204,37 +198,6 @@ public class UserAccountsAdapter
 								BaseApi.getInstance(context, UserAccountsApi.class);
 						assert userAccountsApi != null;
 						UserAccount userAccount = userAccountsApi.getAccountByName(accountName);
-
-						if (!userAccount.isLoggedIn()) {
-							UrlBuilder url =
-									UrlBuilder.fromString(userAccount.getInstanceUrl())
-											.withPath("/");
-
-							String host;
-							if (url.scheme.equals("http")) {
-								if (url.port == 80 || url.port == 0) {
-									host = url.hostName;
-								} else {
-									host = url.hostName + ":" + url.port;
-								}
-							} else {
-								if (url.port == 443 || url.port == 0) {
-									host = url.hostName;
-								} else {
-									host = url.hostName + ":" + url.port;
-								}
-							}
-
-							Toasty.warning(context, context.getString(R.string.logInAgain));
-							dialog.dismiss();
-
-							Intent i = new Intent(context, AddNewAccountActivity.class);
-							i.putExtra("instanceUrl", host);
-							i.putExtra("scheme", url.scheme);
-							i.putExtra("token", userAccount.getToken());
-							context.startActivity(i);
-							return;
-						}
 
 						if (tinyDB.getInt("currentActiveAccountId") != userAccount.getAccountId()) {
 							if (AppUtil.switchToAccount(context, userAccount)) {

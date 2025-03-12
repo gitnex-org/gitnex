@@ -1,5 +1,6 @@
 package org.mian.gitnex.activities;
 
+import android.graphics.Color;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Looper;
@@ -9,12 +10,15 @@ import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
+import android.view.Window;
+import android.view.WindowManager;
 import android.view.inputmethod.EditorInfo;
 import android.widget.ImageView;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.appcompat.widget.Toolbar;
+import androidx.coordinatorlayout.widget.CoordinatorLayout;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
@@ -63,6 +67,40 @@ public class CommitsActivity extends BaseActivity {
 
 		repository = RepositoryContext.fromIntent(getIntent());
 		String branchName = repository.getBranchRef();
+
+		Window window = getWindow();
+		window.clearFlags(WindowManager.LayoutParams.FLAG_TRANSLUCENT_STATUS);
+		window.addFlags(WindowManager.LayoutParams.FLAG_DRAWS_SYSTEM_BAR_BACKGROUNDS);
+		window.setStatusBarColor(Color.TRANSPARENT);
+
+		window.getDecorView()
+				.setSystemUiVisibility(
+						View.SYSTEM_UI_FLAG_LAYOUT_STABLE | View.SYSTEM_UI_FLAG_LAYOUT_FULLSCREEN);
+
+		int statusBarHeight = 36;
+		int extraSpacing = (int) (36 * getResources().getDisplayMetrics().density);
+		int totalTopMargin = statusBarHeight + extraSpacing;
+		CoordinatorLayout.LayoutParams params =
+				(CoordinatorLayout.LayoutParams) activityCommitsBinding.appbar.getLayoutParams();
+		params.setMargins(0, totalTopMargin, 0, 0);
+		activityCommitsBinding.appbar.setLayoutParams(params);
+
+		activityCommitsBinding.appbar.post(
+				() -> {
+					int adjustedTopMargin =
+							activityCommitsBinding.appbar.getHeight() + totalTopMargin;
+					CoordinatorLayout.LayoutParams refreshParams =
+							(CoordinatorLayout.LayoutParams)
+									activityCommitsBinding.pullToRefresh.getLayoutParams();
+					refreshParams.setMargins(0, adjustedTopMargin, 0, 0);
+					activityCommitsBinding.pullToRefresh.setLayoutParams(refreshParams);
+
+					CoordinatorLayout.LayoutParams progressParams =
+							(CoordinatorLayout.LayoutParams)
+									activityCommitsBinding.progressBar.getLayoutParams();
+					progressParams.setMargins(0, adjustedTopMargin, 0, 0);
+					activityCommitsBinding.progressBar.setLayoutParams(progressParams);
+				});
 
 		TextView toolbar_title = activityCommitsBinding.toolbarTitle;
 		toolbar_title.setMovementMethod(new ScrollingMovementMethod());

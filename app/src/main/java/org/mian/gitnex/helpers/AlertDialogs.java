@@ -10,6 +10,7 @@ import org.mian.gitnex.R;
 import org.mian.gitnex.actions.CollaboratorActions;
 import org.mian.gitnex.actions.PullRequestActions;
 import org.mian.gitnex.actions.TeamActions;
+import org.mian.gitnex.activities.AddNewAccountActivity;
 import org.mian.gitnex.activities.CreateLabelActivity;
 import org.mian.gitnex.databinding.CustomPrUpdateStrategyDialogBinding;
 import org.mian.gitnex.helpers.contexts.RepositoryContext;
@@ -32,7 +33,11 @@ public class AlertDialogs {
 				.setMessage(R.string.alertDialogTokenRevokedMessage)
 				.setCancelable(true)
 				.setNeutralButton(R.string.cancelButton, null)
-				.setPositiveButton(R.string.navLogout, (dialog, which) -> AppUtil.logout(context))
+				.setPositiveButton(
+						R.string.addNewAccountText,
+						(dialog, which) ->
+								context.startActivity(
+										new Intent(context, AddNewAccountActivity.class)))
 				.show();
 	}
 

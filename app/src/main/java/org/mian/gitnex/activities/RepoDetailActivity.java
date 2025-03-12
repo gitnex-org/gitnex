@@ -29,7 +29,6 @@ import com.google.android.material.tabs.TabLayoutMediator;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
-import org.gitnex.tea4j.v2.models.Branch;
 import org.gitnex.tea4j.v2.models.Milestone;
 import org.gitnex.tea4j.v2.models.Organization;
 import org.gitnex.tea4j.v2.models.Repository;
@@ -247,9 +246,6 @@ public class RepoDetailActivity extends BaseActivity implements BottomSheetListe
 	public void onButtonClicked(String text) {
 
 		switch (text) {
-			case "chooseBranch":
-				chooseBranch();
-				break;
 			case "openWebRepo":
 				AppUtil.openUrlInBrowser(this, repository.getRepository().getHtmlUrl());
 				break;
@@ -416,68 +412,6 @@ public class RepoDetailActivity extends BaseActivity implements BottomSheetListe
 		if (progressDialog != null) {
 			progressDialog.dismiss();
 		}
-	}
-
-	private void chooseBranch() {
-
-		progressDialog = new Dialog(this);
-		progressDialog.setCancelable(false);
-		progressDialog.setContentView(R.layout.custom_progress_loader);
-		progressDialog.show();
-
-		Call<List<Branch>> call =
-				RetrofitClient.getApiInterface(ctx)
-						.repoListBranches(repository.getOwner(), repository.getName(), null, null);
-
-		call.enqueue(
-				new Callback<>() {
-
-					@Override
-					public void onResponse(
-							@NonNull Call<List<Branch>> call,
-							@NonNull Response<List<Branch>> response) {
-
-						progressDialog.hide();
-						if (response.code() == 200) {
-
-							List<String> branchesList = new ArrayList<>();
-							int selectedBranch = 0;
-							assert response.body() != null;
-
-							for (int i = 0; i < response.body().size(); i++) {
-
-								Branch branches = response.body().get(i);
-								branchesList.add(branches.getName());
-
-								if (repository.getBranchRef().equals(branches.getName())) {
-									selectedBranch = i;
-								}
-							}
-
-							materialAlertDialogBuilder
-									.setTitle(R.string.pageTitleChooseBranch)
-									.setSingleChoiceItems(
-											branchesList.toArray(new String[0]),
-											selectedBranch,
-											(dialogInterface, i) -> {
-												repository.setBranchRef(branchesList.get(i));
-
-												if (getFragmentRefreshListenerFiles() != null) {
-													getFragmentRefreshListenerFiles()
-															.onRefresh(branchesList.get(i));
-												}
-												dialogInterface.dismiss();
-											})
-									.setNeutralButton(R.string.cancelButton, null);
-							materialAlertDialogBuilder.create().show();
-						}
-					}
-
-					@Override
-					public void onFailure(@NonNull Call<List<Branch>> call, @NonNull Throwable t) {
-						progressDialog.hide();
-					}
-				});
 	}
 
 	private void getRepoInfo(final String owner, String repo) {
@@ -670,18 +604,6 @@ public class RepoDetailActivity extends BaseActivity implements BottomSheetListe
 			mainIntent.removeExtra("goToSectionType");
 
 			switch (Objects.requireNonNull(goToSectionType)) {
-				case "branchesList":
-					viewPager.setCurrentItem(1);
-					chooseBranch();
-					break;
-				case "branch":
-					viewPager.setCurrentItem(1);
-					String selectedBranch = mainIntent.getStringExtra("selectedBranch");
-					repository.setBranchRef(selectedBranch);
-					if (getFragmentRefreshListenerFiles() != null) {
-						getFragmentRefreshListenerFiles().onRefresh(selectedBranch);
-					}
-					break;
 				case "file":
 					viewPager.setCurrentItem(1);
 					String branch1 = mainIntent.getStringExtra("branch");
