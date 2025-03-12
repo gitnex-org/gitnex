@@ -92,7 +92,6 @@ import org.mian.gitnex.databinding.BottomSheetAttachmentsBinding;
 import org.mian.gitnex.databinding.CustomAssigneesSelectionDialogBinding;
 import org.mian.gitnex.databinding.CustomImageViewDialogBinding;
 import org.mian.gitnex.databinding.CustomLabelsSelectionDialogBinding;
-import org.mian.gitnex.databinding.CustomPrInfoDialogBinding;
 import org.mian.gitnex.fragments.BottomSheetSingleIssueFragment;
 import org.mian.gitnex.fragments.IssuesFragment;
 import org.mian.gitnex.fragments.PullRequestsFragment;
@@ -879,12 +878,7 @@ public class IssueDetailActivity extends BaseActivity
 		showMenu =
 				() -> {
 					inflater.inflate(R.menu.generic_nav_dotted_menu, menu);
-					if (issue.getIssueType() != null) {
-						if (issue.getIssueType().equalsIgnoreCase("pull")) {
-							inflater.inflate(R.menu.pr_info_menu, menu);
-						}
-					}
-					showMenu = () -> {}; // reset Runnable
+					showMenu = () -> {};
 				};
 		updateMenuState();
 		return true;
@@ -913,28 +907,6 @@ public class IssueDetailActivity extends BaseActivity
 				BottomSheetSingleIssueFragment bottomSheet =
 						new BottomSheetSingleIssueFragment(issue, issueCreator);
 				bottomSheet.show(getSupportFragmentManager(), "singleIssueBottomSheet");
-			}
-			return true;
-		} else if (id == R.id.prInfo) {
-
-			if (issue.getPullRequest() != null) {
-
-				MaterialAlertDialogBuilder materialAlertDialogBuilderPrInfo =
-						new MaterialAlertDialogBuilder(ctx);
-				CustomPrInfoDialogBinding customPrInfoDialogBinding =
-						CustomPrInfoDialogBinding.inflate(LayoutInflater.from(ctx));
-				View view = customPrInfoDialogBinding.getRoot();
-				materialAlertDialogBuilderPrInfo.setView(view);
-
-				customPrInfoDialogBinding.baseBranch.setText(
-						issue.getPullRequest().getBase().getRef());
-				customPrInfoDialogBinding.headBranch.setText(
-						issue.getPullRequest().getHead().getRef());
-
-				materialAlertDialogBuilderPrInfo.setTitle(
-						getResources().getString(R.string.prMergeInfo));
-				materialAlertDialogBuilderPrInfo.setNeutralButton(getString(R.string.close), null);
-				materialAlertDialogBuilderPrInfo.create().show();
 			}
 			return true;
 		} else {
@@ -990,8 +962,6 @@ public class IssueDetailActivity extends BaseActivity
 							500);
 		}
 
-		// tinyDB.remove("commentId");
-		// tinyDB.remove("commentAction");
 		mode = Mode.SEND;
 	}
 
@@ -1130,6 +1100,21 @@ public class IssueDetailActivity extends BaseActivity
 
 			getStatuses();
 			getPullRequest();
+
+			viewBinding.prInfoLayout.setVisibility(View.VISIBLE);
+			String displayName;
+			if (!issue.getPullRequest().getUser().getFullName().isEmpty()) {
+				displayName = issue.getPullRequest().getUser().getFullName();
+			} else {
+				displayName = issue.getPullRequest().getUser().getLogin();
+			}
+			viewBinding.prInfo.setText(
+					getString(
+							R.string.pr_info,
+							displayName,
+							issue.getPullRequest().getHead().getRef(),
+							issue.getPullRequest().getBase().getRef()));
+
 			if (issue.getIssue().getPullRequest().isMerged()) { // merged
 
 				viewBinding.issuePrState.setImageResource(R.drawable.ic_pull_request);

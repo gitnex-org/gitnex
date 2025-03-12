@@ -413,10 +413,80 @@
 
                     </com.google.android.material.card.MaterialCardView>
 
+                    <com.google.android.material.card.MaterialCardView
+                        android:id="@+id/pr_info_layout"
+                        style="?attr/materialCardViewElevatedStyle"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_below="@+id/mainThreadCard"
+                        android:layout_marginTop="@dimen/dimen12dp"
+                        android:visibility="gone"
+                        app:cardElevation="@dimen/dimen0dp">
+
+                        <LinearLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:background="?attr/materialCardBackgroundColor"
+                            android:foreground="?android:attr/selectableItemBackground"
+                            android:orientation="vertical"
+                            android:padding="@dimen/dimen12dp">
+
+                            <TextView
+                                android:id="@+id/pr_info"
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:gravity="start"
+                                android:textColor="?attr/primaryTextColor"
+                                android:textIsSelectable="true"
+                                android:text="@string/pr_info"
+                                android:textSize="@dimen/dimen14sp" />
+
+                        </LinearLayout>
+
+                    </com.google.android.material.card.MaterialCardView>
+
+                    <RelativeLayout
+                        android:id="@+id/notes_info_card"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_below="@+id/pr_info_layout"
+                        android:layout_marginTop="@dimen/dimen16dp">
+
+                        <com.google.android.material.divider.MaterialDivider
+                            android:layout_width="match_parent"
+                            android:layout_height="@dimen/dimen2dp"
+                            app:dividerColor="?attr/dividerColor"
+                            android:layout_marginTop="12dp"
+                            android:background="?android:attr/listDivider" />
+
+                        <com.google.android.material.card.MaterialCardView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            style="?attr/materialCardViewElevatedStyle"
+                            android:layout_centerInParent="true"
+                            app:cardCornerRadius="@dimen/dimen10dp"
+                            app:cardElevation="@dimen/dimen0dp">
+
+                            <com.google.android.material.textview.MaterialTextView
+                                android:id="@+id/divider_info"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:text="@string/timeline"
+                                android:paddingTop="@dimen/dimen4dp"
+                                android:paddingBottom="@dimen/dimen4dp"
+                                android:paddingStart="@dimen/dimen16dp"
+                                android:paddingEnd="@dimen/dimen16dp"
+                                android:textSize="@dimen/dimen14sp" />
+
+                        </com.google.android.material.card.MaterialCardView>
+
+                    </RelativeLayout>
+
                     <FrameLayout
                         android:layout_width="match_parent"
                         android:layout_height="match_parent"
-                        android:layout_below="@+id/mainThreadCard"
+                        android:layout_marginTop="@dimen/dimen16dp"
+                        android:layout_below="@+id/notes_info_card"
                         android:background="?attr/primaryBackgroundColor">
 
                         <androidx.recyclerview.widget.RecyclerView

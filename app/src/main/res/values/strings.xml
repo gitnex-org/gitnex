@@ -553,6 +553,7 @@
     <string name="unpin">Unpin</string>
     <string name="branch">Branch</string>
     <string name="branches">Branches</string>
+    <string name="timeline">Timeline</string>
     <!-- generic copy -->
 
     <string name="exploreUsers">Explore users</string>
@@ -763,6 +764,7 @@
     <string name="prClosed">Pull Request closed</string>
     <string name="prReopened">Pull Request reopened</string>
     <string name="prMergeInfo">Pull Request Info</string>
+    <string name="pr_info">%1$s wants to merge branch %2$s into %3$s</string>
 
     <string name="accountDoesNotExist">It seems that the account for URI %1$s does not exist in the app. You can add one by tapping on the Add New Account button.</string>
     <string name="launchApp">Go to App</string>
@@ -857,7 +859,7 @@
     <string name="noNotes">No notes found</string>
 
     <!-- timeline -->
-    <string name="commitsText">commit</string>
+    <string name="commitsText">commits</string>
     <string name="commitText">commit</string>
     <string name="timelineAddedCommit">%1$s added %2$s %3$s</string>
     <!-- the | is replaced by the label -->

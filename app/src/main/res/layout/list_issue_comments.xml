@@ -4,6 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
+    android:layout_marginBottom="@dimen/dimen12dp"
     android:orientation="vertical">
 
     <LinearLayout
@@ -12,6 +13,7 @@
         android:layout_height="wrap_content"
         android:paddingStart="@dimen/dimen12dp"
         android:paddingEnd="@dimen/dimen0dp"
+        android:visibility="gone"
         android:orientation="vertical">
 
         <FrameLayout
@@ -133,13 +135,13 @@
             </LinearLayout>
 
             <LinearLayout
-            android:id="@+id/attachmentFrame"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:background="?attr/materialCardBackgroundColor"
-            android:foreground="?android:attr/selectableItemBackground"
-            android:visibility="gone"
-            android:orientation="vertical">
+                android:id="@+id/attachmentFrame"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="?attr/materialCardBackgroundColor"
+                android:foreground="?android:attr/selectableItemBackground"
+                android:visibility="gone"
+                android:orientation="vertical">
 
                 <com.google.android.material.divider.MaterialDivider
                     android:layout_width="match_parent"
@@ -179,6 +181,7 @@
                 android:id="@+id/timeline_line_2"
                 android:layout_width="@dimen/dimen2dp"
                 android:layout_height="match_parent"
+                android:visibility="gone"
                 android:background="?attr/colorPrimary" />
 
             <LinearLayout
@@ -190,6 +193,7 @@
                 android:paddingEnd="@dimen/dimen0dp"
                 android:layout_marginStart="@dimen/dimen6dp"
                 android:layout_marginEnd="@dimen/dimen4dp"
+                android:gravity="center_horizontal"
                 android:orientation="horizontal" />
 
         </LinearLayout>
@@ -198,6 +202,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:gravity="center"
+            android:layout_centerVertical="true"
             android:orientation="vertical">
 
             <com.google.android.material.card.MaterialCardView
