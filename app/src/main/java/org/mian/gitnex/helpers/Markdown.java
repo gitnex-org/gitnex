@@ -6,8 +6,10 @@ import android.annotation.SuppressLint;
 import android.content.Context;
 import android.content.Intent;
 import android.graphics.Typeface;
+import android.text.Spannable;
 import android.text.Spanned;
 import android.text.method.LinkMovementMethod;
+import android.view.ViewGroup;
 import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.LinearLayoutManager;
@@ -162,6 +164,21 @@ public class Markdown {
 		}
 	}
 
+	public static void renderWithHighlights(
+			Context context,
+			Spannable spannable,
+			RecyclerView recyclerView,
+			RepositoryContext repository) {
+		try {
+			RecyclerViewRenderer renderer = rvRendererPool.claim(OBJECT_POOL_CLAIM_TIMEOUT);
+			if (renderer != null) {
+				renderer.setParameters(context, spannable, recyclerView, repository);
+				executorService.execute(renderer);
+			}
+		} catch (InterruptedException ignored) {
+		}
+	}
+
 	private static class Renderer implements Runnable, Poolable {
 
 		private final Slot slot;
@@ -305,6 +322,7 @@ public class Markdown {
 
 		private Context context;
 		private String markdown;
+		private Spannable spannable;
 		private RecyclerView recyclerView;
 		private MarkwonAdapter adapter;
 		private RepositoryContext repository;
@@ -534,6 +552,21 @@ public class Markdown {
 
 		public void setParameters(
 				Context context,
+				Spannable spannable,
+				RecyclerView recyclerView,
+				RepositoryContext repository) {
+			this.context = context;
+			this.spannable = spannable;
+			this.markdown = spannable.toString();
+			this.recyclerView = recyclerView;
+			this.repository = repository;
+			if (linkPostProcessor != null) {
+				linkPostProcessor.repository = repository;
+			}
+		}
+
+		public void setParameters(
+				Context context,
 				String markdown,
 				RecyclerView recyclerView,
 				RepositoryContext repository) {
@@ -577,9 +610,38 @@ public class Markdown {
 										// separate ScrollViews
 									}
 								});
-						localReference.setAdapter(localAdapter);
 
-						localAdapter.setMarkdown(markwon, localMd);
+						if (spannable != null) {
+							TextView tempTextView = new TextView(context);
+							tempTextView.setText(spannable);
+							tempTextView.setLayoutParams(
+									new RecyclerView.LayoutParams(
+											RecyclerView.LayoutParams.MATCH_PARENT,
+											RecyclerView.LayoutParams.WRAP_CONTENT));
+							RecyclerView.Adapter<RecyclerView.ViewHolder> customAdapter =
+									new RecyclerView.Adapter<>() {
+										@NonNull @Override
+										public RecyclerView.ViewHolder onCreateViewHolder(
+												@NonNull ViewGroup parent, int viewType) {
+											return new RecyclerView.ViewHolder(tempTextView) {};
+										}
+
+										@Override
+										public void onBindViewHolder(
+												@NonNull RecyclerView.ViewHolder holder,
+												int position) {}
+
+										@Override
+										public int getItemCount() {
+											return 1;
+										}
+									};
+							localReference.setAdapter(customAdapter);
+						} else {
+							localAdapter.setMarkdown(markwon, localMd);
+							localReference.setAdapter(localAdapter);
+						}
+
 						localAdapter.notifyDataSetChanged();
 					});
 

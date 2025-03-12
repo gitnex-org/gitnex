@@ -283,7 +283,7 @@
     <string name="selectBranchError">Select a branch for release</string>
 
     <string name="alertDialogTokenRevokedTitle">Authorization Error</string>
-    <string name="alertDialogTokenRevokedMessage">It seems that the Access Token is revoked OR your are not allowed to see these contents.\n\nIn case of revoked Token, please add the account again</string>
+    <string name="alertDialogTokenRevokedMessage">It seems that the Access Token is revoked OR you are not allowed to see these contents.\n\nIn case of revoked Token, please add the account again</string>
     <string name="labelDeleteMessage">Do you really want to delete this label?</string>
 
     <!-- org tabbed layout str -->
@@ -469,7 +469,7 @@
     <string name="branch_created">Branch created successfully</string>
     <string name="branch_error_archive_mirror">Cannot create branch: Repository is archived or a mirror</string>
     <string name="branch_error_ref_not_found">Reference does not exist</string>
-    <string name="branch_error_exists">"Branch %1$s already exists</string>
+    <string name="branch_error_exists">Branch %1$s already exists</string>
     <string name="branch_error_repo_locked">Repository is locked</string>
     <string name="create_branch">Create Branch</string>
 
@@ -942,4 +942,7 @@
     <string name="attachment">Attachment</string>
     <string name="attachments">Attachments</string>
     <string name="attachmentsSaveError">An issue was created but cannot process attachments at this time. Check the server logs for more details.</string>
+
+    <string name="search_matches_found">%d matches found</string>
+    <string name="search_no_matches">No matches found</string>
 </resources>
