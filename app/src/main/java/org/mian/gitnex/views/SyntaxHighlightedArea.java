@@ -6,6 +6,7 @@ import android.graphics.Canvas;
 import android.graphics.Paint;
 import android.graphics.Rect;
 import android.graphics.Typeface;
+import android.text.Spannable;
 import android.util.AttributeSet;
 import android.util.TypedValue;
 import android.view.View;
@@ -146,6 +147,16 @@ public class SyntaxHighlightedArea extends LinearLayout {
 			highlightingThread.start();
 			lineCountingThread.start();
 		}
+	}
+
+	public void setSpannable(@NonNull Spannable spannable) {
+		sourceView.setText(spannable);
+		long lineCount = AppUtil.getLineCount(spannable.toString());
+		linesView.setLineCount(lineCount);
+	}
+
+	public TextView getSourceView() {
+		return sourceView;
 	}
 
 	private Activity getActivity() {

@@ -8,14 +8,18 @@ import android.graphics.Bitmap;
 import android.graphics.Typeface;
 import android.os.Bundle;
 import android.text.method.ScrollingMovementMethod;
+import android.util.TypedValue;
 import android.view.Gravity;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.ImageButton;
 import androidx.activity.result.ActivityResultLauncher;
 import androidx.activity.result.contract.ActivityResultContracts;
 import androidx.annotation.NonNull;
+import androidx.appcompat.widget.SearchView;
+import androidx.appcompat.widget.Toolbar;
 import androidx.core.app.NotificationCompat;
 import com.vdurmont.emoji.EmojiParser;
 import java.io.IOException;
@@ -32,8 +36,10 @@ import org.mian.gitnex.fragments.BottomSheetFileViewerFragment;
 import org.mian.gitnex.helpers.AlertDialogs;
 import org.mian.gitnex.helpers.AppUtil;
 import org.mian.gitnex.helpers.Constants;
+import org.mian.gitnex.helpers.FileContentSearcher;
 import org.mian.gitnex.helpers.Images;
 import org.mian.gitnex.helpers.Markdown;
+import org.mian.gitnex.helpers.SnackBar;
 import org.mian.gitnex.helpers.Toasty;
 import org.mian.gitnex.helpers.contexts.RepositoryContext;
 import org.mian.gitnex.notifications.Notifications;
@@ -49,6 +55,12 @@ public class FileViewActivity extends BaseActivity implements BottomSheetListene
 	private ActivityFileViewBinding binding;
 	private ContentsResponse file;
 	private RepositoryContext repository;
+	private FileContentSearcher searcher;
+	private String fileContent;
+	private ImageButton prevButton;
+	private ImageButton nextButton;
+	private boolean buttonsAdded = false;
+	private String lastQuery = "";
 	ActivityResultLauncher<Intent> activityResultLauncher =
 			registerForActivityResult(
 					new ActivityResultContracts.StartActivityForResult(),
@@ -209,6 +221,7 @@ public class FileViewActivity extends BaseActivity implements BottomSheetListene
 		binding.toolbarTitle.setMovementMethod(new ScrollingMovementMethod());
 		binding.toolbarTitle.setText(file.getPath());
 
+		searcher = new FileContentSearcher(binding.contentScrollContainer, binding.markdown);
 		getSingleFileContents(
 				repository.getOwner(),
 				repository.getName(),
@@ -281,7 +294,7 @@ public class FileViewActivity extends BaseActivity implements BottomSheetListene
 												}
 
 												processable = true;
-												String text = responseBody.string();
+												fileContent = responseBody.string();
 
 												runOnUiThread(
 														() -> {
@@ -289,16 +302,15 @@ public class FileViewActivity extends BaseActivity implements BottomSheetListene
 																	View.GONE);
 
 															binding.contents.setContent(
-																	text, fileExtension);
+																	fileContent, fileExtension);
 
 															if (renderMd) {
 																Markdown.render(
-																		ctx,
+																		getApplicationContext(),
 																		EmojiParser.parseToUnicode(
-																				text),
+																				fileContent),
 																		binding.markdown,
 																		repository);
-
 																binding.contents.setVisibility(
 																		View.GONE);
 																binding.markdownFrame.setVisibility(
@@ -309,6 +321,7 @@ public class FileViewActivity extends BaseActivity implements BottomSheetListene
 																binding.contents.setVisibility(
 																		View.VISIBLE);
 															}
+															invalidateOptionsMenu();
 														});
 												break;
 										}
@@ -395,67 +408,237 @@ public class FileViewActivity extends BaseActivity implements BottomSheetListene
 		thread.start();
 	}
 
+	private void performSearch(String query, boolean isSubmit) {
+		if (fileContent != null && processable && !renderMd) {
+			searcher.search(
+					fileContent,
+					FilenameUtils.getExtension(file.getPath()),
+					query,
+					binding.contents,
+					binding.markdown,
+					renderMd);
+			int matches = searcher.getMatchCount();
+			if (isSubmit || !query.equals(lastQuery)) {
+				if (matches > 0) {
+					SnackBar.success(
+							this,
+							binding.getRoot(),
+							getString(R.string.search_matches_found, matches));
+				} else {
+					SnackBar.warning(
+							this, binding.getRoot(), getString(R.string.search_no_matches));
+				}
+				lastQuery = query;
+			}
+		}
+	}
+
 	@Override
 	public boolean onCreateOptionsMenu(@NonNull Menu menu) {
 
 		MenuInflater inflater = getMenuInflater();
 		inflater.inflate(R.menu.generic_nav_dotted_menu, menu);
 		inflater.inflate(R.menu.markdown_switcher, menu);
+		inflater.inflate(R.menu.search_menu, menu);
+
+		MenuItem markdownItem = menu.findItem(R.id.markdown);
+		MenuItem searchItem = menu.findItem(R.id.action_search);
 
 		if (!FilenameUtils.getExtension(file.getName()).equalsIgnoreCase("md")) {
+			markdownItem.setVisible(false);
+		}
+		searchItem.setVisible(!renderMd);
 
-			menu.getItem(0).setVisible(false);
+		int iconsColor = getAttrColor(this, R.attr.iconsColor);
+		binding.toolbar.setTitleTextColor(iconsColor);
+		for (int i = 0; i < menu.size(); i++) {
+			MenuItem item = menu.getItem(i);
+			if (item.getIcon() != null) {
+				item.getIcon().setTint(iconsColor);
+			}
+		}
+
+		SearchView searchView = (SearchView) searchItem.getActionView();
+		if (searchView != null) {
+
+			searchView.setOnQueryTextListener(
+					new SearchView.OnQueryTextListener() {
+						@Override
+						public boolean onQueryTextSubmit(String query) {
+							performSearch(query, true);
+							return true;
+						}
+
+						@Override
+						public boolean onQueryTextChange(String newText) {
+							performSearch(newText, false);
+							return true;
+						}
+					});
+
+			if (prevButton == null) {
+
+				prevButton = new ImageButton(FileViewActivity.this);
+				prevButton.setImageResource(R.drawable.ic_arrow_up);
+				prevButton.setBackground(null);
+				prevButton.setPadding(12, 12, 24, 12);
+				prevButton.setColorFilter(iconsColor);
+				prevButton.setMinimumWidth(48);
+				prevButton.setMinimumHeight(48);
+				prevButton.setOnClickListener(
+						v -> searcher.previousMatch(binding.contents, binding.markdown, renderMd));
+			}
+			if (nextButton == null) {
+
+				nextButton = new ImageButton(FileViewActivity.this);
+				nextButton.setImageResource(R.drawable.ic_arrow_down);
+				nextButton.setBackground(null);
+				nextButton.setPadding(12, 12, 12, 12);
+				nextButton.setColorFilter(iconsColor);
+				nextButton.setMinimumWidth(48);
+				nextButton.setMinimumHeight(48);
+				nextButton.setOnClickListener(
+						v -> searcher.nextMatch(binding.contents, binding.markdown, renderMd));
+			}
+
+			int maxWidth = (int) (getResources().getDisplayMetrics().widthPixels * 0.6f);
+			searchView.setMaxWidth(maxWidth);
+
+			searchView.setOnSearchClickListener(
+					v -> {
+						if (!buttonsAdded) {
+
+							Toolbar.LayoutParams prevParams =
+									new Toolbar.LayoutParams(
+											Toolbar.LayoutParams.WRAP_CONTENT,
+											Toolbar.LayoutParams.WRAP_CONTENT);
+							prevParams.gravity = Gravity.END;
+							prevParams.setMargins(0, 0, 4, 0);
+
+							Toolbar.LayoutParams nextParams =
+									new Toolbar.LayoutParams(
+											Toolbar.LayoutParams.WRAP_CONTENT,
+											Toolbar.LayoutParams.WRAP_CONTENT);
+							nextParams.gravity = Gravity.END;
+							nextParams.setMargins(0, 0, 8, 0);
+
+							binding.toolbar.removeView(prevButton);
+							binding.toolbar.removeView(nextButton);
+							binding.toolbar.addView(prevButton, prevParams);
+							binding.toolbar.addView(nextButton, nextParams);
+							buttonsAdded = true;
+
+							if (FilenameUtils.getExtension(file.getName()).equalsIgnoreCase("md")) {
+								markdownItem.setVisible(false);
+							}
+						}
+					});
+
+			searchItem.setOnActionExpandListener(
+					new MenuItem.OnActionExpandListener() {
+						@Override
+						public boolean onMenuItemActionExpand(@NonNull MenuItem item) {
+							return true;
+						}
+
+						@Override
+						public boolean onMenuItemActionCollapse(@NonNull MenuItem item) {
+							if (fileContent != null) {
+								searcher.search(
+										fileContent,
+										FilenameUtils.getExtension(file.getPath()),
+										"",
+										binding.contents,
+										binding.markdown,
+										renderMd);
+							}
+							binding.toolbar.removeView(prevButton);
+							binding.toolbar.removeView(nextButton);
+							buttonsAdded = false;
+							lastQuery = "";
+
+							if (FilenameUtils.getExtension(file.getName()).equalsIgnoreCase("md")) {
+								markdownItem.setVisible(true);
+							}
+							searchItem.setVisible(!renderMd);
+							invalidateOptionsMenu();
+							return true;
+						}
+					});
+
+			searchView.setOnCloseListener(
+					() -> {
+						if (fileContent != null) {
+							searcher.search(
+									fileContent,
+									FilenameUtils.getExtension(file.getPath()),
+									"",
+									binding.contents,
+									binding.markdown,
+									renderMd);
+						}
+						binding.toolbar.removeView(prevButton);
+						binding.toolbar.removeView(nextButton);
+						buttonsAdded = false;
+						lastQuery = "";
+						if (FilenameUtils.getExtension(file.getName()).equalsIgnoreCase("md")) {
+							markdownItem.setVisible(true);
+						}
+						searchItem.setVisible(!renderMd);
+						invalidateOptionsMenu();
+						return false;
+					});
 		}
 
 		return true;
+	}
+
+	private void toggleMarkdown() {
+		if (!renderMd) {
+			if (binding.markdown.getAdapter() == null) {
+				Markdown.render(
+						ctx, EmojiParser.parseToUnicode(fileContent), binding.markdown, repository);
+			}
+			binding.contents.setVisibility(View.GONE);
+			binding.markdownFrame.setVisibility(View.VISIBLE);
+			renderMd = true;
+		} else {
+			binding.markdownFrame.setVisibility(View.GONE);
+			binding.contents.setVisibility(View.VISIBLE);
+			renderMd = false;
+			if (fileContent != null) {
+				binding.contents.setContent(
+						fileContent, FilenameUtils.getExtension(file.getPath()));
+			}
+		}
+		invalidateOptionsMenu();
+	}
+
+	private int getAttrColor(Context context, int attr) {
+		TypedValue outValue = new TypedValue();
+		context.getTheme().resolveAttribute(attr, outValue, true);
+		return outValue.data;
 	}
 
 	@Override
 	public boolean onOptionsItemSelected(MenuItem item) {
 
 		int id = item.getItemId();
-
 		if (id == android.R.id.home) {
-
 			finish();
 			return true;
-
 		} else if (id == R.id.genericMenu) {
-
 			BottomSheetFileViewerFragment bottomSheet = new BottomSheetFileViewerFragment();
 			Bundle opts = repository.getBundle();
 			opts.putBoolean("editable", processable);
 			bottomSheet.setArguments(opts);
 			bottomSheet.show(getSupportFragmentManager(), "fileViewerBottomSheet");
 			return true;
-
 		} else if (id == R.id.markdown) {
-
-			if (!renderMd) {
-				if (binding.markdown.getAdapter() == null) {
-					Markdown.render(
-							ctx,
-							EmojiParser.parseToUnicode(binding.contents.getContent()),
-							binding.markdown,
-							repository);
-				}
-
-				binding.contents.setVisibility(View.GONE);
-				binding.markdownFrame.setVisibility(View.VISIBLE);
-
-				renderMd = true;
-			} else {
-				binding.markdownFrame.setVisibility(View.GONE);
-				binding.contents.setVisibility(View.VISIBLE);
-
-				renderMd = false;
-			}
-
+			toggleMarkdown();
 			return true;
-
-		} else {
-			return super.onOptionsItemSelected(item);
 		}
+		return super.onOptionsItemSelected(item);
 	}
 
 	@Override

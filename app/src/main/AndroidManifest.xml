@@ -24,6 +24,7 @@
         <activity
             android:name=".activities.FileViewActivity"
             android:configChanges="orientation|screenSize|smallestScreenSize|density|screenLayout|keyboard|keyboardHidden|navigation"
+            android:windowSoftInputMode="adjustResize"
             android:theme="@style/AppTheme.NoActionBar"/>
         <activity
             android:name=".activities.CreateFileActivity"
