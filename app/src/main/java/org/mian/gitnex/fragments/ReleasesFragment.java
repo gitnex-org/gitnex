@@ -30,6 +30,7 @@ import java.security.NoSuchAlgorithmException;
 import java.security.SecureRandom;
 import java.util.List;
 import java.util.Objects;
+import java.util.concurrent.atomic.AtomicBoolean;
 import javax.net.ssl.HttpsURLConnection;
 import javax.net.ssl.SSLContext;
 import javax.net.ssl.X509TrustManager;
@@ -40,6 +41,7 @@ import okhttp3.Request;
 import okhttp3.Response;
 import org.gitnex.tea4j.v2.auth.ApiKeyAuth;
 import org.gitnex.tea4j.v2.models.Release;
+import org.gitnex.tea4j.v2.models.Tag;
 import org.mian.gitnex.R;
 import org.mian.gitnex.activities.BaseActivity;
 import org.mian.gitnex.activities.CreateReleaseActivity;
@@ -65,6 +67,9 @@ public class ReleasesFragment extends Fragment {
 	private RepositoryContext repository;
 	private FragmentReleasesBinding fragmentReleasesBinding;
 	private String releaseTag;
+	private List<Release> releasesList = null;
+	private List<Tag> tagsList = null;
+	private boolean isInitialLoad = true;
 	private int page = 1;
 	private int pageReleases = 1;
 
@@ -129,6 +134,7 @@ public class ReleasesFragment extends Fragment {
 						type -> {
 							if (type != null) {
 								repository.setReleasesViewTypeIsTag(type.equals("tags"));
+								isInitialLoad = false;
 							}
 							page = 1;
 							pageReleases = 1;
@@ -186,62 +192,17 @@ public class ReleasesFragment extends Fragment {
 	private void fetchDataAsync(String owner, String repo) {
 
 		ReleasesViewModel releasesModel = new ViewModelProvider(this).get(ReleasesViewModel.class);
+		AtomicBoolean releasesFetched = new AtomicBoolean(false);
+		AtomicBoolean tagsFetched = new AtomicBoolean(false);
 
 		releasesModel
 				.getReleasesList(owner, repo, getContext())
 				.observe(
 						getViewLifecycleOwner(),
 						releasesListMain -> {
-							if (!repository.isReleasesViewTypeIsTag()) {
-								adapter =
-										new ReleasesAdapter(
-												getContext(),
-												releasesListMain,
-												this::requestFileDownload,
-												repository.getOwner(),
-												repository.getName(),
-												fragmentReleasesBinding);
-								adapter.setLoadMoreListener(
-										new ReleasesAdapter.OnLoadMoreListener() {
-
-											@Override
-											public void onLoadMore() {
-												pageReleases += 1;
-												releasesViewModel.loadMoreReleases(
-														owner,
-														repo,
-														pageReleases,
-														getContext(),
-														adapter);
-												fragmentReleasesBinding.progressBar.setVisibility(
-														View.VISIBLE);
-											}
-
-											@Override
-											public void onLoadFinished() {
-												fragmentReleasesBinding.progressBar.setVisibility(
-														View.GONE);
-											}
-										});
-								if (adapter.getItemCount() > 0) {
-									fragmentReleasesBinding.recyclerView.setAdapter(adapter);
-									if (releasesListMain != null && releaseTag != null) {
-										int index = getReleaseIndex(releaseTag, releasesListMain);
-										releaseTag = null;
-										if (index != -1) {
-											fragmentReleasesBinding.recyclerView.scrollToPosition(
-													index);
-										}
-									}
-									fragmentReleasesBinding.noDataReleases.setVisibility(View.GONE);
-								} else {
-									adapter.notifyDataChanged();
-									fragmentReleasesBinding.recyclerView.setAdapter(adapter);
-									fragmentReleasesBinding.noDataReleases.setVisibility(
-											View.VISIBLE);
-								}
-								fragmentReleasesBinding.progressBar.setVisibility(View.GONE);
-							}
+							this.releasesList = releasesListMain;
+							releasesFetched.set(true);
+							setDefaultView(releasesFetched, tagsFetched);
 						});
 
 		releasesModel
@@ -249,49 +210,132 @@ public class ReleasesFragment extends Fragment {
 				.observe(
 						getViewLifecycleOwner(),
 						tagList -> {
-							if (repository.isReleasesViewTypeIsTag()) {
-								tagsAdapter =
-										new TagsAdapter(
-												getContext(),
-												tagList,
-												owner,
-												repo,
-												this::requestFileDownload,
-												fragmentReleasesBinding);
-								tagsAdapter.setLoadMoreListener(
-										new TagsAdapter.OnLoadMoreListener() {
-
-											@Override
-											public void onLoadMore() {
-												page += 1;
-												releasesViewModel.loadMoreTags(
-														owner,
-														repo,
-														page,
-														getContext(),
-														tagsAdapter);
-												fragmentReleasesBinding.progressBar.setVisibility(
-														View.VISIBLE);
-											}
-
-											@Override
-											public void onLoadFinished() {
-												fragmentReleasesBinding.progressBar.setVisibility(
-														View.GONE);
-											}
-										});
-								if (tagsAdapter.getItemCount() > 0) {
-									fragmentReleasesBinding.recyclerView.setAdapter(tagsAdapter);
-									fragmentReleasesBinding.noDataReleases.setVisibility(View.GONE);
-								} else {
-									tagsAdapter.notifyDataChanged();
-									fragmentReleasesBinding.recyclerView.setAdapter(tagsAdapter);
-									fragmentReleasesBinding.noDataReleases.setVisibility(
-											View.VISIBLE);
-								}
-								fragmentReleasesBinding.progressBar.setVisibility(View.GONE);
-							}
+							this.tagsList = tagList;
+							tagsFetched.set(true);
+							setDefaultView(releasesFetched, tagsFetched);
 						});
+	}
+
+	private void setDefaultView(AtomicBoolean releasesFetched, AtomicBoolean tagsFetched) {
+
+		if (!releasesFetched.get() || !tagsFetched.get()) {
+			return;
+		}
+
+		if (isInitialLoad) {
+			boolean hasReleases = releasesList != null && !releasesList.isEmpty();
+			boolean hasTags = tagsList != null && !tagsList.isEmpty();
+
+			if (hasReleases) {
+				repository.setReleasesViewTypeIsTag(false);
+				setReleasesAdapter(releasesList);
+			} else if (hasTags) {
+				repository.setReleasesViewTypeIsTag(true);
+				setTagsAdapter(tagsList);
+			} else {
+				repository.setReleasesViewTypeIsTag(false);
+				setReleasesAdapter(releasesList);
+			}
+			isInitialLoad = false;
+		} else {
+			if (repository.isReleasesViewTypeIsTag()) {
+				setTagsAdapter(tagsList);
+			} else {
+				setReleasesAdapter(releasesList);
+			}
+		}
+
+		fragmentReleasesBinding.progressBar.setVisibility(View.GONE);
+	}
+
+	private void setReleasesAdapter(List<Release> releasesListMain) {
+
+		adapter =
+				new ReleasesAdapter(
+						getContext(),
+						releasesListMain,
+						this::requestFileDownload,
+						repository.getOwner(),
+						repository.getName(),
+						fragmentReleasesBinding);
+
+		adapter.setLoadMoreListener(
+				new ReleasesAdapter.OnLoadMoreListener() {
+					@Override
+					public void onLoadMore() {
+						pageReleases += 1;
+						releasesViewModel.loadMoreReleases(
+								repository.getOwner(),
+								repository.getName(),
+								pageReleases,
+								getContext(),
+								adapter);
+						fragmentReleasesBinding.progressBar.setVisibility(View.VISIBLE);
+					}
+
+					@Override
+					public void onLoadFinished() {
+						fragmentReleasesBinding.progressBar.setVisibility(View.GONE);
+					}
+				});
+
+		if (adapter.getItemCount() > 0) {
+
+			fragmentReleasesBinding.recyclerView.setAdapter(adapter);
+			if (releasesListMain != null && releaseTag != null) {
+				int index = getReleaseIndex(releaseTag, releasesListMain);
+				releaseTag = null;
+				if (index != -1) {
+					fragmentReleasesBinding.recyclerView.scrollToPosition(index);
+				}
+			}
+			fragmentReleasesBinding.noDataReleases.setVisibility(View.GONE);
+		} else {
+			adapter.notifyDataChanged();
+			fragmentReleasesBinding.recyclerView.setAdapter(adapter);
+			fragmentReleasesBinding.noDataReleases.setVisibility(View.VISIBLE);
+		}
+	}
+
+	private void setTagsAdapter(List<Tag> tagList) {
+
+		tagsAdapter =
+				new TagsAdapter(
+						getContext(),
+						tagList,
+						repository.getOwner(),
+						repository.getName(),
+						this::requestFileDownload,
+						fragmentReleasesBinding);
+
+		tagsAdapter.setLoadMoreListener(
+				new TagsAdapter.OnLoadMoreListener() {
+					@Override
+					public void onLoadMore() {
+						page += 1;
+						releasesViewModel.loadMoreTags(
+								repository.getOwner(),
+								repository.getName(),
+								page,
+								getContext(),
+								tagsAdapter);
+						fragmentReleasesBinding.progressBar.setVisibility(View.VISIBLE);
+					}
+
+					@Override
+					public void onLoadFinished() {
+						fragmentReleasesBinding.progressBar.setVisibility(View.GONE);
+					}
+				});
+
+		if (tagsAdapter.getItemCount() > 0) {
+			fragmentReleasesBinding.recyclerView.setAdapter(tagsAdapter);
+			fragmentReleasesBinding.noDataReleases.setVisibility(View.GONE);
+		} else {
+			tagsAdapter.notifyDataChanged();
+			fragmentReleasesBinding.recyclerView.setAdapter(tagsAdapter);
+			fragmentReleasesBinding.noDataReleases.setVisibility(View.VISIBLE);
+		}
 	}
 
 	private static int getReleaseIndex(String tag, List<Release> releases) {
@@ -302,15 +346,6 @@ public class ReleasesFragment extends Fragment {
 		}
 		return -1;
 	}
-
-	/*@Override
-	public void onCreateOptionsMenu(@NonNull Menu menu, @NonNull MenuInflater inflater) {
-		if (!((BaseActivity) requireActivity()).getAccount().requiresVersion("1.15.0")) {
-			return;
-		}
-		inflater.inflate(R.menu.filter_menu_releases, menu);
-		super.onCreateOptionsMenu(menu, inflater);
-	}*/
 
 	private void requestFileDownload(String url) {
 		currentDownloadUrl = url;
