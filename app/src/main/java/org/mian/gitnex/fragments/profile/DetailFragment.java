@@ -10,6 +10,7 @@ import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.GridView;
 import androidx.activity.result.ActivityResultLauncher;
 import androidx.activity.result.contract.ActivityResultContracts;
 import androidx.annotation.NonNull;
@@ -21,16 +22,22 @@ import com.google.android.material.dialog.MaterialAlertDialogBuilder;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.InputStream;
+import java.text.SimpleDateFormat;
+import java.util.Calendar;
+import java.util.Date;
+import java.util.List;
 import java.util.Locale;
 import okhttp3.ResponseBody;
 import org.gitnex.tea4j.v2.models.Repository;
 import org.gitnex.tea4j.v2.models.UpdateUserAvatarOption;
 import org.gitnex.tea4j.v2.models.User;
+import org.gitnex.tea4j.v2.models.UserHeatmapData;
 import org.gitnex.tea4j.v2.models.UserSettings;
 import org.gitnex.tea4j.v2.models.UserSettingsOptions;
 import org.mian.gitnex.R;
 import org.mian.gitnex.activities.BaseActivity;
 import org.mian.gitnex.activities.ProfileActivity;
+import org.mian.gitnex.adapters.HeatmapAdapter;
 import org.mian.gitnex.clients.RetrofitClient;
 import org.mian.gitnex.databinding.CustomEditAvatarDialogBinding;
 import org.mian.gitnex.databinding.CustomEditProfileBinding;
@@ -40,10 +47,12 @@ import org.mian.gitnex.helpers.AppDatabaseSettings;
 import org.mian.gitnex.helpers.AppUtil;
 import org.mian.gitnex.helpers.ClickListener;
 import org.mian.gitnex.helpers.Markdown;
+import org.mian.gitnex.helpers.SnackBar;
 import org.mian.gitnex.helpers.TimeHelper;
 import org.mian.gitnex.helpers.Toasty;
 import retrofit2.Call;
 import retrofit2.Callback;
+import retrofit2.Response;
 
 /**
  * @author M M Arif
@@ -92,6 +101,7 @@ public class DetailFragment extends Fragment {
 
 		getProfileDetail(username);
 		getProfileRepository(username);
+		getUserHeatmap(username);
 
 		materialAlertDialogBuilder =
 				new MaterialAlertDialogBuilder(
@@ -147,6 +157,76 @@ public class DetailFragment extends Fragment {
 							}
 						}
 					});
+
+	private void getUserHeatmap(String username) {
+
+		Call<List<UserHeatmapData>> call =
+				RetrofitClient.getApiInterface(context).userGetHeatmapData(username);
+
+		call.enqueue(
+				new Callback<>() {
+					@Override
+					public void onResponse(
+							@NonNull Call<List<UserHeatmapData>> call,
+							@NonNull Response<List<UserHeatmapData>> response) {
+
+						if (response.isSuccessful() && response.body() != null) {
+							List<UserHeatmapData> heatmapData = response.body();
+							displayHeatmap(heatmapData);
+						} else {
+							binding.heatmapGrid.setVisibility(View.GONE);
+						}
+					}
+
+					@Override
+					public void onFailure(
+							@NonNull Call<List<UserHeatmapData>> call, @NonNull Throwable t) {
+						Toasty.error(context, getString(R.string.genericServerResponseError));
+						binding.heatmapGrid.setVisibility(View.GONE);
+					}
+				});
+	}
+
+	private void displayHeatmap(List<UserHeatmapData> heatmapData) {
+
+		if (heatmapData == null || heatmapData.isEmpty()) {
+			binding.heatmapGrid.setVisibility(View.GONE);
+			return;
+		}
+
+		binding.heatmapGrid.setVisibility(View.VISIBLE);
+		GridView gridView = binding.heatmapGrid;
+
+		int[] contributions = new int[60];
+		Calendar calendar = Calendar.getInstance();
+		long now = calendar.getTimeInMillis() / 1000;
+		calendar.add(Calendar.DAY_OF_YEAR, -59);
+		long startTime = calendar.getTimeInMillis() / 1000;
+
+		for (UserHeatmapData entry : heatmapData) {
+			long timestamp = entry.getTimestamp();
+			if (timestamp >= startTime && timestamp <= now) {
+				int dayIndex = (int) ((timestamp - startTime) / (24 * 60 * 60));
+				if (dayIndex < 60) {
+					contributions[dayIndex] += entry.getContributions();
+				}
+			}
+		}
+
+		HeatmapAdapter adapter = new HeatmapAdapter(context, contributions);
+		gridView.setAdapter(adapter);
+
+		gridView.setOnItemClickListener(
+				(parent, view, position, id) -> {
+					int count = contributions[position];
+					calendar.setTimeInMillis(
+							startTime * 1000 + (long) position * 24 * 60 * 60 * 1000);
+					SimpleDateFormat sdf = new SimpleDateFormat("dd-MM-yyyy", locale);
+					String date = sdf.format(new Date(calendar.getTimeInMillis()));
+					String message = getString(R.string.heatmap_contribution, count, date);
+					SnackBar.info(context, binding.getRoot(), message);
+				});
+	}
 
 	private void openFileAttachment() {
 

@@ -171,6 +171,16 @@
 
                     </LinearLayout>
 
+                    <GridView
+                        android:id="@+id/heatmapGrid"
+                        android:layout_width="match_parent"
+                        android:layout_height="@dimen/dimen144dp"
+                        android:numColumns="12"
+                        android:gravity="center"
+                        android:verticalSpacing="@dimen/dimen6dp"
+                        android:layout_marginTop="@dimen/dimen24dp"
+                        android:visibility="gone" />
+
                     <LinearLayout
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"

@@ -75,4 +75,10 @@
     <color name="codebergDarkThemeIconsColors">#9dacb6</color>
     <color name="codebergDarkColorPrimary">#14507d</color>
     <color name="codebergDarkInputBackground">#04121b</color>
+
+    <color name="heatmap_grey">#ebedf0</color>
+    <color name="heatmap_green_1">#c6e2c6</color>
+    <color name="heatmap_green_2">#7bc96f</color>
+    <color name="heatmap_green_3">#4c9b4c</color>
+    <color name="heatmap_green_4">#2d6b2d</color>
 </resources>

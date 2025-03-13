@@ -35,6 +35,7 @@
     <dimen name="dimen120dp">120dp</dimen>
     <dimen name="dimen132dp">132dp</dimen>
     <dimen name="dimen140dp">140dp</dimen>
+    <dimen name="dimen144dp">144dp</dimen>
     <dimen name="dimen150dp">150dp</dimen>
     <dimen name="dimen180dp">180dp</dimen>
     <dimen name="dimen186dp">186dp</dimen>
