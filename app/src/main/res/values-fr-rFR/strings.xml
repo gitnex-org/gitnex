@@ -219,7 +219,7 @@
     <string name="labelDeleteText">Étiquette supprimée</string>
     <string name="selectBranchError">Branche de diffusion</string>
     <string name="alertDialogTokenRevokedTitle">Erreur d’autorisation</string>
-    <string name="alertDialogTokenRevokedMessage">Le jeton d’accès a peut-être été révoqué ou vous n’êtes pas autorisé à voir ce contenu.\n\nSi le jeton a été révoqué, veuillez vous reconnecter.</string>
+    <string name="alertDialogTokenRevokedMessage">Vous n’avez pas l’autorisation de voir ce contenu OU votre jeton d’accès a été révoqué.\n\nDans ce dernier cas, veuillez vous reconnecter.</string>
     <string name="labelDeleteMessage">Voulez-vous vraiment supprimer cette étiquette ?</string>
     <!-- org tabbed layout str -->
     <string name="orgTabTeams">Équipes</string>
@@ -386,7 +386,7 @@
     <string name="branch_created">Branche créée avec succès</string>
     <string name="branch_error_archive_mirror">Impossible de créer la branche : ce dépôt est archivé ou est un miroir</string>
     <string name="branch_error_ref_not_found">La référence n’existe pas</string>
-    <string name="branch_error_exists">\"La branche %1$s existe déjà</string>
+    <string name="branch_error_exists">La branche %1$s existe déjà</string>
     <string name="branch_error_repo_locked">Le dépôt est verrouillé</string>
     <string name="create_branch">Créer une branche</string>
     <string name="strFilter">Filtrer</string>
@@ -803,4 +803,7 @@
     <string name="attachment">Fichier joint</string>
     <string name="attachments">Fichiers joints</string>
     <string name="attachmentsSaveError">Le ticket a été créé, mais les fichiers n’ont pu être joints. Consultez les journaux du serveur pour plus de détails.</string>
+    <string name="search_matches_found">%1$d résultats</string>
+    <string name="search_no_matches">Aucun résultat trouvé</string>
+    <string name="heatmap_contribution">%1$d contributions sur %2$s</string>
 </resources>
