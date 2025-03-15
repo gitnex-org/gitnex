@@ -27,10 +27,10 @@ import org.mian.gitnex.helpers.codeeditor.theme.Theme;
  */
 public class SyntaxHighlightedArea extends LinearLayout {
 
-	private Theme theme;
+	public Theme theme;
 
-	private TextView sourceView;
-	private LinesView linesView;
+	public TextView sourceView;
+	public LinesView linesView;
 
 	public SyntaxHighlightedArea(@NonNull Context context) {
 		super(context);
@@ -49,11 +49,9 @@ public class SyntaxHighlightedArea extends LinearLayout {
 	}
 
 	public void setup() {
-
 		theme = Theme.getDefaultTheme(getContext());
 
 		sourceView = new TextView(getContext());
-
 		sourceView.setLayoutParams(
 				new ViewGroup.LayoutParams(
 						ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT));
@@ -64,7 +62,6 @@ public class SyntaxHighlightedArea extends LinearLayout {
 		sourceView.setTextColor(
 				getContext().getResources().getColor(theme.getDefaultColor(), null));
 		sourceView.setTextIsSelectable(true);
-
 		int padding = AppUtil.getPixelsFromDensity(getContext(), 5);
 		sourceView.setPadding(padding, 0, padding, 0);
 
@@ -75,7 +72,6 @@ public class SyntaxHighlightedArea extends LinearLayout {
 		horizontalScrollView.addView(sourceView);
 
 		linesView = new LinesView(getContext());
-
 		linesView.setLayoutParams(
 				new LinearLayout.LayoutParams(
 						ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.MATCH_PARENT));
@@ -84,10 +80,8 @@ public class SyntaxHighlightedArea extends LinearLayout {
 				0,
 				AppUtil.getPixelsFromDensity(getContext(), 6),
 				0);
-
 		linesView.getPaint().setTypeface(sourceView.getTypeface());
 		linesView.getPaint().setTextSize(sourceView.getTextSize());
-
 		linesView.setBackgroundColor(
 				getContext().getResources().getColor(theme.getBackgroundColor(), null));
 		linesView.setTextColor(getContext().getResources().getColor(theme.getDefaultColor(), null));
@@ -167,15 +161,17 @@ public class SyntaxHighlightedArea extends LinearLayout {
 		return sourceView.getText().toString();
 	}
 
-	private static class LinesView extends View {
+	public LinesView getLinesView() {
+		return linesView;
+	}
+
+	public static class LinesView extends View {
 
 		private final Paint paint = new Paint();
 		private final Rect textBounds = new Rect();
-
 		@ColorInt private int backgroundColor;
 		@ColorInt private int textColor;
 		@ColorInt private int lineColor;
-
 		private long lineCount;
 
 		public LinesView(Context context) {
@@ -208,12 +204,19 @@ public class SyntaxHighlightedArea extends LinearLayout {
 		}
 
 		@Override
+		public void setPadding(int left, int top, int right, int bottom) {
+			super.setPadding(left, top, right, bottom);
+		}
+
+		@Override
+		public void setLayoutParams(ViewGroup.LayoutParams params) {
+			super.setLayoutParams(params);
+		}
+
+		@Override
 		protected void onMeasure(int widthMeasureSpec, int heightMeasureSpec) {
-
 			String highestLineNumber = String.valueOf(lineCount);
-
 			paint.getTextBounds(highestLineNumber, 0, highestLineNumber.length(), textBounds);
-
 			setMeasuredDimension(
 					getPaddingLeft() + textBounds.width() + getPaddingRight(),
 					MeasureSpec.getSize(heightMeasureSpec));
@@ -221,26 +224,21 @@ public class SyntaxHighlightedArea extends LinearLayout {
 
 		@Override
 		protected void onDraw(Canvas canvas) {
-
 			paint.setColor(backgroundColor);
-
 			canvas.drawRect(0, 0, getWidth(), getHeight(), paint);
 
 			float marginTopBottom = (float) (getHeight() - (textBounds.height() / 2)) / lineCount;
-
 			paint.setColor(textColor);
 
 			canvas.save();
 			canvas.translate(getPaddingLeft(), marginTopBottom);
 
 			for (int currentLine = 1; currentLine <= lineCount; currentLine++) {
-
 				canvas.drawText(String.valueOf(currentLine), 0, 0, paint);
 				canvas.translate(0, marginTopBottom);
 			}
 
 			paint.setColor(lineColor);
-
 			int dividerX = getWidth() - 1;
 			int dividerY = getHeight();
 

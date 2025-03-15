@@ -5,8 +5,9 @@ import android.text.Layout;
 import android.text.Spannable;
 import android.text.SpannableString;
 import android.text.style.BackgroundColorSpan;
+import android.text.style.ForegroundColorSpan;
 import android.util.TypedValue;
-import android.view.ViewTreeObserver;
+import android.widget.HorizontalScrollView;
 import android.widget.TextView;
 import androidx.core.content.ContextCompat;
 import androidx.core.widget.NestedScrollView;
@@ -71,8 +72,8 @@ public class FileContentSearcher {
 
 	public void nextMatch(
 			SyntaxHighlightedArea codeView, RecyclerView markdownView, boolean isMarkdown) {
-
-		if (matchPositions.isEmpty() || currentMatchIndex == -1) return;
+		if (matchPositions.isEmpty() || currentMatchIndex == -1 || matchPositions.size() <= 1)
+			return;
 		currentMatchIndex = (currentMatchIndex + 1) % matchPositions.size();
 		highlightMatches(codeView, markdownView, isMarkdown);
 		scrollToMatch(codeView, markdownView, isMarkdown, currentMatchIndex);
@@ -80,8 +81,8 @@ public class FileContentSearcher {
 
 	public void previousMatch(
 			SyntaxHighlightedArea codeView, RecyclerView markdownView, boolean isMarkdown) {
-
-		if (matchPositions.isEmpty() || currentMatchIndex == -1) return;
+		if (matchPositions.isEmpty() || currentMatchIndex == -1 || matchPositions.size() <= 1)
+			return;
 		currentMatchIndex = (currentMatchIndex - 1 + matchPositions.size()) % matchPositions.size();
 		highlightMatches(codeView, markdownView, isMarkdown);
 		scrollToMatch(codeView, markdownView, isMarkdown, currentMatchIndex);
@@ -93,21 +94,31 @@ public class FileContentSearcher {
 
 	private void highlightMatches(
 			SyntaxHighlightedArea codeView, RecyclerView markdownView, boolean isMarkdown) {
-
 		SpannableString spannable = new SpannableString(content);
 
 		int searchHighlightColor = ContextCompat.getColor(codeView.getContext(), R.color.darkGreen);
 		int selectedHighlightColor =
 				ContextCompat.getColor(codeView.getContext(), R.color.iconPrMergedColor);
+		int whiteColor = ContextCompat.getColor(codeView.getContext(), android.R.color.white);
 
 		for (int i = 0; i < matchPositions.size(); i++) {
 			int[] pos = matchPositions.get(i);
-			int color = (i == currentMatchIndex) ? selectedHighlightColor : searchHighlightColor;
+			int backgroundColor =
+					(i == currentMatchIndex) ? selectedHighlightColor : searchHighlightColor;
+
 			spannable.setSpan(
-					new BackgroundColorSpan(color),
+					new BackgroundColorSpan(backgroundColor),
 					pos[0],
 					pos[1],
 					Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
+
+			if (i == currentMatchIndex) {
+				spannable.setSpan(
+						new ForegroundColorSpan(whiteColor),
+						pos[0],
+						pos[1],
+						Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
+			}
 		}
 
 		if (isMarkdown && markdownView != null) {
@@ -122,12 +133,10 @@ public class FileContentSearcher {
 			RecyclerView markdownView,
 			boolean isMarkdown,
 			int index) {
-
 		if (index < 0 || index >= matchPositions.size()) return;
 		int[] pos = matchPositions.get(index);
 
 		if (isMarkdown && recyclerView != null) {
-
 			Context context = codeView.getContext();
 			int avgCharHeight =
 					(int)
@@ -140,46 +149,45 @@ public class FileContentSearcher {
 					(pos[0] / (charsPerLine > 0 ? charsPerLine : 1)) * (int) (avgCharHeight * 1.2);
 			recyclerView.smoothScrollToPosition(scrollY / avgCharHeight);
 		} else if (scrollView != null) {
-
 			TextView sourceView = codeView.getSourceView();
-			ViewTreeObserver vto = sourceView.getViewTreeObserver();
-			vto.addOnGlobalLayoutListener(
-					new ViewTreeObserver.OnGlobalLayoutListener() {
-						@Override
-						public void onGlobalLayout() {
+			HorizontalScrollView hScrollView = (HorizontalScrollView) sourceView.getParent();
 
-							sourceView.getViewTreeObserver().removeOnGlobalLayoutListener(this);
-							Layout layout = sourceView.getLayout();
-							if (layout != null) {
+			sourceView.requestLayout();
+			scrollView.postDelayed(
+					() -> {
+						Layout layout = sourceView.getLayout();
+						if (layout != null) {
+							int line = layout.getLineForOffset(pos[0]);
+							int y = layout.getLineTop(line);
+							float x = layout.getPrimaryHorizontal(pos[0]);
 
-								int line = layout.getLineForOffset(pos[0]);
-								int y = layout.getLineTop(line);
-								int contentHeight = sourceView.getHeight();
-								int scrollViewHeight = scrollView.getHeight();
-								int maxScroll = Math.max(0, contentHeight - scrollViewHeight);
-								int adjustedY = Math.min(y, maxScroll);
+							int contentHeight = sourceView.getHeight();
+							int scrollViewHeight = scrollView.getHeight();
+							int maxScrollY = Math.max(0, contentHeight - scrollViewHeight);
+							int offsetY = Math.max(0, y - scrollViewHeight / 2); // Center the match
+							int adjustedY = Math.min(offsetY, maxScrollY);
 
-								if (contentHeight > scrollViewHeight) {
-									scrollView.requestLayout();
-									scrollView.post(() -> scrollView.smoothScrollTo(0, adjustedY));
-								}
-							} else {
+							int contentWidth = sourceView.getWidth();
+							int hScrollWidth = hScrollView.getWidth();
+							int maxScrollX = Math.max(0, contentWidth - hScrollWidth);
+							int adjustedX = Math.min((int) x, maxScrollX);
 
-								int lineHeight = sourceView.getLineHeight();
-								int lines = content.substring(0, pos[0]).split("\n").length - 1;
-								int fallbackY = lines * lineHeight;
-								int contentHeight = sourceView.getHeight();
-								int scrollViewHeight = scrollView.getHeight();
-								int maxScroll = Math.max(0, contentHeight - scrollViewHeight);
-								int adjustedFallbackY = Math.min(fallbackY, maxScroll);
+							scrollView.smoothScrollTo(0, adjustedY);
+							hScrollView.smoothScrollTo(adjustedX, 0);
+						} else {
+							int lineHeight = sourceView.getLineHeight();
+							int lines = content.substring(0, pos[0]).split("\n").length - 1;
+							int fallbackY = lines * lineHeight;
+							int contentHeight = sourceView.getHeight();
+							int scrollViewHeight = scrollView.getHeight();
+							int maxScrollY = Math.max(0, contentHeight - scrollViewHeight);
+							int offsetY = Math.max(0, fallbackY - scrollViewHeight / 2);
+							int adjustedFallbackY = Math.min(offsetY, maxScrollY);
 
-								if (contentHeight > scrollViewHeight) {
-									scrollView.post(
-											() -> scrollView.smoothScrollTo(0, adjustedFallbackY));
-								}
-							}
+							scrollView.smoothScrollTo(0, adjustedFallbackY);
 						}
-					});
+					},
+					100);
 		}
 	}
 

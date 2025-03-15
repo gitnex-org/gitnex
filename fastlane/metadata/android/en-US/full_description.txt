@@ -14,21 +14,18 @@ GitNex is a free/paid, open-source Android client for Git repository management 
 - Milestones list
 - Releases list
 - Wiki pages
-- Offline mode
 - Explore repositories/issues/organizations/users
 - Profile view
 - Markdown support
 - Emoji support
 - Extensive Settings
-- 2FA OTP support
 - Notifications
-- Drafts
 - Repository commits
 - Self signed cert support
 - Themes
 - & more...
 
-More features - https://codeberg.org/gitnex/GitNex/wiki/Features
+More features: https://codeberg.org/gitnex/GitNex/wiki/Features
 
 Source code: https://codeberg.org/gitnex/GitNex
 Developer: https://mastodon.social/@mmarif

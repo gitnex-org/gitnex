@@ -221,6 +221,9 @@ public class FileViewActivity extends BaseActivity implements BottomSheetListene
 		binding.toolbarTitle.setMovementMethod(new ScrollingMovementMethod());
 		binding.toolbarTitle.setText(file.getPath());
 
+		binding.contents.setHideProgressCallback(
+				() -> binding.progressBar.setVisibility(View.GONE));
+
 		searcher = new FileContentSearcher(binding.contentScrollContainer, binding.markdown);
 		getSingleFileContents(
 				repository.getOwner(),
@@ -249,8 +252,6 @@ public class FileViewActivity extends BaseActivity implements BottomSheetListene
 
 									if (responseBody != null) {
 
-										runOnUiThread(
-												() -> binding.progressBar.setVisibility(View.GONE));
 										String fileExtension = FilenameUtils.getExtension(filename);
 
 										switch (AppUtil.getFileType(fileExtension)) {
@@ -284,6 +285,10 @@ public class FileViewActivity extends BaseActivity implements BottomSheetListene
 																});
 													}
 												}
+												runOnUiThread(
+														() ->
+																binding.progressBar.setVisibility(
+																		View.GONE));
 												break;
 
 											case UNKNOWN:
@@ -320,6 +325,9 @@ public class FileViewActivity extends BaseActivity implements BottomSheetListene
 																		View.GONE);
 																binding.contents.setVisibility(
 																		View.VISIBLE);
+																android.util.Log.d(
+																		"Zoom - FileViewActivity",
+																		"Contents set visible");
 															}
 															invalidateOptionsMenu();
 														});
@@ -418,18 +426,31 @@ public class FileViewActivity extends BaseActivity implements BottomSheetListene
 					binding.markdown,
 					renderMd);
 			int matches = searcher.getMatchCount();
+			updateNavigationButtons(matches);
 			if (isSubmit || !query.equals(lastQuery)) {
-				if (matches > 0) {
-					SnackBar.success(
-							this,
-							binding.getRoot(),
-							getString(R.string.search_matches_found, matches));
-				} else {
-					SnackBar.warning(
-							this, binding.getRoot(), getString(R.string.search_no_matches));
+				if (!query.isEmpty()) {
+					if (matches > 0) {
+						SnackBar.success(
+								this,
+								binding.getRoot(),
+								getString(R.string.search_matches_found, matches));
+					} else {
+						SnackBar.warning(
+								this, binding.getRoot(), getString(R.string.search_no_matches));
+					}
 				}
 				lastQuery = query;
 			}
+		}
+	}
+
+	private void updateNavigationButtons(int matchCount) {
+		if (prevButton != null && nextButton != null) {
+			boolean enabled = matchCount > 1;
+			prevButton.setEnabled(enabled);
+			nextButton.setEnabled(enabled);
+			prevButton.setAlpha(enabled ? 1.0f : 0.5f);
+			nextButton.setAlpha(enabled ? 1.0f : 0.5f);
 		}
 	}
 
@@ -447,7 +468,12 @@ public class FileViewActivity extends BaseActivity implements BottomSheetListene
 		if (!FilenameUtils.getExtension(file.getName()).equalsIgnoreCase("md")) {
 			markdownItem.setVisible(false);
 		}
-		searchItem.setVisible(!renderMd);
+
+		searchItem.setVisible(
+				processable
+						&& !renderMd
+						&& AppUtil.getFileType(FilenameUtils.getExtension(file.getName()))
+								!= AppUtil.FileType.IMAGE);
 
 		int iconsColor = getAttrColor(this, R.attr.iconsColor);
 		binding.toolbar.setTitleTextColor(iconsColor);
@@ -531,6 +557,7 @@ public class FileViewActivity extends BaseActivity implements BottomSheetListene
 							if (FilenameUtils.getExtension(file.getName()).equalsIgnoreCase("md")) {
 								markdownItem.setVisible(false);
 							}
+							performSearch(lastQuery, false);
 						}
 					});
 
@@ -551,6 +578,7 @@ public class FileViewActivity extends BaseActivity implements BottomSheetListene
 										binding.contents,
 										binding.markdown,
 										renderMd);
+								updateNavigationButtons(0);
 							}
 							binding.toolbar.removeView(prevButton);
 							binding.toolbar.removeView(nextButton);
@@ -576,6 +604,7 @@ public class FileViewActivity extends BaseActivity implements BottomSheetListene
 									binding.contents,
 									binding.markdown,
 									renderMd);
+							updateNavigationButtons(0);
 						}
 						binding.toolbar.removeView(prevButton);
 						binding.toolbar.removeView(nextButton);
@@ -591,6 +620,27 @@ public class FileViewActivity extends BaseActivity implements BottomSheetListene
 		}
 
 		return true;
+	}
+
+	@Override
+	public boolean onOptionsItemSelected(MenuItem item) {
+
+		int id = item.getItemId();
+		if (id == android.R.id.home) {
+			finish();
+			return true;
+		} else if (id == R.id.genericMenu) {
+			BottomSheetFileViewerFragment bottomSheet = new BottomSheetFileViewerFragment();
+			Bundle opts = repository.getBundle();
+			opts.putBoolean("editable", processable);
+			bottomSheet.setArguments(opts);
+			bottomSheet.show(getSupportFragmentManager(), "fileViewerBottomSheet");
+			return true;
+		} else if (id == R.id.markdown) {
+			toggleMarkdown();
+			return true;
+		}
+		return super.onOptionsItemSelected(item);
 	}
 
 	private void toggleMarkdown() {
@@ -621,27 +671,6 @@ public class FileViewActivity extends BaseActivity implements BottomSheetListene
 	}
 
 	@Override
-	public boolean onOptionsItemSelected(MenuItem item) {
-
-		int id = item.getItemId();
-		if (id == android.R.id.home) {
-			finish();
-			return true;
-		} else if (id == R.id.genericMenu) {
-			BottomSheetFileViewerFragment bottomSheet = new BottomSheetFileViewerFragment();
-			Bundle opts = repository.getBundle();
-			opts.putBoolean("editable", processable);
-			bottomSheet.setArguments(opts);
-			bottomSheet.show(getSupportFragmentManager(), "fileViewerBottomSheet");
-			return true;
-		} else if (id == R.id.markdown) {
-			toggleMarkdown();
-			return true;
-		}
-		return super.onOptionsItemSelected(item);
-	}
-
-	@Override
 	public void onButtonClicked(String text) {
 
 		if ("downloadFile".equals(text)) {
@@ -659,14 +688,15 @@ public class FileViewActivity extends BaseActivity implements BottomSheetListene
 
 		if ("editFile".equals(text)) {
 
-			if (binding.contents.getContent() != null && !binding.contents.getContent().isEmpty()) {
+			if (!binding.contents.getSourceView().getText().toString().isEmpty()) {
 
 				Intent intent = repository.getIntent(ctx, CreateFileActivity.class);
 
 				intent.putExtra("fileAction", CreateFileActivity.FILE_ACTION_EDIT);
 				intent.putExtra("filePath", file.getPath());
 				intent.putExtra("fileSha", file.getSha());
-				intent.putExtra("fileContents", binding.contents.getContent());
+				intent.putExtra(
+						"fileContents", binding.contents.getSourceView().getText().toString());
 
 				editFileLauncher.launch(intent);
 
