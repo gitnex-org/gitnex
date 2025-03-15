@@ -14,21 +14,18 @@ GitNex est un client Android open-source gratuit/payant pour vos dépôts Git g�
 - Liste des jalons
 - Liste des versions
 - Pages Wiki
-- Mode hors-ligne
 - Explorer des dépôts/tickets/organisations/utilisateurs
 - Aperçu des profils
 - Syntaxe Markdown
 - Émoticônes
 - Réglages avancés
-- Double authentification OTP
 - Notifications
-- Brouillons
 - Révisions du dépôt
 - Gestion des certificats auto-signés
 - Thèmes
 - et plus encore…
 
-Toutes les fonctionnalités : https://codeberg.org/gitnex/GitNex/wiki/Features
+Vue d’ensemble des fonctionnalités : https://codeberg.org/gitnex/GitNex/wiki/Features
 
 Code source : https://codeberg.org/gitnex/GitNex
 Développeur : https://mastodon.social/@mmarif
