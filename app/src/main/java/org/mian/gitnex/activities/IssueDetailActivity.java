@@ -103,6 +103,7 @@ import org.mian.gitnex.helpers.ColorInverter;
 import org.mian.gitnex.helpers.Constants;
 import org.mian.gitnex.helpers.LabelWidthCalculator;
 import org.mian.gitnex.helpers.Markdown;
+import org.mian.gitnex.helpers.MentionHelper;
 import org.mian.gitnex.helpers.SnackBar;
 import org.mian.gitnex.helpers.TimeHelper;
 import org.mian.gitnex.helpers.TinyDB;
@@ -167,6 +168,7 @@ public class IssueDetailActivity extends BaseActivity
 	private final float buttonAlphaStatDisabled = .5F;
 	private final float buttonAlphaStatEnabled = 1F;
 	private int loadingFinished = 0;
+	private MentionHelper mentionHelper;
 
 	private enum Mode {
 		EDIT,
@@ -411,6 +413,9 @@ public class IssueDetailActivity extends BaseActivity
 			startActivity(issue.getIntent(ctx, DiffActivity.class));
 		}
 
+		mentionHelper = new MentionHelper(this, viewBinding.commentReply);
+		mentionHelper.setup();
+
 		viewBinding.commentReply.addTextChangedListener(
 				new TextWatcher() {
 					@Override
@@ -545,8 +550,9 @@ public class IssueDetailActivity extends BaseActivity
 	}
 
 	public void onDestroy() {
-		AttachmentsAdapter.setAttachmentsReceiveListener(null);
 		super.onDestroy();
+		AttachmentsAdapter.setAttachmentsReceiveListener(null);
+		mentionHelper.dismissPopup();
 	}
 
 	@Override

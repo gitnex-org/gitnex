@@ -70,6 +70,7 @@ import org.mian.gitnex.helpers.AppDatabaseSettings;
 import org.mian.gitnex.helpers.AppUtil;
 import org.mian.gitnex.helpers.Constants;
 import org.mian.gitnex.helpers.Markdown;
+import org.mian.gitnex.helpers.MentionHelper;
 import org.mian.gitnex.helpers.SnackBar;
 import org.mian.gitnex.helpers.attachments.AttachmentUtils;
 import org.mian.gitnex.helpers.attachments.AttachmentsModel;
@@ -101,6 +102,7 @@ public class EditIssueActivity extends BaseActivity
 	private static List<AttachmentsModel> attachmentsList;
 	private static final List<Uri> contentUri = new ArrayList<>();
 	private MenuItem create;
+	private MentionHelper mentionHelper;
 
 	public ActivityResultLauncher<Intent> downloadAttachmentLauncher =
 			registerForActivityResult(
@@ -229,8 +231,9 @@ public class EditIssueActivity extends BaseActivity
 					});
 
 	public void onDestroy() {
-		AttachmentsAdapter.setAttachmentsReceiveListener(null);
 		super.onDestroy();
+		AttachmentsAdapter.setAttachmentsReceiveListener(null);
+		mentionHelper.dismissPopup();
 	}
 
 	@SuppressLint("ClickableViewAccessibility")
@@ -263,6 +266,9 @@ public class EditIssueActivity extends BaseActivity
 		attachmentsAdapter = new AttachmentsAdapter(attachmentsList, ctx);
 
 		AttachmentsAdapter.setAttachmentsReceiveListener(this);
+
+		mentionHelper = new MentionHelper(this, binding.editIssueDescription);
+		mentionHelper.setup();
 
 		create = binding.topAppBar.getMenu().getItem(2);
 		create.setTitle(getString(R.string.saveButton));

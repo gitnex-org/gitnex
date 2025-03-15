@@ -60,6 +60,7 @@ import org.mian.gitnex.helpers.AlertDialogs;
 import org.mian.gitnex.helpers.AppDatabaseSettings;
 import org.mian.gitnex.helpers.Constants;
 import org.mian.gitnex.helpers.Markdown;
+import org.mian.gitnex.helpers.MentionHelper;
 import org.mian.gitnex.helpers.SnackBar;
 import org.mian.gitnex.helpers.Toasty;
 import org.mian.gitnex.helpers.attachments.AttachmentUtils;
@@ -98,6 +99,7 @@ public class CreateIssueActivity extends BaseActivity
 	private NotesApi notesApi;
 	private List<Notes> notesList;
 	public AlertDialog dialogNotes;
+	private MentionHelper mentionHelper;
 
 	@SuppressLint("ClickableViewAccessibility")
 	@Override
@@ -151,6 +153,9 @@ public class CreateIssueActivity extends BaseActivity
 					finish();
 					contentUri.clear();
 				});
+
+		mentionHelper = new MentionHelper(this, viewBinding.newIssueDescription);
+		mentionHelper.setup();
 
 		viewBinding.topAppBar.setOnMenuItemClickListener(
 				menuItem -> {
@@ -280,8 +285,9 @@ public class CreateIssueActivity extends BaseActivity
 					});
 
 	public void onDestroy() {
-		AttachmentsAdapter.setAttachmentsReceiveListener(null);
 		super.onDestroy();
+		AttachmentsAdapter.setAttachmentsReceiveListener(null);
+		mentionHelper.dismissPopup();
 	}
 
 	@Override
