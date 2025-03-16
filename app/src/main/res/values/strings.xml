@@ -946,4 +946,5 @@
     <string name="search_matches_found">%1$d matches found</string>
     <string name="search_no_matches">No matches found</string>
     <string name="heatmap_contribution">%1$d contributions on %2$s</string>
+    <string name="im_mentioned">I\'m mentioned</string>
 </resources>

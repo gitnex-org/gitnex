@@ -24,14 +24,16 @@
 
     </androidx.core.widget.NestedScrollView>
 
-    <Button
+    <com.google.android.material.button.MaterialButton
         android:id="@+id/filterButton"
         android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_gravity="end"
+        android:layout_height="@dimen/dimen54dp"
+        android:layout_marginStart="@dimen/dimen16dp"
         android:layout_marginTop="@dimen/dimen8dp"
+        android:layout_marginEnd="@dimen/dimen16dp"
+        android:layout_marginBottom="@dimen/dimen8dp"
+        android:layout_gravity="end"
         android:text="@string/strFilter"
-        app:backgroundTint="?attr/iconsColor"
-        android:textColor="?attr/primaryTextColor"/>
+        android:textColor="@color/colorWhite" />
 
 </LinearLayout>

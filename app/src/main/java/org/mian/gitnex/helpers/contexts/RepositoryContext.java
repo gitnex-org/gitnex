@@ -4,6 +4,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import androidx.annotation.NonNull;
+import java.io.Serial;
 import java.io.Serializable;
 import java.util.Objects;
 import org.gitnex.tea4j.v2.models.Permission;
@@ -34,6 +35,7 @@ public class RepositoryContext implements Serializable {
 	private boolean watched = false;
 	private int repositoryId = 0;
 	private Repository repositoryModel = null;
+	private String mentionedBy;
 
 	public RepositoryContext(org.gitnex.tea4j.v2.models.Repository repository, Context context) {
 		this.account = ((BaseActivity) context).getAccount();
@@ -57,37 +59,30 @@ public class RepositoryContext implements Serializable {
 	}
 
 	public State getIssueState() {
-
 		return issueState;
 	}
 
 	public void setIssueState(State issueState) {
-
 		this.issueState = issueState;
 	}
 
 	public State getMilestoneState() {
-
 		return milestoneState;
 	}
 
 	public void setMilestoneState(State milestoneState) {
-
 		this.milestoneState = milestoneState;
 	}
 
 	public State getPrState() {
-
 		return prState;
 	}
 
 	public void setPrState(State prState) {
-
 		this.prState = prState;
 	}
 
 	public org.gitnex.tea4j.v2.models.Repository getRepository() {
-
 		return repository;
 	}
 
@@ -99,12 +94,10 @@ public class RepositoryContext implements Serializable {
 	}
 
 	public String getBranchRef() {
-
 		return branchRef;
 	}
 
 	public void setBranchRef(String branchRef) {
-
 		this.branchRef = branchRef;
 	}
 
@@ -121,12 +114,10 @@ public class RepositoryContext implements Serializable {
 	}
 
 	public String getIssueMilestoneFilterName() {
-
 		return issueMilestoneFilterName;
 	}
 
 	public void setIssueMilestoneFilterName(String issueMilestoneFilterName) {
-
 		this.issueMilestoneFilterName = issueMilestoneFilterName;
 	}
 
@@ -151,43 +142,43 @@ public class RepositoryContext implements Serializable {
 	}
 
 	public boolean isStarred() {
-
 		return starred;
 	}
 
 	public void setStarred(boolean starred) {
-
 		this.starred = starred;
 	}
 
 	public boolean isWatched() {
-
 		return watched;
 	}
 
 	public void setWatched(boolean watched) {
-
 		this.watched = watched;
 	}
 
 	public int getRepositoryId() {
-
 		return repositoryId;
 	}
 
 	public void setRepositoryId(int repositoryId) {
-
 		this.repositoryId = repositoryId;
 	}
 
 	public Repository getRepositoryModel() {
-
 		return repositoryModel;
 	}
 
 	public void setRepositoryModel(Repository repositoryModel) {
-
 		this.repositoryModel = repositoryModel;
+	}
+
+	public String getMentionedBy() {
+		return mentionedBy;
+	}
+
+	public void setMentionedBy(String mentionedBy) {
+		this.mentionedBy = mentionedBy;
 	}
 
 	public Repository loadRepositoryModel(Context context) {
@@ -208,17 +199,14 @@ public class RepositoryContext implements Serializable {
 	}
 
 	public boolean isReleasesViewTypeIsTag() {
-
 		return releasesViewTypeIsTag;
 	}
 
 	public void setReleasesViewTypeIsTag(boolean releasesViewTypeIsTag) {
-
 		this.releasesViewTypeIsTag = releasesViewTypeIsTag;
 	}
 
 	public void removeRepository() {
-
 		repository = null;
 	}
 
@@ -257,5 +245,16 @@ public class RepositoryContext implements Serializable {
 			}
 			return "closed";
 		}
+	}
+
+	@Serial
+	private void writeObject(java.io.ObjectOutputStream out) throws java.io.IOException {
+		out.defaultWriteObject();
+	}
+
+	@Serial
+	private void readObject(java.io.ObjectInputStream in)
+			throws java.io.IOException, ClassNotFoundException {
+		in.defaultReadObject();
 	}
 }

@@ -220,7 +220,7 @@ public class RepoDetailActivity extends BaseActivity implements BottomSheetListe
 		} else if (id == R.id.filter) {
 
 			BottomSheetIssuesFilterFragment filterBottomSheet =
-					new BottomSheetIssuesFilterFragment();
+					BottomSheetIssuesFilterFragment.newInstance(repository);
 			filterBottomSheet.show(getSupportFragmentManager(), "repoFilterMenuBottomSheet");
 			return true;
 		} else if (id == R.id.filterPr) {
@@ -269,8 +269,6 @@ public class RepoDetailActivity extends BaseActivity implements BottomSheetListe
 							for (Label label : labelsList) {
 								selectedStates.put(label.getName(), false); // Initialize states
 							}
-						} else {
-							Toasty.error(RepoDetailActivity.this, getString(R.string.genericError));
 						}
 					}
 
@@ -285,6 +283,14 @@ public class RepoDetailActivity extends BaseActivity implements BottomSheetListe
 
 	@Override
 	public void onButtonClicked(String text) {
+
+		if (text.startsWith("mentionedByMe:")) {
+			String usernameWithPrefix = text.substring("mentionedByMe:".length());
+			String username = "null".equals(usernameWithPrefix) ? null : usernameWithPrefix;
+			if (getFragmentRefreshListenerFilterIssuesByMentions() != null) {
+				getFragmentRefreshListenerFilterIssuesByMentions().onRefresh(username);
+			}
+		}
 
 		switch (text) {
 			case "filterByLabels":
@@ -416,7 +422,6 @@ public class RepoDetailActivity extends BaseActivity implements BottomSheetListe
 			labelsContainer.addView(chip);
 		}
 
-		// Create the dialog
 		AlertDialog dialog = builder.setView(dialogView).create();
 
 		filterButton.setOnClickListener(
@@ -430,7 +435,7 @@ public class RepoDetailActivity extends BaseActivity implements BottomSheetListe
 						getFragmentRefreshListenerFilterIssuesByLabels()
 								.onRefresh(selectedLabels.isEmpty() ? null : selectedLabels);
 					}
-					dialog.dismiss(); // Use the AlertDialog object to dismiss
+					dialog.dismiss();
 				});
 
 		dialog.show();
@@ -835,6 +840,24 @@ public class RepoDetailActivity extends BaseActivity implements BottomSheetListe
 					@Override
 					public void onFailure(@NonNull Call<WatchInfo> call, @NonNull Throwable t) {}
 				});
+	}
+
+	// filter by mentioned
+	public interface FragmentRefreshListenerFilterIssuesByMentions {
+		void onRefresh(String username);
+	}
+
+	private FragmentRefreshListenerFilterIssuesByMentions
+			fragmentRefreshListenerFilterIssuesByMentions;
+
+	public void setFragmentRefreshListenerFilterIssuesByMentions(
+			FragmentRefreshListenerFilterIssuesByMentions listener) {
+		this.fragmentRefreshListenerFilterIssuesByMentions = listener;
+	}
+
+	public FragmentRefreshListenerFilterIssuesByMentions
+			getFragmentRefreshListenerFilterIssuesByMentions() {
+		return fragmentRefreshListenerFilterIssuesByMentions;
 	}
 
 	// filter issues by labels

@@ -51,6 +51,7 @@ public class IssuesFragment extends Fragment {
 	private int resultLimit;
 	private RepositoryContext repository;
 	private String selectedLabels = null;
+	private String mentionedBy;
 
 	public static IssuesFragment newInstance(RepositoryContext repository) {
 		IssuesFragment f = new IssuesFragment();
@@ -68,6 +69,7 @@ public class IssuesFragment extends Fragment {
 		context = getContext();
 
 		repository = RepositoryContext.fromBundle(requireArguments());
+		mentionedBy = repository.getMentionedBy();
 
 		boolean archived = repository.getRepository().isArchived();
 
@@ -91,7 +93,8 @@ public class IssuesFragment extends Fragment {
 													repository.getIssueState().toString(),
 													repository.getIssueMilestoneFilterName(),
 													null,
-													selectedLabels);
+													selectedLabels,
+													mentionedBy);
 											adapter.notifyDataChanged();
 										},
 										200));
@@ -112,7 +115,8 @@ public class IssuesFragment extends Fragment {
 												requestType,
 												repository.getIssueState().toString(),
 												repository.getIssueMilestoneFilterName(),
-												selectedLabels);
+												selectedLabels,
+												mentionedBy);
 									}
 								}));
 
@@ -128,140 +132,36 @@ public class IssuesFragment extends Fragment {
 
 		((RepoDetailActivity) requireActivity())
 				.setFragmentRefreshListener(
-						issueState -> {
-							issuesList.clear();
-
-							adapter = new IssuesAdapter(context, issuesList, "");
-							adapter.setLoadMoreListener(
-									() ->
-											fragmentIssuesBinding.recyclerView.post(
-													() -> {
-														if (issuesList.size() == resultLimit
-																|| pageSize == resultLimit) {
-															int page =
-																	(issuesList.size()
-																					+ resultLimit)
-																			/ resultLimit;
-															loadMore(
-																	repository.getOwner(),
-																	repository.getName(),
-																	page,
-																	resultLimit,
-																	requestType,
-																	repository
-																			.getIssueState()
-																			.toString(),
-																	repository
-																			.getIssueMilestoneFilterName(),
-																	selectedLabels);
-														}
-													}));
-
-							fragmentIssuesBinding.progressBar.setVisibility(View.VISIBLE);
-							fragmentIssuesBinding.noDataIssues.setVisibility(View.GONE);
-
-							loadInitial(
-									repository.getOwner(),
-									repository.getName(),
-									resultLimit,
-									requestType,
-									issueState,
-									repository.getIssueMilestoneFilterName(),
-									null,
-									selectedLabels);
-							fragmentIssuesBinding.recyclerView.setAdapter(adapter);
-						});
+						issueState -> refreshIssues(issueState, selectedLabels, mentionedBy));
 
 		((RepoDetailActivity) requireActivity())
 				.setFragmentRefreshListenerFilterIssuesByMilestone(
-						filterIssueByMilestone -> {
-							issuesList.clear();
-
-							adapter = new IssuesAdapter(context, issuesList, "");
-							adapter.setLoadMoreListener(
-									() ->
-											fragmentIssuesBinding.recyclerView.post(
-													() -> {
-														if (issuesList.size() == resultLimit
-																|| pageSize == resultLimit) {
-															int page =
-																	(issuesList.size()
-																					+ resultLimit)
-																			/ resultLimit;
-															loadMore(
-																	repository.getOwner(),
-																	repository.getName(),
-																	page,
-																	resultLimit,
-																	requestType,
-																	repository
-																			.getIssueState()
-																			.toString(),
-																	repository
-																			.getIssueMilestoneFilterName(),
-																	selectedLabels);
-														}
-													}));
-
-							fragmentIssuesBinding.progressBar.setVisibility(View.VISIBLE);
-							fragmentIssuesBinding.noDataIssues.setVisibility(View.GONE);
-
-							loadInitial(
-									repository.getOwner(),
-									repository.getName(),
-									resultLimit,
-									requestType,
-									repository.getIssueState().toString(),
-									filterIssueByMilestone,
-									null,
-									selectedLabels);
-							fragmentIssuesBinding.recyclerView.setAdapter(adapter);
-						});
+						filterIssueByMilestone ->
+								refreshIssues(
+										repository.getIssueState().toString(),
+										selectedLabels,
+										mentionedBy,
+										filterIssueByMilestone));
 
 		((RepoDetailActivity) requireActivity())
 				.setFragmentRefreshListenerFilterIssuesByLabels(
 						filterLabels -> {
-							selectedLabels = filterLabels; // Update selected labels
-							issuesList.clear();
-							adapter = new IssuesAdapter(context, issuesList, "");
-							adapter.setLoadMoreListener(
-									() ->
-											fragmentIssuesBinding.recyclerView.post(
-													() -> {
-														if (issuesList.size() == resultLimit
-																|| pageSize == resultLimit) {
-															int page =
-																	(issuesList.size()
-																					+ resultLimit)
-																			/ resultLimit;
-															loadMore(
-																	repository.getOwner(),
-																	repository.getName(),
-																	page,
-																	resultLimit,
-																	requestType,
-																	repository
-																			.getIssueState()
-																			.toString(),
-																	repository
-																			.getIssueMilestoneFilterName(),
-																	selectedLabels);
-														}
-													}));
-
-							fragmentIssuesBinding.progressBar.setVisibility(View.VISIBLE);
-							fragmentIssuesBinding.noDataIssues.setVisibility(View.GONE);
-
-							loadInitial(
-									repository.getOwner(),
-									repository.getName(),
-									resultLimit,
-									requestType,
+							selectedLabels = filterLabels;
+							refreshIssues(
 									repository.getIssueState().toString(),
-									repository.getIssueMilestoneFilterName(),
-									null,
-									selectedLabels);
-							fragmentIssuesBinding.recyclerView.setAdapter(adapter);
+									selectedLabels,
+									mentionedBy);
+						});
+
+		((RepoDetailActivity) requireActivity())
+				.setFragmentRefreshListenerFilterIssuesByMentions(
+						username -> {
+							mentionedBy = username;
+							repository.setMentionedBy(username);
+							refreshIssues(
+									repository.getIssueState().toString(),
+									selectedLabels,
+									mentionedBy);
 						});
 
 		loadInitial(
@@ -272,7 +172,8 @@ public class IssuesFragment extends Fragment {
 				repository.getIssueState().toString(),
 				repository.getIssueMilestoneFilterName(),
 				null,
-				selectedLabels);
+				selectedLabels,
+				mentionedBy);
 
 		getPinnedIssues(repository.getOwner(), repository.getName());
 
@@ -281,7 +182,6 @@ public class IssuesFragment extends Fragment {
 		}
 
 		if (repository.getRepository().isHasIssues() && !archived) {
-
 			fragmentIssuesBinding.createNewIssue.setVisibility(View.VISIBLE);
 			fragmentIssuesBinding.createNewIssue.setOnClickListener(
 					v12 -> {
@@ -291,18 +191,15 @@ public class IssuesFragment extends Fragment {
 												getContext(), CreateIssueActivity.class));
 					});
 		} else {
-
 			fragmentIssuesBinding.createNewIssue.setVisibility(View.GONE);
 		}
 
 		requireActivity()
 				.addMenuProvider(
 						new MenuProvider() {
-
 							@Override
 							public void onCreateMenu(
 									@NonNull Menu menu, @NonNull MenuInflater menuInflater) {
-
 								menuInflater.inflate(R.menu.search_menu, menu);
 								menuInflater.inflate(R.menu.filter_menu, menu);
 
@@ -322,7 +219,6 @@ public class IssuesFragment extends Fragment {
 								searchView.setOnQueryTextListener(
 										new androidx.appcompat.widget.SearchView
 												.OnQueryTextListener() {
-
 											@Override
 											public boolean onQueryTextSubmit(String query) {
 												loadInitial(
@@ -333,7 +229,8 @@ public class IssuesFragment extends Fragment {
 														repository.getIssueState().toString(),
 														repository.getIssueMilestoneFilterName(),
 														query,
-														selectedLabels);
+														selectedLabels,
+														mentionedBy);
 												searchView.setQuery(null, false);
 												searchItem.collapseActionView();
 												return false;
@@ -369,25 +266,97 @@ public class IssuesFragment extends Fragment {
 					repository.getIssueState().toString(),
 					repository.getIssueMilestoneFilterName(),
 					"",
-					selectedLabels);
+					selectedLabels,
+					mentionedBy);
 			getPinnedIssues(repository.getOwner(), repository.getName());
 			resumeIssues = false;
 		}
 	}
 
-	private void getPinnedIssues(String repoOwner, String repoName) {
+	private void refreshIssues(String issueState, String labels, String mentionedBy) {
+		issuesList.clear();
+		adapter = new IssuesAdapter(context, issuesList, "");
+		adapter.setLoadMoreListener(
+				() ->
+						fragmentIssuesBinding.recyclerView.post(
+								() -> {
+									if (issuesList.size() == resultLimit
+											|| pageSize == resultLimit) {
+										int page = (issuesList.size() + resultLimit) / resultLimit;
+										loadMore(
+												repository.getOwner(),
+												repository.getName(),
+												page,
+												resultLimit,
+												requestType,
+												issueState,
+												repository.getIssueMilestoneFilterName(),
+												labels,
+												mentionedBy);
+									}
+								}));
+		fragmentIssuesBinding.recyclerView.setAdapter(adapter);
+		fragmentIssuesBinding.progressBar.setVisibility(View.VISIBLE);
+		fragmentIssuesBinding.noDataIssues.setVisibility(View.GONE);
+		loadInitial(
+				repository.getOwner(),
+				repository.getName(),
+				resultLimit,
+				requestType,
+				issueState,
+				repository.getIssueMilestoneFilterName(),
+				null,
+				labels,
+				mentionedBy);
+	}
 
+	private void refreshIssues(
+			String issueState, String labels, String mentionedBy, String filterByMilestone) {
+		issuesList.clear();
+		adapter = new IssuesAdapter(context, issuesList, "");
+		adapter.setLoadMoreListener(
+				() ->
+						fragmentIssuesBinding.recyclerView.post(
+								() -> {
+									if (issuesList.size() == resultLimit
+											|| pageSize == resultLimit) {
+										int page = (issuesList.size() + resultLimit) / resultLimit;
+										loadMore(
+												repository.getOwner(),
+												repository.getName(),
+												page,
+												resultLimit,
+												requestType,
+												issueState,
+												filterByMilestone,
+												labels,
+												mentionedBy);
+									}
+								}));
+		fragmentIssuesBinding.recyclerView.setAdapter(adapter);
+		fragmentIssuesBinding.progressBar.setVisibility(View.VISIBLE);
+		fragmentIssuesBinding.noDataIssues.setVisibility(View.GONE);
+		loadInitial(
+				repository.getOwner(),
+				repository.getName(),
+				resultLimit,
+				requestType,
+				issueState,
+				filterByMilestone,
+				null,
+				labels,
+				mentionedBy);
+	}
+
+	private void getPinnedIssues(String repoOwner, String repoName) {
 		Call<List<Issue>> call =
 				RetrofitClient.getApiInterface(context).repoListPinnedIssues(repoOwner, repoName);
-
 		call.enqueue(
 				new Callback<>() {
-
 					@Override
 					public void onResponse(
 							@NonNull Call<List<Issue>> call,
 							@NonNull Response<List<Issue>> response) {
-
 						if (response.code() == 200) {
 							assert response.body() != null;
 							if (!response.body().isEmpty()) {
@@ -425,7 +394,8 @@ public class IssuesFragment extends Fragment {
 			String issueState,
 			String filterByMilestone,
 			String query,
-			String labels) {
+			String labels,
+			String mentionedBy) {
 
 		Call<List<Issue>> call =
 				RetrofitClient.getApiInterface(context)
@@ -437,22 +407,20 @@ public class IssuesFragment extends Fragment {
 								query,
 								requestType,
 								filterByMilestone,
-								null,
-								null,
-								null,
-								null,
-								null,
+								null, // since
+								null, // before
+								null, // created_by
+								null, // assigned_by
+								mentionedBy, // mentioned_by
 								1,
 								resultLimit);
 
 		call.enqueue(
 				new Callback<>() {
-
 					@Override
 					public void onResponse(
 							@NonNull Call<List<Issue>> call,
 							@NonNull Response<List<Issue>> response) {
-
 						if (response.code() == 200) {
 							assert response.body() != null;
 							if (!response.body().isEmpty()) {
@@ -491,7 +459,8 @@ public class IssuesFragment extends Fragment {
 			String requestType,
 			String issueState,
 			String filterByMilestone,
-			String labels) {
+			String labels,
+			String mentionedBy) {
 
 		fragmentIssuesBinding.progressBar.setVisibility(View.VISIBLE);
 
@@ -505,21 +474,20 @@ public class IssuesFragment extends Fragment {
 								null,
 								requestType,
 								filterByMilestone,
-								null,
-								null,
-								null,
-								null,
-								null,
+								null, // since
+								null, // before
+								null, // created_by
+								null, // assigned_by
+								mentionedBy, // mentioned_by
 								page,
 								resultLimit);
+
 		call.enqueue(
 				new Callback<>() {
-
 					@Override
 					public void onResponse(
 							@NonNull Call<List<Issue>> call,
 							@NonNull Response<List<Issue>> response) {
-
 						if (response.code() == 200) {
 							List<Issue> result = response.body();
 							assert result != null;
