@@ -102,6 +102,19 @@
                     app:drawableTopCompat="@drawable/ic_issue_closed"
                     app:layout_alignSelf="flex_start"/>
 
+                <TextView
+                    android:id="@+id/filterByLabels"
+                    android:layout_width="@dimen/dimen132dp"
+                    android:layout_height="@dimen/dimen100dp"
+                    android:background="?android:attr/selectableItemBackgroundBorderless"
+                    android:gravity="center"
+                    android:padding="@dimen/dimen4dp"
+                    android:text="@string/labelTxt"
+                    android:textColor="?attr/primaryTextColor"
+                    android:textSize="@dimen/dimen14sp"
+                    app:drawableTopCompat="@drawable/ic_label"
+                    app:layout_alignSelf="flex_start"/>
+
             </com.google.android.flexbox.FlexboxLayout>
 
         </LinearLayout>

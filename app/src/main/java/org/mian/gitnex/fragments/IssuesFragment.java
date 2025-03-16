@@ -50,6 +50,7 @@ public class IssuesFragment extends Fragment {
 	private int pageSize = Constants.issuesPageInit;
 	private int resultLimit;
 	private RepositoryContext repository;
+	private String selectedLabels = null;
 
 	public static IssuesFragment newInstance(RepositoryContext repository) {
 		IssuesFragment f = new IssuesFragment();
@@ -89,7 +90,8 @@ public class IssuesFragment extends Fragment {
 													requestType,
 													repository.getIssueState().toString(),
 													repository.getIssueMilestoneFilterName(),
-													null);
+													null,
+													selectedLabels);
 											adapter.notifyDataChanged();
 										},
 										200));
@@ -109,7 +111,8 @@ public class IssuesFragment extends Fragment {
 												resultLimit,
 												requestType,
 												repository.getIssueState().toString(),
-												repository.getIssueMilestoneFilterName());
+												repository.getIssueMilestoneFilterName(),
+												selectedLabels);
 									}
 								}));
 
@@ -149,7 +152,8 @@ public class IssuesFragment extends Fragment {
 																			.getIssueState()
 																			.toString(),
 																	repository
-																			.getIssueMilestoneFilterName());
+																			.getIssueMilestoneFilterName(),
+																	selectedLabels);
 														}
 													}));
 
@@ -163,7 +167,8 @@ public class IssuesFragment extends Fragment {
 									requestType,
 									issueState,
 									repository.getIssueMilestoneFilterName(),
-									null);
+									null,
+									selectedLabels);
 							fragmentIssuesBinding.recyclerView.setAdapter(adapter);
 						});
 
@@ -193,7 +198,8 @@ public class IssuesFragment extends Fragment {
 																			.getIssueState()
 																			.toString(),
 																	repository
-																			.getIssueMilestoneFilterName());
+																			.getIssueMilestoneFilterName(),
+																	selectedLabels);
 														}
 													}));
 
@@ -207,7 +213,54 @@ public class IssuesFragment extends Fragment {
 									requestType,
 									repository.getIssueState().toString(),
 									filterIssueByMilestone,
-									null);
+									null,
+									selectedLabels);
+							fragmentIssuesBinding.recyclerView.setAdapter(adapter);
+						});
+
+		((RepoDetailActivity) requireActivity())
+				.setFragmentRefreshListenerFilterIssuesByLabels(
+						filterLabels -> {
+							selectedLabels = filterLabels; // Update selected labels
+							issuesList.clear();
+							adapter = new IssuesAdapter(context, issuesList, "");
+							adapter.setLoadMoreListener(
+									() ->
+											fragmentIssuesBinding.recyclerView.post(
+													() -> {
+														if (issuesList.size() == resultLimit
+																|| pageSize == resultLimit) {
+															int page =
+																	(issuesList.size()
+																					+ resultLimit)
+																			/ resultLimit;
+															loadMore(
+																	repository.getOwner(),
+																	repository.getName(),
+																	page,
+																	resultLimit,
+																	requestType,
+																	repository
+																			.getIssueState()
+																			.toString(),
+																	repository
+																			.getIssueMilestoneFilterName(),
+																	selectedLabels);
+														}
+													}));
+
+							fragmentIssuesBinding.progressBar.setVisibility(View.VISIBLE);
+							fragmentIssuesBinding.noDataIssues.setVisibility(View.GONE);
+
+							loadInitial(
+									repository.getOwner(),
+									repository.getName(),
+									resultLimit,
+									requestType,
+									repository.getIssueState().toString(),
+									repository.getIssueMilestoneFilterName(),
+									null,
+									selectedLabels);
 							fragmentIssuesBinding.recyclerView.setAdapter(adapter);
 						});
 
@@ -218,7 +271,8 @@ public class IssuesFragment extends Fragment {
 				requestType,
 				repository.getIssueState().toString(),
 				repository.getIssueMilestoneFilterName(),
-				null);
+				null,
+				selectedLabels);
 
 		getPinnedIssues(repository.getOwner(), repository.getName());
 
@@ -278,7 +332,8 @@ public class IssuesFragment extends Fragment {
 														requestType,
 														repository.getIssueState().toString(),
 														repository.getIssueMilestoneFilterName(),
-														query);
+														query,
+														selectedLabels);
 												searchView.setQuery(null, false);
 												searchItem.collapseActionView();
 												return false;
@@ -313,7 +368,8 @@ public class IssuesFragment extends Fragment {
 					requestType,
 					repository.getIssueState().toString(),
 					repository.getIssueMilestoneFilterName(),
-					null);
+					"",
+					selectedLabels);
 			getPinnedIssues(repository.getOwner(), repository.getName());
 			resumeIssues = false;
 		}
@@ -368,7 +424,8 @@ public class IssuesFragment extends Fragment {
 			String requestType,
 			String issueState,
 			String filterByMilestone,
-			String query) {
+			String query,
+			String labels) {
 
 		Call<List<Issue>> call =
 				RetrofitClient.getApiInterface(context)
@@ -376,7 +433,7 @@ public class IssuesFragment extends Fragment {
 								repoOwner,
 								repoName,
 								issueState,
-								null,
+								labels,
 								query,
 								requestType,
 								filterByMilestone,
@@ -433,7 +490,8 @@ public class IssuesFragment extends Fragment {
 			int resultLimit,
 			String requestType,
 			String issueState,
-			String filterByMilestone) {
+			String filterByMilestone,
+			String labels) {
 
 		fragmentIssuesBinding.progressBar.setVisibility(View.VISIBLE);
 
@@ -443,7 +501,7 @@ public class IssuesFragment extends Fragment {
 								repoOwner,
 								repoName,
 								issueState,
-								null,
+								labels,
 								null,
 								requestType,
 								filterByMilestone,

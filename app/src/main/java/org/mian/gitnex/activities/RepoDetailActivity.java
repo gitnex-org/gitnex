@@ -4,7 +4,9 @@ import android.annotation.SuppressLint;
 import android.app.Dialog;
 import android.content.Intent;
 import android.content.res.ColorStateList;
+import android.graphics.Color;
 import android.graphics.Typeface;
+import android.graphics.drawable.GradientDrawable;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.Menu;
@@ -12,23 +14,31 @@ import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
 import androidx.activity.result.ActivityResultLauncher;
 import androidx.activity.result.contract.ActivityResultContracts;
 import androidx.annotation.NonNull;
+import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.widget.Toolbar;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentActivity;
 import androidx.viewpager2.adapter.FragmentStateAdapter;
 import androidx.viewpager2.widget.ViewPager2;
+import com.google.android.flexbox.FlexboxLayout;
+import com.google.android.material.chip.Chip;
 import com.google.android.material.dialog.MaterialAlertDialogBuilder;
 import com.google.android.material.progressindicator.LinearProgressIndicator;
 import com.google.android.material.tabs.TabLayout;
 import com.google.android.material.tabs.TabLayoutMediator;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.Objects;
+import java.util.stream.Collectors;
+import org.gitnex.tea4j.v2.models.Label;
 import org.gitnex.tea4j.v2.models.Milestone;
 import org.gitnex.tea4j.v2.models.Organization;
 import org.gitnex.tea4j.v2.models.Repository;
@@ -90,6 +100,9 @@ public class RepoDetailActivity extends BaseActivity implements BottomSheetListe
 	private FragmentRefreshListener fragmentRefreshListenerFiles;
 	private FragmentRefreshListener fragmentRefreshListenerFilterIssuesByMilestone;
 	private FragmentRefreshListener fragmentRefreshListenerReleases;
+	private FragmentRefreshListenerFilterIssuesByLabels fragmentRefreshListenerFilterIssuesByLabels;
+	private final List<Label> labelsList = new ArrayList<>();
+	private final Map<String, Boolean> selectedStates = new HashMap<>();
 	private Dialog progressDialog;
 	private MaterialAlertDialogBuilder materialAlertDialogBuilder;
 	private Intent intentWiki;
@@ -120,6 +133,8 @@ public class RepoDetailActivity extends BaseActivity implements BottomSheetListe
 
 		TextView toolbarTitle = findViewById(R.id.toolbar_title);
 		toolbarTitle.setText(repository.getFullName());
+
+		fetchLabels();
 
 		setSupportActionBar(toolbar);
 		Objects.requireNonNull(getSupportActionBar()).setTitle(repository.getName());
@@ -221,11 +236,7 @@ public class RepoDetailActivity extends BaseActivity implements BottomSheetListe
 			filterMilestoneBottomSheet.show(
 					getSupportFragmentManager(), "repoFilterMenuMilestoneBottomSheet");
 			return true;
-		} /*else if (id == R.id.switchBranches) {
-
-			chooseBranch();
-			return true;
-		}*/ else if (id == R.id.branchCommits) {
+		} else if (id == R.id.branchCommits) {
 
 			Intent intent = repository.getIntent(ctx, CommitsActivity.class);
 
@@ -242,10 +253,43 @@ public class RepoDetailActivity extends BaseActivity implements BottomSheetListe
 		return super.onOptionsItemSelected(item);
 	}
 
+	private void fetchLabels() {
+		Call<List<Label>> call =
+				RetrofitClient.getApiInterface(this)
+						.issueListLabels(repository.getOwner(), repository.getName(), 1, 50);
+		call.enqueue(
+				new Callback<>() {
+					@Override
+					public void onResponse(
+							@NonNull Call<List<Label>> call,
+							@NonNull Response<List<Label>> response) {
+						if (response.isSuccessful() && response.body() != null) {
+							labelsList.clear();
+							labelsList.addAll(response.body());
+							for (Label label : labelsList) {
+								selectedStates.put(label.getName(), false); // Initialize states
+							}
+						} else {
+							Toasty.error(RepoDetailActivity.this, getString(R.string.genericError));
+						}
+					}
+
+					@Override
+					public void onFailure(@NonNull Call<List<Label>> call, @NonNull Throwable t) {
+						Toasty.error(
+								RepoDetailActivity.this,
+								getString(R.string.genericServerResponseError));
+					}
+				});
+	}
+
 	@Override
 	public void onButtonClicked(String text) {
 
 		switch (text) {
+			case "filterByLabels":
+				showLabelFilterDialog();
+				break;
 			case "openWebRepo":
 				AppUtil.openUrlInBrowser(this, repository.getRepository().getHtmlUrl());
 				break;
@@ -332,6 +376,64 @@ public class RepoDetailActivity extends BaseActivity implements BottomSheetListe
 				repository.setStarred(true);
 				break;
 		}
+	}
+
+	private void showLabelFilterDialog() {
+
+		MaterialAlertDialogBuilder builder = new MaterialAlertDialogBuilder(this);
+		View dialogView =
+				LayoutInflater.from(this).inflate(R.layout.custom_filter_issues_by_labels, null);
+
+		FlexboxLayout labelsContainer = dialogView.findViewById(R.id.labelsContainer);
+		Button filterButton = dialogView.findViewById(R.id.filterButton);
+
+		labelsContainer.removeAllViews();
+
+		for (Label label : labelsList) {
+			Chip chip =
+					(Chip)
+							LayoutInflater.from(this)
+									.inflate(
+											R.layout.list_filter_issues_by_labels,
+											labelsContainer,
+											false);
+			chip.setText(label.getName());
+			chip.setCheckable(true);
+			chip.setChecked(
+					Boolean.TRUE.equals(selectedStates.getOrDefault(label.getName(), false)));
+
+			GradientDrawable dot = new GradientDrawable();
+			dot.setShape(GradientDrawable.OVAL);
+			dot.setSize(16, 16);
+			dot.setColor(Color.parseColor("#" + label.getColor()));
+			chip.setChipIcon(dot);
+
+			chip.setOnCheckedChangeListener(
+					(buttonView, isChecked) -> {
+						selectedStates.put(label.getName(), isChecked);
+					});
+
+			labelsContainer.addView(chip);
+		}
+
+		// Create the dialog
+		AlertDialog dialog = builder.setView(dialogView).create();
+
+		filterButton.setOnClickListener(
+				v -> {
+					String selectedLabels =
+							selectedStates.entrySet().stream()
+									.filter(Map.Entry::getValue)
+									.map(Map.Entry::getKey)
+									.collect(Collectors.joining(","));
+					if (getFragmentRefreshListenerFilterIssuesByLabels() != null) {
+						getFragmentRefreshListenerFilterIssuesByLabels()
+								.onRefresh(selectedLabels.isEmpty() ? null : selectedLabels);
+					}
+					dialog.dismiss(); // Use the AlertDialog object to dismiss
+				});
+
+		dialog.show();
 	}
 
 	private void filterIssuesByMilestone() {
@@ -733,6 +835,21 @@ public class RepoDetailActivity extends BaseActivity implements BottomSheetListe
 					@Override
 					public void onFailure(@NonNull Call<WatchInfo> call, @NonNull Throwable t) {}
 				});
+	}
+
+	// filter issues by labels
+	public interface FragmentRefreshListenerFilterIssuesByLabels {
+		void onRefresh(String labels);
+	}
+
+	public void setFragmentRefreshListenerFilterIssuesByLabels(
+			FragmentRefreshListenerFilterIssuesByLabels listener) {
+		this.fragmentRefreshListenerFilterIssuesByLabels = listener;
+	}
+
+	public FragmentRefreshListenerFilterIssuesByLabels
+			getFragmentRefreshListenerFilterIssuesByLabels() {
+		return fragmentRefreshListenerFilterIssuesByLabels;
 	}
 
 	// Issues milestone filter interface

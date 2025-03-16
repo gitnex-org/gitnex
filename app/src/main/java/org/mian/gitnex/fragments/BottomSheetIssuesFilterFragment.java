@@ -49,6 +49,12 @@ public class BottomSheetIssuesFilterFragment extends BottomSheetDialogFragment {
 					dismiss();
 				});
 
+		bottomSheetIssuesFilterBinding.filterByLabels.setOnClickListener(
+				v -> {
+					bmListener.onButtonClicked("filterByLabels");
+					dismiss();
+				});
+
 		return bottomSheetIssuesFilterBinding.getRoot();
 	}
 
