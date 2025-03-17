@@ -806,4 +806,5 @@
     <string name="search_matches_found">%1$d résultats</string>
     <string name="search_no_matches">Aucun résultat trouvé</string>
     <string name="heatmap_contribution">%1$d contributions sur %2$s</string>
+    <string name="im_mentioned">Je suis cité</string>
 </resources>
