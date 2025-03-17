@@ -471,6 +471,7 @@
                                 android:id="@+id/divider_info"
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
+                                android:background="?attr/materialCardBackgroundColor"
                                 android:text="@string/timeline"
                                 android:paddingTop="@dimen/dimen4dp"
                                 android:paddingBottom="@dimen/dimen4dp"
