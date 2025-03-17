@@ -164,6 +164,19 @@
                     app:layout_alignSelf="flex_start" />
 
                 <TextView
+                    android:id="@+id/manageDependencies"
+                    android:layout_width="@dimen/dimen132dp"
+                    android:layout_height="@dimen/dimen100dp"
+                    android:background="?android:attr/selectableItemBackgroundBorderless"
+                    android:gravity="center"
+                    android:padding="@dimen/dimen4dp"
+                    android:text="@string/dependencies"
+                    android:textColor="?attr/primaryTextColor"
+                    android:textSize="@dimen/dimen14sp"
+                    app:drawableTopCompat="@drawable/ic_dependencies"
+                    app:layout_alignSelf="flex_start" />
+
+                <TextView
                     android:id="@+id/pin_issue"
                     android:layout_width="@dimen/dimen132dp"
                     android:layout_height="@dimen/dimen100dp"

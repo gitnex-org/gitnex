@@ -34,7 +34,6 @@ public class BottomSheetSingleIssueFragment extends BottomSheetDialogFragment {
 	private final IssueContext issue;
 	private final String issueCreator;
 	private BottomSheetListener bmListener;
-	private boolean issuePinStatus = false;
 
 	public BottomSheetSingleIssueFragment(IssueContext issue, String username) {
 		this.issue = issue;
@@ -244,6 +243,15 @@ public class BottomSheetSingleIssueFragment extends BottomSheetDialogFragment {
 					});
 		}
 
+		binding.manageDependencies.setOnClickListener(
+				v -> {
+					BottomSheetIssueDependenciesFragment dependenciesSheet =
+							BottomSheetIssueDependenciesFragment.newInstance(issue);
+					dependenciesSheet.show(
+							getParentFragmentManager(), "issueDependenciesBottomSheet");
+					dismiss();
+				});
+
 		binding.subscribeIssue.setOnClickListener(
 				subscribeToIssue -> {
 					IssueActions.subscribe(ctx, issue);
@@ -277,6 +285,7 @@ public class BottomSheetSingleIssueFragment extends BottomSheetDialogFragment {
 			binding.bottomSheetHeaderFrame.setVisibility(View.GONE);
 			binding.mergePullRequest.setVisibility(View.GONE);
 			binding.updatePullRequest.setVisibility(View.GONE);
+			binding.manageDependencies.setVisibility(View.GONE);
 			if (issue.getIssueType().equalsIgnoreCase("issue")) {
 				binding.issuePrDivider.setVisibility(View.GONE);
 			}
@@ -287,6 +296,7 @@ public class BottomSheetSingleIssueFragment extends BottomSheetDialogFragment {
 		} else {
 			binding.addRemoveAssignees.setVisibility(View.GONE);
 			binding.editLabels.setVisibility(View.GONE);
+			binding.manageDependencies.setVisibility(View.GONE);
 		}
 
 		binding.pinIssue.setOnClickListener(

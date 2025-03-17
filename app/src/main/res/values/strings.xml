@@ -947,4 +947,13 @@
     <string name="search_no_matches">No matches found</string>
     <string name="heatmap_contribution">%1$d contributions on %2$s</string>
     <string name="im_mentioned">I\'m mentioned</string>
+
+    <string name="dependencies">Dependencies</string>
+    <string name="no_dependencies_set">No dependencies set</string>
+    <string name="dependency_removed">Dependency removed</string>
+    <string name="dependency_removal_failed">Failed to remove dependency</string>
+    <string name="dependency_added">Dependency added</string>
+    <string name="dependency_add_failed">Failed to add dependency</string>
+    <string name="search_failed">Search failed</string>
+    <string name="no_dependency_search_results">No matching results found</string>
 </resources>

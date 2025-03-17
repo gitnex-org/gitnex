@@ -1,0 +1,76 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:orientation="vertical"
+    android:padding="@dimen/dimen16dp">
+
+    <TextView
+        android:id="@+id/bottomSheetHeader"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="@string/dependencies"
+        android:textAppearance="?attr/textAppearanceTitleLarge"
+        android:textColor="?attr/colorOnSurface"
+        android:paddingBottom="@dimen/dimen16dp" />
+
+    <com.google.android.material.textfield.TextInputLayout
+        android:id="@+id/searchInputLayout"
+        style="@style/Widget.Material3.TextInputLayout.OutlinedBox"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:hint="@string/search"
+        app:endIconMode="custom"
+        app:endIconDrawable="@drawable/ic_search"
+        app:endIconContentDescription="@string/search">
+
+        <com.google.android.material.textfield.TextInputEditText
+            android:id="@+id/searchInput"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:inputType="text"
+            android:maxLines="1"
+            android:textSize="@dimen/dimen16sp"
+            android:textAppearance="?attr/textAppearanceBodyMedium" />
+
+    </com.google.android.material.textfield.TextInputLayout>
+
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/searchResultsRecyclerView"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:visibility="gone"
+        android:layout_marginTop="@dimen/dimen16dp"
+        android:overScrollMode="never"
+        tools:listitem="@layout/list_issue_dependency"
+        tools:itemCount="3" />
+
+    <com.google.android.material.divider.MaterialDivider
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginVertical="@dimen/dimen16dp"
+        app:dividerColor="?attr/colorOutlineVariant" />
+
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/dependenciesRecyclerView"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/dimen8dp"
+        android:overScrollMode="never"
+        tools:listitem="@layout/list_issue_dependency"
+        tools:itemCount="0" />
+
+    <TextView
+        android:id="@+id/noDependenciesText"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="@string/no_dependencies_set"
+        android:textAppearance="?attr/textAppearanceBodyMedium"
+        android:textColor="?attr/colorOnSurfaceVariant"
+        android:gravity="center"
+        android:padding="@dimen/dimen16dp"
+        android:visibility="visible" />
+
+</LinearLayout>
