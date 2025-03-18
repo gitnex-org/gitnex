@@ -807,4 +807,12 @@
     <string name="search_no_matches">Aucun résultat trouvé</string>
     <string name="heatmap_contribution">%1$d contributions sur %2$s</string>
     <string name="im_mentioned">Je suis cité</string>
+    <string name="dependencies">Dépendances</string>
+    <string name="no_dependencies_set">Aucune dépendance</string>
+    <string name="dependency_removed">Dépendance supprimée</string>
+    <string name="dependency_removal_failed">Échec de la suppression de la dépendance</string>
+    <string name="dependency_added">Dépendance ajoutée</string>
+    <string name="dependency_add_failed">Échec de l’ajout de la dépendance</string>
+    <string name="search_failed">Échec de la recherche</string>
+    <string name="no_dependency_search_results">Aucun résultat trouvé</string>
 </resources>
