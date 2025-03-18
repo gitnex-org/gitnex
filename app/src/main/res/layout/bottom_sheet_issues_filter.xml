@@ -49,12 +49,11 @@
         android:layout_height="wrap_content"
         app:singleSelection="true"
         android:paddingStart="@dimen/dimen16dp"
-        android:paddingEnd="@dimen/dimen16dp"
-        android:paddingBottom="@dimen/dimen8dp">
+        android:paddingEnd="@dimen/dimen16dp">
 
         <com.google.android.material.chip.Chip
             android:id="@+id/openChip"
-            style="@style/Widget.MaterialComponents.Chip.Filter"
+            style="@style/Widget.Material3.Chip.Filter"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="@string/isOpen"
@@ -62,7 +61,7 @@
 
         <com.google.android.material.chip.Chip
             android:id="@+id/closedChip"
-            style="@style/Widget.MaterialComponents.Chip.Filter"
+            style="@style/Widget.Material3.Chip.Filter"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="@string/isClosed"/>
@@ -78,21 +77,21 @@
 
         <com.google.android.material.chip.Chip
             android:id="@+id/mentionsChip"
-            style="@style/Widget.MaterialComponents.Chip.Filter"
+            style="@style/Widget.Material3.Chip.Filter"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="@string/im_mentioned"/>
 
         <com.google.android.material.chip.Chip
             android:id="@+id/labelsChip"
-            style="@style/Widget.MaterialComponents.Chip.Filter"
+            style="@style/Widget.Material3.Chip.Filter"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="@string/newIssueLabelsTitle"/>
 
         <com.google.android.material.chip.Chip
             android:id="@+id/milestoneChip"
-            style="@style/Widget.MaterialComponents.Chip.Filter"
+            style="@style/Widget.Material3.Chip.Filter"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="@string/tabTextMl"

@@ -364,18 +364,10 @@ public class IssuesFragment extends Fragment {
 								pinnedIssuesList.clear();
 								pinnedIssuesList.addAll(response.body());
 								adapterPinned.notifyDataChanged();
-								fragmentIssuesBinding.noDataIssues.setVisibility(View.GONE);
 							} else {
 								pinnedIssuesList.clear();
 								adapterPinned.notifyDataChanged();
-								fragmentIssuesBinding.noDataIssues.setVisibility(View.VISIBLE);
 							}
-							fragmentIssuesBinding.progressBar.setVisibility(View.GONE);
-						} else if (response.code() == 404) {
-							fragmentIssuesBinding.noDataIssues.setVisibility(View.VISIBLE);
-							fragmentIssuesBinding.progressBar.setVisibility(View.GONE);
-						} else {
-							Toasty.error(context, getString(R.string.genericError));
 						}
 					}
 
@@ -396,6 +388,8 @@ public class IssuesFragment extends Fragment {
 			String query,
 			String labels,
 			String mentionedBy) {
+
+		fragmentIssuesBinding.progressBar.setVisibility(View.VISIBLE);
 
 		Call<List<Issue>> call =
 				RetrofitClient.getApiInterface(context)

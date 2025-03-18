@@ -1,0 +1,82 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="horizontal"
+    android:paddingBottom="@dimen/dimen4dp"
+    android:gravity="center_vertical">
+
+    <com.google.android.material.card.MaterialCardView
+        android:id="@+id/card_view"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        style="?attr/materialCardViewElevatedStyle"
+        app:cardElevation="@dimen/dimen0dp">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:foreground="?android:attr/selectableItemBackground"
+            android:background="?attr/materialCardBackgroundColor"
+            android:padding="@dimen/dimen12dp"
+            android:gravity="center_vertical"
+            android:orientation="horizontal">
+
+            <!-- User Avatar -->
+            <com.google.android.material.card.MaterialCardView
+                android:id="@+id/avatarFrame"
+                android:layout_width="@dimen/dimen32dp"
+                android:layout_height="@dimen/dimen32dp"
+                style="?attr/materialCardViewElevatedStyle"
+                android:backgroundTint="@android:color/transparent"
+                app:cardElevation="@dimen/dimen0dp"
+                android:layout_marginEnd="@dimen/dimen12dp"
+                app:cardCornerRadius="@dimen/dimen8dp">
+
+                <ImageView
+                    android:id="@+id/userAvatar"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:contentDescription="@string/generalImgContentText"
+                    android:scaleType="centerCrop"
+                    android:src="@drawable/ic_person" />
+
+            </com.google.android.material.card.MaterialCardView>
+
+            <!-- User Name -->
+            <TextView
+                android:id="@+id/userName"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:textAppearance="?attr/textAppearanceBodyMedium"
+                android:textColor="?attr/colorOnSurface"
+                android:layout_marginEnd="@dimen/dimen4dp"
+                tools:text="M M Arif - mian" />
+
+            <!-- Tracked Time -->
+            <TextView
+                android:id="@+id/trackedTimeEntry"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textAppearance="?attr/textAppearanceBodyMedium"
+                android:textColor="?attr/colorOnSurface"
+                android:layout_marginEnd="@dimen/dimen8dp"
+                tools:text="0h 30m 0s" />
+
+            <!-- Delete Icon -->
+            <ImageView
+                android:id="@+id/deleteTrackedTime"
+                android:layout_width="@dimen/dimen22dp"
+                android:layout_height="@dimen/dimen22dp"
+                android:src="@drawable/ic_delete"
+                android:contentDescription="@string/menuDeleteText"
+                app:tint="?attr/colorOnSurfaceVariant" />
+
+        </LinearLayout>
+
+    </com.google.android.material.card.MaterialCardView>
+
+</LinearLayout>

@@ -252,6 +252,14 @@ public class BottomSheetSingleIssueFragment extends BottomSheetDialogFragment {
 					dismiss();
 				});
 
+		binding.trackedTime.setOnClickListener(
+				v -> {
+					BottomSheetTrackedTimeFragment trackedTimeSheet =
+							BottomSheetTrackedTimeFragment.newInstance(issue);
+					trackedTimeSheet.show(getParentFragmentManager(), "trackedTimeBottomSheet");
+					dismiss();
+				});
+
 		binding.subscribeIssue.setOnClickListener(
 				subscribeToIssue -> {
 					IssueActions.subscribe(ctx, issue);
@@ -286,6 +294,7 @@ public class BottomSheetSingleIssueFragment extends BottomSheetDialogFragment {
 			binding.mergePullRequest.setVisibility(View.GONE);
 			binding.updatePullRequest.setVisibility(View.GONE);
 			binding.manageDependencies.setVisibility(View.GONE);
+			binding.trackedTime.setVisibility(View.GONE);
 			if (issue.getIssueType().equalsIgnoreCase("issue")) {
 				binding.issuePrDivider.setVisibility(View.GONE);
 			}
@@ -297,6 +306,7 @@ public class BottomSheetSingleIssueFragment extends BottomSheetDialogFragment {
 			binding.addRemoveAssignees.setVisibility(View.GONE);
 			binding.editLabels.setVisibility(View.GONE);
 			binding.manageDependencies.setVisibility(View.GONE);
+			binding.trackedTime.setVisibility(View.GONE);
 		}
 
 		binding.pinIssue.setOnClickListener(

@@ -9,103 +9,90 @@
     android:paddingTop="@dimen/dimen6dp"
     android:paddingBottom="@dimen/dimen12dp">
 
-    <androidx.core.widget.NestedScrollView
+    <LinearLayout
+        android:id="@+id/myIssuesFilterHeadFrame"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content">
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:padding="@dimen/dimen8dp">
 
-        <LinearLayout
+        <TextView
+            android:id="@+id/bottomSheetHeader"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:orientation="vertical">
+            android:gravity="center"
+            android:text="@string/strFilter"
+            android:textColor="?attr/primaryTextColor"
+            android:textSize="@dimen/dimen16sp"/>
 
-            <LinearLayout
-                android:id="@+id/myIssuesFilterHeadFrame"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:orientation="vertical"
-                android:padding="@dimen/dimen8dp">
+        <com.google.android.material.card.MaterialCardView
+            style="?attr/materialCardViewFilledStyle"
+            android:layout_width="@dimen/dimen28dp"
+            android:layout_height="@dimen/dimen4dp"
+            android:layout_gravity="center_horizontal"
+            android:layout_marginTop="@dimen/dimen8dp"
+            android:layout_marginBottom="@dimen/dimen16dp"
+            app:cardCornerRadius="@dimen/dimen24dp"
+            app:cardElevation="@dimen/dimen0dp">
 
-                <TextView
-                    android:id="@+id/bottomSheetHeader"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:gravity="center"
-                    android:text="@string/strFilter"
-                    android:textColor="?attr/primaryTextColor"
-                    android:textSize="@dimen/dimen16sp"/>
-
-                <com.google.android.material.card.MaterialCardView
-                    style="?attr/materialCardViewFilledStyle"
-                    android:layout_width="@dimen/dimen28dp"
-                    android:layout_height="@dimen/dimen4dp"
-                    android:layout_gravity="center_horizontal"
-                    android:layout_marginTop="@dimen/dimen8dp"
-                    android:layout_marginBottom="@dimen/dimen16dp"
-                    app:cardCornerRadius="@dimen/dimen24dp"
-                    app:cardElevation="@dimen/dimen0dp">
-
-                    <View
-                        android:layout_width="match_parent"
-                        android:layout_height="match_parent"
-                        android:background="?attr/fabColor" />
-
-                </com.google.android.material.card.MaterialCardView>
-
-            </LinearLayout>
-
-            <com.google.android.flexbox.FlexboxLayout
-                android:id="@+id/myIssuesSection"
+            <View
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:padding="@dimen/dimen4dp"
-                app:alignContent="center"
-                app:alignItems="flex_start"
-                app:flexWrap="wrap"
-                app:justifyContent="center">
+                android:background="?attr/fabColor" />
 
-                <TextView
-                    android:id="@+id/openMyIssues"
-                    android:layout_width="@dimen/dimen132dp"
-                    android:layout_height="@dimen/dimen100dp"
-                    android:background="?android:attr/selectableItemBackgroundBorderless"
-                    android:gravity="center"
-                    android:padding="@dimen/dimen4dp"
-                    android:text="@string/isOpen"
-                    android:textColor="?attr/primaryTextColor"
-                    android:textSize="@dimen/dimen14sp"
-                    app:drawableTopCompat="@drawable/ic_issue"
-                    app:layout_alignSelf="flex_start"/>
+        </com.google.android.material.card.MaterialCardView>
 
-                <TextView
-                    android:id="@+id/closedMyIssues"
-                    android:layout_width="@dimen/dimen132dp"
-                    android:layout_height="@dimen/dimen100dp"
-                    android:background="?android:attr/selectableItemBackgroundBorderless"
-                    android:gravity="center"
-                    android:padding="@dimen/dimen4dp"
-                    android:text="@string/isClosed"
-                    android:textColor="?attr/primaryTextColor"
-                    android:textSize="@dimen/dimen14sp"
-                    app:drawableTopCompat="@drawable/ic_issue_closed"
-                    app:layout_alignSelf="flex_start"/>
+    </LinearLayout>
 
-                <TextView
-                    android:id="@+id/assignedToMe"
-                    android:layout_width="@dimen/dimen132dp"
-                    android:layout_height="@dimen/dimen100dp"
-                    android:background="?android:attr/selectableItemBackgroundBorderless"
-                    android:gravity="center"
-                    android:padding="@dimen/dimen4dp"
-                    android:text="@string/assignedToMe"
-                    android:textColor="?attr/primaryTextColor"
-                    android:textSize="@dimen/dimen14sp"
-                    app:drawableTopCompat="@drawable/ic_person"
-                    app:layout_alignSelf="flex_start"/>
+    <com.google.android.material.chip.ChipGroup
+        android:id="@+id/stateChipGroup"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:paddingStart="@dimen/dimen16dp"
+        android:paddingEnd="@dimen/dimen16dp"
+        app:singleSelection="true"
+        app:selectionRequired="true">
 
-            </com.google.android.flexbox.FlexboxLayout>
+        <com.google.android.material.chip.Chip
+            android:id="@+id/chipOpen"
+            style="@style/Widget.Material3.Chip.Filter"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/isOpen"
+            android:checked="true"/>
 
-        </LinearLayout>
+        <com.google.android.material.chip.Chip
+            android:id="@+id/chipClosed"
+            style="@style/Widget.Material3.Chip.Filter"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/isClosed"/>
 
-    </androidx.core.widget.NestedScrollView>
+    </com.google.android.material.chip.ChipGroup>
+
+    <com.google.android.material.chip.ChipGroup
+        android:id="@+id/filterChipGroup"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:padding="@dimen/dimen16dp"
+        app:singleSelection="true"
+        app:selectionRequired="true">
+
+        <com.google.android.material.chip.Chip
+            android:id="@+id/chipCreatedByMe"
+            style="@style/Widget.Material3.Chip.Filter"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/created_by_me"
+            android:checked="true"/>
+
+        <com.google.android.material.chip.Chip
+            android:id="@+id/chipAssignedToMe"
+            style="@style/Widget.Material3.Chip.Filter"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/assignedToMe"/>
+
+    </com.google.android.material.chip.ChipGroup>
 
 </LinearLayout>

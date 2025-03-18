@@ -1,0 +1,108 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="vertical"
+    android:padding="@dimen/dimen16dp">
+
+    <TextView
+        android:id="@+id/bottomSheetHeader"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="@string/tracked_time"
+        android:textAppearance="?attr/textAppearanceTitleLarge"
+        android:textColor="?attr/colorOnSurface"
+        android:paddingBottom="@dimen/dimen16dp" />
+
+    <TextView
+        android:id="@+id/totalTrackedTime"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:textAppearance="?attr/textAppearanceBodyMedium"
+        android:textStyle="bold"
+        android:textColor="?attr/colorOnSurface"
+        android:paddingBottom="@dimen/dimen12dp" />
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:gravity="center_vertical">
+
+        <com.google.android.material.textfield.TextInputLayout
+            android:id="@+id/hoursInputLayout"
+            style="@style/Widget.Material3.TextInputLayout.OutlinedBox.Dense"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:hint="@string/hours"
+            android:layout_marginEnd="@dimen/dimen12dp">
+
+            <com.google.android.material.textfield.TextInputEditText
+                android:id="@+id/hoursInput"
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/dimen40dp"
+                android:inputType="number"
+                android:maxLength="3"
+                android:textAppearance="?attr/textAppearanceBodyMedium" />
+
+        </com.google.android.material.textfield.TextInputLayout>
+
+        <com.google.android.material.textfield.TextInputLayout
+            android:id="@+id/minutesInputLayout"
+            style="@style/Widget.Material3.TextInputLayout.OutlinedBox.Dense"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:hint="@string/minutes"
+            android:layout_marginEnd="@dimen/dimen12dp">
+
+            <com.google.android.material.textfield.TextInputEditText
+                android:id="@+id/minutesInput"
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/dimen40dp"
+                android:inputType="number"
+                android:maxLength="2"
+                android:textAppearance="?attr/textAppearanceBodyMedium" />
+
+        </com.google.android.material.textfield.TextInputLayout>
+
+        <com.google.android.material.button.MaterialButton
+            android:id="@+id/addTimeButton"
+            android:layout_width="@dimen/dimen96dp"
+            android:layout_height="@dimen/dimen50dp"
+            android:text="@string/addButton"
+            android:minWidth="0dp"
+            android:paddingHorizontal="@dimen/dimen16dp" />
+
+    </LinearLayout>
+
+    <com.google.android.material.divider.MaterialDivider
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginVertical="@dimen/dimen16dp"
+        app:dividerColor="?attr/colorOutlineVariant" />
+
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/trackedTimeRecyclerView"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/dimen8dp"
+        android:overScrollMode="never"
+        tools:listitem="@layout/list_tracked_time"
+        tools:itemCount="2" />
+
+    <TextView
+        android:id="@+id/noTrackedTimeText"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="@string/no_tracked_time"
+        android:textAppearance="?attr/textAppearanceBodyMedium"
+        android:textColor="?attr/colorOnSurfaceVariant"
+        android:gravity="center"
+        android:padding="@dimen/dimen16dp"
+        android:visibility="visible" />
+
+</LinearLayout>

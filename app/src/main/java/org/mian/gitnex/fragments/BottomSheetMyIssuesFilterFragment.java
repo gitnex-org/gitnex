@@ -9,7 +9,6 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment;
 import org.mian.gitnex.databinding.BottomSheetMyIssuesFilterBinding;
-import org.mian.gitnex.structs.BottomSheetListener;
 
 /**
  * @author M M Arif
@@ -17,6 +16,32 @@ import org.mian.gitnex.structs.BottomSheetListener;
 public class BottomSheetMyIssuesFilterFragment extends BottomSheetDialogFragment {
 
 	private BottomSheetListener bmListener;
+	private String selectedState = "open";
+	private String selectedFilter = "created_by_me";
+	private static final String ARG_FILTER = "currentFilter";
+
+	public static BottomSheetMyIssuesFilterFragment newInstance(String currentFilter) {
+
+		BottomSheetMyIssuesFilterFragment fragment = new BottomSheetMyIssuesFilterFragment();
+		Bundle args = new Bundle();
+		args.putString(ARG_FILTER, currentFilter);
+		fragment.setArguments(args);
+		return fragment;
+	}
+
+	@Override
+	public void onCreate(@Nullable Bundle savedInstanceState) {
+
+		super.onCreate(savedInstanceState);
+		Bundle args = getArguments();
+
+		if (args != null && args.containsKey(ARG_FILTER)) {
+			String currentFilter = args.getString(ARG_FILTER, "open_created_by_me");
+			String[] parts = currentFilter.split("_");
+			selectedState = parts[0];
+			selectedFilter = parts.length > 1 ? parts[1] : "created_by_me";
+		}
+	}
 
 	@Nullable @Override
 	public View onCreateView(
@@ -24,39 +49,68 @@ public class BottomSheetMyIssuesFilterFragment extends BottomSheetDialogFragment
 			@Nullable ViewGroup container,
 			@Nullable Bundle savedInstanceState) {
 
-		BottomSheetMyIssuesFilterBinding bottomSheetIssuesFilterBinding =
+		BottomSheetMyIssuesFilterBinding binding =
 				BottomSheetMyIssuesFilterBinding.inflate(inflater, container, false);
 
-		bottomSheetIssuesFilterBinding.openMyIssues.setOnClickListener(
-				v1 -> {
-					bmListener.onButtonClicked("openMyIssues");
-					dismiss();
+		// Clear all chip states
+		binding.chipOpen.setChecked(false);
+		binding.chipClosed.setChecked(false);
+		binding.chipCreatedByMe.setChecked(false);
+		binding.chipAssignedToMe.setChecked(false);
+
+		// Set chip states
+		binding.chipOpen.setChecked(selectedState.equals("open"));
+		binding.chipClosed.setChecked(selectedState.equals("closed"));
+		binding.chipCreatedByMe.setChecked(selectedFilter.equals("created_by_me"));
+		binding.chipAssignedToMe.setChecked(selectedFilter.equals("assignedToMe"));
+
+		binding.stateChipGroup.setOnCheckedStateChangeListener(
+				(group, checkedIds) -> {
+					if (!checkedIds.isEmpty()) {
+						int checkedId = checkedIds.get(0);
+						if (checkedId == binding.chipOpen.getId()) {
+							selectedState = "open";
+						} else if (checkedId == binding.chipClosed.getId()) {
+							selectedState = "closed";
+						}
+						applyFilter();
+					}
 				});
 
-		bottomSheetIssuesFilterBinding.closedMyIssues.setOnClickListener(
-				v12 -> {
-					bmListener.onButtonClicked("closedMyIssues");
-					dismiss();
+		binding.filterChipGroup.setOnCheckedStateChangeListener(
+				(group, checkedIds) -> {
+					if (!checkedIds.isEmpty()) {
+
+						int checkedId = checkedIds.get(0);
+						if (checkedId == binding.chipCreatedByMe.getId()) {
+							selectedFilter = "created_by_me";
+						} else if (checkedId == binding.chipAssignedToMe.getId()) {
+							selectedFilter = "assignedToMe";
+						}
+						applyFilter();
+					}
 				});
 
-		bottomSheetIssuesFilterBinding.assignedToMe.setOnClickListener(
-				v12 -> {
-					bmListener.onButtonClicked("assignedToMe");
-					dismiss();
-				});
+		return binding.getRoot();
+	}
 
-		return bottomSheetIssuesFilterBinding.getRoot();
+	private void applyFilter() {
+		String result = selectedState + "_" + selectedFilter;
+		bmListener.onButtonClicked(result);
+		dismiss();
 	}
 
 	@Override
 	public void onAttach(@NonNull Context context) {
-
 		super.onAttach(context);
-
 		try {
 			bmListener = (BottomSheetListener) context;
 		} catch (ClassCastException e) {
 			throw new ClassCastException(context + " must implement BottomSheetListener");
 		}
+	}
+
+	public interface BottomSheetListener {
+		void onButtonClicked(String text);
 	}
 }

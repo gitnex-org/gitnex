@@ -177,6 +177,19 @@
                     app:layout_alignSelf="flex_start" />
 
                 <TextView
+                    android:id="@+id/tracked_time"
+                    android:layout_width="@dimen/dimen132dp"
+                    android:layout_height="@dimen/dimen100dp"
+                    android:background="?android:attr/selectableItemBackgroundBorderless"
+                    android:gravity="center"
+                    android:padding="@dimen/dimen4dp"
+                    android:text="@string/tracked_time"
+                    android:textColor="?attr/primaryTextColor"
+                    android:textSize="@dimen/dimen14sp"
+                    app:drawableTopCompat="@drawable/ic_stopwatch"
+                    app:layout_alignSelf="flex_start" />
+
+                <TextView
                     android:id="@+id/pin_issue"
                     android:layout_width="@dimen/dimen132dp"
                     android:layout_height="@dimen/dimen100dp"

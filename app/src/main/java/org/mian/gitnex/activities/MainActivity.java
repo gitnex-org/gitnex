@@ -70,7 +70,8 @@ import retrofit2.Callback;
  */
 @SuppressWarnings("ConstantConditions")
 public class MainActivity extends BaseActivity
-		implements NavigationView.OnNavigationItemSelectedListener, BottomSheetListener {
+		implements NavigationView.OnNavigationItemSelectedListener,
+				BottomSheetMyIssuesFilterFragment.BottomSheetListener {
 
 	public static boolean refActivity = false;
 	public static boolean reloadRepos = false;
@@ -323,15 +324,14 @@ public class MainActivity extends BaseActivity
 
 			mainIntent.removeExtra("launchFragment");
 
-			switch (launchFragment) {
-				case "notifications":
-					toolbarTitle.setText(getResources().getString(R.string.pageTitleNotifications));
-					getSupportFragmentManager()
-							.beginTransaction()
-							.replace(R.id.fragment_container, new NotificationsFragment())
-							.commit();
-					navigationView.setCheckedItem(R.id.nav_notifications);
-					return;
+			if (launchFragment.equals("notifications")) {
+				toolbarTitle.setText(getResources().getString(R.string.pageTitleNotifications));
+				getSupportFragmentManager()
+						.beginTransaction()
+						.replace(R.id.fragment_container, new NotificationsFragment())
+						.commit();
+				navigationView.setCheckedItem(R.id.nav_notifications);
+				return;
 			}
 		}
 
@@ -590,22 +590,12 @@ public class MainActivity extends BaseActivity
 	@Override
 	public void onButtonClicked(String text) {
 
-		switch (text) {
-			case "openMyIssues":
-				if (getFragmentRefreshListener() != null) {
-					getFragmentRefreshListener().onRefresh("open");
-				}
-				break;
-			case "closedMyIssues":
-				if (getFragmentRefreshListener() != null) {
-					getFragmentRefreshListener().onRefresh("closed");
-				}
-				break;
-			case "assignedToMe":
-				if (getFragmentRefreshListener() != null) {
-					getFragmentRefreshListener().onRefresh("assignedToMe");
-				}
-				break;
+		String[] parts = text.split("_");
+		String state = parts[0];
+		String filter = parts[1];
+
+		if (getFragmentRefreshListener() != null) {
+			getFragmentRefreshListener().onRefresh(state + "_" + filter);
 		}
 	}
 
@@ -731,8 +721,16 @@ public class MainActivity extends BaseActivity
 
 		if (id == R.id.filter) {
 
+			Fragment currentFragment =
+					getSupportFragmentManager().findFragmentById(R.id.fragment_container);
+			String currentFilter = "open_created_by_me";
+
+			if (currentFragment instanceof MyIssuesFragment) {
+				currentFilter = ((MyIssuesFragment) currentFragment).getCurrentFilter();
+			}
+
 			BottomSheetMyIssuesFilterFragment filterBottomSheet =
-					new BottomSheetMyIssuesFilterFragment();
+					BottomSheetMyIssuesFilterFragment.newInstance(currentFilter);
 			filterBottomSheet.show(getSupportFragmentManager(), "myIssuesFilterMenuBottomSheet");
 			return true;
 		}
@@ -961,13 +959,15 @@ public class MainActivity extends BaseActivity
 		this.profileInitListener = profileInitListener;
 	}
 
-	// My issues interface
 	public FragmentRefreshListener getFragmentRefreshListener() {
 		return fragmentRefreshListenerMyIssues;
 	}
 
-	public void setFragmentRefreshListenerMyIssues(
-			FragmentRefreshListener fragmentRefreshListener) {
-		this.fragmentRefreshListenerMyIssues = fragmentRefreshListener;
+	public void setFragmentRefreshListenerMyIssues(FragmentRefreshListener listener) {
+		this.fragmentRefreshListenerMyIssues = listener;
+	}
+
+	public interface FragmentRefreshListener {
+		void onRefresh(String myIssues);
 	}
 }
