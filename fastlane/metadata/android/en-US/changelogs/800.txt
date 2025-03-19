@@ -1,0 +1,14 @@
+8.0.0
+
+🎉 Features 🎉
+- Create a branch when creating, editing, or deleting a file
+- Search within files
+- Display a user activity heatmap on the profile
+- Add pinch-and-zoom support for files
+- Mention users in issues, pull requests, and comments
+- Filter issues by labels and I am mentioned
+- Manage dependencies for issues and pull requests
+- Manage tracked time
+- Add a Created by Me filter to My Issues
+
+Release Notes: https://codeberg.org/gitnex/GitNex/releases

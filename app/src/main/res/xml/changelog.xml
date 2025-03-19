@@ -1,8 +1,27 @@
 <?xml version="1.0" encoding="utf-8"?>
 <changelog>
 
-    <release version="8.0.0-dev" versioncode="795">
-        <change>Under development</change>
+    <release version="8.0.0" versioncode="800">
+        <change>New: Create a branch when creating, editing, or deleting a file</change>
+        <change>New: Search within files</change>
+        <change>New: Show tags if there are no releases</change>
+        <change>New: Display a user activity heatmap on the profile</change>
+        <change>New: Add pinch-and-zoom support for files</change>
+        <change>New: Mention users in issues, pull requests, and comments</change>
+        <change>New: Filter issues by labels</change>
+        <change>New: Filter issues where I am mentioned</change>
+        <change>New: Manage dependencies for issues and pull requests (view, add, remove)</change>
+        <change>New: Manage tracked time (view, add, remove)</change>
+        <change>New: Add a Created by Me filter to My Issues</change>
+        <change>Improvement: UI enhancements</change>
+        <change>Improvement: Paginate repository stargazers and watchers</change>
+        <change>Improvement: Paginate organization members and repository collaborators</change>
+        <change>Improvement: Add pagination for repository branches</change>
+        <change>Improvement: Improve the loading of large files in the file viewer</change>
+        <change>Improvement: Update translations</change>
+        <change>Bugfix: Fix the commits UI</change>
+        <change>Bugfix: Fix the issues progress bar</change>
+        <change>Removal: HTTP Basic Authentication (username/password login) has been removed</change>
     </release>
 
 </changelog>
