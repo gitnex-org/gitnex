@@ -114,6 +114,7 @@
     <string name="commentButtonText">Répondre</string>
     <string name="commentEmptyError">Veuillez saisir votre commentaire</string>
     <string name="commentSuccess">Commentaire publié</string>
+    <string name="created_by_me">Créé par moi</string>
     <string name="featureDeprecated">Cette fonction sera prochainement supprimée</string>
     <string name="generalImgContentText">Image</string>
     <string name="commitAuthor">Auteur de la révision : %1$s</string>
@@ -460,6 +461,8 @@
     <string name="branch">Branche</string>
     <string name="branches">Branches</string>
     <string name="timeline">Historique</string>
+    <string name="hours">Heures</string>
+    <string name="minutes">Minutes</string>
     <!-- generic copy -->
     <string name="exploreUsers">Rechercher des utilisateurs</string>
     <string name="exploreIssues">Rechercher des tickets</string>
@@ -815,4 +818,12 @@
     <string name="dependency_add_failed">Échec de l’ajout de la dépendance</string>
     <string name="search_failed">Échec de la recherche</string>
     <string name="no_dependency_search_results">Aucun résultat trouvé</string>
+    <string name="tracked_time">Chronométrage</string>
+    <string name="no_tracked_time">Pas encore de chronométrage</string>
+    <string name="total_time">Total : %1$d h %2$d min %3$d s</string>
+    <string name="enter_time">Veuillez saisir un temps</string>
+    <string name="time_added">Chrono ajouté</string>
+    <string name="time_removed">Chrono effacé</string>
+    <string name="time_add_failed">Ajout de chrono échoué</string>
+    <string name="time_delete_failed">Effacement de chrono échoué</string>
 </resources>
