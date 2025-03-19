@@ -9,7 +9,6 @@
     <string name="navOrg">Organizzazioni</string>
     <string name="navAbout">Info su</string>
     <string name="navRate">Valuta GitNex</string>
-    <string name="navLogout">Esci</string>
     <string name="navAdministration">Instance Administration</string>
     <string name="navMyIssues">My Issues</string>
     <string name="navMostVisited">Most Visited Repos</string>
@@ -58,7 +57,6 @@
     <string name="navigationDrawerOpen">Apri panello Navigazione</string>
     <string name="navigationDrawerClose">Chiudi panello Navigazione</string>
     <string name="protocol">Protocollo</string>
-    <string name="urlInfoTooltip">1- Choose the correct protocol(https or http). \n2- Enter instance url e.g: try.gitea.io. \n3- If you have enabled 2FA for your account, enter the code in the OTP Code field. \n4- For HTTP basic auth use USERNAME@DOMAIN.COM in the URL field.</string>
     <string name="malformedUrl">Impossibile connettersi all\'host. Controlla l\'URL o la porta per eventuali errori</string>
     <string name="protocolError">Non si consiglia di utilizzare il protocollo HTTP a meno che non si stia testando sulla rete locale</string>
     <string name="malformedJson">È stato ricevuto JSON non valido. La risposta del server non ha avuto successo</string>
@@ -117,6 +115,7 @@ URL è richiesto</string>
     <string name="commentButtonText">Commento</string>
     <string name="commentEmptyError">Inserisci il tuo commento</string>
     <string name="commentSuccess">Commento pubblicato</string>
+    <string name="created_by_me">Creato da me</string>
     <string name="featureDeprecated">Questa funzione sarà rimossa in futuro</string>
     <string name="generalImgContentText">Immagine</string>
     <string name="commitAuthor">Autore commit: %1$s</string>
@@ -180,10 +179,6 @@ URL è richiesto</string>
     <string name="clearCacheSelectionHeaderText">Cancella Cache</string>
     <string name="clearCacheDialogHeader">Svuotare la cache?</string>
     <string name="clearCacheDialogMessage">Questo eliminerà tutti i dati della cache inclusi file e immagini.\n\nProcedi con la cancellazione?</string>
-    <string name="draftsHeader">Bozze</string>
-    <string name="draftsHintText">Bozze dei commenti</string>
-    <string name="settingsEnableCommentsDeletionText">Abilita Eliminazione Bozze</string>
-    <string name="settingsEnableCommentsDeletionHintText">Elimina la bozza del commento quando viene pubblicato</string>
     <string name="settingsGeneralHeader">Generale</string>
     <string name="generalHintText">Home screen, crash reports, custom tabs</string>
     <string name="generalDeepLinkDefaultScreen">Default Link Handler</string>
@@ -226,7 +221,7 @@ URL è richiesto</string>
     <string name="labelDeleteText">Label cancellato</string>
     <string name="selectBranchError">Select a branch for release</string>
     <string name="alertDialogTokenRevokedTitle">Errore di autorizzazione</string>
-    <string name="alertDialogTokenRevokedMessage">It seems that the Access Token is revoked OR your are not allowed to see these contents.\n\nIn case of revoked Token, please logout and login again</string>
+    <string name="alertDialogTokenRevokedMessage">Sembra che il token di accesso sia revocato o non sia tu autorizzato a vedere quei contenuti.\n\nNel caso il token sia revocato aggiungere di nuovo l\'account</string>
     <string name="labelDeleteMessage">Si vuole veramente cancellare questo label?</string>
     <!-- org tabbed layout str -->
     <string name="orgTabTeams">Team</string>
@@ -364,9 +359,6 @@ autorizzazione</string>
     <string name="deleteReleaseConfirmation">Do you really want to delete this release?</string>
     <string name="releaseDeleted">Release deleted</string>
     <!-- release -->
-    <string name="loginOTPTypeError">OTP code should be numbers</string>
-    <string name="loginOTP">Codice OTP (opzionale)</string>
-    <string name="otpMessage">Enter otp code if 2FA is enabled</string>
     <string name="openWebRepo">Apri nel Browser</string>
     <string name="repoStargazersInMenu">Favoriti</string>
     <string name="repoWatchersInMenu">Osservatori</string>
@@ -392,6 +384,14 @@ autorizzazione</string>
     <string name="newFileRequiredFields">Campi come nome file, contenuto e messaggio di commit sono obbligatori</string>
     <string name="newFileEmptyBranchMessage">Leave blank to push to the default branch</string>
     <string name="newFileRequiredFieldNewBranchName">Il nuovo nome del branch non può essere vuoto se il branch attuale non è selezionato</string>
+    <string name="create_branch_empty_fields">Branch name and ref are required</string>
+    <string name="branch_ref">Reference (Branch/Commit)</string>
+    <string name="branch_created">Branch created successfully</string>
+    <string name="branch_error_archive_mirror">Cannot create branch: Repository is archived or a mirror</string>
+    <string name="branch_error_ref_not_found">Il riferimento non esiste</string>
+    <string name="branch_error_exists">Branch %1$s already exists</string>
+    <string name="branch_error_repo_locked">Dispensario bloccato</string>
+    <string name="create_branch">Create Branch</string>
     <string name="strFilter">Filtro</string>
     <string name="strMarkdown">Markdown</string>
     <string name="copyIssueUrl">Copia URL Problema</string>
@@ -460,8 +460,11 @@ autorizzazione</string>
     <string name="bioText">Bio</string>
     <string name="pin">Pin</string>
     <string name="unpin">Unpin</string>
-    <string name="branch">Branch</string>
-    <string name="branches">Branches</string>
+    <string name="branch">Ramo</string>
+    <string name="branches">Rami</string>
+    <string name="timeline">Linea temporale</string>
+    <string name="hours">Ore</string>
+    <string name="minutes">Minuti</string>
     <!-- generic copy -->
     <string name="exploreUsers">Esplora utenti</string>
     <string name="exploreIssues">Esplora problemi</string>
@@ -470,12 +473,10 @@ autorizzazione</string>
     <string name="unStarRepositorySuccess">Repository rimosso dalla lista star</string>
     <string name="watchRepositorySuccess">Repository aggiunto alla watch list</string>
     <string name="unWatchRepositorySuccess">Repository rimosso dalla watchlist</string>
-    <string name="titleDrafts">Bozze</string>
-    <string name="versionUnsupportedOld">Unsupported old version(%1$s) of Gitea detected. Please update to latest stable version. If you continue, some features may not work.</string>
-    <string name="versionUnsupportedNew">Nuova versione di Gitea rilevata! Si prega di AGGIORNARE GitNex!</string>
-    <string name="versionUnknown">Nessun Gitea rilevato!</string>
-    <string name="versionAlertDialogHeader">Versione non supportata di Gitea</string>
-    <string name="loginViaPassword">Basic Auth</string>
+    <string name="versionUnsupportedOld">Vecchia versione non supportata (%1$s) del server rilevata. Per favore aggiorna all\'ultima versione stabile. Se continui, alcune funzionalità potrebbero non funzionare.</string>
+    <string name="versionUnsupportedNew">Nuova versione del server rilevata! Si prega di AGGIORNARE GitNex!</string>
+    <string name="versionUnknown">Nessun server rilevato.</string>
+    <string name="versionAlertDialogHeader">Versione server non supportata</string>
     <string name="unauthorizedApiError">L\'istanza ha restituito un errore - Non autorizzato. Controlla le tue credenziali e riprova</string>
     <string name="loginTokenError">Il token è richiesto</string>
     <string name="prDeletedFork">Fork Eliminato</string>
@@ -505,7 +506,7 @@ autorizzazione</string>
     <string name="selectMergeStrategy">Select merge strategy</string>
     <string name="mergeNotAllowed">Not allowed to merge [Reason: Does not have enough approvals]</string>
     <string name="deleteBranch">Delete Branch</string>
-    <string name="switch_branch">Switch Branch</string>
+    <string name="switch_branch">Cambia ramo</string>
     <string name="waitLoadingDownloadFile">Attendere che il file venga caricato in memoria</string>
     <string name="downloadFileSaved">File salvato con successo</string>
     <string name="excludeFilesInFileViewer">Questo tipo/dimensione di file non è supportata nel visualizzatore. Puoi scaricarlo dal menu.</string>
@@ -553,12 +554,6 @@ autorizzazione</string>
     <string name="crashMessage">It is encouraged to open an issue at the project repository with how to reproduce this bug. It is easier to debug and fix the problem that way.\n\nTap the OK button to send the crash report by email instead. Additional content could be added in the email.\nThank you!</string>
     <string name="forceLogoutDialogHeader">Per favore accedi di nuovo</string>
     <string name="forceLogoutDialogDescription">Due to some major changes regarding the internal functioning of the app, we require you to login again. These changes allow us to make the app more flexible in the future.\n\nThank you for your patience and sorry for the inconvenience.</string>
-    <string name="deleteAllDrafts">Elimina Tutte Le Bozze</string>
-    <string name="draftsListEmpty">Nessuna bozza trovata</string>
-    <string name="draftsDeleteSuccess">Bozze eliminate con successo</string>
-    <string name="draftsSingleDeleteSuccess">Bozza eliminata con successo</string>
-    <string name="deleteAllDraftsDialogMessage">Questo eliminerà tutte le bozze per questo account. \n\nProcedi con la cancellazione?</string>
-    <string name="draftSaved">Draft was saved automatically.</string>
     <string name="resetMostReposCounter">Counter is reset successfully</string>
     <string name="resetCounterDialogMessage">Do you want to reset counter for repository %s?</string>
     <string name="resetCounterAllDialogMessage">This will reset all the counters for this account repositories.</string>
@@ -656,6 +651,7 @@ autorizzazione</string>
     <string name="prClosed">Pull Request closed</string>
     <string name="prReopened">Pull Request reopened</string>
     <string name="prMergeInfo">Pull Request Info</string>
+    <string name="pr_info">%1$s wants to merge branch %2$s into %3$s</string>
     <string name="accountDoesNotExist">It seems that the account for URI %1$s does not exist in the app. You can add one by tapping on the Add New Account button.</string>
     <string name="launchApp">Vai all\'App</string>
     <string name="noActionText">GitNex cannot handle the requested resource. You can open an issue at the project repository as an improvement, providing details of the work. Just launch a default screen for now from the buttons below; it can be changed from settings.</string>
@@ -698,7 +694,6 @@ autorizzazione</string>
     <string name="tagDeleteError">A tag attached to a release cannot be deleted directly</string>
     <string name="useCustomTabs">Usa Schede Personalizzate</string>
     <string name="browserOpenFailed">No application found to open this link. SSH URLs and URLs with another prefix the http:// or https:// are not supported by most browser</string>
-    <string name="logInAgain">Accedi di nuovo</string>
     <string name="notLoggedIn">%s \u25CF non è connesso</string>
     <string name="followSystem">Follow system (Light/Dark)</string>
     <string name="followSystemBlack">Follow system (Light/Pitch Black)</string>
@@ -736,7 +731,7 @@ autorizzazione</string>
     <string name="insertNote">Insert a Note</string>
     <string name="noNotes">No notes found</string>
     <!-- timeline -->
-    <string name="commitsText">commit</string>
+    <string name="commitsText">commits</string>
     <string name="commitText">commit</string>
     <string name="timelineAddedCommit">%1$s added %2$s %3$s</string>
     <!-- the | is replaced by the label -->
@@ -813,4 +808,24 @@ autorizzazione</string>
     <string name="attachment">Attachment</string>
     <string name="attachments">Attachments</string>
     <string name="attachmentsSaveError">An issue was created but cannot process attachments at this time. Check the server logs for more details.</string>
+    <string name="search_matches_found">%1$d corrispondenze trovate</string>
+    <string name="search_no_matches">Nessuna corrispondenza trovata</string>
+    <string name="heatmap_contribution">%1$d contributi il %2$s</string>
+    <string name="im_mentioned">Sono menzionato</string>
+    <string name="dependencies">Dipendenze</string>
+    <string name="no_dependencies_set">Nessuna dipendenza impostata</string>
+    <string name="dependency_removed">Dipendenza rimossa</string>
+    <string name="dependency_removal_failed">Impossibile rimuovere la dipendenza</string>
+    <string name="dependency_added">Dipendenza aggiunta</string>
+    <string name="dependency_add_failed">Impossibile aggiungere la dipendenza</string>
+    <string name="search_failed">Ricerca non riuscita</string>
+    <string name="no_dependency_search_results">Nessun risultato corrispondente trovato</string>
+    <string name="tracked_time">Tempo tracciato</string>
+    <string name="no_tracked_time">Nessun tempo tracciato finora</string>
+    <string name="total_time">Totale: %1$d o %2$d min %3$d sec</string>
+    <string name="enter_time">Inserire un tempo</string>
+    <string name="time_added">Tempo aggiunto</string>
+    <string name="time_removed">Tempo rimosso</string>
+    <string name="time_add_failed">Impossibile aggiungere tempo</string>
+    <string name="time_delete_failed">Impossibile eliminare tempo</string>
 </resources>

@@ -9,7 +9,6 @@
     <string name="navOrg">組織</string>
     <string name="navAbout">關於</string>
     <string name="navRate">五星好評！</string>
-    <string name="navLogout">登出</string>
     <string name="navAdministration">實體管理</string>
     <string name="navMyIssues">我的議題</string>
     <string name="navMostVisited">最常瀏覽的倉儲</string>
@@ -58,7 +57,6 @@
     <string name="navigationDrawerOpen">開啓側邊導航選單</string>
     <string name="navigationDrawerClose">關閉側邊導航選單</string>
     <string name="protocol">協定</string>
-    <string name="urlInfoTooltip">1- 選擇正確的協定 (https 或 http)。 \n2- 輸入實體 URL e.g.: try.gitea.io 。\n 3- 如果你已經爲你的帳號啓用 2FA，輸入以下代碼到 OPT 代碼欄位。\n4- 對於 HTTP 基本驗證，請在 URL 欄位使用 USERNAME@DOMAIN.COM。</string>
     <string name="malformedUrl">無法連線到主機，請確認你的 URL 或埠號是否存在任何錯誤。</string>
     <string name="protocolError">除非你正在測試或使用區域網路，否則不建議使用 HTTP 協定。</string>
     <string name="malformedJson">Malformed JSON was received. Server response was not successful</string>
@@ -116,6 +114,7 @@
     <string name="commentButtonText">留言</string>
     <string name="commentEmptyError">Please write your comment</string>
     <string name="commentSuccess">評論已發佈</string>
+    <string name="created_by_me">Created by Me</string>
     <string name="featureDeprecated">這個函式將於未來移除</string>
     <string name="generalImgContentText">圖片</string>
     <string name="commitAuthor">Commit author: %1$s</string>
@@ -179,10 +178,6 @@
     <string name="clearCacheSelectionHeaderText">清除快取</string>
     <string name="clearCacheDialogHeader">清除快取？</string>
     <string name="clearCacheDialogMessage">This will delete all the cache data including files and images.\n\nProceed with deletion?</string>
-    <string name="draftsHeader">草稿</string>
-    <string name="draftsHintText">留言草稿</string>
-    <string name="settingsEnableCommentsDeletionText">啓用草稿刪除</string>
-    <string name="settingsEnableCommentsDeletionHintText">當留言發佈時，刪除留言草稿</string>
     <string name="settingsGeneralHeader">一般</string>
     <string name="generalHintText">Home screen, crash reports, custom tabs</string>
     <string name="generalDeepLinkDefaultScreen">Default Link Handler</string>
@@ -225,7 +220,7 @@
     <string name="labelDeleteText">標籤已刪除</string>
     <string name="selectBranchError">選擇分支以發行</string>
     <string name="alertDialogTokenRevokedTitle">Authorization Error</string>
-    <string name="alertDialogTokenRevokedMessage">It seems that the Access Token is revoked OR your are not allowed to see these contents.\n\nIn case of revoked Token, please logout and login again</string>
+    <string name="alertDialogTokenRevokedMessage">It seems that the Access Token is revoked OR you are not allowed to see these contents.\n\nIn case of revoked Token, please add the account again</string>
     <string name="labelDeleteMessage">Do you really want to delete this label?</string>
     <!-- org tabbed layout str -->
     <string name="orgTabTeams">團隊</string>
@@ -362,9 +357,6 @@
     <string name="deleteReleaseConfirmation">Do you really want to delete this release?</string>
     <string name="releaseDeleted">Release deleted</string>
     <!-- release -->
-    <string name="loginOTPTypeError">OTP code should be numbers</string>
-    <string name="loginOTP">OTP Code (Optional)</string>
-    <string name="otpMessage">Enter otp code if 2FA is enabled</string>
     <string name="openWebRepo">在瀏覽器中開啟</string>
     <string name="repoStargazersInMenu">Stargazers</string>
     <string name="repoWatchersInMenu">Watchers</string>
@@ -390,6 +382,14 @@
     <string name="newFileRequiredFields">Fields like filename, content and commit message are required</string>
     <string name="newFileEmptyBranchMessage">Leave blank to push to the default branch</string>
     <string name="newFileRequiredFieldNewBranchName">New branch name cannot be empty if current branch is not selected</string>
+    <string name="create_branch_empty_fields">Branch name and ref are required</string>
+    <string name="branch_ref">Reference (Branch/Commit)</string>
+    <string name="branch_created">Branch created successfully</string>
+    <string name="branch_error_archive_mirror">Cannot create branch: Repository is archived or a mirror</string>
+    <string name="branch_error_ref_not_found">Reference does not exist</string>
+    <string name="branch_error_exists">Branch %1$s already exists</string>
+    <string name="branch_error_repo_locked">Repository is locked</string>
+    <string name="create_branch">Create Branch</string>
     <string name="strFilter">篩選器</string>
     <string name="strMarkdown">Markdown</string>
     <string name="copyIssueUrl">Copy Issue URL</string>
@@ -460,6 +460,9 @@
     <string name="unpin">Unpin</string>
     <string name="branch">Branch</string>
     <string name="branches">Branches</string>
+    <string name="timeline">Timeline</string>
+    <string name="hours">Hours</string>
+    <string name="minutes">Minutes</string>
     <!-- generic copy -->
     <string name="exploreUsers">探索使用者</string>
     <string name="exploreIssues">探索議題</string>
@@ -468,12 +471,10 @@
     <string name="unStarRepositorySuccess">Repository removed from starred list</string>
     <string name="watchRepositorySuccess">Repository added to watch list</string>
     <string name="unWatchRepositorySuccess">Repository removed from watch list</string>
-    <string name="titleDrafts">草稿</string>
-    <string name="versionUnsupportedOld">Unsupported old version(%1$s) of Gitea detected. Please update to latest stable version. If you continue, some features may not work.</string>
-    <string name="versionUnsupportedNew">New Gitea version detected! Please UPDATE GitNex!</string>
-    <string name="versionUnknown">No Gitea detected!</string>
-    <string name="versionAlertDialogHeader">Unsupported Version of Gitea</string>
-    <string name="loginViaPassword">基本驗證</string>
+    <string name="versionUnsupportedOld">Unsupported old version(%1$s) of the server detected. Please update to latest stable version. If you continue, some features may not work.</string>
+    <string name="versionUnsupportedNew">New server version detected! Please UPDATE GitNex!</string>
+    <string name="versionUnknown">No server detected!</string>
+    <string name="versionAlertDialogHeader">Unsupported Version of server</string>
     <string name="unauthorizedApiError">Instance has returned an error - Unauthorized. Check your credentials and try again</string>
     <string name="loginTokenError">Token is required</string>
     <string name="prDeletedFork">Deleted Fork</string>
@@ -551,12 +552,6 @@
     <string name="crashMessage">It is encouraged to open an issue at the project repository with how to reproduce this bug. It is easier to debug and fix the problem that way.\n\nTap the OK button to send the crash report by email instead. Additional content could be added in the email.\nThank you!</string>
     <string name="forceLogoutDialogHeader">請重新登入</string>
     <string name="forceLogoutDialogDescription">Due to some major changes regarding the internal functioning of the app, we require you to login again. These changes allow us to make the app more flexible in the future.\n\nThank you for your patience and sorry for the inconvenience.</string>
-    <string name="deleteAllDrafts">刪除所有草稿</string>
-    <string name="draftsListEmpty">找不到草稿</string>
-    <string name="draftsDeleteSuccess">成功刪除草稿</string>
-    <string name="draftsSingleDeleteSuccess">成功刪除草稿</string>
-    <string name="deleteAllDraftsDialogMessage">將刪除此帳號的所有草稿。\n\n 確定繼續刪除？</string>
-    <string name="draftSaved">草稿已自動保存</string>
     <string name="resetMostReposCounter">成功重設計數器</string>
     <string name="resetCounterDialogMessage">您想爲此倉儲 %s 重設計數器嗎？</string>
     <string name="resetCounterAllDialogMessage">This will reset all the counters for this account repositories.</string>
@@ -653,6 +648,7 @@
     <string name="prClosed">Pull Request closed</string>
     <string name="prReopened">Pull Request reopened</string>
     <string name="prMergeInfo">拉取請求資訊</string>
+    <string name="pr_info">%1$s wants to merge branch %2$s into %3$s</string>
     <string name="accountDoesNotExist">It seems that the account for URI %1$s does not exist in the app. You can add one by tapping on the Add New Account button.</string>
     <string name="launchApp">Go to App</string>
     <string name="noActionText">GitNex cannot handle the requested resource. You can open an issue at the project repository as an improvement, providing details of the work. Just launch a default screen for now from the buttons below; it can be changed from settings.</string>
@@ -695,7 +691,6 @@
     <string name="tagDeleteError">A tag attached to a release cannot be deleted directly</string>
     <string name="useCustomTabs">Use Custom Tabs</string>
     <string name="browserOpenFailed">No application found to open this link. SSH URLs and URLs with another prefix the http:// or https:// are not supported by most browser</string>
-    <string name="logInAgain">Log in again</string>
     <string name="notLoggedIn">%s \u25CF not logged in</string>
     <string name="followSystem">跟隨系統 (亮色/深色)</string>
     <string name="followSystemBlack">跟隨系統 (亮色/深黑)</string>
@@ -732,7 +727,7 @@
     <string name="insertNote">Insert a Note</string>
     <string name="noNotes">No notes found</string>
     <!-- timeline -->
-    <string name="commitsText">commit</string>
+    <string name="commitsText">commits</string>
     <string name="commitText">commit</string>
     <string name="timelineAddedCommit">%1$s added %2$s %3$s</string>
     <!-- the | is replaced by the label -->
@@ -809,4 +804,24 @@
     <string name="attachment">Attachment</string>
     <string name="attachments">Attachments</string>
     <string name="attachmentsSaveError">An issue was created but cannot process attachments at this time. Check the server logs for more details.</string>
+    <string name="search_matches_found">%1$d matches found</string>
+    <string name="search_no_matches">No matches found</string>
+    <string name="heatmap_contribution">%1$d contributions on %2$s</string>
+    <string name="im_mentioned">I\'m mentioned</string>
+    <string name="dependencies">Dependencies</string>
+    <string name="no_dependencies_set">No dependencies set</string>
+    <string name="dependency_removed">Dependency removed</string>
+    <string name="dependency_removal_failed">Failed to remove dependency</string>
+    <string name="dependency_added">Dependency added</string>
+    <string name="dependency_add_failed">Failed to add dependency</string>
+    <string name="search_failed">Search failed</string>
+    <string name="no_dependency_search_results">No matching results found</string>
+    <string name="tracked_time">Tracked Time</string>
+    <string name="no_tracked_time">No time tracked yet</string>
+    <string name="total_time">Total: %1$dh %2$dm %3$ds</string>
+    <string name="enter_time">Please enter some time</string>
+    <string name="time_added">Time added</string>
+    <string name="time_removed">Time removed</string>
+    <string name="time_add_failed">Failed to add time</string>
+    <string name="time_delete_failed">Failed to delete time</string>
 </resources>

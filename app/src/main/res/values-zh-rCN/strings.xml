@@ -9,7 +9,6 @@
     <string name="navOrg">组织</string>
     <string name="navAbout">关于</string>
     <string name="navRate">五星好评！</string>
-    <string name="navLogout">退出</string>
     <string name="navAdministration">实例管理</string>
     <string name="navMyIssues">我的问题</string>
     <string name="navMostVisited">访问最多的代码库</string>
@@ -58,7 +57,6 @@
     <string name="navigationDrawerOpen">打开导航栏</string>
     <string name="navigationDrawerClose">关闭导航栏</string>
     <string name="protocol">协议</string>
-    <string name="urlInfoTooltip">1- 选择正确的协议（https 或 http）。\n2- 输入实例网址，例如：try.gitea.io。\n3- 如果您已为您的账户启用了两步验证（2FA），请在OTP代码字段中输入验证码。\n4- 对于 HTTP basic auth，请在URL字段中使用 USERNAME@DOMAIN.COM。</string>
     <string name="malformedUrl">无法连接到主机。请检查您的 URL 或端口是否有任何错误</string>
     <string name="protocolError">除非您正在本地网络上测试，否则不建议使用 HTTP 协议</string>
     <string name="malformedJson">收到格式错误的 JSON 。服务器响应不成功</string>
@@ -116,6 +114,7 @@
     <string name="commentButtonText">评论</string>
     <string name="commentEmptyError">请输入您的评论</string>
     <string name="commentSuccess">评论已发表</string>
+    <string name="created_by_me">Created by Me</string>
     <string name="featureDeprecated">该功能今后将被移除</string>
     <string name="generalImgContentText">图片</string>
     <string name="commitAuthor">提交作者： %1$s</string>
@@ -179,10 +178,6 @@
     <string name="clearCacheSelectionHeaderText">清除缓存</string>
     <string name="clearCacheDialogHeader">清除缓存?</string>
     <string name="clearCacheDialogMessage">这将删除所有缓存数据，包括文件和图像。\n\n继续删除？</string>
-    <string name="draftsHeader">草稿</string>
-    <string name="draftsHintText">评论草稿</string>
-    <string name="settingsEnableCommentsDeletionText">启用草稿删除</string>
-    <string name="settingsEnableCommentsDeletionHintText">发表评论时删除评论草稿</string>
     <string name="settingsGeneralHeader">常规​​​​​</string>
     <string name="generalHintText">主屏幕，崩溃报告，自定义标签</string>
     <string name="generalDeepLinkDefaultScreen">默认链接处理程序</string>
@@ -225,7 +220,7 @@
     <string name="labelDeleteText">标签已删除</string>
     <string name="selectBranchError">选择用于发行的分支</string>
     <string name="alertDialogTokenRevokedTitle">授权错误</string>
-    <string name="alertDialogTokenRevokedMessage">看来访问令牌被吊销，或者您不被允许查看这些内容。\n\n如果令牌被吊销，请注销并重新登录</string>
+    <string name="alertDialogTokenRevokedMessage">It seems that the Access Token is revoked OR you are not allowed to see these contents.\n\nIn case of revoked Token, please add the account again</string>
     <string name="labelDeleteMessage">您真的想要删除此标签吗？</string>
     <!-- org tabbed layout str -->
     <string name="orgTabTeams">团队</string>
@@ -362,9 +357,6 @@
     <string name="deleteReleaseConfirmation">您真想删除此发布吗？</string>
     <string name="releaseDeleted">版本发布已删除</string>
     <!-- release -->
-    <string name="loginOTPTypeError">OTP 代码应该是数字。</string>
-    <string name="loginOTP">OTP 代码(可选)</string>
-    <string name="otpMessage">如果启用了双因素认证，请输入otp 代码</string>
     <string name="openWebRepo">在浏览器中打开</string>
     <string name="repoStargazersInMenu">已收藏</string>
     <string name="repoWatchersInMenu">已关注</string>
@@ -390,6 +382,14 @@
     <string name="newFileRequiredFields">需要文件名、内容和提交消息等字段</string>
     <string name="newFileEmptyBranchMessage">留空以推送到默认分支</string>
     <string name="newFileRequiredFieldNewBranchName">如果未选择当前分支，新分支名称不能为空</string>
+    <string name="create_branch_empty_fields">Branch name and ref are required</string>
+    <string name="branch_ref">Reference (Branch/Commit)</string>
+    <string name="branch_created">Branch created successfully</string>
+    <string name="branch_error_archive_mirror">Cannot create branch: Repository is archived or a mirror</string>
+    <string name="branch_error_ref_not_found">Reference does not exist</string>
+    <string name="branch_error_exists">Branch %1$s already exists</string>
+    <string name="branch_error_repo_locked">Repository is locked</string>
+    <string name="create_branch">Create Branch</string>
     <string name="strFilter">筛选器</string>
     <string name="strMarkdown">Markdown</string>
     <string name="copyIssueUrl">复制问题 URL</string>
@@ -460,6 +460,9 @@
     <string name="unpin">取消置顶</string>
     <string name="branch">Branch</string>
     <string name="branches">Branches</string>
+    <string name="timeline">Timeline</string>
+    <string name="hours">Hours</string>
+    <string name="minutes">Minutes</string>
     <!-- generic copy -->
     <string name="exploreUsers">探索用户</string>
     <string name="exploreIssues">探索问题</string>
@@ -468,12 +471,10 @@
     <string name="unStarRepositorySuccess">从星标列表中删除仓库</string>
     <string name="watchRepositorySuccess">仓库已添加到关注列表</string>
     <string name="unWatchRepositorySuccess">仓库已从关注列表中删除</string>
-    <string name="titleDrafts">草稿</string>
-    <string name="versionUnsupportedOld">检测到不支持的 Gitea 旧版本 (%1$s)。请更新到最新稳定版。如果您继续，某些功能可能无法正常运行。</string>
-    <string name="versionUnsupportedNew">检测到新的 Gitea 版本！请更新 GitNex！</string>
-    <string name="versionUnknown">未检测到Gitea！</string>
-    <string name="versionAlertDialogHeader">不支持的 Gitea 版本</string>
-    <string name="loginViaPassword">基本认证</string>
+    <string name="versionUnsupportedOld">Unsupported old version(%1$s) of the server detected. Please update to latest stable version. If you continue, some features may not work.</string>
+    <string name="versionUnsupportedNew">New server version detected! Please UPDATE GitNex!</string>
+    <string name="versionUnknown">No server detected!</string>
+    <string name="versionAlertDialogHeader">Unsupported Version of server</string>
     <string name="unauthorizedApiError">令牌可能已失效，请检查后重试</string>
     <string name="loginTokenError">令牌是必需的。</string>
     <string name="prDeletedFork">已删除分叉</string>
@@ -551,12 +552,6 @@
     <string name="crashMessage">鼓励在项目存储库中新开一个 issue，并说明如何重现这个 bug。这样更让调试和修复变得比较容易。\n\n点击 OK 按钮，通过电子邮件发送崩溃报告。可以在电子邮件中添加其他内容。\n谢谢！</string>
     <string name="forceLogoutDialogHeader">请重新登录</string>
     <string name="forceLogoutDialogDescription">由于应用内部功能发生了一些重大变化，我们要求您重新登录。这些变化使我们能够使应用程序在未来更具灵活性。\n\n感谢您的耐心，对给您带来的不便我们深表歉意</string>
-    <string name="deleteAllDrafts">删除所有草稿</string>
-    <string name="draftsListEmpty">未找到草稿</string>
-    <string name="draftsDeleteSuccess">已成功删除草稿</string>
-    <string name="draftsSingleDeleteSuccess">草稿已成功删除</string>
-    <string name="deleteAllDraftsDialogMessage">这将删除此帐户的所有草稿。 \n\n继续删除？</string>
-    <string name="draftSaved">草稿已自动保存。</string>
     <string name="resetMostReposCounter">成功重置计数</string>
     <string name="resetCounterDialogMessage">你要重置存储库 %s 的计数吗？</string>
     <string name="resetCounterAllDialogMessage">这会重置此账户存储库的所有计数</string>
@@ -653,6 +648,7 @@
     <string name="prClosed">拉取请求已关闭</string>
     <string name="prReopened">拉取请求已重新打开</string>
     <string name="prMergeInfo">合并请求信息</string>
+    <string name="pr_info">%1$s wants to merge branch %2$s into %3$s</string>
     <string name="accountDoesNotExist">似乎应用程序中并不存在 URI %1$s 的账户。您可以通过点击 “添加新账户” 按钮来添加一个。</string>
     <string name="launchApp">前往应用</string>
     <string name="noActionText">GitNex 无法处理请求的资源。您可以在项目仓库中提交工单以帮助改进，请提供当前任务的详细信息。现在只需从下面的按钮启动一个默认屏幕; 它可以通过设置进行更改。</string>
@@ -695,7 +691,6 @@
     <string name="tagDeleteError">无法直接删除附加到发布的标签</string>
     <string name="useCustomTabs">使用自定义标签</string>
     <string name="browserOpenFailed">未找到打开此链接的程序。大多数浏览器不支持 SSH URL 及在 http:// 或 https:// 前另有前缀的 URL</string>
-    <string name="logInAgain">再次登录</string>
     <string name="notLoggedIn">%s \u25CF 未登录</string>
     <string name="followSystem">跟随系统 (浅色 / 深色)</string>
     <string name="followSystemBlack">跟随系统 (浅色/漆黑)</string>
@@ -732,7 +727,7 @@
     <string name="insertNote">插入备注</string>
     <string name="noNotes">未找到备注</string>
     <!-- timeline -->
-    <string name="commitsText">提交</string>
+    <string name="commitsText">commits</string>
     <string name="commitText">提交</string>
     <string name="timelineAddedCommit">%1$s 添加了 %2$s %3$s</string>
     <!-- the | is replaced by the label -->
@@ -809,4 +804,24 @@
     <string name="attachment">附件</string>
     <string name="attachments">附件</string>
     <string name="attachmentsSaveError">已创建工单，但此时无法处理附件。请检查服务器日志以获得更多详细信息。</string>
+    <string name="search_matches_found">%1$d matches found</string>
+    <string name="search_no_matches">No matches found</string>
+    <string name="heatmap_contribution">%1$d contributions on %2$s</string>
+    <string name="im_mentioned">I\'m mentioned</string>
+    <string name="dependencies">Dependencies</string>
+    <string name="no_dependencies_set">No dependencies set</string>
+    <string name="dependency_removed">Dependency removed</string>
+    <string name="dependency_removal_failed">Failed to remove dependency</string>
+    <string name="dependency_added">Dependency added</string>
+    <string name="dependency_add_failed">Failed to add dependency</string>
+    <string name="search_failed">Search failed</string>
+    <string name="no_dependency_search_results">No matching results found</string>
+    <string name="tracked_time">Tracked Time</string>
+    <string name="no_tracked_time">No time tracked yet</string>
+    <string name="total_time">Total: %1$dh %2$dm %3$ds</string>
+    <string name="enter_time">Please enter some time</string>
+    <string name="time_added">Time added</string>
+    <string name="time_removed">Time removed</string>
+    <string name="time_add_failed">Failed to add time</string>
+    <string name="time_delete_failed">Failed to delete time</string>
 </resources>

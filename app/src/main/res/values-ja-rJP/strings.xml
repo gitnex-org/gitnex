@@ -9,7 +9,6 @@
     <string name="navOrg">組織</string>
     <string name="navAbout">バージョン情報</string>
     <string name="navRate">GitNexを評価する</string>
-    <string name="navLogout">ログアウト</string>
     <string name="navAdministration">Instance Administration</string>
     <string name="navMyIssues">自分の課題</string>
     <string name="navMostVisited">訪問者の多いリポジトリ</string>
@@ -58,7 +57,6 @@
     <string name="navigationDrawerOpen">ナビゲーションドロワーを開く</string>
     <string name="navigationDrawerClose">ナビゲーションドロワーを閉じる</string>
     <string name="protocol">プロトコル</string>
-    <string name="urlInfoTooltip">1- Choose the correct protocol(https or http). \n2- Enter instance url e.g: try.gitea.io. \n3- If you have enabled 2FA for your account, enter the code in the OTP Code field. \n4- For HTTP basic auth use USERNAME@DOMAIN.COM in the URL field.</string>
     <string name="malformedUrl">ホストに接続できませんでした。URLまたはポートにエラーがないか確認してください</string>
     <string name="protocolError">ローカルネットワークでテストする場合を除き、HTTPプロトコルを使用することは推奨されません。</string>
     <string name="malformedJson">不正なJSONを受信しました。サーバー応答が失敗しました</string>
@@ -116,6 +114,7 @@
     <string name="commentButtonText">コメント</string>
     <string name="commentEmptyError">コメントを記入してください</string>
     <string name="commentSuccess">投稿されたコメント</string>
+    <string name="created_by_me">Created by Me</string>
     <string name="featureDeprecated">この機能は将来削除されます。</string>
     <string name="generalImgContentText">Image</string>
     <string name="commitAuthor">コミット作成者:%1$s</string>
@@ -179,10 +178,6 @@
     <string name="clearCacheSelectionHeaderText">キャッシュをクリア</string>
     <string name="clearCacheDialogHeader">キャッシュをクリアしますか?</string>
     <string name="clearCacheDialogMessage">これにより、ファイルとイメージを含むすべてのキャッシュデータが削除されます。\n\n削除を続行しますか?</string>
-    <string name="draftsHeader">下書き</string>
-    <string name="draftsHintText">コメントを下書き</string>
-    <string name="settingsEnableCommentsDeletionText">下書き削除の有効化</string>
-    <string name="settingsEnableCommentsDeletionHintText">コメントが投稿されたときにコメントドラフトを削除する</string>
     <string name="settingsGeneralHeader">一般</string>
     <string name="generalHintText">Home screen, crash reports, custom tabs</string>
     <string name="generalDeepLinkDefaultScreen">既定のリンクハンドラ</string>
@@ -225,7 +220,7 @@
     <string name="labelDeleteText">ラベルが削除されました</string>
     <string name="selectBranchError">リリースするブランチを選択してください</string>
     <string name="alertDialogTokenRevokedTitle">認可エラー</string>
-    <string name="alertDialogTokenRevokedMessage">アクセストークンが無効になっているか、これらのコンテンツの表示が許可されていないようです。\n\nトークンが無効になっている場合は、ログアウトして再度ログインしてください。</string>
+    <string name="alertDialogTokenRevokedMessage">It seems that the Access Token is revoked OR you are not allowed to see these contents.\n\nIn case of revoked Token, please add the account again</string>
     <string name="labelDeleteMessage">本当にこのラベルを削除しますか?</string>
     <!-- org tabbed layout str -->
     <string name="orgTabTeams">チーム</string>
@@ -362,9 +357,6 @@
     <string name="deleteReleaseConfirmation">本当にこのリリースを削除しますか?</string>
     <string name="releaseDeleted">リリースは削除されました</string>
     <!-- release -->
-    <string name="loginOTPTypeError">OTPコードは数字でなければなりません</string>
-    <string name="loginOTP">OTPコード(オプション)</string>
-    <string name="otpMessage">2 FAが有効な場合は、OTPコードを入力します。</string>
     <string name="openWebRepo">ブラウザで開く</string>
     <string name="repoStargazersInMenu">星の数</string>
     <string name="repoWatchersInMenu">ウオッチの数</string>
@@ -390,6 +382,14 @@
     <string name="newFileRequiredFields">ファイル名、内容、コミットメッセージなどのフィールドが必要です</string>
     <string name="newFileEmptyBranchMessage">空白のままにプッシュする場合は空白のままにします</string>
     <string name="newFileRequiredFieldNewBranchName">現在のブランが選択されていない場合、新しいブランチ名を空にすることはできません</string>
+    <string name="create_branch_empty_fields">Branch name and ref are required</string>
+    <string name="branch_ref">Reference (Branch/Commit)</string>
+    <string name="branch_created">Branch created successfully</string>
+    <string name="branch_error_archive_mirror">Cannot create branch: Repository is archived or a mirror</string>
+    <string name="branch_error_ref_not_found">Reference does not exist</string>
+    <string name="branch_error_exists">Branch %1$s already exists</string>
+    <string name="branch_error_repo_locked">Repository is locked</string>
+    <string name="create_branch">Create Branch</string>
     <string name="strFilter">フィルタ</string>
     <string name="strMarkdown">Markdown 形式</string>
     <string name="copyIssueUrl">課題URLのコピー</string>
@@ -460,6 +460,9 @@
     <string name="unpin">Unpin</string>
     <string name="branch">Branch</string>
     <string name="branches">Branches</string>
+    <string name="timeline">Timeline</string>
+    <string name="hours">Hours</string>
+    <string name="minutes">Minutes</string>
     <!-- generic copy -->
     <string name="exploreUsers">ユーザーの表示</string>
     <string name="exploreIssues">課題の表示</string>
@@ -468,12 +471,10 @@
     <string name="unStarRepositorySuccess">スター付きリストからリポジトリが削除されました</string>
     <string name="watchRepositorySuccess">ウオッチリストにリポジトリが追加されました</string>
     <string name="unWatchRepositorySuccess">リポジトリがウオッチリストから削除されました</string>
-    <string name="titleDrafts">下書き</string>
-    <string name="versionUnsupportedOld">サポートされていないGiteaの古いバージョン(%1$s)が検出されました。最新の安定バージョンに更新してください。続行すると、一部の機能が動作しない場合があります。</string>
-    <string name="versionUnsupportedNew">新しいGiteaバージョンが検出されました!GitNex最新情報をお知らせください!</string>
-    <string name="versionUnknown">Giteaが検出されませんでした!</string>
-    <string name="versionAlertDialogHeader">サポートされていないバージョンのGitea</string>
-    <string name="loginViaPassword">Basic Auth</string>
+    <string name="versionUnsupportedOld">Unsupported old version(%1$s) of the server detected. Please update to latest stable version. If you continue, some features may not work.</string>
+    <string name="versionUnsupportedNew">New server version detected! Please UPDATE GitNex!</string>
+    <string name="versionUnknown">No server detected!</string>
+    <string name="versionAlertDialogHeader">Unsupported Version of server</string>
     <string name="unauthorizedApiError">インスタンスから認証エラーが返されました。資格情報を確認して、再試行してください</string>
     <string name="loginTokenError">トークンが必要です</string>
     <string name="prDeletedFork">削除されたフォーク</string>
@@ -551,12 +552,6 @@
     <string name="crashMessage">このバグを再現する方法について、プロジェクトのリポジトリで課題を作成して報告をお願いします。この方法で問題をデバッグして修正する方が簡単です。\n\n[OK]ボタンをタップすると、クラッシュレポートが電子メールで送信されます。メールにコンテンツを追加することもできます。\nありがとうございます!</string>
     <string name="forceLogoutDialogHeader">再度サインインしてください</string>
     <string name="forceLogoutDialogDescription">アプリの内部機能に関するいくつかの大きな変更のため、再度ログインする必要があります。これらの変更により、将来的にアプリをより柔軟にすることが可能になりました。\n\nご迷惑をおかけして申し訳ありません。</string>
-    <string name="deleteAllDrafts">すべての下書きを削除</string>
-    <string name="draftsListEmpty">下書きが見つかりません</string>
-    <string name="draftsDeleteSuccess">下書きは正常に削除されました</string>
-    <string name="draftsSingleDeleteSuccess">下書きは正常に削除されました</string>
-    <string name="deleteAllDraftsDialogMessage">このアカウントの下書きはすべて削除されます。\n\n削除を続行しますか?</string>
-    <string name="draftSaved">ドラフトは自動的に保存されました。</string>
     <string name="resetMostReposCounter">カウンタが正常にリセットされました</string>
     <string name="resetCounterDialogMessage">リポジトリ%sのカウンタをリセットしますか?</string>
     <string name="resetCounterAllDialogMessage">これにより、このアカウントリポジトリのすべてのカウンタがリセットされます。</string>
@@ -653,6 +648,7 @@
     <string name="prClosed">プルリクエストがクローズされました</string>
     <string name="prReopened">プルリクエストが再オープンされました</string>
     <string name="prMergeInfo">プルリクエスト情報</string>
+    <string name="pr_info">%1$s wants to merge branch %2$s into %3$s</string>
     <string name="accountDoesNotExist">It seems that the account for URI %1$s does not exist in the app. You can add one by tapping on the Add New Account button.</string>
     <string name="launchApp">アプリケーションに移動</string>
     <string name="noActionText">GitNex cannot handle the requested resource. You can open an issue at the project repository as an improvement, providing details of the work. Just launch a default screen for now from the buttons below; it can be changed from settings.</string>
@@ -695,7 +691,6 @@
     <string name="tagDeleteError">リリースに添付されたタグは直接削除できません</string>
     <string name="useCustomTabs">カスタムタブを使用する</string>
     <string name="browserOpenFailed">このリンクを開くアプリケーションが見つかりませんでした。SSH URL、およびhttp://またはhttps://以外から始まるURLは、ほとんどのブラウザでサポートされていません。</string>
-    <string name="logInAgain">再度ログインする</string>
     <string name="notLoggedIn">%s\u25CFはログインしていません</string>
     <string name="followSystem">システム設定に従う(ライト/ダーク)</string>
     <string name="followSystemBlack">システム設定に従う(ライト/ピッチブラック)</string>
@@ -732,7 +727,7 @@
     <string name="insertNote">Insert a Note</string>
     <string name="noNotes">No notes found</string>
     <!-- timeline -->
-    <string name="commitsText">commit</string>
+    <string name="commitsText">commits</string>
     <string name="commitText">コミット</string>
     <string name="timelineAddedCommit">%1$s が %2$s %3$sを追加</string>
     <!-- the | is replaced by the label -->
@@ -809,4 +804,24 @@
     <string name="attachment">Attachment</string>
     <string name="attachments">Attachments</string>
     <string name="attachmentsSaveError">An issue was created but cannot process attachments at this time. Check the server logs for more details.</string>
+    <string name="search_matches_found">%1$d matches found</string>
+    <string name="search_no_matches">No matches found</string>
+    <string name="heatmap_contribution">%1$d contributions on %2$s</string>
+    <string name="im_mentioned">I\'m mentioned</string>
+    <string name="dependencies">Dependencies</string>
+    <string name="no_dependencies_set">No dependencies set</string>
+    <string name="dependency_removed">Dependency removed</string>
+    <string name="dependency_removal_failed">Failed to remove dependency</string>
+    <string name="dependency_added">Dependency added</string>
+    <string name="dependency_add_failed">Failed to add dependency</string>
+    <string name="search_failed">Search failed</string>
+    <string name="no_dependency_search_results">No matching results found</string>
+    <string name="tracked_time">Tracked Time</string>
+    <string name="no_tracked_time">No time tracked yet</string>
+    <string name="total_time">Total: %1$dh %2$dm %3$ds</string>
+    <string name="enter_time">Please enter some time</string>
+    <string name="time_added">Time added</string>
+    <string name="time_removed">Time removed</string>
+    <string name="time_add_failed">Failed to add time</string>
+    <string name="time_delete_failed">Failed to delete time</string>
 </resources>

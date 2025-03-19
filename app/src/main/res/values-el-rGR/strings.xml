@@ -9,7 +9,6 @@
     <string name="navOrg">Οργανισμοί</string>
     <string name="navAbout">Σχετικά με</string>
     <string name="navRate">Βαθμολογήστε το GitNex</string>
-    <string name="navLogout">Αποσύνδεση</string>
     <string name="navAdministration">Instance Administration</string>
     <string name="navMyIssues">Τα ζητήματά μου</string>
     <string name="navMostVisited">Συχνά επισκεπτόμενα αποθετήρια</string>
@@ -58,7 +57,6 @@
     <string name="navigationDrawerOpen">Άνοιγμα μενού περιήγησης</string>
     <string name="navigationDrawerClose">Κλείσιμο μενού πλοήγησης</string>
     <string name="protocol">Πρωτόκολλο</string>
-    <string name="urlInfoTooltip">1- Choose the correct protocol(https or http). \n2- Enter instance url e.g: try.gitea.io. \n3- If you have enabled 2FA for your account, enter the code in the OTP Code field. \n4- For HTTP basic auth use USERNAME@DOMAIN.COM in the URL field.</string>
     <string name="malformedUrl">Couldn\'t connect to host. Please check your URL or port for any errors</string>
     <string name="protocolError">It is not recommended to use HTTP protocol unless you are testing on local network</string>
     <string name="malformedJson">Malformed JSON was received. Server response was not successful</string>
@@ -116,6 +114,7 @@
     <string name="commentButtonText">Σχόλιο</string>
     <string name="commentEmptyError">Παρακαλούμε γράψτε το σχόλιό σας</string>
     <string name="commentSuccess">Το σχόλιο καταχωρήθηκε</string>
+    <string name="created_by_me">Created by Me</string>
     <string name="featureDeprecated">Αυτή η δυνατότητα θα εφαρμοστεί στο μέλλον</string>
     <string name="generalImgContentText">Εικόνα</string>
     <string name="commitAuthor">Συγγραφέας υποβολής: %1$s</string>
@@ -179,10 +178,6 @@
     <string name="clearCacheSelectionHeaderText">Clear Cache</string>
     <string name="clearCacheDialogHeader">Clear Cache?</string>
     <string name="clearCacheDialogMessage">This will delete all the cache data including files and images.\n\nProceed with deletion?</string>
-    <string name="draftsHeader">Drafts</string>
-    <string name="draftsHintText">Comments draft</string>
-    <string name="settingsEnableCommentsDeletionText">Enable Drafts Deletion</string>
-    <string name="settingsEnableCommentsDeletionHintText">Delete comment draft when comment is posted</string>
     <string name="settingsGeneralHeader">General</string>
     <string name="generalHintText">Home screen, crash reports, custom tabs</string>
     <string name="generalDeepLinkDefaultScreen">Default Link Handler</string>
@@ -225,7 +220,7 @@
     <string name="labelDeleteText">Label deleted</string>
     <string name="selectBranchError">Select a branch for release</string>
     <string name="alertDialogTokenRevokedTitle">Authorization Error</string>
-    <string name="alertDialogTokenRevokedMessage">It seems that the Access Token is revoked OR your are not allowed to see these contents.\n\nIn case of revoked Token, please logout and login again</string>
+    <string name="alertDialogTokenRevokedMessage">It seems that the Access Token is revoked OR you are not allowed to see these contents.\n\nIn case of revoked Token, please add the account again</string>
     <string name="labelDeleteMessage">Do you really want to delete this label?</string>
     <!-- org tabbed layout str -->
     <string name="orgTabTeams">Teams</string>
@@ -362,9 +357,6 @@
     <string name="deleteReleaseConfirmation">Do you really want to delete this release?</string>
     <string name="releaseDeleted">Release deleted</string>
     <!-- release -->
-    <string name="loginOTPTypeError">Ο κωδικός OTP θα πρέπει να αποτελείται από αριθμούς</string>
-    <string name="loginOTP">Κωδικός OTP (Προαιρετικό)</string>
-    <string name="otpMessage">Εισαγωγή otp κωδικού αν το 2FA είναι ενεργοποιημένο</string>
     <string name="openWebRepo">Άνοιγμα σε Πρόγραμμα περιήγησης</string>
     <string name="repoStargazersInMenu">Stargazers</string>
     <string name="repoWatchersInMenu">Θεατές</string>
@@ -390,6 +382,14 @@
     <string name="newFileRequiredFields">Πεδία όπως όνομα αρχείου, περιεχόμενο και commit μήνυμα απαιτούνται</string>
     <string name="newFileEmptyBranchMessage">Αφήστε κενό για push στο προεπιλεγμένο branch</string>
     <string name="newFileRequiredFieldNewBranchName">Το νέο όνομα κλάδου δεν μπορεί να είναι κενό να ο παρόν κλάδος δεν είναι επιλεγμένος</string>
+    <string name="create_branch_empty_fields">Branch name and ref are required</string>
+    <string name="branch_ref">Reference (Branch/Commit)</string>
+    <string name="branch_created">Branch created successfully</string>
+    <string name="branch_error_archive_mirror">Cannot create branch: Repository is archived or a mirror</string>
+    <string name="branch_error_ref_not_found">Reference does not exist</string>
+    <string name="branch_error_exists">Branch %1$s already exists</string>
+    <string name="branch_error_repo_locked">Repository is locked</string>
+    <string name="create_branch">Create Branch</string>
     <string name="strFilter">Φίλτρο</string>
     <string name="strMarkdown">Markdown</string>
     <string name="copyIssueUrl">Αντιγραφή URL ζητήματος</string>
@@ -460,6 +460,9 @@
     <string name="unpin">Unpin</string>
     <string name="branch">Branch</string>
     <string name="branches">Branches</string>
+    <string name="timeline">Timeline</string>
+    <string name="hours">Hours</string>
+    <string name="minutes">Minutes</string>
     <!-- generic copy -->
     <string name="exploreUsers">Explore users</string>
     <string name="exploreIssues">Explore issues</string>
@@ -468,12 +471,10 @@
     <string name="unStarRepositorySuccess">Repository removed from starred list</string>
     <string name="watchRepositorySuccess">Repository added to watch list</string>
     <string name="unWatchRepositorySuccess">Repository removed from watch list</string>
-    <string name="titleDrafts">Drafts</string>
-    <string name="versionUnsupportedOld">Unsupported old version(%1$s) of Gitea detected. Please update to latest stable version. If you continue, some features may not work.</string>
-    <string name="versionUnsupportedNew">New Gitea version detected! Please UPDATE GitNex!</string>
-    <string name="versionUnknown">No Gitea detected!</string>
-    <string name="versionAlertDialogHeader">Unsupported Version of Gitea</string>
-    <string name="loginViaPassword">Basic Auth</string>
+    <string name="versionUnsupportedOld">Unsupported old version(%1$s) of the server detected. Please update to latest stable version. If you continue, some features may not work.</string>
+    <string name="versionUnsupportedNew">New server version detected! Please UPDATE GitNex!</string>
+    <string name="versionUnknown">No server detected!</string>
+    <string name="versionAlertDialogHeader">Unsupported Version of server</string>
     <string name="unauthorizedApiError">Instance has returned an error - Unauthorized. Check your credentials and try again</string>
     <string name="loginTokenError">Το Token είναι υποχρεωτικό</string>
     <string name="prDeletedFork">Διαγραφή Fork</string>
@@ -551,12 +552,6 @@
     <string name="crashMessage">It is encouraged to open an issue at the project repository with how to reproduce this bug. It is easier to debug and fix the problem that way.\n\nTap the OK button to send the crash report by email instead. Additional content could be added in the email.\nThank you!</string>
     <string name="forceLogoutDialogHeader">Please sign in again</string>
     <string name="forceLogoutDialogDescription">Due to some major changes regarding the internal functioning of the app, we require you to login again. These changes allow us to make the app more flexible in the future.\n\nThank you for your patience and sorry for the inconvenience.</string>
-    <string name="deleteAllDrafts">Delete All Drafts</string>
-    <string name="draftsListEmpty">No drafts found</string>
-    <string name="draftsDeleteSuccess">Drafts deleted successfully</string>
-    <string name="draftsSingleDeleteSuccess">Draft deleted successfully</string>
-    <string name="deleteAllDraftsDialogMessage">This will delete all the drafts for this account. \n\nProceed with deletion?</string>
-    <string name="draftSaved">Draft was saved automatically.</string>
     <string name="resetMostReposCounter">Counter is reset successfully</string>
     <string name="resetCounterDialogMessage">Do you want to reset counter for repository %s?</string>
     <string name="resetCounterAllDialogMessage">This will reset all the counters for this account repositories.</string>
@@ -654,6 +649,7 @@
     <string name="prClosed">Pull Request closed</string>
     <string name="prReopened">Pull Request reopened</string>
     <string name="prMergeInfo">Pull Request Info</string>
+    <string name="pr_info">%1$s wants to merge branch %2$s into %3$s</string>
     <string name="accountDoesNotExist">It seems that the account for URI %1$s does not exist in the app. You can add one by tapping on the Add New Account button.</string>
     <string name="launchApp">Go to App</string>
     <string name="noActionText">GitNex cannot handle the requested resource. You can open an issue at the project repository as an improvement, providing details of the work. Just launch a default screen for now from the buttons below; it can be changed from settings.</string>
@@ -696,7 +692,6 @@
     <string name="tagDeleteError">A tag attached to a release cannot be deleted directly</string>
     <string name="useCustomTabs">Use Custom Tabs</string>
     <string name="browserOpenFailed">No application found to open this link. SSH URLs and URLs with another prefix the http:// or https:// are not supported by most browser</string>
-    <string name="logInAgain">Log in again</string>
     <string name="notLoggedIn">%s \u25CF not logged in</string>
     <string name="followSystem">Follow system (Light/Dark)</string>
     <string name="followSystemBlack">Follow system (Light/Pitch Black)</string>
@@ -734,7 +729,7 @@
     <string name="insertNote">Insert a Note</string>
     <string name="noNotes">No notes found</string>
     <!-- timeline -->
-    <string name="commitsText">commit</string>
+    <string name="commitsText">commits</string>
     <string name="commitText">commit</string>
     <string name="timelineAddedCommit">%1$s added %2$s %3$s</string>
     <!-- the | is replaced by the label -->
@@ -811,4 +806,24 @@
     <string name="attachment">Attachment</string>
     <string name="attachments">Attachments</string>
     <string name="attachmentsSaveError">An issue was created but cannot process attachments at this time. Check the server logs for more details.</string>
+    <string name="search_matches_found">%1$d matches found</string>
+    <string name="search_no_matches">No matches found</string>
+    <string name="heatmap_contribution">%1$d contributions on %2$s</string>
+    <string name="im_mentioned">I\'m mentioned</string>
+    <string name="dependencies">Dependencies</string>
+    <string name="no_dependencies_set">No dependencies set</string>
+    <string name="dependency_removed">Dependency removed</string>
+    <string name="dependency_removal_failed">Failed to remove dependency</string>
+    <string name="dependency_added">Dependency added</string>
+    <string name="dependency_add_failed">Failed to add dependency</string>
+    <string name="search_failed">Search failed</string>
+    <string name="no_dependency_search_results">No matching results found</string>
+    <string name="tracked_time">Tracked Time</string>
+    <string name="no_tracked_time">No time tracked yet</string>
+    <string name="total_time">Total: %1$dh %2$dm %3$ds</string>
+    <string name="enter_time">Please enter some time</string>
+    <string name="time_added">Time added</string>
+    <string name="time_removed">Time removed</string>
+    <string name="time_add_failed">Failed to add time</string>
+    <string name="time_delete_failed">Failed to delete time</string>
 </resources>

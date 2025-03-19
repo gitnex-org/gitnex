@@ -9,7 +9,6 @@
     <string name="navOrg">Организации</string>
     <string name="navAbout">О программе</string>
     <string name="navRate">Оценить GitNex</string>
-    <string name="navLogout">Выход</string>
     <string name="navAdministration">Администрирование экземпляра</string>
     <string name="navMyIssues">Мои вопросы</string>
     <string name="navMostVisited">Самые посещаемые репозитории</string>
@@ -58,7 +57,6 @@
     <string name="navigationDrawerOpen">Открыть навигацию</string>
     <string name="navigationDrawerClose">Закрыть навигацию</string>
     <string name="protocol">Протокол</string>
-    <string name="urlInfoTooltip">1. Выберите протокол (https или http) \n2. Укажите URL Gitea, например: try.gitea.io \n3. Если для учетной записи включена 2FA, введите код OTP в соответствующее поле. \n4. Для базовой аутентификации HTTP укажите USERNAME@DOMAIN.COM в поле URL.</string>
     <string name="malformedUrl">Не удалось подключиться к хосту. Пожалуйста, проверьте URL-адрес или порт на наличие ошибок</string>
     <string name="protocolError">Не рекомендуется использовать протокол HTTP, если вы не тестируете в локальной сети</string>
     <string name="malformedJson">Получен искаженный JSON. Ответ сервера не был успешным</string>
@@ -116,6 +114,7 @@
     <string name="commentButtonText">Комментарий</string>
     <string name="commentEmptyError">Введите свой комментарий.</string>
     <string name="commentSuccess">Комментарий отправлен!</string>
+    <string name="created_by_me">Created by Me</string>
     <string name="featureDeprecated">Эта функция будет удалена в будущем</string>
     <string name="generalImgContentText">Изображение</string>
     <string name="commitAuthor">Автор коммита: %1$s</string>
@@ -179,10 +178,6 @@
     <string name="clearCacheSelectionHeaderText">Очистить кэш</string>
     <string name="clearCacheDialogHeader">Очистить кэш?</string>
     <string name="clearCacheDialogMessage">Это удалит все данные, включая файлы и изображения.\n\nПродолжить удаление?</string>
-    <string name="draftsHeader">Черновики</string>
-    <string name="draftsHintText">Черновик комментариев</string>
-    <string name="settingsEnableCommentsDeletionText">Включить удаление черновиков</string>
-    <string name="settingsEnableCommentsDeletionHintText">Удалить черновик комментария при публикации комментария</string>
     <string name="settingsGeneralHeader">Общее</string>
     <string name="generalHintText">Home screen, crash reports, custom tabs</string>
     <string name="generalDeepLinkDefaultScreen">Обработчик ссылок по умолчанию</string>
@@ -225,7 +220,7 @@
     <string name="labelDeleteText">Метка удалена!</string>
     <string name="selectBranchError">Выберите ветку для релиза</string>
     <string name="alertDialogTokenRevokedTitle">Ошибка авторизации</string>
-    <string name="alertDialogTokenRevokedMessage">Похоже, токен доступа отозван, либо вам не разрешено просматривать это содержимое.\n\nВ случае отзыва токена, пожалуйста, выйдите из системы и войдите снова</string>
+    <string name="alertDialogTokenRevokedMessage">It seems that the Access Token is revoked OR you are not allowed to see these contents.\n\nIn case of revoked Token, please add the account again</string>
     <string name="labelDeleteMessage">Вы действительно хотите удалить эту метку?</string>
     <!-- org tabbed layout str -->
     <string name="orgTabTeams">Команды</string>
@@ -362,9 +357,6 @@
     <string name="deleteReleaseConfirmation">Do you really want to delete this release?</string>
     <string name="releaseDeleted">Release deleted</string>
     <!-- release -->
-    <string name="loginOTPTypeError">Код OTP должен состоять из цифр</string>
-    <string name="loginOTP">Код OTP (необязательно)</string>
-    <string name="otpMessage">Введите код OTP, если включена 2FA</string>
     <string name="openWebRepo">Открыть с помощью браузера</string>
     <string name="repoStargazersInMenu">Звездочеты</string>
     <string name="repoWatchersInMenu">Наблюдатели</string>
@@ -390,6 +382,14 @@
     <string name="newFileRequiredFields">Необходимо указать имя файла, содержимое и сообщение коммита</string>
     <string name="newFileEmptyBranchMessage">Оставьте поле пустым, чтобы отправить в ветку по умолчанию</string>
     <string name="newFileRequiredFieldNewBranchName">Имя новой ветки не может быть пустым, если текущая ветка не выбрана</string>
+    <string name="create_branch_empty_fields">Branch name and ref are required</string>
+    <string name="branch_ref">Reference (Branch/Commit)</string>
+    <string name="branch_created">Branch created successfully</string>
+    <string name="branch_error_archive_mirror">Cannot create branch: Repository is archived or a mirror</string>
+    <string name="branch_error_ref_not_found">Reference does not exist</string>
+    <string name="branch_error_exists">Branch %1$s already exists</string>
+    <string name="branch_error_repo_locked">Repository is locked</string>
+    <string name="create_branch">Create Branch</string>
     <string name="strFilter">Фильтр</string>
     <string name="strMarkdown">Markdown</string>
     <string name="copyIssueUrl">Копировать URL задачи</string>
@@ -460,6 +460,9 @@
     <string name="unpin">Открепить</string>
     <string name="branch">Branch</string>
     <string name="branches">Branches</string>
+    <string name="timeline">Timeline</string>
+    <string name="hours">Hours</string>
+    <string name="minutes">Minutes</string>
     <!-- generic copy -->
     <string name="exploreUsers">Обзор пользователей</string>
     <string name="exploreIssues">Обзор задач</string>
@@ -468,12 +471,10 @@
     <string name="unStarRepositorySuccess">Репозиторий удален из списка избранного</string>
     <string name="watchRepositorySuccess">Репозиторий добавлен в список наблюдения</string>
     <string name="unWatchRepositorySuccess">Репозиторий удален из списка наблюдения</string>
-    <string name="titleDrafts">Черновики</string>
-    <string name="versionUnsupportedOld">Unsupported old version(%1$s) of Gitea detected. Please update to latest stable version. If you continue, some features may not work.</string>
-    <string name="versionUnsupportedNew">Обнаружена новая версия Gitea! Пожалуйста, ОБНОВИТЕ GitNex!</string>
-    <string name="versionUnknown">Gitea не обнаружен!</string>
-    <string name="versionAlertDialogHeader">Неподдерживаемая версия Gitea</string>
-    <string name="loginViaPassword">Basic Auth</string>
+    <string name="versionUnsupportedOld">Unsupported old version(%1$s) of the server detected. Please update to latest stable version. If you continue, some features may not work.</string>
+    <string name="versionUnsupportedNew">New server version detected! Please UPDATE GitNex!</string>
+    <string name="versionUnknown">No server detected!</string>
+    <string name="versionAlertDialogHeader">Unsupported Version of server</string>
     <string name="unauthorizedApiError">Экземпляр вернул ошибку - не авторизовано. Проверьте ваши учетные данные и повторите попытку</string>
     <string name="loginTokenError">Требуется токен</string>
     <string name="prDeletedFork">Удалённый Форк</string>
@@ -551,12 +552,6 @@
     <string name="crashMessage">It is encouraged to open an issue at the project repository with how to reproduce this bug. It is easier to debug and fix the problem that way.\n\nTap the OK button to send the crash report by email instead. Additional content could be added in the email.\nThank you!</string>
     <string name="forceLogoutDialogHeader">Пожалуйста, войдите снова</string>
     <string name="forceLogoutDialogDescription">Due to some major changes regarding the internal functioning of the app, we require you to login again. These changes allow us to make the app more flexible in the future.\n\nThank you for your patience and sorry for the inconvenience.</string>
-    <string name="deleteAllDrafts">Удалить все черновики</string>
-    <string name="draftsListEmpty">Черновики не найдены</string>
-    <string name="draftsDeleteSuccess">Черновики успешно удалены</string>
-    <string name="draftsSingleDeleteSuccess">Черновик успешно удален</string>
-    <string name="deleteAllDraftsDialogMessage">Это приведет к удалению всех черновиков для этой учетной записи. \n\nПродолжить удаление?</string>
-    <string name="draftSaved">Черновик сохранен автоматически.</string>
     <string name="resetMostReposCounter">Counter is reset successfully</string>
     <string name="resetCounterDialogMessage">Do you want to reset counter for repository %s?</string>
     <string name="resetCounterAllDialogMessage">This will reset all the counters for this account repositories.</string>
@@ -656,6 +651,7 @@
     <string name="prClosed">Запрос на слияние закрыт</string>
     <string name="prReopened">Запрос на слияние переоткрыт</string>
     <string name="prMergeInfo">Информация о запросе на слияние</string>
+    <string name="pr_info">%1$s wants to merge branch %2$s into %3$s</string>
     <string name="accountDoesNotExist">Похоже, что учётная запись для URI %1$s не существует в приложении. Вы можете добавить её, нажав кнопку «Добавить новую учётную запись».</string>
     <string name="launchApp">Перейти к приложению</string>
     <string name="noActionText">GitNex не может обработать запрошенный ресурс. Вы можете открыть задачу в репозитории проекта в качестве улучшения, предоставив подробную информацию о работе. Просто запустите экран по умолчанию, используя кнопки ниже, его можно изменить в настройках.</string>
@@ -698,7 +694,6 @@
     <string name="tagDeleteError">Метка прикрепленная к выпуску не может быть удалена напрямую</string>
     <string name="useCustomTabs">Использовать пользовательские вкладки</string>
     <string name="browserOpenFailed">Не найдено приложения для открытия этой ссылки. SSH URL и URL с другим префиксом the http:// или https:// не поддерживаются большинством браузеров</string>
-    <string name="logInAgain">Войти заново</string>
     <string name="notLoggedIn">%s \u25CF не вошел в систему</string>
     <string name="followSystem">Как в системе (Светлый/Темный)</string>
     <string name="followSystemBlack">Как в системе (Светлый/Темный)</string>
@@ -738,7 +733,7 @@
     <string name="insertNote">Insert a Note</string>
     <string name="noNotes">No notes found</string>
     <!-- timeline -->
-    <string name="commitsText">commit</string>
+    <string name="commitsText">commits</string>
     <string name="commitText">commit</string>
     <string name="timelineAddedCommit">%1$s added %2$s %3$s</string>
     <!-- the | is replaced by the label -->
@@ -815,4 +810,24 @@
     <string name="attachment">Вложение</string>
     <string name="attachments">Вложения</string>
     <string name="attachmentsSaveError">Проблема была создана, но в настоящее время обработка вложений невозможна. Проверьте журналы сервера для более подробной информации.</string>
+    <string name="search_matches_found">%1$d matches found</string>
+    <string name="search_no_matches">No matches found</string>
+    <string name="heatmap_contribution">%1$d contributions on %2$s</string>
+    <string name="im_mentioned">I\'m mentioned</string>
+    <string name="dependencies">Dependencies</string>
+    <string name="no_dependencies_set">No dependencies set</string>
+    <string name="dependency_removed">Dependency removed</string>
+    <string name="dependency_removal_failed">Failed to remove dependency</string>
+    <string name="dependency_added">Dependency added</string>
+    <string name="dependency_add_failed">Failed to add dependency</string>
+    <string name="search_failed">Search failed</string>
+    <string name="no_dependency_search_results">No matching results found</string>
+    <string name="tracked_time">Tracked Time</string>
+    <string name="no_tracked_time">No time tracked yet</string>
+    <string name="total_time">Total: %1$dh %2$dm %3$ds</string>
+    <string name="enter_time">Please enter some time</string>
+    <string name="time_added">Time added</string>
+    <string name="time_removed">Time removed</string>
+    <string name="time_add_failed">Failed to add time</string>
+    <string name="time_delete_failed">Failed to delete time</string>
 </resources>

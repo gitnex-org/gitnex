@@ -9,7 +9,6 @@
     <string name="navOrg">المنظمات</string>
     <string name="navAbout">عن التطبيق</string>
     <string name="navRate">GitNex معدل</string>
-    <string name="navLogout">تسجيل الخروج</string>
     <string name="navAdministration">إدارة الجلسة</string>
     <string name="navMyIssues">قضاياي</string>
     <string name="navMostVisited">المستودعات الأكثر زيارة</string>
@@ -58,7 +57,6 @@
     <string name="navigationDrawerOpen">فتح درج التنقل</string>
     <string name="navigationDrawerClose">إغلاق درج التنقل</string>
     <string name="protocol">برتوكول</string>
-    <string name="urlInfoTooltip">1- Choose the correct protocol(https or http). \n2- Enter instance url e.g: try.gitea.io. \n3- If you have enabled 2FA for your account, enter the code in the OTP Code field. \n4- For HTTP basic auth use USERNAME@DOMAIN.COM in the URL field.</string>
     <string name="malformedUrl">لا يمكن الاتصال بالخادم. رجاءً تحقق رابطك أو منفذك لأي أخطاء</string>
     <string name="protocolError">لا يُنصح باستخدام بروتوكول HTTP إلا إذا كنت تجرب في شبكة محلية</string>
     <string name="malformedJson">أُستلم JSON غير صحيح. لم تكن استجابة الخادم ناجحة</string>
@@ -117,6 +115,7 @@ Codeberg.org</string>
     <string name="commentButtonText">تعليق</string>
     <string name="commentEmptyError">رجاءً أكتب تعليقك</string>
     <string name="commentSuccess">نُشِر التعليق</string>
+    <string name="created_by_me">Created by Me</string>
     <string name="featureDeprecated">ستُزال هذه الوظيفة في المستقبل</string>
     <string name="generalImgContentText">صورة</string>
     <string name="commitAuthor">صاحب الإيداع: %1$s</string>
@@ -180,10 +179,6 @@ Codeberg.org</string>
     <string name="clearCacheSelectionHeaderText">مسح التخزين المؤقت</string>
     <string name="clearCacheDialogHeader">مسح التخزين المؤقت؟</string>
     <string name="clearCacheDialogMessage">سيحذف هذا كل البيانات المؤقتة متضمنةً الملفات والصور.\n\n هل تريد إكمال الحذف؟</string>
-    <string name="draftsHeader">المسودات</string>
-    <string name="draftsHintText">مسودة التعليقات</string>
-    <string name="settingsEnableCommentsDeletionText">تمكين حذف المسودات</string>
-    <string name="settingsEnableCommentsDeletionHintText">حذف مسودة التعليق عندما يُنشر</string>
     <string name="settingsGeneralHeader">الإعدادات العامّة</string>
     <string name="generalHintText">Home screen, crash reports, custom tabs</string>
     <string name="generalDeepLinkDefaultScreen">معالج الرابط الافتراضي</string>
@@ -226,7 +221,7 @@ Codeberg.org</string>
     <string name="labelDeleteText">حُذف الوسم</string>
     <string name="selectBranchError">اختر فرعاً للإصدار</string>
     <string name="alertDialogTokenRevokedTitle">خطأ في المصادقة</string>
-    <string name="alertDialogTokenRevokedMessage">يبدو أن رمز الوصول قد أُبطل أو أنه غير مسموح لك برؤية هذا المحتوى.\n\nإذا كنت قد أبطلت الرمز، يرجى تسجيل الخروج وتسجيل الدخول مرة أخرى</string>
+    <string name="alertDialogTokenRevokedMessage">It seems that the Access Token is revoked OR you are not allowed to see these contents.\n\nIn case of revoked Token, please add the account again</string>
     <string name="labelDeleteMessage">هل تريد حقاً حذف هذا الوسم؟</string>
     <!-- org tabbed layout str -->
     <string name="orgTabTeams">الفِرَق</string>
@@ -363,9 +358,6 @@ Codeberg.org</string>
     <string name="deleteReleaseConfirmation">هل تريد حقاً حذف هذا الإصدار؟</string>
     <string name="releaseDeleted">حُذف الإصدار</string>
     <!-- release -->
-    <string name="loginOTPTypeError">رمز OTP يجب أن يحوي أرقاماً فقط</string>
-    <string name="loginOTP">رمز OTP (اختياري)</string>
-    <string name="otpMessage">أدخل رمز OTP إذا كان التحقق بخطوتين مفعلاً</string>
     <string name="openWebRepo">افتح في المتصفح</string>
     <string name="repoStargazersInMenu">المُعجَبون</string>
     <string name="repoWatchersInMenu">المشاهدون</string>
@@ -391,6 +383,14 @@ Codeberg.org</string>
     <string name="newFileRequiredFields">الحقول كأسماء الملفات والمحتوى ورسالة الإيداع مطلوبة</string>
     <string name="newFileEmptyBranchMessage">دعه فارغاً للدفع للفرع الافتراضي</string>
     <string name="newFileRequiredFieldNewBranchName">اسم الفرع الجديد لا يمكن أن يكون فارغاً إذا لم يُختر الفرع الحالي</string>
+    <string name="create_branch_empty_fields">Branch name and ref are required</string>
+    <string name="branch_ref">Reference (Branch/Commit)</string>
+    <string name="branch_created">Branch created successfully</string>
+    <string name="branch_error_archive_mirror">Cannot create branch: Repository is archived or a mirror</string>
+    <string name="branch_error_ref_not_found">Reference does not exist</string>
+    <string name="branch_error_exists">Branch %1$s already exists</string>
+    <string name="branch_error_repo_locked">Repository is locked</string>
+    <string name="create_branch">Create Branch</string>
     <string name="strFilter">التصفية</string>
     <string name="strMarkdown">ماركداون</string>
     <string name="copyIssueUrl">نسخ رابط القضية</string>
@@ -461,6 +461,9 @@ Codeberg.org</string>
     <string name="unpin">Unpin</string>
     <string name="branch">Branch</string>
     <string name="branches">Branches</string>
+    <string name="timeline">Timeline</string>
+    <string name="hours">Hours</string>
+    <string name="minutes">Minutes</string>
     <!-- generic copy -->
     <string name="exploreUsers">استكشاف المستخدمين</string>
     <string name="exploreIssues">استكشاف القضايا</string>
@@ -469,12 +472,10 @@ Codeberg.org</string>
     <string name="unStarRepositorySuccess">أُزيل المستودع من قائمة المفضلة</string>
     <string name="watchRepositorySuccess">أُضيف المستودع لقائمة المراقبة</string>
     <string name="unWatchRepositorySuccess">أُزيل المستودع من قائمة المراقبة</string>
-    <string name="titleDrafts">المسودات</string>
-    <string name="versionUnsupportedOld">أُكتشف إصدار قديم غير مدعوم (%1$s) من Gitea. رجاءً حدث إلى أحدث إصدار مستقر. إذا تابعت فقد لا تعمل بعض الميزات.</string>
-    <string name="versionUnsupportedNew">أُكتشف إصدار جديد من Gitea! يرجى تحديث GitNex!</string>
-    <string name="versionUnknown">لم يُكتشف Gitea!</string>
-    <string name="versionAlertDialogHeader">إصدار غير مدعوم من Gitea</string>
-    <string name="loginViaPassword">Basic Auth</string>
+    <string name="versionUnsupportedOld">Unsupported old version(%1$s) of the server detected. Please update to latest stable version. If you continue, some features may not work.</string>
+    <string name="versionUnsupportedNew">New server version detected! Please UPDATE GitNex!</string>
+    <string name="versionUnknown">No server detected!</string>
+    <string name="versionAlertDialogHeader">Unsupported Version of server</string>
     <string name="unauthorizedApiError">أرجع المثيل خطأ - غير مصرح به. تحقق من بيانات تسجيل دخولك وحاول مرة أخرى</string>
     <string name="loginTokenError">الرمز مطلوب</string>
     <string name="prDeletedFork">اشتقاق محذوف</string>
@@ -553,12 +554,6 @@ Codeberg.org</string>
     <string name="crashMessage">نشجع على فتح مشكلة في مستودع المشروع حول كيفية إعادة إنتاج هذا الخطأ. من الأسهل تصحيح الأخطاء وإصلاحها بهذه الطريقة.\n\n انقر فوق الزر \"موافق\" لإرسال تقرير التعطل بالبريد الإلكتروني بدلاً من ذلك. يمكن إضافة محتوى إضافي في البريد الإلكتروني.\nشكرًا لك!</string>
     <string name="forceLogoutDialogHeader">رجاءً سجل الدخول مرة أخرى</string>
     <string name="forceLogoutDialogDescription">نظرًا لبعض التغييرات الجذرية المتعلقة بالأداء الداخلي للتطبيق، نطلب منك تسجيل الدخول مرة أخرى. تسمح لنا هذه التغييرات بجعل التطبيق أكثر مرونة في المستقبل.\n\n نشكرك على صبرك ونأسف للإزعاج.</string>
-    <string name="deleteAllDrafts">حذف جميع المسودات</string>
-    <string name="draftsListEmpty">لم يُعثر على مسودات</string>
-    <string name="draftsDeleteSuccess">حُذفت المسودات بنجاح</string>
-    <string name="draftsSingleDeleteSuccess">حُذفت المسودة بنجاح</string>
-    <string name="deleteAllDraftsDialogMessage">سيحذف هذا جميع مسودات هذا الحساب.\n\nالإكمال مع الحذف؟</string>
-    <string name="draftSaved">حُفظت المسودة تلقائياً.</string>
     <string name="resetMostReposCounter">أُعيد تعيين العداد بنجاح</string>
     <string name="resetCounterDialogMessage">أتريد إعادة تعيين عداد المستودع %s؟</string>
     <string name="resetCounterAllDialogMessage">سيعيد هذا تعيين جميع العدادات لمستودعات هذا الحساب.</string>
@@ -660,6 +655,7 @@ Codeberg.org</string>
     <string name="prClosed">أُغلق طلب الدمج</string>
     <string name="prReopened">أُعيد فتح طلب الدمج</string>
     <string name="prMergeInfo">معلومات طلب الدمج</string>
+    <string name="pr_info">%1$s wants to merge branch %2$s into %3$s</string>
     <string name="accountDoesNotExist">It seems that the account for URI %1$s does not exist in the app. You can add one by tapping on the Add New Account button.</string>
     <string name="launchApp">انتقل إلى التطبيق</string>
     <string name="noActionText">GitNex cannot handle the requested resource. You can open an issue at the project repository as an improvement, providing details of the work. Just launch a default screen for now from the buttons below; it can be changed from settings.</string>
@@ -703,7 +699,6 @@ Codeberg.org</string>
     <string name="tagDeleteError">لا يمكن حذف العلامة المرفقة بإصدار مباشرة</string>
     <string name="useCustomTabs">Use Custom Tabs</string>
     <string name="browserOpenFailed">No application found to open this link. SSH URLs and URLs with another prefix the http:// or https:// are not supported by most browser</string>
-    <string name="logInAgain">Log in again</string>
     <string name="notLoggedIn">%s \u25CF not logged in</string>
     <string name="followSystem">Follow system (Light/Dark)</string>
     <string name="followSystemBlack">Follow system (Light/Pitch Black)</string>
@@ -745,7 +740,7 @@ Codeberg.org</string>
     <string name="insertNote">Insert a Note</string>
     <string name="noNotes">No notes found</string>
     <!-- timeline -->
-    <string name="commitsText">commit</string>
+    <string name="commitsText">commits</string>
     <string name="commitText">commit</string>
     <string name="timelineAddedCommit">%1$s added %2$s %3$s</string>
     <!-- the | is replaced by the label -->
@@ -822,4 +817,24 @@ Codeberg.org</string>
     <string name="attachment">Attachment</string>
     <string name="attachments">Attachments</string>
     <string name="attachmentsSaveError">An issue was created but cannot process attachments at this time. Check the server logs for more details.</string>
+    <string name="search_matches_found">%1$d matches found</string>
+    <string name="search_no_matches">No matches found</string>
+    <string name="heatmap_contribution">%1$d contributions on %2$s</string>
+    <string name="im_mentioned">I\'m mentioned</string>
+    <string name="dependencies">Dependencies</string>
+    <string name="no_dependencies_set">No dependencies set</string>
+    <string name="dependency_removed">Dependency removed</string>
+    <string name="dependency_removal_failed">Failed to remove dependency</string>
+    <string name="dependency_added">Dependency added</string>
+    <string name="dependency_add_failed">Failed to add dependency</string>
+    <string name="search_failed">Search failed</string>
+    <string name="no_dependency_search_results">No matching results found</string>
+    <string name="tracked_time">Tracked Time</string>
+    <string name="no_tracked_time">No time tracked yet</string>
+    <string name="total_time">Total: %1$dh %2$dm %3$ds</string>
+    <string name="enter_time">Please enter some time</string>
+    <string name="time_added">Time added</string>
+    <string name="time_removed">Time removed</string>
+    <string name="time_add_failed">Failed to add time</string>
+    <string name="time_delete_failed">Failed to delete time</string>
 </resources>

@@ -590,13 +590,37 @@ public class MainActivity extends BaseActivity
 	@Override
 	public void onButtonClicked(String text) {
 
-		String[] parts = text.split("_");
-		String state = parts[0];
-		String filter = parts[1];
-
 		if (getFragmentRefreshListener() != null) {
-			getFragmentRefreshListener().onRefresh(state + "_" + filter);
+			getFragmentRefreshListener().onRefresh(text);
+		} else {
+
+			Fragment currentFragment =
+					getSupportFragmentManager().findFragmentById(R.id.fragment_container);
+			if (currentFragment instanceof MyIssuesFragment) {
+				((MyIssuesFragment) currentFragment).updateFilterState(text);
+			}
 		}
+	}
+
+	@Override
+	public boolean onOptionsItemSelected(MenuItem item) {
+
+		int id = item.getItemId();
+		if (id == R.id.filter) {
+
+			Fragment currentFragment =
+					getSupportFragmentManager().findFragmentById(R.id.fragment_container);
+			String currentFilter = "open_created_by_me";
+
+			if (currentFragment instanceof MyIssuesFragment) {
+				currentFilter = ((MyIssuesFragment) currentFragment).getCurrentFilter();
+			}
+			BottomSheetMyIssuesFilterFragment filterBottomSheet =
+					BottomSheetMyIssuesFilterFragment.newInstance(currentFilter);
+			filterBottomSheet.show(getSupportFragmentManager(), "myIssuesFilterMenuBottomSheet");
+			return true;
+		}
+		return super.onOptionsItemSelected(item);
 	}
 
 	@Override
@@ -712,30 +736,6 @@ public class MainActivity extends BaseActivity
 
 		drawer.closeDrawer(GravityCompat.START);
 		return true;
-	}
-
-	@Override
-	public boolean onOptionsItemSelected(MenuItem item) {
-
-		int id = item.getItemId();
-
-		if (id == R.id.filter) {
-
-			Fragment currentFragment =
-					getSupportFragmentManager().findFragmentById(R.id.fragment_container);
-			String currentFilter = "open_created_by_me";
-
-			if (currentFragment instanceof MyIssuesFragment) {
-				currentFilter = ((MyIssuesFragment) currentFragment).getCurrentFilter();
-			}
-
-			BottomSheetMyIssuesFilterFragment filterBottomSheet =
-					BottomSheetMyIssuesFilterFragment.newInstance(currentFilter);
-			filterBottomSheet.show(getSupportFragmentManager(), "myIssuesFilterMenuBottomSheet");
-			return true;
-		}
-
-		return super.onOptionsItemSelected(item);
 	}
 
 	private void updateGeneralAttachmentSettings() {

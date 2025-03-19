@@ -52,13 +52,11 @@ public class BottomSheetMyIssuesFilterFragment extends BottomSheetDialogFragment
 		BottomSheetMyIssuesFilterBinding binding =
 				BottomSheetMyIssuesFilterBinding.inflate(inflater, container, false);
 
-		// Clear all chip states
 		binding.chipOpen.setChecked(false);
 		binding.chipClosed.setChecked(false);
 		binding.chipCreatedByMe.setChecked(false);
 		binding.chipAssignedToMe.setChecked(false);
 
-		// Set chip states
 		binding.chipOpen.setChecked(selectedState.equals("open"));
 		binding.chipClosed.setChecked(selectedState.equals("closed"));
 		binding.chipCreatedByMe.setChecked(selectedFilter.equals("created_by_me"));
@@ -84,8 +82,10 @@ public class BottomSheetMyIssuesFilterFragment extends BottomSheetDialogFragment
 						int checkedId = checkedIds.get(0);
 						if (checkedId == binding.chipCreatedByMe.getId()) {
 							selectedFilter = "created_by_me";
+							binding.chipAssignedToMe.setChecked(false);
 						} else if (checkedId == binding.chipAssignedToMe.getId()) {
 							selectedFilter = "assignedToMe";
+							binding.chipCreatedByMe.setChecked(false);
 						}
 						applyFilter();
 					}

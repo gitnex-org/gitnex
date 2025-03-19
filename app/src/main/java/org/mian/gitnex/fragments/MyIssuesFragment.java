@@ -139,12 +139,9 @@ public class MyIssuesFragment extends Fragment {
 						Lifecycle.State.RESUMED);
 	}
 
-	public String getCurrentFilter() {
-		return state + "_" + (assignedToMe ? "assignedToMe" : "created_by_me");
-	}
+	public void updateFilterState(String filter) {
 
-	private void updateFilterState(String filter) {
-		String[] parts = filter.split("_");
+		String[] parts = filter.split("_", 2);
 		String stateValue = parts[0];
 		String filterValue = parts[1];
 
@@ -162,6 +159,12 @@ public class MyIssuesFragment extends Fragment {
 			createdByMe = false;
 			assignedToMe = true;
 		}
+
+		fetchDataAsync(null);
+	}
+
+	public String getCurrentFilter() {
+		return state + "_" + (assignedToMe ? "assignedToMe" : "created_by_me");
 	}
 
 	private void fetchDataAsync(String query) {

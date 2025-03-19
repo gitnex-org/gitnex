@@ -9,7 +9,6 @@
     <string name="navOrg">Organizace</string>
     <string name="navAbout">O aplikaci</string>
     <string name="navRate">Ohodnotit GitNex</string>
-    <string name="navLogout">Odhlásit se</string>
     <string name="navAdministration">Administrativa instance</string>
     <string name="navMyIssues">Moje issues</string>
     <string name="navMostVisited">Nejnavštěvovanější repozitáře</string>
@@ -58,7 +57,6 @@
     <string name="navigationDrawerOpen">Otevřít navigační menu</string>
     <string name="navigationDrawerClose">Zavřít navigační menu</string>
     <string name="protocol">Protokol</string>
-    <string name="urlInfoTooltip">1- Vyberte správný protokol (https nebo http). \n2- Zadejte URL instance např.: try.gitea.io. \n3- Pokud máte na svém účtě dvoufázové ověření, zadejte do políčka OTP kód. \n4- Pro HTTP basic auth použijte USERNAME@DOMAIN.COM v poli pro URL.</string>
     <string name="malformedUrl">Nelze se připojit k serveru. Zkontrolujte prosím URL nebo port pro případné chyby</string>
     <string name="protocolError">Není doporučeno používat HTTP protokol, pokud netestujete na místní síti</string>
     <string name="malformedJson">Byl přijat chybný JSON. Odpověď od serveru nebyla úspěšná</string>
@@ -116,6 +114,7 @@
     <string name="commentButtonText">Komentář</string>
     <string name="commentEmptyError">Zadejte svůj komentář</string>
     <string name="commentSuccess">Komentář byl zveřejněn</string>
+    <string name="created_by_me">Created by Me</string>
     <string name="featureDeprecated">Tato funkce bude v budoucnu odstraněna</string>
     <string name="generalImgContentText">Obrázek</string>
     <string name="commitAuthor">Autor commitu: %1$s</string>
@@ -179,10 +178,6 @@
     <string name="clearCacheSelectionHeaderText">Vyčistit mezipaměť</string>
     <string name="clearCacheDialogHeader">Vyčistit mezipaměť?</string>
     <string name="clearCacheDialogMessage">Všechna data v mezipaměti, včetně obrázků a souborů budou vymazána.\n\nPokračovat?</string>
-    <string name="draftsHeader">Koncepty</string>
-    <string name="draftsHintText">Koncepty komentářů</string>
-    <string name="settingsEnableCommentsDeletionText">Povolit mazání konceptů</string>
-    <string name="settingsEnableCommentsDeletionHintText">Smazat koncept komentáře po zveřejnění</string>
     <string name="settingsGeneralHeader">Obecné</string>
     <string name="generalHintText">Domovská obrazovka, hlášení o chybě, vlastní záložky</string>
     <string name="generalDeepLinkDefaultScreen">Výchozí zpracovatel odkazů</string>
@@ -225,7 +220,7 @@
     <string name="labelDeleteText">Štítek smazán</string>
     <string name="selectBranchError">Zvolte větev k vydání</string>
     <string name="alertDialogTokenRevokedTitle">Chyba ověření</string>
-    <string name="alertDialogTokenRevokedMessage">Vypadá to, že přístupový token byl odepřen NEBO nemáte oprávnění vidět tento obsah.\n\nV případě odepřeného tokenu se, prosím, odhlaste a znovu přihlaste</string>
+    <string name="alertDialogTokenRevokedMessage">It seems that the Access Token is revoked OR you are not allowed to see these contents.\n\nIn case of revoked Token, please add the account again</string>
     <string name="labelDeleteMessage">Opravdu chcete smazat tento štítek?</string>
     <!-- org tabbed layout str -->
     <string name="orgTabTeams">Týmy</string>
@@ -362,9 +357,6 @@
     <string name="deleteReleaseConfirmation">Opravdu chcete odstranit toto vydání?</string>
     <string name="releaseDeleted">Vydání smazáno</string>
     <!-- release -->
-    <string name="loginOTPTypeError">OTP kód by měl obsahovat pouze čísla</string>
-    <string name="loginOTP">OTP Kód (volitelný)</string>
-    <string name="otpMessage">Vložte OTP kód, je-li povoleno dvoufázové ověření</string>
     <string name="openWebRepo">Otevřít v prohlížeči</string>
     <string name="repoStargazersInMenu">Ti, co dali hvězdu</string>
     <string name="repoWatchersInMenu">Sledující</string>
@@ -390,6 +382,14 @@
     <string name="newFileRequiredFields">Pole název souboru, obsah a commit zpráva jsou vyžadovány</string>
     <string name="newFileEmptyBranchMessage">Nechte prázdné pro push do výchozí větve</string>
     <string name="newFileRequiredFieldNewBranchName">Nová větev nemůže být prázdná pokud aktuální větev není vybrána</string>
+    <string name="create_branch_empty_fields">Branch name and ref are required</string>
+    <string name="branch_ref">Reference (Branch/Commit)</string>
+    <string name="branch_created">Branch created successfully</string>
+    <string name="branch_error_archive_mirror">Cannot create branch: Repository is archived or a mirror</string>
+    <string name="branch_error_ref_not_found">Reference does not exist</string>
+    <string name="branch_error_exists">Branch %1$s already exists</string>
+    <string name="branch_error_repo_locked">Repository is locked</string>
+    <string name="create_branch">Create Branch</string>
     <string name="strFilter">Filtr</string>
     <string name="strMarkdown">Markdown</string>
     <string name="copyIssueUrl">Zkopírovat issue URL</string>
@@ -460,6 +460,9 @@
     <string name="unpin">Unpin</string>
     <string name="branch">Branch</string>
     <string name="branches">Branches</string>
+    <string name="timeline">Timeline</string>
+    <string name="hours">Hours</string>
+    <string name="minutes">Minutes</string>
     <!-- generic copy -->
     <string name="exploreUsers">Prozkoumat uživatele</string>
     <string name="exploreIssues">Prozkoumat issues</string>
@@ -468,12 +471,10 @@
     <string name="unStarRepositorySuccess">Repozitář odebrán z oblíbených</string>
     <string name="watchRepositorySuccess">Repozitář přidán do sledovaných</string>
     <string name="unWatchRepositorySuccess">Repozitář odebrán ze sledovaných</string>
-    <string name="titleDrafts">Koncepty</string>
-    <string name="versionUnsupportedOld">Nepodporovaná stará Gitea verze(%1$s) detekována. Prosíme, aktualizujte na nejnovější stabilní verzi. Pokud budete pokračovat, některé funkce nemusí fungovat.</string>
-    <string name="versionUnsupportedNew">Nová verze Gitea detekována! Prosím, aktualizujte GitNex!</string>
-    <string name="versionUnknown">Gitea nedetekována!</string>
-    <string name="versionAlertDialogHeader">Nepodporovaná verze Gitea</string>
-    <string name="loginViaPassword">Basic Auth</string>
+    <string name="versionUnsupportedOld">Unsupported old version(%1$s) of the server detected. Please update to latest stable version. If you continue, some features may not work.</string>
+    <string name="versionUnsupportedNew">New server version detected! Please UPDATE GitNex!</string>
+    <string name="versionUnknown">No server detected!</string>
+    <string name="versionAlertDialogHeader">Unsupported Version of server</string>
     <string name="unauthorizedApiError">Instance vrátila chybu - Unauthorized. Zkontrolujte prosím přihlašovací údaje a zkuste to znovu</string>
     <string name="loginTokenError">Token je vyžadován</string>
     <string name="prDeletedFork">Smazaný fork</string>
@@ -551,12 +552,6 @@
     <string name="crashMessage">Je dobré otevřít issue v repozitáři projektu s informací, jak bug reprodukovat. Je tak jednodušší problém identifikovat a opravit.\n\nKliknutím na tlačíko OK odešlete hlášení o chybě emailem. Další obsah může být přidán v emailu.\nDěkujeme!</string>
     <string name="forceLogoutDialogHeader">Prosíme, přihlaste se znovu</string>
     <string name="forceLogoutDialogDescription">Kvůli vážným změnám v interním fungování aplikace potřebujeme, abyste se přihlásili znovu. Tyto změny nám dovolují dělat v budoucnu aplikaci flexibilnější.\n\nDěkujeme za Vaši trpělivost a a omlouváme se za způsobené nepříjemnosti.</string>
-    <string name="deleteAllDrafts">Smazat všechny koncepty</string>
-    <string name="draftsListEmpty">Nebyly nalezeny žádné koncepty</string>
-    <string name="draftsDeleteSuccess">Koncepty úspěšně odstraněny</string>
-    <string name="draftsSingleDeleteSuccess">Koncept úspěšně odstraněn</string>
-    <string name="deleteAllDraftsDialogMessage">Toto vymaže všechny koncepty tohoto účtu.\n\nChcete pokračovat k smazání?</string>
-    <string name="draftSaved">Koncept byl automaticky uložen.</string>
     <string name="resetMostReposCounter">Počítadlo úspěšně resetováno</string>
     <string name="resetCounterDialogMessage">Chcete resetovat počítadlo pro repozitář %s?</string>
     <string name="resetCounterAllDialogMessage">Toto resetuje všechny počítadla pro repozitáře tohoto účtu.</string>
@@ -656,6 +651,7 @@
     <string name="prClosed">Pull request uzavřen</string>
     <string name="prReopened">Pull request znovu otevřen</string>
     <string name="prMergeInfo">Informace o pull requestu</string>
+    <string name="pr_info">%1$s wants to merge branch %2$s into %3$s</string>
     <string name="accountDoesNotExist">Vypadá to, že v aplikaci neexistuje žádný účet pro URI %1$s. Můžete ho přidat klepnutím na tlačítko Přidat účet.</string>
     <string name="launchApp">Přejít do aplikace</string>
     <string name="noActionText">GitNex cannot handle the requested resource. You can open an issue at the project repository as an improvement, providing details of the work. Just launch a default screen for now from the buttons below; it can be changed from settings.</string>
@@ -698,7 +694,6 @@
     <string name="tagDeleteError">Štítek spjatý s vydáním nelze přímo odstranit</string>
     <string name="useCustomTabs">Použít vlastní záložky</string>
     <string name="browserOpenFailed">Nebyla nalezena žádná aplikace pro otevření tohoto odkazu. SSH odkazy a URL s prefixy http:// nebo https:// nejsou většinou prohlížečů podporovány</string>
-    <string name="logInAgain">Přihlásit se znovu</string>
     <string name="notLoggedIn">%s\u25CF není přihlášen</string>
     <string name="followSystem">Podle systému (světlý/tmavý)</string>
     <string name="followSystemBlack">Podle systému (světlý/kompletně tmavý)</string>
@@ -738,7 +733,7 @@
     <string name="insertNote">Vložit poznámku</string>
     <string name="noNotes">Nebyly nalezeny žádné poznámky</string>
     <!-- timeline -->
-    <string name="commitsText">commit</string>
+    <string name="commitsText">commits</string>
     <string name="commitText">commit</string>
     <string name="timelineAddedCommit">%1$s přidal(a) %2$s %3$s</string>
     <!-- the | is replaced by the label -->
@@ -815,4 +810,24 @@
     <string name="attachment">Příloha</string>
     <string name="attachments">Přílohy</string>
     <string name="attachmentsSaveError">Problém byl vytvořen, nelze však aktuálně zpracovat přílohy. Zkontroluje chybové záznamy serveru pro více informací.</string>
+    <string name="search_matches_found">%1$d matches found</string>
+    <string name="search_no_matches">No matches found</string>
+    <string name="heatmap_contribution">%1$d contributions on %2$s</string>
+    <string name="im_mentioned">I\'m mentioned</string>
+    <string name="dependencies">Dependencies</string>
+    <string name="no_dependencies_set">No dependencies set</string>
+    <string name="dependency_removed">Dependency removed</string>
+    <string name="dependency_removal_failed">Failed to remove dependency</string>
+    <string name="dependency_added">Dependency added</string>
+    <string name="dependency_add_failed">Failed to add dependency</string>
+    <string name="search_failed">Search failed</string>
+    <string name="no_dependency_search_results">No matching results found</string>
+    <string name="tracked_time">Tracked Time</string>
+    <string name="no_tracked_time">No time tracked yet</string>
+    <string name="total_time">Total: %1$dh %2$dm %3$ds</string>
+    <string name="enter_time">Please enter some time</string>
+    <string name="time_added">Time added</string>
+    <string name="time_removed">Time removed</string>
+    <string name="time_add_failed">Failed to add time</string>
+    <string name="time_delete_failed">Failed to delete time</string>
 </resources>

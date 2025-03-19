@@ -9,7 +9,6 @@
     <string name="navOrg">Organizações</string>
     <string name="navAbout">Sobre</string>
     <string name="navRate">Avalie o GitNex</string>
-    <string name="navLogout">Sair</string>
     <string name="navAdministration">Administração da Instância</string>
     <string name="navMyIssues">Meus Issues</string>
     <string name="navMostVisited">Repositórios Mais Visitados</string>
@@ -58,7 +57,6 @@
     <string name="navigationDrawerOpen">Abrir painel de navegação</string>
     <string name="navigationDrawerClose">Fechar painel de navegação</string>
     <string name="protocol">Protocolo</string>
-    <string name="urlInfoTooltip">1- Selecione o protocolo correto (https ou http).\n2- Insira a URL da instância, p. ex.: try.gitea.io.\n3- Se você habilitou autenticação de dois fatores (2FA) na sua conta, insira o código no campo OTP.\n4- Para autenticação HTTP básica, use USERNAME@DOMAIN.COM no campo URL.</string>
     <string name="malformedUrl">Não foi possível conectar-se ao host. Por favor verifique sua URL ou porta para ver se há algum erro</string>
     <string name="protocolError">Não é recomendado usar o protocolo HTTP a menos que você esteja testando na rede local</string>
     <string name="malformedJson">JSON malformado foi recebido. A resposta do servidor não foi bem sucedida</string>
@@ -117,6 +115,7 @@ Exemplo: codeberg.org</string>
     <string name="commentButtonText">Comentar</string>
     <string name="commentEmptyError">Por favor, deixe seu comentário</string>
     <string name="commentSuccess">Comentário publicado</string>
+    <string name="created_by_me">Created by Me</string>
     <string name="featureDeprecated">Esta funcionalidade será removida futuramente</string>
     <string name="generalImgContentText">Imagem</string>
     <string name="commitAuthor">Autor do commit: %1$s</string>
@@ -180,10 +179,6 @@ Exemplo: codeberg.org</string>
     <string name="clearCacheSelectionHeaderText">Limpar Cache</string>
     <string name="clearCacheDialogHeader">Limpar Cache?</string>
     <string name="clearCacheDialogMessage">Isto vai excluir todos os dados de cache, incluindo arquivos e imagens.\n\nProsseguir com a exclusão?</string>
-    <string name="draftsHeader">Rascunhos</string>
-    <string name="draftsHintText">Rascunho dos comentários</string>
-    <string name="settingsEnableCommentsDeletionText">Ativar exclusão de rascunhos</string>
-    <string name="settingsEnableCommentsDeletionHintText">Excluir rascunho de comentário quando um comentário é postado</string>
     <string name="settingsGeneralHeader">Geral</string>
     <string name="generalHintText">Tela inicial, relatórios de quebra, abas customizadas</string>
     <string name="generalDeepLinkDefaultScreen">Manipulador de Links Padrão</string>
@@ -226,7 +221,7 @@ Exemplo: codeberg.org</string>
     <string name="labelDeleteText">Marcador excluído</string>
     <string name="selectBranchError">Selecionar um ramo para lançamento</string>
     <string name="alertDialogTokenRevokedTitle">Erro de autorização</string>
-    <string name="alertDialogTokenRevokedMessage">Parece que o Token de Acesso foi revogado OU você não está autorizado a ver esses conteúdos.\n\nNo caso de Token revogado, faça o logout e login de novo</string>
+    <string name="alertDialogTokenRevokedMessage">It seems that the Access Token is revoked OR you are not allowed to see these contents.\n\nIn case of revoked Token, please add the account again</string>
     <string name="labelDeleteMessage">Você realmente deseja excluir este marcador?</string>
     <!-- org tabbed layout str -->
     <string name="orgTabTeams">Equipes</string>
@@ -237,7 +232,7 @@ Exemplo: codeberg.org</string>
     <string name="teamPermissionNone">• Membros dessa equipe não têm permissões.</string>
     <string name="teamPermissionRead">Membros podem ver os repositórios da equipe.</string>
     <string name="teamPermissionWrite">• Membros dessa equipe podem adicionar a repositórios, bem como visualizá-los.</string>
-    <string name="teamPermissionAdmin">• Members of this team can push to and from team repositories and add collaborators.</string>
+    <string name="teamPermissionAdmin">• Membros dessa equipe podem carregar e baixar de repositórios dela e adicionar colaboradores.</string>
     <string name="teamPermissionOwner">• Membros dessa equipe têm permissões de proprietário.</string>
     <string name="teamShowAll">mostrar tudo</string>
     <string name="orgMember">Membros da organização</string>
@@ -250,7 +245,7 @@ Exemplo: codeberg.org</string>
     <string name="memberRemovedMessage">Membro excluído da equipe com êxito</string>
     <string name="repoAddedMessage">Repositório adicionado à equipe com sucesso</string>
     <string name="repoRemovedMessage">Repositório removido da equipe com sucesso</string>
-    <string name="repoAddToTeamMessage">Add repository %1$s to organization %2$s team %3$s</string>
+    <string name="repoAddToTeamMessage">Adicionar repositório %1$s à organização %2$s equipe %3$s</string>
     <string name="repoRemoveTeamMessage">Remover repositório %1$s da equipe %2$s</string>
     <string name="addRemoveMember">Adicionar / Remover Membro</string>
     <!-- org tabbed layout str -->
@@ -363,9 +358,6 @@ Exemplo: codeberg.org</string>
     <string name="deleteReleaseConfirmation">Quer realmente apagar esse lançamento?</string>
     <string name="releaseDeleted">Lançamento apagado</string>
     <!-- release -->
-    <string name="loginOTPTypeError">O código OTP deve ter apenas números</string>
-    <string name="loginOTP">Código OTP (Opcional)</string>
-    <string name="otpMessage">Insira o código OTP se a 2FA estiver ativada</string>
     <string name="openWebRepo">Abrir no Navegador</string>
     <string name="repoStargazersInMenu">Usuários que favoritaram</string>
     <string name="repoWatchersInMenu">Observadores</string>
@@ -391,6 +383,14 @@ Exemplo: codeberg.org</string>
     <string name="newFileRequiredFields">Campos como nome de arquivo, conteúdo e mensagem de commit são necessários</string>
     <string name="newFileEmptyBranchMessage">Deixe em branco para adicionar ao ramo padrão</string>
     <string name="newFileRequiredFieldNewBranchName">Novo nome do branch não pode estar vazio se o branch atual não estiver selecionado</string>
+    <string name="create_branch_empty_fields">Branch name and ref are required</string>
+    <string name="branch_ref">Reference (Branch/Commit)</string>
+    <string name="branch_created">Branch created successfully</string>
+    <string name="branch_error_archive_mirror">Cannot create branch: Repository is archived or a mirror</string>
+    <string name="branch_error_ref_not_found">Reference does not exist</string>
+    <string name="branch_error_exists">Branch %1$s already exists</string>
+    <string name="branch_error_repo_locked">Repository is locked</string>
+    <string name="create_branch">Create Branch</string>
     <string name="strFilter">Filtro</string>
     <string name="strMarkdown">Markdown</string>
     <string name="copyIssueUrl">Copiar URL do incidente</string>
@@ -439,7 +439,7 @@ Exemplo: codeberg.org</string>
     <string name="collaborator">Colaborador</string>
     <string name="unstar">Remover estrela</string>
     <string name="watch">Acompanhar</string>
-    <string name="unwatch">Unwatch</string>
+    <string name="unwatch">Deixar de acompanhar</string>
     <string name="share">Compartilhar</string>
     <string name="repository">Repositório</string>
     <string name="team">Equipe</string>
@@ -452,15 +452,18 @@ Exemplo: codeberg.org</string>
     <string name="reset">Redefinir</string>
     <string name="beta">BETA</string>
     <string name="none">Nada</string>
-    <string name="main">main</string>
+    <string name="main">principal</string>
     <string name="license">Licença</string>
     <string name="title">Título</string>
     <string name="description">Descrição</string>
     <string name="bioText">Biografia</string>
     <string name="pin">Fixar</string>
     <string name="unpin">Desafixar</string>
-    <string name="branch">Branch</string>
-    <string name="branches">Branches</string>
+    <string name="branch">Ramo</string>
+    <string name="branches">Ramos</string>
+    <string name="timeline">Timeline</string>
+    <string name="hours">Hours</string>
+    <string name="minutes">Minutes</string>
     <!-- generic copy -->
     <string name="exploreUsers">Explore users</string>
     <string name="exploreIssues">Explore issues</string>
@@ -469,12 +472,10 @@ Exemplo: codeberg.org</string>
     <string name="unStarRepositorySuccess">Repositório removido da lista de favoritos</string>
     <string name="watchRepositorySuccess">Repositório adicionado à lista de observação</string>
     <string name="unWatchRepositorySuccess">Repositório removido da lista de observação</string>
-    <string name="titleDrafts">Rascunhos</string>
-    <string name="versionUnsupportedOld">Identificada versão defasada (%1$s) do Gitea, sem suporte. Por favor, atualize-o para a versão estável mais atual. Se você continuar, alguns recursos podem não funcionar.</string>
-    <string name="versionUnsupportedNew">Nova versão do Gitea detectada! Por favor, ATUALIZE o GitNex!</string>
-    <string name="versionUnknown">Gitea não detectado!</string>
-    <string name="versionAlertDialogHeader">Versão do Gitea não suportada</string>
-    <string name="loginViaPassword">Autenticação Básica</string>
+    <string name="versionUnsupportedOld">Unsupported old version(%1$s) of the server detected. Please update to latest stable version. If you continue, some features may not work.</string>
+    <string name="versionUnsupportedNew">New server version detected! Please UPDATE GitNex!</string>
+    <string name="versionUnknown">No server detected!</string>
+    <string name="versionAlertDialogHeader">Unsupported Version of server</string>
     <string name="unauthorizedApiError">A instância retornou um erro - Não autorizado. Verifique suas credenciais e tente novamente</string>
     <string name="loginTokenError">Token é obrigatório</string>
     <string name="prDeletedFork">Fork excluído</string>
@@ -487,7 +488,7 @@ Exemplo: codeberg.org</string>
     <string name="mergePullRequestText">Aplicar merge do Pull Request</string>
     <string name="deleteBranchSuccess">Ramo excluído com sucesso</string>
     <string name="deleteBranchError">Não foi possível excluir o ramo</string>
-    <string name="deleteBranchErrorNotFound">Branch does not exist</string>
+    <string name="deleteBranchErrorNotFound">O ramo não existe</string>
     <string name="mergePullRequestButtonText">Aplicar merge</string>
     <string name="deleteBranchAfterMerge">Excluir o branch após o Merge</string>
     <string name="mergeNoteText">A aplicação do merge pode falhar se você não está autorizado a aplicar este Pull Request.</string>
@@ -504,7 +505,7 @@ Exemplo: codeberg.org</string>
     <string name="selectMergeStrategy">Selecionar estratégia de mescla</string>
     <string name="mergeNotAllowed">Impedido de mesclar [Motivo: Sem aprovações suficientes]</string>
     <string name="deleteBranch">Excluir Branch</string>
-    <string name="switch_branch">Switch Branch</string>
+    <string name="switch_branch">Trocar de ramo</string>
     <string name="waitLoadingDownloadFile">Aguarde que o arquivo seja carregado para a memória</string>
     <string name="downloadFileSaved">Arquivo salvo com êxito</string>
     <string name="excludeFilesInFileViewer">Esse tipo/tamanho de arquivo não é suportado pelo visualizador de arquivos. Você pode baixá-lo a partir do menu.</string>
@@ -552,15 +553,9 @@ Exemplo: codeberg.org</string>
     <string name="crashMessage">It is encouraged to open an issue at the project repository with how to reproduce this bug. It is easier to debug and fix the problem that way.\n\nTap the OK button to send the crash report by email instead. Additional content could be added in the email.\nThank you!</string>
     <string name="forceLogoutDialogHeader">Por favor, faça o login novamente</string>
     <string name="forceLogoutDialogDescription">Devido a algumas mudanças importantes no funcionamento interno do aplicativo, precisamos que você se conecte novamente. Essas alterações nos permitirão tornar o aplicativo mais flexível no futuro.\n\nAgradecemos por sua paciência e lamentamos o inconveniente.</string>
-    <string name="deleteAllDrafts">Excluir Todos os Rascunhos</string>
-    <string name="draftsListEmpty">Nenhum rascunho encontrado</string>
-    <string name="draftsDeleteSuccess">Rascunhos excluídos com êxito</string>
-    <string name="draftsSingleDeleteSuccess">Rascunho excluído com êxito</string>
-    <string name="deleteAllDraftsDialogMessage">Isso vai excluir todos os rascunhos para essa conta. \n\nProsseguir com a exclusão?</string>
-    <string name="draftSaved">O rascunho foi salvo automaticamente.</string>
     <string name="resetMostReposCounter">O contador foi reiniciado com êxito</string>
-    <string name="resetCounterDialogMessage">Do you want to reset counter for repository %s?</string>
-    <string name="resetCounterAllDialogMessage">This will reset all the counters for this account repositories.</string>
+    <string name="resetCounterDialogMessage">Quer reiniciar a contagem para o repositório %s?</string>
+    <string name="resetCounterAllDialogMessage">Isso reiniciará todas as contagens para os repositórios dessa conta.</string>
     <string name="appearanceHintText">Temas, fontes, selos, tradução</string>
     <string name="securityHintText">Autenticação biométrica, certificados SSL, cache</string>
     <string name="languagesHintText">Idiomas</string>
@@ -599,13 +594,13 @@ Exemplo: codeberg.org</string>
     <string name="enableNotificationsHeaderText">Ativar Notificações</string>
     <string name="enableLightsHeaderText">Enable Light</string>
     <string name="enableVibrationHeaderText">Ativar Vibração</string>
-    <string name="chooseColorSelectorHeader">Choose Color</string>
+    <string name="chooseColorSelectorHeader">Escolher Cor</string>
     <string name="newMessages">Novas mensagens para %s</string>
     <string name="youHaveGotNewNotifications">Você tem %d novas notificações.</string>
     <string name="mainNotificationChannelName">Notificações</string>
     <string name="mainNotificationChannelDescription">Este é o canal principal de notificações do GitNex.</string>
     <plurals name="youHaveNewNotifications">
-        <item quantity="one">You have %s new notification</item>
+        <item quantity="one">Você tem %s nova notificação</item>
         <item quantity="other">Você tem %s novas notificações</item>
     </plurals>
     <string name="openAppSettings">Para receber notificações, é necessário habilitá-las no GitNex. Toque em Abrir para acessar as configurações de seu telefone e habilitar notificações.</string>
@@ -619,7 +614,7 @@ Exemplo: codeberg.org</string>
     <string name="repoPropertiesEnableIssues">Enable Issues</string>
     <string name="repoPropertiesExternalIssuesUrl">External Issue Tracker Url</string>
     <string name="repoPropertiesEnableWiki">Habilitar Wiki</string>
-    <string name="repoPropertiesExternalWikiUrl">External Wiki Url</string>
+    <string name="repoPropertiesExternalWikiUrl">URL para Wiki externo</string>
     <string name="repoPropertiesEnablePr">Ativar Pull Requests</string>
     <string name="repoPropertiesEnableTimeTracker">Enable Time Tracker</string>
     <string name="repoPropertiesEnableMergeCommits">Enable Merge Commits</string>
@@ -655,6 +650,7 @@ Exemplo: codeberg.org</string>
     <string name="prClosed">Pull Request fechada</string>
     <string name="prReopened">Pull Request atualizado</string>
     <string name="prMergeInfo">Informações do Pull Request</string>
+    <string name="pr_info">%1$s wants to merge branch %2$s into %3$s</string>
     <string name="accountDoesNotExist">Parece que a conta para a URI %1$s não existe no aplicativo. Você pode adicionar uma tocando no botão de Adicionar Uma Conta.</string>
     <string name="launchApp">Ir para o Aplicativo</string>
     <string name="noActionText">GitNex cannot handle the requested resource. You can open an issue at the project repository as an improvement, providing details of the work. Just launch a default screen for now from the buttons below; it can be changed from settings.</string>
@@ -697,17 +693,16 @@ Exemplo: codeberg.org</string>
     <string name="tagDeleteError">Um marcador associado a um lançamento não pode ser excluído diretamente</string>
     <string name="useCustomTabs">Usar abas personalizadas</string>
     <string name="browserOpenFailed">No application found to open this link. SSH URLs and URLs with another prefix the http:// or https:// are not supported by most browser</string>
-    <string name="logInAgain">Log in again</string>
     <string name="notLoggedIn">%s \u25CF not logged in</string>
     <string name="followSystem">Follow system (Light/Dark)</string>
     <string name="followSystemBlack">Follow system (Light/Pitch Black)</string>
     <string name="dynamicColorsFollowSystem">Dynamic colors - Follow system (Light/Dark)</string>
-    <string name="codebergDark">Codeberg (Dark)</string>
+    <string name="codebergDark">Codeberg (Modo Escuro)</string>
     <string name="repoForkOf">Fork of: %s</string>
-    <string name="adoptRepo">Adopt</string>
-    <string name="repoAdopted">Adopted repository %s</string>
-    <string name="unadoptedRepos">Unadopted Repositories</string>
-    <string name="unadoptedReposMessage">- Adopt will add repository %1$s to organization/user %2$s.\n- Delete will remove it from the system.</string>
+    <string name="adoptRepo">Adotar</string>
+    <string name="repoAdopted">Repositório %s adotado</string>
+    <string name="unadoptedRepos">Repositórios Órfãos</string>
+    <string name="unadoptedReposMessage">- Adotar adicionará o repositório %1$s à organização/ao usuário %2$s.\n- Apagar o removerá do sistema.</string>
     <string name="commits">Commits</string>
     <!-- wiki -->
     <string name="wiki">Wiki</string>
@@ -724,8 +719,8 @@ Exemplo: codeberg.org</string>
     <string name="newNote">Nova Nota</string>
     <string name="editNote">Editar Nota</string>
     <string name="newNoteContentHint">Comece a fazer suas anotações aqui</string>
-    <string name="noteDateTime">Created %s</string>
-    <string name="noteTimeModified">Updated %s</string>
+    <string name="noteDateTime">Criou %s</string>
+    <string name="noteTimeModified">Atualizou %s</string>
     <string name="noteDeleteDialogMessage">Quer mesmo excluir essa anotação?</string>
     <plurals name="noteDeleteMessage">
         <item quantity="one">Anotação excluída com sucesso</item>
@@ -735,17 +730,17 @@ Exemplo: codeberg.org</string>
     <string name="insertNote">Inserir uma Anotação</string>
     <string name="noNotes">Nenhuma anotação encontrada</string>
     <!-- timeline -->
-    <string name="commitsText">commit</string>
+    <string name="commitsText">commits</string>
     <string name="commitText">commit</string>
-    <string name="timelineAddedCommit">%1$s added %2$s %3$s</string>
+    <string name="timelineAddedCommit">%1$s adicionou %2$s %3$s</string>
     <!-- the | is replaced by the label -->
-    <string name="timelineAddedLabel">%1$s added the | label %2$s</string>
+    <string name="timelineAddedLabel">%1$s adicionou a | etiqueta %2$s</string>
     <!-- the | is replaced by the label -->
-    <string name="timelineRemovedLabel">%1$s removed the | label %2$s</string>
-    <string name="timelineAssigneesRemoved">%1$s removed their assignment %2$s</string>
-    <string name="timelineAssigneesUnassigned">%1$s was unassigned by %2$s %3$s</string>
-    <string name="timelineAssigneesSelfAssigned">%1$s self-assigned this %2$s</string>
-    <string name="timelineAssigneesAssigned">%1$s was assigned by %2$s %3$s</string>
+    <string name="timelineRemovedLabel">%1$s removeu a | etiqueta %2$s</string>
+    <string name="timelineAssigneesRemoved">%1$s removeram suas indicações %2$s</string>
+    <string name="timelineAssigneesUnassigned">%1$s foi destituído por %2$s %3$s</string>
+    <string name="timelineAssigneesSelfAssigned">%1$s indicou a si para %2$s</string>
+    <string name="timelineAssigneesAssigned">%1$s foi indicado por %2$s %3$s</string>
     <string name="timelineMilestoneAdded">%1$s added this to the %2$s milestone %3$s</string>
     <string name="timelineMilestoneRemoved">%1$s removed this from the %2$s milestone %3$s</string>
     <string name="timelineMilestoneDeleted">%1$s added this to a deleted milestone %2$s</string>
@@ -768,9 +763,9 @@ Exemplo: codeberg.org</string>
     <string name="timelineDueDateRemoved">%1$s removed the due date %2$s %3$s</string>
     <string name="timelineBranchChanged">%1$s alterou o ramo alvo de %2$s para %3$s %4$s</string>
     <string name="timelineBranchDeleted">%1$s removeu o ramo %2$s %3$s</string>
-    <string name="timelineTimeTrackingStart">%1$s started working %2$s</string>
-    <string name="timelineTimeTrackingStop">%1$s stopped time tracking %2$s</string>
-    <string name="timelineTimeTrackingCancel">%1$s cancelled time tracking %2$s</string>
+    <string name="timelineTimeTrackingStart">%1$s começou a trabalhar em %2$s</string>
+    <string name="timelineTimeTrackingStop">%1$s interrompeu o monitoramento de tempo %2$s</string>
+    <string name="timelineTimeTrackingCancel">%1$s cancelou o monitoramento de tempo %2$s</string>
     <string name="timelineTimeTrackingAddManualTime">%1$s added spent time %2$s %3$s</string>
     <string name="timelineTimeTrackingDeleteManualTime">%1$s deleted spent time %2$s %3$s</string>
     <string name="timelineChangeIssueRef">%1$s added reference %2$s %3$s</string>
@@ -812,4 +807,24 @@ Exemplo: codeberg.org</string>
     <string name="attachment">Anexo</string>
     <string name="attachments">Anexos</string>
     <string name="attachmentsSaveError">An issue was created but cannot process attachments at this time. Check the server logs for more details.</string>
+    <string name="search_matches_found">%1$d matches found</string>
+    <string name="search_no_matches">No matches found</string>
+    <string name="heatmap_contribution">%1$d contributions on %2$s</string>
+    <string name="im_mentioned">I\'m mentioned</string>
+    <string name="dependencies">Dependencies</string>
+    <string name="no_dependencies_set">No dependencies set</string>
+    <string name="dependency_removed">Dependency removed</string>
+    <string name="dependency_removal_failed">Failed to remove dependency</string>
+    <string name="dependency_added">Dependency added</string>
+    <string name="dependency_add_failed">Failed to add dependency</string>
+    <string name="search_failed">Search failed</string>
+    <string name="no_dependency_search_results">No matching results found</string>
+    <string name="tracked_time">Tracked Time</string>
+    <string name="no_tracked_time">No time tracked yet</string>
+    <string name="total_time">Total: %1$dh %2$dm %3$ds</string>
+    <string name="enter_time">Please enter some time</string>
+    <string name="time_added">Time added</string>
+    <string name="time_removed">Time removed</string>
+    <string name="time_add_failed">Failed to add time</string>
+    <string name="time_delete_failed">Failed to delete time</string>
 </resources>
