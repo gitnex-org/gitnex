@@ -1,0 +1,8 @@
+8.0.1
+
+🐛 Bug Fixes
+- Fix crash on opening PR from dashboard
+- Fix PR commit statuses opening from dashboard
+- Fix offline mode and cache
+
+Release Notes: https://codeberg.org/gitnex/GitNex/releases
