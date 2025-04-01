@@ -53,7 +53,7 @@ We use [Crowdin](https://crowdin.com/project/gitnex) for translations. If your l
 
 **Link: https://crowdin.com/project/GitNex**
 
-## Screenshots:
+## Screenshots
 
 [<img src="https://codeberg.org/gitnex/GitNex/raw/branch/main/fastlane/metadata/android/en-US/images/phoneScreenshots/001.png" alt="001.png" width="200"/>](https://codeberg.org/gitnex/GitNex/raw/branch/main/fastlane/metadata/android/en-US/images/phoneScreenshots/001.png) | [<img src="https://codeberg.org/gitnex/GitNex/raw/branch/main/fastlane/metadata/android/en-US/images/phoneScreenshots/002.png" alt="002.png" width="200"/>](https://codeberg.org/gitnex/GitNex/raw/branch/main/fastlane/metadata/android/en-US/images/phoneScreenshots/002.png) | [<img src="https://codeberg.org/gitnex/GitNex/raw/branch/main/fastlane/metadata/android/en-US/images/phoneScreenshots/003.png" alt="003.png" width="200"/>](https://codeberg.org/gitnex/GitNex/raw/branch/main/fastlane/metadata/android/en-US/images/phoneScreenshots/003.png) | [<img src="https://codeberg.org/gitnex/GitNex/raw/branch/main/fastlane/metadata/android/en-US/images/phoneScreenshots/004.png" alt="004.png" width="200"/>](https://codeberg.org/gitnex/GitNex/raw/branch/main/fastlane/metadata/android/en-US/images/phoneScreenshots/004.png)
 ---|---|---|---
@@ -86,7 +86,6 @@ Thanks to all the open source libraries, contributors, and donors.
 - [ramseth001/TextDrawable](https://github.com/ramseth001/TextDrawable)
 - [vdurmont/emoji-java](https://github.com/vdurmont/emoji-java)
 - [skydoves/ColorPickerView](https://github.com/skydoves/ColorPickerView)
-- [HamidrezaAmz/BreadcrumbsView](https://github.com/HamidrezaAmz/BreadcrumbsView)
 - [Baseflow/PhotoView](https://github.com/Baseflow/PhotoView)
 - [apache/commons](https://github.com/apache/commons-io)
 - [ge0rg/MemorizingTrustManager](https://github.com/ge0rg/MemorizingTrustManager)
@@ -102,6 +101,10 @@ Thanks to all the open source libraries, contributors, and donors.
 - [google/material-design-icons](https://github.com/google/material-design-icons)
 - [tabler/tabler-icons](https://github.com/tabler/tabler-icons)
 
+## Social
+
 [Follow me on Fediverse - mastodon.social/@mmarif](https://mastodon.social/@mmarif)
+
+[Follow me on Bluesky - mmarif.bsky.social](https://bsky.app/profile/mmarif.bsky.social)
 
 *All trademarks and logos are the properties of their respective owners.*

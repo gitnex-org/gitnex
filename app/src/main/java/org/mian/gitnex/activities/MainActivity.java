@@ -61,7 +61,6 @@ import org.mian.gitnex.helpers.AppUtil;
 import org.mian.gitnex.helpers.ChangeLog;
 import org.mian.gitnex.helpers.Toasty;
 import org.mian.gitnex.structs.BottomSheetListener;
-import org.mian.gitnex.structs.FragmentRefreshListener;
 import retrofit2.Call;
 import retrofit2.Callback;
 
@@ -119,6 +118,8 @@ public class MainActivity extends BaseActivity
 		}
 
 		noConnection = false;
+
+		loadUserInfo();
 
 		Toolbar toolbar = activityMainBinding.toolbar;
 		toolbarTitle = activityMainBinding.toolbarTitle;
@@ -500,24 +501,6 @@ public class MainActivity extends BaseActivity
 					break;
 			}
 		}
-
-		handler.postDelayed(
-				() -> {
-					boolean connToInternet = AppUtil.hasNetworkConnection(appCtx);
-					if (!connToInternet) {
-
-						if (!noConnection) {
-							Toasty.error(
-									ctx, getResources().getString(R.string.checkNetConnection));
-						}
-						noConnection = true;
-					} else {
-
-						loadUserInfo();
-						noConnection = false;
-					}
-				},
-				750);
 
 		handler.postDelayed(
 				() -> {

@@ -15,37 +15,6 @@
         android:visibility="gone"
         tools:visibility="visible">
 
-        <com.google.android.material.card.MaterialCardView
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            style="?attr/materialCardViewElevatedStyle"
-            android:layout_marginStart="@dimen/dimen8dp"
-            android:layout_marginEnd="@dimen/dimen8dp"
-            android:layout_marginTop="@dimen/dimen8dp"
-            android:visibility="gone"
-            app:cardElevation="@dimen/dimen0dp">
-
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:foreground="?android:attr/selectableItemBackground"
-                android:background="?attr/materialCardBackgroundColor"
-                android:orientation="horizontal">
-
-                <moe.feng.common.view.breadcrumbs.BreadcrumbsView
-                    android:id="@+id/breadcrumbs_view"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:saveEnabled="false"
-                    android:text="@string/filesBreadcrumbRoot"
-                    app:CustomTextSize="@dimen/dimen16sp"
-                    app:SelectedTextColor="?attr/primaryTextColor"
-                    app:UnSelectedTextColor="?attr/inputSelectedColor" />
-
-            </LinearLayout>
-
-        </com.google.android.material.card.MaterialCardView>
-
         <!-- branch section -->
         <com.google.android.material.card.MaterialCardView
             android:id="@+id/branch_section"
