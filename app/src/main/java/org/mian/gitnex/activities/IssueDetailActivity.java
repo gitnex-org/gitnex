@@ -169,6 +169,7 @@ public class IssueDetailActivity extends BaseActivity
 	private final float buttonAlphaStatEnabled = 1F;
 	private int loadingFinished = 0;
 	private MentionHelper mentionHelper;
+	private boolean pullRequestFetchAttempted = false;
 
 	private enum Mode {
 		EDIT,
@@ -394,6 +395,7 @@ public class IssueDetailActivity extends BaseActivity
 		getSingleIssue(repoOwner, repoName, issueIndex);
 		getAttachments();
 		fetchDataAsync(repoOwner, repoName, issueIndex);
+		getPullRequest();
 
 		viewBinding.statuses.setOnClickListener(
 				view -> {
@@ -1016,7 +1018,7 @@ public class IssueDetailActivity extends BaseActivity
 		if (issue.hasIssue()) {
 			viewBinding.progressBar.setVisibility(View.GONE);
 			getSubscribed();
-			initWithIssue();
+			checkAndInitWithIssue();
 			return;
 		}
 
@@ -1037,9 +1039,9 @@ public class IssueDetailActivity extends BaseActivity
 
 							Issue singleIssue = response.body();
 							assert singleIssue != null;
-
 							issue.setIssue(singleIssue);
-							initWithIssue();
+							loadingFinishedIssue = true;
+							checkAndInitWithIssue();
 						} else if (response.code() == 401) {
 
 							AlertDialogs.authorizationTokenRevokedDialog(ctx);
@@ -1054,6 +1056,8 @@ public class IssueDetailActivity extends BaseActivity
 					public void onFailure(@NonNull Call<Issue> call, @NonNull Throwable t) {
 
 						viewBinding.progressBar.setVisibility(View.GONE);
+						loadingFinishedIssue = true;
+						checkAndInitWithIssue();
 					}
 				});
 
@@ -1100,26 +1104,34 @@ public class IssueDetailActivity extends BaseActivity
 
 		viewBinding.issuePrState.setVisibility(View.VISIBLE);
 
+		if (issue.getIssue() == null) {
+			return;
+		}
+
 		if (issue.getIssue().getPullRequest() != null) {
 
 			viewBinding.statusesLvMain.setVisibility(View.VISIBLE);
 
 			getStatuses();
-			getPullRequest();
 
 			viewBinding.prInfoLayout.setVisibility(View.VISIBLE);
 			String displayName;
-			if (!issue.getPullRequest().getUser().getFullName().isEmpty()) {
-				displayName = issue.getPullRequest().getUser().getFullName();
+			User user = issue.getIssue().getUser();
+			if (user != null && user.getFullName() != null && !user.getFullName().isEmpty()) {
+				displayName = user.getFullName();
 			} else {
-				displayName = issue.getPullRequest().getUser().getLogin();
+				displayName = user != null && user.getLogin() != null ? user.getLogin() : "Unknown";
 			}
-			viewBinding.prInfo.setText(
-					getString(
-							R.string.pr_info,
-							displayName,
-							issue.getPullRequest().getHead().getRef(),
-							issue.getPullRequest().getBase().getRef()));
+
+			PullRequest pr = issue.getPullRequest();
+			if (pr != null && pr.getHead() != null && pr.getBase() != null) {
+				viewBinding.prInfo.setText(
+						getString(
+								R.string.pr_info,
+								displayName,
+								pr.getHead().getRef(),
+								pr.getBase().getRef()));
+			}
 
 			if (issue.getIssue().getPullRequest().isMerged()) { // merged
 
@@ -1530,17 +1542,31 @@ public class IssueDetailActivity extends BaseActivity
 							public void onResponse(
 									@NonNull Call<PullRequest> call,
 									@NonNull Response<PullRequest> response) {
+								pullRequestFetchAttempted = true;
 								if (response.isSuccessful() && response.body() != null) {
 									issue.setPullRequest(response.body());
 									loadingFinishedPr = true;
 									updateMenuState();
+								} else {
+									loadingFinishedPr = true;
 								}
+								checkAndInitWithIssue();
 							}
 
 							@Override
 							public void onFailure(
-									@NonNull Call<PullRequest> call, @NonNull Throwable t) {}
+									@NonNull Call<PullRequest> call, @NonNull Throwable t) {
+								pullRequestFetchAttempted = true;
+								loadingFinishedPr = true;
+								checkAndInitWithIssue();
+							}
 						});
+	}
+
+	private void checkAndInitWithIssue() {
+		if (loadingFinishedIssue || pullRequestFetchAttempted) {
+			initWithIssue();
+		}
 	}
 
 	private void getRepoInfo() {
@@ -1800,15 +1826,16 @@ public class IssueDetailActivity extends BaseActivity
 
 	private void getStatuses() {
 
+		PullRequest pr = issue.getPullRequest();
+		if (pr == null || pr.getHead() == null || pr.getHead().getRef() == null) {
+			viewBinding.statusesLvMain.setVisibility(View.GONE);
+			return;
+		}
+
+		String headRef = pr.getHead().getSha();
+
 		RetrofitClient.getApiInterface(ctx)
-				.repoListStatuses(
-						repoOwner,
-						repoName,
-						issue.getRepository().getBranchRef(),
-						null,
-						null,
-						null,
-						null)
+				.repoListStatuses(repoOwner, repoName, headRef, null, null, null, null)
 				.enqueue(
 						new Callback<>() {
 
@@ -1862,6 +1889,7 @@ public class IssueDetailActivity extends BaseActivity
 							public void onFailure(
 									@NonNull Call<List<CommitStatus>> call, @NonNull Throwable t) {
 
+								viewBinding.statusesLvMain.setVisibility(View.GONE);
 								checkLoading();
 								if (ctx != null) {
 									Toasty.error(ctx, getString(R.string.genericError));

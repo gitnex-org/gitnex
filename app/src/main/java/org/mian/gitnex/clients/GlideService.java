@@ -11,6 +11,7 @@ import com.bumptech.glide.load.model.GlideUrl;
 import com.bumptech.glide.module.AppGlideModule;
 import java.io.InputStream;
 import okhttp3.OkHttpClient;
+import org.mian.gitnex.activities.BaseActivity;
 
 /**
  * @author mmarif
@@ -26,7 +27,11 @@ public class GlideService extends AppGlideModule {
 	@Override
 	public void registerComponents(
 			@NonNull Context context, @NonNull Glide glide, @NonNull Registry registry) {
-		OkHttpClient okHttpClient = GlideHttpClient.getUnsafeOkHttpClient();
+		String token = "";
+		if (context instanceof BaseActivity) {
+			token = ((BaseActivity) context).getAccount().getAuthorization();
+		}
+		OkHttpClient okHttpClient = RetrofitClient.getOkHttpClient(context, token);
 		registry.replace(
 				GlideUrl.class, InputStream.class, new OkHttpUrlLoader.Factory(okHttpClient));
 	}

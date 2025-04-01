@@ -492,13 +492,6 @@ public class RepoInfoFragment extends Fragment {
 															requireActivity()
 																	.runOnUiThread(
 																			() -> {
-																				Toasty.error(
-																						ctx,
-																						ctx
-																								.getString(
-																										R
-																												.string
-																												.genericError));
 																				binding
 																						.fileContentsFrameHeader
 																						.setVisibility(

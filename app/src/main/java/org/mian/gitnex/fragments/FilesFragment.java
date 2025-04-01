@@ -1,6 +1,5 @@
 package org.mian.gitnex.fragments;
 
-import android.annotation.SuppressLint;
 import android.app.Dialog;
 import android.content.Intent;
 import android.graphics.Rect;
@@ -24,12 +23,8 @@ import androidx.lifecycle.ViewModelProvider;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 import com.google.android.material.dialog.MaterialAlertDialogBuilder;
-import java.util.ArrayList;
-import java.util.Collections;
 import java.util.List;
 import java.util.Objects;
-import moe.feng.common.view.breadcrumbs.DefaultBreadcrumbsCallback;
-import moe.feng.common.view.breadcrumbs.model.BreadcrumbItem;
 import org.gitnex.tea4j.v2.models.Branch;
 import org.gitnex.tea4j.v2.models.ContentsResponse;
 import org.mian.gitnex.R;
@@ -95,31 +90,6 @@ public class FilesFragment extends Fragment implements FilesAdapter.FilesAdapter
 
 		binding.branchTitle.setText(repository.getBranchRef());
 
-		binding.breadcrumbsView.setItems(
-				new ArrayList<>(
-						Collections.singletonList(
-								BreadcrumbItem.createSimpleItem(repository.getBranchRef()))));
-		// noinspection unchecked
-		binding.breadcrumbsView.setCallback(
-				new DefaultBreadcrumbsCallback<BreadcrumbItem>() {
-
-					@SuppressLint("SetTextI18n")
-					@Override
-					public void onNavigateBack(BreadcrumbItem item, int position) {
-
-						if (position == 0) {
-							path.clear();
-						} else {
-							path.pop(path.size() - position);
-						}
-						refresh();
-					}
-
-					@Override
-					public void onNavigateNewLocation(
-							BreadcrumbItem newItem, int changedPosition) {}
-				});
-
 		requireActivity()
 				.getOnBackPressedDispatcher()
 				.addCallback(
@@ -136,7 +106,6 @@ public class FilesFragment extends Fragment implements FilesAdapter.FilesAdapter
 									return;
 								}
 								path.remove(path.size() - 1);
-								binding.breadcrumbsView.removeLastItem();
 								if (path.size() == 0) {
 									fetchDataAsync(
 											repository.getOwner(),
@@ -163,19 +132,12 @@ public class FilesFragment extends Fragment implements FilesAdapter.FilesAdapter
 						repoBranch -> {
 							repository.setBranchRef(repoBranch);
 							path.clear();
-							binding.breadcrumbsView.setItems(
-									new ArrayList<>(
-											Collections.singletonList(
-													BreadcrumbItem.createSimpleItem(
-															repository.getBranchRef()))));
 							refresh();
 						});
 
 		String dir = requireActivity().getIntent().getStringExtra("dir");
 		if (dir != null) {
 			for (String segment : dir.split("/")) {
-				binding.breadcrumbsView.addItem(
-						new BreadcrumbItem(Collections.singletonList(segment)));
 				path.add(segment);
 			}
 		}
@@ -254,8 +216,6 @@ public class FilesFragment extends Fragment implements FilesAdapter.FilesAdapter
 		switch (file.getType()) {
 			case "dir":
 				path.addWithoutEncoding(file.getName());
-				binding.breadcrumbsView.addItem(
-						new BreadcrumbItem(Collections.singletonList(file.getName())));
 				refresh();
 				break;
 
