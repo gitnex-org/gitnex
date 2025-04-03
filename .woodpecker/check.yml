@@ -10,7 +10,7 @@ steps:
       path: [ app/**, build.gradle ]
 
   style:
-    image: alvrme/alpine-android:android-32-jdk17
+    image: alvrme/alpine-android:android-34-jdk21
     commands:
       - ./gradlew :app:spotlessCheck
     when:
@@ -18,7 +18,7 @@ steps:
       path: [ app/**, build.gradle ]
 
   test:
-    image: alvrme/alpine-android:android-32-jdk17
+    image: alvrme/alpine-android:android-34-jdk21
     commands:
       - ./gradlew test
     when:
