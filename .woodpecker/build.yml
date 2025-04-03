@@ -1,6 +1,6 @@
 steps:
   build:
-    image: alvrme/alpine-android:android-32-jdk17
+    image: alvrme/alpine-android:android-34-jdk21
     commands:
       - ./gradlew assembleFreeRelease
     when:
@@ -8,7 +8,7 @@ steps:
       path: [ app/**, build.gradle ]
 
   sign:
-    image: alvrme/alpine-android:android-32-jdk17
+    image: alvrme/alpine-android:android-34-jdk21
     environment:
       OUTPUT: "signed.apk"
       INSTANCE: "https://codeberg.org"
