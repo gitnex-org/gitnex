@@ -141,6 +141,8 @@ public class RetrofitClient {
 						.addInterceptor(auth)
 						.addInterceptor(cacheInterceptor)
 						.addNetworkInterceptor(forceCacheInterceptor);
+			} else {
+				okHttpClient.addInterceptor(auth);
 			}
 
 			return okHttpClient.build();
@@ -172,6 +174,12 @@ public class RetrofitClient {
 	}
 
 	public static ApiInterface getApiInterface(Context context) {
+		if (!(context instanceof BaseActivity)
+				|| ((BaseActivity) context).getAccount() == null
+				|| ((BaseActivity) context).getAccount().getAccount() == null) {
+			throw new IllegalStateException(
+					"No active account available. Use explicit URL and token.");
+		}
 		return getApiInterface(
 				context,
 				((BaseActivity) context).getAccount().getAccount().getInstanceUrl(),
@@ -199,14 +207,16 @@ public class RetrofitClient {
 
 	public static ApiInterface getApiInterface(
 			Context context, String url, String token, File cacheFile) {
-		String key = token.hashCode() + "@" + url;
-		if (!apiInterfaces.containsKey(key)) {
+		String key = (token != null ? token.hashCode() : 0) + "@" + url;
+		if (cacheFile == null || !apiInterfaces.containsKey(key)) {
 			synchronized (RetrofitClient.class) {
-				if (!apiInterfaces.containsKey(key)) {
+				if (cacheFile == null || !apiInterfaces.containsKey(key)) {
 					ApiInterface apiInterface =
 							Objects.requireNonNull(createRetrofit(context, url, token, cacheFile))
 									.create(ApiInterface.class);
-					apiInterfaces.put(key, apiInterface);
+					if (cacheFile != null) {
+						apiInterfaces.put(key, apiInterface);
+					}
 					return apiInterface;
 				}
 			}
@@ -216,7 +226,7 @@ public class RetrofitClient {
 
 	public static WebApi getWebInterface(
 			Context context, String url, String token, File cacheFile) {
-		String key = token.hashCode() + "@" + url;
+		String key = (token != null ? token.hashCode() : 0) + "@" + url;
 		if (!webInterfaces.containsKey(key)) {
 			synchronized (RetrofitClient.class) {
 				if (!webInterfaces.containsKey(key)) {
