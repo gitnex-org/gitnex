@@ -53,6 +53,7 @@ public class LoginActivity extends BaseActivity {
 	private int maxResponseItems = 50;
 	private int defaultPagingNumber = 25;
 	private final String DATABASE_NAME = "gitnex";
+	private boolean hasShownInitialNetworkError = false;
 
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
@@ -86,6 +87,12 @@ public class LoginActivity extends BaseActivity {
 					}
 				});
 
+		if (AppUtil.hasNetworkConnection(ctx)) {
+			enableProcessButton();
+		} else {
+			disableProcessButton();
+		}
+
 		networkStatusObserver.registerNetworkStatusListener(
 				hasNetworkConnection ->
 						runOnUiThread(
@@ -96,11 +103,14 @@ public class LoginActivity extends BaseActivity {
 										disableProcessButton();
 										activityLoginBinding.loginButton.setText(
 												getResources().getString(R.string.btnLogin));
-										SnackBar.error(
-												ctx,
-												findViewById(android.R.id.content),
-												getString(R.string.checkNetConnection));
+										if (hasShownInitialNetworkError) {
+											SnackBar.error(
+													ctx,
+													findViewById(android.R.id.content),
+													getString(R.string.checkNetConnection));
+										}
 									}
+									hasShownInitialNetworkError = true;
 								}));
 
 		activityLoginBinding.loginButton.setOnClickListener(
@@ -185,7 +195,7 @@ public class LoginActivity extends BaseActivity {
 			}
 
 			versionCheck(loginToken);
-			serverPageLimitSettings();
+			serverPageLimitSettings(String.valueOf(instanceUrl), loginToken);
 
 		} catch (Exception e) {
 
@@ -195,10 +205,10 @@ public class LoginActivity extends BaseActivity {
 		}
 	}
 
-	private void serverPageLimitSettings() {
-
+	private void serverPageLimitSettings(String instanceUrl, String loginToken) {
 		Call<GeneralAPISettings> generalAPISettings =
-				RetrofitClient.getApiInterface(ctx).getGeneralAPISettings();
+				RetrofitClient.getApiInterface(ctx, instanceUrl, "token " + loginToken, null)
+						.getGeneralAPISettings();
 		generalAPISettings.enqueue(
 				new Callback<>() {
 
@@ -229,9 +239,7 @@ public class LoginActivity extends BaseActivity {
 
 	private void versionCheck(final String loginToken) {
 
-		Call<ServerVersion> callVersion;
-
-		callVersion =
+		Call<ServerVersion> callVersion =
 				RetrofitClient.getApiInterface(
 								ctx, instanceUrl.toString(), "token " + loginToken, null)
 						.getVersion();
