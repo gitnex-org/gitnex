@@ -56,7 +56,6 @@ public class RetrofitClient {
 	private static final Map<String, ApiInterface> apiInterfaces = new ConcurrentHashMap<>();
 	private static final Map<String, WebApi> webInterfaces = new ConcurrentHashMap<>();
 	private static final int CACHE_SIZE_MB = 50;
-	private static final int MAX_AGE_SECONDS = 60 * 5;
 	private static final int MAX_STALE_SECONDS = 60 * 60 * 24 * 30;
 
 	private static OkHttpClient buildOkHttpClient(Context context, String token, File cacheFile) {
@@ -106,15 +105,20 @@ public class RetrofitClient {
 						chain -> {
 							Request originalRequest = chain.request();
 							boolean hasNetwork = AppUtil.hasNetworkConnection(context);
-							CacheControl.Builder cacheControlBuilder = new CacheControl.Builder();
+							CacheControl cacheControl;
+
 							if (hasNetwork) {
-								cacheControlBuilder.maxAge(MAX_AGE_SECONDS, TimeUnit.SECONDS);
+								cacheControl =
+										new CacheControl.Builder()
+												.maxAge(0, TimeUnit.SECONDS)
+												.build();
 							} else {
-								cacheControlBuilder
-										.onlyIfCached()
-										.maxStale(MAX_STALE_SECONDS, TimeUnit.SECONDS);
+								cacheControl =
+										new CacheControl.Builder()
+												.onlyIfCached()
+												.maxStale(MAX_STALE_SECONDS, TimeUnit.SECONDS)
+												.build();
 							}
-							CacheControl cacheControl = cacheControlBuilder.build();
 
 							Request modifiedRequest =
 									originalRequest.newBuilder().cacheControl(cacheControl).build();
@@ -122,15 +126,18 @@ public class RetrofitClient {
 							return chain.proceed(modifiedRequest);
 						};
 
-				Interceptor forceCacheInterceptor =
+				Interceptor networkInterceptor =
 						chain -> {
 							Request request = chain.request();
 							Response response = chain.proceed(request);
-							if (request.method().equals("GET") && response.isSuccessful()) {
+							if (request.method().equals("GET")
+									&& response.isSuccessful()
+									&& AppUtil.hasNetworkConnection(context)) {
 								return response.newBuilder()
 										.header(
 												"Cache-Control",
-												"public, max-age=" + MAX_AGE_SECONDS)
+												"public, only-if-cached, max-stale="
+														+ MAX_STALE_SECONDS)
 										.removeHeader("Pragma")
 										.build();
 							}
@@ -140,7 +147,7 @@ public class RetrofitClient {
 				okHttpClient
 						.addInterceptor(auth)
 						.addInterceptor(cacheInterceptor)
-						.addNetworkInterceptor(forceCacheInterceptor);
+						.addNetworkInterceptor(networkInterceptor);
 			} else {
 				okHttpClient.addInterceptor(auth);
 			}

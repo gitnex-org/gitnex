@@ -1,56 +1,83 @@
 package org.mian.gitnex.clients;
 
-import android.annotation.SuppressLint;
+import android.content.Context;
+import java.security.SecureRandom;
+import javax.net.ssl.HttpsURLConnection;
 import javax.net.ssl.SSLContext;
-import javax.net.ssl.SSLSocketFactory;
-import javax.net.ssl.TrustManager;
 import javax.net.ssl.X509TrustManager;
 import okhttp3.OkHttpClient;
+import org.gitnex.tea4j.v2.auth.ApiKeyAuth;
+import org.mian.gitnex.helpers.ssl.MemorizingTrustManager;
 
 /**
  * @author mmarif
  */
 public class GlideHttpClient {
 
-	public static OkHttpClient getUnsafeOkHttpClient() {
-
+	public static OkHttpClient getOkHttpClient(Context context, String token) {
 		try {
-			@SuppressLint("CustomX509TrustManager")
-			final TrustManager[] trustAllCerts =
-					new TrustManager[] {
-						new X509TrustManager() {
-							@SuppressLint("TrustAllX509TrustManager")
-							@Override
-							public void checkClientTrusted(
-									java.security.cert.X509Certificate[] chain, String authType) {}
+			SSLContext sslContext = SSLContext.getInstance("TLS");
+			MemorizingTrustManager memorizingTrustManager = new MemorizingTrustManager(context);
+			sslContext.init(
+					null, new X509TrustManager[] {memorizingTrustManager}, new SecureRandom());
 
-							@SuppressLint("TrustAllX509TrustManager")
-							@Override
-							public void checkServerTrusted(
-									java.security.cert.X509Certificate[] chain, String authType) {}
+			ApiKeyAuth auth = new ApiKeyAuth("header", "Authorization");
+			auth.setApiKey(token);
 
-							@Override
-							public java.security.cert.X509Certificate[] getAcceptedIssuers() {
-								return new java.security.cert.X509Certificate[] {};
-							}
-						}
-					};
-
-			// Install the all-trusting trust manager
-			final SSLContext sslContext = SSLContext.getInstance("SSL");
-			sslContext.init(null, trustAllCerts, new java.security.SecureRandom());
-
-			// Create an ssl socket factory with our all-trusting manager
-			final SSLSocketFactory sslSocketFactory = sslContext.getSocketFactory();
-
-			OkHttpClient.Builder builder = new OkHttpClient.Builder();
-			builder.sslSocketFactory(sslSocketFactory, (X509TrustManager) trustAllCerts[0]);
-			builder.hostnameVerifier((hostname, session) -> true);
+			OkHttpClient.Builder builder =
+					new OkHttpClient.Builder()
+							.sslSocketFactory(sslContext.getSocketFactory(), memorizingTrustManager)
+							.hostnameVerifier(
+									memorizingTrustManager.wrapHostnameVerifier(
+											HttpsURLConnection.getDefaultHostnameVerifier()))
+							.addInterceptor(auth);
 
 			return builder.build();
 
 		} catch (Exception e) {
-			throw new RuntimeException(e);
+			throw new RuntimeException("Failed to create Glide OkHttpClient: " + e.getMessage(), e);
+		}
+	}
+
+	public static OkHttpClient getUnsafeOkHttpClient(String token) {
+		try {
+			@SuppressWarnings("CustomX509TrustManager")
+			final X509TrustManager trustAllCerts =
+					new X509TrustManager() {
+						@SuppressWarnings("TrustAllX509TrustManager")
+						@Override
+						public void checkClientTrusted(
+								java.security.cert.X509Certificate[] chain, String authType) {}
+
+						@SuppressWarnings("TrustAllX509TrustManager")
+						@Override
+						public void checkServerTrusted(
+								java.security.cert.X509Certificate[] chain, String authType) {}
+
+						@Override
+						public java.security.cert.X509Certificate[] getAcceptedIssuers() {
+							return new java.security.cert.X509Certificate[] {};
+						}
+					};
+
+			final SSLContext sslContext = SSLContext.getInstance("SSL");
+			sslContext.init(null, new X509TrustManager[] {trustAllCerts}, new SecureRandom());
+			final javax.net.ssl.SSLSocketFactory sslSocketFactory = sslContext.getSocketFactory();
+
+			ApiKeyAuth auth = new ApiKeyAuth("header", "Authorization");
+			auth.setApiKey(token);
+
+			OkHttpClient.Builder builder =
+					new OkHttpClient.Builder()
+							.sslSocketFactory(sslSocketFactory, trustAllCerts)
+							.hostnameVerifier((hostname, session) -> true)
+							.addInterceptor(auth);
+
+			return builder.build();
+
+		} catch (Exception e) {
+			throw new RuntimeException(
+					"Failed to create unsafe Glide OkHttpClient: " + e.getMessage(), e);
 		}
 	}
 }
