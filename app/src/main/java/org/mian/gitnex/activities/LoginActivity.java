@@ -10,10 +10,14 @@ import android.content.Context;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
+import android.util.TypedValue;
 import android.widget.ArrayAdapter;
+import android.widget.TextView;
 import androidx.activity.result.ActivityResultLauncher;
 import androidx.activity.result.contract.ActivityResultContracts;
 import androidx.annotation.NonNull;
+import androidx.appcompat.app.AlertDialog;
+import androidx.core.text.HtmlCompat;
 import com.google.android.material.dialog.MaterialAlertDialogBuilder;
 import io.mikael.urlbuilder.UrlBuilder;
 import java.io.File;
@@ -93,6 +97,8 @@ public class LoginActivity extends BaseActivity {
 			disableProcessButton();
 		}
 
+		activityLoginBinding.tokenHelper.setOnClickListener(token -> showTokenHelpDialog());
+
 		networkStatusObserver.registerNetworkStatusListener(
 				hasNetworkConnection ->
 						runOnUiThread(
@@ -136,6 +142,37 @@ public class LoginActivity extends BaseActivity {
 
 					materialAlertDialogBuilder.create().show();
 				});
+	}
+
+	private void showTokenHelpDialog() {
+
+		MaterialAlertDialogBuilder dialogBuilder =
+				new MaterialAlertDialogBuilder(this)
+						.setMessage(
+								HtmlCompat.fromHtml(
+										getString(R.string.where_to_get_token_message),
+										HtmlCompat.FROM_HTML_MODE_LEGACY))
+						.setPositiveButton(R.string.close, null)
+						.setCancelable(true);
+
+		AlertDialog dialog = dialogBuilder.create();
+		dialog.show();
+
+		TextView messageView = dialog.findViewById(android.R.id.message);
+		if (messageView != null) {
+			messageView.setTextSize(TypedValue.COMPLEX_UNIT_SP, 14);
+			int paddingTop =
+					(int)
+							TypedValue.applyDimension(
+									TypedValue.COMPLEX_UNIT_DIP,
+									16,
+									getResources().getDisplayMetrics());
+			messageView.setPadding(
+					messageView.getPaddingLeft(),
+					paddingTop,
+					messageView.getPaddingRight(),
+					messageView.getPaddingBottom());
+		}
 	}
 
 	private void login() {
