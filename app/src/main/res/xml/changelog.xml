@@ -1,8 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <changelog>
 
-    <release version="8.0.2" versioncode="802">
-        <change>Hotfix: Fix logins</change>
+    <release version="8.0.3" versioncode="803">
+        <change>Bugfix: Fix offline cache affecting online activities</change>
+        <change>Bugfix: Fix glide for self-signed certificates</change>
     </release>
 
 </changelog>
