@@ -2,7 +2,9 @@
 <changelog>
 
     <release version="9.0.0-dev" versioncode="895">
-        <change>Under development</change>
+        <type name="Dev">
+            <change>Under development</change>
+        </type>
     </release>
 
 </changelog>

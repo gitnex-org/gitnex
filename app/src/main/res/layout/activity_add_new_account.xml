@@ -126,6 +126,16 @@
 
             </com.google.android.material.textfield.TextInputLayout>
 
+            <com.google.android.material.textview.MaterialTextView
+                android:id="@+id/token_helper"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/dimen16dp"
+                android:layout_gravity="center_horizontal"
+                android:textSize="@dimen/dimen14sp"
+                android:autoLink="web"
+                android:text="@string/where_to_get_token_text" />
+
         </LinearLayout>
 
     </androidx.core.widget.NestedScrollView>

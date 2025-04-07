@@ -31,7 +31,7 @@ public class GlideService extends AppGlideModule {
 		if (context instanceof BaseActivity) {
 			token = ((BaseActivity) context).getAccount().getAuthorization();
 		}
-		OkHttpClient okHttpClient = RetrofitClient.getOkHttpClient(context, token);
+		OkHttpClient okHttpClient = GlideHttpClient.getOkHttpClient(context, token);
 		registry.replace(
 				GlideUrl.class, InputStream.class, new OkHttpUrlLoader.Factory(okHttpClient));
 	}

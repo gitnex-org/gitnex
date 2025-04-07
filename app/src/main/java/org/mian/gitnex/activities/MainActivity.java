@@ -526,9 +526,7 @@ public class MainActivity extends BaseActivity
 		if (versionCode > tinyDB.getInt("versionCode")) {
 
 			tinyDB.putInt("versionCode", versionCode);
-
-			ChangeLog changelogDialog = new ChangeLog(this);
-			changelogDialog.showDialog();
+			new ChangeLog(this).showDialog();
 		}
 
 		OnBackPressedCallback onBackPressedCallback =
