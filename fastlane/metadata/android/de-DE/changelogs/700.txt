@@ -1,0 +1,15 @@
+7.0.0
+
+🎉 Funktionen 🎉
+- Angepinnte Issues
+- Unterstützung der Sprachen Bash und D
+- Anheften/Entheften eines Issues
+- Anhänge bei der Bearbeitung eines Issues hinzufügen
+- Unterstützung für die Android 15 Edge-to-Edge-Funktion
+
+🚀 Verbesserungen 🚀 
+- Verbesserte UI für Dateien
+- Hervorhebung archivierter Repositories in der Repositorie-Liste
+- Aktualisierte Übersetzungen
+
+Versionshinweise: https://codeberg.org/gitnex/GitNex/releases
