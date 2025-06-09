@@ -189,11 +189,10 @@
 
                 <TextView
                     android:id="@+id/tvCounterBadgeHeader"
-                    android:layout_width="wrap_content"
+                    android:layout_width="0dp"
                     android:layout_height="wrap_content"
-                    android:layout_weight=".90"
+                    android:layout_weight="1"
                     android:text="@string/settingsCounterBadges"
-                    android:layout_marginTop="@dimen/dimen4dp"
                     android:textColor="?attr/primaryTextColor"
                     android:textSize="@dimen/dimen18sp" />
 
@@ -201,8 +200,7 @@
                     android:id="@+id/switchCounterBadge"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:contentDescription="@string/settingsCounterBadges"
-                    android:layout_weight=".10" />
+                    android:contentDescription="@string/settingsCounterBadges" />
 
             </LinearLayout>
 
@@ -213,29 +211,33 @@
                 android:layout_marginTop="@dimen/dimen32dp"
                 android:orientation="vertical">
 
-                <LinearLayout
+                <androidx.constraintlayout.widget.ConstraintLayout
                     android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:orientation="horizontal">
+                    android:layout_height="wrap_content">
 
                     <TextView
                         android:id="@+id/tvLabelsInListHeader"
-                        android:layout_width="wrap_content"
+                        android:layout_width="0dp"
                         android:layout_height="wrap_content"
-                        android:layout_weight=".90"
+                        android:paddingEnd="@dimen/dimen16dp"
+                        android:paddingStart="@dimen/dimen0dp"
                         android:text="@string/settingsLabelsInListHeader"
-                        android:layout_marginTop="@dimen/dimen4dp"
                         android:textColor="?attr/primaryTextColor"
-                        android:textSize="@dimen/dimen18sp" />
+                        android:textSize="@dimen/dimen18sp"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintEnd_toStartOf="@id/switchLabelsInListBadge"
+                        app:layout_constraintBaseline_toBaselineOf="@id/switchLabelsInListBadge"
+                        app:layout_constraintTop_toTopOf="parent" />
 
                     <com.google.android.material.materialswitch.MaterialSwitch
                         android:id="@+id/switchLabelsInListBadge"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:contentDescription="@string/settingsLabelsInListHeader"
-                        android:layout_weight=".10" />
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintTop_toTopOf="parent" />
 
-                </LinearLayout>
+                </androidx.constraintlayout.widget.ConstraintLayout>
 
                 <LinearLayout
                     android:layout_width="match_parent"
@@ -261,29 +263,33 @@
                 android:layout_marginTop="@dimen/dimen32dp"
                 android:orientation="vertical">
 
-                <LinearLayout
+                <androidx.constraintlayout.widget.ConstraintLayout
                     android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:orientation="horizontal">
+                    android:layout_height="wrap_content">
 
                     <TextView
                         android:id="@+id/tvHideEmailLangInProfileHeader"
-                        android:layout_width="wrap_content"
+                        android:layout_width="0dp"
                         android:layout_height="wrap_content"
-                        android:layout_weight=".90"
+                        android:paddingEnd="@dimen/dimen16dp"
+                        android:paddingStart="@dimen/dimen0dp"
                         android:text="@string/hideEmailLangInProfileHeader"
-                        android:layout_marginTop="@dimen/dimen4dp"
                         android:textColor="?attr/primaryTextColor"
-                        android:textSize="@dimen/dimen18sp" />
+                        android:textSize="@dimen/dimen18sp"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintEnd_toStartOf="@id/switchHideEmailLangInProfile"
+                        app:layout_constraintBaseline_toBaselineOf="@id/switchHideEmailLangInProfile"
+                        app:layout_constraintTop_toTopOf="parent" />
 
                     <com.google.android.material.materialswitch.MaterialSwitch
                         android:id="@+id/switchHideEmailLangInProfile"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:contentDescription="@string/hideEmailLangInProfileHeader"
-                        android:layout_weight=".10" />
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintTop_toTopOf="parent" />
 
-                </LinearLayout>
+                </androidx.constraintlayout.widget.ConstraintLayout>
 
                 <LinearLayout
                     android:layout_width="match_parent"
@@ -309,29 +315,33 @@
                 android:layout_marginTop="@dimen/dimen32dp"
                 android:orientation="vertical">
 
-                <LinearLayout
+                <androidx.constraintlayout.widget.ConstraintLayout
                     android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:orientation="horizontal">
+                    android:layout_height="wrap_content">
 
                     <TextView
                         android:id="@+id/tvHideEmailNavDrawerHeader"
-                        android:layout_width="wrap_content"
+                        android:layout_width="0dp"
                         android:layout_height="wrap_content"
-                        android:layout_weight=".90"
+                        android:paddingEnd="@dimen/dimen16dp"
+                        android:paddingStart="@dimen/dimen0dp"
                         android:text="@string/hideEmailNavDrawerHeader"
-                        android:layout_marginTop="@dimen/dimen4dp"
                         android:textColor="?attr/primaryTextColor"
-                        android:textSize="@dimen/dimen18sp" />
+                        android:textSize="@dimen/dimen18sp"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintEnd_toStartOf="@id/switchHideEmailNavDrawer"
+                        app:layout_constraintBaseline_toBaselineOf="@id/switchHideEmailNavDrawer"
+                        app:layout_constraintTop_toTopOf="parent" />
 
                     <com.google.android.material.materialswitch.MaterialSwitch
                         android:id="@+id/switchHideEmailNavDrawer"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:contentDescription="@string/hideEmailNavDrawerHeader"
-                        android:layout_weight=".10" />
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintTop_toTopOf="parent" />
 
-                </LinearLayout>
+                </androidx.constraintlayout.widget.ConstraintLayout>
 
                 <LinearLayout
                     android:layout_width="match_parent"

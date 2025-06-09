@@ -128,11 +128,10 @@
 
                     <com.google.android.material.floatingactionbutton.ExtendedFloatingActionButton
                         android:id="@+id/donationLinkPatreon"
-                        android:layout_width="@dimen/dimen0dp"
+                        android:layout_width="match_parent"
                         android:layout_height="@dimen/dimen60dp"
                         android:layout_marginEnd="@dimen/dimen4dp"
-                        android:layout_marginStart="@dimen/dimen0dp"
-                        android:layout_weight=".5"
+                        android:layout_marginStart="@dimen/dimen4dp"
                         android:stateListAnimator="@null"
                         android:text="@string/supportTextPatreon"
                         android:textStyle="bold"
@@ -144,7 +143,7 @@
 
                 </LinearLayout>
 
-                <!-- translate/website text -->
+                <!-- translate text -->
                 <LinearLayout
                     android:id="@+id/layout_frame_2"
                     android:layout_width="match_parent"
@@ -154,11 +153,10 @@
 
                     <com.google.android.material.floatingactionbutton.ExtendedFloatingActionButton
                         android:id="@+id/translateLink"
-                        android:layout_width="@dimen/dimen0dp"
+                        android:layout_width="match_parent"
                         android:layout_height="@dimen/dimen60dp"
                         android:layout_marginEnd="@dimen/dimen4dp"
-                        android:layout_marginStart="@dimen/dimen0dp"
-                        android:layout_weight=".5"
+                        android:layout_marginStart="@dimen/dimen4dp"
                         android:stateListAnimator="@null"
                         android:text="@string/translateWithCrowdin"
                         android:textStyle="bold"
@@ -168,13 +166,22 @@
                         android:backgroundTint="?attr/fabColor"
                         app:icon="@drawable/ic_language" />
 
+                </LinearLayout>
+
+                <!-- website text -->
+                <LinearLayout
+                    android:id="@+id/layout_frame_4"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="@dimen/dimen12dp"
+                    android:orientation="horizontal">
+
                     <com.google.android.material.floatingactionbutton.ExtendedFloatingActionButton
                         android:id="@+id/appWebsite"
-                        android:layout_width="@dimen/dimen0dp"
+                        android:layout_width="match_parent"
                         android:layout_height="@dimen/dimen60dp"
-                        android:layout_marginEnd="@dimen/dimen0dp"
-                        android:layout_marginStart="@dimen/dimen6dp"
-                        android:layout_weight=".5"
+                        android:layout_marginEnd="@dimen/dimen4dp"
+                        android:layout_marginStart="@dimen/dimen4dp"
                         android:stateListAnimator="@null"
                         android:text="@string/websiteText"
                         android:textStyle="bold"

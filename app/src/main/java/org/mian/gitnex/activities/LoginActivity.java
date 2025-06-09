@@ -69,7 +69,7 @@ public class LoginActivity extends BaseActivity {
 
 		NetworkStatusObserver networkStatusObserver = NetworkStatusObserver.getInstance(ctx);
 
-		// activityLoginBinding.appVersion.setText(AppUtil.getAppVersion(appCtx));
+		activityLoginBinding.appVersion.setText(AppUtil.getAppVersion(appCtx));
 
 		ArrayAdapter<Protocol> adapterProtocols =
 				new ArrayAdapter<>(
