@@ -118,7 +118,7 @@
         <item name="popupMenuStyle">@style/AppThemeCodebergDarkPopupMenuStyle</item>
         <item name="android:homeAsUpIndicator">@drawable/ic_arrow_back</item>
         <item name="autoCompleteTextViewStyle">@style/AppThemeDarkSearchAutoCompleteTextView</item>
-        <item name="hintColor">@color/hintColor</item>
+        <item name="hintColor">@color/codebergDarkHintColor</item>
         <item name="colorControlActivated">@color/codebergDarkColorPrimary</item>
         <item name="dividerColor">@color/codebergDarkThemeDividerColor</item>
         <item name="bottomSheetDialogTheme">@style/AppThemeDarkBottomSheetDialog</item>

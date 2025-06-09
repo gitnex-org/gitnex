@@ -10,6 +10,7 @@
         android:id="@+id/bottom_content"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:fitsSystemWindows="true"
         app:layout_behavior="@string/appbar_scrolling_view_behavior"
         android:layout_gravity="bottom">
 
@@ -185,7 +186,7 @@
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:layout_marginTop="@dimen/dimen8dp"
-                        android:textColor="@color/colorWhite"
+                        android:textColor="?attr/inputTextColor"
                         android:textSize="@dimen/dimen12sp"
                         android:gravity="center" />
 
