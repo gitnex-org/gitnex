@@ -49,36 +49,27 @@ public class RepositoriesViewModel extends ViewModel {
 			Context ctx,
 			FragmentRepositoriesBinding fragmentRepositoriesBinding) {
 
-		Call<List<Repository>> call;
-
-		switch (type) {
-			case "starredRepos":
-				call =
-						RetrofitClient.getApiInterface(ctx)
-								.userCurrentListStarred(page, resultLimit);
-				break;
-			case "myRepos":
-				call =
-						RetrofitClient.getApiInterface(ctx)
-								.userListRepos(userLogin, page, resultLimit);
-				break;
-			case "org":
-				call = RetrofitClient.getApiInterface(ctx).orgListRepos(orgName, page, resultLimit);
-				break;
-			case "team":
-				call =
-						RetrofitClient.getApiInterface(ctx)
-								.orgListTeamRepos(Long.valueOf(userLogin), page, resultLimit);
-				break;
-			case "watched":
-				call =
-						RetrofitClient.getApiInterface(ctx)
-								.userCurrentListSubscriptions(page, resultLimit);
-				break;
-			default:
-				call = RetrofitClient.getApiInterface(ctx).userCurrentListRepos(page, resultLimit);
-				break;
-		}
+		Call<List<Repository>> call =
+				switch (type) {
+					case "starredRepos" ->
+							RetrofitClient.getApiInterface(ctx)
+									.userCurrentListStarred(page, resultLimit);
+					case "myRepos" ->
+							RetrofitClient.getApiInterface(ctx)
+									.userListRepos(userLogin, page, resultLimit);
+					case "org" ->
+							RetrofitClient.getApiInterface(ctx)
+									.orgListRepos(orgName, page, resultLimit);
+					case "team" ->
+							RetrofitClient.getApiInterface(ctx)
+									.orgListTeamRepos(Long.valueOf(userLogin), page, resultLimit);
+					case "watched" ->
+							RetrofitClient.getApiInterface(ctx)
+									.userCurrentListSubscriptions(page, resultLimit);
+					default ->
+							RetrofitClient.getApiInterface(ctx)
+									.userCurrentListRepos(page, resultLimit);
+				};
 
 		call.enqueue(
 				new Callback<>() {
@@ -118,31 +109,27 @@ public class RepositoriesViewModel extends ViewModel {
 			Context ctx,
 			ReposListAdapter adapter) {
 
-		Call<List<Repository>> call;
-
-		switch (type) {
-			case "starredRepos":
-				call =
-						RetrofitClient.getApiInterface(ctx)
-								.userCurrentListStarred(page, resultLimit);
-				break;
-			case "myRepos":
-				call =
-						RetrofitClient.getApiInterface(ctx)
-								.userListRepos(userLogin, page, resultLimit);
-				break;
-			case "org":
-				call = RetrofitClient.getApiInterface(ctx).orgListRepos(orgName, page, resultLimit);
-				break;
-			case "team":
-				call =
-						RetrofitClient.getApiInterface(ctx)
-								.orgListTeamRepos(Long.valueOf(userLogin), page, resultLimit);
-				break;
-			default:
-				call = RetrofitClient.getApiInterface(ctx).userCurrentListRepos(page, resultLimit);
-				break;
-		}
+		Call<List<Repository>> call =
+				switch (type) {
+					case "starredRepos" ->
+							RetrofitClient.getApiInterface(ctx)
+									.userCurrentListStarred(page, resultLimit);
+					case "myRepos" ->
+							RetrofitClient.getApiInterface(ctx)
+									.userListRepos(userLogin, page, resultLimit);
+					case "org" ->
+							RetrofitClient.getApiInterface(ctx)
+									.orgListRepos(orgName, page, resultLimit);
+					case "team" ->
+							RetrofitClient.getApiInterface(ctx)
+									.orgListTeamRepos(Long.valueOf(userLogin), page, resultLimit);
+					case "watched" ->
+							RetrofitClient.getApiInterface(ctx)
+									.userCurrentListSubscriptions(page, resultLimit);
+					default ->
+							RetrofitClient.getApiInterface(ctx)
+									.userCurrentListRepos(page, resultLimit);
+				};
 
 		call.enqueue(
 				new Callback<>() {
