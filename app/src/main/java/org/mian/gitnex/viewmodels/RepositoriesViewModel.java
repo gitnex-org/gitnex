@@ -31,11 +31,19 @@ public class RepositoriesViewModel extends ViewModel {
 			String type,
 			String orgName,
 			Context ctx,
-			FragmentRepositoriesBinding fragmentRepositoriesBinding) {
+			FragmentRepositoriesBinding fragmentRepositoriesBinding,
+			String sort) {
 
 		reposList = new MutableLiveData<>();
 		loadReposList(
-				page, resultLimit, userLogin, type, orgName, ctx, fragmentRepositoriesBinding);
+				page,
+				resultLimit,
+				userLogin,
+				type,
+				orgName,
+				ctx,
+				fragmentRepositoriesBinding,
+				sort);
 
 		return reposList;
 	}
@@ -47,7 +55,8 @@ public class RepositoriesViewModel extends ViewModel {
 			String type,
 			String orgName,
 			Context ctx,
-			FragmentRepositoriesBinding fragmentRepositoriesBinding) {
+			FragmentRepositoriesBinding fragmentRepositoriesBinding,
+			String sort) {
 
 		Call<List<Repository>> call =
 				switch (type) {
@@ -56,7 +65,7 @@ public class RepositoriesViewModel extends ViewModel {
 									.userCurrentListStarred(page, resultLimit);
 					case "myRepos" ->
 							RetrofitClient.getApiInterface(ctx)
-									.userListRepos(userLogin, page, resultLimit);
+									.customUserListRepos(userLogin, page, resultLimit, sort);
 					case "org" ->
 							RetrofitClient.getApiInterface(ctx)
 									.orgListRepos(orgName, page, resultLimit);
@@ -68,7 +77,7 @@ public class RepositoriesViewModel extends ViewModel {
 									.userCurrentListSubscriptions(page, resultLimit);
 					default ->
 							RetrofitClient.getApiInterface(ctx)
-									.userCurrentListRepos(page, resultLimit);
+									.customUserCurrentListRepos(page, resultLimit, sort);
 				};
 
 		call.enqueue(
@@ -107,7 +116,8 @@ public class RepositoriesViewModel extends ViewModel {
 			String type,
 			String orgName,
 			Context ctx,
-			ReposListAdapter adapter) {
+			ReposListAdapter adapter,
+			String sort) {
 
 		Call<List<Repository>> call =
 				switch (type) {
@@ -116,7 +126,7 @@ public class RepositoriesViewModel extends ViewModel {
 									.userCurrentListStarred(page, resultLimit);
 					case "myRepos" ->
 							RetrofitClient.getApiInterface(ctx)
-									.userListRepos(userLogin, page, resultLimit);
+									.customUserListRepos(userLogin, page, resultLimit, sort);
 					case "org" ->
 							RetrofitClient.getApiInterface(ctx)
 									.orgListRepos(orgName, page, resultLimit);
@@ -128,7 +138,7 @@ public class RepositoriesViewModel extends ViewModel {
 									.userCurrentListSubscriptions(page, resultLimit);
 					default ->
 							RetrofitClient.getApiInterface(ctx)
-									.userCurrentListRepos(page, resultLimit);
+									.customUserCurrentListRepos(page, resultLimit, sort);
 				};
 
 		call.enqueue(

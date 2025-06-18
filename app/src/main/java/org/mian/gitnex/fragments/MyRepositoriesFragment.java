@@ -17,6 +17,9 @@ import androidx.fragment.app.Fragment;
 import androidx.lifecycle.Lifecycle;
 import androidx.lifecycle.ViewModelProvider;
 import androidx.recyclerview.widget.LinearLayoutManager;
+import com.google.android.material.bottomsheet.BottomSheetDialogFragment;
+import com.google.android.material.chip.Chip;
+import com.google.android.material.chip.ChipGroup;
 import org.mian.gitnex.R;
 import org.mian.gitnex.activities.BaseActivity;
 import org.mian.gitnex.activities.CreateRepoActivity;
@@ -36,6 +39,7 @@ public class MyRepositoriesFragment extends Fragment {
 	private ReposListAdapter adapter;
 	private int page = 1;
 	private int resultLimit;
+	private String currentSort = "recentupdate";
 
 	@Override
 	public View onCreateView(
@@ -44,6 +48,15 @@ public class MyRepositoriesFragment extends Fragment {
 		fragmentRepositoriesBinding =
 				FragmentRepositoriesBinding.inflate(inflater, container, false);
 
+		((MainActivity) requireActivity())
+				.setActionBarTitle(getResources().getString(R.string.navMyRepos));
+		repositoriesViewModel = new ViewModelProvider(this).get(RepositoriesViewModel.class);
+
+		final String userLogin =
+				((BaseActivity) requireActivity()).getAccount().getAccount().getUserName();
+
+		resultLimit = Constants.getCurrentResultLimit(getContext());
+
 		requireActivity()
 				.addMenuProvider(
 						new MenuProvider() {
@@ -51,6 +64,7 @@ public class MyRepositoriesFragment extends Fragment {
 							public void onCreateMenu(
 									@NonNull Menu menu, @NonNull MenuInflater menuInflater) {
 								menuInflater.inflate(R.menu.search_menu, menu);
+								menuInflater.inflate(R.menu.generic_nav_dotted_menu, menu);
 
 								MenuItem searchItem = menu.findItem(R.id.action_search);
 								androidx.appcompat.widget.SearchView searchView =
@@ -62,7 +76,6 @@ public class MyRepositoriesFragment extends Fragment {
 								searchView.setOnQueryTextListener(
 										new androidx.appcompat.widget.SearchView
 												.OnQueryTextListener() {
-
 											@Override
 											public boolean onQueryTextSubmit(String query) {
 												return false;
@@ -82,20 +95,27 @@ public class MyRepositoriesFragment extends Fragment {
 
 							@Override
 							public boolean onMenuItemSelected(@NonNull MenuItem menuItem) {
+								if (menuItem.getItemId() == R.id.genericMenu) {
+									MyRepositoriesFragment.SortBottomSheetDialogFragment
+											bottomSheet =
+													new MyRepositoriesFragment
+															.SortBottomSheetDialogFragment();
+									bottomSheet.setSortListener(
+											sort -> {
+												currentSort = sort;
+												page = 1;
+												fragmentRepositoriesBinding.progressBar
+														.setVisibility(View.VISIBLE);
+												fetchDataAsync(userLogin);
+											});
+									bottomSheet.show(getChildFragmentManager(), "SortBottomSheet");
+									return true;
+								}
 								return false;
 							}
 						},
 						getViewLifecycleOwner(),
 						Lifecycle.State.RESUMED);
-
-		((MainActivity) requireActivity())
-				.setActionBarTitle(getResources().getString(R.string.navMyRepos));
-		repositoriesViewModel = new ViewModelProvider(this).get(RepositoriesViewModel.class);
-
-		final String userLogin =
-				((BaseActivity) requireActivity()).getAccount().getAccount().getUserName();
-
-		resultLimit = Constants.getCurrentResultLimit(getContext());
 
 		fragmentRepositoriesBinding.addNewRepo.setOnClickListener(
 				view -> {
@@ -139,7 +159,8 @@ public class MyRepositoriesFragment extends Fragment {
 						"myRepos",
 						null,
 						getContext(),
-						fragmentRepositoriesBinding)
+						fragmentRepositoriesBinding,
+						currentSort)
 				.observe(
 						getViewLifecycleOwner(),
 						reposListMain -> {
@@ -158,7 +179,8 @@ public class MyRepositoriesFragment extends Fragment {
 													"myRepos",
 													null,
 													getContext(),
-													adapter);
+													adapter,
+													currentSort);
 											fragmentRepositoriesBinding.progressBar.setVisibility(
 													View.VISIBLE);
 										}
@@ -194,6 +216,94 @@ public class MyRepositoriesFragment extends Fragment {
 			page = 1;
 			fetchDataAsync(userLogin);
 			MainActivity.reloadRepos = false;
+		}
+	}
+
+	public static class SortBottomSheetDialogFragment extends BottomSheetDialogFragment {
+
+		private SortListener sortListener;
+
+		public interface SortListener {
+			void onSortSelected(String sort);
+		}
+
+		public void setSortListener(SortListener listener) {
+			this.sortListener = listener;
+		}
+
+		@Override
+		public View onCreateView(
+				@NonNull LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
+
+			View view = inflater.inflate(R.layout.bottom_sheet_repositories_sort, container, false);
+			ChipGroup chipGroup = view.findViewById(R.id.sort_chip_group);
+			String[] sorts = {
+				"name",
+				"id",
+				"newest",
+				"oldest",
+				"recentupdate",
+				"leastupdate",
+				"reversealphabetically",
+				"alphabetically",
+				"reversesize",
+				"size",
+				"moststars",
+				"feweststars",
+				"mostforks",
+				"fewestforks"
+			};
+			String currentSort = ((MyRepositoriesFragment) requireParentFragment()).currentSort;
+
+			for (String sort : sorts) {
+				Chip chip = new Chip(requireContext());
+				chip.setText(formatSortLabel(sort));
+				chip.setCheckable(true);
+				if (sort.equals(currentSort)) {
+					chip.setChecked(true);
+				}
+				chip.setOnClickListener(
+						v -> {
+							if (sortListener != null) {
+								sortListener.onSortSelected(sort);
+							}
+							dismiss();
+						});
+				chipGroup.addView(chip);
+			}
+
+			chipGroup.setSingleSelection(true);
+
+			return view;
+		}
+
+		private String formatSortLabel(String sort) {
+
+			String[][] compoundMappings = {
+				{"recentupdate", getString(R.string.recent_update)},
+				{"leastupdate", getString(R.string.least_update)},
+				{"reversealphabetically", getString(R.string.reverse_alphabetically)},
+				{"reversesize", getString(R.string.reverse_size)},
+				{"moststars", getString(R.string.most_stars)},
+				{"feweststars", getString(R.string.fewest_stars)},
+				{"mostforks", getString(R.string.most_forks)},
+				{"fewestforks", getString(R.string.fewest_forks)}
+			};
+
+			for (String[] mapping : compoundMappings) {
+				if (mapping[0].equals(sort)) {
+					return mapping[1];
+				}
+			}
+
+			return switch (sort) {
+				case "name" -> getString(R.string.name);
+				case "id" -> getString(R.string.id);
+				case "newest" -> getString(R.string.newest);
+				case "oldest" -> getString(R.string.oldest);
+				case "size" -> getString(R.string.size);
+				default -> sort;
+			};
 		}
 	}
 }

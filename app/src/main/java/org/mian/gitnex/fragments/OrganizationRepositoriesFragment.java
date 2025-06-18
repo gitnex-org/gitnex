@@ -168,7 +168,8 @@ public class OrganizationRepositoriesFragment extends Fragment {
 						"org",
 						orgName,
 						getContext(),
-						fragmentRepositoriesBinding)
+						fragmentRepositoriesBinding,
+						null)
 				.observe(
 						getViewLifecycleOwner(),
 						reposListMain -> {
@@ -188,7 +189,8 @@ public class OrganizationRepositoriesFragment extends Fragment {
 													"org",
 													orgName,
 													getContext(),
-													adapter);
+													adapter,
+													null);
 											fragmentRepositoriesBinding.progressBar.setVisibility(
 													View.VISIBLE);
 										}

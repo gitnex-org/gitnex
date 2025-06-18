@@ -82,4 +82,11 @@
     <color name="heatmap_green_2">#7bc96f</color>
     <color name="heatmap_green_3">#4c9b4c</color>
     <color name="heatmap_green_4">#2d6b2d</color>
+
+    <color name="alert_note_border">#4C78A8</color>
+    <color name="alert_tip_border">#2EA44F</color>
+    <color name="alert_important_border">#6F42C1</color>
+    <color name="alert_warning_border">#DAA038</color>
+    <color name="alert_caution_border">#D73A49</color>
+    <color name="alert_text">#24292E</color>
 </resources>

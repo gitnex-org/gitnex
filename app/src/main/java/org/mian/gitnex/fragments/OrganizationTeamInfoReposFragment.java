@@ -165,7 +165,8 @@ public class OrganizationTeamInfoReposFragment extends Fragment {
 						"team",
 						null,
 						getContext(),
-						fragmentRepositoriesBinding)
+						fragmentRepositoriesBinding,
+						null)
 				.observe(
 						getViewLifecycleOwner(),
 						reposListMain -> {
@@ -184,7 +185,8 @@ public class OrganizationTeamInfoReposFragment extends Fragment {
 													"team",
 													null,
 													getContext(),
-													adapter);
+													adapter,
+													null);
 											fragmentRepositoriesBinding.progressBar.setVisibility(
 													View.VISIBLE);
 										}
