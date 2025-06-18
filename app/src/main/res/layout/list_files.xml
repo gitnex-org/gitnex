@@ -40,7 +40,7 @@
                 android:id="@+id/fileInfo"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="@string/sizeCopy"
+                android:text="@string/size"
                 android:textColor="?attr/hintColor"
                 android:textSize="@dimen/dimen12sp"
                 android:visibility="gone"

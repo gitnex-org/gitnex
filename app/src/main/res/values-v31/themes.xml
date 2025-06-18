@@ -41,6 +41,7 @@
         <item name="shapeAppearanceSmallComponent">@style/inputsMaterialComponentCorner</item>
         <item name="android:windowAnimationStyle">@style/WindowAnimationTransition</item>
         <item name="materialSwitchStyle">@style/materialSwitchStyle</item>
+        <item name="chipStyle">@style/CustomChipFilter</item>
         <item name="isDark">1</item>
     </style>
 
@@ -87,6 +88,7 @@
         <item name="inputSelectedColor">@android:color/system_accent1_300</item>
         <item name="inputTextColor">@android:color/system_accent2_900</item>
         <item name="materialSwitchStyle">@style/materialSwitchStyle</item>
+        <item name="chipStyle">@style/CustomChipFilter</item>
         <item name="isDark">0</item>
     </style>
 

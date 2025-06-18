@@ -135,7 +135,8 @@ public class WatchedRepositoriesFragment extends Fragment {
 						"watched",
 						null,
 						getContext(),
-						fragmentRepositoriesBinding)
+						fragmentRepositoriesBinding,
+						null)
 				.observe(
 						getViewLifecycleOwner(),
 						reposListMain -> {
@@ -154,7 +155,8 @@ public class WatchedRepositoriesFragment extends Fragment {
 													"watched",
 													null,
 													getContext(),
-													adapter);
+													adapter,
+													null);
 											fragmentRepositoriesBinding.progressBar.setVisibility(
 													View.VISIBLE);
 										}

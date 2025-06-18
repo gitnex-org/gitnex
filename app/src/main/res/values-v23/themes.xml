@@ -42,6 +42,7 @@
         <item name="colorSurface">@color/lightThemeInputBackground</item>
         <item name="shapeAppearanceSmallComponent">@style/inputsMaterialComponentCorner</item>
         <item name="android:windowAnimationStyle">@style/WindowAnimationTransition</item>
+        <item name="chipStyle">@style/CustomChipFilter</item>
         <item name="isDark">0</item>
     </style>
     <!-- Light theme -->
@@ -87,6 +88,7 @@
         <item name="colorSurface">@color/retroThemeInputBackground</item>
         <item name="shapeAppearanceSmallComponent">@style/inputsMaterialComponentCorner</item>
         <item name="android:windowAnimationStyle">@style/WindowAnimationTransition</item>
+        <item name="chipStyle">@style/CustomChipFilter</item>
         <item name="isDark">0</item>
     </style>
     <!-- Retro theme -->
@@ -133,6 +135,7 @@
         <item name="shapeAppearanceSmallComponent">@style/inputsMaterialComponentCorner</item>
         <item name="android:windowAnimationStyle">@style/WindowAnimationTransition</item>
         <item name="materialSwitchStyle">@style/m3SwitchStyle</item>
+        <item name="chipStyle">@style/CustomChipFilter</item>
         <item name="isDark">1</item>
     </style>
     <!-- Codeberg dark theme -->

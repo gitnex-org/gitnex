@@ -64,6 +64,7 @@ import org.mian.gitnex.helpers.codeeditor.markwon.MarkwonHighlighter;
 import org.mian.gitnex.helpers.codeeditor.theme.Theme;
 import org.mian.gitnex.helpers.contexts.IssueContext;
 import org.mian.gitnex.helpers.contexts.RepositoryContext;
+import org.mian.gitnex.helpers.markdown.AlertPlugin;
 import stormpot.Allocator;
 import stormpot.BlazePool;
 import stormpot.Config;
@@ -198,6 +199,7 @@ public class Markdown {
 
 			Markwon.Builder builder =
 					Markwon.builder(context)
+							.usePlugin(AlertPlugin.create(context))
 							.usePlugin(CorePlugin.create())
 							.usePlugin(HtmlPlugin.create())
 							.usePlugin(LinkifyPlugin.create(true))
@@ -353,6 +355,7 @@ public class Markdown {
 
 			Markwon.Builder builder =
 					Markwon.builder(context)
+							.usePlugin(AlertPlugin.create(context))
 							.usePlugin(CorePlugin.create())
 							.usePlugin(HtmlPlugin.create())
 							.usePlugin(LinkifyPlugin.create(true))
@@ -547,6 +550,11 @@ public class Markdown {
 									SimpleEntry.create(
 											R.layout.custom_markdown_code_block,
 											R.id.textCodeBlock))
+							.include(
+									AlertPlugin.AlertBlock.class,
+									SimpleEntry.create(
+											R.layout.custom_markdown_alert_block,
+											R.id.textAlertBlock))
 							.build();
 		}
 

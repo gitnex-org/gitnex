@@ -4,6 +4,7 @@
     <!-- Dark theme - default -->
     <style name="AppTheme" parent="Theme.Material3.Dark.NoActionBar">
         <item name="android:statusBarColor">@android:color/transparent</item>
+        <item name="android:windowLightStatusBar">false</item>
         <item name="android:typeface">monospace</item>
         <item name="colorAccent">@color/colorAccent</item>
         <item name="android:textColorSecondary">@color/colorWhite</item>
@@ -43,6 +44,7 @@
         <item name="shapeAppearanceSmallComponent">@style/inputsMaterialComponentCorner</item>
         <item name="android:windowAnimationStyle">@style/WindowAnimationTransition</item>
         <item name="materialSwitchStyle">@style/m3SwitchStyle</item>
+        <item name="chipStyle">@style/CustomChipFilter</item>
         <item name="isDark">1</item>
     </style>
     <!-- Dark theme - default -->
@@ -50,6 +52,7 @@
     <!-- Light theme -->
     <style name="AppThemeLight" parent="Theme.Material3.Light.NoActionBar">
         <item name="android:statusBarColor">@android:color/transparent</item>
+        <item name="android:windowLightStatusBar">true</item>
         <item name="android:typeface">monospace</item>
         <item name="colorAccent">@color/colorAccent</item>
         <item name="android:textColorSecondary">@color/lightThemeTextColor</item>
@@ -88,6 +91,7 @@
         <item name="colorSurface">@color/lightThemeInputBackground</item>
         <item name="shapeAppearanceSmallComponent">@style/inputsMaterialComponentCorner</item>
         <item name="android:windowAnimationStyle">@style/WindowAnimationTransition</item>
+        <item name="chipStyle">@style/CustomChipFilter</item>
         <item name="isDark">0</item>
     </style>
     <!-- Light theme -->
@@ -132,6 +136,7 @@
         <item name="colorSurface">@color/retroThemeInputBackground</item>
         <item name="shapeAppearanceSmallComponent">@style/inputsMaterialComponentCorner</item>
         <item name="android:windowAnimationStyle">@style/WindowAnimationTransition</item>
+        <item name="chipStyle">@style/CustomChipFilter</item>
         <item name="isDark">0</item>
     </style>
     <!-- Retro theme -->
@@ -178,6 +183,7 @@
         <item name="shapeAppearanceSmallComponent">@style/inputsMaterialComponentCorner</item>
         <item name="android:windowAnimationStyle">@style/WindowAnimationTransition</item>
         <item name="materialSwitchStyle">@style/m3SwitchStyle</item>
+        <item name="chipStyle">@style/CustomChipFilter</item>
         <item name="isDark">1</item>
     </style>
     <!-- Pitch black theme -->
@@ -224,6 +230,7 @@
         <item name="shapeAppearanceSmallComponent">@style/inputsMaterialComponentCorner</item>
         <item name="android:windowAnimationStyle">@style/WindowAnimationTransition</item>
         <item name="materialSwitchStyle">@style/m3SwitchStyle</item>
+        <item name="chipStyle">@style/CustomChipFilter</item>
         <item name="isDark">1</item>
     </style>
     <!-- Codeberg dark theme -->
@@ -462,4 +469,13 @@
     <style name="AppThemeSystemPitchBlack" parent="AppThemeLight"/>
 
     <style name="AppThemeDynamicSystem" parent="AppThemeLightDynamicColors"/>
+
+    <style name="CustomChipFilter" parent="Widget.Material3.Chip.Filter">
+        <item name="chipBackgroundColor">?attr/materialCardBackgroundColor</item>
+        <item name="chipStrokeWidth">0dp</item>
+        <item name="chipStrokeColor">@android:color/transparent</item>
+        <item name="android:textColor">?attr/primaryTextColor</item>
+        <item name="rippleColor">@android:color/transparent</item>
+        <item name="checkedIconTint">?attr/iconsColor</item>
+    </style>
 </resources>

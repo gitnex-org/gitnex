@@ -53,7 +53,7 @@
 
         <com.google.android.material.chip.Chip
             android:id="@+id/openChip"
-            style="@style/Widget.Material3.Chip.Filter"
+            style="@style/CustomChipFilter"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="@string/isOpen"
@@ -61,7 +61,7 @@
 
         <com.google.android.material.chip.Chip
             android:id="@+id/closedChip"
-            style="@style/Widget.Material3.Chip.Filter"
+            style="@style/CustomChipFilter"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="@string/isClosed"/>
@@ -77,21 +77,21 @@
 
         <com.google.android.material.chip.Chip
             android:id="@+id/mentionsChip"
-            style="@style/Widget.Material3.Chip.Filter"
+            style="@style/CustomChipFilter"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="@string/im_mentioned"/>
 
         <com.google.android.material.chip.Chip
             android:id="@+id/labelsChip"
-            style="@style/Widget.Material3.Chip.Filter"
+            style="@style/CustomChipFilter"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="@string/newIssueLabelsTitle"/>
 
         <com.google.android.material.chip.Chip
             android:id="@+id/milestoneChip"
-            style="@style/Widget.Material3.Chip.Filter"
+            style="@style/CustomChipFilter"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="@string/tabTextMl"
