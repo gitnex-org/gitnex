@@ -11,7 +11,7 @@ import android.view.ViewGroup;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
-import com.google.android.material.dialog.MaterialAlertDialogBuilder;
+import com.google.android.material.bottomsheet.BottomSheetDialogFragment;
 import org.mian.gitnex.R;
 import org.mian.gitnex.activities.BaseActivity;
 import org.mian.gitnex.activities.SettingsAppearanceActivity;
@@ -20,19 +20,17 @@ import org.mian.gitnex.activities.SettingsCodeEditorActivity;
 import org.mian.gitnex.activities.SettingsGeneralActivity;
 import org.mian.gitnex.activities.SettingsNotificationsActivity;
 import org.mian.gitnex.activities.SettingsSecurityActivity;
-import org.mian.gitnex.databinding.CustomAboutDialogBinding;
+import org.mian.gitnex.databinding.BottomSheetAboutBinding;
 import org.mian.gitnex.databinding.FragmentSettingsBinding;
 import org.mian.gitnex.helpers.AppUtil;
 
 /**
- * @author M M Arif
+ * @author mmarif
  */
 public class SettingsFragment extends Fragment {
 
 	public static boolean refreshParent = false;
-
 	private Context ctx;
-	private MaterialAlertDialogBuilder materialAlertDialogBuilder;
 
 	@Nullable @Override
 	public View onCreateView(
@@ -45,8 +43,6 @@ public class SettingsFragment extends Fragment {
 
 		ctx = getContext();
 		assert ctx != null;
-		materialAlertDialogBuilder =
-				new MaterialAlertDialogBuilder(ctx, R.style.ThemeOverlay_Material3_Dialog_Alert);
 
 		fragmentSettingsBinding.notificationsFrame.setVisibility(View.VISIBLE);
 
@@ -75,54 +71,77 @@ public class SettingsFragment extends Fragment {
 
 		fragmentSettingsBinding.rateAppFrame.setOnClickListener(rateApp -> rateThisApp());
 
-		fragmentSettingsBinding.aboutAppFrame.setOnClickListener(aboutApp -> showAboutAppDialog());
+		fragmentSettingsBinding.aboutAppFrame.setOnClickListener(
+				aboutApp ->
+						new AboutBottomSheetFragment()
+								.show(getChildFragmentManager(), "AboutBottomSheet"));
 
 		return fragmentSettingsBinding.getRoot();
 	}
 
-	public void showAboutAppDialog() {
+	public static class AboutBottomSheetFragment extends BottomSheetDialogFragment {
 
-		CustomAboutDialogBinding aboutAppDialogBinding =
-				CustomAboutDialogBinding.inflate(LayoutInflater.from(ctx));
-		View view = aboutAppDialogBinding.getRoot();
+		private BottomSheetAboutBinding binding;
 
-		materialAlertDialogBuilder.setView(view);
+		@Nullable @Override
+		public View onCreateView(
+				@NonNull LayoutInflater inflater,
+				@Nullable ViewGroup container,
+				@Nullable Bundle savedInstanceState) {
+			binding = BottomSheetAboutBinding.inflate(inflater, container, false);
 
-		aboutAppDialogBinding.appVersionBuild.setText(
-				getString(
-						R.string.appVersionBuild,
-						AppUtil.getAppVersion(ctx),
-						AppUtil.getAppBuildNo(ctx)));
-		aboutAppDialogBinding.userServerVersion.setText(
-				((BaseActivity) requireActivity()).getAccount().getServerVersion().toString());
+			// Set app version and build
+			binding.appVersionBuild.setText(
+					getString(
+							R.string.appVersionBuild,
+							AppUtil.getAppVersion(requireContext()),
+							AppUtil.getAppBuildNo(requireContext())));
 
-		aboutAppDialogBinding.donationLinkPatreon.setOnClickListener(
-				v12 ->
+			// Set server version
+			binding.userServerVersion.setText(
+					((BaseActivity) requireActivity()).getAccount().getServerVersion().toString());
+
+			// Set up link click listeners
+			binding.donationLinkPatreon.setOnClickListener(
+					v -> {
 						AppUtil.openUrlInBrowser(
-								requireContext(),
-								getResources().getString(R.string.supportLinkPatreon)));
+								requireContext(), getString(R.string.supportLinkPatreon));
+						dismiss();
+					});
 
-		aboutAppDialogBinding.translateLink.setOnClickListener(
-				v13 ->
+			binding.translateLink.setOnClickListener(
+					v -> {
+						AppUtil.openUrlInBrowser(requireContext(), getString(R.string.crowdInLink));
+						dismiss();
+					});
+
+			binding.appWebsite.setOnClickListener(
+					v -> {
 						AppUtil.openUrlInBrowser(
-								requireContext(), getResources().getString(R.string.crowdInLink)));
+								requireContext(), getString(R.string.appWebsiteLink));
+						dismiss();
+					});
 
-		aboutAppDialogBinding.appWebsite.setOnClickListener(
-				v14 ->
+			binding.feedback.setOnClickListener(
+					v -> {
 						AppUtil.openUrlInBrowser(
-								requireContext(),
-								getResources().getString(R.string.appWebsiteLink)));
+								requireContext(), getString(R.string.feedbackLink));
+						dismiss();
+					});
 
-		aboutAppDialogBinding.feedback.setOnClickListener(
-				v14 ->
-						AppUtil.openUrlInBrowser(
-								requireContext(), getResources().getString(R.string.feedbackLink)));
+			// Hide donation link for pro users
+			if (AppUtil.isPro(requireContext())) {
+				binding.layoutFrame1.setVisibility(View.GONE);
+			}
 
-		if (AppUtil.isPro(requireContext())) {
-			aboutAppDialogBinding.layoutFrame1.setVisibility(View.GONE);
+			return binding.getRoot();
 		}
 
-		materialAlertDialogBuilder.show();
+		@Override
+		public void onDestroyView() {
+			super.onDestroyView();
+			binding = null; // Prevent memory leaks
+		}
 	}
 
 	public void rateThisApp() {
