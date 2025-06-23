@@ -97,7 +97,6 @@
     <string name="tabTextCollaborators">Participants</string>
     <string name="tabPullRequests">Demandes d’ajout</string>
     <string name="pullRequest">Demande d’ajout</string>
-    <string name="infoTabRepoSize">Taille</string>
     <string name="infoTabRepoDefaultBranch">Branche par défaut</string>
     <string name="infoTabRepoSshUrl">URL SSH</string>
     <string name="infoTabRepoCloneUrl">URL de clonage</string>
@@ -463,6 +462,13 @@
     <string name="timeline">Historique</string>
     <string name="hours">Heures</string>
     <string name="minutes">Minutes</string>
+    <string name="sort">Trier</string>
+    <string name="name">Nom</string>
+    <string name="id">ID</string>
+    <string name="newest">Plus récent</string>
+    <string name="oldest">Plus ancien</string>
+    <string name="alphabetically">Alphabétique</string>
+    <string name="size">Taille</string>
     <!-- generic copy -->
     <string name="exploreUsers">Rechercher des utilisateurs</string>
     <string name="exploreIssues">Rechercher des tickets</string>
@@ -513,7 +519,6 @@
     <string name="deleteFileMessage">Fichier supprimé par la branche %1$s</string>
     <string name="editFileText">Modifier %1$s</string>
     <string name="editFileMessage">Fichier modifié par la branche %1$s</string>
-    <string name="sizeCopy">Taille</string>
     <string name="shareIssue">Partager le ticket</string>
     <string name="shareRepository">Partager le dépôt</string>
     <string name="createRepository">Créer un dépôt</string>
@@ -826,4 +831,12 @@
     <string name="time_removed">Chrono effacé</string>
     <string name="time_add_failed">Ajout de chrono échoué</string>
     <string name="time_delete_failed">Effacement de chrono échoué</string>
+    <string name="recent_update">Date de màj</string>
+    <string name="least_update">Date de màj inversé</string>
+    <string name="reverse_alphabetically">Alphabétique inversé</string>
+    <string name="reverse_size">Taille inversé</string>
+    <string name="most_stars">Le plus d’étoiles</string>
+    <string name="fewest_stars">Le moins d’étoiles</string>
+    <string name="most_forks">Le plus de fourches</string>
+    <string name="fewest_forks">Le moins de fourches</string>
 </resources>
