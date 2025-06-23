@@ -23,7 +23,6 @@ import java.util.ArrayList;
 import java.util.List;
 import org.mian.gitnex.R;
 import org.mian.gitnex.activities.CreateNoteActivity;
-import org.mian.gitnex.activities.MainActivity;
 import org.mian.gitnex.adapters.NotesAdapter;
 import org.mian.gitnex.database.api.BaseApi;
 import org.mian.gitnex.database.api.NotesApi;
@@ -112,9 +111,6 @@ public class NotesFragment extends Fragment {
 						},
 						getViewLifecycleOwner(),
 						Lifecycle.State.RESUMED);
-
-		((MainActivity) requireActivity())
-				.setActionBarTitle(getResources().getString(R.string.navNotes));
 
 		noteIntent = new Intent(ctx, CreateNoteActivity.class);
 

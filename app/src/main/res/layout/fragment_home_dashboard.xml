@@ -1,0 +1,121 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.core.widget.NestedScrollView
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="?attr/primaryBackgroundColor">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:layout_marginTop="@dimen/dimen16dp"
+        android:padding="@dimen/dimen16dp">
+
+        <com.google.android.material.card.MaterialCardView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            app:cardCornerRadius="@dimen/dimen16dp"
+            app:cardElevation="@dimen/dimen0dp"
+            app:strokeWidth="@dimen/dimen0dp"
+            app:cardBackgroundColor="?attr/materialCardBackgroundColor">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:padding="@dimen/dimen16dp">
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal"
+                    android:gravity="center_vertical">
+
+                    <com.google.android.material.card.MaterialCardView
+                        android:layout_width="@dimen/dimen72dp"
+                        android:layout_height="@dimen/dimen72dp"
+                        android:layout_marginEnd="@dimen/dimen8dp"
+                        app:cardCornerRadius="@dimen/dimen16dp"
+                        app:cardElevation="@dimen/dimen0dp"
+                        app:strokeWidth="@dimen/dimen0dp"
+                        app:cardBackgroundColor="?attr/materialCardBackgroundColor">
+
+                        <ImageView
+                            android:id="@+id/userAvatar"
+                            android:layout_width="match_parent"
+                            android:layout_height="match_parent"
+                            android:contentDescription="@string/generalImgContentText"
+                            android:src="@drawable/loader_animated" />
+
+                    </com.google.android.material.card.MaterialCardView>
+
+                    <LinearLayout
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:orientation="vertical"
+                        android:gravity="end">
+
+                        <com.google.android.material.card.MaterialCardView
+                            android:layout_width="wrap_content"
+                            android:layout_height="@dimen/dimen36dp"
+                            android:padding="@dimen/dimen8dp"
+                            android:clipToPadding="false"
+                            android:clipChildren="false"
+                            app:cardCornerRadius="@dimen/dimen8dp"
+                            app:cardElevation="@dimen/dimen0dp"
+                            app:strokeWidth="@dimen/dimen0dp"
+                            app:cardBackgroundColor="?attr/primaryBackgroundColor">
+
+                            <androidx.recyclerview.widget.RecyclerView
+                                android:id="@+id/userAccountsRecyclerView"
+                                android:layout_width="wrap_content"
+                                android:layout_height="@dimen/dimen40dp"
+                                android:clipToPadding="false"
+                                android:paddingStart="@dimen/dimen4dp"
+                                android:paddingTop="@dimen/dimen6dp"
+                                android:paddingEnd="@dimen/dimen4dp"
+                                android:orientation="horizontal"
+                                app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager" />
+
+                        </com.google.android.material.card.MaterialCardView>
+
+                    </LinearLayout>
+
+                </LinearLayout>
+
+                <TextView
+                    android:id="@+id/userFullname"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="@dimen/dimen12dp"
+                    android:textColor="?attr/primaryTextColor"
+                    android:textSize="@dimen/dimen18sp"
+                    android:textIsSelectable="true" />
+
+                <TextView
+                    android:id="@+id/userEmail"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="@dimen/dimen2dp"
+                    android:textColor="?attr/primaryTextColor"
+                    android:textSize="@dimen/dimen14sp"
+                    android:textIsSelectable="true"
+                    android:visibility="gone" />
+
+            </LinearLayout>
+
+        </com.google.android.material.card.MaterialCardView>
+
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/mainSectionsRecyclerView"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/dimen8dp"
+            app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager" />
+
+    </LinearLayout>
+
+</androidx.core.widget.NestedScrollView>

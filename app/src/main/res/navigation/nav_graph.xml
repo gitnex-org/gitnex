@@ -1,0 +1,137 @@
+<?xml version="1.0" encoding="utf-8"?>
+<navigation xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/nav_graph"
+    app:startDestination="@id/homeDashboardFragment">
+
+    <fragment
+        android:id="@+id/homeDashboardFragment"
+        android:name="org.mian.gitnex.fragments.HomeDashboardFragment"
+        android:label="Dashboard">
+        <action
+            android:id="@+id/action_to_organizations"
+            app:destination="@id/organizationsFragment"
+            app:popUpTo="@id/homeDashboardFragment"
+            app:popUpToInclusive="false" />
+        <action
+            android:id="@+id/action_to_myRepositories"
+            app:destination="@id/myRepositoriesFragment"
+            app:popUpTo="@id/homeDashboardFragment"
+            app:popUpToInclusive="false" />
+        <action
+            android:id="@+id/action_to_starredRepositories"
+            app:destination="@id/starredRepositoriesFragment"
+            app:popUpTo="@id/homeDashboardFragment"
+            app:popUpToInclusive="false" />
+        <action
+            android:id="@+id/action_to_watchedRepositories"
+            app:destination="@id/watchedRepositoriesFragment"
+            app:popUpTo="@id/homeDashboardFragment"
+            app:popUpToInclusive="false" />
+        <action
+            android:id="@+id/action_to_myIssues"
+            app:destination="@id/myIssuesFragment"
+            app:popUpTo="@id/homeDashboardFragment"
+            app:popUpToInclusive="false" />
+        <action
+            android:id="@+id/action_to_mostVisitedRepos"
+            app:destination="@id/mostVisitedReposFragment"
+            app:popUpTo="@id/homeDashboardFragment"
+            app:popUpToInclusive="false" />
+        <action
+            android:id="@+id/action_to_notes"
+            app:destination="@id/notesFragment"
+            app:popUpTo="@id/homeDashboardFragment"
+            app:popUpToInclusive="false" />
+        <action
+            android:id="@+id/action_to_accountSettings"
+            app:destination="@id/accountSettingsFragment"
+            app:popUpTo="@id/homeDashboardFragment"
+            app:popUpToInclusive="false" />
+        <action
+            android:id="@+id/action_to_administration"
+            app:destination="@id/administrationFragment"
+            app:popUpTo="@id/homeDashboardFragment"
+            app:popUpToInclusive="false" />
+        <action
+            android:id="@+id/action_to_settings"
+            app:destination="@id/settingsFragment"
+            app:popUpTo="@id/homeDashboardFragment"
+            app:popUpToInclusive="false" />
+        <action
+            android:id="@+id/action_to_activitiesFragment"
+            app:destination="@id/activitiesFragment"
+            app:popUpTo="@id/homeDashboardFragment"
+            app:popUpToInclusive="false" />
+    </fragment>
+
+    <fragment
+        android:id="@+id/repositoriesFragment"
+        android:name="org.mian.gitnex.fragments.RepositoriesFragment"
+        android:label="Repositories" />
+
+    <fragment
+        android:id="@+id/notificationsFragment"
+        android:name="org.mian.gitnex.fragments.NotificationsFragment"
+        android:label="Notifications" />
+
+    <fragment
+        android:id="@+id/exploreFragment"
+        android:name="org.mian.gitnex.fragments.ExploreFragment"
+        android:label="Explore" />
+
+    <fragment
+        android:id="@+id/myIssuesFragment"
+        android:name="org.mian.gitnex.fragments.MyIssuesFragment"
+        android:label="My Issues" />
+
+    <fragment
+        android:id="@+id/organizationsFragment"
+        android:name="org.mian.gitnex.fragments.OrganizationsFragment"
+        android:label="Organizations" />
+
+    <fragment
+        android:id="@+id/myRepositoriesFragment"
+        android:name="org.mian.gitnex.fragments.MyRepositoriesFragment"
+        android:label="My Repositories" />
+
+    <fragment
+        android:id="@+id/starredRepositoriesFragment"
+        android:name="org.mian.gitnex.fragments.StarredRepositoriesFragment"
+        android:label="Starred Repositories" />
+
+    <fragment
+        android:id="@+id/watchedRepositoriesFragment"
+        android:name="org.mian.gitnex.fragments.WatchedRepositoriesFragment"
+        android:label="Watched Repositories" />
+
+    <fragment
+        android:id="@+id/mostVisitedReposFragment"
+        android:name="org.mian.gitnex.fragments.MostVisitedReposFragment"
+        android:label="Most Visited Repos" />
+
+    <fragment
+        android:id="@+id/notesFragment"
+        android:name="org.mian.gitnex.fragments.NotesFragment"
+        android:label="Notes" />
+
+    <fragment
+        android:id="@+id/accountSettingsFragment"
+        android:name="org.mian.gitnex.fragments.AccountSettingsFragment"
+        android:label="Account Settings" />
+
+    <fragment
+        android:id="@+id/administrationFragment"
+        android:name="org.mian.gitnex.fragments.AdministrationFragment"
+        android:label="Administration" />
+
+    <fragment
+        android:id="@+id/settingsFragment"
+        android:name="org.mian.gitnex.fragments.SettingsFragment"
+        android:label="Settings" />
+
+    <fragment
+        android:id="@+id/activitiesFragment"
+        android:name="org.mian.gitnex.fragments.ActivitiesFragment"
+        android:label="Activities" />
+</navigation>

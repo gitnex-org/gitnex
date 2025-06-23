@@ -43,9 +43,6 @@ public class AccountSettingsFragment extends Fragment {
 		view = inflater.inflate(R.layout.fragment_account_settings, container, false);
 		setHasOptionsMenu(false);
 
-		((MainActivity) requireActivity())
-				.setActionBarTitle(getResources().getString(R.string.navAccount));
-
 		myTypeface = AppUtil.getTypeface(ctx);
 
 		AccountContext account = ((BaseActivity) requireActivity()).getAccount();

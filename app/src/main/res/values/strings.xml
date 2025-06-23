@@ -31,7 +31,7 @@
     <string name="navRate">Rate GitNex</string>
     <string name="navAdministration">Instance Administration</string>
     <string name="navMyIssues">My Issues</string>
-    <string name="navMostVisited">Most Visited Repos</string>
+    <string name="navMostVisited">Most Visited Repositories</string>
     <string name="navNotes">Notes</string>
     <string name="navAccount">Account Settings</string>
     <string name="navWatchedRepositories">Watched Repositories</string>
@@ -264,8 +264,8 @@
     <string name="restoreFromBackupPopupText">You are about to restore from a GitNex-generated backup file. This will restore user accounts, settings, notes, and data related to repositories.\n\nClick Restore to start the process.</string>
     <string name="hideEmailLangInProfileHeader">Set Email and Language as Private</string>
     <string name="hideEmailLangInProfileHint">You can set your email and language to private to hide them on your profile screen</string>
-    <string name="hideEmailNavDrawerHeader">Hide Email in Drawer</string>
-    <string name="hideEmailNavDrawerHint">You can enable this option to hide your email in the app navigation drawer</string>
+    <string name="hideEmailNavDrawerHeader">Hide Email</string>
+    <string name="hideEmailNavDrawerHint">You can enable this option to hide your email in the app home dashboard screen</string>
     <!-- settings -->
 
     <string name="noMoreData">No more data available</string>
@@ -565,6 +565,9 @@
     <string name="oldest">Oldest</string>
     <string name="alphabetically">Alphabetically</string>
     <string name="size">Size</string>
+    <string name="home">Home</string>
+    <string name="personal">Personal</string>
+    <string name="activities">Activities</string>
     <!-- generic copy -->
 
     <string name="exploreUsers">Explore users</string>
@@ -984,4 +987,6 @@
     <string name="fewest_stars">Fewest stars</string>
     <string name="most_forks">Most forks</string>
     <string name="fewest_forks">Fewest forks</string>
+
+    <string name="switch_account">Switch account</string>
 </resources>

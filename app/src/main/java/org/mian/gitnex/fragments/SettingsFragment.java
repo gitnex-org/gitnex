@@ -14,7 +14,6 @@ import androidx.fragment.app.Fragment;
 import com.google.android.material.dialog.MaterialAlertDialogBuilder;
 import org.mian.gitnex.R;
 import org.mian.gitnex.activities.BaseActivity;
-import org.mian.gitnex.activities.MainActivity;
 import org.mian.gitnex.activities.SettingsAppearanceActivity;
 import org.mian.gitnex.activities.SettingsBackupRestoreActivity;
 import org.mian.gitnex.activities.SettingsCodeEditorActivity;
@@ -48,9 +47,6 @@ public class SettingsFragment extends Fragment {
 		assert ctx != null;
 		materialAlertDialogBuilder =
 				new MaterialAlertDialogBuilder(ctx, R.style.ThemeOverlay_Material3_Dialog_Alert);
-
-		((MainActivity) requireActivity())
-				.setActionBarTitle(getResources().getString(R.string.navSettings));
 
 		fragmentSettingsBinding.notificationsFrame.setVisibility(View.VISIBLE);
 

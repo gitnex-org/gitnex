@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/subItemContainer"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="horizontal"
+    android:paddingTop="@dimen/dimen12dp"
+    android:paddingBottom="@dimen/dimen12dp"
+    android:paddingStart="@dimen/dimen8dp"
+    android:paddingEnd="@dimen/dimen8dp"
+    android:gravity="center_vertical"
+    android:background="?attr/materialCardBackgroundColor">
+
+    <ImageView
+        android:id="@+id/itemIcon"
+        android:layout_width="@dimen/dimen22dp"
+        android:layout_height="@dimen/dimen22dp"
+        android:layout_marginEnd="@dimen/dimen8dp"
+        android:contentDescription="@string/generalImgContentText"
+        android:src="@drawable/ic_repo"
+        app:tint="?attr/iconsColor" />
+
+    <TextView
+        android:id="@+id/itemTitle"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_weight="1"
+        android:textColor="?attr/primaryTextColor"
+        android:textSize="@dimen/dimen16sp" />
+
+</LinearLayout>

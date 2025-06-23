@@ -15,7 +15,6 @@ import androidx.viewpager2.widget.ViewPager2;
 import com.google.android.material.tabs.TabLayout;
 import com.google.android.material.tabs.TabLayoutMediator;
 import org.mian.gitnex.R;
-import org.mian.gitnex.activities.MainActivity;
 import org.mian.gitnex.helpers.AppDatabaseSettings;
 import org.mian.gitnex.helpers.AppUtil;
 import org.mian.gitnex.helpers.ViewPager2Transformers;
@@ -34,9 +33,6 @@ public class ExploreFragment extends Fragment {
 		View view = inflater.inflate(R.layout.fragment_explore, container, false);
 
 		Context ctx = getContext();
-
-		((MainActivity) requireActivity())
-				.setActionBarTitle(getResources().getString(R.string.pageTitleExplore));
 
 		ViewPager2 viewPager = view.findViewById(R.id.containerExplore);
 		viewPager.setOffscreenPageLimit(1);

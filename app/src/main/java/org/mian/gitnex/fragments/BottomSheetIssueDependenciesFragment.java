@@ -159,7 +159,7 @@ public class BottomSheetIssueDependenciesFragment extends BottomSheetDialogFragm
 
 		Call<Void> call =
 				RetrofitClient.getApiInterface(requireContext())
-						.customIssueRemoveIssueDependencies(
+						.issueRemoveIssueDependencies2(
 								issue.getRepository().getOwner(),
 								issue.getRepository().getName(),
 								String.valueOf(issue.getIssue().getId()),

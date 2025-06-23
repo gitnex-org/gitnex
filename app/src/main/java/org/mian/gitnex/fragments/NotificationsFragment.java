@@ -53,11 +53,16 @@ public class NotificationsFragment extends Fragment
 	private int pageResultLimit;
 	private String currentFilterMode = "unread";
 	public static String emptyErrorResponse;
+	private NotificationCountListener notificationCountListener;
 
 	@Override
 	public void onCreate(@Nullable Bundle savedInstanceState) {
 
 		super.onCreate(savedInstanceState);
+	}
+
+	public interface NotificationCountListener {
+		void onNotificationsMarkedRead();
 	}
 
 	@Nullable @Override
@@ -129,13 +134,15 @@ public class NotificationsFragment extends Fragment
 																				.markedNotificationsAsRead));
 														pageCurrentIndex = 1;
 														loadNotifications(false);
+														if (notificationCountListener != null) {
+															notificationCountListener
+																	.onNotificationsMarkedRead();
+														}
 													} else {
-
 														if (emptyErrorResponse != null) {
 															if (!emptyErrorResponse.isEmpty()) {
 																if (emptyErrorResponse.contains(
 																		"205")) {
-
 																	SnackBar.success(
 																			context,
 																			requireActivity()
@@ -149,9 +156,13 @@ public class NotificationsFragment extends Fragment
 																							.markedNotificationsAsRead));
 																	pageCurrentIndex = 1;
 																	loadNotifications(false);
+																	if (notificationCountListener
+																			!= null) {
+																		notificationCountListener
+																				.onNotificationsMarkedRead();
+																	}
 																}
 															} else {
-
 																activity.runOnUiThread(
 																		() ->
 																				SnackBar.error(
@@ -320,15 +331,11 @@ public class NotificationsFragment extends Fragment
 					.enqueue(
 							(SimpleCallback<NotificationThread>)
 									(call, voidResponse) -> {
-										// reload without any checks, because Gitea returns a 205
-										// and Java expects this to be empty
-										// but Gitea send a response -> results in a call of
-										// onFailure and no response is present
-										// if(voidResponse.isPresent() &&
-										// voidResponse.get().isSuccessful()) {
 										pageCurrentIndex = 1;
 										loadNotifications(false);
-										// }
+										if (notificationCountListener != null) {
+											notificationCountListener.onNotificationsMarkedRead();
+										}
 									});
 		}
 
@@ -371,8 +378,19 @@ public class NotificationsFragment extends Fragment
 				() -> {
 					pageCurrentIndex = 1;
 					loadNotifications(false);
+					if (notificationCountListener != null) {
+						notificationCountListener.onNotificationsMarkedRead();
+					}
 				});
 		bottomSheetNotificationsFragment.show(
 				getChildFragmentManager(), "notificationsBottomSheet");
+	}
+
+	@Override
+	public void onAttach(@NonNull Context context) {
+		super.onAttach(context);
+		if (context instanceof NotificationCountListener) {
+			notificationCountListener = (NotificationCountListener) context;
+		}
 	}
 }

@@ -19,7 +19,6 @@ import androidx.lifecycle.ViewModelProvider;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import org.mian.gitnex.R;
 import org.mian.gitnex.activities.CreateOrganizationActivity;
-import org.mian.gitnex.activities.MainActivity;
 import org.mian.gitnex.adapters.OrganizationsListAdapter;
 import org.mian.gitnex.databinding.FragmentOrganizationsBinding;
 import org.mian.gitnex.helpers.Constants;
@@ -88,8 +87,6 @@ public class OrganizationsFragment extends Fragment {
 						getViewLifecycleOwner(),
 						Lifecycle.State.RESUMED);
 
-		((MainActivity) requireActivity())
-				.setActionBarTitle(getResources().getString(R.string.navOrg));
 		organizationsViewModel = new ViewModelProvider(this).get(OrganizationsViewModel.class);
 
 		resultLimit = Constants.getCurrentResultLimit(getContext());
