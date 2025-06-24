@@ -13,7 +13,6 @@ import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 import org.mian.gitnex.R;
 import org.mian.gitnex.activities.SettingsAppearanceActivity;
-import org.mian.gitnex.activities.SettingsBackupRestoreActivity;
 import org.mian.gitnex.activities.SettingsCodeEditorActivity;
 import org.mian.gitnex.activities.SettingsGeneralActivity;
 import org.mian.gitnex.activities.SettingsSecurityActivity;
@@ -66,7 +65,11 @@ public class SettingsFragment extends Fragment {
 						getString(R.string.backup),
 						getString(R.string.restore)));
 		fragmentSettingsBinding.backupFrame.setOnClickListener(
-				v1 -> startActivity(new Intent(ctx, SettingsBackupRestoreActivity.class)));
+				v1 ->
+						new BottomSheetSettingsBackupRestoreFragment()
+								.show(
+										getChildFragmentManager(),
+										"BottomSheetSettingsBackupRestore"));
 
 		fragmentSettingsBinding.rateAppFrame.setOnClickListener(rateApp -> rateThisApp());
 

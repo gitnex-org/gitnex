@@ -176,9 +176,6 @@
             android:name=".activities.CreateNoteActivity"
             android:configChanges="orientation|screenSize|smallestScreenSize|density|screenLayout|keyboard|keyboardHidden|navigation"
             android:windowSoftInputMode="adjustResize"/>
-        <activity
-            android:name=".activities.SettingsBackupRestoreActivity"
-            android:configChanges="orientation|screenSize|smallestScreenSize|density|screenLayout|keyboard|keyboardHidden|navigation" />
 
         <meta-data
             android:name="com.samsung.android.keepalive.density"

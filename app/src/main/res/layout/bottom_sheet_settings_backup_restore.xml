@@ -10,7 +10,7 @@
     android:paddingBottom="@dimen/dimen12dp">
 
     <LinearLayout
-        android:id="@+id/myIssuesFilterHeadFrame"
+        android:id="@+id/headerFrame"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="vertical"
@@ -21,7 +21,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:gravity="center"
-            android:text="@string/strFilter"
+            android:text="@string/backupRestore"
             android:textColor="?attr/primaryTextColor"
             android:textSize="@dimen/dimen18sp"/>
 
@@ -44,55 +44,63 @@
 
     </LinearLayout>
 
-    <com.google.android.material.chip.ChipGroup
-        android:id="@+id/stateChipGroup"
+    <LinearLayout
+        android:id="@+id/backupDataFrame"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:paddingStart="@dimen/dimen16dp"
         android:paddingEnd="@dimen/dimen16dp"
-        app:singleSelection="true"
-        app:selectionRequired="true">
+        android:orientation="vertical">
 
-        <com.google.android.material.chip.Chip
-            android:id="@+id/chipOpen"
-            style="@style/CustomChipFilter"
-            android:layout_width="wrap_content"
+        <com.google.android.material.card.MaterialCardView
+            android:id="@+id/backupButton"
+            style="?attr/materialCardViewFilledStyle"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="@string/isOpen"
-            android:checked="true"/>
+            android:layout_marginTop="@dimen/dimen8dp"
+            app:cardElevation="@dimen/dimen2dp">
 
-        <com.google.android.material.chip.Chip
-            android:id="@+id/chipClosed"
-            style="@style/CustomChipFilter"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="@string/isClosed"/>
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:padding="@dimen/dimen12dp"
+                android:gravity="center"
+                android:text="@string/backup"
+                android:textColor="?attr/primaryTextColor"
+                android:textSize="@dimen/dimen16sp" />
 
-    </com.google.android.material.chip.ChipGroup>
+        </com.google.android.material.card.MaterialCardView>
 
-    <com.google.android.material.chip.ChipGroup
-        android:id="@+id/filterChipGroup"
+    </LinearLayout>
+
+    <LinearLayout
+        android:id="@+id/restoreDataFrame"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:padding="@dimen/dimen16dp"
-        app:singleSelection="true"
-        app:selectionRequired="true">
+        android:layout_marginTop="@dimen/dimen16dp"
+        android:paddingStart="@dimen/dimen16dp"
+        android:paddingEnd="@dimen/dimen16dp"
+        android:orientation="vertical">
 
-        <com.google.android.material.chip.Chip
-            android:id="@+id/chipCreatedByMe"
-            style="@style/CustomChipFilter"
-            android:layout_width="wrap_content"
+        <com.google.android.material.card.MaterialCardView
+            android:id="@+id/restoreButton"
+            style="?attr/materialCardViewFilledStyle"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="@string/created_by_me"
-            android:checked="true"/>
+            android:layout_marginTop="@dimen/dimen8dp"
+            app:cardElevation="@dimen/dimen2dp">
 
-        <com.google.android.material.chip.Chip
-            android:id="@+id/chipAssignedToMe"
-            style="@style/CustomChipFilter"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="@string/assignedToMe"/>
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:padding="@dimen/dimen12dp"
+                android:gravity="center"
+                android:text="@string/restore"
+                android:textColor="?attr/primaryTextColor"
+                android:textSize="@dimen/dimen16sp" />
 
-    </com.google.android.material.chip.ChipGroup>
+        </com.google.android.material.card.MaterialCardView>
+
+    </LinearLayout>
 
 </LinearLayout>
