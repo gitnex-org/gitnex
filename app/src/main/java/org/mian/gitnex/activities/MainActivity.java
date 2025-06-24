@@ -1,10 +1,14 @@
 package org.mian.gitnex.activities;
 
+import android.annotation.SuppressLint;
 import android.content.Intent;
 import android.os.Bundle;
 import android.os.Handler;
+import android.text.Html;
 import android.util.TypedValue;
 import android.view.View;
+import android.widget.ImageView;
+import android.widget.TextView;
 import androidx.activity.EdgeToEdge;
 import androidx.activity.OnBackPressedCallback;
 import androidx.annotation.NonNull;
@@ -13,17 +17,26 @@ import androidx.navigation.NavController;
 import androidx.navigation.NavOptions;
 import androidx.navigation.fragment.NavHostFragment;
 import androidx.navigation.ui.NavigationUI;
+import com.bumptech.glide.Glide;
+import com.bumptech.glide.load.engine.DiskCacheStrategy;
 import com.google.android.material.badge.BadgeDrawable;
+import java.util.List;
 import java.util.Objects;
 import org.gitnex.tea4j.v2.models.GeneralAPISettings;
 import org.gitnex.tea4j.v2.models.GeneralAttachmentSettings;
 import org.gitnex.tea4j.v2.models.NotificationCount;
 import org.gitnex.tea4j.v2.models.ServerVersion;
+import org.gitnex.tea4j.v2.models.User;
 import org.mian.gitnex.R;
+import org.mian.gitnex.adapters.HomeDashboardAdapter;
+import org.mian.gitnex.adapters.UserAccountsNavAdapter;
 import org.mian.gitnex.clients.RetrofitClient;
 import org.mian.gitnex.database.api.BaseApi;
 import org.mian.gitnex.database.api.UserAccountsApi;
+import org.mian.gitnex.database.models.UserAccount;
 import org.mian.gitnex.databinding.ActivityMainBinding;
+import org.mian.gitnex.databinding.FragmentHomeDashboardBinding;
+import org.mian.gitnex.fragments.HomeDashboardFragment;
 import org.mian.gitnex.fragments.NotificationsFragment;
 import org.mian.gitnex.fragments.profile.DetailFragment;
 import org.mian.gitnex.helpers.AlertDialogs;
@@ -46,11 +59,17 @@ public class MainActivity extends BaseActivity
 	private ActivityMainBinding binding;
 	private TinyDB tinyDB;
 	private NavController navController;
-	private boolean noConnection = false;
+	private boolean noConnection;
 	private BottomSheetListener profileInitListener;
-	public static boolean refActivity = false;
-	public static boolean reloadRepos = false;
-	public static boolean closeActivity = false;
+	public static boolean refActivity;
+	public static boolean reloadRepos;
+	public static boolean closeActivity;
+
+	public interface UserInfoCallback {
+		void onUserInfoLoaded(String username, boolean isAdmin, String serverVersion);
+
+		void onUserAccountsLoaded();
+	}
 
 	@Override
 	public void onNotificationsMarkedRead() {
@@ -62,7 +81,7 @@ public class MainActivity extends BaseActivity
 		super.onCreate(savedInstanceState);
 		EdgeToEdge.enable(this);
 
-		WindowCompat.setDecorFitsSystemWindows(getWindow(), true);
+		WindowCompat.setDecorFitsSystemWindows(getWindow(), false);
 		getWindow().setStatusBarColor(getResources().getColor(R.color.colorPrimary, getTheme()));
 
 		binding = ActivityMainBinding.inflate(getLayoutInflater());
@@ -153,7 +172,26 @@ public class MainActivity extends BaseActivity
 					});
 		}
 
-		loadUserInfo();
+		loadUserInfo(
+				null,
+				null,
+				null,
+				null,
+				null,
+				new UserInfoCallback() {
+					@Override
+					public void onUserInfoLoaded(
+							String username, boolean isAdmin, String serverVersion) {
+						tinyDB.putString("username", username);
+						if (profileInitListener != null) {
+							profileInitListener.onButtonClicked(null);
+						}
+					}
+
+					@Override
+					public void onUserAccountsLoaded() {}
+				});
+
 		getNotificationsCount();
 
 		handler.postDelayed(
@@ -218,13 +256,205 @@ public class MainActivity extends BaseActivity
 			refActivity = false;
 		}
 		if (DetailFragment.refProfile) {
-			loadUserInfo();
+			loadUserInfo(
+					null,
+					null,
+					null,
+					null,
+					null,
+					new UserInfoCallback() {
+						@Override
+						public void onUserInfoLoaded(
+								String username, boolean isAdmin, String serverVersion) {
+							tinyDB.putString("username", username);
+							if (profileInitListener != null) {
+								profileInitListener.onButtonClicked(null);
+							}
+						}
+
+						@Override
+						public void onUserAccountsLoaded() {}
+					});
 			DetailFragment.refProfile = false;
 		}
 	}
 
-	private void handleLaunchFragments(Intent mainIntent) {
+	@SuppressLint("NotifyDataSetChanged")
+	public void loadUserInfo(
+			HomeDashboardFragment fragment,
+			FragmentHomeDashboardBinding binding,
+			HomeDashboardAdapter dashboardAdapter,
+			List<UserAccount> userAccountsList,
+			UserAccountsNavAdapter accountsAdapter,
+			UserInfoCallback callback) {
+		Call<User> call = RetrofitClient.getApiInterface(this).userGetCurrent();
+		call.enqueue(
+				new Callback<User>() {
+					@Override
+					public void onResponse(
+							@NonNull Call<User> call, @NonNull Response<User> response) {
+						if (fragment != null && !fragment.isAdded()) {
+							return;
+						}
 
+						if (binding != null
+								&& userAccountsList != null
+								&& accountsAdapter != null) {
+							assert fragment != null;
+							loadUserAccounts(
+									fragment, binding, userAccountsList, accountsAdapter, callback);
+						}
+
+						User userDetails = response.body();
+						if (response.isSuccessful()
+								&& response.code() == 200
+								&& userDetails != null) {
+							int accountId = tinyDB.getInt("currentActiveAccountId");
+							UserAccountsApi userApi =
+									BaseApi.getInstance(MainActivity.this, UserAccountsApi.class);
+							assert userApi != null;
+							UserAccount account = userApi.getAccountById(accountId);
+
+							if (account == null) {
+								return;
+							}
+
+							String username = userDetails.getLogin();
+							String userEmail = userDetails.getEmail();
+							String name = userDetails.getFullName();
+							String avatarUrl = userDetails.getAvatarUrl();
+
+							if (!account.getUserName().equals(username)) {
+								userApi.updateUsername(accountId, username);
+							}
+
+							if (binding != null) {
+								TextView userFullname = binding.userFullname;
+								TextView userEmailView = binding.userEmail;
+								ImageView userAvatar = binding.userAvatar;
+
+								if (name != null && !name.isEmpty()) {
+									userFullname.setText(Html.fromHtml(name));
+								} else {
+									userFullname.setText(username);
+								}
+
+								if (Boolean.parseBoolean(
+										AppDatabaseSettings.getSettingsValue(
+												MainActivity.this,
+												AppDatabaseSettings
+														.APP_USER_HIDE_EMAIL_IN_NAV_KEY))) {
+									userEmailView.setVisibility(View.GONE);
+								} else {
+									userEmailView.setVisibility(View.VISIBLE);
+									if (userEmail != null && !userEmail.isEmpty()) {
+										userEmailView.setText(userEmail);
+									} else {
+										userEmailView.setText("");
+									}
+								}
+
+								if (avatarUrl != null && !avatarUrl.isEmpty()) {
+									Glide.with(MainActivity.this)
+											.load(avatarUrl)
+											.diskCacheStrategy(DiskCacheStrategy.ALL)
+											.placeholder(R.drawable.loader_animated)
+											.centerCrop()
+											.into(userAvatar);
+								}
+							}
+
+							fetchServerVersion(
+									fragment,
+									dashboardAdapter,
+									username,
+									userDetails.isIsAdmin(),
+									callback);
+						} else if (response.code() == 401) {
+							AlertDialogs.authorizationTokenRevokedDialog(MainActivity.this);
+						}
+					}
+
+					@Override
+					public void onFailure(@NonNull Call<User> call, @NonNull Throwable t) {
+						if (binding != null
+								&& userAccountsList != null
+								&& accountsAdapter != null) {
+							loadUserAccounts(
+									fragment, binding, userAccountsList, accountsAdapter, callback);
+						}
+					}
+				});
+	}
+
+	@SuppressLint("NotifyDataSetChanged")
+	private void loadUserAccounts(
+			HomeDashboardFragment fragment,
+			FragmentHomeDashboardBinding binding,
+			List<UserAccount> userAccountsList,
+			UserAccountsNavAdapter accountsAdapter,
+			UserInfoCallback callback) {
+		UserAccountsApi userAccountsApi = BaseApi.getInstance(this, UserAccountsApi.class);
+		assert userAccountsApi != null;
+		userAccountsApi
+				.getAllAccounts()
+				.observe(
+						fragment.getViewLifecycleOwner(),
+						userAccounts -> {
+							if (!fragment.isAdded()) {
+								return;
+							}
+							if (userAccounts != null && !userAccounts.isEmpty()) {
+								userAccountsList.clear();
+								userAccountsList.addAll(userAccounts);
+								accountsAdapter.notifyDataSetChanged();
+								binding.userAccountsRecyclerView.setVisibility(View.VISIBLE);
+							} else {
+								binding.userAccountsRecyclerView.setVisibility(View.GONE);
+							}
+							if (callback != null) {
+								callback.onUserAccountsLoaded();
+							}
+						});
+	}
+
+	private void fetchServerVersion(
+			HomeDashboardFragment fragment,
+			HomeDashboardAdapter dashboardAdapter,
+			String username,
+			boolean isAdmin,
+			UserInfoCallback callback) {
+		Call<ServerVersion> call = RetrofitClient.getApiInterface(this).getVersion();
+		call.enqueue(
+				new Callback<>() {
+					@Override
+					public void onResponse(
+							@NonNull Call<ServerVersion> call,
+							@NonNull Response<ServerVersion> response) {
+						if (fragment != null && !fragment.isAdded()) {
+							return;
+						}
+						if (response.isSuccessful()
+								&& response.code() == 200
+								&& response.body() != null) {
+							String version = response.body().getVersion();
+							tinyDB.putString("serverVersion", version);
+							if (dashboardAdapter != null) {
+								dashboardAdapter.updateUserInfo(username, isAdmin, version);
+							}
+							if (callback != null) {
+								callback.onUserInfoLoaded(username, isAdmin, version);
+							}
+						}
+					}
+
+					@Override
+					public void onFailure(
+							@NonNull Call<ServerVersion> call, @NonNull Throwable t) {}
+				});
+	}
+
+	private void handleLaunchFragments(Intent mainIntent) {
 		String launchFragment = mainIntent.getStringExtra("launchFragment");
 
 		if (launchFragment != null) {
@@ -290,7 +520,6 @@ public class MainActivity extends BaseActivity
 	}
 
 	private void navigateToDefaultFragment() {
-
 		NavOptions navOptions =
 				new NavOptions.Builder()
 						.setPopUpTo(R.id.nav_graph, true)
@@ -302,6 +531,7 @@ public class MainActivity extends BaseActivity
 						this, AppDatabaseSettings.APP_HOME_SCREEN_KEY))) {
 			case 0:
 				navController.navigate(R.id.homeDashboardFragment, null, navOptions);
+				break;
 			case 1:
 				binding.toolbarTitle.setText(getResources().getString(R.string.navMyRepos));
 				navController.navigate(R.id.nav_graph, null, navOptions);
@@ -355,57 +585,10 @@ public class MainActivity extends BaseActivity
 		}
 	}
 
-	private void loadUserInfo() {
-		Call<org.gitnex.tea4j.v2.models.User> call =
-				RetrofitClient.getApiInterface(this).userGetCurrent();
-		call.enqueue(
-				new Callback<>() {
-					@Override
-					public void onResponse(
-							@NonNull Call<org.gitnex.tea4j.v2.models.User> call,
-							@NonNull Response<org.gitnex.tea4j.v2.models.User> response) {
-						org.gitnex.tea4j.v2.models.User userDetails = response.body();
-						if (response.isSuccessful()
-								&& response.code() == 200
-								&& userDetails != null) {
-							getAccount().setUserInfo(userDetails);
-							int accountId = tinyDB.getInt("currentActiveAccountId");
-							if (!getAccount()
-									.getAccount()
-									.getUserName()
-									.equals(userDetails.getLogin())) {
-								Objects.requireNonNull(
-												BaseApi.getInstance(
-														MainActivity.this, UserAccountsApi.class))
-										.updateUsername(accountId, userDetails.getLogin());
-								getAccount()
-										.setAccount(
-												Objects.requireNonNull(
-																BaseApi.getInstance(
-																		MainActivity.this,
-																		UserAccountsApi.class))
-														.getAccountById(accountId));
-							}
-							tinyDB.putString("username", userDetails.getLogin());
-							if (profileInitListener != null) {
-								profileInitListener.onButtonClicked(null);
-							}
-						} else if (response.code() == 401) {
-							AlertDialogs.authorizationTokenRevokedDialog(MainActivity.this);
-						}
-					}
-
-					@Override
-					public void onFailure(
-							@NonNull Call<org.gitnex.tea4j.v2.models.User> call,
-							@NonNull Throwable t) {}
-				});
-	}
-
-	private void getNotificationsCount() {
+	public void getNotificationsCount() {
 		Call<NotificationCount> call = RetrofitClient.getApiInterface(this).notifyNewAvailable();
 		call.enqueue(
-				new Callback<>() {
+				new Callback<NotificationCount>() {
 					@Override
 					public void onResponse(
 							@NonNull Call<NotificationCount> call,
@@ -438,10 +621,10 @@ public class MainActivity extends BaseActivity
 		return typedValue.data;
 	}
 
-	private void giteaVersion() {
+	public void giteaVersion() {
 		Call<ServerVersion> call = RetrofitClient.getApiInterface(this).getVersion();
 		call.enqueue(
-				new Callback<>() {
+				new Callback<ServerVersion>() {
 					@Override
 					public void onResponse(
 							@NonNull Call<ServerVersion> call,
@@ -473,11 +656,11 @@ public class MainActivity extends BaseActivity
 				});
 	}
 
-	private void serverPageLimitSettings() {
+	public void serverPageLimitSettings() {
 		Call<GeneralAPISettings> call =
 				RetrofitClient.getApiInterface(this).getGeneralAPISettings();
 		call.enqueue(
-				new Callback<>() {
+				new Callback<GeneralAPISettings>() {
 					@Override
 					public void onResponse(
 							@NonNull Call<GeneralAPISettings> call,
@@ -509,11 +692,11 @@ public class MainActivity extends BaseActivity
 				});
 	}
 
-	private void updateGeneralAttachmentSettings() {
+	public void updateGeneralAttachmentSettings() {
 		Call<GeneralAttachmentSettings> call =
 				RetrofitClient.getApiInterface(this).getGeneralAttachmentSettings();
 		call.enqueue(
-				new Callback<>() {
+				new Callback<GeneralAttachmentSettings>() {
 					@Override
 					public void onResponse(
 							@NonNull Call<GeneralAttachmentSettings> call,

@@ -568,6 +568,7 @@
     <string name="home">Home</string>
     <string name="personal">Personal</string>
     <string name="activities">Activities</string>
+    <string name="refresh">Refresh</string>
     <!-- generic copy -->
 
     <string name="exploreUsers">Explore users</string>

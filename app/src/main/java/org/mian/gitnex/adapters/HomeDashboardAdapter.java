@@ -58,42 +58,8 @@ public class HomeDashboardAdapter
 		this.categories = new ArrayList<>();
 		this.username = tinyDB.getString("username");
 
-		// Repositories (no header)
-		List<ItemData> repoItems = new ArrayList<>();
-		repoItems.add(
-				new ItemData(
-						R.drawable.ic_organization,
-						context.getString(R.string.navOrg),
-						"nav_organizations"));
-		repoItems.add(
-				new ItemData(
-						R.drawable.ic_repo,
-						context.getString(R.string.navMyRepos),
-						"nav_my_repos"));
-		repoItems.add(
-				new ItemData(
-						R.drawable.ic_star_unfilled,
-						context.getString(R.string.navStarredRepos),
-						"nav_starred_repos"));
-		repoItems.add(
-				new ItemData(
-						R.drawable.ic_watchers,
-						context.getString(R.string.navWatchedRepositories),
-						"nav_watched_repositories"));
-		repoItems.add(
-				new ItemData(
-						R.drawable.ic_activities,
-						context.getString(R.string.activities),
-						"activitiesFragment"));
-		categories.add(new CategoryData("", repoItems));
-
 		// Personal
 		List<ItemData> personalItems = new ArrayList<>();
-		personalItems.add(
-				new ItemData(
-						R.drawable.ic_issue,
-						context.getString(R.string.navMyIssues),
-						"nav_my_issues"));
 		personalItems.add(
 				new ItemData(
 						R.drawable.ic_trending,
@@ -140,12 +106,10 @@ public class HomeDashboardAdapter
 	@Override
 	public void onBindViewHolder(@NonNull CategoryViewHolder holder, int position) {
 		CategoryData category = categories.get(position);
-		if (category.header.isEmpty()) {
-			holder.header.setVisibility(View.GONE);
-		} else {
-			holder.header.setVisibility(View.VISIBLE);
-			holder.header.setText(category.header);
-		}
+		holder.header.setVisibility(View.VISIBLE);
+		holder.header.setText(category.header);
+		holder.categoryCard.setVisibility(View.VISIBLE);
+		holder.itemContainer.setOrientation(LinearLayout.VERTICAL);
 		holder.itemContainer.removeAllViews();
 		for (ItemData item : category.items) {
 			View itemView =
@@ -169,21 +133,6 @@ public class HomeDashboardAdapter
 					v -> {
 						NavController navController = Navigation.findNavController(v);
 						switch (item.destinationId) {
-							case "nav_organizations":
-								navController.navigate(R.id.action_to_organizations);
-								break;
-							case "nav_my_repos":
-								navController.navigate(R.id.action_to_myRepositories);
-								break;
-							case "nav_starred_repos":
-								navController.navigate(R.id.action_to_starredRepositories);
-								break;
-							case "nav_watched_repositories":
-								navController.navigate(R.id.action_to_watchedRepositories);
-								break;
-							case "activitiesFragment":
-								navController.navigate(R.id.activitiesFragment);
-								break;
 							case "nav_my_issues":
 								navController.navigate(R.id.action_to_myIssues);
 								break;
@@ -221,11 +170,13 @@ public class HomeDashboardAdapter
 	public static class CategoryViewHolder extends RecyclerView.ViewHolder {
 		TextView header;
 		LinearLayout itemContainer;
+		com.google.android.material.card.MaterialCardView categoryCard;
 
 		CategoryViewHolder(View itemView) {
 			super(itemView);
 			header = itemView.findViewById(R.id.sectionHeader);
 			itemContainer = itemView.findViewById(R.id.itemContainer);
+			categoryCard = itemView.findViewById(R.id.categoryCard);
 		}
 	}
 
