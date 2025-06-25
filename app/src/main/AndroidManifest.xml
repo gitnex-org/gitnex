@@ -154,9 +154,6 @@
             android:configChanges="orientation|screenSize|smallestScreenSize|density|screenLayout|keyboard|keyboardHidden|navigation"
             android:windowSoftInputMode="adjustResize"/>
         <activity
-            android:name=".activities.SettingsGeneralActivity"
-            android:configChanges="orientation|screenSize|smallestScreenSize|density|screenLayout|keyboard|keyboardHidden|navigation"/>
-        <activity
             android:name=".activities.AdminCronTasksActivity"
             android:configChanges="orientation|screenSize|smallestScreenSize|density|screenLayout|keyboard|keyboardHidden|navigation"/>
         <activity
