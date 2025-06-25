@@ -289,7 +289,7 @@ public class MainActivity extends BaseActivity
 			UserInfoCallback callback) {
 		Call<User> call = RetrofitClient.getApiInterface(this).userGetCurrent();
 		call.enqueue(
-				new Callback<User>() {
+				new Callback<>() {
 					@Override
 					public void onResponse(
 							@NonNull Call<User> call, @NonNull Response<User> response) {
@@ -377,6 +377,12 @@ public class MainActivity extends BaseActivity
 
 					@Override
 					public void onFailure(@NonNull Call<User> call, @NonNull Throwable t) {
+						if (fragment == null || !fragment.isAdded() || fragment.getView() == null) {
+							if (callback != null) {
+								callback.onUserAccountsLoaded();
+							}
+							return;
+						}
 						if (binding != null
 								&& userAccountsList != null
 								&& accountsAdapter != null) {
@@ -394,6 +400,13 @@ public class MainActivity extends BaseActivity
 			List<UserAccount> userAccountsList,
 			UserAccountsNavAdapter accountsAdapter,
 			UserInfoCallback callback) {
+		if (!fragment.isAdded() || fragment.getView() == null) {
+			if (callback != null) {
+				callback.onUserAccountsLoaded();
+			}
+			return;
+		}
+
 		UserAccountsApi userAccountsApi = BaseApi.getInstance(this, UserAccountsApi.class);
 		assert userAccountsApi != null;
 		userAccountsApi
@@ -401,7 +414,10 @@ public class MainActivity extends BaseActivity
 				.observe(
 						fragment.getViewLifecycleOwner(),
 						userAccounts -> {
-							if (!fragment.isAdded()) {
+							if (!fragment.isAdded() || fragment.getView() == null) {
+								if (callback != null) {
+									callback.onUserAccountsLoaded();
+								}
 								return;
 							}
 							if (userAccounts != null && !userAccounts.isEmpty()) {

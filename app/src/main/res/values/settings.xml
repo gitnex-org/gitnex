@@ -97,20 +97,20 @@
     </string-array>
 
     <string-array name="ceColors">
-        <item>Five O Clock</item>
-        <item>Blue Moon</item>
+        <item>@string/ceColorFive</item>
+        <item>@string/ceColorBlueMoon</item>
     </string-array>
 
     <string-array name="ceIndentation">
-        <item>Tabs</item>
-        <item>Spaces</item>
+        <item>@string/ceIndentationSpaces</item>
+        <item>@string/ceIndentationTabs</item>
     </string-array>
 
     <string-array name="ceIndentationTabsWidth">
-        <item>2</item>
-        <item>4</item>
-        <item>6</item>
-        <item>8</item>
+        <item>@string/ceIndentationTabsWidth2</item>
+        <item>@string/ceIndentationTabsWidth4</item>
+        <item>@string/ceIndentationTabsWidth6</item>
+        <item>@string/ceIndentationTabsWidth8</item>
     </string-array>
 
     <string-array name="fragmentTabsAnimation">

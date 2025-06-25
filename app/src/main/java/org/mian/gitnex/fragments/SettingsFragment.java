@@ -13,7 +13,6 @@ import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 import org.mian.gitnex.R;
 import org.mian.gitnex.activities.SettingsAppearanceActivity;
-import org.mian.gitnex.activities.SettingsCodeEditorActivity;
 import org.mian.gitnex.activities.SettingsGeneralActivity;
 import org.mian.gitnex.activities.SettingsSecurityActivity;
 import org.mian.gitnex.databinding.FragmentSettingsBinding;
@@ -47,7 +46,12 @@ public class SettingsFragment extends Fragment {
 				v1 -> startActivity(new Intent(ctx, SettingsAppearanceActivity.class)));
 
 		fragmentSettingsBinding.codeEditorFrame.setOnClickListener(
-				v1 -> startActivity(new Intent(ctx, SettingsCodeEditorActivity.class)));
+				v1 ->
+						new BottomSheetSettingsCodeEditorFragment()
+								.show(getChildFragmentManager(), "BottomSheetSettingsCodeEditor"));
+
+		/*fragmentSettingsBinding.codeEditorFrame.setOnClickListener(
+		v1 -> startActivity(new Intent(ctx, SettingsCodeEditorActivity.class)));*/
 
 		fragmentSettingsBinding.securityFrame.setOnClickListener(
 				v1 -> startActivity(new Intent(ctx, SettingsSecurityActivity.class)));

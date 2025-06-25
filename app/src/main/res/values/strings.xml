@@ -19,6 +19,14 @@
     <string name="feedbackText" translatable="false">Feedback</string>
     <string name="where_to_get_token_text" translatable="false"><u>Where can I get an access token?</u></string>
     <string name="where_to_get_token_message" translatable="false"><![CDATA[<br>• Log in to your account on your instance (Codeberg, etc.).<br>• Click on your user profile picture, then go to Settings.<br>• Under Applications, create a token with a name of your choice.<br>• Choose All (public, private, and limited).<br>• Under Select permissions, select Read and write for each dropdown.<br><br> Once created, copy and paste or type the token here along with the instance URL.]]></string>
+    <string name="ceColorFive" translatable="false">Five O Clock</string>
+    <string name="ceColorBlueMoon" translatable="false">Blue Moon</string>
+    <string name="ceIndentationTabs" translatable="false">Tabs</string>
+    <string name="ceIndentationSpaces" translatable="false">Spaces</string>
+    <string name="ceIndentationTabsWidth2" translatable="false">2</string>
+    <string name="ceIndentationTabsWidth4" translatable="false">4</string>
+    <string name="ceIndentationTabsWidth6" translatable="false">6</string>
+    <string name="ceIndentationTabsWidth8" translatable="false">8</string>
 
     <!-- menu items -->
     <string name="navMyRepos">My Repositories</string>
