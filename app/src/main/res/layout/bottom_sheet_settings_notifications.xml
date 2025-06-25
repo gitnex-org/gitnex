@@ -67,6 +67,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:contentDescription="@string/enableNotificationsHeaderText"
+            style="@style/m3SwitchStyle"
             android:layout_weight="0.10" />
 
     </LinearLayout>

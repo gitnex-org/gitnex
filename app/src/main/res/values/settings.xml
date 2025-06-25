@@ -89,11 +89,10 @@
     </string-array>
 
     <string-array name="cacheSizeList">
-        <item>50 MB</item>
-        <item>100 MB</item>
-        <item>250 MB</item>
-        <item>500 MB</item>
-        <item>1 GB</item>
+        <item>@string/cacheSize0</item>
+        <item>@string/cacheSize1</item>
+        <item>@string/cacheSize2</item>
+        <item>@string/cacheSize3</item>
     </string-array>
 
     <string-array name="ceColors">

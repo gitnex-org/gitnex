@@ -14,7 +14,6 @@ import androidx.fragment.app.Fragment;
 import org.mian.gitnex.R;
 import org.mian.gitnex.activities.SettingsAppearanceActivity;
 import org.mian.gitnex.activities.SettingsGeneralActivity;
-import org.mian.gitnex.activities.SettingsSecurityActivity;
 import org.mian.gitnex.databinding.FragmentSettingsBinding;
 
 /**
@@ -50,11 +49,10 @@ public class SettingsFragment extends Fragment {
 						new BottomSheetSettingsCodeEditorFragment()
 								.show(getChildFragmentManager(), "BottomSheetSettingsCodeEditor"));
 
-		/*fragmentSettingsBinding.codeEditorFrame.setOnClickListener(
-		v1 -> startActivity(new Intent(ctx, SettingsCodeEditorActivity.class)));*/
-
 		fragmentSettingsBinding.securityFrame.setOnClickListener(
-				v1 -> startActivity(new Intent(ctx, SettingsSecurityActivity.class)));
+				v1 ->
+						new BottomSheetSettingsSecurityFragment()
+								.show(getChildFragmentManager(), "BottomSheetSettingsSecurity"));
 
 		fragmentSettingsBinding.notificationsFrame.setOnClickListener(
 				v1 ->

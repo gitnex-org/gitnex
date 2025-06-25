@@ -27,6 +27,10 @@
     <string name="ceIndentationTabsWidth4" translatable="false">4</string>
     <string name="ceIndentationTabsWidth6" translatable="false">6</string>
     <string name="ceIndentationTabsWidth8" translatable="false">8</string>
+    <string name="cacheSize0" translatable="false">250 MB</string>
+    <string name="cacheSize1" translatable="false">500 MB</string>
+    <string name="cacheSize2" translatable="false">1 GB</string>
+    <string name="cacheSize3" translatable="false">2 GB</string>
 
     <!-- menu items -->
     <string name="navMyRepos">My Repositories</string>
@@ -998,4 +1002,5 @@
     <string name="fewest_forks">Fewest forks</string>
 
     <string name="switch_account">Switch account</string>
+    <string name="clear_cache_button_text">Clear Cache (%1$s)</string>
 </resources>

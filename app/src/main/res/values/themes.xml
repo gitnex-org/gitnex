@@ -235,7 +235,13 @@
     </style>
     <!-- Codeberg dark theme -->
 
+    <style name="Widget.App.Switch" parent="Widget.Material3.CompoundButton.MaterialSwitch">
+        <item name="thumbTint">@color/colorWhite</item>
+        <item name="colorPrimary">?attr/fabColor</item>
+    </style>
+
     <style name="m3SwitchStyle" parent="Widget.Material3.CompoundButton.MaterialSwitch">
+        <item name="materialThemeOverlay">@style/Widget.App.Switch</item>
         <item name="thumbTint">@color/colorWhite</item>
     </style>
 

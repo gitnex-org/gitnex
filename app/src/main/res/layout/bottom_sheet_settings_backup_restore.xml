@@ -44,63 +44,32 @@
 
     </LinearLayout>
 
-    <LinearLayout
-        android:id="@+id/backupDataFrame"
+    <com.google.android.material.floatingactionbutton.ExtendedFloatingActionButton
+        android:id="@+id/backupButton"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:paddingStart="@dimen/dimen16dp"
-        android:paddingEnd="@dimen/dimen16dp"
-        android:orientation="vertical">
+        android:layout_height="@dimen/dimen54dp"
+        android:layout_marginStart="@dimen/dimen16dp"
+        android:layout_marginEnd="@dimen/dimen16dp"
+        android:layout_marginTop="@dimen/dimen8dp"
+        android:stateListAnimator="@null"
+        android:text="@string/backup"
+        android:contentDescription="@string/backup"
+        android:textColor="?attr/materialCardBackgroundColor"
+        app:iconTint="?attr/materialCardBackgroundColor"
+        android:backgroundTint="?attr/fabColor" />
 
-        <com.google.android.material.card.MaterialCardView
-            android:id="@+id/backupButton"
-            style="?attr/materialCardViewFilledStyle"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="@dimen/dimen8dp"
-            app:cardElevation="@dimen/dimen2dp">
-
-            <TextView
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:padding="@dimen/dimen12dp"
-                android:gravity="center"
-                android:text="@string/backup"
-                android:textColor="?attr/primaryTextColor"
-                android:textSize="@dimen/dimen16sp" />
-
-        </com.google.android.material.card.MaterialCardView>
-
-    </LinearLayout>
-
-    <LinearLayout
-        android:id="@+id/restoreDataFrame"
+    <com.google.android.material.floatingactionbutton.ExtendedFloatingActionButton
+        android:id="@+id/restoreButton"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="@dimen/dimen16dp"
-        android:paddingStart="@dimen/dimen16dp"
-        android:paddingEnd="@dimen/dimen16dp"
-        android:orientation="vertical">
-
-        <com.google.android.material.card.MaterialCardView
-            android:id="@+id/restoreButton"
-            style="?attr/materialCardViewFilledStyle"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="@dimen/dimen8dp"
-            app:cardElevation="@dimen/dimen2dp">
-
-            <TextView
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:padding="@dimen/dimen12dp"
-                android:gravity="center"
-                android:text="@string/restore"
-                android:textColor="?attr/primaryTextColor"
-                android:textSize="@dimen/dimen16sp" />
-
-        </com.google.android.material.card.MaterialCardView>
-
-    </LinearLayout>
+        android:layout_height="@dimen/dimen54dp"
+        android:layout_marginStart="@dimen/dimen16dp"
+        android:layout_marginEnd="@dimen/dimen16dp"
+        android:layout_marginTop="@dimen/dimen24dp"
+        android:stateListAnimator="@null"
+        android:text="@string/restore"
+        android:contentDescription="@string/restore"
+        android:textColor="?attr/materialCardBackgroundColor"
+        app:iconTint="?attr/materialCardBackgroundColor"
+        android:backgroundTint="?attr/fabColor" />
 
 </LinearLayout>

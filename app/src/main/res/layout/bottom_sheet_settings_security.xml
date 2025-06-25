@@ -1,0 +1,225 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:background="?attr/primaryBackgroundColor"
+    android:orientation="vertical"
+    android:paddingTop="@dimen/dimen6dp"
+    android:paddingBottom="@dimen/dimen12dp">
+
+    <View
+        android:layout_width="@dimen/dimen32dp"
+        android:layout_height="@dimen/dimen6dp"
+        android:layout_gravity="center_horizontal"
+        android:layout_marginBottom="@dimen/dimen8dp"
+        android:background="@drawable/bottom_sheet_handle"
+        android:backgroundTint="?attr/primaryTextColor" />
+
+    <LinearLayout
+        android:id="@+id/headerFrame"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:padding="@dimen/dimen8dp">
+
+        <TextView
+            android:id="@+id/bottomSheetHeader"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="center"
+            android:text="@string/settingsSecurityHeader"
+            android:textColor="?attr/primaryTextColor"
+            android:textSize="@dimen/dimen18sp"/>
+
+        <com.google.android.material.card.MaterialCardView
+            style="?attr/materialCardViewFilledStyle"
+            android:layout_width="@dimen/dimen28dp"
+            android:layout_height="@dimen/dimen4dp"
+            android:layout_gravity="center_horizontal"
+            android:layout_marginTop="@dimen/dimen8dp"
+            android:layout_marginBottom="@dimen/dimen16dp"
+            app:cardCornerRadius="@dimen/dimen24dp"
+            app:cardElevation="@dimen/dimen0dp">
+
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:background="?attr/fabColor" />
+
+        </com.google.android.material.card.MaterialCardView>
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:id="@+id/biometricFrame"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:paddingStart="@dimen/dimen16dp"
+        android:paddingEnd="@dimen/dimen16dp"
+        android:orientation="horizontal">
+
+        <TextView
+            android:id="@+id/biometricHeader"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="0.90"
+            android:text="@string/settingsBiometricHeader"
+            android:textColor="?attr/primaryTextColor"
+            android:layout_marginTop="@dimen/dimen4dp"
+            android:textSize="@dimen/dimen16sp" />
+
+        <com.google.android.material.materialswitch.MaterialSwitch
+            android:id="@+id/switchBiometric"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:contentDescription="@string/settingsBiometricHeader"
+            style="@style/m3SwitchStyle"
+            android:layout_weight="0.10" />
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:id="@+id/cacheSizeDataFrame"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/dimen24dp"
+        android:paddingStart="@dimen/dimen16dp"
+        android:paddingEnd="@dimen/dimen16dp"
+        android:orientation="vertical">
+
+        <TextView
+            android:id="@+id/cacheSizeDataHeaderSelector"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/cacheSizeDataSelectionHeaderText"
+            android:textColor="?attr/primaryTextColor"
+            android:textSize="@dimen/dimen16sp" />
+
+        <com.google.android.material.chip.ChipGroup
+            android:id="@+id/cacheSizeDataChipGroup"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/dimen8dp"
+            app:singleSelection="true"
+            app:selectionRequired="true">
+
+            <com.google.android.material.chip.Chip
+                android:id="@+id/chipDataCache0"
+                style="@style/CustomChipFilter"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/cacheSize0" />
+
+            <com.google.android.material.chip.Chip
+                android:id="@+id/chipDataCache1"
+                style="@style/CustomChipFilter"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/cacheSize1" />
+
+            <com.google.android.material.chip.Chip
+                android:id="@+id/chipDataCache2"
+                style="@style/CustomChipFilter"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/cacheSize2" />
+
+            <com.google.android.material.chip.Chip
+                android:id="@+id/chipDataCache3"
+                style="@style/CustomChipFilter"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/cacheSize3" />
+
+        </com.google.android.material.chip.ChipGroup>
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:id="@+id/cacheSizeImagesFrame"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/dimen24dp"
+        android:paddingStart="@dimen/dimen16dp"
+        android:paddingEnd="@dimen/dimen16dp"
+        android:orientation="vertical">
+
+        <TextView
+            android:id="@+id/cacheSizeImagesHeaderSelector"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/cacheSizeImagesSelectionHeaderText"
+            android:textColor="?attr/primaryTextColor"
+            android:textSize="@dimen/dimen16sp" />
+
+        <com.google.android.material.chip.ChipGroup
+            android:id="@+id/cacheSizeImagesChipGroup"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/dimen8dp"
+            app:singleSelection="true"
+            app:selectionRequired="true">
+
+            <com.google.android.material.chip.Chip
+                android:id="@+id/chipImagesCache0"
+                style="@style/CustomChipFilter"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/cacheSize0" />
+
+            <com.google.android.material.chip.Chip
+                android:id="@+id/chipImagesCache1"
+                style="@style/CustomChipFilter"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/cacheSize1" />
+
+            <com.google.android.material.chip.Chip
+                android:id="@+id/chipImagesCache2"
+                style="@style/CustomChipFilter"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/cacheSize2" />
+
+            <com.google.android.material.chip.Chip
+                android:id="@+id/chipImagesCache3"
+                style="@style/CustomChipFilter"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/cacheSize3" />
+
+        </com.google.android.material.chip.ChipGroup>
+
+    </LinearLayout>
+
+    <com.google.android.material.floatingactionbutton.ExtendedFloatingActionButton
+        android:id="@+id/clearCacheButton"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/dimen54dp"
+        android:layout_marginStart="@dimen/dimen16dp"
+        android:layout_marginEnd="@dimen/dimen16dp"
+        android:layout_marginTop="@dimen/dimen24dp"
+        android:stateListAnimator="@null"
+        android:text="@string/clearCacheSelectionHeaderText"
+        android:contentDescription="@string/clearCacheSelectionHeaderText"
+        android:textColor="?attr/materialCardBackgroundColor"
+        app:iconTint="?attr/materialCardBackgroundColor"
+        android:backgroundTint="?attr/fabColor" />
+
+    <com.google.android.material.floatingactionbutton.ExtendedFloatingActionButton
+        android:id="@+id/deleteCertsButton"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/dimen54dp"
+        android:layout_marginStart="@dimen/dimen16dp"
+        android:layout_marginEnd="@dimen/dimen16dp"
+        android:layout_marginTop="@dimen/dimen24dp"
+        android:stateListAnimator="@null"
+        android:text="@string/settingsCertsSelectorHeader"
+        android:contentDescription="@string/settingsCertsSelectorHeader"
+        android:textColor="?attr/materialCardBackgroundColor"
+        app:iconTint="?attr/materialCardBackgroundColor"
+        android:backgroundTint="?attr/fabColor" />
+
+</LinearLayout>
