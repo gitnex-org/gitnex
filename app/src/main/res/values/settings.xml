@@ -39,7 +39,6 @@
         <item>Pitch Black</item>
         <item>@string/followSystem</item>
         <item>@string/followSystemBlack</item>
-
     </string-array>
 
     <string-array name="themesAndroid12">

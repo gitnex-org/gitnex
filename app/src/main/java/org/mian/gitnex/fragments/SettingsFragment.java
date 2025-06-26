@@ -12,7 +12,6 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 import org.mian.gitnex.R;
-import org.mian.gitnex.activities.SettingsAppearanceActivity;
 import org.mian.gitnex.databinding.FragmentSettingsBinding;
 
 /**
@@ -43,7 +42,9 @@ public class SettingsFragment extends Fragment {
 								.show(getChildFragmentManager(), "BottomSheetSettingsGeneral"));
 
 		fragmentSettingsBinding.appearanceFrame.setOnClickListener(
-				v1 -> startActivity(new Intent(ctx, SettingsAppearanceActivity.class)));
+				v1 ->
+						new BottomSheetSettingsAppearanceFragment()
+								.show(getChildFragmentManager(), "BottomSheetSettingsAppearance"));
 
 		fragmentSettingsBinding.codeEditorFrame.setOnClickListener(
 				v1 ->
