@@ -15,15 +15,12 @@ import androidx.viewpager2.widget.ViewPager2;
 import com.google.android.material.tabs.TabLayout;
 import com.google.android.material.tabs.TabLayoutMediator;
 import org.mian.gitnex.R;
-import org.mian.gitnex.activities.BaseActivity;
-import org.mian.gitnex.activities.MainActivity;
 import org.mian.gitnex.helpers.AppDatabaseSettings;
 import org.mian.gitnex.helpers.AppUtil;
 import org.mian.gitnex.helpers.ViewPager2Transformers;
-import org.mian.gitnex.helpers.contexts.AccountContext;
 
 /**
- * @author M M Arif
+ * @author mmarif
  */
 public class AccountSettingsFragment extends Fragment {
 
@@ -41,20 +38,9 @@ public class AccountSettingsFragment extends Fragment {
 		ctx = getContext();
 
 		view = inflater.inflate(R.layout.fragment_account_settings, container, false);
-		setHasOptionsMenu(false);
 
 		myTypeface = AppUtil.getTypeface(ctx);
-
-		AccountContext account = ((BaseActivity) requireActivity()).getAccount();
-		if (account.getUserInfo() != null) {
-			viewData();
-		} else {
-			((MainActivity) requireActivity())
-					.setProfileInitListener(
-							(text) -> {
-								viewData();
-							});
-		}
+		viewData();
 
 		return view;
 	}

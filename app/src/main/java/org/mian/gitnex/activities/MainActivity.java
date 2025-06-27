@@ -545,9 +545,6 @@ public class MainActivity extends BaseActivity
 		switch (Integer.parseInt(
 				AppDatabaseSettings.getSettingsValue(
 						this, AppDatabaseSettings.APP_HOME_SCREEN_KEY))) {
-			case 0:
-				navController.navigate(R.id.homeDashboardFragment, null, navOptions);
-				break;
 			case 1:
 				binding.toolbarTitle.setText(getResources().getString(R.string.navMyRepos));
 				navController.navigate(R.id.nav_graph, null, navOptions);
@@ -604,7 +601,7 @@ public class MainActivity extends BaseActivity
 	public void getNotificationsCount() {
 		Call<NotificationCount> call = RetrofitClient.getApiInterface(this).notifyNewAvailable();
 		call.enqueue(
-				new Callback<NotificationCount>() {
+				new Callback<>() {
 					@Override
 					public void onResponse(
 							@NonNull Call<NotificationCount> call,
@@ -640,7 +637,7 @@ public class MainActivity extends BaseActivity
 	public void giteaVersion() {
 		Call<ServerVersion> call = RetrofitClient.getApiInterface(this).getVersion();
 		call.enqueue(
-				new Callback<ServerVersion>() {
+				new Callback<>() {
 					@Override
 					public void onResponse(
 							@NonNull Call<ServerVersion> call,
@@ -676,7 +673,7 @@ public class MainActivity extends BaseActivity
 		Call<GeneralAPISettings> call =
 				RetrofitClient.getApiInterface(this).getGeneralAPISettings();
 		call.enqueue(
-				new Callback<GeneralAPISettings>() {
+				new Callback<>() {
 					@Override
 					public void onResponse(
 							@NonNull Call<GeneralAPISettings> call,
@@ -712,7 +709,7 @@ public class MainActivity extends BaseActivity
 		Call<GeneralAttachmentSettings> call =
 				RetrofitClient.getApiInterface(this).getGeneralAttachmentSettings();
 		call.enqueue(
-				new Callback<GeneralAttachmentSettings>() {
+				new Callback<>() {
 					@Override
 					public void onResponse(
 							@NonNull Call<GeneralAttachmentSettings> call,
@@ -742,10 +739,6 @@ public class MainActivity extends BaseActivity
 					public void onFailure(
 							@NonNull Call<GeneralAttachmentSettings> call, @NonNull Throwable t) {}
 				});
-	}
-
-	public void setProfileInitListener(BottomSheetListener profileInitListener) {
-		this.profileInitListener = profileInitListener;
 	}
 
 	@Override

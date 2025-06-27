@@ -81,7 +81,7 @@ public class MyIssuesFragment extends Fragment {
 							public void onCreateMenu(
 									@NonNull Menu menu, @NonNull MenuInflater menuInflater) {
 								menuInflater.inflate(R.menu.search_menu, menu);
-								menuInflater.inflate(R.menu.filter_menu, menu);
+								menuInflater.inflate(R.menu.generic_nav_dotted_menu, menu);
 
 								MenuItem searchItem = menu.findItem(R.id.action_search);
 								androidx.appcompat.widget.SearchView searchView =
@@ -110,7 +110,7 @@ public class MyIssuesFragment extends Fragment {
 
 							@Override
 							public boolean onMenuItemSelected(@NonNull MenuItem menuItem) {
-								if (menuItem.getItemId() == R.id.filter) {
+								if (menuItem.getItemId() == R.id.genericMenu) {
 									new FilterBottomSheetDialogFragment()
 											.show(getChildFragmentManager(), "MyIssuesFilter");
 									return true;
