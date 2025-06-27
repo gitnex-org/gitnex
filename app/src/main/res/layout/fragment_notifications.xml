@@ -8,25 +8,61 @@
     android:background="?attr/primaryBackgroundColor"
     android:orientation="vertical">
 
-    <FrameLayout
+    <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:background="?attr/primaryBackgroundColor"
-        android:padding="@dimen/dimen8dp">
+        android:orientation="vertical">
 
-        <androidx.swiperefreshlayout.widget.SwipeRefreshLayout
-            android:id="@+id/pullToRefresh"
+        <com.google.android.material.chip.ChipGroup
+            android:id="@+id/filterChipGroup"
             android:layout_width="match_parent"
-            android:layout_height="match_parent">
+            android:layout_height="wrap_content"
+            android:paddingStart="@dimen/dimen8dp"
+            android:paddingEnd="@dimen/dimen8dp"
+            app:singleSelection="true"
+            app:selectionRequired="true">
 
-            <androidx.recyclerview.widget.RecyclerView
-                android:id="@+id/notifications"
+            <com.google.android.material.chip.Chip
+                android:id="@+id/unreadChip"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/isUnread"
+                style="@style/CustomChipFilter"
+                app:checkedIconEnabled="true"
+                android:checked="true" />
+
+            <com.google.android.material.chip.Chip
+                android:id="@+id/readChip"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/isRead"
+                style="@style/CustomChipFilter"
+                app:checkedIconEnabled="true" />
+
+        </com.google.android.material.chip.ChipGroup>
+
+        <FrameLayout
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_weight="1"
+            android:background="?attr/primaryBackgroundColor"
+            android:padding="@dimen/dimen8dp">
+
+            <androidx.swiperefreshlayout.widget.SwipeRefreshLayout
+                android:id="@+id/pullToRefresh"
                 android:layout_width="match_parent"
-                android:layout_height="match_parent"/>
+                android:layout_height="match_parent">
 
-        </androidx.swiperefreshlayout.widget.SwipeRefreshLayout>
+                <androidx.recyclerview.widget.RecyclerView
+                    android:id="@+id/notifications"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"/>
 
-    </FrameLayout>
+            </androidx.swiperefreshlayout.widget.SwipeRefreshLayout>
+
+        </FrameLayout>
+
+    </LinearLayout>
 
     <com.google.android.material.progressindicator.LinearProgressIndicator
         android:id="@+id/progressBar"

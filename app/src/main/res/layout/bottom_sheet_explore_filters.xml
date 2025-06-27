@@ -19,7 +19,7 @@
             android:orientation="vertical">
 
             <LinearLayout
-                android:id="@+id/notificationsFilterHeadFrame"
+                android:id="@+id/filtersHeadFrame"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:orientation="vertical"
@@ -53,43 +53,49 @@
 
             </LinearLayout>
 
-            <com.google.android.flexbox.FlexboxLayout
-                android:id="@+id/notificationsFilterSection"
+            <com.google.android.material.chip.ChipGroup
+                android:id="@+id/filterChipGroup"
                 android:layout_width="match_parent"
-                android:layout_height="match_parent"
+                android:layout_height="wrap_content"
                 android:padding="@dimen/dimen4dp"
+                app:flexWrap="wrap"
                 app:alignContent="center"
                 app:alignItems="flex_start"
-                app:flexWrap="wrap"
                 app:justifyContent="center">
 
-                <TextView
-                    android:id="@+id/unreadNotifications"
-                    android:layout_width="@dimen/dimen132dp"
-                    android:layout_height="@dimen/dimen100dp"
-                    android:background="?android:attr/selectableItemBackgroundBorderless"
-                    android:gravity="center"
-                    android:padding="@dimen/dimen4dp"
-                    android:text="@string/isUnread"
-                    android:textColor="?attr/primaryTextColor"
-                    android:textSize="@dimen/dimen14sp"
-                    app:drawableTopCompat="@drawable/ic_watchers"
-                    app:layout_alignSelf="flex_start"/>
+                <com.google.android.material.chip.Chip
+                    android:id="@+id/includeTopicChip"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/exploreFilterIncludeTopic"
+                    style="@style/CustomChipFilter"
+                    app:checkedIconEnabled="true" />
 
-                <TextView
-                    android:id="@+id/readNotifications"
-                    android:layout_width="@dimen/dimen132dp"
-                    android:layout_height="@dimen/dimen100dp"
-                    android:background="?android:attr/selectableItemBackgroundBorderless"
-                    android:gravity="center"
-                    android:padding="@dimen/dimen4dp"
-                    android:text="@string/isRead"
-                    android:textColor="?attr/primaryTextColor"
-                    android:textSize="@dimen/dimen14sp"
-                    app:drawableTopCompat="@drawable/ic_unwatch"
-                    app:layout_alignSelf="flex_start"/>
+                <com.google.android.material.chip.Chip
+                    android:id="@+id/includeDescChip"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/exploreFilterIncludeDesc"
+                    style="@style/CustomChipFilter"
+                    app:checkedIconEnabled="true" />
 
-            </com.google.android.flexbox.FlexboxLayout>
+                <com.google.android.material.chip.Chip
+                    android:id="@+id/includeTemplateChip"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/exploreFilterIncludeTemplateRepos"
+                    style="@style/CustomChipFilter"
+                    app:checkedIconEnabled="true" />
+
+                <com.google.android.material.chip.Chip
+                    android:id="@+id/onlyArchivedChip"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/exploreFilterIncludeArchive"
+                    style="@style/CustomChipFilter"
+                    app:checkedIconEnabled="true" />
+
+            </com.google.android.material.chip.ChipGroup>
 
         </LinearLayout>
     </androidx.core.widget.NestedScrollView>
