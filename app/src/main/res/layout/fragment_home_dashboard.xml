@@ -99,14 +99,14 @@
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:textColor="?attr/primaryTextColor"
-                            android:textSize="@dimen/dimen18sp"
+                            android:textSize="@dimen/dimen16sp"
                             android:textIsSelectable="true" />
 
                         <TextView
                             android:id="@+id/userEmail"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:layout_marginTop="@dimen/dimen2dp"
+                            android:layout_marginTop="@dimen/dimen4dp"
                             android:textColor="?attr/primaryTextColor"
                             android:textSize="@dimen/dimen14sp"
                             android:textIsSelectable="true"
@@ -176,90 +176,19 @@
                     app:strokeWidth="@dimen/dimen0dp"
                     app:cardBackgroundColor="?attr/materialCardBackgroundColor">
 
-                    <ImageView
-                        android:id="@+id/repoOrgIcon"
-                        android:layout_width="@dimen/dimen28dp"
-                        android:layout_height="@dimen/dimen28dp"
+                    <TextView
+                        android:id="@+id/repoOrgTitle"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
                         android:layout_gravity="center"
-                        android:contentDescription="@string/navOrg"
-                        android:src="@drawable/ic_organization"
-                        app:tint="?attr/iconsColor" />
-
-                </com.google.android.material.card.MaterialCardView>
-
-                <com.google.android.material.card.MaterialCardView
-                    android:id="@+id/repoMyReposCard"
-                    android:layout_width="0dp"
-                    android:layout_height="@dimen/dimen84dp"
-                    android:layout_weight="1"
-                    android:layout_marginHorizontal="@dimen/dimen4dp"
-                    app:cardCornerRadius="@dimen/dimen16dp"
-                    app:cardElevation="@dimen/dimen0dp"
-                    app:strokeWidth="@dimen/dimen0dp"
-                    app:cardBackgroundColor="?attr/materialCardBackgroundColor">
-
-                    <ImageView
-                        android:id="@+id/repoMyReposIcon"
-                        android:layout_width="@dimen/dimen28dp"
-                        android:layout_height="@dimen/dimen28dp"
-                        android:layout_gravity="center"
-                        android:contentDescription="@string/navMyRepos"
-                        android:src="@drawable/ic_repo"
-                        app:tint="?attr/iconsColor" />
-
-                </com.google.android.material.card.MaterialCardView>
-
-                <com.google.android.material.card.MaterialCardView
-                    android:id="@+id/repoStarredCard"
-                    android:layout_width="0dp"
-                    android:layout_height="@dimen/dimen84dp"
-                    android:layout_weight="1"
-                    android:layout_marginHorizontal="@dimen/dimen4dp"
-                    app:cardCornerRadius="@dimen/dimen16dp"
-                    app:cardElevation="@dimen/dimen0dp"
-                    app:strokeWidth="@dimen/dimen0dp"
-                    app:cardBackgroundColor="?attr/materialCardBackgroundColor">
-
-                    <ImageView
-                        android:id="@+id/repoStarredIcon"
-                        android:layout_width="@dimen/dimen28dp"
-                        android:layout_height="@dimen/dimen28dp"
-                        android:layout_gravity="center"
-                        android:contentDescription="@string/navStarredRepos"
-                        android:src="@drawable/ic_star_unfilled"
-                        app:tint="?attr/iconsColor" />
-
-                </com.google.android.material.card.MaterialCardView>
-
-            </LinearLayout>
-
-            <!-- Second Row -->
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="@dimen/dimen8dp"
-                android:orientation="horizontal"
-                android:weightSum="3">
-
-                <com.google.android.material.card.MaterialCardView
-                    android:id="@+id/repoWatchedCard"
-                    android:layout_width="0dp"
-                    android:layout_height="@dimen/dimen84dp"
-                    android:layout_weight="1"
-                    android:layout_marginHorizontal="@dimen/dimen4dp"
-                    app:cardCornerRadius="@dimen/dimen16dp"
-                    app:cardElevation="@dimen/dimen0dp"
-                    app:strokeWidth="@dimen/dimen0dp"
-                    app:cardBackgroundColor="?attr/materialCardBackgroundColor">
-
-                    <ImageView
-                        android:id="@+id/repoWatchedIcon"
-                        android:layout_width="@dimen/dimen28dp"
-                        android:layout_height="@dimen/dimen28dp"
-                        android:layout_gravity="center"
-                        android:contentDescription="@string/navWatchedRepositories"
-                        android:src="@drawable/ic_watchers"
-                        app:tint="?attr/iconsColor" />
+                        android:padding="@dimen/dimen8dp"
+                        android:text="@string/navOrg"
+                        android:textColor="?attr/primaryTextColor"
+                        android:textSize="@dimen/dimen12sp"
+                        android:gravity="center"
+                        app:drawableTopCompat="@drawable/ic_organization"
+                        android:drawablePadding="@dimen/dimen8dp"
+                        android:contentDescription="@string/navOrg" />
 
                 </com.google.android.material.card.MaterialCardView>
 
@@ -274,14 +203,19 @@
                     app:strokeWidth="@dimen/dimen0dp"
                     app:cardBackgroundColor="?attr/materialCardBackgroundColor">
 
-                    <ImageView
+                    <TextView
                         android:id="@+id/repoActivitiesIcon"
-                        android:layout_width="@dimen/dimen28dp"
-                        android:layout_height="@dimen/dimen28dp"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
                         android:layout_gravity="center"
-                        android:contentDescription="@string/activities"
-                        android:src="@drawable/ic_activities"
-                        app:tint="?attr/iconsColor" />
+                        android:padding="@dimen/dimen8dp"
+                        android:text="@string/activities"
+                        android:textColor="?attr/primaryTextColor"
+                        android:textSize="@dimen/dimen12sp"
+                        android:gravity="center"
+                        app:drawableTopCompat="@drawable/ic_activities"
+                        android:drawablePadding="@dimen/dimen8dp"
+                        android:contentDescription="@string/activities" />
 
                 </com.google.android.material.card.MaterialCardView>
 
@@ -296,14 +230,110 @@
                     app:strokeWidth="@dimen/dimen0dp"
                     app:cardBackgroundColor="?attr/materialCardBackgroundColor">
 
-                    <ImageView
+                    <TextView
                         android:id="@+id/repoMyIssuesIcon"
-                        android:layout_width="@dimen/dimen28dp"
-                        android:layout_height="@dimen/dimen28dp"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
                         android:layout_gravity="center"
-                        android:contentDescription="@string/navMyIssues"
-                        android:src="@drawable/ic_issue"
-                        app:tint="?attr/iconsColor" />
+                        android:padding="@dimen/dimen8dp"
+                        android:text="@string/navMyIssues"
+                        android:textColor="?attr/primaryTextColor"
+                        android:textSize="@dimen/dimen12sp"
+                        android:gravity="center"
+                        app:drawableTopCompat="@drawable/ic_issue"
+                        android:drawablePadding="@dimen/dimen8dp"
+                        android:contentDescription="@string/navMyIssues" />
+
+                </com.google.android.material.card.MaterialCardView>
+
+            </LinearLayout>
+
+            <!-- Second Row -->
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/dimen8dp"
+                android:orientation="horizontal"
+                android:weightSum="3">
+
+                <com.google.android.material.card.MaterialCardView
+                    android:id="@+id/repoMyReposCard"
+                    android:layout_width="0dp"
+                    android:layout_height="@dimen/dimen84dp"
+                    android:layout_weight="1"
+                    android:layout_marginHorizontal="@dimen/dimen4dp"
+                    app:cardCornerRadius="@dimen/dimen16dp"
+                    app:cardElevation="@dimen/dimen0dp"
+                    app:strokeWidth="@dimen/dimen0dp"
+                    app:cardBackgroundColor="?attr/materialCardBackgroundColor">
+
+                    <TextView
+                        android:id="@+id/repoMyReposIcon"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center"
+                        android:padding="@dimen/dimen8dp"
+                        android:text="@string/navMyRepos"
+                        android:textColor="?attr/primaryTextColor"
+                        android:textSize="@dimen/dimen12sp"
+                        android:gravity="center"
+                        app:drawableTopCompat="@drawable/ic_repo"
+                        android:drawablePadding="@dimen/dimen8dp"
+                        android:contentDescription="@string/navMyRepos" />
+
+                </com.google.android.material.card.MaterialCardView>
+
+                <com.google.android.material.card.MaterialCardView
+                    android:id="@+id/repoStarredCard"
+                    android:layout_width="0dp"
+                    android:layout_height="@dimen/dimen84dp"
+                    android:layout_weight="1"
+                    android:layout_marginHorizontal="@dimen/dimen4dp"
+                    app:cardCornerRadius="@dimen/dimen16dp"
+                    app:cardElevation="@dimen/dimen0dp"
+                    app:strokeWidth="@dimen/dimen0dp"
+                    app:cardBackgroundColor="?attr/materialCardBackgroundColor">
+
+                    <TextView
+                        android:id="@+id/repoStarredIcon"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center"
+                        android:padding="@dimen/dimen8dp"
+                        android:text="@string/navStarredRepos"
+                        android:textColor="?attr/primaryTextColor"
+                        android:textSize="@dimen/dimen12sp"
+                        android:gravity="center"
+                        app:drawableTopCompat="@drawable/ic_star_unfilled"
+                        android:drawablePadding="@dimen/dimen2dp"
+                        android:contentDescription="@string/navStarredRepos" />
+
+                </com.google.android.material.card.MaterialCardView>
+
+                <com.google.android.material.card.MaterialCardView
+                    android:id="@+id/repoWatchedCard"
+                    android:layout_width="0dp"
+                    android:layout_height="@dimen/dimen84dp"
+                    android:layout_weight="1"
+                    android:layout_marginHorizontal="@dimen/dimen4dp"
+                    app:cardCornerRadius="@dimen/dimen16dp"
+                    app:cardElevation="@dimen/dimen0dp"
+                    app:strokeWidth="@dimen/dimen0dp"
+                    app:cardBackgroundColor="?attr/materialCardBackgroundColor">
+
+                    <TextView
+                        android:id="@+id/repoWatchedIcon"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center"
+                        android:padding="@dimen/dimen8dp"
+                        android:text="@string/navWatchedRepositories"
+                        android:textColor="?attr/primaryTextColor"
+                        android:textSize="@dimen/dimen12sp"
+                        android:gravity="center"
+                        app:drawableTopCompat="@drawable/ic_watchers"
+                        android:drawablePadding="@dimen/dimen2dp"
+                        android:contentDescription="@string/navWatchedRepositories" />
 
                 </com.google.android.material.card.MaterialCardView>
 
