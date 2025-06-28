@@ -12,7 +12,6 @@ import android.widget.TextView;
 import androidx.activity.EdgeToEdge;
 import androidx.activity.OnBackPressedCallback;
 import androidx.annotation.NonNull;
-import androidx.core.view.WindowCompat;
 import androidx.navigation.NavController;
 import androidx.navigation.NavOptions;
 import androidx.navigation.fragment.NavHostFragment;
@@ -45,7 +44,6 @@ import org.mian.gitnex.helpers.AppUtil;
 import org.mian.gitnex.helpers.ChangeLog;
 import org.mian.gitnex.helpers.TinyDB;
 import org.mian.gitnex.helpers.Toasty;
-import org.mian.gitnex.structs.BottomSheetListener;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
@@ -60,7 +58,6 @@ public class MainActivity extends BaseActivity
 	private TinyDB tinyDB;
 	private NavController navController;
 	private boolean noConnection;
-	private BottomSheetListener profileInitListener;
 	public static boolean refActivity;
 	public static boolean reloadRepos;
 	public static boolean closeActivity;
@@ -80,9 +77,6 @@ public class MainActivity extends BaseActivity
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		EdgeToEdge.enable(this);
-
-		WindowCompat.setDecorFitsSystemWindows(getWindow(), false);
-		getWindow().setStatusBarColor(getResources().getColor(R.color.colorPrimary, getTheme()));
 
 		binding = ActivityMainBinding.inflate(getLayoutInflater());
 		setContentView(binding.getRoot());
@@ -183,9 +177,6 @@ public class MainActivity extends BaseActivity
 					public void onUserInfoLoaded(
 							String username, boolean isAdmin, String serverVersion) {
 						tinyDB.putString("username", username);
-						if (profileInitListener != null) {
-							profileInitListener.onButtonClicked(null);
-						}
 					}
 
 					@Override
@@ -267,9 +258,6 @@ public class MainActivity extends BaseActivity
 						public void onUserInfoLoaded(
 								String username, boolean isAdmin, String serverVersion) {
 							tinyDB.putString("username", username);
-							if (profileInitListener != null) {
-								profileInitListener.onButtonClicked(null);
-							}
 						}
 
 						@Override

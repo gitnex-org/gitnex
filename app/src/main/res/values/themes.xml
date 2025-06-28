@@ -3,7 +3,8 @@
 
     <!-- Dark theme - default -->
     <style name="AppTheme" parent="Theme.Material3.Dark.NoActionBar">
-        <item name="android:statusBarColor">@android:color/transparent</item>
+        <item name="android:navigationBarColor">@color/colorPrimary</item>
+        <item name="android:statusBarColor">@color/colorPrimary</item>
         <item name="android:windowLightStatusBar">false</item>
         <item name="android:typeface">monospace</item>
         <item name="colorAccent">@color/colorAccent</item>
@@ -15,6 +16,7 @@
         <item name="colorSecondaryContainer">@color/colorSecondaryContainer</item>
         <item name="materialCardBackgroundColor">@color/cardBackground</item>
 
+        <item name="navigationBarColor">@color/cardBackground</item>
         <item name="diffAddedColor">@color/diffAddedColor</item>
         <item name="diffRemovedColor">@color/diffRemovedColor</item>
         <item name="diffSelectedColor">@color/diffSelectedColor</item>
@@ -51,7 +53,8 @@
 
     <!-- Light theme -->
     <style name="AppThemeLight" parent="Theme.Material3.Light.NoActionBar">
-        <item name="android:statusBarColor">@android:color/transparent</item>
+        <item name="android:navigationBarColor">@color/lightThemeBackground</item>
+        <item name="android:statusBarColor">@color/lightThemeBackground</item>
         <item name="android:windowLightStatusBar">true</item>
         <item name="android:typeface">monospace</item>
         <item name="colorAccent">@color/colorAccent</item>
@@ -63,6 +66,7 @@
         <item name="colorSecondaryContainer">@color/lightThemeColorSecondaryContainer</item>
         <item name="materialCardBackgroundColor">@color/lightThemeCardBackground</item>
 
+        <item name="navigationBarColor">@color/lightThemeCardBackground</item>
         <item name="diffAddedColor">@color/lightThemeDiffAddedColor</item>
         <item name="diffRemovedColor">@color/lightThemeDiffRemovedColor</item>
         <item name="diffSelectedColor">@color/lightThemeDiffSelectedColor</item>
@@ -98,7 +102,9 @@
 
     <!-- Retro theme -->
     <style name="AppThemeRetro" parent="Theme.Material3.Light.NoActionBar">
-        <item name="android:statusBarColor">@android:color/transparent</item>
+        <item name="android:statusBarColor">@color/retroThemeBackground</item>
+        <item name="android:navigationBarColor">@color/retroThemeBackground</item>
+        <item name="android:windowLightStatusBar">true</item>
         <item name="android:typeface">monospace</item>
         <item name="colorAccent">@color/colorAccent</item>
         <item name="android:textColorSecondary">@color/retroThemeTextColor</item>
@@ -108,6 +114,7 @@
         <item name="colorOnSurfaceVariant">@color/retroThemeTextColor</item>
         <item name="materialCardBackgroundColor">@color/retroThemeCardBackground</item>
 
+        <item name="navigationBarColor">@color/retroThemeCardBackground</item>
         <item name="diffAddedColor">@color/retroThemeDiffAddedColor</item>
         <item name="diffRemovedColor">@color/retroThemeDiffRemovedColor</item>
         <item name="diffSelectedColor">@color/retroThemeDiffSelectedColor</item>
@@ -143,7 +150,9 @@
 
     <!-- Pitch black theme -->
     <style name="AppThemePitchBlack" parent="Theme.Material3.Dark.NoActionBar">
-        <item name="android:statusBarColor">@android:color/transparent</item>
+        <item name="android:statusBarColor">@color/pitchBlackThemeBackground</item>
+        <item name="android:navigationBarColor">@color/pitchBlackThemeBackground</item>
+        <item name="android:windowLightStatusBar">false</item>
         <item name="android:typeface">monospace</item>
         <item name="colorAccent">@color/colorAccent</item>
         <item name="android:textColorSecondary">@color/pitchBlackThemeTextColor</item>
@@ -154,6 +163,7 @@
         <item name="colorSecondaryContainer">@color/pitchBlackThemeColorSecondary</item>
         <item name="materialCardBackgroundColor">@color/pitchBlackThemeCardBackground</item>
 
+        <item name="navigationBarColor">@color/pitchBlackThemeCardBackground</item>
         <item name="diffAddedColor">@color/diffAddedColor</item>
         <item name="diffRemovedColor">@color/diffRemovedColor</item>
         <item name="diffSelectedColor">@color/diffSelectedColor</item>
@@ -190,7 +200,9 @@
 
     <!-- Codeberg dark theme -->
     <style name="AppThemeCodebergDark" parent="Theme.Material3.Dark.NoActionBar">
-        <item name="android:statusBarColor">@android:color/transparent</item>
+        <item name="android:statusBarColor">@color/codebergDarkThemeBackground</item>
+        <item name="android:navigationBarColor">@color/codebergDarkThemeBackground</item>
+        <item name="android:windowLightStatusBar">false</item>
         <item name="android:typeface">monospace</item>
         <item name="colorAccent">@color/colorAccent</item>
         <item name="android:textColorSecondary">@color/codebergDarkThemeTextColor</item>
@@ -201,6 +213,7 @@
         <item name="colorSecondaryContainer">@color/codebergDarkThemeColorSecondary</item>
         <item name="materialCardBackgroundColor">@color/codebergDarkThemeCardBackground</item>
 
+        <item name="navigationBarColor">@color/codebergDarkThemeBackground</item>
         <item name="diffAddedColor">@color/diffAddedColor</item>
         <item name="diffRemovedColor">@color/diffRemovedColor</item>
         <item name="diffSelectedColor">@color/diffSelectedColor</item>
@@ -234,254 +247,4 @@
         <item name="isDark">1</item>
     </style>
     <!-- Codeberg dark theme -->
-
-    <style name="Widget.App.Switch" parent="Widget.Material3.CompoundButton.MaterialSwitch">
-        <item name="thumbTint">@color/colorWhite</item>
-        <item name="colorPrimary">?attr/fabColor</item>
-    </style>
-
-    <style name="m3SwitchStyle" parent="Widget.Material3.CompoundButton.MaterialSwitch">
-        <item name="materialThemeOverlay">@style/Widget.App.Switch</item>
-        <item name="thumbTint">@color/colorWhite</item>
-    </style>
-
-    <!-- Custom Material cards -->
-    <style name="CustomMaterCardViewStyle" parent="@style/Widget.MaterialComponents.CardView">
-        <item name="shapeAppearanceOverlay">@style/ShapeAppearanceOverlay.card.custom.corners</item>
-    </style>
-
-    <style name="ShapeAppearanceOverlay.card.custom.corners" parent="">
-        <item name="cornerFamily">rounded</item>
-        <item name="cornerSizeTopRight">@dimen/dimen32dp</item>
-        <item name="cornerSizeTopLeft">@dimen/dimen32dp</item>
-        <item name="cornerSizeBottomRight">0dp</item>
-        <item name="cornerSizeBottomLeft">0dp</item>
-    </style>
-
-    <style name="CustomMaterialCardStyle" parent="@style/Widget.MaterialComponents.CardView">
-        <item name="shapeAppearanceOverlay">@style/ShapeAppearanceOverlay.custom.card</item>
-    </style>
-
-    <style name="ShapeAppearanceOverlay.custom.card" parent="">
-        <item name="cornerFamily">rounded</item>
-    </style>
-
-    <style name="inputsMaterialComponentCorner" parent="ShapeAppearance.Material3.SmallComponent">
-        <item name="cornerFamily">rounded</item>
-        <item name="cornerSize">@dimen/dimen6dp</item>
-    </style>
-
-    <style name="customOverflowButtonStyle">
-        <item name="android:src">@drawable/ic_dotted_menu</item>
-        <item name="android:paddingStart">@dimen/dimen12dp</item>
-        <item name="android:paddingEnd">@dimen/dimen12dp</item>
-    </style>
-
-    <style name="customOverflowMenuStyle" parent="@style/Widget.Material3.PopupMenu.Overflow">
-        <item name="android:popupBackground">@drawable/shape_round_corners</item>
-    </style>
-
-    <style name="AppSearchViewStyle" parent="Widget.AppCompat.SearchView">
-        <item name="searchHintIcon">@drawable/ic_search</item>
-        <item name="searchIcon">@null</item>
-        <item name="queryBackground">@android:color/transparent</item>
-        <item name="closeIcon">@drawable/ic_close</item>
-    </style>
-
-    <style name="AppThemeDarkBottomSheetDialog" parent="Theme.Material3.Dark.BottomSheetDialog">
-        <item name="android:windowIsFloating">false</item>
-        <item name="android:windowSoftInputMode">adjustResize</item>
-        <item name="bottomSheetStyle">@style/AppBottomSheetModalStyle</item>
-        <item name="android:statusBarColor">@android:color/transparent</item>
-    </style>
-
-    <style name="AppThemeLightBottomSheetDialog" parent="Theme.Material3.Light.BottomSheetDialog">
-        <item name="android:windowIsFloating">false</item>
-        <item name="android:windowSoftInputMode">adjustResize</item>
-        <item name="bottomSheetStyle">@style/AppBottomSheetModalStyle</item>
-        <item name="android:statusBarColor">@android:color/transparent</item>
-    </style>
-
-    <style name="AppBottomSheetModalStyle" parent="Widget.Design.BottomSheet.Modal">
-        <item name="android:background">@drawable/shape_bottom_sheet_top_corners</item>
-        <item name="behavior_peekHeight">420dp</item>
-    </style>
-
-    <style name="AppThemeLightSearchAutoCompleteTextView" parent="Widget.AppCompat.Light.AutoCompleteTextView">
-        <item name="android:textColor">@color/lightThemeTextColor</item>
-        <item name="android:textColorHint">@color/lightThemeTextColor</item>
-    </style>
-
-    <style name="AppThemeDarkSearchAutoCompleteTextView" parent="Widget.AppCompat.Light.AutoCompleteTextView">
-        <item name="android:textColor">@color/colorWhite</item>
-        <item name="android:textColorHint">@color/colorWhite</item>
-    </style>
-
-    <style name="AppThemeConfirmDialog" parent="Theme.Material3.Dark.Dialog.Alert">
-        <item name="android:background">@color/colorPrimary</item>
-        <item name="android:textColorPrimary">@color/colorWhite</item>
-        <item name="android:textColor">@color/colorWhite</item>
-        <item name="colorControlNormal">@color/colorWhite</item>
-        <item name="colorControlActivated">@color/darkGreen</item>
-        <item name="buttonBarNegativeButtonStyle">@style/NegativeButtonStyle</item>
-        <item name="buttonBarPositiveButtonStyle">@style/PositiveButtonStyle</item>
-        <item name="buttonBarNeutralButtonStyle">@style/NeutralButtonStyle</item>
-        <item name="android:windowBackground">@drawable/shape_round_corners</item>
-    </style>
-
-    <style name="AppThemeLightConfirmDialog" parent="Theme.Material3.Light.Dialog.Alert">
-        <item name="android:background">@color/colorWhite</item>
-        <item name="android:textColorPrimary">@color/lightThemeTextColor</item>
-        <item name="android:textColor">@color/lightThemeTextColor</item>
-        <item name="colorControlNormal">@color/lightThemeTextColor</item>
-        <item name="colorControlActivated">@color/darkGreen</item>
-        <item name="buttonBarNegativeButtonStyle">@style/NegativeButtonStyle</item>
-        <item name="buttonBarPositiveButtonStyle">@style/PositiveButtonStyle</item>
-        <item name="buttonBarNeutralButtonStyle">@style/NeutralButtonStyle</item>
-        <item name="android:windowBackground">@drawable/shape_round_corners</item>
-    </style>
-
-    <style name="NegativeButtonStyle" parent="Widget.Material3.Button.OutlinedButton">
-        <item name="android:textColor">@color/darkRed</item>
-        <item name="android:layout_marginEnd">@dimen/dimen16dp</item>
-    </style>
-
-    <style name="PositiveButtonStyle" parent="Widget.Material3.Button.OutlinedButton">
-        <item name="android:textColor">@color/darkGreen</item>
-    </style>
-
-    <style name="NeutralButtonStyle" parent="Widget.Material3.Button.OutlinedButton">
-        <item name="android:textColor">@color/colorAccent</item>
-    </style>
-
-    <style name="AppThemePopupMenuStyle" parent="Widget.Material3.PopupMenu">
-        <item name="android:popupBackground">@color/colorPrimary</item>
-        <item name="android:textColor">@color/colorWhite</item>
-        <item name="android:layout_marginStart">@dimen/dimen4dp</item>
-        <item name="android:layout_marginEnd">@dimen/dimen4dp</item>
-    </style>
-
-    <style name="AppThemeLightPopupMenuStyle" parent="Widget.Material3.PopupMenu">
-        <item name="android:popupBackground">@color/colorWhite</item>
-        <item name="android:itemBackground">@color/lightThemeBackground</item>
-        <item name="android:textColor">@color/lightThemeTextColor</item>
-        <item name="android:layout_marginStart">@dimen/dimen4dp</item>
-        <item name="android:layout_marginEnd">@dimen/dimen4dp</item>
-    </style>
-
-    <style name="AppThemeLightCheckBoxStyle" parent="Widget.Material3.CompoundButton.CheckBox">
-        <item name="buttonTint">@color/colorDarkGreen</item>
-    </style>
-
-    <style name="AppThemeCheckBoxStyle" parent="Widget.Material3.CompoundButton.CheckBox">
-        <item name="buttonTint">?attr/iconsColor</item>
-    </style>
-
-    <style name="WindowAnimationTransition">
-        <item name="android:windowEnterAnimation">@android:anim/fade_in</item>
-        <item name="android:windowExitAnimation">@android:anim/fade_out</item>
-    </style>
-
-    <!-- Retro theme styles -->
-    <style name="AppThemeRetroCheckBoxStyle" parent="Widget.Material3.CompoundButton.CheckBox">
-        <item name="buttonTint">@color/retroThemeColorPrimary</item>
-    </style>
-
-    <style name="AppThemeRetroSearchAutoCompleteTextView" parent="Widget.AppCompat.Light.AutoCompleteTextView">
-        <item name="android:textColor">@color/retroThemeColorPrimary</item>
-        <item name="android:textColorHint">@color/retroThemeColorPrimary</item>
-    </style>
-
-    <style name="AppThemeRetroConfirmDialog" parent="ThemeOverlay.Material3.Dialog.Alert">
-        <item name="android:background">@color/colorWhite</item>
-        <item name="android:textColorPrimary">@color/retroThemeTextColor</item>
-        <item name="android:textColor">@color/retroThemeTextColor</item>
-        <item name="colorControlNormal">@color/retroThemeTextColor</item>
-        <item name="colorControlActivated">@color/retroThemeColorPrimary</item>
-        <item name="buttonBarNegativeButtonStyle">@style/RetroNegativeButtonStyle</item>
-        <item name="buttonBarPositiveButtonStyle">@style/RetroPositiveButtonStyle</item>
-        <item name="buttonBarNeutralButtonStyle">@style/RetroNeutralButtonStyle</item>
-        <item name="android:windowBackground">@drawable/shape_round_corners</item>
-    </style>
-
-    <style name="RetroNegativeButtonStyle" parent="Widget.Material3.Button.OutlinedButton">
-        <item name="android:textColor">@color/retroThemeTextColor</item>
-        <item name="android:layout_marginEnd">@dimen/dimen16dp</item>
-    </style>
-
-    <style name="RetroPositiveButtonStyle" parent="Widget.Material3.Button.OutlinedButton">
-        <item name="android:textColor">@color/darkRed</item>
-    </style>
-
-    <style name="RetroNeutralButtonStyle" parent="Widget.Material3.Button.OutlinedButton">
-        <item name="android:textColor">@color/retroThemeColorPrimary</item>
-    </style>
-
-    <style name="AppThemeRetroPopupMenuStyle" parent="Widget.Material3.PopupMenu">
-        <item name="android:popupBackground">@color/colorWhite</item>
-        <item name="android:itemBackground">@color/retroThemeBackground</item>
-        <item name="android:textColor">@color/retroThemeTextColor</item>
-        <item name="android:layout_marginStart">@dimen/dimen4dp</item>
-        <item name="android:layout_marginEnd">@dimen/dimen4dp</item>
-    </style>
-    <!-- Retro theme styles -->
-
-    <!-- Pitch black theme styles -->
-    <style name="AppThemePitchBlackConfirmDialog" parent="Theme.Material3.Dark.Dialog.Alert">
-        <item name="android:background">@color/pitchBlackThemeGeneralBackgroundColor</item>
-        <item name="android:textColorPrimary">@color/pitchBlackThemeTextColor</item>
-        <item name="android:textColor">@color/pitchBlackThemeTextColor</item>
-        <item name="colorControlNormal">@color/pitchBlackThemeTextColor</item>
-        <item name="colorControlActivated">@color/darkGreen</item>
-        <item name="buttonBarNegativeButtonStyle">@style/NegativeButtonStyle</item>
-        <item name="buttonBarPositiveButtonStyle">@style/PositiveButtonStyle</item>
-        <item name="buttonBarNeutralButtonStyle">@style/NeutralButtonStyle</item>
-        <item name="android:windowBackground">@drawable/shape_round_corners</item>
-    </style>
-
-    <style name="AppThemePitchBlackPopupMenuStyle" parent="Widget.Material3.PopupMenu">
-        <item name="android:popupBackground">@color/pitchBlackThemeGeneralBackgroundColor</item>
-        <item name="android:itemBackground">@color/pitchBlackThemeGeneralBackgroundColor</item>
-        <item name="android:textColor">@color/pitchBlackThemeTextColor</item>
-        <item name="android:layout_marginStart">@dimen/dimen4dp</item>
-        <item name="android:layout_marginEnd">@dimen/dimen4dp</item>
-    </style>
-    <!-- Pitch black theme styles -->
-
-    <!-- Codeberg dark theme styles -->
-    <style name="AppThemeCodebergDarkConfirmDialog" parent="Theme.Material3.Dark.Dialog.Alert">
-        <item name="android:background">@color/codebergDarkThemeGeneralBackgroundColor</item>
-        <item name="android:textColorPrimary">@color/codebergDarkThemeTextColor</item>
-        <item name="android:textColor">@color/codebergDarkThemeTextColor</item>
-        <item name="colorControlNormal">@color/codebergDarkThemeTextColor</item>
-        <item name="colorControlActivated">@color/codebergDarkThemeCardBackground</item>
-        <item name="buttonBarNegativeButtonStyle">@style/NegativeButtonStyle</item>
-        <item name="buttonBarPositiveButtonStyle">@style/PositiveButtonStyle</item>
-        <item name="buttonBarNeutralButtonStyle">@style/NeutralButtonStyle</item>
-        <item name="android:windowBackground">@drawable/shape_round_corners</item>
-    </style>
-
-    <style name="AppThemeCodebergDarkPopupMenuStyle" parent="Widget.Material3.PopupMenu">
-        <item name="android:popupBackground">@color/codebergDarkThemeGeneralBackgroundColor</item>
-        <item name="android:itemBackground">@color/codebergDarkThemeGeneralBackgroundColor</item>
-        <item name="android:textColor">@color/codebergDarkThemeTextColor</item>
-        <item name="android:layout_marginStart">@dimen/dimen4dp</item>
-        <item name="android:layout_marginEnd">@dimen/dimen4dp</item>
-    </style>
-    <!-- Codeberg dark theme styles -->
-
-    <style name="AppThemeSystem" parent="AppThemeLight"/>
-
-    <style name="AppThemeSystemPitchBlack" parent="AppThemeLight"/>
-
-    <style name="AppThemeDynamicSystem" parent="AppThemeLightDynamicColors"/>
-
-    <style name="CustomChipFilter" parent="Widget.Material3.Chip.Filter">
-        <item name="chipBackgroundColor">?attr/materialCardBackgroundColor</item>
-        <item name="chipStrokeWidth">0dp</item>
-        <item name="chipStrokeColor">@android:color/transparent</item>
-        <item name="android:textColor">?attr/primaryTextColor</item>
-        <item name="rippleColor">@android:color/transparent</item>
-        <item name="checkedIconTint">?attr/iconsColor</item>
-    </style>
 </resources>
