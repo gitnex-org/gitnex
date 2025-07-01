@@ -175,13 +175,14 @@ public class NotificationsAdapter extends RecyclerView.Adapter<RecyclerView.View
 							type,
 							ColorStateList.valueOf(
 									context.getResources()
-											.getColor(R.color.iconIssuePrClosedColor)));
+											.getColor(R.color.iconIssuePrClosedColor, null)));
 					break;
 				case "merged":
 					ImageViewCompat.setImageTintList(
 							type,
 							ColorStateList.valueOf(
-									context.getResources().getColor(R.color.iconPrMergedColor)));
+									context.getResources()
+											.getColor(R.color.iconPrMergedColor, null)));
 					break;
 
 				default:

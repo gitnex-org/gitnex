@@ -170,6 +170,7 @@ public class IssueDetailActivity extends BaseActivity
 	private int loadingFinished = 0;
 	private MentionHelper mentionHelper;
 	private boolean pullRequestFetchAttempted = false;
+	private boolean issueInitialized = false;
 
 	private enum Mode {
 		EDIT,
@@ -1094,6 +1095,11 @@ public class IssueDetailActivity extends BaseActivity
 
 	private void initWithIssue() {
 
+		if (issueInitialized) {
+			return;
+		}
+		issueInitialized = true;
+
 		if (!issue.getRepository().hasRepository()) {
 			getRepoInfo();
 		} else {
@@ -1564,7 +1570,7 @@ public class IssueDetailActivity extends BaseActivity
 	}
 
 	private void checkAndInitWithIssue() {
-		if (loadingFinishedIssue || pullRequestFetchAttempted) {
+		if ((loadingFinishedIssue || pullRequestFetchAttempted) && !issueInitialized) {
 			initWithIssue();
 		}
 	}
