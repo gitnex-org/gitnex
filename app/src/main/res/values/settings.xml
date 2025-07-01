@@ -39,7 +39,6 @@
         <item>Pitch Black</item>
         <item>@string/followSystem</item>
         <item>@string/followSystemBlack</item>
-
     </string-array>
 
     <string-array name="themesAndroid12">
@@ -56,6 +55,7 @@
     </string-array>
 
     <string-array name="appDefaultHomeScreen">
+        <item>@string/home</item>
         <item>@string/navMyRepos</item>
         <item>@string/pageTitleStarredRepos</item>
         <item>@string/navOrg</item>
@@ -65,17 +65,17 @@
     </string-array>
 
     <string-array name="appDefaultHomeScreenNew">
+        <item>@string/home</item>
         <item>@string/navMyRepos</item>
         <item>@string/pageTitleStarredRepos</item>
         <item>@string/navOrg</item>
         <item>@string/navRepos</item>
-        <item>@string/navAccount</item>
         <item>@string/pageTitleExplore</item>
         <item>@string/pageTitleNotifications</item>
         <item>@string/navMyIssues</item>
         <item>@string/navMostVisited</item>
         <item>@string/navNotes</item>
-        <item>@string/dashboard</item>
+        <item>@string/activities</item>
         <item>@string/navWatchedRepositories</item>
     </string-array>
 
@@ -88,28 +88,27 @@
     </string-array>
 
     <string-array name="cacheSizeList">
-        <item>50 MB</item>
-        <item>100 MB</item>
-        <item>250 MB</item>
-        <item>500 MB</item>
-        <item>1 GB</item>
+        <item>@string/cacheSize0</item>
+        <item>@string/cacheSize1</item>
+        <item>@string/cacheSize2</item>
+        <item>@string/cacheSize3</item>
     </string-array>
 
     <string-array name="ceColors">
-        <item>Five O Clock</item>
-        <item>Blue Moon</item>
+        <item>@string/ceColorFive</item>
+        <item>@string/ceColorBlueMoon</item>
     </string-array>
 
     <string-array name="ceIndentation">
-        <item>Tabs</item>
-        <item>Spaces</item>
+        <item>@string/ceIndentationSpaces</item>
+        <item>@string/ceIndentationTabs</item>
     </string-array>
 
     <string-array name="ceIndentationTabsWidth">
-        <item>2</item>
-        <item>4</item>
-        <item>6</item>
-        <item>8</item>
+        <item>@string/ceIndentationTabsWidth2</item>
+        <item>@string/ceIndentationTabsWidth4</item>
+        <item>@string/ceIndentationTabsWidth6</item>
+        <item>@string/ceIndentationTabsWidth8</item>
     </string-array>
 
     <string-array name="fragmentTabsAnimation">

@@ -22,7 +22,6 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 import org.mian.gitnex.R;
-import org.mian.gitnex.activities.MainActivity;
 import org.mian.gitnex.adapters.MostVisitedReposAdapter;
 import org.mian.gitnex.database.api.BaseApi;
 import org.mian.gitnex.database.api.RepositoriesApi;
@@ -50,9 +49,6 @@ public class MostVisitedReposFragment extends Fragment {
 		fragmentDraftsBinding = FragmentMostVisitedBinding.inflate(inflater, container, false);
 
 		ctx = getContext();
-
-		((MainActivity) requireActivity())
-				.setActionBarTitle(getResources().getString(R.string.navMostVisited));
 
 		TinyDB tinyDb = TinyDB.getInstance(ctx);
 

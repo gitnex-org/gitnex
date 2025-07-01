@@ -4,7 +4,6 @@ import android.content.Context;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Looper;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -36,19 +35,17 @@ import retrofit2.Callback;
 import retrofit2.Response;
 
 /**
- * @author M M Arif
+ * @author mmarif
  */
 public class PullRequestsFragment extends Fragment {
 
 	public static boolean resumePullRequests = false;
-	private final String TAG = "PullRequestFragment";
 	private FragmentPullRequestsBinding fragmentPullRequestsBinding;
 	private List<PullRequest> prList;
 	private PullRequestsAdapter adapter;
 	private Context context;
 	private int pageSize = Constants.prPageInit;
 	private int resultLimit;
-
 	private RepositoryContext repository;
 
 	public static PullRequestsFragment newInstance(RepositoryContext repository) {
@@ -72,6 +69,7 @@ public class PullRequestsFragment extends Fragment {
 		resultLimit = Constants.getCurrentResultLimit(context);
 		prList = new ArrayList<>();
 		repository = RepositoryContext.fromBundle(requireArguments());
+
 		boolean archived = repository.getRepository().isArchived();
 
 		swipeRefresh.setOnRefreshListener(
@@ -90,7 +88,7 @@ public class PullRequestsFragment extends Fragment {
 										},
 										200));
 
-		adapter = new PullRequestsAdapter(getContext(), prList);
+		adapter = new PullRequestsAdapter(context, prList);
 		adapter.setLoadMoreListener(
 				() ->
 						fragmentPullRequestsBinding.recyclerView.post(
@@ -114,7 +112,6 @@ public class PullRequestsFragment extends Fragment {
 				.setFragmentRefreshListenerPr(
 						prState -> {
 							prList.clear();
-
 							adapter = new PullRequestsAdapter(context, prList);
 							adapter.setLoadMoreListener(
 									() ->
@@ -135,10 +132,8 @@ public class PullRequestsFragment extends Fragment {
 																	resultLimit);
 														}
 													}));
-
 							fragmentPullRequestsBinding.progressBar.setVisibility(View.VISIBLE);
 							fragmentPullRequestsBinding.noData.setVisibility(View.GONE);
-
 							loadInitial(
 									repository.getOwner(),
 									repository.getName(),
@@ -160,28 +155,23 @@ public class PullRequestsFragment extends Fragment {
 		}
 
 		if (repository.getRepository().isHasPullRequests() && !archived) {
-
 			fragmentPullRequestsBinding.createPullRequest.setVisibility(View.VISIBLE);
 			fragmentPullRequestsBinding.createPullRequest.setOnClickListener(
-					v12 -> {
-						((RepoDetailActivity) requireActivity())
-								.createPrLauncher.launch(
-										repository.getIntent(
-												getContext(), CreatePullRequestActivity.class));
-					});
+					v ->
+							((RepoDetailActivity) requireActivity())
+									.createPrLauncher.launch(
+											repository.getIntent(
+													context, CreatePullRequestActivity.class)));
 		} else {
-
 			fragmentPullRequestsBinding.createPullRequest.setVisibility(View.GONE);
 		}
 
 		requireActivity()
 				.addMenuProvider(
 						new MenuProvider() {
-
 							@Override
 							public void onCreateMenu(
 									@NonNull Menu menu, @NonNull MenuInflater menuInflater) {
-
 								menuInflater.inflate(R.menu.search_menu, menu);
 								menuInflater.inflate(R.menu.filter_menu_pr, menu);
 
@@ -201,7 +191,6 @@ public class PullRequestsFragment extends Fragment {
 								searchView.setOnQueryTextListener(
 										new androidx.appcompat.widget.SearchView
 												.OnQueryTextListener() {
-
 											@Override
 											public boolean onQueryTextSubmit(String query) {
 												return false;
@@ -228,9 +217,7 @@ public class PullRequestsFragment extends Fragment {
 
 	@Override
 	public void onResume() {
-
 		super.onResume();
-
 		if (resumePullRequests) {
 			loadInitial(
 					repository.getOwner(),
@@ -244,12 +231,12 @@ public class PullRequestsFragment extends Fragment {
 
 	private void loadInitial(
 			String repoOwner, String repoName, int page, String prState, int resultLimit) {
-
 		Call<List<PullRequest>> call =
 				RetrofitClient.getApiInterface(context)
 						.repoListPullRequests(
 								repoOwner,
 								repoName,
+								null,
 								prState,
 								null,
 								null,
@@ -260,14 +247,11 @@ public class PullRequestsFragment extends Fragment {
 
 		call.enqueue(
 				new Callback<>() {
-
 					@Override
 					public void onResponse(
 							@NonNull Call<List<PullRequest>> call,
 							@NonNull Response<List<PullRequest>> response) {
-
 						if (response.code() == 200) {
-
 							assert response.body() != null;
 							if (!response.body().isEmpty()) {
 								prList.clear();
@@ -283,10 +267,7 @@ public class PullRequestsFragment extends Fragment {
 						} else if (response.code() == 404) {
 							fragmentPullRequestsBinding.noData.setVisibility(View.VISIBLE);
 							fragmentPullRequestsBinding.progressBar.setVisibility(View.GONE);
-						} else {
-							Log.i(TAG, String.valueOf(response.code()));
 						}
-						Log.i(TAG, String.valueOf(response.code()));
 					}
 
 					@Override
@@ -297,14 +278,13 @@ public class PullRequestsFragment extends Fragment {
 
 	private void loadMore(
 			String repoOwner, String repoName, int page, String prState, int resultLimit) {
-
 		fragmentPullRequestsBinding.progressBar.setVisibility(View.VISIBLE);
-
 		Call<List<PullRequest>> call =
 				RetrofitClient.getApiInterface(context)
 						.repoListPullRequests(
 								repoOwner,
 								repoName,
+								null,
 								prState,
 								null,
 								null,
@@ -315,18 +295,13 @@ public class PullRequestsFragment extends Fragment {
 
 		call.enqueue(
 				new Callback<>() {
-
 					@Override
 					public void onResponse(
 							@NonNull Call<List<PullRequest>> call,
 							@NonNull Response<List<PullRequest>> response) {
-
 						if (response.code() == 200) {
-
-							// remove loading view
 							prList.remove(prList.size() - 1);
 							List<PullRequest> result = response.body();
-
 							assert result != null;
 							if (!result.isEmpty()) {
 								pageSize = result.size();
@@ -337,8 +312,6 @@ public class PullRequestsFragment extends Fragment {
 							}
 							adapter.notifyDataChanged();
 							fragmentPullRequestsBinding.progressBar.setVisibility(View.GONE);
-						} else {
-							Log.e(TAG, String.valueOf(response.code()));
 						}
 					}
 
@@ -349,9 +322,7 @@ public class PullRequestsFragment extends Fragment {
 	}
 
 	private void filter(String text) {
-
 		List<PullRequest> arr = new ArrayList<>();
-
 		for (PullRequest d : prList) {
 			if (d == null || d.getTitle() == null || d.getBody() == null) {
 				continue;

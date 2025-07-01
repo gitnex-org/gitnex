@@ -12,7 +12,6 @@ import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.ImageView;
 import androidx.annotation.NonNull;
-import androidx.drawerlayout.widget.DrawerLayout;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 import com.bumptech.glide.Glide;
@@ -29,16 +28,13 @@ import org.mian.gitnex.helpers.UrlHelper;
 public class UserAccountsNavAdapter
 		extends RecyclerView.Adapter<UserAccountsNavAdapter.UserAccountsViewHolder> {
 
-	private final DrawerLayout drawer;
 	private final List<UserAccount> userAccountsList;
 	private final Context context;
 
-	public UserAccountsNavAdapter(
-			Context ctx, List<UserAccount> userAccountsListMain, DrawerLayout drawerLayout) {
+	public UserAccountsNavAdapter(Context ctx, List<UserAccount> userAccountsListMain) {
 
 		this.context = ctx;
 		this.userAccountsList = userAccountsListMain;
-		this.drawer = drawerLayout;
 	}
 
 	@NonNull @Override
@@ -109,7 +105,6 @@ public class UserAccountsNavAdapter
 			itemView.setOnClickListener(
 					item -> {
 						customDialogUserAccountsList();
-						drawer.closeDrawers();
 					});
 		}
 	}

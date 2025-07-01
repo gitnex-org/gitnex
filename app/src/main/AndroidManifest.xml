@@ -128,16 +128,7 @@
             android:configChanges="orientation|screenSize|smallestScreenSize|density|screenLayout|keyboard|keyboardHidden|navigation"
             android:theme="@android:style/Theme.NoTitleBar"/>
         <activity
-            android:name=".activities.SettingsAppearanceActivity"
-            android:configChanges="orientation|screenSize|smallestScreenSize|density|screenLayout|keyboard|keyboardHidden|navigation"/>
-        <activity
-            android:name=".activities.SettingsCodeEditorActivity"
-            android:configChanges="orientation|screenSize|smallestScreenSize|density|screenLayout|keyboard|keyboardHidden|navigation"/>
-        <activity
             android:name=".activities.ProfileActivity"
-            android:configChanges="orientation|screenSize|smallestScreenSize|density|screenLayout|keyboard|keyboardHidden|navigation"/>
-        <activity
-            android:name=".activities.SettingsSecurityActivity"
             android:configChanges="orientation|screenSize|smallestScreenSize|density|screenLayout|keyboard|keyboardHidden|navigation"/>
         <activity
             android:name=".activities.AddNewTeamMemberActivity"
@@ -160,12 +151,6 @@
             android:configChanges="orientation|screenSize|smallestScreenSize|density|screenLayout|keyboard|keyboardHidden|navigation"
             android:windowSoftInputMode="adjustResize"/>
         <activity
-            android:name=".activities.SettingsGeneralActivity"
-            android:configChanges="orientation|screenSize|smallestScreenSize|density|screenLayout|keyboard|keyboardHidden|navigation"/>
-        <activity
-            android:name=".activities.SettingsNotificationsActivity"
-            android:configChanges="orientation|screenSize|smallestScreenSize|density|screenLayout|keyboard|keyboardHidden|navigation"/>
-        <activity
             android:name=".activities.AdminCronTasksActivity"
             android:configChanges="orientation|screenSize|smallestScreenSize|density|screenLayout|keyboard|keyboardHidden|navigation"/>
         <activity
@@ -179,9 +164,6 @@
             android:name=".activities.CreateNoteActivity"
             android:configChanges="orientation|screenSize|smallestScreenSize|density|screenLayout|keyboard|keyboardHidden|navigation"
             android:windowSoftInputMode="adjustResize"/>
-        <activity
-            android:name=".activities.SettingsBackupRestoreActivity"
-            android:configChanges="orientation|screenSize|smallestScreenSize|density|screenLayout|keyboard|keyboardHidden|navigation" />
 
         <meta-data
             android:name="com.samsung.android.keepalive.density"

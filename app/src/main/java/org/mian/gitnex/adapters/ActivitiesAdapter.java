@@ -40,7 +40,7 @@ import org.mian.gitnex.helpers.contexts.RepositoryContext;
 /**
  * @author M M Arif
  */
-public class DashboardAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
+public class ActivitiesAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
 
 	private final Context context;
 	TinyDB tinyDb;
@@ -50,7 +50,7 @@ public class DashboardAdapter extends RecyclerView.Adapter<RecyclerView.ViewHold
 	private Intent intent;
 	public boolean isUserOrg = false;
 
-	public DashboardAdapter(List<Activity> dataList, Context ctx) {
+	public ActivitiesAdapter(List<Activity> dataList, Context ctx) {
 		this.context = ctx;
 		this.activityList = dataList;
 		this.tinyDb = TinyDB.getInstance(ctx);
@@ -59,8 +59,8 @@ public class DashboardAdapter extends RecyclerView.Adapter<RecyclerView.ViewHold
 	@NonNull @Override
 	public RecyclerView.ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
 		LayoutInflater inflater = LayoutInflater.from(context);
-		return new DashboardAdapter.DashboardHolder(
-				inflater.inflate(R.layout.list_dashboard_activity, parent, false));
+		return new ActivitiesAdapter.DashboardHolder(
+				inflater.inflate(R.layout.list_activities, parent, false));
 	}
 
 	@Override
@@ -73,7 +73,7 @@ public class DashboardAdapter extends RecyclerView.Adapter<RecyclerView.ViewHold
 			loadMoreListener.onLoadMore();
 		}
 
-		((DashboardAdapter.DashboardHolder) holder).bindData(activityList.get(position), position);
+		((ActivitiesAdapter.DashboardHolder) holder).bindData(activityList.get(position), position);
 	}
 
 	@Override

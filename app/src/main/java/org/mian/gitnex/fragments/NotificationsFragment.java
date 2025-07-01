@@ -5,16 +5,11 @@ import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.LayoutInflater;
-import android.view.Menu;
-import android.view.MenuInflater;
-import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
-import androidx.core.view.MenuProvider;
 import androidx.fragment.app.Fragment;
-import androidx.lifecycle.Lifecycle;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 import java.util.ArrayList;
@@ -53,11 +48,15 @@ public class NotificationsFragment extends Fragment
 	private int pageResultLimit;
 	private String currentFilterMode = "unread";
 	public static String emptyErrorResponse;
+	private NotificationCountListener notificationCountListener;
 
 	@Override
 	public void onCreate(@Nullable Bundle savedInstanceState) {
-
 		super.onCreate(savedInstanceState);
+	}
+
+	public interface NotificationCountListener {
+		void onNotificationsMarkedRead();
 	}
 
 	@Nullable @Override
@@ -81,12 +80,26 @@ public class NotificationsFragment extends Fragment
 		viewBinding.notifications.setLayoutManager(linearLayoutManager);
 		viewBinding.notifications.setAdapter(notificationsAdapter);
 
+		viewBinding.filterChipGroup.setOnCheckedStateChangeListener(
+				(group, checkedIds) -> {
+					if (checkedIds.isEmpty()) return;
+					int checkedId = checkedIds.get(0);
+					String newFilterMode = checkedId == R.id.unreadChip ? "unread" : "read";
+					if (!newFilterMode.equals(currentFilterMode)) {
+						currentFilterMode = newFilterMode;
+						pageCurrentIndex = 1;
+						loadNotifications(false);
+						viewBinding.markAllAsRead.setVisibility(
+								currentFilterMode.equals("unread") ? View.VISIBLE : View.GONE);
+					}
+				});
+
+		viewBinding.unreadChip.setChecked(true);
+
 		viewBinding.notifications.addOnScrollListener(
 				new RecyclerView.OnScrollListener() {
-
 					@Override
 					public void onScrolled(@NonNull RecyclerView recyclerView, int dx, int dy) {
-
 						if (!recyclerView.canScrollVertically(1) && dy != 0) {
 							pageCurrentIndex++;
 							loadNotifications(true);
@@ -129,13 +142,15 @@ public class NotificationsFragment extends Fragment
 																				.markedNotificationsAsRead));
 														pageCurrentIndex = 1;
 														loadNotifications(false);
+														if (notificationCountListener != null) {
+															notificationCountListener
+																	.onNotificationsMarkedRead();
+														}
 													} else {
-
 														if (emptyErrorResponse != null) {
 															if (!emptyErrorResponse.isEmpty()) {
 																if (emptyErrorResponse.contains(
 																		"205")) {
-
 																	SnackBar.success(
 																			context,
 																			requireActivity()
@@ -149,9 +164,13 @@ public class NotificationsFragment extends Fragment
 																							.markedNotificationsAsRead));
 																	pageCurrentIndex = 1;
 																	loadNotifications(false);
+																	if (notificationCountListener
+																			!= null) {
+																		notificationCountListener
+																				.onNotificationsMarkedRead();
+																	}
 																}
 															} else {
-
 																activity.runOnUiThread(
 																		() ->
 																				SnackBar.error(
@@ -179,72 +198,6 @@ public class NotificationsFragment extends Fragment
 				});
 
 		loadNotifications(true);
-
-		requireActivity()
-				.addMenuProvider(
-						new MenuProvider() {
-
-							Menu menu;
-
-							@Override
-							public void onCreateMenu(
-									@NonNull Menu menu, @NonNull MenuInflater menuInflater) {
-
-								this.menu = menu;
-								menuInflater.inflate(R.menu.filter_menu_notifications, menu);
-
-								int filterIcon =
-										currentFilterMode.equalsIgnoreCase("read")
-												? R.drawable.ic_filter_closed
-												: R.drawable.ic_filter;
-
-								menu.getItem(0).setIcon(filterIcon);
-
-								if (currentFilterMode.equalsIgnoreCase("read")) {
-									viewBinding.markAllAsRead.setVisibility(View.GONE);
-								} else {
-									viewBinding.markAllAsRead.setVisibility(View.VISIBLE);
-								}
-							}
-
-							@Override
-							public boolean onMenuItemSelected(@NonNull MenuItem menuItem) {
-
-								if (menu.getItem(0).getItemId() == R.id.filterNotifications) {
-
-									BottomSheetNotificationsFilterFragment
-											bottomSheetNotificationsFilterFragment =
-													new BottomSheetNotificationsFilterFragment();
-									bottomSheetNotificationsFilterFragment.show(
-											getChildFragmentManager(),
-											"notificationsFilterBottomSheet");
-									bottomSheetNotificationsFilterFragment.setOnClickListener(
-											(text) -> {
-												currentFilterMode = text;
-												pageCurrentIndex = 1;
-												loadNotifications(false);
-
-												int filterIcon =
-														currentFilterMode.equalsIgnoreCase("read")
-																? R.drawable.ic_filter_closed
-																: R.drawable.ic_filter;
-
-												menu.getItem(0).setIcon(filterIcon);
-
-												if (currentFilterMode.equalsIgnoreCase("read")) {
-													viewBinding.markAllAsRead.setVisibility(
-															View.GONE);
-												} else {
-													viewBinding.markAllAsRead.setVisibility(
-															View.VISIBLE);
-												}
-											});
-								}
-								return false;
-							}
-						},
-						getViewLifecycleOwner(),
-						Lifecycle.State.RESUMED);
 
 		return viewBinding.getRoot();
 	}
@@ -320,27 +273,21 @@ public class NotificationsFragment extends Fragment
 					.enqueue(
 							(SimpleCallback<NotificationThread>)
 									(call, voidResponse) -> {
-										// reload without any checks, because Gitea returns a 205
-										// and Java expects this to be empty
-										// but Gitea send a response -> results in a call of
-										// onFailure and no response is present
-										// if(voidResponse.isPresent() &&
-										// voidResponse.get().isSuccessful()) {
 										pageCurrentIndex = 1;
 										loadNotifications(false);
-										// }
+										if (notificationCountListener != null) {
+											notificationCountListener.onNotificationsMarkedRead();
+										}
 									});
 		}
 
 		if (StringUtils.containsAny(
 				notificationThread.getSubject().getType().toLowerCase(), "pull", "issue")) {
-
 			RepositoryContext repo =
 					new RepositoryContext(
 							notificationThread.getRepository().getOwner().getLogin(),
 							notificationThread.getRepository().getName(),
-							context); // we can't use the repository object here directly because
-			// the permissions are missing
+							context);
 			String issueUrl = notificationThread.getSubject().getUrl();
 
 			repo.saveToDB(context);
@@ -371,8 +318,19 @@ public class NotificationsFragment extends Fragment
 				() -> {
 					pageCurrentIndex = 1;
 					loadNotifications(false);
+					if (notificationCountListener != null) {
+						notificationCountListener.onNotificationsMarkedRead();
+					}
 				});
 		bottomSheetNotificationsFragment.show(
 				getChildFragmentManager(), "notificationsBottomSheet");
+	}
+
+	@Override
+	public void onAttach(@NonNull Context context) {
+		super.onAttach(context);
+		if (context instanceof NotificationCountListener) {
+			notificationCountListener = (NotificationCountListener) context;
+		}
 	}
 }

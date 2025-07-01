@@ -2,6 +2,7 @@
 <resources>
     <style name="AppThemeDarkDynamicColors" parent="Theme.Material3.Dark.NoActionBar">
         <item name="android:statusBarColor">@android:color/transparent</item>
+        <item name="android:navigationBarColor">@android:color/system_neutral1_800</item>
         <item name="android:typeface">monospace</item>
         <item name="colorAccent">@android:color/system_neutral1_800</item>
         <item name="android:textColorSecondary">@android:color/system_accent1_0</item>
@@ -12,6 +13,7 @@
         <item name="colorSecondaryContainer">@android:color/system_neutral1_800</item>
         <item name="materialCardBackgroundColor">@android:color/system_neutral1_800</item>
 
+        <item name="navigationBarColor">@android:color/system_neutral1_900</item>
         <item name="diffAddedColor">@color/diffAddedColor</item>
         <item name="diffRemovedColor">@color/diffRemovedColor</item>
         <item name="diffSelectedColor">@color/diffSelectedColor</item>
@@ -47,6 +49,7 @@
 
     <style name="AppThemeLightDynamicColors" parent="Theme.Material3.Light.NoActionBar">
         <item name="android:statusBarColor">@android:color/transparent</item>
+        <item name="android:navigationBarColor">@android:color/system_neutral1_10</item>
         <item name="android:windowLightStatusBar">true</item>
         <item name="android:typeface">monospace</item>
         <item name="materialCardBackgroundColor">@android:color/system_accent2_50</item>
@@ -59,6 +62,7 @@
         <item name="colorSecondary">@android:color/system_accent1_200</item>
         <item name="colorOnSurface">@android:color/system_accent2_900</item>
 
+        <item name="navigationBarColor">@android:color/system_neutral1_0</item>
         <item name="diffAddedColor">@color/lightThemeDiffAddedColor</item>
         <item name="diffRemovedColor">@color/lightThemeDiffRemovedColor</item>
         <item name="diffSelectedColor">@color/lightThemeDiffSelectedColor</item>

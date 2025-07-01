@@ -11,29 +11,16 @@ import android.view.ViewGroup;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
-import com.google.android.material.dialog.MaterialAlertDialogBuilder;
 import org.mian.gitnex.R;
-import org.mian.gitnex.activities.BaseActivity;
-import org.mian.gitnex.activities.MainActivity;
-import org.mian.gitnex.activities.SettingsAppearanceActivity;
-import org.mian.gitnex.activities.SettingsBackupRestoreActivity;
-import org.mian.gitnex.activities.SettingsCodeEditorActivity;
-import org.mian.gitnex.activities.SettingsGeneralActivity;
-import org.mian.gitnex.activities.SettingsNotificationsActivity;
-import org.mian.gitnex.activities.SettingsSecurityActivity;
-import org.mian.gitnex.databinding.CustomAboutDialogBinding;
 import org.mian.gitnex.databinding.FragmentSettingsBinding;
-import org.mian.gitnex.helpers.AppUtil;
 
 /**
- * @author M M Arif
+ * @author mmarif
  */
 public class SettingsFragment extends Fragment {
 
 	public static boolean refreshParent = false;
-
 	private Context ctx;
-	private MaterialAlertDialogBuilder materialAlertDialogBuilder;
 
 	@Nullable @Override
 	public View onCreateView(
@@ -46,28 +33,35 @@ public class SettingsFragment extends Fragment {
 
 		ctx = getContext();
 		assert ctx != null;
-		materialAlertDialogBuilder =
-				new MaterialAlertDialogBuilder(ctx, R.style.ThemeOverlay_Material3_Dialog_Alert);
-
-		((MainActivity) requireActivity())
-				.setActionBarTitle(getResources().getString(R.string.navSettings));
 
 		fragmentSettingsBinding.notificationsFrame.setVisibility(View.VISIBLE);
 
 		fragmentSettingsBinding.generalFrame.setOnClickListener(
-				generalFrameCall -> startActivity(new Intent(ctx, SettingsGeneralActivity.class)));
+				v1 ->
+						new BottomSheetSettingsGeneralFragment()
+								.show(getChildFragmentManager(), "BottomSheetSettingsGeneral"));
 
 		fragmentSettingsBinding.appearanceFrame.setOnClickListener(
-				v1 -> startActivity(new Intent(ctx, SettingsAppearanceActivity.class)));
+				v1 ->
+						new BottomSheetSettingsAppearanceFragment()
+								.show(getChildFragmentManager(), "BottomSheetSettingsAppearance"));
 
 		fragmentSettingsBinding.codeEditorFrame.setOnClickListener(
-				v1 -> startActivity(new Intent(ctx, SettingsCodeEditorActivity.class)));
+				v1 ->
+						new BottomSheetSettingsCodeEditorFragment()
+								.show(getChildFragmentManager(), "BottomSheetSettingsCodeEditor"));
 
 		fragmentSettingsBinding.securityFrame.setOnClickListener(
-				v1 -> startActivity(new Intent(ctx, SettingsSecurityActivity.class)));
+				v1 ->
+						new BottomSheetSettingsSecurityFragment()
+								.show(getChildFragmentManager(), "BottomSheetSettingsSecurity"));
 
 		fragmentSettingsBinding.notificationsFrame.setOnClickListener(
-				v1 -> startActivity(new Intent(ctx, SettingsNotificationsActivity.class)));
+				v1 ->
+						new BottomSheetSettingsNotificationsFragment()
+								.show(
+										getChildFragmentManager(),
+										"BottomSheetSettingsNotifications"));
 
 		fragmentSettingsBinding.backupData.setText(
 				getString(
@@ -75,58 +69,20 @@ public class SettingsFragment extends Fragment {
 						getString(R.string.backup),
 						getString(R.string.restore)));
 		fragmentSettingsBinding.backupFrame.setOnClickListener(
-				v1 -> startActivity(new Intent(ctx, SettingsBackupRestoreActivity.class)));
+				v1 ->
+						new BottomSheetSettingsBackupRestoreFragment()
+								.show(
+										getChildFragmentManager(),
+										"BottomSheetSettingsBackupRestore"));
 
 		fragmentSettingsBinding.rateAppFrame.setOnClickListener(rateApp -> rateThisApp());
 
-		fragmentSettingsBinding.aboutAppFrame.setOnClickListener(aboutApp -> showAboutAppDialog());
+		fragmentSettingsBinding.aboutAppFrame.setOnClickListener(
+				aboutApp ->
+						new BottomSheetSettingsAboutFragment()
+								.show(getChildFragmentManager(), "AboutBottomSheet"));
 
 		return fragmentSettingsBinding.getRoot();
-	}
-
-	public void showAboutAppDialog() {
-
-		CustomAboutDialogBinding aboutAppDialogBinding =
-				CustomAboutDialogBinding.inflate(LayoutInflater.from(ctx));
-		View view = aboutAppDialogBinding.getRoot();
-
-		materialAlertDialogBuilder.setView(view);
-
-		aboutAppDialogBinding.appVersionBuild.setText(
-				getString(
-						R.string.appVersionBuild,
-						AppUtil.getAppVersion(ctx),
-						AppUtil.getAppBuildNo(ctx)));
-		aboutAppDialogBinding.userServerVersion.setText(
-				((BaseActivity) requireActivity()).getAccount().getServerVersion().toString());
-
-		aboutAppDialogBinding.donationLinkPatreon.setOnClickListener(
-				v12 ->
-						AppUtil.openUrlInBrowser(
-								requireContext(),
-								getResources().getString(R.string.supportLinkPatreon)));
-
-		aboutAppDialogBinding.translateLink.setOnClickListener(
-				v13 ->
-						AppUtil.openUrlInBrowser(
-								requireContext(), getResources().getString(R.string.crowdInLink)));
-
-		aboutAppDialogBinding.appWebsite.setOnClickListener(
-				v14 ->
-						AppUtil.openUrlInBrowser(
-								requireContext(),
-								getResources().getString(R.string.appWebsiteLink)));
-
-		aboutAppDialogBinding.feedback.setOnClickListener(
-				v14 ->
-						AppUtil.openUrlInBrowser(
-								requireContext(), getResources().getString(R.string.feedbackLink)));
-
-		if (AppUtil.isPro(requireContext())) {
-			aboutAppDialogBinding.layoutFrame1.setVisibility(View.GONE);
-		}
-
-		materialAlertDialogBuilder.show();
 	}
 
 	public void rateThisApp() {

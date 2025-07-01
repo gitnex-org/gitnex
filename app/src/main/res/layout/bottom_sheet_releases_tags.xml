@@ -6,91 +6,64 @@
     android:layout_height="wrap_content"
     android:background="?attr/primaryBackgroundColor"
     android:orientation="vertical"
-    android:paddingTop="@dimen/dimen6dp"
-    android:paddingBottom="@dimen/dimen12dp">
+    android:padding="@dimen/dimen16dp">
 
-    <androidx.core.widget.NestedScrollView
+    <LinearLayout
+        android:id="@+id/releasesTagsHeadFrame"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content">
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:padding="@dimen/dimen8dp">
 
-        <LinearLayout
+        <TextView
+            android:id="@+id/bottomSheetHeader"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:orientation="vertical">
+            android:gravity="center"
+            android:text="@string/strFilter"
+            android:textColor="?attr/primaryTextColor"
+            android:textSize="@dimen/dimen18sp"/>
 
-            <LinearLayout
-                android:id="@+id/releasesTagsHeadFrame"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:orientation="vertical"
-                android:padding="@dimen/dimen8dp">
+        <com.google.android.material.card.MaterialCardView
+            style="?attr/materialCardViewFilledStyle"
+            android:layout_width="@dimen/dimen28dp"
+            android:layout_height="@dimen/dimen4dp"
+            android:layout_gravity="center_horizontal"
+            android:layout_marginTop="@dimen/dimen8dp"
+            android:layout_marginBottom="@dimen/dimen16dp"
+            app:cardCornerRadius="@dimen/dimen24dp"
+            app:cardElevation="@dimen/dimen0dp">
 
-                <TextView
-                    android:id="@+id/bottomSheetHeader"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:gravity="center"
-                    android:text="@string/strFilter"
-                    android:textColor="?attr/primaryTextColor"
-                    android:textSize="@dimen/dimen16sp"/>
-
-                <com.google.android.material.card.MaterialCardView
-                    style="?attr/materialCardViewFilledStyle"
-                    android:layout_width="@dimen/dimen28dp"
-                    android:layout_height="@dimen/dimen4dp"
-                    android:layout_gravity="center_horizontal"
-                    android:layout_marginTop="@dimen/dimen8dp"
-                    android:layout_marginBottom="@dimen/dimen16dp"
-                    app:cardCornerRadius="@dimen/dimen24dp"
-                    app:cardElevation="@dimen/dimen0dp">
-
-                    <View
-                        android:layout_width="match_parent"
-                        android:layout_height="match_parent"
-                        android:background="?attr/fabColor" />
-
-                </com.google.android.material.card.MaterialCardView>
-
-            </LinearLayout>
-
-            <com.google.android.flexbox.FlexboxLayout
-                android:id="@+id/releasesTagsFilterSection"
+            <View
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:padding="@dimen/dimen4dp"
-                app:alignContent="center"
-                app:alignItems="flex_start"
-                app:flexWrap="wrap"
-                app:justifyContent="center">
+                android:background="?attr/fabColor" />
 
-                <TextView
-                    android:id="@+id/releases"
-                    android:layout_width="@dimen/dimen132dp"
-                    android:layout_height="@dimen/dimen100dp"
-                    android:background="?android:attr/selectableItemBackgroundBorderless"
-                    android:gravity="center"
-                    android:padding="@dimen/dimen4dp"
-                    android:text="@string/tabTextReleases"
-                    android:textColor="?attr/primaryTextColor"
-                    android:textSize="@dimen/dimen14sp"
-                    app:drawableTopCompat="@drawable/ic_release"
-                    app:layout_alignSelf="flex_start"/>
+        </com.google.android.material.card.MaterialCardView>
 
-                <TextView
-                    android:id="@+id/tags"
-                    android:layout_width="@dimen/dimen132dp"
-                    android:layout_height="@dimen/dimen100dp"
-                    android:background="?android:attr/selectableItemBackgroundBorderless"
-                    android:gravity="center"
-                    android:padding="@dimen/dimen4dp"
-                    android:text="@string/tags"
-                    android:textColor="?attr/primaryTextColor"
-                    android:textSize="@dimen/dimen14sp"
-                    app:drawableTopCompat="@drawable/ic_tag"
-                    app:layout_alignSelf="flex_start"/>
+    </LinearLayout>
 
-            </com.google.android.flexbox.FlexboxLayout>
+    <com.google.android.material.chip.ChipGroup
+        android:id="@+id/viewTypeChipGroup"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        app:singleSelection="true">
 
-        </LinearLayout>
-    </androidx.core.widget.NestedScrollView>
+        <com.google.android.material.chip.Chip
+            android:id="@+id/releasesChip"
+            style="@style/CustomChipFilter"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/tabTextReleases"
+            android:checked="true"/>
+
+        <com.google.android.material.chip.Chip
+            android:id="@+id/tagsChip"
+            style="@style/CustomChipFilter"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/tags"/>
+
+    </com.google.android.material.chip.ChipGroup>
+
 </LinearLayout>

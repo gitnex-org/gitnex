@@ -87,8 +87,6 @@ public class WatchedRepositoriesFragment extends Fragment {
 						getViewLifecycleOwner(),
 						Lifecycle.State.RESUMED);
 
-		((MainActivity) requireActivity())
-				.setActionBarTitle(getResources().getString(R.string.navWatchedRepositories));
 		repositoriesViewModel = new ViewModelProvider(this).get(RepositoriesViewModel.class);
 
 		resultLimit = Constants.getCurrentResultLimit(getContext());

@@ -65,12 +65,6 @@
 
                 </LinearLayout>
 
-                <ImageView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:contentDescription="@string/generalImgContentText"
-                    app:srcCompat="@drawable/ic_chevron_right"/>
-
             </LinearLayout>
 
             <LinearLayout
@@ -119,12 +113,6 @@
                         android:textSize="@dimen/dimen12sp" />
 
                 </LinearLayout>
-
-                <ImageView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:contentDescription="@string/generalImgContentText"
-                    app:srcCompat="@drawable/ic_chevron_right"/>
 
             </LinearLayout>
 
@@ -175,12 +163,6 @@
 
                 </LinearLayout>
 
-                <ImageView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:contentDescription="@string/generalImgContentText"
-                    app:srcCompat="@drawable/ic_chevron_right" />
-
             </LinearLayout>
 
             <LinearLayout
@@ -229,12 +211,6 @@
                         android:textSize="@dimen/dimen12sp" />
 
                 </LinearLayout>
-
-                <ImageView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:contentDescription="@string/generalImgContentText"
-                    app:srcCompat="@drawable/ic_chevron_right" />
 
             </LinearLayout>
 
@@ -285,12 +261,6 @@
 
                 </LinearLayout>
 
-                <ImageView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:contentDescription="@string/generalImgContentText"
-                    app:srcCompat="@drawable/ic_chevron_right" />
-
             </LinearLayout>
 
             <LinearLayout
@@ -339,12 +309,6 @@
                         android:textSize="@dimen/dimen12sp" />
 
                 </LinearLayout>
-
-                <ImageView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:contentDescription="@string/generalImgContentText"
-                    app:srcCompat="@drawable/ic_chevron_right" />
 
             </LinearLayout>
 

@@ -1,0 +1,75 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:background="?attr/primaryBackgroundColor"
+    android:orientation="vertical"
+    android:paddingTop="@dimen/dimen6dp"
+    android:paddingBottom="@dimen/dimen12dp">
+
+    <LinearLayout
+        android:id="@+id/headerFrame"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:padding="@dimen/dimen8dp">
+
+        <TextView
+            android:id="@+id/bottomSheetHeader"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="center"
+            android:text="@string/backupRestore"
+            android:textColor="?attr/primaryTextColor"
+            android:textSize="@dimen/dimen18sp"/>
+
+        <com.google.android.material.card.MaterialCardView
+            style="?attr/materialCardViewFilledStyle"
+            android:layout_width="@dimen/dimen28dp"
+            android:layout_height="@dimen/dimen4dp"
+            android:layout_gravity="center_horizontal"
+            android:layout_marginTop="@dimen/dimen8dp"
+            android:layout_marginBottom="@dimen/dimen16dp"
+            app:cardCornerRadius="@dimen/dimen24dp"
+            app:cardElevation="@dimen/dimen0dp">
+
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:background="?attr/fabColor" />
+
+        </com.google.android.material.card.MaterialCardView>
+
+    </LinearLayout>
+
+    <com.google.android.material.floatingactionbutton.ExtendedFloatingActionButton
+        android:id="@+id/backupButton"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/dimen54dp"
+        android:layout_marginStart="@dimen/dimen16dp"
+        android:layout_marginEnd="@dimen/dimen16dp"
+        android:layout_marginTop="@dimen/dimen8dp"
+        android:stateListAnimator="@null"
+        android:text="@string/backup"
+        android:contentDescription="@string/backup"
+        android:textColor="?attr/materialCardBackgroundColor"
+        app:iconTint="?attr/materialCardBackgroundColor"
+        android:backgroundTint="?attr/fabColor" />
+
+    <com.google.android.material.floatingactionbutton.ExtendedFloatingActionButton
+        android:id="@+id/restoreButton"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/dimen54dp"
+        android:layout_marginStart="@dimen/dimen16dp"
+        android:layout_marginEnd="@dimen/dimen16dp"
+        android:layout_marginTop="@dimen/dimen24dp"
+        android:stateListAnimator="@null"
+        android:text="@string/restore"
+        android:contentDescription="@string/restore"
+        android:textColor="?attr/materialCardBackgroundColor"
+        app:iconTint="?attr/materialCardBackgroundColor"
+        android:backgroundTint="?attr/fabColor" />
+
+</LinearLayout>

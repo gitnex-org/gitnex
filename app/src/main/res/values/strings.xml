@@ -19,6 +19,18 @@
     <string name="feedbackText" translatable="false">Feedback</string>
     <string name="where_to_get_token_text" translatable="false"><u>Where can I get an access token?</u></string>
     <string name="where_to_get_token_message" translatable="false"><![CDATA[<br>• Log in to your account on your instance (Codeberg, etc.).<br>• Click on your user profile picture, then go to Settings.<br>• Under Applications, create a token with a name of your choice.<br>• Choose All (public, private, and limited).<br>• Under Select permissions, select Read and write for each dropdown.<br><br> Once created, copy and paste or type the token here along with the instance URL.]]></string>
+    <string name="ceColorFive" translatable="false">Five O Clock</string>
+    <string name="ceColorBlueMoon" translatable="false">Blue Moon</string>
+    <string name="ceIndentationTabs" translatable="false">Tabs</string>
+    <string name="ceIndentationSpaces" translatable="false">Spaces</string>
+    <string name="ceIndentationTabsWidth2" translatable="false">2</string>
+    <string name="ceIndentationTabsWidth4" translatable="false">4</string>
+    <string name="ceIndentationTabsWidth6" translatable="false">6</string>
+    <string name="ceIndentationTabsWidth8" translatable="false">8</string>
+    <string name="cacheSize0" translatable="false">250 MB</string>
+    <string name="cacheSize1" translatable="false">500 MB</string>
+    <string name="cacheSize2" translatable="false">1 GB</string>
+    <string name="cacheSize3" translatable="false">2 GB</string>
 
     <!-- menu items -->
     <string name="navMyRepos">My Repositories</string>
@@ -31,7 +43,7 @@
     <string name="navRate">Rate GitNex</string>
     <string name="navAdministration">Instance Administration</string>
     <string name="navMyIssues">My Issues</string>
-    <string name="navMostVisited">Most Visited Repos</string>
+    <string name="navMostVisited">Most Visited Repositories</string>
     <string name="navNotes">Notes</string>
     <string name="navAccount">Account Settings</string>
     <string name="navWatchedRepositories">Watched Repositories</string>
@@ -264,8 +276,8 @@
     <string name="restoreFromBackupPopupText">You are about to restore from a GitNex-generated backup file. This will restore user accounts, settings, notes, and data related to repositories.\n\nClick Restore to start the process.</string>
     <string name="hideEmailLangInProfileHeader">Set Email and Language as Private</string>
     <string name="hideEmailLangInProfileHint">You can set your email and language to private to hide them on your profile screen</string>
-    <string name="hideEmailNavDrawerHeader">Hide Email in Drawer</string>
-    <string name="hideEmailNavDrawerHint">You can enable this option to hide your email in the app navigation drawer</string>
+    <string name="hideEmailNavDrawerHeader">Hide Email</string>
+    <string name="hideEmailNavDrawerHint">You can enable this option to hide your email in the app home dashboard screen</string>
     <!-- settings -->
 
     <string name="noMoreData">No more data available</string>
@@ -565,6 +577,10 @@
     <string name="oldest">Oldest</string>
     <string name="alphabetically">Alphabetically</string>
     <string name="size">Size</string>
+    <string name="home">Home</string>
+    <string name="personal">Personal</string>
+    <string name="activities">Activities</string>
+    <string name="refresh">Refresh</string>
     <!-- generic copy -->
 
     <string name="exploreUsers">Explore users</string>
@@ -984,4 +1000,7 @@
     <string name="fewest_stars">Fewest stars</string>
     <string name="most_forks">Most forks</string>
     <string name="fewest_forks">Fewest forks</string>
+
+    <string name="switch_account">Switch account</string>
+    <string name="clear_cache_button_text">Clear Cache (%1$s)</string>
 </resources>

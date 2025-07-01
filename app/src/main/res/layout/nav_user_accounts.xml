@@ -1,21 +1,19 @@
 <?xml version="1.0" encoding="utf-8"?>
 <com.google.android.material.card.MaterialCardView
-    android:layout_width="@dimen/dimen24dp"
-    android:layout_height="@dimen/dimen24dp"
-    style="?attr/materialCardViewElevatedStyle"
+    android:layout_width="match_parent"
+    android:layout_height="@dimen/dimen36dp"
+    app:strokeWidth="@dimen/dimen0dp"
     app:cardElevation="@dimen/dimen0dp"
-    app:cardCornerRadius="@dimen/dimen8dp"
-    android:layout_marginStart="4dp"
-    android:layout_marginEnd="@dimen/dimen4dp"
-    android:backgroundTint="@android:color/transparent"
+    app:cardBackgroundColor="?attr/materialCardBackgroundColor"
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto">
 
     <ImageView
         android:id="@+id/userAccountAvatar"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
+        android:layout_width="@dimen/dimen24dp"
+        android:layout_height="@dimen/dimen24dp"
         android:src="@drawable/loader_animated"
+        android:layout_gravity="center_vertical|center_horizontal"
         android:contentDescription="@string/generalImgContentText" />
 
 </com.google.android.material.card.MaterialCardView>

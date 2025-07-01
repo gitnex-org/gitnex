@@ -16,5 +16,6 @@
     <attr name="iconsColor" format="reference"/>
     <attr name="pagerTabIndicatorColor" format="reference"/>
     <attr name="materialCardBackgroundColor" format="reference"/>
+    <attr name="navigationBarColor" format="reference"/>
     <attr name="isDark" format="integer"/>
 </resources>

@@ -14,23 +14,21 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import java.util.ArrayList;
 import java.util.List;
 import org.gitnex.tea4j.v2.models.Activity;
-import org.mian.gitnex.R;
 import org.mian.gitnex.activities.BaseActivity;
-import org.mian.gitnex.activities.MainActivity;
-import org.mian.gitnex.adapters.DashboardAdapter;
-import org.mian.gitnex.databinding.FragmentDashboardBinding;
+import org.mian.gitnex.adapters.ActivitiesAdapter;
+import org.mian.gitnex.databinding.FragmentActivitiesBinding;
 import org.mian.gitnex.helpers.TinyDB;
-import org.mian.gitnex.viewmodels.DashboardViewModel;
+import org.mian.gitnex.viewmodels.ActivitiesViewModel;
 
 /**
  * @author M M Arif
  */
-public class DashboardFragment extends Fragment {
+public class ActivitiesFragment extends Fragment {
 
 	protected TinyDB tinyDB;
-	private DashboardViewModel dashboardViewModel;
-	private FragmentDashboardBinding binding;
-	private DashboardAdapter adapter;
+	private ActivitiesViewModel viewModel;
+	private FragmentActivitiesBinding binding;
+	private ActivitiesAdapter adapter;
 	private List<Activity> activityList;
 	private int page = 1;
 	private String username;
@@ -39,23 +37,20 @@ public class DashboardFragment extends Fragment {
 	public View onCreateView(
 			@NonNull LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
 
-		binding = FragmentDashboardBinding.inflate(inflater, container, false);
+		binding = FragmentActivitiesBinding.inflate(inflater, container, false);
 
 		Context ctx = getContext();
 
-		((MainActivity) requireActivity())
-				.setActionBarTitle(getResources().getString(R.string.dashboard));
-
 		activityList = new ArrayList<>();
 
-		dashboardViewModel = new ViewModelProvider(this).get(DashboardViewModel.class);
+		viewModel = new ViewModelProvider(this).get(ActivitiesViewModel.class);
 
 		username = ((BaseActivity) requireActivity()).getAccount().getAccount().getUserName();
 
 		binding.recyclerView.setHasFixedSize(true);
 		binding.recyclerView.setLayoutManager(new LinearLayoutManager(ctx));
 
-		adapter = new DashboardAdapter(activityList, ctx);
+		adapter = new ActivitiesAdapter(activityList, ctx);
 
 		binding.pullToRefresh.setOnRefreshListener(
 				() ->
@@ -82,20 +77,20 @@ public class DashboardFragment extends Fragment {
 
 	private void fetchDataAsync(String username) {
 
-		dashboardViewModel
+		viewModel
 				.getActivitiesList(username, getContext(), binding)
 				.observe(
 						getViewLifecycleOwner(),
 						activityListMain -> {
-							adapter = new DashboardAdapter(activityListMain, getContext());
+							adapter = new ActivitiesAdapter(activityListMain, getContext());
 							adapter.setLoadMoreListener(
-									new DashboardAdapter.OnLoadMoreListener() {
+									new ActivitiesAdapter.OnLoadMoreListener() {
 
 										@Override
 										public void onLoadMore() {
 
 											page += 1;
-											dashboardViewModel.loadMoreActivities(
+											viewModel.loadMoreActivities(
 													username, page, getContext(), adapter, binding);
 											binding.progressBar.setVisibility(View.VISIBLE);
 										}

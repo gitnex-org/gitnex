@@ -87,8 +87,6 @@ public class StarredRepositoriesFragment extends Fragment {
 						getViewLifecycleOwner(),
 						Lifecycle.State.RESUMED);
 
-		((MainActivity) requireActivity())
-				.setActionBarTitle(getResources().getString(R.string.navStarredRepos));
 		repositoriesViewModel = new ViewModelProvider(this).get(RepositoriesViewModel.class);
 
 		resultLimit = Constants.getCurrentResultLimit(getContext());

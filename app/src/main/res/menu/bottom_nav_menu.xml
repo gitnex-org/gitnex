@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+    <item
+        android:id="@+id/homeDashboardFragment"
+        android:icon="@drawable/ic_home"
+        android:title="@string/home" />
+    <item
+        android:id="@+id/repositoriesFragment"
+        android:icon="@drawable/ic_repo"
+        android:title="@string/navRepos" />
+    <item
+        android:id="@+id/notificationsFragment"
+        android:icon="@drawable/ic_notifications"
+        android:title="@string/pageTitleNotifications" />
+    <item
+        android:id="@+id/exploreFragment"
+        android:icon="@drawable/ic_search"
+        android:title="@string/pageTitleExplore" />
+</menu>

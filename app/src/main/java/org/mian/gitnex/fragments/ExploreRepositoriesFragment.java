@@ -16,7 +16,7 @@ import androidx.core.view.MenuProvider;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.Lifecycle;
 import androidx.recyclerview.widget.LinearLayoutManager;
-import com.google.android.material.dialog.MaterialAlertDialogBuilder;
+import com.google.android.material.bottomsheet.BottomSheetDialogFragment;
 import java.util.ArrayList;
 import java.util.List;
 import org.gitnex.tea4j.v2.models.Repository;
@@ -25,7 +25,7 @@ import org.mian.gitnex.R;
 import org.mian.gitnex.activities.MainActivity;
 import org.mian.gitnex.adapters.ExploreRepositoriesAdapter;
 import org.mian.gitnex.clients.RetrofitClient;
-import org.mian.gitnex.databinding.CustomExploreRepositoriesDialogBinding;
+import org.mian.gitnex.databinding.BottomSheetExploreFiltersBinding;
 import org.mian.gitnex.databinding.FragmentExploreRepoBinding;
 import org.mian.gitnex.helpers.Constants;
 import org.mian.gitnex.helpers.SnackBar;
@@ -35,7 +35,7 @@ import retrofit2.Callback;
 import retrofit2.Response;
 
 /**
- * @author M M Arif
+ * @author mmarif
  */
 public class ExploreRepositoriesFragment extends Fragment {
 
@@ -48,9 +48,6 @@ public class ExploreRepositoriesFragment extends Fragment {
 	private int resultLimit;
 	private List<Repository> dataList;
 	private ExploreRepositoriesAdapter adapter;
-
-	private CustomExploreRepositoriesDialogBinding filterBinding;
-
 	private boolean includeTopic = false;
 	private boolean includeDescription = false;
 	private boolean includeTemplate = false;
@@ -75,16 +72,15 @@ public class ExploreRepositoriesFragment extends Fragment {
 							@Override
 							public void onCreateMenu(
 									@NonNull Menu menu, @NonNull MenuInflater menuInflater) {
-
 								menu.clear();
 								menuInflater.inflate(R.menu.search_menu, menu);
-								menuInflater.inflate(R.menu.filter_menu_explore, menu);
-								MenuItem filter = menu.findItem(R.id.filter_explore);
+								menuInflater.inflate(R.menu.generic_nav_dotted_menu, menu);
 
-								filter.setOnMenuItemClickListener(
-										filter_ -> {
-											showFilterOptions();
-											return false;
+								MenuItem filterItem = menu.findItem(R.id.genericMenu);
+								filterItem.setOnMenuItemClickListener(
+										item -> {
+											showFilterBottomSheet();
+											return true;
 										});
 
 								MenuItem searchItem = menu.findItem(R.id.action_search);
@@ -97,7 +93,6 @@ public class ExploreRepositoriesFragment extends Fragment {
 								searchView.setOnQueryTextListener(
 										new androidx.appcompat.widget.SearchView
 												.OnQueryTextListener() {
-
 											@Override
 											public boolean onQueryTextSubmit(String query) {
 												viewBinding.progressBar.setVisibility(View.VISIBLE);
@@ -126,7 +121,7 @@ public class ExploreRepositoriesFragment extends Fragment {
 												searchQuery = query;
 												searchView.setQuery(null, false);
 												searchItem.collapseActionView();
-												return false;
+												return true;
 											}
 
 											@Override
@@ -175,7 +170,6 @@ public class ExploreRepositoriesFragment extends Fragment {
 	}
 
 	private void loadInitial(String searchKeyword, int resultLimit) {
-
 		Call<SearchResults> call =
 				RetrofitClient.getApiInterface(context)
 						.repoSearch(
@@ -218,28 +212,19 @@ public class ExploreRepositoriesFragment extends Fragment {
 							viewBinding.noData.setVisibility(View.VISIBLE);
 							viewBinding.progressBar.setVisibility(View.GONE);
 						} else {
-							Toasty.error(
-									requireActivity(),
-									requireActivity()
-											.getResources()
-											.getString(R.string.genericError));
+							Toasty.error(requireActivity(), getString(R.string.genericError));
 						}
 					}
 
 					@Override
 					public void onFailure(@NonNull Call<SearchResults> call, @NonNull Throwable t) {
-
 						Toasty.error(
-								requireActivity(),
-								requireActivity()
-										.getResources()
-										.getString(R.string.genericServerResponseError));
+								requireActivity(), getString(R.string.genericServerResponseError));
 					}
 				});
 	}
 
 	private void loadMore(String searchKeyword, int resultLimit, int page) {
-
 		viewBinding.progressBar.setVisibility(View.VISIBLE);
 		Call<SearchResults> call =
 				RetrofitClient.getApiInterface(context)
@@ -284,67 +269,111 @@ public class ExploreRepositoriesFragment extends Fragment {
 							adapter.notifyDataChanged();
 							viewBinding.progressBar.setVisibility(View.GONE);
 						} else {
-							Toasty.error(
-									requireActivity(),
-									requireActivity()
-											.getResources()
-											.getString(R.string.genericError));
+							Toasty.error(requireActivity(), getString(R.string.genericError));
 						}
 					}
 
 					@Override
 					public void onFailure(@NonNull Call<SearchResults> call, @NonNull Throwable t) {
-
 						Toasty.error(
-								requireActivity(),
-								requireActivity()
-										.getResources()
-										.getString(R.string.genericServerResponseError));
+								requireActivity(), getString(R.string.genericServerResponseError));
 					}
 				});
 	}
 
-	private void showFilterOptions() {
-
-		MaterialAlertDialogBuilder materialAlertDialogBuilder =
-				new MaterialAlertDialogBuilder(
-						context, R.style.ThemeOverlay_Material3_Dialog_Alert);
-		filterBinding =
-				CustomExploreRepositoriesDialogBinding.inflate(LayoutInflater.from(context));
-
-		View view = filterBinding.getRoot();
-		materialAlertDialogBuilder.setView(view);
-
-		filterBinding.includeTopic.setOnClickListener(
-				includeTopic -> this.includeTopic = filterBinding.includeTopic.isChecked());
-
-		filterBinding.includeDesc.setOnClickListener(
-				includeDesc -> this.includeDescription = filterBinding.includeDesc.isChecked());
-
-		filterBinding.includeTemplate.setOnClickListener(
-				includeTemplate ->
-						this.includeTemplate = filterBinding.includeTemplate.isChecked());
-
-		filterBinding.onlyArchived.setOnClickListener(
-				onlyArchived -> this.onlyArchived = filterBinding.onlyArchived.isChecked());
-
-		filterBinding.includeTopic.setChecked(includeTopic);
-		filterBinding.includeDesc.setChecked(includeDescription);
-		filterBinding.includeTemplate.setChecked(includeTemplate);
-		filterBinding.onlyArchived.setChecked(onlyArchived);
-
-		materialAlertDialogBuilder.setNeutralButton(getString(R.string.close), null);
-		materialAlertDialogBuilder.show();
+	private void showFilterBottomSheet() {
+		BottomSheetFilterFragment bottomSheet =
+				BottomSheetFilterFragment.newInstance(
+						includeTopic,
+						includeDescription,
+						includeTemplate,
+						onlyArchived,
+						(topic, desc, template, archived) -> {
+							includeTopic = topic;
+							includeDescription = desc;
+							includeTemplate = template;
+							onlyArchived = archived;
+							loadInitial(searchQuery, resultLimit);
+						});
+		bottomSheet.show(getChildFragmentManager(), "exploreFiltersBottomSheet");
 	}
 
 	@Override
 	public void onResume() {
 		super.onResume();
-
 		if (MainActivity.reloadRepos) {
 			dataList.clear();
 			loadInitial(searchQuery, resultLimit);
 			MainActivity.reloadRepos = false;
+		}
+	}
+
+	public static class BottomSheetFilterFragment extends BottomSheetDialogFragment {
+
+		private static final String ARG_INCLUDE_TOPIC = "includeTopic";
+		private static final String ARG_INCLUDE_DESC = "includeDescription";
+		private static final String ARG_INCLUDE_TEMPLATE = "includeTemplate";
+		private static final String ARG_ONLY_ARCHIVED = "onlyArchived";
+		private FilterCallback callback;
+
+		public static BottomSheetFilterFragment newInstance(
+				boolean includeTopic,
+				boolean includeDescription,
+				boolean includeTemplate,
+				boolean onlyArchived,
+				FilterCallback callback) {
+			BottomSheetFilterFragment fragment = new BottomSheetFilterFragment();
+			Bundle args = new Bundle();
+			args.putBoolean(ARG_INCLUDE_TOPIC, includeTopic);
+			args.putBoolean(ARG_INCLUDE_DESC, includeDescription);
+			args.putBoolean(ARG_INCLUDE_TEMPLATE, includeTemplate);
+			args.putBoolean(ARG_ONLY_ARCHIVED, onlyArchived);
+			fragment.setArguments(args);
+			fragment.callback = callback;
+			return fragment;
+		}
+
+		@Override
+		public View onCreateView(
+				@NonNull LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
+			BottomSheetExploreFiltersBinding binding =
+					BottomSheetExploreFiltersBinding.inflate(inflater, container, false);
+
+			Bundle args = getArguments();
+			boolean includeTopic = args != null && args.getBoolean(ARG_INCLUDE_TOPIC, false);
+			boolean includeDescription = args != null && args.getBoolean(ARG_INCLUDE_DESC, false);
+			boolean includeTemplate = args != null && args.getBoolean(ARG_INCLUDE_TEMPLATE, false);
+			boolean onlyArchived = args != null && args.getBoolean(ARG_ONLY_ARCHIVED, false);
+
+			binding.includeTopicChip.setChecked(includeTopic);
+			binding.includeDescChip.setChecked(includeDescription);
+			binding.includeTemplateChip.setChecked(includeTemplate);
+			binding.onlyArchivedChip.setChecked(onlyArchived);
+
+			binding.filterChipGroup.setOnCheckedStateChangeListener(
+					(group, checkedIds) -> {
+						boolean newIncludeTopic = checkedIds.contains(R.id.includeTopicChip);
+						boolean newIncludeDescription = checkedIds.contains(R.id.includeDescChip);
+						boolean newIncludeTemplate = checkedIds.contains(R.id.includeTemplateChip);
+						boolean newOnlyArchived = checkedIds.contains(R.id.onlyArchivedChip);
+						if (callback != null) {
+							callback.onFiltersApplied(
+									newIncludeTopic,
+									newIncludeDescription,
+									newIncludeTemplate,
+									newOnlyArchived);
+						}
+					});
+
+			return binding.getRoot();
+		}
+
+		public interface FilterCallback {
+			void onFiltersApplied(
+					boolean includeTopic,
+					boolean includeDescription,
+					boolean includeTemplate,
+					boolean onlyArchived);
 		}
 	}
 }

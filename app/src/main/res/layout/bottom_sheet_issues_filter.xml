@@ -6,8 +6,7 @@
     android:layout_height="wrap_content"
     android:background="?attr/primaryBackgroundColor"
     android:orientation="vertical"
-    android:paddingTop="@dimen/dimen6dp"
-    android:paddingBottom="@dimen/dimen12dp">
+    android:padding="@dimen/dimen16dp">
 
     <LinearLayout
         android:id="@+id/issuesFilterHeadFrame"
@@ -23,7 +22,7 @@
             android:gravity="center"
             android:text="@string/strFilter"
             android:textColor="?attr/primaryTextColor"
-            android:textSize="@dimen/dimen16sp"/>
+            android:textSize="@dimen/dimen18sp"/>
 
         <com.google.android.material.card.MaterialCardView
             style="?attr/materialCardViewFilledStyle"
@@ -47,9 +46,7 @@
         android:id="@+id/stateChipGroup"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        app:singleSelection="true"
-        android:paddingStart="@dimen/dimen16dp"
-        android:paddingEnd="@dimen/dimen16dp">
+        app:singleSelection="true">
 
         <com.google.android.material.chip.Chip
             android:id="@+id/openChip"
@@ -73,7 +70,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         app:singleSelection="false"
-        android:padding="@dimen/dimen16dp">
+        android:paddingTop="@dimen/dimen8dp">
 
         <com.google.android.material.chip.Chip
             android:id="@+id/mentionsChip"

@@ -33,7 +33,7 @@ public class AppDatabaseSettings {
 	public static String APP_LINK_HANDLER_KEY = "app_link_handler";
 	public static String APP_LINK_HANDLER_DEFAULT = "0";
 	public static String APP_HOME_SCREEN_KEY = "app_home_screen";
-	public static String APP_HOME_SCREEN_DEFAULT = "3";
+	public static String APP_HOME_SCREEN_DEFAULT = "0";
 	public static String APP_CUSTOM_BROWSER_KEY = "app_custom_browser_tab";
 	public static String APP_CUSTOM_BROWSER_DEFAULT = "true";
 	public static String APP_DRAFTS_DELETION_KEY = "app_drafts_deletion";

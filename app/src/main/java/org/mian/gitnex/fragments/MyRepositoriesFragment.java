@@ -48,8 +48,6 @@ public class MyRepositoriesFragment extends Fragment {
 		fragmentRepositoriesBinding =
 				FragmentRepositoriesBinding.inflate(inflater, container, false);
 
-		((MainActivity) requireActivity())
-				.setActionBarTitle(getResources().getString(R.string.navMyRepos));
 		repositoriesViewModel = new ViewModelProvider(this).get(RepositoriesViewModel.class);
 
 		final String userLogin =

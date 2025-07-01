@@ -225,16 +225,15 @@ public class RepoDetailActivity extends BaseActivity implements BottomSheetListe
 			return true;
 		} else if (id == R.id.filterPr) {
 
-			BottomSheetPullRequestFilterFragment filterPrBottomSheet =
-					new BottomSheetPullRequestFilterFragment();
-			filterPrBottomSheet.show(getSupportFragmentManager(), "repoFilterMenuPrBottomSheet");
+			BottomSheetPullRequestFilterFragment bottomSheet =
+					BottomSheetPullRequestFilterFragment.newInstance(repository);
+			bottomSheet.show(getSupportFragmentManager(), "pullRequestFilterBottomSheet");
 			return true;
 		} else if (id == R.id.filterMilestone) {
 
-			BottomSheetMilestonesFilterFragment filterMilestoneBottomSheet =
-					new BottomSheetMilestonesFilterFragment();
-			filterMilestoneBottomSheet.show(
-					getSupportFragmentManager(), "repoFilterMenuMilestoneBottomSheet");
+			BottomSheetMilestonesFilterFragment bottomSheet =
+					BottomSheetMilestonesFilterFragment.newInstance(repository);
+			bottomSheet.show(getSupportFragmentManager(), "milestonesFilterBottomSheet");
 			return true;
 		} else if (id == R.id.branchCommits) {
 
@@ -242,11 +241,10 @@ public class RepoDetailActivity extends BaseActivity implements BottomSheetListe
 
 			ctx.startActivity(intent);
 			return true;
-		} else if (id == R.id.filterReleases && getAccount().requiresVersion("1.15.0")) {
-			BottomSheetReleasesTagsFragment bottomSheetReleasesTagsFragment =
-					new BottomSheetReleasesTagsFragment();
-			bottomSheetReleasesTagsFragment.show(
-					getSupportFragmentManager(), "repoFilterReleasesMenuBottomSheet");
+		} else if (id == R.id.filterReleases) {
+			BottomSheetReleasesTagsFragment bottomSheet =
+					BottomSheetReleasesTagsFragment.newInstance(repository);
+			bottomSheet.show(getSupportFragmentManager(), "releasesTagsFilterBottomSheet");
 			return true;
 		}
 

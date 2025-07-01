@@ -78,30 +78,30 @@ public class CommitStatusesAdapter
 		holder.status = currentItem;
 		holder.name.setText(currentItem.getContext());
 		holder.description.setText(currentItem.getDescription());
-		switch (currentItem.getStatus().toLowerCase()) {
-			case "pending":
+		switch (currentItem.getStatus()) {
+			case PENDING:
 				holder.icon.setImageResource(R.drawable.ic_dot_fill);
 				ImageViewCompat.setImageTintList(
 						holder.icon,
 						ColorStateList.valueOf(
 								ctx.getResources().getColor(R.color.lightYellow, null)));
 				break;
-			case "success":
+			case SUCCESS:
 				holder.icon.setImageResource(R.drawable.ic_check);
 				ImageViewCompat.setImageTintList(
 						holder.icon,
 						ColorStateList.valueOf(
 								ctx.getResources().getColor(R.color.colorLightGreen, null)));
 				break;
-			case "error":
-			case "failure":
+			case ERROR:
+			case FAILURE:
 				holder.icon.setImageResource(R.drawable.ic_close);
 				ImageViewCompat.setImageTintList(
 						holder.icon,
 						ColorStateList.valueOf(
 								ctx.getResources().getColor(R.color.iconIssuePrClosedColor, null)));
 				break;
-			case "warning":
+			case WARNING:
 				holder.icon.setImageResource(R.drawable.ic_warning);
 				ImageViewCompat.setImageTintList(
 						holder.icon,

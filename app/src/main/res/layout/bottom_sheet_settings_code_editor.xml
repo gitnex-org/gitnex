@@ -1,0 +1,189 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:background="?attr/primaryBackgroundColor"
+    android:orientation="vertical"
+    android:paddingTop="@dimen/dimen6dp"
+    android:paddingBottom="@dimen/dimen12dp">
+
+    <LinearLayout
+        android:id="@+id/headerFrame"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:padding="@dimen/dimen8dp">
+
+        <TextView
+            android:id="@+id/bottomSheetHeader"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="center"
+            android:text="@string/codeEditor"
+            android:textColor="?attr/primaryTextColor"
+            android:textSize="@dimen/dimen18sp"/>
+
+        <com.google.android.material.card.MaterialCardView
+            style="?attr/materialCardViewFilledStyle"
+            android:layout_width="@dimen/dimen28dp"
+            android:layout_height="@dimen/dimen4dp"
+            android:layout_gravity="center_horizontal"
+            android:layout_marginTop="@dimen/dimen8dp"
+            android:layout_marginBottom="@dimen/dimen16dp"
+            app:cardCornerRadius="@dimen/dimen24dp"
+            app:cardElevation="@dimen/dimen0dp">
+
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:background="?attr/fabColor" />
+
+        </com.google.android.material.card.MaterialCardView>
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:id="@+id/ceColorSelectionFrame"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:paddingStart="@dimen/dimen16dp"
+        android:paddingEnd="@dimen/dimen16dp"
+        android:orientation="vertical">
+
+        <TextView
+            android:id="@+id/ceColorHeaderSelector"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/ceSyntaxHighlightColor"
+            android:textColor="?attr/primaryTextColor"
+            android:textSize="@dimen/dimen16sp" />
+
+        <com.google.android.material.chip.ChipGroup
+            android:id="@+id/ceColorChipGroup"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/dimen8dp"
+            app:singleSelection="true"
+            app:selectionRequired="true">
+
+            <com.google.android.material.chip.Chip
+                android:id="@+id/chipColorDark"
+                style="@style/CustomChipFilter"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/ceColorFive" />
+
+            <com.google.android.material.chip.Chip
+                android:id="@+id/chipColorLight"
+                style="@style/CustomChipFilter"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/ceColorBlueMoon" />
+
+        </com.google.android.material.chip.ChipGroup>
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:id="@+id/indentationSelectionFrame"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/dimen24dp"
+        android:paddingStart="@dimen/dimen16dp"
+        android:paddingEnd="@dimen/dimen16dp"
+        android:orientation="vertical">
+
+        <TextView
+            android:id="@+id/indentationHeaderSelector"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/ceIndentation"
+            android:textColor="?attr/primaryTextColor"
+            android:textSize="@dimen/dimen16sp" />
+
+        <com.google.android.material.chip.ChipGroup
+            android:id="@+id/indentationChipGroup"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/dimen8dp"
+            app:singleSelection="true"
+            app:selectionRequired="true">
+
+            <com.google.android.material.chip.Chip
+                android:id="@+id/chipIndentSpaces"
+                style="@style/CustomChipFilter"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/ceIndentationSpaces" />
+
+            <com.google.android.material.chip.Chip
+                android:id="@+id/chipIndentTabs"
+                style="@style/CustomChipFilter"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/ceIndentationTabs" />
+
+        </com.google.android.material.chip.ChipGroup>
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:id="@+id/indentationTabsSelectionFrame"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/dimen24dp"
+        android:paddingStart="@dimen/dimen16dp"
+        android:paddingEnd="@dimen/dimen16dp"
+        android:orientation="vertical">
+
+        <TextView
+            android:id="@+id/indentationTabsHeaderSelector"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/ceIndentationTabsWidth"
+            android:textColor="?attr/primaryTextColor"
+            android:textSize="@dimen/dimen16sp" />
+
+        <com.google.android.material.chip.ChipGroup
+            android:id="@+id/indentationTabsChipGroup"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/dimen8dp"
+            app:singleSelection="true"
+            app:selectionRequired="true">
+
+            <com.google.android.material.chip.Chip
+                android:id="@+id/chipTabs2"
+                style="@style/CustomChipFilter"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/ceIndentationTabsWidth2" />
+
+            <com.google.android.material.chip.Chip
+                android:id="@+id/chipTabs4"
+                style="@style/CustomChipFilter"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/ceIndentationTabsWidth4" />
+
+            <com.google.android.material.chip.Chip
+                android:id="@+id/chipTabs6"
+                style="@style/CustomChipFilter"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/ceIndentationTabsWidth6" />
+
+            <com.google.android.material.chip.Chip
+                android:id="@+id/chipTabs8"
+                style="@style/CustomChipFilter"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/ceIndentationTabsWidth8" />
+
+        </com.google.android.material.chip.ChipGroup>
+
+    </LinearLayout>
+
+</LinearLayout>
