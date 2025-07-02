@@ -1,0 +1,20 @@
+9.0.0
+
+🎉 Features 🎉
+- Redesigned home screen 
+- Markdown alert support
+- Repository sorting (requires Forgejo 11.x)
+- Revamped login screen UI
+- Revamped app settings
+
+🚀 Improvements 🚀 
+- Improved changelog UI
+- Added popup on login screen explaining where to get a token
+- Theme improvements across the app
+
+🐛 Bug Fixes 🐛
+- Fixed login screen issue
+- Fixed French translation on the Appearance screen
+- Fixed duplicate labels in issue/pr
+
+Release Notes: https://codeberg.org/gitnex/GitNex/releases

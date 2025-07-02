@@ -1,9 +1,23 @@
 <?xml version="1.0" encoding="utf-8"?>
 <changelog>
 
-    <release version="9.0.0-dev" versioncode="895">
-        <type name="Dev">
-            <change>Under development</change>
+    <release version="9.0.0" versioncode="900">
+        <type name="🎉 Features 🎉">
+            <change>Redesigned home screen</change>
+            <change>Markdown alert support</change>
+            <change>Repository sorting (requires Forgejo 11.x)</change>
+            <change>Revamped login screen UI</change>
+            <change>Revamped app settings</change>
+        </type>
+        <type name="🚀 Improvements 🚀">
+            <change>Improved changelog UI</change>
+            <change>Added popup on login screen explaining where to get a token</change>
+            <change>Theme improvements across the app</change>
+        </type>
+        <type name="🐛 Bug Fixes 🐛">
+            <change>Fixed login screen issue</change>
+            <change>Fixed French translation on the Appearance screen</change>
+            <change>Fixed duplicate labels in issue/pr</change>
         </type>
     </release>
 
