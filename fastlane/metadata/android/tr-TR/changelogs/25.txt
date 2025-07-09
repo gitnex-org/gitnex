@@ -1,8 +1,8 @@
-- New: Add collaborator to repository
-- New: User can now edit his/her own comments
-- New: See who are your followers
-- New: See who you are following
-- Enhancement: Redesign Profile screen
-- Enhancement: Added edited status for single issue and comments
+- Yeni: Depoya işbirlikçi ekleme
+- Yeni: Kullanıcı artık kendi yorumlarını düzenleyebilir
+- Yeni: Sizi kimlerin takip ettiğini görün
+- Yeni: Kimleri takip ettiğinizi görün
+- Geliştirme: Profil ekranı yeniden tasarlandı
+- Geliştirme: Tek mesele ve yorumlar için düzenlendi durumu eklendi
 
-Release notes: https://codeberg.org/gitnex/GitNex/releases
+Sürüm notları: https://codeberg.org/gitnex/GitNex/releases

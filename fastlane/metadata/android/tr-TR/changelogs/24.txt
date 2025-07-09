@@ -1,19 +1,19 @@
 1.1.0-rc1
-- New: Redesign the whole app experience in terms of fonts, colors, ux adjustments and ui fixes
-- New: New font
-- New: Issues counter badge. Can be enabled/disabled from settings
-- New: Redesigned settings screen
-- New: Create a team in Organization
-- New: List organization members
-- New: List organization teams
-- New: List team members in organization by tapping on the team name
-- New: Repository list for the organization. Tap on organization.
-- New: Show the repositories list starred by the logged in user
-- Enhancement: Login api calls for http status code 500
-- Enhancement: Font sizes, color schemes
-- Enhancement: Labels, user avatars, menus
-- Enhancement: Added names to collaborators grid in repository view instead of tap
-- Enhancement: Refactored and redesigned About screen
-- Enhancement: Reply to issue button is now at the nav header
-- Fixed: Collaborators avatar layout grid
-- Fixed: Malformed json in logins
+- Yeni: Yazı tipleri, renkler, kullanıcı deneyimi ayarlamaları ve arayüz düzeltmeleri açısından tüm uygulama deneyimi yeniden tasarlandı
+- Yeni: Yeni yazı tipi
+- Yeni: Mesele sayacı rozeti. Ayarlardan etkinleştirilebilir/devre dışı bırakılabilir
+- Yeni: Yeniden tasarlanmış ayarlar ekranı
+- Yeni: Organizasyonda bir takım oluşturma
+- Yeni: Organizasyon üyelerini listeleme
+- Yeni: Organizasyon takımlarını listeleme
+- Yeni: Takım adına dokunarak organizasyondaki takım üyelerini listeleme
+- Yeni: Organizasyon için depo listesi. Organizasyona dokunun.
+- Yeni: Giriş yapmış kullanıcının yıldızladığı depoları listeleme
+- Geliştirme: HTTP 500 durum kodu için giriş API çağrıları
+- Geliştirme: Yazı tipi boyutları, renk şemaları
+- Geliştirme: Etiketler, kullanıcı avatarları, menüler
+- Geliştirme: Depo görünümündeki işbirlikçiler ızgarasına dokunmak yerine isimler eklendi
+- Geliştirme: Hakkında ekranı yeniden düzenlendi ve tasarlandı
+- Geliştirme: Meseleye yanıtla butonu artık gezinti başlığında
+- Düzeltildi: İşbirlikçiler avatar düzeni ızgarası
+- Düzeltildi: Girişlerdeki hatalı biçimlendirilmiş JSON

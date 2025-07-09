@@ -1,16 +1,16 @@
 1.0-rc6
-  * New: Added meta data and changelog for F-droid
+  * Yeni: F-droid için meta veri ve değişiklik günlüğü eklendi
   
 1.0-rc5
-  * New: Highlight usernames in issues and comments
-  * Bugfix: Default label creation bug
-  * Bugfix: Infinite loop of settings screen on some devices
+  * Yeni: Meselelerde ve yorumlarda kullanıcı adlarını vurgulama
+  * Hata Düzeltmesi: Varsayılan etiket oluşturma hatası
+  * Hata Düzeltmesi: Bazı cihazlarda ayarlar ekranının sonsuz döngüye girmesi
 
 1.0-rc4
-  * New: Create label with color picker
-  * Bugfix: Fix label flag in creating new issue
-  * Bugfix: Fix pretty date on new app launch
-  * Enhanced: Moved create milestone and issue into bottom sheet
-  * Enhanced: Clean up issue and comments ui
-  * Enhanced: Enhance milestone open/close status
-  * Enhanced: Enhance milestone due date color and font size
+  * Yeni: Renk seçici ile etiket oluşturma
+  * Hata Düzeltmesi: Yeni mesele oluştururken etiket bayrağı hatası düzeltildi
+  * Hata Düzeltmesi: Yeni uygulama başlangıcında göreli tarih hatası düzeltildi
+  Kilometre taşı ve mesele oluşturma işlemleri alt menüye taşındı
+  * Geliştirme: Mesele ve yorumlar arayüzü temizlendi
+  * Geliştirme: Kilometre taşı açık/kapalı durumu iyileştirildi
+  * Geliştirme: Kilometre taşı bitiş tarihi rengi ve yazı tipi boyutu iyileştirildi

@@ -1,1 +1,1 @@
-Native client for Gitea
+Forgejo ve Gitea için yerel istemci
