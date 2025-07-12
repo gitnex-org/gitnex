@@ -118,10 +118,12 @@ public class DetailFragment extends Fragment {
 						((ProfileActivity) requireActivity()).viewPager.setCurrentItem(2));
 
 		if (username.equals(((BaseActivity) context).getAccount().getAccount().getUserName())) {
-			binding.metaProfile.setVisibility(View.VISIBLE);
+			binding.updateAvatar.setVisibility(View.VISIBLE);
+			binding.updateProfile.setVisibility(View.VISIBLE);
 			itsMe = true;
 		} else {
-			binding.metaProfile.setVisibility(View.GONE);
+			binding.updateAvatar.setVisibility(View.GONE);
+			binding.updateProfile.setVisibility(View.GONE);
 		}
 
 		binding.updateProfile.setOnClickListener(
@@ -475,7 +477,7 @@ public class DetailFragment extends Fragment {
 											String.format(
 													response.body().getStarredReposCount()
 															+ " "
-															+ getString(R.string.starredRepos)));
+															+ getString(R.string.navStarredRepos)));
 
 									String[] userLanguageCodes =
 											response.body().getLanguage().split("-");
@@ -520,14 +522,12 @@ public class DetailFragment extends Fragment {
 										binding.website.setText(response.body().getWebsite());
 									} else {
 										binding.website.setText(R.string.noDataWebsite);
-										binding.website.setAlpha(.4F);
 									}
 
 									if (!response.body().getLocation().isEmpty()) {
 										binding.location.setText(response.body().getLocation());
 									} else {
 										binding.location.setText(R.string.noDataLocation);
-										binding.location.setAlpha(.4F);
 									}
 
 									if (!response.body().getDescription().isEmpty()) {
@@ -537,7 +537,6 @@ public class DetailFragment extends Fragment {
 												binding.bio);
 									} else {
 										binding.bio.setText(R.string.noDataBio);
-										binding.bio.setAlpha(.4F);
 									}
 
 									break;

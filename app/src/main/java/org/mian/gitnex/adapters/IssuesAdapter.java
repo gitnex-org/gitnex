@@ -36,6 +36,7 @@ import org.mian.gitnex.helpers.AppUtil;
 import org.mian.gitnex.helpers.ClickListener;
 import org.mian.gitnex.helpers.ColorInverter;
 import org.mian.gitnex.helpers.LabelWidthCalculator;
+import org.mian.gitnex.helpers.Markdown;
 import org.mian.gitnex.helpers.TimeHelper;
 import org.mian.gitnex.helpers.TinyDB;
 import org.mian.gitnex.helpers.contexts.IssueContext;
@@ -175,7 +176,7 @@ public class IssuesAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder>
 		@SuppressLint("SetTextI18n")
 		void bindData(Issue issue) {
 
-			Locale locale = context.getResources().getConfiguration().locale;
+			Locale locale = context.getResources().getConfiguration().getLocales().get(0);
 
 			Glide.with(context)
 					.load(issue.getUser().getAvatarUrl())
@@ -192,10 +193,15 @@ public class IssuesAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder>
 							+ context.getResources().getString(R.string.hash)
 							+ issue.getNumber()
 							+ "</font>";
-			issueTitle.setText(
+			Markdown.render(
+					context,
 					HtmlCompat.fromHtml(
-							issueNumber_ + " " + EmojiParser.parseToUnicode(issue.getTitle()),
-							HtmlCompat.FROM_HTML_MODE_LEGACY));
+									issueNumber_
+											+ " "
+											+ EmojiParser.parseToUnicode(issue.getTitle()),
+									HtmlCompat.FROM_HTML_MODE_LEGACY)
+							.toString(),
+					issueTitle);
 
 			this.issueObject = issue;
 			this.issueCommentsCount.setText(String.valueOf(issue.getComments()));

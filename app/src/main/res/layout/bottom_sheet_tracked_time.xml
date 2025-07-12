@@ -33,7 +33,6 @@
 
         <com.google.android.material.textfield.TextInputLayout
             android:id="@+id/hoursInputLayout"
-            style="@style/Widget.Material3.TextInputLayout.OutlinedBox.Dense"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_weight="1"
@@ -52,7 +51,6 @@
 
         <com.google.android.material.textfield.TextInputLayout
             android:id="@+id/minutesInputLayout"
-            style="@style/Widget.Material3.TextInputLayout.OutlinedBox.Dense"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_weight="1"
@@ -75,6 +73,7 @@
             android:layout_height="@dimen/dimen50dp"
             android:text="@string/addButton"
             android:minWidth="0dp"
+            android:backgroundTint="?attr/iconsColor"
             android:paddingHorizontal="@dimen/dimen16dp" />
 
     </LinearLayout>

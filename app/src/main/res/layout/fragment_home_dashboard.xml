@@ -92,6 +92,8 @@
                     <LinearLayout
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
+                        android:layout_marginStart="@dimen/dimen8dp"
+                        android:layout_marginEnd="@dimen/dimen8dp"
                         android:orientation="vertical">
 
                         <TextView
@@ -99,7 +101,7 @@
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:textColor="?attr/primaryTextColor"
-                            android:textSize="@dimen/dimen16sp"
+                            android:textSize="@dimen/dimen18sp"
                             android:textIsSelectable="true" />
 
                         <TextView
