@@ -1302,7 +1302,7 @@ public class IssueDetailActivity extends BaseActivity
 			}
 		}
 
-		final Locale locale = getResources().getConfiguration().locale;
+		Locale locale = getResources().getConfiguration().getLocales().get(0);
 		issueCreator = issue.getIssue().getUser().getLogin();
 
 		Glide.with(ctx)
@@ -1319,12 +1319,16 @@ public class IssueDetailActivity extends BaseActivity
 						+ appCtx.getResources().getString(R.string.hash)
 						+ issue.getIssue().getNumber()
 						+ "</font>";
-		viewBinding.issueTitle.setText(
+		Markdown.render(
+				ctx,
 				HtmlCompat.fromHtml(
-						issueNumber_
-								+ " "
-								+ EmojiParser.parseToUnicode(issue.getIssue().getTitle()),
-						HtmlCompat.FROM_HTML_MODE_LEGACY));
+								issueNumber_
+										+ " "
+										+ EmojiParser.parseToUnicode(issue.getIssue().getTitle()),
+								HtmlCompat.FROM_HTML_MODE_LEGACY)
+						.toString(),
+				viewBinding.issueTitle);
+
 		String cleanIssueDescription = issue.getIssue().getBody().trim();
 
 		if (!AppUtil.checkGhostUsers(issue.getIssue().getUser().getLogin())) {
@@ -1484,7 +1488,7 @@ public class IssueDetailActivity extends BaseActivity
 
 		String edited;
 
-		if (!issue.getIssue().getUpdatedAt().equals(issue.getIssue().getUpdatedAt())) {
+		if (!issue.getIssue().getCreatedAt().equals(issue.getIssue().getUpdatedAt())) {
 
 			edited = getString(R.string.colorfulBulletSpan) + getString(R.string.modifiedText);
 			viewBinding.issueModified.setVisibility(View.VISIBLE);

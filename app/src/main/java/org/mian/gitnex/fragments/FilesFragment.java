@@ -391,7 +391,7 @@ public class FilesFragment extends Fragment implements FilesAdapter.FilesAdapter
 								(int)
 										requireContext()
 												.getResources()
-												.getDimension(R.dimen.dimen16dp);
+												.getDimension(R.dimen.dimen4dp);
 						int spacingTop =
 								(int)
 										requireContext()

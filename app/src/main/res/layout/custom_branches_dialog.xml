@@ -11,8 +11,10 @@
         android:layout_height="wrap_content"
         android:text="@string/pageTitleChooseBranch"
         android:textAppearance="?attr/textAppearanceHeadline5"
-        android:layout_marginBottom="@dimen/dimen8dp"
-        android:padding="@dimen/dimen16dp" />
+        android:layout_marginBottom="@dimen/dimen16dp"
+        android:layout_marginStart="@dimen/dimen8dp"
+        android:layout_marginEnd="@dimen/dimen8dp"
+        android:layout_marginTop="@dimen/dimen8dp" />
 
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/recyclerView"

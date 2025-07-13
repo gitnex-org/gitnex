@@ -3,7 +3,7 @@ package org.mian.gitnex.helpers.languagestatistics;
 import android.annotation.SuppressLint;
 
 /**
- * @author M M Arif
+ * @author mmarif
  */
 public class LanguageStatisticsHelper {
 

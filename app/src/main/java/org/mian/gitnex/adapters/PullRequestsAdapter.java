@@ -37,6 +37,7 @@ import org.mian.gitnex.helpers.AppUtil;
 import org.mian.gitnex.helpers.ClickListener;
 import org.mian.gitnex.helpers.ColorInverter;
 import org.mian.gitnex.helpers.LabelWidthCalculator;
+import org.mian.gitnex.helpers.Markdown;
 import org.mian.gitnex.helpers.TimeHelper;
 import org.mian.gitnex.helpers.contexts.IssueContext;
 
@@ -181,7 +182,7 @@ public class PullRequestsAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
 
 		void bindData(PullRequest pullRequest) {
 
-			Locale locale = context.getResources().getConfiguration().locale;
+			Locale locale = context.getResources().getConfiguration().getLocales().get(0);
 
 			Glide.with(context)
 					.load(pullRequest.getUser().getAvatarUrl())
@@ -309,10 +310,16 @@ public class PullRequestsAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
 				this.issuePrState.setVisibility(View.GONE);
 			}
 
-			this.prTitle.setText(
+			Markdown.render(
+					context,
 					HtmlCompat.fromHtml(
-							prNumber_ + " " + EmojiParser.parseToUnicode(pullRequest.getTitle()),
-							HtmlCompat.FROM_HTML_MODE_LEGACY));
+									prNumber_
+											+ " "
+											+ EmojiParser.parseToUnicode(pullRequest.getTitle()),
+									HtmlCompat.FROM_HTML_MODE_LEGACY)
+							.toString(),
+					this.prTitle);
+
 			this.prCommentsCount.setText(String.valueOf(pullRequest.getComments()));
 			this.prCreatedTime.setText(TimeHelper.formatTime(pullRequest.getCreatedAt(), locale));
 

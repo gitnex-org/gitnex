@@ -5,11 +5,9 @@ import java.util.Map;
 import org.mian.gitnex.R;
 
 /**
- * @author M M Arif
+ * @author mmarif
  */
 public class LanguageColor {
-
-	private static int color = R.color.default_lang_color;
 	private static final Map<String, Integer> colors = new HashMap<>();
 
 	static {
@@ -208,16 +206,14 @@ public class LanguageColor {
 		colors.put("robots.txt", R.color.yaml);
 		colors.put("sed", R.color.sed);
 		colors.put("xBase", R.color.x_base);
+		colors.put("D", R.color.wiki);
 	}
 
 	public static int languageColor(String key) {
-
-		for (Map.Entry<String, Integer> s : colors.entrySet()) {
-			if (key.equalsIgnoreCase(s.getKey())) {
-				color = s.getValue();
-			}
+		if (key == null) {
+			return R.color.default_lang_color;
 		}
-
-		return color;
+		Integer color = colors.get(key);
+		return color != null ? color : R.color.default_lang_color;
 	}
 }

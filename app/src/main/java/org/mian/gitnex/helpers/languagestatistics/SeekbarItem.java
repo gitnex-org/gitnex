@@ -1,7 +1,7 @@
 package org.mian.gitnex.helpers.languagestatistics;
 
 /**
- * @author M M Arif
+ * @author mmarif
  */
 public class SeekbarItem {
 

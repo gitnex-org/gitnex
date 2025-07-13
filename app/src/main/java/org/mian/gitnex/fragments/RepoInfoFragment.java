@@ -1,25 +1,24 @@
 package org.mian.gitnex.fragments;
 
 import static org.mian.gitnex.helpers.languagestatistics.LanguageColor.languageColor;
-import static org.mian.gitnex.helpers.languagestatistics.LanguageStatisticsHelper.calculatePercentage;
 
 import android.content.Context;
 import android.content.Intent;
+import android.content.res.ColorStateList;
 import android.graphics.Color;
 import android.os.Bundle;
-import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.ImageView;
 import android.widget.LinearLayout;
-import android.widget.SeekBar;
 import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.core.content.ContextCompat;
 import androidx.fragment.app.Fragment;
-import com.amulyakhare.textdrawable.TextDrawable;
+import com.google.android.material.chip.Chip;
 import com.google.android.material.dialog.MaterialAlertDialogBuilder;
+import com.google.android.material.shape.CornerFamily;
+import com.google.android.material.shape.ShapeAppearanceModel;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Locale;
@@ -45,13 +44,15 @@ import org.mian.gitnex.helpers.Markdown;
 import org.mian.gitnex.helpers.TimeHelper;
 import org.mian.gitnex.helpers.Toasty;
 import org.mian.gitnex.helpers.contexts.RepositoryContext;
+import org.mian.gitnex.helpers.languagestatistics.LanguageColor;
+import org.mian.gitnex.helpers.languagestatistics.LanguageStatisticsHelper;
 import org.mian.gitnex.helpers.languagestatistics.SeekbarItem;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
 
 /**
- * @author M M Arif
+ * @author mmarif
  */
 public class RepoInfoFragment extends Fragment {
 
@@ -82,7 +83,7 @@ public class RepoInfoFragment extends Fragment {
 
 		binding = FragmentRepoInfoBinding.inflate(inflater, container, false);
 		ctx = getContext();
-		Locale locale = getResources().getConfiguration().locale;
+		Locale locale = getResources().getConfiguration().getLocales().get(0);
 
 		pageContent = binding.repoInfoLayout;
 		pageContent.setVisibility(View.GONE);
@@ -156,127 +157,75 @@ public class RepoInfoFragment extends Fragment {
 											seekbarItemList.add(seekbarItem);
 										}
 
-										binding.languagesStatistic.setVisibility(View.VISIBLE);
-										binding.languagesStatistic.initData(seekbarItemList);
+										binding.languageStatsCard.setVisibility(View.VISIBLE);
+										binding.languagesStatistic.setData(seekbarItemList);
 
-										binding.languagesStatistic.setOnSeekBarChangeListener(
-												new SeekBar.OnSeekBarChangeListener() {
+										binding.languageStatsCard.setOnClickListener(
+												v -> {
+													View view =
+															LayoutInflater.from(ctx)
+																	.inflate(
+																			R.layout
+																					.layout_repo_language_statistics,
+																			null);
+													LinearLayout layout =
+															view.findViewById(R.id.lang_color);
+													layout.removeAllViews();
 
-													@Override
-													public void onStopTrackingTouch(
-															SeekBar seekBar) {}
-
-													@Override
-													public void onStartTrackingTouch(
-															SeekBar seekBar) {}
-
-													@Override
-													public void onProgressChanged(
-															SeekBar seekBar,
-															int progress,
-															boolean fromUser) {
-
-														View view =
-																LayoutInflater.from(ctx)
-																		.inflate(
-																				R.layout
-																						.layout_repo_language_statistics,
-																				null);
-
+													for (Map.Entry<String, Long> entry :
+															response.body().entrySet()) {
+														Chip chip = new Chip(ctx);
 														LinearLayout.LayoutParams params =
 																new LinearLayout.LayoutParams(
 																		LinearLayout.LayoutParams
-																				.WRAP_CONTENT,
+																				.MATCH_PARENT,
 																		LinearLayout.LayoutParams
 																				.WRAP_CONTENT);
-														params.setMargins(0, 32, 32, 0);
+														params.setMargins(0, 8, 0, 0);
+														chip.setLayoutParams(params);
+														chip.setText(
+																String.format(
+																		"%s - %s%%",
+																		entry.getKey(),
+																		LanguageStatisticsHelper
+																				.calculatePercentage(
+																						entry
+																								.getValue(),
+																						totalSpan)));
+														int bgColor =
+																ctx.getResources()
+																		.getColor(
+																				LanguageColor
+																						.languageColor(
+																								entry
+																										.getKey()),
+																				null);
+														chip.setChipBackgroundColor(
+																ColorStateList.valueOf(bgColor));
+														chip.setTextColor(
+																isLightColor(bgColor)
+																		? Color.BLACK
+																		: Color.WHITE);
+														chip.setShapeAppearanceModel(
+																new ShapeAppearanceModel()
+																		.toBuilder()
+																				.setAllCorners(
+																						CornerFamily
+																								.ROUNDED,
+																						48)
+																				.build());
+														chip.setEnabled(false);
 
-														LinearLayout layout =
-																view.findViewById(R.id.lang_color);
-														layout.removeAllViews();
-
-														for (Map.Entry<String, Long> entry :
-																response.body().entrySet()) {
-
-															LinearLayout layoutSub =
-																	new LinearLayout(getContext());
-															layoutSub.setOrientation(
-																	LinearLayout.HORIZONTAL);
-															layoutSub.setGravity(
-																	Gravity.START | Gravity.TOP);
-															layout.addView(layoutSub);
-
-															ImageView colorView =
-																	new ImageView(getContext());
-															colorView.setLayoutParams(params);
-
-															String hexColor =
-																	String.format(
-																			"#%06X",
-																			(0xFFFFFF
-																					& languageColor(
-																							entry
-																									.getKey())));
-															TextDrawable drawable =
-																	TextDrawable.builder()
-																			.beginConfig()
-																			.width(64)
-																			.height(64)
-																			.endConfig()
-																			.buildRoundRect(
-																					"",
-																					Color
-																							.parseColor(
-																									hexColor),
-																					8);
-															drawable.setTint(
-																	getResources()
-																			.getColor(
-																					languageColor(
-																							entry
-																									.getKey()),
-																					null));
-															colorView.setImageDrawable(drawable);
-															layoutSub.addView(colorView);
-
-															TextView langName =
-																	new TextView(getContext());
-															langName.setLayoutParams(params);
-															langName.setText(entry.getKey());
-															layoutSub.addView(langName);
-
-															TextView langPercentage =
-																	new TextView(getContext());
-															langPercentage.setLayoutParams(params);
-															langPercentage.setTextSize(12);
-															langPercentage.setText(
-																	getString(
-																			R.string
-																					.lang_percentage,
-																			calculatePercentage(
-																					entry
-																							.getValue(),
-																					totalSpan)));
-															layoutSub.addView(langPercentage);
-														}
-
-														MaterialAlertDialogBuilder
-																materialAlertDialogBuilder1 =
-																		new MaterialAlertDialogBuilder(
-																						ctx)
-																				.setTitle(
-																						R.string
-																								.lang_statistics)
-																				.setView(view)
-																				.setNeutralButton(
-																						getString(
-																								R
-																										.string
-																										.close),
-																						null);
-
-														materialAlertDialogBuilder1.create().show();
+														layout.addView(chip);
 													}
+
+													new MaterialAlertDialogBuilder(ctx)
+															.setTitle(R.string.lang_statistics)
+															.setView(view)
+															.setNeutralButton(
+																	getString(R.string.close), null)
+															.create()
+															.show();
 												});
 									}
 
@@ -287,7 +236,7 @@ public class RepoInfoFragment extends Fragment {
 									break;
 
 								case 404:
-									binding.languagesStatistic.setVisibility(View.GONE);
+									binding.languageStatsCard.setVisibility(View.GONE);
 									break;
 							}
 						}
@@ -299,6 +248,13 @@ public class RepoInfoFragment extends Fragment {
 						Toasty.error(ctx, ctx.getString(R.string.genericServerResponseError));
 					}
 				});
+	}
+
+	private boolean isLightColor(int color) {
+		double luminance =
+				(0.299 * Color.red(color) + 0.587 * Color.green(color) + 0.114 * Color.blue(color))
+						/ 255;
+		return luminance > 0.5;
 	}
 
 	private void setRepoInfo(Locale locale) {
@@ -376,7 +332,7 @@ public class RepoInfoFragment extends Fragment {
 							: repoInfo.getWebsite();
 			binding.repoMetaWebsite.setText(website);
 			binding.repoMetaWebsite.setLinksClickable(false);
-			binding.websiteFrame.setOnClickListener(
+			binding.repoMetaWebsite.setOnClickListener(
 					(v) -> {
 						if (!repoInfo.getWebsite().isEmpty()) {
 							AppUtil.openUrlInBrowser(requireContext(), repoInfo.getWebsite());
