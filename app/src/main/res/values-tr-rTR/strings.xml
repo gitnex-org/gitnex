@@ -768,7 +768,7 @@
     <string name="timelineProjectRemoved">%1$s, bunu %2$s tarihinde bir projeden kaldırdı</string>
     <string name="timelineDueDateAdded">%1$s, %2$s bitiş tarihini %3$s tarihinde ekledi</string>
     <string name="timelineDueDateModified">%1$s, bitiş tarihini %3$s iken %2$s olarak %4$s tarihinde değiştirdi</string>
-    <string name="timelineDueDateRemoved">%1$s, bitiş tarihini %2$s tarihinde kaldırdı</string>
+    <string name="timelineDueDateRemoved">%1$s, bitiş tarihini %2$s tarihinde kaldırdı %3$s</string>
     <string name="timelineBranchChanged">%1$s, hedef dalı %2$s iken %3$s olarak %4$s tarihinde değiştirdi</string>
     <string name="timelineBranchDeleted">%1$s, %2$s dalını %3$s tarihinde sildi</string>
     <string name="timelineTimeTrackingStart">%1$s, %2$s tarihinde çalışmaya başladı</string>
