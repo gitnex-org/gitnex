@@ -784,7 +784,6 @@
     <string name="timelinePinned">%1$s, bunu %2$s tarihinde sabitledi</string>
     <string name="commitStatuses">Durumlar</string>
     <string name="statusNoUrl">Bu durumun bağlantılı bir hedef URL\'si yok.</string>
-    <string name="starredRepos">Yıldızlı Depolar</string>
     <string name="lang_statistics">Dil İstatistikleri</string>
     <string name="dashboard">Pano</string>
     <string name="createdRepository">depo oluşturdu</string>
