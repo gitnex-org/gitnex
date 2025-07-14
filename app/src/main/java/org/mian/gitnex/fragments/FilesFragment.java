@@ -396,7 +396,7 @@ public class FilesFragment extends Fragment implements FilesAdapter.FilesAdapter
 								(int)
 										requireContext()
 												.getResources()
-												.getDimension(R.dimen.dimen12dp);
+												.getDimension(R.dimen.dimen8dp);
 
 						outRect.right = spacingSides;
 						outRect.left = spacingSides;

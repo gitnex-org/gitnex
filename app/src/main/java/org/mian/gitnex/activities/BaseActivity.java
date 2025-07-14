@@ -103,16 +103,6 @@ public abstract class BaseActivity extends AppCompatActivity {
 				break;
 		}
 
-		String[] locale =
-				AppDatabaseSettings.getSettingsValue(ctx, AppDatabaseSettings.APP_LOCALE_KEY)
-						.split("\\|");
-
-		if (locale[0].equals("0")) {
-			AppUtil.setAppLocale(getResources(), Locale.getDefault().getLanguage());
-		} else {
-			AppUtil.setAppLocale(getResources(), locale[1]);
-		}
-
 		Notifications.startWorker(ctx);
 	}
 
@@ -138,5 +128,16 @@ public abstract class BaseActivity extends AppCompatActivity {
 
 	public AccountContext getAccount() {
 		return ((MainApplication) getApplication()).currentAccount;
+	}
+
+	@Override
+	protected void attachBaseContext(Context newBase) {
+		String[] localeSetting =
+				AppDatabaseSettings.getSettingsValue(newBase, AppDatabaseSettings.APP_LOCALE_KEY)
+						.split("\\|");
+		String langCode =
+				localeSetting[0].equals("0") ? Locale.getDefault().getLanguage() : localeSetting[1];
+
+		super.attachBaseContext(AppUtil.setAppLocale(newBase, langCode));
 	}
 }

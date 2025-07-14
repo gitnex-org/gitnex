@@ -41,35 +41,20 @@ public class PythonLanguage extends Language {
 
 	@Override
 	public Pattern getPattern(LanguageElement element) {
-		switch (element) {
-			case KEYWORD:
-				return Pattern.compile("\\b(" + String.join("|", getKeywords()) + ")\\b");
-			case BUILTIN:
-				return PATTERN_BUILTINS;
-			case NUMBER:
-				return PATTERN_NUMBERS;
-			case CHAR:
-				return PATTERN_CHAR;
-			case STRING:
-				return PATTERN_STRING;
-			case HEX:
-				return PATTERN_HEX;
-			case SINGLE_LINE_COMMENT:
-				return PATTERN_HASH_COMMENT;
-			case ATTRIBUTE:
-				return PATTERN_ATTRIBUTE;
-			case OPERATION:
-				return PATTERN_OPERATION;
-			case TODO_COMMENT:
-				return PATTERN_TODO_COMMENT;
-			case ANNOTATION:
-				return PATTERN_ANNOTATION;
-
-			case GENERIC:
-			case MULTI_LINE_COMMENT:
-			default:
-				return null;
-		}
+		return switch (element) {
+			case KEYWORD -> Pattern.compile("\\b(" + String.join("|", getKeywords()) + ")\\b");
+			case BUILTIN -> PATTERN_BUILTINS;
+			case NUMBER -> PATTERN_NUMBERS;
+			case CHAR -> PATTERN_CHAR;
+			case STRING -> PATTERN_STRING;
+			case HEX -> PATTERN_HEX;
+			case SINGLE_LINE_COMMENT -> PATTERN_HASH_COMMENT;
+			case ATTRIBUTE -> PATTERN_ATTRIBUTE;
+			case OPERATION -> PATTERN_OPERATION;
+			case TODO_COMMENT -> PATTERN_TODO_COMMENT;
+			case ANNOTATION -> PATTERN_ANNOTATION;
+			default -> null;
+		};
 	}
 
 	@Override

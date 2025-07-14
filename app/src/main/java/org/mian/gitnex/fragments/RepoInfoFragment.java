@@ -58,9 +58,7 @@ public class RepoInfoFragment extends Fragment {
 
 	private Context ctx;
 	private LinearLayout pageContent;
-
 	private FragmentRepoInfoBinding binding;
-
 	private RepositoryContext repository;
 
 	public RepoInfoFragment() {}

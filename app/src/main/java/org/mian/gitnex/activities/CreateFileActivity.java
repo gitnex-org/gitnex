@@ -596,8 +596,8 @@ public class CreateFileActivity extends BaseActivity {
 							@NonNull RecyclerView.State state) {
 
 						int position = parent.getChildAdapterPosition(view);
-						int spacingSides = (int) ctx.getResources().getDimension(R.dimen.dimen16dp);
-						int spacingTop = (int) ctx.getResources().getDimension(R.dimen.dimen12dp);
+						int spacingSides = (int) ctx.getResources().getDimension(R.dimen.dimen4dp);
+						int spacingTop = (int) ctx.getResources().getDimension(R.dimen.dimen8dp);
 
 						outRect.right = spacingSides;
 						outRect.left = spacingSides;

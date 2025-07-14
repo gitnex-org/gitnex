@@ -119,35 +119,20 @@ public class GoLanguage extends Language {
 
 	@Override
 	public Pattern getPattern(LanguageElement element) {
-		switch (element) {
-			case KEYWORD:
-				return Pattern.compile("\\b(" + String.join("|", getKeywords()) + ")\\b");
-			case BUILTIN:
-				return PATTERN_BUILTINS;
-			case NUMBER:
-				return PATTERN_NUMBERS;
-			case CHAR:
-				return PATTERN_CHAR;
-			case STRING:
-				return PATTERN_STRING;
-			case HEX:
-				return PATTERN_HEX;
-			case SINGLE_LINE_COMMENT:
-				return PATTERN_SINGLE_LINE_COMMENT;
-			case MULTI_LINE_COMMENT:
-				return PATTERN_MULTI_LINE_COMMENT;
-			case ATTRIBUTE:
-				return PATTERN_ATTRIBUTE;
-			case OPERATION:
-				return PATTERN_OPERATION;
-			case TODO_COMMENT:
-				return PATTERN_TODO_COMMENT;
-
-			case GENERIC:
+		return switch (element) {
+			case KEYWORD -> Pattern.compile("\\b(" + String.join("|", getKeywords()) + ")\\b");
+			case BUILTIN -> PATTERN_BUILTINS;
+			case NUMBER -> PATTERN_NUMBERS;
+			case CHAR -> PATTERN_CHAR;
+			case STRING -> PATTERN_STRING;
+			case HEX -> PATTERN_HEX;
+			case SINGLE_LINE_COMMENT -> PATTERN_SINGLE_LINE_COMMENT;
+			case MULTI_LINE_COMMENT -> PATTERN_MULTI_LINE_COMMENT;
+			case ATTRIBUTE -> PATTERN_ATTRIBUTE;
+			case OPERATION -> PATTERN_OPERATION;
+			case TODO_COMMENT -> PATTERN_TODO_COMMENT;
 			// TODO supported by Go 1.18
-			case ANNOTATION:
-			default:
-				return null;
-		}
+			default -> null;
+		};
 	}
 }

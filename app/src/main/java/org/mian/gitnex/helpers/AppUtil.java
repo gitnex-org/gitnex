@@ -11,13 +11,11 @@ import android.content.pm.PackageInfo;
 import android.content.pm.PackageManager;
 import android.content.pm.ResolveInfo;
 import android.content.res.Configuration;
-import android.content.res.Resources;
 import android.graphics.Bitmap;
 import android.graphics.Typeface;
 import android.net.Uri;
 import android.os.Build;
 import android.util.Base64;
-import android.util.DisplayMetrics;
 import android.util.TypedValue;
 import android.view.View;
 import androidx.annotation.AttrRes;
@@ -36,11 +34,11 @@ import java.text.DecimalFormat;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
-import java.util.Collections;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Locale;
+import java.util.Map;
 import java.util.Objects;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
@@ -53,12 +51,24 @@ import org.mian.gitnex.database.api.UserAccountsApi;
 import org.mian.gitnex.database.models.UserAccount;
 
 /**
- * @author M M Arif
+ * @author mmarif
  */
 public class AppUtil {
 
-	private static final HashMap<String[], FileType> extensions = new HashMap<>();
+	private static final Map<String[], FileType> extensions = new HashMap<>();
 	public static Typeface typeface;
+
+	public enum FileType {
+		IMAGE,
+		AUDIO,
+		VIDEO,
+		DOCUMENT,
+		EXECUTABLE,
+		TEXT,
+		FONT,
+		UNKNOWN,
+		KEYSTORE
+	}
 
 	static {
 		extensions.put(
@@ -172,10 +182,24 @@ public class AppUtil {
 					"hx",
 					"ts",
 					"kt",
-					"kts"
+					"kts",
+					"el",
+					"cjs",
+					"jenkinsfile",
+					"toml",
+					"pro",
+					"gitattribute",
+					"gitmodules",
+					"editorconfig",
+					"gradlew"
 				},
 				FileType.TEXT);
 		extensions.put(new String[] {"ttf", "otf", "woff", "woff2", "ttc", "eot"}, FileType.FONT);
+		extensions.put(new String[] {"jks"}, FileType.KEYSTORE);
+	}
+
+	public static Map<String[], FileType> getExtensions() {
+		return extensions;
 	}
 
 	// AppUtil should not be instantiated.
@@ -317,21 +341,19 @@ public class AppUtil {
 		return str.matches("\\d+");
 	}
 
-	public static void setAppLocale(Resources resource, String locCode) {
+	public static Context setAppLocale(Context context, String locCode) {
 
 		String[] multiCodeLang = locCode.split("-");
-		String countryCode;
-		if (locCode.contains("-")) {
-			locCode = multiCodeLang[0];
-			countryCode = multiCodeLang[1];
-		} else {
-			countryCode = "";
-		}
+		String languageCode = multiCodeLang[0];
+		String countryCode = multiCodeLang.length > 1 ? multiCodeLang[1] : "";
 
-		DisplayMetrics dm = resource.getDisplayMetrics();
-		Configuration config = resource.getConfiguration();
-		config.setLocale(new Locale(locCode.toLowerCase(), countryCode));
-		resource.updateConfiguration(config, dm);
+		Locale locale = new Locale(languageCode.toLowerCase(), countryCode);
+		Locale.setDefault(locale);
+
+		Configuration config = new Configuration();
+		config.setLocale(locale);
+
+		return context.createConfigurationContext(config);
 	}
 
 	public static String getTimestampFromDate(Context context, Date date) {
@@ -341,11 +363,7 @@ public class AppUtil {
 						.split("\\|");
 		Locale locale = new Locale(locale_[1]);
 
-		if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
-			return new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ssXXX", locale).format(date);
-		} else {
-			return new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss", locale).format(date);
-		}
+		return new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ssXXX", locale).format(date);
 	}
 
 	@ColorInt
@@ -517,7 +535,7 @@ public class AppUtil {
 		final ArrayList<Intent> chooserIntents = new ArrayList<>();
 		final String ourPackageName = context.getPackageName();
 
-		Collections.sort(activities, new ResolveInfo.DisplayNameComparator(pm));
+		activities.sort(new ResolveInfo.DisplayNameComparator(pm));
 
 		for (ResolveInfo resInfo : activities) {
 			ActivityInfo info = resInfo.activityInfo;
@@ -674,17 +692,6 @@ public class AppUtil {
 		URL url = new URL(u);
 		HttpURLConnection http = (HttpURLConnection) url.openConnection();
 		return (http.getResponseCode());
-	}
-
-	public enum FileType {
-		IMAGE,
-		AUDIO,
-		VIDEO,
-		DOCUMENT,
-		TEXT,
-		EXECUTABLE,
-		FONT,
-		UNKNOWN
 	}
 
 	public interface ProgressListener {

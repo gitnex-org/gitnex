@@ -15,7 +15,6 @@ import java.util.ArrayList;
 public class LanguageStatisticsView extends View {
 
 	private ArrayList<SeekbarItem> progressItemsList;
-	private static final float CORNER_RADIUS = 8f;
 	private final Paint progressPaint = new Paint();
 	private final RectF progressRect = new RectF();
 
@@ -65,7 +64,7 @@ public class LanguageStatisticsView extends View {
 			}
 
 			progressRect.set(lastX, 0f, progressItemRight, height);
-			canvas.drawRoundRect(progressRect, CORNER_RADIUS, CORNER_RADIUS, progressPaint);
+			canvas.drawRect(progressRect, progressPaint);
 
 			lastX = progressItemRight;
 		}

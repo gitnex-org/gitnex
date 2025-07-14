@@ -26,9 +26,10 @@
                 android:layout_gravity="center"
                 android:text="@string/archivedRepositoryMessage"
                 android:background="@drawable/shape_archived"
-                android:padding="@dimen/dimen10dp"
-                android:layout_marginBottom="@dimen/dimen8dp"
-                android:textColor="?attr/primaryTextColor"
+                android:padding="@dimen/dimen12dp"
+                android:layout_marginTop="@dimen/dimen4dp"
+                android:layout_marginBottom="@dimen/dimen12dp"
+                android:textColor="@color/colorWhite"
                 android:textSize="@dimen/dimen14sp" />
 
             <com.google.android.material.card.MaterialCardView
@@ -98,7 +99,9 @@
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         app:cardCornerRadius="@dimen/dimen16dp"
-                        app:cardElevation="0dp"
+                        app:cardElevation="@dimen/dimen0dp"
+                        app:strokeWidth="@dimen/dimen0dp"
+                        android:visibility="gone"
                         app:cardBackgroundColor="@android:color/transparent">
 
                         <org.mian.gitnex.helpers.languagestatistics.LanguageStatisticsView

@@ -33,31 +33,17 @@ public class JsonLanguage extends Language {
 
 	@Override
 	public Pattern getPattern(LanguageElement element) {
-		switch (element) {
-			case KEYWORD:
-				return Pattern.compile("\\b(" + String.join("|", getKeywords()) + ")\\b");
-			case NUMBER:
-				return PATTERN_NUMBERS;
-			case CHAR:
-				return PATTERN_CHAR;
-			case STRING:
-				return PATTERN_STRING;
-			case SINGLE_LINE_COMMENT:
-				return PATTERN_SINGLE_LINE_COMMENT;
-			case MULTI_LINE_COMMENT:
-				return PATTERN_MULTI_LINE_COMMENT;
-			case ATTRIBUTE:
-				return PATTERN_ATTRIBUTE;
-			case TODO_COMMENT:
-				return PATTERN_TODO_COMMENT;
-			case BUILTIN:
-			case OPERATION:
-			case ANNOTATION:
-			case HEX:
-			case GENERIC:
-			default:
-				return null;
-		}
+		return switch (element) {
+			case KEYWORD -> Pattern.compile("\\b(" + String.join("|", getKeywords()) + ")\\b");
+			case NUMBER -> PATTERN_NUMBERS;
+			case CHAR -> PATTERN_CHAR;
+			case STRING -> PATTERN_STRING;
+			case SINGLE_LINE_COMMENT -> PATTERN_SINGLE_LINE_COMMENT;
+			case MULTI_LINE_COMMENT -> PATTERN_MULTI_LINE_COMMENT;
+			case ATTRIBUTE -> PATTERN_ATTRIBUTE;
+			case TODO_COMMENT -> PATTERN_TODO_COMMENT;
+			default -> null;
+		};
 	}
 
 	@Override
