@@ -26,7 +26,7 @@
                     android:id="@+id/fullnameLayout"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_marginBottom="8dp"
+                    android:layout_marginBottom="@dimen/dimen8dp"
                     android:hint="@string/userFullNameText"
                     android:textColorHint="?attr/hintColor"
                     app:boxBackgroundColor="?attr/inputBackgroundColor"
@@ -39,7 +39,7 @@
                         android:layout_height="wrap_content"
                         android:textColor="?attr/inputTextColor"
                         android:textColorHint="?attr/hintColor"
-                        android:textSize="16sp" />
+                        android:textSize="@dimen/dimen16sp" />
 
                 </com.google.android.material.textfield.TextInputLayout>
 
@@ -47,9 +47,9 @@
                     android:id="@+id/descriptionLayout"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_marginTop="8dp"
-                    android:layout_marginBottom="8dp"
-                    android:hint="@string/description"
+                    android:layout_marginTop="@dimen/dimen8dp"
+                    android:layout_marginBottom="@dimen/dimen8dp"
+                    android:hint="@string/bioText"
                     android:textColorHint="?attr/hintColor"
                     app:boxBackgroundColor="?attr/inputBackgroundColor"
                     app:boxStrokeErrorColor="@color/darkRed"
@@ -64,7 +64,7 @@
                         android:singleLine="false"
                         android:textColor="?attr/inputTextColor"
                         android:textColorHint="?attr/hintColor"
-                        android:textSize="16sp" />
+                        android:textSize="@dimen/dimen16sp" />
 
                 </com.google.android.material.textfield.TextInputLayout>
 
@@ -72,7 +72,7 @@
                     android:id="@+id/locationLayout"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_marginBottom="8dp"
+                    android:layout_marginBottom="@dimen/dimen8dp"
                     android:hint="@string/locationText"
                     android:textColorHint="?attr/hintColor"
                     app:boxBackgroundColor="?attr/inputBackgroundColor"
@@ -85,7 +85,7 @@
                         android:layout_height="wrap_content"
                         android:textColor="?attr/inputTextColor"
                         android:textColorHint="?attr/hintColor"
-                        android:textSize="16sp" />
+                        android:textSize="@dimen/dimen16sp" />
 
                 </com.google.android.material.textfield.TextInputLayout>
 
@@ -93,7 +93,7 @@
                     android:id="@+id/websiteLayout"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_marginBottom="8dp"
+                    android:layout_marginBottom="@dimen/dimen8dp"
                     android:hint="@string/websiteText"
                     android:textColorHint="?attr/hintColor"
                     app:boxBackgroundColor="?attr/inputBackgroundColor"
@@ -106,7 +106,7 @@
                         android:layout_height="wrap_content"
                         android:textColor="?attr/inputTextColor"
                         android:textColorHint="?attr/hintColor"
-                        android:textSize="16sp" />
+                        android:textSize="@dimen/dimen16sp" />
 
                 </com.google.android.material.textfield.TextInputLayout>
 
@@ -135,7 +135,7 @@
                 android:layout_marginTop="@dimen/dimen16dp"
                 android:text="@string/saveButton"
                 android:textColor="?attr/materialCardBackgroundColor"
-                android:textSize="16sp"
+                android:textSize="@dimen/dimen16sp"
                 android:textStyle="bold" />
 
         </LinearLayout>

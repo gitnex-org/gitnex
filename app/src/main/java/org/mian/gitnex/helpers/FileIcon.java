@@ -25,7 +25,7 @@ public class FileIcon {
 		typeIcons.put(FileType.UNKNOWN, R.drawable.ic_document);
 		typeIcons.put(FileType.KEYSTORE, R.drawable.ic_lock);
 
-		extensionIcons.put("txt", R.drawable.ic_txt);
+		extensionIcons.put("txt", R.drawable.ic_text);
 		extensionIcons.put("md", R.drawable.ic_markdown);
 		extensionIcons.put("json", R.drawable.ic_json);
 		extensionIcons.put("java", R.drawable.ic_java);
@@ -43,7 +43,7 @@ public class FileIcon {
 		extensionIcons.put("bash", R.drawable.ic_bash);
 		extensionIcons.put("sh", R.drawable.ic_bash);
 		extensionIcons.put("bsh", R.drawable.ic_bash);
-		extensionIcons.put("cv", R.drawable.ic_document);
+		extensionIcons.put("cv", R.drawable.ic_cvs);
 		extensionIcons.put("python", R.drawable.ic_python);
 		extensionIcons.put("perl", R.drawable.ic_perl);
 		extensionIcons.put("pm", R.drawable.ic_perl);
@@ -54,7 +54,7 @@ public class FileIcon {
 		extensionIcons.put("rc", R.drawable.ic_rust);
 		extensionIcons.put("rs", R.drawable.ic_rust);
 		extensionIcons.put("rust", R.drawable.ic_rust);
-		extensionIcons.put("basic", R.drawable.ic_basic);
+		extensionIcons.put("basic", R.drawable.ic_file_code);
 		extensionIcons.put("clj", R.drawable.ic_clj);
 		extensionIcons.put("css", R.drawable.ic_css);
 		extensionIcons.put("dart", R.drawable.ic_dart);
@@ -82,19 +82,19 @@ public class FileIcon {
 		extensionIcons.put("markdown", R.drawable.ic_markdown);
 		extensionIcons.put("xml", R.drawable.ic_xml);
 		extensionIcons.put("proto", R.drawable.ic_proto);
-		extensionIcons.put("regex", R.drawable.ic_regex);
+		extensionIcons.put("regex", R.drawable.ic_file_code);
 		extensionIcons.put("py", R.drawable.ic_python);
 		extensionIcons.put("pl", R.drawable.ic_perl);
 		extensionIcons.put("js", R.drawable.ic_javascript);
 		extensionIcons.put("html", R.drawable.ic_html);
 		extensionIcons.put("htm", R.drawable.ic_html);
 		extensionIcons.put("volt", R.drawable.ic_volt);
-		extensionIcons.put("ini", R.drawable.ic_ini);
-		extensionIcons.put("htaccess", R.drawable.ic_htaccess);
+		extensionIcons.put("ini", R.drawable.ic_conf);
+		extensionIcons.put("htaccess", R.drawable.ic_apache);
 		extensionIcons.put("conf", R.drawable.ic_conf);
-		extensionIcons.put("gitignore", R.drawable.ic_gitignore);
+		extensionIcons.put("gitignore", R.drawable.ic_git);
 		extensionIcons.put("gradle", R.drawable.ic_gradle);
-		extensionIcons.put("properties", R.drawable.ic_properties);
+		extensionIcons.put("properties", R.drawable.ic_conf);
 		extensionIcons.put("bat", R.drawable.ic_bat);
 		extensionIcons.put("twig", R.drawable.ic_twig);
 		extensionIcons.put("cvs", R.drawable.ic_cvs);
@@ -102,24 +102,31 @@ public class FileIcon {
 		extensionIcons.put("in", R.drawable.ic_in);
 		extensionIcons.put("info", R.drawable.ic_info);
 		extensionIcons.put("spec", R.drawable.ic_spec);
-		extensionIcons.put("m4", R.drawable.ic_m4);
+		extensionIcons.put("m4", R.drawable.ic_file_code);
 		extensionIcons.put("am", R.drawable.ic_am);
 		extensionIcons.put("dist", R.drawable.ic_python);
-		extensionIcons.put("pam", R.drawable.ic_pam);
+		extensionIcons.put("pam", R.drawable.ic_file_lock);
 		extensionIcons.put("hx", R.drawable.ic_hx);
 		extensionIcons.put("ts", R.drawable.ic_ts);
-		extensionIcons.put("kt", R.drawable.ic_kt);
-		extensionIcons.put("kts", R.drawable.ic_kts);
+		extensionIcons.put("kt", R.drawable.ic_kotlin);
+		extensionIcons.put("kts", R.drawable.ic_kotlin);
 		extensionIcons.put("el", R.drawable.ic_el);
-		extensionIcons.put("gitattribute", R.drawable.ic_gitignore);
-		extensionIcons.put("gitmodules", R.drawable.ic_gitignore);
-		extensionIcons.put("editorconfig", R.drawable.ic_m4);
+		extensionIcons.put("gitattributes", R.drawable.ic_git);
+		extensionIcons.put("gitmodules", R.drawable.ic_git);
+		extensionIcons.put("editorconfig", R.drawable.ic_editorconfig);
 		extensionIcons.put("cjs", R.drawable.ic_javascript);
 		extensionIcons.put("jenkinsfile", R.drawable.ic_jenkins);
 		extensionIcons.put("toml", R.drawable.ic_toml);
 		extensionIcons.put("lock", R.drawable.ic_file_lock);
 		extensionIcons.put("pro", R.drawable.ic_prolog);
 		extensionIcons.put("gradlew", R.drawable.ic_gradle);
+		extensionIcons.put("ll", R.drawable.ic_file_code);
+		extensionIcons.put("llvm", R.drawable.ic_file_code);
+		extensionIcons.put("csv", R.drawable.ic_csv);
+		extensionIcons.put("mjs", R.drawable.ic_javascript);
+		extensionIcons.put("next", R.drawable.ic_file_next);
+		extensionIcons.put("nvmrc", R.drawable.ic_node_js);
+		extensionIcons.put("license", R.drawable.ic_license);
 	}
 
 	public static int getIconResource(String fileName, String type) {
@@ -145,6 +152,10 @@ public class FileIcon {
 			extension = "gradlew";
 		} else if (fileName.contains(".")) {
 			extension = fileName.substring(fileName.lastIndexOf(".") + 1).toLowerCase();
+		} else if (fileName.equalsIgnoreCase("htaccess")) {
+			extension = "htaccess";
+		} else if (fileName.equalsIgnoreCase("license")) {
+			extension = "license";
 		}
 
 		Integer cachedIcon = iconCache.get(extension);

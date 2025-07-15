@@ -110,8 +110,6 @@ public class FilesAdapter extends RecyclerView.Adapter<FilesAdapter.FilesViewHol
 						FileUtils.byteCountToDisplaySize(Math.toIntExact(currentItem.getSize())));
 				break;
 			case "dir":
-				holder.fileInfo.setVisibility(View.GONE);
-				break;
 			case "submodule":
 			case "symlink":
 			default:

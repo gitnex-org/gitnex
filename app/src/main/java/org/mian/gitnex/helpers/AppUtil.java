@@ -88,7 +88,7 @@ public class AppUtil {
 		extensions.put(
 				new String[] {
 					"doc", "docx", "ppt", "pptx", "xls", "xlsx", "xlsm", "odt", "ott", "odf", "ods",
-					"ots", "odg", "otg", "odp", "otp", "bin", "psd", "xcf", "pdf"
+					"ots", "odg", "otg", "odp", "otp", "bin", "psd", "xcf", "pdf", "csv"
 				},
 				FileType.DOCUMENT);
 		extensions.put(
@@ -188,10 +188,13 @@ public class AppUtil {
 					"jenkinsfile",
 					"toml",
 					"pro",
-					"gitattribute",
+					"gitattributes",
 					"gitmodules",
 					"editorconfig",
-					"gradlew"
+					"gradlew",
+					"mjs",
+					"next",
+					"nvmrc"
 				},
 				FileType.TEXT);
 		extensions.put(new String[] {"ttf", "otf", "woff", "woff2", "ttc", "eot"}, FileType.FONT);

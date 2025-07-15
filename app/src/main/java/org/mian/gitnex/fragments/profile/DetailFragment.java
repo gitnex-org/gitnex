@@ -22,9 +22,11 @@ import com.google.android.material.dialog.MaterialAlertDialogBuilder;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.InputStream;
-import java.text.SimpleDateFormat;
-import java.util.Calendar;
-import java.util.Date;
+import java.time.Instant;
+import java.time.LocalDate;
+import java.time.ZoneId;
+import java.time.format.DateTimeFormatter;
+import java.time.temporal.ChronoUnit;
 import java.util.List;
 import java.util.Locale;
 import okhttp3.ResponseBody;
@@ -190,7 +192,6 @@ public class DetailFragment extends Fragment {
 	}
 
 	private void displayHeatmap(List<UserHeatmapData> heatmapData) {
-
 		if (heatmapData == null || heatmapData.isEmpty()) {
 			binding.heatmapGrid.setVisibility(View.GONE);
 			return;
@@ -200,18 +201,18 @@ public class DetailFragment extends Fragment {
 		GridView gridView = binding.heatmapGrid;
 
 		int[] contributions = new int[60];
-		Calendar calendar = Calendar.getInstance();
-		long now = calendar.getTimeInMillis() / 1000;
-		calendar.add(Calendar.DAY_OF_YEAR, -59);
-		long startTime = calendar.getTimeInMillis() / 1000;
+
+		ZoneId zone = ZoneId.systemDefault();
+		LocalDate today = LocalDate.now(zone);
+		LocalDate startDate = today.minusDays(59);
 
 		for (UserHeatmapData entry : heatmapData) {
-			long timestamp = entry.getTimestamp();
-			if (timestamp >= startTime && timestamp <= now) {
-				int dayIndex = (int) ((timestamp - startTime) / (24 * 60 * 60));
-				if (dayIndex < 60) {
-					contributions[dayIndex] += entry.getContributions();
-				}
+			LocalDate entryDate =
+					Instant.ofEpochSecond(entry.getTimestamp()).atZone(zone).toLocalDate();
+
+			long dayIndex = ChronoUnit.DAYS.between(startDate, entryDate);
+			if (dayIndex >= 0 && dayIndex < 60) {
+				contributions[(int) dayIndex] += entry.getContributions();
 			}
 		}
 
@@ -221,10 +222,9 @@ public class DetailFragment extends Fragment {
 		gridView.setOnItemClickListener(
 				(parent, view, position, id) -> {
 					int count = contributions[position];
-					calendar.setTimeInMillis(
-							startTime * 1000 + (long) position * 24 * 60 * 60 * 1000);
-					SimpleDateFormat sdf = new SimpleDateFormat("dd-MM-yyyy", locale);
-					String date = sdf.format(new Date(calendar.getTimeInMillis()));
+					LocalDate clickedDate = startDate.plusDays(position);
+					String date =
+							clickedDate.format(DateTimeFormatter.ofPattern("dd-MM-yyyy", locale));
 					String message = getString(R.string.heatmap_contribution, count, date);
 					SnackBar.info(context, binding.getRoot(), message);
 				});

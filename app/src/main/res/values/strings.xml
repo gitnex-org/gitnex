@@ -1001,4 +1001,5 @@
 
     <string name="switch_account">Switch account</string>
     <string name="clear_cache_button_text">Clear Cache (%1$s)</string>
+    <string name="repository_not_exist">Repository does not exist</string>
 </resources>

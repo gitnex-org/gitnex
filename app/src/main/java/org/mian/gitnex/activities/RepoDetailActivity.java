@@ -542,8 +542,14 @@ public class RepoDetailActivity extends BaseActivity implements BottomSheetListe
 
 						if (response.code() == 200) {
 							assert repoInfo != null;
-							repository.setRepository(repoInfo);
-							initWithRepo();
+							if (repoInfo.getOwner().getLogin().equals(owner)
+									&& repoInfo.getName().equals(repo)) {
+								repository.setRepository(repoInfo);
+								initWithRepo();
+							} else {
+								Toasty.error(ctx, getString(R.string.repository_not_exist));
+								finish();
+							}
 						} else {
 							Toasty.error(ctx, getString(R.string.genericError));
 							finish();
