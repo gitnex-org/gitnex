@@ -236,4 +236,8 @@ public class Version {
 
 		return raw;
 	}
+
+	public List<Integer> getValues() {
+		return values;
+	}
 }

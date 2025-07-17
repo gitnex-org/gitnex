@@ -66,6 +66,29 @@
                     android:padding="@dimen/dimen28dp">
 
                     <com.google.android.material.textfield.TextInputLayout
+                        android:id="@+id/providerSpinnerLayout"
+                        style="@style/Widget.Material3.TextInputLayout.OutlinedBox.ExposedDropdownMenu"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="@dimen/dimen8dp"
+                        android:layout_marginBottom="@dimen/dimen8dp"
+                        android:hint="@string/select_provider"
+                        android:textColorHint="?attr/hintColor"
+                        app:endIconTint="?attr/iconsColor"
+                        app:hintTextColor="?attr/hintColor">
+
+                        <AutoCompleteTextView
+                            android:id="@+id/providerSpinner"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:inputType="none"
+                            android:labelFor="@+id/providerSpinner"
+                            android:textColor="?attr/inputTextColor"
+                            android:textSize="@dimen/dimen16sp" />
+
+                    </com.google.android.material.textfield.TextInputLayout>
+
+                    <com.google.android.material.textfield.TextInputLayout
                         android:id="@+id/httpsSpinnerLayout"
                         style="@style/Widget.Material3.TextInputLayout.OutlinedBox.ExposedDropdownMenu"
                         android:layout_width="match_parent"

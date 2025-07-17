@@ -23,7 +23,7 @@ import org.mian.gitnex.database.models.UserAccount;
 import org.mian.gitnex.helpers.UrlHelper;
 
 /**
- * @author M M Arif
+ * @author mmarif
  */
 public class UserAccountsNavAdapter
 		extends RecyclerView.Adapter<UserAccountsNavAdapter.UserAccountsViewHolder> {
@@ -81,12 +81,12 @@ public class UserAccountsNavAdapter
 		}
 
 		newAccount.setOnClickListener(
-			item -> {
-				Intent intent = new Intent(context, LoginActivity.class);
-				intent.putExtra("mode", "new_account");
-				context.startActivity(intent);
-				dialog.dismiss();
-			});
+				item -> {
+					Intent intent = new Intent(context, LoginActivity.class);
+					intent.putExtra("mode", "new_account");
+					context.startActivity(intent);
+					dialog.dismiss();
+				});
 
 		UserAccountsAdapter arrayAdapter = new UserAccountsAdapter(context, dialog);
 		listView.setLayoutManager(new LinearLayoutManager(context));

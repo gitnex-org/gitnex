@@ -4,7 +4,6 @@ import android.annotation.SuppressLint;
 import android.content.Intent;
 import android.os.Bundle;
 import android.os.Handler;
-import android.text.Html;
 import android.util.TypedValue;
 import android.view.View;
 import android.widget.ImageView;
@@ -12,6 +11,7 @@ import android.widget.TextView;
 import androidx.activity.EdgeToEdge;
 import androidx.activity.OnBackPressedCallback;
 import androidx.annotation.NonNull;
+import androidx.core.text.HtmlCompat;
 import androidx.navigation.NavController;
 import androidx.navigation.NavOptions;
 import androidx.navigation.fragment.NavHostFragment;
@@ -95,9 +95,21 @@ public class MainActivity extends BaseActivity
 			return;
 		}
 
-		if (tinyDB.getInt("currentActiveAccountId", -1) <= 0) {
+		int currentAccountId = tinyDB.getInt("currentActiveAccountId", -1);
+		if (currentAccountId <= 0) {
 			AppUtil.logout(this);
 			return;
+		}
+
+		UserAccountsApi userAccountsApi = BaseApi.getInstance(this, UserAccountsApi.class);
+		if (userAccountsApi != null) {
+			UserAccount currentAccount = userAccountsApi.getAccountById(currentAccountId);
+			if (currentAccount != null
+					&& (currentAccount.getProvider() == null
+							|| currentAccount.getProvider().isEmpty())) {
+				String inferredProvider = AppUtil.inferProvider(currentAccount.getServerVersion());
+				userAccountsApi.updateProvider(inferredProvider, currentAccountId);
+			}
 		}
 
 		setSupportActionBar(binding.toolbar);
@@ -322,7 +334,9 @@ public class MainActivity extends BaseActivity
 								ImageView userAvatar = binding.userAvatar;
 
 								if (name != null && !name.isEmpty()) {
-									userFullname.setText(Html.fromHtml(name));
+									userFullname.setText(
+											HtmlCompat.fromHtml(
+													name, HtmlCompat.FROM_HTML_MODE_LEGACY));
 								} else {
 									userFullname.setText(username);
 								}

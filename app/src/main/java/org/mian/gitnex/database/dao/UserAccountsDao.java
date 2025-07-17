@@ -8,7 +8,7 @@ import java.util.List;
 import org.mian.gitnex.database.models.UserAccount;
 
 /**
- * @author M M Arif
+ * @author mmarif
  */
 @Dao
 public interface UserAccountsDao {
@@ -81,4 +81,7 @@ public interface UserAccountsDao {
 
 	@Query("DELETE FROM UserAccounts WHERE accountId = :accountId")
 	void deleteAccount(int accountId);
+
+	@Query("UPDATE UserAccounts SET provider = :provider WHERE accountId = :accountId")
+	void updateProvider(String provider, int accountId);
 }

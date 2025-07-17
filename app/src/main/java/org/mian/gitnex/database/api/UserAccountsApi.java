@@ -7,7 +7,7 @@ import org.mian.gitnex.database.dao.UserAccountsDao;
 import org.mian.gitnex.database.models.UserAccount;
 
 /**
- * @author M M Arif
+ * @author mmarif
  */
 public class UserAccountsApi extends BaseApi {
 
@@ -25,7 +25,8 @@ public class UserAccountsApi extends BaseApi {
 			String token,
 			String serverVersion,
 			int maxResponseItems,
-			int defaultPagingNumber) {
+			int defaultPagingNumber,
+			String provider) {
 
 		UserAccount userAccount = new UserAccount();
 		userAccount.setAccountName(accountName);
@@ -36,6 +37,7 @@ public class UserAccountsApi extends BaseApi {
 		userAccount.setLoggedIn(true);
 		userAccount.setMaxResponseItems(maxResponseItems);
 		userAccount.setDefaultPagingNumber(defaultPagingNumber);
+		userAccount.setProvider(provider);
 
 		return userAccountsDao.createAccount(userAccount);
 	}
@@ -116,5 +118,9 @@ public class UserAccountsApi extends BaseApi {
 
 	public void login(int accountId) {
 		executorService.execute(() -> userAccountsDao.login(accountId));
+	}
+
+	public void updateProvider(final String provider, final int accountId) {
+		executorService.execute(() -> userAccountsDao.updateProvider(provider, accountId));
 	}
 }

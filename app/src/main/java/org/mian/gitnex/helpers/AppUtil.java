@@ -721,4 +721,13 @@ public class AppUtil {
 		}
 		return resource;
 	}
+
+	public static String inferProvider(String version) {
+		if (Version.valid(version)) {
+			Version v = new Version(version);
+			int majorVersion = v.getValues().isEmpty() ? 0 : v.getValues().get(0);
+			return majorVersion == 1 ? "gitea" : "forgejo";
+		}
+		return "gitea";
+	}
 }
