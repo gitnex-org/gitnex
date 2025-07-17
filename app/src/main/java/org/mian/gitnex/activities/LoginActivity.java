@@ -11,6 +11,7 @@ import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
 import android.util.TypedValue;
+import android.view.View;
 import android.widget.ArrayAdapter;
 import android.widget.TextView;
 import androidx.activity.result.ActivityResultLauncher;
@@ -46,7 +47,7 @@ import retrofit2.Call;
 import retrofit2.Callback;
 
 /**
- * @author M M Arif
+ * @author mmarif
  */
 public class LoginActivity extends BaseActivity {
 
@@ -58,6 +59,8 @@ public class LoginActivity extends BaseActivity {
 	private int defaultPagingNumber = 25;
 	private final String DATABASE_NAME = "gitnex";
 	private boolean hasShownInitialNetworkError = false;
+	private int btnText;
+	private String selectedProvider = "gitea";
 
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
@@ -67,6 +70,22 @@ public class LoginActivity extends BaseActivity {
 		activityLoginBinding = ActivityLoginBinding.inflate(getLayoutInflater());
 		setContentView(activityLoginBinding.getRoot());
 
+		String mode = getIntent().getStringExtra("mode");
+		if (mode == null) {
+			mode = "login";
+			btnText = R.string.btnLogin;
+		} else {
+			btnText = R.string.addNewAccountText;
+		}
+
+		if (mode.equals("new_account")) {
+			activityLoginBinding.loginButton.setText(btnText);
+			activityLoginBinding.restoreFromBackup.setVisibility(View.GONE);
+		} else {
+			activityLoginBinding.loginButton.setText(btnText);
+			activityLoginBinding.restoreFromBackup.setVisibility(View.VISIBLE);
+		}
+
 		NetworkStatusObserver networkStatusObserver = NetworkStatusObserver.getInstance(ctx);
 
 		activityLoginBinding.appVersion.setText(AppUtil.getAppVersion(appCtx));
@@ -75,20 +94,42 @@ public class LoginActivity extends BaseActivity {
 				new ArrayAdapter<>(
 						LoginActivity.this, R.layout.list_spinner_items, Protocol.values());
 
+		ArrayAdapter<CharSequence> adapterProviders =
+				ArrayAdapter.createFromResource(
+						this, R.array.provider_options, R.layout.list_spinner_items);
+
 		activityLoginBinding.instanceUrl.setText(getIntent().getStringExtra("instanceUrl"));
+		String scheme = getIntent().getStringExtra("scheme");
+		if (scheme != null && scheme.equals("http")) {
+			activityLoginBinding.httpsSpinner.setText(Protocol.HTTP.toString());
+			selectedProtocol = Protocol.HTTP.toString();
+		} else {
+			activityLoginBinding.httpsSpinner.setText(Protocol.HTTPS.toString());
+			selectedProtocol = Protocol.HTTPS.toString();
+		}
 
 		activityLoginBinding.httpsSpinner.setAdapter(adapterProtocols);
 		activityLoginBinding.httpsSpinner.setSelection(0);
 		activityLoginBinding.httpsSpinner.setOnItemClickListener(
 				(parent, view, position, id) -> {
 					selectedProtocol = String.valueOf(parent.getItemAtPosition(position));
-
 					if (selectedProtocol.equals(String.valueOf(Protocol.HTTP))) {
 						SnackBar.warning(
 								ctx,
 								findViewById(android.R.id.content),
 								getString(R.string.protocolError));
 					}
+				});
+
+		activityLoginBinding.providerSpinner.setAdapter(adapterProviders);
+		activityLoginBinding.providerSpinner.setSelection(0);
+		activityLoginBinding.providerSpinner.setText(adapterProviders.getItem(0), false);
+		activityLoginBinding.providerSpinner.setOnItemClickListener(
+				(parent, view, position, id) -> {
+					selectedProvider =
+							position == 0
+									? "gitea"
+									: position == 1 || position == 2 ? "forgejo" : "infer";
 				});
 
 		if (AppUtil.hasNetworkConnection(ctx)) {
@@ -107,8 +148,7 @@ public class LoginActivity extends BaseActivity {
 										enableProcessButton();
 									} else {
 										disableProcessButton();
-										activityLoginBinding.loginButton.setText(
-												getResources().getString(R.string.btnLogin));
+										activityLoginBinding.loginButton.setText(btnText);
 										if (hasShownInitialNetworkError) {
 											SnackBar.error(
 													ctx,
@@ -179,6 +219,15 @@ public class LoginActivity extends BaseActivity {
 
 		try {
 
+			if (selectedProvider == null || selectedProvider.isEmpty()) {
+				SnackBar.error(
+						ctx,
+						findViewById(android.R.id.content),
+						getString(R.string.provider_empty_error));
+				enableProcessButton();
+				return;
+			}
+
 			if (selectedProtocol == null) {
 
 				SnackBar.error(
@@ -189,11 +238,31 @@ public class LoginActivity extends BaseActivity {
 				return;
 			}
 
+			if (Objects.requireNonNull(activityLoginBinding.instanceUrl.getText())
+					.toString()
+					.isEmpty()) {
+
+				SnackBar.error(
+						ctx, findViewById(android.R.id.content), getString(R.string.emptyFieldURL));
+				enableProcessButton();
+				return;
+			}
+
 			String loginToken =
 					Objects.requireNonNull(activityLoginBinding.loginTokenCode.getText())
 							.toString()
 							.replaceAll("[\\uFEFF|#]", "")
 							.trim();
+
+			if (loginToken.isEmpty()) {
+
+				SnackBar.error(
+						ctx,
+						findViewById(android.R.id.content),
+						getString(R.string.loginTokenError));
+				enableProcessButton();
+				return;
+			}
 
 			URI rawInstanceUrl =
 					UrlBuilder.fromString(
@@ -212,24 +281,6 @@ public class LoginActivity extends BaseActivity {
 							.withScheme(selectedProtocol.toLowerCase())
 							.withPath(PathsHelper.join(rawInstanceUrl.getPath(), "/api/v1/"))
 							.toUri();
-
-			if (activityLoginBinding.instanceUrl.getText().toString().isEmpty()) {
-
-				SnackBar.error(
-						ctx, findViewById(android.R.id.content), getString(R.string.emptyFieldURL));
-				enableProcessButton();
-				return;
-			}
-
-			if (loginToken.isEmpty()) {
-
-				SnackBar.error(
-						ctx,
-						findViewById(android.R.id.content),
-						getString(R.string.loginTokenError));
-				enableProcessButton();
-				return;
-			}
 
 			versionCheck(loginToken);
 			serverPageLimitSettings(String.valueOf(instanceUrl), loginToken);
@@ -305,6 +356,9 @@ public class LoginActivity extends BaseActivity {
 							}
 
 							giteaVersion = new Version(version.getVersion());
+							if (selectedProvider.equals("infer")) {
+								selectedProvider = AppUtil.inferProvider(version.getVersion());
+							}
 
 							if (giteaVersion.less(getString(R.string.versionLow))) {
 
@@ -406,11 +460,17 @@ public class LoginActivity extends BaseActivity {
 													loginToken,
 													giteaVersion.toString(),
 													maxResponseItems,
-													defaultPagingNumber);
+													defaultPagingNumber,
+													selectedProvider);
 									account = userAccountsApi.getAccountById((int) accountId);
 								} else {
 									userAccountsApi.updateTokenByAccountName(
 											accountName, loginToken);
+									userAccountsApi.updateProvider(
+											selectedProvider,
+											userAccountsApi
+													.getAccountByName(accountName)
+													.getAccountId());
 									userAccountsApi.login(
 											userAccountsApi
 													.getAccountByName(accountName)
@@ -460,13 +520,8 @@ public class LoginActivity extends BaseActivity {
 
 	private void enableProcessButton() {
 
-		activityLoginBinding.loginButton.setText(R.string.btnLogin);
+		activityLoginBinding.loginButton.setText(btnText);
 		activityLoginBinding.loginButton.setEnabled(true);
-	}
-
-	private enum LoginType {
-		BASIC,
-		TOKEN
 	}
 
 	private void requestRestoreFile() {

@@ -6,7 +6,7 @@ import androidx.room.PrimaryKey;
 import java.io.Serializable;
 
 /**
- * @author M M Arif
+ * @author mmarif
  */
 @Entity(tableName = "userAccounts")
 public class UserAccount implements Serializable {
@@ -24,6 +24,7 @@ public class UserAccount implements Serializable {
 	private int defaultPagingNumber;
 	private int maxAttachmentsSize;
 	private int maxNumberOfAttachments;
+	private String provider;
 
 	public int getAccountId() {
 		return accountId;
@@ -111,5 +112,13 @@ public class UserAccount implements Serializable {
 
 	public void setMaxNumberOfAttachments(int maxNumberOfAttachments) {
 		this.maxNumberOfAttachments = maxNumberOfAttachments;
+	}
+
+	public String getProvider() {
+		return provider;
+	}
+
+	public void setProvider(String provider) {
+		this.provider = provider;
 	}
 }

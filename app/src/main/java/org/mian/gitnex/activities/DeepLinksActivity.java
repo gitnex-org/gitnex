@@ -140,7 +140,8 @@ public class DeepLinksActivity extends BaseActivity {
 					finish();
 				} else if (data.getPathSegments().get(0).equals("user")
 						&& data.getPathSegments().get(1).equals("login")) { // open login
-					Intent loginIntent = new Intent(ctx, AddNewAccountActivity.class);
+					Intent loginIntent = new Intent(ctx, LoginActivity.class);
+					intent.putExtra("mode", "new_account");
 					loginIntent.putExtra("instanceUrl", data.getHost());
 					loginIntent.putExtra("instanceProtocol", data.getScheme());
 					ctx.startActivity(loginIntent);
@@ -453,8 +454,9 @@ public class DeepLinksActivity extends BaseActivity {
 
 			viewBinding.addNewAccount.setOnClickListener(
 					addNewAccount -> {
-						Intent accountIntent = new Intent(ctx, AddNewAccountActivity.class);
+						Intent accountIntent = new Intent(ctx, LoginActivity.class);
 						accountIntent.putExtra("instanceUrl", data.getHost());
+						intent.putExtra("mode", "new_account");
 						startActivity(accountIntent);
 						finish();
 					});

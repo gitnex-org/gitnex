@@ -17,11 +17,11 @@ import org.mian.gitnex.database.models.Repository;
 import org.mian.gitnex.database.models.UserAccount;
 
 /**
- * @author M M Arif
+ * @author mmarif
  */
 @Database(
 		entities = {Repository.class, UserAccount.class, Notes.class, AppSettings.class},
-		version = 10,
+		version = 11,
 		exportSchema = false)
 public abstract class GitnexDatabase extends RoomDatabase {
 
@@ -30,7 +30,6 @@ public abstract class GitnexDatabase extends RoomDatabase {
 			new Migration(1, 2) {
 				@Override
 				public void migrate(@NonNull SupportSQLiteDatabase database) {
-					// database.execSQL("DROP TABLE Drafts");
 					database.execSQL("ALTER TABLE 'Drafts' ADD COLUMN 'commentId' TEXT");
 				}
 			};
@@ -110,6 +109,16 @@ public abstract class GitnexDatabase extends RoomDatabase {
 					database.execSQL("DROP table Drafts");
 				}
 			};
+
+	private static final Migration MIGRATION_10_11 =
+			new Migration(10, 11) {
+
+				@Override
+				public void migrate(@NonNull SupportSQLiteDatabase database) {
+					database.execSQL("ALTER TABLE 'userAccounts' ADD COLUMN 'provider' TEXT");
+				}
+			};
+
 	private static volatile GitnexDatabase gitnexDatabase;
 
 	public static GitnexDatabase getDatabaseInstance(Context context) {
@@ -131,7 +140,8 @@ public abstract class GitnexDatabase extends RoomDatabase {
 											MIGRATION_6_7,
 											MIGRATION_7_8,
 											MIGRATION_8_9,
-											MIGRATION_9_10)
+											MIGRATION_9_10,
+											MIGRATION_10_11)
 									.build();
 				}
 			}

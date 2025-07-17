@@ -23,6 +23,13 @@
         <item>zh-TW</item>
     </string-array>
 
+    <string-array name="provider_options">
+        <item>Gitea</item>
+        <item>Forgejo</item>
+        <item>Codeberg (Forgejo-based)</item>
+        <item>I am not sure</item>
+    </string-array>
+
     <string-array name="fonts">
         <item>Roboto</item>
         <item>Manrope</item>

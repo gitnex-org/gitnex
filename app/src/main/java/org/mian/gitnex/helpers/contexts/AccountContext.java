@@ -83,4 +83,8 @@ public class AccountContext implements Serializable {
 		assert account.getAccountName() != null;
 		return new File(context.getCacheDir() + "responses", account.getAccountName());
 	}
+
+	public String getProvider() {
+		return getAccount().getProvider();
+	}
 }
