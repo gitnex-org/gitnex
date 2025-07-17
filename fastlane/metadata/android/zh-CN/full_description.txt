@@ -5,7 +5,7 @@ GitNex 是 Git 存储库管理工具 Forgejo 和 Gitea 的免费/付费的开源
 - 多账户支持
 - 文件及目录浏览器
 - 文件查看器
-- 创建文件/issue/合并请求/维基/里程碑/发布/标签
+- 创建文件/议题/合并请求/维基/里程碑/发布/标签
 - 合并请求列表
 - 仓库列表
 - 组织列表
@@ -14,21 +14,19 @@ GitNex 是 Git 存储库管理工具 Forgejo 和 Gitea 的免费/付费的开源
 - 里程碑列表
 - 发行列表
 - 维基页面
-- 离线模式
 - 浏览代码仓库/issues/组织/用户
 - 资料视图
 - Markdown 支持
 - Emoji 支持
 - 扩展设置
-- 2FA OTP 支持
 - 通知
-- 草稿
 - 仓库提交
 - 自签名证书支持
 - 主题
 - & 更多...
 
-更多功能 - https://codeberg.org/gitnex/GitNex/wiki/Features
+更多功能：
+https://codeberg.org/gitnex/GitNex/wiki/Features
 
 源代码: https://codeberg.org/gitnex/GitNex
 开发者: https://mastodon.social/@mmarif

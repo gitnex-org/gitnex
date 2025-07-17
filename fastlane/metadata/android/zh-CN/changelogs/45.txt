@@ -1,7 +1,7 @@
-- New: Add or update milestone of an issue
-- New: Field for OTP on the login screen
-- Enhancement: Better handling of buttons on API calls
-- Fixed: Crash when empty password with OTP is used
+新功能：为议题添加/更新里程碑
+新功能：登录页面的一次性密码 (OTP) 字段
+改进：在 API 调用时更好地处理按键行为
+修复：使用空的一次项密码 (OTP) 时的崩溃问题
 
-For more, check the release notes.
+查看发布日志，了解更多
 https://codeberg.org/gitnex/GitNex/releases
