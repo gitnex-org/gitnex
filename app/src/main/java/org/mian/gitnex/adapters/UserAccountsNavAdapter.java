@@ -18,7 +18,7 @@ import com.bumptech.glide.Glide;
 import com.bumptech.glide.load.engine.DiskCacheStrategy;
 import java.util.List;
 import org.mian.gitnex.R;
-import org.mian.gitnex.activities.AddNewAccountActivity;
+import org.mian.gitnex.activities.LoginActivity;
 import org.mian.gitnex.database.models.UserAccount;
 import org.mian.gitnex.helpers.UrlHelper;
 
@@ -81,10 +81,12 @@ public class UserAccountsNavAdapter
 		}
 
 		newAccount.setOnClickListener(
-				item -> {
-					context.startActivity(new Intent(context, AddNewAccountActivity.class));
-					dialog.dismiss();
-				});
+			item -> {
+				Intent intent = new Intent(context, LoginActivity.class);
+				intent.putExtra("mode", "new_account");
+				context.startActivity(intent);
+				dialog.dismiss();
+			});
 
 		UserAccountsAdapter arrayAdapter = new UserAccountsAdapter(context, dialog);
 		listView.setLayoutManager(new LinearLayoutManager(context));

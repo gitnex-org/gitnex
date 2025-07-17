@@ -10,8 +10,8 @@ import org.mian.gitnex.R;
 import org.mian.gitnex.actions.CollaboratorActions;
 import org.mian.gitnex.actions.PullRequestActions;
 import org.mian.gitnex.actions.TeamActions;
-import org.mian.gitnex.activities.AddNewAccountActivity;
 import org.mian.gitnex.activities.CreateLabelActivity;
+import org.mian.gitnex.activities.LoginActivity;
 import org.mian.gitnex.databinding.CustomPrUpdateStrategyDialogBinding;
 import org.mian.gitnex.helpers.contexts.RepositoryContext;
 
@@ -35,9 +35,11 @@ public class AlertDialogs {
 				.setNeutralButton(R.string.cancelButton, null)
 				.setPositiveButton(
 						R.string.addNewAccountText,
-						(dialog, which) ->
-								context.startActivity(
-										new Intent(context, AddNewAccountActivity.class)))
+						(dialog, which) -> {
+							Intent intent = new Intent(context, LoginActivity.class);
+							intent.putExtra("mode", "new_account");
+							context.startActivity(intent);
+						})
 				.show();
 	}
 

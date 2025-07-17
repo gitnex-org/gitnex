@@ -11,6 +11,7 @@ import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
 import android.util.TypedValue;
+import android.view.View;
 import android.widget.ArrayAdapter;
 import android.widget.TextView;
 import androidx.activity.result.ActivityResultLauncher;
@@ -58,6 +59,8 @@ public class LoginActivity extends BaseActivity {
 	private int defaultPagingNumber = 25;
 	private final String DATABASE_NAME = "gitnex";
 	private boolean hasShownInitialNetworkError = false;
+	private String mode;
+	private int btnText;
 
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
@@ -66,6 +69,23 @@ public class LoginActivity extends BaseActivity {
 
 		activityLoginBinding = ActivityLoginBinding.inflate(getLayoutInflater());
 		setContentView(activityLoginBinding.getRoot());
+
+		mode = getIntent().getStringExtra("mode");
+		if (mode == null) {
+			mode = "login";
+			btnText = R.string.btnLogin;
+		}
+		else {
+			btnText = R.string.addNewAccountText;
+		}
+
+		if (mode.equals("new_account")) {
+			activityLoginBinding.loginButton.setText(btnText);
+			activityLoginBinding.restoreFromBackup.setVisibility(View.GONE);
+		} else {
+			activityLoginBinding.loginButton.setText(btnText);
+			activityLoginBinding.restoreFromBackup.setVisibility(View.VISIBLE);
+		}
 
 		NetworkStatusObserver networkStatusObserver = NetworkStatusObserver.getInstance(ctx);
 
@@ -76,6 +96,14 @@ public class LoginActivity extends BaseActivity {
 						LoginActivity.this, R.layout.list_spinner_items, Protocol.values());
 
 		activityLoginBinding.instanceUrl.setText(getIntent().getStringExtra("instanceUrl"));
+		String scheme = getIntent().getStringExtra("scheme");
+		if (scheme != null && scheme.equals("http")) {
+			activityLoginBinding.httpsSpinner.setText(Protocol.HTTP.toString());
+			selectedProtocol = Protocol.HTTP.toString();
+		} else {
+			activityLoginBinding.httpsSpinner.setText(Protocol.HTTPS.toString());
+			selectedProtocol = Protocol.HTTPS.toString();
+		}
 
 		activityLoginBinding.httpsSpinner.setAdapter(adapterProtocols);
 		activityLoginBinding.httpsSpinner.setSelection(0);
@@ -108,7 +136,7 @@ public class LoginActivity extends BaseActivity {
 									} else {
 										disableProcessButton();
 										activityLoginBinding.loginButton.setText(
-												getResources().getString(R.string.btnLogin));
+											btnText);
 										if (hasShownInitialNetworkError) {
 											SnackBar.error(
 													ctx,
@@ -460,13 +488,8 @@ public class LoginActivity extends BaseActivity {
 
 	private void enableProcessButton() {
 
-		activityLoginBinding.loginButton.setText(R.string.btnLogin);
+		activityLoginBinding.loginButton.setText(btnText);
 		activityLoginBinding.loginButton.setEnabled(true);
-	}
-
-	private enum LoginType {
-		BASIC,
-		TOKEN
 	}
 
 	private void requestRestoreFile() {
