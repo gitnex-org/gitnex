@@ -1,0 +1,16 @@
+10.0.0
+
+🎉 Features 🎉
+- Display dates in the Files section (requires Gitea 1.24 or Forgejo 12.x)
+- Redesigned user profile screen
+- Redesigned repository info screen
+- Render Markdown in issue and PR titles
+- File icons in the file browser
+- Repository Actions: view workflows, variables, and runners (requires Gitea 1.24)
+- Create Actions variables
+- Update expired account token
+
+🛠️ Support 🛠️
+- Minimum supported Android version is 8.0
+
+Release Notes: https://codeberg.org/gitnex/GitNex/releases

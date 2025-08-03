@@ -120,6 +120,7 @@
     <string name="repoOwnerError">Select owner for the repository</string>
     <string name="repoDefaultBranchError">The default branch must not be empty</string>
 
+
     <string name="orgNameErrorEmpty">Organization name is empty</string>
     <string name="orgNameErrorInvalid">Organization name is not valid, [a&#8211;z A&#8211;Z 0&#8211;9 &#8211; _]</string>
     <string name="orgDescError">Organization description exceeds the max 255 characters limit</string>
@@ -491,6 +492,7 @@
     <string name="branch_error_exists">Branch %1$s already exists</string>
     <string name="branch_error_repo_locked">Repository is locked</string>
     <string name="create_branch">Create Branch</string>
+    <string name="default_branch">Default Branch</string>
 
     <string name="strFilter">Filter</string>
     <string name="strMarkdown">Markdown</string>
