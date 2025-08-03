@@ -13,6 +13,7 @@ import android.view.ViewGroup;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 import androidx.annotation.NonNull;
+import androidx.annotation.PluralsRes;
 import androidx.core.content.ContextCompat;
 import androidx.fragment.app.Fragment;
 import com.google.android.material.chip.Chip;
@@ -89,10 +90,10 @@ public class RepoInfoFragment extends Fragment {
 		setRepoInfo(locale);
 
 		if (repository.isStarred()) {
-			binding.repoMetaStars.setIcon(
+			binding.repoMetaStarsIcon.setImageDrawable(
 					ContextCompat.getDrawable(requireContext(), R.drawable.ic_star));
 		} else {
-			binding.repoMetaStars.setIcon(
+			binding.repoMetaStarsIcon.setImageDrawable(
 					ContextCompat.getDrawable(requireContext(), R.drawable.ic_star_unfilled));
 		}
 
@@ -302,27 +303,42 @@ public class RepoInfoFragment extends Fragment {
 				binding.repoMetaDescription.setText(getString(R.string.noDataDescription));
 			}
 
-			binding.repoMetaStars.setText(AppUtil.numberFormatter(repoInfo.getStarsCount()));
+			setPluralText(
+					binding.repoMetaStars,
+					R.plurals.repoStars,
+					Math.toIntExact(repoInfo.getStarsCount()));
+			setPluralText(
+					binding.repoMetaWatchers,
+					R.plurals.repoWatchers,
+					Math.toIntExact(repoInfo.getWatchersCount()));
+			setPluralText(
+					binding.repoMetaPullRequests,
+					R.plurals.repoPullRequests,
+					Math.toIntExact(repoInfo.getOpenPrCounter()));
+			setPluralText(
+					binding.repoMetaForks,
+					R.plurals.repoForks,
+					Math.toIntExact(repoInfo.getForksCount()));
 
-			if (repoInfo.getOpenPrCounter() != null) {
-				binding.repoMetaPullRequests.setText(String.valueOf(repoInfo.getOpenPrCounter()));
-			} else {
-				binding.repoMetaPullRequests.setVisibility(View.GONE);
-			}
+			binding.repoMetaLastUpdated.setText(
+					getString(
+							R.string.infoTabRepoUpdatedAt,
+							TimeHelper.formatTime(repoInfo.getUpdatedAt(), locale)));
 
-			binding.repoMetaForks.setText(String.valueOf(repoInfo.getForksCount()));
-			binding.repoMetaWatchers.setText(String.valueOf(repoInfo.getWatchersCount()));
+			binding.repoMetaDefaultBranch.setText(
+					getString(R.string.infoTabRepoDefaultBranch, repoInfo.getDefaultBranch()));
+
 			binding.repoMetaSize.setText(
 					FileUtils.byteCountToDisplaySize(repoInfo.getSize() * 1024));
 
 			binding.repoMetaCreatedAt.setText(
-					TimeHelper.formatTime(repoInfo.getCreatedAt(), locale));
+					getString(
+							R.string.noteDateTime,
+							TimeHelper.formatTime(repoInfo.getCreatedAt(), locale)));
 			binding.repoMetaCreatedAt.setOnClickListener(
 					new ClickListener(
 							TimeHelper.customDateFormatForToastDateFormat(repoInfo.getCreatedAt()),
 							ctx));
-
-			String repoMetaUpdatedAt = TimeHelper.formatTime(repoInfo.getUpdatedAt(), locale);
 
 			String website =
 					(repoInfo.getWebsite().isEmpty())
@@ -343,13 +359,6 @@ public class RepoInfoFragment extends Fragment {
 								LayoutInflater.from(ctx)
 										.inflate(R.layout.layout_repo_more_info, null);
 
-						TextView defaultBranchHeader = view.findViewById(R.id.defaultBranchHeader);
-						TextView defaultBranchContent =
-								view.findViewById(R.id.defaultBranchContent);
-
-						TextView lastUpdatedHeader = view.findViewById(R.id.lastUpdatedHeader);
-						TextView lastUpdatedContent = view.findViewById(R.id.lastUpdatedContent);
-
 						TextView sshUrlHeader = view.findViewById(R.id.sshUrlHeader);
 						TextView sshUrlContent = view.findViewById(R.id.sshUrlContent);
 
@@ -358,12 +367,6 @@ public class RepoInfoFragment extends Fragment {
 
 						TextView repoUrlHeader = view.findViewById(R.id.repoUrlHeader);
 						TextView repoUrlContent = view.findViewById(R.id.repoUrlContent);
-
-						defaultBranchHeader.setText(getString(R.string.infoTabRepoDefaultBranch));
-						defaultBranchContent.setText(repoInfo.getDefaultBranch());
-
-						lastUpdatedHeader.setText(getString(R.string.infoTabRepoUpdatedAt));
-						lastUpdatedContent.setText(repoMetaUpdatedAt);
 
 						sshUrlHeader.setText(getString(R.string.infoTabRepoSshUrl));
 						sshUrlContent.setText(repoInfo.getSshUrl());
@@ -412,6 +415,11 @@ public class RepoInfoFragment extends Fragment {
 
 			pageContent.setVisibility(View.VISIBLE);
 		}
+	}
+
+	private void setPluralText(TextView view, @PluralsRes int pluralId, int count) {
+		String formatted = AppUtil.numberFormatter(count);
+		view.setText(getResources().getQuantityString(pluralId, count, formatted));
 	}
 
 	private void getFileContents(

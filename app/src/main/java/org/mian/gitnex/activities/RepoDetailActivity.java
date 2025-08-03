@@ -354,6 +354,9 @@ public class RepoDetailActivity extends BaseActivity implements BottomSheetListe
 				settingsLauncher.launch(
 						repository.getIntent(ctx, RepositorySettingsActivity.class));
 				break;
+			case "repoActions":
+				startActivity(repository.getIntent(ctx, RepositoryActions.class));
+				break;
 			case "newPullRequest":
 				startActivity(repository.getIntent(ctx, CreatePullRequestActivity.class));
 				break;

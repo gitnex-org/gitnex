@@ -108,4 +108,6 @@ Thanks to all the open source libraries, contributors, and donors.
 
 [Follow me on Bluesky - mmarif.bsky.social](https://bsky.app/profile/mmarif.bsky.social)
 
+[Follow me on X](https://x.com/mmarif08)
+
 *All trademarks and logos are the properties of their respective owners.*

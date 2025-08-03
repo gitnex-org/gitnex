@@ -38,7 +38,7 @@ import org.mian.gitnex.helpers.contexts.IssueContext;
 import org.mian.gitnex.helpers.contexts.RepositoryContext;
 
 /**
- * @author M M Arif
+ * @author mmarif
  */
 public class ActivitiesAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
 
@@ -390,7 +390,7 @@ public class ActivitiesAdapter extends RecyclerView.Adapter<RecyclerView.ViewHol
 		void bindData(Activity activity, int position) {
 
 			this.activityObject = activity;
-			Locale locale = context.getResources().getConfiguration().locale;
+			Locale locale = context.getResources().getConfiguration().getLocales().get(0);
 
 			Glide.with(context)
 					.load(activity.getActUser().getAvatarUrl())
@@ -644,7 +644,7 @@ public class ActivitiesAdapter extends RecyclerView.Adapter<RecyclerView.ViewHol
 									+ id
 									+ "</font>";
 					typeString = context.getString(R.string.reopenedIssue);
-					typeIcon.setImageResource(R.drawable.ic_reopen);
+					typeIcon.setImageResource(R.drawable.ic_refresh);
 				}
 			} else if (activity.getOpType().getValue().contains("pull")) {
 
@@ -700,7 +700,7 @@ public class ActivitiesAdapter extends RecyclerView.Adapter<RecyclerView.ViewHol
 									+ id
 									+ "</font>";
 					typeString = context.getString(R.string.reopenedPR);
-					typeIcon.setImageResource(R.drawable.ic_reopen);
+					typeIcon.setImageResource(R.drawable.ic_refresh);
 				} else if (activity.getOpType().getValue().equalsIgnoreCase("merge_pull_request")) {
 
 					headerString =

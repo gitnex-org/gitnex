@@ -1,0 +1,163 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.core.widget.NestedScrollView
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:fitsSystemWindows="true"
+    android:fillViewport="true"
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:padding="@dimen/dimen16dp"
+        android:background="?attr/primaryBackgroundColor">
+
+        <LinearLayout
+            android:id="@+id/headerFrame"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:padding="@dimen/dimen8dp">
+
+            <TextView
+                android:id="@+id/bottomSheetHeader"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:gravity="center"
+                android:text="@string/create_variable"
+                android:textColor="?attr/primaryTextColor"
+                android:textSize="@dimen/dimen18sp"/>
+
+            <View
+                android:layout_width="@dimen/dimen32dp"
+                android:layout_height="@dimen/dimen4dp"
+                android:layout_gravity="center_horizontal"
+                android:layout_marginTop="@dimen/dimen8dp"
+                android:layout_marginBottom="@dimen/dimen16dp"
+                android:background="@drawable/bottom_sheet_handle"
+                android:backgroundTint="?attr/fabColor" />
+
+        </LinearLayout>
+
+        <TextView
+            android:id="@+id/bottom_sheet_header"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/create_variable_header"
+            android:textColor="?attr/primaryTextColor"
+            android:textSize="@dimen/dimen14sp"
+            android:layout_marginBottom="@dimen/dimen16dp" />
+
+        <com.google.android.material.textfield.TextInputLayout
+            android:id="@+id/variable_name_layout"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/dimen8dp"
+            android:layout_marginBottom="@dimen/dimen8dp"
+            android:hint="@string/name"
+            android:textColorHint="?attr/hintColor"
+            app:helperText="@string/variable_name_helper"
+            app:boxStrokeErrorColor="@color/darkRed"
+            app:endIconMode="clear_text"
+            app:endIconTint="?attr/iconsColor"
+            app:hintTextColor="?attr/hintColor">
+
+            <com.google.android.material.textfield.TextInputEditText
+                android:id="@+id/variable_name"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:imeOptions="actionNext"
+                android:inputType="text"
+                android:singleLine="true"
+                android:textColor="?attr/inputTextColor"
+                android:textColorHint="?attr/hintColor"
+                android:textSize="@dimen/dimen16sp" />
+
+        </com.google.android.material.textfield.TextInputLayout>
+
+        <com.google.android.material.textfield.TextInputLayout
+            android:id="@+id/variable_value_layout"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/dimen8dp"
+            android:layout_marginBottom="@dimen/dimen8dp"
+            android:hint="@string/value"
+            android:textColorHint="?attr/hintColor"
+            app:helperText="@string/variable_value_helper"
+            app:boxStrokeErrorColor="@color/darkRed"
+            app:endIconMode="clear_text"
+            app:endIconTint="?attr/iconsColor"
+            app:hintTextColor="?attr/hintColor">
+
+            <com.google.android.material.textfield.TextInputEditText
+                android:id="@+id/variable_value"
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/dimen100dp"
+                android:gravity="top|start"
+                android:inputType="textCapSentences|textMultiLine"
+                android:scrollbars="vertical"
+                android:textColor="?attr/inputTextColor"
+                android:textColorHint="?attr/hintColor"
+                android:textSize="@dimen/dimen16sp" />
+
+        </com.google.android.material.textfield.TextInputLayout>
+
+        <com.google.android.material.textfield.TextInputLayout
+            android:id="@+id/variable_description_layout"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/dimen8dp"
+            android:layout_marginBottom="@dimen/dimen8dp"
+            android:hint="@string/description"
+            android:textColorHint="?attr/hintColor"
+            app:boxStrokeErrorColor="@color/darkRed"
+            app:helperText="@string/optional"
+            app:endIconMode="clear_text"
+            app:endIconTint="?attr/iconsColor"
+            app:hintTextColor="?attr/hintColor">
+
+            <com.google.android.material.textfield.TextInputEditText
+                android:id="@+id/variable_description"
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/dimen80dp"
+                android:gravity="top|start"
+                android:inputType="textCapSentences|textMultiLine"
+                android:scrollbars="vertical"
+                android:textColor="?attr/inputTextColor"
+                android:textColorHint="?attr/hintColor"
+                android:textSize="@dimen/dimen16sp" />
+
+        </com.google.android.material.textfield.TextInputLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:gravity="end"
+            android:layout_marginTop="@dimen/dimen16dp">
+
+            <com.google.android.material.button.MaterialButton
+                android:id="@+id/cancel_button"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/cancelButton"
+                style="@style/Widget.Material3.Button.TextButton"
+                android:textColor="?attr/primaryTextColor" />
+
+            <com.google.android.material.button.MaterialButton
+                android:id="@+id/create_button"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="@dimen/dimen8dp"
+                android:text="@string/newCreateButtonCopy"
+                style="@style/Widget.Material3.Button"
+                android:textColor="?attr/materialCardBackgroundColor"
+                android:backgroundTint="?attr/fabColor" />
+
+        </LinearLayout>
+
+    </LinearLayout>
+
+</androidx.core.widget.NestedScrollView>

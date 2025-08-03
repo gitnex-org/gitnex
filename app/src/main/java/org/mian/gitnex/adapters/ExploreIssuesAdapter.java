@@ -22,6 +22,7 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.amulyakhare.textdrawable.TextDrawable;
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.load.engine.DiskCacheStrategy;
+import com.vdurmont.emoji.EmojiParser;
 import java.util.List;
 import java.util.Locale;
 import org.gitnex.tea4j.v2.models.Issue;
@@ -33,6 +34,7 @@ import org.mian.gitnex.helpers.AppUtil;
 import org.mian.gitnex.helpers.ClickListener;
 import org.mian.gitnex.helpers.ColorInverter;
 import org.mian.gitnex.helpers.LabelWidthCalculator;
+import org.mian.gitnex.helpers.Markdown;
 import org.mian.gitnex.helpers.TimeHelper;
 import org.mian.gitnex.helpers.contexts.IssueContext;
 import org.mian.gitnex.helpers.contexts.RepositoryContext;
@@ -217,11 +219,16 @@ public class ExploreIssuesAdapter extends RecyclerView.Adapter<RecyclerView.View
 							+ context.getResources().getString(R.string.hash)
 							+ issue.getNumber()
 							+ "</font>";
-
-			issueTitle.setText(
+			Markdown.render(
+					context,
 					HtmlCompat.fromHtml(
-							issueNumber_ + " " + issue.getTitle(),
-							HtmlCompat.FROM_HTML_MODE_LEGACY));
+									issueNumber_
+											+ " "
+											+ EmojiParser.parseToUnicode(issue.getTitle()),
+									HtmlCompat.FROM_HTML_MODE_LEGACY)
+							.toString(),
+					issueTitle);
+
 			issueCommentsCount.setText(String.valueOf(issue.getComments()));
 
 			LinearLayout.LayoutParams params =

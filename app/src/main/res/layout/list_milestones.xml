@@ -37,15 +37,15 @@
                     android:layout_weight="0"
                     android:textColor="?attr/primaryTextColor"
                     android:textIsSelectable="true"
-                    android:textSize="16sp"/>
+                    android:textSize="@dimen/dimen16sp"/>
 
                 <ProgressBar
                     android:id="@+id/milestoneProgress"
                     style="@style/Widget.AppCompat.ProgressBar.Horizontal"
                     android:layout_width="0dp"
-                    android:layout_height="10dp"
-                    android:layout_marginStart="15dp"
-                    android:layout_marginEnd="10dp"
+                    android:layout_height="@dimen/dimen10dp"
+                    android:layout_marginStart="@dimen/dimen16dp"
+                    android:layout_marginEnd="@dimen/dimen10dp"
                     android:layout_weight="1"
                     android:indeterminate="false"
                     android:progress="50"
@@ -57,21 +57,21 @@
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="10dp"
+                android:layout_marginTop="@dimen/dimen12dp"
                 android:orientation="horizontal">
 
                 <LinearLayout
                     android:layout_width="wrap_content"
                     android:layout_height="match_parent"
-                    android:layout_marginEnd="15dp"
+                    android:layout_marginEnd="@dimen/dimen16dp"
                     android:gravity="center_vertical"
                     android:orientation="horizontal"
                     tools:ignore="UseCompoundDrawables">
 
                     <ImageView
-                        android:layout_width="18dp"
+                        android:layout_width="@dimen/dimen18dp"
                         android:layout_height="wrap_content"
-                        android:layout_marginEnd="5dp"
+                        android:layout_marginEnd="@dimen/dimen6dp"
                         android:contentDescription="@string/generalImgContentText"
                         app:srcCompat="@drawable/ic_calendar"/>
 
@@ -81,21 +81,21 @@
                         android:layout_height="wrap_content"
                         android:text="@string/dueDate"
                         android:textColor="?attr/primaryTextColor"
-                        android:textSize="14sp"/>
+                        android:textSize="@dimen/dimen14sp"/>
                 </LinearLayout>
 
                 <LinearLayout
                     android:layout_width="wrap_content"
                     android:layout_height="match_parent"
-                    android:layout_marginEnd="15dp"
+                    android:layout_marginEnd="@dimen/dimen16dp"
                     android:gravity="center_vertical"
                     android:orientation="horizontal"
                     tools:ignore="UseCompoundDrawables">
 
                     <ImageView
-                        android:layout_width="18dp"
+                        android:layout_width="@dimen/dimen18dp"
                         android:layout_height="wrap_content"
-                        android:layout_marginEnd="5dp"
+                        android:layout_marginEnd="@dimen/dimen6dp"
                         android:contentDescription="@string/generalImgContentText"
                         app:srcCompat="@drawable/ic_issue"/>
 
@@ -103,9 +103,9 @@
                         android:id="@+id/milestoneIssuesOpen"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:text="@string/repoStars"
                         android:textColor="?attr/primaryTextColor"
-                        android:textSize="14sp"/>
+                        android:textSize="@dimen/dimen14sp"/>
+
                 </LinearLayout>
 
                 <LinearLayout
@@ -116,9 +116,9 @@
                     tools:ignore="UseCompoundDrawables">
 
                     <ImageView
-                        android:layout_width="18dp"
+                        android:layout_width="@dimen/dimen18dp"
                         android:layout_height="wrap_content"
-                        android:layout_marginEnd="5dp"
+                        android:layout_marginEnd="@dimen/dimen6dp"
                         android:contentDescription="@string/generalImgContentText"
                         app:srcCompat="@drawable/ic_issue_closed"/>
 
@@ -126,9 +126,9 @@
                         android:id="@+id/milestoneIssuesClosed"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:text="@string/repoWatchers"
                         android:textColor="?attr/primaryTextColor"
-                        android:textSize="14sp"/>
+                        android:textSize="@dimen/dimen14sp"/>
+
                 </LinearLayout>
 
             </LinearLayout>
@@ -137,14 +137,14 @@
                 android:id="@+id/milestoneDateMenuFrame"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="5dp"
+                android:layout_marginTop="@dimen/dimen12dp"
                 android:orientation="horizontal">
 
                 <RelativeLayout
                     android:id="@+id/dueDateFrame"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
-                    android:layout_marginTop="3dp"
+                    android:layout_marginTop="@dimen/dimen4dp"
                     android:layout_weight=".90"
                     android:orientation="horizontal">
 
@@ -155,7 +155,7 @@
                         android:text="@string/repoDescription"
                         android:textColor="?attr/primaryTextColor"
                         android:textIsSelectable="true"
-                        android:textSize="14sp"
+                        android:textSize="@dimen/dimen14sp"
                         android:visibility="visible"/>
 
                 </RelativeLayout>
