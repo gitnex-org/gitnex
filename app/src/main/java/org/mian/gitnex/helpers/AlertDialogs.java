@@ -34,10 +34,10 @@ public class AlertDialogs {
 				.setCancelable(true)
 				.setNeutralButton(R.string.cancelButton, null)
 				.setPositiveButton(
-						R.string.addNewAccountText,
+						R.string.update_account,
 						(dialog, which) -> {
 							Intent intent = new Intent(context, LoginActivity.class);
-							intent.putExtra("mode", "new_account");
+							intent.putExtra("mode", "update_account");
 							context.startActivity(intent);
 						})
 				.show();

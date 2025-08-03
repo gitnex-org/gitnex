@@ -74,6 +74,8 @@ public class LoginActivity extends BaseActivity {
 		if (mode == null) {
 			mode = "login";
 			btnText = R.string.btnLogin;
+		} else if (mode.equals("update_account")) {
+			btnText = R.string.update_account;
 		} else {
 			btnText = R.string.addNewAccountText;
 		}
@@ -81,6 +83,68 @@ public class LoginActivity extends BaseActivity {
 		if (mode.equals("new_account")) {
 			activityLoginBinding.loginButton.setText(btnText);
 			activityLoginBinding.restoreFromBackup.setVisibility(View.GONE);
+		} else if (mode.equals("update_account")) {
+			activityLoginBinding.loginButton.setText(btnText);
+			activityLoginBinding.restoreFromBackup.setVisibility(View.GONE);
+
+			int accountId = tinyDB.getInt("currentActiveAccountId", -1);
+			if (accountId != -1) {
+				UserAccountsApi userAccountsApi = BaseApi.getInstance(ctx, UserAccountsApi.class);
+
+				if (userAccountsApi != null) {
+
+					UserAccount account = userAccountsApi.getAccountById(accountId);
+					if (account != null) {
+
+						// Prefill provider
+						selectedProvider = account.getProvider();
+						if (selectedProvider.equals("gitea")) {
+							activityLoginBinding.providerSpinner.setText(
+									getResources().getStringArray(R.array.provider_options)[0],
+									false);
+						} else if (selectedProvider.equals("forgejo")) {
+							activityLoginBinding.providerSpinner.setText(
+									getResources().getStringArray(R.array.provider_options)[1],
+									false);
+						} else {
+							activityLoginBinding.providerSpinner.setText(
+									getResources().getStringArray(R.array.provider_options)[2],
+									false);
+						}
+
+						// Prefill instance URL
+						String url = account.getInstanceUrl();
+						try {
+							URI uri = new URI(url);
+							String cleanUrl = uri.getHost();
+							int port = uri.getPort();
+							if (port != -1) {
+								cleanUrl += ":" + port;
+							}
+							activityLoginBinding.instanceUrl.setText(cleanUrl);
+						} catch (Exception e) {
+							if (url.endsWith("/api/v1/")) {
+								url = url.substring(0, url.length() - "/api/v1/".length());
+							}
+							activityLoginBinding.instanceUrl.setText(url);
+						}
+
+						// Prefill protocol
+						try {
+							URI uri = new URI(url);
+							String scheme = uri.getScheme();
+							selectedProtocol =
+									scheme != null && scheme.equalsIgnoreCase("http")
+											? Protocol.HTTP.toString()
+											: Protocol.HTTPS.toString();
+							activityLoginBinding.httpsSpinner.setText(selectedProtocol);
+						} catch (Exception e) {
+							selectedProtocol = Protocol.HTTPS.toString();
+							activityLoginBinding.httpsSpinner.setText(selectedProtocol);
+						}
+					}
+				}
+			}
 		} else {
 			activityLoginBinding.loginButton.setText(btnText);
 			activityLoginBinding.restoreFromBackup.setVisibility(View.VISIBLE);
@@ -98,11 +162,17 @@ public class LoginActivity extends BaseActivity {
 				ArrayAdapter.createFromResource(
 						this, R.array.provider_options, R.layout.list_spinner_items);
 
-		activityLoginBinding.instanceUrl.setText(getIntent().getStringExtra("instanceUrl"));
+		String instanceUrlExtra = getIntent().getStringExtra("instanceUrl");
 		String scheme = getIntent().getStringExtra("scheme");
-		if (scheme != null && scheme.equals("http")) {
-			activityLoginBinding.httpsSpinner.setText(Protocol.HTTP.toString());
-			selectedProtocol = Protocol.HTTP.toString();
+		if (instanceUrlExtra != null && !instanceUrlExtra.isEmpty()) {
+			activityLoginBinding.instanceUrl.setText(instanceUrlExtra);
+			if (scheme != null && scheme.equals("http")) {
+				activityLoginBinding.httpsSpinner.setText(Protocol.HTTP.toString());
+				selectedProtocol = Protocol.HTTP.toString();
+			} else {
+				activityLoginBinding.httpsSpinner.setText(Protocol.HTTPS.toString());
+				selectedProtocol = Protocol.HTTPS.toString();
+			}
 		} else {
 			activityLoginBinding.httpsSpinner.setText(Protocol.HTTPS.toString());
 			selectedProtocol = Protocol.HTTPS.toString();
@@ -125,12 +195,11 @@ public class LoginActivity extends BaseActivity {
 		activityLoginBinding.providerSpinner.setSelection(0);
 		activityLoginBinding.providerSpinner.setText(adapterProviders.getItem(0), false);
 		activityLoginBinding.providerSpinner.setOnItemClickListener(
-				(parent, view, position, id) -> {
-					selectedProvider =
-							position == 0
-									? "gitea"
-									: position == 1 || position == 2 ? "forgejo" : "infer";
-				});
+				(parent, view, position, id) ->
+						selectedProvider =
+								position == 0
+										? "gitea"
+										: position == 1 || position == 2 ? "forgejo" : "infer");
 
 		if (AppUtil.hasNetworkConnection(ctx)) {
 			enableProcessButton();

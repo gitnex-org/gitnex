@@ -302,7 +302,7 @@
     <string name="selectBranchError">Select a branch for release</string>
 
     <string name="alertDialogTokenRevokedTitle">Authorization Error</string>
-    <string name="alertDialogTokenRevokedMessage">It seems that the Access Token is revoked OR you are not allowed to see these contents.\n\nIn case of revoked Token, please add the account again</string>
+    <string name="alertDialogTokenRevokedMessage">It seems that the Access Token is revoked OR you are not allowed to see these contents.\n\nIn case of revoked Token, please update the account.</string>
     <string name="labelDeleteMessage">Do you really want to delete this label?</string>
 
     <!-- org tabbed layout str -->
@@ -728,6 +728,7 @@
     <string name="removeAccountPopupMessage">Are you sure you want to remove this account from the app?\n\nThis will remove all the data related to this account on the app only.</string>
     <string name="addNewAccount">New Account</string>
     <string name="addNewAccountText">Add Account</string>
+    <string name="update_account">Update Account</string>
     <string name="accountAlreadyExistsError">Account already exists in the app</string>
     <string name="accountAddedMessage">Account added successfully</string>
     <string name="switchAccountSuccess">Switched to account : %1$s@%2$s</string>
