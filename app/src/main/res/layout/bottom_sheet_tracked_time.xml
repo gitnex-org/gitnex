@@ -42,7 +42,7 @@
             <com.google.android.material.textfield.TextInputEditText
                 android:id="@+id/hoursInput"
                 android:layout_width="match_parent"
-                android:layout_height="@dimen/dimen40dp"
+                android:layout_height="wrap_content"
                 android:inputType="number"
                 android:maxLength="3"
                 android:textAppearance="?attr/textAppearanceBodyMedium" />
@@ -60,7 +60,7 @@
             <com.google.android.material.textfield.TextInputEditText
                 android:id="@+id/minutesInput"
                 android:layout_width="match_parent"
-                android:layout_height="@dimen/dimen40dp"
+                android:layout_height="wrap_content"
                 android:inputType="number"
                 android:maxLength="2"
                 android:textAppearance="?attr/textAppearanceBodyMedium" />

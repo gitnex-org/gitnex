@@ -5,17 +5,18 @@ import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment;
 import org.mian.gitnex.actions.RepositoryActions;
+import org.mian.gitnex.activities.BaseActivity;
 import org.mian.gitnex.databinding.BottomSheetRepoBinding;
+import org.mian.gitnex.helpers.Version;
 import org.mian.gitnex.helpers.contexts.RepositoryContext;
 import org.mian.gitnex.structs.BottomSheetListener;
 
 /**
- * @author M M Arif
+ * @author mmarif
  */
 public class BottomSheetRepoFragment extends BottomSheetDialogFragment {
 
@@ -35,40 +36,56 @@ public class BottomSheetRepoFragment extends BottomSheetDialogFragment {
 		BottomSheetRepoBinding bottomSheetRepoBinding =
 				BottomSheetRepoBinding.inflate(inflater, container, false);
 
-		TextView openWebRepo = bottomSheetRepoBinding.openWebRepo;
-		TextView starRepository = bottomSheetRepoBinding.starRepository;
-		TextView unStarRepository = bottomSheetRepoBinding.unStarRepository;
-		TextView watchRepository = bottomSheetRepoBinding.watchRepository;
-		TextView unWatchRepository = bottomSheetRepoBinding.unWatchRepository;
-		TextView shareRepository = bottomSheetRepoBinding.shareRepository;
-		TextView copyRepoUrl = bottomSheetRepoBinding.copyRepoUrl;
-		TextView repoSettings = bottomSheetRepoBinding.repoSettings;
+		// repo actions require gitea and version 1.24
+		String provider = ((BaseActivity) requireContext()).getAccount().getAccount().getProvider();
+		if (provider != null) {
+			String serverVersion =
+					((BaseActivity) requireContext()).getAccount().getAccount().getServerVersion();
+			Version minVersion = new Version("1.24");
+			Version currentVersion =
+					Version.valid(serverVersion) ? new Version(serverVersion) : new Version("0.0");
+
+			if ("gitea".equals(provider) && !currentVersion.less(minVersion)) {
+				bottomSheetRepoBinding.repositoryActions.setVisibility(View.VISIBLE);
+			} else {
+				bottomSheetRepoBinding.repositoryActions.setVisibility(View.GONE);
+			}
+		} else {
+			bottomSheetRepoBinding.repositoryActions.setVisibility(View.GONE);
+		}
 
 		if (repository.getPermissions().isAdmin()) {
 
-			repoSettings.setOnClickListener(
+			bottomSheetRepoBinding.repoSettings.setOnClickListener(
 					repoSettingsView -> {
 						bmListener.onButtonClicked("repoSettings");
 						dismiss();
 					});
+
+			bottomSheetRepoBinding.repositoryActions.setOnClickListener(
+					repoActions -> {
+						bmListener.onButtonClicked("repoActions");
+						dismiss();
+					});
 		} else {
 
-			repoSettings.setVisibility(View.GONE);
+			bottomSheetRepoBinding.repoSettings.setVisibility(View.GONE);
+			bottomSheetRepoBinding.repositoryActions.setVisibility(View.GONE);
 		}
 
-		shareRepository.setOnClickListener(
+		bottomSheetRepoBinding.shareRepository.setOnClickListener(
 				v15 -> {
 					bmListener.onButtonClicked("shareRepo");
 					dismiss();
 				});
 
-		openWebRepo.setOnClickListener(
+		bottomSheetRepoBinding.openWebRepo.setOnClickListener(
 				v16 -> {
 					bmListener.onButtonClicked("openWebRepo");
 					dismiss();
 				});
 
-		copyRepoUrl.setOnClickListener(
+		bottomSheetRepoBinding.copyRepoUrl.setOnClickListener(
 				copyUrl -> {
 					bmListener.onButtonClicked("copyRepoUrl");
 					dismiss();
@@ -76,8 +93,8 @@ public class BottomSheetRepoFragment extends BottomSheetDialogFragment {
 
 		if (repository.isStarred()) {
 
-			starRepository.setVisibility(View.GONE);
-			unStarRepository.setOnClickListener(
+			bottomSheetRepoBinding.starRepository.setVisibility(View.GONE);
+			bottomSheetRepoBinding.unStarRepository.setOnClickListener(
 					v18 -> {
 						RepositoryActions.unStarRepository(getContext(), repository);
 						bmListener.onButtonClicked("unstar");
@@ -85,8 +102,8 @@ public class BottomSheetRepoFragment extends BottomSheetDialogFragment {
 					});
 		} else {
 
-			unStarRepository.setVisibility(View.GONE);
-			starRepository.setOnClickListener(
+			bottomSheetRepoBinding.unStarRepository.setVisibility(View.GONE);
+			bottomSheetRepoBinding.starRepository.setOnClickListener(
 					v19 -> {
 						RepositoryActions.starRepository(getContext(), repository);
 						bmListener.onButtonClicked("star");
@@ -96,8 +113,8 @@ public class BottomSheetRepoFragment extends BottomSheetDialogFragment {
 
 		if (repository.isWatched()) {
 
-			watchRepository.setVisibility(View.GONE);
-			unWatchRepository.setOnClickListener(
+			bottomSheetRepoBinding.watchRepository.setVisibility(View.GONE);
+			bottomSheetRepoBinding.unWatchRepository.setOnClickListener(
 					v110 -> {
 						RepositoryActions.unWatchRepository(getContext(), repository);
 						bmListener.onButtonClicked("unwatch");
@@ -105,8 +122,8 @@ public class BottomSheetRepoFragment extends BottomSheetDialogFragment {
 					});
 		} else {
 
-			unWatchRepository.setVisibility(View.GONE);
-			watchRepository.setOnClickListener(
+			bottomSheetRepoBinding.unWatchRepository.setVisibility(View.GONE);
+			bottomSheetRepoBinding.watchRepository.setOnClickListener(
 					v111 -> {
 						RepositoryActions.watchRepository(getContext(), repository);
 						bmListener.onButtonClicked("watch");

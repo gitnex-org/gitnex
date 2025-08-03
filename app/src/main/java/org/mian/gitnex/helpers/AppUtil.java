@@ -194,7 +194,8 @@ public class AppUtil {
 					"gradlew",
 					"mjs",
 					"next",
-					"nvmrc"
+					"nvmrc",
+					"lock"
 				},
 				FileType.TEXT);
 		extensions.put(new String[] {"ttf", "otf", "woff", "woff2", "ttc", "eot"}, FileType.FONT);

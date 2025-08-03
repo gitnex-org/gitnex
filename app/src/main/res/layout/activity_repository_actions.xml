@@ -1,0 +1,208 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.coordinatorlayout.widget.CoordinatorLayout
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:fitsSystemWindows="true"
+    android:background="?attr/primaryBackgroundColor"
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:padding="@dimen/dimen8dp"
+        android:orientation="vertical">
+
+        <com.google.android.material.card.MaterialCardView
+            android:id="@+id/count_card"
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/dimen54dp"
+            android:layout_marginHorizontal="@dimen/dimen4dp"
+            app:cardCornerRadius="@dimen/dimen16dp"
+            app:cardElevation="@dimen/dimen0dp"
+            app:strokeWidth="@dimen/dimen0dp"
+            app:cardBackgroundColor="?attr/materialCardBackgroundColor">
+
+            <TextView
+                android:id="@+id/count"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="start|center"
+                android:paddingStart="@dimen/dimen20dp"
+                android:paddingEnd="@dimen/dimen20dp"
+                android:text="@string/actions_counts"
+                android:textColor="?attr/primaryTextColor"
+                android:textSize="@dimen/dimen14sp"
+                android:contentDescription="@string/actions_counts" />
+
+        </com.google.android.material.card.MaterialCardView>
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:id="@+id/top_cards_container"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:layout_marginTop="@dimen/dimen72dp"
+        android:weightSum="3"
+        android:padding="@dimen/dimen8dp">
+
+        <com.google.android.material.card.MaterialCardView
+            android:id="@+id/runners_card"
+            android:layout_width="0dp"
+            android:layout_height="@dimen/dimen54dp"
+            android:layout_weight="1"
+            android:layout_marginHorizontal="@dimen/dimen4dp"
+            app:cardCornerRadius="@dimen/dimen16dp"
+            app:cardElevation="@dimen/dimen0dp"
+            app:strokeWidth="@dimen/dimen2dp"
+            app:cardBackgroundColor="?attr/materialCardBackgroundColor">
+
+            <TextView
+                android:id="@+id/runners"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:padding="@dimen/dimen8dp"
+                android:text="@string/runners"
+                android:textColor="?attr/primaryTextColor"
+                android:textSize="@dimen/dimen14sp"
+                android:gravity="center"
+                android:contentDescription="@string/runners" />
+
+        </com.google.android.material.card.MaterialCardView>
+
+        <com.google.android.material.card.MaterialCardView
+            android:id="@+id/workflows_card"
+            android:layout_width="0dp"
+            android:layout_height="@dimen/dimen54dp"
+            android:layout_weight="1"
+            android:layout_marginHorizontal="@dimen/dimen4dp"
+            app:cardCornerRadius="@dimen/dimen16dp"
+            app:cardElevation="@dimen/dimen0dp"
+            app:strokeWidth="@dimen/dimen0dp"
+            app:cardBackgroundColor="?attr/materialCardBackgroundColor">
+
+            <TextView
+                android:id="@+id/workflows"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:padding="@dimen/dimen8dp"
+                android:text="@string/workflows"
+                android:textColor="?attr/primaryTextColor"
+                android:textSize="@dimen/dimen14sp"
+                android:gravity="center"
+                android:contentDescription="@string/workflows" />
+
+        </com.google.android.material.card.MaterialCardView>
+
+        <com.google.android.material.card.MaterialCardView
+            android:id="@+id/variables_card"
+            android:layout_width="0dp"
+            android:layout_height="@dimen/dimen54dp"
+            android:layout_weight="1"
+            android:layout_marginHorizontal="@dimen/dimen4dp"
+            app:cardCornerRadius="@dimen/dimen16dp"
+            app:cardElevation="@dimen/dimen0dp"
+            app:strokeWidth="@dimen/dimen0dp"
+            app:cardBackgroundColor="?attr/materialCardBackgroundColor">
+
+            <TextView
+                android:id="@+id/variables"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:padding="@dimen/dimen8dp"
+                android:text="@string/variables"
+                android:textColor="?attr/primaryTextColor"
+                android:textSize="@dimen/dimen14sp"
+                android:gravity="center"
+                android:contentDescription="@string/variables" />
+
+        </com.google.android.material.card.MaterialCardView>
+
+    </LinearLayout>
+
+    <androidx.core.widget.NestedScrollView
+        android:id="@+id/data_scroll_view"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_marginTop="@dimen/dimen144dp"
+        android:layout_marginHorizontal="@dimen/dimen8dp"
+        android:padding="@dimen/dimen6dp"
+        android:background="?attr/primaryBackgroundColor">
+
+        <LinearLayout
+            android:id="@+id/data_container"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:gravity="center"
+            android:background="?attr/primaryBackgroundColor" />
+
+    </androidx.core.widget.NestedScrollView>
+
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/runners_recyclerView"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        app:layout_behavior="@string/appbar_scrolling_view_behavior"
+        android:background="?attr/primaryBackgroundColor"
+        android:visibility="gone" />
+
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/workflows_recyclerView"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        app:layout_behavior="@string/appbar_scrolling_view_behavior"
+        android:background="?attr/primaryBackgroundColor"
+        android:visibility="gone" />
+
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/variables_recyclerView"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        app:layout_behavior="@string/appbar_scrolling_view_behavior"
+        android:background="?attr/primaryBackgroundColor"
+        android:visibility="gone" />
+
+    <com.google.android.material.bottomappbar.BottomAppBar
+        android:id="@+id/bottom_app_bar"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_gravity="bottom"
+        android:fitsSystemWindows="true"
+        style="@style/Widget.Material3.BottomAppBar"
+        app:backgroundTint="?attr/navigationBarColor"
+        app:navigationIcon="@drawable/ic_arrow_back">
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+
+            <TextView
+                android:id="@+id/bottom_bar_title_text"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/actions"
+                android:layout_alignParentStart="true"
+                android:textSize="@dimen/dimen20sp" />
+
+        </RelativeLayout>
+
+    </com.google.android.material.bottomappbar.BottomAppBar>
+
+    <com.google.android.material.floatingactionbutton.ExtendedFloatingActionButton
+        android:id="@+id/new_variable"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:contentDescription="@string/newCreateButtonCopy"
+        android:textColor="?attr/materialCardBackgroundColor"
+        app:iconTint="?attr/materialCardBackgroundColor"
+        android:backgroundTint="?attr/fabColor"
+        app:layout_anchor="@id/bottom_app_bar"
+        app:icon="@drawable/ic_add" />
+
+</androidx.coordinatorlayout.widget.CoordinatorLayout>

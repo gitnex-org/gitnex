@@ -3,7 +3,7 @@
 
     <!-- Dark theme - default -->
     <style name="AppTheme" parent="Theme.Material3.Dark.NoActionBar">
-        <item name="android:navigationBarColor">@color/colorPrimary</item>
+        <item name="android:navigationBarColor">@color/cardBackground</item>
         <item name="android:statusBarColor">@color/colorPrimary</item>
         <item name="android:windowLightStatusBar">false</item>
         <item name="android:typeface">monospace</item>
@@ -53,7 +53,7 @@
 
     <!-- Light theme -->
     <style name="AppThemeLight" parent="Theme.Material3.Light.NoActionBar">
-        <item name="android:navigationBarColor">@color/lightThemeBackground</item>
+        <item name="android:navigationBarColor">@color/lightThemeCardBackground</item>
         <item name="android:statusBarColor">@color/lightThemeBackground</item>
         <item name="android:windowLightStatusBar">true</item>
         <item name="android:typeface">monospace</item>
@@ -103,7 +103,7 @@
     <!-- Retro theme -->
     <style name="AppThemeRetro" parent="Theme.Material3.Light.NoActionBar">
         <item name="android:statusBarColor">@color/retroThemeBackground</item>
-        <item name="android:navigationBarColor">@color/retroThemeBackground</item>
+        <item name="android:navigationBarColor">@color/retroThemeCardBackground</item>
         <item name="android:windowLightStatusBar">true</item>
         <item name="android:typeface">monospace</item>
         <item name="colorAccent">@color/colorAccent</item>
@@ -151,7 +151,7 @@
     <!-- Pitch black theme -->
     <style name="AppThemePitchBlack" parent="Theme.Material3.Dark.NoActionBar">
         <item name="android:statusBarColor">@color/pitchBlackThemeBackground</item>
-        <item name="android:navigationBarColor">@color/pitchBlackThemeBackground</item>
+        <item name="android:navigationBarColor">@color/pitchBlackThemeCardBackground</item>
         <item name="android:windowLightStatusBar">false</item>
         <item name="android:typeface">monospace</item>
         <item name="colorAccent">@color/colorAccent</item>

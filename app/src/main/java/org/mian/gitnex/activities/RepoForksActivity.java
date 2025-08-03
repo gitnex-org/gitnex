@@ -43,8 +43,7 @@ public class RepoForksActivity extends BaseActivity {
 
 		repository = RepositoryContext.fromIntent(getIntent());
 
-		activityRepoForksBinding.toolbarTitle.setText(
-				ctx.getResources().getString(R.string.infoTabRepoForksCount));
+		activityRepoForksBinding.toolbarTitle.setText(ctx.getResources().getString(R.string.forks));
 
 		activityRepoForksBinding.close.setOnClickListener(v -> finish());
 
