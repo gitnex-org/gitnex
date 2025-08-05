@@ -81,14 +81,22 @@
     <string name="orgCreated">Organizasyon başarıyla oluşturuldu</string>
     <string name="orgExistsError">Organizasyon zaten mevcut</string>
     <string name="diffStatistics">%1$s ekleme ve %2$s silme</string>
-    <string name="processingText">İşleniyor</string>
-    <string name="search">Ara</string>
-    <string name="close">Kapat</string>
-    <string name="addNewContent">Ekle</string>
-    <string name="orgContentAvatar">Org</string>
-    <string name="repoContentAvatar">Depo</string>
-    <string name="privateAvatar">Gzl</string>
-    <string name="removeContent">Kaldır</string>
+    <plurals name="repoStars">
+        <item quantity="one">%1$s yıldız</item>
+        <item quantity="other">%1$s yıldız</item>
+    </plurals>
+    <plurals name="repoWatchers">
+        <item quantity="one">%1$s izleyici</item>
+        <item quantity="other">%1$s izleyici</item>
+    </plurals>
+    <plurals name="repoForks">
+        <item quantity="one">%1$s fork</item>
+        <item quantity="other">%1$s fork</item>
+    </plurals>
+    <plurals name="repoPullRequests">
+        <item quantity="one">%1$s açık pull request</item>
+        <item quantity="other">%1$s açık pull request</item>
+    </plurals>
     <string name="genericApiError">Sunucu bir hata döndürdü. Kod %d</string>
     <string name="tabTextInfo">Detaylar</string>
     <string name="tabTextFiles">Dosyalar</string>
@@ -97,13 +105,12 @@
     <string name="tabTextCollaborators">Katkıda Bulunanlar</string>
     <string name="tabPullRequests">Çekme İstekleri</string>
     <string name="pullRequest">Çekme İsteği</string>
-    <string name="infoTabRepoDefaultBranch">Varsayılan Dal</string>
+    <string name="infoTabRepoDefaultBranch">Varsayılan branch %1$s</string>
     <string name="infoTabRepoSshUrl">SSH URL\'si</string>
     <string name="infoTabRepoCloneUrl">Klonlama URL\'si</string>
     <string name="infoTabRepoRepoUrl">Depo URL\'si</string>
-    <string name="infoTabRepoForksCount">Çatallanmalar</string>
     <string name="infoTabRepoCreatedAt">Oluşturulma</string>
-    <string name="infoTabRepoUpdatedAt">Son Güncelleme</string>
+    <string name="infoTabRepoUpdatedAt">Son güncelleme %1$s</string>
     <string name="infoMoreInformation">Daha Fazla Bilgi</string>
     <string name="timeAtText">tarihinde</string>
     <string name="issueMilestone">Kilometre Taşı %1$s</string>
@@ -219,7 +226,7 @@
     <string name="labelDeleteText">Etiket silindi</string>
     <string name="selectBranchError">Sürüm için bir dal seçin</string>
     <string name="alertDialogTokenRevokedTitle">Yetkilendirme Hatası</string>
-    <string name="alertDialogTokenRevokedMessage">Görünüşe göre Erişim Jetonu (Access Token) iptal edilmiş VEYA bu içerikleri görme yetkiniz yok.\n\nJeton iptali durumunda, lütfen hesabı yeniden ekleyin</string>
+    <string name="alertDialogTokenRevokedMessage">Erişim jetonu iptal edilmiş görünüyor VEYA bu içerikleri görüntüleme izniniz yok.\n\nJeton iptal edildiyse, lütfen hesabı güncelleyin.</string>
     <string name="labelDeleteMessage">Bu etiketi gerçekten silmek istiyor musunuz?</string>
     <!-- org tabbed layout str -->
     <string name="orgTabTeams">Takımlar</string>
@@ -389,6 +396,7 @@
     <string name="branch_error_exists">%1$s dalı zaten mevcut</string>
     <string name="branch_error_repo_locked">Depo kilitli</string>
     <string name="create_branch">Dal Oluştur</string>
+    <string name="default_branch">Varsayılan Branch</string>
     <string name="strFilter">Filtrele</string>
     <string name="strMarkdown">Markdown</string>
     <string name="copyIssueUrl">Mesele URL\'sini Kopyala</string>
@@ -433,7 +441,6 @@
     <string name="issue">Mesele</string>
     <string name="labelTxt">Etiket</string>
     <string name="release">Sürüm</string>
-    <string name="pr">Çekme İsteği</string>
     <string name="collaborator">Katkıda Bulunan</string>
     <string name="unstar">Yıldızı Kaldır</string>
     <string name="watch">İzle</string>
@@ -473,6 +480,23 @@
     <string name="personal">Kişisel</string>
     <string name="activities">Aktiviteler</string>
     <string name="refresh">Yenile</string>
+    <string name="actions">Eylemler</string>
+    <string name="runners">Çalıştırıcılar</string>
+    <string name="workflows">İş Akışları</string>
+    <string name="variables">Değişkenler</string>
+    <string name="forks">Fork\'lar</string>
+    <string name="removeContent">Kaldır</string>
+    <string name="processingText">İşleniyor</string>
+    <string name="search">Ara</string>
+    <string name="close">Kapat</string>
+    <string name="addNewContent">Ekle</string>
+    <string name="orgContentAvatar">Org</string>
+    <string name="repoContentAvatar">Depo</string>
+    <string name="privateAvatar">Gzl</string>
+    <string name="busy">Meşgul</string>
+    <string name="idle">Boşta</string>
+    <string name="value">Değer</string>
+    <string name="optional">İsteğe bağlı</string>
     <!-- generic copy -->
     <string name="exploreUsers">Kullanıcıları keşfet</string>
     <string name="exploreIssues">Meseleleri keşfet</string>
@@ -581,6 +605,7 @@
     <string name="removeAccountPopupMessage">Bu hesabı uygulamadan kaldırmak istediğinizden emin misiniz?\n\nBu işlem, yalnızca uygulamadaki bu hesapla ilgili tüm verileri kaldıracaktır.</string>
     <string name="addNewAccount">Yeni Hesap</string>
     <string name="addNewAccountText">Hesap Ekle</string>
+    <string name="update_account">Hesabı Güncelle</string>
     <string name="accountAlreadyExistsError">Hesap uygulamada zaten mevcut</string>
     <string name="accountAddedMessage">Hesap başarıyla eklendi</string>
     <string name="switchAccountSuccess">%1$s@%2$s hesabına geçildi</string>
@@ -727,7 +752,7 @@
     <string name="newNote">Yeni Not</string>
     <string name="editNote">Notu Düzenle</string>
     <string name="newNoteContentHint">Notlarınızı buraya yazmaya başlayın</string>
-    <string name="noteDateTime">Oluşturuldu: %s</string>
+    <string name="noteDateTime">Oluşturuldu: %1$s</string>
     <string name="noteTimeModified">Güncellendi: %s</string>
     <string name="noteDeleteDialogMessage">Bu notu gerçekten silmek istiyor musunuz?</string>
     <plurals name="noteDeleteMessage">
@@ -808,7 +833,7 @@
     <string name="pushedTag">%1$s etiketini şuraya push yaptı:</string>
     <string name="deletedTag">%1$s etiketini şuradan sildi:</string>
     <string name="releasedBranch">%1$s sürümünü şurada yayınladı:</string>
-    <string name="syncedCommits">commit\'leri şuraya senkronize etti:</string>
+    <string name="syncedCommits">commit\'leri şuraya senkronize etti: %1$s</string>
     <string name="syncedRefs">yeni referans %1$s şuraya senkronize etti:</string>
     <string name="syncedDeletedRefs">referans %1$s şurada senkronize etti ve sildi:</string>
     <string name="attachment">Ek</string>
@@ -844,4 +869,17 @@
     <string name="fewest_forks">En az çatal</string>
     <string name="switch_account">Hesap değiştir</string>
     <string name="clear_cache_button_text">Önbelleği Temizle (%1$s)</string>
+    <string name="repository_not_exist">Depo mevcut değil</string>
+    <string name="select_provider">Sunucu sağlayıcısını seç</string>
+    <string name="provider_empty_error">Lütfen bir sunucu sağlayıcı seçin</string>
+    <string name="actions_counts">%1$s görev, %2$s çıktı dosyası ve %3$s çalıştırıcı</string>
+    <string name="create_variable">Değişken oluştur</string>
+    <string name="variable_name_error">Değişken adı gerekli</string>
+    <string name="variable_value_error">Değer gerekli</string>
+    <string name="variable_create_success">Değişken başarıyla oluşturuldu</string>
+    <string name="variable_create_failed">Değişken oluşturulamadı</string>
+    <string name="variable_name_invalid">İsim yalnızca alfanümerik karakterler veya alt çizgiler içermelidir</string>
+    <string name="create_variable_header">Değişkenler belirli işlemlere aktarılacak ve başka şekilde okunamayacaktır.</string>
+    <string name="variable_name_helper">Büyük/küçük harf duyarsız, yalnızca alfanümerik karakterler veya alt çizgi kullanılabilir, GITEA_ veya GITHUB_ ile başlayamaz</string>
+    <string name="variable_value_helper">Herhangi bir içerik girin. Başındaki ve sonundaki boşluklar dikkate alınmaz.</string>
 </resources>
