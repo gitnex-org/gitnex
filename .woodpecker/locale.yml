@@ -18,7 +18,7 @@ steps:
     when:
       event: [ push, tag ]
       branch: main
-      path: [ app/src/main/res/values/strings.xml, fastlane/metadata/android/en-US/*.txt, fastlane/metadata/android/en-US/changelogs/*.txt ]
+      path: [ app/src/main/res/values/strings.xml ]
 
   pull:
     image: crowdin/cli:3.16.0
