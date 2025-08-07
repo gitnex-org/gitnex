@@ -1,6 +1,0 @@
-Corrigé : Plantage en l’absence d’avatar de dépôt dans les nœuds de l’API. (Anciennes versions de Gitea)
-Corrigé : Problème de la barre de progression des jalons
-Corrigé : Problème pour activer/désactiver la création de nouveaux tickets
-
-Pour plus de détails, consultez les notes de version.
-https://codeberg.org/gitnex/GitNex/releases

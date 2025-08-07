@@ -1,5 +1,0 @@
-3.1.0-rc2
-
-El lanzamiento 3.1.0 RC2 nos trae mejoras en la multicuenta, eliminar y editar archivos, nuevos indicadores de progreso, etc.
-
-Las notas de lanzamiento detalladas serán publicadas en el lanzamiento estable.

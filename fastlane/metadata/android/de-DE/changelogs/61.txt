@@ -1,6 +1,0 @@
-Fehler: Crash wenn Repo-Avatar in API-Knoten nicht verfügbar ist. alte Gitea-Instanzen
-- Fehler: Meilenstein-Fortschrittsleiste behoben
-Fehler: Aktivieren/Deaktivieren beim Erstellen neuer Issues behoben
-
-Für mehr, siehe die Release-Anmerkungen.
-https://codeberg.org/gitnex/GitNex/releases

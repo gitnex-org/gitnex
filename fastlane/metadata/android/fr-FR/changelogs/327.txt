@@ -1,5 +1,0 @@
-3.3.0-rc1
-
-Cette version RC apporte des nouveaux champs de saisie, des nouveaux pop-ups, l’ouverture des liens dans les courriels ainsi que d’autres fonctionnalités et corrections.
-
-Les notes de version détaillées seront publiées avec la version stable.

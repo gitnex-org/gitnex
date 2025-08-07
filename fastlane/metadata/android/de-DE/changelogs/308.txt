@@ -1,5 +1,0 @@
-3.1.0-rc2
-
-3.1.0 RC2 bringt verbessertes Verhalten mit mehreren Accounts, löschen und bearbeiten von Dateien, neue Fortschrittsanzeigen etc.
-
-Ausführliche Release-Anmerkungen werden mit stabilem Release veröffentlicht.

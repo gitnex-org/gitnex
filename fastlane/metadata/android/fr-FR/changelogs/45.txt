@@ -1,7 +1,0 @@
-- Nouveau : Ajouter ou modifier le jalon d’un ticket
-- Nouveau : Champ pour la double authentification à l’écran de connexion
-- Amélioration : Gestion des bouttons en appelant l’API
-- Corrigé : Plantage lorsque la double authentification est utilisée sans saisir de mot de passe
-
-Pour plus de détails, consultez les notes de version.
-https://codeberg.org/gitnex/GitNex/releases

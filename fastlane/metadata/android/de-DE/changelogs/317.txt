@@ -1,5 +1,0 @@
-3.2.0-rc1
-
-3.2.0-rc1 bringt neue PRs, Repo-Einstellungen für Admins und vieles mehr.
-
-Ausführliche Release-Anmerkungen werden mit stabilem Release veröffentlicht.

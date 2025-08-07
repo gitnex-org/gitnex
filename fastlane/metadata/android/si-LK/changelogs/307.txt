@@ -1,5 +1,0 @@
-3.1.0-rc1
-
-1st RC of 3.1.0 which brings features like Multi Account support, forks list etc.
-
-Detailed release notes will be published with stable release.

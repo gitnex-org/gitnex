@@ -1,4 +1,0 @@
-Corrigé : Plantage dans « Mes dépôts » ou « Favoris » en accédant à un dépôt dépourvu d’avatar. (Anciennes versions de Gitea)
-
-Pour plus de détails, consultez les notes de version.
-https://codeberg.org/gitnex/GitNex/releases

@@ -1,6 +1,0 @@
-2.5.0-rc4
-
-Las notas de lanzamiento serán publicadas con el lanzamiento estable.
-Mientras tanto, puedes verificar los hitos de las incidencias que se han unido o cerrado.
-
-https://codeberg.org/gitnex/GitNex/milestone/296?type=all&state=closed

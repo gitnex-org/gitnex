@@ -1,5 +1,0 @@
-3.3.0-rc2
-
-Viele Fehler wurden in diesem Release behoben, einschließlich vieler UI-Verbesserungen.
-
-Ausführliche Release-Anmerkungen werden mit stabilem Release veröffentlicht.

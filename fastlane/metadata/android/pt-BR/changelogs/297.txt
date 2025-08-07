@@ -1,5 +1,0 @@
-3.0.0-rc3
-
-Este lançamento concentra-se em melhorias na interface de usuário do aplicativo, com poucas características novas, e correção de bugs reportados pelos usuários.
-
-Notas de versão detalhadas serão publicadas com a versão estável.

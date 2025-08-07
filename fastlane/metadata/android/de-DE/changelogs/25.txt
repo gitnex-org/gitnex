@@ -1,8 +1,0 @@
-- Neu: Mitarbeiter zu Repository hinzufügen
-- Neu: Kommentare bearbeiten
-- Neu: Follower anzeigen
-- Neu: Sehen, wem du folgst
-- Verbesserung: überarbeiteter Profilbildschirm
-- Verbesserung: "Bearbeitet"-Status für einzelne Issues und Kommentare hinzugefügt
-
-Release-Anmerkungen: https://codeberg.org/gitnex/GitNex/releases

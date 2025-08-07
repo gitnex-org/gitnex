@@ -1,8 +1,0 @@
-- Nouveau : Ajouter des participants au dépôt
-- Nouveau : Modifier ses propres commentaires
-- Nouveau : Voir ses observateurs
-- Nouveau : Voir les utilisateurs suivis
-- Amélioration : Écran de profil refondu
-- Amélioration : Ajout d’un indicateur de modification pour les tickets et les commentaires
-
-Notes de version : https://codeberg.org/gitnex/GitNex/releases

@@ -1,6 +1,0 @@
-2.5.0-rc4
-
-Notas de versão serão publicadas com a versão estável.
-Enquanto isso, confira os marcos para pull requests e problemas já mesclados/fechados.
-
-https://codeberg.org/gitnex/GitNex/milestone/296?type=all&state=closed

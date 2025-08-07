@@ -1,7 +1,0 @@
-- Nouveau : Modifier les tickets
-- Nouveau : Onglets pour les tickets ouverts et les tickets fermés
-- Amélioration : Traduction en allemand
-- Corrigé : Diverses incohérences dans l’agencement de l’IHM
-
-Pour plus de détails, consultez les notes de version.
-https://codeberg.org/gitnex/GitNex/releases

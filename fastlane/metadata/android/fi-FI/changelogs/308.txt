@@ -1,5 +1,0 @@
-3.1.0-rc2
-
-3.1.0 RC2 release brings enhanced multi accounts, delete and edit files, new progress indicators etc.
-
-Detailed release notes will be published with stable release.

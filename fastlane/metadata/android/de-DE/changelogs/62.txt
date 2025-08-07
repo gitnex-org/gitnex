@@ -1,4 +1,0 @@
-Fehler: Crash bei fehlendem Repo-Avatar alte Gitea-Instanzen
-
-Für mehr, siehe die Release-Anmerkungen.
-https://codeberg.org/gitnex/GitNex/releases

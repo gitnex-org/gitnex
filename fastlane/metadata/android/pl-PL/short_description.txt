@@ -1,1 +1,0 @@
-Natywny klient dla Forgejo i Gitea

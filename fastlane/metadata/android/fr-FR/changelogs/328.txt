@@ -1,5 +1,0 @@
-3.3.0-rc2
-
-Cette version contient de nombreuses corrections de bogues et d’améliorations d’IHM.
-
-Les notes de version détaillées seront publiées avec la version stable.

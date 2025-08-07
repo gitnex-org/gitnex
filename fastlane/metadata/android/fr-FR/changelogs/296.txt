@@ -1,6 +1,0 @@
-3.0.0-rc2
-
-Les notes de version détaillées seront publiées avec la version stable.
-En attendant, vous pouvez consulter les demandes d’ajout fusionnées et les tickets fermés pour ce prochain jalon.
-
-https://codeberg.org/gitnex/GitNex/milestone/304?state=closed

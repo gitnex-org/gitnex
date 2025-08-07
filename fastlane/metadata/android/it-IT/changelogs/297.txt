@@ -1,5 +1,0 @@
-3.0.0-rc3
-
-Questa versione mira a migliorare l'interfaccia utente con alcune nuove funzioni e sistema i difetti da voi segnalati finora.
-
-Note di rilascio dettagliate saranno pubblicate con la versione stabile.

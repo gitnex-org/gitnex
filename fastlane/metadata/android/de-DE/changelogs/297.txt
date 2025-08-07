@@ -1,5 +1,0 @@
-3.0.0-rc3
-
-Dieses Release verbessert die UI der App mit wenigen neues Features und behobenen Fehler.
-
-Ausführliche Release-Anmerkungen werden mit stabilem Release veröffentlicht.

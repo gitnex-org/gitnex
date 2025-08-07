@@ -1,6 +1,0 @@
-2.5.0-rc1
-
-Las notas de lanzamiento serán publicadas en el lanzamiento estable.
-Mientras tanto, puedes verificar las incidencias que se han unido o cerrado en CodeBerg.
-
-https://codeberg.org/gitnex/GitNex/milestone/296?type=all&state=closed

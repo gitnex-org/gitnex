@@ -1,7 +1,0 @@
-- Nuevo: Editar incidencias
-- Nuevo: Pestañas para las incidencias abiertas y cerradas
-- Mejora: Traducción al alemán
-- Corregido: Corregidos de diseño en toda la aplicación
-
-Y mucho más, revisa las notas de lanzamiento.
-https://codeberg.org/gitnex/GitNex/releases

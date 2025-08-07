@@ -1,8 +1,0 @@
-- Yeni: Depoya işbirlikçi ekleme
-- Yeni: Kullanıcı artık kendi yorumlarını düzenleyebilir
-- Yeni: Sizi kimlerin takip ettiğini görün
-- Yeni: Kimleri takip ettiğinizi görün
-- Geliştirme: Profil ekranı yeniden tasarlandı
-- Geliştirme: Tek mesele ve yorumlar için düzenlendi durumu eklendi
-
-Sürüm notları: https://codeberg.org/gitnex/GitNex/releases

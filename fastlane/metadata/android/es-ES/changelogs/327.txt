@@ -1,5 +1,0 @@
-3.3.0-rc1
-
-El lanzamiento 3.3.0 rc1 nos trae un nuevo diseño, nuevas notificaciones, abrir enlaces desde correo incluyendo otras características y arreglos de errores.
-
-Notas de lanzamiento detalladas serán publicadas en el lanzamiento estable.

@@ -1,6 +1,0 @@
-2.5.0-rc1
-
-在稳定版本发布时将会有更详细的日志。
-同时检查里程碑中被合并/关闭的合并请求和问题。
-
-https://codeberg.org/gitnex/GitNex/milestone/296?type=all&state=closed

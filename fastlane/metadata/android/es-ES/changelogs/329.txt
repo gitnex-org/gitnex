@@ -1,5 +1,0 @@
-3.3.0-rc3
-
-Último candidato a versión final antes del lanzamiento estable 3.3.0. Incluye arreglos de errores, mejoras en la interfaz y mejoras en las reacciones con emoticonos en las incidencias o PR.
-
-Notas de lanzamiento detalladas serán publicadas en el lanzamiento estable.

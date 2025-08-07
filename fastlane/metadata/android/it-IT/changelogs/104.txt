@@ -1,6 +1,0 @@
-2.5.0-rc4
-
-Le note di rilascio saranno pubblicate con la versione stabile.
-Nel frattempo controlla il programma per richieste e problemi inseriti/risolti.
-
-https://codeberg.org/gitnex/GitNex/milestone/296?type=all&state=closed

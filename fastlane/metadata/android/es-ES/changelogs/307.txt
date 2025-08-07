@@ -1,5 +1,0 @@
-3.1.0-rc1
-
-El lanzamiento 3.1.0-RC1 nos trae soporte a la multicuenta y listas de bifurcaciones.
-
-Las notas de lanzamiento detalladas serán publicadas en el lanzamiento estable.

@@ -1,5 +1,0 @@
-3.2.0-rc1
-
-El lanzamiento 3.2.0 RC1 nos trae creaciones de PR, ajustes de repositorio para administradores y varias características más.
-
-Las notas de lanzamiento detalladas serán publicadas en el lanzamiento estable.

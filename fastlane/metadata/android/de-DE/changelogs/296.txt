@@ -1,6 +1,0 @@
-3.0.0-rc2
-
-Release-Anmerkungen werden mit stabilem Release veröffentlicht.
-Schaue den Meilenstein für geschlossene/zusammengeführte Pull-Requests und Issues an.
-
-https://codeberg.org/gitnex/GitNex/milestone/304?state=closed

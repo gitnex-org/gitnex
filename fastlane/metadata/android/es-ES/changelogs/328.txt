@@ -1,5 +1,0 @@
-3.3.0-rc2
-
-Varios errores han sido solucionados en este lanzamiento, incluyendo varias mejoras en la interfaz de usuario.
-
-Las notas de lanzamiento detalladas serán publicadas en el lanzamiento estable.

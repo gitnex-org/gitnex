@@ -1,5 +1,0 @@
-3.3.0-rc1
-
-3.3.0-rc1 bringt ein neues Eingabedesign, neue Popups, das Öffnen von Links und andere Features zusammen mit Verbesserungen und Fehlerbehebungen.
-
-Ausführliche Release-Anmerkungen werden mit stabilem Release veröffentlicht.

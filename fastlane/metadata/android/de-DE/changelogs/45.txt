@@ -1,7 +1,0 @@
-- Neu: Meilenstein hinzufügen oder bearbeiten
-- Neu: 2FA beim Anmelden
-- Verbesserung: Besseres Verhalten von Buttons auf API-Aufrufen
-- Fehler: Crash bei leerem Passwort mit OTP
-
-Für mehr, siehe die Release-Anmerkungen.
-https://codeberg.org/gitnex/GitNex/releases

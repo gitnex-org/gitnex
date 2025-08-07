@@ -1,1 +1,0 @@
-Forgejo ve Gitea için yerel istemci

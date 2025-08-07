@@ -1,5 +1,0 @@
-3.3.0-rc1
-
-3.3.0 rc1 release brings new input design, new popups, open links from email and including other features with improvements and bug fixes.
-
-Detail release notes will be published with stable release.

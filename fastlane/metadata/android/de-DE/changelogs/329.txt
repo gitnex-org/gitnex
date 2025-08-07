@@ -1,5 +1,0 @@
-3.3.0-rc3
-
-Letzter Release-Kandidat (RC) vor 3.0.0, enthält Fehlerbehebungen, UI-Verbesserungen und Issue/PR-Reaktionen.
-
-Ausführliche Release-Anmerkungen werden mit stabilem Release veröffentlicht.

@@ -1,7 +1,0 @@
-- Neu: Issue bearbeiten
-- New: Tabs für offene/geschlossene Issues
-- Verbesserung: deutsche Übersetzung
-- Fehler: Layouts behoben
-
-Für mehr, siehe die Release-Anmerkungen.
-https://codeberg.org/gitnex/GitNex/releases

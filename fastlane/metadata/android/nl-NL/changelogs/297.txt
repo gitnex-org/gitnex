@@ -1,5 +1,0 @@
-3.0.0-rc3
-
-This release focuses to enhance the UI through out the app with few new features and fix the bugs you guys reported so far.
-
-Detailed release notes will be published with the stable release.

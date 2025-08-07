@@ -1,5 +1,0 @@
-3.3.0-rc3
-
-Cette dernière RC avant la version 3.3.0 stable apporte des corrections de bogues, des améliorations d’IHM ainsi que les réactions aux tickets et demandes d’ajout.
-
-Les notes de version détaillées seront publiées avec la version stable.

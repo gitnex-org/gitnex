@@ -1,5 +1,0 @@
-3.0.0-rc3
-
-Cette versions RC apporte peu de nouveautés, mais améliore l’IHM en général et corrige les problèmes remontés par la communauté.
-
-Les notes de version détaillées seront publiées avec la version stable.
