@@ -4,7 +4,7 @@
 
 # GitNex - Android client for Forgejo and Gitea
 
-GitNex is a free/paid, open-source Android client for the Git repository management tools Forgejo and Gitea.
+GitNex is a FOSS (available both as gratis & paid) Android client, for the Git repository management tools Forgejo and Gitea.
 
 GitNex is licensed under the GPLv3 License. Please refer to the LICENSE file for the full text of the license. **No trackers are used**, and the source code is available here for anyone to audit.
 
@@ -18,7 +18,7 @@ GitNex is licensed under the GPLv3 License. Please refer to the LICENSE file for
 
 ## Note about Forgejo and Gitea version
 
-Please make sure that you are on the latest stable release or later for a better app experience.
+Please make sure that you are on the latest stable release or later, for the best experience.
 
 Check the version [compatibility page](https://codeberg.org/gitnex/GitNex/wiki/Compatibility), which lists all the supported versions along with their compatibility ratios.
 
@@ -40,17 +40,15 @@ Option 2 - Open the terminal (Linux) and navigate to the project directory. Then
 - Notifications
 - Notes
 - Repositories / issues list
-- [& more...](https://codeberg.org/gitnex/GitNex/wiki/Features)
+- [and much more...](https://codeberg.org/gitnex/GitNex/wiki/Features)
 
 ## Contributing
 
-[Contributing](https://codeberg.org/gitnex/GitNex/wiki/Contributing)
+For information regarding contribution guidelines, click [here](https://codeberg.org/gitnex/GitNex/wiki/Contributing).
 
 ## Translation
 
-Help us translate GitNex into your native language.
-
-We use [Crowdin](https://crowdin.com/project/gitnex) for translations. If your language is not listed, please request to add it to the project [here](https://codeberg.org/gitnex/GitNex/issues).
+We use [Crowdin](https://crowdin.com/project/gitnex) for translations; if you can, please improve the translation for your language. If your language is not listed, please request to add it to the project [here](https://codeberg.org/gitnex/GitNex/issues).
 
 **Link: https://crowdin.com/project/GitNex**
 
@@ -66,15 +64,15 @@ We use [Crowdin](https://crowdin.com/project/gitnex) for translations. If your l
 
 [Wiki](https://codeberg.org/gitnex/GitNex/wiki/Home)
 
-[Troubleshoot Guide](https://codeberg.org/gitnex/GitNex/wiki/Troubleshoot-Guide)
+[Troubleshooting Guide](https://codeberg.org/gitnex/GitNex/wiki/Troubleshoot-Guide)
 
-[Faq](https://codeberg.org/gitnex/GitNex/wiki/FAQ)
+[FAQ](https://codeberg.org/gitnex/GitNex/wiki/FAQ)
 
 [Release Blog](https://gitnex.codeberg.page)
 
 ## Thanks
 
-Thanks to all the open source libraries, contributors, and donors.
+Thank you to all the open source libraries, contributors, and donors.
 
 #### Open source libraries
 
@@ -104,10 +102,12 @@ Thanks to all the open source libraries, contributors, and donors.
 
 ## Social
 
-[Follow me on Fediverse - mastodon.social/@mmarif](https://mastodon.social/@mmarif)
+Below are my social media profiles:
 
-[Follow me on Bluesky - mmarif.bsky.social](https://bsky.app/profile/mmarif.bsky.social)
+- [@mmarif@mastodon.social](https://mastodon.social/@mmarif)
 
-[Follow me on X](https://x.com/mmarif08)
+- [mmarif.bsky.social](https://bsky.app/profile/mmarif.bsky.social)
+
+- [X profile](https://x.com/mmarif08)
 
 *All trademarks and logos are the properties of their respective owners.*
