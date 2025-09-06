@@ -1,0 +1,11 @@
+10.0.1
+
+🚀 Improvements 🚀
+- Added user agent to interceptor to avoid blocks
+- Improve translation
+
+🐛 Bug Fixes 🐛
+- Fixed crash on older Android versions
+- Resolved text cutoff issue in the settings appearance screen
+
+Release Notes: https://codeberg.org/gitnex/GitNex/releases
