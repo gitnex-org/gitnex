@@ -6,7 +6,9 @@ import javax.net.ssl.HttpsURLConnection;
 import javax.net.ssl.SSLContext;
 import javax.net.ssl.X509TrustManager;
 import okhttp3.OkHttpClient;
+import okhttp3.Request;
 import org.gitnex.tea4j.v2.auth.ApiKeyAuth;
+import org.mian.gitnex.helpers.AppUtil;
 import org.mian.gitnex.helpers.ssl.MemorizingTrustManager;
 
 /**
@@ -30,6 +32,24 @@ public class GlideHttpClient {
 							.hostnameVerifier(
 									memorizingTrustManager.wrapHostnameVerifier(
 											HttpsURLConnection.getDefaultHostnameVerifier()))
+							.addInterceptor(
+									chain -> {
+										Request originalRequest = chain.request();
+										Request modifiedRequest =
+												originalRequest
+														.newBuilder()
+														.header(
+																"User-Agent",
+																"GitNex/"
+																		+ AppUtil.getAppVersion(
+																				context)
+																		+ " (Android "
+																		+ android.os.Build.VERSION
+																				.RELEASE
+																		+ ")")
+														.build();
+										return chain.proceed(modifiedRequest);
+									})
 							.addInterceptor(auth);
 
 			return builder.build();

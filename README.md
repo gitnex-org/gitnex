@@ -20,8 +20,6 @@ GitNex is licensed under the GPLv3 License. Please refer to the LICENSE file for
 
 Please make sure that you are on the latest stable release or later for a better app experience.
 
-Check the version [compatibility page](https://codeberg.org/gitnex/GitNex/wiki/Compatibility), which lists all the supported versions along with their compatibility ratios.
-
 ## Build from source
 
 Option 1 - Download the source code, open it in Android Studio, and build it there.
