@@ -195,24 +195,29 @@
 
         </LinearLayout>
 
-        <LinearLayout
+        <!-- Counter Badge Frame -->
+        <androidx.constraintlayout.widget.ConstraintLayout
             android:id="@+id/counterBadgeFrame"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="@dimen/dimen24dp"
             android:paddingStart="@dimen/dimen16dp"
-            android:paddingEnd="@dimen/dimen16dp"
-            android:orientation="horizontal">
+            android:paddingEnd="@dimen/dimen16dp">
 
             <TextView
                 android:id="@+id/tvCounterBadgeHeader"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
-                android:layout_weight="0.90"
                 android:text="@string/settingsCounterBadges"
                 android:textColor="?attr/primaryTextColor"
-                android:layout_marginTop="@dimen/dimen4dp"
-                android:textSize="@dimen/dimen16sp" />
+                android:layout_marginTop="@dimen/dimen8dp"
+                android:textSize="@dimen/dimen16sp"
+                android:singleLine="false"
+                android:ellipsize="none"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintEnd_toStartOf="@id/guidelineCounter"
+                app:layout_constraintTop_toTopOf="parent"
+                android:layout_marginEnd="@dimen/dimen12dp" />
 
             <com.google.android.material.materialswitch.MaterialSwitch
                 android:id="@+id/switchCounterBadge"
@@ -220,141 +225,187 @@
                 android:layout_height="wrap_content"
                 android:contentDescription="@string/settingsCounterBadges"
                 style="@style/m3SwitchStyle"
-                android:layout_weight="0.10" />
+                app:layout_constraintStart_toEndOf="@id/tvCounterBadgeHeader"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintTop_toTopOf="@id/tvCounterBadgeHeader"
+                app:layout_constraintBottom_toBottomOf="@id/tvCounterBadgeHeader" />
 
-        </LinearLayout>
+            <androidx.constraintlayout.widget.Guideline
+                android:id="@+id/guidelineCounter"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                app:layout_constraintGuide_percent="0.85" />
 
-        <LinearLayout
+        </androidx.constraintlayout.widget.ConstraintLayout>
+
+        <!-- Labels in List Frame -->
+        <androidx.constraintlayout.widget.ConstraintLayout
             android:id="@+id/labelsInListFrame"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="@dimen/dimen24dp"
             android:paddingStart="@dimen/dimen16dp"
-            android:paddingEnd="@dimen/dimen16dp"
-            android:orientation="vertical">
-
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:orientation="horizontal">
-
-                <TextView
-                    android:id="@+id/tvLabelsInListHeader"
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:layout_weight="0.90"
-                    android:text="@string/settingsLabelsInListHeader"
-                    android:textColor="?attr/primaryTextColor"
-                    android:layout_marginTop="@dimen/dimen4dp"
-                    android:textSize="@dimen/dimen16sp" />
-
-                <com.google.android.material.materialswitch.MaterialSwitch
-                    android:id="@+id/switchLabelsInListBadge"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:contentDescription="@string/settingsLabelsInListHeader"
-                    style="@style/m3SwitchStyle"
-                    android:layout_weight="0.10" />
-
-            </LinearLayout>
+            android:paddingEnd="@dimen/dimen16dp">
 
             <TextView
-                android:layout_width="wrap_content"
+                android:id="@+id/tvLabelsInListHeader"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:text="@string/settingsLabelsInListHeader"
+                android:textColor="?attr/primaryTextColor"
+                android:layout_marginTop="@dimen/dimen8dp"
+                android:textSize="@dimen/dimen16sp"
+                android:singleLine="false"
+                android:ellipsize="none"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintEnd_toStartOf="@id/guidelineLabels"
+                app:layout_constraintTop_toTopOf="parent"
+                android:layout_marginEnd="@dimen/dimen12dp" />
+
+            <TextView
+                android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="@dimen/dimen4dp"
                 android:text="@string/settingsLabelsInListHint"
                 android:textColor="?attr/hintColor"
-                android:textSize="@dimen/dimen12sp" />
+                android:textSize="@dimen/dimen12sp"
+                android:layout_marginEnd="@dimen/dimen12dp"
+                app:layout_constraintStart_toStartOf="@id/tvLabelsInListHeader"
+                app:layout_constraintTop_toBottomOf="@id/tvLabelsInListHeader"
+                app:layout_constraintEnd_toStartOf="@id/guidelineLabels" />
 
-        </LinearLayout>
+            <com.google.android.material.materialswitch.MaterialSwitch
+                android:id="@+id/switchLabelsInListBadge"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:contentDescription="@string/settingsLabelsInListHeader"
+                style="@style/m3SwitchStyle"
+                app:layout_constraintStart_toEndOf="@id/tvLabelsInListHeader"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintTop_toTopOf="@id/tvLabelsInListHeader"
+                app:layout_constraintBottom_toBottomOf="@id/tvLabelsInListHeader" />
 
-        <LinearLayout
+            <androidx.constraintlayout.widget.Guideline
+                android:id="@+id/guidelineLabels"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                app:layout_constraintGuide_percent="0.85" />
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
+
+        <!-- Hide Email/Lang in Profile Frame -->
+        <androidx.constraintlayout.widget.ConstraintLayout
             android:id="@+id/hideEmailLangInProfileFrame"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="@dimen/dimen24dp"
             android:paddingStart="@dimen/dimen16dp"
-            android:paddingEnd="@dimen/dimen16dp"
-            android:orientation="vertical">
-
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:orientation="horizontal">
-
-                <TextView
-                    android:id="@+id/tvHideEmailLangInProfileHeader"
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:layout_weight="0.90"
-                    android:text="@string/hideEmailLangInProfileHeader"
-                    android:textColor="?attr/primaryTextColor"
-                    android:layout_marginTop="@dimen/dimen4dp"
-                    android:textSize="@dimen/dimen16sp" />
-
-                <com.google.android.material.materialswitch.MaterialSwitch
-                    android:id="@+id/switchHideEmailLangInProfile"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:contentDescription="@string/hideEmailLangInProfileHeader"
-                    style="@style/m3SwitchStyle"
-                    android:layout_weight="0.10" />
-
-            </LinearLayout>
+            android:paddingEnd="@dimen/dimen16dp">
 
             <TextView
-                android:layout_width="wrap_content"
+                android:id="@+id/tvHideEmailLangInProfileHeader"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:text="@string/hideEmailLangInProfileHeader"
+                android:textColor="?attr/primaryTextColor"
+                android:layout_marginTop="@dimen/dimen8dp"
+                android:textSize="@dimen/dimen16sp"
+                android:singleLine="false"
+                android:ellipsize="none"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintEnd_toStartOf="@id/guidelineProfile"
+                app:layout_constraintTop_toTopOf="parent"
+                android:layout_marginEnd="@dimen/dimen12dp" />
+
+            <TextView
+                android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="@dimen/dimen4dp"
                 android:text="@string/hideEmailLangInProfileHint"
                 android:textColor="?attr/hintColor"
-                android:textSize="@dimen/dimen12sp" />
+                android:textSize="@dimen/dimen12sp"
+                android:layout_marginEnd="@dimen/dimen12dp"
+                app:layout_constraintStart_toStartOf="@id/tvHideEmailLangInProfileHeader"
+                app:layout_constraintTop_toBottomOf="@id/tvHideEmailLangInProfileHeader"
+                app:layout_constraintEnd_toStartOf="@id/guidelineProfile" />
 
-        </LinearLayout>
+            <com.google.android.material.materialswitch.MaterialSwitch
+                android:id="@+id/switchHideEmailLangInProfile"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:contentDescription="@string/hideEmailLangInProfileHeader"
+                style="@style/m3SwitchStyle"
+                app:layout_constraintStart_toEndOf="@id/tvHideEmailLangInProfileHeader"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintTop_toTopOf="@id/tvHideEmailLangInProfileHeader"
+                app:layout_constraintBottom_toBottomOf="@id/tvHideEmailLangInProfileHeader" />
 
-        <LinearLayout
+            <androidx.constraintlayout.widget.Guideline
+                android:id="@+id/guidelineProfile"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                app:layout_constraintGuide_percent="0.85" />
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
+
+        <!-- Hide Email in Nav Drawer Frame -->
+        <androidx.constraintlayout.widget.ConstraintLayout
             android:id="@+id/hideEmailNavDrawerFrame"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="@dimen/dimen24dp"
             android:paddingStart="@dimen/dimen16dp"
-            android:paddingEnd="@dimen/dimen16dp"
-            android:orientation="vertical">
-
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:orientation="horizontal">
-
-                <TextView
-                    android:id="@+id/tvHideEmailNavDrawerHeader"
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:layout_weight="0.90"
-                    android:text="@string/hideEmailNavDrawerHeader"
-                    android:textColor="?attr/primaryTextColor"
-                    android:layout_marginTop="@dimen/dimen4dp"
-                    android:textSize="@dimen/dimen16sp" />
-
-                <com.google.android.material.materialswitch.MaterialSwitch
-                    android:id="@+id/switchHideEmailNavDrawer"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:contentDescription="@string/hideEmailNavDrawerHeader"
-                    style="@style/m3SwitchStyle"
-                    android:layout_weight="0.10" />
-
-            </LinearLayout>
+            android:paddingEnd="@dimen/dimen16dp">
 
             <TextView
-                android:layout_width="wrap_content"
+                android:id="@+id/tvHideEmailNavDrawerHeader"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:text="@string/hideEmailNavDrawerHeader"
+                android:textColor="?attr/primaryTextColor"
+                android:layout_marginTop="@dimen/dimen8dp"
+                android:textSize="@dimen/dimen16sp"
+                android:singleLine="false"
+                android:ellipsize="none"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintEnd_toStartOf="@id/guidelineEmail"
+                app:layout_constraintTop_toTopOf="parent"
+                android:layout_marginEnd="@dimen/dimen12dp" />
+
+            <TextView
+                android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="@dimen/dimen4dp"
                 android:text="@string/hideEmailNavDrawerHint"
                 android:textColor="?attr/hintColor"
-                android:textSize="@dimen/dimen12sp" />
+                android:textSize="@dimen/dimen12sp"
+                android:layout_marginEnd="@dimen/dimen12dp"
+                app:layout_constraintStart_toStartOf="@id/tvHideEmailNavDrawerHeader"
+                app:layout_constraintTop_toBottomOf="@id/tvHideEmailNavDrawerHeader"
+                app:layout_constraintEnd_toStartOf="@id/guidelineEmail" />
 
-        </LinearLayout>
+            <com.google.android.material.materialswitch.MaterialSwitch
+                android:id="@+id/switchHideEmailNavDrawer"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:contentDescription="@string/hideEmailNavDrawerHeader"
+                style="@style/m3SwitchStyle"
+                app:layout_constraintStart_toEndOf="@id/tvHideEmailNavDrawerHeader"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintTop_toTopOf="@id/tvHideEmailNavDrawerHeader"
+                app:layout_constraintBottom_toBottomOf="@id/tvHideEmailNavDrawerHeader" />
+
+            <androidx.constraintlayout.widget.Guideline
+                android:id="@+id/guidelineEmail"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                app:layout_constraintGuide_percent="0.85" />
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
 
         <LinearLayout
             android:id="@+id/langFrame"
