@@ -80,6 +80,23 @@ public class RetrofitClient {
 									memorizingTrustManager.wrapHostnameVerifier(
 											HttpsURLConnection.getDefaultHostnameVerifier()));
 
+			okHttpClient.addInterceptor(
+					chain -> {
+						Request originalRequest = chain.request();
+						Request modifiedRequest =
+								originalRequest
+										.newBuilder()
+										.header(
+												"User-Agent",
+												"GitNex/"
+														+ AppUtil.getAppVersion(context)
+														+ " (Android "
+														+ android.os.Build.VERSION.RELEASE
+														+ ")")
+										.build();
+						return chain.proceed(modifiedRequest);
+					});
+
 			if (cacheFile != null) {
 				int cacheSize = CACHE_SIZE_MB;
 				try {

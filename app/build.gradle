@@ -117,7 +117,7 @@ dependencies {
     coreLibraryDesugaring "com.android.tools:desugar_jdk_libs:2.1.5"
     implementation 'androidx.biometric:biometric:1.1.0'
     //noinspection GradleDependency
-    implementation 'com.github.chrisvest:stormpot:3.2'
+    implementation 'com.github.chrisvest:stormpot:2.4.2'
     implementation 'androidx.browser:browser:1.8.0'
     implementation 'com.google.android.flexbox:flexbox:3.0.0'
     implementation('org.codeberg.gitnex:tea4j-autodeploy:fa90c7d20a') {
