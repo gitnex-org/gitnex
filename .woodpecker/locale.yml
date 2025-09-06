@@ -11,15 +11,6 @@ steps:
       event: [ push, tag, cron ]
       branch: main
 
-  push:
-    image: crowdin/cli:3.16.0
-    commands:
-      - crowdin push
-    when:
-      event: [ push, tag ]
-      branch: main
-      path: [ app/src/main/res/values/strings.xml ]
-
   pull:
     image: crowdin/cli:3.16.0
     # we do not need to update the config file again since it persists
