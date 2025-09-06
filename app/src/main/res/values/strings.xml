@@ -315,7 +315,7 @@
     <string name="teamPermissionNone">• Members of this team do not have any permissions.</string>
     <string name="teamPermissionRead">• Members of this team can view team repositories.</string>
     <string name="teamPermissionWrite">• Members of this team can view and push to team repositories.</string>
-    <string name="teamPermissionAdmin">• Members of this team can push to and from team repositories and add collaborators.</string>
+    <string name="teamPermissionAdmin">• Team members can push to and pull from team repositories and add collaborators to them.</string>
     <string name="teamPermissionOwner">• Members of this team have owner permissions.</string>
     <string name="teamShowAll">show all</string>
     <string name="orgMember">Org members</string>
@@ -339,7 +339,7 @@
     <string name="newTeamAccessControls">Access Controls</string>
     <string name="newTeamPermissionRead">Members can view and clone team repositories</string>
     <string name="newTeamPermissionWrite">Members can read and push to team repositories</string>
-    <string name="newTeamPermissionAdmin">Members can pull and push to team repositories and add collaborators to them</string>
+    <string name="newTeamPermissionAdmin">Members can pull from and push to team repositories and add collaborators to them</string>
     <string name="newTeamPermissionValues" translatable="false">%1$s%2$s,\u0020</string>
     <string name="newTeamPermissionValuesFinal" translatable="false">%1$s%2$s,\u0020</string>
     <string name="teamNameEmpty">Please enter team name</string>
@@ -638,7 +638,7 @@
     <string name="deleteBranchAfterMerge">Delete branch after merge</string>
     <string name="mergeNoteText">Merge may fail if you are not authorized to merge this Pull Request.</string>
     <string name="mergeInfoDisabledMessage">Disabled Merge button means that there are conflicts OR other things to fix before Merge</string>
-    <string name="deleteBranchForkInfo">This branch belong to a forked repository</string>
+    <string name="deleteBranchForkInfo">This branch belongs to a forked repository</string>
     <string name="mergeCommentText">Merge comment</string>
     <string name="mergePRSuccessMsg">Pull Request was merged successfully</string>
     <string name="mergePR404ErrorMsg">Pull Request is not available for merge</string>
@@ -818,7 +818,7 @@
 
     <string name="accountDoesNotExist">It seems that the account for URI %1$s does not exist in the app. You can add one by tapping on the Add New Account button.</string>
     <string name="launchApp">Go to App</string>
-    <string name="noActionText">GitNex cannot handle the requested resource. You can open an issue at the project repository as an improvement, providing details of the work. Just launch a default screen for now from the buttons below; it can be changed from settings.</string>
+    <string name="noActionText">GitNex cannot handle the requested resource. You can open an issue in the project repository for improvement, providing details of the work. Launch the default screen from the buttons below; it can be changed in settings.</string>
 
     <string name="biometricAuthTitle">Biometric Authentication</string>
     <string name="biometricAuthSubTitle">Unlock using your biometric credentials</string>
@@ -864,7 +864,7 @@
     <string name="tagDeleted">Tag deleted</string>
     <string name="tagDeleteError">A tag attached to a release cannot be deleted directly</string>
     <string name="useCustomTabs">Use Custom Tabs</string>
-    <string name="browserOpenFailed">No application found to open this link. SSH URLs and URLs with another prefix the http:// or https:// are not supported by most browser</string>
+    <string name="browserOpenFailed">No application was found to open this link. SSH URLs and URLs with prefixes other than http:// or https:// are not supported by most browsers</string>
 
     <string name="notLoggedIn">%s \u25CF not logged in</string>
     <string name="followSystem">Follow system (Light/Dark)</string>
