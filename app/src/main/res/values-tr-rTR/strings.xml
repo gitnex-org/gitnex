@@ -237,7 +237,7 @@
     <string name="teamPermissionNone">• Bu takımın üyelerinin herhangi bir izni yoktur.</string>
     <string name="teamPermissionRead">• Bu takımın üyeleri takım depolarını görüntüleyebilir.</string>
     <string name="teamPermissionWrite">• Bu takımın üyeleri takım depolarını görüntüleyebilir ve bu depolara push yapabilir.</string>
-    <string name="teamPermissionAdmin">• Bu takımın üyeleri takım depolarına push yapabilir, depolardan pull yapabilir ve katkıda bulunan ekleyebilir.</string>
+    <string name="teamPermissionAdmin">• Takım üyeleri, takım depolarına gönderme (push) ve alma (pull) işlemleri yapabilir ve onlara işbirlikçi ekleyebilir.</string>
     <string name="teamPermissionOwner">• Bu takımın üyeleri sahip izinlerine sahiptir.</string>
     <string name="teamShowAll">tümünü göster</string>
     <string name="orgMember">Organizasyon üyeleri</string>
@@ -260,7 +260,7 @@
     <string name="newTeamAccessControls">Erişim Kontrolleri</string>
     <string name="newTeamPermissionRead">Üyeler takım depolarını görüntüleyebilir ve klonlayabilir</string>
     <string name="newTeamPermissionWrite">Üyeler takım depolarını okuyabilir ve bu depolara push yapabilir</string>
-    <string name="newTeamPermissionAdmin">Üyeler takım depolarına pull/push yapabilir ve onlara katkıda bulunan ekleyebilir</string>
+    <string name="newTeamPermissionAdmin">Üyeler, takım depolarına alma (pull) ve gönderme (push) işlemleri yapabilir ve onlara işbirlikçi ekleyebilir</string>
     <string name="teamNameEmpty">Lütfen takım adı girin</string>
     <string name="teamNameError">Takım adı yalnızca alfanümerik, tire (-), alt çizgi (_) ve nokta (.) karakterleri içermelidir</string>
     <string name="teamPermissionEmpty">Lütfen izin seçin</string>
@@ -526,7 +526,7 @@
     <string name="deleteBranchAfterMerge">Birleştirmeden sonra dalı sil</string>
     <string name="mergeNoteText">Bu Çekme İsteğini birleştirme yetkiniz yoksa birleştirme başarısız olabilir.</string>
     <string name="mergeInfoDisabledMessage">Devre dışı bırakılmış Birleştir düğmesi, birleştirmeden önce çakışmaların VEYA düzeltilmesi gereken başka şeylerin olduğu anlamına gelir</string>
-    <string name="deleteBranchForkInfo">Bu dal çatallanmış bir depoya aittir</string>
+    <string name="deleteBranchForkInfo">Bu dal, çatallanan (forked) bir depoya aittir</string>
     <string name="mergeCommentText">Birleştirme yorumu</string>
     <string name="mergePRSuccessMsg">Çekme İsteği başarıyla birleştirildi</string>
     <string name="mergePR404ErrorMsg">Çekme İsteği birleştirme için uygun değil</string>
@@ -686,7 +686,7 @@
     <string name="pr_info">%1$s, %2$s dalını %3$s dalına birleştirmek istiyor</string>
     <string name="accountDoesNotExist">%1$s URI\'si için hesap uygulamada mevcut değil gibi görünüyor. Yeni Hesap Ekle düğmesine dokunarak bir tane ekleyebilirsiniz.</string>
     <string name="launchApp">Uygulamaya Git</string>
-    <string name="noActionText">GitNex istenen kaynağı işleyemiyor. Bir iyileştirme olarak proje deposunda, işin ayrıntılarını sağlayarak bir mesele açabilirsiniz. Şimdilik aşağıdaki düğmelerden varsayılan bir ekran başlatın; bu ayar ayarlardan değiştirilebilir.</string>
+    <string name="noActionText">GitNex istenen kaynağı işleyemiyor. İyileştirme için proje deposunda bir konu (issue) açabilir ve çalışmaya dair ayrıntıları sağlayabilirsiniz. Aşağıdaki düğmelerden varsayılan ekranı başlatın; bu, ayarlardan değiştirilebilir.</string>
     <string name="biometricAuthTitle">Biyometrik Kimlik Doğrulama</string>
     <string name="biometricAuthSubTitle">Biyometrik kimlik bilgilerinizi kullanarak kilidi açın</string>
     <string name="biometricNotSupported">Bu cihazda biyometrik özellikler mevcut değil</string>
@@ -725,7 +725,7 @@
     <string name="tagDeleted">Etiket silindi</string>
     <string name="tagDeleteError">Bir sürüme bağlı etiket doğrudan silinemez</string>
     <string name="useCustomTabs">Özel Sekmeleri Kullan</string>
-    <string name="browserOpenFailed">Bu bağlantıyı açacak bir uygulama bulunamadı. SSH URL\'leri ve http:// veya https:// dışında bir öneke sahip URL\'ler çoğu tarayıcı tarafından desteklenmez</string>
+    <string name="browserOpenFailed">Bu bağlantıyı açmak için bir uygulama bulunamadı. SSH URL’leri ve http:// veya https:// dışındaki ön eklerle başlayan URL’ler çoğu tarayıcı tarafından desteklenmez</string>
     <string name="notLoggedIn">%s \u25CF giriş yapılmadı</string>
     <string name="followSystem">Sistemi takip et (Açık/Koyu)</string>
     <string name="followSystemBlack">Sistemi takip et (Açık/Zifiri Siyah)</string>
