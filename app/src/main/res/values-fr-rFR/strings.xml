@@ -11,7 +11,7 @@
     <string name="navRate">Noter GitNex</string>
     <string name="navAdministration">Administration de l’instance</string>
     <string name="navMyIssues">Mes tickets</string>
-    <string name="navMostVisited">Dépôts les plus visités</string>
+    <string name="navMostVisited">Dépôts les plus vus</string>
     <string name="navNotes">Notes</string>
     <string name="navAccount">Paramètres du compte</string>
     <string name="navWatchedRepositories">Dépôts suivis</string>
@@ -22,15 +22,15 @@
     <string name="pageTitleCreateOrganization">Nouvelle organisation</string>
     <string name="pageTitleCreateMilestone">Nouveau jalon</string>
     <string name="pageTitleCreateNewIssue">Nouveau ticket</string>
-    <string name="pageTitleCreateLabel">Nouvelle étiquette</string>
+    <string name="pageTitleCreateLabel">Nouveau marqueur</string>
     <string name="pageTitleCredits">Crédits</string>
     <string name="pageTitleChooseBranch">Branche</string>
-    <string name="pageTitleLabelUpdate">Modifier l’étiquette</string>
+    <string name="pageTitleLabelUpdate">Modifier le marqueur</string>
     <string name="pageTitleStarredRepos">Favoris</string>
     <string name="pageTitleCreateTeam">Nouvelle équipe</string>
     <string name="pageTitleAddEmail">Ajouter une adresse courriel</string>
     <string name="pageTitleNewFile">Nouveau fichier</string>
-    <string name="pageTitleExplore">Rechercher</string>
+    <string name="pageTitleExplore">Explorer</string>
     <string name="pageTitleAdministration">Administration</string>
     <string name="pageTitleNewPullRequest">Nouvelle demande d’ajout</string>
     <string name="pageTitleUsers">Utilisateurs</string>
@@ -45,7 +45,7 @@
     <string name="newRepoDescTintCopy">Description</string>
     <string name="newRepoPrivateCopy">Privé</string>
     <string name="newRepoOwner">Propriétaire</string>
-    <string name="newRepoIssueLabels">Pastilles sur les tickets</string>
+    <string name="newRepoIssueLabels">Marqueurs de ticket</string>
     <string name="setAsTemplate">Utiliser ce dépôt comme modèle</string>
     <string name="newOrgTintCopy">Nom</string>
     <string name="newOrgDescTintCopy">Description</string>
@@ -53,7 +53,7 @@
     <string name="userName">Utilisateur</string>
     <string name="passWord">Mot de passe</string>
     <string name="btnLogin">SE CONNECTER</string>
-    <string name="instanceUrl">URL de l’instance</string>
+    <string name="instanceUrl">URL</string>
     <string name="navigationDrawerOpen">Ouvrir le volet de navigation</string>
     <string name="navigationDrawerClose">Fermer le volet de navigation</string>
     <string name="protocol">Protocole</string>
@@ -64,7 +64,7 @@
     <string name="emptyFieldUsername">Utilisateur requis</string>
     <string name="emptyFieldPassword">Mot de passe requis</string>
     <string name="protocolEmptyError">Le protocole est requis</string>
-    <string name="instanceHelperText">URL sans http ou https. (Exemple : codeberg.org)</string>
+    <string name="instanceHelperText">Sans http:// ou https:// (exemple : codeberg.org)</string>
     <string name="checkNetConnection">Impossible d’accéder au réseau, veuillez vérifier votre connexion Internet</string>
     <string name="repoNameErrorEmpty">Veuillez donner un nom à ce dépôt</string>
     <string name="repoNameErrorInvalid">Nom de dépôt invalide [a&#8211;z A&#8211;Z 0&#8211;9 &#8211; _]</string>
@@ -81,29 +81,36 @@
     <string name="orgCreated">Organisation créée</string>
     <string name="orgExistsError">Ce nom d’organisation est déjà pris</string>
     <string name="diffStatistics">%1$s ajout(s) et %2$s suppression(s)</string>
-    <string name="processingText">Traitement en cours</string>
-    <string name="search">Rechercher</string>
-    <string name="close">Fermer</string>
-    <string name="addNewContent">Ajouter</string>
-    <string name="orgContentAvatar">Org</string>
-    <string name="repoContentAvatar">Dépôt</string>
-    <string name="privateAvatar">Pri</string>
-    <string name="removeContent">Supprimer</string>
+    <plurals name="repoStars">
+        <item quantity="one">fan</item>
+        <item quantity="other">fans</item>
+    </plurals>
+    <plurals name="repoWatchers">
+        <item quantity="one">observateur</item>
+        <item quantity="other">observateurs</item>
+    </plurals>
+    <plurals name="repoForks">
+        <item quantity="one">%1$s bifurcation</item>
+        <item quantity="other">%1$s bifurcations</item>
+    </plurals>
+    <plurals name="repoPullRequests">
+        <item quantity="one">%1$s demande d’ajout ouverte</item>
+        <item quantity="other">%1$s demandes d’ajout ouvertes</item>
+    </plurals>
     <string name="genericApiError">L’instance a renvoyé une erreur. Code %d</string>
     <string name="tabTextInfo">Détails</string>
     <string name="tabTextFiles">Fichiers</string>
     <string name="tabTextMl">Jalons</string>
-    <string name="tabTextReleases">Versions</string>
+    <string name="tabTextReleases">Publications</string>
     <string name="tabTextCollaborators">Participants</string>
     <string name="tabPullRequests">Demandes d’ajout</string>
     <string name="pullRequest">Demande d’ajout</string>
-    <string name="infoTabRepoDefaultBranch">Branche par défaut</string>
+    <string name="infoTabRepoDefaultBranch">Branche par défaut %1$s</string>
     <string name="infoTabRepoSshUrl">URL SSH</string>
     <string name="infoTabRepoCloneUrl">URL de clonage</string>
     <string name="infoTabRepoRepoUrl">URL du dépôt</string>
-    <string name="infoTabRepoForksCount">Bifurcations</string>
     <string name="infoTabRepoCreatedAt">Créé</string>
-    <string name="infoTabRepoUpdatedAt">Dernière modification</string>
+    <string name="infoTabRepoUpdatedAt">Dernière mise à jour : %1$s</string>
     <string name="infoMoreInformation">Plus d’informations</string>
     <string name="timeAtText">à</string>
     <string name="issueMilestone">Jalon %1$s</string>
@@ -132,12 +139,12 @@
     <string name="milestoneIssueStatusClosed">%1$d fermé</string>
     <string name="selectMilestone">Jalon</string>
     <string name="newIssueSelectAssigneesListTitle">Affectation</string>
-    <string name="newIssueSelectLabelsListTitle">Étiquettes</string>
+    <string name="newIssueSelectLabelsListTitle">Marqueurs</string>
     <string name="newIssueTitle">Titre</string>
     <string name="newIssueAssigneesListTitle">Affectation</string>
     <string name="newIssueDueDateTitle">Échéance</string>
     <string name="newIssueMilestoneTitle">Jalon</string>
-    <string name="newIssueLabelsTitle">Étiquettes</string>
+    <string name="newIssueLabelsTitle">Marqueurs</string>
     <string name="issueTitleEmpty">Titre du ticket requis</string>
     <string name="issueDescriptionEmpty">Description du ticket requise</string>
     <string name="issueCreated">Nouveau ticket créé</string>
@@ -183,8 +190,8 @@
     <string name="generalDeepLinkDefaultScreenHintText">Sélectionnez l’écran à afficher par défaut lorsque l’application ne parvient pas à ouvrir un lien externe.</string>
     <string name="linkSelectorDialogTitle">Écran par défaut</string>
     <string name="settingsBiometricHeader">Biométrie</string>
-    <string name="settingsLabelsInListHeader">Notifications textuelles</string>
-    <string name="settingsLabelsInListHint">Affiche du texte dans les tickets et les demandes d’ajout au lieu d’une simple pastille colorée</string>
+    <string name="settingsLabelsInListHeader">Marqueurs textuels</string>
+    <string name="settingsLabelsInListHint">Affiche du texte dans les marqueurs et les demandes d’ajout au lieu d’une simple pastille colorée</string>
     <string name="ceSyntaxHighlightColor">Coloration syntaxique</string>
     <string name="ceIndentation">Indentation</string>
     <string name="ceIndentationTabsWidth">Largeur des tabulations</string>
@@ -193,34 +200,34 @@
     <string name="fadeOut">Fondu</string>
     <string name="zoomOut">Zoom</string>
     <string name="backup">Sauvegarder</string>
-    <string name="restore">Restaurer</string>
+    <string name="restore">Restaurer une sauvegarde</string>
     <string name="backupFileSuccess">Sauvegarde créée avec succès</string>
     <string name="backupFileError">Une erreur s’est produite durant la sauvegarde</string>
     <string name="backupFilePopupText">Vous allez sauvegarder vos comptes, réglages, brouillons, notes et données liées aux dépôts.\n\nCliquez sur Sauvegarder pour lancer le processus.</string>
     <string name="restoreFilePopupText">Vous allez restaurer vos données à partir d’une sauvegarde GitNex. Vos comptes, réglages, brouillons, notes et données liées aux dépôts seront restaurés.\n\nSoyez prudent, car vous allez effacer la base de données actuelle.\n\nCliquez sur Restaurer pour lancer le processus.</string>
     <string name="restoreError">Une erreur s’est produite durant la restauration.</string>
-    <string name="restoreFromBackup">Restaurer depuis la sauvegarde</string>
-    <string name="restoreFromBackupPopupText">Vous allez restaurer vos données à partir d’une sauvegarde GitNex. Vos comptes, réglages, brouillons, notes et données liées aux dépôts seront restaurés.\n\nCliquez sur Restaurer pour lancer le processus.</string>
+    <string name="restoreFromBackup">Restaurer sauvegarde</string>
+    <string name="restoreFromBackupPopupText">Vos comptes, réglages, brouillons, notes et données liées aux dépôts seront restaurés depuis une sauvegarde.</string>
     <string name="hideEmailLangInProfileHeader">Ne pas afficher l’adresse courriel et la langue</string>
     <string name="hideEmailLangInProfileHint">Définies comme privées, votre courriel et votre langue n’apparaitront pas sur votre profil.</string>
-    <string name="hideEmailNavDrawerHeader">Masquer l’adresse courriel dans le menu latéral</string>
-    <string name="hideEmailNavDrawerHint">Activée, cette option masquera votre courriel dans le menu latéral</string>
+    <string name="hideEmailNavDrawerHeader">Masquer l’adresse électronique</string>
+    <string name="hideEmailNavDrawerHint">Activer cette option masquera votre adresse électronique dans le menu latéral</string>
     <!-- settings -->
     <string name="noMoreData">Aucune donnée</string>
-    <string name="createLabel">Nouvelle étiquette</string>
+    <string name="createLabel">Nouveau marqueur</string>
     <string name="menuTitleText">Menu du dépôt</string>
     <string name="labelName">Nom</string>
     <string name="labelColor">Couleur</string>
-    <string name="labelEmptyError">L’étiquette doit avoir un nom</string>
+    <string name="labelEmptyError">Le marqueur doit avoir un nom</string>
     <string name="labelNameError">Nom invalide</string>
-    <string name="labelCreated">Étiquette créée</string>
-    <string name="labelUpdated">Étiquette mise à jour</string>
+    <string name="labelCreated">Marqueur créé</string>
+    <string name="labelUpdated">Marqueur modifié</string>
     <string name="labelMenuContentDesc">Desc</string>
-    <string name="labelDeleteText">Étiquette supprimée</string>
-    <string name="selectBranchError">Branche de diffusion</string>
+    <string name="labelDeleteText">Marqueur supprimé</string>
+    <string name="selectBranchError">Branche de publication</string>
     <string name="alertDialogTokenRevokedTitle">Erreur d’autorisation</string>
-    <string name="alertDialogTokenRevokedMessage">Vous n’avez pas l’autorisation de voir ce contenu OU votre jeton d’accès a été révoqué.\n\nDans ce dernier cas, veuillez vous reconnecter.</string>
-    <string name="labelDeleteMessage">Voulez-vous vraiment supprimer cette étiquette ?</string>
+    <string name="alertDialogTokenRevokedMessage">Le jeton d’accès a peut-être été révoqué ou vous n’êtes pas autorisé à voir ce contenu.\n\nSi le jeton a été révoqué, veuillez vous reconnecter.</string>
+    <string name="labelDeleteMessage">Voulez-vous vraiment supprimer ce marqueur ?</string>
     <!-- org tabbed layout str -->
     <string name="orgTabTeams">Équipes</string>
     <string name="orgTabMembers">Membres</string>
@@ -230,7 +237,7 @@
     <string name="teamPermissionNone">• Cette équipe n’a aucune permission.</string>
     <string name="teamPermissionRead">• Cette équipe peut accéder dépôts communs.</string>
     <string name="teamPermissionWrite">• Cette équipe peut accéder au dépôt et pousser ses modifications.</string>
-    <string name="teamPermissionAdmin">• Les membres peuvent voir et pousser dans les dépôts de l’équipe ainsi qu’ajouter des participants.</string>
+    <string name="teamPermissionAdmin">• Les membres peuvent tirer et pousser dans les dépôts de l’équipe ainsi qu’ajouter des collaborateurs.</string>
     <string name="teamPermissionOwner">• Cette équipe est propriétaire.</string>
     <string name="teamShowAll">voir tout</string>
     <string name="orgMember">Membres de l’organisation</string>
@@ -303,8 +310,8 @@
     <string name="sshKeyError">Clé SSH invalide ou déjà enregistrée</string>
     <!-- account settings -->
     <!-- single issue section -->
-    <string name="singleIssueEditLabels">Gérer les étiquettes</string>
-    <string name="labelsUpdated">Étiquettes mises à jour</string>
+    <string name="singleIssueEditLabels">Gérer les marqueurs</string>
+    <string name="labelsUpdated">Marqueurs modifiés</string>
     <string name="closeIssue">Fermer le ticket</string>
     <string name="editIssue">Modifier le ticket</string>
     <string name="reOpenIssue">Réouvrir le ticket</string>
@@ -343,18 +350,18 @@
     <string name="editIssueSuccessMessage">Ticket mis à jour</string>
     <!-- edit issue -->
     <!-- release -->
-    <string name="createRelease">Nouvelle version</string>
-    <string name="releaseTagNameText">Nom du tag</string>
+    <string name="createRelease">Nouvelle publication</string>
+    <string name="releaseTagNameText">Nom de l’étiquette</string>
     <string name="releaseTitleText">Titre</string>
     <string name="releaseContentText">Contenu</string>
-    <string name="releaseTypeText">Marquer comme préversion</string>
+    <string name="releaseTypeText">Marquer comme prépublication</string>
     <string name="releaseBranchText">Branche</string>
     <string name="releaseDraftText">Brouillon</string>
-    <string name="tagNameErrorEmpty">Nom du tag requis</string>
+    <string name="tagNameErrorEmpty">Nom de l’étiquette requis</string>
     <string name="titleErrorEmpty">Titre requis</string>
-    <string name="releaseCreatedText">Nouvelle version créée</string>
-    <string name="deleteReleaseConfirmation">Êtes-vous certain de vouloir supprimer cette version ?</string>
-    <string name="releaseDeleted">Version supprimée</string>
+    <string name="releaseCreatedText">Nouvelle publication créée</string>
+    <string name="deleteReleaseConfirmation">Êtes-vous certain de vouloir supprimer cette publication ?</string>
+    <string name="releaseDeleted">Publication supprimée</string>
     <!-- release -->
     <string name="openWebRepo">Ouvrir dans le navigateur</string>
     <string name="repoStargazersInMenu">Fans</string>
@@ -389,6 +396,7 @@
     <string name="branch_error_exists">La branche %1$s existe déjà</string>
     <string name="branch_error_repo_locked">Le dépôt est verrouillé</string>
     <string name="create_branch">Créer une branche</string>
+    <string name="default_branch">Branche par défaut</string>
     <string name="strFilter">Filtrer</string>
     <string name="strMarkdown">Markdown</string>
     <string name="copyIssueUrl">Copier l’URL du ticket</string>
@@ -431,9 +439,8 @@
     <string name="genericWaitFor">Un instant… ☕</string>
     <string name="file">Fichier</string>
     <string name="issue">Ticket</string>
-    <string name="labelTxt">Étiquette</string>
-    <string name="release">Version</string>
-    <string name="pr">Demande d’ajout</string>
+    <string name="labelTxt">Marqueur</string>
+    <string name="release">Publication</string>
     <string name="collaborator">Participant</string>
     <string name="unstar">Retirer des favoris</string>
     <string name="watch">Suivre</string>
@@ -469,10 +476,31 @@
     <string name="oldest">Plus ancien</string>
     <string name="alphabetically">Alphabétique</string>
     <string name="size">Taille</string>
+    <string name="home">Accueil</string>
+    <string name="personal">Personnel</string>
+    <string name="activities">Activités</string>
+    <string name="refresh">Actualiser</string>
+    <string name="actions">Actions</string>
+    <string name="runners">Exécuteurs</string>
+    <string name="workflows">Flux de travail</string>
+    <string name="variables">Variables</string>
+    <string name="forks">Bifurcations</string>
+    <string name="removeContent">Supprimer</string>
+    <string name="processingText">Traitement en cours</string>
+    <string name="search">Rechercher</string>
+    <string name="close">Fermer</string>
+    <string name="addNewContent">Ajouter</string>
+    <string name="orgContentAvatar">Org</string>
+    <string name="repoContentAvatar">Dépôt</string>
+    <string name="privateAvatar">Pri</string>
+    <string name="busy">Occupé</string>
+    <string name="idle">Inactif</string>
+    <string name="value">Valeur</string>
+    <string name="optional">Facultatif</string>
     <!-- generic copy -->
-    <string name="exploreUsers">Rechercher des utilisateurs</string>
-    <string name="exploreIssues">Rechercher des tickets</string>
-    <string name="exploreTextBoxHint">Rechercher des dépôts</string>
+    <string name="exploreUsers">Chercher des utilisateurs</string>
+    <string name="exploreIssues">Chercher des tickets</string>
+    <string name="exploreTextBoxHint">Chercher des dépôts</string>
     <string name="starRepositorySuccess">Dépôt ajouté aux favoris</string>
     <string name="unStarRepositorySuccess">Dépôt retiré des favoris</string>
     <string name="watchRepositorySuccess">Vous suivez ce dépôt</string>
@@ -490,12 +518,12 @@
     <string name="fileDiffViewHeaderSingle">%1$s fichier modifié</string>
     <string name="updatePullRequestText">Mettre à jour la demande d’ajout</string>
     <string name="openFileDiffText">Voir Fichiers modifiés</string>
-    <string name="mergePullRequestText">Intégrer la demande d’ajout</string>
+    <string name="mergePullRequestText">Fusionner la demande d’ajout</string>
     <string name="deleteBranchSuccess">Branche supprimée</string>
     <string name="deleteBranchError">Impossible de supprimer la branche</string>
     <string name="deleteBranchErrorNotFound">La branche n’existe pas</string>
-    <string name="mergePullRequestButtonText">Intégrer</string>
-    <string name="deleteBranchAfterMerge">Supprimer la branche après l’intégration</string>
+    <string name="mergePullRequestButtonText">Fusionner</string>
+    <string name="deleteBranchAfterMerge">Supprimer la branche après fusion</string>
     <string name="mergeNoteText">La fusion peut échouer si vous n’êtes pas autorisé à fusionner cette demande d’ajout.</string>
     <string name="mergeInfoDisabledMessage">Le bouton Fusion désactivé signifie qu’il y a des conflits ou des choses à corriger au préalable</string>
     <string name="deleteBranchForkInfo">Cette branche appartient à un dépôt bifurqué</string>
@@ -577,12 +605,13 @@
     <string name="removeAccountPopupMessage">Êtes-vous certain de vouloir supprimer ce compte de l’application ?\n\nSeules les données de l’application seront supprimées.</string>
     <string name="addNewAccount">Nouveau compte</string>
     <string name="addNewAccountText">Ajouter un compte</string>
+    <string name="update_account">Mettre à jour le compte</string>
     <string name="accountAlreadyExistsError">Ce compte existe déjà dans l’application</string>
     <string name="accountAddedMessage">Compte ajouté</string>
     <string name="switchAccountSuccess">Passé au compte : %1$s@%2$s</string>
     <!-- Notifications -->
     <string name="pageTitleNotifications">Notifications</string>
-    <string name="noDataNotifications">C’est parti 🚀</string>
+    <string name="noDataNotifications">Vous avez tout lu 🚀</string>
     <string name="notificationsPollingHeaderText">Période de scrutation</string>
     <string name="pollingDelay15Minutes">15 minutes</string>
     <string name="pollingDelay30Minutes">30 minutes</string>
@@ -607,7 +636,7 @@
         <item quantity="one">Vous avez %s nouvelle notification</item>
         <item quantity="other">Vous avez %s nouvelles notifications</item>
     </plurals>
-    <string name="openAppSettings">Afin de recevoir les notifications, veuillez cliquer sur Ouvrir pour accéder aux paramètres de GitNex, puis activer les notifications.</string>
+    <string name="openAppSettings">Afin de recevoir les notifications de Gitnex, cliquez sur « Ouvrir » pour aller dans les infos de l’appli, puis activez les notifications.</string>
     <string name="isRead">Lu</string>
     <string name="isUnread">Non lu</string>
     <string name="repoSettingsTitle">Paramètres du dépôt</string>
@@ -638,8 +667,8 @@
     <string name="repoTransferOwnerError">Un nouveau propriétaire est requis</string>
     <string name="repoTransferError">Erreur avec le nom du propriétaire. Assurez-vous que le nouveau propriétaire existe</string>
     <string name="exploreFilterDialogTitle">Filtrer les dépôts</string>
-    <string name="exploreFilterIncludeTopic">Rechercher uniquement dans le sujet</string>
-    <string name="exploreFilterIncludeDesc">Rechercher dans la description</string>
+    <string name="exploreFilterIncludeTopic">Chercher uniquement dans le sujet</string>
+    <string name="exploreFilterIncludeDesc">Chercher dans la description</string>
     <string name="exploreFilterIncludeArchive">Dépôts archivés seulement</string>
     <string name="exploreFilterIncludePrivate">Dépôts privés seulement</string>
     <string name="exploreFilterIncludeTemplateRepos">Rechercher dans les dépôts modèles</string>
@@ -657,7 +686,7 @@
     <string name="pr_info">%1$s veut fusionner la branche %2$s dans %3$s</string>
     <string name="accountDoesNotExist">Aucun compte associé à l’URI %1$s ne semble exister dans l’application. Vous pouvez l’ajouter en appuyant sur Ajouter un nouveau compte.</string>
     <string name="launchApp">Lancer l’app</string>
-    <string name="noActionText">GitNex ne prend pas en charge cette ressource, vous pouvez signaler et détailler le problème dans le dépôt du projet. Pour le moment, vous pouvez revenir à l\'écran par défaut en cliquant sur le bouton ci-dessous.</string>
+    <string name="noActionText">GitNex ne peut pas traiter la ressource demandée. Vous pouvez ouvrir un ticket dans le dépôt du projet pour proposer une amélioration en précisant les détails du travail. Lancez l’écran par défaut à l’aide des boutons ci-dessous ; il peut être modifié dans les paramètres.</string>
     <string name="biometricAuthTitle">Authentification biométrique</string>
     <string name="biometricAuthSubTitle">Déverrouiller à l’aide de vos identifiants biométriques</string>
     <string name="biometricNotSupported">Cet appareil ne permet pas la biométrie</string>
@@ -687,16 +716,16 @@
     <string name="updateStrategyRebase">Rebaser</string>
     <string name="selectUpdateStrategy">Politique de mise à jour</string>
     <string name="userAvatar">Avatar</string>
-    <string name="tags">Tags</string>
-    <string name="releasesTags">Versions/Tags</string>
-    <string name="create_tag">Créer un tag seulement</string>
-    <string name="tagCreated">Tag créé</string>
+    <string name="tags">Étiquettes</string>
+    <string name="releasesTags">Publication/Étiquettes</string>
+    <string name="create_tag">Créer seulement une étiquette</string>
+    <string name="tagCreated">Étiquette créée</string>
     <string name="asRef">Mentionné</string>
-    <string name="deleteTagConfirmation">Êtes-vous certain de vouloir supprimer ce tag ?</string>
-    <string name="tagDeleted">Tag supprimé</string>
-    <string name="tagDeleteError">Un tag attaché à une diffusion ne peut être directement supprimé.</string>
+    <string name="deleteTagConfirmation">Êtes-vous certain de vouloir supprimer cette étiquette ?</string>
+    <string name="tagDeleted">Étiquette supprimée</string>
+    <string name="tagDeleteError">Une étiquette attachée à une publication ne peut être directement supprimée.</string>
     <string name="useCustomTabs">Utiliser des onglets personnalisés</string>
-    <string name="browserOpenFailed">Aucune application présente ne peut ouvrir ce lien. La plupart des navigateurs ne sont pas compatibles avec les URL SSH ou des préfixes autres que http:// ou https://</string>
+    <string name="browserOpenFailed">Aucune application présente ne peut ouvrir ce lien. Les navigateurs n’acceptent généralement que les URL SSH ou http(s)://.</string>
     <string name="notLoggedIn">%s \u25CF n’est pas connecté</string>
     <string name="followSystem">Suivant le système (clair/sombre)</string>
     <string name="followSystemBlack">Suivant le système (clair/noir)</string>
@@ -723,7 +752,7 @@
     <string name="newNote">Nouvelle note</string>
     <string name="editNote">Modifier note</string>
     <string name="newNoteContentHint">Prenez vos notes ici</string>
-    <string name="noteDateTime">Créée le %s</string>
+    <string name="noteDateTime">Créé le %1$s</string>
     <string name="noteTimeModified">Mise à jour le %s</string>
     <string name="noteDeleteDialogMessage">Voulez-vous vraiment supprimer cette note ?</string>
     <plurals name="noteDeleteMessage">
@@ -738,9 +767,9 @@
     <string name="commitText">une révision</string>
     <string name="timelineAddedCommit">%1$s a ajouté %2$s %3$s</string>
     <!-- the | is replaced by the label -->
-    <string name="timelineAddedLabel">%1$s a ajouté l’étiquette | %2$s</string>
+    <string name="timelineAddedLabel">%1$s a ajouté le marqueur | %2$s</string>
     <!-- the | is replaced by the label -->
-    <string name="timelineRemovedLabel">%1$s a retiré l’étiquette | %2$s</string>
+    <string name="timelineRemovedLabel">%1$s a retiré le marqueur | %2$s</string>
     <string name="timelineAssigneesRemoved">%1$s s’est désaffecté de ceci %2$s</string>
     <string name="timelineAssigneesUnassigned">%1$s a été désaffecté par %2$s %3$s</string>
     <string name="timelineAssigneesSelfAssigned">%1$s s’est affecté à ceci %2$s</string>
@@ -780,7 +809,6 @@
     <string name="timelinePinned">%1$s a épinglé cette %2$s</string>
     <string name="commitStatuses">Statuts</string>
     <string name="statusNoUrl">Ce statut n’a pas d’URL.</string>
-    <string name="starredRepos">Dépôts favoris</string>
     <string name="lang_statistics">Statistiques du langage</string>
     <string name="dashboard">Tableau de bord</string>
     <string name="createdRepository">a créé le dépôt</string>
@@ -788,7 +816,7 @@
     <string name="starredRepository">a commencé à suivre</string>
     <string name="transferredRepository">a transféré le dépôt %1$s à</string>
     <string name="createdBranch">a créé la branche %1$s dans</string>
-    <string name="pushedTo">a poussé dans %1$s à</string>
+    <string name="pushedTo">a poussé dans la branche %1$s de</string>
     <string name="openedIssue">a ouvert le ticket</string>
     <string name="commentedOnIssue">a commenté le ticket</string>
     <string name="closedIssue">a fermé le ticket</string>
@@ -796,11 +824,11 @@
     <string name="createdPR">a créé la demande d’ajout</string>
     <string name="closedPR">a fermé la demande d’ajout</string>
     <string name="reopenedPR">a rouvert la demande d’ajout</string>
-    <string name="mergedPR">a intégré la demande d’ajout</string>
+    <string name="mergedPR">a fusionné la demande d’ajout</string>
     <string name="approved">a approuvé</string>
     <string name="suggestedChanges">a suggéré des modifications pour</string>
     <string name="commentedOnPR">a commenté la demande d’ajout</string>
-    <string name="autoMergePR">a automatiquement intégré la demande d’ajout</string>
+    <string name="autoMergePR">a automatiquement fusionné la demande d’ajout</string>
     <string name="deletedBranch">a supprimé la branche %1$s de</string>
     <string name="pushedTag">a ajouté l’étiquette %1$s à</string>
     <string name="deletedTag">a retiré l’étiquette %1$s de</string>
@@ -839,4 +867,19 @@
     <string name="fewest_stars">Le moins d’étoiles</string>
     <string name="most_forks">Le plus de fourches</string>
     <string name="fewest_forks">Le moins de fourches</string>
+    <string name="switch_account">Changer de compte</string>
+    <string name="clear_cache_button_text">Vider le cache (%1$s)</string>
+    <string name="repository_not_exist">Le dépôt n’existe pas</string>
+    <string name="select_provider">Forge logicielle</string>
+    <string name="provider_empty_error">Veuillez sélectionner une forge logicielle</string>
+    <string name="actions_counts">%1$s tâches, %2$s artéfacts et %3$s exécuteurs</string>
+    <string name="create_variable">Créer une variable</string>
+    <string name="variable_name_error">Un nom est requis</string>
+    <string name="variable_value_error">Une valeur est requise</string>
+    <string name="variable_create_success">Variable créée</string>
+    <string name="variable_create_failed">La variable n’a pu être créée</string>
+    <string name="variable_name_invalid">Le nom ne peut contenir que des caractères alphanumériques et tiret bas</string>
+    <string name="create_variable_header">Les variables ne sont transmises qu’à certaines étapes de l’exécuteur.</string>
+    <string name="variable_name_helper">Caractères alphanumériques et tiret bas, insensible à la casse, ne peut commencer par GITEA_ ou GITHUB_</string>
+    <string name="variable_value_helper">Entrez du texte. Les espaces au début et à la fin seront ignorés.</string>
 </resources>
