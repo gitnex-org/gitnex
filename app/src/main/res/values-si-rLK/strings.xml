@@ -11,7 +11,7 @@
     <string name="navRate">GitNex අගයන්න</string>
     <string name="navAdministration">Instance Administration</string>
     <string name="navMyIssues">මගේ ගැටළු</string>
-    <string name="navMostVisited">Most Visited Repos</string>
+    <string name="navMostVisited">Most Visited Repositories</string>
     <string name="navNotes">Notes</string>
     <string name="navAccount">Account Settings</string>
     <string name="navWatchedRepositories">Watched Repositories</string>
@@ -81,14 +81,22 @@
     <string name="orgCreated">සංවිධානය සාර්ථකව නිර්මාණය කරන ලදී</string>
     <string name="orgExistsError">සංවිධානය දැනටමත් පවතී</string>
     <string name="diffStatistics">%1$s එකතු කිරීම්(ය) සහ %2$s මකාදැමීම්(ය)</string>
-    <string name="processingText">සැකසීම</string>
-    <string name="search">සොයන්න</string>
-    <string name="close">වසන්න</string>
-    <string name="addNewContent">එකතු කරන්න</string>
-    <string name="orgContentAvatar">සංවිධානය</string>
-    <string name="repoContentAvatar">රෙපෝ</string>
-    <string name="privateAvatar">Pri</string>
-    <string name="removeContent">ඉවත් කරන්න</string>
+    <plurals name="repoStars">
+        <item quantity="one">%1$s star</item>
+        <item quantity="other">%1$s stars</item>
+    </plurals>
+    <plurals name="repoWatchers">
+        <item quantity="one">%1$s watcher</item>
+        <item quantity="other">%1$s watchers</item>
+    </plurals>
+    <plurals name="repoForks">
+        <item quantity="one">%1$s fork</item>
+        <item quantity="other">%1$s forks</item>
+    </plurals>
+    <plurals name="repoPullRequests">
+        <item quantity="one">%1$s open pull request</item>
+        <item quantity="other">%1$s open pull requests</item>
+    </plurals>
     <string name="genericApiError">උදාහරණය දෝෂයක් ලබා දී ඇත. කේතය %d</string>
     <string name="tabTextInfo">විස්තර</string>
     <string name="tabTextFiles">ගොනු</string>
@@ -97,14 +105,12 @@
     <string name="tabTextCollaborators">සහයෝගිතාකරුවන්</string>
     <string name="tabPullRequests">අදින්න ඉල්ලීම්</string>
     <string name="pullRequest">අදින්න ඉල්ලීම</string>
-    <string name="infoTabRepoSize">ප්‍රමාණය</string>
-    <string name="infoTabRepoDefaultBranch">පෙරනිමි ශාඛාව</string>
+    <string name="infoTabRepoDefaultBranch">Default branch %1$s</string>
     <string name="infoTabRepoSshUrl">SSH URL</string>
     <string name="infoTabRepoCloneUrl">ක්ලෝන URL</string>
     <string name="infoTabRepoRepoUrl">කෝ ඇතියේ ඒ.ස.නි.</string>
-    <string name="infoTabRepoForksCount">ගෑරුප්පු</string>
     <string name="infoTabRepoCreatedAt">ලබාිණි</string>
-    <string name="infoTabRepoUpdatedAt">අවසන් වරට යාවත්කාලීන කරන ලදී</string>
+    <string name="infoTabRepoUpdatedAt">Last updated %1$s</string>
     <string name="infoMoreInformation">වැඩි විස්තර</string>
     <string name="timeAtText">හිදී</string>
     <string name="issueMilestone">සන්ධිස්ථානය %1$s</string>
@@ -204,8 +210,8 @@
     <string name="restoreFromBackupPopupText">You are about to restore from a GitNex-generated backup file. This will restore user accounts, settings, notes, and data related to repositories.\n\nClick Restore to start the process.</string>
     <string name="hideEmailLangInProfileHeader">Set Email and Language as Private</string>
     <string name="hideEmailLangInProfileHint">You can set your email and language to private to hide them on your profile screen</string>
-    <string name="hideEmailNavDrawerHeader">Hide Email in Drawer</string>
-    <string name="hideEmailNavDrawerHint">You can enable this option to hide your email in the app navigation drawer</string>
+    <string name="hideEmailNavDrawerHeader">Hide Email</string>
+    <string name="hideEmailNavDrawerHint">You can enable this option to hide your email in the app home dashboard screen</string>
     <!-- settings -->
     <string name="noMoreData">තවත් දත්ත නොමැත</string>
     <string name="createLabel">නව ලේබලය</string>
@@ -220,7 +226,7 @@
     <string name="labelDeleteText">ලේබලය මකා ඇත</string>
     <string name="selectBranchError">මුදා හැරීම සඳහා ශාඛාවක් තෝරන්න</string>
     <string name="alertDialogTokenRevokedTitle">අවසර දීමේ දෝෂය</string>
-    <string name="alertDialogTokenRevokedMessage">It seems that the Access Token is revoked OR you are not allowed to see these contents.\n\nIn case of revoked Token, please add the account again</string>
+    <string name="alertDialogTokenRevokedMessage">It seems that the Access Token is revoked OR you are not allowed to see these contents.\n\nIn case of revoked Token, please update the account.</string>
     <string name="labelDeleteMessage">ඔබට ඇත්තටම මෙම ලේබලය මැකීමට අවශ්‍යද?</string>
     <!-- org tabbed layout str -->
     <string name="orgTabTeams">කණ්ඩායම්</string>
@@ -231,7 +237,7 @@
     <string name="teamPermissionNone">• මෙම කණ්ඩායමේ සාමාජිකයින්ට කිසිදු අවසරයක් නොමැත.</string>
     <string name="teamPermissionRead">• මෙම කණ්ඩායමේ සාමාජිකයින්ට කණ්ඩායම් ගබඩාවන් බැලිය හැක.</string>
     <string name="teamPermissionWrite">• මෙම කණ්ඩායමේ සාමාජිකයින්ට කණ්ඩායම් ගබඩාවන් බැලීමට සහ තල්ලු කිරීමට හැකිය.</string>
-    <string name="teamPermissionAdmin">• මෙම කණ්ඩායමේ සාමාජිකයින්ට කණ්ඩායම් ගබඩා වෙත සහ පිටතට තල්ලු කිරීමට සහ සහකාරකයින් එක් කිරීමට හැකිය.</string>
+    <string name="teamPermissionAdmin">• Team members can push to and pull from team repositories and add collaborators to them.</string>
     <string name="teamPermissionOwner">• මෙම කණ්ඩායමේ සාමාජිකයින්ට හිමිකරු අවසර ඇත.</string>
     <string name="teamShowAll">සියල්ල පෙන්වන්න</string>
     <string name="orgMember">සංවිධානයේ සාමාජිකයින්</string>
@@ -254,7 +260,7 @@
     <string name="newTeamAccessControls">ප්රවේශය පාලනය</string>
     <string name="newTeamPermissionRead">සාමාජිකයින්ට කණ්ඩායම් ගබඩාවන් බැලීමට සහ ක්ලෝන කිරීමට හැකිය</string>
     <string name="newTeamPermissionWrite">සාමාජිකයින්ට කියවා කණ්ඩායම් ගබඩා වෙත තල්ලු කළ හැකිය</string>
-    <string name="newTeamPermissionAdmin">සාමාජිකයින්ට කණ්ඩායම් ගබඩා වෙත ඇදීමට සහ තල්ලු කිරීමට සහ ඒවාට සහයෝගිතාකරුවන් එක් කිරීමට හැකිය</string>
+    <string name="newTeamPermissionAdmin">Members can pull from and push to team repositories and add collaborators to them</string>
     <string name="teamNameEmpty">කරුණාකර කණ්ඩායමේ නම ඇතුලත් කරන්න</string>
     <string name="teamNameError">කණ්ඩායමේ නම අක්ෂරාංක, ඉර (-), යටි ඉරි (_) සහ තිත් (.) අක්ෂර පමණක් අඩංගු විය යුතුය</string>
     <string name="teamPermissionEmpty">කරුණාකර අවසරය තෝරන්න</string>
@@ -390,6 +396,7 @@
     <string name="branch_error_exists">Branch %1$s already exists</string>
     <string name="branch_error_repo_locked">Repository is locked</string>
     <string name="create_branch">Create Branch</string>
+    <string name="default_branch">Default Branch</string>
     <string name="strFilter">පෙරහන</string>
     <string name="strMarkdown">සලකුණු කිරීම</string>
     <string name="copyIssueUrl">නිකුතුවේ URL පිටපත් කරන්න</string>
@@ -434,7 +441,6 @@
     <string name="issue">නිකුත් කිරීම</string>
     <string name="labelTxt">Label</string>
     <string name="release">නිදහස් කරන්න</string>
-    <string name="pr">අදින්න ඉල්ලීම</string>
     <string name="collaborator">සහයෝගිතාකරු</string>
     <string name="unstar">තරුව ඉවත් කරන්න</string>
     <string name="watch">නරඹන්න</string>
@@ -463,6 +469,34 @@
     <string name="timeline">Timeline</string>
     <string name="hours">Hours</string>
     <string name="minutes">Minutes</string>
+    <string name="sort">Sort</string>
+    <string name="name">Name</string>
+    <string name="id">ID</string>
+    <string name="newest">Newest</string>
+    <string name="oldest">Oldest</string>
+    <string name="alphabetically">Alphabetically</string>
+    <string name="size">Size</string>
+    <string name="home">Home</string>
+    <string name="personal">Personal</string>
+    <string name="activities">Activities</string>
+    <string name="refresh">Refresh</string>
+    <string name="actions">Actions</string>
+    <string name="runners">Runners</string>
+    <string name="workflows">Workflows</string>
+    <string name="variables">Variables</string>
+    <string name="forks">Forks</string>
+    <string name="removeContent">ඉවත් කරන්න</string>
+    <string name="processingText">සැකසීම</string>
+    <string name="search">සොයන්න</string>
+    <string name="close">වසන්න</string>
+    <string name="addNewContent">එකතු කරන්න</string>
+    <string name="orgContentAvatar">සංවිධානය</string>
+    <string name="repoContentAvatar">රෙපෝ</string>
+    <string name="privateAvatar">Pri</string>
+    <string name="busy">Busy</string>
+    <string name="idle">Idle</string>
+    <string name="value">Value</string>
+    <string name="optional">Optional</string>
     <!-- generic copy -->
     <string name="exploreUsers">පරිශීලකයන් ගවේෂණය කරන්න</string>
     <string name="exploreIssues">ගැටළු ගවේෂණය කරන්න</string>
@@ -492,7 +526,7 @@
     <string name="deleteBranchAfterMerge">ඒකාබද්ධ කිරීමෙන් පසු ශාඛාව මකන්න</string>
     <string name="mergeNoteText">මෙම ඇදීමේ ඉල්ලීම ඒකාබද්ධ කිරීමට ඔබට අවසර නොමැති නම් ඒකාබද්ධ කිරීම අසාර්ථක විය හැක.</string>
     <string name="mergeInfoDisabledMessage">Disabled Merge බොත්තම යන්නෙන් අදහස් වන්නේ ඒකාබද්ධ කිරීමට පෙර නිවැරදි කිරීමට ගැටුම් හෝ වෙනත් දේවල් ඇති බවයි</string>
-    <string name="deleteBranchForkInfo">මෙම ශාඛාව දෙබලක ගබඩාවකට අයත් වේ</string>
+    <string name="deleteBranchForkInfo">This branch belongs to a forked repository</string>
     <string name="mergeCommentText">අදහස ඒකාබද්ධ කරන්න</string>
     <string name="mergePRSuccessMsg">ඇදීමේ ඉල්ලීම සාර්ථකව ඒකාබද්ධ කරන ලදී</string>
     <string name="mergePR404ErrorMsg">අදින්න ඉල්ලීම ඒකාබද්ධ කිරීම සඳහා නොමැත</string>
@@ -513,7 +547,6 @@
     <string name="deleteFileMessage">%1$sශාඛාව මගින් මකාදැමීමට ගොනුව සකසා ඇත</string>
     <string name="editFileText">සංස්කරණය %1$s</string>
     <string name="editFileMessage">ගොනුව %1$sශාඛාව මගින් වෙනස් කර ඇත</string>
-    <string name="sizeCopy">ප්රමාණය</string>
     <string name="shareIssue">බෙදාගැනීමේ ගැටලුව</string>
     <string name="shareRepository">කොටස් ගබඩාව</string>
     <string name="createRepository">ගබඩාවක් සාදන්න</string>
@@ -572,6 +605,7 @@
     <string name="removeAccountPopupMessage">Are you sure you want to remove this account from the app?\n\nThis will remove all the data related to this account on the app only.</string>
     <string name="addNewAccount">නව ගිණුම</string>
     <string name="addNewAccountText">Add Account</string>
+    <string name="update_account">Update Account</string>
     <string name="accountAlreadyExistsError">ගිණුම දැනටමත් යෙදුම තුළ පවතී</string>
     <string name="accountAddedMessage">ගිණුම සාර්ථකව එකතු කරන ලදී</string>
     <string name="switchAccountSuccess">ගිණුමට මාරු විය: %1$s@%2$s</string>
@@ -652,7 +686,7 @@
     <string name="pr_info">%1$s wants to merge branch %2$s into %3$s</string>
     <string name="accountDoesNotExist">It seems that the account for URI %1$s does not exist in the app. You can add one by tapping on the Add New Account button.</string>
     <string name="launchApp">යෙදුම වෙත යන්න</string>
-    <string name="noActionText">GitNex cannot handle the requested resource. You can open an issue at the project repository as an improvement, providing details of the work. Just launch a default screen for now from the buttons below; it can be changed from settings.</string>
+    <string name="noActionText">GitNex cannot handle the requested resource. You can open an issue in the project repository for improvement, providing details of the work. Launch the default screen from the buttons below; it can be changed in settings.</string>
     <string name="biometricAuthTitle">ජෛවමිතික සත්‍යාපනය</string>
     <string name="biometricAuthSubTitle">ඔබගේ ජෛවමිතික අක්තපත්‍ර භාවිතයෙන් අගුලු හරින්න</string>
     <string name="biometricNotSupported">මෙම උපාංගයේ ජෛවමිතික විශේෂාංග නොමැත</string>
@@ -691,7 +725,7 @@
     <string name="tagDeleted">ටැගය මකා ඇත</string>
     <string name="tagDeleteError">නිකුතුවකට අමුණා ඇති ටැගයක් කෙලින්ම මකා දැමිය නොහැක</string>
     <string name="useCustomTabs">අභිරුචි ටැබ් භාවිතා කරන්න</string>
-    <string name="browserOpenFailed">No application found to open this link. SSH URLs and URLs with another prefix the http:// or https:// are not supported by most browser</string>
+    <string name="browserOpenFailed">No application was found to open this link. SSH URLs and URLs with prefixes other than http:// or https:// are not supported by most browsers</string>
     <string name="notLoggedIn">\u25CF %s වී නැත</string>
     <string name="followSystem">පද්ධතිය අනුගමනය කරන්න (ආලෝකය/අඳුරු)</string>
     <string name="followSystemBlack">පද්ධතිය අනුගමනය කරන්න (ආලෝකය/තාර කළු)</string>
@@ -718,7 +752,7 @@
     <string name="newNote">New Note</string>
     <string name="editNote">Edit Note</string>
     <string name="newNoteContentHint">Start taking your notes here</string>
-    <string name="noteDateTime">Created %s</string>
+    <string name="noteDateTime">Created %1$s</string>
     <string name="noteTimeModified">Updated %s</string>
     <string name="noteDeleteDialogMessage">Do you really want to delete this note?</string>
     <plurals name="noteDeleteMessage">
@@ -775,7 +809,6 @@
     <string name="timelinePinned">%1$s pinned this %2$s</string>
     <string name="commitStatuses">Statuses</string>
     <string name="statusNoUrl">This status has no linked target URL.</string>
-    <string name="starredRepos">Starred Repos</string>
     <string name="lang_statistics">Language Statistics</string>
     <string name="dashboard">Dashboard</string>
     <string name="createdRepository">created repository</string>
@@ -826,4 +859,27 @@
     <string name="time_removed">Time removed</string>
     <string name="time_add_failed">Failed to add time</string>
     <string name="time_delete_failed">Failed to delete time</string>
+    <string name="recent_update">Recent update</string>
+    <string name="least_update">Least update</string>
+    <string name="reverse_alphabetically">Reverse alphabetically</string>
+    <string name="reverse_size">Reverse size</string>
+    <string name="most_stars">Most stars</string>
+    <string name="fewest_stars">Fewest stars</string>
+    <string name="most_forks">Most forks</string>
+    <string name="fewest_forks">Fewest forks</string>
+    <string name="switch_account">Switch account</string>
+    <string name="clear_cache_button_text">Clear Cache (%1$s)</string>
+    <string name="repository_not_exist">Repository does not exist</string>
+    <string name="select_provider">Select instance provider</string>
+    <string name="provider_empty_error">Please select an instance provider</string>
+    <string name="actions_counts">%1$s tasks, %2$s artifacts, and %3$s runners</string>
+    <string name="create_variable">Create variable</string>
+    <string name="variable_name_error">Variable name is required</string>
+    <string name="variable_value_error">Value is required</string>
+    <string name="variable_create_success">Variable created successfully</string>
+    <string name="variable_create_failed">Failed to create variable</string>
+    <string name="variable_name_invalid">Name must contain only alphanumeric characters or underscores</string>
+    <string name="create_variable_header">Variables will be passed to certain actions and cannot be read otherwise.</string>
+    <string name="variable_name_helper">Case-insensitive, alphanumeric characters or underscores only, cannot start with GITEA_ or GITHUB_</string>
+    <string name="variable_value_helper">Input any content. Whitespace at the start and end will be omitted.</string>
 </resources>

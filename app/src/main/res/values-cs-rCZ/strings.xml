@@ -11,7 +11,7 @@
     <string name="navRate">Ohodnotit GitNex</string>
     <string name="navAdministration">Administrativa instance</string>
     <string name="navMyIssues">Moje issues</string>
-    <string name="navMostVisited">Nejnavštěvovanější repozitáře</string>
+    <string name="navMostVisited">Most Visited Repositories</string>
     <string name="navNotes">Poznámky</string>
     <string name="navAccount">Nastavení účtu</string>
     <string name="navWatchedRepositories">Sledované repozitáře</string>
@@ -81,14 +81,30 @@
     <string name="orgCreated">Organizace byla úspěšně vytvořena</string>
     <string name="orgExistsError">Organizace již existuje</string>
     <string name="diffStatistics">%1$s přidáno a %2$s smazáno</string>
-    <string name="processingText">Zpracovávání</string>
-    <string name="search">Hledat</string>
-    <string name="close">Zavřít</string>
-    <string name="addNewContent">Přidat</string>
-    <string name="orgContentAvatar">Avatar organizace</string>
-    <string name="repoContentAvatar">Repo</string>
-    <string name="privateAvatar">Soukromý avatar</string>
-    <string name="removeContent">Odebrat</string>
+    <plurals name="repoStars">
+        <item quantity="one">%1$s star</item>
+        <item quantity="few">%1$s stars</item>
+        <item quantity="many">%1$s stars</item>
+        <item quantity="other">%1$s stars</item>
+    </plurals>
+    <plurals name="repoWatchers">
+        <item quantity="one">%1$s watcher</item>
+        <item quantity="few">%1$s watchers</item>
+        <item quantity="many">%1$s watchers</item>
+        <item quantity="other">%1$s watchers</item>
+    </plurals>
+    <plurals name="repoForks">
+        <item quantity="one">%1$s fork</item>
+        <item quantity="few">%1$s forks</item>
+        <item quantity="many">%1$s forks</item>
+        <item quantity="other">%1$s forks</item>
+    </plurals>
+    <plurals name="repoPullRequests">
+        <item quantity="one">%1$s open pull request</item>
+        <item quantity="few">%1$s open pull requests</item>
+        <item quantity="many">%1$s open pull requests</item>
+        <item quantity="other">%1$s open pull requests</item>
+    </plurals>
     <string name="genericApiError">Instance vrátila chybu. Kód %d</string>
     <string name="tabTextInfo">Podrobnosti</string>
     <string name="tabTextFiles">Soubory</string>
@@ -97,14 +113,12 @@
     <string name="tabTextCollaborators">Spolupracovníci</string>
     <string name="tabPullRequests">Pull Requesty</string>
     <string name="pullRequest">Pull Request</string>
-    <string name="infoTabRepoSize">Velikost</string>
-    <string name="infoTabRepoDefaultBranch">Výchozí větev</string>
+    <string name="infoTabRepoDefaultBranch">Default branch %1$s</string>
     <string name="infoTabRepoSshUrl">SSH URL</string>
     <string name="infoTabRepoCloneUrl">URL pro klonování</string>
     <string name="infoTabRepoRepoUrl">URL repozitáře</string>
-    <string name="infoTabRepoForksCount">Forky</string>
     <string name="infoTabRepoCreatedAt">Vytvořeno</string>
-    <string name="infoTabRepoUpdatedAt">Naposledy aktualizováno</string>
+    <string name="infoTabRepoUpdatedAt">Last updated %1$s</string>
     <string name="infoMoreInformation">Více informací</string>
     <string name="timeAtText">v</string>
     <string name="issueMilestone">Milník %1$s</string>
@@ -204,8 +218,8 @@
     <string name="restoreFromBackupPopupText">Právě se chystáte obnovit data ze zálohy vytvořené GitNexem. Tím obnovíte uživatelské účty, nastavení, poznámky a data související s repozitáři.\n\nKliknutím na Obnovit proces zahájíte.</string>
     <string name="hideEmailLangInProfileHeader">Set Email and Language as Private</string>
     <string name="hideEmailLangInProfileHint">You can set your email and language to private to hide them on your profile screen</string>
-    <string name="hideEmailNavDrawerHeader">Hide Email in Drawer</string>
-    <string name="hideEmailNavDrawerHint">You can enable this option to hide your email in the app navigation drawer</string>
+    <string name="hideEmailNavDrawerHeader">Hide Email</string>
+    <string name="hideEmailNavDrawerHint">You can enable this option to hide your email in the app home dashboard screen</string>
     <!-- settings -->
     <string name="noMoreData">Nejsou k dispozici žádná další data</string>
     <string name="createLabel">Nový štítek</string>
@@ -220,7 +234,7 @@
     <string name="labelDeleteText">Štítek smazán</string>
     <string name="selectBranchError">Zvolte větev k vydání</string>
     <string name="alertDialogTokenRevokedTitle">Chyba ověření</string>
-    <string name="alertDialogTokenRevokedMessage">It seems that the Access Token is revoked OR you are not allowed to see these contents.\n\nIn case of revoked Token, please add the account again</string>
+    <string name="alertDialogTokenRevokedMessage">It seems that the Access Token is revoked OR you are not allowed to see these contents.\n\nIn case of revoked Token, please update the account.</string>
     <string name="labelDeleteMessage">Opravdu chcete smazat tento štítek?</string>
     <!-- org tabbed layout str -->
     <string name="orgTabTeams">Týmy</string>
@@ -231,7 +245,7 @@
     <string name="teamPermissionNone">• Členové tohoto týmu nemají žádná oprávnění.</string>
     <string name="teamPermissionRead">• Členové tohoto týmu mohou zobrazit repozitáře týmu.</string>
     <string name="teamPermissionWrite">• Členové tohoto týmu mohou zobrazit a pushovat do repozitářů týmu.</string>
-    <string name="teamPermissionAdmin">• Členové tohoto týmu mohou pushovat do a z repozitářů týmu a přidávat spolupracovníky.</string>
+    <string name="teamPermissionAdmin">• Team members can push to and pull from team repositories and add collaborators to them.</string>
     <string name="teamPermissionOwner">• Členové tohoto týmu mají práva vlastníka.</string>
     <string name="teamShowAll">zobrazit vše</string>
     <string name="orgMember">Členové organizace</string>
@@ -254,7 +268,7 @@
     <string name="newTeamAccessControls">Správa přístupů</string>
     <string name="newTeamPermissionRead">Členové mohou zobrazit a klonovat repozitáře týmu</string>
     <string name="newTeamPermissionWrite">Členové mohou zobrazit a pushovat do repozitářů týmu</string>
-    <string name="newTeamPermissionAdmin">Členové mohou pullovat a pushovat z a do repozitárů týmu a přidávat k nim spolupracovníky</string>
+    <string name="newTeamPermissionAdmin">Members can pull from and push to team repositories and add collaborators to them</string>
     <string name="teamNameEmpty">Zadej prosím název týmu</string>
     <string name="teamNameError">Název týmu by měl obsahovat pouze písmena a čísla, spojovník (-), podtržítko (_) a tečku (.)</string>
     <string name="teamPermissionEmpty">Vyberte prosím oprávnění</string>
@@ -390,6 +404,7 @@
     <string name="branch_error_exists">Branch %1$s already exists</string>
     <string name="branch_error_repo_locked">Repository is locked</string>
     <string name="create_branch">Create Branch</string>
+    <string name="default_branch">Default Branch</string>
     <string name="strFilter">Filtr</string>
     <string name="strMarkdown">Markdown</string>
     <string name="copyIssueUrl">Zkopírovat issue URL</string>
@@ -434,7 +449,6 @@
     <string name="issue">Issue</string>
     <string name="labelTxt">Popisek</string>
     <string name="release">Vydání</string>
-    <string name="pr">Pull Request</string>
     <string name="collaborator">Spolupracovník</string>
     <string name="unstar">Odznačit</string>
     <string name="watch">Sledovat</string>
@@ -463,6 +477,34 @@
     <string name="timeline">Timeline</string>
     <string name="hours">Hours</string>
     <string name="minutes">Minutes</string>
+    <string name="sort">Sort</string>
+    <string name="name">Name</string>
+    <string name="id">ID</string>
+    <string name="newest">Newest</string>
+    <string name="oldest">Oldest</string>
+    <string name="alphabetically">Alphabetically</string>
+    <string name="size">Size</string>
+    <string name="home">Home</string>
+    <string name="personal">Personal</string>
+    <string name="activities">Activities</string>
+    <string name="refresh">Refresh</string>
+    <string name="actions">Actions</string>
+    <string name="runners">Runners</string>
+    <string name="workflows">Workflows</string>
+    <string name="variables">Variables</string>
+    <string name="forks">Forks</string>
+    <string name="removeContent">Odebrat</string>
+    <string name="processingText">Zpracovávání</string>
+    <string name="search">Hledat</string>
+    <string name="close">Zavřít</string>
+    <string name="addNewContent">Přidat</string>
+    <string name="orgContentAvatar">Avatar organizace</string>
+    <string name="repoContentAvatar">Repo</string>
+    <string name="privateAvatar">Soukromý avatar</string>
+    <string name="busy">Busy</string>
+    <string name="idle">Idle</string>
+    <string name="value">Value</string>
+    <string name="optional">Optional</string>
     <!-- generic copy -->
     <string name="exploreUsers">Prozkoumat uživatele</string>
     <string name="exploreIssues">Prozkoumat issues</string>
@@ -492,7 +534,7 @@
     <string name="deleteBranchAfterMerge">Odstranit větev po sloučení</string>
     <string name="mergeNoteText">Sloučení může selhat pokud nemáte oprávnění sloučit tento pull request.</string>
     <string name="mergeInfoDisabledMessage">Tlačítko Zakázat sloučení znamená, že jsou konflikty NEBO je nutné vyřešit jiné věci před sloučením</string>
-    <string name="deleteBranchForkInfo">Tato větev patří forknutému repozitáři</string>
+    <string name="deleteBranchForkInfo">This branch belongs to a forked repository</string>
     <string name="mergeCommentText">Komentář k sloučení</string>
     <string name="mergePRSuccessMsg">Pull request byl úspěšně sloučen</string>
     <string name="mergePR404ErrorMsg">Pull request není k dispozici ke sloučení</string>
@@ -513,7 +555,6 @@
     <string name="deleteFileMessage">Soubor je nastaven pro smazání větví %1$s</string>
     <string name="editFileText">Upravit %1$s</string>
     <string name="editFileMessage">Soubor je změněn větví %1$s</string>
-    <string name="sizeCopy">Velikost</string>
     <string name="shareIssue">Sdílet issue</string>
     <string name="shareRepository">Sdílet repozitář</string>
     <string name="createRepository">Vytvořit repositář</string>
@@ -572,6 +613,7 @@
     <string name="removeAccountPopupMessage">Jste si jisti, že chcete z aplikace odebrat tento účet?\n\nToto odstraní všechna data spojená s tímto účtem pouze z aplikace.</string>
     <string name="addNewAccount">Nový účet</string>
     <string name="addNewAccountText">Přidat účet</string>
+    <string name="update_account">Update Account</string>
     <string name="accountAlreadyExistsError">Účet již v aplikaci existuje</string>
     <string name="accountAddedMessage">Účet úspěšně přidán</string>
     <string name="switchAccountSuccess">Přepnuto na účet : %1$s@%2$s</string>
@@ -654,7 +696,7 @@
     <string name="pr_info">%1$s wants to merge branch %2$s into %3$s</string>
     <string name="accountDoesNotExist">Vypadá to, že v aplikaci neexistuje žádný účet pro URI %1$s. Můžete ho přidat klepnutím na tlačítko Přidat účet.</string>
     <string name="launchApp">Přejít do aplikace</string>
-    <string name="noActionText">GitNex cannot handle the requested resource. You can open an issue at the project repository as an improvement, providing details of the work. Just launch a default screen for now from the buttons below; it can be changed from settings.</string>
+    <string name="noActionText">GitNex cannot handle the requested resource. You can open an issue in the project repository for improvement, providing details of the work. Launch the default screen from the buttons below; it can be changed in settings.</string>
     <string name="biometricAuthTitle">Biometrické ověření</string>
     <string name="biometricAuthSubTitle">Přihlaste se pomocí biometriky</string>
     <string name="biometricNotSupported">Biometrické funkce nejsou na tomto zařízení dostupné</string>
@@ -693,7 +735,7 @@
     <string name="tagDeleted">Štítek odstraněn</string>
     <string name="tagDeleteError">Štítek spjatý s vydáním nelze přímo odstranit</string>
     <string name="useCustomTabs">Použít vlastní záložky</string>
-    <string name="browserOpenFailed">Nebyla nalezena žádná aplikace pro otevření tohoto odkazu. SSH odkazy a URL s prefixy http:// nebo https:// nejsou většinou prohlížečů podporovány</string>
+    <string name="browserOpenFailed">No application was found to open this link. SSH URLs and URLs with prefixes other than http:// or https:// are not supported by most browsers</string>
     <string name="notLoggedIn">%s\u25CF není přihlášen</string>
     <string name="followSystem">Podle systému (světlý/tmavý)</string>
     <string name="followSystemBlack">Podle systému (světlý/kompletně tmavý)</string>
@@ -720,7 +762,7 @@
     <string name="newNote">Nová poznámka</string>
     <string name="editNote">Upravit poznámku</string>
     <string name="newNoteContentHint">Tady začněte psát svoje poznámky</string>
-    <string name="noteDateTime">Vytvořeno %s</string>
+    <string name="noteDateTime">Created %1$s</string>
     <string name="noteTimeModified">Aktualizováno %s</string>
     <string name="noteDeleteDialogMessage">Opravdu chcete smazat tuto poznámku?</string>
     <plurals name="noteDeleteMessage">
@@ -779,7 +821,6 @@
     <string name="timelinePinned">%1$s připnul(a) %2$s</string>
     <string name="commitStatuses">Stavy</string>
     <string name="statusNoUrl">S tímto stavem není spojena žádná URL.</string>
-    <string name="starredRepos">Oblíbené repozitáře</string>
     <string name="lang_statistics">Statistiky jazyků</string>
     <string name="dashboard">Přehled</string>
     <string name="createdRepository">vytvořil(a) repozitář</string>
@@ -830,4 +871,27 @@
     <string name="time_removed">Time removed</string>
     <string name="time_add_failed">Failed to add time</string>
     <string name="time_delete_failed">Failed to delete time</string>
+    <string name="recent_update">Recent update</string>
+    <string name="least_update">Least update</string>
+    <string name="reverse_alphabetically">Reverse alphabetically</string>
+    <string name="reverse_size">Reverse size</string>
+    <string name="most_stars">Most stars</string>
+    <string name="fewest_stars">Fewest stars</string>
+    <string name="most_forks">Most forks</string>
+    <string name="fewest_forks">Fewest forks</string>
+    <string name="switch_account">Switch account</string>
+    <string name="clear_cache_button_text">Clear Cache (%1$s)</string>
+    <string name="repository_not_exist">Repository does not exist</string>
+    <string name="select_provider">Select instance provider</string>
+    <string name="provider_empty_error">Please select an instance provider</string>
+    <string name="actions_counts">%1$s tasks, %2$s artifacts, and %3$s runners</string>
+    <string name="create_variable">Create variable</string>
+    <string name="variable_name_error">Variable name is required</string>
+    <string name="variable_value_error">Value is required</string>
+    <string name="variable_create_success">Variable created successfully</string>
+    <string name="variable_create_failed">Failed to create variable</string>
+    <string name="variable_name_invalid">Name must contain only alphanumeric characters or underscores</string>
+    <string name="create_variable_header">Variables will be passed to certain actions and cannot be read otherwise.</string>
+    <string name="variable_name_helper">Case-insensitive, alphanumeric characters or underscores only, cannot start with GITEA_ or GITHUB_</string>
+    <string name="variable_value_helper">Input any content. Whitespace at the start and end will be omitted.</string>
 </resources>

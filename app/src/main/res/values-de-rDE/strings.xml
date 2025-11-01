@@ -11,7 +11,7 @@
     <string name="navRate">Bewerte GitNex</string>
     <string name="navAdministration">Instanz-Administration</string>
     <string name="navMyIssues">Meine Issues</string>
-    <string name="navMostVisited">Meistbesuchte Repositories</string>
+    <string name="navMostVisited">Meistbesuchte Repositorys</string>
     <string name="navNotes">Notizen</string>
     <string name="navAccount">Kontoeinstellungen</string>
     <string name="navWatchedRepositories">Beobachtete Repositories</string>
@@ -81,14 +81,22 @@
     <string name="orgCreated">Organisation erfolgreich erstellt!</string>
     <string name="orgExistsError">Organisation existiert bereits</string>
     <string name="diffStatistics">%1$s Ergänzung(en) und %2$s Löschung(en)</string>
-    <string name="processingText">verarbeite</string>
-    <string name="search">Suche</string>
-    <string name="close">Schließen</string>
-    <string name="addNewContent">Hinzufügen</string>
-    <string name="orgContentAvatar">Org</string>
-    <string name="repoContentAvatar">Repo</string>
-    <string name="privateAvatar">Pri</string>
-    <string name="removeContent">Entfernen</string>
+    <plurals name="repoStars">
+        <item quantity="one">%1$s Stern</item>
+        <item quantity="other">%1$s Sterne</item>
+    </plurals>
+    <plurals name="repoWatchers">
+        <item quantity="one">%1$s Beobachter</item>
+        <item quantity="other">%1$s Beobachter</item>
+    </plurals>
+    <plurals name="repoForks">
+        <item quantity="one">%1$s Fork</item>
+        <item quantity="other">%1$s Forks</item>
+    </plurals>
+    <plurals name="repoPullRequests">
+        <item quantity="one">%1$s offener Pull-Request</item>
+        <item quantity="other">%1$s offene Pull-Requests</item>
+    </plurals>
     <string name="genericApiError">Die Instanz hat einen Fehler zurückgegeben. Code %d</string>
     <string name="tabTextInfo">Details</string>
     <string name="tabTextFiles">Dateien</string>
@@ -97,14 +105,12 @@
     <string name="tabTextCollaborators">Mitarbeiter</string>
     <string name="tabPullRequests">Pull Requests</string>
     <string name="pullRequest">Pull-Request</string>
-    <string name="infoTabRepoSize">Größe</string>
-    <string name="infoTabRepoDefaultBranch">Standard-Branch</string>
+    <string name="infoTabRepoDefaultBranch">Standard Branch %1$s</string>
     <string name="infoTabRepoSshUrl">SSH-URL</string>
     <string name="infoTabRepoCloneUrl">Klon-URL</string>
     <string name="infoTabRepoRepoUrl">Repo-URL</string>
-    <string name="infoTabRepoForksCount">Forks</string>
     <string name="infoTabRepoCreatedAt">Erstellt</string>
-    <string name="infoTabRepoUpdatedAt">Letzte Aktualisierung</string>
+    <string name="infoTabRepoUpdatedAt">Zuletzt aktualisiert %1$s</string>
     <string name="infoMoreInformation">Mehr Informationen</string>
     <string name="timeAtText">um</string>
     <string name="issueMilestone">Meilenstein %1$s</string>
@@ -204,8 +210,8 @@
     <string name="restoreFromBackupPopupText">Du bist dabei, eine GitNex-generiertes Sicherung wiederherzustellen. Dies wird Accounts, Einstellungen, Notizen und mit Repositories verbundenen Daten wiederherstellen.\n\nKlicke Wiederherstellen, um den Prozess zu starten.</string>
     <string name="hideEmailLangInProfileHeader">E-Mail und Sprache als privat markieren</string>
     <string name="hideEmailLangInProfileHint">Du kannst deine E-Mail und Sprache als privat markieren, damit diese nicht auf dem Profilbildschirm angezeigt werden</string>
-    <string name="hideEmailNavDrawerHeader">E-Mail-Adresse im Drawer verstecken</string>
-    <string name="hideEmailNavDrawerHint">Du kannst diese Option aktivieren, um deine E-Mail im Navigations-Drawer der App zu verstecken</string>
+    <string name="hideEmailNavDrawerHeader">E-Mail-Adresse verstecken</string>
+    <string name="hideEmailNavDrawerHint">Du kannst diese Option aktivieren, um deine E-Mail auf der Startseite der App zu verstecken</string>
     <!-- settings -->
     <string name="noMoreData">Keine weiteren Daten verfügbar.</string>
     <string name="createLabel">Label erstellen</string>
@@ -220,7 +226,7 @@
     <string name="labelDeleteText">Label gelöscht!</string>
     <string name="selectBranchError">Wähle einen Branch für das Release</string>
     <string name="alertDialogTokenRevokedTitle">Autorisierungsfehler</string>
-    <string name="alertDialogTokenRevokedMessage">Es scheint, dass das Zugriffstoken widerrufen wurde ODER Sie nicht berechtigt sind, diese Inhalte zu sehen. \n\nIm Falle eines widerrufenen Tokens, fügen Sie das Konto bitte erneut hinzu</string>
+    <string name="alertDialogTokenRevokedMessage">Es scheint, dass das Zugriffstoken widerrufen wurde ODER Sie nicht berechtigt sind, diese Inhalte zu sehen.\n\nIm Falle eines widerrufenen Tokens aktualisieren Sie bitte das Konto.</string>
     <string name="labelDeleteMessage">Möchtest du dieses Label wirklich löschen?</string>
     <!-- org tabbed layout str -->
     <string name="orgTabTeams">Teams</string>
@@ -231,7 +237,7 @@
     <string name="teamPermissionNone">• Mitglieder dieses Teams haben keine Berechtigungen.</string>
     <string name="teamPermissionRead">• Mitglieder dieses Teams können Team-Repositories sehen.</string>
     <string name="teamPermissionWrite">• Mitglieder dieses Teams können Team-Repositories sehen und darauf pushen.</string>
-    <string name="teamPermissionAdmin">• Mitglieder dieses Teams können auf und von Team-Repositories pushen und Mitarbeiter hinzufügen.</string>
+    <string name="teamPermissionAdmin">• Teammitglieder können Daten in Team-Repositorys hochladen und daraus herunterladen sowie weitere Mitarbeiter hinzufügen.</string>
     <string name="teamPermissionOwner">• Mitglieder dieses Teams haben Besitzerrechte.</string>
     <string name="teamShowAll">alle anzeigen</string>
     <string name="orgMember">Org Mitglieder</string>
@@ -254,7 +260,7 @@
     <string name="newTeamAccessControls">Zugriffsrechte</string>
     <string name="newTeamPermissionRead">Mitglieder können Team-Repositorys einsehen und klonen</string>
     <string name="newTeamPermissionWrite">Mitglieder können auf Team-Repositories lesen und schreiben.</string>
-    <string name="newTeamPermissionAdmin">Mitglieder können auf Team-Repositories lesen, schreiben und Teilnehmer hinzufügen.</string>
+    <string name="newTeamPermissionAdmin">Mitglieder können aus Team-Repositorys ziehen und in diese pushen sowie Mitwirkende hinzufügen</string>
     <string name="teamNameEmpty">Bitte geben Sie den Teamnamen ein.</string>
     <string name="teamNameError">Team Name sollte nur Buchstaben, Zahlen, Punkte, Bindestrich (-) und Unterstriche (_) enthalten.</string>
     <string name="teamPermissionEmpty">Bitte Berechtigung auswählen</string>
@@ -390,6 +396,7 @@
     <string name="branch_error_exists">Branch%1$s existiert bereits</string>
     <string name="branch_error_repo_locked">Repository ist gesperrt</string>
     <string name="create_branch">Branch erstellen</string>
+    <string name="default_branch">Standard Branch</string>
     <string name="strFilter">Filter</string>
     <string name="strMarkdown">Markdown</string>
     <string name="copyIssueUrl">Issue-URL kopieren</string>
@@ -434,7 +441,6 @@
     <string name="issue">Issue</string>
     <string name="labelTxt">Label</string>
     <string name="release">Release</string>
-    <string name="pr">Pull-Request</string>
     <string name="collaborator">Mitarbeiter</string>
     <string name="unstar">Nicht favorisieren</string>
     <string name="watch">Beobachten</string>
@@ -463,6 +469,34 @@
     <string name="timeline">Timeline</string>
     <string name="hours">Stunden</string>
     <string name="minutes">Minuten</string>
+    <string name="sort">Sortieren</string>
+    <string name="name">Name</string>
+    <string name="id">ID</string>
+    <string name="newest">Neueste</string>
+    <string name="oldest">Älteste</string>
+    <string name="alphabetically">Alphabetisch</string>
+    <string name="size">Größte Größe</string>
+    <string name="home">Startseite</string>
+    <string name="personal">Persönlich</string>
+    <string name="activities">Aktivitäten</string>
+    <string name="refresh">Aktualisieren</string>
+    <string name="actions">Actions</string>
+    <string name="runners">Runners</string>
+    <string name="workflows">Arbeitsabläufe</string>
+    <string name="variables">Variablen</string>
+    <string name="forks">Forks</string>
+    <string name="removeContent">Entfernen</string>
+    <string name="processingText">verarbeite</string>
+    <string name="search">Suche</string>
+    <string name="close">Schließen</string>
+    <string name="addNewContent">Hinzufügen</string>
+    <string name="orgContentAvatar">Org</string>
+    <string name="repoContentAvatar">Repo</string>
+    <string name="privateAvatar">Pri</string>
+    <string name="busy">Beschäftigt</string>
+    <string name="idle">untätig</string>
+    <string name="value">Wert</string>
+    <string name="optional">Optional</string>
     <!-- generic copy -->
     <string name="exploreUsers">Benutzer erkunden</string>
     <string name="exploreIssues">Issues erkunden</string>
@@ -513,7 +547,6 @@
     <string name="deleteFileMessage">Datei zum Löschen durch Branch %1$s gesetzt</string>
     <string name="editFileText">Bearbeite %1$s</string>
     <string name="editFileMessage">Datei wurde von Branch %1$s geändert</string>
-    <string name="sizeCopy">Größe</string>
     <string name="shareIssue">Issue teilen</string>
     <string name="shareRepository">Repository teilen</string>
     <string name="createRepository">Repository erstellen</string>
@@ -572,6 +605,7 @@
     <string name="removeAccountPopupMessage">Bist du sicher, dieses Konto aus der App zu entfernen?\n\nDadurch werden alle mit diesem Konto in Verbindung stehenden Daten entfernt.</string>
     <string name="addNewAccount">Neues Konto</string>
     <string name="addNewAccountText">Konto hinzufügen</string>
+    <string name="update_account">Account aktualisieren</string>
     <string name="accountAlreadyExistsError">Konto existiert bereits in der App</string>
     <string name="accountAddedMessage">Konto erfolgreich hinzugefügt</string>
     <string name="switchAccountSuccess">Auf Konto umgeschaltet: %1$s@%2$s</string>
@@ -652,7 +686,7 @@
     <string name="pr_info">%1$swill branch%2$sin den Branch%3$s mergen</string>
     <string name="accountDoesNotExist">Es sieht so aus als würde das Konto für den Link %1$s nicht existieren. Du kannst es hinzufügen, indem du auf \"Neues Konto hinzufügen\" klickst.</string>
     <string name="launchApp">App aufrufen</string>
-    <string name="noActionText">GitNex kann den Link nicht handhaben. Du kannst ein Issue im Projekt-Repository, mit allen nötigen Details, öffnen, so dass es ausgebessert werden kann. Bitte gebe alle nötigen Details an. Um die Standard-Ansicht zu öffnen, einfach den Button unten anklicken.</string>
+    <string name="noActionText">GitNex kann die angeforderte Ressource nicht verarbeiten. Sie können im Projekt-Repository ein Ticket zur Verbesserung erstellen und dabei Details zur Arbeit angeben. Starten Sie den Standardbildschirm über die Schaltflächen unten. Er kann in den Einstellungen geändert werden.</string>
     <string name="biometricAuthTitle">Biometrische Authentifizierung</string>
     <string name="biometricAuthSubTitle">Entsperre mittels Biometrie</string>
     <string name="biometricNotSupported">Keine biometrischen Funktionen verfügbar</string>
@@ -691,7 +725,7 @@
     <string name="tagDeleted">Tag gelöscht</string>
     <string name="tagDeleteError">Ein Tag, der zu einem Release zugewiesen ist, kann nicht gelöscht werden</string>
     <string name="useCustomTabs">Custom Tabs verwenden</string>
-    <string name="browserOpenFailed">Keine Anwendung zum Öffnen des Links gefunden. SSH-URLs und URLs mit anderen Präfixen als http:// und https:// werden von den meisten Browsern nicht unterstützt</string>
+    <string name="browserOpenFailed">Keine Anwendung zum Öffnen des Links gefunden. SSH-URLs und URLs mit anderen Präfixen als http:// oder https:// werden von den meisten Browsern nicht unterstützt</string>
     <string name="notLoggedIn">%s \u25CF nicht angemeldet</string>
     <string name="followSystem">System folgen (Light/Dark)</string>
     <string name="followSystemBlack">System folgen (Light/Pitch Black)</string>
@@ -718,7 +752,7 @@
     <string name="newNote">Neue Notiz</string>
     <string name="editNote">Notiz bearbeiten</string>
     <string name="newNoteContentHint">Schreibe hier deine Notizen</string>
-    <string name="noteDateTime">%s erstellt</string>
+    <string name="noteDateTime">Erstellt %1$s</string>
     <string name="noteTimeModified">%s aktualisiert</string>
     <string name="noteDeleteDialogMessage">Möchten Sie diese Notiz wirklich löschen?</string>
     <plurals name="noteDeleteMessage">
@@ -775,7 +809,6 @@
     <string name="timelinePinned">%1$s hat das %2$s angepinnt</string>
     <string name="commitStatuses">Status</string>
     <string name="statusNoUrl">Dieser Status hat keine Ziel-URL.</string>
-    <string name="starredRepos">Favoriten</string>
     <string name="lang_statistics">Sprach-Statistik</string>
     <string name="dashboard">Dashboard</string>
     <string name="createdRepository">Repository erstellt</string>
@@ -826,4 +859,27 @@
     <string name="time_removed">Zeit entfernt</string>
     <string name="time_add_failed">Hinzufügen der Zeit fehlgeschlagen</string>
     <string name="time_delete_failed">Entfernen der Zeit fehlgeschlagen</string>
+    <string name="recent_update">Kürzlich aktualisiert</string>
+    <string name="least_update">Am längsten nicht aktualisiert</string>
+    <string name="reverse_alphabetically">Umgekehrt alphabetisch</string>
+    <string name="reverse_size">Kleinste Größe</string>
+    <string name="most_stars">Meiste Favoriten</string>
+    <string name="fewest_stars">Wenigste Favoriten</string>
+    <string name="most_forks">Meiste Forks</string>
+    <string name="fewest_forks">Wenigste Forks</string>
+    <string name="switch_account">Account wechseln</string>
+    <string name="clear_cache_button_text">Cache leeren (%1$s)</string>
+    <string name="repository_not_exist">Repository existiert nicht</string>
+    <string name="select_provider">Instanzanbieter auswählen</string>
+    <string name="provider_empty_error">Bitte Instanzanbieter auswählen</string>
+    <string name="actions_counts">%1$s Aufgaben, %2$s Artefakte, und %3$s runners</string>
+    <string name="create_variable">Variable erstellen</string>
+    <string name="variable_name_error">Variablenname ist erforderlich</string>
+    <string name="variable_value_error">Wert ist erforderlich</string>
+    <string name="variable_create_success">Variable erfolgreich erstellt</string>
+    <string name="variable_create_failed">Variable konnte nicht erstellt werden</string>
+    <string name="variable_name_invalid">Der Name darf nur alphanumerische Zeichen oder Unterstriche enthalten</string>
+    <string name="create_variable_header">Variablen werden an bestimmte Actions übergeben und können nicht anderweitig gelesen werden.</string>
+    <string name="variable_name_helper">Groß-/Kleinschreibung wird nicht berücksichtigt, nur alphanumerische Zeichen oder Unterstriche, darf nicht mit GITEA_ oder GITHUB_ beginnen</string>
+    <string name="variable_value_helper">Geben Sie beliebige Inhalte ein. Leerzeichen am Anfang und Ende werden weggelassen.</string>
 </resources>

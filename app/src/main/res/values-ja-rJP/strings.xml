@@ -11,7 +11,7 @@
     <string name="navRate">GitNexを評価する</string>
     <string name="navAdministration">Instance Administration</string>
     <string name="navMyIssues">自分の課題</string>
-    <string name="navMostVisited">訪問者の多いリポジトリ</string>
+    <string name="navMostVisited">Most Visited Repositories</string>
     <string name="navNotes">注記</string>
     <string name="navAccount">Account Settings</string>
     <string name="navWatchedRepositories">Watched Repositories</string>
@@ -81,14 +81,18 @@
     <string name="orgCreated">組織が正常に作成されました</string>
     <string name="orgExistsError">組織はすでに存在します</string>
     <string name="diffStatistics">%1$s の追加と %2$s の削除</string>
-    <string name="processingText">処理中</string>
-    <string name="search">検索</string>
-    <string name="close">閉じる</string>
-    <string name="addNewContent">追加</string>
-    <string name="orgContentAvatar">組織</string>
-    <string name="repoContentAvatar">リポジトリ</string>
-    <string name="privateAvatar">Pri</string>
-    <string name="removeContent">削除</string>
+    <plurals name="repoStars">
+        <item quantity="other">%1$s stars</item>
+    </plurals>
+    <plurals name="repoWatchers">
+        <item quantity="other">%1$s watchers</item>
+    </plurals>
+    <plurals name="repoForks">
+        <item quantity="other">%1$s forks</item>
+    </plurals>
+    <plurals name="repoPullRequests">
+        <item quantity="other">%1$s open pull requests</item>
+    </plurals>
     <string name="genericApiError">インスタンスがエラーを返しました。コード %d</string>
     <string name="tabTextInfo">詳細</string>
     <string name="tabTextFiles">ファイル</string>
@@ -97,14 +101,12 @@
     <string name="tabTextCollaborators">協力者</string>
     <string name="tabPullRequests">プルリクエスト</string>
     <string name="pullRequest">プルリクエスト</string>
-    <string name="infoTabRepoSize">サイズ</string>
-    <string name="infoTabRepoDefaultBranch">デフォルトブランチ</string>
+    <string name="infoTabRepoDefaultBranch">Default branch %1$s</string>
     <string name="infoTabRepoSshUrl">SSH URL</string>
     <string name="infoTabRepoCloneUrl">クローンURL</string>
     <string name="infoTabRepoRepoUrl">リポジトリ URL</string>
-    <string name="infoTabRepoForksCount">フォーク</string>
     <string name="infoTabRepoCreatedAt">作成済み</string>
-    <string name="infoTabRepoUpdatedAt">最終更新日</string>
+    <string name="infoTabRepoUpdatedAt">Last updated %1$s</string>
     <string name="infoMoreInformation">詳細情報</string>
     <string name="timeAtText">at</string>
     <string name="issueMilestone">マイルストーン %1Ss</string>
@@ -204,8 +206,8 @@
     <string name="restoreFromBackupPopupText">You are about to restore from a GitNex-generated backup file. This will restore user accounts, settings, notes, and data related to repositories.\n\nClick Restore to start the process.</string>
     <string name="hideEmailLangInProfileHeader">Set Email and Language as Private</string>
     <string name="hideEmailLangInProfileHint">You can set your email and language to private to hide them on your profile screen</string>
-    <string name="hideEmailNavDrawerHeader">Hide Email in Drawer</string>
-    <string name="hideEmailNavDrawerHint">You can enable this option to hide your email in the app navigation drawer</string>
+    <string name="hideEmailNavDrawerHeader">Hide Email</string>
+    <string name="hideEmailNavDrawerHint">You can enable this option to hide your email in the app home dashboard screen</string>
     <!-- settings -->
     <string name="noMoreData">これ以上のデータはありません</string>
     <string name="createLabel">新規ラベル</string>
@@ -220,7 +222,7 @@
     <string name="labelDeleteText">ラベルが削除されました</string>
     <string name="selectBranchError">リリースするブランチを選択してください</string>
     <string name="alertDialogTokenRevokedTitle">認可エラー</string>
-    <string name="alertDialogTokenRevokedMessage">It seems that the Access Token is revoked OR you are not allowed to see these contents.\n\nIn case of revoked Token, please add the account again</string>
+    <string name="alertDialogTokenRevokedMessage">It seems that the Access Token is revoked OR you are not allowed to see these contents.\n\nIn case of revoked Token, please update the account.</string>
     <string name="labelDeleteMessage">本当にこのラベルを削除しますか?</string>
     <!-- org tabbed layout str -->
     <string name="orgTabTeams">チーム</string>
@@ -231,7 +233,7 @@
     <string name="teamPermissionNone">•このチームのメンバーには権限がありません。</string>
     <string name="teamPermissionRead">•このチームのメンバーは、チームリポジトリを表示できます。</string>
     <string name="teamPermissionWrite">•このチームのメンバは、チームリポジトリを表示してプッシュすることができます。</string>
-    <string name="teamPermissionAdmin">•このチームのメンバーは、チームリポジトリとの間でプッシュしたり、コラボレーターを追加したりできます。</string>
+    <string name="teamPermissionAdmin">• Team members can push to and pull from team repositories and add collaborators to them.</string>
     <string name="teamPermissionOwner">•このチームのメンバーは所有者権限を持っています。</string>
     <string name="teamShowAll">すべて表示</string>
     <string name="orgMember">Orgメンバー</string>
@@ -254,7 +256,7 @@
     <string name="newTeamAccessControls">アクセス制御</string>
     <string name="newTeamPermissionRead">メンバーはチームリポジトリを表示して複製できる</string>
     <string name="newTeamPermissionWrite">メンバはチームリポジトリを読み込んでプッシュできる</string>
-    <string name="newTeamPermissionAdmin">メンバーは、チームリポジトリにプルおよびプッシュし、コラボレーターを追加できる</string>
+    <string name="newTeamPermissionAdmin">Members can pull from and push to team repositories and add collaborators to them</string>
     <string name="teamNameEmpty">チーム名を入力してください</string>
     <string name="teamNameError">チーム名には英数字、ダッシュ(-)、下線(_)、ドット(.)のみを使用してください</string>
     <string name="teamPermissionEmpty">権限を選択してください</string>
@@ -390,6 +392,7 @@
     <string name="branch_error_exists">Branch %1$s already exists</string>
     <string name="branch_error_repo_locked">Repository is locked</string>
     <string name="create_branch">Create Branch</string>
+    <string name="default_branch">Default Branch</string>
     <string name="strFilter">フィルタ</string>
     <string name="strMarkdown">Markdown 形式</string>
     <string name="copyIssueUrl">課題URLのコピー</string>
@@ -434,7 +437,6 @@
     <string name="issue">課題</string>
     <string name="labelTxt">ラベル</string>
     <string name="release">リリース</string>
-    <string name="pr">プルリクエスト</string>
     <string name="collaborator">協力者</string>
     <string name="unstar">スター解除</string>
     <string name="watch">ウォッチ</string>
@@ -463,6 +465,34 @@
     <string name="timeline">Timeline</string>
     <string name="hours">Hours</string>
     <string name="minutes">Minutes</string>
+    <string name="sort">Sort</string>
+    <string name="name">Name</string>
+    <string name="id">ID</string>
+    <string name="newest">Newest</string>
+    <string name="oldest">Oldest</string>
+    <string name="alphabetically">Alphabetically</string>
+    <string name="size">Size</string>
+    <string name="home">Home</string>
+    <string name="personal">Personal</string>
+    <string name="activities">Activities</string>
+    <string name="refresh">Refresh</string>
+    <string name="actions">Actions</string>
+    <string name="runners">Runners</string>
+    <string name="workflows">Workflows</string>
+    <string name="variables">Variables</string>
+    <string name="forks">Forks</string>
+    <string name="removeContent">削除</string>
+    <string name="processingText">処理中</string>
+    <string name="search">検索</string>
+    <string name="close">閉じる</string>
+    <string name="addNewContent">追加</string>
+    <string name="orgContentAvatar">組織</string>
+    <string name="repoContentAvatar">リポジトリ</string>
+    <string name="privateAvatar">Pri</string>
+    <string name="busy">Busy</string>
+    <string name="idle">Idle</string>
+    <string name="value">Value</string>
+    <string name="optional">Optional</string>
     <!-- generic copy -->
     <string name="exploreUsers">ユーザーの表示</string>
     <string name="exploreIssues">課題の表示</string>
@@ -492,7 +522,7 @@
     <string name="deleteBranchAfterMerge">マージ後にブランチを削除</string>
     <string name="mergeNoteText">このプルリクエストをマージする権限がない場合、マージは失敗する可能性があります。</string>
     <string name="mergeInfoDisabledMessage">無効なマージボタンは、マージ前に競合または他の修正が必要なことがあることを意味します</string>
-    <string name="deleteBranchForkInfo">このブランチはフォークしたリポジトリに属しています</string>
+    <string name="deleteBranchForkInfo">This branch belongs to a forked repository</string>
     <string name="mergeCommentText">マージコメント</string>
     <string name="mergePRSuccessMsg">プルリクエストは正常にマージされました</string>
     <string name="mergePR404ErrorMsg">プルリクエストはマージに使用できません</string>
@@ -513,7 +543,6 @@
     <string name="deleteFileMessage">ファイルはブランチ%1$sによって削除されるように設定されています</string>
     <string name="editFileText">%1$sの編集</string>
     <string name="editFileMessage">ファイルはブランチ%1$sによって変更されています</string>
-    <string name="sizeCopy">サイズ</string>
     <string name="shareIssue">課題の共有</string>
     <string name="shareRepository">リポジトリの共有</string>
     <string name="createRepository">リポジトリの作成</string>
@@ -572,6 +601,7 @@
     <string name="removeAccountPopupMessage">このアカウントをアプリから削除してよろしいですか?\n\nこれにより、このアカウントに関連するすべてのデータがアプリケーションからのみ削除されます。</string>
     <string name="addNewAccount">新規アカウント</string>
     <string name="addNewAccountText">Add Account</string>
+    <string name="update_account">Update Account</string>
     <string name="accountAlreadyExistsError">アカウントは既にアプリケーションに存在します</string>
     <string name="accountAddedMessage">アカウントが正常に追加されました</string>
     <string name="switchAccountSuccess">アカウントに切り替え: %1$s@%2$s</string>
@@ -651,7 +681,7 @@
     <string name="pr_info">%1$s wants to merge branch %2$s into %3$s</string>
     <string name="accountDoesNotExist">It seems that the account for URI %1$s does not exist in the app. You can add one by tapping on the Add New Account button.</string>
     <string name="launchApp">アプリケーションに移動</string>
-    <string name="noActionText">GitNex cannot handle the requested resource. You can open an issue at the project repository as an improvement, providing details of the work. Just launch a default screen for now from the buttons below; it can be changed from settings.</string>
+    <string name="noActionText">GitNex cannot handle the requested resource. You can open an issue in the project repository for improvement, providing details of the work. Launch the default screen from the buttons below; it can be changed in settings.</string>
     <string name="biometricAuthTitle">生体認証</string>
     <string name="biometricAuthSubTitle">生体認証の資格情報を使用してロック解除する</string>
     <string name="biometricNotSupported">このデバイスで利用できる生体認証機能はありません</string>
@@ -690,7 +720,7 @@
     <string name="tagDeleted">タグが削除されました</string>
     <string name="tagDeleteError">リリースに添付されたタグは直接削除できません</string>
     <string name="useCustomTabs">カスタムタブを使用する</string>
-    <string name="browserOpenFailed">このリンクを開くアプリケーションが見つかりませんでした。SSH URL、およびhttp://またはhttps://以外から始まるURLは、ほとんどのブラウザでサポートされていません。</string>
+    <string name="browserOpenFailed">No application was found to open this link. SSH URLs and URLs with prefixes other than http:// or https:// are not supported by most browsers</string>
     <string name="notLoggedIn">%s\u25CFはログインしていません</string>
     <string name="followSystem">システム設定に従う(ライト/ダーク)</string>
     <string name="followSystemBlack">システム設定に従う(ライト/ピッチブラック)</string>
@@ -717,7 +747,7 @@
     <string name="newNote">新しいノート</string>
     <string name="editNote">ノートを編集</string>
     <string name="newNoteContentHint">ここからノートを取り始める</string>
-    <string name="noteDateTime">%sを作成しました</string>
+    <string name="noteDateTime">Created %1$s</string>
     <string name="noteTimeModified">%sを更新しました</string>
     <string name="noteDeleteDialogMessage">Do you really want to delete this note?</string>
     <plurals name="noteDeleteMessage">
@@ -773,7 +803,6 @@
     <string name="timelinePinned">%1$s pinned this %2$s</string>
     <string name="commitStatuses">Statuses</string>
     <string name="statusNoUrl">This status has no linked target URL.</string>
-    <string name="starredRepos">Starred Repos</string>
     <string name="lang_statistics">Language Statistics</string>
     <string name="dashboard">Dashboard</string>
     <string name="createdRepository">created repository</string>
@@ -824,4 +853,27 @@
     <string name="time_removed">Time removed</string>
     <string name="time_add_failed">Failed to add time</string>
     <string name="time_delete_failed">Failed to delete time</string>
+    <string name="recent_update">Recent update</string>
+    <string name="least_update">Least update</string>
+    <string name="reverse_alphabetically">Reverse alphabetically</string>
+    <string name="reverse_size">Reverse size</string>
+    <string name="most_stars">Most stars</string>
+    <string name="fewest_stars">Fewest stars</string>
+    <string name="most_forks">Most forks</string>
+    <string name="fewest_forks">Fewest forks</string>
+    <string name="switch_account">Switch account</string>
+    <string name="clear_cache_button_text">Clear Cache (%1$s)</string>
+    <string name="repository_not_exist">Repository does not exist</string>
+    <string name="select_provider">Select instance provider</string>
+    <string name="provider_empty_error">Please select an instance provider</string>
+    <string name="actions_counts">%1$s tasks, %2$s artifacts, and %3$s runners</string>
+    <string name="create_variable">Create variable</string>
+    <string name="variable_name_error">Variable name is required</string>
+    <string name="variable_value_error">Value is required</string>
+    <string name="variable_create_success">Variable created successfully</string>
+    <string name="variable_create_failed">Failed to create variable</string>
+    <string name="variable_name_invalid">Name must contain only alphanumeric characters or underscores</string>
+    <string name="create_variable_header">Variables will be passed to certain actions and cannot be read otherwise.</string>
+    <string name="variable_name_helper">Case-insensitive, alphanumeric characters or underscores only, cannot start with GITEA_ or GITHUB_</string>
+    <string name="variable_value_helper">Input any content. Whitespace at the start and end will be omitted.</string>
 </resources>

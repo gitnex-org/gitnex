@@ -11,7 +11,7 @@
     <string name="navRate">Оценить GitNex</string>
     <string name="navAdministration">Администрирование экземпляра</string>
     <string name="navMyIssues">Мои вопросы</string>
-    <string name="navMostVisited">Самые посещаемые репозитории</string>
+    <string name="navMostVisited">Most Visited Repositories</string>
     <string name="navNotes">Примечания</string>
     <string name="navAccount">Настройки учетной записи</string>
     <string name="navWatchedRepositories">Просматриваемые репозитории</string>
@@ -81,14 +81,30 @@
     <string name="orgCreated">Организация успешно создана!</string>
     <string name="orgExistsError">Организация уже существует</string>
     <string name="diffStatistics">%1$s добавлен(о) и %2$s удален(о)</string>
-    <string name="processingText">Обработка</string>
-    <string name="search">Поиск</string>
-    <string name="close">Закрыть</string>
-    <string name="addNewContent">Добавить</string>
-    <string name="orgContentAvatar">Орг.</string>
-    <string name="repoContentAvatar">Реп.</string>
-    <string name="privateAvatar">Лич.</string>
-    <string name="removeContent">Удалить</string>
+    <plurals name="repoStars">
+        <item quantity="one">%1$s star</item>
+        <item quantity="few">%1$s stars</item>
+        <item quantity="many">%1$s stars</item>
+        <item quantity="other">%1$s stars</item>
+    </plurals>
+    <plurals name="repoWatchers">
+        <item quantity="one">%1$s watcher</item>
+        <item quantity="few">%1$s watchers</item>
+        <item quantity="many">%1$s watchers</item>
+        <item quantity="other">%1$s watchers</item>
+    </plurals>
+    <plurals name="repoForks">
+        <item quantity="one">%1$s fork</item>
+        <item quantity="few">%1$s forks</item>
+        <item quantity="many">%1$s forks</item>
+        <item quantity="other">%1$s forks</item>
+    </plurals>
+    <plurals name="repoPullRequests">
+        <item quantity="one">%1$s open pull request</item>
+        <item quantity="few">%1$s open pull requests</item>
+        <item quantity="many">%1$s open pull requests</item>
+        <item quantity="other">%1$s open pull requests</item>
+    </plurals>
     <string name="genericApiError">Экземпляр вернул ошибку. Код %d</string>
     <string name="tabTextInfo">Информация</string>
     <string name="tabTextFiles">Файлы</string>
@@ -97,14 +113,12 @@
     <string name="tabTextCollaborators">Соавторы</string>
     <string name="tabPullRequests">Запросы на слияние</string>
     <string name="pullRequest">Запрос на извлечение</string>
-    <string name="infoTabRepoSize">Размер</string>
-    <string name="infoTabRepoDefaultBranch">Ветка по умолчанию</string>
+    <string name="infoTabRepoDefaultBranch">Default branch %1$s</string>
     <string name="infoTabRepoSshUrl">SSH/URL</string>
     <string name="infoTabRepoCloneUrl">Адрес клонирования</string>
     <string name="infoTabRepoRepoUrl">Адрес репозитория</string>
-    <string name="infoTabRepoForksCount">Кол-во форков</string>
     <string name="infoTabRepoCreatedAt">Создан</string>
-    <string name="infoTabRepoUpdatedAt">Последнее обновление</string>
+    <string name="infoTabRepoUpdatedAt">Last updated %1$s</string>
     <string name="infoMoreInformation">Больше информации</string>
     <string name="timeAtText">в</string>
     <string name="issueMilestone">Вехи %1$s</string>
@@ -204,8 +218,8 @@
     <string name="restoreFromBackupPopupText">You are about to restore from a GitNex-generated backup file. This will restore user accounts, settings, notes, and data related to repositories.\n\nClick Restore to start the process.</string>
     <string name="hideEmailLangInProfileHeader">Set Email and Language as Private</string>
     <string name="hideEmailLangInProfileHint">You can set your email and language to private to hide them on your profile screen</string>
-    <string name="hideEmailNavDrawerHeader">Hide Email in Drawer</string>
-    <string name="hideEmailNavDrawerHint">You can enable this option to hide your email in the app navigation drawer</string>
+    <string name="hideEmailNavDrawerHeader">Hide Email</string>
+    <string name="hideEmailNavDrawerHint">You can enable this option to hide your email in the app home dashboard screen</string>
     <!-- settings -->
     <string name="noMoreData">Больше даных нет</string>
     <string name="createLabel">Создание метки</string>
@@ -220,7 +234,7 @@
     <string name="labelDeleteText">Метка удалена!</string>
     <string name="selectBranchError">Выберите ветку для релиза</string>
     <string name="alertDialogTokenRevokedTitle">Ошибка авторизации</string>
-    <string name="alertDialogTokenRevokedMessage">It seems that the Access Token is revoked OR you are not allowed to see these contents.\n\nIn case of revoked Token, please add the account again</string>
+    <string name="alertDialogTokenRevokedMessage">It seems that the Access Token is revoked OR you are not allowed to see these contents.\n\nIn case of revoked Token, please update the account.</string>
     <string name="labelDeleteMessage">Вы действительно хотите удалить эту метку?</string>
     <!-- org tabbed layout str -->
     <string name="orgTabTeams">Команды</string>
@@ -231,7 +245,7 @@
     <string name="teamPermissionNone">• Члены этой команды не имеют никаких разрешений.</string>
     <string name="teamPermissionRead">• Члены этой команды могут просматривать репозитории команды.</string>
     <string name="teamPermissionWrite">• Участники могут читать и изменять репозитории команды.</string>
-    <string name="teamPermissionAdmin">• Члены этой команды могут заливать свои коммиты в и из командного репозитория и добавлять соавторов.</string>
+    <string name="teamPermissionAdmin">• Team members can push to and pull from team repositories and add collaborators to them.</string>
     <string name="teamPermissionOwner">• Члены этой команды имеют права владельца.</string>
     <string name="teamShowAll">показать все</string>
     <string name="orgMember">Участники организации</string>
@@ -254,7 +268,7 @@
     <string name="newTeamAccessControls">Контроль доступа</string>
     <string name="newTeamPermissionRead">Участники могут просматривать и клонировать репозитории команды</string>
     <string name="newTeamPermissionWrite">Участники могут читать и выполнять push в репозитории команды</string>
-    <string name="newTeamPermissionAdmin">Учасники могут выполнять pull, push и добавлять соавторов в репозитории команды</string>
+    <string name="newTeamPermissionAdmin">Members can pull from and push to team repositories and add collaborators to them</string>
     <string name="teamNameEmpty">Пожалуйста, введите имя команды</string>
     <string name="teamNameError">Название команды может содержать только буквы, цифры, дефис (-), подчеркивание (_) и точку (.)</string>
     <string name="teamPermissionEmpty">Пожалуйста, выберите разрешения</string>
@@ -390,6 +404,7 @@
     <string name="branch_error_exists">Branch %1$s already exists</string>
     <string name="branch_error_repo_locked">Repository is locked</string>
     <string name="create_branch">Create Branch</string>
+    <string name="default_branch">Default Branch</string>
     <string name="strFilter">Фильтр</string>
     <string name="strMarkdown">Markdown</string>
     <string name="copyIssueUrl">Копировать URL задачи</string>
@@ -434,7 +449,6 @@
     <string name="issue">Проблема</string>
     <string name="labelTxt">Label</string>
     <string name="release">Release</string>
-    <string name="pr">Pull Request</string>
     <string name="collaborator">Участник</string>
     <string name="unstar">Unstar</string>
     <string name="watch">Отслеживать</string>
@@ -463,6 +477,34 @@
     <string name="timeline">Timeline</string>
     <string name="hours">Hours</string>
     <string name="minutes">Minutes</string>
+    <string name="sort">Sort</string>
+    <string name="name">Name</string>
+    <string name="id">ID</string>
+    <string name="newest">Newest</string>
+    <string name="oldest">Oldest</string>
+    <string name="alphabetically">Alphabetically</string>
+    <string name="size">Size</string>
+    <string name="home">Home</string>
+    <string name="personal">Personal</string>
+    <string name="activities">Activities</string>
+    <string name="refresh">Refresh</string>
+    <string name="actions">Actions</string>
+    <string name="runners">Runners</string>
+    <string name="workflows">Workflows</string>
+    <string name="variables">Variables</string>
+    <string name="forks">Forks</string>
+    <string name="removeContent">Удалить</string>
+    <string name="processingText">Обработка</string>
+    <string name="search">Поиск</string>
+    <string name="close">Закрыть</string>
+    <string name="addNewContent">Добавить</string>
+    <string name="orgContentAvatar">Орг.</string>
+    <string name="repoContentAvatar">Реп.</string>
+    <string name="privateAvatar">Лич.</string>
+    <string name="busy">Busy</string>
+    <string name="idle">Idle</string>
+    <string name="value">Value</string>
+    <string name="optional">Optional</string>
     <!-- generic copy -->
     <string name="exploreUsers">Обзор пользователей</string>
     <string name="exploreIssues">Обзор задач</string>
@@ -492,7 +534,7 @@
     <string name="deleteBranchAfterMerge">Удалить ветку после слияния</string>
     <string name="mergeNoteText">Слияние может завершиться неудачей, если у вас нет прав на выполнение этого запроса на объединение.</string>
     <string name="mergeInfoDisabledMessage">Отключенная кнопка слияния означает наличие конфликтов ИЛИ других вещей, которые необходимо исправить перед слиянием</string>
-    <string name="deleteBranchForkInfo">Эта ветка принадлежит форкнутому репозиторию</string>
+    <string name="deleteBranchForkInfo">This branch belongs to a forked repository</string>
     <string name="mergeCommentText">Комментарий для слияния</string>
     <string name="mergePRSuccessMsg">Запрос на слияние был успешно выполнен</string>
     <string name="mergePR404ErrorMsg">Запрос на слияние не доступен для слияния</string>
@@ -513,7 +555,6 @@
     <string name="deleteFileMessage">Файл установлен для удаления по ветке %1$s</string>
     <string name="editFileText">Изменить %1$s</string>
     <string name="editFileMessage">Файл изменён по ветке %1$s</string>
-    <string name="sizeCopy">Размер</string>
     <string name="shareIssue">Поделиться задачей</string>
     <string name="shareRepository">Поделиться репозиторием</string>
     <string name="createRepository">Создать репозиторий</string>
@@ -572,6 +613,7 @@
     <string name="removeAccountPopupMessage">Are you sure you want to remove this account from the app?\n\nThis will remove all the data related to this account on the app only.</string>
     <string name="addNewAccount">Новая учётная запись</string>
     <string name="addNewAccountText">Add Account</string>
+    <string name="update_account">Update Account</string>
     <string name="accountAlreadyExistsError">Учётная запись уже существует в приложении</string>
     <string name="accountAddedMessage">Учётная запись успешно добавлена</string>
     <string name="switchAccountSuccess">Переключено на аккаунт: %1$s@%2$s</string>
@@ -654,7 +696,7 @@
     <string name="pr_info">%1$s wants to merge branch %2$s into %3$s</string>
     <string name="accountDoesNotExist">Похоже, что учётная запись для URI %1$s не существует в приложении. Вы можете добавить её, нажав кнопку «Добавить новую учётную запись».</string>
     <string name="launchApp">Перейти к приложению</string>
-    <string name="noActionText">GitNex не может обработать запрошенный ресурс. Вы можете открыть задачу в репозитории проекта в качестве улучшения, предоставив подробную информацию о работе. Просто запустите экран по умолчанию, используя кнопки ниже, его можно изменить в настройках.</string>
+    <string name="noActionText">GitNex cannot handle the requested resource. You can open an issue in the project repository for improvement, providing details of the work. Launch the default screen from the buttons below; it can be changed in settings.</string>
     <string name="biometricAuthTitle">Биометрическая Aутентификация</string>
     <string name="biometricAuthSubTitle">Разблокируйте с помощью биометрических данных</string>
     <string name="biometricNotSupported">На этом устройстве нет биометрических функций</string>
@@ -693,7 +735,7 @@
     <string name="tagDeleted">Метка удалена</string>
     <string name="tagDeleteError">Метка прикрепленная к выпуску не может быть удалена напрямую</string>
     <string name="useCustomTabs">Использовать пользовательские вкладки</string>
-    <string name="browserOpenFailed">Не найдено приложения для открытия этой ссылки. SSH URL и URL с другим префиксом the http:// или https:// не поддерживаются большинством браузеров</string>
+    <string name="browserOpenFailed">No application was found to open this link. SSH URLs and URLs with prefixes other than http:// or https:// are not supported by most browsers</string>
     <string name="notLoggedIn">%s \u25CF не вошел в систему</string>
     <string name="followSystem">Как в системе (Светлый/Темный)</string>
     <string name="followSystemBlack">Как в системе (Светлый/Темный)</string>
@@ -720,7 +762,7 @@
     <string name="newNote">Новая заметка</string>
     <string name="editNote">Редактировать Заметку</string>
     <string name="newNoteContentHint">Начните делать заметки здесь</string>
-    <string name="noteDateTime">Created %s</string>
+    <string name="noteDateTime">Created %1$s</string>
     <string name="noteTimeModified">Updated %s</string>
     <string name="noteDeleteDialogMessage">Do you really want to delete this note?</string>
     <plurals name="noteDeleteMessage">
@@ -779,7 +821,6 @@
     <string name="timelinePinned">%1$s pinned this %2$s</string>
     <string name="commitStatuses">Statuses</string>
     <string name="statusNoUrl">This status has no linked target URL.</string>
-    <string name="starredRepos">Starred Repos</string>
     <string name="lang_statistics">Language Statistics</string>
     <string name="dashboard">Панель управления</string>
     <string name="createdRepository">созданный репозиторий</string>
@@ -830,4 +871,27 @@
     <string name="time_removed">Time removed</string>
     <string name="time_add_failed">Failed to add time</string>
     <string name="time_delete_failed">Failed to delete time</string>
+    <string name="recent_update">Recent update</string>
+    <string name="least_update">Least update</string>
+    <string name="reverse_alphabetically">Reverse alphabetically</string>
+    <string name="reverse_size">Reverse size</string>
+    <string name="most_stars">Most stars</string>
+    <string name="fewest_stars">Fewest stars</string>
+    <string name="most_forks">Most forks</string>
+    <string name="fewest_forks">Fewest forks</string>
+    <string name="switch_account">Switch account</string>
+    <string name="clear_cache_button_text">Clear Cache (%1$s)</string>
+    <string name="repository_not_exist">Repository does not exist</string>
+    <string name="select_provider">Select instance provider</string>
+    <string name="provider_empty_error">Please select an instance provider</string>
+    <string name="actions_counts">%1$s tasks, %2$s artifacts, and %3$s runners</string>
+    <string name="create_variable">Create variable</string>
+    <string name="variable_name_error">Variable name is required</string>
+    <string name="variable_value_error">Value is required</string>
+    <string name="variable_create_success">Variable created successfully</string>
+    <string name="variable_create_failed">Failed to create variable</string>
+    <string name="variable_name_invalid">Name must contain only alphanumeric characters or underscores</string>
+    <string name="create_variable_header">Variables will be passed to certain actions and cannot be read otherwise.</string>
+    <string name="variable_name_helper">Case-insensitive, alphanumeric characters or underscores only, cannot start with GITEA_ or GITHUB_</string>
+    <string name="variable_value_helper">Input any content. Whitespace at the start and end will be omitted.</string>
 </resources>
