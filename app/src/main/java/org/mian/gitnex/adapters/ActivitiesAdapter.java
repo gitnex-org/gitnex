@@ -399,12 +399,8 @@ public class ActivitiesAdapter extends RecyclerView.Adapter<RecyclerView.ViewHol
 
 			if (content.trim().startsWith("[")) {
 				try {
-					String cleanContent =
-							content.trim()
-									.substring(1, content.length() - 1);
-					String[] contentParts =
-							cleanContent.split(
-									",", 2);
+					String cleanContent = content.trim().substring(1, content.length() - 1);
+					String[] contentParts = cleanContent.split(",", 2);
 					id = contentParts[0].trim();
 
 					if (id.startsWith("\"") && id.endsWith("\"")) {
