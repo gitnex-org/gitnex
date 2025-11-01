@@ -5,14 +5,14 @@ apply plugin: 'com.android.application'
 
 android {
     defaultConfig {
-        applicationId "org.mian.gitnex"
+        applicationId = "org.mian.gitnex"
         minSdkVersion 26
         targetSdkVersion 36
-        versionCode 1095
-        versionName "11.0.0-dev"
-        multiDexEnabled true
-        testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
-        compileSdk 35
+        versionCode = 1095
+        versionName = "11.0.0-dev"
+        multiDexEnabled = true
+        testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
+        compileSdk = 36
     }
     flavorDimensions = ["default"]
     productFlavors {
@@ -24,13 +24,13 @@ android {
         }
     }
     buildFeatures {
-        viewBinding true
-        buildConfig true
+        viewBinding = true
+        buildConfig = true
     }
     buildTypes {
         release {
             minifyEnabled false
-            shrinkResources false
+            shrinkResources = false
             proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
         }
     }
@@ -38,17 +38,32 @@ android {
         includeInApk = false
     }
     compileOptions {
-        coreLibraryDesugaringEnabled true
+        coreLibraryDesugaringEnabled = true
 
         sourceCompatibility JavaVersion.VERSION_17
         targetCompatibility JavaVersion.VERSION_21
     }
     lint {
-        abortOnError false
+        abortOnError = false
     }
-    namespace 'org.mian.gitnex'
+    namespace = 'org.mian.gitnex'
     defaultConfig {
         vectorDrawables.useSupportLibrary = true
+    }
+    packagingOptions {
+        resources {
+            excludes += [
+                'META-INF/versions/9/OSGI-INF/MANIFEST.MF',
+                'META-INF/DEPENDENCIES',
+                'META-INF/LICENSE',
+                'META-INF/LICENSE.txt',
+                'META-INF/NOTICE',
+                'META-INF/NOTICE.txt'
+            ]
+            pickFirsts += [
+                'META-INF/versions/9/OSGI-INF/MANIFEST.MF'
+            ]
+        }
     }
 }
 
