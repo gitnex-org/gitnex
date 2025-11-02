@@ -127,6 +127,7 @@ public class FileIcon {
 		extensionIcons.put("next", R.drawable.ic_file_next);
 		extensionIcons.put("nvmrc", R.drawable.ic_node_js);
 		extensionIcons.put("license", R.drawable.ic_license);
+		extensionIcons.put("vue", R.drawable.ic_vue);
 	}
 
 	public static int getIconResource(String fileName, String type) {

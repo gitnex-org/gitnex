@@ -11,7 +11,7 @@
     <string name="navRate">Valorar GitNex</string>
     <string name="navAdministration">Administración de la instancia</string>
     <string name="navMyIssues">Mis incidencias</string>
-    <string name="navMostVisited">Repositorios más visitados</string>
+    <string name="navMostVisited">Most Visited Repositories</string>
     <string name="navNotes">Notas</string>
     <string name="navAccount">Configuración de la cuenta</string>
     <string name="navWatchedRepositories">Repositorios favoritos</string>
@@ -45,11 +45,11 @@
     <string name="newRepoDescTintCopy">Descripción del repositorio</string>
     <string name="newRepoPrivateCopy">Privado</string>
     <string name="newRepoOwner">Propietario</string>
-    <string name="newRepoIssueLabels">Issue Labels</string>
+    <string name="newRepoIssueLabels">Etiquetas de tareas</string>
     <string name="setAsTemplate">Hacer el repositorio una plantilla</string>
     <string name="newOrgTintCopy">Nombre de la organización</string>
     <string name="newOrgDescTintCopy">Descripción de la organización</string>
-    <string name="organizationFullname">%1$s - %2$s</string>
+    <string name="organizationFullname">%1$s / %2$s</string>
     <string name="userName">Nombre de usuario</string>
     <string name="passWord">Contraseña</string>
     <string name="btnLogin">INICIAR SESIÓN</string>
@@ -81,14 +81,22 @@
     <string name="orgCreated">La organización se ha creado correctamente</string>
     <string name="orgExistsError">La organización ya existe</string>
     <string name="diffStatistics">%1$s añadido(s) y %2$s eliminado(s)</string>
-    <string name="processingText">Procesando</string>
-    <string name="search">Buscar</string>
-    <string name="close">Cerrar</string>
-    <string name="addNewContent">Añadir</string>
-    <string name="orgContentAvatar">Org</string>
-    <string name="repoContentAvatar">Repo</string>
-    <string name="privateAvatar">Pri</string>
-    <string name="removeContent">Eliminar</string>
+    <plurals name="repoStars">
+        <item quantity="one">%1$s star</item>
+        <item quantity="other">%1$s stars</item>
+    </plurals>
+    <plurals name="repoWatchers">
+        <item quantity="one">%1$s watcher</item>
+        <item quantity="other">%1$s watchers</item>
+    </plurals>
+    <plurals name="repoForks">
+        <item quantity="one">%1$s fork</item>
+        <item quantity="other">%1$s forks</item>
+    </plurals>
+    <plurals name="repoPullRequests">
+        <item quantity="one">%1$s open pull request</item>
+        <item quantity="other">%1$s open pull requests</item>
+    </plurals>
     <string name="genericApiError">La instancia ha devuelto un error. Código %d</string>
     <string name="tabTextInfo">Detalles</string>
     <string name="tabTextFiles">Archivos</string>
@@ -97,14 +105,12 @@
     <string name="tabTextCollaborators">Colaboradores</string>
     <string name="tabPullRequests">Pull Requests</string>
     <string name="pullRequest">Pull Request</string>
-    <string name="infoTabRepoSize">Tamaño</string>
-    <string name="infoTabRepoDefaultBranch">Rama por defecto</string>
+    <string name="infoTabRepoDefaultBranch">Default branch %1$s</string>
     <string name="infoTabRepoSshUrl">URL SSH</string>
     <string name="infoTabRepoCloneUrl">URL de clonado</string>
     <string name="infoTabRepoRepoUrl">URL del repositorio</string>
-    <string name="infoTabRepoForksCount">Bifurcaciones</string>
     <string name="infoTabRepoCreatedAt">Creado</string>
-    <string name="infoTabRepoUpdatedAt">Última actualización</string>
+    <string name="infoTabRepoUpdatedAt">Last updated %1$s</string>
     <string name="infoMoreInformation">Más información</string>
     <string name="timeAtText">a las</string>
     <string name="issueMilestone">Hito %1$s</string>
@@ -114,7 +120,7 @@
     <string name="commentButtonText">Comentar</string>
     <string name="commentEmptyError">Por favor, escribe un comentario</string>
     <string name="commentSuccess">Comentario publicado</string>
-    <string name="created_by_me">Created by Me</string>
+    <string name="created_by_me">Creado por mí</string>
     <string name="featureDeprecated">Esta función se eliminará en el futuro</string>
     <string name="generalImgContentText">Imagen</string>
     <string name="commitAuthor">Autor del commit: %1$s</string>
@@ -204,8 +210,8 @@
     <string name="restoreFromBackupPopupText">You are about to restore from a GitNex-generated backup file. This will restore user accounts, settings, notes, and data related to repositories.\n\nClick Restore to start the process.</string>
     <string name="hideEmailLangInProfileHeader">Set Email and Language as Private</string>
     <string name="hideEmailLangInProfileHint">You can set your email and language to private to hide them on your profile screen</string>
-    <string name="hideEmailNavDrawerHeader">Hide Email in Drawer</string>
-    <string name="hideEmailNavDrawerHint">You can enable this option to hide your email in the app navigation drawer</string>
+    <string name="hideEmailNavDrawerHeader">Hide Email</string>
+    <string name="hideEmailNavDrawerHint">You can enable this option to hide your email in the app home dashboard screen</string>
     <!-- settings -->
     <string name="noMoreData">No hay más datos disponibles</string>
     <string name="createLabel">Nueva etiqueta</string>
@@ -220,7 +226,7 @@
     <string name="labelDeleteText">Etiqueta borrada</string>
     <string name="selectBranchError">Seleccione una rama para el lanzamiento</string>
     <string name="alertDialogTokenRevokedTitle">Error de autorización</string>
-    <string name="alertDialogTokenRevokedMessage">It seems that the Access Token is revoked OR you are not allowed to see these contents.\n\nIn case of revoked Token, please add the account again</string>
+    <string name="alertDialogTokenRevokedMessage">It seems that the Access Token is revoked OR you are not allowed to see these contents.\n\nIn case of revoked Token, please update the account.</string>
     <string name="labelDeleteMessage">¿Estás seguro de borrar esta etiqueta?</string>
     <!-- org tabbed layout str -->
     <string name="orgTabTeams">Equipos</string>
@@ -231,7 +237,7 @@
     <string name="teamPermissionNone">Los miembros de este equipo no tienen permisos.</string>
     <string name="teamPermissionRead">Los miembros de este equipo pueden ver los repositorios del equipo.</string>
     <string name="teamPermissionWrite">Los miembros de este equipo pueden ver y aportar a los repositorios del equipo.</string>
-    <string name="teamPermissionAdmin">Los miembros de este equipo pueden aportar a y desde los repositorios del equipo y añadir colaboradores.</string>
+    <string name="teamPermissionAdmin">• Team members can push to and pull from team repositories and add collaborators to them.</string>
     <string name="teamPermissionOwner">Los miembros de este equipo tienen permisos completos.</string>
     <string name="teamShowAll">ver todo</string>
     <string name="orgMember">Miembros de la organización</string>
@@ -254,7 +260,7 @@
     <string name="newTeamAccessControls">Controles de acceso</string>
     <string name="newTeamPermissionRead">Miembros pueden ver y clonar los repositorios del equipo</string>
     <string name="newTeamPermissionWrite">Miembros pueden leer y push a los repositorios del equipo</string>
-    <string name="newTeamPermissionAdmin">Miembros pueden pull y push a los repositorios del equipo y pueden añadir colaboradores</string>
+    <string name="newTeamPermissionAdmin">Members can pull from and push to team repositories and add collaborators to them</string>
     <string name="teamNameEmpty">Por favor, introduce el nombre del equipo</string>
     <string name="teamNameError">El nombre del equipo tiene que consistir solo en caracteres alfanuméricos, guion (-), barra baja (_) y punto (.)</string>
     <string name="teamPermissionEmpty">Por favor, selecciona un permiso</string>
@@ -390,6 +396,7 @@
     <string name="branch_error_exists">Branch %1$s already exists</string>
     <string name="branch_error_repo_locked">Repository is locked</string>
     <string name="create_branch">Create Branch</string>
+    <string name="default_branch">Default Branch</string>
     <string name="strFilter">Filtro</string>
     <string name="strMarkdown">Markdown</string>
     <string name="copyIssueUrl">Copiar URL de la incidencia</string>
@@ -434,7 +441,6 @@
     <string name="issue">Incidencia</string>
     <string name="labelTxt">Etiqueta</string>
     <string name="release">Lanzamiento</string>
-    <string name="pr">Pull Request</string>
     <string name="collaborator">Colaborador</string>
     <string name="unstar">No destacar</string>
     <string name="watch">Seguir</string>
@@ -463,6 +469,34 @@
     <string name="timeline">Timeline</string>
     <string name="hours">Hours</string>
     <string name="minutes">Minutes</string>
+    <string name="sort">Sort</string>
+    <string name="name">Name</string>
+    <string name="id">ID</string>
+    <string name="newest">Newest</string>
+    <string name="oldest">Oldest</string>
+    <string name="alphabetically">Alphabetically</string>
+    <string name="size">Size</string>
+    <string name="home">Home</string>
+    <string name="personal">Personal</string>
+    <string name="activities">Activities</string>
+    <string name="refresh">Refresh</string>
+    <string name="actions">Actions</string>
+    <string name="runners">Runners</string>
+    <string name="workflows">Workflows</string>
+    <string name="variables">Variables</string>
+    <string name="forks">Forks</string>
+    <string name="removeContent">Eliminar</string>
+    <string name="processingText">Procesando</string>
+    <string name="search">Buscar</string>
+    <string name="close">Cerrar</string>
+    <string name="addNewContent">Añadir</string>
+    <string name="orgContentAvatar">Org</string>
+    <string name="repoContentAvatar">Repo</string>
+    <string name="privateAvatar">Pri</string>
+    <string name="busy">Busy</string>
+    <string name="idle">Idle</string>
+    <string name="value">Value</string>
+    <string name="optional">Optional</string>
     <!-- generic copy -->
     <string name="exploreUsers">Explorar usuarios</string>
     <string name="exploreIssues">Explorar incidencias</string>
@@ -492,7 +526,7 @@
     <string name="deleteBranchAfterMerge">Eliminar rama después de la fusión</string>
     <string name="mergeNoteText">La fusión puede fallar si no tienes el permiso para fusionar este pull request.</string>
     <string name="mergeInfoDisabledMessage">Cuando el botón \"fusionar\" está desactivado indica que existen conflictos u otras cosas que tienen que ser resueltas antes de la fusión</string>
-    <string name="deleteBranchForkInfo">Esta rama pertenece a un repositorio bifurcado</string>
+    <string name="deleteBranchForkInfo">This branch belongs to a forked repository</string>
     <string name="mergeCommentText">Comentario de la fusión</string>
     <string name="mergePRSuccessMsg">Pull Request fue fusionado con éxito</string>
     <string name="mergePR404ErrorMsg">Pull Request no está disponible para fusionar</string>
@@ -513,7 +547,6 @@
     <string name="deleteFileMessage">El archivo fue definido para ser eliminado por la rama %1$s</string>
     <string name="editFileText">Editar %1$s</string>
     <string name="editFileMessage">El archivo fue modificado por la rama %1$s</string>
-    <string name="sizeCopy">Tamaño</string>
     <string name="shareIssue">Compartir incidencia</string>
     <string name="shareRepository">Compartir repositorio</string>
     <string name="createRepository">Crear repositorio</string>
@@ -572,6 +605,7 @@
     <string name="removeAccountPopupMessage">¿Estás seguro que quieres eliminar esta cuenta de la aplicación?\n\nEsta acción va a eliminar todos los datos de la cuenta, pero sólo en esta aplicación.</string>
     <string name="addNewAccount">Nueva cuenta</string>
     <string name="addNewAccountText">Añadir Cuenta</string>
+    <string name="update_account">Update Account</string>
     <string name="accountAlreadyExistsError">La cuenta ya existe en la aplicación</string>
     <string name="accountAddedMessage">Cuenta añadida con éxito</string>
     <string name="switchAccountSuccess">Cambio de la cuenta: %1$s@%2$s</string>
@@ -652,7 +686,7 @@
     <string name="pr_info">%1$s wants to merge branch %2$s into %3$s</string>
     <string name="accountDoesNotExist">La cuenta %1$s no existe en la aplicación. Puedes añadirla pulsando \"Añadir nueva cuenta\".</string>
     <string name="launchApp">Ir a la aplicación</string>
-    <string name="noActionText">GitNex no puede gestionar el recurso solicitado. Puede abrir una incidencia en el repositorio del proyecto aportando detalles del error. Por el momento, lanza una pantalla por defecto desde los botones de abajo; se puede cambiar desde la configuración.</string>
+    <string name="noActionText">GitNex cannot handle the requested resource. You can open an issue in the project repository for improvement, providing details of the work. Launch the default screen from the buttons below; it can be changed in settings.</string>
     <string name="biometricAuthTitle">Autenticación biométrica</string>
     <string name="biometricAuthSubTitle">Desbloquear usando tus credenciales biométricas</string>
     <string name="biometricNotSupported">No se ha encontrado función biométrica en el dispositivo</string>
@@ -691,7 +725,7 @@
     <string name="tagDeleted">Etiqueta eliminada</string>
     <string name="tagDeleteError">No se puede eliminar una etiqueta que está en uso</string>
     <string name="useCustomTabs">Usar pestañas personalizadas</string>
-    <string name="browserOpenFailed">No se ha encontrado una aplicación para abrir este enlace. Las direcciones SSH y cualquiera diferente a http:// o https:// no están soportadas</string>
+    <string name="browserOpenFailed">No application was found to open this link. SSH URLs and URLs with prefixes other than http:// or https:// are not supported by most browsers</string>
     <string name="notLoggedIn">%s \u25CF no ha iniciado sesión</string>
     <string name="followSystem">Sistema (Claro / Oscuro)</string>
     <string name="followSystemBlack">Sistema (Claro / Pitch Black)</string>
@@ -718,7 +752,7 @@
     <string name="newNote">Nueva nota</string>
     <string name="editNote">Editar nota</string>
     <string name="newNoteContentHint">Empieza a tomar tus notas aquí</string>
-    <string name="noteDateTime">Creado %s</string>
+    <string name="noteDateTime">Created %1$s</string>
     <string name="noteTimeModified">Actualizado %s</string>
     <string name="noteDeleteDialogMessage">¿Realmente quieres eliminar esta nota?</string>
     <plurals name="noteDeleteMessage">
@@ -775,7 +809,6 @@
     <string name="timelinePinned">%1$s pinned this %2$s</string>
     <string name="commitStatuses">Estados</string>
     <string name="statusNoUrl">Este estado no tiene una URL de destino asociada.</string>
-    <string name="starredRepos">Repositorios favoritos</string>
     <string name="lang_statistics">Estadísticas del lenguaje</string>
     <string name="dashboard">Panel de Control</string>
     <string name="createdRepository">repositorio creado</string>
@@ -826,4 +859,27 @@
     <string name="time_removed">Time removed</string>
     <string name="time_add_failed">Failed to add time</string>
     <string name="time_delete_failed">Failed to delete time</string>
+    <string name="recent_update">Recent update</string>
+    <string name="least_update">Least update</string>
+    <string name="reverse_alphabetically">Reverse alphabetically</string>
+    <string name="reverse_size">Reverse size</string>
+    <string name="most_stars">Most stars</string>
+    <string name="fewest_stars">Fewest stars</string>
+    <string name="most_forks">Most forks</string>
+    <string name="fewest_forks">Fewest forks</string>
+    <string name="switch_account">Switch account</string>
+    <string name="clear_cache_button_text">Clear Cache (%1$s)</string>
+    <string name="repository_not_exist">Repository does not exist</string>
+    <string name="select_provider">Select instance provider</string>
+    <string name="provider_empty_error">Please select an instance provider</string>
+    <string name="actions_counts">%1$s tasks, %2$s artifacts, and %3$s runners</string>
+    <string name="create_variable">Create variable</string>
+    <string name="variable_name_error">Variable name is required</string>
+    <string name="variable_value_error">Value is required</string>
+    <string name="variable_create_success">Variable created successfully</string>
+    <string name="variable_create_failed">Failed to create variable</string>
+    <string name="variable_name_invalid">Name must contain only alphanumeric characters or underscores</string>
+    <string name="create_variable_header">Variables will be passed to certain actions and cannot be read otherwise.</string>
+    <string name="variable_name_helper">Case-insensitive, alphanumeric characters or underscores only, cannot start with GITEA_ or GITHUB_</string>
+    <string name="variable_value_helper">Input any content. Whitespace at the start and end will be omitted.</string>
 </resources>

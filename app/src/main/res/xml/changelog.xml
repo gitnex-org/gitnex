@@ -1,29 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <changelog>
 
-    <release version="10.0.0" versioncode="1000">
-        <type name="🎉 Features">
-            <change>Display dates in the Files section (requires Gitea 1.24 or Forgejo 12.x)</change>
-            <change>Redesigned user profile screen</change>
-            <change>Redesigned repository info screen</change>
-            <change>Render Markdown in issue and PR titles</change>
-            <change>File icons in the file browser</change>
-            <change>Repository Actions: view workflows, variables, and runners (requires Gitea 1.24)</change>
-            <change>Create Actions variables</change>
-            <change>Update expired account token</change>
-        </type>
-        <type name="🚀 Improvements">
-            <change>Improved branches UI</change>
-            <change>Enhanced repository language bar and statistics UI</change>
-            <change>Added instance providers: Gitea, Forgejo, Codeberg</change>
-            <change>Unified login and add account screens</change>
-        </type>
-        <type name="🐛 Bug Fixes">
-            <change>Fixed crash when a repository does not exist (in most visited repositories)</change>
-            <change>Fixed heatmap timestamp issue</change>
-        </type>
-        <type name="🛠️ Support">
-            <change>Minimum supported Android version is 8.0</change>
+    <release version="11.0.0-dev" versioncode="1095">
+        <type name="Dev">
+            <change>Under development</change>
         </type>
     </release>
 

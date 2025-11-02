@@ -11,7 +11,7 @@
     <string name="navRate">به GitNex امتیاز دهید</string>
     <string name="navAdministration">Instance Administration</string>
     <string name="navMyIssues">My Issues</string>
-    <string name="navMostVisited">Most Visited Repos</string>
+    <string name="navMostVisited">Most Visited Repositories</string>
     <string name="navNotes">Notes</string>
     <string name="navAccount">Account Settings</string>
     <string name="navWatchedRepositories">Watched Repositories</string>
@@ -81,14 +81,22 @@
     <string name="orgCreated">سازمان با موفقیت ساخته شد</string>
     <string name="orgExistsError">نام سازمان از قبل وجود دارد</string>
     <string name="diffStatistics">%1$s addition(s) and %2$s deletion(s)</string>
-    <string name="processingText">در حال پردازش</string>
-    <string name="search">جستجو</string>
-    <string name="close">بستن</string>
-    <string name="addNewContent">افزودن</string>
-    <string name="orgContentAvatar">سازمان</string>
-    <string name="repoContentAvatar">مخزن</string>
-    <string name="privateAvatar">Pri</string>
-    <string name="removeContent">حذف</string>
+    <plurals name="repoStars">
+        <item quantity="one">%1$s star</item>
+        <item quantity="other">%1$s stars</item>
+    </plurals>
+    <plurals name="repoWatchers">
+        <item quantity="one">%1$s watcher</item>
+        <item quantity="other">%1$s watchers</item>
+    </plurals>
+    <plurals name="repoForks">
+        <item quantity="one">%1$s fork</item>
+        <item quantity="other">%1$s forks</item>
+    </plurals>
+    <plurals name="repoPullRequests">
+        <item quantity="one">%1$s open pull request</item>
+        <item quantity="other">%1$s open pull requests</item>
+    </plurals>
     <string name="genericApiError">Instance has returned an error. Code %d</string>
     <string name="tabTextInfo">جزئیات</string>
     <string name="tabTextFiles">فایل ها</string>
@@ -97,14 +105,12 @@
     <string name="tabTextCollaborators">همکاران</string>
     <string name="tabPullRequests">درخواست‌های ادغام</string>
     <string name="pullRequest">Pull Request</string>
-    <string name="infoTabRepoSize">اندازه‌</string>
-    <string name="infoTabRepoDefaultBranch">شاخه پیش‌فرض</string>
+    <string name="infoTabRepoDefaultBranch">Default branch %1$s</string>
     <string name="infoTabRepoSshUrl">نشانی SSH</string>
     <string name="infoTabRepoCloneUrl">نشانی همانندسازی</string>
     <string name="infoTabRepoRepoUrl">نشانی مخزن</string>
-    <string name="infoTabRepoForksCount">انشعاب‌ها</string>
     <string name="infoTabRepoCreatedAt">ایجاد شد</string>
-    <string name="infoTabRepoUpdatedAt">آخرین به‌روزرسانی</string>
+    <string name="infoTabRepoUpdatedAt">Last updated %1$s</string>
     <string name="infoMoreInformation">اطلاعات بیشتر</string>
     <string name="timeAtText">در</string>
     <string name="issueMilestone">نقطه عطف %1$s</string>
@@ -204,8 +210,8 @@
     <string name="restoreFromBackupPopupText">You are about to restore from a GitNex-generated backup file. This will restore user accounts, settings, notes, and data related to repositories.\n\nClick Restore to start the process.</string>
     <string name="hideEmailLangInProfileHeader">Set Email and Language as Private</string>
     <string name="hideEmailLangInProfileHint">You can set your email and language to private to hide them on your profile screen</string>
-    <string name="hideEmailNavDrawerHeader">Hide Email in Drawer</string>
-    <string name="hideEmailNavDrawerHint">You can enable this option to hide your email in the app navigation drawer</string>
+    <string name="hideEmailNavDrawerHeader">Hide Email</string>
+    <string name="hideEmailNavDrawerHint">You can enable this option to hide your email in the app home dashboard screen</string>
     <!-- settings -->
     <string name="noMoreData">اطلاعات بیشتری موجود نیست</string>
     <string name="createLabel">برچسب جدید</string>
@@ -220,7 +226,7 @@
     <string name="labelDeleteText">برچسب حذف شد</string>
     <string name="selectBranchError">یک شاخه را برای انتشار انتخاب کنید</string>
     <string name="alertDialogTokenRevokedTitle">خطای ورود به سامانه</string>
-    <string name="alertDialogTokenRevokedMessage">It seems that the Access Token is revoked OR you are not allowed to see these contents.\n\nIn case of revoked Token, please add the account again</string>
+    <string name="alertDialogTokenRevokedMessage">It seems that the Access Token is revoked OR you are not allowed to see these contents.\n\nIn case of revoked Token, please update the account.</string>
     <string name="labelDeleteMessage">آیا شما واقعا می‌خواهید این برچسب را حذف کنید؟</string>
     <!-- org tabbed layout str -->
     <string name="orgTabTeams">تیم‌ها</string>
@@ -231,7 +237,7 @@
     <string name="teamPermissionNone">• Members of this team do not have any permissions.</string>
     <string name="teamPermissionRead">• Members of this team can view team repositories.</string>
     <string name="teamPermissionWrite">• Members of this team can view and push to team repositories.</string>
-    <string name="teamPermissionAdmin">• Members of this team can push to and from team repositories and add collaborators.</string>
+    <string name="teamPermissionAdmin">• Team members can push to and pull from team repositories and add collaborators to them.</string>
     <string name="teamPermissionOwner">• Members of this team have owner permissions.</string>
     <string name="teamShowAll">show all</string>
     <string name="orgMember">اعضای سازمان</string>
@@ -254,7 +260,7 @@
     <string name="newTeamAccessControls">کنترل‌ دسترسی</string>
     <string name="newTeamPermissionRead">Members can view and clone team repositories</string>
     <string name="newTeamPermissionWrite">Members can read and push to team repositories</string>
-    <string name="newTeamPermissionAdmin">Members can pull and push to team repositories and add collaborators to them</string>
+    <string name="newTeamPermissionAdmin">Members can pull from and push to team repositories and add collaborators to them</string>
     <string name="teamNameEmpty">لطفا نام تیم را وارد کنید</string>
     <string name="teamNameError">Team name should contain only alphanumeric, dash (-), underscore (_) and dot (.) characters</string>
     <string name="teamPermissionEmpty">لطفا دسترسی را انتخاب کنید</string>
@@ -390,6 +396,7 @@
     <string name="branch_error_exists">Branch %1$s already exists</string>
     <string name="branch_error_repo_locked">Repository is locked</string>
     <string name="create_branch">Create Branch</string>
+    <string name="default_branch">Default Branch</string>
     <string name="strFilter">پالایه</string>
     <string name="strMarkdown">Markdown</string>
     <string name="copyIssueUrl">روگیری نشانی مسئله</string>
@@ -434,7 +441,6 @@
     <string name="issue">Issue</string>
     <string name="labelTxt">Label</string>
     <string name="release">Release</string>
-    <string name="pr">Pull Request</string>
     <string name="collaborator">Collaborator</string>
     <string name="unstar">Unstar</string>
     <string name="watch">Watch</string>
@@ -463,6 +469,34 @@
     <string name="timeline">Timeline</string>
     <string name="hours">Hours</string>
     <string name="minutes">Minutes</string>
+    <string name="sort">Sort</string>
+    <string name="name">Name</string>
+    <string name="id">ID</string>
+    <string name="newest">Newest</string>
+    <string name="oldest">Oldest</string>
+    <string name="alphabetically">Alphabetically</string>
+    <string name="size">Size</string>
+    <string name="home">Home</string>
+    <string name="personal">Personal</string>
+    <string name="activities">Activities</string>
+    <string name="refresh">Refresh</string>
+    <string name="actions">Actions</string>
+    <string name="runners">Runners</string>
+    <string name="workflows">Workflows</string>
+    <string name="variables">Variables</string>
+    <string name="forks">Forks</string>
+    <string name="removeContent">حذف</string>
+    <string name="processingText">در حال پردازش</string>
+    <string name="search">جستجو</string>
+    <string name="close">بستن</string>
+    <string name="addNewContent">افزودن</string>
+    <string name="orgContentAvatar">سازمان</string>
+    <string name="repoContentAvatar">مخزن</string>
+    <string name="privateAvatar">Pri</string>
+    <string name="busy">Busy</string>
+    <string name="idle">Idle</string>
+    <string name="value">Value</string>
+    <string name="optional">Optional</string>
     <!-- generic copy -->
     <string name="exploreUsers">Explore users</string>
     <string name="exploreIssues">Explore issues</string>
@@ -492,7 +526,7 @@
     <string name="deleteBranchAfterMerge">حذف شاخه بعد از ادغام</string>
     <string name="mergeNoteText">Merge may fail if you are not authorized to merge this Pull Request.</string>
     <string name="mergeInfoDisabledMessage">Disabled Merge button means that there are conflicts OR other things to fix before Merge</string>
-    <string name="deleteBranchForkInfo">این شاخه متعلق به یک مخزن انشعاب یافته است</string>
+    <string name="deleteBranchForkInfo">This branch belongs to a forked repository</string>
     <string name="mergeCommentText">ادغام دیدگاه</string>
     <string name="mergePRSuccessMsg">Pull Request was merged successfully</string>
     <string name="mergePR404ErrorMsg">Pull Request is not available for merge</string>
@@ -513,7 +547,6 @@
     <string name="deleteFileMessage">File is set for deletion by branch %1$s</string>
     <string name="editFileText">ویرایش %1$s</string>
     <string name="editFileMessage">پرونده توسط شاخه %1$s تغییر یافت</string>
-    <string name="sizeCopy">اندازه‌</string>
     <string name="shareIssue">هم‌رسانی مسئله</string>
     <string name="shareRepository">Share Repository</string>
     <string name="createRepository">Create Repository</string>
@@ -572,6 +605,7 @@
     <string name="removeAccountPopupMessage">Are you sure you want to remove this account from the app?\n\nThis will remove all the data related to this account on the app only.</string>
     <string name="addNewAccount">حساب جدید</string>
     <string name="addNewAccountText">Add Account</string>
+    <string name="update_account">Update Account</string>
     <string name="accountAlreadyExistsError">Account already exists in the app</string>
     <string name="accountAddedMessage">حساب کاربری با موفقیت افزوده شد</string>
     <string name="switchAccountSuccess">Switched to account : %1$s@%2$s</string>
@@ -652,7 +686,7 @@
     <string name="pr_info">%1$s wants to merge branch %2$s into %3$s</string>
     <string name="accountDoesNotExist">It seems that the account for URI %1$s does not exist in the app. You can add one by tapping on the Add New Account button.</string>
     <string name="launchApp">برو به برنامه</string>
-    <string name="noActionText">GitNex cannot handle the requested resource. You can open an issue at the project repository as an improvement, providing details of the work. Just launch a default screen for now from the buttons below; it can be changed from settings.</string>
+    <string name="noActionText">GitNex cannot handle the requested resource. You can open an issue in the project repository for improvement, providing details of the work. Launch the default screen from the buttons below; it can be changed in settings.</string>
     <string name="biometricAuthTitle">Biometric Authentication</string>
     <string name="biometricAuthSubTitle">Unlock using your biometric credentials</string>
     <string name="biometricNotSupported">No biometric features available on this device</string>
@@ -691,7 +725,7 @@
     <string name="tagDeleted">Tag deleted</string>
     <string name="tagDeleteError">A tag attached to a release cannot be deleted directly</string>
     <string name="useCustomTabs">Use Custom Tabs</string>
-    <string name="browserOpenFailed">No application found to open this link. SSH URLs and URLs with another prefix the http:// or https:// are not supported by most browser</string>
+    <string name="browserOpenFailed">No application was found to open this link. SSH URLs and URLs with prefixes other than http:// or https:// are not supported by most browsers</string>
     <string name="notLoggedIn">%s \u25CF not logged in</string>
     <string name="followSystem">Follow system (Light/Dark)</string>
     <string name="followSystemBlack">Follow system (Light/Pitch Black)</string>
@@ -718,7 +752,7 @@
     <string name="newNote">New Note</string>
     <string name="editNote">Edit Note</string>
     <string name="newNoteContentHint">Start taking your notes here</string>
-    <string name="noteDateTime">Created %s</string>
+    <string name="noteDateTime">Created %1$s</string>
     <string name="noteTimeModified">Updated %s</string>
     <string name="noteDeleteDialogMessage">Do you really want to delete this note?</string>
     <plurals name="noteDeleteMessage">
@@ -775,7 +809,6 @@
     <string name="timelinePinned">%1$s pinned this %2$s</string>
     <string name="commitStatuses">Statuses</string>
     <string name="statusNoUrl">This status has no linked target URL.</string>
-    <string name="starredRepos">Starred Repos</string>
     <string name="lang_statistics">Language Statistics</string>
     <string name="dashboard">Dashboard</string>
     <string name="createdRepository">created repository</string>
@@ -826,4 +859,27 @@
     <string name="time_removed">Time removed</string>
     <string name="time_add_failed">Failed to add time</string>
     <string name="time_delete_failed">Failed to delete time</string>
+    <string name="recent_update">Recent update</string>
+    <string name="least_update">Least update</string>
+    <string name="reverse_alphabetically">Reverse alphabetically</string>
+    <string name="reverse_size">Reverse size</string>
+    <string name="most_stars">Most stars</string>
+    <string name="fewest_stars">Fewest stars</string>
+    <string name="most_forks">Most forks</string>
+    <string name="fewest_forks">Fewest forks</string>
+    <string name="switch_account">Switch account</string>
+    <string name="clear_cache_button_text">Clear Cache (%1$s)</string>
+    <string name="repository_not_exist">Repository does not exist</string>
+    <string name="select_provider">Select instance provider</string>
+    <string name="provider_empty_error">Please select an instance provider</string>
+    <string name="actions_counts">%1$s tasks, %2$s artifacts, and %3$s runners</string>
+    <string name="create_variable">Create variable</string>
+    <string name="variable_name_error">Variable name is required</string>
+    <string name="variable_value_error">Value is required</string>
+    <string name="variable_create_success">Variable created successfully</string>
+    <string name="variable_create_failed">Failed to create variable</string>
+    <string name="variable_name_invalid">Name must contain only alphanumeric characters or underscores</string>
+    <string name="create_variable_header">Variables will be passed to certain actions and cannot be read otherwise.</string>
+    <string name="variable_name_helper">Case-insensitive, alphanumeric characters or underscores only, cannot start with GITEA_ or GITHUB_</string>
+    <string name="variable_value_helper">Input any content. Whitespace at the start and end will be omitted.</string>
 </resources>

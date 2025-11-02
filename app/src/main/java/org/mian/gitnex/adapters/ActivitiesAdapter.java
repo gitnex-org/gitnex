@@ -229,20 +229,23 @@ public class ActivitiesAdapter extends RecyclerView.Adapter<RecyclerView.ViewHol
 									RepositoryContext repo =
 											new RepositoryContext(repoOwner, repoName, context);
 
-									String[] contentParts =
-											activityObject.getContent().split("\\|");
-									String id = contentParts[0];
+									String id = getString();
 
-									Intent intentIssueDetail =
-											new IssueContext(repo, Integer.parseInt(id), "open")
-													.getIntent(context, IssueDetailActivity.class);
-									intentIssueDetail.putExtra("openedFromLink", "true");
+									try {
+										Intent intentIssueDetail =
+												new IssueContext(repo, Integer.parseInt(id), "open")
+														.getIntent(
+																context, IssueDetailActivity.class);
+										intentIssueDetail.putExtra("openedFromLink", "true");
 
-									itemView.setOnClickListener(
-											v -> {
-												repo.saveToDB(context);
-												context.startActivity(intentIssueDetail);
-											});
+										itemView.setOnClickListener(
+												v -> {
+													repo.saveToDB(context);
+													context.startActivity(intentIssueDetail);
+												});
+									} catch (NumberFormatException e) {
+										itemView.setOnClickListener(null);
+									}
 								}
 
 								if (activityObject
@@ -286,20 +289,23 @@ public class ActivitiesAdapter extends RecyclerView.Adapter<RecyclerView.ViewHol
 									RepositoryContext repo =
 											new RepositoryContext(repoOwner, repoName, context);
 
-									String[] contentParts =
-											activityObject.getContent().split("\\|");
-									String id = contentParts[0];
+									String id = getString();
 
-									Intent intentIssueDetail =
-											new IssueContext(repo, Integer.parseInt(id), "open")
-													.getIntent(context, IssueDetailActivity.class);
-									intentIssueDetail.putExtra("openedFromLink", "true");
+									try {
+										Intent intentIssueDetail =
+												new IssueContext(repo, Integer.parseInt(id), "open")
+														.getIntent(
+																context, IssueDetailActivity.class);
+										intentIssueDetail.putExtra("openedFromLink", "true");
 
-									itemView.setOnClickListener(
-											v -> {
-												repo.saveToDB(context);
-												context.startActivity(intentIssueDetail);
-											});
+										itemView.setOnClickListener(
+												v -> {
+													repo.saveToDB(context);
+													context.startActivity(intentIssueDetail);
+												});
+									} catch (NumberFormatException e) {
+										itemView.setOnClickListener(null);
+									}
 								}
 
 								if (activityObject
@@ -385,6 +391,29 @@ public class ActivitiesAdapter extends RecyclerView.Adapter<RecyclerView.ViewHol
 								}
 							},
 							200);
+		}
+
+		private String getString() {
+			String content = activityObject.getContent();
+			String id;
+
+			if (content.trim().startsWith("[")) {
+				try {
+					String cleanContent = content.trim().substring(1, content.length() - 1);
+					String[] contentParts = cleanContent.split(",", 2);
+					id = contentParts[0].trim();
+
+					if (id.startsWith("\"") && id.endsWith("\"")) {
+						id = id.substring(1, id.length() - 1);
+					}
+				} catch (Exception e) {
+					id = "0";
+				}
+			} else {
+				String[] contentParts = content.split("\\|");
+				id = contentParts[0];
+			}
+			return id;
 		}
 
 		void bindData(Activity activity, int position) {

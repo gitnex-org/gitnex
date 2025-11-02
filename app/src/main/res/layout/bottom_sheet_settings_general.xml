@@ -237,24 +237,28 @@
 
     </LinearLayout>
 
-    <LinearLayout
+    <androidx.constraintlayout.widget.ConstraintLayout
         android:id="@+id/customTabsFrame"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginTop="@dimen/dimen24dp"
         android:paddingStart="@dimen/dimen16dp"
-        android:paddingEnd="@dimen/dimen16dp"
-        android:orientation="horizontal">
+        android:paddingEnd="@dimen/dimen16dp">
 
         <TextView
             android:id="@+id/customTabsHeader"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:layout_weight="0.90"
             android:text="@string/useCustomTabs"
             android:textColor="?attr/primaryTextColor"
-            android:layout_marginTop="@dimen/dimen4dp"
-            android:textSize="@dimen/dimen16sp" />
+            android:layout_marginTop="@dimen/dimen8dp"
+            android:textSize="@dimen/dimen16sp"
+            android:singleLine="false"
+            android:ellipsize="none"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toStartOf="@id/guidelineTabs"
+            app:layout_constraintTop_toTopOf="parent"
+            android:layout_marginEnd="@dimen/dimen12dp" />
 
         <com.google.android.material.materialswitch.MaterialSwitch
             android:id="@+id/switchTabs"
@@ -262,28 +266,43 @@
             android:layout_height="wrap_content"
             android:contentDescription="@string/useCustomTabs"
             style="@style/m3SwitchStyle"
-            android:layout_weight="0.10" />
+            android:layout_marginStart="@dimen/dimen12dp"
+            app:layout_constraintStart_toEndOf="@id/customTabsHeader"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toTopOf="@id/customTabsHeader"
+            app:layout_constraintBottom_toBottomOf="@id/customTabsHeader" />
 
-    </LinearLayout>
+        <androidx.constraintlayout.widget.Guideline
+            android:id="@+id/guidelineTabs"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            app:layout_constraintGuide_percent="0.85" />
 
-    <LinearLayout
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+    <androidx.constraintlayout.widget.ConstraintLayout
         android:id="@+id/enableSendReports"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginTop="@dimen/dimen24dp"
         android:paddingStart="@dimen/dimen16dp"
-        android:paddingEnd="@dimen/dimen16dp"
-        android:orientation="horizontal">
+        android:paddingEnd="@dimen/dimen16dp">
 
         <TextView
             android:id="@+id/enableReportsHeader"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:layout_weight="0.90"
             android:text="@string/settingsEnableReportsText"
             android:textColor="?attr/primaryTextColor"
-            android:layout_marginTop="@dimen/dimen4dp"
-            android:textSize="@dimen/dimen16sp" />
+            android:layout_marginTop="@dimen/dimen8dp"
+            android:textSize="@dimen/dimen16sp"
+            android:singleLine="false"
+            android:ellipsize="none"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toStartOf="@id/guidelineReports"
+            app:layout_constraintTop_toTopOf="parent"
+            android:layout_marginEnd="@dimen/dimen12dp" />
 
         <com.google.android.material.materialswitch.MaterialSwitch
             android:id="@+id/crashReportsSwitch"
@@ -291,8 +310,19 @@
             android:layout_height="wrap_content"
             android:contentDescription="@string/settingsEnableReportsText"
             style="@style/m3SwitchStyle"
-            android:layout_weight="0.10" />
+            android:layout_marginStart="@dimen/dimen12dp"
+            app:layout_constraintStart_toEndOf="@id/enableReportsHeader"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toTopOf="@id/enableReportsHeader"
+            app:layout_constraintBottom_toBottomOf="@id/enableReportsHeader" />
 
-    </LinearLayout>
+        <androidx.constraintlayout.widget.Guideline
+            android:id="@+id/guidelineReports"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            app:layout_constraintGuide_percent="0.85" />
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
 
 </LinearLayout>
