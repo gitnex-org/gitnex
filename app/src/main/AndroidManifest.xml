@@ -1,6 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<manifest xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:tools="http://schemas.android.com/tools">
+<manifest xmlns:android="http://schemas.android.com/apk/res/android">
 
     <uses-permission android:name="android.permission.INTERNET"/>
     <uses-permission android:name="android.permission.VIBRATE"/>
@@ -16,8 +15,7 @@
         android:networkSecurityConfig="@xml/network_security_config"
         android:resizeableActivity="true"
         android:supportsRtl="true"
-        android:exported="true"
-        tools:targetApi="n">
+        android:exported="true">
         <activity
             android:name=".activities.MergePullRequestActivity"
             android:configChanges="orientation|screenSize|smallestScreenSize|density|screenLayout|keyboard|keyboardHidden|navigation"/>
@@ -167,31 +165,23 @@
 
         <meta-data
             android:name="com.samsung.android.keepalive.density"
-            android:value="true"/> <!-- Version >= 3.0. DeX Dual Mode support -->
+            android:value="true"/>
+        <!-- Version >= 3.0. DeX Dual Mode support -->
         <meta-data
             android:name="com.samsung.android.multidisplay.keep_process_alive"
-            android:value="true"/> <!-- deep links -->
+            android:value="true"/>
+        <!-- Custom URL Scheme -->
         <activity
             android:name=".activities.DeepLinksActivity"
             android:exported="true"
             android:launchMode="singleTask"
-            android:noHistory="true"
-            android:theme="@android:style/Theme.Translucent.NoTitleBar">
+            android:theme="@style/AppTheme.NoActionBar">
 
-            <intent-filter android:autoVerify="true">
+            <intent-filter>
                 <action android:name="android.intent.action.VIEW"/>
-
                 <category android:name="android.intent.category.DEFAULT"/>
                 <category android:name="android.intent.category.BROWSABLE"/>
-
-                <data android:scheme="http"/>
-                <data android:scheme="https"/>
-                <data android:host="codeberg.org"/>
-                <data android:host="gitea.com"/>
-                <data android:host="try.gitea.io"/>
-                <data android:host="code.obermui.de"/>
-                <data android:host="git.fsfe.org"/>
-                <data android:host="opendev.org"/>
+                <data android:scheme="gitnex"/>
             </intent-filter>
         </activity>
     </application>

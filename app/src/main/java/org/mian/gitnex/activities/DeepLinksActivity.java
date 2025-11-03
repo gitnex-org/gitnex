@@ -32,7 +32,7 @@ import retrofit2.Callback;
 import retrofit2.Response;
 
 /**
- * @author M M Arif
+ * @author @mmarif
  */
 public class DeepLinksActivity extends BaseActivity {
 
@@ -62,6 +62,11 @@ public class DeepLinksActivity extends BaseActivity {
 		Intent intent = getIntent();
 		data = intent.getData();
 		assert data != null;
+
+		if ("gitnex".equals(data.getScheme())) {
+			StringBuilder httpsUrl = getStringBuilder();
+			data = Uri.parse(httpsUrl.toString());
+		}
 
 		// check for login
 		if (tinyDB.getInt("currentActiveAccountId", -1) <= -1) {
@@ -473,6 +478,29 @@ public class DeepLinksActivity extends BaseActivity {
 						finish();
 					});
 		}
+	}
+
+	@NonNull private StringBuilder getStringBuilder() {
+		String originalHost = data.getHost();
+		String originalPath = data.getPath();
+		String query = data.getQuery();
+		String fragment = data.getFragment();
+
+		StringBuilder httpsUrl = new StringBuilder("https://");
+		httpsUrl.append(originalHost);
+
+		if (originalPath != null) {
+			httpsUrl.append(originalPath);
+		}
+
+		if (query != null) {
+			httpsUrl.append("?").append(query);
+		}
+
+		if (fragment != null) {
+			httpsUrl.append("#").append(fragment);
+		}
+		return httpsUrl;
 	}
 
 	private void getPullRequest(String repoOwner, String repoName, int index) {

@@ -128,14 +128,14 @@ public class MyIssuesFragment extends Fragment {
 		String filterValue = parts.length > 1 ? parts[1] : "created_by_me";
 
 		createdByMe = filterValue.equals("created_by_me");
-		assignedToMe = filterValue.equals("assignedToMe");
+		assignedToMe = filterValue.equals("assigned_to_me");
 
-		tinyDB.putString("myIssuesFilter", filter);
+		tinyDB.putString("myIssuesFilter", getCurrentFilter());
 		page = 1;
 	}
 
 	public String getCurrentFilter() {
-		return state + "_" + (assignedToMe ? "assignedToMe" : "created_by_me");
+		return state + "_" + (assignedToMe ? "assigned_to_me" : "created_by_me");
 	}
 
 	private void fetchDataAsync(String query) {
@@ -198,14 +198,14 @@ public class MyIssuesFragment extends Fragment {
 			// Initialize based on parent fragment's current filter
 			MyIssuesFragment parent = (MyIssuesFragment) requireParentFragment();
 			String currentFilter = parent.getCurrentFilter();
-			String[] parts = currentFilter.split("_");
+			String[] parts = currentFilter.split("_", 2);
 			selectedState = parts[0];
 			selectedFilter = parts.length > 1 ? parts[1] : "created_by_me";
 
 			binding.chipOpen.setChecked(selectedState.equals("open"));
 			binding.chipClosed.setChecked(selectedState.equals("closed"));
 			binding.chipCreatedByMe.setChecked(selectedFilter.equals("created_by_me"));
-			binding.chipAssignedToMe.setChecked(selectedFilter.equals("assignedToMe"));
+			binding.chipAssignedToMe.setChecked(selectedFilter.equals("assigned_to_me"));
 
 			binding.stateChipGroup.setOnCheckedStateChangeListener(
 					(group, checkedIds) -> {
@@ -224,7 +224,7 @@ public class MyIssuesFragment extends Fragment {
 							selectedFilter =
 									checkedId == binding.chipCreatedByMe.getId()
 											? "created_by_me"
-											: "assignedToMe";
+											: "assigned_to_me";
 							applyFilter(parent);
 						}
 					});

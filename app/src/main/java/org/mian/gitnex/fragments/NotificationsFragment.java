@@ -16,7 +16,7 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Objects;
-import org.apache.commons.lang3.StringUtils;
+import org.apache.commons.lang3.Strings;
 import org.gitnex.tea4j.v2.models.NotificationThread;
 import org.mian.gitnex.R;
 import org.mian.gitnex.activities.IssueDetailActivity;
@@ -33,7 +33,7 @@ import org.mian.gitnex.helpers.contexts.RepositoryContext;
 
 /**
  * @author opyale
- * @author M M Arif
+ * @author mmarif
  */
 public class NotificationsFragment extends Fragment
 		implements NotificationsAdapter.OnNotificationClickedListener,
@@ -230,7 +230,7 @@ public class NotificationsFragment extends Fragment
 											notificationThreads.clear();
 										}
 
-										if (listResponse.get().body() != null) {
+										if (!listResponse.get().body().isEmpty()) {
 											notificationThreads.addAll(
 													Objects.requireNonNull(
 															listResponse.get().body()));
@@ -281,7 +281,7 @@ public class NotificationsFragment extends Fragment
 									});
 		}
 
-		if (StringUtils.containsAny(
+		if (Strings.CS.containsAny(
 				notificationThread.getSubject().getType().toLowerCase(), "pull", "issue")) {
 			RepositoryContext repo =
 					new RepositoryContext(
