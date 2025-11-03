@@ -2,13 +2,13 @@
 
 [<img alt="Become a Patreon" src="https://codeberg.org/gitnex/GitNex/raw/branch/main/assets/patreon.png" height="80"/>](https://www.patreon.com/mmarif)
 
-# GitNex - Android client for Forgejo and Gitea
+# GitNex - Android Client for Forgejo and Gitea
 
-GitNex is a FOSS (available both as gratis & paid) Android client, for the Git repository management tools Forgejo and Gitea.
+GitNex is a FOSS Android client (available both as gratis & paid) for the Git repository management tools Forgejo and Gitea.
 
-GitNex is licensed under the GPLv3 License. Please refer to the LICENSE file for the full text of the license. **No trackers are used**, and the source code is available here for anyone to audit.
+Licensed under the GPLv3 License. Please refer to the LICENSE file for the full text of the license. **No trackers are used**, and the source code is available here for anyone to audit.
 
-## Downloads
+## 📥 Downloads
 
 [<img alt='Get it on F-Droid' src='https://codeberg.org/gitnex/GitNex/raw/branch/main/assets/fdroid.png' height="80"/>](https://f-droid.org/en/packages/org.mian.gitnex/)
 [<img alt='Get it on Google Play' src='https://codeberg.org/gitnex/GitNex/raw/branch/main/assets/google-play.png' height="80"/>](https://play.google.com/store/apps/details?id=org.mian.gitnex.pro)
@@ -16,17 +16,17 @@ GitNex is licensed under the GPLv3 License. Please refer to the LICENSE file for
 [<img alt='Get it on OpenAPK' src='https://codeberg.org/gitnex/GitNex/raw/branch/main/assets/openapk.png' height="82"/>](https://www.openapk.net/gitnex-for-forgejo-and-gitea/org.mian.gitnex/)
 [<img alt='Get it on IzzyOnDroid' src='https://codeberg.org/gitnex/GitNex/raw/branch/main/assets/IzzyOnDroid.png' height="82"/>](https://apt.izzysoft.de/fdroid/index/apk/org.mian.gitnex)
 
-## Note about Forgejo and Gitea version
+## ℹ️ Note About Forgejo and Gitea Version
 
-Please make sure that you are on the latest stable release or later, for the best experience.
+For the best experience, please ensure that you are using the latest stable release or later of your Forgejo or Gitea instance.
 
-## Build from source
+## 🔨 Build from Source
 
-Option 1 - Download the source code, open it in Android Studio, and build it there.
+**Option 1:** Download the source code, open it in Android Studio, and build it there.
 
-Option 2 - Open the terminal (Linux) and navigate to the project directory. Then, run `./gradlew assembleFree`.
+**Option 2:** Open the terminal (Linux) and navigate to the project directory. Then, run: `./gradlew assembleFree`
 
-## Features
+## ✨ Features
 
 - Multiple accounts support
 - File and directory browser
@@ -38,41 +38,58 @@ Option 2 - Open the terminal (Linux) and navigate to the project directory. Then
 - Notifications
 - Notes
 - Repositories / issues list
-- [and much more...](https://codeberg.org/gitnex/GitNex/wiki/Features)
+- [And much more...](https://codeberg.org/gitnex/GitNex/wiki/Features)
 
-## Contributing
+## 🤝 Contributing
 
-For information regarding contribution guidelines, click [here](https://codeberg.org/gitnex/GitNex/wiki/Contributing).
+We welcome contributions! For information regarding contribution guidelines, please click [here](https://codeberg.org/gitnex/GitNex/wiki/Contributing).
 
-## Translation
+## 🌐 Translation
 
-We use [Crowdin](https://crowdin.com/project/gitnex) for translations; if you can, please improve the translation for your language. If your language is not listed, please request to add it to the project [here](https://codeberg.org/gitnex/GitNex/issues).
+We use [Crowdin](https://crowdin.com/project/gitnex) for translations. If you can, please help improve the translation for your language. If your language is not listed, please request to add it to the project [here](https://codeberg.org/gitnex/GitNex/issues).
 
-**Link: https://crowdin.com/project/GitNex**
+**Translation Portal: https://crowdin.com/project/GitNex**
 
-## Screenshots
+## 📸 Screenshots
 
-[<img src="https://codeberg.org/gitnex/GitNex/raw/branch/main/fastlane/metadata/android/en-US/images/phoneScreenshots/001.png" alt="001.png" width="200"/>](https://codeberg.org/gitnex/GitNex/raw/branch/main/fastlane/metadata/android/en-US/images/phoneScreenshots/001.png) | [<img src="https://codeberg.org/gitnex/GitNex/raw/branch/main/fastlane/metadata/android/en-US/images/phoneScreenshots/002.png" alt="002.png" width="200"/>](https://codeberg.org/gitnex/GitNex/raw/branch/main/fastlane/metadata/android/en-US/images/phoneScreenshots/002.png) | [<img src="https://codeberg.org/gitnex/GitNex/raw/branch/main/fastlane/metadata/android/en-US/images/phoneScreenshots/003.png" alt="003.png" width="200"/>](https://codeberg.org/gitnex/GitNex/raw/branch/main/fastlane/metadata/android/en-US/images/phoneScreenshots/003.png) | [<img src="https://codeberg.org/gitnex/GitNex/raw/branch/main/fastlane/metadata/android/en-US/images/phoneScreenshots/004.png" alt="004.png" width="200"/>](https://codeberg.org/gitnex/GitNex/raw/branch/main/fastlane/metadata/android/en-US/images/phoneScreenshots/004.png)
----|---|---|---
-[<img src="https://codeberg.org/gitnex/GitNex/raw/branch/main/fastlane/metadata/android/en-US/images/phoneScreenshots/005.png" alt="005.png" width="200"/>](https://codeberg.org/gitnex/GitNex/raw/branch/main/fastlane/metadata/android/en-US/images/phoneScreenshots/005.png) | [<img src="https://codeberg.org/gitnex/GitNex/raw/branch/main/fastlane/metadata/android/en-US/images/phoneScreenshots/006.png" alt="006.png" width="200"/>](https://codeberg.org/gitnex/GitNex/raw/branch/main/fastlane/metadata/android/en-US/images/phoneScreenshots/006.png) | [<img src="https://codeberg.org/gitnex/GitNex/raw/branch/main/fastlane/metadata/android/en-US/images/phoneScreenshots/007.png" alt="007.png" width="200"/>](https://codeberg.org/gitnex/GitNex/raw/branch/main/fastlane/metadata/android/en-US/images/phoneScreenshots/007.png) | [<img src="https://codeberg.org/gitnex/GitNex/raw/branch/main/fastlane/metadata/android/en-US/images/phoneScreenshots/008.png" alt="008.png" width="200"/>](https://codeberg.org/gitnex/GitNex/raw/branch/main/fastlane/metadata/android/en-US/images/phoneScreenshots/008.png)
+| | | | |
+|:---:|:---:|:---:|:---:|
+| [<img src="https://codeberg.org/gitnex/GitNex/raw/branch/main/fastlane/metadata/android/en-US/images/phoneScreenshots/001.png" alt="Home Screen" width="200"/>](https://codeberg.org/gitnex/GitNex/raw/branch/main/fastlane/metadata/android/en-US/images/phoneScreenshots/001.png) | [<img src="https://codeberg.org/gitnex/GitNex/raw/branch/main/fastlane/metadata/android/en-US/images/phoneScreenshots/002.png" alt="Repository View" width="200"/>](https://codeberg.org/gitnex/GitNex/raw/branch/main/fastlane/metadata/android/en-US/images/phoneScreenshots/002.png) | [<img src="https://codeberg.org/gitnex/GitNex/raw/branch/main/fastlane/metadata/android/en-US/images/phoneScreenshots/003.png" alt="Issues" width="200"/>](https://codeberg.org/gitnex/GitNex/raw/branch/main/fastlane/metadata/android/en-US/images/phoneScreenshots/003.png) | [<img src="https://codeberg.org/gitnex/GitNex/raw/branch/main/fastlane/metadata/android/en-US/images/phoneScreenshots/004.png" alt="Code View" width="200"/>](https://codeberg.org/gitnex/GitNex/raw/branch/main/fastlane/metadata/android/en-US/images/phoneScreenshots/004.png) |
+| [<img src="https://codeberg.org/gitnex/GitNex/raw/branch/main/fastlane/metadata/android/en-US/images/phoneScreenshots/005.png" alt="Pull Requests" width="200"/>](https://codeberg.org/gitnex/GitNex/raw/branch/main/fastlane/metadata/android/en-US/images/phoneScreenshots/005.png) | [<img src="https://codeberg.org/gitnex/GitNex/raw/branch/main/fastlane/metadata/android/en-US/images/phoneScreenshots/006.png" alt="Notifications" width="200"/>](https://codeberg.org/gitnex/GitNex/raw/branch/main/fastlane/metadata/android/en-US/images/phoneScreenshots/006.png) | [<img src="https://codeberg.org/gitnex/GitNex/raw/branch/main/fastlane/metadata/android/en-US/images/phoneScreenshots/007.png" alt="User Profile" width="200"/>](https://codeberg.org/gitnex/GitNex/raw/branch/main/fastlane/metadata/android/en-US/images/phoneScreenshots/007.png) | [<img src="https://codeberg.org/gitnex/GitNex/raw/branch/main/fastlane/metadata/android/en-US/images/phoneScreenshots/008.png" alt="Settings" width="200"/>](https://codeberg.org/gitnex/GitNex/raw/branch/main/fastlane/metadata/android/en-US/images/phoneScreenshots/008.png) |
 
-## Links
+## 🔗 Add a Custom URL Scheme
 
-[Website](https://gitnex.com)
+Starting with version 11.0.0, GitNex supports a custom URL scheme. This feature allows you to seamlessly open links directly in GitNex for issues, pull requests, commits, profiles, and repositories by using third-party apps like [URL Check](https://github.com/TrianguloY/URLCheck).
 
-[Wiki](https://codeberg.org/gitnex/GitNex/wiki/Home)
+### How to Configure URL Check
 
-[Troubleshooting Guide](https://codeberg.org/gitnex/GitNex/wiki/Troubleshoot-Guide)
+1. Install the URL Check app from F-Droid or the Google Play Store.
+2. Open the app and tap on **Module**.
+3. Select **Pattern Checker** and then tap on **Json edit**.
+4. Copy and paste the following JSON configuration into the editor. You can customize the `regex` parameter to add your own instances.
+5. Save your changes.
 
-[FAQ](https://codeberg.org/gitnex/GitNex/wiki/FAQ)
+JSON Configuration:
+```
+"GitNex": {
+  "regex": "^https?://(?:[a-z0-9-]+\\.)*?(codeberg\\.org|gitea\\.com|.*\\.gitea\\.io)(/.*)",
+  "replacement": "gitnex://$1$2"
+}
+```
 
-[Release Blog](https://gitnex.codeberg.page)
+## 🔗 Links
 
-## Thanks
+- [Website](https://gitnex.com)
+- [Wiki](https://codeberg.org/gitnex/GitNex/wiki/Home)
+- [Troubleshooting Guide](https://codeberg.org/gitnex/GitNex/wiki/Troubleshoot-Guide)
+- [FAQ](https://codeberg.org/gitnex/GitNex/wiki/FAQ)
+- [Release Blog](https://gitnex.codeberg.page)
 
-Thank you to all the open source libraries, contributors, and donors.
+## 🙏 Thanks
 
-#### Open source libraries
+Thank you to all the open source libraries, contributors, and donors who make GitNex possible.
+
+#### Open Source Libraries
 
 - [square/retrofit](https://github.com/square/retrofit)
 - [google/gson](https://github.com/google/gson)
@@ -91,21 +108,19 @@ Thank you to all the open source libraries, contributors, and donors.
 - [chrisvest/stormpot](https://github.com/chrisvest/stormpot)
 - [AmrDeveloper/CodeView](https://github.com/AmrDeveloper/CodeView)
 
-#### Icon sets
+#### Icon Sets
 
 - [lucide-icons/lucide](https://github.com/lucide-icons/lucide)
 - [primer/octicons](https://github.com/primer/octicons)
 - [google/material-design-icons](https://github.com/google/material-design-icons)
 - [tabler/tabler-icons](https://github.com/tabler/tabler-icons)
 
-## Social
+## 📱 Social
 
-Below are my social media profiles:
+Follow on social media:
 
 - [@mmarif@mastodon.social](https://mastodon.social/@mmarif)
-
 - [mmarif.bsky.social](https://bsky.app/profile/mmarif.bsky.social)
-
 - [X profile](https://x.com/mmarif08)
 
 *All trademarks and logos are the properties of their respective owners.*

@@ -30,12 +30,14 @@ import org.mian.gitnex.database.api.UserAccountsApi;
 import org.mian.gitnex.database.models.UserAccount;
 import org.mian.gitnex.helpers.AppDatabaseSettings;
 import org.mian.gitnex.helpers.Constants;
+import org.mian.gitnex.helpers.TinyDB;
 import org.mian.gitnex.helpers.Version;
 import retrofit2.Call;
 import retrofit2.Response;
 
 /**
  * @author opyale
+ * @author mmarif
  */
 public class NotificationsWorker extends Worker {
 
@@ -138,6 +140,20 @@ public class NotificationsWorker extends Worker {
 		}
 	}
 
+	private boolean shouldShowNotification(Context context, long notificationId) {
+		TinyDB tinyDB = TinyDB.getInstance(context);
+		long lastShownId = tinyDB.getLong("lastShownNotificationId", 0L);
+
+		// Only show if this notification is newer than the last one we showed
+		boolean shouldShow = notificationId > lastShownId;
+
+		if (shouldShow) {
+			tinyDB.putLong("lastShownNotificationId", notificationId);
+		}
+
+		return shouldShow;
+	}
+
 	private void sendNotifications(
 			@NonNull UserAccount userAccount,
 			@NonNull List<NotificationThread> notificationThreads) {
@@ -192,6 +208,10 @@ public class NotificationsWorker extends Worker {
 		notificationManagerCompat.notify(userAccount.getAccountId(), summaryNotification);
 
 		for (NotificationThread notificationThread : notificationThreads) {
+
+			if (!shouldShowNotification(context, notificationThread.getId())) {
+				continue; // Skip if already shown
+			}
 
 			String subjectUrl = notificationThread.getSubject().getUrl();
 			String issueId =

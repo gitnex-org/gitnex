@@ -212,14 +212,19 @@ public class ExploreRepositoriesFragment extends Fragment {
 							viewBinding.noData.setVisibility(View.VISIBLE);
 							viewBinding.progressBar.setVisibility(View.GONE);
 						} else {
-							Toasty.error(requireActivity(), getString(R.string.genericError));
+							if (isAdded() && getContext() != null) {
+								Toasty.error(getContext(), getString(R.string.genericError));
+							}
 						}
 					}
 
 					@Override
 					public void onFailure(@NonNull Call<SearchResults> call, @NonNull Throwable t) {
-						Toasty.error(
-								requireActivity(), getString(R.string.genericServerResponseError));
+						if (isAdded() && getContext() != null) {
+							Toasty.error(
+									getContext(), getString(R.string.genericServerResponseError));
+						}
+						viewBinding.progressBar.setVisibility(View.GONE);
 					}
 				});
 	}
@@ -269,14 +274,19 @@ public class ExploreRepositoriesFragment extends Fragment {
 							adapter.notifyDataChanged();
 							viewBinding.progressBar.setVisibility(View.GONE);
 						} else {
-							Toasty.error(requireActivity(), getString(R.string.genericError));
+							if (isAdded() && getContext() != null) {
+								Toasty.error(getContext(), getString(R.string.genericError));
+							}
 						}
 					}
 
 					@Override
 					public void onFailure(@NonNull Call<SearchResults> call, @NonNull Throwable t) {
-						Toasty.error(
-								requireActivity(), getString(R.string.genericServerResponseError));
+						if (isAdded() && getContext() != null) {
+							Toasty.error(
+									getContext(), getString(R.string.genericServerResponseError));
+						}
+						viewBinding.progressBar.setVisibility(View.GONE);
 					}
 				});
 	}
