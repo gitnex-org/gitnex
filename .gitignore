@@ -195,7 +195,5 @@ crowdin.yml
 
 !/gradle/wrapper/gradle-wrapper.jar
 
-# End of https://www.gitignore.io/api/android,androidstudio
-
-# Crowdin Config
-crowdin.yml
+# Others
+local.md
