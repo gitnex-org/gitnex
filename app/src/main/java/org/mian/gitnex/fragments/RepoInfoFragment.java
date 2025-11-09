@@ -10,6 +10,7 @@ import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.ViewParent;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 import androidx.annotation.NonNull;
@@ -20,10 +21,13 @@ import com.google.android.material.chip.Chip;
 import com.google.android.material.dialog.MaterialAlertDialogBuilder;
 import com.google.android.material.shape.CornerFamily;
 import com.google.android.material.shape.ShapeAppearanceModel;
+import com.google.android.material.textfield.TextInputEditText;
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.List;
 import java.util.Locale;
 import java.util.Map;
+import java.util.Objects;
 import okhttp3.ResponseBody;
 import org.apache.commons.io.FileUtils;
 import org.gitnex.tea4j.v2.models.Organization;
@@ -36,11 +40,14 @@ import org.mian.gitnex.activities.RepoDetailActivity;
 import org.mian.gitnex.activities.RepoForksActivity;
 import org.mian.gitnex.activities.RepoStargazersActivity;
 import org.mian.gitnex.activities.RepoWatchersActivity;
+import org.mian.gitnex.api.clients.ApiRetrofitClient;
+import org.mian.gitnex.api.models.topics.Topics;
 import org.mian.gitnex.clients.RetrofitClient;
 import org.mian.gitnex.databinding.FragmentRepoInfoBinding;
 import org.mian.gitnex.helpers.AlertDialogs;
 import org.mian.gitnex.helpers.AppUtil;
 import org.mian.gitnex.helpers.ClickListener;
+import org.mian.gitnex.helpers.Constants;
 import org.mian.gitnex.helpers.Markdown;
 import org.mian.gitnex.helpers.TimeHelper;
 import org.mian.gitnex.helpers.Toasty;
@@ -88,6 +95,9 @@ public class RepoInfoFragment extends Fragment {
 		pageContent.setVisibility(View.GONE);
 
 		setRepoInfo(locale);
+
+		loadRepoTopics();
+		binding.addTopicChip.setOnClickListener(v -> showAddTopicDialog());
 
 		if (repository.isStarred()) {
 			binding.repoMetaStarsIcon.setImageDrawable(
@@ -485,6 +495,201 @@ public class RepoInfoFragment extends Fragment {
 					@Override
 					public void onFailure(@NonNull Call<ResponseBody> call, @NonNull Throwable t) {
 						Toasty.error(ctx, ctx.getString(R.string.genericServerResponseError));
+					}
+				});
+	}
+
+	private void loadRepoTopics() {
+		int resultLimit = Constants.getCurrentResultLimit(requireContext());
+
+		Call<Topics> call =
+				Objects.requireNonNull(ApiRetrofitClient.getInstance(getContext()))
+						.getRepoTopics(repository.getOwner(), repository.getName(), 1, resultLimit);
+
+		call.enqueue(
+				new Callback<>() {
+					@Override
+					public void onResponse(
+							@NonNull Call<Topics> call, @NonNull Response<Topics> response) {
+						if (isAdded()) {
+							switch (response.code()) {
+								case 200:
+									if (response.body() != null
+											&& !response.body().getTopics().isEmpty()) {
+										binding.repoTopicsContainer.setVisibility(View.VISIBLE);
+										displayTopics(response.body().getTopics());
+									} else {
+										binding.repoTopicsContainer.setVisibility(View.GONE);
+									}
+									break;
+								case 401:
+									AlertDialogs.authorizationTokenRevokedDialog(ctx);
+									break;
+								default:
+									binding.repoTopicsContainer.setVisibility(View.GONE);
+									break;
+							}
+						}
+					}
+
+					@Override
+					public void onFailure(@NonNull Call<Topics> call, @NonNull Throwable t) {
+						if (isAdded()) {
+							Toasty.error(ctx, ctx.getString(R.string.errorLoadingTopics));
+							binding.repoTopicsContainer.setVisibility(View.GONE);
+						}
+					}
+				});
+	}
+
+	private void displayTopics(List<String> topics) {
+		binding.repoTopicsChipGroup.removeAllViews();
+
+		int[] chipColors = {
+			ContextCompat.getColor(ctx, R.color.chipColor1),
+			ContextCompat.getColor(ctx, R.color.chipColor2),
+			ContextCompat.getColor(ctx, R.color.chipColor3),
+			ContextCompat.getColor(ctx, R.color.chipColor4),
+			ContextCompat.getColor(ctx, R.color.chipColor5)
+		};
+
+		for (int i = 0; i < topics.size(); i++) {
+			String topic = topics.get(i);
+			Chip chip = createTopicChip(topic, chipColors[i % chipColors.length]);
+			binding.repoTopicsChipGroup.addView(chip);
+		}
+
+		Chip plusChip = binding.addTopicChip;
+		ViewParent parent = plusChip.getParent();
+		if (parent instanceof ViewGroup) {
+			((ViewGroup) parent).removeView(plusChip);
+		}
+		binding.repoTopicsChipGroup.addView(plusChip);
+	}
+
+	private Chip createTopicChip(String topic, int backgroundColor) {
+		Chip chip = new Chip(ctx);
+		chip.setText(topic);
+		chip.setCloseIconVisible(true);
+		chip.setCloseIconTint(
+				ColorStateList.valueOf(ContextCompat.getColor(ctx, R.color.colorRed)));
+		chip.setChipBackgroundColor(ColorStateList.valueOf(backgroundColor));
+		chip.setTextColor(isLightColor(backgroundColor) ? Color.BLACK : Color.WHITE);
+
+		chip.setShapeAppearanceModel(
+				new ShapeAppearanceModel()
+						.toBuilder()
+								.setAllCorners(
+										CornerFamily.ROUNDED,
+										getResources().getDimension(R.dimen.dimen8dp))
+								.build());
+
+		chip.setOnCloseIconClickListener(v -> deleteTopic(topic));
+
+		return chip;
+	}
+
+	private void deleteTopic(String topic) {
+		Call<Void> call =
+				Objects.requireNonNull(ApiRetrofitClient.getInstance(getContext()))
+						.deleteRepoTopic(repository.getOwner(), repository.getName(), topic);
+
+		call.enqueue(
+				new Callback<>() {
+					@Override
+					public void onResponse(
+							@NonNull Call<Void> call, @NonNull Response<Void> response) {
+						if (isAdded()) {
+							switch (response.code()) {
+								case 204:
+									Toasty.success(
+											ctx, ctx.getString(R.string.topicDeletedSuccessfully));
+									loadRepoTopics();
+									break;
+								case 401:
+									AlertDialogs.authorizationTokenRevokedDialog(ctx);
+									break;
+								case 403:
+									Toasty.error(ctx, ctx.getString(R.string.unauthorizedApiError));
+									break;
+								default:
+									Toasty.error(ctx, ctx.getString(R.string.errorDeletingTopic));
+									break;
+							}
+						}
+					}
+
+					@Override
+					public void onFailure(@NonNull Call<Void> call, @NonNull Throwable t) {
+						if (isAdded()) {
+							Toasty.error(ctx, ctx.getString(R.string.errorDeletingTopic));
+						}
+					}
+				});
+	}
+
+	private void showAddTopicDialog() {
+		View dialogView = LayoutInflater.from(ctx).inflate(R.layout.custom_dialog_add_topic, null);
+		TextInputEditText topicInput = dialogView.findViewById(R.id.topicInput);
+
+		MaterialAlertDialogBuilder dialogBuilder =
+				new MaterialAlertDialogBuilder(ctx)
+						.setTitle(R.string.addNewTopic)
+						.setView(dialogView)
+						.setPositiveButton(
+								R.string.addButton,
+								(dialog, which) -> {
+									String topicName =
+											Objects.requireNonNull(topicInput.getText())
+													.toString()
+													.trim();
+									if (!topicName.isEmpty()) {
+										addNewTopic(topicName);
+									}
+								})
+						.setNegativeButton(R.string.cancelButton, null);
+
+		dialogBuilder.create().show();
+	}
+
+	private void addNewTopic(String topic) {
+		Call<Void> call =
+				Objects.requireNonNull(ApiRetrofitClient.getInstance(getContext()))
+						.addRepoTopic(repository.getOwner(), repository.getName(), topic);
+
+		call.enqueue(
+				new Callback<>() {
+					@Override
+					public void onResponse(
+							@NonNull Call<Void> call, @NonNull Response<Void> response) {
+						if (isAdded()) {
+							switch (response.code()) {
+								case 204:
+									Toasty.success(
+											ctx, ctx.getString(R.string.topicAddedSuccessfully));
+									loadRepoTopics();
+									break;
+								case 401:
+									AlertDialogs.authorizationTokenRevokedDialog(ctx);
+									break;
+								case 403:
+									Toasty.error(ctx, ctx.getString(R.string.unauthorizedApiError));
+									break;
+								case 422:
+									Toasty.error(ctx, ctx.getString(R.string.invalidTopicName));
+									break;
+								default:
+									Toasty.error(ctx, ctx.getString(R.string.errorAddingTopic));
+									break;
+							}
+						}
+					}
+
+					@Override
+					public void onFailure(@NonNull Call<Void> call, @NonNull Throwable t) {
+						if (isAdded()) {
+							Toasty.error(ctx, ctx.getString(R.string.errorAddingTopic));
+						}
 					}
 				});
 	}
