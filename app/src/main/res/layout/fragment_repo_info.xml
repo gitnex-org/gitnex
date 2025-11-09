@@ -94,6 +94,48 @@
                         android:textColorLink="@color/lightBlue"
                         android:textSize="@dimen/dimen16sp"/>
 
+                    <LinearLayout
+                        android:id="@+id/repoTopicsContainer"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="vertical"
+                        android:visibility="gone"
+                        android:layout_marginBottom="@dimen/dimen16dp"
+                        android:clipChildren="false"
+                        android:clipToPadding="false">
+
+                        <com.google.android.material.chip.ChipGroup
+                            android:id="@+id/repoTopicsChipGroup"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:paddingBottom="@dimen/dimen4dp"
+                            app:singleLine="false"
+                            app:chipSpacingHorizontal="@dimen/dimen8dp"
+                            app:chipSpacingVertical="@dimen/dimen2dp">
+
+                            <com.google.android.material.chip.Chip
+                                android:id="@+id/addTopicChip"
+                                style="@style/Widget.MaterialComponents.Chip.Action"
+                                android:layout_width="@dimen/dimen48dp"
+                                android:layout_height="@dimen/dimen48dp"
+                                android:text=""
+                                android:clickable="true"
+                                android:focusable="true"
+                                app:chipIcon="@drawable/ic_add"
+                                app:chipIconVisible="true"
+                                app:chipIconSize="@dimen/dimen20dp"
+                                app:chipIconTint="?attr/primaryTextColor"
+                                app:chipBackgroundColor="@android:color/transparent"
+                                app:chipStrokeWidth="0dp"
+                                app:checkedIconVisible="false"
+                                app:rippleColor="@android:color/transparent"
+                                app:closeIconVisible="false"
+                                app:ensureMinTouchTargetSize="false" />
+
+                        </com.google.android.material.chip.ChipGroup>
+
+                    </LinearLayout>
+
                     <com.google.android.material.card.MaterialCardView
                         android:id="@+id/language_stats_card"
                         android:layout_width="match_parent"

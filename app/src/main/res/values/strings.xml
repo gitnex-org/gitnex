@@ -1039,4 +1039,14 @@
     <string name="create_variable_header">Variables will be passed to certain actions and cannot be read otherwise.</string>
     <string name="variable_name_helper">Case-insensitive, alphanumeric characters or underscores only, cannot start with GITEA_ or GITHUB_</string>
     <string name="variable_value_helper">Input any content. Whitespace at the start and end will be omitted.</string>
-</resources>
+
+    <string name="addTopic">Add Topic</string>
+    <string name="addNewTopic">Add New Topic</string>
+    <string name="topicName">Topic Name</string>
+    <string name="topicAddedSuccessfully">Topic added successfully</string>
+    <string name="topicDeletedSuccessfully">Topic deleted successfully</string>
+    <string name="errorAddingTopic">Error adding topic</string>
+    <string name="errorDeletingTopic">Error deleting topic</string>
+    <string name="errorLoadingTopics">Error loading topics</string>
+    <string name="invalidTopicName">Invalid topic name</string>
+    </resources>
