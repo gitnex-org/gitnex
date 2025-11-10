@@ -1,0 +1,243 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:background="?attr/primaryBackgroundColor"
+    android:orientation="vertical"
+    android:padding="@dimen/dimen16dp">
+
+    <View
+        android:layout_width="@dimen/dimen32dp"
+        android:layout_height="@dimen/dimen6dp"
+        android:layout_gravity="center_horizontal"
+        android:layout_marginBottom="@dimen/dimen8dp"
+        android:background="@drawable/bottom_sheet_handle"
+        android:backgroundTint="?attr/primaryTextColor" />
+
+    <LinearLayout
+        android:id="@+id/milestonesFilterHeadFrame"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:padding="@dimen/dimen8dp">
+
+        <TextView
+            android:id="@+id/bottomSheetHeader"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="center"
+            android:text="@string/repoSettingsTitle"
+            android:textColor="?attr/primaryTextColor"
+            android:textSize="@dimen/dimen18sp"/>
+
+        <com.google.android.material.card.MaterialCardView
+            style="?attr/materialCardViewFilledStyle"
+            android:layout_width="@dimen/dimen28dp"
+            android:layout_height="@dimen/dimen4dp"
+            android:layout_gravity="center_horizontal"
+            android:layout_marginTop="@dimen/dimen8dp"
+            android:layout_marginBottom="@dimen/dimen16dp"
+            app:cardCornerRadius="@dimen/dimen24dp"
+            app:cardElevation="@dimen/dimen0dp">
+
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:background="?attr/fabColor" />
+
+        </com.google.android.material.card.MaterialCardView>
+
+    </LinearLayout>
+
+    <!-- Forks -->
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:layout_margin="@dimen/dimen12dp"
+        android:gravity="center_vertical">
+
+        <TextView
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:text="@string/forks"
+            android:textColor="?attr/primaryTextColor"
+            android:textSize="@dimen/dimen16sp" />
+
+        <TextView
+            android:id="@+id/forksDisabledValue"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/loading"
+            android:textColor="?attr/primaryTextColor"
+            android:textSize="@dimen/dimen16sp"
+            android:textStyle="bold" />
+
+    </LinearLayout>
+
+    <!-- Migrations -->
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:layout_margin="@dimen/dimen12dp"
+        android:gravity="center_vertical">
+
+        <TextView
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:text="@string/migrations"
+            android:textColor="?attr/primaryTextColor"
+            android:textSize="@dimen/dimen16sp" />
+
+        <TextView
+            android:id="@+id/migrationsDisabledValue"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/loading"
+            android:textColor="?attr/primaryTextColor"
+            android:textSize="@dimen/dimen16sp"
+            android:textStyle="bold" />
+
+    </LinearLayout>
+
+    <!-- HTTP Git -->
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:layout_margin="@dimen/dimen12dp"
+        android:gravity="center_vertical">
+
+        <TextView
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:text="@string/http_git"
+            android:textColor="?attr/primaryTextColor"
+            android:textSize="@dimen/dimen16sp" />
+
+        <TextView
+            android:id="@+id/httpGitDisabledValue"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/loading"
+            android:textColor="?attr/primaryTextColor"
+            android:textSize="@dimen/dimen16sp"
+            android:textStyle="bold" />
+
+    </LinearLayout>
+
+    <!-- LFS -->
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:layout_margin="@dimen/dimen12dp"
+        android:gravity="center_vertical">
+
+        <TextView
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:text="@string/lfs"
+            android:textColor="?attr/primaryTextColor"
+            android:textSize="@dimen/dimen16sp" />
+
+        <TextView
+            android:id="@+id/lfsDisabledValue"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/loading"
+            android:textColor="?attr/primaryTextColor"
+            android:textSize="@dimen/dimen16sp"
+            android:textStyle="bold" />
+
+    </LinearLayout>
+
+    <!-- Mirrors -->
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:layout_margin="@dimen/dimen12dp"
+        android:gravity="center_vertical">
+
+        <TextView
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:text="@string/mirrors"
+            android:textColor="?attr/primaryTextColor"
+            android:textSize="@dimen/dimen16sp" />
+
+        <TextView
+            android:id="@+id/mirrorsDisabledValue"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/loading"
+            android:textColor="?attr/primaryTextColor"
+            android:textSize="@dimen/dimen16sp"
+            android:textStyle="bold" />
+
+    </LinearLayout>
+
+    <!-- Time Tracking -->
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:layout_margin="@dimen/dimen12dp"
+        android:gravity="center_vertical">
+
+        <TextView
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:text="@string/time_tracking"
+            android:textColor="?attr/primaryTextColor"
+            android:textSize="@dimen/dimen16sp" />
+
+        <TextView
+            android:id="@+id/timeTrackingDisabledValue"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/loading"
+            android:textColor="?attr/primaryTextColor"
+            android:textSize="@dimen/dimen16sp"
+            android:textStyle="bold" />
+
+    </LinearLayout>
+
+    <!-- Stars -->
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:layout_margin="@dimen/dimen12dp"
+        android:gravity="center_vertical">
+
+        <TextView
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:text="@string/stars"
+            android:textColor="?attr/primaryTextColor"
+            android:textSize="@dimen/dimen16sp" />
+
+        <TextView
+            android:id="@+id/starsDisabledValue"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/loading"
+            android:textColor="?attr/primaryTextColor"
+            android:textSize="@dimen/dimen16sp"
+            android:textStyle="bold" />
+
+    </LinearLayout>
+
+</LinearLayout>

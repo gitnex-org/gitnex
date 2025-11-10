@@ -604,6 +604,11 @@
     <string name="idle">Idle</string>
     <string name="value">Value</string>
     <string name="optional">Optional</string>
+    <string name="loading">Loading…</string>
+    <string name="migrations">Migrations</string>
+    <string name="lfs">LFS</string>
+    <string name="mirrors">Mirrors</string>
+    <string name="stars">Stars</string>
     <!-- generic copy -->
 
     <string name="exploreUsers">Explore users</string>
@@ -1005,6 +1010,7 @@
     <string name="search_failed">Search failed</string>
     <string name="no_dependency_search_results">No matching results found</string>
 
+    <string name="time_tracking">Time Tracking</string>
     <string name="tracked_time">Tracked Time</string>
     <string name="no_tracked_time">No time tracked yet</string>
     <string name="total_time">Total: %1$dh %2$dm %3$ds</string>
@@ -1049,4 +1055,6 @@
     <string name="errorDeletingTopic">Error deleting topic</string>
     <string name="errorLoadingTopics">Error loading topics</string>
     <string name="invalidTopicName">Invalid topic name</string>
+
+    <string name="http_git">HTTP Git</string>
     </resources>
