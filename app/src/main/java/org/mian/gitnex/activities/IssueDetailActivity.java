@@ -1119,25 +1119,7 @@ public class IssueDetailActivity extends BaseActivity
 			viewBinding.statusesLvMain.setVisibility(View.VISIBLE);
 
 			getStatuses();
-
-			viewBinding.prInfoLayout.setVisibility(View.VISIBLE);
-			String displayName;
-			User user = issue.getIssue().getUser();
-			if (user != null && user.getFullName() != null && !user.getFullName().isEmpty()) {
-				displayName = user.getFullName();
-			} else {
-				displayName = user != null && user.getLogin() != null ? user.getLogin() : "Unknown";
-			}
-
-			PullRequest pr = issue.getPullRequest();
-			if (pr != null && pr.getHead() != null && pr.getBase() != null) {
-				viewBinding.prInfo.setText(
-						getString(
-								R.string.pr_info,
-								displayName,
-								pr.getHead().getRef(),
-								pr.getBase().getRef()));
-			}
+			updatePrInfo();
 
 			if (issue.getIssue().getPullRequest().isMerged()) { // merged
 
@@ -1557,6 +1539,7 @@ public class IssueDetailActivity extends BaseActivity
 									issue.setPullRequest(response.body());
 									loadingFinishedPr = true;
 									updateMenuState();
+									updatePrInfo();
 								} else {
 									loadingFinishedPr = true;
 								}
@@ -1571,6 +1554,30 @@ public class IssueDetailActivity extends BaseActivity
 								checkAndInitWithIssue();
 							}
 						});
+	}
+
+	private void updatePrInfo() {
+		if (issue.getIssue() != null && issue.getIssue().getPullRequest() != null) {
+			PullRequest pr = issue.getPullRequest();
+			if (pr != null && pr.getHead() != null && pr.getBase() != null) {
+				viewBinding.prInfoLayout.setVisibility(View.VISIBLE);
+				String displayName;
+				User user = issue.getIssue().getUser();
+				if (user != null && user.getFullName() != null && !user.getFullName().isEmpty()) {
+					displayName = user.getFullName();
+				} else {
+					displayName =
+							user != null && user.getLogin() != null ? user.getLogin() : "Unknown";
+				}
+
+				viewBinding.prInfo.setText(
+						getString(
+								R.string.pr_info,
+								displayName,
+								pr.getHead().getLabel(),
+								pr.getBase().getRef()));
+			}
+		}
 	}
 
 	private void checkAndInitWithIssue() {
