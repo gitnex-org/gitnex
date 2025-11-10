@@ -116,7 +116,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:contentDescription="@string/generalImgContentText"
-                    app:srcCompat="@drawable/ic_directory" />
+                    app:srcCompat="@drawable/ic_directory_2" />
 
                 <LinearLayout
                     android:layout_width="0dp"
@@ -143,6 +143,44 @@
                     android:layout_height="wrap_content"
                     android:contentDescription="@string/generalImgContentText"
                     app:srcCompat="@drawable/ic_chevron_right" />
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:id="@+id/admin_repository_frame"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="?android:attr/selectableItemBackground"
+                android:gravity="center_vertical"
+                android:orientation="horizontal"
+                android:layout_marginBottom="@dimen/dimen6dp"
+                android:padding="@dimen/dimen16dp">
+
+                <ImageView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:contentDescription="@string/generalImgContentText"
+                    app:srcCompat="@drawable/ic_repo" />
+
+                <LinearLayout
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="@dimen/dimen10dp"
+                    android:layout_marginEnd="@dimen/dimen10dp"
+                    android:layout_weight="1"
+                    android:orientation="vertical">
+
+                    <TextView
+                        android:id="@+id/repository_settings"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:paddingStart="@dimen/dimen12dp"
+                        android:paddingEnd="@dimen/dimen12dp"
+                        android:text="@string/repoSettingsTitle"
+                        android:textColor="?attr/primaryTextColor"
+                        android:textSize="@dimen/dimen16sp" />
+
+                </LinearLayout>
 
             </LinearLayout>
 

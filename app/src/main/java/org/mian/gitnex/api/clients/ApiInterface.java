@@ -2,6 +2,7 @@ package org.mian.gitnex.api.clients;
 
 import java.util.List;
 import org.mian.gitnex.api.models.contents.RepoGetContentsList;
+import org.mian.gitnex.api.models.settings.RepositoryGlobal;
 import org.mian.gitnex.api.models.topics.Topics;
 import retrofit2.Call;
 import retrofit2.http.DELETE;
@@ -40,4 +41,7 @@ public interface ApiInterface {
 	@DELETE("repos/{owner}/{repo}/topics/{topic}") // delete a repo topic
 	Call<Void> deleteRepoTopic(
 			@Path("owner") String owner, @Path("repo") String repo, @Path("topic") String topic);
+
+	@GET("settings/repository") // get repository global settings
+	Call<RepositoryGlobal> getRepositoryGlobalSettings();
 }
