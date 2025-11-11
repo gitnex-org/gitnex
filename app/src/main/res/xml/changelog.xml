@@ -1,9 +1,23 @@
 <?xml version="1.0" encoding="utf-8"?>
 <changelog>
 
-    <release version="11.0.0-dev" versioncode="1095">
-        <type name="Dev">
-            <change>Under development</change>
+     <release version="11.0.0" versioncode="1100">
+        <type name="🎉 Features 🎉">
+            <change>Custom URL scheme: gitnex:// (details in README.md)</change>
+            <change>Repository topics</change>
+            <change>Add or delete repository topics</change>
+            <change>View global repository settings as an instance admin</change>
+        </type>
+        <type name="🚀 Improvements 🚀">
+            <change>Added Vue language to file icons</change>
+        </type>
+        <type name="🐛 Bug Fixes 🐛">
+            <change>Fixed number formatting in activity logs</change>
+            <change>Fixed translation issue in general settings screen</change>
+            <change>Fixed crash after swiping the app away</change>
+            <change>Fixed My Issues filter bug</change>
+            <change>Potential fix for repeating notifications</change>
+            <change>Fixed pull request info when opened from a notification</change>
         </type>
     </release>
 

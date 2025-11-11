@@ -8,8 +8,8 @@ android {
         applicationId = "org.mian.gitnex"
         minSdkVersion 26
         targetSdkVersion 36
-        versionCode = 1095
-        versionName = "11.0.0-dev"
+        versionCode = 1100
+        versionName = "11.0.0"
         multiDexEnabled = true
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
         compileSdk = 36

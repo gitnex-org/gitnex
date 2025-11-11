@@ -1,0 +1,14 @@
+11.0.0
+
+🎉 Features 🎉
+- Custom URL scheme: gitnex:// (details in README.md)
+- Repository topics
+- Add or delete repository topics
+- View global repository settings as an instance admin
+
+🛠️ Support 🛠️
+- Fixed pull request info when opened from a notification
+- Potential fix for repeating notifications
+- Fixed crash after swiping the app away
+
+Release Notes: https://codeberg.org/gitnex/GitNex/releases
