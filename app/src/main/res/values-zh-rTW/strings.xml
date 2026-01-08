@@ -493,6 +493,11 @@
     <string name="idle">閒置</string>
     <string name="value">值</string>
     <string name="optional">選填</string>
+    <string name="loading">載入中...</string>
+    <string name="migrations">遷移</string>
+    <string name="lfs">LFS</string>
+    <string name="mirrors">鏡像</string>
+    <string name="stars">星標</string>
     <!-- generic copy -->
     <string name="exploreUsers">探索使用者</string>
     <string name="exploreIssues">探索議題</string>
@@ -846,6 +851,7 @@
     <string name="dependency_add_failed">新增相依項失敗</string>
     <string name="search_failed">搜尋失敗</string>
     <string name="no_dependency_search_results">未找到符合的結果</string>
+    <string name="time_tracking">時間追蹤</string>
     <string name="tracked_time">追蹤時間</string>
     <string name="no_tracked_time">尚未有追蹤時間</string>
     <string name="total_time">總計：%1$d時 %2$d分 %3$d秒</string>
@@ -877,4 +883,14 @@
     <string name="create_variable_header">變數將會傳遞給特定動作，否則無法被讀取。</string>
     <string name="variable_name_helper">不區分大小寫，只能使用英數字元或底線，且不能以 GITEA_ 或 GITHUB_ 開頭</string>
     <string name="variable_value_helper">輸入任何內容。開頭與結尾的空白將會被省略。</string>
+    <string name="addTopic">新增主題</string>
+    <string name="addNewTopic">新增新主題</string>
+    <string name="topicName">主題名稱</string>
+    <string name="topicAddedSuccessfully">主題已成功新增</string>
+    <string name="topicDeletedSuccessfully">主題已成功刪除</string>
+    <string name="errorAddingTopic">新增主題時發生錯誤</string>
+    <string name="errorDeletingTopic">刪除主題時發生錯誤</string>
+    <string name="errorLoadingTopics">載入主題時發生錯誤</string>
+    <string name="invalidTopicName">無效的主題名稱</string>
+    <string name="http_git">HTTP Git</string>
 </resources>

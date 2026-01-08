@@ -497,6 +497,11 @@
     <string name="idle">Boşta</string>
     <string name="value">Değer</string>
     <string name="optional">İsteğe bağlı</string>
+    <string name="loading">Yükleniyor…</string>
+    <string name="migrations">Geçişler</string>
+    <string name="lfs">LFS</string>
+    <string name="mirrors">Alternatifler</string>
+    <string name="stars">Yıldızlar</string>
     <!-- generic copy -->
     <string name="exploreUsers">Kullanıcıları keşfet</string>
     <string name="exploreIssues">Meseleleri keşfet</string>
@@ -851,6 +856,7 @@
     <string name="dependency_add_failed">Bağımlılık eklenemedi</string>
     <string name="search_failed">Arama başarısız oldu</string>
     <string name="no_dependency_search_results">Eşleşen sonuç bulunamadı</string>
+    <string name="time_tracking">Zaman Takibi</string>
     <string name="tracked_time">Takip Edilen Süre</string>
     <string name="no_tracked_time">Henüz takip edilen süre yok</string>
     <string name="total_time">Toplam: %1$ss %2$ddk %3$dsn</string>
@@ -882,4 +888,14 @@
     <string name="create_variable_header">Değişkenler belirli işlemlere aktarılacak ve başka şekilde okunamayacaktır.</string>
     <string name="variable_name_helper">Büyük/küçük harf duyarsız, yalnızca alfanümerik karakterler veya alt çizgi kullanılabilir, GITEA_ veya GITHUB_ ile başlayamaz</string>
     <string name="variable_value_helper">Herhangi bir içerik girin. Başındaki ve sonundaki boşluklar dikkate alınmaz.</string>
+    <string name="addTopic">Konu Ekle</string>
+    <string name="addNewTopic">Yeni Konu Ekle</string>
+    <string name="topicName">Konu Adı</string>
+    <string name="topicAddedSuccessfully">Konu başarıyla eklendi</string>
+    <string name="topicDeletedSuccessfully">Konu başarıyla silindi</string>
+    <string name="errorAddingTopic">Konu eklenirken hata oluştu</string>
+    <string name="errorDeletingTopic">Konu silinirken hata oluştu</string>
+    <string name="errorLoadingTopics">Konular yüklenirken hata oluştu</string>
+    <string name="invalidTopicName">Geçersiz konu adı</string>
+    <string name="http_git">HTTP Git</string>
 </resources>
