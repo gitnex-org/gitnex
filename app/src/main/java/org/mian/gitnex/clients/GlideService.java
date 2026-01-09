@@ -27,11 +27,16 @@ public class GlideService extends AppGlideModule {
 	@Override
 	public void registerComponents(
 			@NonNull Context context, @NonNull Glide glide, @NonNull Registry registry) {
-		String token = "";
+
+		OkHttpClient okHttpClient;
+
 		if (context instanceof BaseActivity) {
-			token = ((BaseActivity) context).getAccount().getAuthorization();
+			okHttpClient = GlideHttpClient.getOkHttpClientForCurrentAccount(context);
+		} else {
+			String token = "";
+			okHttpClient = GlideHttpClient.getOkHttpClient(context, token);
 		}
-		OkHttpClient okHttpClient = GlideHttpClient.getOkHttpClient(context, token);
+
 		registry.replace(
 				GlideUrl.class, InputStream.class, new OkHttpUrlLoader.Factory(okHttpClient));
 	}

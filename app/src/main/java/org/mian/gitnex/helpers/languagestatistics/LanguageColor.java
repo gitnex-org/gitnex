@@ -207,6 +207,7 @@ public class LanguageColor {
 		colors.put("sed", R.color.sed);
 		colors.put("xBase", R.color.x_base);
 		colors.put("D", R.color.wiki);
+		colors.put("Zig", R.color.zig);
 	}
 
 	public static int languageColor(String key) {

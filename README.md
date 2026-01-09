@@ -76,6 +76,11 @@ JSON Configuration:
 }
 ```
 
+## HTTP Basic Auth
+
+GitNex from version **12.0.0** supports HTTP Basic Authentication for servers behind reverse proxies (nginx, Apache).  
+[Read the Wiki](https://codeberg.org/gitnex/GitNex/wiki/HTTP-Basic-Auth-for-Reverse-Proxies)
+
 ## Links
 
 - [Website](https://gitnex.com)

@@ -22,6 +22,7 @@ import androidx.activity.result.contract.ActivityResultContracts;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.widget.Toolbar;
+import androidx.core.widget.NestedScrollView;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentActivity;
 import androidx.viewpager2.adapter.FragmentStateAdapter;
@@ -37,6 +38,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Objects;
+import java.util.function.Consumer;
 import java.util.stream.Collectors;
 import org.gitnex.tea4j.v2.models.Label;
 import org.gitnex.tea4j.v2.models.Milestone;
@@ -386,42 +388,128 @@ public class RepoDetailActivity extends BaseActivity implements BottomSheetListe
 	}
 
 	private void showLabelFilterDialog() {
-
 		MaterialAlertDialogBuilder builder = new MaterialAlertDialogBuilder(this);
 		View dialogView =
 				LayoutInflater.from(this).inflate(R.layout.custom_filter_issues_by_labels, null);
 
 		FlexboxLayout labelsContainer = dialogView.findViewById(R.id.labelsContainer);
 		Button filterButton = dialogView.findViewById(R.id.filterButton);
+		LinearProgressIndicator progressIndicator = dialogView.findViewById(R.id.progressBar);
+
+		ViewGroup parent = (ViewGroup) labelsContainer.getParent();
+		NestedScrollView scrollView = null;
+		if (parent != null && parent.getParent() instanceof NestedScrollView) {
+			scrollView = (NestedScrollView) parent.getParent();
+		}
 
 		labelsContainer.removeAllViews();
 
-		for (Label label : labelsList) {
-			Chip chip =
-					(Chip)
-							LayoutInflater.from(this)
-									.inflate(
-											R.layout.list_filter_issues_by_labels,
-											labelsContainer,
-											false);
-			chip.setText(label.getName());
-			chip.setCheckable(true);
-			chip.setChecked(
-					Boolean.TRUE.equals(selectedStates.getOrDefault(label.getName(), false)));
+		final Map<String, Boolean> selectedStates = new HashMap<>();
+		final int[] currentPage = {1};
+		final boolean[] isLoading = {false};
+		final int pageSize = 50;
 
-			GradientDrawable dot = new GradientDrawable();
-			dot.setShape(GradientDrawable.OVAL);
-			dot.setSize(16, 16);
-			dot.setColor(Color.parseColor("#" + label.getColor()));
-			chip.setChipIcon(dot);
+		Consumer<List<Label>> addLabelsToView =
+				(newLabels) -> {
+					for (Label label : newLabels) {
+						Chip chip =
+								(Chip)
+										LayoutInflater.from(this)
+												.inflate(
+														R.layout.list_filter_issues_by_labels,
+														labelsContainer,
+														false);
+						chip.setText(label.getName());
+						chip.setCheckable(true);
+						chip.setChecked(Boolean.TRUE.equals(selectedStates.get(label.getName())));
 
-			chip.setOnCheckedChangeListener(
-					(buttonView, isChecked) -> {
-						selectedStates.put(label.getName(), isChecked);
-					});
+						GradientDrawable dot = new GradientDrawable();
+						dot.setShape(GradientDrawable.OVAL);
+						dot.setSize(16, 16);
+						dot.setColor(Color.parseColor("#" + label.getColor()));
+						chip.setChipIcon(dot);
 
-			labelsContainer.addView(chip);
+						chip.setOnCheckedChangeListener(
+								(buttonView, isChecked) -> {
+									selectedStates.put(label.getName(), isChecked);
+								});
+
+						labelsContainer.addView(chip);
+					}
+				};
+
+		Consumer<Integer> loadLabels =
+				(page) -> {
+					if (isLoading[0]) return;
+
+					isLoading[0] = true;
+					progressIndicator.setVisibility(View.VISIBLE);
+
+					Call<List<Label>> call =
+							RetrofitClient.getApiInterface(this)
+									.issueListLabels(
+											repository.getOwner(),
+											repository.getName(),
+											page,
+											pageSize);
+
+					call.enqueue(
+							new Callback<>() {
+								@Override
+								public void onResponse(
+										@NonNull Call<List<Label>> call,
+										@NonNull Response<List<Label>> response) {
+									if (response.isSuccessful() && response.body() != null) {
+										List<Label> newLabels = response.body();
+
+										if (page == 1) {
+											selectedStates.clear();
+											labelsContainer.removeAllViews();
+										}
+
+										if (page == 1) {
+											labelsList.clear();
+										}
+										labelsList.addAll(newLabels);
+
+										for (Label label : newLabels) {
+											selectedStates.putIfAbsent(label.getName(), false);
+										}
+
+										addLabelsToView.accept(newLabels);
+									}
+
+									isLoading[0] = false;
+									progressIndicator.setVisibility(View.GONE);
+								}
+
+								@Override
+								public void onFailure(
+										@NonNull Call<List<Label>> call, @NonNull Throwable t) {
+									isLoading[0] = false;
+									progressIndicator.setVisibility(View.GONE);
+									Toasty.error(
+											RepoDetailActivity.this,
+											getString(R.string.genericServerResponseError));
+								}
+							});
+				};
+
+		if (scrollView != null) {
+			scrollView.setOnScrollChangeListener(
+					(NestedScrollView.OnScrollChangeListener)
+							(v, scrollX, scrollY, oldScrollX, oldScrollY) -> {
+								if (!isLoading[0] && v.getChildAt(0) != null) {
+									View child = v.getChildAt(0);
+									if (child.getBottom() <= (v.getHeight() + v.getScrollY())) {
+										currentPage[0]++;
+										loadLabels.accept(currentPage[0]);
+									}
+								}
+							});
 		}
+
+		loadLabels.accept(currentPage[0]);
 
 		AlertDialog dialog = builder.setView(dialogView).create();
 

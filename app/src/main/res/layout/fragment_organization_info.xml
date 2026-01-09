@@ -44,6 +44,7 @@
                             android:layout_height="@dimen/dimen96dp"
                             style="?attr/materialCardViewFilledStyle"
                             android:layout_gravity="center_horizontal"
+                            android:backgroundTint="@android:color/transparent"
                             app:cardElevation="@dimen/dimen0dp"
                             android:layout_marginTop="@dimen/dimen12dp"
                             android:layout_marginBottom="@dimen/dimen12dp"

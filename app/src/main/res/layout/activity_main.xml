@@ -56,8 +56,6 @@
         app:backgroundTint="?attr/navigationBarColor"
         app:menu="@menu/bottom_nav_menu"
         app:labelVisibilityMode="labeled"
-        app:itemIconTint="?attr/iconsColor"
-        app:itemTextColor="?attr/primaryTextColor"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent" />

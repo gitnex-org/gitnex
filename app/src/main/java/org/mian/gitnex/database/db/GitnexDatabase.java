@@ -21,7 +21,7 @@ import org.mian.gitnex.database.models.UserAccount;
  */
 @Database(
 		entities = {Repository.class, UserAccount.class, Notes.class, AppSettings.class},
-		version = 11,
+		version = 12,
 		exportSchema = false)
 public abstract class GitnexDatabase extends RoomDatabase {
 
@@ -119,6 +119,17 @@ public abstract class GitnexDatabase extends RoomDatabase {
 				}
 			};
 
+	private static final Migration MIGRATION_11_12 =
+			new Migration(11, 12) {
+				@Override
+				public void migrate(@NonNull SupportSQLiteDatabase database) {
+					database.execSQL(
+							"ALTER TABLE 'userAccounts' ADD COLUMN 'proxyAuthUsername' TEXT");
+					database.execSQL(
+							"ALTER TABLE 'userAccounts' ADD COLUMN 'proxyAuthPassword' TEXT");
+				}
+			};
+
 	private static volatile GitnexDatabase gitnexDatabase;
 
 	public static GitnexDatabase getDatabaseInstance(Context context) {
@@ -141,7 +152,8 @@ public abstract class GitnexDatabase extends RoomDatabase {
 											MIGRATION_7_8,
 											MIGRATION_8_9,
 											MIGRATION_9_10,
-											MIGRATION_10_11)
+											MIGRATION_10_11,
+											MIGRATION_11_12)
 									.build();
 				}
 			}

@@ -123,4 +123,10 @@ public class UserAccountsApi extends BaseApi {
 	public void updateProvider(final String provider, final int accountId) {
 		executorService.execute(() -> userAccountsDao.updateProvider(provider, accountId));
 	}
+
+	public void updateProxyAuthCredentials(
+			final int accountId, final String username, final String password) {
+		executorService.execute(
+				() -> userAccountsDao.updateProxyAuthCredentials(username, password, accountId));
+	}
 }
