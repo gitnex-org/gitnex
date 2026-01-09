@@ -13,6 +13,7 @@ import android.os.Bundle;
 import android.util.TypedValue;
 import android.view.View;
 import android.widget.ArrayAdapter;
+import android.widget.Button;
 import android.widget.TextView;
 import androidx.activity.result.ActivityResultLauncher;
 import androidx.activity.result.contract.ActivityResultContracts;
@@ -20,6 +21,7 @@ import androidx.annotation.NonNull;
 import androidx.appcompat.app.AlertDialog;
 import androidx.core.text.HtmlCompat;
 import com.google.android.material.dialog.MaterialAlertDialogBuilder;
+import com.google.android.material.textfield.TextInputEditText;
 import io.mikael.urlbuilder.UrlBuilder;
 import java.io.File;
 import java.io.FileNotFoundException;
@@ -61,6 +63,8 @@ public class LoginActivity extends BaseActivity {
 	private boolean hasShownInitialNetworkError = false;
 	private int btnText;
 	private String selectedProvider = "gitea";
+	private String proxyAuthUsername = null;
+	private String proxyAuthPassword = null;
 
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
@@ -95,6 +99,9 @@ public class LoginActivity extends BaseActivity {
 
 					UserAccount account = userAccountsApi.getAccountById(accountId);
 					if (account != null) {
+
+						proxyAuthUsername = account.getProxyAuthUsername();
+						proxyAuthPassword = account.getProxyAuthPassword();
 
 						// Prefill provider
 						selectedProvider = account.getProvider();
@@ -149,6 +156,8 @@ public class LoginActivity extends BaseActivity {
 			activityLoginBinding.loginButton.setText(btnText);
 			activityLoginBinding.restoreFromBackup.setVisibility(View.VISIBLE);
 		}
+
+		activityLoginBinding.setupProxyAuth.setOnClickListener(view -> showProxyAuthDialog());
 
 		NetworkStatusObserver networkStatusObserver = NetworkStatusObserver.getInstance(ctx);
 
@@ -251,6 +260,101 @@ public class LoginActivity extends BaseActivity {
 
 					materialAlertDialogBuilder.create().show();
 				});
+	}
+
+	private void showProxyAuthDialog() {
+		View dialogView = getLayoutInflater().inflate(R.layout.custom_dialog_proxy_auth, null);
+
+		TextInputEditText usernameInput = dialogView.findViewById(R.id.proxyUsername);
+		TextInputEditText passwordInput = dialogView.findViewById(R.id.proxyPassword);
+
+		if (proxyAuthUsername != null && !proxyAuthUsername.isEmpty()) {
+			usernameInput.setText(proxyAuthUsername);
+		}
+		if (proxyAuthPassword != null && !proxyAuthPassword.isEmpty()) {
+			passwordInput.setText(proxyAuthPassword);
+		}
+
+		MaterialAlertDialogBuilder dialogBuilder =
+				new MaterialAlertDialogBuilder(this)
+						.setView(dialogView)
+						.setNegativeButton(R.string.clear_proxy_creds, null)
+						.setNeutralButton(R.string.skip_proxy_creds, null)
+						.setPositiveButton(R.string.save_proxy_creds, null);
+
+		AlertDialog dialog = dialogBuilder.create();
+
+		dialog.setOnShowListener(
+				dialogInterface -> {
+					Button positiveButton = dialog.getButton(AlertDialog.BUTTON_POSITIVE);
+					Button negativeButton = dialog.getButton(AlertDialog.BUTTON_NEGATIVE);
+					Button neutralButton = dialog.getButton(AlertDialog.BUTTON_NEUTRAL);
+
+					positiveButton.setOnClickListener(
+							view -> {
+								String enteredUsername =
+										usernameInput.getText() != null
+												? usernameInput.getText().toString().trim()
+												: "";
+								String enteredPassword =
+										passwordInput.getText() != null
+												? passwordInput.getText().toString().trim()
+												: "";
+
+								if (enteredUsername.isEmpty() && enteredPassword.isEmpty()) {
+									proxyAuthUsername = null;
+									proxyAuthPassword = null;
+									SnackBar.info(
+											ctx,
+											findViewById(android.R.id.content),
+											getString(R.string.proxy_creds_cleared));
+									dialog.dismiss();
+									return;
+								}
+
+								boolean usernameFilled = !enteredUsername.isEmpty();
+								boolean passwordFilled = !enteredPassword.isEmpty();
+
+								if (usernameFilled != passwordFilled) {
+									SnackBar.error(
+											ctx,
+											findViewById(android.R.id.content),
+											getString(R.string.procy_creds_required_msg));
+
+									if (usernameFilled) {
+										passwordInput.setText("");
+										passwordInput.requestFocus();
+									} else {
+										usernameInput.setText("");
+										usernameInput.requestFocus();
+									}
+									return;
+								}
+
+								proxyAuthUsername = enteredUsername;
+								proxyAuthPassword = enteredPassword;
+								SnackBar.info(
+										ctx,
+										findViewById(android.R.id.content),
+										getString(R.string.proxy_creds_saved));
+								dialog.dismiss();
+							});
+
+					negativeButton.setOnClickListener(
+							view -> {
+								proxyAuthUsername = null;
+								proxyAuthPassword = null;
+								SnackBar.info(
+										ctx,
+										findViewById(android.R.id.content),
+										getString(R.string.proxy_creds_cleared));
+								dialog.dismiss();
+							});
+
+					neutralButton.setOnClickListener(view -> dialog.dismiss());
+				});
+
+		dialog.show();
 	}
 
 	private void showTokenHelpDialog() {
@@ -364,7 +468,13 @@ public class LoginActivity extends BaseActivity {
 
 	private void serverPageLimitSettings(String instanceUrl, String loginToken) {
 		Call<GeneralAPISettings> generalAPISettings =
-				RetrofitClient.getApiInterface(ctx, instanceUrl, "token " + loginToken, null)
+				RetrofitClient.getApiInterface(
+								ctx,
+								instanceUrl,
+								"token " + loginToken,
+								null,
+								proxyAuthUsername,
+								proxyAuthPassword)
 						.getGeneralAPISettings();
 		generalAPISettings.enqueue(
 				new Callback<>() {
@@ -398,7 +508,12 @@ public class LoginActivity extends BaseActivity {
 
 		Call<ServerVersion> callVersion =
 				RetrofitClient.getApiInterface(
-								ctx, instanceUrl.toString(), "token " + loginToken, null)
+								ctx,
+								instanceUrl.toString(),
+								"token " + loginToken,
+								null,
+								proxyAuthUsername,
+								proxyAuthPassword)
 						.getVersion();
 
 		callVersion.enqueue(
@@ -496,7 +611,12 @@ public class LoginActivity extends BaseActivity {
 
 		Call<User> call =
 				RetrofitClient.getApiInterface(
-								ctx, instanceUrl.toString(), "token " + loginToken, null)
+								ctx,
+								instanceUrl.toString(),
+								"token " + loginToken,
+								null,
+								proxyAuthUsername,
+								proxyAuthPassword)
 						.userGetCurrent();
 
 		call.enqueue(
@@ -531,6 +651,23 @@ public class LoginActivity extends BaseActivity {
 													maxResponseItems,
 													defaultPagingNumber,
 													selectedProvider);
+
+									// Save or clear proxy credentials
+									userAccountsApi.updateProxyAuthCredentials(
+											(int) accountId,
+											(proxyAuthUsername != null
+															&& !proxyAuthUsername.isEmpty()
+															&& proxyAuthPassword != null
+															&& !proxyAuthPassword.isEmpty())
+													? proxyAuthUsername
+													: null,
+											(proxyAuthUsername != null
+															&& !proxyAuthUsername.isEmpty()
+															&& proxyAuthPassword != null
+															&& !proxyAuthPassword.isEmpty())
+													? proxyAuthPassword
+													: null);
+
 									account = userAccountsApi.getAccountById((int) accountId);
 								} else {
 									userAccountsApi.updateTokenByAccountName(
@@ -540,6 +677,24 @@ public class LoginActivity extends BaseActivity {
 											userAccountsApi
 													.getAccountByName(accountName)
 													.getAccountId());
+
+									UserAccount existingAccount =
+											userAccountsApi.getAccountByName(accountName);
+									userAccountsApi.updateProxyAuthCredentials(
+											existingAccount.getAccountId(),
+											(proxyAuthUsername != null
+															&& !proxyAuthUsername.isEmpty()
+															&& proxyAuthPassword != null
+															&& !proxyAuthPassword.isEmpty())
+													? proxyAuthUsername
+													: null,
+											(proxyAuthUsername != null
+															&& !proxyAuthUsername.isEmpty()
+															&& proxyAuthPassword != null
+															&& !proxyAuthPassword.isEmpty())
+													? proxyAuthPassword
+													: null);
+
 									userAccountsApi.login(
 											userAccountsApi
 													.getAccountByName(accountName)

@@ -8,6 +8,7 @@ import javax.net.ssl.X509TrustManager;
 import okhttp3.OkHttpClient;
 import okhttp3.Request;
 import org.gitnex.tea4j.v2.auth.ApiKeyAuth;
+import org.mian.gitnex.activities.BaseActivity;
 import org.mian.gitnex.helpers.AppUtil;
 import org.mian.gitnex.helpers.ssl.MemorizingTrustManager;
 
@@ -16,7 +17,8 @@ import org.mian.gitnex.helpers.ssl.MemorizingTrustManager;
  */
 public class GlideHttpClient {
 
-	public static OkHttpClient getOkHttpClient(Context context, String token) {
+	public static OkHttpClient getOkHttpClient(
+			Context context, String token, String proxyUsername, String proxyPassword) {
 		try {
 			SSLContext sslContext = SSLContext.getInstance("TLS");
 			MemorizingTrustManager memorizingTrustManager = new MemorizingTrustManager(context);
@@ -49,8 +51,16 @@ public class GlideHttpClient {
 																		+ ")")
 														.build();
 										return chain.proceed(modifiedRequest);
-									})
-							.addInterceptor(auth);
+									});
+
+			if (proxyUsername != null
+					&& !proxyUsername.isEmpty()
+					&& proxyPassword != null
+					&& !proxyPassword.isEmpty()) {
+				builder.addInterceptor(new BasicAuthInterceptor(proxyUsername, proxyPassword));
+			}
+
+			builder.addInterceptor(auth);
 
 			return builder.build();
 
@@ -59,7 +69,30 @@ public class GlideHttpClient {
 		}
 	}
 
-	public static OkHttpClient getUnsafeOkHttpClient(String token) {
+	public static OkHttpClient getOkHttpClient(Context context, String token) {
+		return getOkHttpClient(context, token, null, null);
+	}
+
+	public static OkHttpClient getOkHttpClientForCurrentAccount(Context context) {
+		if (!(context instanceof BaseActivity)) {
+			return getOkHttpClient(context, "");
+		}
+
+		var accountWrapper = ((BaseActivity) context).getAccount();
+		if (accountWrapper == null || accountWrapper.getAccount() == null) {
+			return getOkHttpClient(context, "");
+		}
+
+		var account = accountWrapper.getAccount();
+		String token = accountWrapper.getAuthorization();
+		String proxyUsername = account.getProxyAuthUsername();
+		String proxyPassword = account.getProxyAuthPassword();
+
+		return getOkHttpClient(context, token, proxyUsername, proxyPassword);
+	}
+
+	public static OkHttpClient getUnsafeOkHttpClient(
+			String token, String proxyUsername, String proxyPassword) {
 		try {
 			@SuppressWarnings("CustomX509TrustManager")
 			final X509TrustManager trustAllCerts =
@@ -90,8 +123,16 @@ public class GlideHttpClient {
 			OkHttpClient.Builder builder =
 					new OkHttpClient.Builder()
 							.sslSocketFactory(sslSocketFactory, trustAllCerts)
-							.hostnameVerifier((hostname, session) -> true)
-							.addInterceptor(auth);
+							.hostnameVerifier((hostname, session) -> true);
+
+			if (proxyUsername != null
+					&& !proxyUsername.isEmpty()
+					&& proxyPassword != null
+					&& !proxyPassword.isEmpty()) {
+				builder.addInterceptor(new BasicAuthInterceptor(proxyUsername, proxyPassword));
+			}
+
+			builder.addInterceptor(auth);
 
 			return builder.build();
 

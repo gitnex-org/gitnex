@@ -25,6 +25,8 @@ public class UserAccount implements Serializable {
 	private int maxAttachmentsSize;
 	private int maxNumberOfAttachments;
 	private String provider;
+	@Nullable private String proxyAuthUsername;
+	@Nullable private String proxyAuthPassword;
 
 	public int getAccountId() {
 		return accountId;
@@ -120,5 +122,21 @@ public class UserAccount implements Serializable {
 
 	public void setProvider(String provider) {
 		this.provider = provider;
+	}
+
+	@Nullable public String getProxyAuthUsername() {
+		return proxyAuthUsername;
+	}
+
+	public void setProxyAuthUsername(@Nullable String username) {
+		this.proxyAuthUsername = username;
+	}
+
+	@Nullable public String getProxyAuthPassword() {
+		return proxyAuthPassword;
+	}
+
+	public void setProxyAuthPassword(@Nullable String password) {
+		this.proxyAuthPassword = password;
 	}
 }
