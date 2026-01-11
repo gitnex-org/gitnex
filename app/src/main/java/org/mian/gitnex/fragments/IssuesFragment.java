@@ -8,6 +8,7 @@ import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
+import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.inputmethod.EditorInfo;
@@ -17,6 +18,7 @@ import androidx.core.view.MenuProvider;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.Lifecycle;
 import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 import java.util.ArrayList;
 import java.util.List;
 import org.gitnex.tea4j.v2.models.Issue;
@@ -129,6 +131,29 @@ public class IssuesFragment extends Fragment {
 				new LinearLayoutManager(context, LinearLayoutManager.HORIZONTAL, false);
 		fragmentIssuesBinding.rvPinnedIssues.setLayoutManager(horizontalLayoutManager);
 		fragmentIssuesBinding.rvPinnedIssues.setAdapter(adapterPinned);
+
+		fragmentIssuesBinding.rvPinnedIssues.setHasFixedSize(true);
+		fragmentIssuesBinding.rvPinnedIssues.setNestedScrollingEnabled(false);
+
+		fragmentIssuesBinding.rvPinnedIssues.addOnItemTouchListener(
+				new RecyclerView.OnItemTouchListener() {
+
+					@Override
+					public boolean onInterceptTouchEvent(
+							@NonNull RecyclerView rv, @NonNull MotionEvent e) {
+						if (e.getAction() == MotionEvent.ACTION_DOWN
+								|| e.getAction() == MotionEvent.ACTION_MOVE) {
+							rv.getParent().requestDisallowInterceptTouchEvent(true);
+						}
+						return false;
+					}
+
+					@Override
+					public void onTouchEvent(@NonNull RecyclerView rv, @NonNull MotionEvent e) {}
+
+					@Override
+					public void onRequestDisallowInterceptTouchEvent(boolean disallowIntercept) {}
+				});
 
 		((RepoDetailActivity) requireActivity())
 				.setFragmentRefreshListener(

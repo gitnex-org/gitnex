@@ -1743,7 +1743,6 @@ public class IssueDetailActivity extends BaseActivity
 				.load(url + "?token=" + token)
 				.diskCacheStrategy(DiskCacheStrategy.ALL)
 				.placeholder(R.drawable.loader_animated)
-				.centerCrop()
 				.error(R.drawable.ic_close)
 				.into(
 						new CustomTarget<Bitmap>() {

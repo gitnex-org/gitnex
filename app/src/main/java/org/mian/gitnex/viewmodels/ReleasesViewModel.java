@@ -5,6 +5,7 @@ import androidx.annotation.NonNull;
 import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MutableLiveData;
 import androidx.lifecycle.ViewModel;
+import java.util.Collections;
 import java.util.List;
 import org.gitnex.tea4j.v2.models.Release;
 import org.gitnex.tea4j.v2.models.Tag;
@@ -51,6 +52,8 @@ public class ReleasesViewModel extends ViewModel {
 
 						if (response.isSuccessful()) {
 							releasesList.postValue(response.body());
+						} else if (response.code() == 404) {
+							releasesList.postValue(Collections.emptyList());
 						} else {
 							Toasty.error(ctx, ctx.getString(R.string.genericError));
 						}
@@ -82,14 +85,15 @@ public class ReleasesViewModel extends ViewModel {
 						if (response.isSuccessful()) {
 							List<Release> list = releasesList.getValue();
 							assert list != null;
-							assert response.body() != null;
 
-							if (!response.body().isEmpty()) {
+							if (response.body() != null && !response.body().isEmpty()) {
 								list.addAll(response.body());
 								adapter.updateList(list);
 							} else {
 								adapter.setMoreDataAvailable(false);
 							}
+						} else if (response.code() == 404) {
+							adapter.setMoreDataAvailable(false);
 						} else {
 							Toasty.error(ctx, ctx.getString(R.string.genericError));
 						}
@@ -125,6 +129,8 @@ public class ReleasesViewModel extends ViewModel {
 
 						if (response.isSuccessful()) {
 							tagsList.postValue(response.body());
+						} else if (response.code() == 404) {
+							tagsList.postValue(Collections.emptyList());
 						} else {
 							Toasty.error(ctx, ctx.getString(R.string.genericError));
 						}
@@ -155,14 +161,15 @@ public class ReleasesViewModel extends ViewModel {
 
 							List<Tag> list = tagsList.getValue();
 							assert list != null;
-							assert response.body() != null;
 
-							if (!response.body().isEmpty()) {
+							if (response.body() != null && !response.body().isEmpty()) {
 								list.addAll(response.body());
 								adapter.updateList(list);
 							} else {
 								adapter.setMoreDataAvailable(false);
 							}
+						} else if (response.code() == 404) {
+							adapter.setMoreDataAvailable(false);
 						} else {
 							Toasty.error(ctx, ctx.getString(R.string.genericError));
 						}

@@ -564,6 +564,15 @@ public class RepoInfoFragment extends Fragment {
 		if (parent instanceof ViewGroup) {
 			((ViewGroup) parent).removeView(plusChip);
 		}
+
+		plusChip.setChipBackgroundColorResource(android.R.color.transparent);
+		plusChip.setRippleColorResource(android.R.color.transparent);
+		plusChip.setBackgroundResource(android.R.color.transparent);
+		plusChip.setForeground(null);
+		plusChip.setBackgroundTintList(ColorStateList.valueOf(Color.TRANSPARENT));
+		plusChip.setStateListAnimator(null);
+		plusChip.setElevation(0f);
+
 		binding.repoTopicsChipGroup.addView(plusChip);
 	}
 
