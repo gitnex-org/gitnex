@@ -28,6 +28,7 @@ import java.io.OutputStream;
 import java.security.KeyManagementException;
 import java.security.NoSuchAlgorithmException;
 import java.security.SecureRandom;
+import java.util.Collections;
 import java.util.List;
 import java.util.Objects;
 import java.util.concurrent.atomic.AtomicBoolean;
@@ -217,15 +218,14 @@ public class ReleasesFragment extends Fragment {
 	}
 
 	private void setDefaultView(AtomicBoolean releasesFetched, AtomicBoolean tagsFetched) {
-
 		if (!releasesFetched.get() || !tagsFetched.get()) {
 			return;
 		}
 
-		if (isInitialLoad) {
-			boolean hasReleases = releasesList != null && !releasesList.isEmpty();
-			boolean hasTags = tagsList != null && !tagsList.isEmpty();
+		boolean hasReleases = releasesList != null && !releasesList.isEmpty();
+		boolean hasTags = tagsList != null && !tagsList.isEmpty();
 
+		if (isInitialLoad) {
 			if (hasReleases) {
 				repository.setReleasesViewTypeIsTag(false);
 				setReleasesAdapter(releasesList);
@@ -234,7 +234,7 @@ public class ReleasesFragment extends Fragment {
 				setTagsAdapter(tagsList);
 			} else {
 				repository.setReleasesViewTypeIsTag(false);
-				setReleasesAdapter(releasesList);
+				setReleasesAdapter(Collections.emptyList());
 			}
 			isInitialLoad = false;
 		} else {

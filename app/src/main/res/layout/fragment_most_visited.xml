@@ -35,6 +35,6 @@
         android:textColor="?attr/primaryTextColor"
         android:gravity="center"
         android:textSize="20sp"
-        android:visibility="visible"/>
+        android:visibility="gone"/>
 
 </RelativeLayout>
