@@ -58,7 +58,12 @@ public class RetrofitClient {
 	private static final int CACHE_SIZE_MB = 50;
 	private static final int MAX_STALE_SECONDS = 60 * 60 * 24 * 30;
 
-	private static OkHttpClient buildOkHttpClient(Context context, String token, File cacheFile) {
+	private static OkHttpClient buildOkHttpClient(
+			Context context,
+			String token,
+			File cacheFile,
+			String proxyUsername,
+			String proxyPassword) {
 
 		// HttpLoggingInterceptor logging = new HttpLoggingInterceptor();
 		// logging.setLevel(HttpLoggingInterceptor.Level.BODY);
@@ -96,6 +101,13 @@ public class RetrofitClient {
 										.build();
 						return chain.proceed(modifiedRequest);
 					});
+
+			if (proxyUsername != null
+					&& !proxyUsername.isEmpty()
+					&& proxyPassword != null
+					&& !proxyPassword.isEmpty()) {
+				okHttpClient.addInterceptor(new BasicAuthInterceptor(proxyUsername, proxyPassword));
+			}
 
 			if (cacheFile != null) {
 				int cacheSize = CACHE_SIZE_MB;
@@ -178,7 +190,18 @@ public class RetrofitClient {
 
 	private static Retrofit createRetrofit(
 			Context context, String instanceUrl, String token, File cacheFile) {
-		OkHttpClient okHttpClient = buildOkHttpClient(context, token, cacheFile);
+		return createRetrofit(context, instanceUrl, token, cacheFile, null, null);
+	}
+
+	private static Retrofit createRetrofit(
+			Context context,
+			String instanceUrl,
+			String token,
+			File cacheFile,
+			String proxyUsername,
+			String proxyPassword) {
+		OkHttpClient okHttpClient =
+				buildOkHttpClient(context, token, cacheFile, proxyUsername, proxyPassword);
 		return new Retrofit.Builder()
 				.baseUrl(instanceUrl)
 				.client(okHttpClient)
@@ -194,7 +217,13 @@ public class RetrofitClient {
 
 	public static OkHttpClient getOkHttpClient(Context context, String token) {
 		File cacheFile = new File(context.getCacheDir(), "http-cache");
-		return buildOkHttpClient(context, token, cacheFile);
+		return buildOkHttpClient(context, token, cacheFile, null, null);
+	}
+
+	public static OkHttpClient getOkHttpClient(
+			Context context, String token, String proxyUsername, String proxyPassword) {
+		File cacheFile = new File(context.getCacheDir(), "http-cache");
+		return buildOkHttpClient(context, token, cacheFile, proxyUsername, proxyPassword);
 	}
 
 	public static ApiInterface getApiInterface(Context context) {
@@ -204,39 +233,79 @@ public class RetrofitClient {
 			throw new IllegalStateException(
 					"No active account available. Use explicit URL and token.");
 		}
+
+		var account = ((BaseActivity) context).getAccount().getAccount();
+		String proxyUsername = account.getProxyAuthUsername();
+		String proxyPassword = account.getProxyAuthPassword();
+
 		return getApiInterface(
 				context,
-				((BaseActivity) context).getAccount().getAccount().getInstanceUrl(),
+				account.getInstanceUrl(),
 				((BaseActivity) context).getAccount().getAuthorization(),
-				((BaseActivity) context).getAccount().getCacheDir(context));
+				((BaseActivity) context).getAccount().getCacheDir(context),
+				proxyUsername,
+				proxyPassword);
 	}
 
 	public static WebApi getWebInterface(Context context) {
 		String instanceUrl = ((BaseActivity) context).getAccount().getAccount().getInstanceUrl();
 		instanceUrl = instanceUrl.substring(0, instanceUrl.lastIndexOf("api/v1/"));
+
+		var account = ((BaseActivity) context).getAccount().getAccount();
+		String proxyUsername = account.getProxyAuthUsername();
+		String proxyPassword = account.getProxyAuthPassword();
+
 		return getWebInterface(
 				context,
 				instanceUrl,
 				((BaseActivity) context).getAccount().getWebAuthorization(),
-				((BaseActivity) context).getAccount().getCacheDir(context));
+				((BaseActivity) context).getAccount().getCacheDir(context),
+				proxyUsername,
+				proxyPassword);
 	}
 
 	public static WebApi getWebInterface(Context context, String url) {
+		var account = ((BaseActivity) context).getAccount().getAccount();
+		String proxyUsername = account.getProxyAuthUsername();
+		String proxyPassword = account.getProxyAuthPassword();
+
 		return getWebInterface(
 				context,
 				url,
 				((BaseActivity) context).getAccount().getAuthorization(),
-				((BaseActivity) context).getAccount().getCacheDir(context));
+				((BaseActivity) context).getAccount().getCacheDir(context),
+				proxyUsername,
+				proxyPassword);
 	}
 
 	public static ApiInterface getApiInterface(
 			Context context, String url, String token, File cacheFile) {
+		return getApiInterface(context, url, token, cacheFile, null, null);
+	}
+
+	public static ApiInterface getApiInterface(
+			Context context,
+			String url,
+			String token,
+			File cacheFile,
+			String proxyUsername,
+			String proxyPassword) {
 		String key = (token != null ? token.hashCode() : 0) + "@" + url;
+		if (proxyUsername != null && proxyPassword != null) {
+			key += "@proxy@" + proxyUsername.hashCode();
+		}
 		if (cacheFile == null || !apiInterfaces.containsKey(key)) {
 			synchronized (RetrofitClient.class) {
 				if (cacheFile == null || !apiInterfaces.containsKey(key)) {
 					ApiInterface apiInterface =
-							Objects.requireNonNull(createRetrofit(context, url, token, cacheFile))
+							Objects.requireNonNull(
+											createRetrofit(
+													context,
+													url,
+													token,
+													cacheFile,
+													proxyUsername,
+													proxyPassword))
 									.create(ApiInterface.class);
 					if (cacheFile != null) {
 						apiInterfaces.put(key, apiInterface);
@@ -250,12 +319,32 @@ public class RetrofitClient {
 
 	public static WebApi getWebInterface(
 			Context context, String url, String token, File cacheFile) {
+		return getWebInterface(context, url, token, cacheFile, null, null);
+	}
+
+	public static WebApi getWebInterface(
+			Context context,
+			String url,
+			String token,
+			File cacheFile,
+			String proxyUsername,
+			String proxyPassword) {
 		String key = (token != null ? token.hashCode() : 0) + "@" + url;
+		if (proxyUsername != null && proxyPassword != null) {
+			key += "@proxy@" + proxyUsername.hashCode();
+		}
 		if (!webInterfaces.containsKey(key)) {
 			synchronized (RetrofitClient.class) {
 				if (!webInterfaces.containsKey(key)) {
 					WebApi webInterface =
-							Objects.requireNonNull(createRetrofit(context, url, token, cacheFile))
+							Objects.requireNonNull(
+											createRetrofit(
+													context,
+													url,
+													token,
+													cacheFile,
+													proxyUsername,
+													proxyPassword))
 									.create(WebApi.class);
 					webInterfaces.put(key, webInterface);
 					return webInterface;

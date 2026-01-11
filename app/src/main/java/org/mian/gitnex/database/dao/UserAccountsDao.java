@@ -84,4 +84,8 @@ public interface UserAccountsDao {
 
 	@Query("UPDATE UserAccounts SET provider = :provider WHERE accountId = :accountId")
 	void updateProvider(String provider, int accountId);
+
+	@Query(
+			"UPDATE UserAccounts SET proxyAuthUsername = :username, proxyAuthPassword = :password WHERE accountId = :accountId")
+	void updateProxyAuthCredentials(String username, String password, int accountId);
 }

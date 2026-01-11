@@ -196,7 +196,9 @@ public class AppUtil {
 					"next",
 					"nvmrc",
 					"lock",
-					"vue"
+					"vue",
+					"zig",
+					"zon"
 				},
 				FileType.TEXT);
 		extensions.put(new String[] {"ttf", "otf", "woff", "woff2", "ttc", "eot"}, FileType.FONT);

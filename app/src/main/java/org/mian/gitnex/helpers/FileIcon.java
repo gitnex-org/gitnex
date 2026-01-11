@@ -128,6 +128,8 @@ public class FileIcon {
 		extensionIcons.put("nvmrc", R.drawable.ic_node_js);
 		extensionIcons.put("license", R.drawable.ic_license);
 		extensionIcons.put("vue", R.drawable.ic_vue);
+		extensionIcons.put("zig", R.drawable.ic_file_zig);
+		extensionIcons.put("zon", R.drawable.ic_file_zig);
 	}
 
 	public static int getIconResource(String fileName, String type) {

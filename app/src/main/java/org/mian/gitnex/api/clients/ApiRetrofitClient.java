@@ -16,6 +16,7 @@ import okhttp3.OkHttpClient;
 import okhttp3.Request;
 import okhttp3.Response;
 import org.mian.gitnex.activities.BaseActivity;
+import org.mian.gitnex.clients.BasicAuthInterceptor;
 import org.mian.gitnex.helpers.AppDatabaseSettings;
 import org.mian.gitnex.helpers.AppUtil;
 import org.mian.gitnex.helpers.FilesData;
@@ -38,15 +39,28 @@ public class ApiRetrofitClient {
 		var account = ((BaseActivity) context).getAccount().getAccount();
 		String url = account.getInstanceUrl();
 		String token = ((BaseActivity) context).getAccount().getAuthorization();
+		String proxyUsername = account.getProxyAuthUsername();
+		String proxyPassword = account.getProxyAuthPassword();
 		File cacheFile = new File(context.getCacheDir(), "http-cache");
 
 		String key = token.hashCode() + "@" + url;
-		return instances.computeIfAbsent(key, k -> createApi(context, url, token, cacheFile));
+		if (proxyUsername != null && proxyPassword != null) {
+			key += "@proxy@" + proxyUsername.hashCode();
+		}
+
+		return instances.computeIfAbsent(
+				key, k -> createApi(context, url, token, cacheFile, proxyUsername, proxyPassword));
 	}
 
 	private static ApiInterface createApi(
-			Context context, String url, String token, File cacheFile) {
-		OkHttpClient client = buildOkHttpClient(context, token, cacheFile);
+			Context context,
+			String url,
+			String token,
+			File cacheFile,
+			String proxyUsername,
+			String proxyPassword) {
+		OkHttpClient client =
+				buildOkHttpClient(context, token, cacheFile, proxyUsername, proxyPassword);
 		Retrofit retrofit =
 				new Retrofit.Builder()
 						.baseUrl(url)
@@ -57,7 +71,17 @@ public class ApiRetrofitClient {
 		return retrofit.create(ApiInterface.class);
 	}
 
-	private static OkHttpClient buildOkHttpClient(Context context, String token, File cacheFile) {
+	private static ApiInterface createApi(
+			Context context, String url, String token, File cacheFile) {
+		return createApi(context, url, token, cacheFile, null, null);
+	}
+
+	private static OkHttpClient buildOkHttpClient(
+			Context context,
+			String token,
+			File cacheFile,
+			String proxyUsername,
+			String proxyPassword) {
 		try {
 			SSLContext sslContext = SSLContext.getInstance("TLS");
 			MemorizingTrustManager trustManager = new MemorizingTrustManager(context);
@@ -73,8 +97,16 @@ public class ApiRetrofitClient {
 							.hostnameVerifier(
 									trustManager.wrapHostnameVerifier(
 											HttpsURLConnection.getDefaultHostnameVerifier()))
-							.addInterceptor(userAgentInterceptor(context))
-							.addInterceptor(authInterceptor(token));
+							.addInterceptor(userAgentInterceptor(context));
+
+			if (proxyUsername != null
+					&& !proxyUsername.isEmpty()
+					&& proxyPassword != null
+					&& !proxyPassword.isEmpty()) {
+				builder.addInterceptor(new BasicAuthInterceptor(proxyUsername, proxyPassword));
+			}
+
+			builder.addInterceptor(authInterceptor(token));
 
 			if (cacheFile != null) {
 				int cacheSize = getCacheSize(context);
@@ -89,6 +121,10 @@ public class ApiRetrofitClient {
 		} catch (Exception e) {
 			throw new RuntimeException(e);
 		}
+	}
+
+	private static OkHttpClient buildOkHttpClient(Context context, String token, File cacheFile) {
+		return buildOkHttpClient(context, token, cacheFile, null, null);
 	}
 
 	private static Interceptor userAgentInterceptor(Context ctx) {
