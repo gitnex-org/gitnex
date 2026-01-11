@@ -126,6 +126,7 @@
                                 app:chipIconSize="@dimen/dimen20dp"
                                 app:chipIconTint="?attr/primaryTextColor"
                                 app:chipBackgroundColor="@android:color/transparent"
+                                app:chipSurfaceColor="@android:color/transparent"
                                 app:chipStrokeWidth="0dp"
                                 app:checkedIconVisible="false"
                                 app:rippleColor="@android:color/transparent"
