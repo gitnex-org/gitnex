@@ -3,6 +3,7 @@ package org.mian.gitnex.adapters;
 import static org.mian.gitnex.helpers.AppUtil.isNightModeThemeDynamic;
 
 import android.annotation.SuppressLint;
+import android.app.Activity;
 import android.content.ClipData;
 import android.content.ClipboardManager;
 import android.content.Context;
@@ -27,6 +28,8 @@ import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
+import androidx.appcompat.app.AlertDialog;
 import androidx.core.content.ContextCompat;
 import androidx.core.content.res.ResourcesCompat;
 import androidx.core.text.HtmlCompat;
@@ -35,10 +38,12 @@ import com.amulyakhare.textdrawable.TextDrawable;
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.load.engine.DiskCacheStrategy;
 import com.bumptech.glide.request.target.CustomTarget;
+import com.bumptech.glide.request.target.Target;
 import com.bumptech.glide.request.transition.Transition;
 import com.google.android.material.bottomsheet.BottomSheetDialog;
 import com.google.android.material.card.MaterialCardView;
 import com.google.android.material.dialog.MaterialAlertDialogBuilder;
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Locale;
@@ -75,7 +80,7 @@ import retrofit2.Call;
 import retrofit2.Callback;
 
 /**
- * @author M M Arif
+ * @author mmarif
  */
 public class IssueCommentsAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
 
@@ -102,7 +107,7 @@ public class IssueCommentsAdapter extends RecyclerView.Adapter<RecyclerView.View
 		this.issuesComments = issuesCommentsMain;
 		this.onInteractedListener = onInteractedListener;
 		tinyDB = TinyDB.getInstance(ctx);
-		locale = ctx.getResources().getConfiguration().locale;
+		locale = ctx.getResources().getConfiguration().getLocales().get(0);
 		this.issue = issue;
 	}
 
@@ -241,6 +246,8 @@ public class IssueCommentsAdapter extends RecyclerView.Adapter<RecyclerView.View
 		private TimelineComment issueComment;
 		private final LinearLayout timelineDividerView;
 		private final FrameLayout timelineLine2;
+		private final List<Target<?>> glideTargets = new ArrayList<>();
+		private boolean isAttachedToWindow = false;
 
 		private IssueCommentViewHolder(View view) {
 
@@ -263,14 +270,15 @@ public class IssueCommentsAdapter extends RecyclerView.Adapter<RecyclerView.View
 
 			String token = ((BaseActivity) context).getAccount().getAccount().getToken();
 
-			new Handler()
-					.postDelayed(
-							() -> {
-								if (issueComment != null) {
-									getAttachments(issueComment.getId(), view, token);
-								}
-							},
-							250);
+			Handler handler = new Handler();
+
+			handler.postDelayed(
+					() -> {
+						if (issueComment != null) {
+							getAttachments(issueComment.getId(), view, token, this);
+						}
+					},
+					250);
 
 			menu.setOnClickListener(
 					v -> {
@@ -466,6 +474,9 @@ public class IssueCommentsAdapter extends RecyclerView.Adapter<RecyclerView.View
 		}
 
 		void bindData(TimelineComment timelineComment) {
+
+			clearGlideRequests();
+			isAttachedToWindow = true;
 
 			if (timelineComment != null) {
 
@@ -1139,7 +1150,6 @@ public class IssueCommentsAdapter extends RecyclerView.Adapter<RecyclerView.View
 						}
 					}
 
-					// TODO pretty-print
 					if (issueComment.getType().equalsIgnoreCase("added_deadline")) {
 						start.setText(
 								context.getString(
@@ -1364,12 +1374,7 @@ public class IssueCommentsAdapter extends RecyclerView.Adapter<RecyclerView.View
 
 					author.setText(issueComment.getUser().getLogin());
 
-					Glide.with(context)
-							.load(issueComment.getUser().getAvatarUrl())
-							.diskCacheStrategy(DiskCacheStrategy.ALL)
-							.placeholder(R.drawable.loader_animated)
-							.centerCrop()
-							.into(avatar);
+					loadAvatarSafely(issueComment.getUser().getAvatarUrl(), avatar);
 
 					Markdown.render(
 							context, issueComment.getBody(), comment, issue.getRepository());
@@ -1401,9 +1406,41 @@ public class IssueCommentsAdapter extends RecyclerView.Adapter<RecyclerView.View
 				commentView.setVisibility(View.GONE);
 			}
 		}
+
+		private void loadAvatarSafely(String avatarUrl, ImageView avatarView) {
+			if (isActivityValid()) {
+				Target<Drawable> target =
+						Glide.with(context)
+								.load(avatarUrl)
+								.diskCacheStrategy(DiskCacheStrategy.ALL)
+								.placeholder(R.drawable.loader_animated)
+								.centerCrop()
+								.into(avatarView);
+
+				glideTargets.add(target);
+			}
+		}
+
+		private boolean isActivityValid() {
+			if (context instanceof Activity activity) {
+				return !activity.isFinishing() && !activity.isDestroyed();
+			}
+			return true;
+		}
+
+		void clearGlideRequests() {
+			if (context != null && isActivityValid()) {
+				for (Target<?> target : glideTargets) {
+					Glide.with(context).clear(target);
+				}
+			}
+			glideTargets.clear();
+			isAttachedToWindow = false;
+		}
 	}
 
-	private void getAttachments(Long issueIndex, View view, String token) {
+	private void getAttachments(
+			Long issueIndex, View view, String token, IssueCommentViewHolder holder) {
 
 		LinearLayout attachmentFrame = view.findViewById(R.id.attachmentFrame);
 		LinearLayout attachmentsView = view.findViewById(R.id.attachmentsView);
@@ -1422,6 +1459,10 @@ public class IssueCommentsAdapter extends RecyclerView.Adapter<RecyclerView.View
 					public void onResponse(
 							@NonNull Call<List<Attachment>> call,
 							@NonNull retrofit2.Response<List<Attachment>> response) {
+
+						if (holder == null || !holder.isAttachedToWindow) {
+							return;
+						}
 
 						List<Attachment> attachment = response.body();
 
@@ -1453,16 +1494,24 @@ public class IssueCommentsAdapter extends RecyclerView.Adapter<RecyclerView.View
 																	attachment.get(i).getName())
 															.toLowerCase())) {
 
-										Glide.with(context)
-												.load(
-														attachment.get(i).getBrowserDownloadUrl()
-																+ "?token="
-																+ token)
-												.diskCacheStrategy(DiskCacheStrategy.ALL)
-												.placeholder(R.drawable.loader_animated)
-												.centerCrop()
-												.error(R.drawable.ic_close)
-												.into(attachmentView);
+										if (holder.isActivityValid()) {
+											Target<Drawable> target =
+													Glide.with(context)
+															.load(
+																	attachment
+																					.get(i)
+																					.getBrowserDownloadUrl()
+																			+ "?token="
+																			+ token)
+															.diskCacheStrategy(
+																	DiskCacheStrategy.ALL)
+															.placeholder(R.drawable.loader_animated)
+															.centerCrop()
+															.error(R.drawable.ic_close)
+															.into(attachmentView);
+
+											holder.glideTargets.add(target);
+										}
 
 										attachmentsView.addView(materialCardView);
 										attachmentView.setLayoutParams(paramsAttachment);
@@ -1475,7 +1524,8 @@ public class IssueCommentsAdapter extends RecyclerView.Adapter<RecyclerView.View
 																attachment
 																		.get(finalI1)
 																		.getBrowserDownloadUrl(),
-																token));
+																token,
+																holder));
 
 									} else {
 
@@ -1508,7 +1558,11 @@ public class IssueCommentsAdapter extends RecyclerView.Adapter<RecyclerView.View
 				});
 	}
 
-	private void imageViewDialog(String url, String token) {
+	private void imageViewDialog(String url, String token, IssueCommentViewHolder holder) {
+
+		if (holder == null || !holder.isActivityValid()) {
+			return;
+		}
 
 		MaterialAlertDialogBuilder materialAlertDialogBuilder =
 				new MaterialAlertDialogBuilder(
@@ -1521,28 +1575,65 @@ public class IssueCommentsAdapter extends RecyclerView.Adapter<RecyclerView.View
 
 		materialAlertDialogBuilder.setNeutralButton(context.getString(R.string.close), null);
 
-		Glide.with(context)
-				.asBitmap()
-				.load(url + "?token=" + token)
-				.diskCacheStrategy(DiskCacheStrategy.ALL)
-				.placeholder(R.drawable.loader_animated)
-				.centerCrop()
-				.error(R.drawable.ic_close)
-				.dontAnimate()
-				.into(
-						new CustomTarget<Bitmap>() {
-							@Override
-							public void onResourceReady(
-									@NonNull Bitmap resource,
-									Transition<? super Bitmap> transition) {
-								imageViewDialogBinding.imageView.setImageBitmap(resource);
-								imageViewDialogBinding.imageView.buildDrawingCache();
-							}
+		CustomTarget<Bitmap> target =
+				new CustomTarget<Bitmap>() {
+					@Override
+					public void onResourceReady(
+							@NonNull Bitmap resource, Transition<? super Bitmap> transition) {
+						if (holder.isAttachedToWindow) {
+							imageViewDialogBinding.imageView.setImageBitmap(resource);
+							imageViewDialogBinding.imageView.buildDrawingCache();
+						}
+					}
 
-							@Override
-							public void onLoadCleared(Drawable placeholder) {}
-						});
+					@Override
+					public void onLoadCleared(Drawable placeholder) {
+						if (holder.isAttachedToWindow) {
+							imageViewDialogBinding.imageView.setImageDrawable(placeholder);
+						}
+					}
 
-		materialAlertDialogBuilder.create().show();
+					@Override
+					public void onLoadFailed(@Nullable Drawable errorDrawable) {
+						super.onLoadFailed(errorDrawable);
+						if (holder.isAttachedToWindow) {
+							imageViewDialogBinding.imageView.setImageDrawable(errorDrawable);
+						}
+					}
+				};
+
+		holder.glideTargets.add(target);
+
+		if (holder.isActivityValid()) {
+			Glide.with(context)
+					.asBitmap()
+					.load(url + "?token=" + token)
+					.diskCacheStrategy(DiskCacheStrategy.ALL)
+					.placeholder(R.drawable.loader_animated)
+					.error(R.drawable.ic_close)
+					.dontAnimate()
+					.into(target);
+		}
+
+		AlertDialog dialog = materialAlertDialogBuilder.create();
+
+		dialog.setOnDismissListener(
+				dialogInterface -> {
+					if (holder.isActivityValid()) {
+						Glide.with(context).clear(target);
+						holder.glideTargets.remove(target);
+					}
+				});
+
+		dialog.show();
+	}
+
+	@Override
+	public void onViewRecycled(@NonNull RecyclerView.ViewHolder holder) {
+		super.onViewRecycled(holder);
+
+		if (holder instanceof IssueCommentViewHolder) {
+			((IssueCommentViewHolder) holder).clearGlideRequests();
+		}
 	}
 }
