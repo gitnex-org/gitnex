@@ -12,25 +12,27 @@ import org.mian.gitnex.R;
 import org.mian.gitnex.adapters.ActivitiesAdapter;
 import org.mian.gitnex.clients.RetrofitClient;
 import org.mian.gitnex.databinding.FragmentActivitiesBinding;
-import org.mian.gitnex.helpers.Constants;
 import org.mian.gitnex.helpers.Toasty;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
 
 /**
- * @author M M Arif
+ * @author mmarif
  */
 public class ActivitiesViewModel extends ViewModel {
 
 	private MutableLiveData<List<Activity>> activityList;
 	private int resultLimit;
 
+	public void setResultLimit(int resultLimit) {
+		this.resultLimit = resultLimit;
+	}
+
 	public LiveData<List<Activity>> getActivitiesList(
 			String username, Context ctx, FragmentActivitiesBinding binding) {
 
 		activityList = new MutableLiveData<>();
-		resultLimit = Constants.getCurrentResultLimit(ctx);
 		loadActivityList(username, ctx, binding);
 		return activityList;
 	}

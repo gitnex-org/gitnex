@@ -926,8 +926,11 @@ public class IssueDetailActivity extends BaseActivity
 
 	@Override
 	public void onResume() {
-
+		if (isFinishing() || isDestroyed()) {
+			return;
+		}
 		super.onResume();
+
 		issue.getRepository().checkAccountSwitch(this);
 
 		if (commentPosted) {

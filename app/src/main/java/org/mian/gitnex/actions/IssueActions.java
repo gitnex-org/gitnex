@@ -3,6 +3,7 @@ package org.mian.gitnex.actions;
 import android.app.Activity;
 import android.content.Context;
 import androidx.annotation.NonNull;
+import java.util.Objects;
 import org.gitnex.tea4j.v2.models.Comment;
 import org.gitnex.tea4j.v2.models.CreateIssueCommentOption;
 import org.gitnex.tea4j.v2.models.EditIssueCommentOption;
@@ -23,7 +24,7 @@ import retrofit2.Callback;
 import retrofit2.Response;
 
 /**
- * @author M M Arif
+ * @author mmarif
  */
 public class IssueActions {
 
@@ -124,13 +125,18 @@ public class IssueActions {
 								}
 
 								IssueDetailActivity.singleIssueUpdate = true;
-								((IssueDetailActivity) ctx).onResume();
+								if (ctx instanceof IssueDetailActivity activity) {
+									if (!activity.isFinishing() && !activity.isDestroyed()) {
+										activity.runOnUiThread(activity::onResume);
+									}
+								}
 								if (((Activity) ctx).getIntent().getStringExtra("openedFromLink")
 												== null
-										|| !((Activity) ctx)
-												.getIntent()
-												.getStringExtra("openedFromLink")
-												.equals("true")) {
+										|| !Objects.equals(
+												((Activity) ctx)
+														.getIntent()
+														.getStringExtra("openedFromLink"),
+												"true")) {
 									RepoDetailActivity.updateRepo = true;
 								}
 							}

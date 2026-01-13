@@ -107,6 +107,9 @@ public abstract class BaseActivity extends AppCompatActivity {
 	}
 
 	public void onResume() {
+		if (isFinishing() || isDestroyed()) {
+			return;
+		}
 		super.onResume();
 
 		if (BiometricManager.from(ctx)

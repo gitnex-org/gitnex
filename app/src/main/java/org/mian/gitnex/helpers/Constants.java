@@ -4,10 +4,11 @@ import android.content.Context;
 import org.mian.gitnex.activities.BaseActivity;
 
 /**
- * @author M M Arif
+ * @author mmarif
  */
 public class Constants {
 
+	public static int DEFAULT_RESULT_LIMIT = 50;
 	// issues variables
 	public static final int issuesPageInit = 1;
 	public static final String issuesRequestType = "issues";
@@ -33,6 +34,12 @@ public class Constants {
 	public static final String notificationsWorkerId = "notifications_worker";
 
 	public static int getCurrentResultLimit(Context context) {
+		if (context == null) {
+			return DEFAULT_RESULT_LIMIT;
+		}
+		if (!(context instanceof BaseActivity)) {
+			return DEFAULT_RESULT_LIMIT;
+		}
 		return ((BaseActivity) context).getAccount().requiresVersion("1.15")
 				? ((BaseActivity) context).getAccount().getDefaultPageLimit()
 				: ((BaseActivity) context).getAccount().getMaxPageLimit();

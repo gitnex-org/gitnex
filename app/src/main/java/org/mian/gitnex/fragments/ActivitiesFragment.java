@@ -17,11 +17,12 @@ import org.gitnex.tea4j.v2.models.Activity;
 import org.mian.gitnex.activities.BaseActivity;
 import org.mian.gitnex.adapters.ActivitiesAdapter;
 import org.mian.gitnex.databinding.FragmentActivitiesBinding;
+import org.mian.gitnex.helpers.Constants;
 import org.mian.gitnex.helpers.TinyDB;
 import org.mian.gitnex.viewmodels.ActivitiesViewModel;
 
 /**
- * @author M M Arif
+ * @author mmarif
  */
 public class ActivitiesFragment extends Fragment {
 
@@ -32,6 +33,7 @@ public class ActivitiesFragment extends Fragment {
 	private List<Activity> activityList;
 	private int page = 1;
 	private String username;
+	int resultLimit = Constants.getCurrentResultLimit(getContext());
 
 	@Override
 	public View onCreateView(
@@ -44,6 +46,7 @@ public class ActivitiesFragment extends Fragment {
 		activityList = new ArrayList<>();
 
 		viewModel = new ViewModelProvider(this).get(ActivitiesViewModel.class);
+		viewModel.setResultLimit(resultLimit);
 
 		username = ((BaseActivity) requireActivity()).getAccount().getAccount().getUserName();
 
@@ -77,11 +80,24 @@ public class ActivitiesFragment extends Fragment {
 
 	private void fetchDataAsync(String username) {
 
+		if (!isAdded() || getContext() == null) {
+			return;
+		}
+
+		Context context = getContext();
+		if (context == null) {
+			return;
+		}
+
 		viewModel
 				.getActivitiesList(username, getContext(), binding)
 				.observe(
 						getViewLifecycleOwner(),
 						activityListMain -> {
+							if (!isAdded() || getContext() == null) {
+								return;
+							}
+
 							adapter = new ActivitiesAdapter(activityListMain, getContext());
 							adapter.setLoadMoreListener(
 									new ActivitiesAdapter.OnLoadMoreListener() {
