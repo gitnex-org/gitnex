@@ -124,8 +124,6 @@ public class ActivitiesAdapter extends RecyclerView.Adapter<RecyclerView.ViewHol
 		private final ImageView typeIcon;
 		private final TextView dashText;
 		private final LinearLayout dashTextFrame;
-		private LinearLayout dashboardLayoutCardsFrame;
-		private MaterialCardView cardLayout;
 
 		private Activity activityObject;
 
@@ -138,8 +136,9 @@ public class ActivitiesAdapter extends RecyclerView.Adapter<RecyclerView.ViewHol
 			createdTime = itemView.findViewById(R.id.created_time);
 			dashText = itemView.findViewById(R.id.text);
 			dashTextFrame = itemView.findViewById(R.id.dash_text_frame);
-			dashboardLayoutCardsFrame = itemView.findViewById(R.id.dashboardLayoutCardsFrame);
-			cardLayout = itemView.findViewById(R.id.cardLayout);
+			LinearLayout dashboardLayoutCardsFrame =
+					itemView.findViewById(R.id.dashboardLayoutCardsFrame);
+			MaterialCardView cardLayout = itemView.findViewById(R.id.cardLayout);
 
 			new Handler()
 					.postDelayed(
@@ -397,9 +396,11 @@ public class ActivitiesAdapter extends RecyclerView.Adapter<RecyclerView.ViewHol
 			String content = activityObject.getContent();
 			String id;
 
-			if (content.trim().startsWith("[")) {
+			int arrayStart = content.trim().indexOf("[\"");
+			if (arrayStart != -1) {
 				try {
-					String cleanContent = content.trim().substring(1, content.length() - 1);
+					String jsonPart = content.trim().substring(arrayStart);
+					String cleanContent = jsonPart.substring(1, jsonPart.length() - 1);
 					String[] contentParts = cleanContent.split(",", 2);
 					id = contentParts[0].trim();
 
@@ -501,30 +502,19 @@ public class ActivitiesAdapter extends RecyclerView.Adapter<RecyclerView.ViewHol
 									+ activity.getRepo().getFullName()
 									+ "</font>";
 
+					String branch =
+							"<font color='"
+									+ ResourcesCompat.getColor(
+											context.getResources(), R.color.lightGray, null)
+									+ "'>"
+									+ activity.getRefName()
+											.substring(activity.getRefName().lastIndexOf("/") + 1)
+											.trim()
+									+ "</font>";
 					if (activity.getContent().isEmpty()) {
-						String branch =
-								"<font color='"
-										+ ResourcesCompat.getColor(
-												context.getResources(), R.color.lightGray, null)
-										+ "'>"
-										+ activity.getRefName()
-												.substring(
-														activity.getRefName().lastIndexOf("/") + 1)
-												.trim()
-										+ "</font>";
 						typeString =
 								String.format(context.getString(R.string.createdBranch), branch);
 					} else {
-						String branch =
-								"<font color='"
-										+ ResourcesCompat.getColor(
-												context.getResources(), R.color.lightGray, null)
-										+ "'>"
-										+ activity.getRefName()
-												.substring(
-														activity.getRefName().lastIndexOf("/") + 1)
-												.trim()
-										+ "</font>";
 						typeString = String.format(context.getString(R.string.pushedTo), branch);
 
 						JSONObject commitsObj = null;
@@ -611,15 +601,45 @@ public class ActivitiesAdapter extends RecyclerView.Adapter<RecyclerView.ViewHol
 			} else if (activity.getOpType().getValue().contains("issue")) {
 
 				String id;
-				String content;
-				String[] contentParts = activity.getContent().split("\\|");
-				if (contentParts.length > 1) {
+				String content = "";
+				String rawContent = activity.getContent().trim();
+
+				int arrayStart = rawContent.indexOf("[\"");
+				if (arrayStart != -1) {
+					try {
+						String jsonPart = rawContent.substring(arrayStart);
+						String cleanContent = jsonPart.substring(1, jsonPart.length() - 1);
+						String[] contentParts = cleanContent.split(",", 2);
+						id = contentParts[0].trim();
+
+						if (id.startsWith("\"") && id.endsWith("\"")) {
+							id = id.substring(1, id.length() - 1);
+						}
+
+						if (contentParts.length > 1) {
+							content = contentParts[1].trim();
+							if (content.startsWith("\"") && content.endsWith("\"")) {
+								content = content.substring(1, content.length() - 1);
+							}
+						}
+					} catch (Exception e) {
+						String[] contentParts = rawContent.split("\\|");
+						id = contentParts[0];
+						if (contentParts.length > 1) {
+							content = contentParts[1];
+						}
+					}
+				} else {
+					String[] contentParts = rawContent.split("\\|");
 					id = contentParts[0];
-					content = contentParts[1];
+					if (contentParts.length > 1) {
+						content = contentParts[1];
+					}
+				}
+
+				if (!content.isEmpty()) {
 					dashTextFrame.setVisibility(View.VISIBLE);
 					dashText.setText(EmojiParser.parseToUnicode(content));
-				} else {
-					id = contentParts[0];
 				}
 
 				if (activity.getOpType().getValue().equalsIgnoreCase("create_issue")) {
@@ -678,15 +698,45 @@ public class ActivitiesAdapter extends RecyclerView.Adapter<RecyclerView.ViewHol
 			} else if (activity.getOpType().getValue().contains("pull")) {
 
 				String id;
-				String content;
-				String[] contentParts = activity.getContent().split("\\|");
-				if (contentParts.length > 1) {
+				String content = "";
+				String rawContent = activity.getContent().trim();
+
+				int arrayStart = rawContent.indexOf("[\"");
+				if (arrayStart != -1) {
+					try {
+						String jsonPart = rawContent.substring(arrayStart);
+						String cleanContent = jsonPart.substring(1, jsonPart.length() - 1);
+						String[] contentParts = cleanContent.split(",", 2);
+						id = contentParts[0].trim();
+
+						if (id.startsWith("\"") && id.endsWith("\"")) {
+							id = id.substring(1, id.length() - 1);
+						}
+
+						if (contentParts.length > 1) {
+							content = contentParts[1].trim();
+							if (content.startsWith("\"") && content.endsWith("\"")) {
+								content = content.substring(1, content.length() - 1);
+							}
+						}
+					} catch (Exception e) {
+						String[] contentParts = rawContent.split("\\|");
+						id = contentParts[0];
+						if (contentParts.length > 1) {
+							content = contentParts[1];
+						}
+					}
+				} else {
+					String[] contentParts = rawContent.split("\\|");
 					id = contentParts[0];
-					content = contentParts[1];
+					if (contentParts.length > 1) {
+						content = contentParts[1];
+					}
+				}
+
+				if (!content.isEmpty()) {
 					dashTextFrame.setVisibility(View.VISIBLE);
 					dashText.setText(EmojiParser.parseToUnicode(content));
-				} else {
-					id = contentParts[0];
 				}
 
 				if (activity.getOpType().getValue().equalsIgnoreCase("create_pull_request")) {
@@ -804,10 +854,36 @@ public class ActivitiesAdapter extends RecyclerView.Adapter<RecyclerView.ViewHol
 				}
 			} else if (activity.getOpType().getValue().contains("branch")) {
 
-				String content;
-				String[] contentParts = activity.getContent().split("\\|");
-				if (contentParts.length > 1) {
-					content = contentParts[1];
+				String content = "";
+				String rawContent = activity.getContent().trim();
+
+				int arrayStart = rawContent.indexOf("[\"");
+				if (arrayStart != -1) {
+					try {
+						String jsonPart = rawContent.substring(arrayStart);
+						String cleanContent = jsonPart.substring(1, jsonPart.length() - 1);
+						String[] contentParts = cleanContent.split(",", 2);
+
+						if (contentParts.length > 1) {
+							content = contentParts[1].trim();
+							if (content.startsWith("\"") && content.endsWith("\"")) {
+								content = content.substring(1, content.length() - 1);
+							}
+						}
+					} catch (Exception e) {
+						String[] contentParts = rawContent.split("\\|");
+						if (contentParts.length > 1) {
+							content = contentParts[1];
+						}
+					}
+				} else {
+					String[] contentParts = rawContent.split("\\|");
+					if (contentParts.length > 1) {
+						content = contentParts[1];
+					}
+				}
+
+				if (!content.isEmpty()) {
 					dashTextFrame.setVisibility(View.VISIBLE);
 					dashText.setText(EmojiParser.parseToUnicode(content));
 				}
