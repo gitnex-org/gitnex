@@ -37,6 +37,11 @@ public class BottomSheetSettingsGeneralFragment extends BottomSheetDialogFragmen
 						AppDatabaseSettings.getSettingsValue(
 								requireContext(), AppDatabaseSettings.APP_LINK_HANDLER_KEY));
 
+		binding.urlPromptSwitch.setChecked(
+				Boolean.parseBoolean(
+						AppDatabaseSettings.getSettingsValue(
+								requireContext(), AppDatabaseSettings.APP_URL_PROMPT_KEY)));
+
 		setHomeScreenChipSelection(homeScreenSelectedChoice);
 		setLinkHandlerChipSelection(defaultLinkHandlerScreenSelectedChoice);
 		binding.switchTabs.setChecked(
@@ -110,6 +115,22 @@ public class BottomSheetSettingsGeneralFragment extends BottomSheetDialogFragmen
 							requireContext(),
 							String.valueOf(isChecked),
 							AppDatabaseSettings.APP_CRASH_REPORTS_KEY);
+					SnackBar.success(
+							requireContext(),
+							requireActivity().findViewById(android.R.id.content),
+							getString(R.string.settingsSave));
+				});
+
+		// URL Prompt switch listener
+		binding.urlPromptFrame.setOnClickListener(
+				v -> binding.urlPromptSwitch.setChecked(!binding.urlPromptSwitch.isChecked()));
+
+		binding.urlPromptSwitch.setOnCheckedChangeListener(
+				(buttonView, isChecked) -> {
+					AppDatabaseSettings.updateSettingsValue(
+							requireContext(),
+							String.valueOf(isChecked),
+							AppDatabaseSettings.APP_URL_PROMPT_KEY);
 					SnackBar.success(
 							requireContext(),
 							requireActivity().findViewById(android.R.id.content),

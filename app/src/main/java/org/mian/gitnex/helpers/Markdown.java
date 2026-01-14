@@ -14,6 +14,7 @@ import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
+import com.google.android.material.dialog.MaterialAlertDialogBuilder;
 import io.noties.markwon.AbstractMarkwonPlugin;
 import io.noties.markwon.Markwon;
 import io.noties.markwon.MarkwonConfiguration;
@@ -65,6 +66,8 @@ import org.mian.gitnex.helpers.codeeditor.theme.Theme;
 import org.mian.gitnex.helpers.contexts.IssueContext;
 import org.mian.gitnex.helpers.contexts.RepositoryContext;
 import org.mian.gitnex.helpers.markdown.AlertPlugin;
+import org.mian.gitnex.helpers.markdown.AutoLinkPlugin;
+import org.mian.gitnex.helpers.markdown.UrlPromptPlugin;
 import stormpot.Allocator;
 import stormpot.BlazePool;
 import stormpot.Config;
@@ -201,6 +204,8 @@ public class Markdown {
 			Markwon.Builder builder =
 					Markwon.builder(context)
 							.usePlugin(AlertPlugin.create(context))
+							.usePlugin(UrlPromptPlugin.create())
+							.usePlugin(AutoLinkPlugin.create())
 							.usePlugin(CorePlugin.create())
 							.usePlugin(HtmlPlugin.create())
 							.usePlugin(LinkifyPlugin.create(true))
@@ -277,6 +282,64 @@ public class Markdown {
 											}
 											builder.headingTypeface(
 													Typeface.create(tf, Typeface.BOLD));
+										}
+
+										@Override
+										public void configureConfiguration(
+												@NonNull MarkwonConfiguration.Builder builder) {
+											builder.linkResolver(
+													(view, link) -> {
+														boolean showPrompt =
+																Boolean.parseBoolean(
+																		AppDatabaseSettings
+																				.getSettingsValue(
+																						view
+																								.getContext(),
+																						AppDatabaseSettings
+																								.APP_URL_PROMPT_KEY));
+
+														if (showPrompt) {
+															// Show Material Dialog
+															MaterialAlertDialogBuilder
+																	dialogBuilder =
+																			new MaterialAlertDialogBuilder(
+																					view
+																							.getContext());
+
+															dialogBuilder
+																	.setTitle(R.string.isOpen)
+																	.setMessage(link)
+																	.setPositiveButton(
+																			R.string.isOpen,
+																			(dialog, which) ->
+																					AppUtil
+																							.openUrlInBrowser(
+																									view
+																											.getContext(),
+																									link))
+																	.setNegativeButton(
+																			R.string.menuCopyText,
+																			(dialog, which) ->
+																					AppUtil
+																							.copyToClipboard(
+																									view
+																											.getContext(),
+																									link,
+																									view.getContext()
+																											.getString(
+																													R
+																															.string
+																															.copyIssueUrlToastMsg)))
+																	.setNeutralButton(
+																			R.string.cancelButton,
+																			null)
+																	.show();
+														} else {
+															AppUtil.openUrlInBrowser(
+																	view.getContext(), link);
+														}
+													});
+											super.configureConfiguration(builder);
 										}
 									});
 
@@ -357,6 +420,8 @@ public class Markdown {
 			Markwon.Builder builder =
 					Markwon.builder(context)
 							.usePlugin(AlertPlugin.create(context))
+							.usePlugin(UrlPromptPlugin.create())
+							.usePlugin(AutoLinkPlugin.create())
 							.usePlugin(CorePlugin.create())
 							.usePlugin(HtmlPlugin.create())
 							.usePlugin(LinkifyPlugin.create(true))
@@ -462,8 +527,7 @@ public class Markdown {
 															view.getContext().startActivity(i);
 														} else if (link.startsWith(
 																"gitnexissue://")) {
-															link = link.substring(14); // remove
-															// gitnexissue://
+															link = link.substring(14);
 															String index;
 															if (link.contains("/")) {
 																index = link.split("#")[1];
@@ -501,7 +565,6 @@ public class Markdown {
 																i.putExtra(
 																		"openedFromLink", "true");
 															}
-
 															view.getContext().startActivity(i);
 														} else if (link.startsWith(
 																"gitnexcommit://")) {
@@ -517,12 +580,60 @@ public class Markdown {
 															} else {
 																sha = link.substring(1);
 															}
-
 															i.putExtra("sha", sha);
 															view.getContext().startActivity(i);
 														} else {
-															AppUtil.openUrlInBrowser(
-																	view.getContext(), link);
+															boolean showPrompt =
+																	Boolean.parseBoolean(
+																			AppDatabaseSettings
+																					.getSettingsValue(
+																							view
+																									.getContext(),
+																							AppDatabaseSettings
+																									.APP_URL_PROMPT_KEY));
+
+															if (showPrompt) {
+																MaterialAlertDialogBuilder
+																		dialogBuilder =
+																				new MaterialAlertDialogBuilder(
+																						view
+																								.getContext());
+
+																String finalLink = link;
+																dialogBuilder
+																		.setTitle(R.string.isOpen)
+																		.setMessage(link)
+																		.setPositiveButton(
+																				R.string.isOpen,
+																				(dialog, which) ->
+																						AppUtil
+																								.openUrlInBrowser(
+																										view
+																												.getContext(),
+																										finalLink))
+																		.setNegativeButton(
+																				R.string
+																						.menuCopyText,
+																				(dialog, which) ->
+																						AppUtil
+																								.copyToClipboard(
+																										view
+																												.getContext(),
+																										finalLink,
+																										view.getContext()
+																												.getString(
+																														R
+																																.string
+																																.copyIssueUrlToastMsg)))
+																		.setNeutralButton(
+																				R.string
+																						.cancelButton,
+																				null)
+																		.show();
+															} else {
+																AppUtil.openUrlInBrowser(
+																		view.getContext(), link);
+															}
 														}
 													});
 											super.configureConfiguration(builder);

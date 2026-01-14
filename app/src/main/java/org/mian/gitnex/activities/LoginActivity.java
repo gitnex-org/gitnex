@@ -319,7 +319,7 @@ public class LoginActivity extends BaseActivity {
 									SnackBar.error(
 											ctx,
 											findViewById(android.R.id.content),
-											getString(R.string.procy_creds_required_msg));
+											getString(R.string.proxy_creds_required_msg));
 
 									if (usernameFilled) {
 										passwordInput.setText("");

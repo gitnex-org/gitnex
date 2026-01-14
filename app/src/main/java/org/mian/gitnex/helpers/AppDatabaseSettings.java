@@ -67,6 +67,8 @@ public class AppDatabaseSettings {
 	public static String APP_USER_PROFILE_HIDE_EMAIL_LANGUAGE_DEFAULT = "false";
 	public static String APP_USER_HIDE_EMAIL_IN_NAV_KEY = "app_user_hide_email_nav";
 	public static String APP_USER_HIDE_EMAIL_IN_NAV_DEFAULT = "false";
+	public static String APP_URL_PROMPT_KEY = "app_url_prompt";
+	public static String APP_URL_PROMPT_DEFAULT = "false";
 
 	public static void initDefaultSettings(Context ctx) {
 
@@ -206,6 +208,11 @@ public class AppDatabaseSettings {
 					APP_USER_HIDE_EMAIL_IN_NAV_KEY,
 					APP_USER_HIDE_EMAIL_IN_NAV_DEFAULT,
 					APP_USER_HIDE_EMAIL_IN_NAV_DEFAULT);
+		}
+
+		if (appSettingsApi.fetchSettingCountByKey(APP_URL_PROMPT_KEY) == 0) {
+			appSettingsApi.insertNewSetting(
+					APP_URL_PROMPT_KEY, APP_URL_PROMPT_DEFAULT, APP_URL_PROMPT_DEFAULT);
 		}
 
 		if (appSettingsApi.fetchSettingCountByKey("prefsMigration") == 0) {

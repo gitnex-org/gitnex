@@ -1,9 +1,5 @@
 package org.mian.gitnex.fragments;
 
-import static androidx.biometric.BiometricManager.Authenticators.BIOMETRIC_STRONG;
-import static androidx.biometric.BiometricManager.Authenticators.DEVICE_CREDENTIAL;
-
-import android.app.KeyguardManager;
 import android.content.Context;
 import android.os.Bundle;
 import android.view.LayoutInflater;
@@ -70,63 +66,25 @@ public class BottomSheetSettingsSecurityFragment extends BottomSheetDialogFragme
 
 		binding.switchBiometric.setOnCheckedChangeListener(
 				(buttonView, isChecked) -> {
-					if (isChecked) {
-						BiometricManager biometricManager = BiometricManager.from(requireContext());
-						KeyguardManager keyguardManager =
-								(KeyguardManager)
-										requireContext().getSystemService(Context.KEYGUARD_SERVICE);
+					if (!isChecked) {
+						AppDatabaseSettings.updateSettingsValue(
+								requireContext(), "false", AppDatabaseSettings.APP_BIOMETRIC_KEY);
+						SnackBar.success(
+								requireContext(),
+								requireActivity().findViewById(android.R.id.content),
+								getString(R.string.settingsSave));
+						return;
+					}
 
-						if (!keyguardManager.isDeviceSecure()) {
-							switch (biometricManager.canAuthenticate(
-									BIOMETRIC_STRONG | DEVICE_CREDENTIAL)) {
-								case BiometricManager.BIOMETRIC_SUCCESS:
-									AppDatabaseSettings.updateSettingsValue(
-											requireContext(),
-											"true",
-											AppDatabaseSettings.APP_BIOMETRIC_KEY);
-									SnackBar.success(
-											requireContext(),
-											requireActivity().findViewById(android.R.id.content),
-											getString(R.string.settingsSave));
-									break;
-								case BiometricManager.BIOMETRIC_ERROR_NO_HARDWARE:
-								case BiometricManager.BIOMETRIC_ERROR_SECURITY_UPDATE_REQUIRED:
-								case BiometricManager.BIOMETRIC_ERROR_UNSUPPORTED:
-								case BiometricManager.BIOMETRIC_STATUS_UNKNOWN:
-									AppDatabaseSettings.updateSettingsValue(
-											requireContext(),
-											"false",
-											AppDatabaseSettings.APP_BIOMETRIC_KEY);
-									binding.switchBiometric.setChecked(false);
-									SnackBar.error(
-											requireContext(),
-											requireActivity().findViewById(android.R.id.content),
-											getString(R.string.biometricNotSupported));
-									break;
-								case BiometricManager.BIOMETRIC_ERROR_HW_UNAVAILABLE:
-									AppDatabaseSettings.updateSettingsValue(
-											requireContext(),
-											"false",
-											AppDatabaseSettings.APP_BIOMETRIC_KEY);
-									binding.switchBiometric.setChecked(false);
-									SnackBar.error(
-											requireContext(),
-											requireActivity().findViewById(android.R.id.content),
-											getString(R.string.biometricNotAvailable));
-									break;
-								case BiometricManager.BIOMETRIC_ERROR_NONE_ENROLLED:
-									AppDatabaseSettings.updateSettingsValue(
-											requireContext(),
-											"false",
-											AppDatabaseSettings.APP_BIOMETRIC_KEY);
-									binding.switchBiometric.setChecked(false);
-									SnackBar.info(
-											requireContext(),
-											requireActivity().findViewById(android.R.id.content),
-											getString(R.string.enrollBiometric));
-									break;
-							}
-						} else {
+					BiometricManager biometricManager = BiometricManager.from(requireContext());
+
+					int result =
+							biometricManager.canAuthenticate(
+									BiometricManager.Authenticators.BIOMETRIC_STRONG
+											| BiometricManager.Authenticators.DEVICE_CREDENTIAL);
+
+					switch (result) {
+						case BiometricManager.BIOMETRIC_SUCCESS:
 							AppDatabaseSettings.updateSettingsValue(
 									requireContext(),
 									"true",
@@ -135,14 +93,34 @@ public class BottomSheetSettingsSecurityFragment extends BottomSheetDialogFragme
 									requireContext(),
 									requireActivity().findViewById(android.R.id.content),
 									getString(R.string.settingsSave));
-						}
-					} else {
-						AppDatabaseSettings.updateSettingsValue(
-								requireContext(), "false", AppDatabaseSettings.APP_BIOMETRIC_KEY);
-						SnackBar.success(
-								requireContext(),
-								requireActivity().findViewById(android.R.id.content),
-								getString(R.string.settingsSave));
+							break;
+
+						case BiometricManager.BIOMETRIC_ERROR_NONE_ENROLLED:
+							binding.switchBiometric.setChecked(false);
+							SnackBar.info(
+									requireContext(),
+									requireActivity().findViewById(android.R.id.content),
+									getString(R.string.enrollBiometric));
+							break;
+
+						case BiometricManager.BIOMETRIC_ERROR_NO_HARDWARE:
+						case BiometricManager.BIOMETRIC_ERROR_UNSUPPORTED:
+						case BiometricManager.BIOMETRIC_ERROR_SECURITY_UPDATE_REQUIRED:
+							binding.switchBiometric.setChecked(false);
+							SnackBar.error(
+									requireContext(),
+									requireActivity().findViewById(android.R.id.content),
+									getString(R.string.biometricNotSupported));
+							break;
+
+						case BiometricManager.BIOMETRIC_ERROR_HW_UNAVAILABLE:
+						default:
+							binding.switchBiometric.setChecked(false);
+							SnackBar.error(
+									requireContext(),
+									requireActivity().findViewById(android.R.id.content),
+									getString(R.string.biometricNotAvailable));
+							break;
 					}
 				});
 

@@ -4,6 +4,7 @@ import android.content.Context;
 import android.os.Bundle;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.biometric.BiometricManager;
 import androidx.biometric.BiometricPrompt;
 import androidx.core.content.ContextCompat;
 import java.util.concurrent.Executor;
@@ -72,7 +73,9 @@ public class BiometricUnlock extends AppCompatActivity {
 				new BiometricPrompt.PromptInfo.Builder()
 						.setTitle(getString(R.string.biometricAuthTitle))
 						.setSubtitle(getString(R.string.biometricAuthSubTitle))
-						.setNegativeButtonText(getString(R.string.cancelButton))
+						.setAllowedAuthenticators(
+								BiometricManager.Authenticators.BIOMETRIC_STRONG
+										| BiometricManager.Authenticators.DEVICE_CREDENTIAL)
 						.build();
 
 		biometricPrompt.authenticate(biometricPromptBuilder);

@@ -1,328 +1,391 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout
+<androidx.core.widget.NestedScrollView
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
-    android:layout_height="wrap_content"
-    android:background="?attr/primaryBackgroundColor"
-    android:orientation="vertical"
-    android:paddingTop="@dimen/dimen6dp"
-    android:paddingBottom="@dimen/dimen12dp">
-
-    <View
-        android:layout_width="@dimen/dimen32dp"
-        android:layout_height="@dimen/dimen6dp"
-        android:layout_gravity="center_horizontal"
-        android:layout_marginBottom="@dimen/dimen8dp"
-        android:background="@drawable/bottom_sheet_handle"
-        android:backgroundTint="?attr/primaryTextColor" />
+    android:layout_height="match_parent"
+    android:background="?attr/primaryBackgroundColor">
 
     <LinearLayout
-        android:id="@+id/headerFrame"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="vertical"
-        android:padding="@dimen/dimen8dp">
+        android:paddingTop="@dimen/dimen6dp"
+        android:paddingBottom="@dimen/dimen12dp">
 
-        <TextView
-            android:id="@+id/bottomSheetHeader"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:gravity="center"
-            android:text="@string/settingsGeneralHeader"
-            android:textColor="?attr/primaryTextColor"
-            android:textSize="@dimen/dimen18sp"/>
-
-        <com.google.android.material.card.MaterialCardView
-            style="?attr/materialCardViewFilledStyle"
-            android:layout_width="@dimen/dimen28dp"
-            android:layout_height="@dimen/dimen4dp"
+        <View
+            android:layout_width="@dimen/dimen32dp"
+            android:layout_height="@dimen/dimen6dp"
             android:layout_gravity="center_horizontal"
-            android:layout_marginTop="@dimen/dimen8dp"
-            android:layout_marginBottom="@dimen/dimen16dp"
-            app:cardCornerRadius="@dimen/dimen24dp"
-            app:cardElevation="@dimen/dimen0dp">
+            android:layout_marginBottom="@dimen/dimen8dp"
+            android:background="@drawable/bottom_sheet_handle"
+            android:backgroundTint="?attr/primaryTextColor" />
 
-            <View
+        <LinearLayout
+            android:id="@+id/headerFrame"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:padding="@dimen/dimen8dp">
+
+            <TextView
+                android:id="@+id/bottomSheetHeader"
                 android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:background="?attr/fabColor" />
+                android:layout_height="wrap_content"
+                android:gravity="center"
+                android:text="@string/settingsGeneralHeader"
+                android:textColor="?attr/primaryTextColor"
+                android:textSize="@dimen/dimen18sp"/>
 
-        </com.google.android.material.card.MaterialCardView>
+            <com.google.android.material.card.MaterialCardView
+                style="?attr/materialCardViewFilledStyle"
+                android:layout_width="@dimen/dimen28dp"
+                android:layout_height="@dimen/dimen4dp"
+                android:layout_gravity="center_horizontal"
+                android:layout_marginTop="@dimen/dimen8dp"
+                android:layout_marginBottom="@dimen/dimen16dp"
+                app:cardCornerRadius="@dimen/dimen24dp"
+                app:cardElevation="@dimen/dimen0dp">
 
-    </LinearLayout>
+                <View
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:background="?attr/fabColor" />
 
-    <LinearLayout
-        android:id="@+id/linkHandlerFrame"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="@dimen/dimen24dp"
-        android:paddingStart="@dimen/dimen16dp"
-        android:paddingEnd="@dimen/dimen16dp"
-        android:orientation="vertical">
+            </com.google.android.material.card.MaterialCardView>
 
-        <TextView
-            android:id="@+id/linkHandlerHeaderSelector"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="@string/generalDeepLinkDefaultScreen"
-            android:textColor="?attr/primaryTextColor"
-            android:textSize="@dimen/dimen16sp" />
+        </LinearLayout>
 
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="@dimen/dimen4dp"
-            android:text="@string/generalDeepLinkDefaultScreenHintText"
-            android:textColor="?attr/hintColor"
-            android:textSize="@dimen/dimen12sp" />
-
-        <com.google.android.material.chip.ChipGroup
-            android:id="@+id/linkHandlerChipGroup"
+        <LinearLayout
+            android:id="@+id/linkHandlerFrame"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginTop="@dimen/dimen8dp"
-            app:singleSelection="true"
-            app:selectionRequired="true">
+            android:layout_marginTop="@dimen/dimen24dp"
+            android:paddingStart="@dimen/dimen16dp"
+            android:paddingEnd="@dimen/dimen16dp"
+            android:orientation="vertical">
 
-            <com.google.android.material.chip.Chip
-                android:id="@+id/chipLinkHandler0"
-                style="@style/CustomChipFilter"
+            <TextView
+                android:id="@+id/linkHandlerHeaderSelector"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="@string/none" />
+                android:text="@string/generalDeepLinkDefaultScreen"
+                android:textColor="?attr/primaryTextColor"
+                android:textSize="@dimen/dimen16sp" />
 
-            <com.google.android.material.chip.Chip
-                android:id="@+id/chipLinkHandler1"
-                style="@style/CustomChipFilter"
+            <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="@string/navRepos" />
+                android:layout_marginTop="@dimen/dimen4dp"
+                android:text="@string/generalDeepLinkDefaultScreenHintText"
+                android:textColor="?attr/hintColor"
+                android:textSize="@dimen/dimen12sp" />
 
-            <com.google.android.material.chip.Chip
-                android:id="@+id/chipLinkHandler2"
-                style="@style/CustomChipFilter"
-                android:layout_width="wrap_content"
+            <com.google.android.material.chip.ChipGroup
+                android:id="@+id/linkHandlerChipGroup"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="@string/navOrg" />
+                android:layout_marginTop="@dimen/dimen8dp"
+                app:singleSelection="true"
+                app:selectionRequired="true">
 
-            <com.google.android.material.chip.Chip
-                android:id="@+id/chipLinkHandler3"
-                style="@style/CustomChipFilter"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="@string/pageTitleNotifications" />
+                <com.google.android.material.chip.Chip
+                    android:id="@+id/chipLinkHandler0"
+                    style="@style/CustomChipFilter"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/none" />
 
-            <com.google.android.material.chip.Chip
-                android:id="@+id/chipLinkHandler4"
-                style="@style/CustomChipFilter"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="@string/pageTitleExplore" />
+                <com.google.android.material.chip.Chip
+                    android:id="@+id/chipLinkHandler1"
+                    style="@style/CustomChipFilter"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/navRepos" />
 
-        </com.google.android.material.chip.ChipGroup>
+                <com.google.android.material.chip.Chip
+                    android:id="@+id/chipLinkHandler2"
+                    style="@style/CustomChipFilter"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/navOrg" />
 
-    </LinearLayout>
+                <com.google.android.material.chip.Chip
+                    android:id="@+id/chipLinkHandler3"
+                    style="@style/CustomChipFilter"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/pageTitleNotifications" />
 
-    <LinearLayout
-        android:id="@+id/homeScreenFrame"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="@dimen/dimen24dp"
-        android:paddingStart="@dimen/dimen16dp"
-        android:paddingEnd="@dimen/dimen16dp"
-        android:orientation="vertical">
+                <com.google.android.material.chip.Chip
+                    android:id="@+id/chipLinkHandler4"
+                    style="@style/CustomChipFilter"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/pageTitleExplore" />
 
-        <TextView
-            android:id="@+id/homeScreenHeaderSelector"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="@string/settingsHomeScreenHeaderText"
-            android:textColor="?attr/primaryTextColor"
-            android:textSize="@dimen/dimen16sp" />
+            </com.google.android.material.chip.ChipGroup>
 
-        <com.google.android.material.chip.ChipGroup
-            android:id="@+id/homeScreenChipGroup"
+        </LinearLayout>
+
+        <LinearLayout
+            android:id="@+id/homeScreenFrame"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginTop="@dimen/dimen8dp"
-            app:singleSelection="true"
-            app:selectionRequired="true">
+            android:layout_marginTop="@dimen/dimen24dp"
+            android:paddingStart="@dimen/dimen16dp"
+            android:paddingEnd="@dimen/dimen16dp"
+            android:orientation="vertical">
 
-            <com.google.android.material.chip.Chip
-                android:id="@+id/chipHomeScreen0"
-                style="@style/CustomChipFilter"
+            <TextView
+                android:id="@+id/homeScreenHeaderSelector"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="@string/home" />
+                android:text="@string/settingsHomeScreenHeaderText"
+                android:textColor="?attr/primaryTextColor"
+                android:textSize="@dimen/dimen16sp" />
 
-            <com.google.android.material.chip.Chip
-                android:id="@+id/chipHomeScreen1"
-                style="@style/CustomChipFilter"
+            <com.google.android.material.chip.ChipGroup
+                android:id="@+id/homeScreenChipGroup"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/dimen8dp"
+                app:singleSelection="true"
+                app:selectionRequired="true">
+
+                <com.google.android.material.chip.Chip
+                    android:id="@+id/chipHomeScreen0"
+                    style="@style/CustomChipFilter"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/home" />
+
+                <com.google.android.material.chip.Chip
+                    android:id="@+id/chipHomeScreen1"
+                    style="@style/CustomChipFilter"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/navMyRepos" />
+
+                <com.google.android.material.chip.Chip
+                    android:id="@+id/chipHomeScreen2"
+                    style="@style/CustomChipFilter"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/navStarredRepos" />
+
+                <com.google.android.material.chip.Chip
+                    android:id="@+id/chipHomeScreen3"
+                    style="@style/CustomChipFilter"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/navOrg" />
+
+                <com.google.android.material.chip.Chip
+                    android:id="@+id/chipHomeScreen4"
+                    style="@style/CustomChipFilter"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/navRepos" />
+
+                <com.google.android.material.chip.Chip
+                    android:id="@+id/chipHomeScreen5"
+                    style="@style/CustomChipFilter"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/pageTitleExplore" />
+
+                <com.google.android.material.chip.Chip
+                    android:id="@+id/chipHomeScreen6"
+                    style="@style/CustomChipFilter"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/pageTitleNotifications" />
+
+                <com.google.android.material.chip.Chip
+                    android:id="@+id/chipHomeScreen7"
+                    style="@style/CustomChipFilter"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/navMyIssues" />
+
+                <com.google.android.material.chip.Chip
+                    android:id="@+id/chipHomeScreen8"
+                    style="@style/CustomChipFilter"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/navMostVisited" />
+
+                <com.google.android.material.chip.Chip
+                    android:id="@+id/chipHomeScreen9"
+                    style="@style/CustomChipFilter"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/navNotes" />
+
+                <com.google.android.material.chip.Chip
+                    android:id="@+id/chipHomeScreen10"
+                    style="@style/CustomChipFilter"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/activities" />
+
+                <com.google.android.material.chip.Chip
+                    android:id="@+id/chipHomeScreen11"
+                    style="@style/CustomChipFilter"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/navWatchedRepositories" />
+
+            </com.google.android.material.chip.ChipGroup>
+
+        </LinearLayout>
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:id="@+id/customTabsFrame"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/dimen24dp"
+            android:paddingStart="@dimen/dimen16dp"
+            android:paddingEnd="@dimen/dimen16dp">
+
+            <TextView
+                android:id="@+id/customTabsHeader"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:text="@string/useCustomTabs"
+                android:textColor="?attr/primaryTextColor"
+                android:layout_marginTop="@dimen/dimen8dp"
+                android:textSize="@dimen/dimen16sp"
+                android:singleLine="false"
+                android:ellipsize="none"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintEnd_toStartOf="@id/guidelineTabs"
+                app:layout_constraintTop_toTopOf="parent"
+                android:layout_marginEnd="@dimen/dimen12dp" />
+
+            <com.google.android.material.materialswitch.MaterialSwitch
+                android:id="@+id/switchTabs"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="@string/navMyRepos" />
+                android:contentDescription="@string/useCustomTabs"
+                style="@style/m3SwitchStyle"
+                android:layout_marginStart="@dimen/dimen12dp"
+                app:layout_constraintStart_toEndOf="@id/customTabsHeader"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintTop_toTopOf="@id/customTabsHeader"
+                app:layout_constraintBottom_toBottomOf="@id/customTabsHeader" />
 
-            <com.google.android.material.chip.Chip
-                android:id="@+id/chipHomeScreen2"
-                style="@style/CustomChipFilter"
+            <androidx.constraintlayout.widget.Guideline
+                android:id="@+id/guidelineTabs"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="@string/navStarredRepos" />
+                android:orientation="vertical"
+                app:layout_constraintGuide_percent="0.85" />
 
-            <com.google.android.material.chip.Chip
-                android:id="@+id/chipHomeScreen3"
-                style="@style/CustomChipFilter"
+        </androidx.constraintlayout.widget.ConstraintLayout>
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:id="@+id/urlPromptFrame"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/dimen24dp"
+            android:paddingStart="@dimen/dimen16dp"
+            android:paddingEnd="@dimen/dimen16dp">
+
+            <TextView
+                android:id="@+id/urlPromptHeader"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:text="@string/url_prompt_title"
+                android:textColor="?attr/primaryTextColor"
+                android:layout_marginTop="@dimen/dimen8dp"
+                android:textSize="@dimen/dimen16sp"
+                android:singleLine="false"
+                android:ellipsize="none"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintEnd_toStartOf="@id/guidelineUrlPrompt"
+                app:layout_constraintTop_toTopOf="parent"
+                android:layout_marginEnd="@dimen/dimen12dp" />
+
+            <com.google.android.material.materialswitch.MaterialSwitch
+                android:id="@+id/urlPromptSwitch"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="@string/navOrg" />
+                android:contentDescription="@string/url_prompt_title"
+                style="@style/m3SwitchStyle"
+                android:layout_marginStart="@dimen/dimen12dp"
+                app:layout_constraintStart_toEndOf="@id/urlPromptHeader"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintTop_toTopOf="@id/urlPromptHeader"
+                app:layout_constraintBottom_toBottomOf="@id/urlPromptHeader" />
 
-            <com.google.android.material.chip.Chip
-                android:id="@+id/chipHomeScreen4"
-                style="@style/CustomChipFilter"
+            <TextView
+                android:id="@+id/urlPromptHint"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/dimen4dp"
+                android:text="@string/url_prompt_description"
+                android:textColor="?attr/hintColor"
+                android:textSize="@dimen/dimen12sp"
+                android:layout_marginEnd="@dimen/dimen12dp"
+                app:layout_constraintStart_toStartOf="@id/urlPromptHeader"
+                app:layout_constraintEnd_toStartOf="@id/guidelineUrlPrompt"
+                app:layout_constraintTop_toBottomOf="@id/urlPromptHeader" />
+
+            <androidx.constraintlayout.widget.Guideline
+                android:id="@+id/guidelineUrlPrompt"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="@string/navRepos" />
+                android:orientation="vertical"
+                app:layout_constraintGuide_percent="0.85" />
 
-            <com.google.android.material.chip.Chip
-                android:id="@+id/chipHomeScreen5"
-                style="@style/CustomChipFilter"
+        </androidx.constraintlayout.widget.ConstraintLayout>
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:id="@+id/enableSendReports"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/dimen24dp"
+            android:paddingStart="@dimen/dimen16dp"
+            android:paddingEnd="@dimen/dimen16dp">
+
+            <TextView
+                android:id="@+id/enableReportsHeader"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:text="@string/settingsEnableReportsText"
+                android:textColor="?attr/primaryTextColor"
+                android:layout_marginTop="@dimen/dimen8dp"
+                android:textSize="@dimen/dimen16sp"
+                android:singleLine="false"
+                android:ellipsize="none"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintEnd_toStartOf="@id/guidelineReports"
+                app:layout_constraintTop_toTopOf="parent"
+                android:layout_marginEnd="@dimen/dimen12dp" />
+
+            <com.google.android.material.materialswitch.MaterialSwitch
+                android:id="@+id/crashReportsSwitch"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="@string/pageTitleExplore" />
+                android:contentDescription="@string/settingsEnableReportsText"
+                style="@style/m3SwitchStyle"
+                android:layout_marginStart="@dimen/dimen12dp"
+                app:layout_constraintStart_toEndOf="@id/enableReportsHeader"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintTop_toTopOf="@id/enableReportsHeader"
+                app:layout_constraintBottom_toBottomOf="@id/enableReportsHeader" />
 
-            <com.google.android.material.chip.Chip
-                android:id="@+id/chipHomeScreen6"
-                style="@style/CustomChipFilter"
+            <androidx.constraintlayout.widget.Guideline
+                android:id="@+id/guidelineReports"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="@string/pageTitleNotifications" />
+                android:orientation="vertical"
+                app:layout_constraintGuide_percent="0.85" />
 
-            <com.google.android.material.chip.Chip
-                android:id="@+id/chipHomeScreen7"
-                style="@style/CustomChipFilter"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="@string/navMyIssues" />
-
-            <com.google.android.material.chip.Chip
-                android:id="@+id/chipHomeScreen8"
-                style="@style/CustomChipFilter"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="@string/navMostVisited" />
-
-            <com.google.android.material.chip.Chip
-                android:id="@+id/chipHomeScreen9"
-                style="@style/CustomChipFilter"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="@string/navNotes" />
-
-            <com.google.android.material.chip.Chip
-                android:id="@+id/chipHomeScreen10"
-                style="@style/CustomChipFilter"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="@string/activities" />
-
-            <com.google.android.material.chip.Chip
-                android:id="@+id/chipHomeScreen11"
-                style="@style/CustomChipFilter"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="@string/navWatchedRepositories" />
-
-        </com.google.android.material.chip.ChipGroup>
+        </androidx.constraintlayout.widget.ConstraintLayout>
 
     </LinearLayout>
 
-    <androidx.constraintlayout.widget.ConstraintLayout
-        android:id="@+id/customTabsFrame"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="@dimen/dimen24dp"
-        android:paddingStart="@dimen/dimen16dp"
-        android:paddingEnd="@dimen/dimen16dp">
-
-        <TextView
-            android:id="@+id/customTabsHeader"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:text="@string/useCustomTabs"
-            android:textColor="?attr/primaryTextColor"
-            android:layout_marginTop="@dimen/dimen8dp"
-            android:textSize="@dimen/dimen16sp"
-            android:singleLine="false"
-            android:ellipsize="none"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintEnd_toStartOf="@id/guidelineTabs"
-            app:layout_constraintTop_toTopOf="parent"
-            android:layout_marginEnd="@dimen/dimen12dp" />
-
-        <com.google.android.material.materialswitch.MaterialSwitch
-            android:id="@+id/switchTabs"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:contentDescription="@string/useCustomTabs"
-            style="@style/m3SwitchStyle"
-            android:layout_marginStart="@dimen/dimen12dp"
-            app:layout_constraintStart_toEndOf="@id/customTabsHeader"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintTop_toTopOf="@id/customTabsHeader"
-            app:layout_constraintBottom_toBottomOf="@id/customTabsHeader" />
-
-        <androidx.constraintlayout.widget.Guideline
-            android:id="@+id/guidelineTabs"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:orientation="vertical"
-            app:layout_constraintGuide_percent="0.85" />
-
-    </androidx.constraintlayout.widget.ConstraintLayout>
-
-    <androidx.constraintlayout.widget.ConstraintLayout
-        android:id="@+id/enableSendReports"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="@dimen/dimen24dp"
-        android:paddingStart="@dimen/dimen16dp"
-        android:paddingEnd="@dimen/dimen16dp">
-
-        <TextView
-            android:id="@+id/enableReportsHeader"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:text="@string/settingsEnableReportsText"
-            android:textColor="?attr/primaryTextColor"
-            android:layout_marginTop="@dimen/dimen8dp"
-            android:textSize="@dimen/dimen16sp"
-            android:singleLine="false"
-            android:ellipsize="none"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintEnd_toStartOf="@id/guidelineReports"
-            app:layout_constraintTop_toTopOf="parent"
-            android:layout_marginEnd="@dimen/dimen12dp" />
-
-        <com.google.android.material.materialswitch.MaterialSwitch
-            android:id="@+id/crashReportsSwitch"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:contentDescription="@string/settingsEnableReportsText"
-            style="@style/m3SwitchStyle"
-            android:layout_marginStart="@dimen/dimen12dp"
-            app:layout_constraintStart_toEndOf="@id/enableReportsHeader"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintTop_toTopOf="@id/enableReportsHeader"
-            app:layout_constraintBottom_toBottomOf="@id/enableReportsHeader" />
-
-        <androidx.constraintlayout.widget.Guideline
-            android:id="@+id/guidelineReports"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:orientation="vertical"
-            app:layout_constraintGuide_percent="0.85" />
-
-    </androidx.constraintlayout.widget.ConstraintLayout>
-
-</LinearLayout>
+</androidx.core.widget.NestedScrollView>
