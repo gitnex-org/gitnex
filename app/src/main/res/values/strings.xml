@@ -609,6 +609,7 @@
     <string name="lfs">LFS</string>
     <string name="mirrors">Mirrors</string>
     <string name="stars">Stars</string>
+    <string name="template">Template</string>
     <!-- generic copy -->
 
     <string name="exploreUsers">Explore users</string>

@@ -55,7 +55,32 @@
            android:orientation="vertical"
            android:padding="@dimen/dimen16dp">
 
-            <com.google.android.material.textfield.TextInputLayout
+           <com.google.android.material.textfield.TextInputLayout
+               android:id="@+id/newIssueTemplateSpinnerLayout"
+               style="@style/Widget.Material3.TextInputLayout.OutlinedBox.ExposedDropdownMenu"
+               android:layout_width="match_parent"
+               android:layout_height="wrap_content"
+               android:layout_marginTop="@dimen/dimen8dp"
+               android:layout_marginBottom="@dimen/dimen8dp"
+               android:hint="@string/template"
+               android:textColorHint="?attr/hintColor"
+               app:boxBackgroundColor="?attr/primaryBackgroundColor"
+               app:endIconTint="?attr/iconsColor"
+               app:hintTextColor="?attr/hintColor"
+               android:visibility="gone">
+
+                   <AutoCompleteTextView
+                       android:id="@+id/newIssueTemplateSpinner"
+                       android:layout_width="match_parent"
+                       android:layout_height="wrap_content"
+                       android:inputType="none"
+                       android:labelFor="@+id/newIssueTemplateSpinner"
+                       android:textColor="?attr/inputTextColor"
+                       android:textSize="@dimen/dimen16sp" />
+
+            </com.google.android.material.textfield.TextInputLayout>
+
+           <com.google.android.material.textfield.TextInputLayout
                 android:id="@+id/newIssueTitleLayout"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -82,7 +107,7 @@
                     android:textColorHint="?attr/hintColor"
                     android:textSize="@dimen/dimen16sp" />
 
-            </com.google.android.material.textfield.TextInputLayout>
+           </com.google.android.material.textfield.TextInputLayout>
 
            <TextView
                android:id="@+id/insertNote"

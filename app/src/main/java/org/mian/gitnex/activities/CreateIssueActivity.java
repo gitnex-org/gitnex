@@ -36,6 +36,7 @@ import okhttp3.RequestBody;
 import org.gitnex.tea4j.v2.models.Attachment;
 import org.gitnex.tea4j.v2.models.CreateIssueOption;
 import org.gitnex.tea4j.v2.models.Issue;
+import org.gitnex.tea4j.v2.models.IssueTemplate;
 import org.gitnex.tea4j.v2.models.Label;
 import org.gitnex.tea4j.v2.models.Milestone;
 import org.gitnex.tea4j.v2.models.User;
@@ -198,6 +199,7 @@ public class CreateIssueActivity extends BaseActivity
 		viewBinding.insertNote.setOnClickListener(insertNote -> showAllNotes());
 
 		getMilestones(repository.getOwner(), repository.getName(), resultLimit);
+		fetchIssueTemplates();
 
 		viewBinding.newIssueLabels.setOnClickListener(newIssueLabels -> showLabels());
 
@@ -672,6 +674,98 @@ public class CreateIssueActivity extends BaseActivity
 								getString(R.string.genericServerResponseError));
 					}
 				});
+	}
+
+	private void fetchIssueTemplates() {
+		Call<List<IssueTemplate>> call =
+				RetrofitClient.getApiInterface(ctx)
+						.repoGetIssueTemplates(repository.getOwner(), repository.getName());
+
+		call.enqueue(
+				new Callback<>() {
+					@Override
+					public void onResponse(
+							@NonNull Call<List<IssueTemplate>> call,
+							@NonNull retrofit2.Response<List<IssueTemplate>> response) {
+						if (response.isSuccessful()
+								&& response.body() != null
+								&& !response.body().isEmpty()) {
+							List<IssueTemplate> templates = response.body();
+							setupTemplateSpinner(templates);
+						}
+					}
+
+					@Override
+					public void onFailure(
+							@NonNull Call<List<IssueTemplate>> call, @NonNull Throwable t) {}
+				});
+	}
+
+	private void setupTemplateSpinner(List<IssueTemplate> templates) {
+		if (templates == null || templates.isEmpty()) {
+			viewBinding.newIssueTemplateSpinnerLayout.setVisibility(View.GONE);
+			return;
+		}
+
+		viewBinding.newIssueTemplateSpinnerLayout.setVisibility(View.VISIBLE);
+
+		List<String> templateNames = new ArrayList<>();
+		templateNames.add(getString(R.string.none));
+
+		for (IssueTemplate template : templates) {
+			templateNames.add(template.getName());
+		}
+
+		ArrayAdapter<String> adapter =
+				new ArrayAdapter<>(
+						CreateIssueActivity.this, R.layout.list_spinner_items, templateNames);
+
+		viewBinding.newIssueTemplateSpinner.setAdapter(adapter);
+
+		viewBinding.newIssueTemplateSpinner.setOnItemClickListener(
+				(parent, view, position, id) -> {
+					String selectedName = adapter.getItem(position);
+					if (selectedName == null) {
+						return;
+					}
+
+					if (selectedName.equals(getString(R.string.none))) {
+						viewBinding.newIssueTitle.setText("");
+						viewBinding.newIssueDescription.setText("");
+					} else {
+						for (IssueTemplate template : templates) {
+							if (template.getName().equals(selectedName)) {
+								applyIssueTemplate(template);
+								break;
+							}
+						}
+					}
+				});
+	}
+
+	private void applyIssueTemplate(IssueTemplate template) {
+		if (template == null) {
+			return;
+		}
+
+		if (template.getTitle() != null && !template.getTitle().isEmpty()) {
+			viewBinding.newIssueTitle.setText(template.getTitle().trim());
+		} else {
+			viewBinding.newIssueTitle.setText("");
+		}
+
+		String templateContent = "";
+		if (template.getContent() != null) {
+			templateContent = template.getContent();
+		} else if (template.getBody() != null) {
+			templateContent = template.getBody().toString();
+		}
+
+		if (!templateContent.isEmpty()) {
+			viewBinding.newIssueDescription.setText(templateContent.trim());
+		} else {
+			viewBinding.newIssueDescription.setText("");
+		}
 	}
 
 	@Override

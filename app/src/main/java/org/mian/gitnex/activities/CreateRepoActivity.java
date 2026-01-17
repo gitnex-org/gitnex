@@ -93,7 +93,7 @@ public class CreateRepoActivity extends BaseActivity {
 				Objects.requireNonNull(activityCreateRepoBinding.defaultBranch.getText())
 						.toString();
 
-		if (!newRepoDesc.equals("")) {
+		if (!newRepoDesc.isEmpty()) {
 
 			if (newRepoDesc.length() > 255) {
 
