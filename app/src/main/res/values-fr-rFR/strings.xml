@@ -497,6 +497,12 @@
     <string name="idle">Inactif</string>
     <string name="value">Valeur</string>
     <string name="optional">Facultatif</string>
+    <string name="loading">Chargement…</string>
+    <string name="migrations">Migrations</string>
+    <string name="lfs">LFS</string>
+    <string name="mirrors">Miroirs</string>
+    <string name="stars">Stars</string>
+    <string name="template">Template</string>
     <!-- generic copy -->
     <string name="exploreUsers">Chercher des utilisateurs</string>
     <string name="exploreIssues">Chercher des tickets</string>
@@ -851,6 +857,7 @@
     <string name="dependency_add_failed">Échec de l’ajout de la dépendance</string>
     <string name="search_failed">Échec de la recherche</string>
     <string name="no_dependency_search_results">Aucun résultat trouvé</string>
+    <string name="time_tracking">Suivi du temps</string>
     <string name="tracked_time">Chronométrage</string>
     <string name="no_tracked_time">Pas encore de chronométrage</string>
     <string name="total_time">Total : %1$d h %2$d min %3$d s</string>
@@ -882,4 +889,27 @@
     <string name="create_variable_header">Les variables ne sont transmises qu’à certaines étapes de l’exécuteur.</string>
     <string name="variable_name_helper">Caractères alphanumériques et tiret bas, insensible à la casse, ne peut commencer par GITEA_ ou GITHUB_</string>
     <string name="variable_value_helper">Entrez du texte. Les espaces au début et à la fin seront ignorés.</string>
+    <string name="addTopic">Ajouter un sujet</string>
+    <string name="addNewTopic">Ajouter un nouveau sujet</string>
+    <string name="topicName">Nom du sujet</string>
+    <string name="topicAddedSuccessfully">Sujet ajouté</string>
+    <string name="topicDeletedSuccessfully">Sujet supprimé</string>
+    <string name="errorAddingTopic">Error adding topic</string>
+    <string name="errorDeletingTopic">Error deleting topic</string>
+    <string name="errorLoadingTopics">Error loading topics</string>
+    <string name="invalidTopicName">Nom de sujet invalide</string>
+    <string name="http_git">HTTP Git</string>
+    <string name="proxy_auth_title">Reverse Proxy Credentials</string>
+    <string name="proxy_auth_description">If your Gitea/Forgejo is behind a reverse proxy with HTTP Basic Authentication, enter the credentials here.\n\nGitNex sends these in the \'X-Proxy-Auth: Basic …\' header. Administrators needs to configure the proxy to read from this header.</string>
+    <string name="proxy_username_hint">Proxy Username</string>
+    <string name="proxy_password_hint">Proxy Password</string>
+    <string name="setup_proxy_auth">Setup Proxy Authorization</string>
+    <string name="save_proxy_creds">Save Proxy Credentials</string>
+    <string name="skip_proxy_creds">Skip</string>
+    <string name="clear_proxy_creds">Clear Credentials</string>
+    <string name="proxy_creds_saved">Proxy credentials saved</string>
+    <string name="proxy_creds_cleared">Proxy credentials cleared</string>
+    <string name="proxy_creds_required_msg">Please provide both username and password or leave both empty</string>
+    <string name="url_prompt_title">Show URL confirmation dialog</string>
+    <string name="url_prompt_description">Show a confirmation dialog before opening external links in Markdown rendered contents</string>
 </resources>

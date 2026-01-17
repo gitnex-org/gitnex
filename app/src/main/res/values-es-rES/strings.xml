@@ -11,7 +11,7 @@
     <string name="navRate">Valorar GitNex</string>
     <string name="navAdministration">Administración de la instancia</string>
     <string name="navMyIssues">Mis incidencias</string>
-    <string name="navMostVisited">Most Visited Repositories</string>
+    <string name="navMostVisited">Repositorios más visitados</string>
     <string name="navNotes">Notas</string>
     <string name="navAccount">Configuración de la cuenta</string>
     <string name="navWatchedRepositories">Repositorios favoritos</string>
@@ -199,9 +199,9 @@
     <string name="fragmentTabsAnimationHeader">Animación de las pestañas</string>
     <string name="fadeOut">Desvanecer</string>
     <string name="zoomOut">Reducir</string>
-    <string name="backup">Backup</string>
-    <string name="restore">Restore</string>
-    <string name="backupFileSuccess">The backup was successfully created</string>
+    <string name="backup">Respaldo</string>
+    <string name="restore">Restaurar</string>
+    <string name="backupFileSuccess">El respaldo fue creado exitosamente</string>
     <string name="backupFileError">An error occurred while creating a data backup</string>
     <string name="backupFilePopupText">This action will backup your accounts, settings, notes, and data related to repositories.\n\nClick the Backup button to download the backup file.</string>
     <string name="restoreFilePopupText">You are about to restore from a GitNex-generated backup file. This will restore user accounts, settings, notes, and data related to repositories.\n\nPlease note this action will overwrite the current database data. Proceed with caution.\n\nClick Restore to start the process.</string>
@@ -286,10 +286,10 @@
     <!-- profile section -->
     <string name="profileTabFollowers">Seguidores</string>
     <string name="profileTabFollowing">Siguiendo</string>
-    <string name="editSettings">Edit Profile</string>
+    <string name="editSettings">Editar perfil</string>
     <string name="hideActivity">Hide Activity from profile page</string>
-    <string name="hideEmail">Hide Email</string>
-    <string name="profileUpdate">Profile updated</string>
+    <string name="hideEmail">Ocultar correo electrónico</string>
+    <string name="profileUpdate">Perfil actualizado</string>
     <!-- profile section -->
     <!-- account settings -->
     <string name="accountEmails">Correos electrónicos</string>
@@ -305,7 +305,7 @@
     <string name="addSSHKey">Add SSH Key</string>
     <string name="sshKeyStatusReadOnly">Read-only Access</string>
     <string name="sshKeyStatusReadWrite">Read-write Access</string>
-    <string name="sshKey">SSH Key</string>
+    <string name="sshKey">Llave SSH</string>
     <string name="sshKeySuccess">New SSH key added successfully</string>
     <string name="sshKeyError">Invalid SSH key or SSH key already exists</string>
     <!-- account settings -->
@@ -390,7 +390,7 @@
     <string name="newFileRequiredFieldNewBranchName">El nombre de la nueva rama no puede estar vacío si la rama actual no está seleccionada</string>
     <string name="create_branch_empty_fields">Branch name and ref are required</string>
     <string name="branch_ref">Reference (Branch/Commit)</string>
-    <string name="branch_created">Branch created successfully</string>
+    <string name="branch_created">Rama creada exitosamente</string>
     <string name="branch_error_archive_mirror">Cannot create branch: Repository is archived or a mirror</string>
     <string name="branch_error_ref_not_found">Reference does not exist</string>
     <string name="branch_error_exists">Branch %1$s already exists</string>
@@ -459,9 +459,9 @@
     <string name="none">Ninguno</string>
     <string name="main">main</string>
     <string name="license">Licencia</string>
-    <string name="title">Title</string>
-    <string name="description">Description</string>
-    <string name="bioText">Bio</string>
+    <string name="title">Título</string>
+    <string name="description">Descripción</string>
+    <string name="bioText">Biografía</string>
     <string name="pin">Pin</string>
     <string name="unpin">Unpin</string>
     <string name="branch">Branch</string>
@@ -497,6 +497,12 @@
     <string name="idle">Idle</string>
     <string name="value">Value</string>
     <string name="optional">Optional</string>
+    <string name="loading">Loading…</string>
+    <string name="migrations">Migrations</string>
+    <string name="lfs">LFS</string>
+    <string name="mirrors">Mirrors</string>
+    <string name="stars">Stars</string>
+    <string name="template">Template</string>
     <!-- generic copy -->
     <string name="exploreUsers">Explorar usuarios</string>
     <string name="exploreIssues">Explorar incidencias</string>
@@ -836,11 +842,11 @@
     <string name="syncedCommits">synced commits to %1$s at</string>
     <string name="syncedRefs">synced new reference %1$s to</string>
     <string name="syncedDeletedRefs">synced and deleted reference %1$s at</string>
-    <string name="attachment">Attachment</string>
-    <string name="attachments">Attachments</string>
+    <string name="attachment">Adjunto</string>
+    <string name="attachments">Archivos adjuntos</string>
     <string name="attachmentsSaveError">An issue was created but cannot process attachments at this time. Check the server logs for more details.</string>
     <string name="search_matches_found">%1$d matches found</string>
-    <string name="search_no_matches">No matches found</string>
+    <string name="search_no_matches">No se encuentran coincidencias</string>
     <string name="heatmap_contribution">%1$d contributions on %2$s</string>
     <string name="im_mentioned">I\'m mentioned</string>
     <string name="dependencies">Dependencies</string>
@@ -851,6 +857,7 @@
     <string name="dependency_add_failed">Failed to add dependency</string>
     <string name="search_failed">Search failed</string>
     <string name="no_dependency_search_results">No matching results found</string>
+    <string name="time_tracking">Time Tracking</string>
     <string name="tracked_time">Tracked Time</string>
     <string name="no_tracked_time">No time tracked yet</string>
     <string name="total_time">Total: %1$dh %2$dm %3$ds</string>
@@ -882,4 +889,27 @@
     <string name="create_variable_header">Variables will be passed to certain actions and cannot be read otherwise.</string>
     <string name="variable_name_helper">Case-insensitive, alphanumeric characters or underscores only, cannot start with GITEA_ or GITHUB_</string>
     <string name="variable_value_helper">Input any content. Whitespace at the start and end will be omitted.</string>
+    <string name="addTopic">Add Topic</string>
+    <string name="addNewTopic">Add New Topic</string>
+    <string name="topicName">Topic Name</string>
+    <string name="topicAddedSuccessfully">Topic added successfully</string>
+    <string name="topicDeletedSuccessfully">Topic deleted successfully</string>
+    <string name="errorAddingTopic">Error adding topic</string>
+    <string name="errorDeletingTopic">Error deleting topic</string>
+    <string name="errorLoadingTopics">Error loading topics</string>
+    <string name="invalidTopicName">Invalid topic name</string>
+    <string name="http_git">HTTP Git</string>
+    <string name="proxy_auth_title">Reverse Proxy Credentials</string>
+    <string name="proxy_auth_description">If your Gitea/Forgejo is behind a reverse proxy with HTTP Basic Authentication, enter the credentials here.\n\nGitNex sends these in the \'X-Proxy-Auth: Basic …\' header. Administrators needs to configure the proxy to read from this header.</string>
+    <string name="proxy_username_hint">Proxy Username</string>
+    <string name="proxy_password_hint">Proxy Password</string>
+    <string name="setup_proxy_auth">Setup Proxy Authorization</string>
+    <string name="save_proxy_creds">Save Proxy Credentials</string>
+    <string name="skip_proxy_creds">Skip</string>
+    <string name="clear_proxy_creds">Clear Credentials</string>
+    <string name="proxy_creds_saved">Proxy credentials saved</string>
+    <string name="proxy_creds_cleared">Proxy credentials cleared</string>
+    <string name="proxy_creds_required_msg">Please provide both username and password or leave both empty</string>
+    <string name="url_prompt_title">Show URL confirmation dialog</string>
+    <string name="url_prompt_description">Show a confirmation dialog before opening external links in Markdown rendered contents</string>
 </resources>

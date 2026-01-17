@@ -497,6 +497,12 @@
     <string name="idle">Idle</string>
     <string name="value">Arvo</string>
     <string name="optional">Valinnainen</string>
+    <string name="loading">Ladataan…</string>
+    <string name="migrations">Migraatiot</string>
+    <string name="lfs">LFS</string>
+    <string name="mirrors">Peilit</string>
+    <string name="stars">Tähdet</string>
+    <string name="template">Template</string>
     <!-- generic copy -->
     <string name="exploreUsers">Selaa käyttäjiä</string>
     <string name="exploreIssues">Selaa ongelmia</string>
@@ -851,6 +857,7 @@
     <string name="dependency_add_failed">Riippuvuuden lisääminen epäonnistui</string>
     <string name="search_failed">Haku epäonnistui</string>
     <string name="no_dependency_search_results">Ei vastaavia tuloksia</string>
+    <string name="time_tracking">Time Tracking</string>
     <string name="tracked_time">Seurattu aika</string>
     <string name="no_tracked_time">Aikaa ei ole vielä seurattu</string>
     <string name="total_time">Yhteensä: %1$d t %2$d min %3$d s</string>
@@ -882,4 +889,27 @@
     <string name="create_variable_header">Muuttujat välitetään tietyille toiminnoille, eikä niitä voi muussa yhteydessä lukea.</string>
     <string name="variable_name_helper">Ei huomioi kirjainkokoa, vain aakkosnumeerisia merkkejä ja alaviivoja, ei voi alkaa sanoilla GITEA_ tai GITHUB_</string>
     <string name="variable_value_helper">Syötä mitä tahansa sisältöä. Tyhjä tila alussa ja lopussa poistetaan.</string>
+    <string name="addTopic">Add Topic</string>
+    <string name="addNewTopic">Add New Topic</string>
+    <string name="topicName">Topic Name</string>
+    <string name="topicAddedSuccessfully">Topic added successfully</string>
+    <string name="topicDeletedSuccessfully">Topic deleted successfully</string>
+    <string name="errorAddingTopic">Error adding topic</string>
+    <string name="errorDeletingTopic">Error deleting topic</string>
+    <string name="errorLoadingTopics">Error loading topics</string>
+    <string name="invalidTopicName">Invalid topic name</string>
+    <string name="http_git">HTTP Git</string>
+    <string name="proxy_auth_title">Reverse Proxy Credentials</string>
+    <string name="proxy_auth_description">If your Gitea/Forgejo is behind a reverse proxy with HTTP Basic Authentication, enter the credentials here.\n\nGitNex sends these in the \'X-Proxy-Auth: Basic …\' header. Administrators needs to configure the proxy to read from this header.</string>
+    <string name="proxy_username_hint">Proxy Username</string>
+    <string name="proxy_password_hint">Proxy Password</string>
+    <string name="setup_proxy_auth">Setup Proxy Authorization</string>
+    <string name="save_proxy_creds">Save Proxy Credentials</string>
+    <string name="skip_proxy_creds">Skip</string>
+    <string name="clear_proxy_creds">Clear Credentials</string>
+    <string name="proxy_creds_saved">Proxy credentials saved</string>
+    <string name="proxy_creds_cleared">Proxy credentials cleared</string>
+    <string name="proxy_creds_required_msg">Please provide both username and password or leave both empty</string>
+    <string name="url_prompt_title">Show URL confirmation dialog</string>
+    <string name="url_prompt_description">Show a confirmation dialog before opening external links in Markdown rendered contents</string>
 </resources>

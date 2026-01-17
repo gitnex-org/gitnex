@@ -3,13 +3,24 @@
 
      <release version="12.0.0-dev" versioncode="1195">
         <type name="🎉 Features 🎉">
-            <change>Under development</change>
+            <change>HTTP basic authentication (more in README.md)</change>
+            <change>Pinch to zoom in and out of images in issue/PR/comment popups</change>
+            <change>PIN/password as a fallback for biometric authentication</change>
+            <change>URL opening prompt popup (Settings → General)</change>
+            <change>Issue templates for new issues</change>
         </type>
-        <type name="🚀 Improvements 🚀">
-            <change>Under development</change>
+        <type name="v🚀 Improvements 🚀">
+            <change>Zig language support in files and the languages bar</change>
+            <change>Added pagination to labels for the issues filter</change>
+            <change>Improved pinned issues scrolling</change>
+            <change>UI improvements across the app</change>
         </type>
         <type name="🐛 Bug Fixes 🐛">
-            <change>Under development</change>
+            <change>Fixed bottom navigation colors</change>
+            <change>Fixed releases and tags view</change>
+            <change>Fixed topics add button UI</change>
+            <change>Fixed showing 'no data found' for most visited repositories for a split second</change>
+            <change>Fixed comment content formatting in Activities</change>
         </type>
     </release>
 

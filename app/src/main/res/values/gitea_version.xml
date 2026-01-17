@@ -2,6 +2,6 @@
 <resources>
 
     <string name="versionLow" translatable="false">1.24</string>
-    <string name="versionHigh" translatable="false">15.0.0</string>
+    <string name="versionHigh" translatable="false">16.0.0</string>
 
 </resources>

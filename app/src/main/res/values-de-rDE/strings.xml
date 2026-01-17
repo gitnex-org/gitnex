@@ -497,6 +497,12 @@
     <string name="idle">untätig</string>
     <string name="value">Wert</string>
     <string name="optional">Optional</string>
+    <string name="loading">Wird geladen…</string>
+    <string name="migrations">Migrationen</string>
+    <string name="lfs">LFS</string>
+    <string name="mirrors">Mirrors</string>
+    <string name="stars">Favoriten</string>
+    <string name="template">Template</string>
     <!-- generic copy -->
     <string name="exploreUsers">Benutzer erkunden</string>
     <string name="exploreIssues">Issues erkunden</string>
@@ -851,6 +857,7 @@
     <string name="dependency_add_failed">Abhängigkeit kann nicht hinzugefügt werden</string>
     <string name="search_failed">Suche fehlgeschlagen</string>
     <string name="no_dependency_search_results">Keine Übereinstimmungen gefunden</string>
+    <string name="time_tracking">Zeiterfassung</string>
     <string name="tracked_time">Erfasste Zeit</string>
     <string name="no_tracked_time">Noch keine Zeit erfasst</string>
     <string name="total_time">Gesamt:%1$dh %2$dm %3$ds</string>
@@ -882,4 +889,27 @@
     <string name="create_variable_header">Variablen werden an bestimmte Actions übergeben und können nicht anderweitig gelesen werden.</string>
     <string name="variable_name_helper">Groß-/Kleinschreibung wird nicht berücksichtigt, nur alphanumerische Zeichen oder Unterstriche, darf nicht mit GITEA_ oder GITHUB_ beginnen</string>
     <string name="variable_value_helper">Geben Sie beliebige Inhalte ein. Leerzeichen am Anfang und Ende werden weggelassen.</string>
+    <string name="addTopic">Thema hinzfügen</string>
+    <string name="addNewTopic">Neues Thema hinzufügen</string>
+    <string name="topicName">Titel des Themas</string>
+    <string name="topicAddedSuccessfully">Thema erfolgreich hinzugefügt</string>
+    <string name="topicDeletedSuccessfully">Thema erfolgreich gelöscht</string>
+    <string name="errorAddingTopic">Fehler beim Hinzufügen des Themas</string>
+    <string name="errorDeletingTopic">Fehler beim Löschen des Themas</string>
+    <string name="errorLoadingTopics">Fehler beim Laden des Themas</string>
+    <string name="invalidTopicName">Invalid topic name</string>
+    <string name="http_git">HTTP Git</string>
+    <string name="proxy_auth_title">Reverse Proxy Credentials</string>
+    <string name="proxy_auth_description">If your Gitea/Forgejo is behind a reverse proxy with HTTP Basic Authentication, enter the credentials here.\n\nGitNex sends these in the \'X-Proxy-Auth: Basic …\' header. Administrators needs to configure the proxy to read from this header.</string>
+    <string name="proxy_username_hint">Proxy Username</string>
+    <string name="proxy_password_hint">Proxy Password</string>
+    <string name="setup_proxy_auth">Setup Proxy Authorization</string>
+    <string name="save_proxy_creds">Save Proxy Credentials</string>
+    <string name="skip_proxy_creds">Skip</string>
+    <string name="clear_proxy_creds">Clear Credentials</string>
+    <string name="proxy_creds_saved">Proxy credentials saved</string>
+    <string name="proxy_creds_cleared">Proxy credentials cleared</string>
+    <string name="proxy_creds_required_msg">Please provide both username and password or leave both empty</string>
+    <string name="url_prompt_title">Show URL confirmation dialog</string>
+    <string name="url_prompt_description">Show a confirmation dialog before opening external links in Markdown rendered contents</string>
 </resources>

@@ -9,12 +9,12 @@
     <string name="navOrg">Organizzazioni</string>
     <string name="navAbout">Info su</string>
     <string name="navRate">Valuta GitNex</string>
-    <string name="navAdministration">Instance Administration</string>
-    <string name="navMyIssues">My Issues</string>
-    <string name="navMostVisited">Most Visited Repositories</string>
-    <string name="navNotes">Notes</string>
-    <string name="navAccount">Account Settings</string>
-    <string name="navWatchedRepositories">Watched Repositories</string>
+    <string name="navAdministration">Amministrazione istanza</string>
+    <string name="navMyIssues">Le mie segnalazioni</string>
+    <string name="navMostVisited">Repository più visitati</string>
+    <string name="navNotes">Note</string>
+    <string name="navAccount">Impostazioni account</string>
+    <string name="navWatchedRepositories">Repository osservati</string>
     <!-- menu items -->
     <!-- page titles -->
     <string name="pageTitleNewRepo">Nuovo Repository</string>
@@ -31,10 +31,10 @@
     <string name="pageTitleAddEmail">Aggiungi indirizzo e-mail</string>
     <string name="pageTitleNewFile">Nuovo File</string>
     <string name="pageTitleExplore">Esplora</string>
-    <string name="pageTitleAdministration">Administration</string>
+    <string name="pageTitleAdministration">Amministrazione</string>
     <string name="pageTitleNewPullRequest">Nuova Pull Request</string>
     <string name="pageTitleUsers">Utenti</string>
-    <string name="pageTitleAddRepository">Add Repository</string>
+    <string name="pageTitleAddRepository">Aggiungi repository</string>
     <!-- page titles -->
     <string name="repoName">Demo repo</string>
     <string name="repoDescription">Descrizione demo</string>
@@ -46,7 +46,7 @@
     <string name="newRepoPrivateCopy">Privato</string>
     <string name="newRepoOwner">Proprietario</string>
     <string name="newRepoIssueLabels">Issue Labels</string>
-    <string name="setAsTemplate">Make repository a template</string>
+    <string name="setAsTemplate">Rendi il repository un template</string>
     <string name="newOrgTintCopy">Nome Organizzazione</string>
     <string name="newOrgDescTintCopy">Descrizione Organizzazione</string>
     <string name="organizationFullname">%1$s - %2$s</string>
@@ -65,7 +65,7 @@ URL è richiesto</string>
     <string name="emptyFieldUsername">Nome utente obbligatorio</string>
     <string name="emptyFieldPassword">Password obbligatoria</string>
     <string name="protocolEmptyError">Il protocollo è richiesto</string>
-    <string name="instanceHelperText">Enter URL without http or https. Example: codeberg.org</string>
+    <string name="instanceHelperText">Inserisci l\'URL senza http o https. Esempio: codeberg.org</string>
     <string name="checkNetConnection">Errore di connessione. Controllare la connessione Internet</string>
     <string name="repoNameErrorEmpty">Il nome del repository è vuoto</string>
     <string name="repoNameErrorInvalid">Nome del repository non è valido. [a&#8211;z A&#8211;Z 0&#8211;char@@9 &#8211; _]</string>
@@ -75,16 +75,16 @@ URL è richiesto</string>
     <string name="repoCreated">Il repository è stato creato</string>
     <string name="repoExistsError">Il repository di questo nome esiste già sotto il proprietario selezionato</string>
     <string name="repoOwnerError">Seleziona il proprietario per il repository</string>
-    <string name="repoDefaultBranchError">The default branch must not be empty</string>
+    <string name="repoDefaultBranchError">Il branch principale non può essere vuoto</string>
     <string name="orgNameErrorEmpty">Nome organizzazione vuoto</string>
     <string name="orgNameErrorInvalid">Nome organizzazione nono valido, [a&#8211;z A&#8211;Z 0&#8211;char@@9 &#8211; _]</string>
     <string name="orgDescError">La descrizione dell\'organizzazione supera il limite massimo di 255 caratteri</string>
     <string name="orgCreated">Organizzazione creata</string>
     <string name="orgExistsError">Organizzazione esiste già</string>
-    <string name="diffStatistics">%1$s addition(s) and %2$s deletion(s)</string>
+    <string name="diffStatistics">%1$s aggiunto/i e %2$s eliminato/i</string>
     <plurals name="repoStars">
         <item quantity="one">%1$s star</item>
-        <item quantity="other">%1$s stars</item>
+        <item quantity="other">%1$s stelle</item>
     </plurals>
     <plurals name="repoWatchers">
         <item quantity="one">%1$s watcher</item>
@@ -92,11 +92,11 @@ URL è richiesto</string>
     </plurals>
     <plurals name="repoForks">
         <item quantity="one">%1$s fork</item>
-        <item quantity="other">%1$s forks</item>
+        <item quantity="other">%1$s fork</item>
     </plurals>
     <plurals name="repoPullRequests">
-        <item quantity="one">%1$s open pull request</item>
-        <item quantity="other">%1$s open pull requests</item>
+        <item quantity="one">%1$s apri più pull request</item>
+        <item quantity="other">%1$s apri più pull requests</item>
     </plurals>
     <string name="genericApiError">L\'istanza ha restituito un errore. Codice %d</string>
     <string name="tabTextInfo">Dettagli</string>
@@ -105,13 +105,13 @@ URL è richiesto</string>
     <string name="tabTextReleases">Rilasci</string>
     <string name="tabTextCollaborators">Collaboratori</string>
     <string name="tabPullRequests">Pull Requests</string>
-    <string name="pullRequest">Pull Request</string>
+    <string name="pullRequest">Pull request</string>
     <string name="infoTabRepoDefaultBranch">Default branch %1$s</string>
     <string name="infoTabRepoSshUrl">SSH URL</string>
     <string name="infoTabRepoCloneUrl">Clona URL</string>
     <string name="infoTabRepoRepoUrl">URL del Repo</string>
     <string name="infoTabRepoCreatedAt">Creato</string>
-    <string name="infoTabRepoUpdatedAt">Last updated %1$s</string>
+    <string name="infoTabRepoUpdatedAt">Ultimo aggiornamento %1$s</string>
     <string name="infoMoreInformation">Ulteriori Informazioni</string>
     <string name="timeAtText">alle</string>
     <string name="issueMilestone">Milestone %1$s</string>
@@ -499,6 +499,12 @@ autorizzazione</string>
     <string name="idle">Idle</string>
     <string name="value">Value</string>
     <string name="optional">Optional</string>
+    <string name="loading">Loading…</string>
+    <string name="migrations">Migrations</string>
+    <string name="lfs">LFS</string>
+    <string name="mirrors">Mirrors</string>
+    <string name="stars">Stars</string>
+    <string name="template">Template</string>
     <!-- generic copy -->
     <string name="exploreUsers">Esplora utenti</string>
     <string name="exploreIssues">Esplora problemi</string>
@@ -853,6 +859,7 @@ autorizzazione</string>
     <string name="dependency_add_failed">Impossibile aggiungere la dipendenza</string>
     <string name="search_failed">Ricerca non riuscita</string>
     <string name="no_dependency_search_results">Nessun risultato corrispondente trovato</string>
+    <string name="time_tracking">Time Tracking</string>
     <string name="tracked_time">Tempo tracciato</string>
     <string name="no_tracked_time">Nessun tempo tracciato finora</string>
     <string name="total_time">Totale: %1$d o %2$d min %3$d sec</string>
@@ -884,4 +891,27 @@ autorizzazione</string>
     <string name="create_variable_header">Variables will be passed to certain actions and cannot be read otherwise.</string>
     <string name="variable_name_helper">Case-insensitive, alphanumeric characters or underscores only, cannot start with GITEA_ or GITHUB_</string>
     <string name="variable_value_helper">Input any content. Whitespace at the start and end will be omitted.</string>
+    <string name="addTopic">Add Topic</string>
+    <string name="addNewTopic">Add New Topic</string>
+    <string name="topicName">Topic Name</string>
+    <string name="topicAddedSuccessfully">Topic added successfully</string>
+    <string name="topicDeletedSuccessfully">Topic deleted successfully</string>
+    <string name="errorAddingTopic">Error adding topic</string>
+    <string name="errorDeletingTopic">Error deleting topic</string>
+    <string name="errorLoadingTopics">Error loading topics</string>
+    <string name="invalidTopicName">Invalid topic name</string>
+    <string name="http_git">HTTP Git</string>
+    <string name="proxy_auth_title">Reverse Proxy Credentials</string>
+    <string name="proxy_auth_description">If your Gitea/Forgejo is behind a reverse proxy with HTTP Basic Authentication, enter the credentials here.\n\nGitNex sends these in the \'X-Proxy-Auth: Basic …\' header. Administrators needs to configure the proxy to read from this header.</string>
+    <string name="proxy_username_hint">Proxy Username</string>
+    <string name="proxy_password_hint">Proxy Password</string>
+    <string name="setup_proxy_auth">Setup Proxy Authorization</string>
+    <string name="save_proxy_creds">Save Proxy Credentials</string>
+    <string name="skip_proxy_creds">Skip</string>
+    <string name="clear_proxy_creds">Clear Credentials</string>
+    <string name="proxy_creds_saved">Proxy credentials saved</string>
+    <string name="proxy_creds_cleared">Proxy credentials cleared</string>
+    <string name="proxy_creds_required_msg">Please provide both username and password or leave both empty</string>
+    <string name="url_prompt_title">Show URL confirmation dialog</string>
+    <string name="url_prompt_description">Show a confirmation dialog before opening external links in Markdown rendered contents</string>
 </resources>

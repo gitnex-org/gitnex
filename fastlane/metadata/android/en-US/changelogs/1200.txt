@@ -1,0 +1,15 @@
+12.0.0
+
+🎉 Features 🎉
+- HTTP basic authentication (more in README.md)
+- Pinch to zoom in and out of images in issue/PR/comment popups
+- PIN/password as a fallback for biometric authentication
+- URL opening prompt popup (Settings → General)
+- Issue templates for new issues
+
+🚀 Improvements 🚀
+- Zig language support in files and the languages bar
+- Added pagination to labels for the issues filter
+- Improved pinned issues scrolling
+
+https://codeberg.org/gitnex/GitNex/releases
