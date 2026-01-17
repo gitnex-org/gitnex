@@ -800,7 +800,7 @@
     <string name="timelineStatusReopenedPr">%1$s переоткрыл(а) pull request %2$s</string>
     <string name="timelineStatusClosedPr">%1$s закрыл(а) pull request %2$s</string>
     <string name="timelineStatusMergedPr">%1$s переместил(а) pull request %2$s</string>
-    <string name="timelineStatusRefPr"><![CDATA[%1$s сослался(ась) на этот pull request из <font color='%2$d'>%3$s</font> %4$s]]></string>
+    <string name="timelineStatusRefPr"><![CDATA[%1$s сослался(ась) на этот pull request из <font color=\'%2$d\'>%3$s</font> %4$s]]></string>
     <string name="timelineReviewRequest">%1$s запросил проверку у %2$s %3$s</string>
     <string name="timelineChangeTitle">%1$s изменил(а) заголовок с %2$s на %3$s %4$s</string>
     <string name="timelineLocked">%1$s закрыл(а) как %2$s и ограничил(а) обсуждение для участников %3$s</string>
@@ -822,7 +822,7 @@
     <string name="timelineChangeIssueRef">%1$s добавил(а) ссылку %2$s %3$s</string>
     <string name="timelineRefIssue">%1$s сослался(ась) на задачу в %2$s %3$s</string>
     <string name="timelineRefPr">%1$s сослался(ась) на pull request в %2$s %3$s</string>
-    <string name="timelineStatusRefIssue"><![CDATA[%1$s сослался(ась) на эту задачу из <font color='%2$d'>%3$s</font> %4$s]]></string>
+    <string name="timelineStatusRefIssue"><![CDATA[%1$s сослался(ась) на эту задачу из <font color=\'%2$d\'>%3$s</font> %4$s]]></string>
     <string name="timelineReviewLeftComment">%1$s прокомментировал: %2$s %3$s</string>
     <string name="timelinePinned">%1$s закрепил %2$s</string>
     <string name="commitStatuses">Статусы</string>
