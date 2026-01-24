@@ -498,7 +498,7 @@
     <string name="lfs">LFS</string>
     <string name="mirrors">鏡像</string>
     <string name="stars">星標</string>
-    <string name="template">Template</string>
+    <string name="template">模板</string>
     <!-- generic copy -->
     <string name="exploreUsers">探索使用者</string>
     <string name="exploreIssues">探索議題</string>
@@ -894,17 +894,17 @@
     <string name="errorLoadingTopics">載入主題時發生錯誤</string>
     <string name="invalidTopicName">無效的主題名稱</string>
     <string name="http_git">HTTP Git</string>
-    <string name="proxy_auth_title">Reverse Proxy Credentials</string>
-    <string name="proxy_auth_description">If your Gitea/Forgejo is behind a reverse proxy with HTTP Basic Authentication, enter the credentials here.\n\nGitNex sends these in the \'X-Proxy-Auth: Basic …\' header. Administrators needs to configure the proxy to read from this header.</string>
-    <string name="proxy_username_hint">Proxy Username</string>
-    <string name="proxy_password_hint">Proxy Password</string>
-    <string name="setup_proxy_auth">Setup Proxy Authorization</string>
-    <string name="save_proxy_creds">Save Proxy Credentials</string>
-    <string name="skip_proxy_creds">Skip</string>
-    <string name="clear_proxy_creds">Clear Credentials</string>
-    <string name="proxy_creds_saved">Proxy credentials saved</string>
-    <string name="proxy_creds_cleared">Proxy credentials cleared</string>
-    <string name="proxy_creds_required_msg">Please provide both username and password or leave both empty</string>
-    <string name="url_prompt_title">Show URL confirmation dialog</string>
-    <string name="url_prompt_description">Show a confirmation dialog before opening external links in Markdown rendered contents</string>
+    <string name="proxy_auth_title">反向代理憑證</string>
+    <string name="proxy_auth_description">若您的 Gitea/Forgejo 位於具有 HTTP 基本驗證的反向代理之後，請在此輸入憑證。\n\nGitNex 會將其傳送至 \'X-Proxy-Auth: Basic …\' 標頭中。管理員需要設定代理伺服器以讀取此標頭。</string>
+    <string name="proxy_username_hint">代理使用者名稱</string>
+    <string name="proxy_password_hint">代理密碼</string>
+    <string name="setup_proxy_auth">設定代理授權</string>
+    <string name="save_proxy_creds">儲存代理憑證</string>
+    <string name="skip_proxy_creds">略過</string>
+    <string name="clear_proxy_creds">清除憑證</string>
+    <string name="proxy_creds_saved">代理憑證已儲存</string>
+    <string name="proxy_creds_cleared">代理憑證已清除</string>
+    <string name="proxy_creds_required_msg">請提供使用者名稱與密碼，或將兩者皆留空</string>
+    <string name="url_prompt_title">顯示網址確認對話框</string>
+    <string name="url_prompt_description">在 Markdown 渲染內容中開啟外部連結前，顯示確認對話框</string>
 </resources>
