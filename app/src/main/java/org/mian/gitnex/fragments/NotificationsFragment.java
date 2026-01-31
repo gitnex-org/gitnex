@@ -129,14 +129,12 @@ public class NotificationsFragment extends Fragment
 								.enqueue(
 										(SimpleCallback<List<NotificationThread>>)
 												(call, voidResponse) -> {
+													View fragmentRootView = getView();
 													if (voidResponse.isPresent()
 															&& voidResponse.get().isSuccessful()) {
 														SnackBar.success(
 																context,
-																requireActivity()
-																		.findViewById(
-																				android.R.id
-																						.content),
+																fragmentRootView,
 																getString(
 																		R.string
 																				.markedNotificationsAsRead));
@@ -153,12 +151,7 @@ public class NotificationsFragment extends Fragment
 																		"205")) {
 																	SnackBar.success(
 																			context,
-																			requireActivity()
-																					.findViewById(
-																							android
-																									.R
-																									.id
-																									.content),
+																			fragmentRootView,
 																			getString(
 																					R.string
 																							.markedNotificationsAsRead));
@@ -175,12 +168,7 @@ public class NotificationsFragment extends Fragment
 																		() ->
 																				SnackBar.error(
 																						context,
-																						requireActivity()
-																								.findViewById(
-																										android
-																												.R
-																												.id
-																												.content),
+																						fragmentRootView,
 																						getString(
 																								R
 																										.string

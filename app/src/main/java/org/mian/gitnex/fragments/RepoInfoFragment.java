@@ -68,6 +68,7 @@ public class RepoInfoFragment extends Fragment {
 	private LinearLayout pageContent;
 	private FragmentRepoInfoBinding binding;
 	private RepositoryContext repository;
+	boolean isAdmin;
 
 	public RepoInfoFragment() {}
 
@@ -95,6 +96,8 @@ public class RepoInfoFragment extends Fragment {
 		pageContent.setVisibility(View.GONE);
 
 		setRepoInfo(locale);
+
+		isAdmin = repository.getPermissions() != null && repository.getPermissions().isAdmin();
 
 		loadRepoTopics();
 		binding.addTopicChip.setOnClickListener(v -> showAddTopicDialog());
@@ -514,19 +517,37 @@ public class RepoInfoFragment extends Fragment {
 						if (isAdded()) {
 							switch (response.code()) {
 								case 200:
+									List<String> topics = new ArrayList<>();
 									if (response.body() != null
 											&& !response.body().getTopics().isEmpty()) {
+										topics = response.body().getTopics();
+									}
+
+									boolean hasTopics = !topics.isEmpty();
+
+									if (hasTopics || isAdmin) {
 										binding.repoTopicsContainer.setVisibility(View.VISIBLE);
-										displayTopics(response.body().getTopics());
+										displayTopics(topics);
 									} else {
 										binding.repoTopicsContainer.setVisibility(View.GONE);
 									}
 									break;
 								case 401:
 									AlertDialogs.authorizationTokenRevokedDialog(ctx);
+									if (isAdmin) {
+										binding.repoTopicsContainer.setVisibility(View.VISIBLE);
+										displayTopics(new ArrayList<>());
+									} else {
+										binding.repoTopicsContainer.setVisibility(View.GONE);
+									}
 									break;
 								default:
-									binding.repoTopicsContainer.setVisibility(View.GONE);
+									if (isAdmin) {
+										binding.repoTopicsContainer.setVisibility(View.VISIBLE);
+										displayTopics(new ArrayList<>());
+									} else {
+										binding.repoTopicsContainer.setVisibility(View.GONE);
+									}
 									break;
 							}
 						}
@@ -535,8 +556,13 @@ public class RepoInfoFragment extends Fragment {
 					@Override
 					public void onFailure(@NonNull Call<Topics> call, @NonNull Throwable t) {
 						if (isAdded()) {
+							if (isAdmin) {
+								binding.repoTopicsContainer.setVisibility(View.VISIBLE);
+								displayTopics(new ArrayList<>());
+							} else {
+								binding.repoTopicsContainer.setVisibility(View.GONE);
+							}
 							Toasty.error(ctx, ctx.getString(R.string.errorLoadingTopics));
-							binding.repoTopicsContainer.setVisibility(View.GONE);
 						}
 					}
 				});
@@ -573,15 +599,25 @@ public class RepoInfoFragment extends Fragment {
 		plusChip.setStateListAnimator(null);
 		plusChip.setElevation(0f);
 
-		binding.repoTopicsChipGroup.addView(plusChip);
+		if (isAdmin) {
+			binding.repoTopicsChipGroup.addView(plusChip);
+		}
 	}
 
 	private Chip createTopicChip(String topic, int backgroundColor) {
 		Chip chip = new Chip(ctx);
+		chip.setCheckable(false);
+		chip.setClickable(false);
+		chip.setSelected(false);
 		chip.setText(topic);
-		chip.setCloseIconVisible(true);
-		chip.setCloseIconTint(
-				ColorStateList.valueOf(ContextCompat.getColor(ctx, R.color.colorRed)));
+		chip.setCloseIconVisible(isAdmin);
+
+		if (isAdmin) {
+			chip.setCloseIconTint(
+					ColorStateList.valueOf(ContextCompat.getColor(ctx, R.color.colorRed)));
+			chip.setOnCloseIconClickListener(v -> deleteTopic(topic));
+		}
+
 		chip.setChipBackgroundColor(ColorStateList.valueOf(backgroundColor));
 		chip.setTextColor(isLightColor(backgroundColor) ? Color.BLACK : Color.WHITE);
 
@@ -592,8 +628,6 @@ public class RepoInfoFragment extends Fragment {
 										CornerFamily.ROUNDED,
 										getResources().getDimension(R.dimen.dimen8dp))
 								.build());
-
-		chip.setOnCloseIconClickListener(v -> deleteTopic(topic));
 
 		return chip;
 	}

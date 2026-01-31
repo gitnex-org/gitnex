@@ -1073,4 +1073,8 @@
 
     <string name="url_prompt_title">Show URL confirmation dialog</string>
     <string name="url_prompt_description">Show a confirmation dialog before opening external links in Markdown rendered contents</string>
+
+    <string name="gitignore_template">Gitignore Template</string>
+    <string name="no_template">No template</string>
+    <string name="no_license">No license</string>
 </resources>

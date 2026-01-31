@@ -4,6 +4,7 @@ import android.os.Bundle;
 import android.os.Handler;
 import android.os.Looper;
 import android.view.MenuItem;
+import android.view.View;
 import android.widget.ArrayAdapter;
 import androidx.annotation.NonNull;
 import java.util.ArrayList;
@@ -16,6 +17,8 @@ import org.gitnex.tea4j.v2.models.CreateRepoOption;
 import org.gitnex.tea4j.v2.models.Organization;
 import org.gitnex.tea4j.v2.models.Repository;
 import org.mian.gitnex.R;
+import org.mian.gitnex.api.clients.ApiRetrofitClient;
+import org.mian.gitnex.api.models.license.License;
 import org.mian.gitnex.clients.RetrofitClient;
 import org.mian.gitnex.databinding.ActivityCreateRepoBinding;
 import org.mian.gitnex.helpers.AlertDialogs;
@@ -25,21 +28,23 @@ import retrofit2.Call;
 import retrofit2.Callback;
 
 /**
- * @author M M Arif
+ * @author mmarif
  */
 public class CreateRepoActivity extends BaseActivity {
 
-	// https://github.com/go-gitea/gitea/blob/52cfd2743c0e85b36081cf80a850e6a5901f1865/models/repo.go#L964-L967
 	final List<String> reservedRepoNames = Arrays.asList(".", "..");
 	final Pattern reservedRepoPatterns = Pattern.compile("\\.(git|wiki)$");
 	List<String> organizationsList = new ArrayList<>();
 	List<String> issueLabelsList = new ArrayList<>();
-	List<String> licenseList = new ArrayList<>();
+	List<String> licenseDisplayList = new ArrayList<>();
+	List<String> licenseKeyList = new ArrayList<>();
+	List<String> gitignoreList = new ArrayList<>();
 	private ActivityCreateRepoBinding activityCreateRepoBinding;
 	private String loginUid;
 	private String selectedOwner;
 	private String selectedIssueLabels;
 	private String selectedLicense;
+	private String selectedGitignore;
 
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
@@ -59,13 +64,13 @@ public class CreateRepoActivity extends BaseActivity {
 		MenuItem markdown = activityCreateRepoBinding.topAppBar.getMenu().getItem(1);
 		markdown.setVisible(false);
 
-		String[] licenses = getResources().getStringArray(R.array.licenses);
-		Collections.addAll(licenseList, licenses);
 		getLicenses();
 
 		issueLabelsList.add(getString(R.string.advanced));
 		issueLabelsList.add(getString(R.string.defaultText));
 		getIssueLabels();
+
+		getGitignoreTemplates();
 
 		activityCreateRepoBinding.topAppBar.setOnMenuItemClickListener(
 				menuItem -> {
@@ -170,6 +175,10 @@ public class CreateRepoActivity extends BaseActivity {
 		createRepository.setTemplate(repoAsTemplate);
 		createRepository.setLicense(selectedLicense);
 
+		if (selectedGitignore != null && !selectedGitignore.isEmpty()) {
+			createRepository.setGitignores(selectedGitignore);
+		}
+
 		Call<Repository> call;
 		if (selectedOwner.equals(loginUid)) {
 
@@ -237,15 +246,127 @@ public class CreateRepoActivity extends BaseActivity {
 	}
 
 	private void getLicenses() {
+		Call<List<License>> call = ApiRetrofitClient.getInstance(ctx).getLicenses();
 
+		call.enqueue(
+				new Callback<>() {
+					@Override
+					public void onResponse(
+							@NonNull Call<List<License>> call,
+							@NonNull retrofit2.Response<List<License>> response) {
+
+						if (response.isSuccessful() && response.body() != null) {
+							List<License> licenses = response.body();
+							if (!licenses.isEmpty()) {
+								licenseDisplayList.clear();
+								licenseKeyList.clear();
+
+								licenseDisplayList.add(getString(R.string.no_license));
+								licenseKeyList.add("");
+
+								for (License license : licenses) {
+									licenseDisplayList.add(license.getName());
+									licenseKeyList.add(license.getKey());
+								}
+
+								setupLicenseDropdown();
+							} else {
+								hideLicenseDropdown();
+							}
+						} else {
+							hideLicenseDropdown();
+						}
+					}
+
+					@Override
+					public void onFailure(@NonNull Call<List<License>> call, @NonNull Throwable t) {
+						hideLicenseDropdown();
+					}
+				});
+	}
+
+	private void setupLicenseDropdown() {
 		ArrayAdapter<String> adapter =
 				new ArrayAdapter<>(
-						CreateRepoActivity.this, R.layout.list_spinner_items, licenseList);
+						CreateRepoActivity.this, R.layout.list_spinner_items, licenseDisplayList);
 
 		activityCreateRepoBinding.licenses.setAdapter(adapter);
 
 		activityCreateRepoBinding.licenses.setOnItemClickListener(
-				(parent, view, position, id) -> selectedLicense = licenseList.get(position));
+				(parent, view, position, id) -> {
+					if (position == 0) {
+						selectedLicense = null;
+					} else {
+						selectedLicense = licenseKeyList.get(position);
+					}
+				});
+
+		activityCreateRepoBinding.licenses.setText(licenseDisplayList.get(0), false);
+		selectedLicense = null;
+	}
+
+	private void hideLicenseDropdown() {
+		activityCreateRepoBinding.licenseFrame.setVisibility(View.GONE);
+		selectedLicense = null;
+	}
+
+	private void getGitignoreTemplates() {
+		Call<List<String>> call = ApiRetrofitClient.getInstance(ctx).getGitignoreTemplates();
+
+		call.enqueue(
+				new Callback<>() {
+					@Override
+					public void onResponse(
+							@NonNull Call<List<String>> call,
+							@NonNull retrofit2.Response<List<String>> response) {
+
+						if (response.isSuccessful() && response.body() != null) {
+							List<String> templates = response.body();
+							if (!templates.isEmpty()) {
+								Collections.sort(templates);
+								gitignoreList.addAll(templates);
+
+								gitignoreList.add(0, getString(R.string.no_template));
+
+								setupGitignoreDropdown();
+							} else {
+								hideGitignoreDropdown();
+							}
+						} else {
+							hideGitignoreDropdown();
+						}
+					}
+
+					@Override
+					public void onFailure(@NonNull Call<List<String>> call, @NonNull Throwable t) {
+						hideGitignoreDropdown();
+					}
+				});
+	}
+
+	private void setupGitignoreDropdown() {
+		ArrayAdapter<String> adapter =
+				new ArrayAdapter<>(
+						CreateRepoActivity.this, R.layout.list_spinner_items, gitignoreList);
+
+		activityCreateRepoBinding.gitignoreTemplates.setAdapter(adapter);
+
+		activityCreateRepoBinding.gitignoreTemplates.setOnItemClickListener(
+				(parent, view, position, id) -> {
+					if (position == 0) {
+						selectedGitignore = null;
+					} else {
+						selectedGitignore = gitignoreList.get(position);
+					}
+				});
+
+		activityCreateRepoBinding.gitignoreTemplates.setText(gitignoreList.get(0), false);
+		selectedGitignore = null;
+	}
+
+	private void hideGitignoreDropdown() {
+		activityCreateRepoBinding.gitignoreFrame.setVisibility(View.GONE);
+		selectedGitignore = null;
 	}
 
 	private void getOrganizations(final String userLogin) {

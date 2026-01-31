@@ -100,7 +100,6 @@
                         android:layout_height="wrap_content"
                         android:orientation="vertical"
                         android:visibility="gone"
-                        android:layout_marginBottom="@dimen/dimen16dp"
                         android:clipChildren="false"
                         android:clipToPadding="false">
 
@@ -144,6 +143,7 @@
                         app:cardCornerRadius="@dimen/dimen16dp"
                         app:cardElevation="@dimen/dimen0dp"
                         app:strokeWidth="@dimen/dimen0dp"
+                        android:layout_marginTop="@dimen/dimen16dp"
                         android:visibility="gone"
                         app:cardBackgroundColor="@android:color/transparent">
 
