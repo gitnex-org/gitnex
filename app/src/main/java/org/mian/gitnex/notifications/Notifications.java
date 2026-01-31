@@ -67,6 +67,27 @@ public class Notifications {
 		WorkManager.getInstance(context).cancelAllWorkByTag(Constants.notificationsWorkerId);
 	}
 
+	public static void startBadgeWorker(Context context) {
+		Constraints constraints =
+				new Constraints.Builder().setRequiredNetworkType(NetworkType.CONNECTED).build();
+
+		PeriodicWorkRequest badgeWorkRequest =
+				new PeriodicWorkRequest.Builder(
+								NotificationsBadgeWorker.class, 15, TimeUnit.MINUTES)
+						.setConstraints(constraints)
+						.build();
+
+		WorkManager.getInstance(context)
+				.enqueueUniquePeriodicWork(
+						"notification_badge_updates",
+						ExistingPeriodicWorkPolicy.KEEP,
+						badgeWorkRequest);
+	}
+
+	public static void stopBadgeWorker(Context context) {
+		WorkManager.getInstance(context).cancelUniqueWork("notification_badge_updates");
+	}
+
 	public static void startWorker(Context context) {
 
 		int delay;

@@ -16,6 +16,8 @@ import androidx.navigation.NavController;
 import androidx.navigation.NavOptions;
 import androidx.navigation.fragment.NavHostFragment;
 import androidx.navigation.ui.NavigationUI;
+import androidx.work.OneTimeWorkRequest;
+import androidx.work.WorkManager;
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.load.engine.DiskCacheStrategy;
 import com.google.android.material.badge.BadgeDrawable;
@@ -44,6 +46,9 @@ import org.mian.gitnex.helpers.AppUtil;
 import org.mian.gitnex.helpers.ChangeLog;
 import org.mian.gitnex.helpers.TinyDB;
 import org.mian.gitnex.helpers.Toasty;
+import org.mian.gitnex.notifications.Notifications;
+import org.mian.gitnex.notifications.NotificationsBadge;
+import org.mian.gitnex.notifications.NotificationsBadgeWorker;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
@@ -54,7 +59,7 @@ import retrofit2.Response;
 public class MainActivity extends BaseActivity
 		implements NotificationsFragment.NotificationCountListener {
 
-	private ActivityMainBinding binding;
+	public ActivityMainBinding binding;
 	private TinyDB tinyDB;
 	private NavController navController;
 	private boolean noConnection;
@@ -110,6 +115,13 @@ public class MainActivity extends BaseActivity
 				String inferredProvider = AppUtil.inferProvider(currentAccount.getServerVersion());
 				userAccountsApi.updateProvider(inferredProvider, currentAccountId);
 			}
+		}
+
+		loadSavedBadgeCount();
+		if (Boolean.parseBoolean(
+				AppDatabaseSettings.getSettingsValue(
+						this, AppDatabaseSettings.APP_NOTIFICATIONS_KEY))) {
+			Notifications.startBadgeWorker(this);
 		}
 
 		setSupportActionBar(binding.toolbar);
@@ -277,6 +289,17 @@ public class MainActivity extends BaseActivity
 					});
 			DetailFragment.refProfile = false;
 		}
+
+		getNotificationsCount();
+		loadSavedBadgeCount();
+		WorkManager.getInstance(this)
+				.enqueue(new OneTimeWorkRequest.Builder(NotificationsBadgeWorker.class).build());
+	}
+
+	@Override
+	protected void onDestroy() {
+		super.onDestroy();
+		Notifications.stopBadgeWorker(this);
 	}
 
 	@SuppressLint("NotifyDataSetChanged")
@@ -498,7 +521,7 @@ public class MainActivity extends BaseActivity
 					navController.navigate(R.id.repositoriesFragment, null, navOptions);
 					break;
 				case "org":
-					navController.navigate(R.id.action_to_organizations, null, navOptions);
+					navController.navigate(R.id.organizationsFragment, null, navOptions);
 					break;
 				case "notification":
 					binding.toolbarTitle.setText(
@@ -514,7 +537,7 @@ public class MainActivity extends BaseActivity
 					startActivity(intentProfile);
 					break;
 				case "admin":
-					navController.navigate(R.id.action_to_administration, null, navOptions);
+					navController.navigate(R.id.administrationFragment, null, navOptions);
 					break;
 			}
 			return;
@@ -538,27 +561,35 @@ public class MainActivity extends BaseActivity
 	}
 
 	private void navigateToDefaultFragment() {
+		int homeScreenValue;
+		try {
+			homeScreenValue =
+					Integer.parseInt(
+							AppDatabaseSettings.getSettingsValue(
+									this, AppDatabaseSettings.APP_HOME_SCREEN_KEY));
+		} catch (NumberFormatException e) {
+			homeScreenValue = 0;
+		}
+
 		NavOptions navOptions =
 				new NavOptions.Builder()
-						.setPopUpTo(R.id.nav_graph, true)
+						.setPopUpTo(navController.getGraph().getId(), true)
 						.setLaunchSingleTop(true)
 						.build();
 
-		switch (Integer.parseInt(
-				AppDatabaseSettings.getSettingsValue(
-						this, AppDatabaseSettings.APP_HOME_SCREEN_KEY))) {
+		switch (homeScreenValue) {
 			case 1:
 				binding.toolbarTitle.setText(getResources().getString(R.string.navMyRepos));
-				navController.navigate(R.id.nav_graph, null, navOptions);
+				navController.navigate(R.id.myRepositoriesFragment, null, navOptions);
 				break;
 			case 2:
 				binding.toolbarTitle.setText(
 						getResources().getString(R.string.pageTitleStarredRepos));
-				navController.navigate(R.id.action_to_starredRepositories, null, navOptions);
+				navController.navigate(R.id.starredRepositoriesFragment, null, navOptions);
 				break;
 			case 3:
 				binding.toolbarTitle.setText(getResources().getString(R.string.navOrg));
-				navController.navigate(R.id.action_to_organizations, null, navOptions);
+				navController.navigate(R.id.organizationsFragment, null, navOptions);
 				break;
 			case 4:
 				binding.toolbarTitle.setText(getResources().getString(R.string.navRepos));
@@ -575,15 +606,15 @@ public class MainActivity extends BaseActivity
 				break;
 			case 7:
 				binding.toolbarTitle.setText(getResources().getString(R.string.navMyIssues));
-				navController.navigate(R.id.action_to_myIssues, null, navOptions);
+				navController.navigate(R.id.myIssuesFragment, null, navOptions);
 				break;
 			case 8:
 				binding.toolbarTitle.setText(getResources().getString(R.string.navMostVisited));
-				navController.navigate(R.id.action_to_mostVisitedRepos, null, navOptions);
+				navController.navigate(R.id.mostVisitedReposFragment, null, navOptions);
 				break;
 			case 9:
 				binding.toolbarTitle.setText(getResources().getString(R.string.navNotes));
-				navController.navigate(R.id.action_to_notes, null, navOptions);
+				navController.navigate(R.id.notesFragment, null, navOptions);
 				break;
 			case 10:
 				binding.toolbarTitle.setText(getResources().getString(R.string.activities));
@@ -592,12 +623,43 @@ public class MainActivity extends BaseActivity
 			case 11:
 				binding.toolbarTitle.setText(
 						getResources().getString(R.string.navWatchedRepositories));
-				navController.navigate(R.id.action_to_watchedRepositories, null, navOptions);
+				navController.navigate(R.id.watchedRepositoriesFragment, null, navOptions);
 				break;
 			default:
 				navController.navigate(R.id.homeDashboardFragment, null, navOptions);
 				break;
 		}
+	}
+
+	private void loadSavedBadgeCount() {
+		TinyDB tinyDB = TinyDB.getInstance(this);
+		int currentAccountId = tinyDB.getInt("currentActiveAccountId", -1);
+
+		if (currentAccountId > 0) {
+			int savedCount = NotificationsBadge.getBadgeCount(this, currentAccountId);
+			if (savedCount > 0) {
+				updateBadgeUI(savedCount);
+			}
+		}
+	}
+
+	private void updateBadgeUI(int count) {
+		runOnUiThread(
+				() -> {
+					if (count > 0) {
+						BadgeDrawable badge =
+								binding.bottomNavigation.getOrCreateBadge(
+										R.id.notificationsFragment);
+						badge.setNumber(count);
+						badge.setBackgroundColor(getThemeColor(R.attr.primaryTextColor));
+						badge.setBadgeTextColor(getThemeColor(R.attr.materialCardBackgroundColor));
+						badge.setVisible(true);
+					} else {
+						if (binding.bottomNavigation.getBadge(R.id.notificationsFragment) != null) {
+							binding.bottomNavigation.removeBadge(R.id.notificationsFragment);
+						}
+					}
+				});
 	}
 
 	public void getNotificationsCount() {
@@ -608,29 +670,31 @@ public class MainActivity extends BaseActivity
 					public void onResponse(
 							@NonNull Call<NotificationCount> call,
 							@NonNull Response<NotificationCount> response) {
-						NotificationCount notificationCount = response.body();
-						if (response.code() == 200
-								&& notificationCount != null
-								&& notificationCount.getNew() > 0) {
-							BadgeDrawable badge =
-									binding.bottomNavigation.getOrCreateBadge(
-											R.id.notificationsFragment);
-							badge.setNumber(Math.toIntExact(notificationCount.getNew()));
-							badge.setBackgroundColor(getThemeColor(R.attr.primaryTextColor));
-							badge.setBadgeTextColor(
-									getThemeColor(R.attr.materialCardBackgroundColor));
+						if (response.code() == 200 && response.body() != null) {
+							int newCount = Math.toIntExact(response.body().getNew());
+
+							TinyDB tinyDB = TinyDB.getInstance(MainActivity.this);
+							int accountId = tinyDB.getInt("currentActiveAccountId", -1);
+							if (accountId > 0) {
+								NotificationsBadge.saveBadgeCount(
+										MainActivity.this, accountId, newCount);
+							}
+
+							updateBadgeUI(newCount);
 						} else {
-							binding.bottomNavigation.removeBadge(R.id.notificationsFragment);
+							updateBadgeUI(0);
 						}
 					}
 
 					@Override
 					public void onFailure(
-							@NonNull Call<NotificationCount> call, @NonNull Throwable t) {}
+							@NonNull Call<NotificationCount> call, @NonNull Throwable t) {
+						loadSavedBadgeCount();
+					}
 				});
 	}
 
-	private int getThemeColor(int attr) {
+	public int getThemeColor(int attr) {
 		TypedValue typedValue = new TypedValue();
 		getTheme().resolveAttribute(attr, typedValue, true);
 		return typedValue.data;

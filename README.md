@@ -81,6 +81,10 @@ JSON Configuration:
 GitNex from version **12.0.0** supports HTTP Basic Authentication for servers behind reverse proxies (nginx, Apache).  
 [Read the Wiki](https://codeberg.org/gitnex/GitNex/wiki/HTTP-Basic-Auth-for-Reverse-Proxies)
 
+## Self-signed certificates
+
+GitNex supports self-signed certificates. You can read more [here](https://codeberg.org/gitnex/GitNex/wiki/FAQ#does-gitnex-support-self-signed-certificates).
+
 ## Links
 
 - [Website](https://gitnex.com)
