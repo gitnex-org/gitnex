@@ -2,6 +2,7 @@ package org.mian.gitnex.api.clients;
 
 import java.util.List;
 import org.mian.gitnex.api.models.contents.RepoGetContentsList;
+import org.mian.gitnex.api.models.license.License;
 import org.mian.gitnex.api.models.settings.RepositoryGlobal;
 import org.mian.gitnex.api.models.topics.Topics;
 import retrofit2.Call;
@@ -44,4 +45,10 @@ public interface ApiInterface {
 
 	@GET("settings/repository") // get repository global settings
 	Call<RepositoryGlobal> getRepositoryGlobalSettings();
+
+	@GET("gitignore/templates") // get all gitignore templates
+	Call<List<String>> getGitignoreTemplates();
+
+	@GET("licenses") // get all licenses
+	Call<List<License>> getLicenses();
 }
