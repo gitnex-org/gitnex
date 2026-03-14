@@ -33,7 +33,21 @@ public class AdminGetUsersViewModel extends ViewModel {
 	public void loadUsersList(int page, int resultLimit, Context ctx) {
 
 		Call<List<User>> call =
-				RetrofitClient.getApiInterface(ctx).adminSearchUsers(null, null, page, resultLimit);
+				RetrofitClient.getApiInterface(ctx)
+						.adminSearchUsers(
+								null,
+								null,
+								page,
+								resultLimit,
+								null,
+								null,
+								null,
+								null,
+								null,
+								null,
+								null,
+								null,
+								null);
 
 		call.enqueue(
 				new Callback<>() {
@@ -61,7 +75,21 @@ public class AdminGetUsersViewModel extends ViewModel {
 			int page, int resultLimit, Context ctx, AdminGetUsersAdapter adapter) {
 
 		Call<List<User>> call =
-				RetrofitClient.getApiInterface(ctx).adminSearchUsers(null, null, page, resultLimit);
+				RetrofitClient.getApiInterface(ctx)
+						.adminSearchUsers(
+								null,
+								null,
+								page,
+								resultLimit,
+								null,
+								null,
+								null,
+								null,
+								null,
+								null,
+								null,
+								null,
+								null);
 
 		call.enqueue(
 				new Callback<>() {

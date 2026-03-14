@@ -32,6 +32,7 @@
     <string name="cacheSize2" translatable="false">1 GB</string>
     <string name="cacheSize3" translatable="false">2 GB</string>
     <string name="na" translatable="false">N/A</string>
+    <string name="default_branch_name" translatable="false">main</string>
 
     <!-- menu items -->
     <string name="navMyRepos">My Repositories</string>
@@ -73,12 +74,9 @@
 
     <string name="repoName">Demo repo</string>
     <string name="repoDescription">Demo description</string>
-
     <string name="orgName">Demo organization</string>
-
     <string name="newCreateButtonCopy">Create</string>
     <string name="newUpdateButtonCopy">Update</string>
-
     <string name="newRepoTintCopy">Repository Name</string>
     <string name="newRepoDescTintCopy">Repository Description</string>
     <string name="newRepoPrivateCopy">Private</string>
@@ -87,7 +85,6 @@
     <string name="advanced" translatable="false">Advanced</string>
     <string name="defaultText" translatable="false">Default</string>
     <string name="setAsTemplate">Make repository a template</string>
-
     <string name="newOrgTintCopy">Organization Name</string>
     <string name="newOrgDescTintCopy">Organization Description</string>
     <string name="organizationFullname">%1$s - %2$s</string>
@@ -950,7 +947,7 @@
     <string name="timelineBranchDeleted">%1$s deleted branch %2$s %3$s</string>
     <string name="timelineTimeTrackingStart">%1$s started working %2$s</string>
     <string name="timelineTimeTrackingStop">%1$s stopped time tracking %2$s</string>
-    <string name="timelineTimeTrackingCancel">%1$s cancelled time tracking %2$s</string>
+    <string name="timelineTimeTrackingCancel">%1$s canceled time tracking %2$s</string>
     <string name="timelineTimeTrackingAddManualTime">%1$s added spent time %2$s %3$s</string>
     <string name="timelineTimeTrackingDeleteManualTime">%1$s deleted spent time %2$s %3$s</string>
     <string name="timelineChangeIssueRef">%1$s added reference %2$s %3$s</string>

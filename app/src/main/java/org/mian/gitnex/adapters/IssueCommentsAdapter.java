@@ -14,6 +14,7 @@ import android.graphics.Typeface;
 import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.os.Handler;
+import android.os.Looper;
 import android.text.Spannable;
 import android.text.SpannableString;
 import android.text.style.ImageSpan;
@@ -22,7 +23,6 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.EditText;
-import android.widget.FrameLayout;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
@@ -101,74 +101,13 @@ public class IssueCommentsAdapter extends RecyclerView.Adapter<RecyclerView.View
 			List<TimelineComment> issuesCommentsMain,
 			Runnable onInteractedListener,
 			IssueContext issue) {
-
 		this.context = ctx;
 		this.bundle = bundle;
 		this.issuesComments = issuesCommentsMain;
 		this.onInteractedListener = onInteractedListener;
-		tinyDB = TinyDB.getInstance(ctx);
-		locale = ctx.getResources().getConfiguration().getLocales().get(0);
+		this.tinyDB = TinyDB.getInstance(ctx);
+		this.locale = ctx.getResources().getConfiguration().getLocales().get(0);
 		this.issue = issue;
-	}
-
-	private void updateAdapter(int position) {
-
-		issuesComments.remove(position);
-		notifyItemRemoved(position);
-		notifyItemRangeChanged(position, issuesComments.size());
-	}
-
-	private void deleteIssueComment(final Context ctx, final int commentId, int position) {
-
-		Call<Void> call =
-				RetrofitClient.getApiInterface(ctx)
-						.issueDeleteComment(
-								issue.getRepository().getOwner(),
-								issue.getRepository().getName(),
-								(long) commentId);
-
-		call.enqueue(
-				new Callback<>() {
-
-					@Override
-					public void onResponse(
-							@NonNull Call<Void> call, @NonNull retrofit2.Response<Void> response) {
-
-						switch (response.code()) {
-							case 204:
-								updateAdapter(position);
-								Toasty.success(
-										ctx,
-										ctx.getResources()
-												.getString(R.string.deleteCommentSuccess));
-								IssuesFragment.resumeIssues = true;
-								break;
-
-							case 401:
-								AlertDialogs.authorizationTokenRevokedDialog(ctx);
-								break;
-
-							case 403:
-								Toasty.error(ctx, ctx.getString(R.string.authorizeError));
-								break;
-
-							case 404:
-								Toasty.warning(ctx, ctx.getString(R.string.apiNotFound));
-								break;
-
-							default:
-								Toasty.error(ctx, ctx.getString(R.string.genericError));
-						}
-					}
-
-					@Override
-					public void onFailure(@NonNull Call<Void> call, @NonNull Throwable t) {
-
-						Toasty.error(
-								ctx,
-								ctx.getResources().getString(R.string.genericServerResponseError));
-					}
-				});
 	}
 
 	@NonNull @Override
@@ -180,6 +119,12 @@ public class IssueCommentsAdapter extends RecyclerView.Adapter<RecyclerView.View
 
 	@Override
 	public void onBindViewHolder(@NonNull RecyclerView.ViewHolder holder, int position) {
+		checkLoadMore(position);
+		((IssueCommentsAdapter.IssueCommentViewHolder) holder)
+				.bindData(issuesComments.get(position));
+	}
+
+	private void checkLoadMore(int position) {
 		if (position >= getItemCount() - 1
 				&& isMoreDataAvailable
 				&& !isLoading
@@ -187,9 +132,6 @@ public class IssueCommentsAdapter extends RecyclerView.Adapter<RecyclerView.View
 			isLoading = true;
 			loadMoreListener.onLoadMore();
 		}
-
-		((IssueCommentsAdapter.IssueCommentViewHolder) holder)
-				.bindData(issuesComments.get(position));
 	}
 
 	public void notifyDataChanged() {
@@ -224,8 +166,15 @@ public class IssueCommentsAdapter extends RecyclerView.Adapter<RecyclerView.View
 		return issuesComments.size();
 	}
 
-	public interface OnLoadMoreListener {
+	@Override
+	public void onViewRecycled(@NonNull RecyclerView.ViewHolder holder) {
+		super.onViewRecycled(holder);
+		if (holder instanceof IssueCommentViewHolder) {
+			((IssueCommentViewHolder) holder).clearGlideRequests();
+		}
+	}
 
+	public interface OnLoadMoreListener {
 		void onLoadMore();
 
 		void onLoadFinished();
@@ -233,219 +182,42 @@ public class IssueCommentsAdapter extends RecyclerView.Adapter<RecyclerView.View
 
 	class IssueCommentViewHolder extends RecyclerView.ViewHolder {
 
-		private final ImageView avatar;
-		private final TextView author;
-		private final TextView information;
-		private final RecyclerView comment;
-		private final LinearLayout commentReactionBadges;
-		private final MaterialCardView commentView;
-		private final RelativeLayout timelineView;
-		private final LinearLayout timelineData;
-		private final ImageView timelineIcon;
+		private ImageView avatar;
+		private TextView author;
+		private TextView information;
+		private RecyclerView comment;
+		private LinearLayout commentReactionBadges;
+		private MaterialCardView commentView;
+		private RelativeLayout timelineView;
+		private LinearLayout timelineData;
+		private ImageView timelineIcon;
+		private final List<Target<?>> glideTargets = new ArrayList<>();
+
 		private String userLoginId;
 		private TimelineComment issueComment;
-		private final LinearLayout timelineDividerView;
-		private final FrameLayout timelineLine2;
-		private final List<Target<?>> glideTargets = new ArrayList<>();
 		private boolean isAttachedToWindow = false;
 
 		private IssueCommentViewHolder(View view) {
-
 			super(view);
+			initializeViews(view);
+			setupAvatarClickListener();
+			scheduleAttachmentLoading();
+			setupMenuClickListener(view);
+		}
 
+		private void initializeViews(View view) {
 			avatar = view.findViewById(R.id.avatar);
 			author = view.findViewById(R.id.author);
 			information = view.findViewById(R.id.information);
-			ImageView menu = view.findViewById(R.id.menu);
 			comment = view.findViewById(R.id.comment);
 			commentReactionBadges = view.findViewById(R.id.commentReactionBadges);
-
 			commentView = view.findViewById(R.id.comment_view);
-
 			timelineView = view.findViewById(R.id.timeline_view);
 			timelineData = view.findViewById(R.id.timeline_data);
 			timelineIcon = view.findViewById(R.id.timeline_icon);
-			timelineDividerView = view.findViewById(R.id.timeline_divider_view);
-			timelineLine2 = view.findViewById(R.id.timeline_line_2);
+		}
 
-			String token = ((BaseActivity) context).getAccount().getAccount().getToken();
-
-			Handler handler = new Handler();
-
-			handler.postDelayed(
-					() -> {
-						if (issueComment != null) {
-							getAttachments(issueComment.getId(), view, token, this);
-						}
-					},
-					250);
-
-			menu.setOnClickListener(
-					v -> {
-						final String loginUid =
-								((BaseActivity) context).getAccount().getAccount().getUserName();
-
-						@SuppressLint("InflateParams")
-						View vw =
-								LayoutInflater.from(context)
-										.inflate(R.layout.bottom_sheet_issue_comments, null);
-
-						TextView commentMenuEdit = vw.findViewById(R.id.commentMenuEdit);
-						TextView commentShare = vw.findViewById(R.id.issueCommentShare);
-						TextView commentMenuQuote = vw.findViewById(R.id.commentMenuQuote);
-						TextView commentMenuCopy = vw.findViewById(R.id.commentMenuCopy);
-						TextView commentMenuDelete = vw.findViewById(R.id.commentMenuDelete);
-						TextView issueCommentCopyUrl = vw.findViewById(R.id.issueCommentCopyUrl);
-						TextView open = vw.findViewById(R.id.open);
-						LinearLayout linearLayout = vw.findViewById(R.id.commentReactionButtons);
-
-						if (issue.getRepository().getRepository().isArchived()) {
-							commentMenuEdit.setVisibility(View.GONE);
-							commentMenuDelete.setVisibility(View.GONE);
-							commentMenuQuote.setVisibility(View.GONE);
-							linearLayout.setVisibility(View.GONE);
-						}
-
-						if (!loginUid.contentEquals(issueComment.getUser().getLogin())
-								&& !issue.getRepository().getPermissions().isPush()) {
-							commentMenuEdit.setVisibility(View.GONE);
-							commentMenuDelete.setVisibility(View.GONE);
-						}
-
-						if (issueComment.getBody().isEmpty()) {
-							commentMenuCopy.setVisibility(View.GONE);
-						}
-
-						BottomSheetDialog dialog = new BottomSheetDialog(context);
-						dialog.setContentView(vw);
-						dialog.show();
-
-						TextView loadReactions = new TextView(context);
-						loadReactions.setText(context.getString(R.string.genericWaitFor));
-						loadReactions.setGravity(Gravity.CENTER);
-						loadReactions.setLayoutParams(
-								new ViewGroup.LayoutParams(
-										ViewGroup.LayoutParams.MATCH_PARENT, 160));
-						linearLayout.addView(loadReactions);
-
-						Bundle bundle1 = new Bundle();
-						bundle1.putAll(bundle);
-						bundle1.putInt("commentId", Math.toIntExact(issueComment.getId()));
-
-						ReactionSpinner reactionSpinner = new ReactionSpinner(context, bundle1);
-						reactionSpinner.setOnInteractedListener(
-								() -> {
-									onInteractedListener.run();
-									dialog.dismiss();
-								});
-
-						reactionSpinner.setOnLoadingFinishedListener(
-								() -> {
-									linearLayout.removeView(loadReactions);
-									reactionSpinner.setLayoutParams(
-											new ViewGroup.LayoutParams(
-													ViewGroup.LayoutParams.MATCH_PARENT, 160));
-									linearLayout.addView(reactionSpinner);
-								});
-
-						commentMenuEdit.setOnClickListener(
-								v1 -> {
-									IssueDetailActivity parentActivity =
-											(IssueDetailActivity) context;
-									EditText text = parentActivity.findViewById(R.id.comment_reply);
-									text.append(issueComment.getBody());
-
-									tinyDB.putString("commentAction", "edit");
-									tinyDB.putInt(
-											"commentId", Math.toIntExact(issueComment.getId()));
-
-									dialog.dismiss();
-								});
-
-						commentShare.setOnClickListener(
-								v1 -> {
-									AppUtil.sharingIntent(context, issueComment.getHtmlUrl());
-									dialog.dismiss();
-								});
-
-						issueCommentCopyUrl.setOnClickListener(
-								v1 -> {
-									AppUtil.copyToClipboard(
-											context,
-											issueComment.getHtmlUrl(),
-											context.getString(R.string.copyIssueUrlToastMsg));
-									dialog.dismiss();
-								});
-
-						open.setOnClickListener(
-								v1 -> {
-									AppUtil.openUrlInBrowser(context, issueComment.getHtmlUrl());
-									dialog.dismiss();
-								});
-
-						commentMenuQuote.setOnClickListener(
-								v1 -> {
-									StringBuilder stringBuilder = new StringBuilder();
-									String commenterName = issueComment.getUser().getLogin();
-
-									if (!commenterName.equals(
-											((BaseActivity) context)
-													.getAccount()
-													.getAccount()
-													.getUserName())) {
-										stringBuilder
-												.append("@")
-												.append(commenterName)
-												.append("\n\n");
-									}
-
-									String[] lines = issueComment.getBody().split("\\R");
-
-									for (String line : lines) {
-										stringBuilder.append(">").append(line).append("\n");
-									}
-
-									String comment = String.valueOf(stringBuilder.append("\n"));
-
-									IssueDetailActivity parentActivity =
-											(IssueDetailActivity) context;
-									EditText text = parentActivity.findViewById(R.id.comment_reply);
-									text.setText(comment);
-
-									dialog.dismiss();
-								});
-
-						commentMenuCopy.setOnClickListener(
-								v1 -> {
-									ClipboardManager clipboard =
-											(ClipboardManager)
-													Objects.requireNonNull(context)
-															.getSystemService(
-																	Context.CLIPBOARD_SERVICE);
-									assert clipboard != null;
-
-									ClipData clip =
-											ClipData.newPlainText(
-													"Comment on issue #" + issue.getIssueIndex(),
-													issueComment.getBody());
-									clipboard.setPrimaryClip(clip);
-
-									dialog.dismiss();
-									Toasty.success(
-											context,
-											context.getString(R.string.copyIssueCommentToastMsg));
-								});
-
-						commentMenuDelete.setOnClickListener(
-								v1 -> {
-									deleteIssueComment(
-											context,
-											Math.toIntExact(issueComment.getId()),
-											getBindingAdapterPosition());
-									dialog.dismiss();
-								});
-					});
-
+		private void setupAvatarClickListener() {
 			new Handler()
 					.postDelayed(
 							() -> {
@@ -473,937 +245,843 @@ public class IssueCommentsAdapter extends RecyclerView.Adapter<RecyclerView.View
 							500);
 		}
 
-		void bindData(TimelineComment timelineComment) {
+		private void scheduleAttachmentLoading() {
+			String token = ((BaseActivity) context).getAccount().getAccount().getToken();
+			new Handler()
+					.postDelayed(
+							() -> {
+								if (issueComment != null) {
+									getAttachments(issueComment.getId(), itemView, token, this);
+								}
+							},
+							250);
+		}
 
+		void bindData(TimelineComment timelineComment) {
 			clearGlideRequests();
 			isAttachedToWindow = true;
 
-			if (timelineComment != null) {
+			if (timelineComment == null) {
+				hideAllViews();
+				return;
+			}
 
-				Typeface typeface = AppUtil.getTypeface(context);
-				int fontSize = 14;
+			this.issueComment = timelineComment;
+			this.userLoginId = timelineComment.getUser().getLogin();
 
-				userLoginId = timelineComment.getUser().getLogin();
+			commentView.setVisibility(View.GONE);
+			timelineView.setVisibility(View.VISIBLE);
+			timelineData.removeAllViews();
 
-				this.issueComment = timelineComment;
+			String info = buildInfoText(timelineComment);
 
-				/*if (getBindingAdapterPosition() == 0) {
-					timelineDividerView.setVisibility(View.GONE);
-				} else {
-					timelineDividerView.setVisibility(View.VISIBLE);
-				}
-
-				if (getBindingAdapterPosition() == getItemCount() - 1) {
-					timelineLine2.setVisibility(View.GONE);
-				} else {
-					timelineLine2.setVisibility(View.VISIBLE);
-				}*/
-
-				StringBuilder infoBuilder = null;
-				if (issueComment.getCreatedAt() != null) {
-
-					infoBuilder =
-							new StringBuilder(
-									TimeHelper.formatTime(issueComment.getCreatedAt(), locale));
-
-					information.setOnClickListener(
-							new ClickListener(
-									TimeHelper.customDateFormatForToastDateFormat(
-											issueComment.getCreatedAt()),
-									context));
-
-					if (!issueComment.getCreatedAt().equals(issueComment.getUpdatedAt())) {
-						infoBuilder
-								.append(context.getString(R.string.colorfulBulletSpan))
-								.append(context.getString(R.string.modifiedText));
-					}
-				}
-				assert infoBuilder != null;
-				String info = infoBuilder.toString();
-
-				// label view in timeline
-				if (issueComment.getType().equalsIgnoreCase("label")) {
-
-					int color = Color.parseColor("#" + issueComment.getLabel().getColor());
-					int height = AppUtil.getPixelsFromDensity(context, 20);
-					int textSize = AppUtil.getPixelsFromScaledDensity(context, 12);
-
-					TextDrawable drawable =
-							TextDrawable.builder()
-									.beginConfig()
-									.useFont(typeface)
-									.textColor(new ColorInverter().getContrastColor(color))
-									.fontSize(textSize)
-									.width(
-											LabelWidthCalculator.calculateLabelWidth(
-													issueComment.getLabel().getName(),
-													typeface,
-													textSize,
-													AppUtil.getPixelsFromDensity(context, 10)))
-									.height(height)
-									.endConfig()
-									.buildRoundRect(
-											issueComment.getLabel().getName(),
-											color,
-											AppUtil.getPixelsFromDensity(context, 6));
-
-					TextView textView = new TextView(context);
-					String text;
-
-					if (issueComment.getBody().isEmpty()) {
-						text =
-								context.getString(
-										R.string.timelineRemovedLabel,
-										issueComment.getUser().getLogin(),
-										info);
-						timelineIcon.setColorFilter(
-								context.getResources()
-										.getColor(R.color.iconIssuePrClosedColor, null));
-					} else {
-						text =
-								context.getString(
-										R.string.timelineAddedLabel,
-										issueComment.getUser().getLogin(),
-										info);
-					}
-
-					timelineIcon.setImageDrawable(
-							ContextCompat.getDrawable(context, R.drawable.ic_tag));
-
-					SpannableString spannableString = new SpannableString(text.replace('|', ' '));
-
-					drawable.setBounds(
-							0, 0, drawable.getIntrinsicWidth(), drawable.getIntrinsicHeight());
-					ImageSpan image = new ImageSpan(drawable);
-
-					new Handler()
-							.postDelayed(
-									() -> {
-										spannableString.setSpan(
-												image,
-												text.indexOf('|'),
-												text.indexOf('|') + 1,
-												Spannable.SPAN_INCLUSIVE_EXCLUSIVE);
-
-										if (Integer.parseInt(
-														AppDatabaseSettings.getSettingsValue(
-																context,
-																AppDatabaseSettings.APP_THEME_KEY))
-												== 8) {
-											if (!isNightModeThemeDynamic(context)) {
-												textView.setTextColor(
-														AppUtil.dynamicColorResource(context));
-											}
-										}
-										textView.setText(spannableString);
-										timelineData.addView(textView);
-									},
-									250);
-				}
-				// pull/push/commit data view in timeline
-				else if (issueComment.getType().equalsIgnoreCase("pull_push")) {
-
-					TextView start = new TextView(context);
-
-					JSONObject commitsObj = null;
-					try {
-						commitsObj = new JSONObject(issueComment.getBody());
-					} catch (JSONException ignored) {
-					}
-
-					JSONArray commitsShaArray = null;
-					try {
-						commitsShaArray =
-								Objects.requireNonNull(commitsObj).getJSONArray("commit_ids");
-					} catch (JSONException ignored) {
-					}
-
-					String commitText = context.getResources().getString(R.string.commitsText);
-					if (Objects.requireNonNull(commitsShaArray).length() == 1) {
-						commitText = context.getResources().getString(R.string.commitText);
-					}
-
-					String commitString =
-							context.getString(
-									R.string.timelineAddedCommit,
-									issueComment.getUser().getLogin(),
-									commitText,
-									info);
-					if (Integer.parseInt(
-									AppDatabaseSettings.getSettingsValue(
-											context, AppDatabaseSettings.APP_THEME_KEY))
-							== 8) {
-						if (!isNightModeThemeDynamic(context)) {
-							start.setTextColor(AppUtil.dynamicColorResource(context));
-						}
-					}
-					start.setText(
-							HtmlCompat.fromHtml(commitString, HtmlCompat.FROM_HTML_MODE_LEGACY));
-					start.setTextSize(fontSize);
-
-					timelineData.setOrientation(LinearLayout.VERTICAL);
-					timelineIcon.setImageDrawable(
-							ContextCompat.getDrawable(context, R.drawable.ic_commit));
-					timelineData.addView(start);
-
-					for (int i = 0; i < Objects.requireNonNull(commitsShaArray).length(); i++) {
-
-						try {
-
-							String timelineCommits =
-									"<font color='"
-											+ ResourcesCompat.getColor(
-													context.getResources(), R.color.lightBlue, null)
-											+ "'>"
-											+ StringUtils.substring(
-													String.valueOf(commitsShaArray.get(i)), 0, 10)
-											+ "</font>";
-
-							TextView dynamicCommitTv = new TextView(context);
-							dynamicCommitTv.setId(View.generateViewId());
-
-							dynamicCommitTv.setText(
-									HtmlCompat.fromHtml(
-											timelineCommits, HtmlCompat.FROM_HTML_MODE_LEGACY));
-
-							JSONArray finalCommitsArray = commitsShaArray;
-							int finalI = i;
-
-							dynamicCommitTv.setOnClickListener(
-									v14 -> {
-										intent =
-												IssueContext.fromIntent(
-																((IssueDetailActivity) context)
-																		.getIntent())
-														.getRepository()
-														.getIntent(
-																context,
-																CommitDetailActivity.class);
-										try {
-											intent.putExtra(
-													"sha", (String) finalCommitsArray.get(finalI));
-										} catch (JSONException ignored) {
-										}
-										context.startActivity(intent);
-									});
-
-							timelineData.setOrientation(LinearLayout.VERTICAL);
-							timelineData.addView(dynamicCommitTv);
-						} catch (JSONException ignored) {
-						}
-					}
-				}
-				// assignees data view in timeline
-				else if (issueComment.getType().equalsIgnoreCase("assignees")) {
-
-					TextView start = new TextView(context);
-
-					if (Integer.parseInt(
-									AppDatabaseSettings.getSettingsValue(
-											context, AppDatabaseSettings.APP_THEME_KEY))
-							== 8) {
-						if (!isNightModeThemeDynamic(context)) {
-							start.setTextColor(AppUtil.dynamicColorResource(context));
-						}
-					}
-
-					if (issueComment.isRemovedAssignee()) {
-
-						if (issueComment
-								.getUser()
-								.getLogin()
-								.equalsIgnoreCase(issueComment.getAssignee().getLogin())) {
-							start.setText(
-									context.getString(
-											R.string.timelineAssigneesRemoved,
-											issueComment.getUser().getLogin(),
-											info));
-						} else {
-							start.setText(
-									context.getString(
-											R.string.timelineAssigneesUnassigned,
-											issueComment.getAssignee().getLogin(),
-											issueComment.getUser().getLogin(),
-											info));
-						}
-						timelineIcon.setColorFilter(
-								context.getResources()
-										.getColor(R.color.iconIssuePrClosedColor, null));
-					} else {
-						if (issueComment
-								.getUser()
-								.getLogin()
-								.equalsIgnoreCase(issueComment.getAssignee().getLogin())) {
-							start.setText(
-									context.getString(
-											R.string.timelineAssigneesSelfAssigned,
-											issueComment.getUser().getLogin(),
-											info));
-						} else {
-							start.setText(
-									context.getString(
-											R.string.timelineAssigneesAssigned,
-											issueComment.getAssignee().getLogin(),
-											issueComment.getUser().getLogin(),
-											info));
-						}
-					}
-					start.setTextSize(fontSize);
-
-					timelineIcon.setImageDrawable(
-							ContextCompat.getDrawable(context, R.drawable.ic_person));
-					timelineData.addView(start);
-				}
-				// milestone data view in timeline
-				else if (issueComment.getType().equalsIgnoreCase("milestone")) {
-
-					TextView start = new TextView(context);
-
-					if (Integer.parseInt(
-									AppDatabaseSettings.getSettingsValue(
-											context, AppDatabaseSettings.APP_THEME_KEY))
-							== 8) {
-						if (!isNightModeThemeDynamic(context)) {
-							start.setTextColor(AppUtil.dynamicColorResource(context));
-						}
-					}
-
-					if (issueComment.getMilestone() != null) {
-						start.setText(
-								context.getString(
-										R.string.timelineMilestoneAdded,
-										issueComment.getUser().getLogin(),
-										issueComment.getMilestone().getTitle(),
-										info));
-					} else {
-						if (issueComment.getOldMilestone() != null) {
-							start.setText(
-									context.getString(
-											R.string.timelineMilestoneRemoved,
-											issueComment.getUser().getLogin(),
-											issueComment.getOldMilestone().getTitle(),
-											info));
-						} else {
-							start.setText(
-									context.getString(
-											R.string.timelineMilestoneDeleted,
-											issueComment.getUser().getLogin(),
-											info));
-						}
-						timelineIcon.setColorFilter(
-								context.getResources()
-										.getColor(R.color.iconIssuePrClosedColor, null));
-					}
-					start.setTextSize(fontSize);
-					timelineIcon.setImageDrawable(
-							ContextCompat.getDrawable(context, R.drawable.ic_milestone));
-					timelineData.addView(start);
-				}
-				// status view in timeline
-				else if (issueComment.getType().equalsIgnoreCase("close")
-						|| issueComment.getType().equalsIgnoreCase("reopen")
-						|| issueComment.getType().equalsIgnoreCase("merge_pull")
-						|| issueComment.getType().equalsIgnoreCase("commit_ref")) {
-
-					TextView start = new TextView(context);
-
-					if (Integer.parseInt(
-									AppDatabaseSettings.getSettingsValue(
-											context, AppDatabaseSettings.APP_THEME_KEY))
-							== 8) {
-						if (!isNightModeThemeDynamic(context)) {
-							start.setTextColor(AppUtil.dynamicColorResource(context));
-						}
-					}
-
-					if (issue.getIssueType().equalsIgnoreCase("Issue")) {
-						if (issueComment.getType().equals("close")) {
-							start.setText(
-									context.getString(
-											R.string.timelineStatusClosedIssue,
-											issueComment.getUser().getLogin(),
-											info));
-							timelineIcon.setColorFilter(
-									context.getResources()
-											.getColor(R.color.iconIssuePrClosedColor, null));
-						} else if (issueComment.getType().equalsIgnoreCase("reopen")) {
-							start.setText(
-									context.getString(
-											R.string.timelineStatusReopenedIssue,
-											issueComment.getUser().getLogin(),
-											info));
-						} else if (issueComment.getType().equalsIgnoreCase("commit_ref")) {
-							String commitString =
-									context.getString(
-											R.string.timelineStatusRefIssue,
-											issueComment.getUser().getLogin(),
-											ResourcesCompat.getColor(
-													context.getResources(),
-													R.color.lightBlue,
-													null),
-											context.getResources()
-													.getString(R.string.commitText)
-													.toLowerCase(),
-											info);
-							start.setText(
-									HtmlCompat.fromHtml(
-											commitString, HtmlCompat.FROM_HTML_MODE_LEGACY));
-							timelineIcon.setImageDrawable(
-									ContextCompat.getDrawable(context, R.drawable.ic_bookmark));
-
-							start.setOnClickListener(
-									v14 -> {
-										intent =
-												IssueContext.fromIntent(
-																((IssueDetailActivity) context)
-																		.getIntent())
-														.getRepository()
-														.getIntent(
-																context,
-																CommitDetailActivity.class);
-										intent.putExtra("sha", issueComment.getRefCommitSha());
-										context.startActivity(intent);
-									});
-						}
-						timelineIcon.setImageDrawable(
-								ContextCompat.getDrawable(context, R.drawable.ic_issue));
-					} else if (issue.getIssueType().equalsIgnoreCase("Pull")) {
-						if (issueComment.getType().equalsIgnoreCase("close")) {
-							start.setText(
-									context.getString(
-											R.string.timelineStatusClosedPr,
-											issueComment.getUser().getLogin(),
-											info));
-							timelineIcon.setImageDrawable(
-									ContextCompat.getDrawable(context, R.drawable.ic_pull_request));
-							timelineIcon.setColorFilter(
-									context.getResources()
-											.getColor(R.color.iconIssuePrClosedColor, null));
-						} else if (issueComment.getType().equalsIgnoreCase("merge_pull")) {
-							start.setText(
-									context.getString(
-											R.string.timelineStatusMergedPr,
-											issueComment.getUser().getLogin(),
-											info));
-							timelineIcon.setImageDrawable(
-									ContextCompat.getDrawable(context, R.drawable.ic_pull_request));
-							timelineIcon.setColorFilter(
-									context.getResources()
-											.getColor(R.color.iconPrMergedColor, null));
-						} else if (issueComment.getType().equalsIgnoreCase("commit_ref")) {
-							String commitString =
-									context.getString(
-											R.string.timelineStatusRefPr,
-											issueComment.getUser().getLogin(),
-											ResourcesCompat.getColor(
-													context.getResources(),
-													R.color.lightBlue,
-													null),
-											context.getResources()
-													.getString(R.string.commitText)
-													.toLowerCase(),
-											info);
-							start.setText(
-									HtmlCompat.fromHtml(
-											commitString, HtmlCompat.FROM_HTML_MODE_LEGACY));
-							timelineIcon.setImageDrawable(
-									ContextCompat.getDrawable(context, R.drawable.ic_bookmark));
-
-							start.setOnClickListener(
-									v14 -> {
-										intent =
-												IssueContext.fromIntent(
-																((IssueDetailActivity) context)
-																		.getIntent())
-														.getRepository()
-														.getIntent(
-																context,
-																CommitDetailActivity.class);
-										intent.putExtra("sha", issueComment.getRefCommitSha());
-										context.startActivity(intent);
-									});
-						} else {
-							start.setText(
-									context.getString(
-											R.string.timelineStatusReopenedPr,
-											issueComment.getUser().getLogin(),
-											info));
-							timelineIcon.setImageDrawable(
-									ContextCompat.getDrawable(context, R.drawable.ic_pull_request));
-						}
-					}
-					start.setTextSize(fontSize);
-
-					timelineData.addView(start);
-				}
-				// review data view in timeline
-				else if (issueComment.getType().equalsIgnoreCase("review_request")
-						|| issueComment.getType().equalsIgnoreCase("review")
-						|| issueComment.getType().equalsIgnoreCase("dismiss_review")) {
-
-					TextView start = new TextView(context);
-
-					if (Integer.parseInt(
-									AppDatabaseSettings.getSettingsValue(
-											context, AppDatabaseSettings.APP_THEME_KEY))
-							== 8) {
-						if (!isNightModeThemeDynamic(context)) {
-							start.setTextColor(AppUtil.dynamicColorResource(context));
-						}
-					}
-
-					if (issueComment.getType().equalsIgnoreCase("review")) {
-						if (!issueComment.getBody().equalsIgnoreCase("")) {
-
-							start.setText(
-									context.getString(
-											R.string.timelineReviewLeftComment,
-											issueComment.getUser().getLogin(),
-											issueComment.getBody(),
-											info));
-							timelineIcon.setImageDrawable(
-									ContextCompat.getDrawable(context, R.drawable.ic_comment));
-						} else {
-							timelineView.setVisibility(View.GONE);
-							timelineDividerView.setVisibility(View.GONE);
-						}
-					} else if (issueComment.getType().equalsIgnoreCase("dismiss_review")) {
-						timelineView.setVisibility(View.GONE);
-						timelineDividerView.setVisibility(View.GONE);
-					} else if (issueComment.getType().equalsIgnoreCase("review_request")) {
-						String reviewer;
-						if (issueComment.getAssignee() != null) {
-							reviewer = issueComment.getAssignee().getLogin();
-						} else {
-							if (issueComment.getAssigneeTeam() != null) {
-								reviewer = issueComment.getAssigneeTeam().getName();
-							} else {
-								reviewer = "";
-							}
-						}
-						start.setText(
-								context.getString(
-										R.string.timelineReviewRequest,
-										issueComment.getUser().getLogin(),
-										reviewer,
-										info));
-						timelineIcon.setImageDrawable(
-								ContextCompat.getDrawable(context, R.drawable.ic_watchers));
-					}
-					start.setTextSize(fontSize);
-
-					timelineData.addView(start);
-				}
-				// change title data view in timeline
-				else if (issueComment.getType().equalsIgnoreCase("change_title")) {
-
-					TextView start = new TextView(context);
-
-					if (Integer.parseInt(
-									AppDatabaseSettings.getSettingsValue(
-											context, AppDatabaseSettings.APP_THEME_KEY))
-							== 8) {
-						if (!isNightModeThemeDynamic(context)) {
-							start.setTextColor(AppUtil.dynamicColorResource(context));
-						}
-					}
-
-					start.setText(
-							context.getString(
-									R.string.timelineChangeTitle,
-									issueComment.getUser().getLogin(),
-									issueComment.getOldTitle(),
-									issueComment.getNewTitle(),
-									info));
-					start.setTextSize(fontSize);
-
-					timelineIcon.setImageDrawable(
-							ContextCompat.getDrawable(context, R.drawable.ic_edit));
-					timelineData.addView(start);
-				}
-				// lock/unlock data view in timeline
-				else if (issueComment.getType().equalsIgnoreCase("lock")
-						|| issueComment.getType().equalsIgnoreCase("unlock")) {
-
-					TextView start = new TextView(context);
-
-					if (Integer.parseInt(
-									AppDatabaseSettings.getSettingsValue(
-											context, AppDatabaseSettings.APP_THEME_KEY))
-							== 8) {
-						if (!isNightModeThemeDynamic(context)) {
-							start.setTextColor(AppUtil.dynamicColorResource(context));
-						}
-					}
-
-					if (issueComment.getType().equalsIgnoreCase("lock")) {
-						start.setText(
-								context.getString(
-										R.string.timelineLocked,
-										issueComment.getUser().getLogin(),
-										issueComment.getBody(),
-										info));
-						timelineIcon.setImageDrawable(
-								ContextCompat.getDrawable(context, R.drawable.ic_lock));
-					} else if (issueComment.getType().equalsIgnoreCase("unlock")) {
-						start.setText(
-								context.getString(
-										R.string.timelineUnlocked,
-										issueComment.getUser().getLogin(),
-										info));
-						timelineIcon.setImageDrawable(
-								ContextCompat.getDrawable(context, R.drawable.ic_key));
-					}
-					start.setTextSize(fontSize);
-
-					timelineData.addView(start);
-				}
-				// dependency data view in timeline
-				else if (issueComment.getType().equalsIgnoreCase("add_dependency")
-						|| issueComment.getType().equalsIgnoreCase("remove_dependency")) {
-
-					TextView start = new TextView(context);
-
-					if (Integer.parseInt(
-									AppDatabaseSettings.getSettingsValue(
-											context, AppDatabaseSettings.APP_THEME_KEY))
-							== 8) {
-						if (!isNightModeThemeDynamic(context)) {
-							start.setTextColor(AppUtil.dynamicColorResource(context));
-						}
-					}
-
-					if (issueComment.getType().equalsIgnoreCase("add_dependency")) {
-						start.setText(
-								context.getString(
-										R.string.timelineDependencyAdded,
-										issueComment.getUser().getLogin(),
-										issueComment.getDependentIssue().getNumber(),
-										info));
-					} else if (issueComment.getType().equalsIgnoreCase("remove_dependency")) {
-						start.setText(
-								context.getString(
-										R.string.timelineDependencyRemoved,
-										issueComment.getUser().getLogin(),
-										issueComment.getDependentIssue().getNumber(),
-										info));
-						timelineIcon.setColorFilter(
-								context.getResources()
-										.getColor(R.color.iconIssuePrClosedColor, null));
-					}
-					start.setTextSize(fontSize);
-
-					timelineIcon.setImageDrawable(
-							ContextCompat.getDrawable(context, R.drawable.ic_dependency));
-					timelineData.addView(start);
-				}
-				// project data view in timeline
-				else if (issueComment.getType().equalsIgnoreCase("project")
-						|| issueComment.getType().equalsIgnoreCase("project_board")) {
-
-					TextView start = new TextView(context);
-
-					if (Integer.parseInt(
-									AppDatabaseSettings.getSettingsValue(
-											context, AppDatabaseSettings.APP_THEME_KEY))
-							== 8) {
-						if (!isNightModeThemeDynamic(context)) {
-							start.setTextColor(AppUtil.dynamicColorResource(context));
-						}
-					}
-
-					if (issueComment.getProjectId() > 0) {
-						start.setText(
-								context.getString(
-										R.string.timelineProjectAdded,
-										issueComment.getUser().getLogin(),
-										info));
-					} else {
-						start.setText(
-								context.getString(
-										R.string.timelineProjectRemoved,
-										issueComment.getUser().getLogin(),
-										info));
-						timelineIcon.setColorFilter(
-								context.getResources()
-										.getColor(R.color.iconIssuePrClosedColor, null));
-					}
-					start.setTextSize(fontSize);
-
-					timelineIcon.setImageDrawable(
-							ContextCompat.getDrawable(context, R.drawable.ic_kanban));
-					timelineData.addView(start);
-				}
-				// due date/deadline data view in timeline
-				else if (issueComment.getType().equalsIgnoreCase("added_deadline")
-						|| issueComment.getType().equalsIgnoreCase("modified_deadline")
-						|| issueComment.getType().equalsIgnoreCase("removed_deadline")) {
-
-					TextView start = new TextView(context);
-
-					if (Integer.parseInt(
-									AppDatabaseSettings.getSettingsValue(
-											context, AppDatabaseSettings.APP_THEME_KEY))
-							== 8) {
-						if (!isNightModeThemeDynamic(context)) {
-							start.setTextColor(AppUtil.dynamicColorResource(context));
-						}
-					}
-
-					if (issueComment.getType().equalsIgnoreCase("added_deadline")) {
-						start.setText(
-								context.getString(
-										R.string.timelineDueDateAdded,
-										issueComment.getUser().getLogin(),
-										issueComment.getBody(),
-										info));
-					} else if (issueComment.getType().equalsIgnoreCase("modified_deadline")) {
-						start.setText(
-								context.getString(
-										R.string.timelineDueDateModified,
-										issueComment.getUser().getLogin(),
-										issueComment.getBody().split("\\|")[0],
-										issueComment.getBody().split("\\|")[1],
-										info));
-					} else if (issueComment.getType().equalsIgnoreCase("removed_deadline")) {
-						start.setText(
-								context.getString(
-										R.string.timelineDueDateRemoved,
-										issueComment.getUser().getLogin(),
-										issueComment.getBody(),
-										info));
-						timelineIcon.setColorFilter(
-								context.getResources()
-										.getColor(R.color.iconIssuePrClosedColor, null));
-					}
-					start.setTextSize(fontSize);
-
-					timelineIcon.setImageDrawable(
-							ContextCompat.getDrawable(context, R.drawable.ic_clock));
-					timelineData.addView(start);
-				}
-				// branch data view in timeline
-				else if (issueComment.getType().equalsIgnoreCase("change_target_branch")
-						|| issueComment.getType().equalsIgnoreCase("delete_branch")) {
-
-					TextView start = new TextView(context);
-
-					if (Integer.parseInt(
-									AppDatabaseSettings.getSettingsValue(
-											context, AppDatabaseSettings.APP_THEME_KEY))
-							== 8) {
-						if (!isNightModeThemeDynamic(context)) {
-							start.setTextColor(AppUtil.dynamicColorResource(context));
-						}
-					}
-
-					if (issueComment.getType().equalsIgnoreCase("change_target_branch")) {
-						start.setText(
-								context.getString(
-										R.string.timelineBranchChanged,
-										issueComment.getUser().getLogin(),
-										issueComment.getOldRef(),
-										issueComment.getNewRef(),
-										info));
-					} else if (issueComment.getType().equalsIgnoreCase("delete_branch")) {
-						start.setText(
-								context.getString(
-										R.string.timelineBranchDeleted,
-										issueComment.getUser().getLogin(),
-										issueComment.getOldRef(),
-										info));
-						timelineIcon.setColorFilter(
-								context.getResources()
-										.getColor(R.color.iconIssuePrClosedColor, null));
-					}
-					start.setTextSize(fontSize);
-
-					timelineIcon.setImageDrawable(
-							ContextCompat.getDrawable(context, R.drawable.ic_branch));
-					timelineData.addView(start);
-				}
-				// time tracking data view in timeline
-				else if (issueComment.getType().equalsIgnoreCase("start_tracking")
-						|| issueComment.getType().equalsIgnoreCase("stop_tracking")
-						|| issueComment.getType().equalsIgnoreCase("cancel_tracking")
-						|| issueComment.getType().equalsIgnoreCase("add_time_manual")
-						|| issueComment.getType().equalsIgnoreCase("delete_time_manual")) {
-
-					TextView start = new TextView(context);
-
-					if (Integer.parseInt(
-									AppDatabaseSettings.getSettingsValue(
-											context, AppDatabaseSettings.APP_THEME_KEY))
-							== 8) {
-						if (!isNightModeThemeDynamic(context)) {
-							start.setTextColor(AppUtil.dynamicColorResource(context));
-						}
-					}
-
-					if (issueComment.getType().equalsIgnoreCase("start_tracking")) {
-						start.setText(
-								context.getString(
-										R.string.timelineTimeTrackingStart,
-										issueComment.getUser().getLogin(),
-										info));
-					} else if (issueComment.getType().equalsIgnoreCase("stop_tracking")) {
-						start.setText(
-								context.getString(
-										R.string.timelineTimeTrackingStop,
-										issueComment.getUser().getLogin(),
-										info));
-					} else if (issueComment.getType().equalsIgnoreCase("cancel_tracking")) {
-						start.setText(
-								context.getString(
-										R.string.timelineTimeTrackingCancel,
-										issueComment.getUser().getLogin(),
-										info));
-						timelineIcon.setColorFilter(
-								context.getResources()
-										.getColor(R.color.iconIssuePrClosedColor, null));
-					} else if (issueComment.getType().equalsIgnoreCase("add_time_manual")) {
-						start.setText(
-								context.getString(
-										R.string.timelineTimeTrackingAddManualTime,
-										issueComment.getUser().getLogin(),
-										issueComment.getBody(),
-										info));
-					} else if (issueComment.getType().equalsIgnoreCase("delete_time_manual")) {
-						start.setText(
-								context.getString(
-										R.string.timelineTimeTrackingDeleteManualTime,
-										issueComment.getUser().getLogin(),
-										issueComment.getBody(),
-										info));
-						timelineIcon.setColorFilter(
-								context.getResources()
-										.getColor(R.color.iconIssuePrClosedColor, null));
-					}
-					start.setTextSize(fontSize);
-
-					timelineIcon.setImageDrawable(
-							ContextCompat.getDrawable(context, R.drawable.ic_clock));
-					timelineData.addView(start);
-				}
-				// issue/pr refs data view in timeline
-				else if (issueComment.getType().equalsIgnoreCase("change_issue_ref")
-						|| issueComment.getType().equalsIgnoreCase("issue_ref")
-						|| issueComment.getType().equalsIgnoreCase("comment_ref")
-						|| issueComment.getType().equalsIgnoreCase("pull_ref")) {
-
-					RecyclerView recyclerView = new RecyclerView(context);
-
-					if (issueComment.getType().equalsIgnoreCase("change_issue_ref")) {
-						String text =
-								context.getString(
-										R.string.timelineChangeIssueRef,
-										issueComment.getUser().getLogin(),
-										issueComment.getNewRef(),
-										info);
-						Markdown.render(context, text, recyclerView, issue.getRepository());
-						timelineIcon.setImageDrawable(
-								ContextCompat.getDrawable(context, R.drawable.ic_branch));
-					} else if (issueComment.getType().equalsIgnoreCase("comment_ref")
-							|| issueComment.getType().equalsIgnoreCase("issue_ref")
-							|| issueComment.getType().equalsIgnoreCase("pull_ref")) {
-
-						if (issue.getIssueType().equalsIgnoreCase("Issue")) {
-							String text =
-									context.getString(
-											R.string.timelineRefIssue,
-											issueComment.getUser().getLogin(),
-											timelineComment.getRefIssue().getHtmlUrl(),
-											info);
-							Markdown.render(context, text, recyclerView, issue.getRepository());
-						} else if (issue.getIssueType().equalsIgnoreCase("Pull")) {
-							String text =
-									context.getString(
-											R.string.timelineRefPr,
-											issueComment.getUser().getLogin(),
-											timelineComment.getRefIssue().getHtmlUrl(),
-											info);
-							Markdown.render(context, text, recyclerView, issue.getRepository());
-						}
-						timelineIcon.setImageDrawable(
-								ContextCompat.getDrawable(context, R.drawable.ic_bookmark));
-					}
-
-					timelineData.addView(recyclerView);
-				}
-				// code data view in timeline
-				else if (issueComment.getType().equalsIgnoreCase("code")) {
-					timelineView.setVisibility(View.GONE);
-					timelineDividerView.setVisibility(View.GONE);
-				}
-				// schedule pr view in timeline
-				else if (issueComment.getType().equalsIgnoreCase("pull_scheduled_merge")
-						|| issueComment.getType().equalsIgnoreCase("pull_cancel_scheduled_merge")) {
-					timelineView.setVisibility(View.GONE);
-					timelineDividerView.setVisibility(View.GONE);
-				}
-				// issue/pr pinned
-				else if (issueComment.getType().equalsIgnoreCase("pin")) {
-					TextView start = new TextView(context);
-
-					if (Integer.parseInt(
-									AppDatabaseSettings.getSettingsValue(
-											context, AppDatabaseSettings.APP_THEME_KEY))
-							== 8) {
-						if (!isNightModeThemeDynamic(context)) {
-							start.setTextColor(AppUtil.dynamicColorResource(context));
-						}
-					}
-
-					start.setText(
-							context.getString(
-									R.string.timelinePinned,
-									issueComment.getUser().getLogin(),
-									info));
-
-					start.setTextSize(fontSize);
-
-					timelineIcon.setImageDrawable(
-							ContextCompat.getDrawable(context, R.drawable.ic_pin));
-					timelineData.addView(start);
-				} else {
-					timelineView.setVisibility(View.GONE);
-				}
-
-				// comment data view in timeline
-				if (issueComment.getType().equalsIgnoreCase("comment")) {
-
-					author.setText(issueComment.getUser().getLogin());
-
-					loadAvatarSafely(issueComment.getUser().getAvatarUrl(), avatar);
-
-					Markdown.render(
-							context, issueComment.getBody(), comment, issue.getRepository());
-
-					information.setText(info);
-
-					Bundle bundle1 = new Bundle();
-					bundle1.putAll(bundle);
-					bundle1.putInt("commentId", Math.toIntExact(issueComment.getId()));
-
-					ReactionList reactionList = new ReactionList(context, bundle1);
-
-					commentReactionBadges.addView(reactionList);
-					reactionList.setOnReactionAddedListener(
-							() -> {
-								if (commentReactionBadges.getVisibility() != View.VISIBLE) {
-									commentReactionBadges.post(
-											() ->
-													commentReactionBadges.setVisibility(
-															View.VISIBLE));
-								}
-							});
-				} else {
-					commentView.setVisibility(View.GONE);
-				}
+			if (isTimelineEvent(timelineComment)) {
+				handleTimelineEvent(timelineComment, info);
 			} else {
-				timelineDividerView.setVisibility(View.GONE);
 				timelineView.setVisibility(View.GONE);
-				commentView.setVisibility(View.GONE);
+				handleCommentEvent(timelineComment, info);
+			}
+		}
+
+		private void hideAllViews() {
+			timelineView.setVisibility(View.GONE);
+			commentView.setVisibility(View.GONE);
+		}
+
+		private void hideTimelineViews() {
+			timelineView.setVisibility(View.GONE);
+		}
+
+		private boolean isTimelineEvent(TimelineComment timelineComment) {
+			return !timelineComment.getType().equalsIgnoreCase("comment");
+		}
+
+		private String buildInfoText(TimelineComment issueComment) {
+			if (issueComment.getCreatedAt() == null) return "";
+
+			StringBuilder infoBuilder =
+					new StringBuilder(TimeHelper.formatTime(issueComment.getCreatedAt(), locale));
+
+			information.setOnClickListener(
+					new ClickListener(
+							TimeHelper.customDateFormatForToastDateFormat(
+									issueComment.getCreatedAt()),
+							context));
+
+			if (!issueComment.getCreatedAt().equals(issueComment.getUpdatedAt())) {
+				infoBuilder
+						.append(context.getString(R.string.colorfulBulletSpan))
+						.append(context.getString(R.string.modifiedText));
+			}
+
+			return infoBuilder.toString();
+		}
+
+		private void handleTimelineEvent(TimelineComment timelineComment, String info) {
+			timelineView.setVisibility(View.VISIBLE);
+
+			switch (timelineComment.getType().toLowerCase()) {
+				case "label":
+					handleLabelEvent(timelineComment, info);
+					break;
+				case "pull_push":
+					handlePullPushEvent(timelineComment, info);
+					break;
+				case "assignees":
+					handleAssigneesEvent(timelineComment, info);
+					break;
+				case "milestone":
+					handleMilestoneEvent(timelineComment, info);
+					break;
+				case "close":
+				case "reopen":
+				case "merge_pull":
+				case "commit_ref":
+					handleStatusEvent(timelineComment, info);
+					break;
+				case "review_request":
+				case "review":
+				case "dismiss_review":
+					handleReviewEvent(timelineComment, info);
+					break;
+				case "change_title":
+					handleChangeTitleEvent(timelineComment, info);
+					break;
+				case "lock":
+				case "unlock":
+					handleLockEvent(timelineComment, info);
+					break;
+				case "add_dependency":
+				case "remove_dependency":
+					handleDependencyEvent(timelineComment, info);
+					break;
+				case "project":
+				case "project_board":
+					handleProjectEvent(timelineComment, info);
+					break;
+				case "added_deadline":
+				case "modified_deadline":
+				case "removed_deadline":
+					handleDueDateEvent(timelineComment, info);
+					break;
+				case "change_target_branch":
+				case "delete_branch":
+					handleBranchEvent(timelineComment, info);
+					break;
+				case "start_tracking":
+				case "stop_tracking":
+				case "cancel_tracking":
+				case "add_time_manual":
+				case "delete_time_manual":
+					handleTimeTrackingEvent(timelineComment, info);
+					break;
+				case "change_issue_ref":
+				case "issue_ref":
+				case "comment_ref":
+				case "pull_ref":
+					handleIssueRefEvent(timelineComment, info);
+					break;
+				case "pin":
+					handlePinEvent(timelineComment, info);
+					break;
+				case "code":
+				case "pull_scheduled_merge":
+				case "pull_cancel_scheduled_merge":
+					hideTimelineViews();
+					break;
+				default:
+					timelineView.setVisibility(View.GONE);
+			}
+		}
+
+		private void handleCommentEvent(TimelineComment timelineComment, String info) {
+			commentView.setVisibility(View.VISIBLE);
+			author.setText(timelineComment.getUser().getLogin());
+			loadAvatarSafely(timelineComment.getUser().getAvatarUrl(), avatar);
+			Markdown.render(context, timelineComment.getBody(), comment, issue.getRepository());
+			information.setText(info);
+
+			setupReactions(timelineComment);
+		}
+
+		private void setupReactions(TimelineComment timelineComment) {
+			commentReactionBadges.removeAllViews();
+
+			Bundle bundle1 = new Bundle();
+			bundle1.putAll(bundle);
+			bundle1.putInt("commentId", Math.toIntExact(timelineComment.getId()));
+
+			ReactionList reactionList = new ReactionList(context, bundle1);
+			commentReactionBadges.addView(reactionList);
+
+			reactionList.setOnReactionAddedListener(
+					() -> {
+						if (commentReactionBadges.getVisibility() != View.VISIBLE) {
+							commentReactionBadges.post(
+									() -> commentReactionBadges.setVisibility(View.VISIBLE));
+						}
+					});
+		}
+
+		private void handleLabelEvent(TimelineComment timelineComment, String info) {
+			TextView textView = createBaseTextView();
+			int color = Color.parseColor("#" + timelineComment.getLabel().getColor());
+
+			String text;
+			if (timelineComment.getBody().isEmpty()) {
+				text =
+						context.getString(
+								R.string.timelineRemovedLabel,
+								timelineComment.getUser().getLogin(),
+								info);
+				timelineIcon.setColorFilter(
+						ContextCompat.getColor(context, R.color.iconIssuePrClosedColor));
+			} else {
+				text =
+						context.getString(
+								R.string.timelineAddedLabel,
+								timelineComment.getUser().getLogin(),
+								info);
+			}
+
+			timelineIcon.setImageDrawable(ContextCompat.getDrawable(context, R.drawable.ic_tag));
+
+			SpannableString spannableString = createLabelSpannable(text, timelineComment, color);
+
+			new Handler(Looper.getMainLooper())
+					.postDelayed(
+							() -> {
+								applyThemeColor(textView);
+								textView.setText(spannableString);
+								timelineData.addView(textView);
+							},
+							250);
+		}
+
+		private SpannableString createLabelSpannable(
+				String text, TimelineComment timelineComment, int color) {
+			Typeface typeface = AppUtil.getTypeface(context);
+			int height = AppUtil.getPixelsFromDensity(context, 20);
+			int textSize = AppUtil.getPixelsFromScaledDensity(context, 12);
+
+			TextDrawable drawable =
+					TextDrawable.builder()
+							.beginConfig()
+							.useFont(typeface)
+							.textColor(new ColorInverter().getContrastColor(color))
+							.fontSize(textSize)
+							.width(
+									LabelWidthCalculator.calculateLabelWidth(
+											timelineComment.getLabel().getName(),
+											typeface,
+											textSize,
+											AppUtil.getPixelsFromDensity(context, 10)))
+							.height(height)
+							.endConfig()
+							.buildRoundRect(
+									timelineComment.getLabel().getName(),
+									color,
+									AppUtil.getPixelsFromDensity(context, 6));
+
+			SpannableString spannableString = new SpannableString(text.replace('|', ' '));
+			int placeholderIndex = text.indexOf('|');
+
+			if (placeholderIndex != -1) {
+				drawable.setBounds(
+						0, 0, drawable.getIntrinsicWidth(), drawable.getIntrinsicHeight());
+				spannableString.setSpan(
+						new ImageSpan(drawable),
+						placeholderIndex,
+						placeholderIndex + 1,
+						Spannable.SPAN_INCLUSIVE_EXCLUSIVE);
+			}
+
+			return spannableString;
+		}
+
+		private void handlePullPushEvent(TimelineComment timelineComment, String info) {
+			TextView startView = createBaseTextView();
+
+			try {
+				JSONObject commitsObj = new JSONObject(timelineComment.getBody());
+				JSONArray commitsShaArray = commitsObj.getJSONArray("commit_ids");
+
+				String commitText =
+						context.getResources()
+								.getString(
+										commitsShaArray.length() == 1
+												? R.string.commitText
+												: R.string.commitsText);
+
+				String commitString =
+						context.getString(
+								R.string.timelineAddedCommit,
+								timelineComment.getUser().getLogin(),
+								commitText,
+								info);
+
+				applyThemeColor(startView);
+				startView.setText(
+						HtmlCompat.fromHtml(commitString, HtmlCompat.FROM_HTML_MODE_LEGACY));
+				startView.setTextSize(14);
+
+				timelineData.setOrientation(LinearLayout.VERTICAL);
+				timelineIcon.setImageDrawable(
+						ContextCompat.getDrawable(context, R.drawable.ic_commit));
+				timelineData.addView(startView);
+
+				addCommitViews(commitsShaArray);
+
+			} catch (JSONException ignored) {
+			}
+		}
+
+		private void addCommitViews(JSONArray commitsShaArray) {
+			for (int i = 0; i < commitsShaArray.length(); i++) {
+				try {
+					String sha = commitsShaArray.getString(i);
+					String shortSha = StringUtils.substring(sha, 0, 10);
+
+					String timelineCommits =
+							"<font color='"
+									+ ResourcesCompat.getColor(
+											context.getResources(), R.color.lightBlue, null)
+									+ "'>"
+									+ shortSha
+									+ "</font>";
+
+					TextView dynamicCommitTv = createBaseTextView();
+					dynamicCommitTv.setId(View.generateViewId());
+					dynamicCommitTv.setText(
+							HtmlCompat.fromHtml(timelineCommits, HtmlCompat.FROM_HTML_MODE_LEGACY));
+
+					dynamicCommitTv.setOnClickListener(
+							v -> {
+								intent =
+										IssueContext.fromIntent(
+														((IssueDetailActivity) context).getIntent())
+												.getRepository()
+												.getIntent(context, CommitDetailActivity.class);
+								intent.putExtra("sha", sha);
+								context.startActivity(intent);
+							});
+
+					timelineData.addView(dynamicCommitTv);
+				} catch (JSONException ignored) {
+				}
+			}
+		}
+
+		private void handleAssigneesEvent(TimelineComment timelineComment, String info) {
+			TextView startView = createBaseTextView();
+
+			if (timelineComment.isRemovedAssignee()) {
+				if (timelineComment
+						.getUser()
+						.getLogin()
+						.equalsIgnoreCase(timelineComment.getAssignee().getLogin())) {
+					startView.setText(
+							context.getString(
+									R.string.timelineAssigneesRemoved,
+									timelineComment.getUser().getLogin(),
+									info));
+				} else {
+					startView.setText(
+							context.getString(
+									R.string.timelineAssigneesUnassigned,
+									timelineComment.getAssignee().getLogin(),
+									timelineComment.getUser().getLogin(),
+									info));
+				}
+				timelineIcon.setColorFilter(
+						ContextCompat.getColor(context, R.color.iconIssuePrClosedColor));
+			} else {
+				if (timelineComment
+						.getUser()
+						.getLogin()
+						.equalsIgnoreCase(timelineComment.getAssignee().getLogin())) {
+					startView.setText(
+							context.getString(
+									R.string.timelineAssigneesSelfAssigned,
+									timelineComment.getUser().getLogin(),
+									info));
+				} else {
+					startView.setText(
+							context.getString(
+									R.string.timelineAssigneesAssigned,
+									timelineComment.getAssignee().getLogin(),
+									timelineComment.getUser().getLogin(),
+									info));
+				}
+			}
+
+			startView.setTextSize(14);
+			timelineIcon.setImageDrawable(ContextCompat.getDrawable(context, R.drawable.ic_person));
+			timelineData.addView(startView);
+		}
+
+		private void handleMilestoneEvent(TimelineComment timelineComment, String info) {
+			TextView startView = createBaseTextView();
+
+			if (timelineComment.getMilestone() != null) {
+				startView.setText(
+						context.getString(
+								R.string.timelineMilestoneAdded,
+								timelineComment.getUser().getLogin(),
+								timelineComment.getMilestone().getTitle(),
+								info));
+			} else {
+				if (timelineComment.getOldMilestone() != null) {
+					startView.setText(
+							context.getString(
+									R.string.timelineMilestoneRemoved,
+									timelineComment.getUser().getLogin(),
+									timelineComment.getOldMilestone().getTitle(),
+									info));
+				} else {
+					startView.setText(
+							context.getString(
+									R.string.timelineMilestoneDeleted,
+									timelineComment.getUser().getLogin(),
+									info));
+				}
+				timelineIcon.setColorFilter(
+						ContextCompat.getColor(context, R.color.iconIssuePrClosedColor));
+			}
+
+			startView.setTextSize(14);
+			timelineIcon.setImageDrawable(
+					ContextCompat.getDrawable(context, R.drawable.ic_milestone));
+			timelineData.addView(startView);
+		}
+
+		private void handleStatusEvent(TimelineComment timelineComment, String info) {
+			TextView startView = createBaseTextView();
+			boolean isIssue = issue.getIssueType().equalsIgnoreCase("Issue");
+
+			switch (timelineComment.getType().toLowerCase()) {
+				case "close":
+					handleCloseEvent(startView, timelineComment, info, isIssue);
+					break;
+				case "reopen":
+					handleReopenEvent(startView, timelineComment, info, isIssue);
+					break;
+				case "merge_pull":
+					handleMergeEvent(startView, timelineComment, info);
+					break;
+				case "commit_ref":
+					handleCommitRefEvent(startView, timelineComment, info, isIssue);
+					break;
+			}
+
+			startView.setTextSize(14);
+			timelineData.addView(startView);
+		}
+
+		private void handleCloseEvent(
+				TextView startView, TimelineComment timelineComment, String info, boolean isIssue) {
+			if (isIssue) {
+				startView.setText(
+						context.getString(
+								R.string.timelineStatusClosedIssue,
+								timelineComment.getUser().getLogin(),
+								info));
+				timelineIcon.setImageDrawable(
+						ContextCompat.getDrawable(context, R.drawable.ic_issue));
+			} else {
+				startView.setText(
+						context.getString(
+								R.string.timelineStatusClosedPr,
+								timelineComment.getUser().getLogin(),
+								info));
+				timelineIcon.setImageDrawable(
+						ContextCompat.getDrawable(context, R.drawable.ic_pull_request));
+			}
+			timelineIcon.setColorFilter(
+					ContextCompat.getColor(context, R.color.iconIssuePrClosedColor));
+		}
+
+		private void handleReopenEvent(
+				TextView startView, TimelineComment timelineComment, String info, boolean isIssue) {
+			if (isIssue) {
+				startView.setText(
+						context.getString(
+								R.string.timelineStatusReopenedIssue,
+								timelineComment.getUser().getLogin(),
+								info));
+				timelineIcon.setImageDrawable(
+						ContextCompat.getDrawable(context, R.drawable.ic_issue));
+			} else {
+				startView.setText(
+						context.getString(
+								R.string.timelineStatusReopenedPr,
+								timelineComment.getUser().getLogin(),
+								info));
+				timelineIcon.setImageDrawable(
+						ContextCompat.getDrawable(context, R.drawable.ic_pull_request));
+			}
+		}
+
+		private void handleMergeEvent(
+				TextView startView, TimelineComment timelineComment, String info) {
+			startView.setText(
+					context.getString(
+							R.string.timelineStatusMergedPr,
+							timelineComment.getUser().getLogin(),
+							info));
+			timelineIcon.setImageDrawable(
+					ContextCompat.getDrawable(context, R.drawable.ic_pull_request));
+			timelineIcon.setColorFilter(ContextCompat.getColor(context, R.color.iconPrMergedColor));
+		}
+
+		private void handleCommitRefEvent(
+				TextView startView, TimelineComment timelineComment, String info, boolean isIssue) {
+			String commitString =
+					context.getString(
+							isIssue
+									? R.string.timelineStatusRefIssue
+									: R.string.timelineStatusRefPr,
+							timelineComment.getUser().getLogin(),
+							ResourcesCompat.getColor(
+									context.getResources(), R.color.lightBlue, null),
+							context.getResources().getString(R.string.commitText).toLowerCase(),
+							info);
+
+			startView.setText(HtmlCompat.fromHtml(commitString, HtmlCompat.FROM_HTML_MODE_LEGACY));
+			timelineIcon.setImageDrawable(
+					ContextCompat.getDrawable(context, R.drawable.ic_bookmark));
+
+			startView.setOnClickListener(
+					v -> {
+						intent =
+								IssueContext.fromIntent(((IssueDetailActivity) context).getIntent())
+										.getRepository()
+										.getIntent(context, CommitDetailActivity.class);
+						intent.putExtra("sha", timelineComment.getRefCommitSha());
+						context.startActivity(intent);
+					});
+		}
+
+		private void handleReviewEvent(TimelineComment timelineComment, String info) {
+			TextView startView = createBaseTextView();
+
+			switch (timelineComment.getType().toLowerCase()) {
+				case "review":
+					if (!timelineComment.getBody().isEmpty()) {
+						startView.setText(
+								context.getString(
+										R.string.timelineReviewLeftComment,
+										timelineComment.getUser().getLogin(),
+										timelineComment.getBody(),
+										info));
+						timelineIcon.setImageDrawable(
+								ContextCompat.getDrawable(context, R.drawable.ic_comment));
+					} else {
+						hideTimelineViews();
+						return;
+					}
+					break;
+
+				case "dismiss_review":
+					hideTimelineViews();
+					return;
+
+				case "review_request":
+					String reviewer = getReviewerName(timelineComment);
+					startView.setText(
+							context.getString(
+									R.string.timelineReviewRequest,
+									timelineComment.getUser().getLogin(),
+									reviewer,
+									info));
+					timelineIcon.setImageDrawable(
+							ContextCompat.getDrawable(context, R.drawable.ic_watchers));
+					break;
+			}
+
+			startView.setTextSize(14);
+			timelineData.addView(startView);
+		}
+
+		private String getReviewerName(TimelineComment timelineComment) {
+			if (timelineComment.getAssignee() != null) {
+				return timelineComment.getAssignee().getLogin();
+			} else if (timelineComment.getAssigneeTeam() != null) {
+				return timelineComment.getAssigneeTeam().getName();
+			}
+			return "";
+		}
+
+		private void handleChangeTitleEvent(TimelineComment timelineComment, String info) {
+			TextView startView = createBaseTextView();
+
+			startView.setText(
+					context.getString(
+							R.string.timelineChangeTitle,
+							timelineComment.getUser().getLogin(),
+							timelineComment.getOldTitle(),
+							timelineComment.getNewTitle(),
+							info));
+			startView.setTextSize(14);
+
+			timelineIcon.setImageDrawable(ContextCompat.getDrawable(context, R.drawable.ic_edit));
+			timelineData.addView(startView);
+		}
+
+		private void handleLockEvent(TimelineComment timelineComment, String info) {
+			TextView startView = createBaseTextView();
+
+			if (timelineComment.getType().equalsIgnoreCase("lock")) {
+				startView.setText(
+						context.getString(
+								R.string.timelineLocked,
+								timelineComment.getUser().getLogin(),
+								timelineComment.getBody(),
+								info));
+				timelineIcon.setImageDrawable(
+						ContextCompat.getDrawable(context, R.drawable.ic_lock));
+			} else {
+				startView.setText(
+						context.getString(
+								R.string.timelineUnlocked,
+								timelineComment.getUser().getLogin(),
+								info));
+				timelineIcon.setImageDrawable(
+						ContextCompat.getDrawable(context, R.drawable.ic_key));
+			}
+
+			startView.setTextSize(14);
+			timelineData.addView(startView);
+		}
+
+		private void handleDependencyEvent(TimelineComment timelineComment, String info) {
+			TextView startView = createBaseTextView();
+
+			if (timelineComment.getType().equalsIgnoreCase("add_dependency")) {
+				startView.setText(
+						context.getString(
+								R.string.timelineDependencyAdded,
+								timelineComment.getUser().getLogin(),
+								timelineComment.getDependentIssue().getNumber(),
+								info));
+			} else {
+				startView.setText(
+						context.getString(
+								R.string.timelineDependencyRemoved,
+								timelineComment.getUser().getLogin(),
+								timelineComment.getDependentIssue().getNumber(),
+								info));
+				timelineIcon.setColorFilter(
+						ContextCompat.getColor(context, R.color.iconIssuePrClosedColor));
+			}
+
+			startView.setTextSize(14);
+			timelineIcon.setImageDrawable(
+					ContextCompat.getDrawable(context, R.drawable.ic_dependency));
+			timelineData.addView(startView);
+		}
+
+		private void handleProjectEvent(TimelineComment timelineComment, String info) {
+			TextView startView = createBaseTextView();
+
+			if (timelineComment.getProjectId() > 0) {
+				startView.setText(
+						context.getString(
+								R.string.timelineProjectAdded,
+								timelineComment.getUser().getLogin(),
+								info));
+			} else {
+				startView.setText(
+						context.getString(
+								R.string.timelineProjectRemoved,
+								timelineComment.getUser().getLogin(),
+								info));
+				timelineIcon.setColorFilter(
+						ContextCompat.getColor(context, R.color.iconIssuePrClosedColor));
+			}
+
+			startView.setTextSize(14);
+			timelineIcon.setImageDrawable(ContextCompat.getDrawable(context, R.drawable.ic_kanban));
+			timelineData.addView(startView);
+		}
+
+		private void handleDueDateEvent(TimelineComment timelineComment, String info) {
+			TextView startView = createBaseTextView();
+
+			switch (timelineComment.getType().toLowerCase()) {
+				case "added_deadline":
+					startView.setText(
+							context.getString(
+									R.string.timelineDueDateAdded,
+									timelineComment.getUser().getLogin(),
+									timelineComment.getBody(),
+									info));
+					break;
+
+				case "modified_deadline":
+					String[] dates = timelineComment.getBody().split("\\|");
+					startView.setText(
+							context.getString(
+									R.string.timelineDueDateModified,
+									timelineComment.getUser().getLogin(),
+									dates[0],
+									dates[1],
+									info));
+					break;
+
+				case "removed_deadline":
+					startView.setText(
+							context.getString(
+									R.string.timelineDueDateRemoved,
+									timelineComment.getUser().getLogin(),
+									timelineComment.getBody(),
+									info));
+					timelineIcon.setColorFilter(
+							ContextCompat.getColor(context, R.color.iconIssuePrClosedColor));
+					break;
+			}
+
+			startView.setTextSize(14);
+			timelineIcon.setImageDrawable(ContextCompat.getDrawable(context, R.drawable.ic_clock));
+			timelineData.addView(startView);
+		}
+
+		private void handleBranchEvent(TimelineComment timelineComment, String info) {
+			TextView startView = createBaseTextView();
+
+			if (timelineComment.getType().equalsIgnoreCase("change_target_branch")) {
+				startView.setText(
+						context.getString(
+								R.string.timelineBranchChanged,
+								timelineComment.getUser().getLogin(),
+								timelineComment.getOldRef(),
+								timelineComment.getNewRef(),
+								info));
+			} else {
+				startView.setText(
+						context.getString(
+								R.string.timelineBranchDeleted,
+								timelineComment.getUser().getLogin(),
+								timelineComment.getOldRef(),
+								info));
+				timelineIcon.setColorFilter(
+						ContextCompat.getColor(context, R.color.iconIssuePrClosedColor));
+			}
+
+			startView.setTextSize(14);
+			timelineIcon.setImageDrawable(ContextCompat.getDrawable(context, R.drawable.ic_branch));
+			timelineData.addView(startView);
+		}
+
+		private void handleTimeTrackingEvent(TimelineComment timelineComment, String info) {
+			TextView startView = createBaseTextView();
+
+			switch (timelineComment.getType().toLowerCase()) {
+				case "start_tracking":
+					startView.setText(
+							context.getString(
+									R.string.timelineTimeTrackingStart,
+									timelineComment.getUser().getLogin(),
+									info));
+					break;
+
+				case "stop_tracking":
+					startView.setText(
+							context.getString(
+									R.string.timelineTimeTrackingStop,
+									timelineComment.getUser().getLogin(),
+									info));
+					break;
+
+				case "cancel_tracking":
+					startView.setText(
+							context.getString(
+									R.string.timelineTimeTrackingCancel,
+									timelineComment.getUser().getLogin(),
+									info));
+					timelineIcon.setColorFilter(
+							ContextCompat.getColor(context, R.color.iconIssuePrClosedColor));
+					break;
+
+				case "add_time_manual":
+					startView.setText(
+							context.getString(
+									R.string.timelineTimeTrackingAddManualTime,
+									timelineComment.getUser().getLogin(),
+									timelineComment.getBody(),
+									info));
+					break;
+
+				case "delete_time_manual":
+					startView.setText(
+							context.getString(
+									R.string.timelineTimeTrackingDeleteManualTime,
+									timelineComment.getUser().getLogin(),
+									timelineComment.getBody(),
+									info));
+					timelineIcon.setColorFilter(
+							ContextCompat.getColor(context, R.color.iconIssuePrClosedColor));
+					break;
+			}
+
+			startView.setTextSize(14);
+			timelineIcon.setImageDrawable(ContextCompat.getDrawable(context, R.drawable.ic_clock));
+			timelineData.addView(startView);
+		}
+
+		private void handleIssueRefEvent(TimelineComment timelineComment, String info) {
+			RecyclerView recyclerView = new RecyclerView(context);
+
+			if (timelineComment.getType().equalsIgnoreCase("change_issue_ref")) {
+				String text =
+						context.getString(
+								R.string.timelineChangeIssueRef,
+								timelineComment.getUser().getLogin(),
+								timelineComment.getNewRef(),
+								info);
+				Markdown.render(context, text, recyclerView, issue.getRepository());
+				timelineIcon.setImageDrawable(
+						ContextCompat.getDrawable(context, R.drawable.ic_branch));
+			} else {
+				boolean isIssue = issue.getIssueType().equalsIgnoreCase("Issue");
+				String text =
+						context.getString(
+								isIssue ? R.string.timelineRefIssue : R.string.timelineRefPr,
+								timelineComment.getUser().getLogin(),
+								timelineComment.getRefIssue().getHtmlUrl(),
+								info);
+				Markdown.render(context, text, recyclerView, issue.getRepository());
+				timelineIcon.setImageDrawable(
+						ContextCompat.getDrawable(context, R.drawable.ic_bookmark));
+			}
+
+			timelineData.addView(recyclerView);
+		}
+
+		private void handlePinEvent(TimelineComment timelineComment, String info) {
+			TextView startView = createBaseTextView();
+
+			startView.setText(
+					context.getString(
+							R.string.timelinePinned, timelineComment.getUser().getLogin(), info));
+			startView.setTextSize(14);
+
+			timelineIcon.setImageDrawable(ContextCompat.getDrawable(context, R.drawable.ic_pin));
+			timelineData.addView(startView);
+		}
+
+		private TextView createBaseTextView() {
+			TextView textView = new TextView(context);
+			applyThemeColor(textView);
+			return textView;
+		}
+
+		private void applyThemeColor(TextView textView) {
+			String themeValue =
+					AppDatabaseSettings.getSettingsValue(
+							context, AppDatabaseSettings.APP_THEME_KEY);
+			if ("8".equals(themeValue) && !isNightModeThemeDynamic(context)) {
+				textView.setTextColor(AppUtil.dynamicColorResource(context));
 			}
 		}
 
@@ -1416,7 +1094,6 @@ public class IssueCommentsAdapter extends RecyclerView.Adapter<RecyclerView.View
 								.placeholder(R.drawable.loader_animated)
 								.centerCrop()
 								.into(avatarView);
-
 				glideTargets.add(target);
 			}
 		}
@@ -1437,11 +1114,176 @@ public class IssueCommentsAdapter extends RecyclerView.Adapter<RecyclerView.View
 			glideTargets.clear();
 			isAttachedToWindow = false;
 		}
+
+		@SuppressLint("InflateParams")
+		private void setupMenuClickListener(View view) {
+			ImageView menu = view.findViewById(R.id.menu);
+			menu.setOnClickListener(v -> showBottomSheetMenu());
+		}
+
+		@SuppressLint("InflateParams")
+		private void showBottomSheetMenu() {
+			final String loginUid =
+					((BaseActivity) context).getAccount().getAccount().getUserName();
+
+			LinearLayout root = new LinearLayout(context);
+			root.setLayoutParams(
+					new ViewGroup.LayoutParams(
+							ViewGroup.LayoutParams.MATCH_PARENT,
+							ViewGroup.LayoutParams.WRAP_CONTENT));
+
+			View vw =
+					LayoutInflater.from(context)
+							.inflate(R.layout.bottom_sheet_issue_comments, root, false);
+
+			BottomSheetDialog dialog = new BottomSheetDialog(context);
+			dialog.setContentView(vw);
+
+			configureMenuItems(vw, dialog, loginUid);
+			setupReactionSpinner(vw, dialog);
+
+			dialog.show();
+		}
+
+		private void configureMenuItems(View vw, BottomSheetDialog dialog, String loginUid) {
+			TextView commentMenuEdit = vw.findViewById(R.id.commentMenuEdit);
+			TextView commentShare = vw.findViewById(R.id.issueCommentShare);
+			TextView commentMenuQuote = vw.findViewById(R.id.commentMenuQuote);
+			TextView commentMenuCopy = vw.findViewById(R.id.commentMenuCopy);
+			TextView commentMenuDelete = vw.findViewById(R.id.commentMenuDelete);
+			TextView issueCommentCopyUrl = vw.findViewById(R.id.issueCommentCopyUrl);
+			TextView open = vw.findViewById(R.id.open);
+			LinearLayout linearLayout = vw.findViewById(R.id.commentReactionButtons);
+
+			if (issue.getRepository().getRepository().isArchived()) {
+				commentMenuEdit.setVisibility(View.GONE);
+				commentMenuDelete.setVisibility(View.GONE);
+				commentMenuQuote.setVisibility(View.GONE);
+				linearLayout.setVisibility(View.GONE);
+			}
+
+			if (!loginUid.contentEquals(issueComment.getUser().getLogin())
+					&& !issue.getRepository().getPermissions().isPush()) {
+				commentMenuEdit.setVisibility(View.GONE);
+				commentMenuDelete.setVisibility(View.GONE);
+			}
+
+			if (issueComment.getBody().isEmpty()) {
+				commentMenuCopy.setVisibility(View.GONE);
+			}
+
+			commentMenuEdit.setOnClickListener(v1 -> handleEditComment(dialog));
+			commentShare.setOnClickListener(v1 -> handleShareComment(dialog));
+			issueCommentCopyUrl.setOnClickListener(v1 -> handleCopyUrl(dialog));
+			open.setOnClickListener(v1 -> handleOpenInBrowser(dialog));
+			commentMenuQuote.setOnClickListener(v1 -> handleQuoteComment(dialog));
+			commentMenuCopy.setOnClickListener(v1 -> handleCopyComment(dialog));
+			commentMenuDelete.setOnClickListener(v1 -> handleDeleteComment(dialog));
+		}
+
+		private void setupReactionSpinner(View vw, BottomSheetDialog dialog) {
+			LinearLayout linearLayout = vw.findViewById(R.id.commentReactionButtons);
+
+			TextView loadReactions = new TextView(context);
+			loadReactions.setText(context.getString(R.string.genericWaitFor));
+			loadReactions.setGravity(Gravity.CENTER);
+			loadReactions.setLayoutParams(
+					new ViewGroup.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, 160));
+			linearLayout.addView(loadReactions);
+
+			Bundle bundle1 = new Bundle();
+			bundle1.putAll(bundle);
+			bundle1.putInt("commentId", Math.toIntExact(issueComment.getId()));
+
+			ReactionSpinner reactionSpinner = new ReactionSpinner(context, bundle1);
+			reactionSpinner.setOnInteractedListener(
+					() -> {
+						onInteractedListener.run();
+						dialog.dismiss();
+					});
+
+			reactionSpinner.setOnLoadingFinishedListener(
+					() -> {
+						linearLayout.removeView(loadReactions);
+						reactionSpinner.setLayoutParams(
+								new ViewGroup.LayoutParams(
+										ViewGroup.LayoutParams.MATCH_PARENT, 160));
+						linearLayout.addView(reactionSpinner);
+					});
+		}
+
+		private void handleEditComment(BottomSheetDialog dialog) {
+			IssueDetailActivity parentActivity = (IssueDetailActivity) context;
+			EditText text = parentActivity.findViewById(R.id.comment_reply);
+			text.append(issueComment.getBody());
+
+			tinyDB.putString("commentAction", "edit");
+			tinyDB.putInt("commentId", Math.toIntExact(issueComment.getId()));
+			dialog.dismiss();
+		}
+
+		private void handleShareComment(BottomSheetDialog dialog) {
+			AppUtil.sharingIntent(context, issueComment.getHtmlUrl());
+			dialog.dismiss();
+		}
+
+		private void handleCopyUrl(BottomSheetDialog dialog) {
+			AppUtil.copyToClipboard(
+					context,
+					issueComment.getHtmlUrl(),
+					context.getString(R.string.copyIssueUrlToastMsg));
+			dialog.dismiss();
+		}
+
+		private void handleOpenInBrowser(BottomSheetDialog dialog) {
+			AppUtil.openUrlInBrowser(context, issueComment.getHtmlUrl());
+			dialog.dismiss();
+		}
+
+		private void handleQuoteComment(BottomSheetDialog dialog) {
+			StringBuilder stringBuilder = new StringBuilder();
+			String commenterName = issueComment.getUser().getLogin();
+
+			if (!commenterName.equals(
+					((BaseActivity) context).getAccount().getAccount().getUserName())) {
+				stringBuilder.append("@").append(commenterName).append("\n\n");
+			}
+
+			String[] lines = issueComment.getBody().split("\\R");
+			for (String line : lines) {
+				stringBuilder.append(">").append(line).append("\n");
+			}
+
+			IssueDetailActivity parentActivity = (IssueDetailActivity) context;
+			EditText text = parentActivity.findViewById(R.id.comment_reply);
+			text.setText(stringBuilder.append("\n").toString());
+			dialog.dismiss();
+		}
+
+		private void handleCopyComment(BottomSheetDialog dialog) {
+			ClipboardManager clipboard =
+					(ClipboardManager)
+							Objects.requireNonNull(context)
+									.getSystemService(Context.CLIPBOARD_SERVICE);
+
+			ClipData clip =
+					ClipData.newPlainText(
+							"Comment on issue #" + issue.getIssueIndex(), issueComment.getBody());
+			clipboard.setPrimaryClip(clip);
+
+			dialog.dismiss();
+			Toasty.success(context, context.getString(R.string.copyIssueCommentToastMsg));
+		}
+
+		private void handleDeleteComment(BottomSheetDialog dialog) {
+			deleteIssueComment(
+					context, Math.toIntExact(issueComment.getId()), getBindingAdapterPosition());
+			dialog.dismiss();
+		}
 	}
 
 	private void getAttachments(
 			Long issueIndex, View view, String token, IssueCommentViewHolder holder) {
-
 		LinearLayout attachmentFrame = view.findViewById(R.id.attachmentFrame);
 		LinearLayout attachmentsView = view.findViewById(R.id.attachmentsView);
 
@@ -1454,101 +1296,19 @@ public class IssueCommentsAdapter extends RecyclerView.Adapter<RecyclerView.View
 
 		call.enqueue(
 				new Callback<>() {
-
 					@Override
 					public void onResponse(
 							@NonNull Call<List<Attachment>> call,
 							@NonNull retrofit2.Response<List<Attachment>> response) {
+						if (holder == null || !holder.isAttachedToWindow) return;
 
-						if (holder == null || !holder.isAttachedToWindow) {
-							return;
-						}
-
-						List<Attachment> attachment = response.body();
-
-						if (response.code() == 200) {
-							assert attachment != null;
-
-							if (!attachment.isEmpty()) {
-
-								attachmentFrame.setVisibility(View.VISIBLE);
-								LinearLayout.LayoutParams paramsAttachment =
-										new LinearLayout.LayoutParams(96, 96);
-								paramsAttachment.setMargins(0, 0, 48, 0);
-
-								for (int i = 0; i < attachment.size(); i++) {
-
-									ImageView attachmentView = new ImageView(context);
-									MaterialCardView materialCardView =
-											new MaterialCardView(context);
-									materialCardView.setLayoutParams(paramsAttachment);
-									materialCardView.setStrokeWidth(0);
-									materialCardView.setRadius(28);
-									materialCardView.setCardBackgroundColor(Color.TRANSPARENT);
-
-									if (Arrays.asList(
-													"bmp", "gif", "jpg", "jpeg", "png", "webp",
-													"heic", "heif")
-											.contains(
-													FilenameUtils.getExtension(
-																	attachment.get(i).getName())
-															.toLowerCase())) {
-
-										if (holder.isActivityValid()) {
-											Target<Drawable> target =
-													Glide.with(context)
-															.load(
-																	attachment
-																					.get(i)
-																					.getBrowserDownloadUrl()
-																			+ "?token="
-																			+ token)
-															.diskCacheStrategy(
-																	DiskCacheStrategy.ALL)
-															.placeholder(R.drawable.loader_animated)
-															.centerCrop()
-															.error(R.drawable.ic_close)
-															.into(attachmentView);
-
-											holder.glideTargets.add(target);
-										}
-
-										attachmentsView.addView(materialCardView);
-										attachmentView.setLayoutParams(paramsAttachment);
-										materialCardView.addView(attachmentView);
-
-										int finalI1 = i;
-										materialCardView.setOnClickListener(
-												v1 ->
-														imageViewDialog(
-																attachment
-																		.get(finalI1)
-																		.getBrowserDownloadUrl(),
-																token,
-																holder));
-
-									} else {
-
-										attachmentView.setImageResource(
-												R.drawable.ic_file_download);
-										attachmentView.setPadding(4, 4, 4, 4);
-										attachmentsView.addView(materialCardView);
-										attachmentView.setLayoutParams(paramsAttachment);
-										materialCardView.addView(attachmentView);
-
-										// int finalI = i;
-										materialCardView.setOnClickListener(
-												v1 -> {
-													// filesize = attachment.get(finalI).getSize();
-													// filename = attachment.get(finalI).getName();
-													// filehash = attachment.get(finalI).getUuid();
-													// requestFileDownload();
-												});
-									}
-								}
-							} else {
-								attachmentFrame.setVisibility(View.GONE);
-							}
+						if (response.code() == 200
+								&& response.body() != null
+								&& !response.body().isEmpty()) {
+							attachmentFrame.setVisibility(View.VISIBLE);
+							displayAttachments(response.body(), attachmentsView, token, holder);
+						} else {
+							attachmentFrame.setVisibility(View.GONE);
 						}
 					}
 
@@ -1558,50 +1318,95 @@ public class IssueCommentsAdapter extends RecyclerView.Adapter<RecyclerView.View
 				});
 	}
 
-	private void imageViewDialog(String url, String token, IssueCommentViewHolder holder) {
+	private void displayAttachments(
+			List<Attachment> attachments,
+			LinearLayout attachmentsView,
+			String token,
+			IssueCommentViewHolder holder) {
+		LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(96, 96);
+		params.setMargins(0, 0, 48, 0);
 
-		if (holder == null || !holder.isActivityValid()) {
-			return;
+		for (Attachment attachment : attachments) {
+			MaterialCardView cardView = createAttachmentCard(params);
+
+			if (isImageAttachment(attachment.getName())) {
+				setupImageAttachment(cardView, attachment, token, holder, params);
+			} else {
+				setupFileAttachment(cardView, attachment, params);
+			}
+
+			attachmentsView.addView(cardView);
+		}
+	}
+
+	private MaterialCardView createAttachmentCard(LinearLayout.LayoutParams params) {
+		MaterialCardView cardView = new MaterialCardView(context);
+		cardView.setLayoutParams(params);
+		cardView.setStrokeWidth(0);
+		cardView.setRadius(28);
+		cardView.setCardBackgroundColor(Color.TRANSPARENT);
+		return cardView;
+	}
+
+	private boolean isImageAttachment(String filename) {
+		String ext = FilenameUtils.getExtension(filename).toLowerCase();
+		return Arrays.asList("bmp", "gif", "jpg", "jpeg", "png", "webp", "heic", "heif")
+				.contains(ext);
+	}
+
+	private void setupImageAttachment(
+			MaterialCardView cardView,
+			Attachment attachment,
+			String token,
+			IssueCommentViewHolder holder,
+			LinearLayout.LayoutParams params) {
+		ImageView imageView = new ImageView(context);
+		imageView.setLayoutParams(params);
+
+		if (holder.isActivityValid()) {
+			Target<Drawable> target =
+					Glide.with(context)
+							.load(attachment.getBrowserDownloadUrl() + "?token=" + token)
+							.diskCacheStrategy(DiskCacheStrategy.ALL)
+							.placeholder(R.drawable.loader_animated)
+							.centerCrop()
+							.error(R.drawable.ic_close)
+							.into(imageView);
+			holder.glideTargets.add(target);
 		}
 
-		MaterialAlertDialogBuilder materialAlertDialogBuilder =
+		cardView.addView(imageView);
+		cardView.setOnClickListener(
+				v -> imageViewDialog(attachment.getBrowserDownloadUrl(), token, holder));
+	}
+
+	private void setupFileAttachment(
+			MaterialCardView cardView, Attachment attachment, LinearLayout.LayoutParams params) {
+		ImageView imageView = new ImageView(context);
+		imageView.setImageResource(R.drawable.ic_file_download);
+		imageView.setPadding(4, 4, 4, 4);
+		imageView.setLayoutParams(params);
+
+		cardView.addView(imageView);
+		cardView.setOnClickListener(
+				v -> {
+					// TODO: Implement file download
+				});
+	}
+
+	private void imageViewDialog(String url, String token, IssueCommentViewHolder holder) {
+		if (holder == null || !holder.isActivityValid()) return;
+
+		MaterialAlertDialogBuilder builder =
 				new MaterialAlertDialogBuilder(
 						context, R.style.ThemeOverlay_Material3_Dialog_Alert);
 
-		CustomImageViewDialogBinding imageViewDialogBinding =
+		CustomImageViewDialogBinding binding =
 				CustomImageViewDialogBinding.inflate(LayoutInflater.from(context));
-		View view = imageViewDialogBinding.getRoot();
-		materialAlertDialogBuilder.setView(view);
+		builder.setView(binding.getRoot());
+		builder.setNeutralButton(context.getString(R.string.close), null);
 
-		materialAlertDialogBuilder.setNeutralButton(context.getString(R.string.close), null);
-
-		CustomTarget<Bitmap> target =
-				new CustomTarget<Bitmap>() {
-					@Override
-					public void onResourceReady(
-							@NonNull Bitmap resource, Transition<? super Bitmap> transition) {
-						if (holder.isAttachedToWindow) {
-							imageViewDialogBinding.imageView.setImageBitmap(resource);
-							imageViewDialogBinding.imageView.buildDrawingCache();
-						}
-					}
-
-					@Override
-					public void onLoadCleared(Drawable placeholder) {
-						if (holder.isAttachedToWindow) {
-							imageViewDialogBinding.imageView.setImageDrawable(placeholder);
-						}
-					}
-
-					@Override
-					public void onLoadFailed(@Nullable Drawable errorDrawable) {
-						super.onLoadFailed(errorDrawable);
-						if (holder.isAttachedToWindow) {
-							imageViewDialogBinding.imageView.setImageDrawable(errorDrawable);
-						}
-					}
-				};
-
+		CustomTarget<Bitmap> target = createImageTarget(binding, holder);
 		holder.glideTargets.add(target);
 
 		if (holder.isActivityValid()) {
@@ -1615,8 +1420,7 @@ public class IssueCommentsAdapter extends RecyclerView.Adapter<RecyclerView.View
 					.into(target);
 		}
 
-		AlertDialog dialog = materialAlertDialogBuilder.create();
-
+		AlertDialog dialog = builder.create();
 		dialog.setOnDismissListener(
 				dialogInterface -> {
 					if (holder.isActivityValid()) {
@@ -1624,16 +1428,86 @@ public class IssueCommentsAdapter extends RecyclerView.Adapter<RecyclerView.View
 						holder.glideTargets.remove(target);
 					}
 				});
-
 		dialog.show();
 	}
 
-	@Override
-	public void onViewRecycled(@NonNull RecyclerView.ViewHolder holder) {
-		super.onViewRecycled(holder);
+	private CustomTarget<Bitmap> createImageTarget(
+			CustomImageViewDialogBinding binding, IssueCommentViewHolder holder) {
+		return new CustomTarget<>() {
+			@Override
+			public void onResourceReady(
+					@NonNull Bitmap resource, Transition<? super Bitmap> transition) {
+				if (holder.isAttachedToWindow) {
+					binding.imageView.setImageBitmap(resource);
+					binding.imageView.buildDrawingCache();
+				}
+			}
 
-		if (holder instanceof IssueCommentViewHolder) {
-			((IssueCommentViewHolder) holder).clearGlideRequests();
-		}
+			@Override
+			public void onLoadCleared(Drawable placeholder) {
+				if (holder.isAttachedToWindow) {
+					binding.imageView.setImageDrawable(placeholder);
+				}
+			}
+
+			@Override
+			public void onLoadFailed(@Nullable Drawable errorDrawable) {
+				super.onLoadFailed(errorDrawable);
+				if (holder.isAttachedToWindow) {
+					binding.imageView.setImageDrawable(errorDrawable);
+				}
+			}
+		};
+	}
+
+	private void updateAdapter(int position) {
+		issuesComments.remove(position);
+		notifyItemRemoved(position);
+		notifyItemRangeChanged(position, issuesComments.size());
+	}
+
+	private void deleteIssueComment(final Context ctx, final int commentId, int position) {
+		Call<Void> call =
+				RetrofitClient.getApiInterface(ctx)
+						.issueDeleteComment(
+								issue.getRepository().getOwner(),
+								issue.getRepository().getName(),
+								(long) commentId);
+
+		call.enqueue(
+				new Callback<>() {
+					@Override
+					public void onResponse(
+							@NonNull Call<Void> call, @NonNull retrofit2.Response<Void> response) {
+						switch (response.code()) {
+							case 204:
+								updateAdapter(position);
+								Toasty.success(
+										ctx,
+										ctx.getResources()
+												.getString(R.string.deleteCommentSuccess));
+								IssuesFragment.resumeIssues = true;
+								break;
+							case 401:
+								AlertDialogs.authorizationTokenRevokedDialog(ctx);
+								break;
+							case 403:
+								Toasty.error(ctx, ctx.getString(R.string.authorizeError));
+								break;
+							case 404:
+								Toasty.warning(ctx, ctx.getString(R.string.apiNotFound));
+								break;
+							default:
+								Toasty.error(ctx, ctx.getString(R.string.genericError));
+						}
+					}
+
+					@Override
+					public void onFailure(@NonNull Call<Void> call, @NonNull Throwable t) {
+						Toasty.error(
+								ctx,
+								ctx.getResources().getString(R.string.genericServerResponseError));
+					}
+				});
 	}
 }

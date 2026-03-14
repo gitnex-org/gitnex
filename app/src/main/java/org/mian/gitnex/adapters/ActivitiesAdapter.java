@@ -20,8 +20,6 @@ import com.google.android.material.card.MaterialCardView;
 import com.vdurmont.emoji.EmojiParser;
 import java.util.List;
 import java.util.Locale;
-import java.util.Objects;
-import org.apache.commons.lang3.StringUtils;
 import org.gitnex.tea4j.v2.models.Activity;
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -32,6 +30,7 @@ import org.mian.gitnex.activities.ProfileActivity;
 import org.mian.gitnex.activities.RepoDetailActivity;
 import org.mian.gitnex.helpers.AppUtil;
 import org.mian.gitnex.helpers.ClickListener;
+import org.mian.gitnex.helpers.Markdown;
 import org.mian.gitnex.helpers.TimeHelper;
 import org.mian.gitnex.helpers.TinyDB;
 import org.mian.gitnex.helpers.contexts.IssueContext;
@@ -392,33 +391,132 @@ public class ActivitiesAdapter extends RecyclerView.Adapter<RecyclerView.ViewHol
 							200);
 		}
 
+		private static class ExtractedData {
+			String id = "";
+			String content = "";
+		}
+
 		private String getString() {
 			String content = activityObject.getContent();
-			String id;
+			ExtractedData data = extractIdAndContent(content);
+			return data.id;
+		}
 
-			int arrayStart = content.trim().indexOf("[\"");
-			if (arrayStart != -1) {
+		private String cleanRawContent(String input) {
+			if (input == null) return "";
+
+			String cleaned = input.trim();
+
+			if (cleaned.startsWith("\"")) {
+				cleaned = cleaned.substring(1);
+			}
+			if (cleaned.endsWith("\"")) {
+				cleaned = cleaned.substring(0, cleaned.length() - 1);
+			}
+
+			cleaned = unescapeJson(cleaned);
+			cleaned = cleaned.replace("```", "");
+			cleaned = cleaned.replace("`", "");
+
+			return cleaned.replaceAll("[\\n\\r\\t]+", " ").replaceAll("\\s+", " ").trim();
+		}
+
+		private String unescapeJson(String input) {
+			StringBuilder result = new StringBuilder();
+			int i = 0;
+			while (i < input.length()) {
+				char c = input.charAt(i);
+				if (c == '\\' && i + 1 < input.length()) {
+					char next = input.charAt(i + 1);
+					switch (next) {
+						case '\\' -> {
+							result.append('\\');
+							i += 2;
+							continue;
+						}
+						case '"' -> {
+							result.append('"');
+							i += 2;
+							continue;
+						}
+						case '\'' -> {
+							result.append('\'');
+							i += 2;
+							continue;
+						}
+						case 'n' -> {
+							result.append('\n');
+							i += 2;
+							continue;
+						}
+						case 'r' -> {
+							result.append('\r');
+							i += 2;
+							continue;
+						}
+						case 't' -> {
+							result.append('\t');
+							i += 2;
+							continue;
+						}
+						case 'u' -> {
+							if (i + 5 < input.length()) {
+								try {
+									String hex = input.substring(i + 2, i + 6);
+									int code = Integer.parseInt(hex, 16);
+									result.append((char) code);
+									i += 6;
+									continue;
+								} catch (NumberFormatException ignored) {
+								}
+							}
+						}
+					}
+					result.append('\\').append(next);
+					i += 2;
+					continue;
+				}
+				result.append(c);
+				i++;
+			}
+			return result.toString();
+		}
+
+		private ExtractedData extractIdAndContent(String rawContent) {
+			ExtractedData data = new ExtractedData();
+			if (rawContent == null || rawContent.isEmpty()) return data;
+
+			String trimmed = rawContent.trim();
+
+			if (trimmed.startsWith("[\"")) {
 				try {
-					String jsonPart = content.trim().substring(arrayStart);
-					String cleanContent = jsonPart.substring(1, jsonPart.length() - 1);
-					String[] contentParts = cleanContent.split(",", 2);
-					id = contentParts[0].trim();
+					String contentInside = trimmed.substring(1, trimmed.length() - 1);
 
-					if (id.startsWith("\"") && id.endsWith("\"")) {
-						id = id.substring(1, id.length() - 1);
+					String[] parts = contentInside.split("\",\"", 2);
+
+					data.id = cleanRawContent(parts[0]);
+
+					if (parts.length > 1) {
+						String content = parts[1];
+						if (content.endsWith("\"")) {
+							content = content.substring(0, content.length() - 1);
+						}
+						data.content = cleanRawContent(content);
 					}
 				} catch (Exception e) {
-					id = "0";
+					data.id = "0";
 				}
 			} else {
-				String[] contentParts = content.split("\\|");
-				id = contentParts[0];
+				String[] parts = trimmed.split("\\|");
+				data.id = cleanRawContent(parts[0]);
+				if (parts.length > 1) {
+					data.content = cleanRawContent(parts[1]);
+				}
 			}
-			return id;
+			return data;
 		}
 
 		void bindData(Activity activity, int position) {
-
 			this.activityObject = activity;
 			Locale locale = context.getResources().getConfiguration().getLocales().get(0);
 
@@ -429,603 +527,176 @@ public class ActivitiesAdapter extends RecyclerView.Adapter<RecyclerView.ViewHol
 					.centerCrop()
 					.into(userAvatar);
 
+			int lightGray =
+					ResourcesCompat.getColor(context.getResources(), R.color.lightGray, null);
+			String grayHex = String.format("#%06X", (0xFFFFFF & lightGray));
 			String username =
-					"<font color='"
-							+ ResourcesCompat.getColor(
-									context.getResources(), R.color.lightGray, null)
-							+ "'>"
-							+ activity.getActUser().getLogin()
-							+ "</font>";
+					"<font color='" + grayHex + "'>" + activity.getActUser().getLogin() + "</font>";
 
 			String headerString = "";
 			String typeString = "";
+			String opType = activity.getOpType().getValue().toLowerCase();
 
-			if (activity.getOpType().getValue().contains("repo")) {
+			dashTextFrame.setVisibility(View.GONE);
+			dashText.setVisibility(View.VISIBLE);
 
-				if (activity.getOpType().getValue().equalsIgnoreCase("create_repo")) {
-
-					headerString =
-							"<font color='"
-									+ ResourcesCompat.getColor(
-											context.getResources(), R.color.lightGray, null)
-									+ "'>"
-									+ activity.getRepo().getFullName()
-									+ "</font>";
-					typeString = context.getString(R.string.createdRepository);
-					typeIcon.setImageResource(R.drawable.ic_repo);
-				} else if (activity.getOpType().getValue().equalsIgnoreCase("rename_repo")) {
-
-					headerString =
-							"<font color='"
-									+ ResourcesCompat.getColor(
-											context.getResources(), R.color.lightGray, null)
-									+ "'>"
-									+ activity.getRepo().getFullName()
-									+ "</font>";
-					typeString =
-							String.format(
-									context.getString(R.string.renamedRepository),
-									activity.getContent());
-					typeIcon.setImageResource(R.drawable.ic_repo);
-				} else if (activity.getOpType().getValue().equalsIgnoreCase("star_repo")) {
-
-					headerString =
-							"<font color='"
-									+ ResourcesCompat.getColor(
-											context.getResources(), R.color.lightGray, null)
-									+ "'>"
-									+ activity.getRepo().getFullName()
-									+ "</font>";
-					typeString = context.getString(R.string.starredRepository);
-					typeIcon.setImageResource(R.drawable.ic_star);
-				} else if (activity.getOpType().getValue().equalsIgnoreCase("transfer_repo")) {
-
-					headerString =
-							"<font color='"
-									+ ResourcesCompat.getColor(
-											context.getResources(), R.color.lightGray, null)
-									+ "'>"
-									+ activity.getRepo().getFullName()
-									+ "</font>";
-					typeString =
-							String.format(
-									context.getString(R.string.transferredRepository),
-									activity.getContent());
-					typeIcon.setImageResource(R.drawable.ic_arrow_up);
-				} else if (activity.getOpType().getValue().equalsIgnoreCase("commit_repo")) {
-
-					headerString =
-							"<font color='"
-									+ ResourcesCompat.getColor(
-											context.getResources(), R.color.lightGray, null)
-									+ "'>"
-									+ activity.getRepo().getFullName()
-									+ "</font>";
-
-					String branch =
-							"<font color='"
-									+ ResourcesCompat.getColor(
-											context.getResources(), R.color.lightGray, null)
-									+ "'>"
-									+ activity.getRefName()
-											.substring(activity.getRefName().lastIndexOf("/") + 1)
-											.trim()
-									+ "</font>";
-					if (activity.getContent().isEmpty()) {
+			if (opType.contains("repo")) {
+				headerString =
+						"<font color='"
+								+ grayHex
+								+ "'>"
+								+ activity.getRepo().getFullName()
+								+ "</font>";
+				switch (opType) {
+					case "create_repo" -> {
+						typeString = context.getString(R.string.createdRepository);
+						typeIcon.setImageResource(R.drawable.ic_repo);
+					}
+					case "rename_repo" -> {
 						typeString =
-								String.format(context.getString(R.string.createdBranch), branch);
-					} else {
-						typeString = String.format(context.getString(R.string.pushedTo), branch);
-
-						JSONObject commitsObj = null;
-						try {
-							commitsObj = new JSONObject(activity.getContent());
-						} catch (JSONException ignored) {
-						}
-
-						JSONArray commitsShaArray = null;
-						try {
-							commitsShaArray =
-									Objects.requireNonNull(commitsObj).getJSONArray("Commits");
-						} catch (JSONException ignored) {
-						}
-
-						dashTextFrame.setVisibility(View.VISIBLE);
-
-						dashTextFrame.setOrientation(LinearLayout.VERTICAL);
-						dashTextFrame.removeAllViews();
-
-						for (int i = 0; i < Objects.requireNonNull(commitsShaArray).length(); i++) {
-
-							try {
-
-								String timelineCommits =
-										"<font color='"
-												+ ResourcesCompat.getColor(
-														context.getResources(),
-														R.color.lightBlue,
-														null)
-												+ "'>"
-												+ StringUtils.substring(
-														String.valueOf(commitsShaArray.get(i)),
-														9,
-														19)
-												+ "</font>";
-
-								TextView dynamicCommitTv = new TextView(context);
-								dynamicCommitTv.setId(View.generateViewId());
-
-								dynamicCommitTv.setText(
-										HtmlCompat.fromHtml(
-												timelineCommits, HtmlCompat.FROM_HTML_MODE_LEGACY));
-
-								JSONObject sha1Obj = null;
-								try {
-									sha1Obj = (JSONObject) commitsShaArray.get(i);
-								} catch (JSONException ignored) {
-								}
-
-								JSONObject finalSha1Obj = sha1Obj;
-								dynamicCommitTv.setOnClickListener(
-										v14 -> {
-											RepositoryContext repo =
-													new RepositoryContext(
-															activity.getRepo(), context);
-
-											Intent repoIntent =
-													new Intent(context, RepoDetailActivity.class);
-											repoIntent.putExtra("goToSection", "yes");
-											repoIntent.putExtra("goToSectionType", "commit");
-											try {
-												assert finalSha1Obj != null;
-												repoIntent.putExtra(
-														"sha", (String) finalSha1Obj.get("Sha1"));
-											} catch (JSONException ignored) {
-											}
-
-											repo.saveToDB(context);
-											repoIntent.putExtra(
-													RepositoryContext.INTENT_EXTRA, repo);
-
-											context.startActivity(repoIntent);
-										});
-
-								dashTextFrame.setOrientation(LinearLayout.VERTICAL);
-								dashTextFrame.addView(dynamicCommitTv);
-							} catch (JSONException ignored) {
-							}
-						}
+								String.format(
+										context.getString(R.string.renamedRepository),
+										activity.getContent());
+						typeIcon.setImageResource(R.drawable.ic_repo);
 					}
-					typeIcon.setImageResource(R.drawable.ic_commit);
-				}
-			} else if (activity.getOpType().getValue().contains("issue")) {
-
-				String id;
-				String content = "";
-				String rawContent = activity.getContent().trim();
-
-				int arrayStart = rawContent.indexOf("[\"");
-				if (arrayStart != -1) {
-					try {
-						String jsonPart = rawContent.substring(arrayStart);
-						String cleanContent = jsonPart.substring(1, jsonPart.length() - 1);
-						String[] contentParts = cleanContent.split(",", 2);
-						id = contentParts[0].trim();
-
-						if (id.startsWith("\"") && id.endsWith("\"")) {
-							id = id.substring(1, id.length() - 1);
-						}
-
-						if (contentParts.length > 1) {
-							content = contentParts[1].trim();
-							if (content.startsWith("\"") && content.endsWith("\"")) {
-								content = content.substring(1, content.length() - 1);
-							}
-						}
-					} catch (Exception e) {
-						String[] contentParts = rawContent.split("\\|");
-						id = contentParts[0];
-						if (contentParts.length > 1) {
-							content = contentParts[1];
-						}
+					case "star_repo" -> {
+						typeString = context.getString(R.string.starredRepository);
+						typeIcon.setImageResource(R.drawable.ic_star);
 					}
-				} else {
-					String[] contentParts = rawContent.split("\\|");
-					id = contentParts[0];
-					if (contentParts.length > 1) {
-						content = contentParts[1];
+					case "transfer_repo" -> {
+						typeString =
+								String.format(
+										context.getString(R.string.transferredRepository),
+										activity.getContent());
+						typeIcon.setImageResource(R.drawable.ic_arrow_up);
+					}
+					case "commit_repo" -> {
+						handleCommitRepo(activity, grayHex);
+						typeString =
+								String.format(
+										context.getString(R.string.pushedTo),
+										getShortBranch(activity.getRefName(), grayHex));
+						typeIcon.setImageResource(R.drawable.ic_commit);
 					}
 				}
 
-				if (!content.isEmpty()) {
+			} else if (opType.contains("issue") || opType.contains("pull")) {
+				ExtractedData data = extractIdAndContent(activity.getContent());
+				headerString =
+						"<font color='"
+								+ grayHex
+								+ "'>"
+								+ activity.getRepo().getFullName()
+								+ context.getString(R.string.hash)
+								+ data.id
+								+ "</font>";
+
+				if (!data.content.isEmpty()) {
 					dashTextFrame.setVisibility(View.VISIBLE);
-					dashText.setText(EmojiParser.parseToUnicode(content));
+					Markdown.render(context, EmojiParser.parseToUnicode(data.content), dashText);
 				}
 
-				if (activity.getOpType().getValue().equalsIgnoreCase("create_issue")) {
-
-					headerString =
-							"<font color='"
-									+ ResourcesCompat.getColor(
-											context.getResources(), R.color.lightGray, null)
-									+ "'>"
-									+ activity.getRepo().getFullName()
-									+ context.getResources().getString(R.string.hash)
-									+ id
-									+ "</font>";
-					typeString = context.getString(R.string.openedIssue);
-					typeIcon.setImageResource(R.drawable.ic_issue);
-				} else if (activity.getOpType().getValue().equalsIgnoreCase("comment_issue")) {
-
-					headerString =
-							"<font color='"
-									+ ResourcesCompat.getColor(
-											context.getResources(), R.color.lightGray, null)
-									+ "'>"
-									+ activity.getRepo().getFullName()
-									+ context.getResources().getString(R.string.hash)
-									+ id
-									+ "</font>";
-					typeString = context.getString(R.string.commentedOnIssue);
-					typeIcon.setImageResource(R.drawable.ic_comment);
-				} else if (activity.getOpType().getValue().equalsIgnoreCase("close_issue")) {
-
-					headerString =
-							"<font color='"
-									+ ResourcesCompat.getColor(
-											context.getResources(), R.color.lightGray, null)
-									+ "'>"
-									+ activity.getRepo().getFullName()
-									+ context.getResources().getString(R.string.hash)
-									+ id
-									+ "</font>";
-					typeString = context.getString(R.string.closedIssue);
-					typeIcon.setImageResource(R.drawable.ic_issue_closed);
-				} else if (activity.getOpType().getValue().equalsIgnoreCase("reopen_issue")) {
-
-					headerString =
-							"<font color='"
-									+ ResourcesCompat.getColor(
-											context.getResources(), R.color.lightGray, null)
-									+ "'>"
-									+ activity.getRepo().getFullName()
-									+ context.getResources().getString(R.string.hash)
-									+ id
-									+ "</font>";
-					typeString = context.getString(R.string.reopenedIssue);
-					typeIcon.setImageResource(R.drawable.ic_refresh);
-				}
-			} else if (activity.getOpType().getValue().contains("pull")) {
-
-				String id;
-				String content = "";
-				String rawContent = activity.getContent().trim();
-
-				int arrayStart = rawContent.indexOf("[\"");
-				if (arrayStart != -1) {
-					try {
-						String jsonPart = rawContent.substring(arrayStart);
-						String cleanContent = jsonPart.substring(1, jsonPart.length() - 1);
-						String[] contentParts = cleanContent.split(",", 2);
-						id = contentParts[0].trim();
-
-						if (id.startsWith("\"") && id.endsWith("\"")) {
-							id = id.substring(1, id.length() - 1);
+				if (opType.contains("issue")) {
+					switch (opType) {
+						case "create_issue" -> {
+							typeString = context.getString(R.string.openedIssue);
+							typeIcon.setImageResource(R.drawable.ic_issue);
 						}
-
-						if (contentParts.length > 1) {
-							content = contentParts[1].trim();
-							if (content.startsWith("\"") && content.endsWith("\"")) {
-								content = content.substring(1, content.length() - 1);
-							}
+						case "comment_issue" -> {
+							typeString = context.getString(R.string.commentedOnIssue);
+							typeIcon.setImageResource(R.drawable.ic_comment);
 						}
-					} catch (Exception e) {
-						String[] contentParts = rawContent.split("\\|");
-						id = contentParts[0];
-						if (contentParts.length > 1) {
-							content = contentParts[1];
+						case "close_issue" -> {
+							typeString = context.getString(R.string.closedIssue);
+							typeIcon.setImageResource(R.drawable.ic_issue_closed);
+						}
+						default -> { // reopen_issue
+							typeString = context.getString(R.string.reopenedIssue);
+							typeIcon.setImageResource(R.drawable.ic_refresh);
 						}
 					}
-				} else {
-					String[] contentParts = rawContent.split("\\|");
-					id = contentParts[0];
-					if (contentParts.length > 1) {
-						content = contentParts[1];
+				} else { // Pull Requests
+					switch (opType) {
+						case "create_pull_request" -> {
+							typeString = context.getString(R.string.createdPR);
+							typeIcon.setImageResource(R.drawable.ic_pull_request);
+						}
+						case "close_pull_request" -> {
+							typeString = context.getString(R.string.closedPR);
+							typeIcon.setImageResource(R.drawable.ic_issue_closed);
+						}
+						case "reopen_pull_request" -> {
+							typeString = context.getString(R.string.reopenedPR);
+							typeIcon.setImageResource(R.drawable.ic_refresh);
+						}
+						case "merge_pull_request" -> {
+							typeString = context.getString(R.string.mergedPR);
+							typeIcon.setImageResource(R.drawable.ic_pull_request);
+						}
+						case "approve_pull_request" -> {
+							typeString = context.getString(R.string.approved);
+							typeIcon.setImageResource(R.drawable.ic_done);
+						}
+						case "reject_pull_request" -> {
+							typeString = context.getString(R.string.suggestedChanges);
+							typeIcon.setImageResource(R.drawable.ic_diff);
+						}
+						case "comment_pull" -> {
+							typeString = context.getString(R.string.commentedOnPR);
+							typeIcon.setImageResource(R.drawable.ic_comment);
+						}
+						case "auto_merge_pull_request" -> {
+							typeString = context.getString(R.string.autoMergePR);
+							typeIcon.setImageResource(R.drawable.ic_issue_closed);
+						}
 					}
 				}
 
-				if (!content.isEmpty()) {
-					dashTextFrame.setVisibility(View.VISIBLE);
-					dashText.setText(EmojiParser.parseToUnicode(content));
-				}
+			} else if (opType.contains("branch")
+					|| opType.contains("tag")
+					|| opType.contains("release")) {
+				String branch = getShortBranch(activity.getRefName(), grayHex);
+				headerString =
+						"<font color='"
+								+ grayHex
+								+ "'>"
+								+ activity.getRepo().getFullName()
+								+ "</font>";
 
-				if (activity.getOpType().getValue().equalsIgnoreCase("create_pull_request")) {
-
-					headerString =
-							"<font color='"
-									+ ResourcesCompat.getColor(
-											context.getResources(), R.color.lightGray, null)
-									+ "'>"
-									+ activity.getRepo().getFullName()
-									+ context.getResources().getString(R.string.hash)
-									+ id
-									+ "</font>";
-					typeString = context.getString(R.string.createdPR);
-					typeIcon.setImageResource(R.drawable.ic_pull_request);
-				} else if (activity.getOpType().getValue().equalsIgnoreCase("close_pull_request")) {
-
-					headerString =
-							"<font color='"
-									+ ResourcesCompat.getColor(
-											context.getResources(), R.color.lightGray, null)
-									+ "'>"
-									+ activity.getRepo().getFullName()
-									+ context.getResources().getString(R.string.hash)
-									+ id
-									+ "</font>";
-					typeString = context.getString(R.string.closedPR);
-					typeIcon.setImageResource(R.drawable.ic_issue_closed);
-				} else if (activity.getOpType()
-						.getValue()
-						.equalsIgnoreCase("reopen_pull_request")) {
-
-					headerString =
-							"<font color='"
-									+ ResourcesCompat.getColor(
-											context.getResources(), R.color.lightGray, null)
-									+ "'>"
-									+ activity.getRepo().getFullName()
-									+ context.getResources().getString(R.string.hash)
-									+ id
-									+ "</font>";
-					typeString = context.getString(R.string.reopenedPR);
-					typeIcon.setImageResource(R.drawable.ic_refresh);
-				} else if (activity.getOpType().getValue().equalsIgnoreCase("merge_pull_request")) {
-
-					headerString =
-							"<font color='"
-									+ ResourcesCompat.getColor(
-											context.getResources(), R.color.lightGray, null)
-									+ "'>"
-									+ activity.getRepo().getFullName()
-									+ context.getResources().getString(R.string.hash)
-									+ id
-									+ "</font>";
-					typeString = context.getString(R.string.mergedPR);
-					typeIcon.setImageResource(R.drawable.ic_pull_request);
-				} else if (activity.getOpType()
-						.getValue()
-						.equalsIgnoreCase("approve_pull_request")) {
-
-					headerString =
-							"<font color='"
-									+ ResourcesCompat.getColor(
-											context.getResources(), R.color.lightGray, null)
-									+ "'>"
-									+ activity.getRepo().getFullName()
-									+ context.getResources().getString(R.string.hash)
-									+ id
-									+ "</font>";
-					typeString = context.getString(R.string.approved);
-					typeIcon.setImageResource(R.drawable.ic_done);
-				} else if (activity.getOpType()
-						.getValue()
-						.equalsIgnoreCase("reject_pull_request")) {
-
-					headerString =
-							"<font color='"
-									+ ResourcesCompat.getColor(
-											context.getResources(), R.color.lightGray, null)
-									+ "'>"
-									+ activity.getRepo().getFullName()
-									+ context.getResources().getString(R.string.hash)
-									+ id
-									+ "</font>";
-					typeString = context.getString(R.string.suggestedChanges);
-					typeIcon.setImageResource(R.drawable.ic_diff);
-				} else if (activity.getOpType().getValue().equalsIgnoreCase("comment_pull")) {
-
-					headerString =
-							"<font color='"
-									+ ResourcesCompat.getColor(
-											context.getResources(), R.color.lightGray, null)
-									+ "'>"
-									+ activity.getRepo().getFullName()
-									+ context.getResources().getString(R.string.hash)
-									+ id
-									+ "</font>";
-					typeString = context.getString(R.string.commentedOnPR);
-					typeIcon.setImageResource(R.drawable.ic_comment);
-				} else if (activity.getOpType()
-						.getValue()
-						.equalsIgnoreCase("auto_merge_pull_request")) {
-
-					headerString =
-							"<font color='"
-									+ ResourcesCompat.getColor(
-											context.getResources(), R.color.lightGray, null)
-									+ "'>"
-									+ activity.getRepo().getFullName()
-									+ context.getResources().getString(R.string.hash)
-									+ id
-									+ "</font>";
-					typeString = context.getString(R.string.autoMergePR);
-					typeIcon.setImageResource(R.drawable.ic_issue_closed);
-				}
-			} else if (activity.getOpType().getValue().contains("branch")) {
-
-				String content = "";
-				String rawContent = activity.getContent().trim();
-
-				int arrayStart = rawContent.indexOf("[\"");
-				if (arrayStart != -1) {
-					try {
-						String jsonPart = rawContent.substring(arrayStart);
-						String cleanContent = jsonPart.substring(1, jsonPart.length() - 1);
-						String[] contentParts = cleanContent.split(",", 2);
-
-						if (contentParts.length > 1) {
-							content = contentParts[1].trim();
-							if (content.startsWith("\"") && content.endsWith("\"")) {
-								content = content.substring(1, content.length() - 1);
-							}
-						}
-					} catch (Exception e) {
-						String[] contentParts = rawContent.split("\\|");
-						if (contentParts.length > 1) {
-							content = contentParts[1];
-						}
-					}
-				} else {
-					String[] contentParts = rawContent.split("\\|");
-					if (contentParts.length > 1) {
-						content = contentParts[1];
-					}
-				}
-
-				if (!content.isEmpty()) {
-					dashTextFrame.setVisibility(View.VISIBLE);
-					dashText.setText(EmojiParser.parseToUnicode(content));
-				}
-
-				if (activity.getOpType().getValue().equalsIgnoreCase("delete_branch")) {
-
-					headerString =
-							"<font color='"
-									+ ResourcesCompat.getColor(
-											context.getResources(), R.color.lightGray, null)
-									+ "'>"
-									+ activity.getRepo().getFullName()
-									+ "</font>";
-
-					String branch =
-							"<font color='"
-									+ ResourcesCompat.getColor(
-											context.getResources(), R.color.lightGray, null)
-									+ "'>"
-									+ activity.getRefName()
-											.substring(activity.getRefName().lastIndexOf("/") + 1)
-											.trim()
-									+ "</font>";
-
-					typeString = String.format(context.getString(R.string.deletedBranch), branch);
-					typeIcon.setImageResource(R.drawable.ic_commit);
-				}
-			} else if (activity.getOpType().getValue().contains("tag")) {
-
-				if (activity.getOpType().getValue().equalsIgnoreCase("push_tag")) {
-
-					headerString =
-							"<font color='"
-									+ ResourcesCompat.getColor(
-											context.getResources(), R.color.lightGray, null)
-									+ "'>"
-									+ activity.getRepo().getFullName()
-									+ "</font>";
-
-					String branch =
-							"<font color='"
-									+ ResourcesCompat.getColor(
-											context.getResources(), R.color.lightGray, null)
-									+ "'>"
-									+ activity.getRefName()
-											.substring(activity.getRefName().lastIndexOf("/") + 1)
-											.trim()
-									+ "</font>";
-
-					typeString = String.format(context.getString(R.string.pushedTag), branch);
-					typeIcon.setImageResource(R.drawable.ic_commit);
-				} else if (activity.getOpType().getValue().equalsIgnoreCase("delete_tag")) {
-
-					headerString =
-							"<font color='"
-									+ ResourcesCompat.getColor(
-											context.getResources(), R.color.lightGray, null)
-									+ "'>"
-									+ activity.getRepo().getFullName()
-									+ "</font>";
-
-					String branch =
-							"<font color='"
-									+ ResourcesCompat.getColor(
-											context.getResources(), R.color.lightGray, null)
-									+ "'>"
-									+ activity.getRefName()
-											.substring(activity.getRefName().lastIndexOf("/") + 1)
-											.trim()
-									+ "</font>";
-
-					typeString = String.format(context.getString(R.string.deletedTag), branch);
-					typeIcon.setImageResource(R.drawable.ic_commit);
-				}
-			} else if (activity.getOpType().getValue().contains("release")) {
-
-				if (activity.getOpType().getValue().equalsIgnoreCase("publish_release")) {
-
-					headerString =
-							"<font color='"
-									+ ResourcesCompat.getColor(
-											context.getResources(), R.color.lightGray, null)
-									+ "'>"
-									+ activity.getRepo().getFullName()
-									+ "</font>";
-
-					String branch =
-							"<font color='"
-									+ ResourcesCompat.getColor(
-											context.getResources(), R.color.lightGray, null)
-									+ "'>"
-									+ activity.getRefName()
-											.substring(activity.getRefName().lastIndexOf("/") + 1)
-											.trim()
-									+ "</font>";
-
+				if (opType.contains("release")) {
 					typeString = String.format(context.getString(R.string.releasedBranch), branch);
 					typeIcon.setImageResource(R.drawable.ic_tag);
+				} else if (opType.contains("delete")) {
+					typeString = String.format(context.getString(R.string.deletedBranch), branch);
+					typeIcon.setImageResource(R.drawable.ic_commit);
+				} else { // push_tag, etc
+					typeString = String.format(context.getString(R.string.pushedTag), branch);
+					typeIcon.setImageResource(R.drawable.ic_commit);
 				}
-			} else if (activity.getOpType().getValue().contains("mirror")) {
 
-				if (activity.getOpType().getValue().equalsIgnoreCase("mirror_sync_push")) {
-
-					headerString =
-							"<font color='"
-									+ ResourcesCompat.getColor(
-											context.getResources(), R.color.lightGray, null)
-									+ "'>"
-									+ activity.getRepo().getFullName()
-									+ "</font>";
-
-					typeString =
-							String.format(context.getString(R.string.syncedCommits), headerString);
-					typeIcon.setImageResource(R.drawable.ic_tag);
-				} else if (activity.getOpType().getValue().equalsIgnoreCase("mirror_sync_create")) {
-
-					headerString =
-							"<font color='"
-									+ ResourcesCompat.getColor(
-											context.getResources(), R.color.lightGray, null)
-									+ "'>"
-									+ activity.getRepo().getFullName()
-									+ "</font>";
-
-					typeString =
-							String.format(context.getString(R.string.syncedRefs), headerString);
-					typeIcon.setImageResource(R.drawable.ic_tag);
-				} else if (activity.getOpType().getValue().equalsIgnoreCase("mirror_sync_delete")) {
-
-					headerString =
-							"<font color='"
-									+ ResourcesCompat.getColor(
-											context.getResources(), R.color.lightGray, null)
-									+ "'>"
-									+ activity.getRepo().getFullName()
-									+ "</font>";
-
-					typeString =
-							String.format(
-									context.getString(R.string.syncedDeletedRefs), headerString);
-					typeIcon.setImageResource(R.drawable.ic_tag);
-				}
+			} else if (opType.contains("mirror")) {
+				headerString =
+						"<font color='"
+								+ grayHex
+								+ "'>"
+								+ activity.getRepo().getFullName()
+								+ "</font>";
+				typeIcon.setImageResource(R.drawable.ic_tag);
+				typeString =
+						switch (opType) {
+							case "mirror_sync_push" ->
+									String.format(
+											context.getString(R.string.syncedCommits),
+											headerString);
+							case "mirror_sync_create" ->
+									String.format(
+											context.getString(R.string.syncedRefs), headerString);
+							case "mirror_sync_delete" ->
+									String.format(
+											context.getString(R.string.syncedDeletedRefs),
+											headerString);
+							default -> typeString;
+						};
 			} else {
 				dashTextFrame.setVisibility(View.GONE);
 				dashText.setVisibility(View.GONE);
@@ -1035,12 +706,56 @@ public class ActivitiesAdapter extends RecyclerView.Adapter<RecyclerView.ViewHol
 					HtmlCompat.fromHtml(
 							username + " " + typeString + " " + headerString,
 							HtmlCompat.FROM_HTML_MODE_LEGACY));
-
 			this.createdTime.setText(TimeHelper.formatTime(activity.getCreated(), locale));
 			this.createdTime.setOnClickListener(
 					new ClickListener(
 							TimeHelper.customDateFormatForToastDateFormat(activity.getCreated()),
 							context));
+		}
+
+		private String getShortBranch(String refName, String color) {
+			if (refName == null || !refName.contains("/")) return refName != null ? refName : "";
+			String name = refName.substring(refName.lastIndexOf("/") + 1).trim();
+			return "<font color='" + color + "'>" + name + "</font>";
+		}
+
+		private void handleCommitRepo(Activity activity, String blueColor) {
+			if (activity.getContent() == null || activity.getContent().isEmpty()) return;
+			try {
+				JSONObject commitsObj = new JSONObject(activity.getContent());
+				JSONArray commitsShaArray = commitsObj.getJSONArray("Commits");
+
+				dashTextFrame.setVisibility(View.VISIBLE);
+				dashTextFrame.setOrientation(LinearLayout.VERTICAL);
+				dashTextFrame.removeAllViews();
+
+				for (int i = 0; i < commitsShaArray.length(); i++) {
+					JSONObject commitItem = commitsShaArray.getJSONObject(i);
+					String sha = commitItem.getString("Sha1");
+					String displaySha = sha.length() > 10 ? sha.substring(0, 10) : sha;
+
+					TextView dynamicCommitTv = new TextView(context);
+					dynamicCommitTv.setText(
+							HtmlCompat.fromHtml(
+									"<font color='" + blueColor + "'>" + displaySha + "</font>",
+									HtmlCompat.FROM_HTML_MODE_LEGACY));
+
+					dynamicCommitTv.setOnClickListener(
+							v -> {
+								RepositoryContext repo =
+										new RepositoryContext(activity.getRepo(), context);
+								Intent intent = new Intent(context, RepoDetailActivity.class);
+								intent.putExtra("goToSection", "yes");
+								intent.putExtra("goToSectionType", "commit");
+								intent.putExtra("sha", sha);
+								repo.saveToDB(context);
+								intent.putExtra(RepositoryContext.INTENT_EXTRA, repo);
+								context.startActivity(intent);
+							});
+					dashTextFrame.addView(dynamicCommitTv);
+				}
+			} catch (JSONException ignored) {
+			}
 		}
 	}
 }

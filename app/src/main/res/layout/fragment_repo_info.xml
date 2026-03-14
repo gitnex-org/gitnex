@@ -386,11 +386,9 @@
                         android:id="@+id/repo_fork_frame"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:orientation="horizontal"
-                        android:background="?android:attr/selectableItemBackground"
                         android:layout_marginBottom="@dimen/dimen16dp"
-                        android:paddingStart="@dimen/dimen16dp"
-                        android:paddingEnd="@dimen/dimen16dp">
+                        android:orientation="horizontal"
+                        tools:ignore="UseCompoundDrawables">
 
                         <ImageView
                             android:layout_gravity="center"
