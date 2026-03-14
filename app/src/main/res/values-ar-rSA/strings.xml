@@ -820,18 +820,18 @@ Codeberg.org</string>
     <string name="timelineChangeTitle">%1$s عدّل العنوان من %2$s إلى %3$s %4$s</string>
     <string name="timelineLocked">%1$s locked as %2$s and limited conversation to collaborators %3$s</string>
     <string name="timelineUnlocked">%1$s ألغى قفل هذه المحادثة %2$s</string>
-    <string name="timelineDependencyAdded">%1$s أضاف تبعية جديدة #%2$d %3$s</string>
-    <string name="timelineDependencyRemoved">%1$s أزال تبعية #%2$d %3$s</string>
+    <string name="timelineDependencyAdded">%1$s added a new dependency #%2$d %3$s</string>
+    <string name="timelineDependencyRemoved">%1$s removed a dependency #%2$d %3$s</string>
     <string name="timelineProjectAdded">%1$s أضاف هذا لمشروع %2$s</string>
     <string name="timelineProjectRemoved">%1$s حذف هذا من مشروع %2$s</string>
-    <string name="timelineDueDateAdded">%1$s أضاف تاريخ الإكمال %2$s %3$s</string>
+    <string name="timelineDueDateAdded">%1$s added the due date %2$s %3$s</string>
     <string name="timelineDueDateModified">%1$s عدّل تاريخ الإكمال من %2$s إلى %3$s %4$s</string>
     <string name="timelineDueDateRemoved">%1$s حذف تاريخ الإكمال %2$s %3$s</string>
     <string name="timelineBranchChanged">%1$s عدّل الفرع المستهدف من %2$s إلى %3$s %4$s</string>
     <string name="timelineBranchDeleted">%1$s حذف فرع %2$s %3$s</string>
     <string name="timelineTimeTrackingStart">%1$s بدأ يعمل على %2$s</string>
     <string name="timelineTimeTrackingStop">%1$s أوقف متابعة %2$s</string>
-    <string name="timelineTimeTrackingCancel">%1$s ألغى متابعة %2$s</string>
+    <string name="timelineTimeTrackingCancel">%1$s canceled time tracking %2$s</string>
     <string name="timelineTimeTrackingAddManualTime">%1$s أضاف الوقت الممضي %2$s %3$s</string>
     <string name="timelineTimeTrackingDeleteManualTime">%1$s حذف الوقت الممضي %2$s %3$s</string>
     <string name="timelineChangeIssueRef">%1$s أضاف مرجعاً %2$s %3$s</string>
@@ -939,4 +939,7 @@ Codeberg.org</string>
     <string name="proxy_creds_required_msg">Please provide both username and password or leave both empty</string>
     <string name="url_prompt_title">Show URL confirmation dialog</string>
     <string name="url_prompt_description">Show a confirmation dialog before opening external links in Markdown rendered contents</string>
+    <string name="gitignore_template">Gitignore Template</string>
+    <string name="no_template">No template</string>
+    <string name="no_license">No license</string>
 </resources>

@@ -103,52 +103,32 @@ public class LoginActivity extends BaseActivity {
 						proxyAuthUsername = account.getProxyAuthUsername();
 						proxyAuthPassword = account.getProxyAuthPassword();
 
-						// Prefill provider
 						selectedProvider = account.getProvider();
-						if (selectedProvider.equals("gitea")) {
-							activityLoginBinding.providerSpinner.setText(
-									getResources().getStringArray(R.array.provider_options)[0],
-									false);
-						} else if (selectedProvider.equals("forgejo")) {
-							activityLoginBinding.providerSpinner.setText(
-									getResources().getStringArray(R.array.provider_options)[1],
-									false);
+						String[] providerOptions =
+								getResources().getStringArray(R.array.provider_options);
+
+						if ("gitea".equalsIgnoreCase(selectedProvider)) {
+							activityLoginBinding.providerSpinner.setText(providerOptions[0], false);
+						} else if ("forgejo".equalsIgnoreCase(selectedProvider)) {
+							activityLoginBinding.providerSpinner.setText(providerOptions[1], false);
 						} else {
-							activityLoginBinding.providerSpinner.setText(
-									getResources().getStringArray(R.array.provider_options)[2],
-									false);
+							activityLoginBinding.providerSpinner.setText(providerOptions[2], false);
 						}
 
-						// Prefill instance URL
 						String url = account.getInstanceUrl();
-						try {
-							URI uri = new URI(url);
-							String cleanUrl = uri.getHost();
-							int port = uri.getPort();
-							if (port != -1) {
-								cleanUrl += ":" + port;
-							}
-							activityLoginBinding.instanceUrl.setText(cleanUrl);
-						} catch (Exception e) {
-							if (url.endsWith("/api/v1/")) {
-								url = url.substring(0, url.length() - "/api/v1/".length());
-							}
-							activityLoginBinding.instanceUrl.setText(url);
-						}
+						activityLoginBinding.instanceUrl.setText(getCleanUrlForDisplay(url));
 
-						// Prefill protocol
 						try {
 							URI uri = new URI(url);
 							String scheme = uri.getScheme();
 							selectedProtocol =
-									scheme != null && scheme.equalsIgnoreCase("http")
+									(scheme != null && scheme.equalsIgnoreCase("http"))
 											? Protocol.HTTP.toString()
 											: Protocol.HTTPS.toString();
-							activityLoginBinding.httpsSpinner.setText(selectedProtocol);
 						} catch (Exception e) {
 							selectedProtocol = Protocol.HTTPS.toString();
-							activityLoginBinding.httpsSpinner.setText(selectedProtocol);
 						}
+						activityLoginBinding.httpsSpinner.setText(selectedProtocol, false);
 					}
 				}
 			}
@@ -260,6 +240,46 @@ public class LoginActivity extends BaseActivity {
 
 					materialAlertDialogBuilder.create().show();
 				});
+	}
+
+	public static String getCleanUrlForDisplay(String rawUrl) {
+
+		if (rawUrl == null || rawUrl.isEmpty()) return "";
+
+		try {
+			URI uri = new URI(rawUrl);
+			String host = uri.getHost();
+			int port = uri.getPort();
+			String path = uri.getPath();
+
+			StringBuilder displayUrl = new StringBuilder(host != null ? host : "");
+
+			if (port != -1) {
+				displayUrl.append(":").append(port);
+			}
+
+			if (path != null && !path.isEmpty()) {
+				String cleanPath = path;
+				if (cleanPath.endsWith("/api/v1/")) {
+					cleanPath = cleanPath.substring(0, cleanPath.length() - 8);
+				} else if (cleanPath.endsWith("/api/v1")) {
+					cleanPath = cleanPath.substring(0, cleanPath.length() - 7);
+				}
+
+				if (!cleanPath.equals("/") && !cleanPath.isEmpty()) {
+					displayUrl.append(cleanPath);
+				}
+			}
+			return displayUrl.toString();
+
+		} catch (Exception e) {
+			String fallback = rawUrl.replace("https://", "").replace("http://", "");
+			if (fallback.endsWith("/api/v1/"))
+				fallback = fallback.substring(0, fallback.length() - 8);
+			if (fallback.endsWith("/api/v1"))
+				fallback = fallback.substring(0, fallback.length() - 7);
+			return fallback;
+		}
 	}
 
 	private void showProxyAuthDialog() {

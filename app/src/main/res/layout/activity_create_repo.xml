@@ -113,7 +113,7 @@
                     android:inputType="textCapSentences"
                     android:textColor="?attr/inputTextColor"
                     android:textColorHint="?attr/hintColor"
-                    android:text="@string/main"
+                    android:text="@string/default_branch_name"
                     android:textSize="@dimen/dimen16sp" />
 
             </com.google.android.material.textfield.TextInputLayout>
