@@ -2,160 +2,72 @@ package org.mian.gitnex.adapters;
 
 import android.content.Context;
 import android.graphics.Typeface;
-import android.util.TypedValue;
-import android.view.View;
+import android.view.LayoutInflater;
 import android.view.ViewGroup;
-import android.widget.BaseAdapter;
 import android.widget.TextView;
-import androidx.fragment.app.FragmentManager;
-import java.util.ArrayList;
+import androidx.annotation.NonNull;
+import androidx.recyclerview.widget.RecyclerView;
 import java.util.List;
 import org.mian.gitnex.R;
 import org.mian.gitnex.helpers.AppUtil;
-import org.mian.gitnex.helpers.contexts.IssueContext;
 
 /**
  * @author opyale
+ * @author mmarif
  */
-public class DiffAdapter extends BaseAdapter {
+public class DiffAdapter extends RecyclerView.Adapter<DiffAdapter.ViewHolder> {
 
-	private static int COLOR_ADDED;
-	private static int COLOR_REMOVED;
-	private static int COLOR_NORMAL;
-	private static int COLOR_SELECTED;
-	private static int COLOR_FONT;
-	private final Context context;
-	private final FragmentManager fragmentManager;
 	private final List<String> lines;
-	private final IssueContext issue;
-	private final List<Integer> selectedLines;
+	private final int colorAdded, colorRemoved, colorNormal;
 	private final Typeface typeface;
-	private final String type;
 
-	public DiffAdapter(
-			Context context,
-			FragmentManager fragmentManager,
-			List<String> lines,
-			IssueContext issue,
-			String type) {
-
-		this.context = context;
-		this.fragmentManager = fragmentManager;
+	public DiffAdapter(Context context, List<String> lines) {
 		this.lines = lines;
-		this.issue = issue;
-		this.type = type;
+		this.colorAdded = AppUtil.getColorFromAttribute(context, R.attr.diffAddedColor);
+		this.colorRemoved = AppUtil.getColorFromAttribute(context, R.attr.diffRemovedColor);
+		this.colorNormal = AppUtil.getColorFromAttribute(context, R.attr.primaryBackgroundColor);
+		this.typeface =
+				Typeface.createFromAsset(context.getAssets(), "fonts/sourcecodeproregular.ttf");
+	}
 
-		selectedLines = new ArrayList<>();
-		typeface = Typeface.createFromAsset(context.getAssets(), "fonts/sourcecodeproregular.ttf");
-
-		COLOR_ADDED = AppUtil.getColorFromAttribute(context, R.attr.diffAddedColor);
-		COLOR_REMOVED = AppUtil.getColorFromAttribute(context, R.attr.diffRemovedColor);
-		COLOR_NORMAL = AppUtil.getColorFromAttribute(context, R.attr.primaryBackgroundColor);
-		COLOR_SELECTED = AppUtil.getColorFromAttribute(context, R.attr.diffSelectedColor);
-		COLOR_FONT = AppUtil.getColorFromAttribute(context, R.attr.inputTextColor);
+	@NonNull @Override
+	public ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
+		TextView view =
+				(TextView)
+						LayoutInflater.from(parent.getContext())
+								.inflate(R.layout.list_item_diff_line, parent, false);
+		view.setTypeface(typeface);
+		return new ViewHolder(view);
 	}
 
 	@Override
-	public int getCount() {
+	public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
+		String line = lines.get(position);
+		holder.textView.setText(line);
+
+		int bgColor = colorNormal;
+		if (line != null && !line.isEmpty()) {
+			char firstChar = line.charAt(0);
+			if (firstChar == '+') {
+				bgColor = colorAdded;
+			} else if (firstChar == '-') {
+				bgColor = colorRemoved;
+			}
+		}
+		holder.textView.setBackgroundColor(bgColor);
+	}
+
+	@Override
+	public int getItemCount() {
 		return lines.size();
 	}
 
-	@Override
-	public Object getItem(int position) {
-		return lines.get(position);
-	}
+	public static class ViewHolder extends RecyclerView.ViewHolder {
+		TextView textView;
 
-	@Override
-	public long getItemId(int position) {
-		return position;
-	}
-
-	@Override
-	public View getView(int position, View convertView, ViewGroup parent) {
-
-		if (convertView == null) {
-
-			TextView textView = new TextView(context);
-
-			textView.setLayoutParams(
-					new ViewGroup.LayoutParams(
-							ViewGroup.LayoutParams.MATCH_PARENT,
-							ViewGroup.LayoutParams.WRAP_CONTENT));
-			textView.setTextColor(COLOR_FONT);
-			textView.setTextSize(TypedValue.COMPLEX_UNIT_SP, 14);
-			textView.setPadding(32, 0, 32, 0);
-			textView.setTypeface(typeface);
-
-			convertView = textView;
-		}
-
-		if (type.equalsIgnoreCase("pull")) {
-			convertView.setOnClickListener(
-					v -> {
-						if (selectedLines.contains(position)) {
-
-							selectedLines.remove((Object) position);
-							v.setBackgroundColor(getLineColor(lines.get(position)));
-						} else {
-
-							selectedLines.add(position);
-							v.setBackgroundColor(COLOR_SELECTED);
-						}
-					});
-
-			/*convertView.setOnLongClickListener(
-			v -> {
-				if (selectedLines.contains(position)) {
-
-					StringBuilder stringBuilder = new StringBuilder();
-					stringBuilder.append("```\n");
-
-					for (Integer selectedLine :
-							selectedLines.stream().sorted().collect(Collectors.toList())) {
-						stringBuilder.append(lines.get(selectedLine));
-						stringBuilder.append("\n");
-					}
-
-					stringBuilder.append("```\n\n");
-					selectedLines.clear();
-
-					Bundle bundle = new Bundle();
-					bundle.putString("commentBody", stringBuilder.toString());
-					bundle.putBoolean("cursorToEnd", true);
-
-					//BottomSheetReplyFragment.newInstance(bundle, issue)
-					//		.show(fragmentManager, "replyBottomSheet");
-				}
-
-				return true;
-			});*/
-		}
-
-		String line = lines.get(position);
-
-		int backgroundColor =
-				selectedLines.contains(position) ? COLOR_SELECTED : getLineColor(line);
-
-		convertView.setBackgroundColor(backgroundColor);
-		((TextView) convertView).setText(line);
-
-		return convertView;
-	}
-
-	private int getLineColor(String line) {
-
-		if (line.isEmpty()) {
-			return COLOR_NORMAL;
-		}
-
-		switch (line.charAt(0)) {
-			case '+':
-				return COLOR_ADDED;
-			case '-':
-				return COLOR_REMOVED;
-
-			default:
-				return COLOR_NORMAL;
+		public ViewHolder(TextView itemView) {
+			super(itemView);
+			this.textView = itemView;
 		}
 	}
 }

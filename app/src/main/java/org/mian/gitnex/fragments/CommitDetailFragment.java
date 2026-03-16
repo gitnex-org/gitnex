@@ -17,7 +17,9 @@ import com.bumptech.glide.Glide;
 import com.bumptech.glide.load.engine.DiskCacheStrategy;
 import com.vdurmont.emoji.EmojiParser;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
+import java.util.Locale;
 import java.util.Objects;
 import org.gitnex.tea4j.v2.models.Commit;
 import org.gitnex.tea4j.v2.models.CommitStatus;
@@ -41,6 +43,7 @@ import retrofit2.Response;
 
 /**
  * @author qwerty287
+ * @author mmarif
  */
 public class CommitDetailFragment extends Fragment {
 
@@ -61,47 +64,58 @@ public class CommitDetailFragment extends Fragment {
 			@NonNull LayoutInflater inflater,
 			@Nullable ViewGroup container,
 			@Nullable Bundle savedInstanceState) {
-
-		super.onCreateView(inflater, container, savedInstanceState);
-
-		if (binding != null) {
-			return binding.getRoot();
-		}
-
-		binding = FragmentCommitDetailsBinding.inflate(getLayoutInflater(), container, false);
+		binding = FragmentCommitDetailsBinding.inflate(inflater, container, false);
 
 		IssueContext issue = IssueContext.fromIntent(requireActivity().getIntent());
 		RepositoryContext repository = RepositoryContext.fromIntent(requireActivity().getIntent());
 		repoOwner = repository.getOwner();
 		repoName = repository.getName();
 		sha = requireActivity().getIntent().getStringExtra("sha");
-		assert sha != null;
-		binding.toolbarTitle.setText(sha.substring(0, Math.min(sha.length(), 10)));
 
-		adapter = new DiffFilesAdapter(requireContext(), fileDiffViews, issue, "commit");
+		if (sha != null) {
+			String shortSha = sha.substring(0, Math.min(sha.length(), 10));
+			binding.toolbarTitle.setText(shortSha);
+		}
 
-		binding.diffFiles.setHasFixedSize(true);
-		binding.diffFiles.setLayoutManager(new LinearLayoutManager(requireContext()));
-		binding.diffFiles.setAdapter(adapter);
+		setupRecyclerView(issue);
+		setupListeners();
 
 		getCommit();
 		getDiff();
 		getStatuses();
 
+		return binding.getRoot();
+	}
+
+	private void setupRecyclerView(IssueContext issue) {
+		adapter =
+				new DiffFilesAdapter(
+						requireContext(), fileDiffViews, issue, repoOwner, repoName, sha, "commit");
+		binding.diffFiles.setHasFixedSize(true);
+		binding.diffFiles.setLayoutManager(new LinearLayoutManager(requireContext()));
+		binding.diffFiles.setAdapter(adapter);
+		binding.diffFiles.setNestedScrollingEnabled(false);
+	}
+
+	private void setupListeners() {
+		binding.btnBack.setOnClickListener(v -> requireActivity().finish());
+
 		binding.statuses.setOnClickListener(
 				view -> {
-					if (binding.statusesLv.getVisibility() == View.GONE) {
+					if (binding.statusesList.getVisibility() == View.GONE) {
 						binding.statusesExpandCollapse.setImageResource(R.drawable.ic_chevron_up);
-						binding.statusesLv.setVisibility(View.VISIBLE);
+						binding.statusesList.setVisibility(View.VISIBLE);
 					} else {
 						binding.statusesExpandCollapse.setImageResource(R.drawable.ic_chevron_down);
-						binding.statusesLv.setVisibility(View.GONE);
+						binding.statusesList.setVisibility(View.GONE);
 					}
 				});
 
-		binding.close.setOnClickListener((v) -> requireActivity().finish());
-
-		return binding.getRoot();
+		binding.toolbarTitle.setOnLongClickListener(
+				v -> {
+					copyToClipboard(sha);
+					return true;
+				});
 	}
 
 	private void getDiff() {
@@ -114,85 +128,40 @@ public class CommitDetailFragment extends Fragment {
 
 		call.enqueue(
 				new Callback<>() {
-
 					@Override
 					public void onResponse(
 							@NonNull Call<String> call, @NonNull Response<String> response) {
+						if (binding == null) return;
 
 						checkLoading();
-						switch (response.code()) {
-							case 200:
-								assert response.body() != null;
-								fileDiffViews = ParseDiff.getFileDiffViewArray(response.body());
-
-								requireActivity()
-										.runOnUiThread(
-												() -> {
-													adapter.updateList(fileDiffViews);
-													adapter.notifyDataChanged();
-												});
-								break;
-
-							case 401:
-								requireActivity()
-										.runOnUiThread(
-												() ->
-														AlertDialogs
-																.authorizationTokenRevokedDialog(
-																		requireContext()));
-								break;
-
-							case 403:
-								requireActivity()
-										.runOnUiThread(
-												() ->
-														Toasty.error(
-																requireContext(),
-																getString(
-																		R.string.authorizeError)));
-								break;
-
-							case 404:
-								requireActivity()
-										.runOnUiThread(
-												() ->
-														Toasty.warning(
-																requireContext(),
-																getString(R.string.apiNotFound)));
-								break;
-
-							default:
-								requireActivity()
-										.runOnUiThread(
-												() ->
-														Toasty.error(
-																requireContext(),
-																getString(R.string.genericError)));
+						if (response.isSuccessful() && response.body() != null) {
+							fileDiffViews = ParseDiff.getFileDiffViewArray(response.body());
+							adapter.updateList(fileDiffViews);
+						} else {
+							handleErrorCodes(response.code());
 						}
 					}
 
 					@Override
 					public void onFailure(@NonNull Call<String> call, @NonNull Throwable t) {
-
-						checkLoading();
-						if (getContext() != null) {
-							Toasty.error(requireContext(), getString(R.string.genericError));
+						if (binding != null) {
+							checkLoading();
+							showGenericError();
 						}
 					}
 				});
 	}
 
 	private void getCommit() {
-
 		RetrofitClient.getApiInterface(requireContext())
 				.repoGetSingleCommit(repoOwner, repoName, sha, true, false, true)
 				.enqueue(
 						new Callback<>() {
-
 							@Override
 							public void onResponse(
 									@NonNull Call<Commit> call,
 									@NonNull Response<Commit> response) {
+								if (binding == null) return;
 
 								checkLoading();
 								Commit commitsModel = response.body();
@@ -200,179 +169,73 @@ public class CommitDetailFragment extends Fragment {
 									onFailure(call, new Throwable());
 									return;
 								}
-								String[] commitMessageParts =
-										commitsModel.getCommit().getMessage().split("(\r\n|\n)", 2);
-
-								if (commitMessageParts.length > 1
-										&& !commitMessageParts[1].trim().isEmpty()) {
-									binding.commitBody.setVisibility(View.VISIBLE);
-									binding.commitSubject.setText(
-											EmojiParser.parseToUnicode(
-													commitMessageParts[0].trim()));
-									binding.commitBody.setText(
-											EmojiParser.parseToUnicode(
-													commitMessageParts[1].trim()));
-								} else {
-									binding.commitSubject.setText(
-											EmojiParser.parseToUnicode(
-													commitMessageParts[0].trim()));
-									binding.commitBody.setVisibility(View.GONE);
-								}
-
-								if (!Objects.equals(
-										commitsModel.getCommit().getCommitter().getEmail(),
-										commitsModel.getCommit().getCommitter().getEmail())) {
-									binding.commitAuthorAndCommitter.setText(
-											HtmlCompat.fromHtml(
-													CommitDetailFragment.this.getString(
-															R.string
-																	.commitAuthoredByAndCommittedByWhen,
-															commitsModel
-																	.getCommit()
-																	.getAuthor()
-																	.getName(),
-															commitsModel
-																	.getCommit()
-																	.getCommitter()
-																	.getName(),
-															TimeHelper.formatTime(
-																	TimeHelper.parseIso8601(
-																			commitsModel
-																					.getCommit()
-																					.getCommitter()
-																					.getDate()),
-																	getResources()
-																			.getConfiguration()
-																			.locale)),
-													HtmlCompat.FROM_HTML_MODE_COMPACT));
-								} else {
-									binding.commitAuthorAndCommitter.setText(
-											HtmlCompat.fromHtml(
-													CommitDetailFragment.this.getString(
-															R.string.commitCommittedByWhen,
-															commitsModel
-																	.getCommit()
-																	.getCommitter()
-																	.getName(),
-															TimeHelper.formatTime(
-																	TimeHelper.parseIso8601(
-																			commitsModel
-																					.getCommit()
-																					.getCommitter()
-																					.getDate()),
-																	getResources()
-																			.getConfiguration()
-																			.locale)),
-													HtmlCompat.FROM_HTML_MODE_COMPACT));
-								}
-
-								if (commitsModel.getAuthor() != null
-										&& commitsModel.getAuthor().getAvatarUrl() != null
-										&& !commitsModel.getAuthor().getAvatarUrl().isEmpty()) {
-
-									binding.commitAuthorAvatarFrame.setVisibility(View.VISIBLE);
-
-									Glide.with(requireContext())
-											.load(commitsModel.getAuthor().getAvatarUrl())
-											.diskCacheStrategy(DiskCacheStrategy.ALL)
-											.placeholder(R.drawable.loader_animated)
-											.centerCrop()
-											.into(binding.commitAuthorAvatar);
-
-									binding.commitAuthorAvatar.setOnClickListener(
-											(v) -> {
-												Intent intent =
-														new Intent(
-																requireContext(),
-																ProfileActivity.class);
-												intent.putExtra(
-														"username",
-														commitsModel.getAuthor().getLogin());
-												startActivity(intent);
-											});
-
-								} else {
-									binding.commitAuthorAvatar.setImageDrawable(null);
-									binding.commitAuthorAvatarFrame.setVisibility(View.GONE);
-								}
-
-								if (commitsModel.getCommitter() != null
-										&& (commitsModel.getAuthor() == null
-												|| !commitsModel
-														.getAuthor()
-														.getLogin()
-														.equals(
-																commitsModel
-																		.getCommitter()
-																		.getLogin()))
-										&& commitsModel.getCommitter().getAvatarUrl() != null
-										&& !commitsModel.getCommitter().getAvatarUrl().isEmpty()) {
-
-									binding.commitCommitterAvatarFrame.setVisibility(View.VISIBLE);
-
-									Glide.with(requireContext())
-											.load(commitsModel.getCommitter().getAvatarUrl())
-											.diskCacheStrategy(DiskCacheStrategy.ALL)
-											.placeholder(R.drawable.loader_animated)
-											.centerCrop()
-											.into(binding.commitCommitterAvatar);
-
-									binding.commitCommitterAvatar.setOnClickListener(
-											(v) -> {
-												Intent intent =
-														new Intent(
-																requireContext(),
-																ProfileActivity.class);
-												intent.putExtra(
-														"username",
-														commitsModel.getCommitter().getLogin());
-												startActivity(intent);
-											});
-
-								} else {
-									binding.commitCommitterAvatar.setImageDrawable(null);
-									binding.commitCommitterAvatarFrame.setVisibility(View.GONE);
-								}
-
-								binding.commitSha.setText(
-										commitsModel
-												.getSha()
-												.substring(
-														0,
-														Math.min(
-																commitsModel.getSha().length(),
-																10)));
-								binding.commitSha.setOnClickListener(
-										(v) -> {
-											ClipboardManager clipboard =
-													(ClipboardManager)
-															requireContext()
-																	.getSystemService(
-																			Context
-																					.CLIPBOARD_SERVICE);
-											ClipData clip =
-													ClipData.newPlainText(
-															"commitSha", commitsModel.getSha());
-											assert clipboard != null;
-											clipboard.setPrimaryClip(clip);
-											Toasty.success(
-													requireContext(),
-													getString(R.string.copyShaToastMsg));
-										});
+								updateCommitUI(commitsModel);
 							}
 
 							@Override
 							public void onFailure(
 									@NonNull Call<Commit> call, @NonNull Throwable t) {
-
-								checkLoading();
-								if (getContext() != null) {
-									Toasty.error(
-											requireContext(), getString(R.string.genericError));
-									requireActivity().finish();
+								if (binding != null) {
+									checkLoading();
+									showGenericError();
 								}
 							}
 						});
+	}
+
+	private void updateCommitUI(Commit commitsModel) {
+		if (binding == null) {
+			return;
+		}
+
+		String[] commitMessageParts = commitsModel.getCommit().getMessage().split("(\r\n|\n)", 2);
+		binding.commitSubject.setText(EmojiParser.parseToUnicode(commitMessageParts[0].trim()));
+
+		if (commitMessageParts.length > 1 && !commitMessageParts[1].trim().isEmpty()) {
+			binding.commitBody.setVisibility(View.VISIBLE);
+			binding.commitBody.setText(EmojiParser.parseToUnicode(commitMessageParts[1].trim()));
+		} else {
+			binding.commitBody.setVisibility(View.GONE);
+		}
+
+		Date date = TimeHelper.parseIso8601(commitsModel.getCommit().getCommitter().getDate());
+		String time = TimeHelper.getFullDateTime(date, Locale.getDefault());
+		String authoredBy = commitsModel.getCommit().getAuthor().getName();
+		String committedBy = commitsModel.getCommit().getCommitter().getName();
+
+		if (!authoredBy.equals(committedBy)) {
+			binding.commitAuthorAndCommitter.setText(
+					HtmlCompat.fromHtml(
+							getString(
+									R.string.commitAuthoredByAndCommittedByWhen,
+									authoredBy,
+									committedBy,
+									time),
+							HtmlCompat.FROM_HTML_MODE_COMPACT));
+		} else {
+			binding.commitAuthorAndCommitter.setText(
+					HtmlCompat.fromHtml(
+							getString(R.string.commitCommittedByWhen, committedBy, time),
+							HtmlCompat.FROM_HTML_MODE_COMPACT));
+		}
+
+		loadAvatar(commitsModel, binding.commitAuthorAvatar, binding.commitAuthorAvatarFrame);
+		if (commitsModel.getCommitter() != null
+				&& (commitsModel.getAuthor() == null
+						|| !commitsModel
+								.getAuthor()
+								.getLogin()
+								.equals(commitsModel.getCommitter().getLogin()))) {
+			loadAvatar(
+					commitsModel,
+					binding.commitCommitterAvatar,
+					binding.commitCommitterAvatarFrame);
+		} else {
+			binding.commitCommitterAvatarFrame.setVisibility(View.GONE);
+		}
+
+		binding.commitSha.setText(sha.substring(0, Math.min(sha.length(), 10)));
+		binding.commitSha.setOnClickListener(v -> copyToClipboard(sha));
 	}
 
 	private void getStatuses() {
@@ -380,70 +243,129 @@ public class CommitDetailFragment extends Fragment {
 				.repoListStatuses(repoOwner, repoName, sha, null, null, null, null)
 				.enqueue(
 						new Callback<>() {
-
 							@Override
 							public void onResponse(
 									@NonNull Call<List<CommitStatus>> call,
 									@NonNull Response<List<CommitStatus>> response) {
+								if (binding == null) {
+									return;
+								}
 
 								checkLoading();
 
-								if (!response.isSuccessful() || response.body() == null) {
-									onFailure(call, new Throwable());
-									return;
-								}
-
-								if (response.body().isEmpty()) {
-									binding.statusesLvMain.setVisibility(View.GONE);
-									return;
-								}
-
-								// merge statuses: a status can be added multiple times with the
-								// same context, so we only use the newest one
-								ArrayList<CommitStatus> result = new ArrayList<>();
-								for (CommitStatus c : response.body()) {
-									CommitStatus statusInList = null;
-									for (CommitStatus s : result) {
-										if (Objects.equals(s.getContext(), c.getContext())) {
-											statusInList = s;
-											break;
-										}
+								if (response.isSuccessful() && response.body() != null) {
+									if (response.body().isEmpty()) {
+										binding.statusesLvMain.setVisibility(View.GONE);
+										return;
 									}
-									if (statusInList != null) {
-										// if the status that's already in the list was created
-										// before this one, replace it
-										if (statusInList.getCreatedAt().before(c.getCreatedAt())) {
-											result.remove(statusInList);
-											result.add(c);
+
+									ArrayList<CommitStatus> result = new ArrayList<>();
+									for (CommitStatus c : response.body()) {
+										boolean exists = false;
+										for (int i = 0; i < result.size(); i++) {
+											if (Objects.equals(
+													result.get(i).getContext(), c.getContext())) {
+												if (result.get(i).getCreatedAt() != null
+														&& result.get(i)
+																.getCreatedAt()
+																.before(c.getCreatedAt())) {
+													result.set(i, c);
+												}
+												exists = true;
+												break;
+											}
 										}
-									} else {
-										result.add(c);
+										if (!exists) result.add(c);
+									}
+
+									if (getContext() != null) {
+										binding.statusesList.setLayoutManager(
+												new LinearLayoutManager(requireContext()));
+										binding.statusesList.setAdapter(
+												new CommitStatusesAdapter(result));
 									}
 								}
-
-								binding.statusesList.setLayoutManager(
-										new LinearLayoutManager(requireContext()));
-								binding.statusesList.setAdapter(new CommitStatusesAdapter(result));
 							}
 
 							@Override
 							public void onFailure(
 									@NonNull Call<List<CommitStatus>> call, @NonNull Throwable t) {
-
-								checkLoading();
-								if (getContext() != null) {
-									Toasty.error(
-											requireContext(), getString(R.string.genericError));
-									requireActivity().finish();
+								if (binding != null) {
+									checkLoading();
+									showGenericError();
 								}
 							}
 						});
 	}
 
-	private void checkLoading() {
-		loadingFinished += 1;
-		if (loadingFinished >= 3) {
-			binding.progressBar.setVisibility(View.GONE);
+	private void loadAvatar(Commit commit, android.widget.ImageView view, View frame) {
+		if (isAdded()
+				&& commit != null
+				&& commit.getAuthor().getAvatarUrl() != null
+				&& !commit.getAuthor().getAvatarUrl().isEmpty()) {
+			frame.setVisibility(View.VISIBLE);
+			Glide.with(this)
+					.load(commit.getAuthor().getAvatarUrl())
+					.diskCacheStrategy(DiskCacheStrategy.ALL)
+					.placeholder(R.drawable.loader_animated)
+					.centerCrop()
+					.into(view);
+
+			view.setOnClickListener(
+					v -> {
+						Intent intent = new Intent(requireContext(), ProfileActivity.class);
+						intent.putExtra("username", commit.getAuthor().getLogin());
+						startActivity(intent);
+					});
+		} else if (frame != null) {
+			frame.setVisibility(View.GONE);
 		}
+	}
+
+	private void checkLoading() {
+		loadingFinished++;
+
+		if (binding == null) {
+			return;
+		}
+
+		if (loadingFinished >= 3) {
+			binding.expressiveLoader.setVisibility(View.GONE);
+			binding.contentScrollView.setVisibility(View.VISIBLE);
+			binding.contentScrollView.setAlpha(0f);
+			binding.contentScrollView.animate().alpha(1f).setDuration(300).start();
+			binding.dockedToolbar.setVisibility(View.VISIBLE);
+		}
+	}
+
+	private void copyToClipboard(String text) {
+		ClipboardManager clipboard =
+				(ClipboardManager) requireContext().getSystemService(Context.CLIPBOARD_SERVICE);
+		ClipData clip = ClipData.newPlainText("commitSha", text);
+		if (clipboard != null) {
+			clipboard.setPrimaryClip(clip);
+			Toasty.success(requireContext(), getString(R.string.copyShaToastMsg));
+		}
+	}
+
+	private void handleErrorCodes(int code) {
+		switch (code) {
+			case 401 -> AlertDialogs.authorizationTokenRevokedDialog(requireContext());
+			case 403 -> Toasty.error(requireContext(), getString(R.string.authorizeError));
+			case 404 -> Toasty.warning(requireContext(), getString(R.string.apiNotFound));
+			default -> showGenericError();
+		}
+	}
+
+	private void showGenericError() {
+		if (getContext() != null) {
+			Toasty.error(requireContext(), getString(R.string.genericError));
+		}
+	}
+
+	@Override
+	public void onDestroyView() {
+		super.onDestroyView();
+		binding = null;
 	}
 }

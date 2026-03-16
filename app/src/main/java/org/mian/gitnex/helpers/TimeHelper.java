@@ -4,14 +4,17 @@ import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.time.Instant;
+import java.time.LocalDateTime;
+import java.time.ZoneId;
 import java.time.format.DateTimeFormatter;
+import java.time.format.FormatStyle;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.Locale;
 import org.ocpsoft.prettytime.PrettyTime;
 
 /**
- * @author M M Arif
+ * @author mmarif
  */
 public class TimeHelper {
 
@@ -70,6 +73,24 @@ public class TimeHelper {
 		}
 
 		return cal.after(from) && cal.before(to);
+	}
+
+	public static String getAbsoluteDate(Date date, Locale locale) {
+		if (date == null) return "";
+		LocalDateTime dateTime = LocalDateTime.ofInstant(date.toInstant(), ZoneId.systemDefault());
+		DateTimeFormatter formatter =
+				DateTimeFormatter.ofLocalizedDate(FormatStyle.MEDIUM).withLocale(locale);
+
+		return dateTime.format(formatter);
+	}
+
+	public static String getFullDateTime(Date date, Locale locale) {
+		if (date == null) return "";
+		DateTimeFormatter formatter =
+				DateTimeFormatter.ofLocalizedDateTime(FormatStyle.MEDIUM, FormatStyle.SHORT)
+						.withLocale(locale);
+
+		return LocalDateTime.ofInstant(date.toInstant(), ZoneId.systemDefault()).format(formatter);
 	}
 
 	public static Date parseIso8601(String iso8601) {

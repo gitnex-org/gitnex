@@ -257,4 +257,10 @@
         <item name="rippleColor">@android:color/transparent</item>
         <item name="checkedIconTint">?attr/iconsColor</item>
     </style>
+
+    <style name="ShapeAppearance.RoundedDock" parent="ShapeAppearance.Material3.MediumComponent">
+        <item name="cornerFamily">rounded</item>
+        <item name="cornerSize">@dimen/dimen32dp</item>
+    </style>
+
 </resources>

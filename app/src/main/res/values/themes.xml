@@ -2,11 +2,10 @@
 <resources>
 
     <!-- Dark theme - default -->
-    <style name="AppTheme" parent="Theme.Material3.Dark.NoActionBar">
+    <style name="AppTheme" parent="Theme.Material3Expressive.Dark.NoActionBar">
         <item name="android:navigationBarColor">@color/cardBackground</item>
         <item name="android:statusBarColor">@color/colorPrimary</item>
         <item name="android:windowLightStatusBar">false</item>
-        <item name="android:typeface">monospace</item>
         <item name="colorAccent">@color/colorAccent</item>
         <item name="android:textColorSecondary">@color/colorWhite</item>
         <item name="android:textColorPrimary">@color/colorWhite</item>
@@ -52,11 +51,10 @@
     <!-- Dark theme - default -->
 
     <!-- Light theme -->
-    <style name="AppThemeLight" parent="Theme.Material3.Light.NoActionBar">
+    <style name="AppThemeLight" parent="Theme.Material3Expressive.Light.NoActionBar">
         <item name="android:navigationBarColor">@color/lightThemeCardBackground</item>
         <item name="android:statusBarColor">@color/lightThemeBackground</item>
         <item name="android:windowLightStatusBar">true</item>
-        <item name="android:typeface">monospace</item>
         <item name="colorAccent">@color/colorAccent</item>
         <item name="android:textColorSecondary">@color/lightThemeTextColor</item>
         <item name="android:textColorPrimary">@color/lightThemeTextColor</item>
@@ -101,11 +99,10 @@
     <!-- Light theme -->
 
     <!-- Retro theme -->
-    <style name="AppThemeRetro" parent="Theme.Material3.Light.NoActionBar">
+    <style name="AppThemeRetro" parent="Theme.Material3Expressive.Light.NoActionBar">
         <item name="android:statusBarColor">@color/retroThemeBackground</item>
         <item name="android:navigationBarColor">@color/retroThemeCardBackground</item>
         <item name="android:windowLightStatusBar">true</item>
-        <item name="android:typeface">monospace</item>
         <item name="colorAccent">@color/colorAccent</item>
         <item name="android:textColorSecondary">@color/retroThemeTextColor</item>
         <item name="android:textColorPrimary">@color/retroThemeTextColor</item>
@@ -149,11 +146,10 @@
     <!-- Retro theme -->
 
     <!-- Pitch black theme -->
-    <style name="AppThemePitchBlack" parent="Theme.Material3.Dark.NoActionBar">
+    <style name="AppThemePitchBlack" parent="Theme.Material3Expressive.Dark.NoActionBar">
         <item name="android:statusBarColor">@color/pitchBlackThemeBackground</item>
         <item name="android:navigationBarColor">@color/pitchBlackThemeCardBackground</item>
         <item name="android:windowLightStatusBar">false</item>
-        <item name="android:typeface">monospace</item>
         <item name="colorAccent">@color/colorAccent</item>
         <item name="android:textColorSecondary">@color/pitchBlackThemeTextColor</item>
         <item name="android:textColorPrimary">@color/pitchBlackThemeTextColor</item>
@@ -199,11 +195,10 @@
     <!-- Pitch black theme -->
 
     <!-- Codeberg dark theme -->
-    <style name="AppThemeCodebergDark" parent="Theme.Material3.Dark.NoActionBar">
+    <style name="AppThemeCodebergDark" parent="Theme.Material3Expressive.Dark.NoActionBar">
         <item name="android:statusBarColor">@color/codebergDarkThemeBackground</item>
         <item name="android:navigationBarColor">@color/codebergDarkThemeBackground</item>
         <item name="android:windowLightStatusBar">false</item>
-        <item name="android:typeface">monospace</item>
         <item name="colorAccent">@color/colorAccent</item>
         <item name="android:textColorSecondary">@color/codebergDarkThemeTextColor</item>
         <item name="android:textColorPrimary">@color/codebergDarkThemeTextColor</item>

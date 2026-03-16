@@ -40,8 +40,6 @@ public class Constants {
 		if (!(context instanceof BaseActivity)) {
 			return DEFAULT_RESULT_LIMIT;
 		}
-		return ((BaseActivity) context).getAccount().requiresVersion("1.15")
-				? ((BaseActivity) context).getAccount().getDefaultPageLimit()
-				: ((BaseActivity) context).getAccount().getMaxPageLimit();
+		return ((BaseActivity) context).getAccount().getMaxPageLimit();
 	}
 }

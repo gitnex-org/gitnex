@@ -15,10 +15,10 @@ import org.mian.gitnex.R;
 import org.mian.gitnex.actions.IssueActions;
 import org.mian.gitnex.actions.PullRequestActions;
 import org.mian.gitnex.activities.BaseActivity;
-import org.mian.gitnex.activities.DiffActivity;
 import org.mian.gitnex.activities.EditIssueActivity;
 import org.mian.gitnex.activities.IssueDetailActivity;
 import org.mian.gitnex.activities.MergePullRequestActivity;
+import org.mian.gitnex.activities.PullRequestDiffActivity;
 import org.mian.gitnex.databinding.BottomSheetSingleIssueBinding;
 import org.mian.gitnex.helpers.AlertDialogs;
 import org.mian.gitnex.helpers.AppUtil;
@@ -27,7 +27,7 @@ import org.mian.gitnex.structs.BottomSheetListener;
 import org.mian.gitnex.views.ReactionSpinner;
 
 /**
- * @author M M Arif
+ * @author mmarif
  */
 public class BottomSheetSingleIssueFragment extends BottomSheetDialogFragment {
 
@@ -170,7 +170,7 @@ public class BottomSheetSingleIssueFragment extends BottomSheetDialogFragment {
 
 		binding.openFilesDiff.setOnClickListener(
 				v14 -> {
-					startActivity(issue.getIntent(ctx, DiffActivity.class));
+					startActivity(issue.getIntent(ctx, PullRequestDiffActivity.class));
 					dismiss();
 				});
 

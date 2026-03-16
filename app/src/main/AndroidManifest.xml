@@ -162,6 +162,10 @@
             android:name=".activities.RepositoryActions"
             android:configChanges="orientation|screenSize|smallestScreenSize|density|screenLayout|keyboard|keyboardHidden|navigation"
             android:windowSoftInputMode="adjustResize"/>
+        <activity
+            android:name=".activities.PullRequestDiffActivity"
+            android:configChanges="orientation|screenSize|smallestScreenSize|density|screenLayout|keyboard|keyboardHidden|navigation"
+            android:windowSoftInputMode="adjustResize"/>
 
         <meta-data
             android:name="com.samsung.android.keepalive.density"

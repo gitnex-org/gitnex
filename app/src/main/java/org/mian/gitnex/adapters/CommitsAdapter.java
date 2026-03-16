@@ -2,54 +2,61 @@ package org.mian.gitnex.adapters;
 
 import android.annotation.SuppressLint;
 import android.content.Context;
-import android.content.Intent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
-import android.widget.TextView;
 import androidx.annotation.NonNull;
-import androidx.core.text.HtmlCompat;
 import androidx.recyclerview.widget.RecyclerView;
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.load.engine.DiskCacheStrategy;
-import com.google.android.material.card.MaterialCardView;
 import com.vdurmont.emoji.EmojiParser;
+import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
+import java.util.Locale;
 import java.util.Objects;
 import org.gitnex.tea4j.v2.models.Commit;
+import org.gitnex.tea4j.v2.models.User;
 import org.mian.gitnex.R;
-import org.mian.gitnex.activities.CommitDetailActivity;
-import org.mian.gitnex.activities.CommitsActivity;
-import org.mian.gitnex.activities.DiffActivity;
+import org.mian.gitnex.databinding.ListCommitsBinding;
 import org.mian.gitnex.helpers.TimeHelper;
-import org.mian.gitnex.helpers.contexts.IssueContext;
 
 /**
- * @author M M Arif
+ * @author mmarif
  */
-public class CommitsAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
+public class CommitsAdapter extends RecyclerView.Adapter<CommitsAdapter.CommitsHolder> {
 
 	private final Context context;
 	private List<Commit> commitsList;
-	private Runnable loadMoreListener;
+	private final OnCommitClickListener listener;
 	private boolean isLoading = false;
 	private boolean isMoreDataAvailable = true;
+	private Runnable loadMoreListener;
 
-	public CommitsAdapter(Context ctx, List<Commit> commitsListMain) {
+	public interface OnCommitClickListener {
+		void onCommitClick(Commit commit);
+	}
 
-		this.context = ctx;
-		this.commitsList = commitsListMain;
+	public CommitsAdapter(
+			Context context, List<Commit> commitsList, OnCommitClickListener listener) {
+		this.context = context;
+		this.commitsList = commitsList != null ? commitsList : new ArrayList<>();
+		this.listener = listener;
 	}
 
 	@NonNull @Override
-	public RecyclerView.ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-		LayoutInflater inflater = LayoutInflater.from(context);
-		return new CommitsHolder(inflater.inflate(R.layout.list_commits, parent, false));
+	public CommitsHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
+		ListCommitsBinding binding =
+				ListCommitsBinding.inflate(LayoutInflater.from(parent.getContext()), parent, false);
+		return new CommitsHolder(binding);
 	}
 
 	@Override
-	public void onBindViewHolder(@NonNull RecyclerView.ViewHolder holder, int position) {
+	public void onBindViewHolder(@NonNull CommitsHolder holder, int position) {
+		if (commitsList.isEmpty()) return;
+
+		Commit commit = commitsList.get(position);
 
 		if (position >= getItemCount() - 1
 				&& isMoreDataAvailable
@@ -59,12 +66,8 @@ public class CommitsAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder
 			loadMoreListener.run();
 		}
 
-		((CommitsHolder) holder).bindData(commitsList.get(position));
-	}
-
-	@Override
-	public int getItemViewType(int position) {
-		return position;
+		holder.bindData(commit, context, listener);
+		holder.binding.getRoot().updateAppearance(position, getItemCount());
 	}
 
 	@Override
@@ -72,152 +75,130 @@ public class CommitsAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder
 		return commitsList.size();
 	}
 
-	public void setMoreDataAvailable(boolean moreDataAvailable) {
-		isMoreDataAvailable = moreDataAvailable;
+	public void setMoreDataAvailable(boolean available) {
+		this.isMoreDataAvailable = available;
+	}
+
+	public void setLoadMoreListener(Runnable listener) {
+		this.loadMoreListener = listener;
 	}
 
 	@SuppressLint("NotifyDataSetChanged")
-	public void notifyDataChanged() {
+	public void updateList(List<Commit> newList) {
+		this.commitsList = newList != null ? newList : new ArrayList<>();
+		this.isLoading = false;
 		notifyDataSetChanged();
-		isLoading = false;
 	}
 
-	public void setLoadMoreListener(Runnable loadMoreListener) {
-		this.loadMoreListener = loadMoreListener;
-	}
+	public static class CommitsHolder extends RecyclerView.ViewHolder {
+		private final ListCommitsBinding binding;
 
-	public void updateList(List<Commit> list) {
-		commitsList = list;
-		notifyDataChanged();
-	}
-
-	class CommitsHolder extends RecyclerView.ViewHolder {
-
-		View rootView;
-
-		TextView commitSubject;
-		TextView commitAuthorAndCommitter;
-		ImageView commitAuthorAvatar;
-		ImageView commitCommitterAvatar;
-		TextView commitSha;
-		MaterialCardView commitCommitterAvatarFrame;
-		MaterialCardView commitAuthorAvatarFrame;
-
-		CommitsHolder(View itemView) {
-
-			super(itemView);
-
-			rootView = itemView;
-
-			commitSubject = itemView.findViewById(R.id.commitSubject);
-			commitAuthorAndCommitter = itemView.findViewById(R.id.commitAuthorAndCommitter);
-			commitAuthorAvatar = itemView.findViewById(R.id.commitAuthorAvatar);
-			commitCommitterAvatar = itemView.findViewById(R.id.commitCommitterAvatar);
-			commitSha = itemView.findViewById(R.id.commitSha);
-			commitCommitterAvatarFrame = itemView.findViewById(R.id.commitCommitterAvatarFrame);
-			commitAuthorAvatarFrame = itemView.findViewById(R.id.commitAuthorAvatarFrame);
+		CommitsHolder(ListCommitsBinding binding) {
+			super(binding.getRoot());
+			this.binding = binding;
 		}
 
-		void bindData(Commit commitsModel) {
+		public void bindData(Commit commit, Context context, OnCommitClickListener listener) {
+			if (commit == null || commit.getCommit() == null) return;
 
-			String[] commitMessageParts =
-					commitsModel.getCommit().getMessage().split("(\r\n|\n)", 2);
+			String message = commit.getCommit().getMessage();
+			String subject = (message != null) ? message.split("(\r\n|\n)")[0].trim() : "";
+			binding.commitSubject.setText(EmojiParser.parseToUnicode(subject));
 
-			commitSubject.setText(EmojiParser.parseToUnicode(commitMessageParts[0].trim()));
+			String authorName =
+					(commit.getCommit().getAuthor() != null)
+							? commit.getCommit().getAuthor().getName()
+							: "";
+			String committerName =
+					(commit.getCommit().getCommitter() != null)
+							? commit.getCommit().getCommitter().getName()
+							: "";
 
-			if (!Objects.equals(
-					commitsModel.getCommit().getCommitter().getEmail(),
-					commitsModel.getCommit().getAuthor().getEmail())) {
-				commitAuthorAndCommitter.setText(
-						HtmlCompat.fromHtml(
-								context.getString(
-										R.string.commitAuthoredByAndCommittedByWhen,
-										commitsModel.getCommit().getAuthor().getName(),
-										commitsModel.getCommit().getCommitter().getName(),
-										TimeHelper.formatTime(
-												TimeHelper.parseIso8601(
-														commitsModel
-																.getCommit()
-																.getCommitter()
-																.getDate()),
-												context.getResources().getConfiguration().locale)),
-								HtmlCompat.FROM_HTML_MODE_COMPACT));
-			} else {
-				commitAuthorAndCommitter.setText(
-						HtmlCompat.fromHtml(
-								context.getString(
-										R.string.commitCommittedByWhen,
-										commitsModel.getCommit().getCommitter().getName(),
-										TimeHelper.formatTime(
-												TimeHelper.parseIso8601(
-														commitsModel
-																.getCommit()
-																.getCommitter()
-																.getDate()),
-												context.getResources().getConfiguration().locale)),
-								HtmlCompat.FROM_HTML_MODE_COMPACT));
+			String authorEmail =
+					(commit.getCommit().getAuthor() != null)
+							? commit.getCommit().getAuthor().getEmail()
+							: null;
+			String committerEmail =
+					(commit.getCommit().getCommitter() != null)
+							? commit.getCommit().getCommitter().getEmail()
+							: null;
+
+			String time = "";
+			if (commit.getCommit().getCommitter() != null
+					&& commit.getCommit().getCommitter().getDate() != null) {
+				Date date = TimeHelper.parseIso8601(commit.getCommit().getCommitter().getDate());
+				time = TimeHelper.getFullDateTime(date, Locale.getDefault());
 			}
 
-			if (commitsModel.getAuthor() != null
-					&& commitsModel.getAuthor().getAvatarUrl() != null
-					&& !commitsModel.getAuthor().getAvatarUrl().isEmpty()) {
+			String metaText;
+			boolean isDifferentUser =
+					(authorEmail != null
+							&& committerEmail != null
+							&& !Objects.equals(authorEmail, committerEmail));
 
-				commitAuthorAvatarFrame.setVisibility(View.VISIBLE);
-
-				Glide.with(context)
-						.load(commitsModel.getAuthor().getAvatarUrl())
-						.diskCacheStrategy(DiskCacheStrategy.ALL)
-						.placeholder(R.drawable.loader_animated)
-						.centerCrop()
-						.into(commitAuthorAvatar);
+			if (isDifferentUser) {
+				metaText =
+						context.getString(
+								R.string.commitAuthoredByAndCommittedByWhen,
+								authorName,
+								committerName,
+								time);
+			} else if (authorEmail != null) {
+				metaText = context.getString(R.string.commitAuthoredAndCommitted, authorName, time);
 			} else {
-				commitAuthorAvatar.setImageDrawable(null);
-				commitAuthorAvatarFrame.setVisibility(View.GONE);
+				metaText = context.getString(R.string.commitCommittedByWhen, committerName, time);
 			}
 
-			if (commitsModel.getCommitter() != null
-					&& (commitsModel.getAuthor() == null
-							|| !commitsModel
-									.getAuthor()
-									.getLogin()
-									.equals(commitsModel.getCommitter().getLogin()))
-					&& commitsModel.getCommitter().getAvatarUrl() != null
-					&& !commitsModel.getCommitter().getAvatarUrl().isEmpty()) {
+			binding.commitAuthorAndCommitter.setText(metaText);
 
-				commitCommitterAvatarFrame.setVisibility(View.VISIBLE);
+			loadAvatar(
+					context,
+					commit.getAuthor(),
+					binding.commitAuthorAvatar,
+					binding.commitAuthorAvatarFrame);
 
-				Glide.with(context)
-						.load(commitsModel.getCommitter().getAvatarUrl())
-						.diskCacheStrategy(DiskCacheStrategy.ALL)
-						.placeholder(R.drawable.loader_animated)
-						.centerCrop()
-						.into(commitCommitterAvatar);
+			boolean showSecondAvatar =
+					commit.getAuthor() != null
+							&& commit.getCommitter() != null
+							&& !Objects.equals(
+									commit.getAuthor().getLogin(),
+									commit.getCommitter().getLogin());
+
+			if (showSecondAvatar) {
+				binding.commitCommitterAvatarFrame.setVisibility(View.VISIBLE);
+				loadAvatar(
+						context,
+						commit.getCommitter(),
+						binding.commitCommitterAvatar,
+						binding.commitCommitterAvatarFrame);
 			} else {
-				commitCommitterAvatar.setImageDrawable(null);
-				commitCommitterAvatarFrame.setVisibility(View.GONE);
+				binding.commitCommitterAvatarFrame.setVisibility(View.GONE);
 			}
 
-			commitSha.setText(
-					commitsModel
-							.getSha()
-							.substring(0, Math.min(commitsModel.getSha().length(), 10)));
-			rootView.setOnClickListener(
+			String sha = commit.getSha();
+			if (sha != null) {
+				binding.commitSha.setText(sha.substring(0, Math.min(sha.length(), 7)));
+			}
+
+			itemView.setOnClickListener(
 					v -> {
-						Intent intent;
-						if (context instanceof CommitsActivity) {
-							intent =
-									((CommitsActivity) context)
-											.repository.getIntent(
-													context, CommitDetailActivity.class);
-						} else {
-							intent =
-									IssueContext.fromIntent(((DiffActivity) context).getIntent())
-											.getRepository()
-											.getIntent(context, CommitDetailActivity.class);
-						}
-						intent.putExtra("sha", commitsModel.getSha());
-						context.startActivity(intent);
+						if (listener != null) listener.onCommitClick(commit);
 					});
+		}
+
+		private void loadAvatar(Context context, User user, ImageView imageView, View frame) {
+			if (user != null && user.getAvatarUrl() != null && !user.getAvatarUrl().isEmpty()) {
+				frame.setVisibility(View.VISIBLE);
+				Glide.with(context)
+						.load(user.getAvatarUrl())
+						.diskCacheStrategy(DiskCacheStrategy.ALL)
+						.placeholder(R.drawable.loader_animated)
+						.centerCrop()
+						.into(imageView);
+			} else {
+				imageView.setImageDrawable(null);
+				frame.setVisibility(View.GONE);
+			}
 		}
 	}
 }
