@@ -48,7 +48,7 @@ public class AccountSettingsSSHKeysViewModel extends ViewModel {
 						if (response.isSuccessful()) {
 							keysList.postValue(response.body());
 						} else {
-							Toasty.error(ctx, ctx.getString(R.string.genericError));
+							Toasty.show(ctx, ctx.getString(R.string.genericError));
 						}
 					}
 
@@ -56,7 +56,7 @@ public class AccountSettingsSSHKeysViewModel extends ViewModel {
 					public void onFailure(
 							@NonNull Call<List<PublicKey>> call, @NonNull Throwable t) {
 
-						Toasty.error(ctx, ctx.getString(R.string.genericServerResponseError));
+						Toasty.show(ctx, ctx.getString(R.string.genericServerResponseError));
 					}
 				});
 	}

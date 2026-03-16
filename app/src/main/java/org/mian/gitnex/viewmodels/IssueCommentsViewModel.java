@@ -58,7 +58,7 @@ public class IssueCommentsViewModel extends ViewModel {
 								}
 							}
 						} else {
-							Toasty.error(ctx, ctx.getString(R.string.genericError));
+							Toasty.show(ctx, ctx.getString(R.string.genericError));
 						}
 					}
 
@@ -66,7 +66,7 @@ public class IssueCommentsViewModel extends ViewModel {
 					public void onFailure(
 							@NonNull Call<List<TimelineComment>> call, @NonNull Throwable t) {
 
-						Toasty.error(ctx, ctx.getString(R.string.genericServerResponseError));
+						Toasty.show(ctx, ctx.getString(R.string.genericServerResponseError));
 					}
 				});
 	}
@@ -110,14 +110,14 @@ public class IssueCommentsViewModel extends ViewModel {
 								adapter.setMoreDataAvailable(false);
 							}
 						} else {
-							Toasty.error(ctx, ctx.getString(R.string.genericError));
+							Toasty.show(ctx, ctx.getString(R.string.genericError));
 						}
 					}
 
 					@Override
 					public void onFailure(
 							@NonNull Call<List<TimelineComment>> call, @NonNull Throwable t) {
-						Toasty.error(ctx, ctx.getString(R.string.genericServerResponseError));
+						Toasty.show(ctx, ctx.getString(R.string.genericServerResponseError));
 					}
 				});
 	}

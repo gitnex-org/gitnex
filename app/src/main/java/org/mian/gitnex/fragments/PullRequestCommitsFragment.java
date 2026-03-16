@@ -106,7 +106,7 @@ public class PullRequestCommitsFragment extends Fragment {
 						getViewLifecycleOwner(),
 						msg -> {
 							if (msg != null) {
-								Toasty.error(ctx, msg);
+								Toasty.show(ctx, msg);
 								binding.pullToRefresh.setRefreshing(false);
 							}
 						});

@@ -101,7 +101,7 @@ public class MostVisitedReposAdapter
 		mostVisitedReposList.remove(position);
 		notifyItemRemoved(position);
 		notifyItemRangeChanged(position, mostVisitedReposList.size());
-		Toasty.success(ctx, ctx.getResources().getString(R.string.resetMostReposCounter));
+		Toasty.show(ctx, ctx.getResources().getString(R.string.resetMostReposCounter));
 	}
 
 	public MostVisitedReposAdapter(Context ctx, List<Repository> reposListMain) {

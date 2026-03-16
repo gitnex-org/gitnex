@@ -20,7 +20,7 @@ import org.mian.gitnex.databinding.ActivityCreateLabelBinding;
 import org.mian.gitnex.helpers.AlertDialogs;
 import org.mian.gitnex.helpers.AppUtil;
 import org.mian.gitnex.helpers.Constants;
-import org.mian.gitnex.helpers.SnackBar;
+import org.mian.gitnex.helpers.Toasty;
 import org.mian.gitnex.helpers.contexts.RepositoryContext;
 import org.mian.gitnex.viewmodels.LabelsViewModel;
 import retrofit2.Call;
@@ -167,15 +167,13 @@ public class CreateLabelActivity extends BaseActivity {
 
 		if (updateLabelName.isEmpty()) {
 
-			SnackBar.error(
-					ctx, findViewById(android.R.id.content), getString(R.string.labelEmptyError));
+			Toasty.show(ctx, getString(R.string.labelEmptyError));
 			return;
 		}
 
 		if (!AppUtil.checkLabel(updateLabelName)) {
 
-			SnackBar.error(
-					ctx, findViewById(android.R.id.content), getString(R.string.labelNameError));
+			Toasty.show(ctx, getString(R.string.labelNameError));
 			return;
 		}
 
@@ -204,15 +202,13 @@ public class CreateLabelActivity extends BaseActivity {
 
 		if (newLabelName.isEmpty()) {
 
-			SnackBar.error(
-					ctx, findViewById(android.R.id.content), getString(R.string.labelEmptyError));
+			Toasty.show(ctx, getString(R.string.labelEmptyError));
 			return;
 		}
 
 		if (!AppUtil.checkLabel(newLabelName)) {
 
-			SnackBar.error(
-					ctx, findViewById(android.R.id.content), getString(R.string.labelNameError));
+			Toasty.show(ctx, getString(R.string.labelNameError));
 			return;
 		}
 
@@ -253,10 +249,7 @@ public class CreateLabelActivity extends BaseActivity {
 
 						if (response.code() == 201) {
 
-							SnackBar.success(
-									ctx,
-									findViewById(android.R.id.content),
-									getString(R.string.labelCreated));
+							Toasty.show(ctx, getString(R.string.labelCreated));
 							refreshLabels = true;
 							new Handler().postDelayed(() -> finish(), 3000);
 						} else if (response.code() == 401) {
@@ -264,10 +257,7 @@ public class CreateLabelActivity extends BaseActivity {
 							AlertDialogs.authorizationTokenRevokedDialog(ctx);
 						} else {
 
-							SnackBar.error(
-									ctx,
-									findViewById(android.R.id.content),
-									getString(R.string.genericError));
+							Toasty.show(ctx, getString(R.string.genericError));
 						}
 					}
 
@@ -323,10 +313,7 @@ public class CreateLabelActivity extends BaseActivity {
 
 							if (response.code() == 200) {
 
-								SnackBar.success(
-										ctx,
-										findViewById(android.R.id.content),
-										getString(R.string.labelUpdated));
+								Toasty.show(ctx, getString(R.string.labelUpdated));
 								refreshLabels = true;
 								new Handler().postDelayed(() -> finish(), 3000);
 							}
@@ -335,10 +322,7 @@ public class CreateLabelActivity extends BaseActivity {
 							AlertDialogs.authorizationTokenRevokedDialog(ctx);
 						} else {
 
-							SnackBar.error(
-									ctx,
-									findViewById(android.R.id.content),
-									getString(R.string.genericError));
+							Toasty.show(ctx, getString(R.string.genericError));
 						}
 					}
 
@@ -380,10 +364,7 @@ public class CreateLabelActivity extends BaseActivity {
 
 							if (response.code() == 204) {
 
-								SnackBar.success(
-										ctx,
-										findViewById(android.R.id.content),
-										getString(R.string.labelDeleteText));
+								Toasty.show(ctx, getString(R.string.labelDeleteText));
 
 								if (getIntent().getStringExtra("type") != null
 										&& Objects.requireNonNull(
@@ -415,10 +396,7 @@ public class CreateLabelActivity extends BaseActivity {
 							AlertDialogs.authorizationTokenRevokedDialog(ctx);
 						} else {
 
-							SnackBar.error(
-									ctx,
-									findViewById(android.R.id.content),
-									getString(R.string.genericError));
+							Toasty.show(ctx, getString(R.string.genericError));
 						}
 					}
 

@@ -110,16 +110,15 @@ public class IssueActions {
 								}
 								if (issue.getIssueType().equalsIgnoreCase("Pull")) {
 									if (issueState.equals("closed")) {
-										Toasty.success(ctx, ctx.getString(R.string.prClosed));
+										Toasty.show(ctx, ctx.getString(R.string.prClosed));
 									} else if (issueState.equals("open")) {
-										Toasty.success(ctx, ctx.getString(R.string.prReopened));
+										Toasty.show(ctx, ctx.getString(R.string.prReopened));
 									}
 								} else {
 									if (issueState.equals("closed")) {
-										Toasty.success(
-												ctx, ctx.getString(R.string.issueStateClosed));
+										Toasty.show(ctx, ctx.getString(R.string.issueStateClosed));
 									} else if (issueState.equals("open")) {
-										Toasty.success(
+										Toasty.show(
 												ctx, ctx.getString(R.string.issueStateReopened));
 									}
 								}
@@ -145,20 +144,20 @@ public class IssueActions {
 							AlertDialogs.authorizationTokenRevokedDialog(ctx);
 						} else if (response.code() == 403) {
 
-							Toasty.error(ctx, ctx.getString(R.string.authorizeError));
+							Toasty.show(ctx, ctx.getString(R.string.authorizeError));
 						} else if (response.code() == 404) {
 
-							Toasty.warning(ctx, ctx.getString(R.string.apiNotFound));
+							Toasty.show(ctx, ctx.getString(R.string.apiNotFound));
 						} else {
 
-							Toasty.error(ctx, ctx.getString(R.string.genericError));
+							Toasty.show(ctx, ctx.getString(R.string.genericError));
 						}
 					}
 
 					@Override
 					public void onFailure(@NonNull Call<Issue> call, @NonNull Throwable t) {
 
-						Toasty.error(
+						Toasty.show(
 								ctx,
 								ctx.getResources().getString(R.string.genericServerResponseError));
 					}
@@ -188,24 +187,24 @@ public class IssueActions {
 
 							if (response.code() == 201) {
 
-								Toasty.success(ctx, ctx.getString(R.string.subscribedSuccessfully));
+								Toasty.show(ctx, ctx.getString(R.string.subscribedSuccessfully));
 							} else if (response.code() == 200) {
 
-								Toasty.success(ctx, ctx.getString(R.string.alreadySubscribed));
+								Toasty.show(ctx, ctx.getString(R.string.alreadySubscribed));
 							}
 						} else if (response.code() == 401) {
 
 							AlertDialogs.authorizationTokenRevokedDialog(ctx);
 						} else {
 
-							Toasty.error(ctx, ctx.getString(R.string.subscriptionError));
+							Toasty.show(ctx, ctx.getString(R.string.subscriptionError));
 						}
 					}
 
 					@Override
 					public void onFailure(@NonNull Call<Void> call, @NonNull Throwable t) {
 
-						Toasty.error(
+						Toasty.show(
 								ctx,
 								ctx.getResources().getString(R.string.genericServerResponseError));
 					}
@@ -235,25 +234,24 @@ public class IssueActions {
 
 							if (response.code() == 201) {
 
-								Toasty.success(
-										ctx, ctx.getString(R.string.unsubscribedSuccessfully));
+								Toasty.show(ctx, ctx.getString(R.string.unsubscribedSuccessfully));
 							} else if (response.code() == 200) {
 
-								Toasty.success(ctx, ctx.getString(R.string.alreadyUnsubscribed));
+								Toasty.show(ctx, ctx.getString(R.string.alreadyUnsubscribed));
 							}
 						} else if (response.code() == 401) {
 
 							AlertDialogs.authorizationTokenRevokedDialog(ctx);
 						} else {
 
-							Toasty.error(ctx, ctx.getString(R.string.unSubscriptionError));
+							Toasty.show(ctx, ctx.getString(R.string.unSubscriptionError));
 						}
 					}
 
 					@Override
 					public void onFailure(@NonNull Call<Void> call, @NonNull Throwable t) {
 
-						Toasty.error(
+						Toasty.show(
 								ctx,
 								ctx.getResources().getString(R.string.genericServerResponseError));
 					}
@@ -282,7 +280,7 @@ public class IssueActions {
 
 							if (response.code() == 204) {
 
-								Toasty.success(ctx, ctx.getString(R.string.issue_pinned));
+								Toasty.show(ctx, ctx.getString(R.string.issue_pinned));
 								IssuesFragment.resumeIssues = true;
 								issue.setPinned(true);
 							}
@@ -291,14 +289,14 @@ public class IssueActions {
 							AlertDialogs.authorizationTokenRevokedDialog(ctx);
 						} else {
 
-							Toasty.error(ctx, ctx.getString(R.string.pinning_failed));
+							Toasty.show(ctx, ctx.getString(R.string.pinning_failed));
 						}
 					}
 
 					@Override
 					public void onFailure(@NonNull Call<Void> call, @NonNull Throwable t) {
 
-						Toasty.error(
+						Toasty.show(
 								ctx,
 								ctx.getResources().getString(R.string.genericServerResponseError));
 					}
@@ -327,7 +325,7 @@ public class IssueActions {
 
 							if (response.code() == 204) {
 
-								Toasty.success(ctx, ctx.getString(R.string.issue_unpinned));
+								Toasty.show(ctx, ctx.getString(R.string.issue_unpinned));
 								IssuesFragment.resumeIssues = true;
 								issue.setPinned(false);
 								issue.getIssue().setPinOrder(0L);
@@ -337,14 +335,14 @@ public class IssueActions {
 							AlertDialogs.authorizationTokenRevokedDialog(ctx);
 						} else {
 
-							Toasty.error(ctx, ctx.getString(R.string.unpinning_failed));
+							Toasty.show(ctx, ctx.getString(R.string.unpinning_failed));
 						}
 					}
 
 					@Override
 					public void onFailure(@NonNull Call<Void> call, @NonNull Throwable t) {
 
-						Toasty.error(
+						Toasty.show(
 								ctx,
 								ctx.getResources().getString(R.string.genericServerResponseError));
 					}
@@ -397,7 +395,7 @@ public class IssueActions {
 					@Override
 					public void onFailure(@NonNull Call<Comment> call, @NonNull Throwable t) {
 
-						Toasty.error(
+						Toasty.show(
 								context,
 								context.getResources()
 										.getString(R.string.genericServerResponseError));

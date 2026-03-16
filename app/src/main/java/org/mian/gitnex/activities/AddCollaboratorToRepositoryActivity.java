@@ -99,14 +99,14 @@ public class AddCollaboratorToRepositoryActivity extends BaseActivity {
 							getUsersList(response.body().getData(), ctx);
 						} else {
 
-							Toasty.error(ctx, ctx.getString(R.string.genericError));
+							Toasty.show(ctx, ctx.getString(R.string.genericError));
 						}
 					}
 
 					@Override
 					public void onFailure(
 							@NonNull Call<InlineResponse2001> call, @NonNull Throwable t) {
-						Toasty.error(ctx, ctx.getString(R.string.genericServerResponseError));
+						Toasty.show(ctx, ctx.getString(R.string.genericServerResponseError));
 					}
 				});
 	}

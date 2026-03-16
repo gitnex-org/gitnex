@@ -35,7 +35,7 @@ public class PullRequestActions {
 						if (response.code() == 204) {
 
 							if (showToasts) {
-								Toasty.success(
+								Toasty.show(
 										context, context.getString(R.string.deleteBranchSuccess));
 							}
 						} else if (response.code() == 401) {
@@ -44,19 +44,19 @@ public class PullRequestActions {
 						} else if (response.code() == 403) {
 
 							if (showToasts) {
-								Toasty.error(context, context.getString(R.string.authorizeError));
+								Toasty.show(context, context.getString(R.string.authorizeError));
 							}
 						} else if (response.code() == 404) {
 
 							if (showToasts) {
-								Toasty.warning(
+								Toasty.show(
 										context,
 										context.getString(R.string.deleteBranchErrorNotFound));
 							}
 						} else {
 
 							if (showToasts) {
-								Toasty.error(context, context.getString(R.string.genericError));
+								Toasty.show(context, context.getString(R.string.genericError));
 							}
 						}
 					}
@@ -65,7 +65,7 @@ public class PullRequestActions {
 					public void onFailure(@NonNull Call<Void> call, @NonNull Throwable t) {
 
 						if (showToasts) {
-							Toasty.error(context, context.getString(R.string.deleteBranchError));
+							Toasty.show(context, context.getString(R.string.deleteBranchError));
 						}
 					}
 				});
@@ -91,19 +91,19 @@ public class PullRequestActions {
 							public void onResponse(@NonNull Call call, @NonNull Response response) {
 
 								if (response.isSuccessful()) {
-									Toasty.success(
+									Toasty.show(
 											context, context.getString(R.string.updatePrSuccess));
 								} else {
 									if (response.code() == 403) {
-										Toasty.error(
+										Toasty.show(
 												context,
 												context.getString(R.string.authorizeError));
 									} else if (response.code() == 409) {
-										Toasty.error(
+										Toasty.show(
 												context,
 												context.getString(R.string.updatePrConflict));
 									} else {
-										Toasty.error(
+										Toasty.show(
 												context, context.getString(R.string.genericError));
 									}
 								}
@@ -112,7 +112,7 @@ public class PullRequestActions {
 							@Override
 							public void onFailure(@NonNull Call call, @NonNull Throwable t) {
 
-								Toasty.error(context, context.getString(R.string.genericError));
+								Toasty.show(context, context.getString(R.string.genericError));
 							}
 						});
 	}

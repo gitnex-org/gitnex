@@ -71,7 +71,7 @@ import org.mian.gitnex.helpers.AppUtil;
 import org.mian.gitnex.helpers.Constants;
 import org.mian.gitnex.helpers.Markdown;
 import org.mian.gitnex.helpers.MentionHelper;
-import org.mian.gitnex.helpers.SnackBar;
+import org.mian.gitnex.helpers.Toasty;
 import org.mian.gitnex.helpers.attachments.AttachmentUtils;
 import org.mian.gitnex.helpers.attachments.AttachmentsModel;
 import org.mian.gitnex.helpers.contexts.IssueContext;
@@ -435,10 +435,7 @@ public class EditIssueActivity extends BaseActivity
 						} else {
 
 							create.setVisible(true);
-							SnackBar.error(
-									ctx,
-									findViewById(android.R.id.content),
-									getString(R.string.attachmentsSaveError));
+							Toasty.show(ctx, getString(R.string.attachmentsSaveError));
 						}
 					}
 
@@ -446,10 +443,7 @@ public class EditIssueActivity extends BaseActivity
 					public void onFailure(@NonNull Call<Attachment> call, @NonNull Throwable t) {
 
 						create.setVisible(true);
-						SnackBar.error(
-								ctx,
-								findViewById(android.R.id.content),
-								getString(R.string.genericServerResponseError));
+						Toasty.show(ctx, getString(R.string.genericServerResponseError));
 					}
 				});
 	}
@@ -464,8 +458,7 @@ public class EditIssueActivity extends BaseActivity
 
 		if (editIssueTitleForm.isEmpty()) {
 
-			SnackBar.error(
-					ctx, findViewById(android.R.id.content), getString(R.string.issueTitleEmpty));
+			Toasty.show(ctx, getString(R.string.issueTitleEmpty));
 			return;
 		}
 
@@ -518,16 +511,10 @@ public class EditIssueActivity extends BaseActivity
 
 							if (issue.getIssueType().equalsIgnoreCase("Pull")) {
 
-								SnackBar.success(
-										ctx,
-										findViewById(android.R.id.content),
-										getString(R.string.editPrSuccessMessage));
+								Toasty.show(ctx, getString(R.string.editPrSuccessMessage));
 							} else {
 
-								SnackBar.success(
-										ctx,
-										findViewById(android.R.id.content),
-										getString(R.string.editIssueSuccessMessage));
+								Toasty.show(ctx, getString(R.string.editIssueSuccessMessage));
 							}
 
 							Intent result = new Intent();
@@ -543,10 +530,7 @@ public class EditIssueActivity extends BaseActivity
 						} else {
 
 							create.setVisible(true);
-							SnackBar.error(
-									ctx,
-									findViewById(android.R.id.content),
-									getString(R.string.genericError));
+							Toasty.show(ctx, getString(R.string.genericError));
 						}
 					}
 
@@ -749,10 +733,7 @@ public class EditIssueActivity extends BaseActivity
 							AlertDialogs.authorizationTokenRevokedDialog(ctx);
 						} else {
 
-							SnackBar.error(
-									ctx,
-									findViewById(android.R.id.content),
-									getString(R.string.genericError));
+							Toasty.show(ctx, getString(R.string.genericError));
 						}
 					}
 

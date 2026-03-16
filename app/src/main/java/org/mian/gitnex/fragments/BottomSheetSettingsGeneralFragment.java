@@ -10,7 +10,7 @@ import com.google.android.material.bottomsheet.BottomSheetDialogFragment;
 import org.mian.gitnex.R;
 import org.mian.gitnex.databinding.BottomSheetSettingsGeneralBinding;
 import org.mian.gitnex.helpers.AppDatabaseSettings;
-import org.mian.gitnex.helpers.SnackBar;
+import org.mian.gitnex.helpers.Toasty;
 
 /**
  * @author mmarif
@@ -64,10 +64,7 @@ public class BottomSheetSettingsGeneralFragment extends BottomSheetDialogFragmen
 									String.valueOf(newSelection),
 									AppDatabaseSettings.APP_HOME_SCREEN_KEY);
 							SettingsFragment.refreshParent = true;
-							SnackBar.success(
-									requireContext(),
-									requireActivity().findViewById(android.R.id.content),
-									getString(R.string.settingsSave));
+							Toasty.show(requireContext(), getString(R.string.settingsSave));
 						}
 					}
 				});
@@ -83,10 +80,7 @@ public class BottomSheetSettingsGeneralFragment extends BottomSheetDialogFragmen
 									String.valueOf(newSelection),
 									AppDatabaseSettings.APP_LINK_HANDLER_KEY);
 							SettingsFragment.refreshParent = true;
-							SnackBar.success(
-									requireContext(),
-									requireActivity().findViewById(android.R.id.content),
-									getString(R.string.settingsSave));
+							Toasty.show(requireContext(), getString(R.string.settingsSave));
 						}
 					}
 				});
@@ -99,10 +93,7 @@ public class BottomSheetSettingsGeneralFragment extends BottomSheetDialogFragmen
 							requireContext(),
 							String.valueOf(isChecked),
 							AppDatabaseSettings.APP_CUSTOM_BROWSER_KEY);
-					SnackBar.success(
-							requireContext(),
-							requireActivity().findViewById(android.R.id.content),
-							getString(R.string.settingsSave));
+					Toasty.show(requireContext(), getString(R.string.settingsSave));
 				});
 
 		binding.enableSendReports.setOnClickListener(
@@ -115,10 +106,7 @@ public class BottomSheetSettingsGeneralFragment extends BottomSheetDialogFragmen
 							requireContext(),
 							String.valueOf(isChecked),
 							AppDatabaseSettings.APP_CRASH_REPORTS_KEY);
-					SnackBar.success(
-							requireContext(),
-							requireActivity().findViewById(android.R.id.content),
-							getString(R.string.settingsSave));
+					Toasty.show(requireContext(), getString(R.string.settingsSave));
 				});
 
 		// URL Prompt switch listener
@@ -131,10 +119,7 @@ public class BottomSheetSettingsGeneralFragment extends BottomSheetDialogFragmen
 							requireContext(),
 							String.valueOf(isChecked),
 							AppDatabaseSettings.APP_URL_PROMPT_KEY);
-					SnackBar.success(
-							requireContext(),
-							requireActivity().findViewById(android.R.id.content),
-							getString(R.string.settingsSave));
+					Toasty.show(requireContext(), getString(R.string.settingsSave));
 				});
 
 		return binding.getRoot();

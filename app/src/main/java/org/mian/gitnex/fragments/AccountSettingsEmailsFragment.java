@@ -104,7 +104,7 @@ public class AccountSettingsEmailsFragment extends Fragment {
 									customAccountSettingsAddNewEmailBinding.userEmail.getText())
 							.toString()
 							.isEmpty()) {
-						Toasty.error(context, getString(R.string.emailErrorEmpty));
+						Toasty.show(context, getString(R.string.emailErrorEmpty));
 					} else {
 						addNewEmail(
 								String.valueOf(
@@ -137,19 +137,19 @@ public class AccountSettingsEmailsFragment extends Fragment {
 
 							dialogSaveEmail.dismiss();
 							accountSettingsEmailsViewModel.loadEmailsList(context);
-							Toasty.success(context, getString(R.string.emailAddedText));
+							Toasty.show(context, getString(R.string.emailAddedText));
 						} else if (response.code() == 401) {
 
 							AlertDialogs.authorizationTokenRevokedDialog(context);
 						} else if (response.code() == 403) {
 
-							Toasty.error(context, getString(R.string.authorizeError));
+							Toasty.show(context, getString(R.string.authorizeError));
 						} else if (response.code() == 422) {
 
-							Toasty.error(context, getString(R.string.emailErrorInUse));
+							Toasty.show(context, getString(R.string.emailErrorInUse));
 						} else {
 
-							Toasty.error(context, getString(R.string.genericError));
+							Toasty.show(context, getString(R.string.genericError));
 						}
 					}
 

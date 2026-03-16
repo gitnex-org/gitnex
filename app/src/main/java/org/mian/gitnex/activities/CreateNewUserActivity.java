@@ -13,7 +13,7 @@ import org.mian.gitnex.clients.RetrofitClient;
 import org.mian.gitnex.databinding.ActivityCreateNewUserBinding;
 import org.mian.gitnex.helpers.AlertDialogs;
 import org.mian.gitnex.helpers.AppUtil;
-import org.mian.gitnex.helpers.SnackBar;
+import org.mian.gitnex.helpers.Toasty;
 import retrofit2.Call;
 import retrofit2.Callback;
 
@@ -73,37 +73,29 @@ public class CreateNewUserActivity extends BaseActivity {
 				Objects.requireNonNull(activityCreateNewUserBinding.userPassword.getText())
 						.toString();
 
-		if (newFullName.equals("")
-				|| newUserName.equals("") | newUserEmail.equals("")
-				|| newUserPassword.equals("")) {
+		if (newFullName.isEmpty()
+				|| newUserName.isEmpty() | newUserEmail.isEmpty()
+				|| newUserPassword.isEmpty()) {
 
-			SnackBar.error(
-					ctx, findViewById(android.R.id.content), getString(R.string.emptyFields));
+			Toasty.show(ctx, getString(R.string.emptyFields));
 			return;
 		}
 
 		if (!AppUtil.checkStrings(newFullName)) {
 
-			SnackBar.error(
-					ctx,
-					findViewById(android.R.id.content),
-					getString(R.string.userInvalidFullName));
+			Toasty.show(ctx, getString(R.string.userInvalidFullName));
 			return;
 		}
 
 		if (!AppUtil.checkStringsWithAlphaNumeric(newUserName)) {
 
-			SnackBar.error(
-					ctx,
-					findViewById(android.R.id.content),
-					getString(R.string.userInvalidUserName));
+			Toasty.show(ctx, getString(R.string.userInvalidUserName));
 			return;
 		}
 
 		if (!Patterns.EMAIL_ADDRESS.matcher(newUserEmail).matches()) {
 
-			SnackBar.error(
-					ctx, findViewById(android.R.id.content), getString(R.string.userInvalidEmail));
+			Toasty.show(ctx, getString(R.string.userInvalidEmail));
 			return;
 		}
 
@@ -131,38 +123,23 @@ public class CreateNewUserActivity extends BaseActivity {
 
 						if (response.code() == 201) {
 
-							SnackBar.success(
-									ctx,
-									findViewById(android.R.id.content),
-									getString(R.string.userCreatedText));
+							Toasty.show(ctx, getString(R.string.userCreatedText));
 							new Handler().postDelayed(() -> finish(), 3000);
 						} else if (response.code() == 401) {
 
 							AlertDialogs.authorizationTokenRevokedDialog(ctx);
 						} else if (response.code() == 403) {
 
-							SnackBar.error(
-									ctx,
-									findViewById(android.R.id.content),
-									getString(R.string.authorizeError));
+							Toasty.show(ctx, getString(R.string.authorizeError));
 						} else if (response.code() == 404) {
 
-							SnackBar.error(
-									ctx,
-									findViewById(android.R.id.content),
-									getString(R.string.apiNotFound));
+							Toasty.show(ctx, getString(R.string.apiNotFound));
 						} else if (response.code() == 422) {
 
-							SnackBar.warning(
-									ctx,
-									findViewById(android.R.id.content),
-									getString(R.string.userExistsError));
+							Toasty.show(ctx, getString(R.string.userExistsError));
 						} else {
 
-							SnackBar.error(
-									ctx,
-									findViewById(android.R.id.content),
-									getString(R.string.genericError));
+							Toasty.show(ctx, getString(R.string.genericError));
 						}
 					}
 

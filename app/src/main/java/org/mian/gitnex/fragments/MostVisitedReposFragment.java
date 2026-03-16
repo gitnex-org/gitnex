@@ -111,7 +111,7 @@ public class MostVisitedReposFragment extends Fragment {
 								if (menuItem.getItemId() == R.id.reset_menu_item) {
 
 									if (mostVisitedReposList.isEmpty()) {
-										Toasty.warning(
+										Toasty.show(
 												ctx,
 												getResources().getString(R.string.noDataFound));
 									} else {
@@ -169,9 +169,9 @@ public class MostVisitedReposFragment extends Fragment {
 					.resetAllRepositoryMostVisited(accountId);
 			mostVisitedReposList.clear();
 			adapter.clearAdapter();
-			Toasty.success(ctx, getResources().getString(R.string.resetMostReposCounter));
+			Toasty.show(ctx, getResources().getString(R.string.resetMostReposCounter));
 		} else {
-			Toasty.warning(ctx, getResources().getString(R.string.noDataFound));
+			Toasty.show(ctx, getResources().getString(R.string.noDataFound));
 		}
 	}
 

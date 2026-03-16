@@ -23,7 +23,7 @@ import org.mian.gitnex.databinding.ActivityCreateMilestoneBinding;
 import org.mian.gitnex.helpers.AlertDialogs;
 import org.mian.gitnex.helpers.AppDatabaseSettings;
 import org.mian.gitnex.helpers.Markdown;
-import org.mian.gitnex.helpers.SnackBar;
+import org.mian.gitnex.helpers.Toasty;
 import org.mian.gitnex.helpers.contexts.RepositoryContext;
 import retrofit2.Call;
 import retrofit2.Callback;
@@ -137,23 +137,17 @@ public class CreateMilestoneActivity extends BaseActivity {
 		String milestoneDueDate =
 				Objects.requireNonNull(binding.milestoneDueDate.getText()).toString();
 
-		if (newMilestoneTitle.equals("")) {
+		if (newMilestoneTitle.isEmpty()) {
 
-			SnackBar.error(
-					ctx,
-					findViewById(android.R.id.content),
-					getString(R.string.milestoneNameErrorEmpty));
+			Toasty.show(ctx, getString(R.string.milestoneNameErrorEmpty));
 			return;
 		}
 
-		if (!newMilestoneDescription.equals("")) {
+		if (!newMilestoneDescription.isEmpty()) {
 
 			if (newMilestoneDescription.length() > 255) {
 
-				SnackBar.error(
-						ctx,
-						findViewById(android.R.id.content),
-						getString(R.string.milestoneDescError));
+				Toasty.show(ctx, getString(R.string.milestoneDescError));
 				return;
 			}
 		}
@@ -205,10 +199,7 @@ public class CreateMilestoneActivity extends BaseActivity {
 							if (response.code() == 201) {
 
 								RepoDetailActivity.updateFABActions = true;
-								SnackBar.success(
-										ctx,
-										findViewById(android.R.id.content),
-										getString(R.string.milestoneCreated));
+								Toasty.show(ctx, getString(R.string.milestoneCreated));
 
 								new Handler().postDelayed(() -> finish(), 3000);
 							}
@@ -217,10 +208,7 @@ public class CreateMilestoneActivity extends BaseActivity {
 							AlertDialogs.authorizationTokenRevokedDialog(ctx);
 						} else {
 
-							SnackBar.error(
-									ctx,
-									findViewById(android.R.id.content),
-									getString(R.string.genericError));
+							Toasty.show(ctx, getString(R.string.genericError));
 						}
 					}
 

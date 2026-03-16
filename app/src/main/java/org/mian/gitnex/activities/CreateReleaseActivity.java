@@ -35,7 +35,6 @@ import org.mian.gitnex.databinding.CustomInsertNoteBinding;
 import org.mian.gitnex.helpers.AlertDialogs;
 import org.mian.gitnex.helpers.Constants;
 import org.mian.gitnex.helpers.Markdown;
-import org.mian.gitnex.helpers.SnackBar;
 import org.mian.gitnex.helpers.Toasty;
 import org.mian.gitnex.helpers.contexts.RepositoryContext;
 import retrofit2.Call;
@@ -172,7 +171,7 @@ public class CreateReleaseActivity extends BaseActivity {
 			fetchNotes();
 			dialogNotes = materialAlertDialogBuilder.show();
 		} else {
-			Toasty.warning(ctx, getResources().getString(R.string.noNotes));
+			Toasty.show(ctx, getResources().getString(R.string.noNotes));
 		}
 	}
 
@@ -204,14 +203,12 @@ public class CreateReleaseActivity extends BaseActivity {
 						+ Objects.requireNonNull(binding.releaseContent.getText());
 
 		if (tagName.isEmpty()) {
-			SnackBar.error(
-					ctx, findViewById(android.R.id.content), getString(R.string.tagNameErrorEmpty));
+			Toasty.show(ctx, getString(R.string.tagNameErrorEmpty));
 			return;
 		}
 
 		if (selectedBranch == null) {
-			SnackBar.error(
-					ctx, findViewById(android.R.id.content), getString(R.string.selectBranchError));
+			Toasty.show(ctx, getString(R.string.selectBranchError));
 			return;
 		}
 
@@ -235,28 +232,16 @@ public class CreateReleaseActivity extends BaseActivity {
 						if (response.code() == 201) {
 
 							RepoDetailActivity.updateFABActions = true;
-							SnackBar.success(
-									ctx,
-									findViewById(android.R.id.content),
-									getString(R.string.tagCreated));
+							Toasty.show(ctx, getString(R.string.tagCreated));
 							new Handler().postDelayed(() -> finish(), 3000);
 						} else if (response.code() == 401) {
 							AlertDialogs.authorizationTokenRevokedDialog(ctx);
 						} else if (response.code() == 403) {
-							SnackBar.error(
-									ctx,
-									findViewById(android.R.id.content),
-									getString(R.string.authorizeError));
+							Toasty.show(ctx, getString(R.string.authorizeError));
 						} else if (response.code() == 404) {
-							SnackBar.error(
-									ctx,
-									findViewById(android.R.id.content),
-									getString(R.string.apiNotFound));
+							Toasty.show(ctx, getString(R.string.apiNotFound));
 						} else {
-							SnackBar.error(
-									ctx,
-									findViewById(android.R.id.content),
-									getString(R.string.genericError));
+							Toasty.show(ctx, getString(R.string.genericError));
 						}
 					}
 
@@ -277,20 +262,17 @@ public class CreateReleaseActivity extends BaseActivity {
 		boolean newReleaseDraft = binding.releaseDraft.isChecked();
 
 		if (newReleaseTitle.isEmpty()) {
-			SnackBar.error(
-					ctx, findViewById(android.R.id.content), getString(R.string.titleErrorEmpty));
+			Toasty.show(ctx, getString(R.string.titleErrorEmpty));
 			return;
 		}
 
 		if (newReleaseTagName.isEmpty()) {
-			SnackBar.error(
-					ctx, findViewById(android.R.id.content), getString(R.string.tagNameErrorEmpty));
+			Toasty.show(ctx, getString(R.string.tagNameErrorEmpty));
 			return;
 		}
 
 		if (checkBranch == null) {
-			SnackBar.error(
-					ctx, findViewById(android.R.id.content), getString(R.string.selectBranchError));
+			Toasty.show(ctx, getString(R.string.selectBranchError));
 			return;
 		}
 
@@ -338,32 +320,20 @@ public class CreateReleaseActivity extends BaseActivity {
 						if (response.code() == 201) {
 
 							RepoDetailActivity.updateFABActions = true;
-							SnackBar.success(
-									ctx,
-									findViewById(android.R.id.content),
-									getString(R.string.releaseCreatedText));
+							Toasty.show(ctx, getString(R.string.releaseCreatedText));
 							new Handler().postDelayed(() -> finish(), 3000);
 						} else if (response.code() == 401) {
 
 							AlertDialogs.authorizationTokenRevokedDialog(ctx);
 						} else if (response.code() == 403) {
 
-							SnackBar.error(
-									ctx,
-									findViewById(android.R.id.content),
-									getString(R.string.authorizeError));
+							Toasty.show(ctx, getString(R.string.authorizeError));
 						} else if (response.code() == 404) {
 
-							SnackBar.error(
-									ctx,
-									findViewById(android.R.id.content),
-									getString(R.string.apiNotFound));
+							Toasty.show(ctx, getString(R.string.apiNotFound));
 						} else {
 
-							SnackBar.error(
-									ctx,
-									findViewById(android.R.id.content),
-									getString(R.string.genericError));
+							Toasty.show(ctx, getString(R.string.genericError));
 						}
 					}
 

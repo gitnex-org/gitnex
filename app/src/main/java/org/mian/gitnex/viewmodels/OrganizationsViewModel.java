@@ -46,7 +46,7 @@ public class OrganizationsViewModel extends ViewModel {
 						if (response.isSuccessful()) {
 							orgList.postValue(response.body());
 						} else {
-							Toasty.error(ctx, ctx.getString(R.string.genericError));
+							Toasty.show(ctx, ctx.getString(R.string.genericError));
 						}
 					}
 
@@ -54,7 +54,7 @@ public class OrganizationsViewModel extends ViewModel {
 					public void onFailure(
 							@NonNull Call<List<Organization>> call, @NonNull Throwable t) {
 
-						Toasty.error(ctx, ctx.getString(R.string.genericServerResponseError));
+						Toasty.show(ctx, ctx.getString(R.string.genericServerResponseError));
 					}
 				});
 	}
@@ -85,7 +85,7 @@ public class OrganizationsViewModel extends ViewModel {
 								adapter.setMoreDataAvailable(false);
 							}
 						} else {
-							Toasty.error(ctx, ctx.getString(R.string.genericError));
+							Toasty.show(ctx, ctx.getString(R.string.genericError));
 						}
 					}
 
@@ -93,7 +93,7 @@ public class OrganizationsViewModel extends ViewModel {
 					public void onFailure(
 							@NonNull Call<List<Organization>> call, @NonNull Throwable t) {
 
-						Toasty.error(ctx, ctx.getString(R.string.genericServerResponseError));
+						Toasty.show(ctx, ctx.getString(R.string.genericServerResponseError));
 					}
 				});
 	}

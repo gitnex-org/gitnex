@@ -113,7 +113,7 @@ public class DiffFilesFragment extends Fragment {
 						getViewLifecycleOwner(),
 						error -> {
 							if (error != null) {
-								Toasty.error(ctx, error);
+								Toasty.show(ctx, error);
 							}
 						});
 	}

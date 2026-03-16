@@ -49,7 +49,6 @@ import org.mian.gitnex.helpers.AppDatabaseSettings;
 import org.mian.gitnex.helpers.AppUtil;
 import org.mian.gitnex.helpers.ClickListener;
 import org.mian.gitnex.helpers.Markdown;
-import org.mian.gitnex.helpers.SnackBar;
 import org.mian.gitnex.helpers.TimeHelper;
 import org.mian.gitnex.helpers.Toasty;
 import retrofit2.Call;
@@ -185,7 +184,7 @@ public class DetailFragment extends Fragment {
 					@Override
 					public void onFailure(
 							@NonNull Call<List<UserHeatmapData>> call, @NonNull Throwable t) {
-						Toasty.error(context, getString(R.string.genericServerResponseError));
+						Toasty.show(context, getString(R.string.genericServerResponseError));
 						binding.heatmapGrid.setVisibility(View.GONE);
 					}
 				});
@@ -226,7 +225,7 @@ public class DetailFragment extends Fragment {
 					String date =
 							clickedDate.format(DateTimeFormatter.ofPattern("dd-MM-yyyy", locale));
 					String message = getString(R.string.heatmap_contribution, count, date);
-					SnackBar.info(context, binding.getRoot(), message);
+					Toasty.show(context, message);
 				});
 	}
 
@@ -288,18 +287,18 @@ public class DetailFragment extends Fragment {
 
 							dialogEditAvatar.dismiss();
 							getProfileDetail(username);
-							Toasty.success(context, getString(R.string.profileUpdate));
+							Toasty.show(context, getString(R.string.profileUpdate));
 							refProfile = true;
 						} else {
 
-							Toasty.error(context, getString(R.string.genericError));
+							Toasty.show(context, getString(R.string.genericError));
 						}
 					}
 
 					@Override
 					public void onFailure(@NonNull Call<Void> call, @NonNull Throwable t) {
 
-						Toasty.error(context, getString(R.string.genericServerResponseError));
+						Toasty.show(context, getString(R.string.genericServerResponseError));
 					}
 				});
 	}
@@ -355,18 +354,18 @@ public class DetailFragment extends Fragment {
 
 							dialogEditSettings.dismiss();
 							getProfileDetail(username);
-							Toasty.success(context, getString(R.string.profileUpdate));
+							Toasty.show(context, getString(R.string.profileUpdate));
 							refProfile = true;
 						} else {
 
-							Toasty.error(context, getString(R.string.genericError));
+							Toasty.show(context, getString(R.string.genericError));
 						}
 					}
 
 					@Override
 					public void onFailure(@NonNull Call<UserSettings> call, @NonNull Throwable t) {
 
-						Toasty.error(context, getString(R.string.genericServerResponseError));
+						Toasty.show(context, getString(R.string.genericServerResponseError));
 					}
 				});
 	}
@@ -412,7 +411,7 @@ public class DetailFragment extends Fragment {
 
 					@Override
 					public void onFailure(@NonNull Call<UserSettings> call, @NonNull Throwable t) {
-						Toasty.error(
+						Toasty.show(
 								context, context.getResources().getString(R.string.genericError));
 					}
 				});
@@ -546,12 +545,12 @@ public class DetailFragment extends Fragment {
 									break;
 
 								case 403:
-									Toasty.error(
+									Toasty.show(
 											context, context.getString(R.string.authorizeError));
 									break;
 
 								default:
-									Toasty.error(context, getString(R.string.genericError));
+									Toasty.show(context, getString(R.string.genericError));
 									break;
 							}
 						}
@@ -560,7 +559,7 @@ public class DetailFragment extends Fragment {
 
 					@Override
 					public void onFailure(@NonNull Call<User> call, @NonNull Throwable t) {
-						Toasty.error(
+						Toasty.show(
 								context, context.getResources().getString(R.string.genericError));
 					}
 				});
@@ -624,7 +623,7 @@ public class DetailFragment extends Fragment {
 																								.runOnUiThread(
 																										() ->
 																												Toasty
-																														.error(
+																														.show(
 																																context,
 																																context
 																																		.getString(
@@ -647,7 +646,7 @@ public class DetailFragment extends Fragment {
 															case 403:
 																binding.profileRepoView
 																		.setVisibility(View.GONE);
-																Toasty.error(
+																Toasty.show(
 																		context,
 																		context.getString(
 																				R.string
@@ -675,13 +674,13 @@ public class DetailFragment extends Fragment {
 
 								case 403:
 									binding.profileRepoView.setVisibility(View.GONE);
-									Toasty.error(
+									Toasty.show(
 											context, context.getString(R.string.authorizeError));
 									break;
 
 								default:
 									binding.profileRepoView.setVisibility(View.GONE);
-									Toasty.error(context, getString(R.string.genericError));
+									Toasty.show(context, getString(R.string.genericError));
 									break;
 							}
 						}

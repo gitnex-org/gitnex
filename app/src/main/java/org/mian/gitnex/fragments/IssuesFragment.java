@@ -29,7 +29,6 @@ import org.mian.gitnex.adapters.IssuesAdapter;
 import org.mian.gitnex.clients.RetrofitClient;
 import org.mian.gitnex.databinding.FragmentIssuesBinding;
 import org.mian.gitnex.helpers.Constants;
-import org.mian.gitnex.helpers.SnackBar;
 import org.mian.gitnex.helpers.Toasty;
 import org.mian.gitnex.helpers.contexts.RepositoryContext;
 import retrofit2.Call;
@@ -398,7 +397,7 @@ public class IssuesFragment extends Fragment {
 
 					@Override
 					public void onFailure(@NonNull Call<List<Issue>> call, @NonNull Throwable t) {
-						Toasty.error(context, getString(R.string.genericServerResponseError));
+						Toasty.show(context, getString(R.string.genericServerResponseError));
 					}
 				});
 	}
@@ -459,13 +458,13 @@ public class IssuesFragment extends Fragment {
 							fragmentIssuesBinding.noDataIssues.setVisibility(View.VISIBLE);
 							fragmentIssuesBinding.progressBar.setVisibility(View.GONE);
 						} else {
-							Toasty.error(context, getString(R.string.genericError));
+							Toasty.show(context, getString(R.string.genericError));
 						}
 					}
 
 					@Override
 					public void onFailure(@NonNull Call<List<Issue>> call, @NonNull Throwable t) {
-						Toasty.error(context, getString(R.string.genericServerResponseError));
+						Toasty.show(context, getString(R.string.genericServerResponseError));
 					}
 				});
 	}
@@ -514,10 +513,7 @@ public class IssuesFragment extends Fragment {
 								pageSize = result.size();
 								issuesList.addAll(result);
 							} else {
-								SnackBar.info(
-										context,
-										fragmentIssuesBinding.getRoot(),
-										getString(R.string.noMoreData));
+								Toasty.show(context, getString(R.string.noMoreData));
 								adapter.setMoreDataAvailable(false);
 								adapterPinned.setMoreDataAvailable(false);
 							}
@@ -525,13 +521,13 @@ public class IssuesFragment extends Fragment {
 							adapterPinned.notifyDataChanged();
 							fragmentIssuesBinding.progressBar.setVisibility(View.GONE);
 						} else {
-							Toasty.error(context, getString(R.string.genericError));
+							Toasty.show(context, getString(R.string.genericError));
 						}
 					}
 
 					@Override
 					public void onFailure(@NonNull Call<List<Issue>> call, @NonNull Throwable t) {
-						Toasty.error(context, getString(R.string.genericServerResponseError));
+						Toasty.show(context, getString(R.string.genericServerResponseError));
 					}
 				});
 	}

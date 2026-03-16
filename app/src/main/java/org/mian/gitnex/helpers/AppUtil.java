@@ -505,7 +505,7 @@ public class AppUtil {
 		ClipData clip = ClipData.newPlainText(data, data);
 		clipboard.setPrimaryClip(clip);
 
-		Toasty.info(ctx, message);
+		Toasty.show(ctx, message);
 	}
 
 	public static boolean switchToAccount(Context context, UserAccount userAccount) {
@@ -602,13 +602,13 @@ public class AppUtil {
 		try {
 			Intent browserIntent = wrapBrowserIntent(context, i);
 			if (browserIntent == null) {
-				Toasty.error(context, context.getString(R.string.genericError));
+				Toasty.show(context, context.getString(R.string.genericError));
 			}
 			context.startActivity(browserIntent);
 		} catch (ActivityNotFoundException e) {
-			Toasty.error(context, context.getString(R.string.browserOpenFailed));
+			Toasty.show(context, context.getString(R.string.browserOpenFailed));
 		} catch (Exception e) {
-			Toasty.error(context, context.getString(R.string.genericError));
+			Toasty.show(context, context.getString(R.string.genericError));
 		}
 	}
 

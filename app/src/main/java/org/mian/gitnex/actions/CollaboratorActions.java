@@ -37,7 +37,7 @@ public class CollaboratorActions {
 							if (response.code() == 204) {
 
 								CollaboratorsFragment.refreshCollaborators = true;
-								Toasty.success(
+								Toasty.show(
 										context,
 										context.getString(R.string.removeCollaboratorToastText));
 								((AddCollaboratorToRepositoryActivity) context).finish();
@@ -47,20 +47,20 @@ public class CollaboratorActions {
 							AlertDialogs.authorizationTokenRevokedDialog(context);
 						} else if (response.code() == 403) {
 
-							Toasty.error(context, context.getString(R.string.authorizeError));
+							Toasty.show(context, context.getString(R.string.authorizeError));
 						} else if (response.code() == 404) {
 
-							Toasty.warning(context, context.getString(R.string.apiNotFound));
+							Toasty.show(context, context.getString(R.string.apiNotFound));
 						} else {
 
-							Toasty.error(context, context.getString(R.string.genericError));
+							Toasty.show(context, context.getString(R.string.genericError));
 						}
 					}
 
 					@Override
 					public void onFailure(@NonNull Call<Void> call, @NonNull Throwable t) {
 
-						Toasty.error(
+						Toasty.show(
 								context,
 								context.getResources()
 										.getString(R.string.genericServerResponseError));
@@ -97,7 +97,7 @@ public class CollaboratorActions {
 							if (response.code() == 204) {
 
 								CollaboratorsFragment.refreshCollaborators = true;
-								Toasty.success(
+								Toasty.show(
 										context,
 										context.getString(R.string.addCollaboratorToastText));
 								((AddCollaboratorToRepositoryActivity) context).finish();
@@ -107,20 +107,20 @@ public class CollaboratorActions {
 							AlertDialogs.authorizationTokenRevokedDialog(context);
 						} else if (response.code() == 403) {
 
-							Toasty.error(context, context.getString(R.string.authorizeError));
+							Toasty.show(context, context.getString(R.string.authorizeError));
 						} else if (response.code() == 404) {
 
-							Toasty.warning(context, context.getString(R.string.apiNotFound));
+							Toasty.show(context, context.getString(R.string.apiNotFound));
 						} else {
 
-							Toasty.error(context, context.getString(R.string.genericError));
+							Toasty.show(context, context.getString(R.string.genericError));
 						}
 					}
 
 					@Override
 					public void onFailure(@NonNull Call<Void> call, @NonNull Throwable t) {
 
-						Toasty.error(
+						Toasty.show(
 								context,
 								context.getResources()
 										.getString(R.string.genericServerResponseError));

@@ -96,7 +96,7 @@ public class RepositoriesViewModel extends ViewModel {
 							fragmentRepositoriesBinding.progressBar.setVisibility(View.GONE);
 							fragmentRepositoriesBinding.noData.setVisibility(View.VISIBLE);
 						} else {
-							Toasty.error(ctx, ctx.getString(R.string.genericError));
+							Toasty.show(ctx, ctx.getString(R.string.genericError));
 						}
 					}
 
@@ -104,7 +104,7 @@ public class RepositoriesViewModel extends ViewModel {
 					public void onFailure(
 							@NonNull Call<List<Repository>> call, @NonNull Throwable t) {
 
-						Toasty.error(ctx, ctx.getString(R.string.genericServerResponseError));
+						Toasty.show(ctx, ctx.getString(R.string.genericServerResponseError));
 					}
 				});
 	}
@@ -161,7 +161,7 @@ public class RepositoriesViewModel extends ViewModel {
 								adapter.setMoreDataAvailable(false);
 							}
 						} else {
-							Toasty.error(ctx, ctx.getString(R.string.genericError));
+							Toasty.show(ctx, ctx.getString(R.string.genericError));
 						}
 					}
 
@@ -169,7 +169,7 @@ public class RepositoriesViewModel extends ViewModel {
 					public void onFailure(
 							@NonNull Call<List<Repository>> call, @NonNull Throwable t) {
 
-						Toasty.error(ctx, ctx.getString(R.string.genericServerResponseError));
+						Toasty.show(ctx, ctx.getString(R.string.genericServerResponseError));
 					}
 				});
 	}

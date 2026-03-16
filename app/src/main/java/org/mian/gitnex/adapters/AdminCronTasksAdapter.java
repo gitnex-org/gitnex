@@ -123,7 +123,7 @@ public class AdminCronTasksAdapter
 
 						switch (response.code()) {
 							case 204:
-								Toasty.success(
+								Toasty.show(
 										ctx,
 										ctx.getString(R.string.adminCronTaskSuccessMsg, taskName));
 								break;
@@ -133,22 +133,22 @@ public class AdminCronTasksAdapter
 								break;
 
 							case 403:
-								Toasty.error(ctx, ctx.getString(R.string.authorizeError));
+								Toasty.show(ctx, ctx.getString(R.string.authorizeError));
 								break;
 
 							case 404:
-								Toasty.warning(ctx, ctx.getString(R.string.apiNotFound));
+								Toasty.show(ctx, ctx.getString(R.string.apiNotFound));
 								break;
 
 							default:
-								Toasty.error(ctx, ctx.getString(R.string.genericError));
+								Toasty.show(ctx, ctx.getString(R.string.genericError));
 						}
 					}
 
 					@Override
 					public void onFailure(@NonNull Call<Void> call, @NonNull Throwable t) {
 
-						Toasty.error(ctx, ctx.getString(R.string.genericServerResponseError));
+						Toasty.show(ctx, ctx.getString(R.string.genericServerResponseError));
 					}
 				});
 	}

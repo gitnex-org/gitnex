@@ -150,7 +150,7 @@ public class CommitsActivity extends BaseActivity {
 				.observe(
 						this,
 						msg -> {
-							Toasty.error(ctx, msg);
+							Toasty.show(ctx, msg);
 							binding.pullToRefresh.setRefreshing(false);
 							binding.expressiveLoader.setVisibility(View.GONE);
 						});

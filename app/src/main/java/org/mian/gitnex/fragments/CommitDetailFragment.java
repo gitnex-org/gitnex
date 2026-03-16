@@ -344,22 +344,22 @@ public class CommitDetailFragment extends Fragment {
 		ClipData clip = ClipData.newPlainText("commitSha", text);
 		if (clipboard != null) {
 			clipboard.setPrimaryClip(clip);
-			Toasty.success(requireContext(), getString(R.string.copyShaToastMsg));
+			Toasty.show(requireContext(), getString(R.string.copyShaToastMsg));
 		}
 	}
 
 	private void handleErrorCodes(int code) {
 		switch (code) {
 			case 401 -> AlertDialogs.authorizationTokenRevokedDialog(requireContext());
-			case 403 -> Toasty.error(requireContext(), getString(R.string.authorizeError));
-			case 404 -> Toasty.warning(requireContext(), getString(R.string.apiNotFound));
+			case 403 -> Toasty.show(requireContext(), getString(R.string.authorizeError));
+			case 404 -> Toasty.show(requireContext(), getString(R.string.apiNotFound));
 			default -> showGenericError();
 		}
 	}
 
 	private void showGenericError() {
 		if (getContext() != null) {
-			Toasty.error(requireContext(), getString(R.string.genericError));
+			Toasty.show(requireContext(), getString(R.string.genericError));
 		}
 	}
 

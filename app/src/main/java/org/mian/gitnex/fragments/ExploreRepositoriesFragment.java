@@ -28,7 +28,6 @@ import org.mian.gitnex.clients.RetrofitClient;
 import org.mian.gitnex.databinding.BottomSheetExploreFiltersBinding;
 import org.mian.gitnex.databinding.FragmentExploreRepoBinding;
 import org.mian.gitnex.helpers.Constants;
-import org.mian.gitnex.helpers.SnackBar;
 import org.mian.gitnex.helpers.Toasty;
 import retrofit2.Call;
 import retrofit2.Callback;
@@ -213,7 +212,7 @@ public class ExploreRepositoriesFragment extends Fragment {
 							viewBinding.progressBar.setVisibility(View.GONE);
 						} else {
 							if (isAdded() && getContext() != null) {
-								Toasty.error(getContext(), getString(R.string.genericError));
+								Toasty.show(getContext(), getString(R.string.genericError));
 							}
 						}
 					}
@@ -221,7 +220,7 @@ public class ExploreRepositoriesFragment extends Fragment {
 					@Override
 					public void onFailure(@NonNull Call<SearchResults> call, @NonNull Throwable t) {
 						if (isAdded() && getContext() != null) {
-							Toasty.error(
+							Toasty.show(
 									getContext(), getString(R.string.genericServerResponseError));
 						}
 						viewBinding.progressBar.setVisibility(View.GONE);
@@ -265,17 +264,14 @@ public class ExploreRepositoriesFragment extends Fragment {
 								pageSize = result.size();
 								dataList.addAll(result);
 							} else {
-								SnackBar.info(
-										context,
-										viewBinding.getRoot(),
-										getString(R.string.noMoreData));
+								Toasty.show(context, getString(R.string.noMoreData));
 								adapter.setMoreDataAvailable(false);
 							}
 							adapter.notifyDataChanged();
 							viewBinding.progressBar.setVisibility(View.GONE);
 						} else {
 							if (isAdded() && getContext() != null) {
-								Toasty.error(getContext(), getString(R.string.genericError));
+								Toasty.show(getContext(), getString(R.string.genericError));
 							}
 						}
 					}
@@ -283,7 +279,7 @@ public class ExploreRepositoriesFragment extends Fragment {
 					@Override
 					public void onFailure(@NonNull Call<SearchResults> call, @NonNull Throwable t) {
 						if (isAdded() && getContext() != null) {
-							Toasty.error(
+							Toasty.show(
 									getContext(), getString(R.string.genericServerResponseError));
 						}
 						viewBinding.progressBar.setVisibility(View.GONE);

@@ -18,7 +18,7 @@ import org.mian.gitnex.databinding.ActivityCreateTeamByOrgBinding;
 import org.mian.gitnex.fragments.OrganizationTeamsFragment;
 import org.mian.gitnex.helpers.AlertDialogs;
 import org.mian.gitnex.helpers.AppUtil;
-import org.mian.gitnex.helpers.SnackBar;
+import org.mian.gitnex.helpers.Toasty;
 import retrofit2.Call;
 import retrofit2.Callback;
 
@@ -190,7 +190,7 @@ public class CreateTeamByOrgActivity extends BaseActivity {
 																activityCreateTeamByOrgBinding
 																		.teamAccessControls
 																		.getText());
-												if (!data.equals("")) {
+												if (!data.isEmpty()) {
 
 													activityCreateTeamByOrgBinding
 															.teamAccessControls.setText(
@@ -203,7 +203,7 @@ public class CreateTeamByOrgActivity extends BaseActivity {
 																		.teamAccessControlsArray
 																		.getText());
 
-												if (!dataArray.equals("")) {
+												if (!dataArray.isEmpty()) {
 
 													activityCreateTeamByOrgBinding
 															.teamAccessControlsArray.setText(
@@ -245,53 +245,43 @@ public class CreateTeamByOrgActivity extends BaseActivity {
 		String newTeamAccessControls =
 				activityCreateTeamByOrgBinding.teamAccessControlsArray.getText().toString();
 
-		if (newTeamName.equals("")) {
+		if (newTeamName.isEmpty()) {
 
-			SnackBar.error(
-					ctx, findViewById(android.R.id.content), getString(R.string.teamNameEmpty));
+			Toasty.show(ctx, getString(R.string.teamNameEmpty));
 			return;
 		}
 
 		if (!AppUtil.checkStringsWithAlphaNumericDashDotUnderscore(newTeamName)) {
 
-			SnackBar.error(
-					ctx, findViewById(android.R.id.content), getString(R.string.teamNameError));
+			Toasty.show(ctx, getString(R.string.teamNameError));
 			return;
 		}
 
-		if (!newTeamDesc.equals("")) {
+		if (!newTeamDesc.isEmpty()) {
 
 			if (!AppUtil.checkStrings(newTeamDesc)) {
 
-				SnackBar.error(
-						ctx, findViewById(android.R.id.content), getString(R.string.teamDescError));
+				Toasty.show(ctx, getString(R.string.teamDescError));
 				return;
 			}
 
 			if (newTeamDesc.length() > 100) {
 
-				SnackBar.error(
-						ctx, findViewById(android.R.id.content), getString(R.string.teamDescLimit));
+				Toasty.show(ctx, getString(R.string.teamDescLimit));
 				return;
 			}
 		}
 
-		if (newTeamPermission.equals("")) {
+		if (newTeamPermission.isEmpty()) {
 
-			SnackBar.error(
-					ctx,
-					findViewById(android.R.id.content),
-					getString(R.string.teamPermissionEmpty));
+			Toasty.show(ctx, getString(R.string.teamPermissionEmpty));
 			return;
 		}
 
 		List<String> newTeamAccessControls_ =
 				new ArrayList<>(Arrays.asList(newTeamAccessControls.split(",")));
 
-		for (int i = 0; i < newTeamAccessControls_.size(); i++) {
-
-			newTeamAccessControls_.set(i, newTeamAccessControls_.get(i).trim());
-		}
+		newTeamAccessControls_.replaceAll(String::trim);
 
 		createNewTeamCall(
 				orgName, newTeamName, newTeamDesc, newTeamPermission, newTeamAccessControls_);
@@ -336,27 +326,18 @@ public class CreateTeamByOrgActivity extends BaseActivity {
 
 								OrganizationTeamsFragment.resumeTeams = true;
 
-								SnackBar.success(
-										ctx,
-										findViewById(android.R.id.content),
-										getString(R.string.teamCreated));
+								Toasty.show(ctx, getString(R.string.teamCreated));
 								new Handler().postDelayed(() -> finish(), 3000);
 							}
 						} else if (response2.code() == 404) {
 
-							SnackBar.error(
-									ctx,
-									findViewById(android.R.id.content),
-									getString(R.string.apiNotFound));
+							Toasty.show(ctx, getString(R.string.apiNotFound));
 						} else if (response2.code() == 401) {
 
 							AlertDialogs.authorizationTokenRevokedDialog(ctx);
 						} else {
 
-							SnackBar.error(
-									ctx,
-									findViewById(android.R.id.content),
-									getString(R.string.genericError));
+							Toasty.show(ctx, getString(R.string.genericError));
 						}
 					}
 

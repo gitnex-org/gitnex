@@ -97,14 +97,14 @@ public class AddNewTeamRepoActivity extends BaseActivity {
 
 							addNewTeamRepositoryBinding.progressBar.setVisibility(View.GONE);
 						} else {
-							Toasty.error(ctx, getString(R.string.genericError));
+							Toasty.show(ctx, getString(R.string.genericError));
 						}
 					}
 
 					@Override
 					public void onFailure(
 							@NonNull Call<List<Repository>> call, @NonNull Throwable t) {
-						Toasty.error(ctx, ctx.getString(R.string.genericServerResponseError));
+						Toasty.show(ctx, ctx.getString(R.string.genericServerResponseError));
 					}
 				});
 	}

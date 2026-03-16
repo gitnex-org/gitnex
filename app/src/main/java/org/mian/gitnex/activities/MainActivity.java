@@ -214,7 +214,7 @@ public class MainActivity extends BaseActivity
 					boolean connToInternet = AppUtil.hasNetworkConnection(this);
 					if (!connToInternet) {
 						if (!noConnection) {
-							Toasty.error(
+							Toasty.show(
 									this, getResources().getString(R.string.checkNetConnection));
 						}
 						noConnection = true;

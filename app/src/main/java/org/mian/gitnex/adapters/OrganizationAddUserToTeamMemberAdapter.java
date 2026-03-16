@@ -125,7 +125,7 @@ public class OrganizationAddUserToTeamMemberAdapter
 						@Override
 						public void onFailure(@NonNull Call<User> call, @NonNull Throwable t) {
 
-							Toasty.error(
+							Toasty.show(
 									context,
 									context.getResources()
 											.getString(R.string.genericServerResponseError));

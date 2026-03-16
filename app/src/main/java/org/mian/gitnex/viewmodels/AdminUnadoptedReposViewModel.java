@@ -60,18 +60,18 @@ public class AdminUnadoptedReposViewModel extends ViewModel {
 						} else if (response.code() == 401) {
 							AlertDialogs.authorizationTokenRevokedDialog(ctx);
 						} else if (response.code() == 403) {
-							Toasty.error(ctx, ctx.getString(R.string.authorizeError));
+							Toasty.show(ctx, ctx.getString(R.string.authorizeError));
 						} else if (response.code() == 404) {
-							Toasty.warning(ctx, ctx.getString(R.string.apiNotFound));
+							Toasty.show(ctx, ctx.getString(R.string.apiNotFound));
 						} else {
-							Toasty.error(ctx, ctx.getString(R.string.genericError));
+							Toasty.show(ctx, ctx.getString(R.string.genericError));
 						}
 					}
 
 					@Override
 					public void onFailure(@NonNull Call<List<String>> call, @NonNull Throwable t) {
 
-						Toasty.error(ctx, ctx.getString(R.string.genericServerResponseError));
+						Toasty.show(ctx, ctx.getString(R.string.genericServerResponseError));
 					}
 				});
 	}

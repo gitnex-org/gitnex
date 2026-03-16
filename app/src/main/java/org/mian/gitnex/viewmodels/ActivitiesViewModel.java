@@ -55,7 +55,7 @@ public class ActivitiesViewModel extends ViewModel {
 							activityList.postValue(response.body());
 						} else {
 							binding.progressBar.setVisibility(View.GONE);
-							Toasty.error(ctx, ctx.getString(R.string.genericError));
+							Toasty.show(ctx, ctx.getString(R.string.genericError));
 						}
 					}
 
@@ -63,7 +63,7 @@ public class ActivitiesViewModel extends ViewModel {
 					public void onFailure(
 							@NonNull Call<List<Activity>> call, @NonNull Throwable t) {
 
-						Toasty.error(ctx, ctx.getString(R.string.genericServerResponseError));
+						Toasty.show(ctx, ctx.getString(R.string.genericServerResponseError));
 					}
 				});
 	}
@@ -101,7 +101,7 @@ public class ActivitiesViewModel extends ViewModel {
 							}
 						} else {
 							binding.progressBar.setVisibility(View.GONE);
-							Toasty.error(ctx, ctx.getString(R.string.genericError));
+							Toasty.show(ctx, ctx.getString(R.string.genericError));
 						}
 					}
 
@@ -109,7 +109,7 @@ public class ActivitiesViewModel extends ViewModel {
 					public void onFailure(
 							@NonNull Call<List<Activity>> call, @NonNull Throwable t) {
 
-						Toasty.error(ctx, ctx.getString(R.string.genericServerResponseError));
+						Toasty.show(ctx, ctx.getString(R.string.genericServerResponseError));
 					}
 				});
 	}

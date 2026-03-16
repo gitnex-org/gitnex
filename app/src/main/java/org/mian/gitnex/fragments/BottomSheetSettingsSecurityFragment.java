@@ -17,7 +17,7 @@ import org.mian.gitnex.R;
 import org.mian.gitnex.databinding.BottomSheetSettingsSecurityBinding;
 import org.mian.gitnex.helpers.AppDatabaseSettings;
 import org.mian.gitnex.helpers.AppUtil;
-import org.mian.gitnex.helpers.SnackBar;
+import org.mian.gitnex.helpers.Toasty;
 import org.mian.gitnex.helpers.ssl.MemorizingTrustManager;
 
 /**
@@ -69,10 +69,7 @@ public class BottomSheetSettingsSecurityFragment extends BottomSheetDialogFragme
 					if (!isChecked) {
 						AppDatabaseSettings.updateSettingsValue(
 								requireContext(), "false", AppDatabaseSettings.APP_BIOMETRIC_KEY);
-						SnackBar.success(
-								requireContext(),
-								requireActivity().findViewById(android.R.id.content),
-								getString(R.string.settingsSave));
+						Toasty.show(requireContext(), getString(R.string.settingsSave));
 						return;
 					}
 
@@ -89,37 +86,27 @@ public class BottomSheetSettingsSecurityFragment extends BottomSheetDialogFragme
 									requireContext(),
 									"true",
 									AppDatabaseSettings.APP_BIOMETRIC_KEY);
-							SnackBar.success(
-									requireContext(),
-									requireActivity().findViewById(android.R.id.content),
-									getString(R.string.settingsSave));
+							Toasty.show(requireContext(), getString(R.string.settingsSave));
 							break;
 
 						case BiometricManager.BIOMETRIC_ERROR_NONE_ENROLLED:
 							binding.switchBiometric.setChecked(false);
-							SnackBar.info(
-									requireContext(),
-									requireActivity().findViewById(android.R.id.content),
-									getString(R.string.enrollBiometric));
+							Toasty.show(requireContext(), getString(R.string.enrollBiometric));
 							break;
 
 						case BiometricManager.BIOMETRIC_ERROR_NO_HARDWARE:
 						case BiometricManager.BIOMETRIC_ERROR_UNSUPPORTED:
 						case BiometricManager.BIOMETRIC_ERROR_SECURITY_UPDATE_REQUIRED:
 							binding.switchBiometric.setChecked(false);
-							SnackBar.error(
-									requireContext(),
-									requireActivity().findViewById(android.R.id.content),
-									getString(R.string.biometricNotSupported));
+							Toasty.show(
+									requireContext(), getString(R.string.biometricNotSupported));
 							break;
 
 						case BiometricManager.BIOMETRIC_ERROR_HW_UNAVAILABLE:
 						default:
 							binding.switchBiometric.setChecked(false);
-							SnackBar.error(
-									requireContext(),
-									requireActivity().findViewById(android.R.id.content),
-									getString(R.string.biometricNotAvailable));
+							Toasty.show(
+									requireContext(), getString(R.string.biometricNotAvailable));
 							break;
 					}
 				});
@@ -142,10 +129,7 @@ public class BottomSheetSettingsSecurityFragment extends BottomSheetDialogFragme
 									String.valueOf(newSelection),
 									AppDatabaseSettings.APP_DATA_CACHE_KEY);
 							SettingsFragment.refreshParent = true;
-							SnackBar.success(
-									requireContext(),
-									requireActivity().findViewById(android.R.id.content),
-									getString(R.string.settingsSave));
+							Toasty.show(requireContext(), getString(R.string.settingsSave));
 						}
 					}
 				});
@@ -165,10 +149,7 @@ public class BottomSheetSettingsSecurityFragment extends BottomSheetDialogFragme
 									String.valueOf(newSelection),
 									AppDatabaseSettings.APP_IMAGES_CACHE_KEY);
 							SettingsFragment.refreshParent = true;
-							SnackBar.success(
-									requireContext(),
-									requireActivity().findViewById(android.R.id.content),
-									getString(R.string.settingsSave));
+							Toasty.show(requireContext(), getString(R.string.settingsSave));
 						}
 					}
 				});

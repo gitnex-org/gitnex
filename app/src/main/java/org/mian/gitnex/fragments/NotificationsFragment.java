@@ -27,7 +27,7 @@ import org.mian.gitnex.databinding.FragmentNotificationsBinding;
 import org.mian.gitnex.helpers.AppUtil;
 import org.mian.gitnex.helpers.Constants;
 import org.mian.gitnex.helpers.SimpleCallback;
-import org.mian.gitnex.helpers.SnackBar;
+import org.mian.gitnex.helpers.Toasty;
 import org.mian.gitnex.helpers.contexts.IssueContext;
 import org.mian.gitnex.helpers.contexts.RepositoryContext;
 
@@ -132,9 +132,8 @@ public class NotificationsFragment extends Fragment
 													View fragmentRootView = getView();
 													if (voidResponse.isPresent()
 															&& voidResponse.get().isSuccessful()) {
-														SnackBar.success(
+														Toasty.show(
 																context,
-																fragmentRootView,
 																getString(
 																		R.string
 																				.markedNotificationsAsRead));
@@ -149,9 +148,8 @@ public class NotificationsFragment extends Fragment
 															if (!emptyErrorResponse.isEmpty()) {
 																if (emptyErrorResponse.contains(
 																		"205")) {
-																	SnackBar.success(
+																	Toasty.show(
 																			context,
-																			fragmentRootView,
 																			getString(
 																					R.string
 																							.markedNotificationsAsRead));
@@ -166,9 +164,8 @@ public class NotificationsFragment extends Fragment
 															} else {
 																activity.runOnUiThread(
 																		() ->
-																				SnackBar.error(
+																				Toasty.show(
 																						context,
-																						fragmentRootView,
 																						getString(
 																								R
 																										.string

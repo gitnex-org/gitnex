@@ -36,7 +36,7 @@ public class TeamActions {
 							if (response.code() == 204) {
 
 								OrganizationTeamInfoMembersFragment.refreshMembers = true;
-								Toasty.success(
+								Toasty.show(
 										context, context.getString(R.string.memberRemovedMessage));
 								((AddNewTeamMemberActivity) context).finish();
 							}
@@ -46,20 +46,20 @@ public class TeamActions {
 							AlertDialogs.authorizationTokenRevokedDialog(context);
 						} else if (response.code() == 403) {
 
-							Toasty.error(context, context.getString(R.string.authorizeError));
+							Toasty.show(context, context.getString(R.string.authorizeError));
 						} else if (response.code() == 404) {
 
-							Toasty.warning(context, context.getString(R.string.apiNotFound));
+							Toasty.show(context, context.getString(R.string.apiNotFound));
 						} else {
 
-							Toasty.error(context, context.getString(R.string.genericError));
+							Toasty.show(context, context.getString(R.string.genericError));
 						}
 					}
 
 					@Override
 					public void onFailure(@NonNull Call<Void> call, @NonNull Throwable t) {
 
-						Toasty.error(
+						Toasty.show(
 								context,
 								context.getResources()
 										.getString(R.string.genericServerResponseError));
@@ -84,7 +84,7 @@ public class TeamActions {
 							if (response.code() == 204) {
 
 								OrganizationTeamInfoMembersFragment.refreshMembers = true;
-								Toasty.success(
+								Toasty.show(
 										context, context.getString(R.string.memberAddedMessage));
 								((AddNewTeamMemberActivity) context).finish();
 							}
@@ -93,20 +93,20 @@ public class TeamActions {
 							AlertDialogs.authorizationTokenRevokedDialog(context);
 						} else if (response.code() == 403) {
 
-							Toasty.error(context, context.getString(R.string.authorizeError));
+							Toasty.show(context, context.getString(R.string.authorizeError));
 						} else if (response.code() == 404) {
 
-							Toasty.warning(context, context.getString(R.string.apiNotFound));
+							Toasty.show(context, context.getString(R.string.apiNotFound));
 						} else {
 
-							Toasty.error(context, context.getString(R.string.genericError));
+							Toasty.show(context, context.getString(R.string.genericError));
 						}
 					}
 
 					@Override
 					public void onFailure(@NonNull Call<Void> call, @NonNull Throwable t) {
 
-						Toasty.error(
+						Toasty.show(
 								context,
 								context.getResources()
 										.getString(R.string.genericServerResponseError));
@@ -133,7 +133,7 @@ public class TeamActions {
 							if (response.code() == 204) {
 
 								OrganizationTeamInfoReposFragment.repoAdded = true;
-								Toasty.success(
+								Toasty.show(
 										context, context.getString(R.string.repoRemovedMessage));
 								((AddNewTeamRepoActivity) context).finish();
 							}
@@ -143,20 +143,20 @@ public class TeamActions {
 							AlertDialogs.authorizationTokenRevokedDialog(context);
 						} else if (response.code() == 403) {
 
-							Toasty.error(context, context.getString(R.string.authorizeError));
+							Toasty.show(context, context.getString(R.string.authorizeError));
 						} else if (response.code() == 404) {
 
-							Toasty.warning(context, context.getString(R.string.apiNotFound));
+							Toasty.show(context, context.getString(R.string.apiNotFound));
 						} else {
 
-							Toasty.error(context, context.getString(R.string.genericError));
+							Toasty.show(context, context.getString(R.string.genericError));
 						}
 					}
 
 					@Override
 					public void onFailure(@NonNull Call<Void> call, @NonNull Throwable t) {
 
-						Toasty.error(
+						Toasty.show(
 								context,
 								context.getResources()
 										.getString(R.string.genericServerResponseError));
@@ -182,8 +182,7 @@ public class TeamActions {
 							if (response.code() == 204) {
 
 								OrganizationTeamInfoReposFragment.repoAdded = true;
-								Toasty.success(
-										context, context.getString(R.string.repoAddedMessage));
+								Toasty.show(context, context.getString(R.string.repoAddedMessage));
 								((AddNewTeamRepoActivity) context).finish();
 							}
 						} else if (response.code() == 401) {
@@ -191,20 +190,20 @@ public class TeamActions {
 							AlertDialogs.authorizationTokenRevokedDialog(context);
 						} else if (response.code() == 403) {
 
-							Toasty.error(context, context.getString(R.string.authorizeError));
+							Toasty.show(context, context.getString(R.string.authorizeError));
 						} else if (response.code() == 404) {
 
-							Toasty.warning(context, context.getString(R.string.apiNotFound));
+							Toasty.show(context, context.getString(R.string.apiNotFound));
 						} else {
 
-							Toasty.error(context, context.getString(R.string.genericError));
+							Toasty.show(context, context.getString(R.string.genericError));
 						}
 					}
 
 					@Override
 					public void onFailure(@NonNull Call<Void> call, @NonNull Throwable t) {
 
-						Toasty.error(
+						Toasty.show(
 								context,
 								context.getResources()
 										.getString(R.string.genericServerResponseError));

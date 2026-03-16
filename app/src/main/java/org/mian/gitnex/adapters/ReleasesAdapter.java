@@ -228,7 +228,7 @@ public class ReleasesAdapter extends RecyclerView.Adapter<ReleasesAdapter.Releas
 
 														if (response.isSuccessful()) {
 															updateAdapter(position);
-															Toasty.success(
+															Toasty.show(
 																	context,
 																	context.getString(
 																			R.string
@@ -241,13 +241,13 @@ public class ReleasesAdapter extends RecyclerView.Adapter<ReleasesAdapter.Releas
 																				View.VISIBLE);
 															}
 														} else if (response.code() == 403) {
-															Toasty.error(
+															Toasty.show(
 																	context,
 																	context.getString(
 																			R.string
 																					.authorizeError));
 														} else {
-															Toasty.error(
+															Toasty.show(
 																	context,
 																	context.getString(
 																			R.string.genericError));
@@ -259,7 +259,7 @@ public class ReleasesAdapter extends RecyclerView.Adapter<ReleasesAdapter.Releas
 															@NonNull Call<Void> call,
 															@NonNull Throwable t) {
 
-														Toasty.error(
+														Toasty.show(
 																context,
 																context.getString(
 																		R.string.genericError));

@@ -78,7 +78,7 @@ public class LabelsViewModel extends ViewModel {
 					@Override
 					public void onFailure(@NonNull Call<List<Label>> call, @NonNull Throwable t) {
 
-						Toasty.error(ctx, ctx.getString(R.string.genericServerResponseError));
+						Toasty.show(ctx, ctx.getString(R.string.genericServerResponseError));
 					}
 				});
 	}
@@ -128,7 +128,7 @@ public class LabelsViewModel extends ViewModel {
 					@Override
 					public void onFailure(@NonNull Call<List<Label>> call, @NonNull Throwable t) {
 
-						Toasty.error(ctx, ctx.getString(R.string.genericServerResponseError));
+						Toasty.show(ctx, ctx.getString(R.string.genericServerResponseError));
 					}
 				});
 	}

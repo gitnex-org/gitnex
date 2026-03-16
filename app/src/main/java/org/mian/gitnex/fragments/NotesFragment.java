@@ -89,7 +89,7 @@ public class NotesFragment extends Fragment {
 								if (menuItem.getItemId() == R.id.reset_menu_item) {
 
 									if (notesList.isEmpty()) {
-										Toasty.warning(
+										Toasty.show(
 												ctx,
 												getResources().getString(R.string.noDataFound));
 									} else {
@@ -202,10 +202,9 @@ public class NotesFragment extends Fragment {
 			notesApi.deleteAllNotes();
 			notesList.clear();
 			adapter.clearAdapter();
-			Toasty.success(
-					ctx, ctx.getResources().getQuantityString(R.plurals.noteDeleteMessage, 2));
+			Toasty.show(ctx, ctx.getResources().getQuantityString(R.plurals.noteDeleteMessage, 2));
 		} else {
-			Toasty.warning(ctx, getResources().getString(R.string.noDataFound));
+			Toasty.show(ctx, getResources().getString(R.string.noDataFound));
 		}
 	}
 }

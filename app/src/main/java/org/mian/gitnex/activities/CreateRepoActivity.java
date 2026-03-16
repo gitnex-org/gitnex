@@ -23,7 +23,7 @@ import org.mian.gitnex.clients.RetrofitClient;
 import org.mian.gitnex.databinding.ActivityCreateRepoBinding;
 import org.mian.gitnex.helpers.AlertDialogs;
 import org.mian.gitnex.helpers.AppUtil;
-import org.mian.gitnex.helpers.SnackBar;
+import org.mian.gitnex.helpers.Toasty;
 import retrofit2.Call;
 import retrofit2.Callback;
 
@@ -102,46 +102,29 @@ public class CreateRepoActivity extends BaseActivity {
 
 			if (newRepoDesc.length() > 255) {
 
-				SnackBar.error(
-						ctx, findViewById(android.R.id.content), getString(R.string.repoDescError));
+				Toasty.show(ctx, getString(R.string.repoDescError));
 				return;
 			}
 		}
 
 		if (newRepoName.isEmpty()) {
 
-			SnackBar.error(
-					ctx,
-					findViewById(android.R.id.content),
-					getString(R.string.repoNameErrorEmpty));
+			Toasty.show(ctx, getString(R.string.repoNameErrorEmpty));
 		} else if (!AppUtil.checkStrings(newRepoName)) {
 
-			SnackBar.error(
-					ctx,
-					findViewById(android.R.id.content),
-					getString(R.string.repoNameErrorInvalid));
+			Toasty.show(ctx, getString(R.string.repoNameErrorInvalid));
 		} else if (reservedRepoNames.contains(newRepoName)) {
 
-			SnackBar.error(
-					ctx,
-					findViewById(android.R.id.content),
-					getString(R.string.repoNameErrorReservedName));
+			Toasty.show(ctx, getString(R.string.repoNameErrorReservedName));
 		} else if (reservedRepoPatterns.matcher(newRepoName).find()) {
 
-			SnackBar.error(
-					ctx,
-					findViewById(android.R.id.content),
-					getString(R.string.repoNameErrorReservedPatterns));
+			Toasty.show(ctx, getString(R.string.repoNameErrorReservedPatterns));
 		} else if (defaultBranch.equalsIgnoreCase("")) {
 
-			SnackBar.error(
-					ctx,
-					findViewById(android.R.id.content),
-					getString(R.string.repoDefaultBranchError));
+			Toasty.show(ctx, getString(R.string.repoDefaultBranchError));
 		} else if (selectedOwner == null) {
 
-			SnackBar.error(
-					ctx, findViewById(android.R.id.content), getString(R.string.repoOwnerError));
+			Toasty.show(ctx, getString(R.string.repoOwnerError));
 		} else {
 
 			createNewRepository(
@@ -203,10 +186,7 @@ public class CreateRepoActivity extends BaseActivity {
 							MainActivity.reloadRepos = true;
 							OrganizationDetailActivity.updateOrgFABActions = true;
 
-							SnackBar.success(
-									ctx,
-									findViewById(android.R.id.content),
-									getString(R.string.repoCreated));
+							Toasty.show(ctx, getString(R.string.repoCreated));
 
 							new Handler().postDelayed(() -> finish(), 3000);
 						} else if (response.code() == 401) {
@@ -214,16 +194,10 @@ public class CreateRepoActivity extends BaseActivity {
 							AlertDialogs.authorizationTokenRevokedDialog(ctx);
 						} else if (response.code() == 409) {
 
-							SnackBar.error(
-									ctx,
-									findViewById(android.R.id.content),
-									getString(R.string.repoExistsError));
+							Toasty.show(ctx, getString(R.string.repoExistsError));
 						} else {
 
-							SnackBar.error(
-									ctx,
-									findViewById(android.R.id.content),
-									getString(R.string.genericError));
+							Toasty.show(ctx, getString(R.string.genericError));
 						}
 					}
 

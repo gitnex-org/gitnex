@@ -144,7 +144,7 @@ public class WikiListAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
 
 														if (response.isSuccessful()) {
 															updateAdapter(position);
-															Toasty.success(
+															Toasty.show(
 																	context,
 																	context.getString(
 																			R.string
@@ -155,13 +155,13 @@ public class WikiListAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
 																				View.VISIBLE);
 															}
 														} else if (response.code() == 403) {
-															Toasty.error(
+															Toasty.show(
 																	context,
 																	context.getString(
 																			R.string
 																					.authorizeError));
 														} else {
-															Toasty.error(
+															Toasty.show(
 																	context,
 																	context.getString(
 																			R.string.genericError));
@@ -173,7 +173,7 @@ public class WikiListAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
 															@NonNull Call<Void> call,
 															@NonNull Throwable t) {
 
-														Toasty.error(
+														Toasty.show(
 																context,
 																context.getString(
 																		R.string.genericError));

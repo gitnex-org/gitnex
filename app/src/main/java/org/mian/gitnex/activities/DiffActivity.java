@@ -77,14 +77,14 @@ public class DiffActivity extends BaseActivity {
 						if (response.isSuccessful() && response.body() != null) {
 							processDiff(response.body());
 						} else {
-							Toasty.error(DiffActivity.this, getString(R.string.failed_diff));
+							Toasty.show(DiffActivity.this, getString(R.string.failed_diff));
 						}
 					}
 
 					@Override
 					public void onFailure(@NonNull Call<String> call, @NonNull Throwable t) {
 						binding.expressiveLoader.setVisibility(View.GONE);
-						Toasty.error(DiffActivity.this, getString(R.string.network_error));
+						Toasty.show(DiffActivity.this, getString(R.string.network_error));
 					}
 				});
 	}

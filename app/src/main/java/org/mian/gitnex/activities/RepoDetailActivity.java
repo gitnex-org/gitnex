@@ -274,7 +274,7 @@ public class RepoDetailActivity extends BaseActivity implements BottomSheetListe
 
 					@Override
 					public void onFailure(@NonNull Call<List<Label>> call, @NonNull Throwable t) {
-						Toasty.error(
+						Toasty.show(
 								RepoDetailActivity.this,
 								getString(R.string.genericServerResponseError));
 					}
@@ -488,7 +488,7 @@ public class RepoDetailActivity extends BaseActivity implements BottomSheetListe
 										@NonNull Call<List<Label>> call, @NonNull Throwable t) {
 									isLoading[0] = false;
 									progressIndicator.setVisibility(View.GONE);
-									Toasty.error(
+									Toasty.show(
 											RepoDetailActivity.this,
 											getString(R.string.genericServerResponseError));
 								}
@@ -638,11 +638,11 @@ public class RepoDetailActivity extends BaseActivity implements BottomSheetListe
 								repository.setRepository(repoInfo);
 								initWithRepo();
 							} else {
-								Toasty.error(ctx, getString(R.string.repository_not_exist));
+								Toasty.show(ctx, getString(R.string.repository_not_exist));
 								finish();
 							}
 						} else {
-							Toasty.error(ctx, getString(R.string.genericError));
+							Toasty.show(ctx, getString(R.string.genericError));
 							finish();
 						}
 					}
@@ -650,7 +650,7 @@ public class RepoDetailActivity extends BaseActivity implements BottomSheetListe
 					@Override
 					public void onFailure(@NonNull Call<Repository> call, @NonNull Throwable t) {
 
-						Toasty.error(ctx, getString(R.string.genericError));
+						Toasty.show(ctx, getString(R.string.genericError));
 						finish();
 					}
 				});

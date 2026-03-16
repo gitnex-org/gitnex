@@ -257,7 +257,7 @@ public class RepoInfoFragment extends Fragment {
 					@Override
 					public void onFailure(
 							@NonNull Call<Map<String, Long>> call, @NonNull Throwable t) {
-						Toasty.error(ctx, ctx.getString(R.string.genericServerResponseError));
+						Toasty.show(ctx, ctx.getString(R.string.genericServerResponseError));
 					}
 				});
 	}
@@ -497,7 +497,7 @@ public class RepoInfoFragment extends Fragment {
 
 					@Override
 					public void onFailure(@NonNull Call<ResponseBody> call, @NonNull Throwable t) {
-						Toasty.error(ctx, ctx.getString(R.string.genericServerResponseError));
+						Toasty.show(ctx, ctx.getString(R.string.genericServerResponseError));
 					}
 				});
 	}
@@ -562,7 +562,7 @@ public class RepoInfoFragment extends Fragment {
 							} else {
 								binding.repoTopicsContainer.setVisibility(View.GONE);
 							}
-							Toasty.error(ctx, ctx.getString(R.string.errorLoadingTopics));
+							Toasty.show(ctx, ctx.getString(R.string.errorLoadingTopics));
 						}
 					}
 				});
@@ -645,7 +645,7 @@ public class RepoInfoFragment extends Fragment {
 						if (isAdded()) {
 							switch (response.code()) {
 								case 204:
-									Toasty.success(
+									Toasty.show(
 											ctx, ctx.getString(R.string.topicDeletedSuccessfully));
 									loadRepoTopics();
 									break;
@@ -653,10 +653,10 @@ public class RepoInfoFragment extends Fragment {
 									AlertDialogs.authorizationTokenRevokedDialog(ctx);
 									break;
 								case 403:
-									Toasty.error(ctx, ctx.getString(R.string.unauthorizedApiError));
+									Toasty.show(ctx, ctx.getString(R.string.unauthorizedApiError));
 									break;
 								default:
-									Toasty.error(ctx, ctx.getString(R.string.errorDeletingTopic));
+									Toasty.show(ctx, ctx.getString(R.string.errorDeletingTopic));
 									break;
 							}
 						}
@@ -665,7 +665,7 @@ public class RepoInfoFragment extends Fragment {
 					@Override
 					public void onFailure(@NonNull Call<Void> call, @NonNull Throwable t) {
 						if (isAdded()) {
-							Toasty.error(ctx, ctx.getString(R.string.errorDeletingTopic));
+							Toasty.show(ctx, ctx.getString(R.string.errorDeletingTopic));
 						}
 					}
 				});
@@ -708,7 +708,7 @@ public class RepoInfoFragment extends Fragment {
 						if (isAdded()) {
 							switch (response.code()) {
 								case 204:
-									Toasty.success(
+									Toasty.show(
 											ctx, ctx.getString(R.string.topicAddedSuccessfully));
 									loadRepoTopics();
 									break;
@@ -716,13 +716,13 @@ public class RepoInfoFragment extends Fragment {
 									AlertDialogs.authorizationTokenRevokedDialog(ctx);
 									break;
 								case 403:
-									Toasty.error(ctx, ctx.getString(R.string.unauthorizedApiError));
+									Toasty.show(ctx, ctx.getString(R.string.unauthorizedApiError));
 									break;
 								case 422:
-									Toasty.error(ctx, ctx.getString(R.string.invalidTopicName));
+									Toasty.show(ctx, ctx.getString(R.string.invalidTopicName));
 									break;
 								default:
-									Toasty.error(ctx, ctx.getString(R.string.errorAddingTopic));
+									Toasty.show(ctx, ctx.getString(R.string.errorAddingTopic));
 									break;
 							}
 						}
@@ -731,7 +731,7 @@ public class RepoInfoFragment extends Fragment {
 					@Override
 					public void onFailure(@NonNull Call<Void> call, @NonNull Throwable t) {
 						if (isAdded()) {
-							Toasty.error(ctx, ctx.getString(R.string.errorAddingTopic));
+							Toasty.show(ctx, ctx.getString(R.string.errorAddingTopic));
 						}
 					}
 				});

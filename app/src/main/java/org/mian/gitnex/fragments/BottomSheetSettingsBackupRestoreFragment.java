@@ -28,7 +28,7 @@ import org.mian.gitnex.database.models.UserAccount;
 import org.mian.gitnex.databinding.BottomSheetSettingsBackupRestoreBinding;
 import org.mian.gitnex.helpers.AppUtil;
 import org.mian.gitnex.helpers.BackupUtil;
-import org.mian.gitnex.helpers.SnackBar;
+import org.mian.gitnex.helpers.Toasty;
 
 /**
  * @author mmarif
@@ -113,22 +113,14 @@ public class BottomSheetSettingsBackupRestoreFragment extends BottomSheetDialogF
 											.runOnUiThread(
 													() -> {
 														if (copySucceeded) {
-															SnackBar.success(
+															Toasty.show(
 																	ctx,
-																	requireActivity()
-																			.findViewById(
-																					android.R.id
-																							.content),
 																	getString(
 																			R.string
 																					.backupFileSuccess));
 														} else {
-															SnackBar.error(
+															Toasty.show(
 																	ctx,
-																	requireActivity()
-																			.findViewById(
-																					android.R.id
-																							.content),
 																	getString(
 																			R.string
 																					.backupFileError));
@@ -141,12 +133,8 @@ public class BottomSheetSettingsBackupRestoreFragment extends BottomSheetDialogF
 									requireActivity()
 											.runOnUiThread(
 													() ->
-															SnackBar.error(
+															Toasty.show(
 																	ctx,
-																	requireActivity()
-																			.findViewById(
-																					android.R.id
-																							.content),
 																	getString(
 																			R.string
 																					.backupFileError)));
@@ -155,12 +143,8 @@ public class BottomSheetSettingsBackupRestoreFragment extends BottomSheetDialogF
 								requireActivity()
 										.runOnUiThread(
 												() ->
-														SnackBar.error(
+														Toasty.show(
 																ctx,
-																requireActivity()
-																		.findViewById(
-																				android.R.id
-																						.content),
 																getString(
 																		R.string.backupFileError)));
 							} finally {
@@ -188,10 +172,7 @@ public class BottomSheetSettingsBackupRestoreFragment extends BottomSheetDialogF
 										ctx.getContentResolver().openInputStream(restoreFileUri);
 								restoreDatabaseThread(inputStream);
 							} catch (FileNotFoundException e) {
-								SnackBar.error(
-										ctx,
-										requireActivity().findViewById(android.R.id.content),
-										getString(R.string.restoreError));
+								Toasty.show(ctx, getString(R.string.restoreError));
 							}
 						}
 					});
@@ -225,12 +206,8 @@ public class BottomSheetSettingsBackupRestoreFragment extends BottomSheetDialogF
 								requireActivity()
 										.runOnUiThread(
 												() ->
-														SnackBar.error(
+														Toasty.show(
 																ctx,
-																requireActivity()
-																		.findViewById(
-																				android.R.id
-																						.content),
 																getString(R.string.restoreError)));
 							} finally {
 								if (!exceptionOccurred) {

@@ -52,7 +52,7 @@ public class MilestoneActions {
 
 						if (response.isSuccessful()) {
 
-							Toasty.success(ctx, ctx.getString(R.string.milestoneStatusUpdate));
+							Toasty.show(ctx, ctx.getString(R.string.milestoneStatusUpdate));
 
 						} else if (response.code() == 401) {
 
@@ -60,14 +60,14 @@ public class MilestoneActions {
 
 						} else {
 
-							Toasty.error(ctx, ctx.getString(R.string.genericError));
+							Toasty.show(ctx, ctx.getString(R.string.genericError));
 						}
 					}
 
 					@Override
 					public void onFailure(@NonNull Call<Milestone> call, @NonNull Throwable t) {
 
-						Toasty.error(ctx, ctx.getString(R.string.genericError));
+						Toasty.show(ctx, ctx.getString(R.string.genericError));
 					}
 				});
 	}

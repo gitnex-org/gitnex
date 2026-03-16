@@ -24,7 +24,6 @@ import org.mian.gitnex.clients.RetrofitClient;
 import org.mian.gitnex.databinding.FragmentRepositoriesBinding;
 import org.mian.gitnex.helpers.AlertDialogs;
 import org.mian.gitnex.helpers.Constants;
-import org.mian.gitnex.helpers.SnackBar;
 import org.mian.gitnex.helpers.Toasty;
 import retrofit2.Call;
 import retrofit2.Callback;
@@ -158,7 +157,7 @@ public class RepositoriesFragment extends Fragment {
 									break;
 
 								case 403:
-									Toasty.error(
+									Toasty.show(
 											context, context.getString(R.string.authorizeError));
 									break;
 
@@ -169,7 +168,7 @@ public class RepositoriesFragment extends Fragment {
 									break;
 
 								default:
-									Toasty.error(context, getString(R.string.genericError));
+									Toasty.show(context, getString(R.string.genericError));
 									break;
 							}
 						}
@@ -178,7 +177,7 @@ public class RepositoriesFragment extends Fragment {
 					@Override
 					public void onFailure(
 							@NonNull Call<List<Repository>> call, @NonNull Throwable t) {
-						Toasty.error(context, getString(R.string.genericError));
+						Toasty.show(context, getString(R.string.genericError));
 					}
 				});
 	}
@@ -208,10 +207,7 @@ public class RepositoriesFragment extends Fragment {
 										pageSize = result.size();
 										reposList.addAll(result);
 									} else {
-										SnackBar.info(
-												context,
-												fragmentRepositoriesBinding.getRoot(),
-												getString(R.string.noMoreData));
+										Toasty.show(context, getString(R.string.noMoreData));
 										adapter.setMoreDataAvailable(false);
 									}
 									adapter.notifyDataChanged();
@@ -224,7 +220,7 @@ public class RepositoriesFragment extends Fragment {
 									break;
 
 								case 403:
-									Toasty.error(
+									Toasty.show(
 											context, context.getString(R.string.authorizeError));
 									break;
 
@@ -235,7 +231,7 @@ public class RepositoriesFragment extends Fragment {
 									break;
 
 								default:
-									Toasty.error(context, getString(R.string.genericError));
+									Toasty.show(context, getString(R.string.genericError));
 									break;
 							}
 						}
@@ -244,7 +240,7 @@ public class RepositoriesFragment extends Fragment {
 					@Override
 					public void onFailure(
 							@NonNull Call<List<Repository>> call, @NonNull Throwable t) {
-						Toasty.error(context, getString(R.string.genericError));
+						Toasty.show(context, getString(R.string.genericError));
 					}
 				});
 	}

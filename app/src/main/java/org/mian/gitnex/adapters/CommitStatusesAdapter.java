@@ -98,7 +98,7 @@ public class CommitStatusesAdapter extends RecyclerView.Adapter<CommitStatusesAd
 			if (currentStatus.getTargetUrl() != null && !currentStatus.getTargetUrl().isEmpty()) {
 				AppUtil.openUrlInBrowser(itemView.getContext(), currentStatus.getTargetUrl());
 			} else {
-				Toasty.info(
+				Toasty.show(
 						itemView.getContext(),
 						itemView.getContext().getString(R.string.statusNoUrl));
 			}

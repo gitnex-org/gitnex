@@ -56,7 +56,7 @@ public class UserAccountsAdapter
 		userAccountsList.remove(position);
 		notifyItemRemoved(position);
 		notifyItemRangeChanged(position, userAccountsList.size());
-		Toasty.success(context, context.getResources().getString(R.string.accountDeletedMessage));
+		Toasty.show(context, context.getResources().getString(R.string.accountDeletedMessage));
 	}
 
 	private void getNotificationsCount() {
@@ -85,7 +85,7 @@ public class UserAccountsAdapter
 														Math.toIntExact(
 																notificationCount.getNew()));
 								new Handler()
-										.postDelayed(() -> Toasty.info(context, toastMsg), 5000);
+										.postDelayed(() -> Toasty.show(context, toastMsg), 5000);
 							}
 						}
 					}
@@ -207,7 +207,7 @@ public class UserAccountsAdapter
 												.withPath("/")
 												.toString();
 
-								Toasty.success(
+								Toasty.show(
 										context,
 										context.getResources()
 												.getString(

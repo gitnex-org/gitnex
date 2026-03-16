@@ -49,14 +49,14 @@ public class MembersByOrgViewModel extends ViewModel {
 						if (response.isSuccessful()) {
 							membersList.postValue(response.body());
 						} else {
-							Toasty.error(ctx, ctx.getString(R.string.genericError));
+							Toasty.show(ctx, ctx.getString(R.string.genericError));
 						}
 					}
 
 					@Override
 					public void onFailure(@NonNull Call<List<User>> call, @NonNull Throwable t) {
 
-						Toasty.error(ctx, ctx.getString(R.string.genericServerResponseError));
+						Toasty.show(ctx, ctx.getString(R.string.genericServerResponseError));
 					}
 				});
 	}
@@ -98,7 +98,7 @@ public class MembersByOrgViewModel extends ViewModel {
 					@Override
 					public void onFailure(@NonNull Call<List<User>> call, @NonNull Throwable t) {
 
-						Toasty.error(ctx, ctx.getString(R.string.genericServerResponseError));
+						Toasty.show(ctx, ctx.getString(R.string.genericServerResponseError));
 					}
 				});
 	}

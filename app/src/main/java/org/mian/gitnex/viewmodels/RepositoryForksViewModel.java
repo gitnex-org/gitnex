@@ -48,7 +48,7 @@ public class RepositoryForksViewModel extends ViewModel {
 						if (response.isSuccessful()) {
 							forksList.postValue(response.body());
 						} else {
-							Toasty.error(ctx, ctx.getString(R.string.genericError));
+							Toasty.show(ctx, ctx.getString(R.string.genericError));
 						}
 					}
 
@@ -56,7 +56,7 @@ public class RepositoryForksViewModel extends ViewModel {
 					public void onFailure(
 							@NonNull Call<List<Repository>> call, @NonNull Throwable t) {
 
-						Toasty.error(ctx, ctx.getString(R.string.genericServerResponseError));
+						Toasty.show(ctx, ctx.getString(R.string.genericServerResponseError));
 					}
 				});
 	}
@@ -89,7 +89,7 @@ public class RepositoryForksViewModel extends ViewModel {
 								adapter.setMoreDataAvailable(false);
 							}
 						} else {
-							Toasty.error(ctx, ctx.getString(R.string.genericError));
+							Toasty.show(ctx, ctx.getString(R.string.genericError));
 						}
 					}
 
@@ -97,7 +97,7 @@ public class RepositoryForksViewModel extends ViewModel {
 					public void onFailure(
 							@NonNull Call<List<Repository>> call, @NonNull Throwable t) {
 
-						Toasty.error(ctx, ctx.getString(R.string.genericServerResponseError));
+						Toasty.show(ctx, ctx.getString(R.string.genericServerResponseError));
 					}
 				});
 	}

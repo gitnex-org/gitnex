@@ -160,7 +160,7 @@ public class BottomSheetTrackedTimeFragment extends BottomSheetDialogFragment {
 		int minutes = minutesStr.isEmpty() ? 0 : Integer.parseInt(minutesStr);
 
 		if (hours == 0 && minutes == 0) {
-			Toasty.warning(requireContext(), getString(R.string.enter_time));
+			Toasty.show(requireContext(), getString(R.string.enter_time));
 			return;
 		}
 
@@ -193,15 +193,15 @@ public class BottomSheetTrackedTimeFragment extends BottomSheetDialogFragment {
 							binding.minutesInput.setText("");
 							updateTotalTime();
 							updateUI();
-							Toasty.success(requireContext(), getString(R.string.time_added));
+							Toasty.show(requireContext(), getString(R.string.time_added));
 						} else {
-							Toasty.error(requireContext(), getString(R.string.time_add_failed));
+							Toasty.show(requireContext(), getString(R.string.time_add_failed));
 						}
 					}
 
 					@Override
 					public void onFailure(@NonNull Call<TrackedTime> call, @NonNull Throwable t) {
-						Toasty.error(
+						Toasty.show(
 								requireContext(), getString(R.string.genericServerResponseError));
 					}
 				});
@@ -231,15 +231,15 @@ public class BottomSheetTrackedTimeFragment extends BottomSheetDialogFragment {
 									position, trackedTimeList.size());
 							updateTotalTime();
 							updateUI();
-							Toasty.success(requireContext(), getString(R.string.time_removed));
+							Toasty.show(requireContext(), getString(R.string.time_removed));
 						} else {
-							Toasty.error(requireContext(), getString(R.string.time_delete_failed));
+							Toasty.show(requireContext(), getString(R.string.time_delete_failed));
 						}
 					}
 
 					@Override
 					public void onFailure(@NonNull Call<Void> call, @NonNull Throwable t) {
-						Toasty.error(
+						Toasty.show(
 								requireContext(), getString(R.string.genericServerResponseError));
 					}
 				});

@@ -52,15 +52,12 @@ public class OrganizationTeamInfoActivity extends BaseActivity {
 
 					@NonNull @Override
 					public Fragment createFragment(int position) {
-						switch (position) {
-							case 0:
-								return OrganizationTeamInfoReposFragment.newInstance(team);
-							case 1:
-								return OrganizationTeamInfoMembersFragment.newInstance(team);
-							case 2:
-								return OrganizationTeamInfoPermissionsFragment.newInstance(team);
-						}
-						return null;
+						return switch (position) {
+							case 0 -> OrganizationTeamInfoReposFragment.newInstance(team);
+							case 1 -> OrganizationTeamInfoMembersFragment.newInstance(team);
+							case 2 -> OrganizationTeamInfoPermissionsFragment.newInstance(team);
+							default -> null;
+						};
 					}
 
 					@Override

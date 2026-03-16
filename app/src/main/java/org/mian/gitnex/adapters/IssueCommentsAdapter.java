@@ -1272,7 +1272,7 @@ public class IssueCommentsAdapter extends RecyclerView.Adapter<RecyclerView.View
 			clipboard.setPrimaryClip(clip);
 
 			dialog.dismiss();
-			Toasty.success(context, context.getString(R.string.copyIssueCommentToastMsg));
+			Toasty.show(context, context.getString(R.string.copyIssueCommentToastMsg));
 		}
 
 		private void handleDeleteComment(BottomSheetDialog dialog) {
@@ -1482,7 +1482,7 @@ public class IssueCommentsAdapter extends RecyclerView.Adapter<RecyclerView.View
 						switch (response.code()) {
 							case 204:
 								updateAdapter(position);
-								Toasty.success(
+								Toasty.show(
 										ctx,
 										ctx.getResources()
 												.getString(R.string.deleteCommentSuccess));
@@ -1492,19 +1492,19 @@ public class IssueCommentsAdapter extends RecyclerView.Adapter<RecyclerView.View
 								AlertDialogs.authorizationTokenRevokedDialog(ctx);
 								break;
 							case 403:
-								Toasty.error(ctx, ctx.getString(R.string.authorizeError));
+								Toasty.show(ctx, ctx.getString(R.string.authorizeError));
 								break;
 							case 404:
-								Toasty.warning(ctx, ctx.getString(R.string.apiNotFound));
+								Toasty.show(ctx, ctx.getString(R.string.apiNotFound));
 								break;
 							default:
-								Toasty.error(ctx, ctx.getString(R.string.genericError));
+								Toasty.show(ctx, ctx.getString(R.string.genericError));
 						}
 					}
 
 					@Override
 					public void onFailure(@NonNull Call<Void> call, @NonNull Throwable t) {
-						Toasty.error(
+						Toasty.show(
 								ctx,
 								ctx.getResources().getString(R.string.genericServerResponseError));
 					}

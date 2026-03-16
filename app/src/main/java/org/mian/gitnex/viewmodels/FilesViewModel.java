@@ -76,7 +76,7 @@ public class FilesViewModel extends ViewModel {
 					public void onFailure(
 							@NonNull Call<List<ContentsResponse>> call, @NonNull Throwable t) {
 
-						Toasty.error(ctx, ctx.getString(R.string.genericServerResponseError));
+						Toasty.show(ctx, ctx.getString(R.string.genericServerResponseError));
 					}
 				});
 	}
@@ -132,7 +132,7 @@ public class FilesViewModel extends ViewModel {
 					public void onFailure(
 							@NonNull Call<List<ContentsResponse>> call, @NonNull Throwable t) {
 
-						Toasty.error(ctx, ctx.getString(R.string.genericServerResponseError));
+						Toasty.show(ctx, ctx.getString(R.string.genericServerResponseError));
 					}
 				});
 	}

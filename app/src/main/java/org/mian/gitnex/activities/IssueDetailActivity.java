@@ -104,7 +104,6 @@ import org.mian.gitnex.helpers.Constants;
 import org.mian.gitnex.helpers.LabelWidthCalculator;
 import org.mian.gitnex.helpers.Markdown;
 import org.mian.gitnex.helpers.MentionHelper;
-import org.mian.gitnex.helpers.SnackBar;
 import org.mian.gitnex.helpers.TimeHelper;
 import org.mian.gitnex.helpers.TinyDB;
 import org.mian.gitnex.helpers.Toasty;
@@ -532,7 +531,7 @@ public class IssueDetailActivity extends BaseActivity
 																				ctx,
 																				null));
 
-												Toasty.success(
+												Toasty.show(
 														ctx,
 														getString(R.string.editCommentUpdatedText));
 
@@ -545,7 +544,7 @@ public class IssueDetailActivity extends BaseActivity
 														InputMethodManager.SHOW_IMPLICIT, 0);
 											} else {
 
-												Toasty.error(ctx, getString(R.string.genericError));
+												Toasty.show(ctx, getString(R.string.genericError));
 											}
 										});
 					}
@@ -642,10 +641,7 @@ public class IssueDetailActivity extends BaseActivity
 					@Override
 					public void onFailure(@NonNull Call<Attachment> call, @NonNull Throwable t) {
 
-						SnackBar.error(
-								ctx,
-								findViewById(android.R.id.content),
-								getString(R.string.genericServerResponseError));
+						Toasty.show(ctx, getString(R.string.genericServerResponseError));
 					}
 				});
 	}
@@ -769,7 +765,7 @@ public class IssueDetailActivity extends BaseActivity
 
 						if (response2.code() == 201) {
 
-							Toasty.success(ctx, ctx.getString(R.string.assigneesUpdated));
+							Toasty.show(ctx, ctx.getString(R.string.assigneesUpdated));
 
 							viewBinding.frameAssignees.removeAllViews();
 							viewBinding.frameLabels.removeAllViews();
@@ -791,13 +787,13 @@ public class IssueDetailActivity extends BaseActivity
 							AlertDialogs.authorizationTokenRevokedDialog(ctx);
 						} else if (response2.code() == 403) {
 
-							Toasty.error(ctx, ctx.getString(R.string.authorizeError));
+							Toasty.show(ctx, ctx.getString(R.string.authorizeError));
 						} else if (response2.code() == 404) {
 
-							Toasty.warning(ctx, ctx.getString(R.string.apiNotFound));
+							Toasty.show(ctx, ctx.getString(R.string.apiNotFound));
 						} else {
 
-							Toasty.error(ctx, getString(R.string.genericError));
+							Toasty.show(ctx, getString(R.string.genericError));
 						}
 					}
 
@@ -833,7 +829,7 @@ public class IssueDetailActivity extends BaseActivity
 
 						if (response.code() == 200) {
 
-							Toasty.success(ctx, ctx.getString(R.string.labelsUpdated));
+							Toasty.show(ctx, ctx.getString(R.string.labelsUpdated));
 
 							viewBinding.frameAssignees.removeAllViews();
 							viewBinding.frameLabels.removeAllViews();
@@ -856,13 +852,13 @@ public class IssueDetailActivity extends BaseActivity
 							AlertDialogs.authorizationTokenRevokedDialog(ctx);
 						} else if (response.code() == 403) {
 
-							Toasty.error(ctx, ctx.getString(R.string.authorizeError));
+							Toasty.show(ctx, ctx.getString(R.string.authorizeError));
 						} else if (response.code() == 404) {
 
-							Toasty.warning(ctx, ctx.getString(R.string.apiNotFound));
+							Toasty.show(ctx, ctx.getString(R.string.apiNotFound));
 						} else {
 
-							Toasty.error(ctx, getString(R.string.genericError));
+							Toasty.show(ctx, getString(R.string.genericError));
 						}
 					}
 
@@ -1051,7 +1047,7 @@ public class IssueDetailActivity extends BaseActivity
 							AlertDialogs.authorizationTokenRevokedDialog(ctx);
 						} else if (response.code() == 404) {
 
-							Toasty.warning(ctx, getResources().getString(R.string.noDataFound));
+							Toasty.show(ctx, getResources().getString(R.string.noDataFound));
 							finish();
 						}
 					}
@@ -1609,14 +1605,14 @@ public class IssueDetailActivity extends BaseActivity
 							loadingFinishedRepo = true;
 							updateMenuState();
 						} else {
-							Toasty.error(ctx, getString(R.string.genericError));
+							Toasty.show(ctx, getString(R.string.genericError));
 						}
 					}
 
 					@Override
 					public void onFailure(@NonNull Call<Repository> call, @NonNull Throwable t) {
 
-						Toasty.error(ctx, getString(R.string.genericError));
+						Toasty.show(ctx, getString(R.string.genericError));
 					}
 				});
 	}
@@ -1815,7 +1811,7 @@ public class IssueDetailActivity extends BaseActivity
 																			ScrollView
 																					.FOCUS_DOWN)));
 
-							Toasty.success(ctx, getString(R.string.commentSuccess));
+							Toasty.show(ctx, getString(R.string.commentSuccess));
 
 							viewBinding.send.setAlpha(buttonAlphaStatDisabled);
 							viewBinding.send.setEnabled(false);
@@ -1829,14 +1825,14 @@ public class IssueDetailActivity extends BaseActivity
 
 						} else {
 
-							Toasty.error(ctx, getString(R.string.genericError));
+							Toasty.show(ctx, getString(R.string.genericError));
 						}
 					}
 
 					@Override
 					public void onFailure(@NonNull Call<Comment> call, @NonNull Throwable t) {
 
-						Toasty.error(
+						Toasty.show(
 								ctx,
 								ctx.getResources().getString(R.string.genericServerResponseError));
 					}
@@ -1911,7 +1907,7 @@ public class IssueDetailActivity extends BaseActivity
 								viewBinding.statusesLvMain.setVisibility(View.GONE);
 								checkLoading();
 								if (ctx != null) {
-									Toasty.error(ctx, getString(R.string.genericError));
+									Toasty.show(ctx, getString(R.string.genericError));
 								}
 							}
 						});

@@ -103,7 +103,7 @@ public class SSHKeysFragment extends Fragment {
 							|| Objects.requireNonNull(newSSHKeyBinding.key.getText())
 									.toString()
 									.isEmpty()) {
-						Toasty.error(context, getString(R.string.emptyFields));
+						Toasty.show(context, getString(R.string.emptyFields));
 					} else {
 						saveSSHKey(
 								String.valueOf(newSSHKeyBinding.keyTitle.getText()),
@@ -137,26 +137,26 @@ public class SSHKeysFragment extends Fragment {
 
 							dialogSaveKey.dismiss();
 							accountSettingsSSHKeysViewModel.loadKeysList(context);
-							Toasty.success(context, getString(R.string.sshKeySuccess));
+							Toasty.show(context, getString(R.string.sshKeySuccess));
 						} else if (response.code() == 401) {
 
 							AlertDialogs.authorizationTokenRevokedDialog(context);
 						} else if (response.code() == 403) {
 
-							Toasty.error(context, getString(R.string.authorizeError));
+							Toasty.show(context, getString(R.string.authorizeError));
 						} else if (response.code() == 422) {
 
-							Toasty.error(context, getString(R.string.sshKeyError));
+							Toasty.show(context, getString(R.string.sshKeyError));
 						} else {
 
-							Toasty.error(context, getString(R.string.genericError));
+							Toasty.show(context, getString(R.string.genericError));
 						}
 					}
 
 					@Override
 					public void onFailure(@NonNull Call<PublicKey> call, @NonNull Throwable t) {
 
-						Toasty.error(context, getString(R.string.genericServerResponseError));
+						Toasty.show(context, getString(R.string.genericServerResponseError));
 					}
 				});
 	}

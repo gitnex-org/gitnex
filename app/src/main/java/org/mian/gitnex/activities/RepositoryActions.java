@@ -133,15 +133,15 @@ public class RepositoryActions extends BaseActivity {
 						: "";
 
 		if (name.isEmpty()) {
-			Toasty.error(this, getString(R.string.variable_name_error));
+			Toasty.show(this, getString(R.string.variable_name_error));
 			return;
 		}
 		if (!name.matches("^[a-zA-Z0-9_]+$")) {
-			Toasty.error(this, getString(R.string.variable_name_invalid));
+			Toasty.show(this, getString(R.string.variable_name_invalid));
 			return;
 		}
 		if (value.isEmpty()) {
-			Toasty.error(this, getString(R.string.variable_value_error));
+			Toasty.show(this, getString(R.string.variable_value_error));
 			return;
 		}
 
@@ -165,14 +165,14 @@ public class RepositoryActions extends BaseActivity {
 					public void onResponse(
 							@NonNull Call<Void> call, @NonNull Response<Void> response) {
 						if (response.isSuccessful()) {
-							Toasty.success(
+							Toasty.show(
 									RepositoryActions.this,
 									getString(R.string.variable_create_success));
 							variablesViewModel.resetPagination();
 							fetchVariables();
 							dialog.dismiss();
 						} else {
-							Toasty.error(
+							Toasty.show(
 									RepositoryActions.this,
 									getString(R.string.variable_create_failed));
 						}
@@ -180,7 +180,7 @@ public class RepositoryActions extends BaseActivity {
 
 					@Override
 					public void onFailure(@NonNull Call<Void> call, @NonNull Throwable t) {
-						Toasty.error(
+						Toasty.show(
 								RepositoryActions.this, getString(R.string.variable_create_failed));
 					}
 				});

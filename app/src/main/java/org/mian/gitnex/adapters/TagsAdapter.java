@@ -171,7 +171,7 @@ public class TagsAdapter extends RecyclerView.Adapter<TagsAdapter.TagsViewHolder
 
 																if (response.isSuccessful()) {
 																	updateAdapter(position);
-																	Toasty.success(
+																	Toasty.show(
 																			context,
 																			context.getString(
 																					R.string
@@ -184,19 +184,19 @@ public class TagsAdapter extends RecyclerView.Adapter<TagsAdapter.TagsViewHolder
 																								.VISIBLE);
 																	}
 																} else if (response.code() == 403) {
-																	Toasty.error(
+																	Toasty.show(
 																			context,
 																			context.getString(
 																					R.string
 																							.authorizeError));
 																} else if (response.code() == 409) {
-																	Toasty.error(
+																	Toasty.show(
 																			context,
 																			context.getString(
 																					R.string
 																							.tagDeleteError));
 																} else {
-																	Toasty.error(
+																	Toasty.show(
 																			context,
 																			context.getString(
 																					R.string
@@ -209,7 +209,7 @@ public class TagsAdapter extends RecyclerView.Adapter<TagsAdapter.TagsViewHolder
 																	@NonNull Call<Void> call,
 																	@NonNull Throwable t) {
 
-																Toasty.error(
+																Toasty.show(
 																		context,
 																		context.getString(
 																				R.string

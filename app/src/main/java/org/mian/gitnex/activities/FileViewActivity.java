@@ -39,7 +39,6 @@ import org.mian.gitnex.helpers.Constants;
 import org.mian.gitnex.helpers.FileContentSearcher;
 import org.mian.gitnex.helpers.Images;
 import org.mian.gitnex.helpers.Markdown;
-import org.mian.gitnex.helpers.SnackBar;
 import org.mian.gitnex.helpers.Toasty;
 import org.mian.gitnex.helpers.contexts.RepositoryContext;
 import org.mian.gitnex.notifications.Notifications;
@@ -383,7 +382,7 @@ public class FileViewActivity extends BaseActivity implements BottomSheetListene
 										case 403:
 											runOnUiThread(
 													() ->
-															Toasty.error(
+															Toasty.show(
 																	ctx,
 																	ctx.getString(
 																			R.string
@@ -393,7 +392,7 @@ public class FileViewActivity extends BaseActivity implements BottomSheetListene
 										case 404:
 											runOnUiThread(
 													() ->
-															Toasty.warning(
+															Toasty.show(
 																	ctx,
 																	ctx.getString(
 																			R.string.apiNotFound)));
@@ -402,7 +401,7 @@ public class FileViewActivity extends BaseActivity implements BottomSheetListene
 										default:
 											runOnUiThread(
 													() ->
-															Toasty.error(
+															Toasty.show(
 																	ctx,
 																	getString(
 																			R.string
@@ -430,13 +429,9 @@ public class FileViewActivity extends BaseActivity implements BottomSheetListene
 			if (isSubmit || !query.equals(lastQuery)) {
 				if (!query.isEmpty()) {
 					if (matches > 0) {
-						SnackBar.success(
-								this,
-								binding.getRoot(),
-								getString(R.string.search_matches_found, matches));
+						Toasty.show(this, getString(R.string.search_matches_found, matches));
 					} else {
-						SnackBar.warning(
-								this, binding.getRoot(), getString(R.string.search_no_matches));
+						Toasty.show(this, getString(R.string.search_no_matches));
 					}
 				}
 				lastQuery = query;
@@ -701,7 +696,7 @@ public class FileViewActivity extends BaseActivity implements BottomSheetListene
 				editFileLauncher.launch(intent);
 
 			} else {
-				Toasty.error(ctx, getString(R.string.fileTypeCannotBeEdited));
+				Toasty.show(ctx, getString(R.string.fileTypeCannotBeEdited));
 			}
 		}
 

@@ -10,7 +10,7 @@ import com.google.android.material.bottomsheet.BottomSheetDialogFragment;
 import org.mian.gitnex.R;
 import org.mian.gitnex.databinding.BottomSheetSettingsCodeEditorBinding;
 import org.mian.gitnex.helpers.AppDatabaseSettings;
-import org.mian.gitnex.helpers.SnackBar;
+import org.mian.gitnex.helpers.Toasty;
 
 /**
  * @author mmarif
@@ -61,10 +61,7 @@ public class BottomSheetSettingsCodeEditorFragment extends BottomSheetDialogFrag
 									String.valueOf(newSelection),
 									AppDatabaseSettings.APP_CE_SYNTAX_HIGHLIGHT_KEY);
 							SettingsFragment.refreshParent = true;
-							SnackBar.success(
-									requireContext(),
-									requireActivity().findViewById(android.R.id.content),
-									getString(R.string.settingsSave));
+							Toasty.show(requireContext(), getString(R.string.settingsSave));
 						}
 					}
 				});
@@ -81,10 +78,7 @@ public class BottomSheetSettingsCodeEditorFragment extends BottomSheetDialogFrag
 									AppDatabaseSettings.APP_CE_INDENTATION_KEY);
 							updateTabsWidthVisibility();
 							SettingsFragment.refreshParent = true;
-							SnackBar.success(
-									requireContext(),
-									requireActivity().findViewById(android.R.id.content),
-									getString(R.string.settingsSave));
+							Toasty.show(requireContext(), getString(R.string.settingsSave));
 						}
 					}
 				});
@@ -100,10 +94,7 @@ public class BottomSheetSettingsCodeEditorFragment extends BottomSheetDialogFrag
 									String.valueOf(newSelection),
 									AppDatabaseSettings.APP_CE_TABS_WIDTH_KEY);
 							SettingsFragment.refreshParent = true;
-							SnackBar.success(
-									requireContext(),
-									requireActivity().findViewById(android.R.id.content),
-									getString(R.string.settingsSave));
+							Toasty.show(requireContext(), getString(R.string.settingsSave));
 						}
 					}
 				});

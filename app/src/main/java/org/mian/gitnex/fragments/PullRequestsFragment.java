@@ -307,7 +307,7 @@ public class PullRequestsFragment extends Fragment {
 								pageSize = result.size();
 								prList.addAll(result);
 							} else {
-								Toasty.info(context, getString(R.string.noMoreData));
+								Toasty.show(context, getString(R.string.noMoreData));
 								adapter.setMoreDataAvailable(false);
 							}
 							adapter.notifyDataChanged();

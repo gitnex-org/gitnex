@@ -62,7 +62,6 @@ import org.mian.gitnex.helpers.AppDatabaseSettings;
 import org.mian.gitnex.helpers.Constants;
 import org.mian.gitnex.helpers.Markdown;
 import org.mian.gitnex.helpers.MentionHelper;
-import org.mian.gitnex.helpers.SnackBar;
 import org.mian.gitnex.helpers.Toasty;
 import org.mian.gitnex.helpers.attachments.AttachmentUtils;
 import org.mian.gitnex.helpers.attachments.AttachmentsModel;
@@ -271,7 +270,7 @@ public class CreatePullRequestActivity extends BaseActivity
 			fetchNotes();
 			dialogNotes = materialAlertDialogBuilderNotes.show();
 		} else {
-			Toasty.warning(ctx, getResources().getString(R.string.noNotes));
+			Toasty.show(ctx, getResources().getString(R.string.noNotes));
 		}
 	}
 
@@ -381,20 +380,14 @@ public class CreatePullRequestActivity extends BaseActivity
 							AlertDialogs.authorizationTokenRevokedDialog(ctx);
 						} else {
 
-							SnackBar.error(
-									ctx,
-									findViewById(android.R.id.content),
-									getString(R.string.attachmentsSaveError));
+							Toasty.show(ctx, getString(R.string.attachmentsSaveError));
 						}
 					}
 
 					@Override
 					public void onFailure(@NonNull Call<Attachment> call, @NonNull Throwable t) {
 
-						SnackBar.error(
-								ctx,
-								findViewById(android.R.id.content),
-								getString(R.string.genericServerResponseError));
+						Toasty.show(ctx, getString(R.string.genericServerResponseError));
 					}
 				});
 	}
@@ -418,19 +411,16 @@ public class CreatePullRequestActivity extends BaseActivity
 
 		if (prTitle.matches("")) {
 
-			SnackBar.error(ctx, findViewById(android.R.id.content), getString(R.string.titleError));
+			Toasty.show(ctx, getString(R.string.titleError));
 		} else if (mergeInto.matches("")) {
 
-			SnackBar.error(
-					ctx, findViewById(android.R.id.content), getString(R.string.mergeIntoError));
+			Toasty.show(ctx, getString(R.string.mergeIntoError));
 		} else if (pullFrom.matches("")) {
 
-			SnackBar.error(
-					ctx, findViewById(android.R.id.content), getString(R.string.pullFromError));
+			Toasty.show(ctx, getString(R.string.pullFromError));
 		} else if (pullFrom.equals(mergeInto)) {
 
-			SnackBar.error(
-					ctx, findViewById(android.R.id.content), getString(R.string.sameBranchesError));
+			Toasty.show(ctx, getString(R.string.sameBranchesError));
 		} else {
 
 			createPullRequest(
@@ -487,10 +477,7 @@ public class CreatePullRequestActivity extends BaseActivity
 
 						if (response.code() == 201) {
 
-							SnackBar.success(
-									ctx,
-									findViewById(android.R.id.content),
-									getString(R.string.prCreateSuccess));
+							Toasty.show(ctx, getString(R.string.prCreateSuccess));
 							RepoDetailActivity.updateRepo = true;
 							PullRequestsFragment.resumePullRequests = true;
 							MainActivity.reloadRepos = true;
@@ -506,24 +493,15 @@ public class CreatePullRequestActivity extends BaseActivity
 								|| response.message().equals("Conflict")) {
 
 							viewBinding.topAppBar.getMenu().getItem(2).setVisible(false);
-							SnackBar.error(
-									ctx,
-									findViewById(android.R.id.content),
-									getString(R.string.prAlreadyExists));
+							Toasty.show(ctx, getString(R.string.prAlreadyExists));
 						} else if (response.code() == 404) {
 
 							viewBinding.topAppBar.getMenu().getItem(2).setVisible(false);
-							SnackBar.error(
-									ctx,
-									findViewById(android.R.id.content),
-									getString(R.string.apiNotFound));
+							Toasty.show(ctx, getString(R.string.apiNotFound));
 						} else {
 
 							viewBinding.topAppBar.getMenu().getItem(2).setVisible(false);
-							SnackBar.error(
-									ctx,
-									findViewById(android.R.id.content),
-									getString(R.string.genericError));
+							Toasty.show(ctx, getString(R.string.genericError));
 						}
 					}
 
@@ -531,10 +509,7 @@ public class CreatePullRequestActivity extends BaseActivity
 					public void onFailure(@NonNull Call<PullRequest> call, @NonNull Throwable t) {
 
 						viewBinding.topAppBar.getMenu().getItem(2).setVisible(false);
-						SnackBar.error(
-								ctx,
-								findViewById(android.R.id.content),
-								getString(R.string.genericServerResponseError));
+						Toasty.show(ctx, getString(R.string.genericServerResponseError));
 					}
 				});
 	}
@@ -815,10 +790,7 @@ public class CreatePullRequestActivity extends BaseActivity
 					public void onFailure(
 							@NonNull Call<List<Milestone>> call, @NonNull Throwable t) {
 
-						SnackBar.error(
-								ctx,
-								findViewById(android.R.id.content),
-								getString(R.string.genericServerResponseError));
+						Toasty.show(ctx, getString(R.string.genericServerResponseError));
 					}
 				});
 	}

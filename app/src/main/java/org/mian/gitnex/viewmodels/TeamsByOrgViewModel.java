@@ -50,13 +50,13 @@ public class TeamsByOrgViewModel extends ViewModel {
 						if (response.isSuccessful()) {
 							teamsList.postValue(response.body());
 						} else if (response.code() == 403) {
-							Toasty.error(ctx, ctx.getString(R.string.authorizeError));
+							Toasty.show(ctx, ctx.getString(R.string.authorizeError));
 							mProgressBar.setVisibility(View.GONE);
 							noDataTeams.setVisibility(View.GONE);
 						} else {
 							mProgressBar.setVisibility(View.GONE);
 							noDataTeams.setVisibility(View.GONE);
-							Toasty.error(ctx, ctx.getString(R.string.genericError));
+							Toasty.show(ctx, ctx.getString(R.string.genericError));
 						}
 					}
 
@@ -65,7 +65,7 @@ public class TeamsByOrgViewModel extends ViewModel {
 
 						mProgressBar.setVisibility(View.GONE);
 						noDataTeams.setVisibility(View.GONE);
-						Toasty.error(ctx, ctx.getString(R.string.genericServerResponseError));
+						Toasty.show(ctx, ctx.getString(R.string.genericServerResponseError));
 					}
 				});
 	}

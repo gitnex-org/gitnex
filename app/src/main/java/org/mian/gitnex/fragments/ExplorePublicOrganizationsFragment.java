@@ -20,7 +20,7 @@ import org.mian.gitnex.adapters.OrganizationsListAdapter;
 import org.mian.gitnex.clients.RetrofitClient;
 import org.mian.gitnex.databinding.FragmentOrganizationsBinding;
 import org.mian.gitnex.helpers.Constants;
-import org.mian.gitnex.helpers.SnackBar;
+import org.mian.gitnex.helpers.Toasty;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
@@ -151,10 +151,7 @@ public class ExplorePublicOrganizationsFragment extends Fragment {
 									pageSize = result.size();
 									organizationsList.addAll(result);
 								} else {
-									SnackBar.info(
-											context,
-											fragmentPublicOrgBinding.getRoot(),
-											getString(R.string.noMoreData));
+									Toasty.show(context, getString(R.string.noMoreData));
 									adapter.setMoreDataAvailable(false);
 								}
 							}

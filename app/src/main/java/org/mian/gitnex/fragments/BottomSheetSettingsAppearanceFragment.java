@@ -20,7 +20,7 @@ import org.mian.gitnex.databinding.BottomSheetSettingsAppearanceBinding;
 import org.mian.gitnex.helpers.AppDatabaseSettings;
 import org.mian.gitnex.helpers.AppUtil;
 import org.mian.gitnex.helpers.FontsOverride;
-import org.mian.gitnex.helpers.SnackBar;
+import org.mian.gitnex.helpers.Toasty;
 
 /**
  * @author mmarif
@@ -193,10 +193,7 @@ public class BottomSheetSettingsAppearanceFragment extends BottomSheetDialogFrag
 											: View.GONE);
 							SettingsFragment.refreshParent = true;
 							requireActivity().recreate();
-							SnackBar.success(
-									requireContext(),
-									requireActivity().findViewById(android.R.id.content),
-									getString(R.string.settingsSave));
+							Toasty.show(requireContext(), getString(R.string.settingsSave));
 						}
 					}
 				});
@@ -225,10 +222,7 @@ public class BottomSheetSettingsAppearanceFragment extends BottomSheetDialogFrag
 												requireActivity().recreate();
 											},
 											1000);
-							SnackBar.success(
-									requireContext(),
-									requireActivity().findViewById(android.R.id.content),
-									getString(R.string.settingsSave));
+							Toasty.show(requireContext(), getString(R.string.settingsSave));
 						}
 					}
 				});
@@ -247,10 +241,7 @@ public class BottomSheetSettingsAppearanceFragment extends BottomSheetDialogFrag
 									AppDatabaseSettings.APP_TABS_ANIMATION_KEY);
 							SettingsFragment.refreshParent = true;
 							requireActivity().recreate();
-							SnackBar.success(
-									requireContext(),
-									requireActivity().findViewById(android.R.id.content),
-									getString(R.string.settingsSave));
+							Toasty.show(requireContext(), getString(R.string.settingsSave));
 						}
 					}
 				});
@@ -265,10 +256,7 @@ public class BottomSheetSettingsAppearanceFragment extends BottomSheetDialogFrag
 							requireContext(),
 							String.valueOf(isChecked),
 							AppDatabaseSettings.APP_COUNTER_KEY);
-					SnackBar.success(
-							requireContext(),
-							requireActivity().findViewById(android.R.id.content),
-							getString(R.string.settingsSave));
+					Toasty.show(requireContext(), getString(R.string.settingsSave));
 				});
 
 		binding.hideEmailLangInProfileFrame.setOnClickListener(
@@ -281,10 +269,7 @@ public class BottomSheetSettingsAppearanceFragment extends BottomSheetDialogFrag
 							requireContext(),
 							String.valueOf(isChecked),
 							AppDatabaseSettings.APP_USER_PROFILE_HIDE_EMAIL_LANGUAGE_KEY);
-					SnackBar.success(
-							requireContext(),
-							requireActivity().findViewById(android.R.id.content),
-							getString(R.string.settingsSave));
+					Toasty.show(requireContext(), getString(R.string.settingsSave));
 				});
 
 		binding.hideEmailNavDrawerFrame.setOnClickListener(
@@ -297,10 +282,7 @@ public class BottomSheetSettingsAppearanceFragment extends BottomSheetDialogFrag
 							requireContext(),
 							String.valueOf(isChecked),
 							AppDatabaseSettings.APP_USER_HIDE_EMAIL_IN_NAV_KEY);
-					SnackBar.success(
-							requireContext(),
-							requireActivity().findViewById(android.R.id.content),
-							getString(R.string.settingsSave));
+					Toasty.show(requireContext(), getString(R.string.settingsSave));
 				});
 
 		binding.labelsInListFrame.setOnClickListener(
@@ -313,10 +295,7 @@ public class BottomSheetSettingsAppearanceFragment extends BottomSheetDialogFrag
 							requireContext(),
 							String.valueOf(isChecked),
 							AppDatabaseSettings.APP_LABELS_IN_LIST_KEY);
-					SnackBar.success(
-							requireContext(),
-							requireActivity().findViewById(android.R.id.content),
-							getString(R.string.settingsSave));
+					Toasty.show(requireContext(), getString(R.string.settingsSave));
 				});
 
 		binding.langFrame.setOnClickListener(
@@ -339,10 +318,8 @@ public class BottomSheetSettingsAppearanceFragment extends BottomSheetDialogFrag
 												SettingsFragment.refreshParent = true;
 												requireActivity().recreate();
 												dialog.dismiss();
-												SnackBar.success(
+												Toasty.show(
 														requireContext(),
-														requireActivity()
-																.findViewById(android.R.id.content),
 														getString(R.string.settingsSave));
 											});
 					builder.create().show();
@@ -395,10 +372,7 @@ public class BottomSheetSettingsAppearanceFragment extends BottomSheetDialogFrag
 											R.string.settingsThemeTimeSelectedHint,
 											hourStr,
 											minuteStr));
-					SnackBar.success(
-							requireContext(),
-							requireActivity().findViewById(android.R.id.content),
-							getString(R.string.settingsSave));
+					Toasty.show(requireContext(), getString(R.string.settingsSave));
 				});
 		picker.show(getParentFragmentManager(), "lightTimePicker");
 	}
@@ -441,10 +415,7 @@ public class BottomSheetSettingsAppearanceFragment extends BottomSheetDialogFrag
 											R.string.settingsThemeTimeSelectedHint,
 											hourStr,
 											minuteStr));
-					SnackBar.success(
-							requireContext(),
-							requireActivity().findViewById(android.R.id.content),
-							getString(R.string.settingsSave));
+					Toasty.show(requireContext(), getString(R.string.settingsSave));
 				});
 		picker.show(getParentFragmentManager(), "darkTimePicker");
 	}

@@ -25,7 +25,6 @@ import org.mian.gitnex.adapters.UsersAdapter;
 import org.mian.gitnex.clients.RetrofitClient;
 import org.mian.gitnex.databinding.FragmentExploreUsersBinding;
 import org.mian.gitnex.helpers.Constants;
-import org.mian.gitnex.helpers.SnackBar;
 import org.mian.gitnex.helpers.Toasty;
 import retrofit2.Call;
 import retrofit2.Callback;
@@ -181,7 +180,7 @@ public class ExploreUsersFragment extends Fragment {
 							viewBinding.noData.setVisibility(View.VISIBLE);
 							viewBinding.progressBar.setVisibility(View.GONE);
 						} else {
-							Toasty.error(
+							Toasty.show(
 									requireActivity(),
 									requireActivity()
 											.getResources()
@@ -193,7 +192,7 @@ public class ExploreUsersFragment extends Fragment {
 					public void onFailure(
 							@NonNull Call<InlineResponse2001> call, @NonNull Throwable t) {
 
-						Toasty.error(
+						Toasty.show(
 								requireActivity(),
 								requireActivity()
 										.getResources()
@@ -223,17 +222,14 @@ public class ExploreUsersFragment extends Fragment {
 									pageSize = result.size();
 									usersList.addAll(result);
 								} else {
-									SnackBar.info(
-											context,
-											viewBinding.getRoot(),
-											getString(R.string.noMoreData));
+									Toasty.show(context, getString(R.string.noMoreData));
 									adapter.setMoreDataAvailable(false);
 								}
 							}
 							adapter.notifyDataChanged();
 							viewBinding.progressBar.setVisibility(View.GONE);
 						} else {
-							Toasty.error(
+							Toasty.show(
 									requireActivity(),
 									requireActivity()
 											.getResources()
@@ -245,7 +241,7 @@ public class ExploreUsersFragment extends Fragment {
 					public void onFailure(
 							@NonNull Call<InlineResponse2001> call, @NonNull Throwable t) {
 
-						Toasty.error(
+						Toasty.show(
 								requireActivity(),
 								requireActivity()
 										.getResources()

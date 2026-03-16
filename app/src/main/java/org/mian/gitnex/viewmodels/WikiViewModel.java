@@ -69,7 +69,7 @@ public class WikiViewModel extends ViewModel {
 							fragmentWikiBinding.noData.setVisibility(View.VISIBLE);
 							fragmentWikiBinding.recyclerView.setVisibility(View.GONE);
 						} else {
-							Toasty.error(ctx, ctx.getString(R.string.genericError));
+							Toasty.show(ctx, ctx.getString(R.string.genericError));
 						}
 
 						try {
@@ -86,7 +86,7 @@ public class WikiViewModel extends ViewModel {
 					public void onFailure(
 							@NonNull Call<List<WikiPageMetaData>> call, @NonNull Throwable t) {
 
-						Toasty.error(ctx, ctx.getString(R.string.genericServerResponseError));
+						Toasty.show(ctx, ctx.getString(R.string.genericServerResponseError));
 					}
 				});
 	}
@@ -123,7 +123,7 @@ public class WikiViewModel extends ViewModel {
 								adapter.setMoreDataAvailable(false);
 							}
 						} else {
-							Toasty.error(ctx, ctx.getString(R.string.genericError));
+							Toasty.show(ctx, ctx.getString(R.string.genericError));
 						}
 					}
 
@@ -131,7 +131,7 @@ public class WikiViewModel extends ViewModel {
 					public void onFailure(
 							@NonNull Call<List<WikiPageMetaData>> call, @NonNull Throwable t) {
 
-						Toasty.error(ctx, ctx.getString(R.string.genericServerResponseError));
+						Toasty.show(ctx, ctx.getString(R.string.genericServerResponseError));
 					}
 				});
 	}

@@ -15,7 +15,7 @@ import org.mian.gitnex.databinding.ActivityCreateOrganizationBinding;
 import org.mian.gitnex.fragments.OrganizationsFragment;
 import org.mian.gitnex.helpers.AlertDialogs;
 import org.mian.gitnex.helpers.AppUtil;
-import org.mian.gitnex.helpers.SnackBar;
+import org.mian.gitnex.helpers.Toasty;
 import retrofit2.Call;
 import retrofit2.Callback;
 
@@ -80,26 +80,21 @@ public class CreateOrganizationActivity extends BaseActivity {
 										.getText())
 						.toString();
 
-		if (!newOrgDesc.equals("")) {
+		if (!newOrgDesc.isEmpty()) {
 
 			if (newOrgDesc.length() > 255) {
 
-				SnackBar.error(
-						ctx, findViewById(android.R.id.content), getString(R.string.orgDescError));
+				Toasty.show(ctx, getString(R.string.orgDescError));
 				return;
 			}
 		}
 
-		if (newOrgName.equals("")) {
+		if (newOrgName.isEmpty()) {
 
-			SnackBar.error(
-					ctx, findViewById(android.R.id.content), getString(R.string.orgNameErrorEmpty));
+			Toasty.show(ctx, getString(R.string.orgNameErrorEmpty));
 		} else if (!AppUtil.checkStrings(newOrgName)) {
 
-			SnackBar.error(
-					ctx,
-					findViewById(android.R.id.content),
-					getString(R.string.orgNameErrorInvalid));
+			Toasty.show(ctx, getString(R.string.orgNameErrorInvalid));
 		} else {
 
 			createNewOrganization(newOrgName, newOrgDesc);
@@ -124,40 +119,25 @@ public class CreateOrganizationActivity extends BaseActivity {
 
 						if (response.code() == 201) {
 							OrganizationsFragment.orgCreated = true;
-							SnackBar.success(
-									ctx,
-									findViewById(android.R.id.content),
-									getString(R.string.orgCreated));
+							Toasty.show(ctx, getString(R.string.orgCreated));
 							new Handler().postDelayed(() -> finish(), 3000);
 						} else if (response.code() == 401) {
 
 							AlertDialogs.authorizationTokenRevokedDialog(ctx);
 						} else if (response.code() == 409) {
 
-							SnackBar.error(
-									ctx,
-									findViewById(android.R.id.content),
-									getString(R.string.orgExistsError));
+							Toasty.show(ctx, getString(R.string.orgExistsError));
 						} else if (response.code() == 422) {
 
-							SnackBar.error(
-									ctx,
-									findViewById(android.R.id.content),
-									getString(R.string.orgExistsError));
+							Toasty.show(ctx, getString(R.string.orgExistsError));
 						} else {
 
 							if (response.code() == 404) {
 
-								SnackBar.error(
-										ctx,
-										findViewById(android.R.id.content),
-										getString(R.string.apiNotFound));
+								Toasty.show(ctx, getString(R.string.apiNotFound));
 							} else {
 
-								SnackBar.error(
-										ctx,
-										findViewById(android.R.id.content),
-										getString(R.string.genericError));
+								Toasty.show(ctx, getString(R.string.genericError));
 							}
 						}
 					}

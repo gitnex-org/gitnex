@@ -58,7 +58,7 @@ public class ProfileActivity extends BaseActivity implements BottomSheetListener
 				&& !Objects.equals(profileIntent.getStringExtra("username"), "")) {
 			username = profileIntent.getStringExtra("username");
 		} else {
-			Toasty.warning(ctx, ctx.getResources().getString(R.string.userInvalidUserName));
+			Toasty.show(ctx, ctx.getResources().getString(R.string.userInvalidUserName));
 			finish();
 			return;
 		}
@@ -165,22 +165,22 @@ public class ProfileActivity extends BaseActivity implements BottomSheetListener
 						if (response.isSuccessful()) {
 							following = !following;
 							if (following) {
-								Toasty.success(
+								Toasty.show(
 										ProfileActivity.this,
 										String.format(getString(R.string.nowFollowUser), username));
 							} else {
-								Toasty.success(
+								Toasty.show(
 										ProfileActivity.this,
 										String.format(
 												getString(R.string.unfollowedUser), username));
 							}
 						} else {
 							if (following) {
-								Toasty.error(
+								Toasty.show(
 										ProfileActivity.this,
 										getString(R.string.unfollowingFailed));
 							} else {
-								Toasty.error(
+								Toasty.show(
 										ProfileActivity.this, getString(R.string.followingFailed));
 							}
 						}
@@ -189,10 +189,10 @@ public class ProfileActivity extends BaseActivity implements BottomSheetListener
 					@Override
 					public void onFailure(@NonNull Call<Void> call, @NonNull Throwable t) {
 						if (following) {
-							Toasty.error(
+							Toasty.show(
 									ProfileActivity.this, getString(R.string.unfollowingFailed));
 						} else {
-							Toasty.error(ProfileActivity.this, getString(R.string.followingFailed));
+							Toasty.show(ProfileActivity.this, getString(R.string.followingFailed));
 						}
 					}
 				});
@@ -231,21 +231,21 @@ public class ProfileActivity extends BaseActivity implements BottomSheetListener
 
 		@NonNull @Override
 		public Fragment createFragment(int position) {
-			switch (position) {
-				case 0: // detail
-					return DetailFragment.newInstance(username);
-				case 1: // repos
-					return RepositoriesFragment.newInstance(username);
-				case 2: // starred repos
-					return StarredRepositoriesFragment.newInstance(username);
-				case 3: // organizations
-					return OrganizationsFragment.newInstance(username);
-				case 4: // followers
-					return FollowersFragment.newInstance(username);
-				case 5: // following
-					return FollowingFragment.newInstance(username);
-			}
-			return null;
+			return switch (position) {
+				case 0 -> // detail
+						DetailFragment.newInstance(username);
+				case 1 -> // repos
+						RepositoriesFragment.newInstance(username);
+				case 2 -> // starred repos
+						StarredRepositoriesFragment.newInstance(username);
+				case 3 -> // organizations
+						OrganizationsFragment.newInstance(username);
+				case 4 -> // followers
+						FollowersFragment.newInstance(username);
+				case 5 -> // following
+						FollowingFragment.newInstance(username);
+				default -> null;
+			};
 		}
 
 		@Override

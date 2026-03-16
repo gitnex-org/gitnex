@@ -11,7 +11,7 @@ import org.mian.gitnex.R;
 import org.mian.gitnex.databinding.BottomSheetSettingsNotificationsBinding;
 import org.mian.gitnex.helpers.AppDatabaseSettings;
 import org.mian.gitnex.helpers.AppUtil;
-import org.mian.gitnex.helpers.SnackBar;
+import org.mian.gitnex.helpers.Toasty;
 import org.mian.gitnex.notifications.Notifications;
 
 /**
@@ -61,10 +61,7 @@ public class BottomSheetSettingsNotificationsFragment extends BottomSheetDialogF
 						AppUtil.setMultiVisibility(View.GONE, binding.pollingDelayFrame);
 					}
 
-					SnackBar.success(
-							requireContext(),
-							requireActivity().findViewById(android.R.id.content),
-							getString(R.string.settingsSave));
+					Toasty.show(requireContext(), getString(R.string.settingsSave));
 				});
 
 		binding.enableNotificationsFrame.setOnClickListener(
@@ -87,10 +84,7 @@ public class BottomSheetSettingsNotificationsFragment extends BottomSheetDialogF
 						Notifications.startWorker(requireContext());
 
 						SettingsFragment.refreshParent = true;
-						SnackBar.success(
-								requireContext(),
-								requireActivity().findViewById(android.R.id.content),
-								getString(R.string.settingsSave));
+						Toasty.show(requireContext(), getString(R.string.settingsSave));
 					}
 				});
 

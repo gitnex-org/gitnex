@@ -144,19 +144,19 @@ public class AccountSettingsEmailsAdapter
 
 														if (response.isSuccessful()) {
 															updateAdapter(position);
-															Toasty.success(
+															Toasty.show(
 																	context,
 																	context.getString(
 																			R.string
 																					.deleteEmailSuccess));
 														} else if (response.code() == 403) {
-															Toasty.error(
+															Toasty.show(
 																	context,
 																	context.getString(
 																			R.string
 																					.authorizeError));
 														} else {
-															Toasty.error(
+															Toasty.show(
 																	context,
 																	context.getString(
 																			R.string.genericError));
@@ -168,7 +168,7 @@ public class AccountSettingsEmailsAdapter
 															@NonNull Call<Void> call,
 															@NonNull Throwable t) {
 
-														Toasty.error(
+														Toasty.show(
 																context,
 																context.getString(
 																		R.string.genericError));

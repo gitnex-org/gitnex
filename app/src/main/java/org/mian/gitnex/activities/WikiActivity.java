@@ -87,7 +87,7 @@ public class WikiActivity extends BaseActivity implements BottomSheetListener {
 						: "";
 
 		if (wikiTitle.isEmpty() || wikiContent.isEmpty()) {
-			Toasty.error(ctx, getString(R.string.wikiPageNameAndContentError));
+			Toasty.show(ctx, getString(R.string.wikiPageNameAndContentError));
 			return;
 		}
 
@@ -120,7 +120,7 @@ public class WikiActivity extends BaseActivity implements BottomSheetListener {
 						if (response.isSuccessful()) {
 							if (response.code() == 201) {
 
-								Toasty.success(ctx, getString(R.string.wikiCreated));
+								Toasty.show(ctx, getString(R.string.wikiCreated));
 								WikiFragment.resumeWiki = true;
 								finish();
 							} else {
@@ -136,7 +136,7 @@ public class WikiActivity extends BaseActivity implements BottomSheetListener {
 									case 403:
 										runOnUiThread(
 												() ->
-														Toasty.error(
+														Toasty.show(
 																ctx,
 																ctx.getString(
 																		R.string.authorizeError)));
@@ -144,7 +144,7 @@ public class WikiActivity extends BaseActivity implements BottomSheetListener {
 									case 404:
 										runOnUiThread(
 												() ->
-														Toasty.warning(
+														Toasty.show(
 																ctx,
 																ctx.getString(
 																		R.string.apiNotFound)));
@@ -152,7 +152,7 @@ public class WikiActivity extends BaseActivity implements BottomSheetListener {
 									default:
 										runOnUiThread(
 												() ->
-														Toasty.error(
+														Toasty.show(
 																ctx,
 																getString(R.string.genericError)));
 								}
@@ -163,7 +163,7 @@ public class WikiActivity extends BaseActivity implements BottomSheetListener {
 					@Override
 					public void onFailure(@NonNull Call<WikiPage> call, @NonNull Throwable t) {
 
-						Toasty.error(ctx, ctx.getString(R.string.genericServerResponseError));
+						Toasty.show(ctx, ctx.getString(R.string.genericServerResponseError));
 					}
 				});
 	}
@@ -193,7 +193,7 @@ public class WikiActivity extends BaseActivity implements BottomSheetListener {
 						if (response.isSuccessful()) {
 							if (response.code() == 200) {
 
-								Toasty.success(ctx, getString(R.string.wikiUpdated));
+								Toasty.show(ctx, getString(R.string.wikiUpdated));
 								WikiFragment.resumeWiki = true;
 								finish();
 							} else {
@@ -209,7 +209,7 @@ public class WikiActivity extends BaseActivity implements BottomSheetListener {
 									case 403:
 										runOnUiThread(
 												() ->
-														Toasty.error(
+														Toasty.show(
 																ctx,
 																ctx.getString(
 																		R.string.authorizeError)));
@@ -217,7 +217,7 @@ public class WikiActivity extends BaseActivity implements BottomSheetListener {
 									case 404:
 										runOnUiThread(
 												() ->
-														Toasty.warning(
+														Toasty.show(
 																ctx,
 																ctx.getString(
 																		R.string.apiNotFound)));
@@ -225,7 +225,7 @@ public class WikiActivity extends BaseActivity implements BottomSheetListener {
 									default:
 										runOnUiThread(
 												() ->
-														Toasty.error(
+														Toasty.show(
 																ctx,
 																getString(R.string.genericError)));
 								}
@@ -236,7 +236,7 @@ public class WikiActivity extends BaseActivity implements BottomSheetListener {
 					@Override
 					public void onFailure(@NonNull Call<WikiPage> call, @NonNull Throwable t) {
 
-						Toasty.error(ctx, ctx.getString(R.string.genericServerResponseError));
+						Toasty.show(ctx, ctx.getString(R.string.genericServerResponseError));
 					}
 				});
 	}
@@ -299,7 +299,7 @@ public class WikiActivity extends BaseActivity implements BottomSheetListener {
 									case 403:
 										runOnUiThread(
 												() ->
-														Toasty.error(
+														Toasty.show(
 																ctx,
 																ctx.getString(
 																		R.string.authorizeError)));
@@ -307,7 +307,7 @@ public class WikiActivity extends BaseActivity implements BottomSheetListener {
 									case 404:
 										runOnUiThread(
 												() ->
-														Toasty.warning(
+														Toasty.show(
 																ctx,
 																ctx.getString(
 																		R.string.apiNotFound)));
@@ -315,7 +315,7 @@ public class WikiActivity extends BaseActivity implements BottomSheetListener {
 									default:
 										runOnUiThread(
 												() ->
-														Toasty.error(
+														Toasty.show(
 																ctx,
 																getString(R.string.genericError)));
 								}
@@ -328,7 +328,7 @@ public class WikiActivity extends BaseActivity implements BottomSheetListener {
 					@Override
 					public void onFailure(@NonNull Call<WikiPage> call, @NonNull Throwable t) {
 
-						Toasty.error(ctx, ctx.getString(R.string.genericServerResponseError));
+						Toasty.show(ctx, ctx.getString(R.string.genericServerResponseError));
 					}
 				});
 	}
@@ -356,7 +356,7 @@ public class WikiActivity extends BaseActivity implements BottomSheetListener {
 																					response) {
 
 																if (response.isSuccessful()) {
-																	Toasty.success(
+																	Toasty.show(
 																			ctx,
 																			getString(
 																					R.string
@@ -364,13 +364,13 @@ public class WikiActivity extends BaseActivity implements BottomSheetListener {
 																	WikiFragment.resumeWiki = true;
 																	finish();
 																} else if (response.code() == 403) {
-																	Toasty.error(
+																	Toasty.show(
 																			ctx,
 																			ctx.getString(
 																					R.string
 																							.authorizeError));
 																} else {
-																	Toasty.error(
+																	Toasty.show(
 																			ctx,
 																			ctx.getString(
 																					R.string
@@ -383,7 +383,7 @@ public class WikiActivity extends BaseActivity implements BottomSheetListener {
 																	@NonNull Call<Void> call,
 																	@NonNull Throwable t) {
 
-																Toasty.error(
+																Toasty.show(
 																		ctx,
 																		ctx.getString(
 																				R.string

@@ -41,7 +41,7 @@ import org.mian.gitnex.databinding.ActivityLoginBinding;
 import org.mian.gitnex.helpers.AppUtil;
 import org.mian.gitnex.helpers.NetworkStatusObserver;
 import org.mian.gitnex.helpers.PathsHelper;
-import org.mian.gitnex.helpers.SnackBar;
+import org.mian.gitnex.helpers.Toasty;
 import org.mian.gitnex.helpers.UrlHelper;
 import org.mian.gitnex.helpers.Version;
 import org.mian.gitnex.structs.Protocol;
@@ -173,10 +173,7 @@ public class LoginActivity extends BaseActivity {
 				(parent, view, position, id) -> {
 					selectedProtocol = String.valueOf(parent.getItemAtPosition(position));
 					if (selectedProtocol.equals(String.valueOf(Protocol.HTTP))) {
-						SnackBar.warning(
-								ctx,
-								findViewById(android.R.id.content),
-								getString(R.string.protocolError));
+						Toasty.show(ctx, getString(R.string.protocolError));
 					}
 				});
 
@@ -208,10 +205,8 @@ public class LoginActivity extends BaseActivity {
 										disableProcessButton();
 										activityLoginBinding.loginButton.setText(btnText);
 										if (hasShownInitialNetworkError) {
-											SnackBar.error(
-													ctx,
-													findViewById(android.R.id.content),
-													getString(R.string.checkNetConnection));
+											Toasty.show(
+													ctx, getString(R.string.checkNetConnection));
 										}
 									}
 									hasShownInitialNetworkError = true;
@@ -324,10 +319,7 @@ public class LoginActivity extends BaseActivity {
 								if (enteredUsername.isEmpty() && enteredPassword.isEmpty()) {
 									proxyAuthUsername = null;
 									proxyAuthPassword = null;
-									SnackBar.info(
-											ctx,
-											findViewById(android.R.id.content),
-											getString(R.string.proxy_creds_cleared));
+									Toasty.show(ctx, getString(R.string.proxy_creds_cleared));
 									dialog.dismiss();
 									return;
 								}
@@ -336,10 +328,7 @@ public class LoginActivity extends BaseActivity {
 								boolean passwordFilled = !enteredPassword.isEmpty();
 
 								if (usernameFilled != passwordFilled) {
-									SnackBar.error(
-											ctx,
-											findViewById(android.R.id.content),
-											getString(R.string.proxy_creds_required_msg));
+									Toasty.show(ctx, getString(R.string.proxy_creds_required_msg));
 
 									if (usernameFilled) {
 										passwordInput.setText("");
@@ -353,10 +342,7 @@ public class LoginActivity extends BaseActivity {
 
 								proxyAuthUsername = enteredUsername;
 								proxyAuthPassword = enteredPassword;
-								SnackBar.info(
-										ctx,
-										findViewById(android.R.id.content),
-										getString(R.string.proxy_creds_saved));
+								Toasty.show(ctx, getString(R.string.proxy_creds_saved));
 								dialog.dismiss();
 							});
 
@@ -364,10 +350,7 @@ public class LoginActivity extends BaseActivity {
 							view -> {
 								proxyAuthUsername = null;
 								proxyAuthPassword = null;
-								SnackBar.info(
-										ctx,
-										findViewById(android.R.id.content),
-										getString(R.string.proxy_creds_cleared));
+								Toasty.show(ctx, getString(R.string.proxy_creds_cleared));
 								dialog.dismiss();
 							});
 
@@ -413,20 +396,14 @@ public class LoginActivity extends BaseActivity {
 		try {
 
 			if (selectedProvider == null || selectedProvider.isEmpty()) {
-				SnackBar.error(
-						ctx,
-						findViewById(android.R.id.content),
-						getString(R.string.provider_empty_error));
+				Toasty.show(ctx, getString(R.string.provider_empty_error));
 				enableProcessButton();
 				return;
 			}
 
 			if (selectedProtocol == null) {
 
-				SnackBar.error(
-						ctx,
-						findViewById(android.R.id.content),
-						getString(R.string.protocolEmptyError));
+				Toasty.show(ctx, getString(R.string.protocolEmptyError));
 				enableProcessButton();
 				return;
 			}
@@ -435,8 +412,7 @@ public class LoginActivity extends BaseActivity {
 					.toString()
 					.isEmpty()) {
 
-				SnackBar.error(
-						ctx, findViewById(android.R.id.content), getString(R.string.emptyFieldURL));
+				Toasty.show(ctx, getString(R.string.emptyFieldURL));
 				enableProcessButton();
 				return;
 			}
@@ -449,10 +425,7 @@ public class LoginActivity extends BaseActivity {
 
 			if (loginToken.isEmpty()) {
 
-				SnackBar.error(
-						ctx,
-						findViewById(android.R.id.content),
-						getString(R.string.loginTokenError));
+				Toasty.show(ctx, getString(R.string.loginTokenError));
 				enableProcessButton();
 				return;
 			}
@@ -480,8 +453,7 @@ public class LoginActivity extends BaseActivity {
 
 		} catch (Exception e) {
 
-			SnackBar.error(
-					ctx, findViewById(android.R.id.content), getString(R.string.malformedUrl));
+			Toasty.show(ctx, getString(R.string.malformedUrl));
 			enableProcessButton();
 		}
 	}
@@ -551,10 +523,7 @@ public class LoginActivity extends BaseActivity {
 
 							if (!Version.valid(version.getVersion())) {
 
-								SnackBar.error(
-										ctx,
-										findViewById(android.R.id.content),
-										getString(R.string.versionUnknown));
+								Toasty.show(ctx, getString(R.string.versionUnknown));
 								enableProcessButton();
 								return;
 							}
@@ -596,10 +565,7 @@ public class LoginActivity extends BaseActivity {
 								login(loginToken);
 							} else {
 
-								SnackBar.warning(
-										ctx,
-										findViewById(android.R.id.content),
-										getString(R.string.versionUnsupportedNew));
+								Toasty.show(ctx, getString(R.string.versionUnsupportedNew));
 								login(loginToken);
 							}
 
@@ -618,10 +584,7 @@ public class LoginActivity extends BaseActivity {
 					public void onFailure(
 							@NonNull Call<ServerVersion> callVersion, @NonNull Throwable t) {
 
-						SnackBar.error(
-								ctx,
-								findViewById(android.R.id.content),
-								getString(R.string.genericServerResponseError));
+						Toasty.show(ctx, getString(R.string.genericServerResponseError));
 						enableProcessButton();
 					}
 				});
@@ -729,17 +692,12 @@ public class LoginActivity extends BaseActivity {
 								finish();
 								break;
 							case 401:
-								SnackBar.error(
-										ctx,
-										findViewById(android.R.id.content),
-										getString(R.string.unauthorizedApiError));
+								Toasty.show(ctx, getString(R.string.unauthorizedApiError));
 								enableProcessButton();
 								break;
 							default:
-								SnackBar.error(
-										ctx,
-										findViewById(android.R.id.content),
-										getString(R.string.genericApiError, response.code()));
+								Toasty.show(
+										ctx, getString(R.string.genericApiError, response.code()));
 								enableProcessButton();
 						}
 					}
@@ -747,10 +705,7 @@ public class LoginActivity extends BaseActivity {
 					@Override
 					public void onFailure(@NonNull Call<User> call, @NonNull Throwable t) {
 
-						SnackBar.error(
-								ctx,
-								findViewById(android.R.id.content),
-								getString(R.string.genericServerResponseError));
+						Toasty.show(ctx, getString(R.string.genericServerResponseError));
 						enableProcessButton();
 					}
 				});
@@ -795,10 +750,7 @@ public class LoginActivity extends BaseActivity {
 										getContentResolver().openInputStream(restoreFileUri);
 								restoreDatabaseThread(inputStream);
 							} catch (FileNotFoundException e) {
-								SnackBar.error(
-										ctx,
-										findViewById(android.R.id.content),
-										getString(R.string.restoreError));
+								Toasty.show(ctx, getString(R.string.restoreError));
 							}
 						}
 					});
@@ -826,10 +778,7 @@ public class LoginActivity extends BaseActivity {
 							} catch (final Exception e) {
 
 								exceptionOccurred = true;
-								SnackBar.error(
-										ctx,
-										findViewById(android.R.id.content),
-										getString(R.string.restoreError));
+								Toasty.show(ctx, getString(R.string.restoreError));
 							} finally {
 								if (!exceptionOccurred) {
 

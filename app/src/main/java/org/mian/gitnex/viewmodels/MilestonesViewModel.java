@@ -52,7 +52,7 @@ public class MilestonesViewModel extends ViewModel {
 						if (response.isSuccessful()) {
 							milestonesList.postValue(response.body());
 						} else {
-							Toasty.error(ctx, ctx.getString(R.string.genericError));
+							Toasty.show(ctx, ctx.getString(R.string.genericError));
 						}
 					}
 
@@ -60,7 +60,7 @@ public class MilestonesViewModel extends ViewModel {
 					public void onFailure(
 							@NonNull Call<List<Milestone>> call, @NonNull Throwable t) {
 
-						Toasty.error(ctx, ctx.getString(R.string.genericServerResponseError));
+						Toasty.show(ctx, ctx.getString(R.string.genericServerResponseError));
 					}
 				});
 	}
@@ -99,7 +99,7 @@ public class MilestonesViewModel extends ViewModel {
 								adapter.setMoreDataAvailable(false);
 							}
 						} else {
-							Toasty.error(ctx, ctx.getString(R.string.genericError));
+							Toasty.show(ctx, ctx.getString(R.string.genericError));
 						}
 					}
 
@@ -107,7 +107,7 @@ public class MilestonesViewModel extends ViewModel {
 					public void onFailure(
 							@NonNull Call<List<Milestone>> call, @NonNull Throwable t) {
 
-						Toasty.error(ctx, ctx.getString(R.string.genericServerResponseError));
+						Toasty.show(ctx, ctx.getString(R.string.genericServerResponseError));
 					}
 				});
 	}

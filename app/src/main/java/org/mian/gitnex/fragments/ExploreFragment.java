@@ -83,21 +83,18 @@ public class ExploreFragment extends Fragment {
 
 		@NonNull @Override
 		public Fragment createFragment(int position) {
-			Fragment fragment = null;
-			switch (position) {
-				case 0: // Repositories
-					fragment = new ExploreRepositoriesFragment();
-					break;
-				case 1: // Issues
-					fragment = new ExploreIssuesFragment();
-					break;
-				case 2: // Organizations
-					fragment = new ExplorePublicOrganizationsFragment();
-					break;
-				case 3: // Users
-					fragment = new ExploreUsersFragment();
-					break;
-			}
+			Fragment fragment =
+					switch (position) {
+						case 0 -> // Repositories
+								new ExploreRepositoriesFragment();
+						case 1 -> // Issues
+								new ExploreIssuesFragment();
+						case 2 -> // Organizations
+								new ExplorePublicOrganizationsFragment();
+						case 3 -> // Users
+								new ExploreUsersFragment();
+						default -> null;
+					};
 			assert fragment != null;
 			return fragment;
 		}
