@@ -31,11 +31,11 @@ import org.mian.gitnex.activities.IssueDetailActivity;
 import org.mian.gitnex.activities.ProfileActivity;
 import org.mian.gitnex.helpers.AppDatabaseSettings;
 import org.mian.gitnex.helpers.AppUtil;
-import org.mian.gitnex.helpers.ClickListener;
 import org.mian.gitnex.helpers.ColorInverter;
 import org.mian.gitnex.helpers.LabelWidthCalculator;
 import org.mian.gitnex.helpers.Markdown;
 import org.mian.gitnex.helpers.TimeHelper;
+import org.mian.gitnex.helpers.Toasty;
 import org.mian.gitnex.helpers.contexts.IssueContext;
 import org.mian.gitnex.helpers.contexts.RepositoryContext;
 
@@ -201,8 +201,6 @@ public class ExploreIssuesAdapter extends RecyclerView.Adapter<RecyclerView.View
 
 			this.issue = issue;
 
-			Locale locale = context.getResources().getConfiguration().locale;
-
 			Glide.with(context)
 					.load(issue.getUser().getAvatarUrl())
 					.diskCacheStrategy(DiskCacheStrategy.ALL)
@@ -326,11 +324,14 @@ public class ExploreIssuesAdapter extends RecyclerView.Adapter<RecyclerView.View
 						context.getResources().getColor(R.color.releasePre, null));
 			}
 
-			issueCreatedTime.setText(TimeHelper.formatTime(issue.getCreatedAt(), locale));
+			issueCreatedTime.setText(
+					TimeHelper.formatTime(issue.getCreatedAt(), Locale.getDefault()));
 			issueCreatedTime.setOnClickListener(
-					new ClickListener(
-							TimeHelper.customDateFormatForToastDateFormat(issue.getCreatedAt()),
-							context));
+					v ->
+							Toasty.show(
+									context,
+									TimeHelper.getFullDateTime(
+											issue.getCreatedAt(), Locale.getDefault())));
 		}
 	}
 }

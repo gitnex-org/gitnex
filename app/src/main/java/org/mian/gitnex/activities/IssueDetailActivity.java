@@ -98,7 +98,6 @@ import org.mian.gitnex.fragments.PullRequestsFragment;
 import org.mian.gitnex.helpers.AlertDialogs;
 import org.mian.gitnex.helpers.AppDatabaseSettings;
 import org.mian.gitnex.helpers.AppUtil;
-import org.mian.gitnex.helpers.ClickListener;
 import org.mian.gitnex.helpers.ColorInverter;
 import org.mian.gitnex.helpers.Constants;
 import org.mian.gitnex.helpers.LabelWidthCalculator;
@@ -1458,10 +1457,11 @@ public class IssueDetailActivity extends BaseActivity
 			String dueDate = formatter.format(issue.getIssue().getDueDate());
 			viewBinding.issueDueDate.setText(dueDate);
 			viewBinding.issueDueDate.setOnClickListener(
-					new ClickListener(
-							TimeHelper.customDateFormatForToastDateFormat(
-									issue.getIssue().getDueDate()),
-							ctx));
+					v ->
+							Toasty.show(
+									ctx,
+									TimeHelper.getFullDateTime(
+											issue.getIssue().getDueDate(), Locale.getDefault())));
 		} else {
 
 			viewBinding.dueDateFrame.setVisibility(View.GONE);
@@ -1475,10 +1475,11 @@ public class IssueDetailActivity extends BaseActivity
 			viewBinding.issueModified.setVisibility(View.VISIBLE);
 			viewBinding.issueModified.setText(edited);
 			viewBinding.issueModified.setOnClickListener(
-					new ClickListener(
-							TimeHelper.customDateFormatForToastDateFormat(
-									issue.getIssue().getUpdatedAt()),
-							ctx));
+					v ->
+							Toasty.show(
+									ctx,
+									TimeHelper.getFullDateTime(
+											issue.getIssue().getUpdatedAt(), Locale.getDefault())));
 		} else {
 
 			viewBinding.issueModified.setVisibility(View.INVISIBLE);
@@ -1488,10 +1489,11 @@ public class IssueDetailActivity extends BaseActivity
 		viewBinding.issueCreatedTime.setText(
 				TimeHelper.formatTime(issue.getIssue().getCreatedAt(), locale));
 		viewBinding.issueCreatedTime.setOnClickListener(
-				new ClickListener(
-						TimeHelper.customDateFormatForToastDateFormat(
-								issue.getIssue().getCreatedAt()),
-						ctx));
+				v ->
+						Toasty.show(
+								ctx,
+								TimeHelper.getFullDateTime(
+										issue.getIssue().getCreatedAt(), Locale.getDefault())));
 
 		Bundle bundle = new Bundle();
 		bundle.putString("repoOwner", repoOwner);

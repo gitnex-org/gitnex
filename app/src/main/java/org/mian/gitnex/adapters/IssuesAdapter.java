@@ -33,12 +33,12 @@ import org.mian.gitnex.activities.ProfileActivity;
 import org.mian.gitnex.activities.RepoDetailActivity;
 import org.mian.gitnex.helpers.AppDatabaseSettings;
 import org.mian.gitnex.helpers.AppUtil;
-import org.mian.gitnex.helpers.ClickListener;
 import org.mian.gitnex.helpers.ColorInverter;
 import org.mian.gitnex.helpers.LabelWidthCalculator;
 import org.mian.gitnex.helpers.Markdown;
 import org.mian.gitnex.helpers.TimeHelper;
 import org.mian.gitnex.helpers.TinyDB;
+import org.mian.gitnex.helpers.Toasty;
 import org.mian.gitnex.helpers.contexts.IssueContext;
 
 /**
@@ -315,10 +315,13 @@ public class IssuesAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder>
 			}
 
 			this.issueCreatedTime.setText(TimeHelper.formatTime(issue.getCreatedAt(), locale));
+
 			this.issueCreatedTime.setOnClickListener(
-					new ClickListener(
-							TimeHelper.customDateFormatForToastDateFormat(issue.getCreatedAt()),
-							context));
+					v ->
+							Toasty.show(
+									context,
+									TimeHelper.getFullDateTime(
+											issue.getCreatedAt(), Locale.getDefault())));
 		}
 	}
 }

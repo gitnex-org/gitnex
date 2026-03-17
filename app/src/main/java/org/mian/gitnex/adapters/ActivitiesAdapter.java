@@ -29,10 +29,10 @@ import org.mian.gitnex.activities.IssueDetailActivity;
 import org.mian.gitnex.activities.ProfileActivity;
 import org.mian.gitnex.activities.RepoDetailActivity;
 import org.mian.gitnex.helpers.AppUtil;
-import org.mian.gitnex.helpers.ClickListener;
 import org.mian.gitnex.helpers.Markdown;
 import org.mian.gitnex.helpers.TimeHelper;
 import org.mian.gitnex.helpers.TinyDB;
+import org.mian.gitnex.helpers.Toasty;
 import org.mian.gitnex.helpers.contexts.IssueContext;
 import org.mian.gitnex.helpers.contexts.RepositoryContext;
 
@@ -708,9 +708,11 @@ public class ActivitiesAdapter extends RecyclerView.Adapter<RecyclerView.ViewHol
 							HtmlCompat.FROM_HTML_MODE_LEGACY));
 			this.createdTime.setText(TimeHelper.formatTime(activity.getCreated(), locale));
 			this.createdTime.setOnClickListener(
-					new ClickListener(
-							TimeHelper.customDateFormatForToastDateFormat(activity.getCreated()),
-							context));
+					v ->
+							Toasty.show(
+									context,
+									TimeHelper.getFullDateTime(
+											activity.getCreated(), Locale.getDefault())));
 		}
 
 		private String getShortBranch(String refName, String color) {

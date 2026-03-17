@@ -47,7 +47,6 @@ import org.mian.gitnex.databinding.FragmentProfileDetailBinding;
 import org.mian.gitnex.helpers.AlertDialogs;
 import org.mian.gitnex.helpers.AppDatabaseSettings;
 import org.mian.gitnex.helpers.AppUtil;
-import org.mian.gitnex.helpers.ClickListener;
 import org.mian.gitnex.helpers.Markdown;
 import org.mian.gitnex.helpers.TimeHelper;
 import org.mian.gitnex.helpers.Toasty;
@@ -98,7 +97,6 @@ public class DetailFragment extends Fragment {
 
 		binding = FragmentProfileDetailBinding.inflate(inflater, container, false);
 		context = getContext();
-		locale = getResources().getConfiguration().locale;
 
 		getProfileDetail(username);
 		getProfileRepository(username);
@@ -512,11 +510,14 @@ public class DetailFragment extends Fragment {
 									binding.userJoinedOn.setText(
 											TimeHelper.formatTime(
 													response.body().getCreated(), locale));
+
 									binding.userJoinedOn.setOnClickListener(
-											new ClickListener(
-													TimeHelper.customDateFormatForToastDateFormat(
-															response.body().getCreated()),
-													context));
+											v ->
+													Toasty.show(
+															context,
+															TimeHelper.getFullDateTime(
+																	response.body().getCreated(),
+																	Locale.getDefault())));
 									if (!response.body().getWebsite().isEmpty()) {
 										binding.website.setText(response.body().getWebsite());
 									} else {

@@ -66,7 +66,6 @@ import org.mian.gitnex.fragments.IssuesFragment;
 import org.mian.gitnex.helpers.AlertDialogs;
 import org.mian.gitnex.helpers.AppDatabaseSettings;
 import org.mian.gitnex.helpers.AppUtil;
-import org.mian.gitnex.helpers.ClickListener;
 import org.mian.gitnex.helpers.ColorInverter;
 import org.mian.gitnex.helpers.LabelWidthCalculator;
 import org.mian.gitnex.helpers.Markdown;
@@ -303,10 +302,11 @@ public class IssueCommentsAdapter extends RecyclerView.Adapter<RecyclerView.View
 					new StringBuilder(TimeHelper.formatTime(issueComment.getCreatedAt(), locale));
 
 			information.setOnClickListener(
-					new ClickListener(
-							TimeHelper.customDateFormatForToastDateFormat(
-									issueComment.getCreatedAt()),
-							context));
+					v ->
+							Toasty.show(
+									context,
+									TimeHelper.getFullDateTime(
+											issueComment.getCreatedAt(), Locale.getDefault())));
 
 			if (!issueComment.getCreatedAt().equals(issueComment.getUpdatedAt())) {
 				infoBuilder

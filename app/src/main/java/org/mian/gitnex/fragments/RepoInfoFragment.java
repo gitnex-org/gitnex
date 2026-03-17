@@ -46,7 +46,6 @@ import org.mian.gitnex.clients.RetrofitClient;
 import org.mian.gitnex.databinding.FragmentRepoInfoBinding;
 import org.mian.gitnex.helpers.AlertDialogs;
 import org.mian.gitnex.helpers.AppUtil;
-import org.mian.gitnex.helpers.ClickListener;
 import org.mian.gitnex.helpers.Constants;
 import org.mian.gitnex.helpers.Markdown;
 import org.mian.gitnex.helpers.TimeHelper;
@@ -348,10 +347,13 @@ public class RepoInfoFragment extends Fragment {
 					getString(
 							R.string.noteDateTime,
 							TimeHelper.formatTime(repoInfo.getCreatedAt(), locale)));
+
 			binding.repoMetaCreatedAt.setOnClickListener(
-					new ClickListener(
-							TimeHelper.customDateFormatForToastDateFormat(repoInfo.getCreatedAt()),
-							ctx));
+					v ->
+							Toasty.show(
+									ctx,
+									TimeHelper.getFullDateTime(
+											repoInfo.getCreatedAt(), Locale.getDefault())));
 
 			String website =
 					(repoInfo.getWebsite().isEmpty())

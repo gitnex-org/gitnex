@@ -27,7 +27,6 @@ import org.mian.gitnex.activities.RepoDetailActivity;
 import org.mian.gitnex.clients.RetrofitClient;
 import org.mian.gitnex.databinding.FragmentReleasesBinding;
 import org.mian.gitnex.helpers.AppUtil;
-import org.mian.gitnex.helpers.ClickListener;
 import org.mian.gitnex.helpers.Markdown;
 import org.mian.gitnex.helpers.TimeHelper;
 import org.mian.gitnex.helpers.Toasty;
@@ -77,8 +76,6 @@ public class ReleasesAdapter extends RecyclerView.Adapter<ReleasesAdapter.Releas
 	@Override
 	public void onBindViewHolder(@NonNull ReleasesAdapter.ReleasesViewHolder holder, int position) {
 
-		final Locale locale = context.getResources().getConfiguration().locale;
-
 		Release currentItem = releasesList.get(position);
 		holder.releases = currentItem;
 
@@ -114,13 +111,16 @@ public class ReleasesAdapter extends RecyclerView.Adapter<ReleasesAdapter.Releas
 		}
 
 		if (currentItem.getPublishedAt() != null) {
-			holder.releaseDate.setText(TimeHelper.formatTime(currentItem.getPublishedAt(), locale));
+			holder.releaseDate.setText(
+					TimeHelper.formatTime(currentItem.getPublishedAt(), Locale.getDefault()));
 		}
 
 		holder.releaseDate.setOnClickListener(
-				new ClickListener(
-						TimeHelper.customDateFormatForToastDateFormat(currentItem.getPublishedAt()),
-						context));
+				v ->
+						Toasty.show(
+								context,
+								TimeHelper.getFullDateTime(
+										currentItem.getPublishedAt(), Locale.getDefault())));
 
 		if (!currentItem.getBody().isEmpty()) {
 			Markdown.render(context, currentItem.getBody(), holder.releaseBodyContent);

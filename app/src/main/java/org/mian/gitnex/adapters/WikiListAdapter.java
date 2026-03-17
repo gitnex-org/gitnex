@@ -17,13 +17,13 @@ import com.amulyakhare.textdrawable.util.ColorGenerator;
 import com.google.android.material.bottomsheet.BottomSheetDialog;
 import com.google.android.material.dialog.MaterialAlertDialogBuilder;
 import java.util.List;
+import java.util.Locale;
 import org.gitnex.tea4j.v2.models.WikiPageMetaData;
 import org.mian.gitnex.R;
 import org.mian.gitnex.activities.RepoDetailActivity;
 import org.mian.gitnex.activities.WikiActivity;
 import org.mian.gitnex.clients.RetrofitClient;
 import org.mian.gitnex.databinding.FragmentWikiBinding;
-import org.mian.gitnex.helpers.ClickListener;
 import org.mian.gitnex.helpers.TimeHelper;
 import org.mian.gitnex.helpers.Toasty;
 import org.mian.gitnex.helpers.contexts.RepositoryContext;
@@ -284,14 +284,16 @@ public class WikiListAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
 													ctx.getResources().getConfiguration().locale)),
 							HtmlCompat.FROM_HTML_MODE_COMPACT));
 			this.wikiLastUpdatedBy.setOnClickListener(
-					new ClickListener(
-							TimeHelper.customDateFormatForToastDateFormat(
-									TimeHelper.parseIso8601(
-											wikiPageMetaData
-													.getLastCommit()
-													.getAuthor()
-													.getDate())),
-							ctx));
+					v ->
+							Toasty.show(
+									ctx,
+									TimeHelper.getFullDateTime(
+											TimeHelper.parseIso8601(
+													wikiPageMetaData
+															.getLastCommit()
+															.getAuthor()
+															.getDate()),
+											Locale.getDefault())));
 
 			ColorGenerator generator = ColorGenerator.Companion.getMATERIAL();
 			int color = generator.getColor(wikiPageMetaData.getTitle());

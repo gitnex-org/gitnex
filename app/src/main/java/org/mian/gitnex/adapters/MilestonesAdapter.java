@@ -22,9 +22,9 @@ import org.gitnex.tea4j.v2.models.Milestone;
 import org.mian.gitnex.R;
 import org.mian.gitnex.actions.MilestoneActions;
 import org.mian.gitnex.activities.RepoDetailActivity;
-import org.mian.gitnex.helpers.ClickListener;
 import org.mian.gitnex.helpers.Markdown;
 import org.mian.gitnex.helpers.TimeHelper;
+import org.mian.gitnex.helpers.Toasty;
 import org.mian.gitnex.helpers.contexts.RepositoryContext;
 
 /**
@@ -187,7 +187,6 @@ public class MilestonesAdapter extends RecyclerView.Adapter<RecyclerView.ViewHol
 		void bindData(Milestone dataModel) {
 
 			this.milestones = dataModel;
-			final String locale = context.getResources().getConfiguration().locale.getLanguage();
 
 			Markdown.render(context, dataModel.getTitle(), msTitle);
 
@@ -215,10 +214,11 @@ public class MilestonesAdapter extends RecyclerView.Adapter<RecyclerView.ViewHol
 
 					msProgress.setProgress(100);
 					msProgress.setOnClickListener(
-							new ClickListener(
-									context.getResources()
-											.getString(R.string.milestoneCompletion, 100),
-									context));
+							v ->
+									Toasty.show(
+											context,
+											context.getResources()
+													.getString(R.string.milestoneCompletion, 100)));
 				} else {
 
 					int msCompletion =
@@ -227,11 +227,15 @@ public class MilestonesAdapter extends RecyclerView.Adapter<RecyclerView.ViewHol
 											* dataModel.getClosedIssues()
 											/ (dataModel.getOpenIssues()
 													+ dataModel.getClosedIssues()));
+
 					msProgress.setOnClickListener(
-							new ClickListener(
-									context.getResources()
-											.getString(R.string.milestoneCompletion, msCompletion),
-									context));
+							v ->
+									Toasty.show(
+											context,
+											context.getResources()
+													.getString(
+															R.string.milestoneCompletion,
+															msCompletion)));
 					msProgress.setProgress(msCompletion);
 				}
 
@@ -239,14 +243,16 @@ public class MilestonesAdapter extends RecyclerView.Adapter<RecyclerView.ViewHol
 
 				msProgress.setProgress(0);
 				msProgress.setOnClickListener(
-						new ClickListener(
-								context.getResources().getString(R.string.milestoneCompletion, 0),
-								context));
+						v ->
+								Toasty.show(
+										context,
+										context.getResources()
+												.getString(R.string.milestoneCompletion, 0)));
 			}
 
 			if (dataModel.getDueOn() != null) {
 
-				DateFormat formatter = new SimpleDateFormat("yyyy-MM-dd", new Locale(locale));
+				DateFormat formatter = new SimpleDateFormat("yyyy-MM-dd", Locale.getDefault());
 				Date date = dataModel.getDueOn();
 
 				assert date != null;
@@ -260,9 +266,11 @@ public class MilestonesAdapter extends RecyclerView.Adapter<RecyclerView.ViewHol
 
 				msDueDate.setText(dueDate);
 				msDueDate.setOnClickListener(
-						new ClickListener(
-								TimeHelper.customDateFormatForToastDateFormat(dataModel.getDueOn()),
-								context));
+						v ->
+								Toasty.show(
+										context,
+										TimeHelper.getFullDateTime(
+												dataModel.getDueOn(), Locale.getDefault())));
 			} else {
 
 				msDueDate.setText(context.getString(R.string.milestoneNoDueDate));

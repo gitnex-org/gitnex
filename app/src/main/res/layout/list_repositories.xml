@@ -1,190 +1,256 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<com.google.android.material.listitem.ListItemLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="wrap_content"
-    android:orientation="vertical"
-    android:paddingTop="@dimen/dimen4dp"
-    android:paddingBottom="@dimen/dimen4dp">
+    android:layout_height="wrap_content">
 
-    <CheckBox
-        android:id="@+id/repoIsAdmin"
+    <com.google.android.material.listitem.ListItemCardView
+        android:id="@+id/card"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:buttonTint="#FFFFFF"
-        android:checked="false"
-        android:visibility="gone"/>
+        android:checkable="false"
+        app:strokeWidth="0dp"
+        android:layout_marginVertical="@dimen/dimen1dp"
+        app:cardBackgroundColor="?attr/materialCardBackgroundColor">
 
-    <com.google.android.material.card.MaterialCardView
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        style="?attr/materialCardViewElevatedStyle"
-        app:cardElevation="@dimen/dimen0dp">
-
-        <LinearLayout
+        <androidx.constraintlayout.widget.ConstraintLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:foreground="?android:attr/selectableItemBackground"
-            android:background="?attr/materialCardBackgroundColor"
-            android:padding="@dimen/dimen12dp"
-            android:orientation="vertical">
+            android:padding="@dimen/dimen8dp">
 
             <LinearLayout
-                android:id="@+id/orgInfoFrame"
-                android:layout_width="match_parent"
+                android:id="@+id/topStatsRow"
+                android:layout_width="0dp"
                 android:layout_height="wrap_content"
-                android:layout_marginBottom="@dimen/dimen8dp"
                 android:gravity="center_vertical"
                 android:orientation="horizontal"
-                tools:ignore="UseCompoundDrawables">
+                app:layout_constraintEnd_toStartOf="@id/repoLastUpdated"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent">
 
-                <com.google.android.material.card.MaterialCardView
-                    android:layout_width="@dimen/dimen32dp"
-                    android:layout_height="@dimen/dimen32dp"
-                    style="?attr/materialCardViewElevatedStyle"
-                    android:backgroundTint="@android:color/transparent"
-                    app:cardElevation="@dimen/dimen0dp"
-                    android:layout_marginEnd="@dimen/dimen12dp"
-                    app:cardCornerRadius="@dimen/dimen8dp">
-
-                    <ImageView
-                        android:id="@+id/imageAvatar"
-                        android:layout_width="match_parent"
-                        android:layout_height="match_parent"
-                        android:contentDescription="@string/repoContentAvatar"
-                        android:src="@drawable/ic_android"/>
-
-                </com.google.android.material.card.MaterialCardView>
+                <ImageView
+                    android:layout_width="@dimen/dimen14dp"
+                    android:layout_height="@dimen/dimen14dp"
+                    android:contentDescription="@string/generalImgContentText"
+                    app:srcCompat="@drawable/ic_issue"
+                    app:tint="?attr/iconsColor"
+                    android:alpha="0.6"/>
 
                 <TextView
-                    android:id="@+id/orgName"
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:textColor="?attr/primaryTextColor"
-                    android:textSize="@dimen/dimen14sp"
-                    android:layout_weight="1"
-                    tools:text="@string/orgName"/>
-
-                <com.google.android.material.card.MaterialCardView
-                    android:id="@+id/repo_is_archived_frame"
+                    android:id="@+id/repoOpenIssues"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:backgroundTint="@android:color/transparent"
-                    android:layout_weight="0"
-                    app:strokeWidth="@dimen/dimen1dp"
-                    app:cardElevation="@dimen/dimen0dp"
-                    app:cardCornerRadius="@dimen/dimen6dp"
-                    android:visibility="gone">
+                    android:layout_marginStart="@dimen/dimen4dp"
+                    android:textAppearance="?attr/textAppearanceLabelMedium"
+                    tools:text="12"/>
 
-                    <TextView
-                        android:id="@+id/repo_is_archived"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:textSize="@dimen/dimen12sp"
-                        android:paddingStart="@dimen/dimen4dp"
-                        android:paddingEnd="@dimen/dimen4dp"
-                        android:paddingTop="@dimen/dimen2dp"
-                        android:paddingBottom="@dimen/dimen2dp"
-                        android:text="@string/archivedRepository" />
+                <ImageView
+                    android:layout_width="@dimen/dimen14dp"
+                    android:layout_height="@dimen/dimen14dp"
+                    android:layout_marginStart="@dimen/dimen12dp"
+                    android:contentDescription="@string/generalImgContentText"
+                    app:srcCompat="@drawable/ic_pull_request"
+                    app:tint="?attr/iconsColor"
+                    android:alpha="0.6"/>
 
-                </com.google.android.material.card.MaterialCardView>
-
+                <TextView
+                    android:id="@+id/repoOpenPRs"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="@dimen/dimen4dp"
+                    android:textAppearance="?attr/textAppearanceLabelMedium"
+                    tools:text="5"/>
             </LinearLayout>
 
             <TextView
-                android:id="@+id/repoName"
+                android:id="@+id/repoLastUpdated"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="@string/repoName"
-                android:textColor="?attr/primaryTextColor"
-                android:textSize="@dimen/dimen18sp"
-                android:textStyle="bold"/>
+                android:textAppearance="?attr/textAppearanceLabelLarge"
+                android:textColor="?attr/colorPrimary"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
+                tools:text="Mar 16, 2026" />
+
+            <com.google.android.material.card.MaterialCardView
+                android:id="@+id/avatarFrame"
+                android:layout_width="@dimen/dimen24dp"
+                android:layout_height="@dimen/dimen24dp"
+                android:layout_marginTop="@dimen/dimen12dp"
+                android:backgroundTint="@android:color/transparent"
+                app:cardCornerRadius="@dimen/dimen6dp"
+                app:cardElevation="0dp"
+                app:strokeWidth="0dp"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/topStatsRow">
+
+                <ImageView
+                    android:id="@+id/imageAvatar"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:contentDescription="@string/generalImgContentText"
+                    android:scaleType="centerCrop"
+                    tools:src="@tools:sample/avatars" />
+
+            </com.google.android.material.card.MaterialCardView>
+
+            <TextView
+                android:id="@+id/orgName"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="@dimen/dimen10dp"
+                android:alpha="0.6"
+                android:textAppearance="?attr/textAppearanceLabelLarge"
+                app:layout_constraintBottom_toBottomOf="@id/avatarFrame"
+                app:layout_constraintStart_toEndOf="@id/avatarFrame"
+                app:layout_constraintTop_toTopOf="@id/avatarFrame"
+                tools:text="mmarif" />
+
+            <com.google.android.material.card.MaterialCardView
+                android:id="@+id/repo_is_archived_frame"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="@dimen/dimen8dp"
+                android:visibility="gone"
+                app:cardBackgroundColor="?attr/colorSurfaceContainerLow"
+                app:cardCornerRadius="@dimen/dimen4dp"
+                app:cardElevation="0dp"
+                app:strokeWidth="0dp"
+                app:layout_constraintBottom_toBottomOf="@id/orgName"
+                app:layout_constraintStart_toEndOf="@id/orgName"
+                app:layout_constraintTop_toTopOf="@id/orgName"
+                tools:visibility="visible">
+
+                <TextView
+                    android:id="@+id/repo_is_archived"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:paddingHorizontal="@dimen/dimen6dp"
+                    android:paddingVertical="@dimen/dimen2dp"
+                    android:text="@string/archivedRepository"
+                    android:textAppearance="?attr/textAppearanceLabelSmall"
+                    android:textColor="?attr/hintColor" />
+
+            </com.google.android.material.card.MaterialCardView>
+
+            <TextView
+                android:id="@+id/repoName"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/dimen8dp"
+                android:textAppearance="?attr/textAppearanceTitleLarge"
+                android:textStyle="bold"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/avatarFrame"
+                tools:text="GitNex" />
 
             <TextView
                 android:id="@+id/repoDescription"
-                android:layout_width="match_parent"
+                android:layout_width="0dp"
                 android:layout_height="wrap_content"
-                android:layout_marginBottom="@dimen/dimen8dp"
-                android:textColor="?attr/primaryTextColor"
-                android:textSize="@dimen/dimen16sp"
-                android:visibility="gone"
-                android:text="@string/noDataDescription"/>
-
-            <View
-                android:id="@+id/spacerView"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:layout_marginBottom="@dimen/dimen8dp"/>
+                android:layout_marginTop="@dimen/dimen4dp"
+                android:alpha="0.7"
+                android:ellipsize="end"
+                android:maxLines="2"
+                android:textAppearance="?attr/textAppearanceBodyMedium"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/repoName"
+                tools:text="The best Gitea client for Android." />
 
             <LinearLayout
-                android:id="@+id/repoInfoFrame"
-                android:layout_width="match_parent"
+                android:id="@+id/metaLayout"
+                android:layout_width="0dp"
                 android:layout_height="wrap_content"
-                android:orientation="horizontal">
+                android:layout_marginTop="@dimen/dimen16dp"
+                android:gravity="center_vertical"
+                android:orientation="horizontal"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/repoDescription">
 
-                <TextView
-                    android:id="@+id/repoLastUpdated"
+                <com.google.android.material.card.MaterialCardView
+                    android:id="@+id/repo_language_frame"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:textColor="?attr/hintColor"
-                    android:textSize="@dimen/dimen12sp"
-                    tools:text="@string/lastUpdatedAt"/>
-
-                <LinearLayout
-                    android:id="@+id/repoInfoStarsFrame"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_marginStart="10dp"
-                    android:gravity="center_vertical|end"
-                    android:orientation="horizontal"
-                    android:paddingStart="@dimen/dimen6dp"
-                    android:paddingEnd="@dimen/dimen6dp">
-
-                    <ImageView
-                        android:layout_width="@dimen/dimen18dp"
-                        android:layout_height="@dimen/dimen18dp"
-                        android:layout_marginStart="@dimen/dimen4dp"
-                        android:layout_marginEnd="@dimen/dimen6dp"
-                        android:contentDescription="@string/generalImgContentText"
-                        app:srcCompat="@drawable/ic_star"
-                        app:tint="?attr/iconsColor"/>
-
-                    <TextView
-                        android:id="@+id/repoStars"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:gravity="center_vertical"
-                        android:textColor="?attr/primaryTextColor"
-                        android:textSize="@dimen/dimen14sp"
-                        tools:text="@string/repoStars"/>
-
-                    <ImageView
-                        android:layout_width="@dimen/dimen18dp"
-                        android:layout_height="@dimen/dimen18dp"
-                        android:layout_marginStart="@dimen/dimen16dp"
-                        android:layout_marginEnd="@dimen/dimen2dp"
-                        android:contentDescription="@string/generalImgContentText"
-                        android:visibility="gone"
-                        app:srcCompat="@drawable/ic_star"
-                        app:tint="?attr/iconsColor"/>
+                    android:layout_marginEnd="@dimen/dimen12dp"
+                    android:visibility="gone"
+                    app:cardBackgroundColor="?attr/colorSurfaceContainerLow"
+                    app:cardCornerRadius="@dimen/dimen4dp"
+                    app:cardElevation="0dp"
+                    app:strokeWidth="0dp"
+                    tools:visibility="visible">
 
                     <TextView
                         android:id="@+id/repoStars2"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:gravity="center_vertical"
-                        android:textColor="?attr/primaryTextColor"
-                        android:textSize="@dimen/dimen14sp"
-                        android:visibility="gone"
-                        tools:text="Java"/>
+                        android:gravity="center"
+                        android:paddingHorizontal="@dimen/dimen8dp"
+                        android:paddingVertical="@dimen/dimen2dp"
+                        android:textAppearance="?attr/textAppearanceLabelMedium"
+                        android:textColor="?attr/colorPrimary"
+                        android:textStyle="bold"
+                        tools:text="Java" />
 
-                </LinearLayout>
+                </com.google.android.material.card.MaterialCardView>
+
+                <ImageView
+                    android:id="@+id/starIcon"
+                    android:layout_width="@dimen/dimen16dp"
+                    android:layout_height="@dimen/dimen16dp"
+                    android:contentDescription="@string/generalImgContentText"
+                    app:srcCompat="@drawable/ic_star"
+                    app:tint="?attr/iconsColor" />
+
+                <TextView
+                    android:id="@+id/repoStars"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="@dimen/dimen4dp"
+                    android:layout_marginEnd="@dimen/dimen16dp"
+                    android:textAppearance="?attr/textAppearanceLabelMedium"
+                    tools:text="1.2k" />
+
+                <View
+                    android:layout_width="0dp"
+                    android:layout_height="0dp"
+                    android:layout_weight="1" />
+
+                <ImageView
+                    android:id="@+id/repoIsPrivate"
+                    android:layout_width="@dimen/dimen14dp"
+                    android:layout_height="@dimen/dimen14dp"
+                    android:alpha="0.6"
+                    android:contentDescription="@string/generalImgContentText"
+                    android:visibility="gone"
+                    app:srcCompat="@drawable/ic_lock"
+                    app:tint="?attr/iconsColor"
+                    tools:visibility="visible" />
 
             </LinearLayout>
 
-        </LinearLayout>
+            <CheckBox
+                android:id="@+id/repoIsAdmin"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:visibility="gone"
+                android:contentDescription="@string/generalImgContentText"
+                app:layout_constraintTop_toTopOf="parent"
+                app:layout_constraintEnd_toEndOf="parent" />
 
-    </com.google.android.material.card.MaterialCardView>
+            <View
+                android:id="@+id/spacerView"
+                android:layout_width="match_parent"
+                android:layout_height="0dp"
+                android:visibility="gone"
+                app:layout_constraintTop_toBottomOf="@id/metaLayout" />
 
-</LinearLayout>
+        </androidx.constraintlayout.widget.ConstraintLayout>
+
+    </com.google.android.material.listitem.ListItemCardView>
+
+</com.google.android.material.listitem.ListItemLayout>

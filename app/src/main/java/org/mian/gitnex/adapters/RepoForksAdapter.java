@@ -24,8 +24,8 @@ import java.util.Locale;
 import org.mian.gitnex.R;
 import org.mian.gitnex.activities.RepoDetailActivity;
 import org.mian.gitnex.helpers.AppUtil;
-import org.mian.gitnex.helpers.ClickListener;
 import org.mian.gitnex.helpers.TimeHelper;
+import org.mian.gitnex.helpers.Toasty;
 import org.mian.gitnex.helpers.contexts.RepositoryContext;
 
 /**
@@ -221,11 +221,13 @@ public class RepoForksAdapter extends RecyclerView.Adapter<RecyclerView.ViewHold
 						context.getString(
 								R.string.lastUpdatedAt,
 								TimeHelper.formatTime(forksModel.getUpdatedAt(), locale)));
+
 				repoLastUpdated.setOnClickListener(
-						new ClickListener(
-								TimeHelper.customDateFormatForToastDateFormat(
-										forksModel.getUpdatedAt()),
-								context));
+						v ->
+								Toasty.show(
+										context,
+										TimeHelper.getFullDateTime(
+												forksModel.getUpdatedAt(), Locale.getDefault())));
 			} else {
 				repoLastUpdated.setVisibility(View.GONE);
 			}

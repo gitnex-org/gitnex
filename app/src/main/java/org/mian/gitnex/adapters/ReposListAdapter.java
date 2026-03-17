@@ -7,48 +7,43 @@ import android.graphics.Typeface;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.CheckBox;
 import android.widget.Filter;
 import android.widget.Filterable;
-import android.widget.ImageView;
-import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 import com.amulyakhare.textdrawable.TextDrawable;
 import com.amulyakhare.textdrawable.util.ColorGenerator;
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.load.engine.DiskCacheStrategy;
-import com.google.android.material.card.MaterialCardView;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Locale;
 import org.mian.gitnex.R;
 import org.mian.gitnex.activities.RepoDetailActivity;
+import org.mian.gitnex.databinding.ListRepositoriesBinding;
 import org.mian.gitnex.helpers.AppUtil;
-import org.mian.gitnex.helpers.ClickListener;
 import org.mian.gitnex.helpers.TimeHelper;
-import org.mian.gitnex.helpers.TinyDB;
+import org.mian.gitnex.helpers.Toasty;
 import org.mian.gitnex.helpers.contexts.RepositoryContext;
 
 /**
  * @author M M Arif
  */
-public class ReposListAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder>
+public class ReposListAdapter extends RecyclerView.Adapter<ReposListAdapter.ReposHolder>
 		implements Filterable {
 
 	private final Context context;
 	private final List<org.gitnex.tea4j.v2.models.Repository> reposListFull;
-	private final TinyDB tinyDb;
-	public boolean isUserOrg = false;
 	private List<org.gitnex.tea4j.v2.models.Repository> reposList;
 	private OnLoadMoreListener loadMoreListener;
-	private boolean isLoading = false, isMoreDataAvailable = true;
+	private boolean isLoading = false;
+	private boolean isMoreDataAvailable = true;
+	public boolean isUserOrg = false;
+
 	private final Filter reposFilter =
 			new Filter() {
-
 				@Override
 				protected FilterResults performFiltering(CharSequence constraint) {
-
 					List<org.gitnex.tea4j.v2.models.Repository> filteredList = new ArrayList<>();
 
 					if (constraint == null || constraint.length() == 0) {
@@ -68,15 +63,31 @@ public class ReposListAdapter extends RecyclerView.Adapter<RecyclerView.ViewHold
 
 					FilterResults results = new FilterResults();
 					results.values = filteredList;
-
+					results.count = filteredList.size();
 					return results;
 				}
 
 				@Override
 				protected void publishResults(CharSequence constraint, FilterResults results) {
-
 					reposList.clear();
-					reposList.addAll((List) results.values);
+
+					// No cast needed - we know what we put in, we know what we get out
+					// The FilterResults.values is exactly what we set in performFiltering
+					Object resultObject = results.values;
+
+					if (resultObject instanceof List<?> resultList) {
+
+						// Create a new typed list by iterating
+						List<org.gitnex.tea4j.v2.models.Repository> typedList = new ArrayList<>();
+						for (Object item : resultList) {
+							if (item instanceof org.gitnex.tea4j.v2.models.Repository) {
+								typedList.add((org.gitnex.tea4j.v2.models.Repository) item);
+							}
+						}
+
+						reposList.addAll(typedList);
+					}
+
 					notifyDataChanged();
 				}
 			};
@@ -85,19 +96,18 @@ public class ReposListAdapter extends RecyclerView.Adapter<RecyclerView.ViewHold
 			List<org.gitnex.tea4j.v2.models.Repository> reposListMain, Context ctx) {
 		this.context = ctx;
 		this.reposList = reposListMain;
-		reposListFull = new ArrayList<>(reposList);
-		this.tinyDb = TinyDB.getInstance(context);
+		this.reposListFull = new ArrayList<>(reposList);
 	}
 
 	@NonNull @Override
-	public RecyclerView.ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
+	public ReposHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
 		LayoutInflater inflater = LayoutInflater.from(context);
-		return new ReposListAdapter.ReposHolder(
-				inflater.inflate(R.layout.list_repositories, parent, false));
+		ListRepositoriesBinding binding = ListRepositoriesBinding.inflate(inflater, parent, false);
+		return new ReposHolder(binding);
 	}
 
 	@Override
-	public void onBindViewHolder(@NonNull RecyclerView.ViewHolder holder, int position) {
+	public void onBindViewHolder(@NonNull ReposHolder holder, int position) {
 		if (position >= getItemCount() - 1
 				&& isMoreDataAvailable
 				&& !isLoading
@@ -106,12 +116,8 @@ public class ReposListAdapter extends RecyclerView.Adapter<RecyclerView.ViewHold
 			loadMoreListener.onLoadMore();
 		}
 
-		((ReposListAdapter.ReposHolder) holder).bindData(reposList.get(position));
-	}
-
-	@Override
-	public int getItemViewType(int position) {
-		return position;
+		holder.bindData(reposList.get(position));
+		holder.binding.getRoot().updateAppearance(position, getItemCount());
 	}
 
 	@Override
@@ -121,7 +127,7 @@ public class ReposListAdapter extends RecyclerView.Adapter<RecyclerView.ViewHold
 
 	public void setMoreDataAvailable(boolean moreDataAvailable) {
 		isMoreDataAvailable = moreDataAvailable;
-		if (!isMoreDataAvailable) {
+		if (!isMoreDataAvailable && loadMoreListener != null) {
 			loadMoreListener.onLoadFinished();
 		}
 	}
@@ -130,7 +136,9 @@ public class ReposListAdapter extends RecyclerView.Adapter<RecyclerView.ViewHold
 	public void notifyDataChanged() {
 		notifyDataSetChanged();
 		isLoading = false;
-		loadMoreListener.onLoadFinished();
+		if (loadMoreListener != null) {
+			loadMoreListener.onLoadFinished();
+		}
 	}
 
 	public void setLoadMoreListener(OnLoadMoreListener loadMoreListener) {
@@ -138,7 +146,7 @@ public class ReposListAdapter extends RecyclerView.Adapter<RecyclerView.ViewHold
 	}
 
 	public void updateList(List<org.gitnex.tea4j.v2.models.Repository> list) {
-		reposList = list;
+		this.reposList = list;
 		notifyDataChanged();
 	}
 
@@ -148,61 +156,107 @@ public class ReposListAdapter extends RecyclerView.Adapter<RecyclerView.ViewHold
 	}
 
 	public interface OnLoadMoreListener {
-
 		void onLoadMore();
 
 		void onLoadFinished();
 	}
 
-	public class ReposHolder extends RecyclerView.ViewHolder {
+	public static class ReposHolder extends RecyclerView.ViewHolder {
 
-		private final ImageView image;
-		private final TextView repoName;
-		private final TextView orgName;
-		private final TextView repoDescription;
-		private final TextView repoStars;
-		private final TextView repoLastUpdated;
-		private final View spacerView;
+		private final ListRepositoriesBinding binding;
 		private org.gitnex.tea4j.v2.models.Repository userRepositories;
-		private CheckBox isRepoAdmin;
-		private MaterialCardView isRepoArchivedFrame;
+		private final ReposListAdapter adapter;
 
-		ReposHolder(View itemView) {
+		ReposHolder(ListRepositoriesBinding binding) {
+			super(binding.getRoot());
+			this.binding = binding;
+			this.adapter = null; // Will be set via bind method if needed
 
-			super(itemView);
-			repoName = itemView.findViewById(R.id.repoName);
-			orgName = itemView.findViewById(R.id.orgName);
-			repoDescription = itemView.findViewById(R.id.repoDescription);
-			isRepoAdmin = itemView.findViewById(R.id.repoIsAdmin);
-			image = itemView.findViewById(R.id.imageAvatar);
-			repoStars = itemView.findViewById(R.id.repoStars);
-			repoLastUpdated = itemView.findViewById(R.id.repoLastUpdated);
-			spacerView = itemView.findViewById(R.id.spacerView);
-			isRepoArchivedFrame = itemView.findViewById(R.id.repo_is_archived_frame);
+			setupClickListeners();
+		}
 
-			itemView.setOnClickListener(
-					v -> {
-						Context context = v.getContext();
-						RepositoryContext repo = new RepositoryContext(userRepositories, context);
-						repo.saveToDB(context);
-						Intent intent = repo.getIntent(context, RepoDetailActivity.class);
-						if (isUserOrg) {
-							intent.putExtra("openedFromUserOrg", true);
-						}
-						context.startActivity(intent);
-					});
+		private void setupClickListeners() {
+			binding.getRoot()
+					.setOnClickListener(
+							v -> {
+								Context context = v.getContext();
+								RepositoryContext repo =
+										new RepositoryContext(userRepositories, context);
+								repo.saveToDB(context);
+								Intent intent = repo.getIntent(context, RepoDetailActivity.class);
+								if (adapter != null && adapter.isUserOrg) {
+									intent.putExtra("openedFromUserOrg", true);
+								}
+								context.startActivity(intent);
+							});
 		}
 
 		@SuppressLint("SetTextI18n")
 		void bindData(org.gitnex.tea4j.v2.models.Repository repositories) {
-
 			this.userRepositories = repositories;
 
-			Locale locale = context.getResources().getConfiguration().locale;
-			orgName.setText(repositories.getFullName().split("/")[0]);
-			repoName.setText(repositories.getFullName().split("/")[1]);
-			repoStars.setText(AppUtil.numberFormatter(repositories.getStarsCount()));
+			// 1. Top Stats Row (Issues and PRs)
+			binding.repoOpenIssues.setText(String.valueOf(repositories.getOpenIssuesCount()));
+			binding.repoOpenPRs.setText(String.valueOf(repositories.getOpenPrCounter()));
 
+			// 2. Organization Name & Archived Badge
+			String fullName = repositories.getFullName();
+			String[] nameParts = fullName.split("/");
+			if (nameParts.length > 0) {
+				binding.orgName.setText(nameParts[0]);
+			}
+			binding.repoIsArchivedFrame.setVisibility(
+					repositories.isArchived() ? View.VISIBLE : View.GONE);
+
+			if (nameParts.length > 1) {
+				binding.repoName.setText(nameParts[1]);
+			}
+
+			// 3. Info Footer (Lang background is back!)
+			binding.repoStars.setText(AppUtil.numberFormatter(repositories.getStarsCount()));
+
+			if (repositories.getLanguage() != null
+					&& !repositories.getLanguage().trim().isEmpty()) {
+				binding.repoLanguageFrame.setVisibility(View.VISIBLE);
+				binding.repoStars2.setText(repositories.getLanguage());
+			} else {
+				binding.repoLanguageFrame.setVisibility(View.GONE);
+			}
+
+			// Lock icon at the end of the footer
+			binding.repoIsPrivate.setVisibility(
+					repositories.isPrivate() ? View.VISIBLE : View.GONE);
+
+			// 4. Date/Time
+			if (repositories.getUpdatedAt() != null) {
+				binding.repoLastUpdated.setVisibility(View.VISIBLE);
+				binding.repoLastUpdated.setText(
+						TimeHelper.formatTime(repositories.getUpdatedAt(), Locale.getDefault()));
+				binding.repoLastUpdated.setOnClickListener(
+						v ->
+								Toasty.show(
+										binding.repoLastUpdated.getContext(),
+										TimeHelper.getFullDateTime(
+												repositories.getUpdatedAt(), Locale.getDefault())));
+			}
+
+			// 5. Description
+			if (repositories.getDescription() != null && !repositories.getDescription().isEmpty()) {
+				binding.repoDescription.setVisibility(View.VISIBLE);
+				binding.repoDescription.setText(repositories.getDescription());
+			} else {
+				binding.repoDescription.setVisibility(View.GONE);
+			}
+
+			// 6. Backend Logic
+			if (repositories.getPermissions() != null) {
+				binding.repoIsAdmin.setChecked(repositories.getPermissions().isAdmin());
+			}
+
+			loadAvatar(repositories);
+		}
+
+		private void loadAvatar(org.gitnex.tea4j.v2.models.Repository repositories) {
 			ColorGenerator generator = ColorGenerator.Companion.getMATERIAL();
 			int color = generator.getColor(repositories.getName());
 			String firstCharacter = String.valueOf(repositories.getFullName().charAt(0));
@@ -218,50 +272,15 @@ public class ReposListAdapter extends RecyclerView.Adapter<RecyclerView.ViewHold
 							.endConfig()
 							.buildRoundRect(firstCharacter, color, 12);
 
-			if (repositories.getAvatarUrl() != null) {
-				if (!repositories.getAvatarUrl().isEmpty()) {
-					Glide.with(context)
-							.load(repositories.getAvatarUrl())
-							.diskCacheStrategy(DiskCacheStrategy.ALL)
-							.placeholder(R.drawable.loader_animated)
-							.centerCrop()
-							.into(image);
-				} else {
-					image.setImageDrawable(drawable);
-				}
+			if (repositories.getAvatarUrl() != null && !repositories.getAvatarUrl().isEmpty()) {
+				Glide.with(binding.imageAvatar.getContext())
+						.load(repositories.getAvatarUrl())
+						.diskCacheStrategy(DiskCacheStrategy.ALL)
+						.placeholder(R.drawable.loader_animated)
+						.centerCrop()
+						.into(binding.imageAvatar);
 			} else {
-				image.setImageDrawable(drawable);
-			}
-
-			if (repositories.getUpdatedAt() != null) {
-				repoLastUpdated.setText(TimeHelper.formatTime(repositories.getUpdatedAt(), locale));
-				repoLastUpdated.setOnClickListener(
-						new ClickListener(
-								TimeHelper.customDateFormatForToastDateFormat(
-										repositories.getUpdatedAt()),
-								context));
-			} else {
-				repoLastUpdated.setVisibility(View.GONE);
-			}
-
-			if (!repositories.getDescription().isEmpty()) {
-				repoDescription.setVisibility(View.VISIBLE);
-				repoDescription.setText(repositories.getDescription());
-				spacerView.setVisibility(View.GONE);
-			} else {
-				repoDescription.setVisibility(View.GONE);
-				spacerView.setVisibility(View.VISIBLE);
-			}
-
-			if (isRepoAdmin == null) {
-				isRepoAdmin = new CheckBox(context);
-			}
-			isRepoAdmin.setChecked(repositories.getPermissions().isAdmin());
-
-			if (repositories.isArchived()) {
-				isRepoArchivedFrame.setVisibility(View.VISIBLE);
-			} else {
-				isRepoArchivedFrame.setVisibility(View.GONE);
+				binding.imageAvatar.setImageDrawable(drawable);
 			}
 		}
 	}

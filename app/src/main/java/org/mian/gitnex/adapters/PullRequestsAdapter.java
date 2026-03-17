@@ -34,11 +34,11 @@ import org.mian.gitnex.activities.ProfileActivity;
 import org.mian.gitnex.activities.RepoDetailActivity;
 import org.mian.gitnex.helpers.AppDatabaseSettings;
 import org.mian.gitnex.helpers.AppUtil;
-import org.mian.gitnex.helpers.ClickListener;
 import org.mian.gitnex.helpers.ColorInverter;
 import org.mian.gitnex.helpers.LabelWidthCalculator;
 import org.mian.gitnex.helpers.Markdown;
 import org.mian.gitnex.helpers.TimeHelper;
+import org.mian.gitnex.helpers.Toasty;
 import org.mian.gitnex.helpers.contexts.IssueContext;
 
 /**
@@ -331,10 +331,11 @@ public class PullRequestsAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
 			}
 
 			this.prCreatedTime.setOnClickListener(
-					new ClickListener(
-							TimeHelper.customDateFormatForToastDateFormat(
-									pullRequest.getCreatedAt()),
-							context));
+					v ->
+							Toasty.show(
+									context,
+									TimeHelper.getFullDateTime(
+											pullRequest.getCreatedAt(), Locale.getDefault())));
 		}
 	}
 }

@@ -11,7 +11,7 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:background="?attr/primaryBackgroundColor"
-        android:padding="@dimen/dimen8dp">
+        android:paddingHorizontal="@dimen/dimen16dp">
 
         <androidx.swiperefreshlayout.widget.SwipeRefreshLayout
             android:id="@+id/pullToRefresh"

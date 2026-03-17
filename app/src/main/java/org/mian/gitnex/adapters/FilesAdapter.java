@@ -19,9 +19,9 @@ import java.util.Locale;
 import org.apache.commons.io.FileUtils;
 import org.gitnex.tea4j.v2.models.ContentsResponse;
 import org.mian.gitnex.R;
-import org.mian.gitnex.helpers.ClickListener;
 import org.mian.gitnex.helpers.FileIcon;
 import org.mian.gitnex.helpers.TimeHelper;
+import org.mian.gitnex.helpers.Toasty;
 
 /**
  * @author mmarif
@@ -122,10 +122,12 @@ public class FilesAdapter extends RecyclerView.Adapter<FilesAdapter.FilesViewHol
 					TimeHelper.formatTime(currentItem.getLastCommitterDate(), locale));
 			holder.fileDate.setVisibility(View.VISIBLE);
 			holder.fileDate.setOnClickListener(
-					new ClickListener(
-							TimeHelper.customDateFormatForToastDateFormat(
-									currentItem.getLastCommitterDate()),
-							context));
+					v ->
+							Toasty.show(
+									context,
+									TimeHelper.getFullDateTime(
+											currentItem.getLastCommitterDate(),
+											Locale.getDefault())));
 		} else {
 			holder.fileDate.setVisibility(View.GONE);
 		}
