@@ -1081,4 +1081,11 @@
 
     <string name="empty_state_title">Nothing here</string>
     <string name="empty_state_desc">There is no data to display at the moment.</string>
+
+    <string name="good_morning">Good morning</string>
+    <string name="good_afternoon">Good afternoon</string>
+    <string name="good_evening">Good evening</string>
+
+    <string name="dashboard_most_visited_repos_sub_title">View the repositories you visit most often</string>
+    <string name="dashboard_notes_sub_title">Create and manage personal notes, and attach them to issues</string>
 </resources>

@@ -29,7 +29,6 @@ import org.gitnex.tea4j.v2.models.NotificationCount;
 import org.gitnex.tea4j.v2.models.ServerVersion;
 import org.gitnex.tea4j.v2.models.User;
 import org.mian.gitnex.R;
-import org.mian.gitnex.adapters.HomeDashboardAdapter;
 import org.mian.gitnex.adapters.UserAccountsNavAdapter;
 import org.mian.gitnex.clients.RetrofitClient;
 import org.mian.gitnex.database.api.BaseApi;
@@ -68,7 +67,12 @@ public class MainActivity extends BaseActivity
 	public static boolean closeActivity;
 
 	public interface UserInfoCallback {
-		void onUserInfoLoaded(String username, boolean isAdmin, String serverVersion);
+		void onUserInfoLoaded(
+				String username,
+				boolean isAdmin,
+				String serverVersion,
+				long followers,
+				long following);
 
 		void onUserAccountsLoaded();
 	}
@@ -195,11 +199,14 @@ public class MainActivity extends BaseActivity
 				null,
 				null,
 				null,
-				null,
 				new UserInfoCallback() {
 					@Override
 					public void onUserInfoLoaded(
-							String username, boolean isAdmin, String serverVersion) {
+							String username,
+							boolean isAdmin,
+							String serverVersion,
+							long follower,
+							long following) {
 						tinyDB.putString("username", username);
 					}
 
@@ -276,11 +283,14 @@ public class MainActivity extends BaseActivity
 					null,
 					null,
 					null,
-					null,
 					new UserInfoCallback() {
 						@Override
 						public void onUserInfoLoaded(
-								String username, boolean isAdmin, String serverVersion) {
+								String username,
+								boolean isAdmin,
+								String serverVersion,
+								long followers,
+								long following) {
 							tinyDB.putString("username", username);
 						}
 
@@ -306,7 +316,6 @@ public class MainActivity extends BaseActivity
 	public void loadUserInfo(
 			HomeDashboardFragment fragment,
 			FragmentHomeDashboardBinding binding,
-			HomeDashboardAdapter dashboardAdapter,
 			List<UserAccount> userAccountsList,
 			UserAccountsNavAdapter accountsAdapter,
 			UserInfoCallback callback) {
@@ -391,9 +400,10 @@ public class MainActivity extends BaseActivity
 
 							fetchServerVersion(
 									fragment,
-									dashboardAdapter,
 									username,
 									userDetails.isIsAdmin(),
+									userDetails.getFollowersCount(),
+									userDetails.getFollowingCount(),
 									callback);
 						} else if (response.code() == 401) {
 							AlertDialogs.authorizationTokenRevokedDialog(MainActivity.this);
@@ -425,45 +435,38 @@ public class MainActivity extends BaseActivity
 			List<UserAccount> userAccountsList,
 			UserAccountsNavAdapter accountsAdapter,
 			UserInfoCallback callback) {
-		if (!fragment.isAdded() || fragment.getView() == null) {
-			if (callback != null) {
-				callback.onUserAccountsLoaded();
-			}
+
+		if (fragment == null || !fragment.isAdded() || fragment.getView() == null) {
+			if (callback != null) callback.onUserAccountsLoaded();
 			return;
 		}
 
 		UserAccountsApi userAccountsApi = BaseApi.getInstance(this, UserAccountsApi.class);
-		assert userAccountsApi != null;
+		if (userAccountsApi == null) return;
+
 		userAccountsApi
 				.getAllAccounts()
 				.observe(
 						fragment.getViewLifecycleOwner(),
 						userAccounts -> {
-							if (!fragment.isAdded() || fragment.getView() == null) {
-								if (callback != null) {
-									callback.onUserAccountsLoaded();
-								}
-								return;
-							}
+							if (!fragment.isAdded()) return;
+
 							if (userAccounts != null && !userAccounts.isEmpty()) {
 								userAccountsList.clear();
 								userAccountsList.addAll(userAccounts);
 								accountsAdapter.notifyDataSetChanged();
-								binding.userAccountsRecyclerView.setVisibility(View.VISIBLE);
-							} else {
-								binding.userAccountsRecyclerView.setVisibility(View.GONE);
 							}
-							if (callback != null) {
-								callback.onUserAccountsLoaded();
-							}
+
+							if (callback != null) callback.onUserAccountsLoaded();
 						});
 	}
 
 	private void fetchServerVersion(
 			HomeDashboardFragment fragment,
-			HomeDashboardAdapter dashboardAdapter,
 			String username,
 			boolean isAdmin,
+			long followers,
+			long following,
 			UserInfoCallback callback) {
 		Call<ServerVersion> call = RetrofitClient.getApiInterface(this).getVersion();
 		call.enqueue(
@@ -472,19 +475,15 @@ public class MainActivity extends BaseActivity
 					public void onResponse(
 							@NonNull Call<ServerVersion> call,
 							@NonNull Response<ServerVersion> response) {
-						if (fragment != null && !fragment.isAdded()) {
-							return;
-						}
-						if (response.isSuccessful()
-								&& response.code() == 200
-								&& response.body() != null) {
+						if (fragment != null && !fragment.isAdded()) return;
+
+						if (response.isSuccessful() && response.body() != null) {
 							String version = response.body().getVersion();
 							tinyDB.putString("serverVersion", version);
-							if (dashboardAdapter != null) {
-								dashboardAdapter.updateUserInfo(username, isAdmin, version);
-							}
+
 							if (callback != null) {
-								callback.onUserInfoLoaded(username, isAdmin, version);
+								callback.onUserInfoLoaded(
+										username, isAdmin, version, followers, following);
 							}
 						}
 					}

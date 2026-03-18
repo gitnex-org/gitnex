@@ -263,4 +263,11 @@
         <item name="cornerSize">@dimen/dimen32dp</item>
     </style>
 
+    <style name="ShapeAppearance.TopRounded" parent="ShapeAppearance.Material3.SmallComponent">
+        <item name="cornerFamily">rounded</item>
+        <item name="cornerSizeTopLeft">@dimen/dimen40dp</item>
+        <item name="cornerSizeTopRight">@dimen/dimen40dp</item>
+        <item name="cornerSizeBottomLeft">0dp</item>
+        <item name="cornerSizeBottomRight">0dp</item>
+    </style>
 </resources>

@@ -3,6 +3,7 @@ package org.mian.gitnex.fragments;
 import android.annotation.SuppressLint;
 import android.content.Intent;
 import android.os.Bundle;
+import android.transition.TransitionManager;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -12,14 +13,16 @@ import androidx.navigation.NavController;
 import androidx.navigation.Navigation;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.List;
 import org.mian.gitnex.R;
 import org.mian.gitnex.activities.MainActivity;
 import org.mian.gitnex.activities.ProfileActivity;
-import org.mian.gitnex.adapters.HomeDashboardAdapter;
 import org.mian.gitnex.adapters.UserAccountsNavAdapter;
 import org.mian.gitnex.database.models.UserAccount;
 import org.mian.gitnex.databinding.FragmentHomeDashboardBinding;
+import org.mian.gitnex.databinding.ItemDashboardCardFullBinding;
+import org.mian.gitnex.databinding.ItemDashboardCardLargeBinding;
 
 /**
  * @author mmarif
@@ -30,60 +33,98 @@ public class HomeDashboardFragment extends Fragment {
 	private String username;
 	private List<UserAccount> userAccountsList;
 	private UserAccountsNavAdapter accountsAdapter;
-	private HomeDashboardAdapter dashboardAdapter;
 
-	@SuppressLint("NotifyDataSetChanged")
 	@Override
 	public View onCreateView(
 			@NonNull LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-
 		binding = FragmentHomeDashboardBinding.inflate(inflater, container, false);
+
 		userAccountsList = new ArrayList<>();
 		accountsAdapter = new UserAccountsNavAdapter(requireContext(), userAccountsList);
-		dashboardAdapter = new HomeDashboardAdapter(requireContext());
-
-		binding.mainScreensRecyclerView.setLayoutManager(new LinearLayoutManager(requireContext()));
-		binding.mainScreensRecyclerView.setAdapter(dashboardAdapter);
 
 		binding.userAccountsRecyclerView.setLayoutManager(
 				new LinearLayoutManager(requireContext()));
 		binding.userAccountsRecyclerView.setAdapter(accountsAdapter);
+		binding.userAccountsRecyclerView.setVisibility(View.GONE);
 
-		NavController navController =
-				Navigation.findNavController(requireActivity(), R.id.nav_host_fragment);
-		binding.repoOrgCard.setOnClickListener(
-				v -> navController.navigate(R.id.action_to_organizations));
-		binding.repoMyReposCard.setOnClickListener(
-				v -> navController.navigate(R.id.action_to_myRepositories));
-		binding.repoStarredCard.setOnClickListener(
-				v -> navController.navigate(R.id.action_to_starredRepositories));
-		binding.repoWatchedCard.setOnClickListener(
-				v -> navController.navigate(R.id.action_to_watchedRepositories));
-		binding.repoActivitiesCard.setOnClickListener(
-				v -> navController.navigate(R.id.activitiesFragment));
-		binding.repoMyIssuesCard.setOnClickListener(
-				v -> navController.navigate(R.id.action_to_myIssues));
+		setupDashboardCards();
+		initClickListeners();
+		loadData();
 
-		// Load user info from MainActivity
-		if (requireActivity() instanceof MainActivity) {
-			((MainActivity) requireActivity())
-					.loadUserInfo(
-							this,
-							binding,
-							dashboardAdapter,
-							userAccountsList,
-							accountsAdapter,
-							new MainActivity.UserInfoCallback() {
-								@Override
-								public void onUserInfoLoaded(
-										String username, boolean isAdmin, String serverVersion) {
-									HomeDashboardFragment.this.username = username;
-								}
+		return binding.getRoot();
+	}
 
-								@Override
-								public void onUserAccountsLoaded() {}
-							});
+	private void loadData() {
+		if (requireActivity() instanceof MainActivity mainActivity) {
+			mainActivity.loadUserInfo(
+					this,
+					binding,
+					userAccountsList,
+					accountsAdapter,
+					new MainActivity.UserInfoCallback() {
+						@Override
+						public void onUserInfoLoaded(
+								String username,
+								boolean isAdmin,
+								String serverVersion,
+								long followers,
+								long following) {
+							if (!isAdded()) return;
+
+							HomeDashboardFragment.this.username = username;
+
+							binding.userFollowers.setText(String.valueOf(followers));
+							binding.userFollowing.setText(String.valueOf(following));
+
+							updateAdminVisibility(isAdmin);
+						}
+
+						@Override
+						public void onUserAccountsLoaded() {}
+					});
 		}
+	}
+
+	private void initClickListeners() {
+
+		binding.serverIcon.setOnClickListener(
+				v -> {
+					TransitionManager.beginDelayedTransition(binding.getRoot());
+					boolean isVisible =
+							binding.userAccountsRecyclerView.getVisibility() == View.VISIBLE;
+					binding.userAccountsRecyclerView.setVisibility(
+							isVisible ? View.GONE : View.VISIBLE);
+				});
+
+		binding.refreshButton.setOnClickListener(v -> performRefresh());
+
+		binding.settingsCard.setOnClickListener(v -> navigateTo(R.id.action_to_settings));
+		binding.repoStarredCard
+				.getRoot()
+				.setOnClickListener(v -> navigateTo(R.id.action_to_starredRepositories));
+		binding.repoWatchedCard
+				.getRoot()
+				.setOnClickListener(v -> navigateTo(R.id.action_to_watchedRepositories));
+		binding.myReposCard
+				.getRoot()
+				.setOnClickListener(v -> navigateTo(R.id.action_to_myRepositories));
+		binding.myIssuesCard.getRoot().setOnClickListener(v -> navigateTo(R.id.action_to_myIssues));
+		binding.organizationsCard
+				.getRoot()
+				.setOnClickListener(v -> navigateTo(R.id.action_to_organizations));
+		binding.activitiesCard
+				.getRoot()
+				.setOnClickListener(v -> navigateTo(R.id.activitiesFragment));
+		binding.mostVisitedReposCard
+				.getRoot()
+				.setOnClickListener(v -> navigateTo(R.id.action_to_mostVisitedRepos));
+		binding.notesCard.getRoot().setOnClickListener(v -> navigateTo(R.id.action_to_notes));
+		binding.accountSettingsCard
+				.getRoot()
+				.setOnClickListener(v -> navigateTo(R.id.action_to_accountSettings));
+		binding.instanceAdministrationCard
+				.getRoot()
+				.setOnClickListener(v -> navigateTo(R.id.action_to_administration));
 
 		binding.userAvatar.setOnClickListener(
 				v -> {
@@ -93,42 +134,105 @@ public class HomeDashboardFragment extends Fragment {
 						startActivity(intentProfile);
 					}
 				});
+	}
 
-		binding.refreshButton.setOnClickListener(
-				v -> {
-					binding.userAvatar.setImageResource(R.drawable.loader_animated);
-					binding.userFullname.setText("");
-					binding.userEmail.setText("");
-					userAccountsList.clear();
-					accountsAdapter.notifyDataSetChanged();
+	private void navigateTo(int destinationId) {
+		try {
+			NavController navController =
+					Navigation.findNavController(requireActivity(), R.id.nav_host_fragment);
+			navController.navigate(destinationId);
+		} catch (Exception ignored) {
+		}
+	}
 
-					// Call MainActivity methods
-					if (requireActivity() instanceof MainActivity mainActivity) {
-						mainActivity.getNotificationsCount();
-						mainActivity.giteaVersion();
-						mainActivity.serverPageLimitSettings();
-						mainActivity.updateGeneralAttachmentSettings();
-						mainActivity.loadUserInfo(
-								this,
-								binding,
-								dashboardAdapter,
-								userAccountsList,
-								accountsAdapter,
-								new MainActivity.UserInfoCallback() {
-									@Override
-									public void onUserInfoLoaded(
-											String username,
-											boolean isAdmin,
-											String serverVersion) {
-										HomeDashboardFragment.this.username = username;
-									}
+	private void setupDashboardCards() {
 
-									@Override
-									public void onUserAccountsLoaded() {}
-								});
-					}
-				});
+		Calendar c = Calendar.getInstance();
+		int timeOfDay = c.get(Calendar.HOUR_OF_DAY);
+		int greetingRes =
+				(timeOfDay < 12)
+						? R.string.good_morning
+						: (timeOfDay < 16) ? R.string.good_afternoon : R.string.good_evening;
+		binding.greetingText.setText(getString(greetingRes));
 
-		return binding.getRoot();
+		binding.userFollowers.setText("-");
+		binding.userFollowing.setText("-");
+
+		updateLargeCard(
+				binding.repoStarredCard, R.string.navStarredRepos, null, R.drawable.ic_star);
+		updateLargeCard(
+				binding.repoWatchedCard,
+				R.string.navWatchedRepositories,
+				null,
+				R.drawable.ic_watchers);
+		updateLargeCard(binding.myReposCard, R.string.navMyRepos, null, R.drawable.ic_repo);
+		updateLargeCard(binding.myIssuesCard, R.string.navMyIssues, null, R.drawable.ic_issue);
+		updateLargeCard(
+				binding.organizationsCard, R.string.navOrg, null, R.drawable.ic_organization);
+		updateLargeCard(
+				binding.activitiesCard, R.string.activities, null, R.drawable.ic_activities);
+		updateLargeCard(
+				binding.accountSettingsCard,
+				R.string.navAccount,
+				null,
+				R.drawable.ic_account_settings);
+		updateLargeCard(
+				binding.instanceAdministrationCard,
+				R.string.navAdministration,
+				null,
+				R.drawable.ic_tool);
+
+		updateFullCard(
+				binding.mostVisitedReposCard,
+				R.string.navMostVisited,
+				getString(R.string.dashboard_most_visited_repos_sub_title),
+				R.drawable.ic_trending);
+		updateFullCard(
+				binding.notesCard,
+				R.string.navNotes,
+				getString(R.string.dashboard_notes_sub_title),
+				R.drawable.ic_notes);
+	}
+
+	private void updateAdminVisibility(boolean isAdmin) {
+		binding.instanceAdministrationCard
+				.getRoot()
+				.setVisibility(isAdmin ? View.VISIBLE : View.GONE);
+	}
+
+	@SuppressLint("NotifyDataSetChanged")
+	private void performRefresh() {
+		binding.userAvatar.setImageResource(R.drawable.loader_animated);
+		binding.userFullname.setText("");
+		binding.userEmail.setText("");
+		binding.userFollowers.setText("-");
+		binding.userFollowing.setText("-");
+		userAccountsList.clear();
+		accountsAdapter.notifyDataSetChanged();
+		loadData();
+	}
+
+	private void updateLargeCard(
+			ItemDashboardCardLargeBinding cardBinding, int titleRes, String subtext, int iconRes) {
+		cardBinding.tileTitle.setText(titleRes);
+		cardBinding.tileIcon.setImageResource(iconRes);
+		cardBinding.tileSubtitle.setVisibility(
+				(subtext != null && !subtext.isEmpty()) ? View.VISIBLE : View.GONE);
+		if (subtext != null) cardBinding.tileSubtitle.setText(subtext);
+	}
+
+	private void updateFullCard(
+			ItemDashboardCardFullBinding cardBinding, int titleRes, String subtext, int iconRes) {
+		cardBinding.cardTitle.setText(titleRes);
+		cardBinding.cardIcon.setImageResource(iconRes);
+		cardBinding.cardSubtext.setVisibility(
+				(subtext != null && !subtext.isEmpty()) ? View.VISIBLE : View.GONE);
+		if (subtext != null) cardBinding.cardSubtext.setText(subtext);
+	}
+
+	@Override
+	public void onDestroyView() {
+		super.onDestroyView();
+		binding = null;
 	}
 }
