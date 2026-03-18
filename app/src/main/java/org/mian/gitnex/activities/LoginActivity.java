@@ -116,7 +116,8 @@ public class LoginActivity extends BaseActivity {
 						}
 
 						String url = account.getInstanceUrl();
-						activityLoginBinding.instanceUrl.setText(getCleanUrlForDisplay(url));
+						activityLoginBinding.instanceUrl.setText(
+								UrlHelper.getCleanUrlForDisplay(url));
 
 						try {
 							URI uri = new URI(url);
@@ -235,46 +236,6 @@ public class LoginActivity extends BaseActivity {
 
 					materialAlertDialogBuilder.create().show();
 				});
-	}
-
-	public static String getCleanUrlForDisplay(String rawUrl) {
-
-		if (rawUrl == null || rawUrl.isEmpty()) return "";
-
-		try {
-			URI uri = new URI(rawUrl);
-			String host = uri.getHost();
-			int port = uri.getPort();
-			String path = uri.getPath();
-
-			StringBuilder displayUrl = new StringBuilder(host != null ? host : "");
-
-			if (port != -1) {
-				displayUrl.append(":").append(port);
-			}
-
-			if (path != null && !path.isEmpty()) {
-				String cleanPath = path;
-				if (cleanPath.endsWith("/api/v1/")) {
-					cleanPath = cleanPath.substring(0, cleanPath.length() - 8);
-				} else if (cleanPath.endsWith("/api/v1")) {
-					cleanPath = cleanPath.substring(0, cleanPath.length() - 7);
-				}
-
-				if (!cleanPath.equals("/") && !cleanPath.isEmpty()) {
-					displayUrl.append(cleanPath);
-				}
-			}
-			return displayUrl.toString();
-
-		} catch (Exception e) {
-			String fallback = rawUrl.replace("https://", "").replace("http://", "");
-			if (fallback.endsWith("/api/v1/"))
-				fallback = fallback.substring(0, fallback.length() - 8);
-			if (fallback.endsWith("/api/v1"))
-				fallback = fallback.substring(0, fallback.length() - 7);
-			return fallback;
-		}
 	}
 
 	private void showProxyAuthDialog() {

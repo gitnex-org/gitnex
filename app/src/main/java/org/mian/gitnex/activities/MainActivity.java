@@ -29,7 +29,6 @@ import org.gitnex.tea4j.v2.models.NotificationCount;
 import org.gitnex.tea4j.v2.models.ServerVersion;
 import org.gitnex.tea4j.v2.models.User;
 import org.mian.gitnex.R;
-import org.mian.gitnex.adapters.UserAccountsNavAdapter;
 import org.mian.gitnex.clients.RetrofitClient;
 import org.mian.gitnex.database.api.BaseApi;
 import org.mian.gitnex.database.api.UserAccountsApi;
@@ -198,7 +197,6 @@ public class MainActivity extends BaseActivity
 				null,
 				null,
 				null,
-				null,
 				new UserInfoCallback() {
 					@Override
 					public void onUserInfoLoaded(
@@ -282,7 +280,6 @@ public class MainActivity extends BaseActivity
 					null,
 					null,
 					null,
-					null,
 					new UserInfoCallback() {
 						@Override
 						public void onUserInfoLoaded(
@@ -317,7 +314,6 @@ public class MainActivity extends BaseActivity
 			HomeDashboardFragment fragment,
 			FragmentHomeDashboardBinding binding,
 			List<UserAccount> userAccountsList,
-			UserAccountsNavAdapter accountsAdapter,
 			UserInfoCallback callback) {
 		Call<User> call = RetrofitClient.getApiInterface(this).userGetCurrent();
 		call.enqueue(
@@ -329,12 +325,9 @@ public class MainActivity extends BaseActivity
 							return;
 						}
 
-						if (binding != null
-								&& userAccountsList != null
-								&& accountsAdapter != null) {
+						if (binding != null && userAccountsList != null) {
 							assert fragment != null;
-							loadUserAccounts(
-									fragment, binding, userAccountsList, accountsAdapter, callback);
+							loadUserAccounts(fragment, binding, userAccountsList, callback);
 						}
 
 						User userDetails = response.body();
@@ -418,11 +411,8 @@ public class MainActivity extends BaseActivity
 							}
 							return;
 						}
-						if (binding != null
-								&& userAccountsList != null
-								&& accountsAdapter != null) {
-							loadUserAccounts(
-									fragment, binding, userAccountsList, accountsAdapter, callback);
+						if (binding != null && userAccountsList != null) {
+							loadUserAccounts(fragment, binding, userAccountsList, callback);
 						}
 					}
 				});
@@ -433,7 +423,6 @@ public class MainActivity extends BaseActivity
 			HomeDashboardFragment fragment,
 			FragmentHomeDashboardBinding binding,
 			List<UserAccount> userAccountsList,
-			UserAccountsNavAdapter accountsAdapter,
 			UserInfoCallback callback) {
 
 		if (fragment == null || !fragment.isAdded() || fragment.getView() == null) {
@@ -454,7 +443,6 @@ public class MainActivity extends BaseActivity
 							if (userAccounts != null && !userAccounts.isEmpty()) {
 								userAccountsList.clear();
 								userAccountsList.addAll(userAccounts);
-								accountsAdapter.notifyDataSetChanged();
 							}
 
 							if (callback != null) callback.onUserAccountsLoaded();

@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="vertical"
+    android:paddingHorizontal="@dimen/dimen24dp"
+    android:paddingBottom="@dimen/dimen32dp">
+
+    <com.google.android.material.bottomsheet.BottomSheetDragHandleView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content" />
+
+    <TextView
+        style="@style/TextAppearance.Material3.HeadlineSmall"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/accounts"
+        android:textStyle="bold" />
+
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/accountsList"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/dimen16dp"
+        android:clipToPadding="false"
+        android:overScrollMode="never" />
+
+    <com.google.android.material.button.MaterialButton
+        android:id="@+id/newAccount"
+        style="@style/Widget.Material3.Button"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/dimen54dp"
+        android:layout_marginHorizontal="@dimen/dimen16dp"
+        android:layout_marginTop="@dimen/dimen16dp"
+        android:text="@string/addNewAccount" />
+
+</LinearLayout>

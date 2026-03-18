@@ -1,9 +1,7 @@
 package org.mian.gitnex.fragments;
 
-import android.annotation.SuppressLint;
 import android.content.Intent;
 import android.os.Bundle;
-import android.transition.TransitionManager;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -12,17 +10,25 @@ import androidx.fragment.app.Fragment;
 import androidx.navigation.NavController;
 import androidx.navigation.Navigation;
 import androidx.recyclerview.widget.LinearLayoutManager;
-import java.util.ArrayList;
+import com.bumptech.glide.Glide;
+import com.bumptech.glide.load.engine.DiskCacheStrategy;
+import com.google.android.material.bottomsheet.BottomSheetBehavior;
+import com.google.android.material.bottomsheet.BottomSheetDialog;
 import java.util.Calendar;
-import java.util.List;
 import org.mian.gitnex.R;
+import org.mian.gitnex.activities.LoginActivity;
 import org.mian.gitnex.activities.MainActivity;
 import org.mian.gitnex.activities.ProfileActivity;
-import org.mian.gitnex.adapters.UserAccountsNavAdapter;
+import org.mian.gitnex.adapters.UserAccountsAdapter;
+import org.mian.gitnex.database.api.BaseApi;
+import org.mian.gitnex.database.api.UserAccountsApi;
 import org.mian.gitnex.database.models.UserAccount;
+import org.mian.gitnex.databinding.BottomsheetUserAccountsBinding;
 import org.mian.gitnex.databinding.FragmentHomeDashboardBinding;
 import org.mian.gitnex.databinding.ItemDashboardCardFullBinding;
 import org.mian.gitnex.databinding.ItemDashboardCardLargeBinding;
+import org.mian.gitnex.helpers.TinyDB;
+import org.mian.gitnex.helpers.UrlHelper;
 
 /**
  * @author mmarif
@@ -31,25 +37,18 @@ public class HomeDashboardFragment extends Fragment {
 
 	private FragmentHomeDashboardBinding binding;
 	private String username;
-	private List<UserAccount> userAccountsList;
-	private UserAccountsNavAdapter accountsAdapter;
+	private TinyDB tinyDB;
 
 	@Override
 	public View onCreateView(
 			@NonNull LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
 		binding = FragmentHomeDashboardBinding.inflate(inflater, container, false);
-
-		userAccountsList = new ArrayList<>();
-		accountsAdapter = new UserAccountsNavAdapter(requireContext(), userAccountsList);
-
-		binding.userAccountsRecyclerView.setLayoutManager(
-				new LinearLayoutManager(requireContext()));
-		binding.userAccountsRecyclerView.setAdapter(accountsAdapter);
-		binding.userAccountsRecyclerView.setVisibility(View.GONE);
+		tinyDB = TinyDB.getInstance(requireContext());
 
 		setupDashboardCards();
 		initClickListeners();
 		loadData();
+		loadActiveServerIcon();
 
 		return binding.getRoot();
 	}
@@ -59,8 +58,7 @@ public class HomeDashboardFragment extends Fragment {
 			mainActivity.loadUserInfo(
 					this,
 					binding,
-					userAccountsList,
-					accountsAdapter,
+					null,
 					new MainActivity.UserInfoCallback() {
 						@Override
 						public void onUserInfoLoaded(
@@ -70,12 +68,9 @@ public class HomeDashboardFragment extends Fragment {
 								long followers,
 								long following) {
 							if (!isAdded()) return;
-
 							HomeDashboardFragment.this.username = username;
-
 							binding.userFollowers.setText(String.valueOf(followers));
 							binding.userFollowing.setText(String.valueOf(following));
-
 							updateAdminVisibility(isAdmin);
 						}
 
@@ -85,16 +80,65 @@ public class HomeDashboardFragment extends Fragment {
 		}
 	}
 
+	private void loadActiveServerIcon() {
+		int activeAccountId = tinyDB.getInt("currentActiveAccountId", -1);
+		if (activeAccountId != -1) {
+			UserAccountsApi accountsApi =
+					BaseApi.getInstance(requireContext(), UserAccountsApi.class);
+			if (accountsApi != null) {
+				UserAccount activeAccount = accountsApi.getAccountById(activeAccountId);
+				if (activeAccount != null) {
+					Glide.with(this)
+							.load(
+									UrlHelper.appendPath(
+											activeAccount.getInstanceUrl(),
+											"assets/img/favicon.png"))
+							.diskCacheStrategy(DiskCacheStrategy.ALL)
+							.placeholder(R.drawable.loader_animated)
+							.error(R.drawable.ic_server)
+							.centerCrop()
+							.into(binding.serverIcon);
+				}
+			}
+		}
+	}
+
+	private void showAccountsBottomSheet() {
+
+		BottomSheetDialog bottomSheetDialog = new BottomSheetDialog(requireContext());
+		BottomsheetUserAccountsBinding sheetBinding =
+				BottomsheetUserAccountsBinding.inflate(getLayoutInflater());
+		bottomSheetDialog.setContentView(sheetBinding.getRoot());
+
+		View bottomSheet =
+				bottomSheetDialog.findViewById(
+						com.google.android.material.R.id.design_bottom_sheet);
+		if (bottomSheet != null) {
+			BottomSheetBehavior<View> behavior = BottomSheetBehavior.from(bottomSheet);
+			behavior.setFitToContents(true);
+			behavior.setSkipCollapsed(true);
+			behavior.setExpandedOffset(0);
+			behavior.setState(BottomSheetBehavior.STATE_EXPANDED);
+		}
+
+		UserAccountsAdapter adapter = new UserAccountsAdapter(requireContext(), bottomSheetDialog);
+		sheetBinding.accountsList.setLayoutManager(new LinearLayoutManager(requireContext()));
+		sheetBinding.accountsList.setAdapter(adapter);
+
+		sheetBinding.newAccount.setOnClickListener(
+				v -> {
+					Intent intent = new Intent(requireContext(), LoginActivity.class);
+					intent.putExtra("mode", "new_account");
+					startActivity(intent);
+					bottomSheetDialog.dismiss();
+				});
+
+		bottomSheetDialog.show();
+	}
+
 	private void initClickListeners() {
 
-		binding.serverIcon.setOnClickListener(
-				v -> {
-					TransitionManager.beginDelayedTransition(binding.getRoot());
-					boolean isVisible =
-							binding.userAccountsRecyclerView.getVisibility() == View.VISIBLE;
-					binding.userAccountsRecyclerView.setVisibility(
-							isVisible ? View.GONE : View.VISIBLE);
-				});
+		binding.serverIcon.setOnClickListener(v -> showAccountsBottomSheet());
 
 		binding.refreshButton.setOnClickListener(v -> performRefresh());
 
@@ -200,16 +244,16 @@ public class HomeDashboardFragment extends Fragment {
 				.setVisibility(isAdmin ? View.VISIBLE : View.GONE);
 	}
 
-	@SuppressLint("NotifyDataSetChanged")
 	private void performRefresh() {
 		binding.userAvatar.setImageResource(R.drawable.loader_animated);
+		binding.serverIcon.setImageResource(R.drawable.loader_animated);
 		binding.userFullname.setText("");
 		binding.userEmail.setText("");
 		binding.userFollowers.setText("-");
 		binding.userFollowing.setText("-");
-		userAccountsList.clear();
-		accountsAdapter.notifyDataSetChanged();
+
 		loadData();
+		loadActiveServerIcon();
 	}
 
 	private void updateLargeCard(

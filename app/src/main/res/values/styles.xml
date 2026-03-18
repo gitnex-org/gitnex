@@ -61,25 +61,6 @@
         <item name="closeIcon">@drawable/ic_close</item>
     </style>
 
-    <style name="AppThemeDarkBottomSheetDialog" parent="Theme.Material3.Dark.BottomSheetDialog">
-        <item name="android:windowIsFloating">false</item>
-        <item name="android:windowSoftInputMode">adjustResize</item>
-        <item name="bottomSheetStyle">@style/AppBottomSheetModalStyle</item>
-        <item name="android:statusBarColor">@android:color/transparent</item>
-    </style>
-
-    <style name="AppThemeLightBottomSheetDialog" parent="Theme.Material3.Light.BottomSheetDialog">
-        <item name="android:windowIsFloating">false</item>
-        <item name="android:windowSoftInputMode">adjustResize</item>
-        <item name="bottomSheetStyle">@style/AppBottomSheetModalStyle</item>
-        <item name="android:statusBarColor">@android:color/transparent</item>
-    </style>
-
-    <style name="AppBottomSheetModalStyle" parent="Widget.Design.BottomSheet.Modal">
-        <item name="android:background">@drawable/shape_bottom_sheet_top_corners</item>
-        <item name="behavior_peekHeight">420dp</item>
-    </style>
-
     <style name="AppThemeLightSearchAutoCompleteTextView" parent="Widget.AppCompat.Light.AutoCompleteTextView">
         <item name="android:textColor">@color/lightThemeTextColor</item>
         <item name="android:textColorHint">@color/lightThemeTextColor</item>

@@ -30,7 +30,6 @@
         <item name="hintColor">@android:color/system_accent1_300</item>
         <item name="colorControlActivated">@android:color/system_accent1_300</item>
         <item name="dividerColor">@android:color/system_accent2_600</item>
-        <item name="bottomSheetDialogTheme">@style/AppThemeDarkBottomSheetDialog</item>
         <item name="searchViewStyle">@style/AppSearchViewStyle</item>
         <item name="progressIndicatorColor">@android:color/system_accent1_300</item>
         <item name="fabColor">@android:color/system_accent1_300</item>
@@ -74,7 +73,6 @@
         <item name="popupMenuStyle">@style/AppThemeLightPopupMenuStyle</item>
         <item name="android:homeAsUpIndicator">@drawable/ic_arrow_back</item>
         <item name="autoCompleteTextViewStyle">@style/AppThemeLightSearchAutoCompleteTextView</item>
-        <item name="bottomSheetDialogTheme">@style/AppThemeLightBottomSheetDialog</item>
         <item name="searchViewStyle">@style/AppSearchViewStyle</item>
         <item name="android:actionOverflowButtonStyle">@style/customOverflowButtonStyle</item>
         <item name="actionOverflowMenuStyle">@style/customOverflowMenuStyle</item>
