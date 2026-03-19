@@ -61,7 +61,6 @@ public class MainActivity extends BaseActivity
 	private TinyDB tinyDB;
 	private NavController navController;
 	private boolean noConnection;
-	public static boolean refActivity;
 	public static boolean reloadRepos;
 	public static boolean closeActivity;
 
@@ -269,11 +268,6 @@ public class MainActivity extends BaseActivity
 		if (closeActivity) {
 			finishAndRemoveTask();
 			closeActivity = false;
-		}
-		if (refActivity) {
-			recreate();
-			refActivity = false;
-			overridePendingTransition(android.R.anim.fade_in, android.R.anim.fade_out);
 		}
 		if (DetailFragment.refProfile) {
 			loadUserInfo(

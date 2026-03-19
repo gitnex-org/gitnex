@@ -4,7 +4,7 @@ import androidx.annotation.NonNull;
 import java.io.Serializable;
 
 /**
- * @author M M Arif
+ * @author mmarif
  */
 public class MergePullRequestSpinner implements Serializable {
 

@@ -22,7 +22,7 @@ import org.mian.gitnex.databinding.FragmentSearchIssuesBinding;
 import org.mian.gitnex.viewmodels.IssuesViewModel;
 
 /**
- * @author M M Arif
+ * @author mmarif
  */
 public class ExploreIssuesFragment extends Fragment {
 

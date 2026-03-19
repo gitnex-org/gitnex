@@ -32,7 +32,7 @@ import org.mian.gitnex.helpers.TimeHelper;
 import org.mian.gitnex.helpers.Toasty;
 
 /**
- * @author M M Arif
+ * @author mmarif
  */
 public class NotesAdapter extends RecyclerView.Adapter<NotesAdapter.NotesViewHolder> {
 

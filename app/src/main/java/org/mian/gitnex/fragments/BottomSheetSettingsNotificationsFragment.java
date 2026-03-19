@@ -11,9 +11,9 @@ import com.google.android.material.bottomsheet.BottomSheetBehavior;
 import com.google.android.material.bottomsheet.BottomSheetDialog;
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment;
 import org.mian.gitnex.R;
-import org.mian.gitnex.activities.AppSettingsActivity;
 import org.mian.gitnex.databinding.BottomSheetSettingsNotificationsBinding;
 import org.mian.gitnex.helpers.AppDatabaseSettings;
+import org.mian.gitnex.helpers.AppUIStateManager;
 import org.mian.gitnex.helpers.AppUtil;
 import org.mian.gitnex.helpers.Toasty;
 import org.mian.gitnex.notifications.Notifications;
@@ -97,7 +97,7 @@ public class BottomSheetSettingsNotificationsFragment extends BottomSheetDialogF
 							Notifications.stopWorker(requireContext());
 							Notifications.startWorker(requireContext());
 
-							AppSettingsActivity.refreshParent = true;
+							AppUIStateManager.invalidateUI();
 							Toasty.show(requireContext(), getString(R.string.settingsSave));
 						}
 					}

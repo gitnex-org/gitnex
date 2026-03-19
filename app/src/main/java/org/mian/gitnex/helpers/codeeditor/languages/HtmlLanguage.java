@@ -9,7 +9,7 @@ import java.util.Set;
 import java.util.regex.Pattern;
 
 /**
- * @author M M Arif
+ * @author mmarif
  */
 public class HtmlLanguage extends Language {
 

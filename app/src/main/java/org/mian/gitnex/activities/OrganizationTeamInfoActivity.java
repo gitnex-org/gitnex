@@ -18,7 +18,7 @@ import org.mian.gitnex.helpers.AppDatabaseSettings;
 import org.mian.gitnex.helpers.ViewPager2Transformers;
 
 /**
- * @author M M Arif
+ * @author mmarif
  */
 public class OrganizationTeamInfoActivity extends BaseActivity {
 

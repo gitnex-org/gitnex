@@ -32,7 +32,7 @@ import retrofit2.Callback;
 import retrofit2.Response;
 
 /**
- * @author M M Arif
+ * @author mmarif
  */
 public class WikiListAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
 

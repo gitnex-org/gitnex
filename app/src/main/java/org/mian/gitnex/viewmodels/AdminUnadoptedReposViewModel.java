@@ -17,7 +17,7 @@ import retrofit2.Callback;
 import retrofit2.Response;
 
 /**
- * @author M M Arif
+ * @author mmarif
  * @author qwerty287
  */
 public class AdminUnadoptedReposViewModel extends ViewModel {

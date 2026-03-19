@@ -8,7 +8,7 @@ import androidx.annotation.NonNull;
 
 /**
  * @author AmrDeveloper
- * @author M M Arif
+ * @author mmarif
  */
 public class SourcePositionListener {
 

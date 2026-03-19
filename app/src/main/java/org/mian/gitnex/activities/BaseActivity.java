@@ -9,6 +9,7 @@ import java.util.Locale;
 import org.mian.gitnex.R;
 import org.mian.gitnex.core.MainApplication;
 import org.mian.gitnex.helpers.AppDatabaseSettings;
+import org.mian.gitnex.helpers.AppUIStateManager;
 import org.mian.gitnex.helpers.AppUtil;
 import org.mian.gitnex.helpers.TimeHelper;
 import org.mian.gitnex.helpers.TinyDB;
@@ -23,6 +24,7 @@ public abstract class BaseActivity extends AppCompatActivity {
 	protected TinyDB tinyDB;
 	protected Context ctx = this;
 	protected Context appCtx;
+	private int localUiVersion = AppUIStateManager.getUiVersion();
 
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
@@ -147,6 +149,12 @@ public abstract class BaseActivity extends AppCompatActivity {
 									this, AppDatabaseSettings.APP_BIOMETRIC_LIFE_CYCLE_KEY))) {
 				startActivity(new Intent(this, BiometricUnlock.class));
 			}
+		}
+
+		if (localUiVersion < AppUIStateManager.getUiVersion()) {
+			localUiVersion = AppUIStateManager.getUiVersion();
+			recreate();
+			overridePendingTransition(android.R.anim.fade_in, android.R.anim.fade_out);
 		}
 	}
 }

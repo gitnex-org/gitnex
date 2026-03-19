@@ -10,7 +10,7 @@ import java.util.regex.Pattern;
 
 /**
  * @author AmrDeveloper
- * @author M M Arif
+ * @author mmarif
  */
 public class JavaLanguage extends Language {
 

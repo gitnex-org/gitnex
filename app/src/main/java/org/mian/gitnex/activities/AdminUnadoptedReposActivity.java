@@ -17,7 +17,7 @@ import org.mian.gitnex.helpers.Constants;
 import org.mian.gitnex.viewmodels.AdminUnadoptedReposViewModel;
 
 /**
- * @author M M Arif
+ * @author mmarif
  * @author qwerty287
  */
 public class AdminUnadoptedReposActivity extends BaseActivity {

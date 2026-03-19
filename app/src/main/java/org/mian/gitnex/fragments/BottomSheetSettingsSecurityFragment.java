@@ -17,9 +17,9 @@ import java.io.File;
 import java.io.IOException;
 import org.apache.commons.io.FileUtils;
 import org.mian.gitnex.R;
-import org.mian.gitnex.activities.AppSettingsActivity;
 import org.mian.gitnex.databinding.BottomSheetSettingsSecurityBinding;
 import org.mian.gitnex.helpers.AppDatabaseSettings;
+import org.mian.gitnex.helpers.AppUIStateManager;
 import org.mian.gitnex.helpers.AppUtil;
 import org.mian.gitnex.helpers.Toasty;
 import org.mian.gitnex.helpers.ssl.MemorizingTrustManager;
@@ -138,7 +138,7 @@ public class BottomSheetSettingsSecurityFragment extends BottomSheetDialogFragme
 									requireContext(),
 									String.valueOf(newSelection),
 									AppDatabaseSettings.APP_DATA_CACHE_KEY);
-							AppSettingsActivity.refreshParent = true;
+							AppUIStateManager.invalidateUI();
 							Toasty.show(requireContext(), getString(R.string.settingsSave));
 						}
 					}
@@ -158,7 +158,7 @@ public class BottomSheetSettingsSecurityFragment extends BottomSheetDialogFragme
 									requireContext(),
 									String.valueOf(newSelection),
 									AppDatabaseSettings.APP_IMAGES_CACHE_KEY);
-							AppSettingsActivity.refreshParent = true;
+							AppUIStateManager.invalidateUI();
 							Toasty.show(requireContext(), getString(R.string.settingsSave));
 						}
 					}

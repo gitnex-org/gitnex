@@ -1,7 +1,7 @@
 package org.mian.gitnex.structs;
 
 /**
- * @author M M Arif
+ * @author mmarif
  * @author qwerty287
  */
 public interface FragmentRefreshListener {

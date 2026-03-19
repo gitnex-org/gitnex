@@ -14,7 +14,7 @@ import org.mian.gitnex.helpers.Constants;
 import org.mian.gitnex.viewmodels.AdminCronTasksViewModel;
 
 /**
- * @author M M Arif
+ * @author mmarif
  */
 public class AdminCronTasksActivity extends BaseActivity {
 

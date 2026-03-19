@@ -4,7 +4,7 @@ import android.view.View;
 import androidx.viewpager2.widget.ViewPager2;
 
 /**
- * @author M M Arif
+ * @author mmarif
  */
 public abstract class ViewPager2Transformers {
 

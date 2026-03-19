@@ -20,7 +20,7 @@ import org.mian.gitnex.activities.ProfileActivity;
 import org.mian.gitnex.helpers.AppUtil;
 
 /**
- * @author M M Arif
+ * @author mmarif
  */
 public class CollaboratorsAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
 

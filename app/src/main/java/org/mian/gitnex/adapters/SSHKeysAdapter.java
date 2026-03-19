@@ -11,7 +11,7 @@ import org.gitnex.tea4j.v2.models.PublicKey;
 import org.mian.gitnex.R;
 
 /**
- * @author M M Arif
+ * @author mmarif
  */
 public class SSHKeysAdapter extends RecyclerView.Adapter<SSHKeysAdapter.KeysViewHolder> {
 

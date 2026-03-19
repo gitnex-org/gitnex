@@ -6,7 +6,7 @@ import org.mian.gitnex.database.api.BaseApi;
 import org.mian.gitnex.database.models.AppSettings;
 
 /**
- * @author M M Arif
+ * @author mmarif
  */
 public class AppDatabaseSettings {
 

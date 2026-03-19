@@ -26,7 +26,7 @@ import org.mian.gitnex.helpers.ColorInverter;
 import org.mian.gitnex.helpers.contexts.RepositoryContext;
 
 /**
- * @author M M Arif
+ * @author mmarif
  */
 public class LabelsAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
 

@@ -23,7 +23,7 @@ import org.mian.gitnex.helpers.codeeditor.theme.Theme;
 
 /**
  * @author AmrDeveloper
- * @author M M Arif
+ * @author mmarif
  */
 public class CodeEditorActivity extends BaseActivity {
 

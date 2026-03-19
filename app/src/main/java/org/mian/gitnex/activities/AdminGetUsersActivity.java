@@ -21,7 +21,7 @@ import org.mian.gitnex.helpers.Constants;
 import org.mian.gitnex.viewmodels.AdminGetUsersViewModel;
 
 /**
- * @author M M Arif
+ * @author mmarif
  */
 public class AdminGetUsersActivity extends BaseActivity {
 

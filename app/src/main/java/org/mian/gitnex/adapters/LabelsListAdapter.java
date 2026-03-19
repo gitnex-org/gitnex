@@ -17,7 +17,7 @@ import org.gitnex.tea4j.v2.models.Label;
 import org.mian.gitnex.R;
 
 /**
- * @author M M Arif
+ * @author mmarif
  */
 public class LabelsListAdapter extends RecyclerView.Adapter<LabelsListAdapter.LabelsViewHolder> {
 

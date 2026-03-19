@@ -25,7 +25,7 @@ import org.mian.gitnex.helpers.Constants;
 import org.mian.gitnex.viewmodels.OrganizationsViewModel;
 
 /**
- * @author M M Arif
+ * @author mmarif
  */
 public class OrganizationsFragment extends Fragment {
 

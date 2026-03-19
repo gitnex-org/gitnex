@@ -49,7 +49,7 @@ import retrofit2.converter.gson.GsonConverterFactory;
 import retrofit2.converter.scalars.ScalarsConverterFactory;
 
 /**
- * @author M M Arif
+ * @author mmarif
  */
 public class RetrofitClient {
 

@@ -27,7 +27,7 @@ import org.mian.gitnex.helpers.Toasty;
 import org.mian.gitnex.helpers.contexts.RepositoryContext;
 
 /**
- * @author M M Arif
+ * @author mmarif
  */
 public class ReposListAdapter extends RecyclerView.Adapter<ReposListAdapter.ReposHolder>
 		implements Filterable {

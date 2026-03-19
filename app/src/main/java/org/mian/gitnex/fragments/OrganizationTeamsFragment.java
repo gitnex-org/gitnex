@@ -31,7 +31,7 @@ import org.mian.gitnex.databinding.FragmentOrganizationTeamsBinding;
 import org.mian.gitnex.viewmodels.TeamsByOrgViewModel;
 
 /**
- * @author M M Arif
+ * @author mmarif
  */
 public class OrganizationTeamsFragment extends Fragment {
 

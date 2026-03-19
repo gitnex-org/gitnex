@@ -13,7 +13,7 @@ import org.mian.gitnex.R;
 
 /**
  * @author AmrDeveloper
- * @author M M Arif
+ * @author mmarif
  */
 public class CustomCodeViewAdapter extends CodeViewAdapter {
 

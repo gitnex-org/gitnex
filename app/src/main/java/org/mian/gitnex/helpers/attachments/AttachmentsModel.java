@@ -3,7 +3,7 @@ package org.mian.gitnex.helpers.attachments;
 import android.net.Uri;
 
 /**
- * @author M M Arif
+ * @author mmarif
  */
 public class AttachmentsModel {
 

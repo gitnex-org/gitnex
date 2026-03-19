@@ -7,7 +7,7 @@ import org.mian.gitnex.database.dao.AppSettingsDao;
 import org.mian.gitnex.database.models.AppSettings;
 
 /**
- * @author M M Arif
+ * @author mmarif
  */
 public class AppSettingsApi extends BaseApi {
 

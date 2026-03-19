@@ -81,7 +81,7 @@ import retrofit2.Callback;
 import retrofit2.Response;
 
 /**
- * @author M M Arif
+ * @author mmarif
  */
 public class EditIssueActivity extends BaseActivity
 		implements AttachmentsAdapter.AttachmentsReceiverListener {

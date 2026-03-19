@@ -20,7 +20,7 @@ import org.gitnex.tea4j.v2.models.User;
 import org.mian.gitnex.R;
 
 /**
- * @author M M Arif
+ * @author mmarif
  */
 public class AssigneesListAdapter
 		extends RecyclerView.Adapter<AssigneesListAdapter.AssigneesViewHolder> {

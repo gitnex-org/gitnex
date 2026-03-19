@@ -24,7 +24,6 @@ import org.mian.gitnex.fragments.BottomSheetSettingsSecurityFragment;
 public class AppSettingsActivity extends BaseActivity {
 
 	private ActivityAppSettingsBinding binding;
-	public static boolean refreshParent = false;
 
 	@Override
 	public void onCreate(@Nullable Bundle savedInstanceState) {
@@ -189,11 +188,5 @@ public class AppSettingsActivity extends BaseActivity {
 	@Override
 	public void onResume() {
 		super.onResume();
-		if (refreshParent) {
-			refreshParent = false;
-			MainActivity.refActivity = true;
-			recreate();
-			overridePendingTransition(0, 0);
-		}
 	}
 }

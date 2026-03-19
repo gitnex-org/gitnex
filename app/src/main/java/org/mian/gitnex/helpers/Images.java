@@ -4,7 +4,7 @@ import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 
 /**
- * @author M M Arif
+ * @author mmarif
  */
 public class Images {
 

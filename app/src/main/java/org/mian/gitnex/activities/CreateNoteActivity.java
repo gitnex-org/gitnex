@@ -22,7 +22,7 @@ import org.mian.gitnex.databinding.ActivityCreateNoteBinding;
 import org.mian.gitnex.helpers.Markdown;
 
 /**
- * @author M M Arif
+ * @author mmarif
  */
 public class CreateNoteActivity extends BaseActivity {
 

@@ -30,7 +30,7 @@ import org.mian.gitnex.helpers.contexts.RepositoryContext;
 import org.mian.gitnex.viewmodels.MilestonesViewModel;
 
 /**
- * @author M M Arif
+ * @author mmarif
  */
 public class MilestonesFragment extends Fragment {
 

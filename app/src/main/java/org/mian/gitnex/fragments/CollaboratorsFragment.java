@@ -16,7 +16,7 @@ import org.mian.gitnex.helpers.contexts.RepositoryContext;
 import org.mian.gitnex.viewmodels.CollaboratorsViewModel;
 
 /**
- * @author M M Arif
+ * @author mmarif
  */
 public class CollaboratorsFragment extends Fragment {
 

@@ -58,7 +58,7 @@ import org.mian.gitnex.notifications.Notifications;
 import org.mian.gitnex.viewmodels.ReleasesViewModel;
 
 /**
- * @author M M Arif
+ * @author mmarif
  */
 public class ReleasesFragment extends Fragment {
 

@@ -31,7 +31,7 @@ import org.mian.gitnex.helpers.TinyDB;
 import org.mian.gitnex.helpers.Toasty;
 
 /**
- * @author M M Arif
+ * @author mmarif
  */
 public class MostVisitedReposFragment extends Fragment {
 

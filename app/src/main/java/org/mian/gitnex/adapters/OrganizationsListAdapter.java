@@ -25,7 +25,7 @@ import org.mian.gitnex.activities.OrganizationDetailActivity;
 import org.mian.gitnex.helpers.Markdown;
 
 /**
- * @author M M Arif
+ * @author mmarif
  */
 public class OrganizationsListAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder>
 		implements Filterable {

@@ -20,7 +20,7 @@ import org.mian.gitnex.helpers.contexts.RepositoryContext;
 import org.mian.gitnex.viewmodels.RepositoryForksViewModel;
 
 /**
- * @author M M Arif
+ * @author mmarif
  */
 public class RepoForksActivity extends BaseActivity {
 

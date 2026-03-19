@@ -19,7 +19,7 @@ import org.mian.gitnex.helpers.contexts.RepositoryContext;
 import org.mian.gitnex.viewmodels.LabelsViewModel;
 
 /**
- * @author M M Arif
+ * @author mmarif
  */
 public class LabelsFragment extends Fragment {
 

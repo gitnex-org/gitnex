@@ -28,7 +28,7 @@ import org.mian.gitnex.helpers.Toasty;
 import org.mian.gitnex.helpers.contexts.RepositoryContext;
 
 /**
- * @author M M Arif
+ * @author mmarif
  */
 public class MilestonesAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
 

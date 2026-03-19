@@ -26,7 +26,7 @@ import org.mian.gitnex.helpers.Toasty;
 import org.mian.gitnex.helpers.contexts.RepositoryContext;
 
 /**
- * @author M M Arif
+ * @author mmarif
  */
 public class MostVisitedReposAdapter
 		extends RecyclerView.Adapter<MostVisitedReposAdapter.MostVisitedViewHolder> {

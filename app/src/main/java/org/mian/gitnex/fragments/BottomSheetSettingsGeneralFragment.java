@@ -11,9 +11,9 @@ import com.google.android.material.bottomsheet.BottomSheetBehavior;
 import com.google.android.material.bottomsheet.BottomSheetDialog;
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment;
 import org.mian.gitnex.R;
-import org.mian.gitnex.activities.AppSettingsActivity;
 import org.mian.gitnex.databinding.BottomSheetSettingsGeneralBinding;
 import org.mian.gitnex.helpers.AppDatabaseSettings;
+import org.mian.gitnex.helpers.AppUIStateManager;
 import org.mian.gitnex.helpers.Toasty;
 
 /**
@@ -73,7 +73,7 @@ public class BottomSheetSettingsGeneralFragment extends BottomSheetDialogFragmen
 									requireContext(),
 									String.valueOf(newSelection),
 									AppDatabaseSettings.APP_HOME_SCREEN_KEY);
-							AppSettingsActivity.refreshParent = true;
+							AppUIStateManager.invalidateUI();
 							Toasty.show(requireContext(), getString(R.string.settingsSave));
 						}
 					}
@@ -89,7 +89,7 @@ public class BottomSheetSettingsGeneralFragment extends BottomSheetDialogFragmen
 									requireContext(),
 									String.valueOf(newSelection),
 									AppDatabaseSettings.APP_LINK_HANDLER_KEY);
-							AppSettingsActivity.refreshParent = true;
+							AppUIStateManager.invalidateUI();
 							Toasty.show(requireContext(), getString(R.string.settingsSave));
 						}
 					}

@@ -20,7 +20,7 @@ import org.mian.gitnex.helpers.Constants;
 import org.mian.gitnex.viewmodels.LabelsViewModel;
 
 /**
- * @author M M Arif
+ * @author mmarif
  */
 public class OrganizationLabelsFragment extends Fragment {
 

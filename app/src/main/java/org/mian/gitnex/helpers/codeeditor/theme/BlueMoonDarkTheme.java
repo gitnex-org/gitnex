@@ -5,7 +5,7 @@ import org.mian.gitnex.R;
 import org.mian.gitnex.helpers.codeeditor.languages.LanguageElement;
 
 /**
- * @author M M Arif
+ * @author mmarif
  */
 public class BlueMoonDarkTheme implements Theme {
 

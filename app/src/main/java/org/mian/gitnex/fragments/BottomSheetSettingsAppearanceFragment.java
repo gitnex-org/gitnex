@@ -18,9 +18,9 @@ import com.google.android.material.timepicker.MaterialTimePicker;
 import java.util.LinkedHashMap;
 import java.util.Locale;
 import org.mian.gitnex.R;
-import org.mian.gitnex.activities.AppSettingsActivity;
 import org.mian.gitnex.databinding.BottomSheetSettingsAppearanceBinding;
 import org.mian.gitnex.helpers.AppDatabaseSettings;
+import org.mian.gitnex.helpers.AppUIStateManager;
 import org.mian.gitnex.helpers.AppUtil;
 import org.mian.gitnex.helpers.Toasty;
 
@@ -196,7 +196,7 @@ public class BottomSheetSettingsAppearanceFragment extends BottomSheetDialogFrag
 									themeList[newSelection].startsWith("Auto")
 											? View.VISIBLE
 											: View.GONE);
-							AppSettingsActivity.refreshParent = true;
+							AppUIStateManager.invalidateUI();
 							dismiss();
 							requireActivity().recreate();
 							Toasty.show(requireContext(), getString(R.string.settingsSave));
@@ -221,7 +221,7 @@ public class BottomSheetSettingsAppearanceFragment extends BottomSheetDialogFrag
 									.postDelayed(
 											() -> {
 												AppUtil.typeface = null; // reset typeface
-												AppSettingsActivity.refreshParent = true;
+												AppUIStateManager.invalidateUI();
 												dismiss();
 												requireActivity().recreate();
 											},
@@ -241,7 +241,7 @@ public class BottomSheetSettingsAppearanceFragment extends BottomSheetDialogFrag
 									requireContext(),
 									String.valueOf(newSelection),
 									AppDatabaseSettings.APP_TABS_ANIMATION_KEY);
-							AppSettingsActivity.refreshParent = true;
+							AppUIStateManager.invalidateUI();
 							dismiss();
 							requireActivity().recreate();
 							Toasty.show(requireContext(), getString(R.string.settingsSave));
@@ -318,7 +318,7 @@ public class BottomSheetSettingsAppearanceFragment extends BottomSheetDialogFrag
 														requireContext(),
 														i + "|" + selectedLanguage,
 														AppDatabaseSettings.APP_LOCALE_KEY);
-												AppSettingsActivity.refreshParent = true;
+												AppUIStateManager.invalidateUI();
 												requireActivity().recreate();
 												dialog.dismiss();
 												Toasty.show(
@@ -359,7 +359,7 @@ public class BottomSheetSettingsAppearanceFragment extends BottomSheetDialogFrag
 							requireContext(),
 							String.valueOf(picker.getMinute()),
 							AppDatabaseSettings.APP_THEME_AUTO_LIGHT_MIN_KEY);
-					AppSettingsActivity.refreshParent = true;
+					AppUIStateManager.invalidateUI();
 					requireActivity().recreate();
 					String minuteStr =
 							picker.getMinute() < 10
@@ -402,7 +402,7 @@ public class BottomSheetSettingsAppearanceFragment extends BottomSheetDialogFrag
 							requireContext(),
 							String.valueOf(picker.getMinute()),
 							AppDatabaseSettings.APP_THEME_AUTO_DARK_MIN_KEY);
-					AppSettingsActivity.refreshParent = true;
+					AppUIStateManager.invalidateUI();
 					requireActivity().recreate();
 					String minuteStr =
 							picker.getMinute() < 10

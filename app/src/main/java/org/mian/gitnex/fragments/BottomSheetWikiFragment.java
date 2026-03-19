@@ -12,7 +12,7 @@ import org.mian.gitnex.databinding.BottomSheetWikiInListBinding;
 import org.mian.gitnex.structs.BottomSheetListener;
 
 /**
- * @author M M Arif
+ * @author mmarif
  */
 public class BottomSheetWikiFragment extends BottomSheetDialogFragment {
 

@@ -11,9 +11,9 @@ import com.google.android.material.bottomsheet.BottomSheetBehavior;
 import com.google.android.material.bottomsheet.BottomSheetDialog;
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment;
 import org.mian.gitnex.R;
-import org.mian.gitnex.activities.AppSettingsActivity;
 import org.mian.gitnex.databinding.BottomSheetSettingsCodeEditorBinding;
 import org.mian.gitnex.helpers.AppDatabaseSettings;
+import org.mian.gitnex.helpers.AppUIStateManager;
 import org.mian.gitnex.helpers.Toasty;
 
 /**
@@ -70,7 +70,7 @@ public class BottomSheetSettingsCodeEditorFragment extends BottomSheetDialogFrag
 									requireContext(),
 									String.valueOf(newSelection),
 									AppDatabaseSettings.APP_CE_SYNTAX_HIGHLIGHT_KEY);
-							AppSettingsActivity.refreshParent = true;
+							AppUIStateManager.invalidateUI();
 							Toasty.show(requireContext(), getString(R.string.settingsSave));
 						}
 					}
@@ -87,7 +87,7 @@ public class BottomSheetSettingsCodeEditorFragment extends BottomSheetDialogFrag
 									String.valueOf(newSelection),
 									AppDatabaseSettings.APP_CE_INDENTATION_KEY);
 							updateTabsWidthVisibility();
-							AppSettingsActivity.refreshParent = true;
+							AppUIStateManager.invalidateUI();
 							Toasty.show(requireContext(), getString(R.string.settingsSave));
 						}
 					}
@@ -103,7 +103,7 @@ public class BottomSheetSettingsCodeEditorFragment extends BottomSheetDialogFrag
 									requireContext(),
 									String.valueOf(newSelection),
 									AppDatabaseSettings.APP_CE_TABS_WIDTH_KEY);
-							AppSettingsActivity.refreshParent = true;
+							AppUIStateManager.invalidateUI();
 							Toasty.show(requireContext(), getString(R.string.settingsSave));
 						}
 					}

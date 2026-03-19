@@ -12,7 +12,7 @@ import org.mian.gitnex.databinding.BottomSheetUserProfileBinding;
 import org.mian.gitnex.structs.BottomSheetListener;
 
 /**
- * @author M M Arif
+ * @author mmarif
  * @author qwerty287
  */
 public class BottomSheetUserProfileFragment extends BottomSheetDialogFragment {

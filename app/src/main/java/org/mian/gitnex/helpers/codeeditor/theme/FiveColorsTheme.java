@@ -6,7 +6,7 @@ import org.mian.gitnex.helpers.codeeditor.languages.LanguageElement;
 
 /**
  * @author qwerty287
- * @author M M Arif
+ * @author mmarif
  */
 public class FiveColorsTheme implements Theme {
 

@@ -7,7 +7,7 @@ import org.mian.gitnex.database.dao.NotesDao;
 import org.mian.gitnex.database.models.Notes;
 
 /**
- * @author M M Arif
+ * @author mmarif
  */
 public class NotesApi extends BaseApi {
 

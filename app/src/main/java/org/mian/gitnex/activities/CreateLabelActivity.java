@@ -27,7 +27,7 @@ import retrofit2.Call;
 import retrofit2.Callback;
 
 /**
- * @author M M Arif
+ * @author mmarif
  */
 public class CreateLabelActivity extends BaseActivity {
 

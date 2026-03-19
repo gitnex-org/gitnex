@@ -16,7 +16,7 @@ import org.mian.gitnex.databinding.CustomPrUpdateStrategyDialogBinding;
 import org.mian.gitnex.helpers.contexts.RepositoryContext;
 
 /**
- * @author M M Arif
+ * @author mmarif
  */
 public class AlertDialogs {
 
