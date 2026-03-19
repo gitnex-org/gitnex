@@ -1,12 +1,10 @@
 package org.mian.gitnex.fragments;
 
 import android.content.Context;
-import android.graphics.Typeface;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
@@ -16,7 +14,6 @@ import com.google.android.material.tabs.TabLayout;
 import com.google.android.material.tabs.TabLayoutMediator;
 import org.mian.gitnex.R;
 import org.mian.gitnex.helpers.AppDatabaseSettings;
-import org.mian.gitnex.helpers.AppUtil;
 import org.mian.gitnex.helpers.ViewPager2Transformers;
 
 /**
@@ -27,7 +24,6 @@ public class AccountSettingsFragment extends Fragment {
 	public ViewPager2 viewPager;
 	private Context ctx;
 	private View view;
-	private Typeface myTypeface;
 
 	@Nullable @Override
 	public View onCreateView(
@@ -39,7 +35,6 @@ public class AccountSettingsFragment extends Fragment {
 
 		view = inflater.inflate(R.layout.fragment_account_settings, container, false);
 
-		myTypeface = AppUtil.getTypeface(ctx);
 		viewData();
 
 		return view;
@@ -71,25 +66,6 @@ public class AccountSettingsFragment extends Fragment {
 							viewPager,
 							(tab, position) -> tab.setText(tabTitles[position]))
 					.attach();
-
-			ViewGroup viewGroup = (ViewGroup) tabLayout.getChildAt(0);
-			int tabsCount_ = viewGroup.getChildCount();
-
-			for (int j = 0; j < tabsCount_; j++) {
-
-				ViewGroup vgTab = (ViewGroup) viewGroup.getChildAt(j);
-				int tabChildCount = vgTab.getChildCount();
-
-				for (int i = 0; i < tabChildCount; i++) {
-
-					View tabViewChild = vgTab.getChildAt(i);
-
-					if (tabViewChild instanceof TextView) {
-
-						((TextView) tabViewChild).setTypeface(myTypeface);
-					}
-				}
-			}
 		}
 	}
 

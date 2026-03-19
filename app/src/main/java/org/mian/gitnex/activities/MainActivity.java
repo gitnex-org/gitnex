@@ -272,8 +272,8 @@ public class MainActivity extends BaseActivity
 		}
 		if (refActivity) {
 			recreate();
-			overridePendingTransition(0, 0);
 			refActivity = false;
+			overridePendingTransition(android.R.anim.fade_in, android.R.anim.fade_out);
 		}
 		if (DetailFragment.refProfile) {
 			loadUserInfo(

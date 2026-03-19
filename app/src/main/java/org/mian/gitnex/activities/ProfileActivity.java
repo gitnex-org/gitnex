@@ -1,11 +1,9 @@
 package org.mian.gitnex.activities;
 
 import android.content.Intent;
-import android.graphics.Typeface;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
-import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 import androidx.annotation.NonNull;
@@ -27,7 +25,6 @@ import org.mian.gitnex.fragments.profile.OrganizationsFragment;
 import org.mian.gitnex.fragments.profile.RepositoriesFragment;
 import org.mian.gitnex.fragments.profile.StarredRepositoriesFragment;
 import org.mian.gitnex.helpers.AppDatabaseSettings;
-import org.mian.gitnex.helpers.AppUtil;
 import org.mian.gitnex.helpers.Toasty;
 import org.mian.gitnex.helpers.ViewPager2Transformers;
 import org.mian.gitnex.structs.BottomSheetListener;
@@ -36,7 +33,7 @@ import retrofit2.Callback;
 import retrofit2.Response;
 
 /**
- * @author M M Arif
+ * @author mmarif
  */
 public class ProfileActivity extends BaseActivity implements BottomSheetListener {
 
@@ -71,8 +68,6 @@ public class ProfileActivity extends BaseActivity implements BottomSheetListener
 		viewPager.setOffscreenPageLimit(1);
 		TabLayout tabLayout = findViewById(R.id.tabs);
 
-		Typeface myTypeface = AppUtil.getTypeface(this);
-		toolbarTitle.setTypeface(myTypeface);
 		toolbarTitle.setText(username);
 
 		viewPager.setAdapter(new ViewPagerAdapter(this));
@@ -99,17 +94,6 @@ public class ProfileActivity extends BaseActivity implements BottomSheetListener
 		int tabsCount = vg.getChildCount();
 
 		for (int j = 0; j < tabsCount; j++) {
-
-			ViewGroup vgTab = (ViewGroup) vg.getChildAt(j);
-			int tabChildCount = vgTab.getChildCount();
-
-			for (int i = 0; i < tabChildCount; i++) {
-				View tabViewChild = vgTab.getChildAt(i);
-				if (tabViewChild instanceof TextView) {
-					((TextView) tabViewChild).setTypeface(myTypeface);
-				}
-			}
-
 			if (!username.equals(getAccount().getAccount().getUserName())) {
 				checkFollowStatus();
 			}

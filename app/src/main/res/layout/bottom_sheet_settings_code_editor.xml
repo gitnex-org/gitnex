@@ -4,52 +4,29 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:background="?attr/primaryBackgroundColor"
     android:orientation="vertical"
-    android:paddingTop="@dimen/dimen6dp"
-    android:paddingBottom="@dimen/dimen12dp">
+    android:background="@android:color/transparent"
+    android:paddingHorizontal="@dimen/dimen24dp"
+    android:paddingBottom="@dimen/dimen32dp">
 
-    <LinearLayout
-        android:id="@+id/headerFrame"
+    <com.google.android.material.bottomsheet.BottomSheetDragHandleView
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:orientation="vertical"
-        android:padding="@dimen/dimen8dp">
+        android:layout_height="wrap_content" />
 
         <TextView
-            android:id="@+id/bottomSheetHeader"
-            android:layout_width="match_parent"
+            android:id="@+id/sheetTitle"
+            style="@style/TextAppearance.Material3.HeadlineSmall"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:gravity="center"
             android:text="@string/codeEditor"
-            android:textColor="?attr/primaryTextColor"
-            android:textSize="@dimen/dimen18sp"/>
-
-        <com.google.android.material.card.MaterialCardView
-            style="?attr/materialCardViewFilledStyle"
-            android:layout_width="@dimen/dimen28dp"
-            android:layout_height="@dimen/dimen4dp"
-            android:layout_gravity="center_horizontal"
-            android:layout_marginTop="@dimen/dimen8dp"
-            android:layout_marginBottom="@dimen/dimen16dp"
-            app:cardCornerRadius="@dimen/dimen24dp"
-            app:cardElevation="@dimen/dimen0dp">
-
-            <View
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:background="?attr/fabColor" />
-
-        </com.google.android.material.card.MaterialCardView>
-
-    </LinearLayout>
+            android:textStyle="bold"
+            android:textColor="?attr/primaryTextColor" />
 
     <LinearLayout
         android:id="@+id/ceColorSelectionFrame"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:paddingStart="@dimen/dimen16dp"
-        android:paddingEnd="@dimen/dimen16dp"
+        android:layout_marginTop="@dimen/dimen16dp"
         android:orientation="vertical">
 
         <TextView
@@ -90,9 +67,7 @@
         android:id="@+id/indentationSelectionFrame"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginTop="@dimen/dimen24dp"
-        android:paddingStart="@dimen/dimen16dp"
-        android:paddingEnd="@dimen/dimen16dp"
+        android:layout_marginTop="@dimen/dimen16dp"
         android:orientation="vertical">
 
         <TextView
@@ -133,9 +108,7 @@
         android:id="@+id/indentationTabsSelectionFrame"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginTop="@dimen/dimen24dp"
-        android:paddingStart="@dimen/dimen16dp"
-        android:paddingEnd="@dimen/dimen16dp"
+        android:layout_marginTop="@dimen/dimen16dp"
         android:orientation="vertical">
 
         <TextView

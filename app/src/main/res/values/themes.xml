@@ -237,4 +237,19 @@
         <item name="isDark">1</item>
     </style>
     <!-- Codeberg dark theme -->
+
+    <style name="FontManrope">
+        <item name="android:fontFamily">@font/manroperegular</item>
+        <item name="fontFamily">@font/manroperegular</item>
+    </style>
+
+    <style name="FontRoboto">
+        <item name="android:fontFamily">@font/roboto</item>
+        <item name="fontFamily">@font/roboto</item>
+    </style>
+
+    <style name="FontSourceCode">
+        <item name="android:fontFamily">@font/sourcecodeproregular</item>
+        <item name="fontFamily">@font/sourcecodeproregular</item>
+    </style>
 </resources>

@@ -23,6 +23,7 @@ import androidx.annotation.ColorInt;
 import androidx.browser.customtabs.CustomTabColorSchemeParams;
 import androidx.browser.customtabs.CustomTabsIntent;
 import androidx.core.content.pm.PackageInfoCompat;
+import androidx.core.content.res.ResourcesCompat;
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
@@ -640,30 +641,20 @@ public class AppUtil {
 	}
 
 	public static Typeface getTypeface(Context context) {
-
-		if (typeface == null) {
-			switch (Integer.parseInt(
-					AppDatabaseSettings.getSettingsValue(
-							context, AppDatabaseSettings.APP_FONT_KEY))) {
-				case 0:
-					typeface = Typeface.createFromAsset(context.getAssets(), "fonts/roboto.ttf");
-					break;
-				case 2:
-					typeface =
-							Typeface.createFromAsset(
-									context.getAssets(), "fonts/sourcecodeproregular.ttf");
-					break;
-				case 3:
-					typeface = Typeface.DEFAULT;
-					break;
-				default:
-					typeface =
-							Typeface.createFromAsset(
-									context.getAssets(), "fonts/manroperegular.ttf");
-					break;
-			}
+		int fontIndex =
+				Integer.parseInt(
+						AppDatabaseSettings.getSettingsValue(
+								context, AppDatabaseSettings.APP_FONT_KEY));
+		try {
+			return switch (fontIndex) {
+				case 0 -> ResourcesCompat.getFont(context, R.font.roboto);
+				case 2 -> ResourcesCompat.getFont(context, R.font.sourcecodeproregular);
+				case 3 -> Typeface.DEFAULT;
+				default -> ResourcesCompat.getFont(context, R.font.manroperegular);
+			};
+		} catch (Exception e) {
+			return Typeface.DEFAULT;
 		}
-		return typeface;
 	}
 
 	/** Pretty number format Example, 1200 = 1.2k */

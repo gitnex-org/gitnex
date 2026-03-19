@@ -15,7 +15,6 @@ import org.mian.gitnex.R;
 import org.mian.gitnex.database.models.UserAccount;
 import org.mian.gitnex.helpers.AppDatabaseSettings;
 import org.mian.gitnex.helpers.AppUtil;
-import org.mian.gitnex.helpers.FontsOverride;
 import org.mian.gitnex.helpers.TinyDB;
 import org.mian.gitnex.helpers.contexts.AccountContext;
 import org.mian.gitnex.notifications.Notifications;
@@ -47,8 +46,6 @@ public class MainApplication extends Application {
 
 		AppDatabaseSettings.updateSettingsValue(
 				getApplicationContext(), "false", AppDatabaseSettings.APP_BIOMETRIC_LIFE_CYCLE_KEY);
-
-		FontsOverride.setDefaultFont(getBaseContext());
 
 		Notifications.createChannels(appCtx);
 		DynamicColors.applyToActivitiesIfAvailable(this);

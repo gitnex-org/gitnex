@@ -4,65 +4,34 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="?attr/primaryBackgroundColor">
+    android:fillViewport="true">
 
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="vertical"
-        android:paddingTop="@dimen/dimen6dp"
-        android:paddingBottom="@dimen/dimen12dp">
+        android:background="@android:color/transparent"
+        android:paddingHorizontal="@dimen/dimen24dp"
+        android:paddingBottom="@dimen/dimen32dp">
 
-        <View
-            android:layout_width="@dimen/dimen32dp"
-            android:layout_height="@dimen/dimen6dp"
-            android:layout_gravity="center_horizontal"
-            android:layout_marginBottom="@dimen/dimen8dp"
-            android:background="@drawable/bottom_sheet_handle"
-            android:backgroundTint="?attr/primaryTextColor" />
-
-        <LinearLayout
-            android:id="@+id/headerFrame"
+        <com.google.android.material.bottomsheet.BottomSheetDragHandleView
             android:layout_width="match_parent"
+            android:layout_height="wrap_content" />
+
+        <TextView
+            android:id="@+id/sheetTitle"
+            style="@style/TextAppearance.Material3.HeadlineSmall"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:orientation="vertical"
-            android:padding="@dimen/dimen8dp">
-
-            <TextView
-                android:id="@+id/bottomSheetHeader"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:gravity="center"
-                android:text="@string/settingsGeneralHeader"
-                android:textColor="?attr/primaryTextColor"
-                android:textSize="@dimen/dimen18sp"/>
-
-            <com.google.android.material.card.MaterialCardView
-                style="?attr/materialCardViewFilledStyle"
-                android:layout_width="@dimen/dimen28dp"
-                android:layout_height="@dimen/dimen4dp"
-                android:layout_gravity="center_horizontal"
-                android:layout_marginTop="@dimen/dimen8dp"
-                android:layout_marginBottom="@dimen/dimen16dp"
-                app:cardCornerRadius="@dimen/dimen24dp"
-                app:cardElevation="@dimen/dimen0dp">
-
-                <View
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent"
-                    android:background="?attr/fabColor" />
-
-            </com.google.android.material.card.MaterialCardView>
-
-        </LinearLayout>
+            android:text="@string/settingsGeneralHeader"
+            android:textStyle="bold"
+            android:textColor="?attr/primaryTextColor" />
 
         <LinearLayout
             android:id="@+id/linkHandlerFrame"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginTop="@dimen/dimen24dp"
-            android:paddingStart="@dimen/dimen16dp"
-            android:paddingEnd="@dimen/dimen16dp"
+            android:layout_marginTop="@dimen/dimen16dp"
             android:orientation="vertical">
 
             <TextView
@@ -132,9 +101,7 @@
             android:id="@+id/homeScreenFrame"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginTop="@dimen/dimen24dp"
-            android:paddingStart="@dimen/dimen16dp"
-            android:paddingEnd="@dimen/dimen16dp"
+            android:layout_marginTop="@dimen/dimen16dp"
             android:orientation="vertical">
 
             <TextView
@@ -245,9 +212,7 @@
             android:id="@+id/customTabsFrame"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginTop="@dimen/dimen24dp"
-            android:paddingStart="@dimen/dimen16dp"
-            android:paddingEnd="@dimen/dimen16dp">
+            android:layout_marginTop="@dimen/dimen16dp">
 
             <TextView
                 android:id="@+id/customTabsHeader"
@@ -289,9 +254,7 @@
             android:id="@+id/urlPromptFrame"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginTop="@dimen/dimen24dp"
-            android:paddingStart="@dimen/dimen16dp"
-            android:paddingEnd="@dimen/dimen16dp">
+            android:layout_marginTop="@dimen/dimen16dp">
 
             <TextView
                 android:id="@+id/urlPromptHeader"
@@ -346,9 +309,7 @@
             android:id="@+id/enableSendReports"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginTop="@dimen/dimen24dp"
-            android:paddingStart="@dimen/dimen16dp"
-            android:paddingEnd="@dimen/dimen16dp">
+            android:layout_marginTop="@dimen/dimen16dp">
 
             <TextView
                 android:id="@+id/enableReportsHeader"

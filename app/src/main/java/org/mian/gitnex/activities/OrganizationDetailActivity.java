@@ -1,13 +1,10 @@
 package org.mian.gitnex.activities;
 
-import android.graphics.Typeface;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
-import android.view.View;
 import android.view.ViewGroup;
-import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentActivity;
@@ -37,7 +34,7 @@ import retrofit2.Callback;
 import retrofit2.Response;
 
 /**
- * @author M M Arif
+ * @author mmarif
  */
 public class OrganizationDetailActivity extends BaseActivity implements BottomSheetListener {
 
@@ -122,9 +119,6 @@ public class OrganizationDetailActivity extends BaseActivity implements BottomSh
 
 		ViewGroup vg = (ViewGroup) activityOrgDetailBinding.tabs.getChildAt(0);
 
-		Typeface myTypeface = AppUtil.getTypeface(ctx);
-
-		activityOrgDetailBinding.toolbarTitle.setTypeface(myTypeface);
 		activityOrgDetailBinding.toolbarTitle.setText(orgName);
 
 		viewPager.setAdapter(new OrganizationDetailActivity.ViewPagerAdapter(this));
@@ -151,19 +145,6 @@ public class OrganizationDetailActivity extends BaseActivity implements BottomSh
 						viewPager,
 						(tab, position) -> tab.setText(tabsList.get(position)))
 				.attach();
-
-		for (int j = 0; j < tabsList.size(); j++) {
-
-			ViewGroup vgTab = (ViewGroup) vg.getChildAt(j);
-			int tabChildCount = vgTab.getChildCount();
-
-			for (int i = 0; i < tabChildCount; i++) {
-				View tabViewChild = vgTab.getChildAt(i);
-				if (tabViewChild instanceof TextView) {
-					((TextView) tabViewChild).setTypeface(myTypeface);
-				}
-			}
-		}
 	}
 
 	public class ViewPagerAdapter extends FragmentStateAdapter {

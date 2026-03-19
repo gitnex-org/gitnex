@@ -6,6 +6,7 @@ import android.view.LayoutInflater;
 import android.view.ViewGroup;
 import android.widget.TextView;
 import androidx.annotation.NonNull;
+import androidx.core.content.res.ResourcesCompat;
 import androidx.recyclerview.widget.RecyclerView;
 import java.util.List;
 import org.mian.gitnex.R;
@@ -26,8 +27,8 @@ public class DiffAdapter extends RecyclerView.Adapter<DiffAdapter.ViewHolder> {
 		this.colorAdded = AppUtil.getColorFromAttribute(context, R.attr.diffAddedColor);
 		this.colorRemoved = AppUtil.getColorFromAttribute(context, R.attr.diffRemovedColor);
 		this.colorNormal = AppUtil.getColorFromAttribute(context, R.attr.primaryBackgroundColor);
-		this.typeface =
-				Typeface.createFromAsset(context.getAssets(), "fonts/sourcecodeproregular.ttf");
+		this.typeface = ResourcesCompat.getFont(context, R.font.sourcecodeproregular);
+		;
 	}
 
 	@NonNull @Override

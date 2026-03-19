@@ -54,11 +54,6 @@
             app:popUpTo="@id/homeDashboardFragment"
             app:popUpToInclusive="false" />
         <action
-            android:id="@+id/action_to_settings"
-            app:destination="@id/settingsFragment"
-            app:popUpTo="@id/homeDashboardFragment"
-            app:popUpToInclusive="false" />
-        <action
             android:id="@+id/action_to_activitiesFragment"
             app:destination="@id/activitiesFragment"
             app:popUpTo="@id/homeDashboardFragment"
@@ -124,11 +119,6 @@
         android:id="@+id/administrationFragment"
         android:name="org.mian.gitnex.fragments.AdministrationFragment"
         android:label="Administration" />
-
-    <fragment
-        android:id="@+id/settingsFragment"
-        android:name="org.mian.gitnex.fragments.SettingsFragment"
-        android:label="Settings" />
 
     <fragment
         android:id="@+id/activitiesFragment"

@@ -53,8 +53,7 @@
                 android:layout_weight="1"
                 android:textAppearance="?attr/textAppearanceBodyMedium"
                 android:textColor="?attr/colorOnSurface"
-                android:layout_marginEnd="@dimen/dimen4dp"
-                tools:text="M M Arif - mian" />
+                android:layout_marginEnd="@dimen/dimen4dp" />
 
             <!-- Tracked Time -->
             <TextView

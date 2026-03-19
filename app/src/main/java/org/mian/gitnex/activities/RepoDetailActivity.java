@@ -5,7 +5,6 @@ import android.app.Dialog;
 import android.content.Intent;
 import android.content.res.ColorStateList;
 import android.graphics.Color;
-import android.graphics.Typeface;
 import android.graphics.drawable.GradientDrawable;
 import android.os.Bundle;
 import android.view.LayoutInflater;
@@ -73,7 +72,7 @@ import retrofit2.Callback;
 import retrofit2.Response;
 
 /**
- * @author M M Arif
+ * @author mmarif
  */
 public class RepoDetailActivity extends BaseActivity implements BottomSheetListener {
 
@@ -95,7 +94,6 @@ public class RepoDetailActivity extends BaseActivity implements BottomSheetListe
 	private TextView textViewBadgeIssue;
 	private TextView textViewBadgePull;
 	private TextView textViewBadgeRelease;
-	private Typeface myTypeface;
 	private FragmentRefreshListener fragmentRefreshListener;
 	private FragmentRefreshListener fragmentRefreshListenerPr;
 	private FragmentRefreshListener fragmentRefreshListenerMilestone;
@@ -141,9 +139,6 @@ public class RepoDetailActivity extends BaseActivity implements BottomSheetListe
 		setSupportActionBar(toolbar);
 		Objects.requireNonNull(getSupportActionBar()).setTitle(repository.getName());
 		getSupportActionBar().setDisplayHomeAsUpEnabled(true);
-
-		myTypeface = AppUtil.getTypeface(this);
-		toolbarTitle.setTypeface(myTypeface);
 
 		getRepoInfo(repository.getOwner(), repository.getName());
 
@@ -682,40 +677,24 @@ public class RepoDetailActivity extends BaseActivity implements BottomSheetListe
 									ctx, AppDatabaseSettings.APP_TABS_ANIMATION_KEY)));
 
 			String[] tabTitles = {
-				ctx.getResources().getString(R.string.tabTextInfo),
-				ctx.getResources().getString(R.string.tabTextFiles),
-				ctx.getResources().getString(R.string.pageTitleIssues),
-				ctx.getResources().getString(R.string.tabPullRequests),
-				ctx.getResources().getString(R.string.tabTextReleases),
-				ctx.getResources().getString(R.string.wiki),
-				ctx.getResources().getString(R.string.tabTextMl),
-				ctx.getResources().getString(R.string.newIssueLabelsTitle),
-				ctx.getResources().getString(R.string.tabTextCollaborators)
+				getString(R.string.tabTextInfo),
+				getString(R.string.tabTextFiles),
+				getString(R.string.pageTitleIssues),
+				getString(R.string.tabPullRequests),
+				getString(R.string.tabTextReleases),
+				getString(R.string.wiki),
+				getString(R.string.tabTextMl),
+				getString(R.string.newIssueLabelsTitle),
+				getString(R.string.tabTextCollaborators)
 			};
+
 			new TabLayoutMediator(
 							tabLayout,
 							viewPager,
-							(tab, position) -> tab.setText(tabTitles[position]))
+							(tab, position) -> {
+								tab.setText(tabTitles[position]);
+							})
 					.attach();
-
-			ViewGroup viewGroup = (ViewGroup) tabLayout.getChildAt(0);
-			int tabsCount = viewGroup.getChildCount();
-
-			for (int j = 0; j < tabsCount; j++) {
-
-				ViewGroup vgTab = (ViewGroup) viewGroup.getChildAt(j);
-				int tabChildCount = vgTab.getChildCount();
-
-				for (int i = 0; i < tabChildCount; i++) {
-
-					View tabViewChild = vgTab.getChildAt(i);
-
-					if (tabViewChild instanceof TextView) {
-
-						((TextView) tabViewChild).setTypeface(myTypeface);
-					}
-				}
-			}
 		}
 
 		if (Boolean.parseBoolean(

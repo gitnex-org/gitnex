@@ -16,6 +16,7 @@ import com.google.android.material.bottomsheet.BottomSheetBehavior;
 import com.google.android.material.bottomsheet.BottomSheetDialog;
 import java.util.Calendar;
 import org.mian.gitnex.R;
+import org.mian.gitnex.activities.AppSettingsActivity;
 import org.mian.gitnex.activities.LoginActivity;
 import org.mian.gitnex.activities.MainActivity;
 import org.mian.gitnex.activities.ProfileActivity;
@@ -138,11 +139,18 @@ public class HomeDashboardFragment extends Fragment {
 
 	private void initClickListeners() {
 
-		binding.serverIcon.setOnClickListener(v -> showAccountsBottomSheet());
+		binding.serverIconCard.setOnClickListener(v -> showAccountsBottomSheet());
 
-		binding.refreshButton.setOnClickListener(v -> performRefresh());
+		binding.refreshButtonCard.setOnClickListener(v -> performRefresh());
 
-		binding.settingsCard.setOnClickListener(v -> navigateTo(R.id.action_to_settings));
+		binding.settingsCard.setOnClickListener(
+				v -> {
+					Intent intent = new Intent(requireContext(), AppSettingsActivity.class);
+					startActivity(intent);
+					requireActivity()
+							.overridePendingTransition(
+									android.R.anim.fade_in, android.R.anim.fade_out);
+				});
 		binding.repoStarredCard
 				.getRoot()
 				.setOnClickListener(v -> navigateTo(R.id.action_to_starredRepositories));

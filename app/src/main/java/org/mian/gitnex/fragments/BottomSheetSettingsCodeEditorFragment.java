@@ -1,13 +1,17 @@
 package org.mian.gitnex.fragments;
 
+import android.app.Dialog;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import com.google.android.material.bottomsheet.BottomSheetBehavior;
+import com.google.android.material.bottomsheet.BottomSheetDialog;
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment;
 import org.mian.gitnex.R;
+import org.mian.gitnex.activities.AppSettingsActivity;
 import org.mian.gitnex.databinding.BottomSheetSettingsCodeEditorBinding;
 import org.mian.gitnex.helpers.AppDatabaseSettings;
 import org.mian.gitnex.helpers.Toasty;
@@ -22,6 +26,12 @@ public class BottomSheetSettingsCodeEditorFragment extends BottomSheetDialogFrag
 	private static int indentationSelectedChoice;
 	private static int indentationTabsSelectedChoice;
 	private static String[] indentationList;
+
+	@Override
+	public void onCreate(@Nullable Bundle savedInstanceState) {
+		super.onCreate(savedInstanceState);
+		setStyle(STYLE_NORMAL, R.style.Custom_BottomSheet);
+	}
 
 	@Nullable @Override
 	public View onCreateView(
@@ -60,7 +70,7 @@ public class BottomSheetSettingsCodeEditorFragment extends BottomSheetDialogFrag
 									requireContext(),
 									String.valueOf(newSelection),
 									AppDatabaseSettings.APP_CE_SYNTAX_HIGHLIGHT_KEY);
-							SettingsFragment.refreshParent = true;
+							AppSettingsActivity.refreshParent = true;
 							Toasty.show(requireContext(), getString(R.string.settingsSave));
 						}
 					}
@@ -77,7 +87,7 @@ public class BottomSheetSettingsCodeEditorFragment extends BottomSheetDialogFrag
 									String.valueOf(newSelection),
 									AppDatabaseSettings.APP_CE_INDENTATION_KEY);
 							updateTabsWidthVisibility();
-							SettingsFragment.refreshParent = true;
+							AppSettingsActivity.refreshParent = true;
 							Toasty.show(requireContext(), getString(R.string.settingsSave));
 						}
 					}
@@ -93,7 +103,7 @@ public class BottomSheetSettingsCodeEditorFragment extends BottomSheetDialogFrag
 									requireContext(),
 									String.valueOf(newSelection),
 									AppDatabaseSettings.APP_CE_TABS_WIDTH_KEY);
-							SettingsFragment.refreshParent = true;
+							AppSettingsActivity.refreshParent = true;
 							Toasty.show(requireContext(), getString(R.string.settingsSave));
 						}
 					}
@@ -167,6 +177,24 @@ public class BottomSheetSettingsCodeEditorFragment extends BottomSheetDialogFrag
 						getString(R.string.ceIndentationTabs));
 		binding.indentationTabsSelectionFrame.setVisibility(
 				isTabsSelected ? View.VISIBLE : View.GONE);
+	}
+
+	@Override
+	public void onStart() {
+		super.onStart();
+		Dialog dialog = getDialog();
+		if (dialog instanceof BottomSheetDialog) {
+			View bottomSheet =
+					((BottomSheetDialog) dialog)
+							.findViewById(com.google.android.material.R.id.design_bottom_sheet);
+			if (bottomSheet != null) {
+				BottomSheetBehavior<View> behavior = BottomSheetBehavior.from(bottomSheet);
+				behavior.setFitToContents(true);
+				behavior.setSkipCollapsed(true);
+				behavior.setExpandedOffset(0);
+				behavior.setState(BottomSheetBehavior.STATE_EXPANDED);
+			}
+		}
 	}
 
 	@Override

@@ -17,6 +17,8 @@ import android.widget.TextView;
 import androidx.annotation.ColorInt;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.core.content.res.ResourcesCompat;
+import org.mian.gitnex.R;
 import org.mian.gitnex.core.MainGrammarLocator;
 import org.mian.gitnex.helpers.AppUtil;
 import org.mian.gitnex.helpers.codeeditor.markwon.SyntaxHighlighter;
@@ -55,9 +57,8 @@ public class SyntaxHighlightedArea extends LinearLayout {
 		sourceView.setLayoutParams(
 				new ViewGroup.LayoutParams(
 						ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT));
-		sourceView.setTypeface(
-				Typeface.createFromAsset(
-						getContext().getAssets(), "fonts/sourcecodeproregular.ttf"));
+		Typeface font = ResourcesCompat.getFont(getContext(), R.font.sourcecodeproregular);
+		sourceView.setTypeface(font);
 		sourceView.setTextSize(TypedValue.COMPLEX_UNIT_SP, 14);
 		sourceView.setTextColor(
 				getContext().getResources().getColor(theme.getDefaultColor(), null));

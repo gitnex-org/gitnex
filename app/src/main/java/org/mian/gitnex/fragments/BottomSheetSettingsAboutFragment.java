@@ -1,15 +1,19 @@
 package org.mian.gitnex.fragments;
 
+import android.app.Dialog;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import com.google.android.material.bottomsheet.BottomSheetBehavior;
+import com.google.android.material.bottomsheet.BottomSheetDialog;
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment;
 import org.mian.gitnex.R;
 import org.mian.gitnex.activities.BaseActivity;
 import org.mian.gitnex.databinding.BottomSheetSettingsAboutBinding;
+import org.mian.gitnex.databinding.ItemSettingsMoreAppsBinding;
 import org.mian.gitnex.helpers.AppUtil;
 
 /**
@@ -18,6 +22,12 @@ import org.mian.gitnex.helpers.AppUtil;
 public class BottomSheetSettingsAboutFragment extends BottomSheetDialogFragment {
 
 	private BottomSheetSettingsAboutBinding binding;
+
+	@Override
+	public void onCreate(@Nullable Bundle savedInstanceState) {
+		super.onCreate(savedInstanceState);
+		setStyle(STYLE_NORMAL, R.style.Custom_BottomSheet);
+	}
 
 	@Nullable @Override
 	public View onCreateView(
@@ -63,12 +73,50 @@ public class BottomSheetSettingsAboutFragment extends BottomSheetDialogFragment 
 					dismiss();
 				});
 
-		// Hide donation link for pro users
+		setupMiniApp(binding.appLabNex, "LabNex", R.drawable.app_labnex, "https://labnex.app");
+		setupMiniApp(
+				binding.appOceanNex,
+				"OceanNex",
+				R.drawable.app_oceannex,
+				"https://oceannex.swatian.com");
+		setupMiniApp(
+				binding.appNexNode,
+				"NexNode",
+				R.drawable.app_nexnode,
+				"https://nexnode.swatian.com");
+
 		if (AppUtil.isPro(requireContext())) {
-			binding.layoutFrame1.setVisibility(View.GONE);
+			binding.donationLinkPatreon.setVisibility(View.GONE);
 		}
 
 		return binding.getRoot();
+	}
+
+	private void setupMiniApp(
+			ItemSettingsMoreAppsBinding itemBinding, String name, int iconRes, String url) {
+		itemBinding.appName.setText(name);
+		itemBinding.appIcon.setImageResource(iconRes);
+		itemBinding
+				.getRoot()
+				.setOnClickListener(v -> AppUtil.openUrlInBrowser(requireContext(), url));
+	}
+
+	@Override
+	public void onStart() {
+		super.onStart();
+		Dialog dialog = getDialog();
+		if (dialog instanceof BottomSheetDialog) {
+			View bottomSheet =
+					((BottomSheetDialog) dialog)
+							.findViewById(com.google.android.material.R.id.design_bottom_sheet);
+			if (bottomSheet != null) {
+				BottomSheetBehavior<View> behavior = BottomSheetBehavior.from(bottomSheet);
+				behavior.setFitToContents(true);
+				behavior.setSkipCollapsed(true);
+				behavior.setExpandedOffset(0);
+				behavior.setState(BottomSheetBehavior.STATE_EXPANDED);
+			}
+		}
 	}
 
 	@Override

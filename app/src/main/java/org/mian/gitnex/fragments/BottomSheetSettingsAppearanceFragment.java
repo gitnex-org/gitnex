@@ -1,14 +1,16 @@
 package org.mian.gitnex.fragments;
 
+import android.app.Dialog;
 import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import com.google.android.material.bottomsheet.BottomSheetBehavior;
+import com.google.android.material.bottomsheet.BottomSheetDialog;
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment;
 import com.google.android.material.chip.Chip;
 import com.google.android.material.dialog.MaterialAlertDialogBuilder;
@@ -16,10 +18,10 @@ import com.google.android.material.timepicker.MaterialTimePicker;
 import java.util.LinkedHashMap;
 import java.util.Locale;
 import org.mian.gitnex.R;
+import org.mian.gitnex.activities.AppSettingsActivity;
 import org.mian.gitnex.databinding.BottomSheetSettingsAppearanceBinding;
 import org.mian.gitnex.helpers.AppDatabaseSettings;
 import org.mian.gitnex.helpers.AppUtil;
-import org.mian.gitnex.helpers.FontsOverride;
 import org.mian.gitnex.helpers.Toasty;
 
 /**
@@ -27,7 +29,6 @@ import org.mian.gitnex.helpers.Toasty;
  */
 public class BottomSheetSettingsAppearanceFragment extends BottomSheetDialogFragment {
 
-	private static final String TAG = "BottomSheetSettingsAppearance";
 	private BottomSheetSettingsAppearanceBinding binding;
 	private static int customFontSelectedChoice;
 	private static String[] themeList;
@@ -35,6 +36,12 @@ public class BottomSheetSettingsAppearanceFragment extends BottomSheetDialogFrag
 	private static int langSelectedChoice;
 	private static int fragmentTabsAnimationSelectedChoice;
 	private LinkedHashMap<String, String> lang;
+
+	@Override
+	public void onCreate(@Nullable Bundle savedInstanceState) {
+		super.onCreate(savedInstanceState);
+		setStyle(STYLE_NORMAL, R.style.Custom_BottomSheet);
+	}
 
 	@Nullable @Override
 	public View onCreateView(
@@ -173,10 +180,8 @@ public class BottomSheetSettingsAppearanceFragment extends BottomSheetDialogFrag
 
 		binding.themeChipGroup.setOnCheckedStateChangeListener(
 				(group, checkedIds) -> {
-					Log.d(TAG, "Theme chip checked: " + checkedIds);
 					if (checkedIds.size() == 1) {
 						int newSelection = getThemeChipPosition(checkedIds.get(0));
-						Log.d(TAG, "Theme new selection: " + newSelection);
 						if (newSelection != themeSelectedChoice) {
 							themeSelectedChoice = newSelection;
 							AppDatabaseSettings.updateSettingsValue(
@@ -191,7 +196,8 @@ public class BottomSheetSettingsAppearanceFragment extends BottomSheetDialogFrag
 									themeList[newSelection].startsWith("Auto")
 											? View.VISIBLE
 											: View.GONE);
-							SettingsFragment.refreshParent = true;
+							AppSettingsActivity.refreshParent = true;
+							dismiss();
 							requireActivity().recreate();
 							Toasty.show(requireContext(), getString(R.string.settingsSave));
 						}
@@ -203,10 +209,8 @@ public class BottomSheetSettingsAppearanceFragment extends BottomSheetDialogFrag
 
 		binding.customFontChipGroup.setOnCheckedStateChangeListener(
 				(group, checkedIds) -> {
-					Log.d(TAG, "Font chip checked: " + checkedIds);
 					if (checkedIds.size() == 1) {
 						int newSelection = getCustomFontChipPosition(checkedIds.get(0));
-						Log.d(TAG, "Font new selection: " + newSelection);
 						if (newSelection != customFontSelectedChoice) {
 							customFontSelectedChoice = newSelection;
 							AppDatabaseSettings.updateSettingsValue(
@@ -217,8 +221,8 @@ public class BottomSheetSettingsAppearanceFragment extends BottomSheetDialogFrag
 									.postDelayed(
 											() -> {
 												AppUtil.typeface = null; // reset typeface
-												FontsOverride.setDefaultFont(requireContext());
-												SettingsFragment.refreshParent = true;
+												AppSettingsActivity.refreshParent = true;
+												dismiss();
 												requireActivity().recreate();
 											},
 											1000);
@@ -229,17 +233,16 @@ public class BottomSheetSettingsAppearanceFragment extends BottomSheetDialogFrag
 
 		binding.fragmentTabsAnimationChipGroup.setOnCheckedStateChangeListener(
 				(group, checkedIds) -> {
-					Log.d(TAG, "Tabs animation chip checked: " + checkedIds);
 					if (checkedIds.size() == 1) {
 						int newSelection = getFragmentTabsAnimationChipPosition(checkedIds.get(0));
-						Log.d(TAG, "Tabs animation new selection: " + newSelection);
 						if (newSelection != fragmentTabsAnimationSelectedChoice) {
 							fragmentTabsAnimationSelectedChoice = newSelection;
 							AppDatabaseSettings.updateSettingsValue(
 									requireContext(),
 									String.valueOf(newSelection),
 									AppDatabaseSettings.APP_TABS_ANIMATION_KEY);
-							SettingsFragment.refreshParent = true;
+							AppSettingsActivity.refreshParent = true;
+							dismiss();
 							requireActivity().recreate();
 							Toasty.show(requireContext(), getString(R.string.settingsSave));
 						}
@@ -315,7 +318,7 @@ public class BottomSheetSettingsAppearanceFragment extends BottomSheetDialogFrag
 														requireContext(),
 														i + "|" + selectedLanguage,
 														AppDatabaseSettings.APP_LOCALE_KEY);
-												SettingsFragment.refreshParent = true;
+												AppSettingsActivity.refreshParent = true;
 												requireActivity().recreate();
 												dialog.dismiss();
 												Toasty.show(
@@ -356,7 +359,7 @@ public class BottomSheetSettingsAppearanceFragment extends BottomSheetDialogFrag
 							requireContext(),
 							String.valueOf(picker.getMinute()),
 							AppDatabaseSettings.APP_THEME_AUTO_LIGHT_MIN_KEY);
-					SettingsFragment.refreshParent = true;
+					AppSettingsActivity.refreshParent = true;
 					requireActivity().recreate();
 					String minuteStr =
 							picker.getMinute() < 10
@@ -399,7 +402,7 @@ public class BottomSheetSettingsAppearanceFragment extends BottomSheetDialogFrag
 							requireContext(),
 							String.valueOf(picker.getMinute()),
 							AppDatabaseSettings.APP_THEME_AUTO_DARK_MIN_KEY);
-					SettingsFragment.refreshParent = true;
+					AppSettingsActivity.refreshParent = true;
 					requireActivity().recreate();
 					String minuteStr =
 							picker.getMinute() < 10
@@ -453,6 +456,24 @@ public class BottomSheetSettingsAppearanceFragment extends BottomSheetDialogFrag
 		return String.format(
 				"%s (%s)",
 				translated.getDisplayName(translated), translated.getDisplayName(english));
+	}
+
+	@Override
+	public void onStart() {
+		super.onStart();
+		Dialog dialog = getDialog();
+		if (dialog instanceof BottomSheetDialog) {
+			View bottomSheet =
+					((BottomSheetDialog) dialog)
+							.findViewById(com.google.android.material.R.id.design_bottom_sheet);
+			if (bottomSheet != null) {
+				BottomSheetBehavior<View> behavior = BottomSheetBehavior.from(bottomSheet);
+				behavior.setFitToContents(true);
+				behavior.setSkipCollapsed(true);
+				behavior.setExpandedOffset(0);
+				behavior.setState(BottomSheetBehavior.STATE_EXPANDED);
+			}
+		}
 	}
 
 	@Override

@@ -5,7 +5,6 @@ import android.app.NotificationManager;
 import android.content.Context;
 import android.content.Intent;
 import android.graphics.Bitmap;
-import android.graphics.Typeface;
 import android.os.Bundle;
 import android.text.method.ScrollingMovementMethod;
 import android.util.TypedValue;
@@ -47,7 +46,7 @@ import retrofit2.Call;
 import retrofit2.Response;
 
 /**
- * @author M M Arif
+ * @author mmarif
  */
 public class FileViewActivity extends BaseActivity implements BottomSheetListener {
 
@@ -356,8 +355,6 @@ public class FileViewActivity extends BaseActivity implements BottomSheetListene
 																				.excludeFilesInFileViewer));
 														binding.markdownTv.setGravity(
 																Gravity.CENTER);
-														binding.markdownTv.setTypeface(
-																null, Typeface.BOLD);
 													});
 										}
 									} else {

@@ -6,6 +6,7 @@ import android.graphics.Color;
 import android.graphics.Typeface;
 import android.os.Bundle;
 import android.widget.ArrayAdapter;
+import androidx.core.content.res.ResourcesCompat;
 import com.amrdeveloper.codeview.Code;
 import java.util.HashMap;
 import java.util.List;
@@ -65,8 +66,8 @@ public class CodeEditorActivity extends BaseActivity {
 
 	private void configCodeView(Language currentLanguage, String fileContent) {
 
-		binding.codeView.setTypeface(
-				Typeface.createFromAsset(ctx.getAssets(), "fonts/sourcecodeproregular.ttf"));
+		Typeface font = ResourcesCompat.getFont(ctx, R.font.sourcecodeproregular);
+		binding.codeView.setTypeface(font);
 
 		// Setup Line number feature
 		binding.codeView.setEnableLineNumber(true);

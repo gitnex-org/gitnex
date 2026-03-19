@@ -1,13 +1,17 @@
 package org.mian.gitnex.fragments;
 
+import android.app.Dialog;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import com.google.android.material.bottomsheet.BottomSheetBehavior;
+import com.google.android.material.bottomsheet.BottomSheetDialog;
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment;
 import org.mian.gitnex.R;
+import org.mian.gitnex.activities.AppSettingsActivity;
 import org.mian.gitnex.databinding.BottomSheetSettingsNotificationsBinding;
 import org.mian.gitnex.helpers.AppDatabaseSettings;
 import org.mian.gitnex.helpers.AppUtil;
@@ -21,6 +25,12 @@ public class BottomSheetSettingsNotificationsFragment extends BottomSheetDialogF
 
 	private BottomSheetSettingsNotificationsBinding binding;
 	private static int pollingDelayListSelectedChoice;
+
+	@Override
+	public void onCreate(@Nullable Bundle savedInstanceState) {
+		super.onCreate(savedInstanceState);
+		setStyle(STYLE_NORMAL, R.style.Custom_BottomSheet);
+	}
 
 	@Nullable @Override
 	public View onCreateView(
@@ -70,21 +80,26 @@ public class BottomSheetSettingsNotificationsFragment extends BottomSheetDialogF
 								!binding.enableNotificationsMode.isChecked()));
 
 		// Polling delay selection
-		binding.pollingDelayChipGroup.setOnCheckedChangeListener(
-				(group, checkedId) -> {
-					int newSelection = getChipPosition(checkedId);
-					if (newSelection != pollingDelayListSelectedChoice) {
-						pollingDelayListSelectedChoice = newSelection;
-						AppDatabaseSettings.updateSettingsValue(
-								requireContext(),
-								String.valueOf(newSelection),
-								AppDatabaseSettings.APP_NOTIFICATIONS_DELAY_KEY);
+		binding.pollingDelayChipGroup.setOnCheckedStateChangeListener(
+				(group, checkedIds) -> {
+					if (!checkedIds.isEmpty()) {
+						int checkedId = checkedIds.get(0);
+						int newSelection = getChipPosition(checkedId);
 
-						Notifications.stopWorker(requireContext());
-						Notifications.startWorker(requireContext());
+						if (newSelection != pollingDelayListSelectedChoice) {
+							pollingDelayListSelectedChoice = newSelection;
 
-						SettingsFragment.refreshParent = true;
-						Toasty.show(requireContext(), getString(R.string.settingsSave));
+							AppDatabaseSettings.updateSettingsValue(
+									requireContext(),
+									String.valueOf(newSelection),
+									AppDatabaseSettings.APP_NOTIFICATIONS_DELAY_KEY);
+
+							Notifications.stopWorker(requireContext());
+							Notifications.startWorker(requireContext());
+
+							AppSettingsActivity.refreshParent = true;
+							Toasty.show(requireContext(), getString(R.string.settingsSave));
+						}
 					}
 				});
 
@@ -114,6 +129,24 @@ public class BottomSheetSettingsNotificationsFragment extends BottomSheetDialogF
 		if (checkedId == R.id.chip45Minutes) return 2;
 		if (checkedId == R.id.chip1Hour) return 3;
 		return pollingDelayListSelectedChoice; // Fallback to current selection
+	}
+
+	@Override
+	public void onStart() {
+		super.onStart();
+		Dialog dialog = getDialog();
+		if (dialog instanceof BottomSheetDialog) {
+			View bottomSheet =
+					((BottomSheetDialog) dialog)
+							.findViewById(com.google.android.material.R.id.design_bottom_sheet);
+			if (bottomSheet != null) {
+				BottomSheetBehavior<View> behavior = BottomSheetBehavior.from(bottomSheet);
+				behavior.setFitToContents(true);
+				behavior.setSkipCollapsed(true);
+				behavior.setExpandedOffset(0);
+				behavior.setState(BottomSheetBehavior.STATE_EXPANDED);
+			}
+		}
 	}
 
 	@Override

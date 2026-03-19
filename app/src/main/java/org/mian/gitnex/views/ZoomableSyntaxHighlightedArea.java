@@ -13,8 +13,10 @@ import android.widget.HorizontalScrollView;
 import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.core.content.res.ResourcesCompat;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
+import org.mian.gitnex.R;
 import org.mian.gitnex.core.MainGrammarLocator;
 import org.mian.gitnex.helpers.AppUtil;
 import org.mian.gitnex.helpers.codeeditor.markwon.SyntaxHighlighter;
@@ -53,9 +55,8 @@ public class ZoomableSyntaxHighlightedArea extends SyntaxHighlightedArea {
 		zoomableTextView = new ZoomableTextView(getContext());
 		zoomableTextView.setLayoutParams(
 				new LayoutParams(LayoutParams.WRAP_CONTENT, LayoutParams.WRAP_CONTENT));
-		zoomableTextView.setTypeface(
-				Typeface.createFromAsset(
-						getContext().getAssets(), "fonts/sourcecodeproregular.ttf"));
+		Typeface font = ResourcesCompat.getFont(getContext(), R.font.sourcecodeproregular);
+		zoomableTextView.setTypeface(font);
 		zoomableTextView.setTextSize(TypedValue.COMPLEX_UNIT_SP, 14);
 		zoomableTextView.setTextColor(
 				getContext().getResources().getColor(theme.getDefaultColor(), null));

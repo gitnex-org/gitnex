@@ -5,7 +5,6 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.res.ColorStateList;
 import android.graphics.Color;
-import android.graphics.Typeface;
 import android.os.Handler;
 import android.view.Gravity;
 import android.view.LayoutInflater;
@@ -42,7 +41,7 @@ import org.mian.gitnex.helpers.Toasty;
 import org.mian.gitnex.helpers.contexts.IssueContext;
 
 /**
- * @author M M Arif
+ * @author mmarif
  */
 public class PullRequestsAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
 
@@ -199,8 +198,6 @@ public class PullRequestsAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
 							LinearLayout.LayoutParams.WRAP_CONTENT);
 			params.setMargins(0, 0, 15, 0);
 
-			Typeface typeface = AppUtil.getTypeface(context);
-
 			if (pullRequest.getLabels() != null) {
 
 				if (!Boolean.parseBoolean(
@@ -224,7 +221,6 @@ public class PullRequestsAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
 						TextDrawable drawable =
 								TextDrawable.builder()
 										.beginConfig()
-										.useFont(typeface)
 										.width(54)
 										.height(54)
 										.endConfig()
@@ -256,13 +252,11 @@ public class PullRequestsAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
 						TextDrawable drawable =
 								TextDrawable.builder()
 										.beginConfig()
-										.useFont(typeface)
 										.textColor(new ColorInverter().getContrastColor(color))
 										.fontSize(textSize)
 										.width(
 												LabelWidthCalculator.calculateLabelWidth(
 														labelName,
-														typeface,
 														textSize,
 														AppUtil.getPixelsFromDensity(context, 8)))
 										.height(height)

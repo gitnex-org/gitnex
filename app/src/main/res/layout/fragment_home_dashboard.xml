@@ -54,6 +54,8 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:textAppearance="@style/TextAppearance.Material3.TitleLarge"
+                    android:maxLines="1"
+                    android:ellipsize="end"
                     android:textStyle="bold"
                     android:includeFontPadding="false" />
 
@@ -172,6 +174,7 @@
                     app:layout_constraintTop_toTopOf="parent">
 
                     <com.google.android.material.card.MaterialCardView
+                        android:id="@+id/serverIconCard"
                         android:layout_width="@dimen/dimen40dp"
                         android:layout_height="@dimen/dimen40dp"
                         android:layout_marginEnd="@dimen/dimen8dp"
@@ -192,6 +195,7 @@
                     </com.google.android.material.card.MaterialCardView>
 
                     <com.google.android.material.card.MaterialCardView
+                        android:id="@+id/refreshButtonCard"
                         android:layout_width="@dimen/dimen40dp"
                         android:layout_height="@dimen/dimen40dp"
                         app:cardBackgroundColor="?attr/primaryBackgroundColor"

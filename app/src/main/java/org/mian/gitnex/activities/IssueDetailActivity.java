@@ -7,7 +7,6 @@ import android.content.Intent;
 import android.content.res.ColorStateList;
 import android.graphics.Bitmap;
 import android.graphics.Color;
-import android.graphics.Typeface;
 import android.graphics.drawable.Drawable;
 import android.net.Uri;
 import android.os.Build;
@@ -118,7 +117,7 @@ import retrofit2.Callback;
 import retrofit2.Response;
 
 /**
- * @author M M Arif
+ * @author mmarif
  */
 public class IssueDetailActivity extends BaseActivity
 		implements LabelsListAdapter.LabelsListAdapterListener,
@@ -126,7 +125,6 @@ public class IssueDetailActivity extends BaseActivity
 				BottomSheetListener,
 				AttachmentsAdapter.AttachmentsReceiverListener {
 
-	private Typeface myTypeface;
 	public static boolean singleIssueUpdate = false;
 	public static boolean commentPosted = false;
 	private final List<Label> labelsList = new ArrayList<>();
@@ -387,8 +385,6 @@ public class IssueDetailActivity extends BaseActivity
 										},
 										50));
 
-		myTypeface = AppUtil.getTypeface(this);
-		viewBinding.toolbarTitle.setTypeface(myTypeface);
 		viewBinding.toolbarTitle.setText(repoName);
 
 		getSingleIssue(repoOwner, repoName, issueIndex);
@@ -1428,13 +1424,11 @@ public class IssueDetailActivity extends BaseActivity
 				TextDrawable drawable =
 						TextDrawable.builder()
 								.beginConfig()
-								.useFont(myTypeface)
 								.textColor(new ColorInverter().getContrastColor(color))
 								.fontSize(textSize)
 								.width(
 										LabelWidthCalculator.calculateLabelWidth(
 												labelName,
-												myTypeface,
 												textSize,
 												AppUtil.getPixelsFromDensity(ctx, 10)))
 								.height(height)

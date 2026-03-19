@@ -4,65 +4,34 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="?attr/primaryBackgroundColor">
+    android:fillViewport="true">
 
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="vertical"
-        android:paddingTop="@dimen/dimen6dp"
-        android:paddingBottom="@dimen/dimen12dp">
+        android:background="@android:color/transparent"
+        android:paddingHorizontal="@dimen/dimen24dp"
+        android:paddingBottom="@dimen/dimen32dp">
 
-        <View
-            android:layout_width="@dimen/dimen32dp"
-            android:layout_height="@dimen/dimen6dp"
-            android:layout_gravity="center_horizontal"
-            android:layout_marginBottom="@dimen/dimen8dp"
-            android:background="@drawable/bottom_sheet_handle"
-            android:backgroundTint="?attr/primaryTextColor" />
-
-        <LinearLayout
-            android:id="@+id/headerFrame"
+        <com.google.android.material.bottomsheet.BottomSheetDragHandleView
             android:layout_width="match_parent"
+            android:layout_height="wrap_content" />
+
+        <TextView
+            android:id="@+id/sheetTitle"
+            style="@style/TextAppearance.Material3.HeadlineSmall"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:orientation="vertical"
-            android:padding="@dimen/dimen8dp">
-
-            <TextView
-                android:id="@+id/bottomSheetHeader"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:gravity="center"
-                android:text="@string/settingsAppearanceHeader"
-                android:textColor="?attr/primaryTextColor"
-                android:textSize="@dimen/dimen18sp"/>
-
-            <com.google.android.material.card.MaterialCardView
-                style="?attr/materialCardViewFilledStyle"
-                android:layout_width="@dimen/dimen28dp"
-                android:layout_height="@dimen/dimen4dp"
-                android:layout_gravity="center_horizontal"
-                android:layout_marginTop="@dimen/dimen8dp"
-                android:layout_marginBottom="@dimen/dimen16dp"
-                app:cardCornerRadius="@dimen/dimen24dp"
-                app:cardElevation="@dimen/dimen0dp">
-
-                <View
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent"
-                    android:background="?attr/fabColor" />
-
-            </com.google.android.material.card.MaterialCardView>
-
-        </LinearLayout>
+            android:text="@string/settingsAppearanceHeader"
+            android:textStyle="bold"
+            android:textColor="?attr/primaryTextColor" />
 
         <LinearLayout
             android:id="@+id/themeSelectionFrame"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginTop="@dimen/dimen24dp"
-            android:paddingStart="@dimen/dimen16dp"
-            android:paddingEnd="@dimen/dimen16dp"
+            android:layout_marginTop="@dimen/dimen16dp"
             android:orientation="vertical">
 
             <TextView
@@ -87,9 +56,7 @@
             android:id="@+id/lightThemeTimeSelectionFrame"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginTop="@dimen/dimen24dp"
-            android:paddingStart="@dimen/dimen16dp"
-            android:paddingEnd="@dimen/dimen16dp"
+            android:layout_marginTop="@dimen/dimen16dp"
             android:orientation="vertical"
             android:visibility="gone">
 
@@ -116,9 +83,7 @@
             android:id="@+id/darkThemeTimeSelectionFrame"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginTop="@dimen/dimen24dp"
-            android:paddingStart="@dimen/dimen16dp"
-            android:paddingEnd="@dimen/dimen16dp"
+            android:layout_marginTop="@dimen/dimen16dp"
             android:orientation="vertical"
             android:visibility="gone">
 
@@ -145,9 +110,7 @@
             android:id="@+id/customFontFrame"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginTop="@dimen/dimen24dp"
-            android:paddingStart="@dimen/dimen16dp"
-            android:paddingEnd="@dimen/dimen16dp"
+            android:layout_marginTop="@dimen/dimen16dp"
             android:orientation="vertical">
 
             <TextView
@@ -172,9 +135,7 @@
             android:id="@+id/fragmentTabsAnimationFrame"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginTop="@dimen/dimen24dp"
-            android:paddingStart="@dimen/dimen16dp"
-            android:paddingEnd="@dimen/dimen16dp"
+            android:layout_marginTop="@dimen/dimen16dp"
             android:orientation="vertical">
 
             <TextView
@@ -200,9 +161,7 @@
             android:id="@+id/counterBadgeFrame"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginTop="@dimen/dimen24dp"
-            android:paddingStart="@dimen/dimen16dp"
-            android:paddingEnd="@dimen/dimen16dp">
+            android:layout_marginTop="@dimen/dimen16dp">
 
             <TextView
                 android:id="@+id/tvCounterBadgeHeader"
@@ -245,9 +204,7 @@
             android:id="@+id/labelsInListFrame"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginTop="@dimen/dimen24dp"
-            android:paddingStart="@dimen/dimen16dp"
-            android:paddingEnd="@dimen/dimen16dp">
+            android:layout_marginTop="@dimen/dimen16dp">
 
             <TextView
                 android:id="@+id/tvLabelsInListHeader"
@@ -302,9 +259,7 @@
             android:id="@+id/hideEmailLangInProfileFrame"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginTop="@dimen/dimen24dp"
-            android:paddingStart="@dimen/dimen16dp"
-            android:paddingEnd="@dimen/dimen16dp">
+            android:layout_marginTop="@dimen/dimen16dp">
 
             <TextView
                 android:id="@+id/tvHideEmailLangInProfileHeader"
@@ -359,9 +314,7 @@
             android:id="@+id/hideEmailNavDrawerFrame"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginTop="@dimen/dimen24dp"
-            android:paddingStart="@dimen/dimen16dp"
-            android:paddingEnd="@dimen/dimen16dp">
+            android:layout_marginTop="@dimen/dimen16dp">
 
             <TextView
                 android:id="@+id/tvHideEmailNavDrawerHeader"
@@ -415,9 +368,7 @@
             android:id="@+id/langFrame"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginTop="@dimen/dimen24dp"
-            android:paddingStart="@dimen/dimen16dp"
-            android:paddingEnd="@dimen/dimen16dp"
+            android:layout_marginTop="@dimen/dimen16dp"
             android:orientation="vertical">
 
             <TextView
@@ -443,10 +394,8 @@
             android:id="@+id/helpTranslate"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginTop="@dimen/dimen24dp"
+            android:layout_marginTop="@dimen/dimen16dp"
             android:layout_marginBottom="@dimen/dimen16dp"
-            android:layout_marginStart="@dimen/dimen16dp"
-            android:layout_marginEnd="@dimen/dimen16dp"
             android:background="?android:attr/selectableItemBackground"
             android:text="@string/settingsHelpTranslateText"
             android:textColor="@color/lightBlue"

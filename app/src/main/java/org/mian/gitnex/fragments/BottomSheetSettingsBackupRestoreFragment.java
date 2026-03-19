@@ -1,6 +1,7 @@
 package org.mian.gitnex.fragments;
 
 import android.app.Activity;
+import android.app.Dialog;
 import android.content.Context;
 import android.content.Intent;
 import android.net.Uri;
@@ -12,6 +13,8 @@ import androidx.activity.result.ActivityResultLauncher;
 import androidx.activity.result.contract.ActivityResultContracts;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import com.google.android.material.bottomsheet.BottomSheetBehavior;
+import com.google.android.material.bottomsheet.BottomSheetDialog;
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment;
 import java.io.File;
 import java.io.FileNotFoundException;
@@ -40,6 +43,12 @@ public class BottomSheetSettingsBackupRestoreFragment extends BottomSheetDialogF
 	private final String DATABASE_NAME = "gitnex";
 	private String BACKUP_DATABASE_NAME;
 
+	@Override
+	public void onCreate(@Nullable Bundle savedInstanceState) {
+		super.onCreate(savedInstanceState);
+		setStyle(STYLE_NORMAL, R.style.Custom_BottomSheet);
+	}
+
 	@Nullable @Override
 	public View onCreateView(
 			@NonNull LayoutInflater inflater,
@@ -53,7 +62,7 @@ public class BottomSheetSettingsBackupRestoreFragment extends BottomSheetDialogF
 		binding.backupButton.setOnClickListener(v -> requestBackupFileDownload());
 		binding.restoreButton.setOnClickListener(v -> requestRestoreFile());
 
-		binding.bottomSheetHeader.setText(
+		binding.sheetTitle.setText(
 				getString(
 						R.string.backupRestore,
 						getString(R.string.backup),
@@ -233,6 +242,24 @@ public class BottomSheetSettingsBackupRestoreFragment extends BottomSheetDialogF
 		assert i != null;
 		startActivity(Intent.makeRestartActivityTask(i.getComponent()));
 		Runtime.getRuntime().exit(0);
+	}
+
+	@Override
+	public void onStart() {
+		super.onStart();
+		Dialog dialog = getDialog();
+		if (dialog instanceof BottomSheetDialog) {
+			View bottomSheet =
+					((BottomSheetDialog) dialog)
+							.findViewById(com.google.android.material.R.id.design_bottom_sheet);
+			if (bottomSheet != null) {
+				BottomSheetBehavior<View> behavior = BottomSheetBehavior.from(bottomSheet);
+				behavior.setFitToContents(true);
+				behavior.setSkipCollapsed(true);
+				behavior.setExpandedOffset(0);
+				behavior.setState(BottomSheetBehavior.STATE_EXPANDED);
+			}
+		}
 	}
 
 	@Override

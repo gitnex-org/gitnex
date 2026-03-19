@@ -10,7 +10,6 @@ import android.content.Context;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.Color;
-import android.graphics.Typeface;
 import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.os.Handler;
@@ -460,20 +459,17 @@ public class IssueCommentsAdapter extends RecyclerView.Adapter<RecyclerView.View
 
 		private SpannableString createLabelSpannable(
 				String text, TimelineComment timelineComment, int color) {
-			Typeface typeface = AppUtil.getTypeface(context);
 			int height = AppUtil.getPixelsFromDensity(context, 20);
 			int textSize = AppUtil.getPixelsFromScaledDensity(context, 12);
 
 			TextDrawable drawable =
 					TextDrawable.builder()
 							.beginConfig()
-							.useFont(typeface)
 							.textColor(new ColorInverter().getContrastColor(color))
 							.fontSize(textSize)
 							.width(
 									LabelWidthCalculator.calculateLabelWidth(
 											timelineComment.getLabel().getName(),
-											typeface,
 											textSize,
 											AppUtil.getPixelsFromDensity(context, 10)))
 							.height(height)
