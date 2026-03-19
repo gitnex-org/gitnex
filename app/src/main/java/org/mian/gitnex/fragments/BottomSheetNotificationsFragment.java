@@ -1,39 +1,38 @@
 package org.mian.gitnex.fragments;
 
-import android.content.Context;
+import android.app.Dialog;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.lifecycle.ViewModelProvider;
+import com.google.android.material.bottomsheet.BottomSheetBehavior;
+import com.google.android.material.bottomsheet.BottomSheetDialog;
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment;
 import org.gitnex.tea4j.v2.models.NotificationThread;
-import org.mian.gitnex.clients.RetrofitClient;
+import org.mian.gitnex.R;
 import org.mian.gitnex.databinding.BottomSheetNotificationsBinding;
-import org.mian.gitnex.helpers.AppUtil;
-import org.mian.gitnex.helpers.SimpleCallback;
+import org.mian.gitnex.viewmodels.NotificationsViewModel;
 
 /**
  * @author opyale
+ * @author mmarif
  */
 public class BottomSheetNotificationsFragment extends BottomSheetDialogFragment {
 
-	private Context context;
-	private NotificationThread notificationThread;
-	private Runnable onOptionSelectedListener;
+	private NotificationThread thread;
+	private NotificationsViewModel viewModel;
 
-	public void onAttach(
-			Context context,
-			NotificationThread notificationThread,
-			Runnable onOptionSelectedListener) {
+	@Override
+	public void onCreate(@Nullable Bundle savedInstanceState) {
+		super.onCreate(savedInstanceState);
+		setStyle(STYLE_NORMAL, R.style.Custom_BottomSheet);
+	}
 
-		super.onAttach(context);
-
-		this.context = context;
-		this.notificationThread = notificationThread;
-		this.onOptionSelectedListener = onOptionSelectedListener;
+	public void onAttach(NotificationThread thread) {
+		this.thread = thread;
 	}
 
 	@Nullable @Override
@@ -41,104 +40,62 @@ public class BottomSheetNotificationsFragment extends BottomSheetDialogFragment 
 			@NonNull LayoutInflater inflater,
 			@Nullable ViewGroup container,
 			@Nullable Bundle savedInstanceState) {
-
-		BottomSheetNotificationsBinding bottomSheetNotificationsBinding =
+		BottomSheetNotificationsBinding binding =
 				BottomSheetNotificationsBinding.inflate(inflater, container, false);
 
-		TextView markRead = bottomSheetNotificationsBinding.markRead;
-		TextView markUnread = bottomSheetNotificationsBinding.markUnread;
-		TextView markPinned = bottomSheetNotificationsBinding.markPinned;
+		viewModel = new ViewModelProvider(requireActivity()).get(NotificationsViewModel.class);
 
-		if (notificationThread.isPinned()) {
-			AppUtil.setMultiVisibility(View.GONE, markUnread, markPinned);
-		} else if (notificationThread.isUnread()) {
-			markUnread.setVisibility(View.GONE);
-		} else {
-			markRead.setVisibility(View.GONE);
+		setupUI(binding);
+
+		binding.markRead.setOnClickListener(v -> updateStatus("read"));
+		binding.markUnread.setOnClickListener(v -> updateStatus("unread"));
+		binding.markPinned.setOnClickListener(v -> updateStatus("pinned"));
+
+		return binding.getRoot();
+	}
+
+	private void updateStatus(String status) {
+		viewModel.updateNotificationStatus(requireContext(), thread.getId(), status);
+		dismiss();
+	}
+
+	private void setupUI(BottomSheetNotificationsBinding binding) {
+		if (thread == null) return;
+
+		if (thread.getSubject() != null && thread.getSubject().getTitle() != null) {
+			binding.sheetTitle.setText(thread.getSubject().getTitle());
+		}
+		if (thread.getRepository() != null) {
+			binding.sheetSubtitle.setText(thread.getRepository().getFullName());
+			binding.sheetSubtitle.setVisibility(View.VISIBLE);
 		}
 
-		markPinned.setOnClickListener(
-				v12 ->
-						RetrofitClient.getApiInterface(context)
-								.notifyReadThread(
-										String.valueOf(notificationThread.getId()), "pinned")
-								.enqueue(
-										(SimpleCallback<NotificationThread>)
-												(call, voidResponse) -> {
+		if (thread.isPinned()) {
+			binding.markPinned.setVisibility(View.GONE);
+		}
 
-													// reload without any checks, because Gitea
-													// returns a 205 and Java expects this to be
-													// empty
-													// but Gitea send a response -> results in a
-													// call of onFailure and no response is present
-													// if(voidResponse.isPresent() &&
-													// voidResponse.get().isSuccessful()) {
-													onOptionSelectedListener.run();
-													/*} else {
-														Toasty.error(context, getString(R.string.genericError));
-													}*/
+		if (thread.isUnread()) {
+			binding.markUnread.setVisibility(View.GONE);
+		} else {
+			binding.markRead.setVisibility(View.GONE);
+		}
+	}
 
-													dismiss();
-												}));
-
-		markRead.setOnClickListener(
-				v1 ->
-						RetrofitClient.getApiInterface(context)
-								.notifyReadThread(
-										String.valueOf(notificationThread.getId()), "read")
-								.enqueue(
-										(SimpleCallback<NotificationThread>)
-												(call, voidResponse) -> {
-
-													// reload without any checks, because Gitea
-													// returns a 205 and Java expects this to be
-													// empty
-													// but Gitea send a response -> results in a
-													// call of onFailure and no response is present
-													// reload without any checks, because Gitea
-													// returns a 205 and Java expects this to be
-													// empty
-													// but Gitea send a response -> results in a
-													// call of onFailure and no response is present
-													// if(voidResponse.isPresent() &&
-													// voidResponse.get().isSuccessful()) {
-													onOptionSelectedListener.run();
-													/*} else {
-														Toasty.error(context, getString(R.string.genericError));
-													}*/
-
-													dismiss();
-												}));
-
-		markUnread.setOnClickListener(
-				v13 ->
-						RetrofitClient.getApiInterface(context)
-								.notifyReadThread(
-										String.valueOf(notificationThread.getId()), "unread")
-								.enqueue(
-										(SimpleCallback<NotificationThread>)
-												(call, voidResponse) -> {
-
-													// reload without any checks, because Gitea
-													// returns a 205 and Java expects this to be
-													// empty
-													// but Gitea send a response -> results in a
-													// call of onFailure and no response is present
-													// reload without any checks, because Gitea
-													// returns a 205 and Java expects this to be
-													// empty
-													// but Gitea send a response -> results in a
-													// call of onFailure and no response is present
-													// if(voidResponse.isPresent() &&
-													// voidResponse.get().isSuccessful()) {
-													onOptionSelectedListener.run();
-													/*} else {
-														Toasty.error(context, getString(R.string.genericError));
-													}*/
-
-													dismiss();
-												}));
-
-		return bottomSheetNotificationsBinding.getRoot();
+	@Override
+	public void onStart() {
+		super.onStart();
+		Dialog dialog = getDialog();
+		if (dialog instanceof BottomSheetDialog) {
+			View bottomSheet =
+					((BottomSheetDialog) dialog)
+							.findViewById(com.google.android.material.R.id.design_bottom_sheet);
+			if (bottomSheet != null) {
+				BottomSheetBehavior<View> behavior = BottomSheetBehavior.from(bottomSheet);
+				behavior.setFitToContents(true);
+				behavior.setSkipCollapsed(true);
+				behavior.setExpandedOffset(0);
+				behavior.setState(BottomSheetBehavior.STATE_EXPANDED);
+			}
+		}
 	}
 }

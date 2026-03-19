@@ -1,108 +1,92 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<com.google.android.material.listitem.ListItemLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    android:id="@+id/frame"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="wrap_content"
-    android:paddingTop="@dimen/dimen4dp"
-    android:paddingBottom="@dimen/dimen4dp"
-    android:orientation="horizontal">
+    android:layout_height="wrap_content">
 
-    <com.google.android.material.card.MaterialCardView
+    <com.google.android.material.listitem.ListItemCardView
+        android:id="@+id/card"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        style="?attr/materialCardViewElevatedStyle"
-        app:cardElevation="@dimen/dimen0dp">
+        android:layout_marginVertical="@dimen/dimen1dp"
+        app:cardBackgroundColor="?attr/materialCardBackgroundColor"
+        app:strokeWidth="0dp">
 
-        <LinearLayout
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:id="@+id/container"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:foreground="?android:attr/selectableItemBackground"
-            android:background="?attr/materialCardBackgroundColor"
-            android:padding="@dimen/dimen12dp"
-            android:orientation="horizontal">
-
-            <LinearLayout
-                android:layout_width="wrap_content"
-                android:layout_height="match_parent"
-                android:layout_marginEnd="20dp"
-                android:gravity="center_horizontal"
-                android:orientation="vertical">
-
-                <ImageView
-                    android:id="@+id/type"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_gravity="top"
-                    android:contentDescription="@string/generalImgContentText"
-                    app:srcCompat="@drawable/ic_pull_request"/>
-
-            </LinearLayout>
-
-            <LinearLayout
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_weight="1"
-                android:orientation="vertical">
-
-                <TextView
-                    android:id="@+id/subject"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:textColor="?attr/primaryTextColor"
-                    android:textSize="18sp"/>
-
-                <TextView
-                    android:id="@+id/repository"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="5dp"
-                    android:textColor="?attr/primaryTextColor"/>
-
-            </LinearLayout>
+            android:padding="@dimen/dimen8dp">
 
             <ImageView
-                android:id="@+id/pinnedVertical"
-                android:layout_width="wrap_content"
-                android:visibility="gone"
-                android:layout_height="match_parent"
-                android:layout_gravity="top"
-                android:layout_marginStart="10dp"
-                android:background="@android:color/transparent"
+                android:id="@+id/type"
+                android:layout_width="@dimen/dimen24dp"
+                android:layout_height="@dimen/dimen24dp"
                 android:contentDescription="@string/generalImgContentText"
-                app:srcCompat="@drawable/ic_pin"/>
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="@id/subject"
+                app:layout_constraintBottom_toBottomOf="@id/subject"
+                app:srcCompat="@drawable/ic_pull_request"
+                app:tint="?attr/iconsColor" />
 
-            <LinearLayout
-                android:orientation="vertical"
-                android:layout_width="wrap_content"
-                android:layout_height="match_parent">
+            <TextView
+                android:id="@+id/subject"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="@dimen/dimen12dp"
+                android:layout_marginEnd="@dimen/dimen8dp"
+                android:textAppearance="?attr/textAppearanceTitleMedium"
+                android:textColor="?attr/primaryTextColor"
+                android:textSize="16sp"
+                app:layout_constraintEnd_toStartOf="@id/pinned"
+                app:layout_constraintStart_toEndOf="@id/type"
+                app:layout_constraintTop_toTopOf="parent"
+                tools:text="#123 Awesome feature implementation" />
 
-                <ImageView
-                    android:id="@+id/pinned"
-                    android:layout_width="wrap_content"
-                    android:layout_height="0dp"
-                    android:layout_weight="0.5"
-                    android:layout_gravity="top"
-                    android:layout_marginStart="10dp"
-                    android:background="@android:color/transparent"
-                    android:contentDescription="@string/generalImgContentText"
-                    app:srcCompat="@drawable/ic_pin"/>
+            <TextView
+                android:id="@+id/repository"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/dimen4dp"
+                android:alpha="0.7"
+                android:textAppearance="?attr/textAppearanceLabelMedium"
+                android:textColor="?attr/primaryTextColor"
+                app:layout_constraintEnd_toEndOf="@id/subject"
+                app:layout_constraintStart_toStartOf="@id/subject"
+                app:layout_constraintTop_toBottomOf="@id/subject"
+                tools:text="org/repository-name" />
 
-                <ImageView
-                    android:id="@+id/more"
-                    android:layout_width="wrap_content"
-                    android:layout_height="0dp"
-                    android:layout_weight="0.5"
-                    android:layout_gravity="bottom"
-                    android:layout_marginStart="10dp"
-                    android:background="@android:color/transparent"
-                    android:contentDescription="@string/generalImgContentText"
-                    app:srcCompat="@drawable/ic_dotted_menu_horizontal"/>
+            <ImageView
+                android:id="@+id/pinned"
+                android:layout_width="@dimen/dimen18dp"
+                android:layout_height="@dimen/dimen18dp"
+                android:layout_marginEnd="@dimen/dimen8dp"
+                android:contentDescription="@string/generalImgContentText"
+                android:visibility="gone"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toStartOf="@id/more"
+                app:layout_constraintTop_toTopOf="parent"
+                app:srcCompat="@drawable/ic_pin"
+                app:tint="?attr/colorPrimary"
+                tools:visibility="visible" />
 
-            </LinearLayout>
+            <ImageView
+                android:id="@+id/more"
+                android:layout_width="@dimen/dimen32dp"
+                android:layout_height="@dimen/dimen32dp"
+                android:background="?attr/selectableItemBackgroundBorderless"
+                android:contentDescription="@string/generalImgContentText"
+                android:padding="@dimen/dimen4dp"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
+                app:srcCompat="@drawable/ic_dotted_menu"
+                app:tint="?attr/iconsColor" />
 
-        </LinearLayout>
+        </androidx.constraintlayout.widget.ConstraintLayout>
 
-    </com.google.android.material.card.MaterialCardView>
+    </com.google.android.material.listitem.ListItemCardView>
 
-</LinearLayout>
+</com.google.android.material.listitem.ListItemLayout>

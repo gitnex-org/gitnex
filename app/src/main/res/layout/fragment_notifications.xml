@@ -5,38 +5,36 @@
     android:id="@+id/mainLayout"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="?attr/primaryBackgroundColor"
-    android:orientation="vertical">
+    android:background="?attr/primaryBackgroundColor">
 
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
+        android:paddingHorizontal="@dimen/dimen16dp"
         android:orientation="vertical">
 
         <com.google.android.material.chip.ChipGroup
             android:id="@+id/filterChipGroup"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:paddingStart="@dimen/dimen8dp"
-            android:paddingEnd="@dimen/dimen8dp"
-            app:singleSelection="true"
-            app:selectionRequired="true">
+            app:selectionRequired="true"
+            app:singleSelection="true">
 
             <com.google.android.material.chip.Chip
                 android:id="@+id/unreadChip"
+                style="@style/CustomChipFilter"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:checked="true"
                 android:text="@string/isUnread"
-                style="@style/CustomChipFilter"
-                app:checkedIconEnabled="true"
-                android:checked="true" />
+                app:checkedIconEnabled="true" />
 
             <com.google.android.material.chip.Chip
                 android:id="@+id/readChip"
+                style="@style/CustomChipFilter"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="@string/isRead"
-                style="@style/CustomChipFilter"
                 app:checkedIconEnabled="true" />
 
         </com.google.android.material.chip.ChipGroup>
@@ -44,9 +42,7 @@
         <FrameLayout
             android:layout_width="match_parent"
             android:layout_height="0dp"
-            android:layout_weight="1"
-            android:background="?attr/primaryBackgroundColor"
-            android:padding="@dimen/dimen8dp">
+            android:layout_weight="1">
 
             <androidx.swiperefreshlayout.widget.SwipeRefreshLayout
                 android:id="@+id/pullToRefresh"
@@ -56,45 +52,44 @@
                 <androidx.recyclerview.widget.RecyclerView
                     android:id="@+id/notifications"
                     android:layout_width="match_parent"
-                    android:layout_height="match_parent"/>
+                    android:layout_height="match_parent"
+                    android:clipToPadding="false"
+                    android:paddingBottom="@dimen/dimen80dp" />
 
             </androidx.swiperefreshlayout.widget.SwipeRefreshLayout>
+
+            <com.google.android.material.loadingindicator.LoadingIndicator
+                android:id="@+id/expressive_loader"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:visibility="gone"
+                app:indicatorSize="@dimen/dimen48dp"
+                app:trackThickness="@dimen/dimen4dp" />
+
+            <include
+                android:id="@+id/layout_empty"
+                layout="@layout/layout_empty_state"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:visibility="gone" />
 
         </FrameLayout>
 
     </LinearLayout>
 
-    <com.google.android.material.progressindicator.LinearProgressIndicator
-        android:id="@+id/progressBar"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:indeterminate="true"
-        style="@style/Widget.MaterialComponents.LinearProgressIndicator"
-        app:indicatorColor="?attr/progressIndicatorColor" />
-
-    <TextView
-        android:id="@+id/noDataNotifications"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:layout_margin="15dp"
-        android:gravity="center"
-        android:text="@string/noDataNotifications"
-        android:textColor="?attr/primaryTextColor"
-        android:textSize="20sp"
-        android:visibility="gone" />
-
     <com.google.android.material.floatingactionbutton.ExtendedFloatingActionButton
         android:id="@+id/markAllAsRead"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_gravity="end|bottom"
+        android:layout_gravity="bottom|end"
         android:layout_margin="16dp"
-        android:text="@string/markAsRead"
-        android:contentDescription="@string/markAsRead"
-        android:textColor="?attr/materialCardBackgroundColor"
-        app:iconTint="?attr/materialCardBackgroundColor"
         android:backgroundTint="?attr/fabColor"
-        app:layout_behavior="com.google.android.material.behavior.HideBottomViewOnScrollBehavior"
-        app:icon="@drawable/ic_done" />
+        android:contentDescription="@string/markAsRead"
+        android:text="@string/markAsRead"
+        android:textColor="?attr/materialCardBackgroundColor"
+        app:icon="@drawable/ic_done"
+        app:iconTint="?attr/materialCardBackgroundColor"
+        app:layout_behavior="com.google.android.material.behavior.HideBottomViewOnScrollBehavior" />
 
 </androidx.coordinatorlayout.widget.CoordinatorLayout>

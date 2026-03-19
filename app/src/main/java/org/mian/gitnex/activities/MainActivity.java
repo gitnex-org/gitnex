@@ -482,8 +482,6 @@ public class MainActivity extends BaseActivity
 		if (launchFragment != null) {
 			mainIntent.removeExtra("launchFragment");
 			if (launchFragment.equals("notifications")) {
-				binding.toolbarTitle.setText(
-						getResources().getString(R.string.pageTitleNotifications));
 				navController.navigate(R.id.notificationsFragment);
 				return;
 			}
@@ -505,8 +503,6 @@ public class MainActivity extends BaseActivity
 					navController.navigate(R.id.organizationsFragment, null, navOptions);
 					break;
 				case "notification":
-					binding.toolbarTitle.setText(
-							getResources().getString(R.string.pageTitleNotifications));
 					navController.navigate(R.id.notificationsFragment, null, navOptions);
 					break;
 				case "explore":
@@ -581,8 +577,6 @@ public class MainActivity extends BaseActivity
 				navController.navigate(R.id.exploreFragment, null, navOptions);
 				break;
 			case 6:
-				binding.toolbarTitle.setText(
-						getResources().getString(R.string.pageTitleNotifications));
 				navController.navigate(R.id.notificationsFragment, null, navOptions);
 				break;
 			case 7:
