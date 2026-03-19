@@ -20,7 +20,6 @@ import androidx.core.content.res.ResourcesCompat;
 import androidx.core.text.HtmlCompat;
 import androidx.core.widget.ImageViewCompat;
 import androidx.recyclerview.widget.RecyclerView;
-import com.amulyakhare.textdrawable.TextDrawable;
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.load.engine.DiskCacheStrategy;
 import com.vdurmont.emoji.EmojiParser;
@@ -33,8 +32,7 @@ import org.mian.gitnex.activities.ProfileActivity;
 import org.mian.gitnex.activities.RepoDetailActivity;
 import org.mian.gitnex.helpers.AppDatabaseSettings;
 import org.mian.gitnex.helpers.AppUtil;
-import org.mian.gitnex.helpers.ColorInverter;
-import org.mian.gitnex.helpers.LabelWidthCalculator;
+import org.mian.gitnex.helpers.AvatarGenerator;
 import org.mian.gitnex.helpers.Markdown;
 import org.mian.gitnex.helpers.TimeHelper;
 import org.mian.gitnex.helpers.Toasty;
@@ -209,7 +207,6 @@ public class PullRequestsAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
 					frameLabelsDots.removeAllViews();
 
 					for (int i = 0; i < pullRequest.getLabels().size(); i++) {
-
 						String labelColor = pullRequest.getLabels().get(i).getColor();
 						int color = Color.parseColor("#" + labelColor);
 
@@ -218,15 +215,9 @@ public class PullRequestsAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
 						frameLabelsDots.setGravity(Gravity.START | Gravity.TOP);
 						labelsView.setLayoutParams(params);
 
-						TextDrawable drawable =
-								TextDrawable.builder()
-										.beginConfig()
-										.width(54)
-										.height(54)
-										.endConfig()
-										.buildRound("", color);
+						labelsView.setImageDrawable(
+								AvatarGenerator.getCircleColorDrawable(context, color, 14));
 
-						labelsView.setImageDrawable(drawable);
 						frameLabelsDots.addView(labelsView);
 					}
 				} else {
@@ -236,7 +227,6 @@ public class PullRequestsAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
 					frameLabels.removeAllViews();
 
 					for (int i = 0; i < pullRequest.getLabels().size(); i++) {
-
 						String labelColor = pullRequest.getLabels().get(i).getColor();
 						String labelName = pullRequest.getLabels().get(i).getName();
 						int color = Color.parseColor("#" + labelColor);
@@ -246,27 +236,9 @@ public class PullRequestsAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
 						frameLabels.setGravity(Gravity.START | Gravity.TOP);
 						labelsView.setLayoutParams(params);
 
-						int height = AppUtil.getPixelsFromDensity(context, 20);
-						int textSize = AppUtil.getPixelsFromScaledDensity(context, 12);
+						labelsView.setImageDrawable(
+								AvatarGenerator.getLabelDrawable(context, labelName, color, 20));
 
-						TextDrawable drawable =
-								TextDrawable.builder()
-										.beginConfig()
-										.textColor(new ColorInverter().getContrastColor(color))
-										.fontSize(textSize)
-										.width(
-												LabelWidthCalculator.calculateLabelWidth(
-														labelName,
-														textSize,
-														AppUtil.getPixelsFromDensity(context, 8)))
-										.height(height)
-										.endConfig()
-										.buildRoundRect(
-												labelName,
-												color,
-												AppUtil.getPixelsFromDensity(context, 6));
-
-						labelsView.setImageDrawable(drawable);
 						frameLabels.addView(labelsView);
 					}
 				}

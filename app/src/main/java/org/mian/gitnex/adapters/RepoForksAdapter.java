@@ -3,7 +3,7 @@ package org.mian.gitnex.adapters;
 import android.annotation.SuppressLint;
 import android.content.Context;
 import android.content.Intent;
-import android.graphics.Typeface;
+import android.graphics.drawable.Drawable;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -14,8 +14,6 @@ import android.widget.ImageView;
 import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
-import com.amulyakhare.textdrawable.TextDrawable;
-import com.amulyakhare.textdrawable.util.ColorGenerator;
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.load.engine.DiskCacheStrategy;
 import java.util.ArrayList;
@@ -24,6 +22,7 @@ import java.util.Locale;
 import org.mian.gitnex.R;
 import org.mian.gitnex.activities.RepoDetailActivity;
 import org.mian.gitnex.helpers.AppUtil;
+import org.mian.gitnex.helpers.AvatarGenerator;
 import org.mian.gitnex.helpers.TimeHelper;
 import org.mian.gitnex.helpers.Toasty;
 import org.mian.gitnex.helpers.contexts.RepositoryContext;
@@ -180,47 +179,32 @@ public class RepoForksAdapter extends RecyclerView.Adapter<RecyclerView.ViewHold
 		@SuppressLint("SetTextI18n")
 		void bindData(org.gitnex.tea4j.v2.models.Repository forksModel) {
 
-			Locale locale = context.getResources().getConfiguration().locale;
 			this.userRepositories = forksModel;
 			orgName.setText(forksModel.getFullName().split("/")[0]);
 			repoName.setText(forksModel.getFullName().split("/")[1]);
 			repoStars.setText(AppUtil.numberFormatter(forksModel.getStarsCount()));
 
-			ColorGenerator generator = ColorGenerator.Companion.getMATERIAL();
-			int color = generator.getColor(forksModel.getName());
-			String firstCharacter = String.valueOf(forksModel.getFullName().charAt(0));
+			Drawable placeholder =
+					AvatarGenerator.getLetterAvatar(context, forksModel.getName(), 44);
 
-			TextDrawable drawable =
-					TextDrawable.builder()
-							.beginConfig()
-							.useFont(Typeface.DEFAULT)
-							.fontSize(28)
-							.toUpperCase()
-							.width(44)
-							.height(44)
-							.endConfig()
-							.buildRoundRect(firstCharacter, color, 12);
-
-			if (forksModel.getAvatarUrl() != null) {
-				if (!forksModel.getAvatarUrl().isEmpty()) {
-					Glide.with(context)
-							.load(forksModel.getAvatarUrl())
-							.diskCacheStrategy(DiskCacheStrategy.ALL)
-							.placeholder(R.drawable.loader_animated)
-							.centerCrop()
-							.into(image);
-				} else {
-					image.setImageDrawable(drawable);
-				}
+			if (forksModel.getAvatarUrl() != null && !forksModel.getAvatarUrl().isEmpty()) {
+				Glide.with(context)
+						.load(forksModel.getAvatarUrl())
+						.diskCacheStrategy(DiskCacheStrategy.ALL)
+						.placeholder(placeholder)
+						.error(placeholder)
+						.centerCrop()
+						.into(image);
 			} else {
-				image.setImageDrawable(drawable);
+				image.setImageDrawable(placeholder);
 			}
 
 			if (forksModel.getUpdatedAt() != null) {
 				repoLastUpdated.setText(
 						context.getString(
 								R.string.lastUpdatedAt,
-								TimeHelper.formatTime(forksModel.getUpdatedAt(), locale)));
+								TimeHelper.formatTime(
+										forksModel.getUpdatedAt(), Locale.getDefault())));
 
 				repoLastUpdated.setOnClickListener(
 						v ->

@@ -18,7 +18,6 @@ import androidx.core.content.ContextCompat;
 import androidx.core.content.res.ResourcesCompat;
 import androidx.core.text.HtmlCompat;
 import androidx.recyclerview.widget.RecyclerView;
-import com.amulyakhare.textdrawable.TextDrawable;
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.load.engine.DiskCacheStrategy;
 import com.google.android.material.card.MaterialCardView;
@@ -32,8 +31,7 @@ import org.mian.gitnex.activities.ProfileActivity;
 import org.mian.gitnex.activities.RepoDetailActivity;
 import org.mian.gitnex.helpers.AppDatabaseSettings;
 import org.mian.gitnex.helpers.AppUtil;
-import org.mian.gitnex.helpers.ColorInverter;
-import org.mian.gitnex.helpers.LabelWidthCalculator;
+import org.mian.gitnex.helpers.AvatarGenerator;
 import org.mian.gitnex.helpers.Markdown;
 import org.mian.gitnex.helpers.TimeHelper;
 import org.mian.gitnex.helpers.TinyDB;
@@ -230,7 +228,6 @@ public class IssuesAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder>
 					frameLabelsDots.removeAllViews();
 
 					for (int i = 0; i < issue.getLabels().size(); i++) {
-
 						String labelColor = issue.getLabels().get(i).getColor();
 						int color = Color.parseColor("#" + labelColor);
 
@@ -239,15 +236,9 @@ public class IssuesAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder>
 						frameLabelsDots.setGravity(Gravity.START | Gravity.TOP);
 						labelsView.setLayoutParams(params);
 
-						TextDrawable drawable =
-								TextDrawable.builder()
-										.beginConfig()
-										.width(54)
-										.height(54)
-										.endConfig()
-										.buildRound("", color);
+						labelsView.setImageDrawable(
+								AvatarGenerator.getCircleColorDrawable(context, color, 14));
 
-						labelsView.setImageDrawable(drawable);
 						frameLabelsDots.addView(labelsView);
 					}
 				} else {
@@ -257,7 +248,6 @@ public class IssuesAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder>
 					frameLabels.removeAllViews();
 
 					for (int i = 0; i < issue.getLabels().size(); i++) {
-
 						String labelColor = issue.getLabels().get(i).getColor();
 						String labelName = issue.getLabels().get(i).getName();
 						int color = Color.parseColor("#" + labelColor);
@@ -267,27 +257,9 @@ public class IssuesAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder>
 						frameLabels.setGravity(Gravity.START | Gravity.TOP);
 						labelsView.setLayoutParams(params);
 
-						int height = AppUtil.getPixelsFromDensity(context, 20);
-						int textSize = AppUtil.getPixelsFromScaledDensity(context, 12);
+						labelsView.setImageDrawable(
+								AvatarGenerator.getLabelDrawable(context, labelName, color, 20));
 
-						TextDrawable drawable =
-								TextDrawable.builder()
-										.beginConfig()
-										.textColor(new ColorInverter().getContrastColor(color))
-										.fontSize(textSize)
-										.width(
-												LabelWidthCalculator.calculateLabelWidth(
-														labelName,
-														textSize,
-														AppUtil.getPixelsFromDensity(context, 8)))
-										.height(height)
-										.endConfig()
-										.buildRoundRect(
-												labelName,
-												color,
-												AppUtil.getPixelsFromDensity(context, 6));
-
-						labelsView.setImageDrawable(drawable);
 						frameLabels.addView(labelsView);
 					}
 				}

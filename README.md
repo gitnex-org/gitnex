@@ -105,7 +105,6 @@ Thank you to all the open source libraries, contributors, and donors who make Gi
 - [bumptech/glide](https://github.com/bumptech/glide)
 - [noties/Markwon](https://github.com/noties/Markwon)
 - [ocpsoft/prettytime](https://github.com/ocpsoft/prettytime)
-- [ramseth001/TextDrawable](https://github.com/ramseth001/TextDrawable)
 - [vdurmont/emoji-java](https://github.com/vdurmont/emoji-java)
 - [skydoves/ColorPickerView](https://github.com/skydoves/ColorPickerView)
 - [Baseflow/PhotoView](https://github.com/Baseflow/PhotoView)

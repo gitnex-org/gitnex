@@ -3,22 +3,20 @@ package org.mian.gitnex.adapters;
 import android.annotation.SuppressLint;
 import android.content.Context;
 import android.content.Intent;
-import android.graphics.Typeface;
+import android.graphics.drawable.Drawable;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
-import com.amulyakhare.textdrawable.TextDrawable;
-import com.amulyakhare.textdrawable.util.ColorGenerator;
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.load.engine.DiskCacheStrategy;
 import java.util.List;
 import java.util.Locale;
-import org.mian.gitnex.R;
 import org.mian.gitnex.activities.RepoDetailActivity;
 import org.mian.gitnex.databinding.ListRepositoriesBinding;
 import org.mian.gitnex.helpers.AppUtil;
+import org.mian.gitnex.helpers.AvatarGenerator;
 import org.mian.gitnex.helpers.TimeHelper;
 import org.mian.gitnex.helpers.Toasty;
 import org.mian.gitnex.helpers.contexts.RepositoryContext;
@@ -111,11 +109,9 @@ public class ExploreRepositoriesAdapter
 		void bindData(org.gitnex.tea4j.v2.models.Repository repositories) {
 			this.userRepositories = repositories;
 
-			// 1. Top Utility Stats (Issues and PRs)
 			binding.repoOpenIssues.setText(String.valueOf(repositories.getOpenIssuesCount()));
 			binding.repoOpenPRs.setText(String.valueOf(repositories.getOpenPrCounter()));
 
-			// 2. Identity Row (Org and Archived)
 			String fullName = repositories.getFullName();
 			if (fullName != null && fullName.contains("/")) {
 				String[] parts = fullName.split("/");
@@ -128,7 +124,6 @@ public class ExploreRepositoriesAdapter
 			binding.repoIsArchivedFrame.setVisibility(
 					repositories.isArchived() ? View.VISIBLE : View.GONE);
 
-			// 3. Info Footer (Lang and Stars)
 			binding.repoStars.setText(AppUtil.numberFormatter(repositories.getStarsCount()));
 
 			if (repositories.getLanguage() != null
@@ -139,11 +134,9 @@ public class ExploreRepositoriesAdapter
 				binding.repoLanguageFrame.setVisibility(View.GONE);
 			}
 
-			// Private Lock Icon
 			binding.repoIsPrivate.setVisibility(
 					repositories.isPrivate() ? View.VISIBLE : View.GONE);
 
-			// 4. Date/Time with Click for Detail
 			if (repositories.getUpdatedAt() != null) {
 				binding.repoLastUpdated.setVisibility(View.VISIBLE);
 				binding.repoLastUpdated.setText(
@@ -158,7 +151,6 @@ public class ExploreRepositoriesAdapter
 				binding.repoLastUpdated.setVisibility(View.GONE);
 			}
 
-			// 5. Description
 			if (repositories.getDescription() != null && !repositories.getDescription().isEmpty()) {
 				binding.repoDescription.setVisibility(View.VISIBLE);
 				binding.repoDescription.setText(repositories.getDescription());
@@ -168,7 +160,6 @@ public class ExploreRepositoriesAdapter
 				binding.spacerView.setVisibility(View.VISIBLE);
 			}
 
-			// 6. Backend Only
 			if (repositories.getPermissions() != null) {
 				binding.repoIsAdmin.setChecked(repositories.getPermissions().isAdmin());
 			}
@@ -177,34 +168,20 @@ public class ExploreRepositoriesAdapter
 		}
 
 		private void loadAvatar(org.gitnex.tea4j.v2.models.Repository repositories) {
-			ColorGenerator generator = ColorGenerator.Companion.getMATERIAL();
-			int color = generator.getColor(repositories.getName());
-			String firstCharacter =
-					repositories.getFullName() != null && !repositories.getFullName().isEmpty()
-							? String.valueOf(repositories.getFullName().charAt(0))
-							: "?";
+			String label =
+					(repositories.getFullName() != null && !repositories.getFullName().isEmpty())
+							? repositories.getFullName()
+							: repositories.getName();
 
-			TextDrawable drawable =
-					TextDrawable.builder()
-							.beginConfig()
-							.useFont(Typeface.DEFAULT)
-							.fontSize(28)
-							.toUpperCase()
-							.width(44)
-							.height(44)
-							.endConfig()
-							.buildRoundRect(firstCharacter, color, 12);
+			Drawable placeholder = AvatarGenerator.getLetterAvatar(context, label, 44);
 
-			if (repositories.getAvatarUrl() != null && !repositories.getAvatarUrl().isEmpty()) {
-				Glide.with(context)
-						.load(repositories.getAvatarUrl())
-						.diskCacheStrategy(DiskCacheStrategy.ALL)
-						.placeholder(R.drawable.loader_animated)
-						.centerCrop()
-						.into(binding.imageAvatar);
-			} else {
-				binding.imageAvatar.setImageDrawable(drawable);
-			}
+			Glide.with(context)
+					.load(repositories.getAvatarUrl())
+					.diskCacheStrategy(DiskCacheStrategy.ALL)
+					.placeholder(placeholder)
+					.error(placeholder)
+					.centerCrop()
+					.into(binding.imageAvatar);
 		}
 	}
 }

@@ -1,7 +1,6 @@
 package org.mian.gitnex.adapters;
 
 import android.content.Context;
-import android.graphics.Typeface;
 import android.os.Handler;
 import android.os.Looper;
 import android.view.LayoutInflater;
@@ -11,8 +10,6 @@ import android.widget.ImageView;
 import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
-import com.amulyakhare.textdrawable.TextDrawable;
-import com.amulyakhare.textdrawable.util.ColorGenerator;
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.load.engine.DiskCacheStrategy;
 import java.util.ArrayList;
@@ -22,6 +19,7 @@ import org.gitnex.tea4j.v2.models.Repository;
 import org.mian.gitnex.R;
 import org.mian.gitnex.clients.RetrofitClient;
 import org.mian.gitnex.helpers.AlertDialogs;
+import org.mian.gitnex.helpers.AvatarGenerator;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
@@ -127,21 +125,6 @@ public class OrganizationTeamRepositoriesAdapter
 
 		holder.name.setText(currentItem.getName());
 
-		TextDrawable drawable =
-				TextDrawable.builder()
-						.beginConfig()
-						.useFont(Typeface.DEFAULT)
-						.fontSize(28)
-						.toUpperCase()
-						.width(44)
-						.height(44)
-						.endConfig()
-						.buildRoundRect(
-								String.valueOf(currentItem.getFullName().charAt(0)),
-								ColorGenerator.Companion.getMATERIAL()
-										.getColor(currentItem.getName()),
-								12);
-
 		if (currentItem.getAvatarUrl() != null && !currentItem.getAvatarUrl().isEmpty()) {
 			Glide.with(context)
 					.load(currentItem.getAvatarUrl())
@@ -150,7 +133,8 @@ public class OrganizationTeamRepositoriesAdapter
 					.centerCrop()
 					.into(holder.repoAvatar);
 		} else {
-			holder.repoAvatar.setImageDrawable(drawable);
+			holder.repoAvatar.setImageDrawable(
+					AvatarGenerator.getLetterAvatar(context, currentItem.getFullName(), 44));
 		}
 	}
 

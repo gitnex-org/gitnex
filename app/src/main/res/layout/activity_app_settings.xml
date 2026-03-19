@@ -16,7 +16,6 @@
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:paddingHorizontal="@dimen/dimen16dp"
             android:orientation="vertical">
 
             <include android:id="@+id/rowGeneral" layout="@layout/item_settings_row" />

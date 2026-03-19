@@ -10,13 +10,13 @@ import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.core.content.res.ResourcesCompat;
 import androidx.recyclerview.widget.RecyclerView;
-import com.amulyakhare.textdrawable.TextDrawable;
 import com.google.android.material.dialog.MaterialAlertDialogBuilder;
 import java.util.List;
 import org.gitnex.tea4j.v2.models.DeleteEmailOption;
 import org.gitnex.tea4j.v2.models.Email;
 import org.mian.gitnex.R;
 import org.mian.gitnex.clients.RetrofitClient;
+import org.mian.gitnex.helpers.AvatarGenerator;
 import org.mian.gitnex.helpers.Toasty;
 import retrofit2.Call;
 import retrofit2.Callback;
@@ -59,26 +59,16 @@ public class AccountSettingsEmailsAdapter
 
 		if (currentItem.isPrimary()) {
 			holder.primaryFrame.setVisibility(View.VISIBLE);
-			TextDrawable drawable =
-					TextDrawable.builder()
-							.beginConfig()
-							.textColor(
-									ResourcesCompat.getColor(
-											context.getResources(), R.color.colorWhite, null))
-							.fontSize(36)
-							.width(220)
-							.height(60)
-							.endConfig()
-							.buildRoundRect(
-									context.getResources().getString(R.string.emailTypeText),
-									ResourcesCompat.getColor(
-											context.getResources(),
-											R.color.tooltipBackground,
-											null),
-									8);
-			holder.emailPrimary.setImageDrawable(drawable);
 			holder.deleteFrame.setVisibility(View.GONE);
 			holder.primaryFrame.setLayoutParams(param);
+
+			int labelColor =
+					ResourcesCompat.getColor(
+							context.getResources(), R.color.tooltipBackground, null);
+			String labelText = context.getString(R.string.emailTypeText);
+
+			holder.emailPrimary.setImageDrawable(
+					AvatarGenerator.getLabelDrawable(context, labelText, labelColor, 20));
 		} else {
 			holder.primaryFrame.setVisibility(View.GONE);
 			holder.deleteFrame.setVisibility(View.VISIBLE);

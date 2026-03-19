@@ -36,7 +36,6 @@ import androidx.core.text.HtmlCompat;
 import androidx.core.widget.ImageViewCompat;
 import androidx.lifecycle.ViewModelProvider;
 import androidx.recyclerview.widget.LinearLayoutManager;
-import com.amulyakhare.textdrawable.TextDrawable;
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.load.engine.DiskCacheStrategy;
 import com.bumptech.glide.load.resource.bitmap.RoundedCorners;
@@ -97,9 +96,8 @@ import org.mian.gitnex.fragments.PullRequestsFragment;
 import org.mian.gitnex.helpers.AlertDialogs;
 import org.mian.gitnex.helpers.AppDatabaseSettings;
 import org.mian.gitnex.helpers.AppUtil;
-import org.mian.gitnex.helpers.ColorInverter;
+import org.mian.gitnex.helpers.AvatarGenerator;
 import org.mian.gitnex.helpers.Constants;
-import org.mian.gitnex.helpers.LabelWidthCalculator;
 import org.mian.gitnex.helpers.Markdown;
 import org.mian.gitnex.helpers.MentionHelper;
 import org.mian.gitnex.helpers.TimeHelper;
@@ -1418,25 +1416,8 @@ public class IssueDetailActivity extends BaseActivity
 				viewBinding.frameLabels.setGravity(Gravity.START | Gravity.TOP);
 				labelsView.setLayoutParams(paramsLabels);
 
-				int height = AppUtil.getPixelsFromDensity(ctx, 20);
-				int textSize = AppUtil.getPixelsFromScaledDensity(ctx, 12);
-
-				TextDrawable drawable =
-						TextDrawable.builder()
-								.beginConfig()
-								.textColor(new ColorInverter().getContrastColor(color))
-								.fontSize(textSize)
-								.width(
-										LabelWidthCalculator.calculateLabelWidth(
-												labelName,
-												textSize,
-												AppUtil.getPixelsFromDensity(ctx, 10)))
-								.height(height)
-								.endConfig()
-								.buildRoundRect(
-										labelName, color, AppUtil.getPixelsFromDensity(ctx, 6));
-
-				labelsView.setImageDrawable(drawable);
+				labelsView.setImageDrawable(
+						AvatarGenerator.getLabelDrawable(ctx, labelName, color, 20));
 				viewBinding.frameLabels.addView(labelsView);
 			}
 		} else {

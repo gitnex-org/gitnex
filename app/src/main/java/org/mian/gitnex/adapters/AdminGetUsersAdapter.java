@@ -3,7 +3,7 @@ package org.mian.gitnex.adapters;
 import android.annotation.SuppressLint;
 import android.content.Context;
 import android.content.Intent;
-import android.text.Html;
+import android.graphics.drawable.Drawable;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -14,15 +14,14 @@ import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.core.content.res.ResourcesCompat;
 import androidx.recyclerview.widget.RecyclerView;
-import com.amulyakhare.textdrawable.TextDrawable;
 import com.bumptech.glide.Glide;
-import com.bumptech.glide.load.engine.DiskCacheStrategy;
 import java.util.ArrayList;
 import java.util.List;
 import org.gitnex.tea4j.v2.models.User;
 import org.mian.gitnex.R;
 import org.mian.gitnex.activities.ProfileActivity;
 import org.mian.gitnex.helpers.AppUtil;
+import org.mian.gitnex.helpers.AvatarGenerator;
 
 /**
  * @author mmarif
@@ -181,7 +180,7 @@ public class AdminGetUsersAdapter extends RecyclerView.Adapter<RecyclerView.View
 
 			if (!users.getFullName().isEmpty()) {
 
-				userFullName.setText(Html.fromHtml(users.getFullName()));
+				userFullName.setText(users.getFullName());
 				userName.setText(
 						context.getResources()
 								.getString(R.string.usernameWithAt, users.getLogin()));
@@ -200,35 +199,23 @@ public class AdminGetUsersAdapter extends RecyclerView.Adapter<RecyclerView.View
 			}
 
 			if (users.isIsAdmin()) {
-
 				userRole.setVisibility(View.VISIBLE);
-				TextDrawable drawable =
-						TextDrawable.builder()
-								.beginConfig()
-								.textColor(
-										ResourcesCompat.getColor(
-												context.getResources(), R.color.colorWhite, null))
-								.fontSize(60)
-								.width(200)
-								.height(80)
-								.endConfig()
-								.buildRoundRect(
-										context.getResources()
-												.getString(R.string.userRoleAdmin)
-												.toLowerCase(),
-										ResourcesCompat.getColor(
-												context.getResources(), R.color.releasePre, null),
-										8);
-				userRole.setImageDrawable(drawable);
-			} else {
+				int badgeColor =
+						ResourcesCompat.getColor(context.getResources(), R.color.releasePre, null);
+				String badgeText = context.getString(R.string.userRoleAdmin).toLowerCase();
 
+				userRole.setImageDrawable(
+						AvatarGenerator.getLabelDrawable(context, badgeText, badgeColor, 28));
+			} else {
 				userRole.setVisibility(View.GONE);
 			}
 
+			Drawable userPlaceholder =
+					AvatarGenerator.getLetterAvatar(context, users.getLogin(), 44);
 			Glide.with(context)
 					.load(users.getAvatarUrl())
-					.diskCacheStrategy(DiskCacheStrategy.ALL)
-					.placeholder(R.drawable.loader_animated)
+					.placeholder(userPlaceholder)
+					.error(userPlaceholder)
 					.centerCrop()
 					.into(userAvatar);
 		}

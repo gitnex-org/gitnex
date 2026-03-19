@@ -33,7 +33,6 @@ import androidx.core.content.ContextCompat;
 import androidx.core.content.res.ResourcesCompat;
 import androidx.core.text.HtmlCompat;
 import androidx.recyclerview.widget.RecyclerView;
-import com.amulyakhare.textdrawable.TextDrawable;
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.load.engine.DiskCacheStrategy;
 import com.bumptech.glide.request.target.CustomTarget;
@@ -65,8 +64,7 @@ import org.mian.gitnex.fragments.IssuesFragment;
 import org.mian.gitnex.helpers.AlertDialogs;
 import org.mian.gitnex.helpers.AppDatabaseSettings;
 import org.mian.gitnex.helpers.AppUtil;
-import org.mian.gitnex.helpers.ColorInverter;
-import org.mian.gitnex.helpers.LabelWidthCalculator;
+import org.mian.gitnex.helpers.AvatarGenerator;
 import org.mian.gitnex.helpers.Markdown;
 import org.mian.gitnex.helpers.TimeHelper;
 import org.mian.gitnex.helpers.TinyDB;
@@ -459,34 +457,22 @@ public class IssueCommentsAdapter extends RecyclerView.Adapter<RecyclerView.View
 
 		private SpannableString createLabelSpannable(
 				String text, TimelineComment timelineComment, int color) {
-			int height = AppUtil.getPixelsFromDensity(context, 20);
-			int textSize = AppUtil.getPixelsFromScaledDensity(context, 12);
-
-			TextDrawable drawable =
-					TextDrawable.builder()
-							.beginConfig()
-							.textColor(new ColorInverter().getContrastColor(color))
-							.fontSize(textSize)
-							.width(
-									LabelWidthCalculator.calculateLabelWidth(
-											timelineComment.getLabel().getName(),
-											textSize,
-											AppUtil.getPixelsFromDensity(context, 10)))
-							.height(height)
-							.endConfig()
-							.buildRoundRect(
-									timelineComment.getLabel().getName(),
-									color,
-									AppUtil.getPixelsFromDensity(context, 6));
+			Drawable labelDrawable =
+					AvatarGenerator.getLabelDrawable(
+							context, timelineComment.getLabel().getName(), color, 20);
 
 			SpannableString spannableString = new SpannableString(text.replace('|', ' '));
 			int placeholderIndex = text.indexOf('|');
 
 			if (placeholderIndex != -1) {
-				drawable.setBounds(
-						0, 0, drawable.getIntrinsicWidth(), drawable.getIntrinsicHeight());
+				labelDrawable.setBounds(
+						0,
+						0,
+						labelDrawable.getIntrinsicWidth(),
+						labelDrawable.getIntrinsicHeight());
+
 				spannableString.setSpan(
-						new ImageSpan(drawable),
+						new ImageSpan(labelDrawable, ImageSpan.ALIGN_BOTTOM),
 						placeholderIndex,
 						placeholderIndex + 1,
 						Spannable.SPAN_INCLUSIVE_EXCLUSIVE);

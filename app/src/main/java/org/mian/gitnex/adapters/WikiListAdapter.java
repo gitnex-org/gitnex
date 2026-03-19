@@ -3,7 +3,6 @@ package org.mian.gitnex.adapters;
 import android.annotation.SuppressLint;
 import android.content.Context;
 import android.content.Intent;
-import android.graphics.Typeface;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -12,8 +11,6 @@ import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.core.text.HtmlCompat;
 import androidx.recyclerview.widget.RecyclerView;
-import com.amulyakhare.textdrawable.TextDrawable;
-import com.amulyakhare.textdrawable.util.ColorGenerator;
 import com.google.android.material.bottomsheet.BottomSheetDialog;
 import com.google.android.material.dialog.MaterialAlertDialogBuilder;
 import java.util.List;
@@ -24,6 +21,7 @@ import org.mian.gitnex.activities.RepoDetailActivity;
 import org.mian.gitnex.activities.WikiActivity;
 import org.mian.gitnex.clients.RetrofitClient;
 import org.mian.gitnex.databinding.FragmentWikiBinding;
+import org.mian.gitnex.helpers.AvatarGenerator;
 import org.mian.gitnex.helpers.TimeHelper;
 import org.mian.gitnex.helpers.Toasty;
 import org.mian.gitnex.helpers.contexts.RepositoryContext;
@@ -295,21 +293,8 @@ public class WikiListAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
 															.getDate()),
 											Locale.getDefault())));
 
-			ColorGenerator generator = ColorGenerator.Companion.getMATERIAL();
-			int color = generator.getColor(wikiPageMetaData.getTitle());
-			String firstCharacter = String.valueOf(wikiPageMetaData.getTitle().charAt(0));
-
-			TextDrawable drawable =
-					TextDrawable.builder()
-							.beginConfig()
-							.useFont(Typeface.DEFAULT)
-							.fontSize(28)
-							.toUpperCase()
-							.width(44)
-							.height(44)
-							.endConfig()
-							.buildRoundRect(firstCharacter, color, 12);
-			avatar.setImageDrawable(drawable);
+			avatar.setImageDrawable(
+					AvatarGenerator.getLetterAvatar(ctx, wikiPageMetaData.getTitle(), 44));
 
 			if (!((RepoDetailActivity) ctx).repository.getPermissions().isPush()) {
 				wikiMenu.setVisibility(View.GONE);
