@@ -66,6 +66,9 @@
     <string name="protocolEmptyError">協定爲必填欄位</string>
     <string name="instanceHelperText">輸入 URL，不包含 http 或 https。例如： codeberg.org</string>
     <string name="checkNetConnection">無法存取網路，請確認你的網際網路連線。</string>
+    <string name="network_error">網路異常</string>
+    <string name="failed_diff">載入差異失敗</string>
+    <string name="no_changes_found">找不到此檔案的變更</string>
     <string name="repoNameErrorEmpty">儲存庫名稱爲空</string>
     <string name="repoNameErrorInvalid">儲存庫名稱無效。[a&#8211;z A&#8211;Z 0&#8211;9 &#8211; _]</string>
     <string name="repoNameErrorReservedName">儲存庫名稱已被保留</string>
@@ -499,6 +502,7 @@
     <string name="mirrors">鏡像</string>
     <string name="stars">星標</string>
     <string name="template">模板</string>
+    <string name="accounts">帳號</string>
     <!-- generic copy -->
     <string name="exploreUsers">探索使用者</string>
     <string name="exploreIssues">探索議題</string>
@@ -553,8 +557,9 @@
     <string name="shareRepository">分享儲存庫</string>
     <string name="createRepository">建立儲存庫</string>
     <string name="commitTitle">提交</string>
-    <string name="commitAuthoredByAndCommittedByWhen"><![CDATA[<b>%1$s</b> 撰寫，<b>%2$s</b> 提交於 %3$s]]></string>
-    <string name="commitCommittedByWhen"><![CDATA[<b>%1$s</b> 提交於 %2$s]]></string>
+    <string name="commitAuthoredByAndCommittedByWhen">%1$s 撰寫，%2$s 提交於 %3$s</string>
+    <string name="commitCommittedByWhen">%1$s 提交於 %2$s</string>
+    <string name="commitAuthoredAndCommitted">%1$s 撰寫並提交於 %2$s</string>
     <string name="viewCommits">檢視提交</string>
     <!-- Memorizing Trust Manager -->
     <string name="mtmNotification">憑證認證</string>
@@ -907,4 +912,14 @@
     <string name="proxy_creds_required_msg">請提供使用者名稱與密碼，或將兩者皆留空</string>
     <string name="url_prompt_title">顯示網址確認對話框</string>
     <string name="url_prompt_description">在 Markdown 渲染內容中開啟外部連結前，顯示確認對話框</string>
+    <string name="gitignore_template">Gitignore 模板</string>
+    <string name="no_template">無模板</string>
+    <string name="no_license">無授權條款</string>
+    <string name="empty_state_title">這裡空空如也</string>
+    <string name="empty_state_desc">目前沒有可顯示的資料。</string>
+    <string name="good_morning">早上好</string>
+    <string name="good_afternoon">下午好</string>
+    <string name="good_evening">晚上好</string>
+    <string name="dashboard_most_visited_repos_sub_title">檢視您最常造訪的儲存庫</string>
+    <string name="dashboard_notes_sub_title">建立與管理個人備註，並將其附加至議題</string>
 </resources>
