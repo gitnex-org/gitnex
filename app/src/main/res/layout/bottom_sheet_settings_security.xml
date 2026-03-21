@@ -158,28 +158,26 @@
 
     </LinearLayout>
 
-    <com.google.android.material.floatingactionbutton.ExtendedFloatingActionButton
+    <com.google.android.material.button.MaterialButton
         android:id="@+id/clearCacheButton"
+        style="@style/Widget.Material3.Button"
         android:layout_width="match_parent"
         android:layout_height="@dimen/dimen54dp"
+        android:layout_marginHorizontal="@dimen/dimen8dp"
         android:layout_marginTop="@dimen/dimen16dp"
-        android:stateListAnimator="@null"
-        android:text="@string/clearCacheSelectionHeaderText"
-        android:contentDescription="@string/clearCacheSelectionHeaderText"
         android:textColor="?attr/materialCardBackgroundColor"
-        app:iconTint="?attr/materialCardBackgroundColor"
-        android:backgroundTint="?attr/fabColor" />
+        android:backgroundTint="?attr/iconsColor"
+        android:text="@string/clearCacheSelectionHeaderText" />
 
-    <com.google.android.material.floatingactionbutton.ExtendedFloatingActionButton
+    <com.google.android.material.button.MaterialButton
         android:id="@+id/deleteCertsButton"
+        style="@style/Widget.Material3.Button"
         android:layout_width="match_parent"
         android:layout_height="@dimen/dimen54dp"
+        android:layout_marginHorizontal="@dimen/dimen8dp"
         android:layout_marginTop="@dimen/dimen16dp"
-        android:stateListAnimator="@null"
-        android:text="@string/settingsCertsSelectorHeader"
-        android:contentDescription="@string/settingsCertsSelectorHeader"
         android:textColor="?attr/materialCardBackgroundColor"
-        app:iconTint="?attr/materialCardBackgroundColor"
-        android:backgroundTint="?attr/fabColor" />
+        android:backgroundTint="?attr/iconsColor"
+        android:text="@string/settingsCertsSelectorHeader" />
 
 </LinearLayout>

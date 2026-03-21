@@ -8,7 +8,6 @@ import android.graphics.Rect;
 import android.net.Uri;
 import android.os.Bundle;
 import android.os.Handler;
-import android.os.Looper;
 import android.view.LayoutInflater;
 import android.view.MotionEvent;
 import android.view.View;
@@ -95,7 +94,6 @@ public class CreatePullRequestActivity extends BaseActivity
 	private CustomInsertNoteBinding customInsertNoteBinding;
 	private NotesAdapter adapter;
 	private NotesApi notesApi;
-	private List<Notes> notesList;
 	public AlertDialog dialogNotes;
 	private MentionHelper mentionHelper;
 
@@ -238,58 +236,46 @@ public class CreatePullRequestActivity extends BaseActivity
 					});
 
 	private void showAllNotes() {
-
-		notesList = new ArrayList<>();
+		List<Notes> notesList = new ArrayList<>();
 		notesApi = BaseApi.getInstance(ctx, NotesApi.class);
-
 		customInsertNoteBinding = CustomInsertNoteBinding.inflate(LayoutInflater.from(ctx));
 
-		View view = customInsertNoteBinding.getRoot();
-		materialAlertDialogBuilderNotes.setView(view);
+		materialAlertDialogBuilderNotes.setView(customInsertNoteBinding.getRoot());
 
-		customInsertNoteBinding.recyclerView.setHasFixedSize(true);
 		customInsertNoteBinding.recyclerView.setLayoutManager(new LinearLayoutManager(ctx));
-
 		adapter = new NotesAdapter(ctx, notesList, "insert", "pr");
-
-		customInsertNoteBinding.pullToRefresh.setOnRefreshListener(
-				() ->
-						new Handler(Looper.getMainLooper())
-								.postDelayed(
-										() -> {
-											notesList.clear();
-											customInsertNoteBinding.pullToRefresh.setRefreshing(
-													false);
-											customInsertNoteBinding.progressBar.setVisibility(
-													View.VISIBLE);
-											fetchNotes();
-										},
-										250));
+		customInsertNoteBinding.recyclerView.setAdapter(adapter);
 
 		if (notesApi.getCount() > 0) {
 			fetchNotes();
 			dialogNotes = materialAlertDialogBuilderNotes.show();
 		} else {
-			Toasty.show(ctx, getResources().getString(R.string.noNotes));
+			Toasty.show(ctx, getString(R.string.noNotes));
 		}
 	}
 
 	private void fetchNotes() {
+		customInsertNoteBinding.expressiveLoader.setVisibility(View.VISIBLE);
 
 		notesApi.fetchAllNotes()
 				.observe(
 						this,
 						allNotes -> {
-							assert allNotes != null;
-							if (!allNotes.isEmpty()) {
+							customInsertNoteBinding.expressiveLoader.setVisibility(View.GONE);
 
-								notesList.clear();
-
-								notesList.addAll(allNotes);
-								adapter.notifyDataChanged();
-								customInsertNoteBinding.recyclerView.setAdapter(adapter);
+							if (allNotes != null && !allNotes.isEmpty()) {
+								adapter.updateList(allNotes);
+								customInsertNoteBinding
+										.layoutEmpty
+										.getRoot()
+										.setVisibility(View.GONE);
+							} else {
+								adapter.updateList(new ArrayList<>());
+								customInsertNoteBinding
+										.layoutEmpty
+										.getRoot()
+										.setVisibility(View.VISIBLE);
 							}
-							customInsertNoteBinding.progressBar.setVisibility(View.GONE);
 						});
 	}
 

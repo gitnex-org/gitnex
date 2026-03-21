@@ -7,9 +7,8 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.EditText;
-import android.widget.ImageView;
-import android.widget.TextView;
 import androidx.annotation.NonNull;
+import androidx.appcompat.app.AlertDialog;
 import androidx.recyclerview.widget.RecyclerView;
 import com.google.android.material.dialog.MaterialAlertDialogBuilder;
 import com.vdurmont.emoji.EmojiParser;
@@ -20,6 +19,7 @@ import java.util.Locale;
 import java.util.Objects;
 import org.apache.commons.lang3.StringUtils;
 import org.mian.gitnex.R;
+import org.mian.gitnex.activities.BaseActivity;
 import org.mian.gitnex.activities.CreateIssueActivity;
 import org.mian.gitnex.activities.CreateNoteActivity;
 import org.mian.gitnex.activities.CreatePullRequestActivity;
@@ -27,6 +27,7 @@ import org.mian.gitnex.activities.CreateReleaseActivity;
 import org.mian.gitnex.database.api.BaseApi;
 import org.mian.gitnex.database.api.NotesApi;
 import org.mian.gitnex.database.models.Notes;
+import org.mian.gitnex.databinding.ListNotesBinding;
 import org.mian.gitnex.helpers.Markdown;
 import org.mian.gitnex.helpers.TimeHelper;
 import org.mian.gitnex.helpers.Toasty;
@@ -38,151 +39,130 @@ public class NotesAdapter extends RecyclerView.Adapter<NotesAdapter.NotesViewHol
 
 	private List<Notes> notesList;
 	private final Context ctx;
-	private final Intent noteIntent;
 	private final String insert;
-	private final String source;
 
-	public NotesAdapter(Context ctx, List<Notes> notesListMain, String insert, String source) {
+	public NotesAdapter(Context ctx, List<Notes> notesList, String insert, String source) {
 		this.ctx = ctx;
-		this.notesList = notesListMain;
-		noteIntent = new Intent(ctx, CreateNoteActivity.class);
+		this.notesList = notesList;
 		this.insert = insert;
-		this.source = source;
 	}
 
 	public class NotesViewHolder extends RecyclerView.ViewHolder {
+		private final ListNotesBinding binding;
+		private Notes note;
 
-		private Notes notes;
+		private NotesViewHolder(ListNotesBinding binding) {
+			super(binding.getRoot());
+			this.binding = binding;
 
-		private final TextView content;
-		private final TextView datetime;
+			setupClickListeners();
+		}
 
-		private NotesViewHolder(View itemView) {
-
-			super(itemView);
-
-			content = itemView.findViewById(R.id.content);
-			datetime = itemView.findViewById(R.id.datetime);
-			ImageView deleteNote = itemView.findViewById(R.id.delete_note);
-
-			itemView.setOnClickListener(
-					view -> {
-						noteIntent.putExtra("action", "edit");
-						noteIntent.putExtra("noteId", notes.getNoteId());
-						ctx.startActivity(noteIntent);
+		private void setupClickListeners() {
+			binding.noteCard.setOnClickListener(
+					v -> {
+						if ("insert".equalsIgnoreCase(insert)) {
+							performInsert();
+						} else {
+							Intent intent = new Intent(ctx, CreateNoteActivity.class);
+							intent.putExtra("action", "edit");
+							intent.putExtra("noteId", note.getNoteId());
+							ctx.startActivity(intent);
+						}
 					});
 
-			deleteNote.setOnClickListener(
-					itemDelete -> {
-						MaterialAlertDialogBuilder materialAlertDialogBuilder =
-								new MaterialAlertDialogBuilder(
-										ctx, R.style.ThemeOverlay_Material3_Dialog_Alert);
-
-						materialAlertDialogBuilder
+			binding.deleteNote.setOnClickListener(
+					v -> {
+						new MaterialAlertDialogBuilder(
+										ctx, R.style.ThemeOverlay_Material3_Dialog_Alert)
 								.setTitle(ctx.getString(R.string.menuDeleteText))
 								.setMessage(ctx.getString(R.string.noteDeleteDialogMessage))
 								.setPositiveButton(
 										R.string.menuDeleteText,
-										(dialog, whichButton) ->
+										(dialog, which) ->
 												deleteNote(
 														getBindingAdapterPosition(),
-														notes.getNoteId()))
+														note.getNoteId()))
 								.setNeutralButton(R.string.cancelButton, null)
 								.show();
 					});
+		}
 
-			if (insert.equalsIgnoreCase("insert") && source.equalsIgnoreCase("issue")) {
+		private void performInsert() {
 
-				deleteNote.setVisibility(View.GONE);
+			if (!(ctx instanceof BaseActivity activity)) return;
 
-				itemView.setOnClickListener(
-						view -> {
-							CreateIssueActivity parentActivity = (CreateIssueActivity) ctx;
-							EditText text = parentActivity.findViewById(R.id.newIssueDescription);
-							text.append(notes.getContent());
+			EditText targetField = null;
+			AlertDialog dialogToDismiss = null;
 
-							parentActivity.dialogNotes.dismiss();
-						});
+			if (activity instanceof CreateIssueActivity issueAct) {
+				targetField = issueAct.findViewById(R.id.newIssueDescription);
+				dialogToDismiss = issueAct.dialogNotes;
+			} else if (activity instanceof CreateReleaseActivity releaseAct) {
+				targetField = releaseAct.findViewById(R.id.releaseContent);
+				dialogToDismiss = releaseAct.dialogNotes;
+			} else if (activity instanceof CreatePullRequestActivity prAct) {
+				targetField = prAct.findViewById(R.id.prBody);
+				dialogToDismiss = prAct.dialogNotes;
 			}
 
-			if (insert.equalsIgnoreCase("insert") && source.equalsIgnoreCase("release")) {
+			if (targetField != null) {
+				targetField.append(note.getContent());
 
-				deleteNote.setVisibility(View.GONE);
-
-				itemView.setOnClickListener(
-						view -> {
-							CreateReleaseActivity parentActivity = (CreateReleaseActivity) ctx;
-							EditText text = parentActivity.findViewById(R.id.releaseContent);
-							text.append(notes.getContent());
-
-							parentActivity.dialogNotes.dismiss();
-						});
+				if (dialogToDismiss != null && dialogToDismiss.isShowing()) {
+					dialogToDismiss.dismiss();
+				}
 			}
+		}
 
-			if (insert.equalsIgnoreCase("insert") && source.equalsIgnoreCase("pr")) {
+		public void bind(Notes note) {
+			this.note = note;
 
-				deleteNote.setVisibility(View.GONE);
+			Markdown.render(
+					ctx,
+					EmojiParser.parseToUnicode(
+							Objects.requireNonNull(
+									StringUtils.substring(note.getContent(), 0, 140))),
+					binding.noteContent);
 
-				itemView.setOnClickListener(
-						view -> {
-							CreatePullRequestActivity parentActivity =
-									(CreatePullRequestActivity) ctx;
-							EditText text = parentActivity.findViewById(R.id.prBody);
-							text.append(notes.getContent());
+			long timestamp = (note.getModified() != null) ? note.getModified() : note.getDatetime();
+			String formattedTime =
+					TimeHelper.formatTime(
+							Date.from(Instant.ofEpochSecond(timestamp)), Locale.getDefault());
 
-							parentActivity.dialogNotes.dismiss();
-						});
-			}
+			String dateLabel =
+					(note.getModified() != null)
+							? ctx.getString(R.string.noteTimeModified, formattedTime)
+							: ctx.getString(R.string.noteDateTime, formattedTime);
+
+			binding.noteDate.setText(dateLabel);
+
+			binding.deleteNote.setVisibility(
+					"insert".equalsIgnoreCase(insert) ? View.GONE : View.VISIBLE);
 		}
 	}
 
 	private void deleteNote(int position, int noteId) {
-
 		NotesApi notesApi = BaseApi.getInstance(ctx, NotesApi.class);
-		assert notesApi != null;
-		notesApi.deleteNote(noteId);
-		notesList.remove(position);
-		notifyItemRemoved(position);
-		notifyItemRangeChanged(position, notesList.size());
-		Toasty.show(ctx, ctx.getResources().getQuantityString(R.plurals.noteDeleteMessage, 1));
+		if (notesApi != null) {
+			notesApi.deleteNote(noteId);
+			notesList.remove(position);
+			notifyItemRemoved(position);
+			notifyItemRangeChanged(position, notesList.size());
+			Toasty.show(ctx, ctx.getResources().getQuantityString(R.plurals.noteDeleteMessage, 1));
+		}
 	}
 
 	@NonNull @Override
-	public NotesAdapter.NotesViewHolder onCreateViewHolder(
-			@NonNull ViewGroup parent, int viewType) {
-		View v =
-				LayoutInflater.from(parent.getContext())
-						.inflate(R.layout.list_notes, parent, false);
-		return new NotesViewHolder(v);
+	public NotesViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
+		return new NotesViewHolder(
+				ListNotesBinding.inflate(LayoutInflater.from(parent.getContext()), parent, false));
 	}
 
 	@Override
-	public void onBindViewHolder(@NonNull NotesAdapter.NotesViewHolder holder, int position) {
-
-		Locale locale = ctx.getResources().getConfiguration().locale;
-		Notes currentItem = notesList.get(position);
-		holder.notes = currentItem;
-
-		Markdown.render(
-				ctx,
-				EmojiParser.parseToUnicode(
-						Objects.requireNonNull(
-								StringUtils.substring(currentItem.getContent(), 0, 140))),
-				holder.content);
-
-		if (currentItem.getModified() != null) {
-			String modifiedTime =
-					TimeHelper.formatTime(
-							Date.from(Instant.ofEpochSecond(currentItem.getModified())), locale);
-			holder.datetime.setText(
-					ctx.getResources().getString(R.string.noteTimeModified, modifiedTime));
-		} else {
-			String createdTime =
-					TimeHelper.formatTime(
-							Date.from(Instant.ofEpochSecond(currentItem.getDatetime())), locale);
-			holder.datetime.setText(
-					ctx.getResources().getString(R.string.noteDateTime, createdTime));
-		}
+	public void onBindViewHolder(@NonNull NotesViewHolder holder, int position) {
+		holder.bind(notesList.get(position));
+		holder.binding.getRoot().updateAppearance(position, getItemCount());
 	}
 
 	@Override
@@ -191,18 +171,8 @@ public class NotesAdapter extends RecyclerView.Adapter<NotesAdapter.NotesViewHol
 	}
 
 	@SuppressLint("NotifyDataSetChanged")
-	public void notifyDataChanged() {
-		notifyDataSetChanged();
-	}
-
 	public void updateList(List<Notes> list) {
-
-		notesList = list;
-		notifyDataChanged();
-	}
-
-	public void clearAdapter() {
-		notesList.clear();
-		notifyDataChanged();
+		this.notesList = list;
+		notifyDataSetChanged();
 	}
 }

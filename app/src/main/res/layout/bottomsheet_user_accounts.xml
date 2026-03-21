@@ -32,6 +32,8 @@
         android:layout_height="@dimen/dimen54dp"
         android:layout_marginHorizontal="@dimen/dimen16dp"
         android:layout_marginTop="@dimen/dimen16dp"
+        android:textColor="?attr/materialCardBackgroundColor"
+        android:backgroundTint="?attr/iconsColor"
         android:text="@string/addNewAccount" />
 
 </LinearLayout>

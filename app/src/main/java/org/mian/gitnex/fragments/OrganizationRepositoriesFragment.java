@@ -2,8 +2,6 @@ package org.mian.gitnex.fragments;
 
 import android.content.Intent;
 import android.os.Bundle;
-import android.os.Handler;
-import android.os.Looper;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -12,11 +10,14 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.view.inputmethod.EditorInfo;
 import androidx.annotation.NonNull;
+import androidx.appcompat.widget.SearchView;
 import androidx.core.view.MenuProvider;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.Lifecycle;
 import androidx.lifecycle.ViewModelProvider;
 import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
+import java.util.ArrayList;
 import java.util.Objects;
 import org.gitnex.tea4j.v2.models.OrganizationPermissions;
 import org.mian.gitnex.R;
@@ -25,6 +26,7 @@ import org.mian.gitnex.activities.OrganizationDetailActivity;
 import org.mian.gitnex.adapters.ReposListAdapter;
 import org.mian.gitnex.databinding.FragmentRepositoriesBinding;
 import org.mian.gitnex.helpers.Constants;
+import org.mian.gitnex.helpers.EndlessRecyclerViewScrollListener;
 import org.mian.gitnex.viewmodels.RepositoriesViewModel;
 
 /**
@@ -32,14 +34,14 @@ import org.mian.gitnex.viewmodels.RepositoriesViewModel;
  */
 public class OrganizationRepositoriesFragment extends Fragment {
 
-	private OrganizationPermissions permissions;
-	private RepositoriesViewModel repositoriesViewModel;
-	private FragmentRepositoriesBinding fragmentRepositoriesBinding;
+	private FragmentRepositoriesBinding binding;
+	private RepositoriesViewModel viewModel;
 	private ReposListAdapter adapter;
-	private int page = 1;
-	private int resultLimit;
-	private static final String getOrgName = null;
+	private EndlessRecyclerViewScrollListener scrollListener;
+	private OrganizationPermissions permissions;
 	private String orgName;
+	private int resultLimit;
+	private boolean isSearching = false;
 
 	public OrganizationRepositoriesFragment() {}
 
@@ -47,7 +49,7 @@ public class OrganizationRepositoriesFragment extends Fragment {
 			String orgName, OrganizationPermissions permissions) {
 		OrganizationRepositoriesFragment fragment = new OrganizationRepositoriesFragment();
 		Bundle args = new Bundle();
-		args.putString(getOrgName, orgName);
+		args.putString("orgName", orgName);
 		args.putSerializable("permissions", permissions);
 		fragment.setArguments(args);
 		return fragment;
@@ -57,7 +59,7 @@ public class OrganizationRepositoriesFragment extends Fragment {
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		if (getArguments() != null) {
-			orgName = getArguments().getString(getOrgName);
+			orgName = getArguments().getString("orgName");
 			permissions = (OrganizationPermissions) getArguments().getSerializable("permissions");
 		}
 	}
@@ -65,86 +67,93 @@ public class OrganizationRepositoriesFragment extends Fragment {
 	@Override
 	public View onCreateView(
 			@NonNull LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
+		binding = FragmentRepositoriesBinding.inflate(inflater, container, false);
+		resultLimit = Constants.getCurrentResultLimit(requireContext());
+		viewModel = new ViewModelProvider(this).get(RepositoriesViewModel.class);
 
-		fragmentRepositoriesBinding =
-				FragmentRepositoriesBinding.inflate(inflater, container, false);
-		repositoriesViewModel = new ViewModelProvider(this).get(RepositoriesViewModel.class);
+		setupRecyclerView();
+		setupSwipeRefresh();
+		setupMenu();
+		observeViewModel();
+		setupFab();
 
-		resultLimit = Constants.getCurrentResultLimit(getContext());
+		refreshData();
+		return binding.getRoot();
+	}
 
-		fragmentRepositoriesBinding.recyclerView.setHasFixedSize(true);
-		fragmentRepositoriesBinding.recyclerView.setLayoutManager(
-				new LinearLayoutManager(getContext()));
+	private void setupRecyclerView() {
+		adapter = new ReposListAdapter(new ArrayList<>(), requireContext());
+		adapter.isUserOrg = true;
 
-		fragmentRepositoriesBinding.pullToRefresh.setOnRefreshListener(
-				() ->
-						new Handler(Looper.getMainLooper())
-								.postDelayed(
-										() -> {
-											page = 1;
-											fragmentRepositoriesBinding.pullToRefresh.setRefreshing(
-													false);
-											fetchDataAsync();
-											fragmentRepositoriesBinding.progressBar.setVisibility(
-													View.VISIBLE);
-										},
-										50));
+		LinearLayoutManager layoutManager = new LinearLayoutManager(requireContext());
+		binding.recyclerView.setLayoutManager(layoutManager);
+		binding.recyclerView.setAdapter(adapter);
 
-		page = 1;
-		fetchDataAsync();
+		scrollListener =
+				new EndlessRecyclerViewScrollListener(layoutManager) {
+					@Override
+					public void onLoadMore(int page, int totalItemsCount, RecyclerView view) {
+						if (!isSearching) {
+							viewModel.fetchRepos(
+									requireContext(),
+									"org",
+									"",
+									orgName,
+									page,
+									resultLimit,
+									null,
+									false);
+						}
+					}
+				};
+		binding.recyclerView.addOnScrollListener(scrollListener);
+	}
 
-		if (permissions != null) {
-			if (!permissions.isCanCreateRepository()) {
-				fragmentRepositoriesBinding.addNewRepo.setVisibility(View.GONE);
-			}
+	private void setupFab() {
+		if (permissions != null && !permissions.isCanCreateRepository()) {
+			binding.addNewRepo.setVisibility(View.GONE);
 		}
 
-		fragmentRepositoriesBinding.addNewRepo.setOnClickListener(
-				v12 -> {
-					Intent intentRepo = new Intent(getContext(), CreateRepoActivity.class);
-					intentRepo.putExtra("organizationAction", true);
-					intentRepo.putExtra("orgName", orgName);
-					intentRepo.putExtras(
-							Objects.requireNonNull(requireActivity().getIntent().getExtras()));
-					startActivity(intentRepo);
+		binding.addNewRepo.setOnClickListener(
+				v -> {
+					Intent intent = new Intent(getContext(), CreateRepoActivity.class);
+					intent.putExtra("organizationAction", true);
+					intent.putExtra("orgName", orgName);
+					if (requireActivity().getIntent().getExtras() != null) {
+						intent.putExtras(
+								Objects.requireNonNull(requireActivity().getIntent().getExtras()));
+					}
+					startActivity(intent);
 				});
+	}
 
+	private void setupMenu() {
 		requireActivity()
 				.addMenuProvider(
 						new MenuProvider() {
-
 							@Override
 							public void onCreateMenu(
 									@NonNull Menu menu, @NonNull MenuInflater menuInflater) {
-
 								menuInflater.inflate(R.menu.search_menu, menu);
-
 								MenuItem searchItem = menu.findItem(R.id.action_search);
-								androidx.appcompat.widget.SearchView searchView =
-										(androidx.appcompat.widget.SearchView)
-												searchItem.getActionView();
-								assert searchView != null;
-								searchView.setImeOptions(EditorInfo.IME_ACTION_DONE);
-
-								searchView.setOnQueryTextListener(
-										new androidx.appcompat.widget.SearchView
-												.OnQueryTextListener() {
-
-											@Override
-											public boolean onQueryTextSubmit(String query) {
-												return false;
-											}
-
-											@Override
-											public boolean onQueryTextChange(String newText) {
-												if (fragmentRepositoriesBinding.recyclerView
-																.getAdapter()
-														!= null) {
-													adapter.getFilter().filter(newText);
+								SearchView searchView = (SearchView) searchItem.getActionView();
+								if (searchView != null) {
+									searchView.setImeOptions(EditorInfo.IME_ACTION_DONE);
+									searchView.setOnQueryTextListener(
+											new SearchView.OnQueryTextListener() {
+												@Override
+												public boolean onQueryTextSubmit(String query) {
+													return false;
 												}
-												return false;
-											}
-										});
+
+												@Override
+												public boolean onQueryTextChange(String newText) {
+													isSearching = !newText.isEmpty();
+													adapter.getFilter().filter(newText);
+													return true;
+												}
+											});
+								}
 							}
 
 							@Override
@@ -154,76 +163,56 @@ public class OrganizationRepositoriesFragment extends Fragment {
 						},
 						getViewLifecycleOwner(),
 						Lifecycle.State.RESUMED);
-
-		return fragmentRepositoriesBinding.getRoot();
 	}
 
-	private void fetchDataAsync() {
-
-		repositoriesViewModel
-				.getRepositories(
-						page,
-						resultLimit,
-						"",
-						"org",
-						orgName,
-						getContext(),
-						fragmentRepositoriesBinding,
-						null)
+	private void observeViewModel() {
+		viewModel
+				.getRepos()
 				.observe(
 						getViewLifecycleOwner(),
-						reposListMain -> {
-							adapter = new ReposListAdapter(reposListMain, getContext());
-							adapter.isUserOrg = true;
-							adapter.setLoadMoreListener(
-									new ReposListAdapter.OnLoadMoreListener() {
-
-										@Override
-										public void onLoadMore() {
-
-											page += 1;
-											repositoriesViewModel.loadMoreRepos(
-													page,
-													resultLimit,
-													"",
-													"org",
-													orgName,
-													getContext(),
-													adapter,
-													null);
-											fragmentRepositoriesBinding.progressBar.setVisibility(
-													View.VISIBLE);
-										}
-
-										@Override
-										public void onLoadFinished() {
-
-											fragmentRepositoriesBinding.progressBar.setVisibility(
-													View.GONE);
-										}
-									});
-
-							if (adapter.getItemCount() > 0) {
-								fragmentRepositoriesBinding.recyclerView.setAdapter(adapter);
-								fragmentRepositoriesBinding.noData.setVisibility(View.GONE);
-							} else {
-								adapter.notifyDataChanged();
-								fragmentRepositoriesBinding.recyclerView.setAdapter(adapter);
-								fragmentRepositoriesBinding.noData.setVisibility(View.VISIBLE);
-							}
-
-							fragmentRepositoriesBinding.progressBar.setVisibility(View.GONE);
+						list -> {
+							adapter.updateList(list);
+							updateUiState();
 						});
+
+		viewModel
+				.getIsLoading()
+				.observe(
+						getViewLifecycleOwner(),
+						loading -> {
+							boolean hasData = adapter.getItemCount() > 0;
+							binding.expressiveLoader.setVisibility(
+									loading && !hasData ? View.VISIBLE : View.GONE);
+						});
+
+		viewModel.getHasLoadedOnce().observe(getViewLifecycleOwner(), hasLoaded -> updateUiState());
+	}
+
+	private void updateUiState() {
+		boolean isEmpty = adapter.getItemCount() == 0;
+		boolean loaded = Boolean.TRUE.equals(viewModel.getHasLoadedOnce().getValue());
+		binding.layoutEmpty.getRoot().setVisibility(loaded && isEmpty ? View.VISIBLE : View.GONE);
+	}
+
+	private void refreshData() {
+		if (scrollListener != null) scrollListener.resetState();
+		viewModel.resetPagination();
+		viewModel.fetchRepos(requireContext(), "org", "", orgName, 1, resultLimit, null, true);
+	}
+
+	private void setupSwipeRefresh() {
+		binding.pullToRefresh.setOnRefreshListener(
+				() -> {
+					binding.pullToRefresh.setRefreshing(false);
+					refreshData();
+				});
 	}
 
 	@Override
 	public void onResume() {
-
 		super.onResume();
-
 		if (OrganizationDetailActivity.updateOrgFABActions) {
-			page = 1;
-			fetchDataAsync();
+			refreshData();
 			OrganizationDetailActivity.updateOrgFABActions = false;
 		}
 	}

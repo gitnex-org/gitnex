@@ -16,12 +16,12 @@ import com.bumptech.glide.load.engine.DiskCacheStrategy;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Locale;
+import org.gitnex.tea4j.v2.models.Repository;
 import org.mian.gitnex.activities.RepoDetailActivity;
 import org.mian.gitnex.databinding.ListRepositoriesBinding;
 import org.mian.gitnex.helpers.AppUtil;
 import org.mian.gitnex.helpers.AvatarGenerator;
 import org.mian.gitnex.helpers.TimeHelper;
-import org.mian.gitnex.helpers.Toasty;
 import org.mian.gitnex.helpers.contexts.RepositoryContext;
 
 /**
@@ -31,85 +31,32 @@ public class ReposListAdapter extends RecyclerView.Adapter<ReposListAdapter.Repo
 		implements Filterable {
 
 	private final Context context;
-	private final List<org.gitnex.tea4j.v2.models.Repository> reposListFull;
 	private List<org.gitnex.tea4j.v2.models.Repository> reposList;
-	private OnLoadMoreListener loadMoreListener;
-	private boolean isLoading = false;
-	private boolean isMoreDataAvailable = true;
+	private List<org.gitnex.tea4j.v2.models.Repository> reposListFull;
 	public boolean isUserOrg = false;
 
-	private final Filter reposFilter =
-			new Filter() {
-				@Override
-				protected FilterResults performFiltering(CharSequence constraint) {
-					List<org.gitnex.tea4j.v2.models.Repository> filteredList = new ArrayList<>();
-
-					if (constraint == null || constraint.length() == 0) {
-						filteredList.addAll(reposListFull);
-					} else {
-						String filterPattern = constraint.toString().toLowerCase().trim();
-
-						for (org.gitnex.tea4j.v2.models.Repository item : reposListFull) {
-							if (item.getFullName().toLowerCase().contains(filterPattern)
-									|| item.getDescription()
-											.toLowerCase()
-											.contains(filterPattern)) {
-								filteredList.add(item);
-							}
-						}
-					}
-
-					FilterResults results = new FilterResults();
-					results.values = filteredList;
-					results.count = filteredList.size();
-					return results;
-				}
-
-				@Override
-				protected void publishResults(CharSequence constraint, FilterResults results) {
-					reposList.clear();
-
-					Object resultObject = results.values;
-
-					if (resultObject instanceof List<?> resultList) {
-						List<org.gitnex.tea4j.v2.models.Repository> typedList = new ArrayList<>();
-						for (Object item : resultList) {
-							if (item instanceof org.gitnex.tea4j.v2.models.Repository) {
-								typedList.add((org.gitnex.tea4j.v2.models.Repository) item);
-							}
-						}
-
-						reposList.addAll(typedList);
-					}
-
-					notifyDataChanged();
-				}
-			};
-
-	public ReposListAdapter(
-			List<org.gitnex.tea4j.v2.models.Repository> reposListMain, Context ctx) {
+	public ReposListAdapter(List<org.gitnex.tea4j.v2.models.Repository> list, Context ctx) {
 		this.context = ctx;
-		this.reposList = reposListMain;
-		this.reposListFull = new ArrayList<>(reposList);
+		this.reposList = list;
+		this.reposListFull = new ArrayList<>(list);
+	}
+
+	@SuppressLint("NotifyDataSetChanged")
+	public void updateList(List<org.gitnex.tea4j.v2.models.Repository> newList) {
+		this.reposList = newList;
+		this.reposListFull = new ArrayList<>(newList);
+		notifyDataSetChanged();
 	}
 
 	@NonNull @Override
 	public ReposHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-		LayoutInflater inflater = LayoutInflater.from(context);
-		ListRepositoriesBinding binding = ListRepositoriesBinding.inflate(inflater, parent, false);
-		return new ReposHolder(binding);
+		ListRepositoriesBinding binding =
+				ListRepositoriesBinding.inflate(LayoutInflater.from(context), parent, false);
+		return new ReposHolder(binding, this);
 	}
 
 	@Override
 	public void onBindViewHolder(@NonNull ReposHolder holder, int position) {
-		if (position >= getItemCount() - 1
-				&& isMoreDataAvailable
-				&& !isLoading
-				&& loadMoreListener != null) {
-			isLoading = true;
-			loadMoreListener.onLoadMore();
-		}
-
 		holder.bindData(reposList.get(position));
 		holder.binding.getRoot().updateAppearance(position, getItemCount());
 	}
@@ -119,149 +66,115 @@ public class ReposListAdapter extends RecyclerView.Adapter<ReposListAdapter.Repo
 		return reposList.size();
 	}
 
-	public void setMoreDataAvailable(boolean moreDataAvailable) {
-		isMoreDataAvailable = moreDataAvailable;
-		if (!isMoreDataAvailable && loadMoreListener != null) {
-			loadMoreListener.onLoadFinished();
-		}
-	}
-
-	@SuppressLint("NotifyDataSetChanged")
-	public void notifyDataChanged() {
-		notifyDataSetChanged();
-		isLoading = false;
-		if (loadMoreListener != null) {
-			loadMoreListener.onLoadFinished();
-		}
-	}
-
-	public void setLoadMoreListener(OnLoadMoreListener loadMoreListener) {
-		this.loadMoreListener = loadMoreListener;
-	}
-
-	public void updateList(List<org.gitnex.tea4j.v2.models.Repository> list) {
-		this.reposList = list;
-		notifyDataChanged();
-	}
-
 	@Override
 	public Filter getFilter() {
-		return reposFilter;
-	}
+		return new Filter() {
+			@Override
+			protected FilterResults performFiltering(CharSequence constraint) {
+				List<org.gitnex.tea4j.v2.models.Repository> filtered = new ArrayList<>();
+				if (constraint == null || constraint.length() == 0) {
+					filtered.addAll(reposListFull);
+				} else {
+					String pattern = constraint.toString().toLowerCase().trim();
+					for (org.gitnex.tea4j.v2.models.Repository item : reposListFull) {
+						if (item.getFullName().toLowerCase().contains(pattern)
+								|| (item.getDescription() != null
+										&& item.getDescription().toLowerCase().contains(pattern))) {
+							filtered.add(item);
+						}
+					}
+				}
+				FilterResults results = new FilterResults();
+				results.values = filtered;
+				return results;
+			}
 
-	public interface OnLoadMoreListener {
-		void onLoadMore();
-
-		void onLoadFinished();
+			@SuppressLint("NotifyDataSetChanged")
+			@Override
+			protected void publishResults(CharSequence constraint, FilterResults results) {
+				reposList = (List<Repository>) results.values;
+				notifyDataSetChanged();
+			}
+		};
 	}
 
 	public static class ReposHolder extends RecyclerView.ViewHolder {
-
 		private final ListRepositoriesBinding binding;
-		private org.gitnex.tea4j.v2.models.Repository userRepositories;
 		private final ReposListAdapter adapter;
 		private final Context context;
+		private org.gitnex.tea4j.v2.models.Repository repo;
 
-		ReposHolder(ListRepositoriesBinding binding) {
+		ReposHolder(ListRepositoriesBinding binding, ReposListAdapter adapter) {
 			super(binding.getRoot());
 			this.binding = binding;
-			this.adapter = null;
+			this.adapter = adapter;
 			this.context = binding.getRoot().getContext();
-
-			setupClickListeners();
+			setupClick();
 		}
 
-		private void setupClickListeners() {
+		private void setupClick() {
 			binding.getRoot()
 					.setOnClickListener(
 							v -> {
-								RepositoryContext repo =
-										new RepositoryContext(userRepositories, context);
-								repo.saveToDB(context);
-								Intent intent = repo.getIntent(context, RepoDetailActivity.class);
-								if (adapter != null && adapter.isUserOrg) {
-									intent.putExtra("openedFromUserOrg", true);
-								}
+								RepositoryContext repoCtx = new RepositoryContext(repo, context);
+								repoCtx.saveToDB(context);
+								Intent intent =
+										repoCtx.getIntent(context, RepoDetailActivity.class);
+								if (adapter.isUserOrg) intent.putExtra("openedFromUserOrg", true);
 								context.startActivity(intent);
 							});
 		}
 
 		@SuppressLint("SetTextI18n")
-		void bindData(org.gitnex.tea4j.v2.models.Repository repositories) {
-			this.userRepositories = repositories;
+		void bindData(org.gitnex.tea4j.v2.models.Repository repository) {
+			this.repo = repository;
 
-			binding.repoOpenIssues.setText(String.valueOf(repositories.getOpenIssuesCount()));
-			binding.repoOpenPRs.setText(String.valueOf(repositories.getOpenPrCounter()));
+			binding.repoOpenIssues.setText(String.valueOf(repo.getOpenIssuesCount()));
+			binding.repoOpenPRs.setText(String.valueOf(repo.getOpenPrCounter()));
 
-			String fullName = repositories.getFullName();
+			String fullName = repo.getFullName();
 			String[] nameParts = fullName.split("/");
-			if (nameParts.length > 0) {
-				binding.orgName.setText(nameParts[0]);
-			}
-			binding.repoIsArchivedFrame.setVisibility(
-					repositories.isArchived() ? View.VISIBLE : View.GONE);
+			if (nameParts.length > 0) binding.orgName.setText(nameParts[0]);
+			if (nameParts.length > 1) binding.repoName.setText(nameParts[1]);
 
-			if (nameParts.length > 1) {
-				binding.repoName.setText(nameParts[1]);
-			}
+			binding.repoIsArchivedFrame.setVisibility(repo.isArchived() ? View.VISIBLE : View.GONE);
+			binding.repoIsPrivate.setVisibility(repo.isPrivate() ? View.VISIBLE : View.GONE);
+			binding.repoStars.setText(AppUtil.numberFormatter(repo.getStarsCount()));
 
-			binding.repoStars.setText(AppUtil.numberFormatter(repositories.getStarsCount()));
-
-			if (repositories.getLanguage() != null
-					&& !repositories.getLanguage().trim().isEmpty()) {
+			if (repo.getLanguage() != null && !repo.getLanguage().trim().isEmpty()) {
 				binding.repoLanguageFrame.setVisibility(View.VISIBLE);
-				binding.repoStars2.setText(repositories.getLanguage());
+				binding.repoStars2.setText(repo.getLanguage());
 			} else {
 				binding.repoLanguageFrame.setVisibility(View.GONE);
 			}
 
-			binding.repoIsPrivate.setVisibility(
-					repositories.isPrivate() ? View.VISIBLE : View.GONE);
-
-			if (repositories.getUpdatedAt() != null) {
-				binding.repoLastUpdated.setVisibility(View.VISIBLE);
+			if (repo.getUpdatedAt() != null) {
 				binding.repoLastUpdated.setText(
-						TimeHelper.formatTime(repositories.getUpdatedAt(), Locale.getDefault()));
-				binding.repoLastUpdated.setOnClickListener(
-						v ->
-								Toasty.show(
-										context,
-										TimeHelper.getFullDateTime(
-												repositories.getUpdatedAt(), Locale.getDefault())));
+						TimeHelper.formatTime(repo.getUpdatedAt(), Locale.getDefault()));
 			}
 
-			if (repositories.getDescription() != null && !repositories.getDescription().isEmpty()) {
+			if (repo.getDescription() != null && !repo.getDescription().isEmpty()) {
 				binding.repoDescription.setVisibility(View.VISIBLE);
-				binding.repoDescription.setText(repositories.getDescription());
+				binding.repoDescription.setText(repo.getDescription());
 			} else {
 				binding.repoDescription.setVisibility(View.GONE);
 			}
 
-			if (repositories.getPermissions() != null) {
-				binding.repoIsAdmin.setChecked(repositories.getPermissions().isAdmin());
-			}
-
-			loadAvatar(repositories);
+			loadAvatar(repo);
 		}
 
-		private void loadAvatar(org.gitnex.tea4j.v2.models.Repository repositories) {
-			String repoName = repositories.getName();
-			String fullName = repositories.getFullName();
-			String label = (fullName != null && !fullName.isEmpty()) ? fullName : repoName;
-
+		private void loadAvatar(org.gitnex.tea4j.v2.models.Repository repository) {
+			String label =
+					(repository.getFullName() != null)
+							? repository.getFullName()
+							: repository.getName();
 			Drawable placeholder = AvatarGenerator.getLetterAvatar(context, label, 44);
-
-			if (repositories.getAvatarUrl() != null && !repositories.getAvatarUrl().isEmpty()) {
-				Glide.with(context)
-						.load(repositories.getAvatarUrl())
-						.diskCacheStrategy(DiskCacheStrategy.ALL)
-						.placeholder(placeholder)
-						.error(placeholder)
-						.centerCrop()
-						.into(binding.imageAvatar);
-			} else {
-				binding.imageAvatar.setImageDrawable(placeholder);
-			}
+			Glide.with(context)
+					.load(repository.getAvatarUrl())
+					.diskCacheStrategy(DiskCacheStrategy.ALL)
+					.placeholder(placeholder)
+					.circleCrop()
+					.into(binding.imageAvatar);
 		}
 	}
 }

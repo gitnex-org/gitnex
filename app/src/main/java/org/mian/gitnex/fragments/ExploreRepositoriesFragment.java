@@ -1,9 +1,6 @@
 package org.mian.gitnex.fragments;
 
-import android.content.Context;
 import android.os.Bundle;
-import android.os.Handler;
-import android.os.Looper;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -12,59 +9,84 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.view.inputmethod.EditorInfo;
 import androidx.annotation.NonNull;
+import androidx.appcompat.widget.SearchView;
 import androidx.core.view.MenuProvider;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.Lifecycle;
+import androidx.lifecycle.ViewModelProvider;
 import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment;
 import java.util.ArrayList;
-import java.util.List;
-import org.gitnex.tea4j.v2.models.Repository;
-import org.gitnex.tea4j.v2.models.SearchResults;
 import org.mian.gitnex.R;
 import org.mian.gitnex.activities.MainActivity;
-import org.mian.gitnex.adapters.ExploreRepositoriesAdapter;
-import org.mian.gitnex.clients.RetrofitClient;
+import org.mian.gitnex.adapters.ReposListAdapter;
 import org.mian.gitnex.databinding.BottomSheetExploreFiltersBinding;
 import org.mian.gitnex.databinding.FragmentExploreRepoBinding;
 import org.mian.gitnex.helpers.Constants;
+import org.mian.gitnex.helpers.EndlessRecyclerViewScrollListener;
 import org.mian.gitnex.helpers.Toasty;
-import retrofit2.Call;
-import retrofit2.Callback;
-import retrofit2.Response;
+import org.mian.gitnex.viewmodels.RepositoriesViewModel;
 
 /**
  * @author mmarif
  */
 public class ExploreRepositoriesFragment extends Fragment {
 
-	private final boolean repoTypeInclude = true;
-	private final String sort = "updated";
-	private final String order = "desc";
 	private FragmentExploreRepoBinding viewBinding;
-	private Context context;
-	private int pageSize;
+	private RepositoriesViewModel viewModel;
+	private ReposListAdapter adapter;
+	private EndlessRecyclerViewScrollListener scrollListener;
+
 	private int resultLimit;
-	private List<Repository> dataList;
-	private ExploreRepositoriesAdapter adapter;
+	private String searchQuery = "";
 	private boolean includeTopic = false;
 	private boolean includeDescription = false;
 	private boolean includeTemplate = false;
 	private boolean onlyArchived = false;
-	private String searchQuery = "";
 
 	@Override
 	public View onCreateView(
 			@NonNull LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-
 		viewBinding = FragmentExploreRepoBinding.inflate(inflater, container, false);
+		resultLimit = Constants.getCurrentResultLimit(requireContext());
+		viewModel = new ViewModelProvider(this).get(RepositoriesViewModel.class);
 
-		context = getContext();
-		dataList = new ArrayList<>();
-		adapter = new ExploreRepositoriesAdapter(dataList, context);
+		setupRecyclerView();
+		setupSwipeRefresh();
+		setupMenu();
+		observeViewModel();
 
-		resultLimit = Constants.getCurrentResultLimit(context);
+		refreshData();
+		return viewBinding.getRoot();
+	}
 
+	private void setupRecyclerView() {
+		adapter = new ReposListAdapter(new ArrayList<>(), requireContext());
+		LinearLayoutManager layoutManager = new LinearLayoutManager(requireContext());
+		viewBinding.recyclerViewReposSearch.setLayoutManager(layoutManager);
+		viewBinding.recyclerViewReposSearch.setAdapter(adapter);
+
+		scrollListener =
+				new EndlessRecyclerViewScrollListener(layoutManager) {
+					@Override
+					public void onLoadMore(int page, int totalItemsCount, RecyclerView view) {
+						viewModel.searchExploreRepos(
+								requireContext(),
+								searchQuery,
+								includeTopic,
+								includeDescription,
+								includeTemplate,
+								onlyArchived,
+								page,
+								resultLimit,
+								false);
+					}
+				};
+		viewBinding.recyclerViewReposSearch.addOnScrollListener(scrollListener);
+	}
+
+	private void setupMenu() {
 		requireActivity()
 				.addMenuProvider(
 						new MenuProvider() {
@@ -75,215 +97,102 @@ public class ExploreRepositoriesFragment extends Fragment {
 								menuInflater.inflate(R.menu.search_menu, menu);
 								menuInflater.inflate(R.menu.generic_nav_dotted_menu, menu);
 
-								MenuItem filterItem = menu.findItem(R.id.genericMenu);
-								filterItem.setOnMenuItemClickListener(
-										item -> {
-											showFilterBottomSheet();
-											return true;
-										});
-
 								MenuItem searchItem = menu.findItem(R.id.action_search);
-								androidx.appcompat.widget.SearchView searchView =
-										(androidx.appcompat.widget.SearchView)
-												searchItem.getActionView();
-								assert searchView != null;
-								searchView.setImeOptions(EditorInfo.IME_ACTION_DONE);
+								SearchView searchView = (SearchView) searchItem.getActionView();
+								if (searchView != null) {
+									searchView.setImeOptions(EditorInfo.IME_ACTION_DONE);
+									searchView.setOnQueryTextListener(
+											new SearchView.OnQueryTextListener() {
+												@Override
+												public boolean onQueryTextSubmit(String query) {
+													searchQuery = query;
+													refreshData();
+													searchView.setQuery(null, false);
+													searchItem.collapseActionView();
+													return true;
+												}
 
-								searchView.setOnQueryTextListener(
-										new androidx.appcompat.widget.SearchView
-												.OnQueryTextListener() {
-											@Override
-											public boolean onQueryTextSubmit(String query) {
-												viewBinding.progressBar.setVisibility(View.VISIBLE);
-												loadInitial(query, resultLimit);
-												adapter.setLoadMoreListener(
-														() ->
-																viewBinding.recyclerViewReposSearch
-																		.post(
-																				() -> {
-																					if (dataList
-																											.size()
-																									== resultLimit
-																							|| pageSize
-																									== resultLimit) {
-																						int page =
-																								(dataList
-																														.size()
-																												+ resultLimit)
-																										/ resultLimit;
-																						loadMore(
-																								query,
-																								resultLimit,
-																								page);
-																					}
-																				}));
-												searchQuery = query;
-												searchView.setQuery(null, false);
-												searchItem.collapseActionView();
-												return true;
-											}
-
-											@Override
-											public boolean onQueryTextChange(String newText) {
-												return false;
-											}
-										});
+												@Override
+												public boolean onQueryTextChange(String newText) {
+													return false;
+												}
+											});
+								}
 							}
 
 							@Override
 							public boolean onMenuItemSelected(@NonNull MenuItem menuItem) {
+								if (menuItem.getItemId() == R.id.genericMenu) {
+									showFilterBottomSheet();
+									return true;
+								}
 								return false;
 							}
 						},
 						getViewLifecycleOwner(),
 						Lifecycle.State.RESUMED);
+	}
 
+	private void observeViewModel() {
+		viewModel
+				.getRepos()
+				.observe(
+						getViewLifecycleOwner(),
+						list -> {
+							adapter.updateList(list);
+							updateUiState();
+						});
+
+		viewModel
+				.getIsLoading()
+				.observe(
+						getViewLifecycleOwner(),
+						loading -> {
+							boolean hasData = adapter.getItemCount() > 0;
+							viewBinding.expressiveLoader.setVisibility(
+									loading && !hasData ? View.VISIBLE : View.GONE);
+						});
+
+		viewModel.getHasLoadedOnce().observe(getViewLifecycleOwner(), hasLoaded -> updateUiState());
+
+		viewModel
+				.getError()
+				.observe(
+						getViewLifecycleOwner(),
+						error -> {
+							if (error != null) Toasty.show(requireContext(), error);
+						});
+	}
+
+	private void updateUiState() {
+		boolean isEmpty = adapter.getItemCount() == 0;
+		boolean loaded = Boolean.TRUE.equals(viewModel.getHasLoadedOnce().getValue());
+		viewBinding
+				.layoutEmpty
+				.getRoot()
+				.setVisibility(loaded && isEmpty ? View.VISIBLE : View.GONE);
+	}
+
+	private void refreshData() {
+		if (scrollListener != null) scrollListener.resetState();
+		viewModel.resetPagination();
+		viewModel.searchExploreRepos(
+				requireContext(),
+				searchQuery,
+				includeTopic,
+				includeDescription,
+				includeTemplate,
+				onlyArchived,
+				1,
+				resultLimit,
+				true);
+	}
+
+	private void setupSwipeRefresh() {
 		viewBinding.pullToRefresh.setOnRefreshListener(
-				() ->
-						new Handler(Looper.getMainLooper())
-								.postDelayed(
-										() -> {
-											viewBinding.pullToRefresh.setRefreshing(false);
-											loadInitial("", resultLimit);
-											adapter.notifyDataChanged();
-										},
-										200));
-
-		adapter.setLoadMoreListener(
-				() ->
-						viewBinding.recyclerViewReposSearch.post(
-								() -> {
-									if (dataList.size() == resultLimit || pageSize == resultLimit) {
-										int page = (dataList.size() + resultLimit) / resultLimit;
-										loadMore("", resultLimit, page);
-									}
-								}));
-
-		viewBinding.recyclerViewReposSearch.setHasFixedSize(true);
-		viewBinding.recyclerViewReposSearch.setLayoutManager(new LinearLayoutManager(context));
-		viewBinding.recyclerViewReposSearch.setAdapter(adapter);
-
-		loadInitial("", resultLimit);
-
-		return viewBinding.getRoot();
-	}
-
-	private void loadInitial(String searchKeyword, int resultLimit) {
-		Call<SearchResults> call =
-				RetrofitClient.getApiInterface(context)
-						.repoSearch(
-								searchKeyword,
-								includeTopic,
-								includeDescription,
-								null,
-								null,
-								null,
-								null,
-								repoTypeInclude,
-								null,
-								includeTemplate,
-								onlyArchived,
-								null,
-								null,
-								sort,
-								order,
-								1,
-								resultLimit);
-		call.enqueue(
-				new Callback<>() {
-					@Override
-					public void onResponse(
-							@NonNull Call<SearchResults> call,
-							@NonNull Response<SearchResults> response) {
-						if (response.isSuccessful()) {
-							if (response.body() != null && !response.body().getData().isEmpty()) {
-								dataList.clear();
-								dataList.addAll(response.body().getData());
-								adapter.notifyDataChanged();
-								viewBinding.noData.setVisibility(View.GONE);
-							} else {
-								dataList.clear();
-								adapter.notifyDataChanged();
-								viewBinding.noData.setVisibility(View.VISIBLE);
-							}
-							viewBinding.progressBar.setVisibility(View.GONE);
-						} else if (response.code() == 404) {
-							viewBinding.noData.setVisibility(View.VISIBLE);
-							viewBinding.progressBar.setVisibility(View.GONE);
-						} else {
-							if (isAdded() && getContext() != null) {
-								Toasty.show(getContext(), getString(R.string.genericError));
-							}
-						}
-					}
-
-					@Override
-					public void onFailure(@NonNull Call<SearchResults> call, @NonNull Throwable t) {
-						if (isAdded() && getContext() != null) {
-							Toasty.show(
-									getContext(), getString(R.string.genericServerResponseError));
-						}
-						viewBinding.progressBar.setVisibility(View.GONE);
-					}
-				});
-	}
-
-	private void loadMore(String searchKeyword, int resultLimit, int page) {
-		viewBinding.progressBar.setVisibility(View.VISIBLE);
-		Call<SearchResults> call =
-				RetrofitClient.getApiInterface(context)
-						.repoSearch(
-								searchKeyword,
-								includeTopic,
-								includeDescription,
-								null,
-								null,
-								null,
-								null,
-								repoTypeInclude,
-								null,
-								includeTemplate,
-								onlyArchived,
-								null,
-								null,
-								sort,
-								order,
-								page,
-								resultLimit);
-
-		call.enqueue(
-				new Callback<>() {
-					@Override
-					public void onResponse(
-							@NonNull Call<SearchResults> call,
-							@NonNull Response<SearchResults> response) {
-						if (response.isSuccessful()) {
-							assert response.body() != null;
-							List<Repository> result = response.body().getData();
-							if (!result.isEmpty()) {
-								pageSize = result.size();
-								dataList.addAll(result);
-							} else {
-								Toasty.show(context, getString(R.string.noMoreData));
-								adapter.setMoreDataAvailable(false);
-							}
-							adapter.notifyDataChanged();
-							viewBinding.progressBar.setVisibility(View.GONE);
-						} else {
-							if (isAdded() && getContext() != null) {
-								Toasty.show(getContext(), getString(R.string.genericError));
-							}
-						}
-					}
-
-					@Override
-					public void onFailure(@NonNull Call<SearchResults> call, @NonNull Throwable t) {
-						if (isAdded() && getContext() != null) {
-							Toasty.show(
-									getContext(), getString(R.string.genericServerResponseError));
-						}
-						viewBinding.progressBar.setVisibility(View.GONE);
-					}
+				() -> {
+					viewBinding.pullToRefresh.setRefreshing(false);
+					refreshData();
 				});
 	}
 
@@ -299,7 +208,7 @@ public class ExploreRepositoriesFragment extends Fragment {
 							includeDescription = desc;
 							includeTemplate = template;
 							onlyArchived = archived;
-							loadInitial(searchQuery, resultLimit);
+							refreshData();
 						});
 		bottomSheet.show(getChildFragmentManager(), "exploreFiltersBottomSheet");
 	}
@@ -308,8 +217,7 @@ public class ExploreRepositoriesFragment extends Fragment {
 	public void onResume() {
 		super.onResume();
 		if (MainActivity.reloadRepos) {
-			dataList.clear();
-			loadInitial(searchQuery, resultLimit);
+			refreshData();
 			MainActivity.reloadRepos = false;
 		}
 	}

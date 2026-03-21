@@ -1,7 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:orientation="vertical"
     android:background="@android:color/transparent"
     android:paddingHorizontal="@dimen/dimen24dp"
@@ -21,28 +20,26 @@
         android:textStyle="bold"
         android:textColor="?attr/primaryTextColor" />
 
-    <com.google.android.material.floatingactionbutton.ExtendedFloatingActionButton
+    <com.google.android.material.button.MaterialButton
         android:id="@+id/backupButton"
+        style="@style/Widget.Material3.Button"
         android:layout_width="match_parent"
         android:layout_height="@dimen/dimen54dp"
+        android:layout_marginHorizontal="@dimen/dimen8dp"
         android:layout_marginTop="@dimen/dimen16dp"
-        android:stateListAnimator="@null"
-        android:text="@string/backup"
-        android:contentDescription="@string/backup"
         android:textColor="?attr/materialCardBackgroundColor"
-        app:iconTint="?attr/materialCardBackgroundColor"
-        android:backgroundTint="?attr/fabColor" />
+        android:backgroundTint="?attr/iconsColor"
+        android:text="@string/backup" />
 
-    <com.google.android.material.floatingactionbutton.ExtendedFloatingActionButton
+    <com.google.android.material.button.MaterialButton
         android:id="@+id/restoreButton"
+        style="@style/Widget.Material3.Button"
         android:layout_width="match_parent"
         android:layout_height="@dimen/dimen54dp"
+        android:layout_marginHorizontal="@dimen/dimen8dp"
         android:layout_marginTop="@dimen/dimen16dp"
-        android:stateListAnimator="@null"
-        android:text="@string/restore"
-        android:contentDescription="@string/restore"
         android:textColor="?attr/materialCardBackgroundColor"
-        app:iconTint="?attr/materialCardBackgroundColor"
-        android:backgroundTint="?attr/fabColor" />
+        android:backgroundTint="?attr/iconsColor"
+        android:text="@string/restore" />
 
 </LinearLayout>

@@ -1,18 +1,16 @@
 package org.mian.gitnex.viewmodels;
 
 import android.content.Context;
-import android.view.View;
 import androidx.annotation.NonNull;
 import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MutableLiveData;
 import androidx.lifecycle.ViewModel;
+import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 import org.gitnex.tea4j.v2.models.Repository;
-import org.mian.gitnex.R;
-import org.mian.gitnex.adapters.ReposListAdapter;
+import org.gitnex.tea4j.v2.models.SearchResults;
 import org.mian.gitnex.clients.RetrofitClient;
-import org.mian.gitnex.databinding.FragmentRepositoriesBinding;
-import org.mian.gitnex.helpers.Toasty;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
@@ -22,155 +20,207 @@ import retrofit2.Response;
  */
 public class RepositoriesViewModel extends ViewModel {
 
-	private MutableLiveData<List<Repository>> reposList;
+	private final MutableLiveData<List<Repository>> repos =
+			new MutableLiveData<>(new ArrayList<>());
+	private final MutableLiveData<Boolean> isLoading = new MutableLiveData<>(false);
+	private final MutableLiveData<String> errorMessage = new MutableLiveData<>();
+	private final MutableLiveData<Boolean> hasLoadedOnce = new MutableLiveData<>(false);
 
-	public LiveData<List<Repository>> getRepositories(
-			int page,
-			int resultLimit,
-			String userLogin,
-			String type,
-			String orgName,
-			Context ctx,
-			FragmentRepositoriesBinding fragmentRepositoriesBinding,
-			String sort) {
+	private int totalCount = -1;
+	private boolean isLastPage = false;
 
-		reposList = new MutableLiveData<>();
-		loadReposList(
-				page,
-				resultLimit,
-				userLogin,
-				type,
-				orgName,
-				ctx,
-				fragmentRepositoriesBinding,
-				sort);
-
-		return reposList;
+	public LiveData<List<Repository>> getRepos() {
+		return repos;
 	}
 
-	public void loadReposList(
-			int page,
-			int resultLimit,
-			String userLogin,
-			String type,
-			String orgName,
+	public LiveData<Boolean> getIsLoading() {
+		return isLoading;
+	}
+
+	public LiveData<String> getError() {
+		return errorMessage;
+	}
+
+	public LiveData<Boolean> getHasLoadedOnce() {
+		return hasLoadedOnce;
+	}
+
+	public void fetchRepos(
 			Context ctx,
-			FragmentRepositoriesBinding fragmentRepositoriesBinding,
-			String sort) {
+			String type,
+			String userLogin,
+			String orgName,
+			int page,
+			int limit,
+			String sort,
+			boolean isRefresh) {
+
+		if (Boolean.TRUE.equals(isLoading.getValue())) return;
+		if (!isRefresh && isLastPage) return;
+
+		isLoading.setValue(true);
+
+		String fetchType = type != null ? type : "repos";
 
 		Call<List<Repository>> call =
-				switch (type) {
-					case "starredRepos" ->
+				switch (fetchType) {
+					case "userRepos" ->
 							RetrofitClient.getApiInterface(ctx)
-									.userCurrentListStarred(page, resultLimit);
+									.userListRepos(userLogin, page, limit);
+
+					case "starredRepos" -> {
+						if (userLogin != null && !userLogin.isEmpty()) {
+							yield RetrofitClient.getApiInterface(ctx)
+									.userListStarred(userLogin, page, limit);
+						} else {
+							yield RetrofitClient.getApiInterface(ctx)
+									.userCurrentListStarred(page, limit);
+						}
+					}
+
 					case "myRepos" ->
 							RetrofitClient.getApiInterface(ctx)
-									.customUserListRepos(userLogin, page, resultLimit, sort);
+									.customUserListRepos(userLogin, page, limit, sort);
+
 					case "org" ->
-							RetrofitClient.getApiInterface(ctx)
-									.orgListRepos(orgName, page, resultLimit);
+							RetrofitClient.getApiInterface(ctx).orgListRepos(orgName, page, limit);
+
 					case "team" ->
 							RetrofitClient.getApiInterface(ctx)
-									.orgListTeamRepos(Long.valueOf(userLogin), page, resultLimit);
+									.orgListTeamRepos(Long.valueOf(userLogin), page, limit);
+
 					case "watched" ->
 							RetrofitClient.getApiInterface(ctx)
-									.userCurrentListSubscriptions(page, resultLimit);
+									.userCurrentListSubscriptions(page, limit);
+
 					default ->
 							RetrofitClient.getApiInterface(ctx)
-									.customUserCurrentListRepos(page, resultLimit, sort);
+									.customUserCurrentListRepos(page, limit, sort);
 				};
 
 		call.enqueue(
 				new Callback<>() {
-
 					@Override
 					public void onResponse(
 							@NonNull Call<List<Repository>> call,
 							@NonNull Response<List<Repository>> response) {
-
-						if (response.isSuccessful()) {
-							if (response.code() == 200) {
-								reposList.postValue(response.body());
-							}
-						} else if (response.code() == 403) {
-							fragmentRepositoriesBinding.progressBar.setVisibility(View.GONE);
-							fragmentRepositoriesBinding.noData.setVisibility(View.VISIBLE);
-						} else {
-							Toasty.show(ctx, ctx.getString(R.string.genericError));
-						}
+						handleResponse(response, isRefresh, limit);
+						hasLoadedOnce.setValue(true);
 					}
 
 					@Override
 					public void onFailure(
 							@NonNull Call<List<Repository>> call, @NonNull Throwable t) {
-
-						Toasty.show(ctx, ctx.getString(R.string.genericServerResponseError));
+						isLoading.setValue(false);
+						errorMessage.setValue(t.getMessage());
+						hasLoadedOnce.setValue(true);
 					}
 				});
 	}
 
-	public void loadMoreRepos(
-			int page,
-			int resultLimit,
-			String userLogin,
-			String type,
-			String orgName,
-			Context ctx,
-			ReposListAdapter adapter,
-			String sort) {
+	private void handleResponse(Response<List<Repository>> response, boolean isRefresh, int limit) {
+		isLoading.setValue(false);
+		if (response.isSuccessful() && response.body() != null) {
+			String totalHeader = response.headers().get("x-total-count");
+			if (totalHeader != null) totalCount = Integer.parseInt(totalHeader);
 
-		Call<List<Repository>> call =
-				switch (type) {
-					case "starredRepos" ->
-							RetrofitClient.getApiInterface(ctx)
-									.userCurrentListStarred(page, resultLimit);
-					case "myRepos" ->
-							RetrofitClient.getApiInterface(ctx)
-									.customUserListRepos(userLogin, page, resultLimit, sort);
-					case "org" ->
-							RetrofitClient.getApiInterface(ctx)
-									.orgListRepos(orgName, page, resultLimit);
-					case "team" ->
-							RetrofitClient.getApiInterface(ctx)
-									.orgListTeamRepos(Long.valueOf(userLogin), page, resultLimit);
-					case "watched" ->
-							RetrofitClient.getApiInterface(ctx)
-									.userCurrentListSubscriptions(page, resultLimit);
-					default ->
-							RetrofitClient.getApiInterface(ctx)
-									.customUserCurrentListRepos(page, resultLimit, sort);
-				};
+			List<Repository> currentList =
+					isRefresh
+							? new ArrayList<>()
+							: new ArrayList<>(Objects.requireNonNull(repos.getValue()));
+
+			currentList.addAll(response.body());
+			repos.setValue(currentList);
+
+			if (response.body().size() < limit || currentList.size() >= totalCount) {
+				isLastPage = true;
+			}
+		} else {
+			errorMessage.setValue("Error: " + response.code());
+		}
+	}
+
+	public void searchExploreRepos(
+			Context ctx,
+			String query,
+			boolean includeTopic,
+			boolean includeDesc,
+			boolean includeTemplate,
+			boolean onlyArchived,
+			int page,
+			int limit,
+			boolean isRefresh) {
+
+		if (Boolean.TRUE.equals(isLoading.getValue())) return;
+		if (!isRefresh && isLastPage) return;
+
+		isLoading.setValue(true);
+
+		Call<SearchResults> call =
+				RetrofitClient.getApiInterface(ctx)
+						.repoSearch(
+								query,
+								includeTopic,
+								includeDesc,
+								null,
+								null,
+								null,
+								null,
+								true,
+								null,
+								includeTemplate,
+								onlyArchived,
+								null,
+								null,
+								"updated",
+								"desc",
+								page,
+								limit);
 
 		call.enqueue(
 				new Callback<>() {
-
 					@Override
 					public void onResponse(
-							@NonNull Call<List<Repository>> call,
-							@NonNull Response<List<Repository>> response) {
-
-						if (response.isSuccessful()) {
-							List<Repository> list = reposList.getValue();
-							assert list != null;
-							assert response.body() != null;
-
-							if (!response.body().isEmpty()) {
-								list.addAll(response.body());
-								adapter.updateList(list);
-							} else {
-								adapter.setMoreDataAvailable(false);
-							}
-						} else {
-							Toasty.show(ctx, ctx.getString(R.string.genericError));
-						}
+							@NonNull Call<SearchResults> call,
+							@NonNull Response<SearchResults> response) {
+						handleSearchResponse(response, isRefresh, limit);
+						hasLoadedOnce.setValue(true);
 					}
 
 					@Override
-					public void onFailure(
-							@NonNull Call<List<Repository>> call, @NonNull Throwable t) {
-
-						Toasty.show(ctx, ctx.getString(R.string.genericServerResponseError));
+					public void onFailure(@NonNull Call<SearchResults> call, @NonNull Throwable t) {
+						isLoading.setValue(false);
+						errorMessage.setValue(t.getMessage());
+						hasLoadedOnce.setValue(true);
 					}
 				});
+	}
+
+	private void handleSearchResponse(
+			Response<SearchResults> response, boolean isRefresh, int limit) {
+		isLoading.setValue(false);
+		if (response.isSuccessful() && response.body() != null) {
+			List<Repository> newRepos = response.body().getData();
+
+			List<Repository> currentList =
+					isRefresh
+							? new ArrayList<>()
+							: new ArrayList<>(Objects.requireNonNull(repos.getValue()));
+
+			currentList.addAll(newRepos);
+			repos.setValue(currentList);
+
+			if (newRepos.size() < limit) {
+				isLastPage = true;
+			}
+		} else {
+			errorMessage.setValue("Error: " + response.code());
+		}
+	}
+
+	public void resetPagination() {
+		this.isLastPage = false;
+		this.totalCount = -1;
+		this.hasLoadedOnce.setValue(false);
 	}
 }

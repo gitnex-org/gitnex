@@ -11,7 +11,8 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:background="?attr/primaryBackgroundColor"
-        android:padding="@dimen/dimen8dp">
+        android:paddingVertical="@dimen/dimen8dp"
+        android:paddingHorizontal="@dimen/dimen12dp">
 
         <androidx.swiperefreshlayout.widget.SwipeRefreshLayout
             android:id="@+id/pullToRefresh"
@@ -27,23 +28,17 @@
 
     </FrameLayout>
 
-    <com.google.android.material.progressindicator.LinearProgressIndicator
-        android:id="@+id/progressBar"
-        android:layout_width="match_parent"
+    <com.google.android.material.loadingindicator.LoadingIndicator
+        android:id="@+id/expressive_loader"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:indeterminate="true"
-        style="@style/Widget.Material3.LinearProgressIndicator"
-        app:indicatorColor="?attr/progressIndicatorColor" />
+        android:layout_gravity="center"
+        app:indicatorSize="@dimen/dimen48dp"
+        app:trackThickness="@dimen/dimen4dp" />
 
-    <TextView
-        android:id="@+id/noData"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:layout_margin="@dimen/dimen16dp"
-        android:gravity="center"
-        android:text="@string/noDataFound"
-        android:textColor="?attr/primaryTextColor"
-        android:textSize="18sp"
+    <include
+        android:id="@+id/layout_empty"
+        layout="@layout/layout_empty_state"
         android:visibility="gone" />
 
     <com.google.android.material.floatingactionbutton.ExtendedFloatingActionButton

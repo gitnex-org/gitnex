@@ -2,8 +2,6 @@ package org.mian.gitnex.fragments;
 
 import android.content.Intent;
 import android.os.Bundle;
-import android.os.Handler;
-import android.os.Looper;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -12,20 +10,22 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.view.inputmethod.EditorInfo;
 import androidx.annotation.NonNull;
+import androidx.appcompat.widget.SearchView;
 import androidx.core.view.MenuProvider;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.Lifecycle;
 import androidx.lifecycle.ViewModelProvider;
 import androidx.recyclerview.widget.LinearLayoutManager;
-import java.util.Objects;
+import androidx.recyclerview.widget.RecyclerView;
+import java.util.ArrayList;
 import org.gitnex.tea4j.v2.models.OrganizationPermissions;
 import org.gitnex.tea4j.v2.models.Team;
 import org.mian.gitnex.R;
 import org.mian.gitnex.activities.AddNewTeamRepoActivity;
-import org.mian.gitnex.activities.MainActivity;
 import org.mian.gitnex.adapters.ReposListAdapter;
 import org.mian.gitnex.databinding.FragmentRepositoriesBinding;
 import org.mian.gitnex.helpers.Constants;
+import org.mian.gitnex.helpers.EndlessRecyclerViewScrollListener;
 import org.mian.gitnex.viewmodels.RepositoriesViewModel;
 
 /**
@@ -34,70 +34,85 @@ import org.mian.gitnex.viewmodels.RepositoriesViewModel;
 public class OrganizationTeamInfoReposFragment extends Fragment {
 
 	public static boolean repoAdded = false;
-	private RepositoriesViewModel repositoriesViewModel;
-	private FragmentRepositoriesBinding fragmentRepositoriesBinding;
+	private FragmentRepositoriesBinding binding;
+	private RepositoriesViewModel viewModel;
 	private ReposListAdapter adapter;
-	private int page = 1;
-	private int resultLimit;
+	private EndlessRecyclerViewScrollListener scrollListener;
 
 	private Team team;
+	private int resultLimit;
+	private boolean isSearching = false;
 
 	public static OrganizationTeamInfoReposFragment newInstance(Team team) {
 		OrganizationTeamInfoReposFragment fragment = new OrganizationTeamInfoReposFragment();
-
 		Bundle bundle = new Bundle();
 		bundle.putSerializable("team", team);
 		bundle.putBoolean("showRepo", !team.isIncludesAllRepositories());
 		fragment.setArguments(bundle);
-
 		return fragment;
 	}
 
 	@Override
 	public View onCreateView(
 			@NonNull LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
+		binding = FragmentRepositoriesBinding.inflate(inflater, container, false);
+		resultLimit = Constants.getCurrentResultLimit(requireContext());
+		viewModel = new ViewModelProvider(this).get(RepositoriesViewModel.class);
 
-		fragmentRepositoriesBinding =
-				FragmentRepositoriesBinding.inflate(inflater, container, false);
+		if (getArguments() != null) {
+			team = (Team) getArguments().getSerializable("team");
+		}
 
-		resultLimit = Constants.getCurrentResultLimit(getContext());
+		setupRecyclerView();
+		setupSwipeRefresh();
+		setupMenu();
+		observeViewModel();
+		setupActionButtons();
 
-		team = (Team) requireArguments().getSerializable("team");
+		refreshData();
+		return binding.getRoot();
+	}
 
-		repositoriesViewModel = new ViewModelProvider(this).get(RepositoriesViewModel.class);
+	private void setupRecyclerView() {
+		adapter = new ReposListAdapter(new ArrayList<>(), requireContext());
+		LinearLayoutManager layoutManager = new LinearLayoutManager(requireContext());
+		binding.recyclerView.setLayoutManager(layoutManager);
+		binding.recyclerView.setAdapter(adapter);
 
-		fragmentRepositoriesBinding.addNewRepo.setText(R.string.pageTitleAddRepository);
+		scrollListener =
+				new EndlessRecyclerViewScrollListener(layoutManager) {
+					@Override
+					public void onLoadMore(int page, int totalItemsCount, RecyclerView view) {
+						if (!isSearching && team != null) {
+							viewModel.fetchRepos(
+									requireContext(),
+									"team",
+									String.valueOf(team.getId()),
+									null,
+									page,
+									resultLimit,
+									null,
+									false);
+						}
+					}
+				};
+		binding.recyclerView.addOnScrollListener(scrollListener);
+	}
 
-		fragmentRepositoriesBinding.recyclerView.setHasFixedSize(true);
-		fragmentRepositoriesBinding.recyclerView.setLayoutManager(
-				new LinearLayoutManager(getContext()));
-
-		fragmentRepositoriesBinding.pullToRefresh.setOnRefreshListener(
-				() ->
-						new Handler(Looper.getMainLooper())
-								.postDelayed(
-										() -> {
-											page = 1;
-											fragmentRepositoriesBinding.pullToRefresh.setRefreshing(
-													false);
-											fetchDataAsync();
-											fragmentRepositoriesBinding.progressBar.setVisibility(
-													View.VISIBLE);
-										},
-										50));
-
-		fetchDataAsync();
+	private void setupActionButtons() {
+		binding.addNewRepo.setText(R.string.pageTitleAddRepository);
 
 		OrganizationPermissions permissions =
 				(OrganizationPermissions)
 						requireActivity().getIntent().getSerializableExtra("permissions");
 
-		if (!requireArguments().getBoolean("showRepo")
-				|| !Objects.requireNonNull(permissions).isIsOwner()) {
-			fragmentRepositoriesBinding.addNewRepo.setVisibility(View.GONE);
+		boolean canShow = getArguments() != null && getArguments().getBoolean("showRepo");
+		if (!canShow || (permissions != null && !permissions.isIsOwner())) {
+			binding.addNewRepo.setVisibility(View.GONE);
 		}
-		fragmentRepositoriesBinding.addNewRepo.setOnClickListener(
-				v1 -> {
+
+		binding.addNewRepo.setOnClickListener(
+				v -> {
 					Intent intent = new Intent(getContext(), AddNewTeamRepoActivity.class);
 					intent.putExtra("teamId", team.getId());
 					intent.putExtra("teamName", team.getName());
@@ -105,43 +120,35 @@ public class OrganizationTeamInfoReposFragment extends Fragment {
 							"orgName", requireActivity().getIntent().getStringExtra("orgName"));
 					startActivity(intent);
 				});
+	}
 
+	private void setupMenu() {
 		requireActivity()
 				.addMenuProvider(
 						new MenuProvider() {
-
 							@Override
 							public void onCreateMenu(
 									@NonNull Menu menu, @NonNull MenuInflater menuInflater) {
-
 								menuInflater.inflate(R.menu.search_menu, menu);
-
 								MenuItem searchItem = menu.findItem(R.id.action_search);
-								androidx.appcompat.widget.SearchView searchView =
-										(androidx.appcompat.widget.SearchView)
-												searchItem.getActionView();
-								assert searchView != null;
-								searchView.setImeOptions(EditorInfo.IME_ACTION_DONE);
-
-								searchView.setOnQueryTextListener(
-										new androidx.appcompat.widget.SearchView
-												.OnQueryTextListener() {
-
-											@Override
-											public boolean onQueryTextSubmit(String query) {
-												return false;
-											}
-
-											@Override
-											public boolean onQueryTextChange(String newText) {
-												if (fragmentRepositoriesBinding.recyclerView
-																.getAdapter()
-														!= null) {
-													adapter.getFilter().filter(newText);
+								SearchView searchView = (SearchView) searchItem.getActionView();
+								if (searchView != null) {
+									searchView.setImeOptions(EditorInfo.IME_ACTION_DONE);
+									searchView.setOnQueryTextListener(
+											new SearchView.OnQueryTextListener() {
+												@Override
+												public boolean onQueryTextSubmit(String query) {
+													return false;
 												}
-												return false;
-											}
-										});
+
+												@Override
+												public boolean onQueryTextChange(String newText) {
+													isSearching = !newText.isEmpty();
+													adapter.getFilter().filter(newText);
+													return true;
+												}
+											});
+								}
 							}
 
 							@Override
@@ -151,75 +158,67 @@ public class OrganizationTeamInfoReposFragment extends Fragment {
 						},
 						getViewLifecycleOwner(),
 						Lifecycle.State.RESUMED);
-
-		return fragmentRepositoriesBinding.getRoot();
 	}
 
-	private void fetchDataAsync() {
-
-		repositoriesViewModel
-				.getRepositories(
-						page,
-						resultLimit,
-						String.valueOf(team.getId()),
-						"team",
-						null,
-						getContext(),
-						fragmentRepositoriesBinding,
-						null)
+	private void observeViewModel() {
+		viewModel
+				.getRepos()
 				.observe(
 						getViewLifecycleOwner(),
-						reposListMain -> {
-							adapter = new ReposListAdapter(reposListMain, getContext());
-							adapter.setLoadMoreListener(
-									new ReposListAdapter.OnLoadMoreListener() {
-
-										@Override
-										public void onLoadMore() {
-
-											page += 1;
-											repositoriesViewModel.loadMoreRepos(
-													page,
-													resultLimit,
-													String.valueOf(team.getId()),
-													"team",
-													null,
-													getContext(),
-													adapter,
-													null);
-											fragmentRepositoriesBinding.progressBar.setVisibility(
-													View.VISIBLE);
-										}
-
-										@Override
-										public void onLoadFinished() {
-
-											fragmentRepositoriesBinding.progressBar.setVisibility(
-													View.GONE);
-										}
-									});
-
-							if (adapter.getItemCount() > 0) {
-								fragmentRepositoriesBinding.recyclerView.setAdapter(adapter);
-								fragmentRepositoriesBinding.noData.setVisibility(View.GONE);
-							} else {
-								adapter.notifyDataChanged();
-								fragmentRepositoriesBinding.recyclerView.setAdapter(adapter);
-								fragmentRepositoriesBinding.noData.setVisibility(View.VISIBLE);
-							}
-
-							fragmentRepositoriesBinding.progressBar.setVisibility(View.GONE);
+						list -> {
+							adapter.updateList(list);
+							updateUiState();
 						});
+
+		viewModel
+				.getIsLoading()
+				.observe(
+						getViewLifecycleOwner(),
+						loading -> {
+							boolean hasData = adapter.getItemCount() > 0;
+							binding.expressiveLoader.setVisibility(
+									loading && !hasData ? View.VISIBLE : View.GONE);
+						});
+
+		viewModel.getHasLoadedOnce().observe(getViewLifecycleOwner(), hasLoaded -> updateUiState());
+	}
+
+	private void updateUiState() {
+		boolean isEmpty = adapter.getItemCount() == 0;
+		boolean loaded = Boolean.TRUE.equals(viewModel.getHasLoadedOnce().getValue());
+		binding.layoutEmpty.getRoot().setVisibility(loaded && isEmpty ? View.VISIBLE : View.GONE);
+	}
+
+	private void refreshData() {
+		if (scrollListener != null) scrollListener.resetState();
+		viewModel.resetPagination();
+		if (team != null) {
+			viewModel.fetchRepos(
+					requireContext(),
+					"team",
+					String.valueOf(team.getId()),
+					null,
+					1,
+					resultLimit,
+					null,
+					true);
+		}
+	}
+
+	private void setupSwipeRefresh() {
+		binding.pullToRefresh.setOnRefreshListener(
+				() -> {
+					binding.pullToRefresh.setRefreshing(false);
+					refreshData();
+				});
 	}
 
 	@Override
 	public void onResume() {
 		super.onResume();
-
 		if (repoAdded) {
-			page = 1;
-			fetchDataAsync();
-			MainActivity.reloadRepos = false;
+			refreshData();
+			repoAdded = false;
 		}
 	}
 }

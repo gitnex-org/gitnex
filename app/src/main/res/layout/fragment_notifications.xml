@@ -10,7 +10,7 @@
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:paddingHorizontal="@dimen/dimen16dp"
+        android:paddingHorizontal="@dimen/dimen12dp"
         android:orientation="vertical">
 
         <com.google.android.material.chip.ChipGroup
@@ -90,6 +90,6 @@
         android:textColor="?attr/materialCardBackgroundColor"
         app:icon="@drawable/ic_done"
         app:iconTint="?attr/materialCardBackgroundColor"
-        app:layout_behavior="com.google.android.material.behavior.HideBottomViewOnScrollBehavior" />
+        app:layout_behavior="com.google.android.material.behavior.HideViewOnScrollBehavior" />
 
 </androidx.coordinatorlayout.widget.CoordinatorLayout>
