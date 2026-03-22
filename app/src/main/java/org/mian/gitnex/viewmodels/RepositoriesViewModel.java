@@ -93,6 +93,10 @@ public class RepositoriesViewModel extends ViewModel {
 							RetrofitClient.getApiInterface(ctx)
 									.userCurrentListSubscriptions(page, limit);
 
+					case "forks" ->
+							RetrofitClient.getApiInterface(ctx)
+									.listForks(userLogin, orgName, page, limit);
+
 					default ->
 							RetrofitClient.getApiInterface(ctx)
 									.customUserCurrentListRepos(page, limit, sort);

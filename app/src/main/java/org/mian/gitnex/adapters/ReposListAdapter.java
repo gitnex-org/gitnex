@@ -16,7 +16,6 @@ import com.bumptech.glide.load.engine.DiskCacheStrategy;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Locale;
-import org.gitnex.tea4j.v2.models.Repository;
 import org.mian.gitnex.activities.RepoDetailActivity;
 import org.mian.gitnex.databinding.ListRepositoriesBinding;
 import org.mian.gitnex.helpers.AppUtil;
@@ -92,7 +91,14 @@ public class ReposListAdapter extends RecyclerView.Adapter<ReposListAdapter.Repo
 			@SuppressLint("NotifyDataSetChanged")
 			@Override
 			protected void publishResults(CharSequence constraint, FilterResults results) {
-				reposList = (List<Repository>) results.values;
+				if (results.values instanceof List<?>) {
+					reposList = new ArrayList<>();
+					for (Object item : (List<?>) results.values) {
+						if (item instanceof org.gitnex.tea4j.v2.models.Repository) {
+							reposList.add((org.gitnex.tea4j.v2.models.Repository) item);
+						}
+					}
+				}
 				notifyDataSetChanged();
 			}
 		};

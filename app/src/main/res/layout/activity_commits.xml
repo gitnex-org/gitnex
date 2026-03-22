@@ -22,7 +22,7 @@
                 android:clipToPadding="false"
                 android:paddingTop="@dimen/dimen54dp"
                 android:paddingBottom="@dimen/dimen80dp"
-                android:paddingHorizontal="@dimen/dimen16dp"
+                android:paddingHorizontal="@dimen/dimen12dp"
                 app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"/>
 
             <com.google.android.material.loadingindicator.LoadingIndicator
@@ -130,7 +130,7 @@
             android:id="@+id/search_results_recycler"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:padding="@dimen/dimen16dp"
+            android:padding="@dimen/dimen12dp"
             app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager" />
 
     </com.google.android.material.search.SearchView>

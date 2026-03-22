@@ -1,155 +1,198 @@
 package org.mian.gitnex.activities;
 
-import android.annotation.SuppressLint;
 import android.os.Bundle;
-import android.os.Handler;
-import android.os.Looper;
-import android.view.Menu;
-import android.view.MenuInflater;
-import android.view.MenuItem;
+import android.text.Editable;
+import android.text.TextWatcher;
 import android.view.View;
-import android.view.inputmethod.EditorInfo;
-import androidx.annotation.NonNull;
-import androidx.appcompat.widget.Toolbar;
 import androidx.lifecycle.ViewModelProvider;
 import androidx.recyclerview.widget.LinearLayoutManager;
-import org.mian.gitnex.R;
-import org.mian.gitnex.adapters.RepoForksAdapter;
+import androidx.recyclerview.widget.RecyclerView;
+import java.util.ArrayList;
+import java.util.List;
+import org.gitnex.tea4j.v2.models.Repository;
+import org.mian.gitnex.adapters.ReposListAdapter;
 import org.mian.gitnex.databinding.ActivityRepoForksBinding;
+import org.mian.gitnex.helpers.Constants;
+import org.mian.gitnex.helpers.EndlessRecyclerViewScrollListener;
+import org.mian.gitnex.helpers.Toasty;
 import org.mian.gitnex.helpers.contexts.RepositoryContext;
-import org.mian.gitnex.viewmodels.RepositoryForksViewModel;
+import org.mian.gitnex.viewmodels.RepositoriesViewModel;
 
 /**
  * @author mmarif
  */
 public class RepoForksActivity extends BaseActivity {
 
-	private ActivityRepoForksBinding activityRepoForksBinding;
-	private int pageSize = 1;
-	private RepoForksAdapter adapter;
+	private ActivityRepoForksBinding binding;
+	private RepositoriesViewModel viewModel;
+	private ReposListAdapter adapter;
+	private EndlessRecyclerViewScrollListener scrollListener;
+	private int resultLimit;
 	private RepositoryContext repository;
 
-	@SuppressLint("DefaultLocale")
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
-
 		super.onCreate(savedInstanceState);
+		binding = ActivityRepoForksBinding.inflate(getLayoutInflater());
+		setContentView(binding.getRoot());
 
-		activityRepoForksBinding = ActivityRepoForksBinding.inflate(getLayoutInflater());
-		setContentView(activityRepoForksBinding.getRoot());
-
-		Toolbar toolbar = activityRepoForksBinding.toolbar;
-		setSupportActionBar(toolbar);
-
+		resultLimit = Constants.getCurrentResultLimit(ctx);
 		repository = RepositoryContext.fromIntent(getIntent());
+		viewModel = new ViewModelProvider(this).get(RepositoriesViewModel.class);
 
-		activityRepoForksBinding.toolbarTitle.setText(ctx.getResources().getString(R.string.forks));
+		setupToolbar();
+		setupRecyclerView();
+		setupSwipeRefresh();
+		observeViewModel();
+		setupSearch();
 
-		activityRepoForksBinding.close.setOnClickListener(v -> finish());
-
-		activityRepoForksBinding.pullToRefresh.setOnRefreshListener(
-				() ->
-						new Handler(Looper.getMainLooper())
-								.postDelayed(
-										() -> {
-											pageSize = 1;
-											activityRepoForksBinding.pullToRefresh.setRefreshing(
-													false);
-											fetchData();
-											activityRepoForksBinding.progressBar.setVisibility(
-													View.VISIBLE);
-										},
-										150));
-
-		activityRepoForksBinding.recyclerView.setHasFixedSize(true);
-		activityRepoForksBinding.recyclerView.setLayoutManager(new LinearLayoutManager(ctx));
-
-		fetchData();
+		refreshData();
 	}
 
-	private void fetchData() {
+	private void setupToolbar() {
+		binding.btnBack.setOnClickListener(v -> finish());
+		binding.btnSearch.setOnClickListener(v -> binding.searchView.show());
+	}
 
-		RepositoryForksViewModel repositoryForksViewModel =
-				new ViewModelProvider(this).get(RepositoryForksViewModel.class);
+	private void setupSearch() {
+		binding.searchResultsRecycler.setLayoutManager(new LinearLayoutManager(this));
+		binding.searchResultsRecycler.setAdapter(adapter);
 
-		repositoryForksViewModel
-				.getForksList(repository.getOwner(), repository.getName(), ctx)
-				.observe(
-						this,
-						forksListMain -> {
-							adapter = new RepoForksAdapter(ctx, forksListMain);
-							adapter.setLoadMoreListener(
-									new RepoForksAdapter.OnLoadMoreListener() {
+		binding.searchView
+				.getEditText()
+				.addTextChangedListener(
+						new TextWatcher() {
+							@Override
+							public void beforeTextChanged(
+									CharSequence s, int start, int count, int after) {}
 
-										@Override
-										public void onLoadMore() {
-
-											pageSize += 1;
-											repositoryForksViewModel.loadMore(
-													repository.getOwner(),
-													repository.getName(),
-													pageSize,
-													ctx,
-													adapter);
-											activityRepoForksBinding.progressBar.setVisibility(
-													View.VISIBLE);
-										}
-
-										@Override
-										public void onLoadFinished() {
-
-											activityRepoForksBinding.progressBar.setVisibility(
-													View.GONE);
-										}
-									});
-
-							if (adapter.getItemCount() > 0) {
-								activityRepoForksBinding.recyclerView.setAdapter(adapter);
-								activityRepoForksBinding.noData.setVisibility(View.GONE);
-							} else {
-								adapter.notifyDataChanged();
-								activityRepoForksBinding.recyclerView.setAdapter(adapter);
-								activityRepoForksBinding.noData.setVisibility(View.VISIBLE);
+							@Override
+							public void onTextChanged(
+									CharSequence s, int start, int before, int count) {
+								filter(s.toString());
 							}
 
-							activityRepoForksBinding.progressBar.setVisibility(View.GONE);
+							@Override
+							public void afterTextChanged(Editable s) {}
+						});
+
+		binding.searchView.addTransitionListener(
+				(searchView, previousState, newState) -> {
+					if (newState
+							== com.google.android.material.search.SearchView.TransitionState
+									.HIDDEN) {
+						binding.searchView.setText("");
+						filter("");
+						binding.recyclerView.scrollToPosition(0);
+					}
+				});
+	}
+
+	private void setupRecyclerView() {
+		adapter = new ReposListAdapter(new ArrayList<>(), ctx);
+		LinearLayoutManager layoutManager = new LinearLayoutManager(ctx);
+		binding.recyclerView.setLayoutManager(layoutManager);
+		binding.recyclerView.setAdapter(adapter);
+
+		scrollListener =
+				new EndlessRecyclerViewScrollListener(layoutManager) {
+					@Override
+					public void onLoadMore(int page, int totalItemsCount, RecyclerView view) {
+						if (binding.searchView.isShowing()) return;
+						viewModel.fetchRepos(
+								ctx,
+								"forks",
+								repository.getOwner(),
+								repository.getName(),
+								page,
+								resultLimit,
+								null,
+								false);
+					}
+				};
+		binding.recyclerView.addOnScrollListener(scrollListener);
+	}
+
+	private void observeViewModel() {
+		viewModel
+				.getRepos()
+				.observe(
+						this,
+						list -> {
+							adapter.updateList(list);
+							updateUiState();
+						});
+
+		viewModel.getHasLoadedOnce().observe(this, hasLoaded -> updateUiState());
+
+		viewModel
+				.getIsLoading()
+				.observe(
+						this,
+						loading -> {
+							boolean hasData = adapter.getItemCount() > 0;
+							binding.expressiveLoader.setVisibility(
+									loading && !hasData ? View.VISIBLE : View.GONE);
+						});
+
+		viewModel
+				.getError()
+				.observe(
+						this,
+						error -> {
+							if (error != null) Toasty.show(ctx, error);
 						});
 	}
 
-	@Override
-	public boolean onCreateOptionsMenu(@NonNull Menu menu) {
-
-		MenuInflater inflater = getMenuInflater();
-		inflater.inflate(R.menu.search_menu, menu);
-		super.onCreateOptionsMenu(menu);
-
-		MenuItem searchItem = menu.findItem(R.id.action_search);
-		androidx.appcompat.widget.SearchView searchView =
-				(androidx.appcompat.widget.SearchView) searchItem.getActionView();
-		searchView.setImeOptions(EditorInfo.IME_ACTION_DONE);
-
-		searchView.setOnQueryTextListener(
-				new androidx.appcompat.widget.SearchView.OnQueryTextListener() {
-
-					@Override
-					public boolean onQueryTextSubmit(String query) {
-						return false;
-					}
-
-					@Override
-					public boolean onQueryTextChange(String newText) {
-						if (activityRepoForksBinding.recyclerView.getAdapter() != null) {
-							adapter.getFilter().filter(newText);
-						}
-						return false;
-					}
-				});
-		return false;
+	private void updateUiState() {
+		boolean isEmpty = adapter.getItemCount() == 0;
+		boolean loaded = Boolean.TRUE.equals(viewModel.getHasLoadedOnce().getValue());
+		binding.layoutEmpty.getRoot().setVisibility(loaded && isEmpty ? View.VISIBLE : View.GONE);
 	}
 
-	@Override
-	public void onResume() {
-		super.onResume();
-		repository.checkAccountSwitch(this);
+	private void refreshData() {
+		if (scrollListener != null) scrollListener.resetState();
+		viewModel.resetPagination();
+		viewModel.fetchRepos(
+				ctx,
+				"forks",
+				repository.getOwner(),
+				repository.getName(),
+				1,
+				resultLimit,
+				null,
+				true);
+	}
+
+	private void setupSwipeRefresh() {
+		binding.pullToRefresh.setOnRefreshListener(
+				() -> {
+					binding.pullToRefresh.setRefreshing(false);
+					refreshData();
+				});
+	}
+
+	private void filter(String text) {
+		List<Repository> originalList = viewModel.getRepos().getValue();
+		if (originalList == null) return;
+
+		if (text == null || text.isEmpty()) {
+			adapter.updateList(originalList);
+			return;
+		}
+
+		List<Repository> filtered = new ArrayList<>();
+		String query = text.toLowerCase().trim();
+
+		for (Repository repo : originalList) {
+			String fullName = repo.getFullName() != null ? repo.getFullName().toLowerCase() : "";
+			String description =
+					repo.getDescription() != null ? repo.getDescription().toLowerCase() : "";
+
+			if (fullName.contains(query) || description.contains(query)) {
+				filtered.add(repo);
+			}
+		}
+		adapter.updateList(filtered);
 	}
 }
