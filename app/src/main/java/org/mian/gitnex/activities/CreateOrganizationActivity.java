@@ -12,7 +12,6 @@ import org.gitnex.tea4j.v2.models.Organization;
 import org.mian.gitnex.R;
 import org.mian.gitnex.clients.RetrofitClient;
 import org.mian.gitnex.databinding.ActivityCreateOrganizationBinding;
-import org.mian.gitnex.fragments.OrganizationsFragment;
 import org.mian.gitnex.helpers.AlertDialogs;
 import org.mian.gitnex.helpers.AppUtil;
 import org.mian.gitnex.helpers.Toasty;
@@ -118,7 +117,7 @@ public class CreateOrganizationActivity extends BaseActivity {
 							@NonNull retrofit2.Response<Organization> response) {
 
 						if (response.code() == 201) {
-							OrganizationsFragment.orgCreated = true;
+							OrganizationsActivity.orgCreated = true;
 							Toasty.show(ctx, getString(R.string.orgCreated));
 							new Handler().postDelayed(() -> finish(), 3000);
 						} else if (response.code() == 401) {

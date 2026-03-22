@@ -502,9 +502,6 @@ public class MainActivity extends BaseActivity
 				case "repos":
 					navController.navigate(R.id.repositoriesFragment, null, navOptions);
 					break;
-				case "org":
-					navController.navigate(R.id.organizationsFragment, null, navOptions);
-					break;
 				case "notification":
 					navController.navigate(R.id.notificationsFragment, null, navOptions);
 					break;
@@ -517,9 +514,6 @@ public class MainActivity extends BaseActivity
 					Intent intentProfile = new Intent(this, ProfileActivity.class);
 					intentProfile.putExtra("username", tinyDB.getString("username"));
 					startActivity(intentProfile);
-					break;
-				case "admin":
-					navController.navigate(R.id.administrationFragment, null, navOptions);
 					break;
 			}
 			return;
@@ -561,28 +555,16 @@ public class MainActivity extends BaseActivity
 
 		switch (homeScreenValue) {
 			case 1:
-				binding.toolbarTitle.setText(getResources().getString(R.string.navOrg));
-				navController.navigate(R.id.organizationsFragment, null, navOptions);
-				break;
-			case 2:
 				binding.toolbarTitle.setText(getResources().getString(R.string.navRepos));
 				navController.navigate(R.id.repositoriesFragment, null, navOptions);
 				break;
-			case 3:
+			case 2:
 				Intent intent = new Intent(ctx, ExploreActivity.class);
 				startActivity(intent);
 				this.overridePendingTransition(android.R.anim.fade_in, android.R.anim.fade_out);
 				break;
-			case 4:
+			case 3:
 				navController.navigate(R.id.notificationsFragment, null, navOptions);
-				break;
-			case 5:
-				binding.toolbarTitle.setText(getResources().getString(R.string.navMyIssues));
-				navController.navigate(R.id.myIssuesFragment, null, navOptions);
-				break;
-			case 6:
-				binding.toolbarTitle.setText(getResources().getString(R.string.activities));
-				navController.navigate(R.id.activitiesFragment, null, navOptions);
 				break;
 			default:
 				navController.navigate(R.id.homeDashboardFragment, null, navOptions);

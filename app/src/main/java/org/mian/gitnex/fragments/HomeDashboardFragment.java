@@ -16,12 +16,17 @@ import com.google.android.material.bottomsheet.BottomSheetBehavior;
 import com.google.android.material.bottomsheet.BottomSheetDialog;
 import java.util.Calendar;
 import org.mian.gitnex.R;
+import org.mian.gitnex.activities.AccountSettingsActivity;
+import org.mian.gitnex.activities.ActivitiesActivity;
+import org.mian.gitnex.activities.AdministrationActivity;
 import org.mian.gitnex.activities.AppSettingsActivity;
 import org.mian.gitnex.activities.LoginActivity;
 import org.mian.gitnex.activities.MainActivity;
 import org.mian.gitnex.activities.MostVisitedReposActivity;
+import org.mian.gitnex.activities.MyIssuesActivity;
 import org.mian.gitnex.activities.MyReposActivity;
 import org.mian.gitnex.activities.NotesActivity;
+import org.mian.gitnex.activities.OrganizationsActivity;
 import org.mian.gitnex.activities.ProfileActivity;
 import org.mian.gitnex.activities.StarredReposActivity;
 import org.mian.gitnex.activities.WatchedReposActivity;
@@ -176,13 +181,28 @@ public class HomeDashboardFragment extends Fragment {
 							Intent intent = new Intent(requireContext(), MyReposActivity.class);
 							startActivity(intent);
 						});
-		binding.myIssuesCard.getRoot().setOnClickListener(v -> navigateTo(R.id.action_to_myIssues));
+		binding.myIssuesCard
+				.getRoot()
+				.setOnClickListener(
+						v -> {
+							Intent intent = new Intent(requireContext(), MyIssuesActivity.class);
+							startActivity(intent);
+						});
 		binding.organizationsCard
 				.getRoot()
-				.setOnClickListener(v -> navigateTo(R.id.action_to_organizations));
+				.setOnClickListener(
+						v -> {
+							Intent intent =
+									new Intent(requireContext(), OrganizationsActivity.class);
+							startActivity(intent);
+						});
 		binding.activitiesCard
 				.getRoot()
-				.setOnClickListener(v -> navigateTo(R.id.activitiesFragment));
+				.setOnClickListener(
+						v -> {
+							Intent intent = new Intent(requireContext(), ActivitiesActivity.class);
+							startActivity(intent);
+						});
 		binding.mostVisitedReposCard
 				.getRoot()
 				.setOnClickListener(
@@ -200,10 +220,20 @@ public class HomeDashboardFragment extends Fragment {
 						});
 		binding.accountSettingsCard
 				.getRoot()
-				.setOnClickListener(v -> navigateTo(R.id.action_to_accountSettings));
+				.setOnClickListener(
+						v -> {
+							Intent intent =
+									new Intent(requireContext(), AccountSettingsActivity.class);
+							startActivity(intent);
+						});
 		binding.instanceAdministrationCard
 				.getRoot()
-				.setOnClickListener(v -> navigateTo(R.id.action_to_administration));
+				.setOnClickListener(
+						v -> {
+							Intent intent =
+									new Intent(requireContext(), AdministrationActivity.class);
+							startActivity(intent);
+						});
 
 		binding.userAvatar.setOnClickListener(
 				v -> {

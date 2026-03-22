@@ -1,36 +1,27 @@
-package org.mian.gitnex.fragments;
+package org.mian.gitnex.activities;
 
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Looper;
 import android.view.LayoutInflater;
-import android.view.Menu;
-import android.view.MenuInflater;
-import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
-import android.view.inputmethod.EditorInfo;
 import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
-import androidx.core.view.MenuProvider;
-import androidx.fragment.app.Fragment;
-import androidx.lifecycle.Lifecycle;
 import androidx.lifecycle.ViewModelProvider;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment;
-import org.mian.gitnex.R;
 import org.mian.gitnex.adapters.ExploreIssuesAdapter;
+import org.mian.gitnex.databinding.ActivityMyIssuesBinding;
 import org.mian.gitnex.databinding.BottomSheetMyIssuesFilterBinding;
-import org.mian.gitnex.databinding.FragmentIssuesBinding;
 import org.mian.gitnex.helpers.TinyDB;
 import org.mian.gitnex.viewmodels.IssuesViewModel;
 
 /**
  * @author mmarif
  */
-public class MyIssuesFragment extends Fragment {
+public class MyIssuesActivity extends BaseActivity {
 
-	private FragmentIssuesBinding binding;
+	private ActivityMyIssuesBinding binding;
 	private IssuesViewModel issuesViewModel;
 	private ExploreIssuesAdapter adapter;
 	private TinyDB tinyDB;
@@ -39,23 +30,33 @@ public class MyIssuesFragment extends Fragment {
 	private boolean createdByMe = true;
 	private int page = 1;
 
-	@Nullable @Override
-	public View onCreateView(
-			@NonNull LayoutInflater inflater,
-			@Nullable ViewGroup container,
-			Bundle savedInstanceState) {
-		binding = FragmentIssuesBinding.inflate(inflater, container, false);
-		tinyDB = TinyDB.getInstance(requireContext());
+	@Override
+	public void onCreate(Bundle savedInstanceState) {
+		super.onCreate(savedInstanceState);
+		binding = ActivityMyIssuesBinding.inflate(getLayoutInflater());
+		setContentView(binding.getRoot());
+
+		tinyDB = TinyDB.getInstance(this);
 		issuesViewModel = new ViewModelProvider(this).get(IssuesViewModel.class);
 
 		String savedFilter = tinyDB.getString("myIssuesFilter", "open_created_by_me");
 		updateFilterState(savedFilter);
 
-		binding.recyclerView.setHasFixedSize(true);
-		binding.recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
-		binding.createNewIssue.setVisibility(View.GONE);
+		setupUI();
+		setupSearch();
+		fetchDataAsync(null);
+	}
 
-		setupMenu();
+	private void setupUI() {
+		binding.btnBack.setOnClickListener(v -> finish());
+		binding.btnSearch.setOnClickListener(v -> binding.searchView.show());
+		binding.btnMore.setOnClickListener(
+				v ->
+						new FilterBottomSheetDialogFragment()
+								.show(getSupportFragmentManager(), "MyIssuesFilter"));
+
+		binding.recyclerView.setHasFixedSize(true);
+		binding.recyclerView.setLayoutManager(new LinearLayoutManager(this));
 
 		binding.pullToRefresh.setOnRefreshListener(
 				() ->
@@ -67,59 +68,18 @@ public class MyIssuesFragment extends Fragment {
 											fetchDataAsync(null);
 										},
 										50));
-
-		fetchDataAsync(null);
-
-		return binding.getRoot();
 	}
 
-	private void setupMenu() {
-		requireActivity()
-				.addMenuProvider(
-						new MenuProvider() {
-							@Override
-							public void onCreateMenu(
-									@NonNull Menu menu, @NonNull MenuInflater menuInflater) {
-								menuInflater.inflate(R.menu.search_menu, menu);
-								menuInflater.inflate(R.menu.generic_nav_dotted_menu, menu);
-
-								MenuItem searchItem = menu.findItem(R.id.action_search);
-								androidx.appcompat.widget.SearchView searchView =
-										(androidx.appcompat.widget.SearchView)
-												searchItem.getActionView();
-								assert searchView != null;
-								searchView.setImeOptions(EditorInfo.IME_ACTION_DONE);
-
-								searchView.setOnQueryTextListener(
-										new androidx.appcompat.widget.SearchView
-												.OnQueryTextListener() {
-											@Override
-											public boolean onQueryTextSubmit(String query) {
-												fetchDataAsync(query);
-												searchView.setQuery(null, false);
-												searchItem.collapseActionView();
-												return false;
-											}
-
-											@Override
-											public boolean onQueryTextChange(String newText) {
-												return false;
-											}
-										});
-							}
-
-							@Override
-							public boolean onMenuItemSelected(@NonNull MenuItem menuItem) {
-								if (menuItem.getItemId() == R.id.genericMenu) {
-									new FilterBottomSheetDialogFragment()
-											.show(getChildFragmentManager(), "MyIssuesFilter");
-									return true;
-								}
-								return false;
-							}
-						},
-						getViewLifecycleOwner(),
-						Lifecycle.State.RESUMED);
+	private void setupSearch() {
+		binding.searchView
+				.getEditText()
+				.setOnEditorActionListener(
+						(v, actionId, event) -> {
+							String query = binding.searchView.getText().toString().trim();
+							fetchDataAsync(query);
+							binding.searchView.hide();
+							return true;
+						});
 	}
 
 	public void updateFilterState(String filter) {
@@ -139,15 +99,15 @@ public class MyIssuesFragment extends Fragment {
 	}
 
 	private void fetchDataAsync(String query) {
-		binding.progressBar.setVisibility(View.VISIBLE);
-		binding.noDataIssues.setVisibility(View.GONE);
+		binding.expressiveLoader.setVisibility(View.VISIBLE);
+		binding.layoutEmpty.getRoot().setVisibility(View.GONE);
 
 		issuesViewModel
-				.getIssuesList(query, "issues", createdByMe, state, assignedToMe, getContext())
+				.getIssuesList(query, "issues", createdByMe, state, assignedToMe, this)
 				.observe(
-						getViewLifecycleOwner(),
+						this,
 						issuesListMain -> {
-							adapter = new ExploreIssuesAdapter(issuesListMain, getContext());
+							adapter = new ExploreIssuesAdapter(issuesListMain, this);
 							adapter.setLoadMoreListener(
 									new ExploreIssuesAdapter.OnLoadMoreListener() {
 										@Override
@@ -160,32 +120,30 @@ public class MyIssuesFragment extends Fragment {
 													state,
 													page,
 													assignedToMe,
-													getContext(),
+													MyIssuesActivity.this,
 													adapter);
-											binding.progressBar.setVisibility(View.VISIBLE);
+											binding.expressiveLoader.setVisibility(View.VISIBLE);
 										}
 
 										@Override
 										public void onLoadFinished() {
-											binding.progressBar.setVisibility(View.GONE);
+											binding.expressiveLoader.setVisibility(View.GONE);
 										}
 									});
 
 							if (adapter.getItemCount() > 0) {
 								binding.recyclerView.setAdapter(adapter);
-								binding.noDataIssues.setVisibility(View.GONE);
+								binding.layoutEmpty.getRoot().setVisibility(View.GONE);
 							} else {
 								adapter.notifyDataChanged();
 								binding.recyclerView.setAdapter(adapter);
-								binding.noDataIssues.setVisibility(View.VISIBLE);
+								binding.layoutEmpty.getRoot().setVisibility(View.VISIBLE);
 							}
-
-							binding.progressBar.setVisibility(View.GONE);
+							binding.expressiveLoader.setVisibility(View.GONE);
 						});
 	}
 
 	public static class FilterBottomSheetDialogFragment extends BottomSheetDialogFragment {
-
 		private String selectedState = "open";
 		private String selectedFilter = "created_by_me";
 
@@ -194,10 +152,9 @@ public class MyIssuesFragment extends Fragment {
 				@NonNull LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
 			BottomSheetMyIssuesFilterBinding binding =
 					BottomSheetMyIssuesFilterBinding.inflate(inflater, container, false);
+			MyIssuesActivity activity = (MyIssuesActivity) requireActivity();
 
-			// Initialize based on parent fragment's current filter
-			MyIssuesFragment parent = (MyIssuesFragment) requireParentFragment();
-			String currentFilter = parent.getCurrentFilter();
+			String currentFilter = activity.getCurrentFilter();
 			String[] parts = currentFilter.split("_", 2);
 			selectedState = parts[0];
 			selectedFilter = parts.length > 1 ? parts[1] : "created_by_me";
@@ -210,32 +167,31 @@ public class MyIssuesFragment extends Fragment {
 			binding.stateChipGroup.setOnCheckedStateChangeListener(
 					(group, checkedIds) -> {
 						if (!checkedIds.isEmpty()) {
-							int checkedId = checkedIds.get(0);
 							selectedState =
-									checkedId == binding.chipOpen.getId() ? "open" : "closed";
-							applyFilter(parent);
+									checkedIds.get(0) == binding.chipOpen.getId()
+											? "open"
+											: "closed";
+							applyFilter(activity);
 						}
 					});
 
 			binding.filterChipGroup.setOnCheckedStateChangeListener(
 					(group, checkedIds) -> {
 						if (!checkedIds.isEmpty()) {
-							int checkedId = checkedIds.get(0);
 							selectedFilter =
-									checkedId == binding.chipCreatedByMe.getId()
+									checkedIds.get(0) == binding.chipCreatedByMe.getId()
 											? "created_by_me"
 											: "assigned_to_me";
-							applyFilter(parent);
+							applyFilter(activity);
 						}
 					});
 
 			return binding.getRoot();
 		}
 
-		private void applyFilter(MyIssuesFragment parent) {
-			String result = selectedState + "_" + selectedFilter;
-			parent.updateFilterState(result);
-			parent.fetchDataAsync(null);
+		private void applyFilter(MyIssuesActivity activity) {
+			activity.updateFilterState(selectedState + "_" + selectedFilter);
+			activity.fetchDataAsync(null);
 			dismiss();
 		}
 	}

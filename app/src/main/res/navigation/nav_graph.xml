@@ -8,31 +8,6 @@
         android:id="@+id/homeDashboardFragment"
         android:name="org.mian.gitnex.fragments.HomeDashboardFragment"
         android:label="Dashboard">
-        <action
-            android:id="@+id/action_to_organizations"
-            app:destination="@id/organizationsFragment"
-            app:popUpTo="@id/homeDashboardFragment"
-            app:popUpToInclusive="false" />
-        <action
-            android:id="@+id/action_to_myIssues"
-            app:destination="@id/myIssuesFragment"
-            app:popUpTo="@id/homeDashboardFragment"
-            app:popUpToInclusive="false" />
-        <action
-            android:id="@+id/action_to_accountSettings"
-            app:destination="@id/accountSettingsFragment"
-            app:popUpTo="@id/homeDashboardFragment"
-            app:popUpToInclusive="false" />
-        <action
-            android:id="@+id/action_to_administration"
-            app:destination="@id/administrationFragment"
-            app:popUpTo="@id/homeDashboardFragment"
-            app:popUpToInclusive="false" />
-        <action
-            android:id="@+id/action_to_activitiesFragment"
-            app:destination="@id/activitiesFragment"
-            app:popUpTo="@id/homeDashboardFragment"
-            app:popUpToInclusive="false" />
     </fragment>
 
     <fragment
@@ -44,29 +19,4 @@
         android:id="@+id/notificationsFragment"
         android:name="org.mian.gitnex.fragments.NotificationsFragment"
         android:label="Notifications" />
-
-    <fragment
-        android:id="@+id/myIssuesFragment"
-        android:name="org.mian.gitnex.fragments.MyIssuesFragment"
-        android:label="My Issues" />
-
-    <fragment
-        android:id="@+id/organizationsFragment"
-        android:name="org.mian.gitnex.fragments.OrganizationsFragment"
-        android:label="Organizations" />
-
-    <fragment
-        android:id="@+id/accountSettingsFragment"
-        android:name="org.mian.gitnex.fragments.AccountSettingsFragment"
-        android:label="Account Settings" />
-
-    <fragment
-        android:id="@+id/administrationFragment"
-        android:name="org.mian.gitnex.fragments.AdministrationFragment"
-        android:label="Administration" />
-
-    <fragment
-        android:id="@+id/activitiesFragment"
-        android:name="org.mian.gitnex.fragments.ActivitiesFragment"
-        android:label="Activities" />
 </navigation>
