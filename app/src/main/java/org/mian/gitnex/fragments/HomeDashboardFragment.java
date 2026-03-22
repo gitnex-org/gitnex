@@ -19,6 +19,7 @@ import org.mian.gitnex.R;
 import org.mian.gitnex.activities.AppSettingsActivity;
 import org.mian.gitnex.activities.LoginActivity;
 import org.mian.gitnex.activities.MainActivity;
+import org.mian.gitnex.activities.MostVisitedReposActivity;
 import org.mian.gitnex.activities.NotesActivity;
 import org.mian.gitnex.activities.ProfileActivity;
 import org.mian.gitnex.adapters.UserAccountsAdapter;
@@ -170,7 +171,15 @@ public class HomeDashboardFragment extends Fragment {
 				.setOnClickListener(v -> navigateTo(R.id.activitiesFragment));
 		binding.mostVisitedReposCard
 				.getRoot()
-				.setOnClickListener(v -> navigateTo(R.id.action_to_mostVisitedRepos));
+				.setOnClickListener(
+						v -> {
+							Intent intent =
+									new Intent(requireContext(), MostVisitedReposActivity.class);
+							startActivity(intent);
+							requireActivity()
+									.overridePendingTransition(
+											android.R.anim.fade_in, android.R.anim.fade_out);
+						});
 		binding.notesCard
 				.getRoot()
 				.setOnClickListener(
