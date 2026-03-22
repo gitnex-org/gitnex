@@ -22,6 +22,7 @@ import org.mian.gitnex.activities.MainActivity;
 import org.mian.gitnex.activities.MostVisitedReposActivity;
 import org.mian.gitnex.activities.NotesActivity;
 import org.mian.gitnex.activities.ProfileActivity;
+import org.mian.gitnex.activities.StarredReposActivity;
 import org.mian.gitnex.adapters.UserAccountsAdapter;
 import org.mian.gitnex.database.api.BaseApi;
 import org.mian.gitnex.database.api.UserAccountsApi;
@@ -155,7 +156,15 @@ public class HomeDashboardFragment extends Fragment {
 				});
 		binding.repoStarredCard
 				.getRoot()
-				.setOnClickListener(v -> navigateTo(R.id.action_to_starredRepositories));
+				.setOnClickListener(
+						v -> {
+							Intent intent =
+									new Intent(requireContext(), StarredReposActivity.class);
+							startActivity(intent);
+							requireActivity()
+									.overridePendingTransition(
+											android.R.anim.fade_in, android.R.anim.fade_out);
+						});
 		binding.repoWatchedCard
 				.getRoot()
 				.setOnClickListener(v -> navigateTo(R.id.action_to_watchedRepositories));

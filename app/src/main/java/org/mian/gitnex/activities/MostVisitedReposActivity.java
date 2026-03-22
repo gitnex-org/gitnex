@@ -95,10 +95,9 @@ public class MostVisitedReposActivity extends BaseActivity {
 
 	private void setupRefreshLayout() {
 		binding.pullToRefresh.setOnRefreshListener(
-				() -> {
-					new Handler(Looper.getMainLooper())
-							.postDelayed(() -> fetchDataAsync(currentActiveAccountId), 250);
-				});
+				() ->
+						new Handler(Looper.getMainLooper())
+								.postDelayed(() -> fetchDataAsync(currentActiveAccountId), 250));
 	}
 
 	private void fetchDataAsync(int accountId) {

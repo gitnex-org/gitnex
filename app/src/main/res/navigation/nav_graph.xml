@@ -19,11 +19,6 @@
             app:popUpTo="@id/homeDashboardFragment"
             app:popUpToInclusive="false" />
         <action
-            android:id="@+id/action_to_starredRepositories"
-            app:destination="@id/starredRepositoriesFragment"
-            app:popUpTo="@id/homeDashboardFragment"
-            app:popUpToInclusive="false" />
-        <action
             android:id="@+id/action_to_watchedRepositories"
             app:destination="@id/watchedRepositoriesFragment"
             app:popUpTo="@id/homeDashboardFragment"
@@ -61,11 +56,6 @@
         android:label="Notifications" />
 
     <fragment
-        android:id="@+id/exploreFragment"
-        android:name="org.mian.gitnex.fragments.ExploreFragment"
-        android:label="Explore" />
-
-    <fragment
         android:id="@+id/myIssuesFragment"
         android:name="org.mian.gitnex.fragments.MyIssuesFragment"
         android:label="My Issues" />
@@ -79,11 +69,6 @@
         android:id="@+id/myRepositoriesFragment"
         android:name="org.mian.gitnex.fragments.MyRepositoriesFragment"
         android:label="My Repositories" />
-
-    <fragment
-        android:id="@+id/starredRepositoriesFragment"
-        android:name="org.mian.gitnex.fragments.StarredRepositoriesFragment"
-        android:label="Starred Repositories" />
 
     <fragment
         android:id="@+id/watchedRepositoriesFragment"

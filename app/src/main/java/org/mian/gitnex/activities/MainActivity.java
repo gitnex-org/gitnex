@@ -160,7 +160,10 @@ public class MainActivity extends BaseActivity
 										R.id.notificationsFragment, null, navOptions);
 								return true;
 							} else if (itemId == R.id.exploreFragment) {
-								navController.navigate(R.id.exploreFragment, null, navOptions);
+								Intent intent = new Intent(ctx, ExploreActivity.class);
+								startActivity(intent);
+								this.overridePendingTransition(
+										android.R.anim.fade_in, android.R.anim.fade_out);
 								return true;
 							}
 						} catch (IllegalArgumentException ignored) {
@@ -506,7 +509,9 @@ public class MainActivity extends BaseActivity
 					navController.navigate(R.id.notificationsFragment, null, navOptions);
 					break;
 				case "explore":
-					navController.navigate(R.id.exploreFragment, null, navOptions);
+					Intent intent = new Intent(ctx, ExploreActivity.class);
+					startActivity(intent);
+					this.overridePendingTransition(android.R.anim.fade_in, android.R.anim.fade_out);
 					break;
 				case "profile":
 					Intent intentProfile = new Intent(this, ProfileActivity.class);
@@ -573,8 +578,9 @@ public class MainActivity extends BaseActivity
 				navController.navigate(R.id.repositoriesFragment, null, navOptions);
 				break;
 			case 5:
-				binding.toolbarTitle.setText(getResources().getString(R.string.pageTitleExplore));
-				navController.navigate(R.id.exploreFragment, null, navOptions);
+				Intent intent = new Intent(ctx, ExploreActivity.class);
+				startActivity(intent);
+				this.overridePendingTransition(android.R.anim.fade_in, android.R.anim.fade_out);
 				break;
 			case 6:
 				navController.navigate(R.id.notificationsFragment, null, navOptions);
