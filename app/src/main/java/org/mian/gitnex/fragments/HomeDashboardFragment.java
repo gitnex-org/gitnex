@@ -19,6 +19,7 @@ import org.mian.gitnex.R;
 import org.mian.gitnex.activities.AppSettingsActivity;
 import org.mian.gitnex.activities.LoginActivity;
 import org.mian.gitnex.activities.MainActivity;
+import org.mian.gitnex.activities.NotesActivity;
 import org.mian.gitnex.activities.ProfileActivity;
 import org.mian.gitnex.adapters.UserAccountsAdapter;
 import org.mian.gitnex.database.api.BaseApi;
@@ -170,7 +171,16 @@ public class HomeDashboardFragment extends Fragment {
 		binding.mostVisitedReposCard
 				.getRoot()
 				.setOnClickListener(v -> navigateTo(R.id.action_to_mostVisitedRepos));
-		binding.notesCard.getRoot().setOnClickListener(v -> navigateTo(R.id.action_to_notes));
+		binding.notesCard
+				.getRoot()
+				.setOnClickListener(
+						v -> {
+							Intent intent = new Intent(requireContext(), NotesActivity.class);
+							startActivity(intent);
+							requireActivity()
+									.overridePendingTransition(
+											android.R.anim.fade_in, android.R.anim.fade_out);
+						});
 		binding.accountSettingsCard
 				.getRoot()
 				.setOnClickListener(v -> navigateTo(R.id.action_to_accountSettings));
@@ -184,6 +194,9 @@ public class HomeDashboardFragment extends Fragment {
 						Intent intentProfile = new Intent(requireContext(), ProfileActivity.class);
 						intentProfile.putExtra("username", username);
 						startActivity(intentProfile);
+						requireActivity()
+								.overridePendingTransition(
+										android.R.anim.fade_in, android.R.anim.fade_out);
 					}
 				});
 	}

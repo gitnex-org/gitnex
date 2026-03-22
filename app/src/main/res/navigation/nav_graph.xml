@@ -39,11 +39,6 @@
             app:popUpTo="@id/homeDashboardFragment"
             app:popUpToInclusive="false" />
         <action
-            android:id="@+id/action_to_notes"
-            app:destination="@id/notesFragment"
-            app:popUpTo="@id/homeDashboardFragment"
-            app:popUpToInclusive="false" />
-        <action
             android:id="@+id/action_to_accountSettings"
             app:destination="@id/accountSettingsFragment"
             app:popUpTo="@id/homeDashboardFragment"
@@ -104,11 +99,6 @@
         android:id="@+id/mostVisitedReposFragment"
         android:name="org.mian.gitnex.fragments.MostVisitedReposFragment"
         android:label="Most Visited Repos" />
-
-    <fragment
-        android:id="@+id/notesFragment"
-        android:name="org.mian.gitnex.fragments.NotesFragment"
-        android:label="Notes" />
 
     <fragment
         android:id="@+id/accountSettingsFragment"

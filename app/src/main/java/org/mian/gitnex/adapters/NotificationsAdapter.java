@@ -3,12 +3,14 @@ package org.mian.gitnex.adapters;
 import android.annotation.SuppressLint;
 import android.content.Context;
 import android.content.res.ColorStateList;
+import android.text.SpannableStringBuilder;
+import android.text.Spanned;
+import android.text.style.ForegroundColorSpan;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import androidx.annotation.NonNull;
-import androidx.core.content.res.ResourcesCompat;
-import androidx.core.text.HtmlCompat;
+import androidx.core.graphics.ColorUtils;
 import androidx.recyclerview.widget.RecyclerView;
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -94,28 +96,28 @@ public class NotificationsAdapter
 
 		private void setupSubject(NotificationThread thread) {
 			String url = thread.getSubject().getUrl();
-
-			int colorInt =
-					ResourcesCompat.getColor(context.getResources(), R.color.lightGray, null);
-			String idColor = String.format("#%06X", (0xFFFFFF & colorInt));
-
 			String subjectText = thread.getSubject().getTitle();
 			String type = thread.getSubject().getType().toLowerCase();
 
 			if (Arrays.asList("pull", "issue").contains(type)) {
 				String id = url.substring(url.lastIndexOf("/") + 1);
-				subjectText =
-						"<font color='"
-								+ idColor
-								+ "'>"
-								+ context.getString(R.string.hash)
-								+ id
-								+ "</font> "
-								+ subjectText;
-			}
+				String idPrefix = context.getString(R.string.hash) + id + " ";
 
-			binding.subject.setText(
-					HtmlCompat.fromHtml(subjectText, HtmlCompat.FROM_HTML_MODE_LEGACY));
+				SpannableStringBuilder builder = new SpannableStringBuilder(idPrefix + subjectText);
+
+				int currentTextColor = binding.subject.getCurrentTextColor();
+				int alphaColor = ColorUtils.setAlphaComponent(currentTextColor, 179);
+
+				builder.setSpan(
+						new ForegroundColorSpan(alphaColor),
+						0,
+						idPrefix.length(),
+						Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
+
+				binding.subject.setText(builder);
+			} else {
+				binding.subject.setText(subjectText);
+			}
 		}
 
 		private void setupRepository(NotificationThread thread) {

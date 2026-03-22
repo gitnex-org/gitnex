@@ -588,14 +588,10 @@ public class MainActivity extends BaseActivity
 				navController.navigate(R.id.mostVisitedReposFragment, null, navOptions);
 				break;
 			case 9:
-				binding.toolbarTitle.setText(getResources().getString(R.string.navNotes));
-				navController.navigate(R.id.notesFragment, null, navOptions);
-				break;
-			case 10:
 				binding.toolbarTitle.setText(getResources().getString(R.string.activities));
 				navController.navigate(R.id.activitiesFragment, null, navOptions);
 				break;
-			case 11:
+			case 10:
 				binding.toolbarTitle.setText(
 						getResources().getString(R.string.navWatchedRepositories));
 				navController.navigate(R.id.watchedRepositoriesFragment, null, navOptions);
