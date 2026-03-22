@@ -20,7 +20,7 @@ import org.mian.gitnex.viewmodels.RepositoriesViewModel;
 /**
  * @author mmarif
  */
-public class StarredReposActivity extends BaseActivity {
+public class WatchedReposActivity extends BaseActivity {
 
 	private ActivityRepositoriesBinding binding;
 	private RepositoriesViewModel viewModel;
@@ -49,7 +49,7 @@ public class StarredReposActivity extends BaseActivity {
 		binding.btnBack.setOnClickListener(v -> finish());
 		binding.btnSearch.setOnClickListener(v -> binding.searchView.show());
 		binding.btnNewRepository.setOnClickListener(
-				v -> startActivity(new Intent(ctx, CreateRepoActivity.class)));
+				v -> startActivity(new Intent(this, CreateRepoActivity.class)));
 
 		adapter = new ReposListAdapter(new ArrayList<>(), this);
 		LinearLayoutManager layoutManager = new LinearLayoutManager(this);
@@ -61,9 +61,8 @@ public class StarredReposActivity extends BaseActivity {
 					@Override
 					public void onLoadMore(int page, int totalItemsCount, RecyclerView view) {
 						if (binding.searchView.isShowing()) return;
-
 						viewModel.fetchRepos(
-								ctx, "starredRepos", "", null, page, resultLimit, null, false);
+								ctx, "watched", "", null, page, resultLimit, null, false);
 					}
 				};
 		binding.recyclerView.addOnScrollListener(scrollListener);
@@ -142,7 +141,7 @@ public class StarredReposActivity extends BaseActivity {
 	private void refreshData() {
 		if (scrollListener != null) scrollListener.resetState();
 		viewModel.resetPagination();
-		viewModel.fetchRepos(this, "starredRepos", "", null, 1, resultLimit, null, true);
+		viewModel.fetchRepos(this, "watched", "", null, 1, resultLimit, null, true);
 	}
 
 	@Override

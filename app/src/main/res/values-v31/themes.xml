@@ -39,7 +39,7 @@
         <item name="actionOverflowMenuStyle">@style/customOverflowMenuStyle</item>
         <item name="colorSurface">@android:color/system_neutral1_800</item>
         <item name="shapeAppearanceSmallComponent">@style/inputsMaterialComponentCorner</item>
-        <item name="android:windowAnimationStyle">@style/WindowAnimationTransition</item>
+        <item name="android:windowAnimationStyle">@style/CustomActivityAnimation</item>
         <item name="materialSwitchStyle">@style/materialSwitchStyle</item>
         <item name="chipStyle">@style/CustomChipFilter</item>
         <item name="isDark">1</item>
@@ -77,7 +77,7 @@
         <item name="android:actionOverflowButtonStyle">@style/customOverflowButtonStyle</item>
         <item name="actionOverflowMenuStyle">@style/customOverflowMenuStyle</item>
         <item name="shapeAppearanceSmallComponent">@style/inputsMaterialComponentCorner</item>
-        <item name="android:windowAnimationStyle">@style/WindowAnimationTransition</item>
+        <item name="android:windowAnimationStyle">@style/CustomActivityAnimation</item>
         <item name="progressIndicatorColor">@android:color/system_accent1_300</item>
         <item name="fabColor">@android:color/system_accent1_300</item>
         <item name="iconsColor">@android:color/system_accent1_300</item>

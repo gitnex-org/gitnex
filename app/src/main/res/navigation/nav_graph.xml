@@ -14,16 +14,6 @@
             app:popUpTo="@id/homeDashboardFragment"
             app:popUpToInclusive="false" />
         <action
-            android:id="@+id/action_to_myRepositories"
-            app:destination="@id/myRepositoriesFragment"
-            app:popUpTo="@id/homeDashboardFragment"
-            app:popUpToInclusive="false" />
-        <action
-            android:id="@+id/action_to_watchedRepositories"
-            app:destination="@id/watchedRepositoriesFragment"
-            app:popUpTo="@id/homeDashboardFragment"
-            app:popUpToInclusive="false" />
-        <action
             android:id="@+id/action_to_myIssues"
             app:destination="@id/myIssuesFragment"
             app:popUpTo="@id/homeDashboardFragment"
@@ -64,16 +54,6 @@
         android:id="@+id/organizationsFragment"
         android:name="org.mian.gitnex.fragments.OrganizationsFragment"
         android:label="Organizations" />
-
-    <fragment
-        android:id="@+id/myRepositoriesFragment"
-        android:name="org.mian.gitnex.fragments.MyRepositoriesFragment"
-        android:label="My Repositories" />
-
-    <fragment
-        android:id="@+id/watchedRepositoriesFragment"
-        android:name="org.mian.gitnex.fragments.WatchedRepositoriesFragment"
-        android:label="Watched Repositories" />
 
     <fragment
         android:id="@+id/accountSettingsFragment"

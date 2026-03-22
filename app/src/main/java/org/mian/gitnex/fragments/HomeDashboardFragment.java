@@ -20,9 +20,11 @@ import org.mian.gitnex.activities.AppSettingsActivity;
 import org.mian.gitnex.activities.LoginActivity;
 import org.mian.gitnex.activities.MainActivity;
 import org.mian.gitnex.activities.MostVisitedReposActivity;
+import org.mian.gitnex.activities.MyReposActivity;
 import org.mian.gitnex.activities.NotesActivity;
 import org.mian.gitnex.activities.ProfileActivity;
 import org.mian.gitnex.activities.StarredReposActivity;
+import org.mian.gitnex.activities.WatchedReposActivity;
 import org.mian.gitnex.adapters.UserAccountsAdapter;
 import org.mian.gitnex.database.api.BaseApi;
 import org.mian.gitnex.database.api.UserAccountsApi;
@@ -150,9 +152,6 @@ public class HomeDashboardFragment extends Fragment {
 				v -> {
 					Intent intent = new Intent(requireContext(), AppSettingsActivity.class);
 					startActivity(intent);
-					requireActivity()
-							.overridePendingTransition(
-									android.R.anim.fade_in, android.R.anim.fade_out);
 				});
 		binding.repoStarredCard
 				.getRoot()
@@ -161,16 +160,22 @@ public class HomeDashboardFragment extends Fragment {
 							Intent intent =
 									new Intent(requireContext(), StarredReposActivity.class);
 							startActivity(intent);
-							requireActivity()
-									.overridePendingTransition(
-											android.R.anim.fade_in, android.R.anim.fade_out);
 						});
 		binding.repoWatchedCard
 				.getRoot()
-				.setOnClickListener(v -> navigateTo(R.id.action_to_watchedRepositories));
+				.setOnClickListener(
+						v -> {
+							Intent intent =
+									new Intent(requireContext(), WatchedReposActivity.class);
+							startActivity(intent);
+						});
 		binding.myReposCard
 				.getRoot()
-				.setOnClickListener(v -> navigateTo(R.id.action_to_myRepositories));
+				.setOnClickListener(
+						v -> {
+							Intent intent = new Intent(requireContext(), MyReposActivity.class);
+							startActivity(intent);
+						});
 		binding.myIssuesCard.getRoot().setOnClickListener(v -> navigateTo(R.id.action_to_myIssues));
 		binding.organizationsCard
 				.getRoot()
@@ -185,9 +190,6 @@ public class HomeDashboardFragment extends Fragment {
 							Intent intent =
 									new Intent(requireContext(), MostVisitedReposActivity.class);
 							startActivity(intent);
-							requireActivity()
-									.overridePendingTransition(
-											android.R.anim.fade_in, android.R.anim.fade_out);
 						});
 		binding.notesCard
 				.getRoot()
@@ -195,9 +197,6 @@ public class HomeDashboardFragment extends Fragment {
 						v -> {
 							Intent intent = new Intent(requireContext(), NotesActivity.class);
 							startActivity(intent);
-							requireActivity()
-									.overridePendingTransition(
-											android.R.anim.fade_in, android.R.anim.fade_out);
 						});
 		binding.accountSettingsCard
 				.getRoot()
@@ -212,9 +211,6 @@ public class HomeDashboardFragment extends Fragment {
 						Intent intentProfile = new Intent(requireContext(), ProfileActivity.class);
 						intentProfile.putExtra("username", username);
 						startActivity(intentProfile);
-						requireActivity()
-								.overridePendingTransition(
-										android.R.anim.fade_in, android.R.anim.fade_out);
 					}
 				});
 	}

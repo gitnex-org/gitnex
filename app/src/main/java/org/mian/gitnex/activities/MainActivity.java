@@ -561,42 +561,28 @@ public class MainActivity extends BaseActivity
 
 		switch (homeScreenValue) {
 			case 1:
-				binding.toolbarTitle.setText(getResources().getString(R.string.navMyRepos));
-				navController.navigate(R.id.myRepositoriesFragment, null, navOptions);
-				break;
-			case 2:
-				binding.toolbarTitle.setText(
-						getResources().getString(R.string.pageTitleStarredRepos));
-				navController.navigate(R.id.starredRepositoriesFragment, null, navOptions);
-				break;
-			case 3:
 				binding.toolbarTitle.setText(getResources().getString(R.string.navOrg));
 				navController.navigate(R.id.organizationsFragment, null, navOptions);
 				break;
-			case 4:
+			case 2:
 				binding.toolbarTitle.setText(getResources().getString(R.string.navRepos));
 				navController.navigate(R.id.repositoriesFragment, null, navOptions);
 				break;
-			case 5:
+			case 3:
 				Intent intent = new Intent(ctx, ExploreActivity.class);
 				startActivity(intent);
 				this.overridePendingTransition(android.R.anim.fade_in, android.R.anim.fade_out);
 				break;
-			case 6:
+			case 4:
 				navController.navigate(R.id.notificationsFragment, null, navOptions);
 				break;
-			case 7:
+			case 5:
 				binding.toolbarTitle.setText(getResources().getString(R.string.navMyIssues));
 				navController.navigate(R.id.myIssuesFragment, null, navOptions);
 				break;
-			case 8:
+			case 6:
 				binding.toolbarTitle.setText(getResources().getString(R.string.activities));
 				navController.navigate(R.id.activitiesFragment, null, navOptions);
-				break;
-			case 9:
-				binding.toolbarTitle.setText(
-						getResources().getString(R.string.navWatchedRepositories));
-				navController.navigate(R.id.watchedRepositoriesFragment, null, navOptions);
 				break;
 			default:
 				navController.navigate(R.id.homeDashboardFragment, null, navOptions);

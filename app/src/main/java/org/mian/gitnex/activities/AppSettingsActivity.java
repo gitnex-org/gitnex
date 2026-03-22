@@ -37,7 +37,7 @@ public class AppSettingsActivity extends BaseActivity {
 						new OnBackPressedCallback(true) {
 							@Override
 							public void handleOnBackPressed() {
-								finishWithTransition();
+								finish();
 							}
 						});
 
@@ -153,7 +153,7 @@ public class AppSettingsActivity extends BaseActivity {
 				false);
 		binding.rowRateApp.getRoot().setOnClickListener(v -> rateThisApp());
 
-		binding.btnBack.setOnClickListener(v -> finishWithTransition());
+		binding.btnBack.setOnClickListener(v -> finish());
 	}
 
 	private void setupRow(
@@ -178,11 +178,6 @@ public class AppSettingsActivity extends BaseActivity {
 									"https://play.google.com/store/apps/details?id="
 											+ getPackageName())));
 		}
-	}
-
-	private void finishWithTransition() {
-		finish();
-		overridePendingTransition(0, android.R.anim.fade_out);
 	}
 
 	@Override

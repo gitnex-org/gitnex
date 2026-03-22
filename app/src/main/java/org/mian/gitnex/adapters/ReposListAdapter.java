@@ -179,7 +179,7 @@ public class ReposListAdapter extends RecyclerView.Adapter<ReposListAdapter.Repo
 					.load(repository.getAvatarUrl())
 					.diskCacheStrategy(DiskCacheStrategy.ALL)
 					.placeholder(placeholder)
-					.circleCrop()
+					.centerCrop()
 					.into(binding.imageAvatar);
 		}
 	}

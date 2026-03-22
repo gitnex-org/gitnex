@@ -42,7 +42,7 @@
         <item name="actionOverflowMenuStyle">@style/customOverflowMenuStyle</item>
         <item name="colorSurface">@color/inputBackground</item>
         <item name="shapeAppearanceSmallComponent">@style/inputsMaterialComponentCorner</item>
-        <item name="android:windowAnimationStyle">@style/WindowAnimationTransition</item>
+        <item name="android:windowAnimationStyle">@style/CustomActivityAnimation</item>
         <item name="materialSwitchStyle">@style/m3SwitchStyle</item>
         <item name="chipStyle">@style/CustomChipFilter</item>
         <item name="isDark">1</item>
@@ -90,7 +90,7 @@
         <item name="actionOverflowMenuStyle">@style/customOverflowMenuStyle</item>
         <item name="colorSurface">@color/lightThemeInputBackground</item>
         <item name="shapeAppearanceSmallComponent">@style/inputsMaterialComponentCorner</item>
-        <item name="android:windowAnimationStyle">@style/WindowAnimationTransition</item>
+        <item name="android:windowAnimationStyle">@style/CustomActivityAnimation</item>
         <item name="chipStyle">@style/CustomChipFilter</item>
         <item name="isDark">0</item>
     </style>
@@ -136,7 +136,7 @@
         <item name="actionOverflowMenuStyle">@style/customOverflowMenuStyle</item>
         <item name="colorSurface">@color/retroThemeInputBackground</item>
         <item name="shapeAppearanceSmallComponent">@style/inputsMaterialComponentCorner</item>
-        <item name="android:windowAnimationStyle">@style/WindowAnimationTransition</item>
+        <item name="android:windowAnimationStyle">@style/CustomActivityAnimation</item>
         <item name="chipStyle">@style/CustomChipFilter</item>
         <item name="isDark">0</item>
     </style>
@@ -183,7 +183,7 @@
         <item name="actionOverflowMenuStyle">@style/customOverflowMenuStyle</item>
         <item name="colorSurface">@color/inputBackground</item>
         <item name="shapeAppearanceSmallComponent">@style/inputsMaterialComponentCorner</item>
-        <item name="android:windowAnimationStyle">@style/WindowAnimationTransition</item>
+        <item name="android:windowAnimationStyle">@style/CustomActivityAnimation</item>
         <item name="materialSwitchStyle">@style/m3SwitchStyle</item>
         <item name="chipStyle">@style/CustomChipFilter</item>
         <item name="isDark">1</item>
@@ -231,7 +231,7 @@
         <item name="actionOverflowMenuStyle">@style/customOverflowMenuStyle</item>
         <item name="colorSurface">@color/codebergDarkInputBackground</item>
         <item name="shapeAppearanceSmallComponent">@style/inputsMaterialComponentCorner</item>
-        <item name="android:windowAnimationStyle">@style/WindowAnimationTransition</item>
+        <item name="android:windowAnimationStyle">@style/CustomActivityAnimation</item>
         <item name="materialSwitchStyle">@style/m3SwitchStyle</item>
         <item name="chipStyle">@style/CustomChipFilter</item>
         <item name="isDark">1</item>
