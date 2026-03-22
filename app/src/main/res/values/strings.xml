@@ -465,6 +465,7 @@
     <string name="noDataDescription">No description found</string>
     <string name="noDataBio">No bio found</string>
     <string name="noDataLocation">No location found</string>
+    <string name="noDataLocale">No locale found</string>
     <string name="starMember">Star</string>
     <string name="watcherMember">Watcher</string>
 

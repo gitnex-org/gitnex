@@ -476,28 +476,36 @@ public class DetailFragment extends Fragment {
 															+ " "
 															+ getString(R.string.navStarredRepos)));
 
-									String[] userLanguageCodes =
-											response.body().getLanguage().split("-");
+									String languageRaw = response.body().getLanguage();
+									boolean isPrivate =
+											Boolean.parseBoolean(
+															AppDatabaseSettings.getSettingsValue(
+																	context,
+																	AppDatabaseSettings
+																			.APP_USER_PROFILE_HIDE_EMAIL_LANGUAGE_KEY))
+													&& itsMe;
 
-									if (Boolean.parseBoolean(
-													AppDatabaseSettings.getSettingsValue(
-															context,
-															AppDatabaseSettings
-																	.APP_USER_PROFILE_HIDE_EMAIL_LANGUAGE_KEY))
-											&& itsMe) {
+									if (isPrivate) {
 										binding.userLang.setText(
 												getString(R.string.strPrivate).toUpperCase());
 										binding.userLang.setAlpha(.4F);
-									} else {
+									} else if (languageRaw != null && !languageRaw.isEmpty()) {
+										String[] userLanguageCodes = languageRaw.split("-");
+
 										if (userLanguageCodes.length >= 2) {
-											Locale locale =
+											Locale userLocale =
 													new Locale(
 															userLanguageCodes[0],
 															userLanguageCodes[1]);
-											binding.userLang.setText(locale.getDisplayLanguage());
+											binding.userLang.setText(
+													userLocale.getDisplayLanguage());
 										} else {
-											binding.userLang.setText(locale.getDisplayLanguage());
+											binding.userLang.setText(
+													Locale.getDefault().getDisplayLanguage());
 										}
+										binding.userLang.setAlpha(1.0F);
+									} else {
+										binding.userLang.setText(R.string.noDataLocale);
 									}
 
 									Glide.with(context)

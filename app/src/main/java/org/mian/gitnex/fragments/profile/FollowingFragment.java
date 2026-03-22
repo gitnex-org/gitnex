@@ -1,9 +1,6 @@
 package org.mian.gitnex.fragments.profile;
 
-import android.content.Context;
 import android.os.Bundle;
-import android.os.Handler;
-import android.os.Looper;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -13,33 +10,33 @@ import android.view.ViewGroup;
 import android.view.inputmethod.EditorInfo;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.core.view.MenuProvider;
 import androidx.fragment.app.Fragment;
+import androidx.lifecycle.Lifecycle;
+import androidx.lifecycle.ViewModelProvider;
 import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 import java.util.ArrayList;
 import java.util.List;
 import org.gitnex.tea4j.v2.models.User;
 import org.mian.gitnex.R;
 import org.mian.gitnex.adapters.UsersAdapter;
-import org.mian.gitnex.clients.RetrofitClient;
 import org.mian.gitnex.databinding.FragmentProfileFollowersFollowingBinding;
-import org.mian.gitnex.helpers.AlertDialogs;
 import org.mian.gitnex.helpers.Constants;
+import org.mian.gitnex.helpers.EndlessRecyclerViewScrollListener;
 import org.mian.gitnex.helpers.Toasty;
-import retrofit2.Call;
-import retrofit2.Callback;
-import retrofit2.Response;
+import org.mian.gitnex.viewmodels.UserListViewModel;
 
 /**
  * @author mmarif
  */
 public class FollowingFragment extends Fragment {
 
-	private static final String usernameBundle = "";
-	private Context context;
-	private FragmentProfileFollowersFollowingBinding fragmentProfileFollowersFollowingBinding;
-	private List<User> usersList;
+	private static final String BUNDLE_USERNAME = "username";
+	private FragmentProfileFollowersFollowingBinding binding;
+	private UserListViewModel viewModel;
 	private UsersAdapter adapter;
-	private int pageSize;
+	private EndlessRecyclerViewScrollListener scrollListener;
 	private int resultLimit;
 	private String username;
 
@@ -48,7 +45,7 @@ public class FollowingFragment extends Fragment {
 	public static FollowingFragment newInstance(String username) {
 		FollowingFragment fragment = new FollowingFragment();
 		Bundle args = new Bundle();
-		args.putString(usernameBundle, username);
+		args.putString(BUNDLE_USERNAME, username);
 		fragment.setArguments(args);
 		return fragment;
 	}
@@ -57,7 +54,7 @@ public class FollowingFragment extends Fragment {
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		if (getArguments() != null) {
-			username = getArguments().getString(usernameBundle);
+			username = getArguments().getString(BUNDLE_USERNAME);
 		}
 	}
 
@@ -66,217 +63,155 @@ public class FollowingFragment extends Fragment {
 			@NonNull LayoutInflater inflater,
 			@Nullable ViewGroup container,
 			@Nullable Bundle savedInstanceState) {
+		binding = FragmentProfileFollowersFollowingBinding.inflate(inflater, container, false);
 
-		fragmentProfileFollowersFollowingBinding =
-				FragmentProfileFollowersFollowingBinding.inflate(inflater, container, false);
-		setHasOptionsMenu(true);
-		context = getContext();
+		resultLimit = Constants.getCurrentResultLimit(requireContext());
+		viewModel = new ViewModelProvider(this).get(UserListViewModel.class);
 
-		resultLimit = Constants.getCurrentResultLimit(context);
-		usersList = new ArrayList<>();
+		setupRecyclerView();
+		setupSwipeRefresh();
+		setupMenu();
+		observeViewModel();
 
-		fragmentProfileFollowersFollowingBinding.pullToRefresh.setOnRefreshListener(
-				() ->
-						new Handler(Looper.getMainLooper())
-								.postDelayed(
-										() -> {
-											fragmentProfileFollowersFollowingBinding.pullToRefresh
-													.setRefreshing(false);
-											loadInitial(username, resultLimit);
-											adapter.notifyDataChanged();
-										},
-										200));
+		if (viewModel.getUsers().getValue() == null || viewModel.getUsers().getValue().isEmpty()) {
+			refreshData();
+		}
 
-		adapter = new UsersAdapter(usersList, context);
-		adapter.setLoadMoreListener(
-				() ->
-						fragmentProfileFollowersFollowingBinding.recyclerView.post(
-								() -> {
-									if (usersList.size() == resultLimit
-											|| pageSize == resultLimit) {
-										int page = (usersList.size() + resultLimit) / resultLimit;
-										loadMore(username, page, resultLimit);
-									}
-								}));
-
-		fragmentProfileFollowersFollowingBinding.recyclerView.setHasFixedSize(true);
-		fragmentProfileFollowersFollowingBinding.recyclerView.setLayoutManager(
-				new LinearLayoutManager(context));
-		fragmentProfileFollowersFollowingBinding.recyclerView.setAdapter(adapter);
-
-		loadInitial(username, resultLimit);
-
-		return fragmentProfileFollowersFollowingBinding.getRoot();
+		return binding.getRoot();
 	}
 
-	private void loadInitial(String username, int resultLimit) {
+	private void setupRecyclerView() {
+		adapter = new UsersAdapter(requireContext(), new ArrayList<>());
+		LinearLayoutManager layoutManager = new LinearLayoutManager(requireContext());
+		binding.recyclerView.setLayoutManager(layoutManager);
+		binding.recyclerView.setAdapter(adapter);
 
-		Call<List<User>> call =
-				RetrofitClient.getApiInterface(context).userListFollowing(username, 1, resultLimit);
-
-		call.enqueue(
-				new Callback<List<User>>() {
-
+		scrollListener =
+				new EndlessRecyclerViewScrollListener(layoutManager) {
 					@Override
-					public void onResponse(
-							@NonNull Call<List<User>> call,
-							@NonNull Response<List<User>> response) {
+					public void onLoadMore(int page, int totalItemsCount, RecyclerView view) {
+						viewModel.fetchUsers(
+								requireContext(),
+								"following",
+								username,
+								null,
+								null,
+								page,
+								resultLimit,
+								false);
+					}
+				};
+		binding.recyclerView.addOnScrollListener(scrollListener);
+	}
 
-						if (response.isSuccessful()) {
+	private void setupSwipeRefresh() {
+		binding.pullToRefresh.setOnRefreshListener(
+				() -> {
+					binding.pullToRefresh.setRefreshing(false);
+					refreshData();
+				});
+	}
 
-							switch (response.code()) {
-								case 200:
-									assert response.body() != null;
-									if (response.body().size() > 0) {
-										usersList.clear();
-										usersList.addAll(response.body());
-										adapter.notifyDataChanged();
-										fragmentProfileFollowersFollowingBinding.noData
-												.setVisibility(View.GONE);
-									} else {
-										usersList.clear();
-										adapter.notifyDataChanged();
-										fragmentProfileFollowersFollowingBinding.noData
-												.setVisibility(View.VISIBLE);
-									}
-									fragmentProfileFollowersFollowingBinding.progressBar
-											.setVisibility(View.GONE);
-									break;
+	private void observeViewModel() {
+		viewModel
+				.getUsers()
+				.observe(
+						getViewLifecycleOwner(),
+						list -> {
+							adapter.updateList(list);
+							updateUiVisibility(
+									Boolean.TRUE.equals(viewModel.getIsLoading().getValue()));
+						});
 
-								case 401:
-									AlertDialogs.authorizationTokenRevokedDialog(context);
-									break;
+		viewModel.getIsLoading().observe(getViewLifecycleOwner(), this::updateUiVisibility);
 
-								case 403:
-									Toasty.show(
-											context, context.getString(R.string.authorizeError));
-									break;
+		viewModel
+				.getError()
+				.observe(
+						getViewLifecycleOwner(),
+						error -> {
+							if (error != null) Toasty.show(requireContext(), error);
+						});
+	}
 
-								case 404:
-									fragmentProfileFollowersFollowingBinding.noData.setVisibility(
-											View.VISIBLE);
-									fragmentProfileFollowersFollowingBinding.progressBar
-											.setVisibility(View.GONE);
-									break;
+	private void updateUiVisibility(boolean isLoading) {
+		boolean hasData = adapter.getItemCount() > 0;
+		boolean hasLoadedOnce = Boolean.TRUE.equals(viewModel.getHasLoadedOnce().getValue());
 
-								default:
-									Toasty.show(context, getString(R.string.genericError));
-									break;
+		binding.expressiveLoader.setVisibility(isLoading && !hasData ? View.VISIBLE : View.GONE);
+		binding.layoutEmpty
+				.getRoot()
+				.setVisibility(!isLoading && !hasData && hasLoadedOnce ? View.VISIBLE : View.GONE);
+		binding.pullToRefresh.setVisibility(
+				!hasData && !isLoading && hasLoadedOnce ? View.GONE : View.VISIBLE);
+	}
+
+	private void refreshData() {
+		scrollListener.resetState();
+		viewModel.resetPagination();
+		viewModel.fetchUsers(
+				requireContext(), "following", username, null, null, 1, resultLimit, true);
+	}
+
+	private void setupMenu() {
+		requireActivity()
+				.addMenuProvider(
+						new MenuProvider() {
+							@Override
+							public void onCreateMenu(
+									@NonNull Menu menu, @NonNull MenuInflater menuInflater) {
+								menu.clear();
+								menuInflater.inflate(R.menu.search_menu, menu);
+
+								MenuItem searchItem = menu.findItem(R.id.action_search);
+								androidx.appcompat.widget.SearchView searchView =
+										(androidx.appcompat.widget.SearchView)
+												searchItem.getActionView();
+
+								if (searchView != null) {
+									searchView.setImeOptions(EditorInfo.IME_ACTION_DONE);
+									searchView.setOnQueryTextListener(
+											new androidx.appcompat.widget.SearchView
+													.OnQueryTextListener() {
+												@Override
+												public boolean onQueryTextSubmit(String query) {
+													return false;
+												}
+
+												@Override
+												public boolean onQueryTextChange(String newText) {
+													filter(newText);
+													return false;
+												}
+											});
+								}
 							}
-						}
-					}
 
-					@Override
-					public void onFailure(@NonNull Call<List<User>> call, @NonNull Throwable t) {
-						Toasty.show(context, getString(R.string.genericError));
-					}
-				});
-	}
-
-	private void loadMore(String username, int page, int resultLimit) {
-
-		fragmentProfileFollowersFollowingBinding.progressBar.setVisibility(View.VISIBLE);
-
-		Call<List<User>> call =
-				RetrofitClient.getApiInterface(context)
-						.userListFollowing(username, page, resultLimit);
-
-		call.enqueue(
-				new Callback<List<User>>() {
-
-					@Override
-					public void onResponse(
-							@NonNull Call<List<User>> call,
-							@NonNull Response<List<User>> response) {
-
-						if (response.isSuccessful()) {
-
-							switch (response.code()) {
-								case 200:
-									List<User> result = response.body();
-									assert result != null;
-									if (result.size() > 0) {
-										pageSize = result.size();
-										usersList.addAll(result);
-									} else {
-										Toasty.show(context, getString(R.string.noMoreData));
-										adapter.setMoreDataAvailable(false);
-									}
-									adapter.notifyDataChanged();
-									fragmentProfileFollowersFollowingBinding.progressBar
-											.setVisibility(View.GONE);
-									break;
-
-								case 401:
-									AlertDialogs.authorizationTokenRevokedDialog(context);
-									break;
-
-								case 403:
-									Toasty.show(
-											context, context.getString(R.string.authorizeError));
-									break;
-
-								case 404:
-									fragmentProfileFollowersFollowingBinding.noData.setVisibility(
-											View.VISIBLE);
-									fragmentProfileFollowersFollowingBinding.progressBar
-											.setVisibility(View.GONE);
-									break;
-
-								default:
-									Toasty.show(context, getString(R.string.genericError));
-									break;
+							@Override
+							public boolean onMenuItemSelected(@NonNull MenuItem menuItem) {
+								return false;
 							}
-						}
-					}
-
-					@Override
-					public void onFailure(@NonNull Call<List<User>> call, @NonNull Throwable t) {
-						Toasty.show(context, getString(R.string.genericError));
-					}
-				});
-	}
-
-	@Override
-	public void onCreateOptionsMenu(@NonNull Menu menu, @NonNull MenuInflater inflater) {
-
-		inflater.inflate(R.menu.search_menu, menu);
-		super.onCreateOptionsMenu(menu, inflater);
-
-		MenuItem searchItem = menu.findItem(R.id.action_search);
-		androidx.appcompat.widget.SearchView searchView =
-				(androidx.appcompat.widget.SearchView) searchItem.getActionView();
-		searchView.setImeOptions(EditorInfo.IME_ACTION_DONE);
-
-		searchView.setOnQueryTextListener(
-				new androidx.appcompat.widget.SearchView.OnQueryTextListener() {
-
-					@Override
-					public boolean onQueryTextSubmit(String query) {
-						return false;
-					}
-
-					@Override
-					public boolean onQueryTextChange(String newText) {
-						filter(newText);
-						return false;
-					}
-				});
+						},
+						getViewLifecycleOwner(),
+						Lifecycle.State.RESUMED);
 	}
 
 	private void filter(String text) {
+		List<User> originalList = viewModel.getUsers().getValue();
+		if (originalList == null) return;
+		if (text.isEmpty()) {
+			adapter.updateList(originalList);
+			return;
+		}
 
-		List<User> arr = new ArrayList<>();
-
-		for (User d : usersList) {
-			if (d == null || d.getLogin() == null || d.getFullName() == null) {
-				continue;
-			}
-			if (d.getLogin().toLowerCase().contains(text)
-					|| d.getFullName().toLowerCase().contains(text)) {
-				arr.add(d);
+		String query = text.toLowerCase().trim();
+		List<User> filtered = new ArrayList<>();
+		for (User u : originalList) {
+			if ((u.getLogin() != null && u.getLogin().toLowerCase().contains(query))
+					|| (u.getFullName() != null && u.getFullName().toLowerCase().contains(query))) {
+				filtered.add(u);
 			}
 		}
-		adapter.updateList(arr);
+		adapter.updateList(filtered);
 	}
 }

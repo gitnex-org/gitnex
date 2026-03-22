@@ -3,13 +3,9 @@ package org.mian.gitnex.adapters;
 import android.annotation.SuppressLint;
 import android.content.Context;
 import android.content.Intent;
-import android.os.Handler;
-import android.text.Html;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.ImageView;
-import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 import com.bumptech.glide.Glide;
@@ -18,132 +14,76 @@ import java.util.List;
 import org.gitnex.tea4j.v2.models.User;
 import org.mian.gitnex.R;
 import org.mian.gitnex.activities.ProfileActivity;
-import org.mian.gitnex.helpers.AppUtil;
+import org.mian.gitnex.databinding.ListUsersBinding;
 
 /**
  * @author mmarif
  */
-public class UsersAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
+public class UsersAdapter extends RecyclerView.Adapter<UsersAdapter.UserViewHolder> {
 
+	private List<User> userList;
 	private final Context context;
-	private List<User> followersList;
-	private Runnable loadMoreListener;
-	private boolean isLoading = false, isMoreDataAvailable = true;
 
-	public UsersAdapter(List<User> dataList, Context ctx) {
+	public UsersAdapter(Context ctx, List<User> userList) {
 		this.context = ctx;
-		this.followersList = dataList;
+		this.userList = userList;
 	}
 
 	@NonNull @Override
-	public RecyclerView.ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-		LayoutInflater inflater = LayoutInflater.from(context);
-		return new UsersAdapter.UsersHolder(inflater.inflate(R.layout.list_users, parent, false));
+	public UserViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
+		ListUsersBinding binding =
+				ListUsersBinding.inflate(LayoutInflater.from(context), parent, false);
+		return new UserViewHolder(binding);
 	}
 
 	@Override
-	public void onBindViewHolder(@NonNull RecyclerView.ViewHolder holder, int position) {
-		if (position >= getItemCount() - 1
-				&& isMoreDataAvailable
-				&& !isLoading
-				&& loadMoreListener != null) {
-			isLoading = true;
-			loadMoreListener.run();
-		}
-		((UsersAdapter.UsersHolder) holder).bindData(followersList.get(position));
-	}
-
-	@Override
-	public int getItemViewType(int position) {
-		return position;
+	public void onBindViewHolder(@NonNull UserViewHolder holder, int position) {
+		User user = userList.get(position);
+		holder.bind(user);
+		holder.binding.getRoot().updateAppearance(position, getItemCount());
 	}
 
 	@Override
 	public int getItemCount() {
-		return followersList.size();
-	}
-
-	public void setMoreDataAvailable(boolean moreDataAvailable) {
-		isMoreDataAvailable = moreDataAvailable;
+		return userList.size();
 	}
 
 	@SuppressLint("NotifyDataSetChanged")
-	public void notifyDataChanged() {
+	public void updateList(List<User> newList) {
+		this.userList = newList;
 		notifyDataSetChanged();
-		isLoading = false;
 	}
 
-	public void setLoadMoreListener(Runnable loadMoreListener) {
-		this.loadMoreListener = loadMoreListener;
-	}
+	public class UserViewHolder extends RecyclerView.ViewHolder {
+		private final ListUsersBinding binding;
 
-	public void updateList(List<User> list) {
-		followersList = list;
-		notifyDataChanged();
-	}
+		UserViewHolder(ListUsersBinding binding) {
+			super(binding.getRoot());
+			this.binding = binding;
 
-	class UsersHolder extends RecyclerView.ViewHolder {
-
-		private final ImageView userAvatar;
-		private final TextView userFullName;
-		private final TextView userName;
-		private User userInfo;
-
-		UsersHolder(View itemView) {
-			super(itemView);
-
-			userAvatar = itemView.findViewById(R.id.userAvatar);
-			userFullName = itemView.findViewById(R.id.userFullName);
-			userName = itemView.findViewById(R.id.userName);
-
-			new Handler()
-					.postDelayed(
-							() -> {
-								if (!AppUtil.checkGhostUsers(userInfo.getLogin())) {
-
-									itemView.setOnClickListener(
-											loginId -> {
-												Intent intent =
-														new Intent(context, ProfileActivity.class);
-												intent.putExtra("username", userInfo.getLogin());
-												context.startActivity(intent);
-											});
-
-									itemView.setOnLongClickListener(
-											loginId -> {
-												AppUtil.copyToClipboard(
-														context,
-														userInfo.getLogin(),
-														context.getString(
-																R.string.copyLoginIdToClipBoard,
-																userInfo.getLogin()));
-												return true;
-											});
-								}
-							},
-							500);
+			binding.getRoot()
+					.setOnClickListener(
+							v -> {
+								User user = userList.get(getBindingAdapterPosition());
+								Intent intent = new Intent(context, ProfileActivity.class);
+								intent.putExtra("username", user.getLogin());
+								context.startActivity(intent);
+							});
 		}
 
-		@SuppressLint("SetTextI18n")
-		void bindData(User userInfo) {
-			this.userInfo = userInfo;
-
-			if (!userInfo.getFullName().isEmpty()) {
-				userFullName.setText(Html.fromHtml(userInfo.getFullName()));
-				userName.setText(
-						context.getResources()
-								.getString(R.string.usernameWithAt, userInfo.getLogin()));
-			} else {
-				userFullName.setText(userInfo.getLogin());
-				userName.setVisibility(View.GONE);
-			}
+		void bind(User user) {
+			binding.userNameTv.setText(
+					user.getFullName().isEmpty() ? user.getLogin() : user.getFullName());
+			binding.userName.setText(context.getString(R.string.usernameWithAt, user.getLogin()));
+			binding.userName.setVisibility(user.getFullName().isEmpty() ? View.GONE : View.VISIBLE);
 
 			Glide.with(context)
-					.load(userInfo.getAvatarUrl())
+					.load(user.getAvatarUrl())
 					.diskCacheStrategy(DiskCacheStrategy.ALL)
 					.placeholder(R.drawable.loader_animated)
+					.error(R.drawable.ic_person)
 					.centerCrop()
-					.into(userAvatar);
+					.into(binding.userAvatarImageView);
 		}
 	}
 }
