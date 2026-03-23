@@ -7,8 +7,7 @@
     <fragment
         android:id="@+id/homeDashboardFragment"
         android:name="org.mian.gitnex.fragments.HomeDashboardFragment"
-        android:label="Dashboard">
-    </fragment>
+        android:label="Dashboard" />
 
     <fragment
         android:id="@+id/repositoriesFragment"

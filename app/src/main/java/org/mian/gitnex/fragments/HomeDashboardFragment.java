@@ -7,8 +7,6 @@ import android.view.View;
 import android.view.ViewGroup;
 import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
-import androidx.navigation.NavController;
-import androidx.navigation.Navigation;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.load.engine.DiskCacheStrategy;
@@ -20,6 +18,7 @@ import org.mian.gitnex.activities.AccountSettingsActivity;
 import org.mian.gitnex.activities.ActivitiesActivity;
 import org.mian.gitnex.activities.AdministrationActivity;
 import org.mian.gitnex.activities.AppSettingsActivity;
+import org.mian.gitnex.activities.ExploreActivity;
 import org.mian.gitnex.activities.LoginActivity;
 import org.mian.gitnex.activities.MainActivity;
 import org.mian.gitnex.activities.MostVisitedReposActivity;
@@ -203,6 +202,13 @@ public class HomeDashboardFragment extends Fragment {
 							Intent intent = new Intent(requireContext(), ActivitiesActivity.class);
 							startActivity(intent);
 						});
+		binding.exploreCard
+				.getRoot()
+				.setOnClickListener(
+						v -> {
+							Intent intent = new Intent(requireContext(), ExploreActivity.class);
+							startActivity(intent);
+						});
 		binding.mostVisitedReposCard
 				.getRoot()
 				.setOnClickListener(
@@ -245,15 +251,6 @@ public class HomeDashboardFragment extends Fragment {
 				});
 	}
 
-	private void navigateTo(int destinationId) {
-		try {
-			NavController navController =
-					Navigation.findNavController(requireActivity(), R.id.nav_host_fragment);
-			navController.navigate(destinationId);
-		} catch (Exception ignored) {
-		}
-	}
-
 	private void setupDashboardCards() {
 
 		Calendar c = Calendar.getInstance();
@@ -291,6 +288,11 @@ public class HomeDashboardFragment extends Fragment {
 				null,
 				R.drawable.ic_tool);
 
+		updateFullCard(
+				binding.exploreCard,
+				R.string.pageTitleExplore,
+				getString(R.string.dashboard_explore_sub_title),
+				R.drawable.ic_search);
 		updateFullCard(
 				binding.mostVisitedReposCard,
 				R.string.navMostVisited,

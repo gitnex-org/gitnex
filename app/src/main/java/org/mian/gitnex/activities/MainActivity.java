@@ -159,12 +159,6 @@ public class MainActivity extends BaseActivity
 								navController.navigate(
 										R.id.notificationsFragment, null, navOptions);
 								return true;
-							} else if (itemId == R.id.exploreFragment) {
-								Intent intent = new Intent(ctx, ExploreActivity.class);
-								startActivity(intent);
-								this.overridePendingTransition(
-										android.R.anim.fade_in, android.R.anim.fade_out);
-								return true;
 							}
 						} catch (IllegalArgumentException ignored) {
 						}
@@ -177,8 +171,7 @@ public class MainActivity extends BaseActivity
 						boolean isBottomNav =
 								destination.getId() == R.id.homeDashboardFragment
 										|| destination.getId() == R.id.repositoriesFragment
-										|| destination.getId() == R.id.notificationsFragment
-										|| destination.getId() == R.id.exploreFragment;
+										|| destination.getId() == R.id.notificationsFragment;
 
 						if (!isBottomNav) {
 							binding.bottomNavigation.setSelectedItemId(0);
@@ -505,11 +498,6 @@ public class MainActivity extends BaseActivity
 				case "notification":
 					navController.navigate(R.id.notificationsFragment, null, navOptions);
 					break;
-				case "explore":
-					Intent intent = new Intent(ctx, ExploreActivity.class);
-					startActivity(intent);
-					this.overridePendingTransition(android.R.anim.fade_in, android.R.anim.fade_out);
-					break;
 				case "profile":
 					Intent intentProfile = new Intent(this, ProfileActivity.class);
 					intentProfile.putExtra("username", tinyDB.getString("username"));
@@ -555,15 +543,9 @@ public class MainActivity extends BaseActivity
 
 		switch (homeScreenValue) {
 			case 1:
-				binding.toolbarTitle.setText(getResources().getString(R.string.navRepos));
 				navController.navigate(R.id.repositoriesFragment, null, navOptions);
 				break;
 			case 2:
-				Intent intent = new Intent(ctx, ExploreActivity.class);
-				startActivity(intent);
-				this.overridePendingTransition(android.R.anim.fade_in, android.R.anim.fade_out);
-				break;
-			case 3:
 				navController.navigate(R.id.notificationsFragment, null, navOptions);
 				break;
 			default:

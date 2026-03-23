@@ -298,13 +298,24 @@
                 </LinearLayout>
 
                 <include
-                    android:id="@+id/mostVisitedReposCard"
+                    android:id="@+id/exploreCard"
                     layout="@layout/item_dashboard_card_full"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="@dimen/dimen12dp"
                     android:layout_marginHorizontal="@dimen/dimen4dp"
                     app:layout_constraintTop_toBottomOf="@id/largeCardsRow3"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintEnd_toEndOf="parent" />
+
+                <include
+                    android:id="@+id/mostVisitedReposCard"
+                    layout="@layout/item_dashboard_card_full"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="@dimen/dimen12dp"
+                    android:layout_marginHorizontal="@dimen/dimen4dp"
+                    app:layout_constraintTop_toBottomOf="@id/exploreCard"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintEnd_toEndOf="parent" />
 
@@ -342,6 +353,7 @@
                         android:layout_width="0dp"
                         android:layout_height="match_parent"
                         android:layout_marginStart="@dimen/dimen4dp"
+                        android:visibility="gone"
                         android:layout_weight="1" />
 
                 </LinearLayout>

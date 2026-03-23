@@ -12,8 +12,4 @@
         android:id="@+id/notificationsFragment"
         android:icon="@drawable/ic_notifications"
         android:title="@string/pageTitleNotifications" />
-    <item
-        android:id="@+id/exploreFragment"
-        android:icon="@drawable/ic_search"
-        android:title="@string/pageTitleExplore" />
 </menu>
