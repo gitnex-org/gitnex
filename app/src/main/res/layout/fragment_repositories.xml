@@ -41,17 +41,22 @@
         layout="@layout/layout_empty_state"
         android:visibility="gone" />
 
-    <com.google.android.material.floatingactionbutton.ExtendedFloatingActionButton
-        android:id="@+id/addNewRepo"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_gravity="end|bottom"
-        android:layout_margin="@dimen/dimen16dp"
-        android:text="@string/pageTitleNewRepo"
-        android:contentDescription="@string/pageTitleNewRepo"
-        android:textColor="?attr/materialCardBackgroundColor"
-        app:iconTint="?attr/materialCardBackgroundColor"
-        android:backgroundTint="?attr/fabColor"
-        app:icon="@drawable/ic_add" />
+    <com.google.android.material.search.SearchView
+        android:id="@+id/search_view"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:hint="@string/search"
+        android:layout_marginTop="-56dp"
+        app:navigationIcon="@drawable/ic_arrow_back"
+        app:backgroundTint="?attr/primaryBackgroundColor">
+
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/search_results_recycler"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:padding="@dimen/dimen12dp"
+            app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager" />
+
+    </com.google.android.material.search.SearchView>
 
 </androidx.coordinatorlayout.widget.CoordinatorLayout>

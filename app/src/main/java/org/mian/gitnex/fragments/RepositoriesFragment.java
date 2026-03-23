@@ -2,17 +2,13 @@ package org.mian.gitnex.fragments;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.text.Editable;
+import android.text.TextWatcher;
 import android.view.LayoutInflater;
-import android.view.Menu;
-import android.view.MenuInflater;
-import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import androidx.annotation.NonNull;
-import androidx.appcompat.widget.SearchView;
-import androidx.core.view.MenuProvider;
 import androidx.fragment.app.Fragment;
-import androidx.lifecycle.Lifecycle;
 import androidx.lifecycle.ViewModelProvider;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
@@ -62,7 +58,7 @@ public class RepositoriesFragment extends Fragment {
 
 		setupRecyclerView();
 		setupSwipeRefresh();
-		setupMenu();
+		setupSearch();
 		observeViewModel();
 
 		refreshData();
@@ -79,73 +75,20 @@ public class RepositoriesFragment extends Fragment {
 				new EndlessRecyclerViewScrollListener(layoutManager) {
 					@Override
 					public void onLoadMore(int page, int totalItemsCount, RecyclerView view) {
-						if (!isSearching) {
-							viewModel.fetchRepos(
-									requireContext(),
-									type,
-									userLogin,
-									orgName,
-									page,
-									resultLimit,
-									currentSort,
-									false);
-						}
+						if (isSearching) return;
+
+						viewModel.fetchRepos(
+								requireContext(),
+								type,
+								userLogin,
+								orgName,
+								page,
+								resultLimit,
+								currentSort,
+								false);
 					}
 				};
 		binding.recyclerView.addOnScrollListener(scrollListener);
-
-		binding.addNewRepo.setOnClickListener(
-				v -> startActivity(new Intent(getContext(), CreateRepoActivity.class)));
-	}
-
-	private void setupMenu() {
-		requireActivity()
-				.addMenuProvider(
-						new MenuProvider() {
-							@Override
-							public void onCreateMenu(
-									@NonNull Menu menu, @NonNull MenuInflater menuInflater) {
-								menuInflater.inflate(R.menu.search_menu, menu);
-								menuInflater.inflate(R.menu.generic_nav_dotted_menu, menu);
-
-								MenuItem searchItem = menu.findItem(R.id.action_search);
-								SearchView searchView = (SearchView) searchItem.getActionView();
-								if (searchView != null) {
-									searchView.setOnQueryTextListener(
-											new SearchView.OnQueryTextListener() {
-												@Override
-												public boolean onQueryTextSubmit(String query) {
-													return false;
-												}
-
-												@Override
-												public boolean onQueryTextChange(String newText) {
-													isSearching = !newText.isEmpty();
-													adapter.getFilter().filter(newText);
-													return true;
-												}
-											});
-								}
-							}
-
-							@Override
-							public boolean onMenuItemSelected(@NonNull MenuItem menuItem) {
-								if (menuItem.getItemId() == R.id.genericMenu) {
-									SortBottomSheetDialogFragment bottomSheet =
-											new SortBottomSheetDialogFragment();
-									bottomSheet.setSortListener(
-											sort -> {
-												currentSort = sort;
-												refreshData();
-											});
-									bottomSheet.show(getChildFragmentManager(), "SortBottomSheet");
-									return true;
-								}
-								return false;
-							}
-						},
-						getViewLifecycleOwner(),
-						Lifecycle.State.RESUMED);
 	}
 
 	private void observeViewModel() {
@@ -185,7 +128,7 @@ public class RepositoriesFragment extends Fragment {
 		binding.layoutEmpty.getRoot().setVisibility(loaded && isEmpty ? View.VISIBLE : View.GONE);
 	}
 
-	private void refreshData() {
+	public void refreshData() {
 		if (scrollListener != null) scrollListener.resetState();
 		viewModel.resetPagination();
 		viewModel.fetchRepos(
@@ -207,6 +150,77 @@ public class RepositoriesFragment extends Fragment {
 			refreshData();
 			MainActivity.reloadRepos = false;
 		}
+	}
+
+	public void toggleSearch() {
+		if (binding.searchView.isShowing()) {
+			binding.searchView.hide();
+		} else {
+			binding.searchView.show();
+		}
+	}
+
+	private void setupSearch() {
+		binding.searchResultsRecycler.setLayoutManager(new LinearLayoutManager(requireContext()));
+		binding.searchResultsRecycler.setAdapter(adapter);
+
+		binding.searchView
+				.getEditText()
+				.addTextChangedListener(
+						new TextWatcher() {
+							@Override
+							public void beforeTextChanged(
+									CharSequence s, int start, int count, int after) {}
+
+							@Override
+							public void onTextChanged(
+									CharSequence s, int start, int before, int count) {
+								filter(s.toString());
+							}
+
+							@Override
+							public void afterTextChanged(Editable s) {}
+						});
+
+		binding.searchView.addTransitionListener(
+				(searchView, previousState, newState) -> {
+					if (newState.toString().equals("HIDDEN")) {
+						binding.searchView.setText("");
+						filter("");
+						isSearching = false;
+						binding.recyclerView.scrollToPosition(0);
+					} else if (newState.toString().equals("SHOWN")) {
+						isSearching = true;
+					}
+				});
+
+		binding.searchView
+				.getEditText()
+				.setOnEditorActionListener(
+						(v, actionId, event) -> {
+							binding.searchView.hide();
+							return false;
+						});
+	}
+
+	private void filter(String text) {
+		if (adapter != null && adapter.getFilter() != null) {
+			adapter.getFilter().filter(text);
+		}
+	}
+
+	public void openSortMenu() {
+		SortBottomSheetDialogFragment bottomSheet = new SortBottomSheetDialogFragment();
+		bottomSheet.setSortListener(
+				sort -> {
+					currentSort = sort;
+					refreshData();
+				});
+		bottomSheet.show(getChildFragmentManager(), "SortBottomSheet");
+	}
+
+	public void createNewRepo() {
+		startActivity(new Intent(getContext(), CreateRepoActivity.class));
 	}
 
 	public static class SortBottomSheetDialogFragment extends BottomSheetDialogFragment {

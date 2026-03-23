@@ -136,43 +136,9 @@ public class BottomSheetSettingsGeneralFragment extends BottomSheetDialogFragmen
 	}
 
 	private void setHomeScreenChipSelection(int position) {
-		switch (position) {
-			case 0:
-				binding.chipHomeScreen0.setChecked(true);
-				break;
-			case 1:
-				binding.chipHomeScreen1.setChecked(true);
-				break;
-			case 2:
-				binding.chipHomeScreen2.setChecked(true);
-				break;
-			case 3:
-				binding.chipHomeScreen3.setChecked(true);
-				break;
-			case 4:
-				binding.chipHomeScreen4.setChecked(true);
-				break;
-			case 5:
-				binding.chipHomeScreen5.setChecked(true);
-				break;
-			case 6:
-				binding.chipHomeScreen6.setChecked(true);
-				break;
-			case 7:
-				binding.chipHomeScreen7.setChecked(true);
-				break;
-			case 8:
-				binding.chipHomeScreen8.setChecked(true);
-				break;
-			case 9:
-				binding.chipHomeScreen9.setChecked(true);
-				break;
-			case 10:
-				binding.chipHomeScreen10.setChecked(true);
-				break;
-			case 11:
-				binding.chipHomeScreen11.setChecked(true);
-				break;
+		int[] chipIds = {R.id.chipHomeScreen0, R.id.chipHomeScreen1, R.id.chipHomeScreen2};
+		if (position >= 0 && position < chipIds.length) {
+			binding.homeScreenChipGroup.check(chipIds[position]);
 		}
 	}
 
@@ -180,45 +146,25 @@ public class BottomSheetSettingsGeneralFragment extends BottomSheetDialogFragmen
 		if (checkedId == R.id.chipHomeScreen0) return 0;
 		if (checkedId == R.id.chipHomeScreen1) return 1;
 		if (checkedId == R.id.chipHomeScreen2) return 2;
-		if (checkedId == R.id.chipHomeScreen3) return 3;
-		if (checkedId == R.id.chipHomeScreen4) return 4;
-		if (checkedId == R.id.chipHomeScreen5) return 5;
-		if (checkedId == R.id.chipHomeScreen6) return 6;
-		if (checkedId == R.id.chipHomeScreen7) return 7;
-		if (checkedId == R.id.chipHomeScreen8) return 8;
-		if (checkedId == R.id.chipHomeScreen9) return 9;
-		if (checkedId == R.id.chipHomeScreen10) return 10;
-		if (checkedId == R.id.chipHomeScreen11) return 11;
-		return homeScreenSelectedChoice;
+		return 0;
 	}
 
 	private void setLinkHandlerChipSelection(int position) {
-		switch (position) {
-			case 0:
-				binding.chipLinkHandler0.setChecked(true);
-				break;
-			case 1:
-				binding.chipLinkHandler1.setChecked(true);
-				break;
-			case 2:
-				binding.chipLinkHandler2.setChecked(true);
-				break;
-			case 3:
-				binding.chipLinkHandler3.setChecked(true);
-				break;
-			case 4:
-				binding.chipLinkHandler4.setChecked(true);
-				break;
-		}
+		int chipId =
+				switch (position) {
+					case 1 -> R.id.chipLinkHandler1;
+					case 2 -> R.id.chipLinkHandler2;
+					case 3 -> R.id.chipLinkHandler3;
+					default -> R.id.chipLinkHandler0;
+				};
+		binding.linkHandlerChipGroup.check(chipId);
 	}
 
 	private int getLinkHandlerChipPosition(int checkedId) {
-		if (checkedId == R.id.chipLinkHandler0) return 0;
 		if (checkedId == R.id.chipLinkHandler1) return 1;
 		if (checkedId == R.id.chipLinkHandler2) return 2;
 		if (checkedId == R.id.chipLinkHandler3) return 3;
-		if (checkedId == R.id.chipLinkHandler4) return 4;
-		return defaultLinkHandlerScreenSelectedChoice;
+		return 0;
 	}
 
 	@Override

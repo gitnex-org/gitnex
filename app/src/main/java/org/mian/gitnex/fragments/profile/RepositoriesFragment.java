@@ -70,8 +70,6 @@ public class RepositoriesFragment extends Fragment {
 		setupMenu();
 		observeViewModel();
 
-		binding.addNewRepo.setVisibility(View.GONE);
-
 		refreshData();
 		return binding.getRoot();
 	}

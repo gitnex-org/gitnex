@@ -1,6 +1,5 @@
 package org.mian.gitnex.fragments;
 
-import android.content.Intent;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.Menu;
@@ -18,10 +17,8 @@ import androidx.lifecycle.ViewModelProvider;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 import java.util.ArrayList;
-import org.gitnex.tea4j.v2.models.OrganizationPermissions;
 import org.gitnex.tea4j.v2.models.Team;
 import org.mian.gitnex.R;
-import org.mian.gitnex.activities.AddNewTeamRepoActivity;
 import org.mian.gitnex.adapters.ReposListAdapter;
 import org.mian.gitnex.databinding.FragmentRepositoriesBinding;
 import org.mian.gitnex.helpers.Constants;
@@ -67,7 +64,6 @@ public class OrganizationTeamInfoReposFragment extends Fragment {
 		setupSwipeRefresh();
 		setupMenu();
 		observeViewModel();
-		setupActionButtons();
 
 		refreshData();
 		return binding.getRoot();
@@ -97,29 +93,6 @@ public class OrganizationTeamInfoReposFragment extends Fragment {
 					}
 				};
 		binding.recyclerView.addOnScrollListener(scrollListener);
-	}
-
-	private void setupActionButtons() {
-		binding.addNewRepo.setText(R.string.pageTitleAddRepository);
-
-		OrganizationPermissions permissions =
-				(OrganizationPermissions)
-						requireActivity().getIntent().getSerializableExtra("permissions");
-
-		boolean canShow = getArguments() != null && getArguments().getBoolean("showRepo");
-		if (!canShow || (permissions != null && !permissions.isIsOwner())) {
-			binding.addNewRepo.setVisibility(View.GONE);
-		}
-
-		binding.addNewRepo.setOnClickListener(
-				v -> {
-					Intent intent = new Intent(getContext(), AddNewTeamRepoActivity.class);
-					intent.putExtra("teamId", team.getId());
-					intent.putExtra("teamName", team.getName());
-					intent.putExtra(
-							"orgName", requireActivity().getIntent().getStringExtra("orgName"));
-					startActivity(intent);
-				});
 	}
 
 	private void setupMenu() {

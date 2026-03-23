@@ -69,6 +69,7 @@ public class AppDatabaseSettings {
 	public static String APP_USER_HIDE_EMAIL_IN_NAV_DEFAULT = "false";
 	public static String APP_URL_PROMPT_KEY = "app_url_prompt";
 	public static String APP_URL_PROMPT_DEFAULT = "false";
+	public static String APP_V2_MIGRATION_KEY = "app_v2_migration";
 
 	public static void initDefaultSettings(Context ctx) {
 
@@ -215,8 +216,12 @@ public class AppDatabaseSettings {
 					APP_URL_PROMPT_KEY, APP_URL_PROMPT_DEFAULT, APP_URL_PROMPT_DEFAULT);
 		}
 
-		if (appSettingsApi.fetchSettingCountByKey("prefsMigration") == 0) {
-			appSettingsApi.insertNewSetting("prefsMigration", "true", "true");
+		if (appSettingsApi.fetchSettingCountByKey(APP_V2_MIGRATION_KEY) == 0) {
+			appSettingsApi.insertNewSetting(APP_V2_MIGRATION_KEY, "true", "true");
+		}
+
+		if (getSettingsValue(ctx, APP_V2_MIGRATION_KEY).equals("true")) {
+			migrateToSimplifiedNavigation(ctx);
 		}
 	}
 
@@ -235,182 +240,27 @@ public class AppDatabaseSettings {
 		appSettingsApi.updateSettingValueByKey(val, key);
 	}
 
-	// remove this in the upcoming releases (5.5 or up)
-	public static void prefsMigration(Context ctx) {
+	// remove this in version 15 later
+	private static void migrateToSimplifiedNavigation(Context ctx) {
+		String homeRaw = getSettingsValue(ctx, APP_HOME_SCREEN_KEY);
+		updateSettingsValue(ctx, sanitizeNavValue(homeRaw), APP_HOME_SCREEN_KEY);
 
-		TinyDB tinyDB = TinyDB.getInstance(ctx);
+		String linkRaw = getSettingsValue(ctx, APP_LINK_HANDLER_KEY);
+		updateSettingsValue(ctx, sanitizeNavValue(linkRaw), APP_LINK_HANDLER_KEY);
 
-		if (tinyDB.checkForExistingPref("themeId")) {
-			AppDatabaseSettings.updateSettingsValue(
-					ctx,
-					String.valueOf(tinyDB.getInt("themeId")),
-					AppDatabaseSettings.APP_THEME_KEY);
-			tinyDB.remove("themeId");
-		}
+		updateSettingsValue(ctx, "false", APP_V2_MIGRATION_KEY);
+	}
 
-		if (tinyDB.checkForExistingPref("lightThemeTimeHour")) {
-			AppDatabaseSettings.updateSettingsValue(
-					ctx,
-					String.valueOf(tinyDB.getInt("lightThemeTimeHour")),
-					AppDatabaseSettings.APP_THEME_AUTO_LIGHT_HOUR_KEY);
-			tinyDB.remove("lightThemeTimeHour");
-		}
-		if (tinyDB.checkForExistingPref("lightThemeTimeMinute")) {
-			AppDatabaseSettings.updateSettingsValue(
-					ctx,
-					String.valueOf(tinyDB.getInt("lightThemeTimeMinute")),
-					AppDatabaseSettings.APP_THEME_AUTO_LIGHT_MIN_KEY);
-			tinyDB.remove("lightThemeTimeMinute");
+	private static String sanitizeNavValue(String rawValue) {
+		int val;
+		try {
+			val = Integer.parseInt(rawValue);
+		} catch (Exception e) {
+			return "0";
 		}
 
-		if (tinyDB.checkForExistingPref("darkThemeTimeHour")) {
-			AppDatabaseSettings.updateSettingsValue(
-					ctx,
-					String.valueOf(tinyDB.getInt("darkThemeTimeHour")),
-					AppDatabaseSettings.APP_THEME_AUTO_DARK_HOUR_KEY);
-			tinyDB.remove("darkThemeTimeHour");
-		}
-		if (tinyDB.checkForExistingPref("darkThemeTimeMinute")) {
-			AppDatabaseSettings.updateSettingsValue(
-					ctx,
-					String.valueOf(tinyDB.getInt("darkThemeTimeMinute")),
-					AppDatabaseSettings.APP_THEME_AUTO_DARK_MIN_KEY);
-			tinyDB.remove("darkThemeTimeMinute");
-		}
-
-		if (tinyDB.checkForExistingPref("customFontId")) {
-			AppDatabaseSettings.updateSettingsValue(
-					ctx,
-					String.valueOf(tinyDB.getInt("customFontId")),
-					AppDatabaseSettings.APP_FONT_KEY);
-			tinyDB.remove("customFontId");
-		}
-
-		if (tinyDB.checkForExistingPref("fragmentTabsAnimationId")) {
-			AppDatabaseSettings.updateSettingsValue(
-					ctx,
-					String.valueOf(tinyDB.getInt("fragmentTabsAnimationId")),
-					AppDatabaseSettings.APP_TABS_ANIMATION_KEY);
-			tinyDB.remove("fragmentTabsAnimationId");
-		}
-
-		if (tinyDB.checkForExistingPref("locale")) {
-			AppDatabaseSettings.updateSettingsValue(
-					ctx,
-					tinyDB.getInt("langId") + "|" + tinyDB.getString("locale"),
-					AppDatabaseSettings.APP_LOCALE_KEY);
-			tinyDB.remove("locale");
-			tinyDB.remove("langId");
-		}
-
-		if (tinyDB.checkForExistingPref("ceColorId")) {
-			AppDatabaseSettings.updateSettingsValue(
-					ctx,
-					String.valueOf(tinyDB.getInt("ceColorId")),
-					AppDatabaseSettings.APP_CE_SYNTAX_HIGHLIGHT_KEY);
-			tinyDB.remove("ceColorId");
-		}
-		if (tinyDB.checkForExistingPref("ceIndentationId")) {
-			AppDatabaseSettings.updateSettingsValue(
-					ctx,
-					String.valueOf(tinyDB.getInt("ceIndentationId")),
-					AppDatabaseSettings.APP_CE_INDENTATION_KEY);
-			tinyDB.remove("ceIndentationId");
-		}
-		if (tinyDB.checkForExistingPref("ceIndentationTabsId")) {
-			AppDatabaseSettings.updateSettingsValue(
-					ctx,
-					String.valueOf(tinyDB.getInt("ceIndentationTabsId")),
-					AppDatabaseSettings.APP_CE_TABS_WIDTH_KEY);
-			tinyDB.remove("ceIndentationTabsId");
-		}
-
-		if (tinyDB.checkForExistingPref("homeScreenId")) {
-			AppDatabaseSettings.updateSettingsValue(
-					ctx,
-					String.valueOf(tinyDB.getInt("homeScreenId")),
-					AppDatabaseSettings.APP_HOME_SCREEN_KEY);
-			tinyDB.remove("homeScreenId");
-		}
-
-		if (tinyDB.checkForExistingPref("defaultScreenId")) {
-			AppDatabaseSettings.updateSettingsValue(
-					ctx,
-					String.valueOf(tinyDB.getInt("defaultScreenId")),
-					AppDatabaseSettings.APP_LINK_HANDLER_KEY);
-			tinyDB.remove("defaultScreenId");
-		}
-
-		if (tinyDB.checkForExistingPref("enableCounterBadges")) {
-			AppDatabaseSettings.updateSettingsValue(
-					ctx,
-					String.valueOf(tinyDB.getBoolean("enableCounterBadges")),
-					AppDatabaseSettings.APP_COUNTER_KEY);
-			tinyDB.remove("enableCounterBadges");
-		}
-
-		if (tinyDB.checkForExistingPref("showLabelsInList")) {
-			AppDatabaseSettings.updateSettingsValue(
-					ctx,
-					String.valueOf(tinyDB.getBoolean("showLabelsInList")),
-					AppDatabaseSettings.APP_LABELS_IN_LIST_KEY);
-			tinyDB.remove("showLabelsInList");
-		}
-
-		if (tinyDB.checkForExistingPref("notificationsEnabled")) {
-			AppDatabaseSettings.updateSettingsValue(
-					ctx,
-					String.valueOf(tinyDB.getBoolean("notificationsEnabled")),
-					AppDatabaseSettings.APP_NOTIFICATIONS_KEY);
-			tinyDB.remove("notificationsEnabled");
-		}
-		if (tinyDB.checkForExistingPref("notificationsPollingDelayId")) {
-			AppDatabaseSettings.updateSettingsValue(
-					ctx,
-					String.valueOf(tinyDB.getInt("notificationsPollingDelayId")),
-					AppDatabaseSettings.APP_NOTIFICATIONS_DELAY_KEY);
-			tinyDB.remove("notificationsPollingDelayId");
-		}
-
-		if (tinyDB.checkForExistingPref("biometricStatus")) {
-			AppDatabaseSettings.updateSettingsValue(
-					ctx,
-					String.valueOf(tinyDB.getBoolean("biometricStatus")),
-					AppDatabaseSettings.APP_BIOMETRIC_KEY);
-			tinyDB.remove("biometricStatus");
-		}
-		if (tinyDB.checkForExistingPref("biometricLifeCycle")) {
-			AppDatabaseSettings.updateSettingsValue(
-					ctx,
-					String.valueOf(tinyDB.getBoolean("biometricLifeCycle")),
-					AppDatabaseSettings.APP_BIOMETRIC_LIFE_CYCLE_KEY);
-			tinyDB.remove("biometricLifeCycle");
-		}
-
-		if (tinyDB.checkForExistingPref("useCustomTabs")) {
-			AppDatabaseSettings.updateSettingsValue(
-					ctx,
-					String.valueOf(tinyDB.getBoolean("useCustomTabs")),
-					AppDatabaseSettings.APP_CUSTOM_BROWSER_KEY);
-			tinyDB.remove("useCustomTabs");
-		}
-
-		if (tinyDB.checkForExistingPref("crashReportingEnabled")) {
-			AppDatabaseSettings.updateSettingsValue(
-					ctx,
-					String.valueOf(tinyDB.getBoolean("crashReportingEnabled")),
-					AppDatabaseSettings.APP_CRASH_REPORTS_KEY);
-			tinyDB.remove("crashReportingEnabled");
-		}
-
-		if (tinyDB.checkForExistingPref("draftsCommentsDeletionEnabled")) {
-			AppDatabaseSettings.updateSettingsValue(
-					ctx,
-					String.valueOf(tinyDB.getBoolean("draftsCommentsDeletionEnabled")),
-					AppDatabaseSettings.APP_DRAFTS_DELETION_KEY);
-			tinyDB.remove("draftsCommentsDeletionEnabled");
-		}
-
-		AppDatabaseSettings.updateSettingsValue(ctx, "false", "prefsMigration");
+		if (val == 2 || val == 6) return "2";
+		if (val == 1 || val == 4 || val == 11) return "1";
+		return "0";
 	}
 }

@@ -47,6 +47,8 @@ public class NotificationsFragment extends Fragment
 
 	public interface NotificationCountListener {
 		void onNotificationsMarkedRead();
+
+		void onUpdateNotificationActionVisibility(boolean visible);
 	}
 
 	@Nullable @Override
@@ -70,12 +72,17 @@ public class NotificationsFragment extends Fragment
 		setupRefreshLayout();
 		observeViewModel();
 
-		binding.markAllAsRead.setOnClickListener(v -> viewModel.markAllAsRead(context));
-
 		viewModel.clearData();
 		refreshData();
 
 		return binding.getRoot();
+	}
+
+	public void markAllAsRead() {
+		List<NotificationThread> list = viewModel.getNotifications().getValue();
+		if (list != null && !list.isEmpty()) {
+			viewModel.markAllAsRead(context);
+		}
 	}
 
 	private void setupRecyclerView() {
@@ -93,23 +100,11 @@ public class NotificationsFragment extends Fragment
 									context, currentFilterMode, page, pageResultLimit, false);
 						}
 					}
-
-					@Override
-					public void onScrolled(@NonNull RecyclerView view, int dx, int dy) {
-						super.onScrolled(view, dx, dy);
-						if (currentFilterMode.equals("unread") && adapter.getItemCount() > 0) {
-							if (dy > 0 && binding.markAllAsRead.isShown())
-								binding.markAllAsRead.hide();
-							else if (dy < 0 && !binding.markAllAsRead.isShown())
-								binding.markAllAsRead.show();
-						}
-					}
 				};
 		binding.notifications.addOnScrollListener(scrollListener);
 	}
 
 	private void observeViewModel() {
-
 		viewModel
 				.getNotifications()
 				.observe(
@@ -168,10 +163,10 @@ public class NotificationsFragment extends Fragment
 
 		binding.layoutEmpty.getRoot().setVisibility(loaded && isEmpty ? View.VISIBLE : View.GONE);
 
-		if (currentFilterMode.equals("unread")) {
-			binding.markAllAsRead.setVisibility(isEmpty ? View.GONE : View.VISIBLE);
-		} else {
-			binding.markAllAsRead.setVisibility(View.GONE);
+		boolean canMarkRead = !isEmpty && "unread".equals(currentFilterMode);
+
+		if (notificationCountListener != null) {
+			notificationCountListener.onUpdateNotificationActionVisibility(canMarkRead);
 		}
 	}
 
@@ -179,7 +174,8 @@ public class NotificationsFragment extends Fragment
 		binding.filterChipGroup.setOnCheckedStateChangeListener(
 				(group, checkedIds) -> {
 					if (checkedIds.isEmpty()) return;
-					String mode = (checkedIds.get(0) == R.id.unreadChip) ? "unread" : "read";
+					int checkedId = checkedIds.get(0);
+					String mode = (checkedId == R.id.unreadChip) ? "unread" : "read";
 					if (!mode.equals(currentFilterMode)) {
 						currentFilterMode = mode;
 						refreshData();
@@ -199,7 +195,6 @@ public class NotificationsFragment extends Fragment
 		if (scrollListener != null) {
 			scrollListener.resetState();
 		}
-
 		viewModel.resetPagination();
 		viewModel.fetchNotifications(context, currentFilterMode, 1, pageResultLimit, true);
 	}
@@ -211,7 +206,6 @@ public class NotificationsFragment extends Fragment
 		}
 
 		String type = thread.getSubject().getType().toLowerCase();
-
 		if (Arrays.asList("pull", "issue").contains(type)) {
 			handleIssuePrNavigation(thread);
 		} else if (type.equalsIgnoreCase("repository")) {

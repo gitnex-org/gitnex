@@ -1,64 +1,147 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout
+<androidx.coordinatorlayout.widget.CoordinatorLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:id="@+id/rootLayout"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:fitsSystemWindows="true"
+    android:paddingTop="@dimen/dimen56dp"
+    android:paddingBottom="@dimen/dimen16dp"
     android:background="?attr/primaryBackgroundColor">
-
-    <com.google.android.material.appbar.AppBarLayout
-        android:id="@+id/app_bar_layout"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintEnd_toEndOf="parent">
-
-        <com.google.android.material.appbar.MaterialToolbar
-            android:id="@+id/toolbar"
-            android:layout_width="match_parent"
-            android:layout_height="?attr/actionBarSize"
-            android:background="?attr/primaryBackgroundColor"
-            app:titleTextColor="?attr/primaryTextColor"
-            android:elevation="@dimen/dimen0dp">
-
-            <TextView
-                android:id="@+id/toolbar_title"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:layout_gravity="center_vertical"
-                android:gravity="center_vertical"
-                android:textSize="@dimen/dimen20sp"
-                android:textColor="?attr/primaryTextColor" />
-
-        </com.google.android.material.appbar.MaterialToolbar>
-
-    </com.google.android.material.appbar.AppBarLayout>
 
     <androidx.fragment.app.FragmentContainerView
         android:id="@+id/nav_host_fragment"
         android:name="androidx.navigation.fragment.NavHostFragment"
-        android:layout_width="0dp"
-        android:layout_height="0dp"
-        android:fitsSystemWindows="true"
-        app:layout_constraintTop_toBottomOf="@id/app_bar_layout"
-        app:layout_constraintBottom_toTopOf="@id/bottom_navigation"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:navGraph="@navigation/nav_graph" />
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        app:navGraph="@navigation/nav_graph"
+        app:defaultNavHost="true" />
 
-    <com.google.android.material.bottomnavigation.BottomNavigationView
-        android:id="@+id/bottom_navigation"
-        android:layout_width="0dp"
+    <com.google.android.material.dockedtoolbar.DockedToolbarLayout
+        android:id="@+id/docked_toolbar"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        app:backgroundTint="?attr/navigationBarColor"
-        android:paddingVertical="@dimen/dimen4dp"
-        app:menu="@menu/bottom_nav_menu"
-        app:labelVisibilityMode="labeled"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintEnd_toEndOf="parent" />
+        app:paddingBottomSystemWindowInsets="false"
+        app:paddingLeftSystemWindowInsets="false"
+        app:paddingRightSystemWindowInsets="false"
+        app:paddingTopSystemWindowInsets="false"
+        android:layout_gravity="bottom|center_horizontal"
+        android:layout_marginBottom="@dimen/dimen32dp"
+        app:shapeAppearanceOverlay="@style/ShapeAppearance.RoundedDock"
+        android:backgroundTint="?attr/colorSurfaceContainerHigh"
+        app:layout_behavior="com.google.android.material.behavior.HideViewOnScrollBehavior">
 
-</androidx.constraintlayout.widget.ConstraintLayout>
+        <com.google.android.material.overflow.OverflowLinearLayout
+            android:id="@+id/dock_container"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_vertical"
+            android:orientation="horizontal"
+            android:paddingHorizontal="@dimen/dimen4dp">
+
+            <com.google.android.material.button.MaterialButton
+                android:id="@+id/btn_nav_home"
+                style="@style/Widget.Material3.Button.IconButton"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                app:icon="@drawable/ic_home"
+                app:iconTint="?attr/primaryTextColor"
+                android:paddingHorizontal="@dimen/dimen24dp"
+                android:minWidth="0dp" />
+
+            <com.google.android.material.button.MaterialButton
+                android:id="@+id/btn_nav_repos"
+                style="@style/Widget.Material3.Button.IconButton"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                app:icon="@drawable/ic_repo"
+                app:iconTint="?attr/primaryTextColor"
+                android:paddingHorizontal="@dimen/dimen24dp"
+                android:minWidth="0dp" />
+
+            <com.google.android.material.button.MaterialButton
+                android:id="@+id/btn_nav_notifications"
+                style="@style/Widget.Material3.Button.IconButton"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                app:icon="@drawable/ic_notifications"
+                app:iconTint="?attr/primaryTextColor"
+                android:paddingHorizontal="@dimen/dimen24dp"
+                android:minWidth="0dp" />
+
+            <View
+                android:id="@+id/dock_repo_divider"
+                android:layout_width="@dimen/dimen1dp"
+                android:layout_height="@dimen/dimen24dp"
+                android:layout_gravity="center_vertical"
+                android:layout_marginHorizontal="@dimen/dimen4dp"
+                android:background="?attr/colorOutlineVariant"
+                android:visibility="gone" />
+
+            <com.google.android.material.button.MaterialButton
+                android:id="@+id/btn_dock_mark_read"
+                style="?attr/materialIconButtonStyle"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                app:icon="@drawable/ic_done"
+                android:layout_gravity="center_vertical"
+                android:layout_marginStart="@dimen/dimen4dp"
+                android:backgroundTint="@android:color/transparent"
+                android:visibility="gone"
+                android:contentDescription="@string/markAsRead" />
+
+            <com.google.android.material.button.MaterialButton
+                android:id="@+id/btn_dock_new_repo"
+                style="?attr/materialIconButtonStyle"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                app:icon="@drawable/ic_add"
+                android:layout_gravity="center_vertical"
+                android:layout_marginStart="@dimen/dimen4dp"
+                android:backgroundTint="@android:color/transparent"
+                android:visibility="gone"
+                android:contentDescription="@string/addButton" />
+
+            <com.google.android.material.button.MaterialButton
+                android:id="@+id/btn_dock_search"
+                style="?attr/materialIconButtonStyle"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                app:icon="@drawable/ic_search"
+                android:layout_gravity="center_vertical"
+                android:backgroundTint="@android:color/transparent"
+                android:visibility="gone"
+                android:contentDescription="@string/search" />
+
+            <com.google.android.material.button.MaterialButton
+                android:id="@+id/btn_dock_sort"
+                style="?attr/materialIconButtonStyle"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                app:icon="@drawable/ic_dotted_menu"
+                android:layout_gravity="center_vertical"
+                android:backgroundTint="@android:color/transparent"
+                android:visibility="gone"
+                android:contentDescription="@string/sort" />
+
+        </com.google.android.material.overflow.OverflowLinearLayout>
+
+    </com.google.android.material.dockedtoolbar.DockedToolbarLayout>
+
+    <com.google.android.material.search.SearchView
+        android:id="@+id/search_view"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:hint="@string/search"
+        app:navigationIcon="@drawable/ic_arrow_back"
+        app:backgroundTint="?attr/primaryBackgroundColor">
+
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/search_results_recycler"
+            android:padding="@dimen/dimen16dp"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent" />
+
+    </com.google.android.material.search.SearchView>
+
+</androidx.coordinatorlayout.widget.CoordinatorLayout>

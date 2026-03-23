@@ -71,8 +71,6 @@ public class StarredRepositoriesFragment extends Fragment {
 		setupMenu();
 		observeViewModel();
 
-		binding.addNewRepo.setVisibility(View.GONE);
-
 		refreshData();
 		return binding.getRoot();
 	}

@@ -40,6 +40,7 @@
         <item name="colorSurface">@android:color/system_neutral1_800</item>
         <item name="shapeAppearanceSmallComponent">@style/inputsMaterialComponentCorner</item>
         <item name="android:windowAnimationStyle">@style/CustomActivityAnimation</item>
+        <item name="motionEasingEmphasizedInterpolator">@android:interpolator/fast_out_slow_in</item>
         <item name="materialSwitchStyle">@style/materialSwitchStyle</item>
         <item name="chipStyle">@style/CustomChipFilter</item>
         <item name="isDark">1</item>
@@ -88,6 +89,7 @@
         <item name="inputSelectedColor">@android:color/system_accent1_300</item>
         <item name="inputTextColor">@android:color/system_accent2_900</item>
         <item name="materialSwitchStyle">@style/materialSwitchStyle</item>
+        <item name="motionEasingEmphasizedInterpolator">@android:interpolator/fast_out_slow_in</item>
         <item name="chipStyle">@style/CustomChipFilter</item>
         <item name="isDark">0</item>
     </style>

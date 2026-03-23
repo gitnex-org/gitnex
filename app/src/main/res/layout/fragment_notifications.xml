@@ -78,18 +78,4 @@
 
     </LinearLayout>
 
-    <com.google.android.material.floatingactionbutton.ExtendedFloatingActionButton
-        android:id="@+id/markAllAsRead"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_gravity="bottom|end"
-        android:layout_margin="16dp"
-        android:backgroundTint="?attr/fabColor"
-        android:contentDescription="@string/markAsRead"
-        android:text="@string/markAsRead"
-        android:textColor="?attr/materialCardBackgroundColor"
-        app:icon="@drawable/ic_done"
-        app:iconTint="?attr/materialCardBackgroundColor"
-        app:layout_behavior="com.google.android.material.behavior.HideViewOnScrollBehavior" />
-
 </androidx.coordinatorlayout.widget.CoordinatorLayout>

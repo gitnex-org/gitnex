@@ -1,6 +1,5 @@
 package org.mian.gitnex.fragments;
 
-import android.content.Intent;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.Menu;
@@ -18,10 +17,8 @@ import androidx.lifecycle.ViewModelProvider;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 import java.util.ArrayList;
-import java.util.Objects;
 import org.gitnex.tea4j.v2.models.OrganizationPermissions;
 import org.mian.gitnex.R;
-import org.mian.gitnex.activities.CreateRepoActivity;
 import org.mian.gitnex.activities.OrganizationDetailActivity;
 import org.mian.gitnex.adapters.ReposListAdapter;
 import org.mian.gitnex.databinding.FragmentRepositoriesBinding;
@@ -75,7 +72,6 @@ public class OrganizationRepositoriesFragment extends Fragment {
 		setupSwipeRefresh();
 		setupMenu();
 		observeViewModel();
-		setupFab();
 
 		refreshData();
 		return binding.getRoot();
@@ -107,24 +103,6 @@ public class OrganizationRepositoriesFragment extends Fragment {
 					}
 				};
 		binding.recyclerView.addOnScrollListener(scrollListener);
-	}
-
-	private void setupFab() {
-		if (permissions != null && !permissions.isCanCreateRepository()) {
-			binding.addNewRepo.setVisibility(View.GONE);
-		}
-
-		binding.addNewRepo.setOnClickListener(
-				v -> {
-					Intent intent = new Intent(getContext(), CreateRepoActivity.class);
-					intent.putExtra("organizationAction", true);
-					intent.putExtra("orgName", orgName);
-					if (requireActivity().getIntent().getExtras() != null) {
-						intent.putExtras(
-								Objects.requireNonNull(requireActivity().getIntent().getExtras()));
-					}
-					startActivity(intent);
-				});
 	}
 
 	private void setupMenu() {

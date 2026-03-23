@@ -43,6 +43,7 @@
         <item name="colorSurface">@color/inputBackground</item>
         <item name="shapeAppearanceSmallComponent">@style/inputsMaterialComponentCorner</item>
         <item name="android:windowAnimationStyle">@style/CustomActivityAnimation</item>
+        <item name="motionEasingEmphasizedInterpolator">@android:interpolator/fast_out_slow_in</item>
         <item name="materialSwitchStyle">@style/m3SwitchStyle</item>
         <item name="chipStyle">@style/CustomChipFilter</item>
         <item name="isDark">1</item>
@@ -91,6 +92,7 @@
         <item name="colorSurface">@color/lightThemeInputBackground</item>
         <item name="shapeAppearanceSmallComponent">@style/inputsMaterialComponentCorner</item>
         <item name="android:windowAnimationStyle">@style/CustomActivityAnimation</item>
+        <item name="motionEasingEmphasizedInterpolator">@android:interpolator/fast_out_slow_in</item>
         <item name="chipStyle">@style/CustomChipFilter</item>
         <item name="isDark">0</item>
     </style>
@@ -137,6 +139,7 @@
         <item name="colorSurface">@color/retroThemeInputBackground</item>
         <item name="shapeAppearanceSmallComponent">@style/inputsMaterialComponentCorner</item>
         <item name="android:windowAnimationStyle">@style/CustomActivityAnimation</item>
+        <item name="motionEasingEmphasizedInterpolator">@android:interpolator/fast_out_slow_in</item>
         <item name="chipStyle">@style/CustomChipFilter</item>
         <item name="isDark">0</item>
     </style>
@@ -184,6 +187,7 @@
         <item name="colorSurface">@color/inputBackground</item>
         <item name="shapeAppearanceSmallComponent">@style/inputsMaterialComponentCorner</item>
         <item name="android:windowAnimationStyle">@style/CustomActivityAnimation</item>
+        <item name="motionEasingEmphasizedInterpolator">@android:interpolator/fast_out_slow_in</item>
         <item name="materialSwitchStyle">@style/m3SwitchStyle</item>
         <item name="chipStyle">@style/CustomChipFilter</item>
         <item name="isDark">1</item>
@@ -232,6 +236,7 @@
         <item name="colorSurface">@color/codebergDarkInputBackground</item>
         <item name="shapeAppearanceSmallComponent">@style/inputsMaterialComponentCorner</item>
         <item name="android:windowAnimationStyle">@style/CustomActivityAnimation</item>
+        <item name="motionEasingEmphasizedInterpolator">@android:interpolator/fast_out_slow_in</item>
         <item name="materialSwitchStyle">@style/m3SwitchStyle</item>
         <item name="chipStyle">@style/CustomChipFilter</item>
         <item name="isDark">1</item>

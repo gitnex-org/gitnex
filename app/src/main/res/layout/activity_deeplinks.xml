@@ -1,39 +1,36 @@
 <?xml version="1.0" encoding="utf-8"?>
 <androidx.coordinatorlayout.widget.CoordinatorLayout
-    android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:background="?attr/primaryBackgroundColor"
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    android:fitsSystemWindows="true">
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:paddingTop="@dimen/dimen56dp"
+    android:paddingBottom="@dimen/dimen16dp"
+    android:background="?attr/materialCardBackgroundColor">
 
-    <com.google.android.material.progressindicator.LinearProgressIndicator
+    <com.google.android.material.loadingindicator.LoadingIndicator
         android:id="@+id/progressBar"
-        style="@style/Widget.MaterialComponents.LinearProgressIndicator"
-        android:layout_width="match_parent"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:indeterminate="true"
-        app:indicatorColor="?attr/progressIndicatorColor" />
+        android:layout_gravity="center"
+        app:indicatorSize="@dimen/dimen48dp"
+        app:trackThickness="@dimen/dimen4dp" />
 
     <androidx.core.widget.NestedScrollView
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        app:layout_behavior="@string/appbar_scrolling_view_behavior">
+        android:layout_height="match_parent">
 
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:orientation="horizontal">
+            android:orientation="vertical"
+            android:padding="@dimen/dimen16dp">
 
             <LinearLayout
                 android:id="@+id/addNewAccountFrame"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:orientation="vertical"
-                android:paddingStart="@dimen/dimen16dp"
-                android:paddingTop="@dimen/dimen32dp"
-                android:paddingEnd="@dimen/dimen16dp"
-                android:paddingBottom="@dimen/dimen16dp"
                 android:visibility="gone">
 
                 <TextView
@@ -42,37 +39,30 @@
                     android:layout_height="wrap_content"
                     android:text="@string/accountDoesNotExist"
                     android:textColor="?attr/primaryTextColor"
-                    android:textSize="@dimen/dimen16sp" />
+                    android:padding="@dimen/dimen4dp"
+                    android:textSize="@dimen/dimen18sp" />
 
                 <com.google.android.material.button.MaterialButton
                     android:id="@+id/addNewAccount"
                     android:layout_width="match_parent"
                     android:layout_height="@dimen/dimen54dp"
                     android:layout_marginTop="@dimen/dimen24dp"
-                    android:text="@string/addNewAccountText"
-                    android:textColor="?attr/materialCardBackgroundColor"
-                    android:textSize="@dimen/dimen16sp"
-                    android:textStyle="bold" />
-
-                <com.google.android.material.button.MaterialButton
-                    android:id="@+id/openInBrowser"
-                    android:layout_width="match_parent"
-                    android:layout_height="@dimen/dimen60dp"
-                    android:layout_marginTop="@dimen/dimen8dp"
-                    android:text="@string/openWebRepo"
-                    android:textColor="?attr/materialCardBackgroundColor"
-                    android:textSize="@dimen/dimen16sp"
-                    android:textStyle="bold" />
+                    android:text="@string/addNewAccountText" />
 
                 <com.google.android.material.button.MaterialButton
                     android:id="@+id/launchApp"
                     android:layout_width="match_parent"
                     android:layout_height="@dimen/dimen54dp"
                     android:layout_marginTop="@dimen/dimen8dp"
-                    android:text="@string/launchApp"
-                    android:textColor="?attr/materialCardBackgroundColor"
-                    android:textSize="@dimen/dimen16sp"
-                    android:textStyle="bold" />
+                    android:text="@string/launchApp" />
+
+                <com.google.android.material.button.MaterialButton
+                    android:id="@+id/openInBrowser"
+                    style="@style/Widget.Material3.Button.TextButton"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="@dimen/dimen16dp"
+                    android:text="@string/openWebRepo" />
 
             </LinearLayout>
 
@@ -81,10 +71,6 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:orientation="vertical"
-                android:paddingStart="@dimen/dimen16dp"
-                android:paddingTop="@dimen/dimen32dp"
-                android:paddingEnd="@dimen/dimen16dp"
-                android:paddingBottom="@dimen/dimen16dp"
                 android:visibility="gone">
 
                 <TextView
@@ -92,68 +78,38 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:text="@string/noActionText"
+                    android:padding="@dimen/dimen4dp"
                     android:textColor="?attr/primaryTextColor"
-                    android:textSize="@dimen/dimen16sp" />
+                    android:textSize="@dimen/dimen18sp" />
+
+                <include
+                    android:id="@+id/homeCard"
+                    layout="@layout/item_dashboard_card_full"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="@dimen/dimen24dp" />
+
+                <include
+                    android:id="@+id/repositoryCard"
+                    layout="@layout/item_dashboard_card_full"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="@dimen/dimen8dp" />
+
+                <include
+                    android:id="@+id/notificationCard"
+                    layout="@layout/item_dashboard_card_full"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="@dimen/dimen8dp" />
 
                 <com.google.android.material.button.MaterialButton
                     android:id="@+id/openInBrowserNoActionFrame"
+                    style="@style/Widget.Material3.Button.TextButton"
                     android:layout_width="match_parent"
-                    android:layout_height="@dimen/dimen54dp"
-                    android:layout_marginTop="@dimen/dimen24dp"
-                    android:text="@string/openWebRepo"
-                    android:textColor="?attr/materialCardBackgroundColor"
-                    android:textSize="@dimen/dimen16sp"
-                    android:textStyle="bold" />
-
-                <com.google.android.material.button.MaterialButton
-                    android:id="@+id/repository"
-                    android:layout_width="match_parent"
-                    android:layout_height="@dimen/dimen54dp"
-                    android:layout_marginTop="@dimen/dimen8dp"
-                    android:text="@string/navRepos"
-                    android:textColor="?attr/materialCardBackgroundColor"
-                    android:textSize="@dimen/dimen16sp"
-                    android:textStyle="bold" />
-
-                <com.google.android.material.button.MaterialButton
-                    android:id="@+id/organization"
-                    android:layout_width="match_parent"
-                    android:layout_height="@dimen/dimen54dp"
-                    android:layout_marginTop="@dimen/dimen8dp"
-                    android:text="@string/navOrg"
-                    android:textColor="?attr/materialCardBackgroundColor"
-                    android:textSize="@dimen/dimen16sp"
-                    android:textStyle="bold" />
-
-                <com.google.android.material.button.MaterialButton
-                    android:id="@+id/notification"
-                    android:layout_width="match_parent"
-                    android:layout_height="@dimen/dimen54dp"
-                    android:layout_marginTop="@dimen/dimen8dp"
-                    android:text="@string/pageTitleNotifications"
-                    android:textColor="?attr/materialCardBackgroundColor"
-                    android:textSize="@dimen/dimen16sp"
-                    android:textStyle="bold" />
-
-                <com.google.android.material.button.MaterialButton
-                    android:id="@+id/explore"
-                    android:layout_width="match_parent"
-                    android:layout_height="@dimen/dimen54dp"
-                    android:layout_marginTop="@dimen/dimen8dp"
-                    android:text="@string/pageTitleExplore"
-                    android:textColor="?attr/materialCardBackgroundColor"
-                    android:textSize="@dimen/dimen16sp"
-                    android:textStyle="bold" />
-
-                <com.google.android.material.button.MaterialButton
-                    android:id="@+id/launchApp2"
-                    android:layout_width="match_parent"
-                    android:layout_height="@dimen/dimen54dp"
-                    android:layout_marginTop="@dimen/dimen8dp"
-                    android:text="@string/launchApp"
-                    android:textColor="?attr/materialCardBackgroundColor"
-                    android:textSize="@dimen/dimen16sp"
-                    android:textStyle="bold" />
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="@dimen/dimen16dp"
+                    android:text="@string/openWebRepo" />
 
             </LinearLayout>
 
