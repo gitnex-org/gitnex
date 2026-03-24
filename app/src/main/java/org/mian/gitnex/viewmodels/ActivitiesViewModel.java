@@ -5,13 +5,11 @@ import androidx.annotation.NonNull;
 import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MutableLiveData;
 import androidx.lifecycle.ViewModel;
+import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 import org.gitnex.tea4j.v2.models.Activity;
-import org.mian.gitnex.R;
-import org.mian.gitnex.activities.ActivitiesActivity;
-import org.mian.gitnex.adapters.ActivitiesAdapter;
 import org.mian.gitnex.clients.RetrofitClient;
-import org.mian.gitnex.helpers.Toasty;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
@@ -21,95 +19,74 @@ import retrofit2.Response;
  */
 public class ActivitiesViewModel extends ViewModel {
 
-	private MutableLiveData<List<Activity>> activityList;
+	private final MutableLiveData<List<Activity>> activities =
+			new MutableLiveData<>(new ArrayList<>());
+	private final MutableLiveData<Boolean> isLoading = new MutableLiveData<>(false);
+	private final MutableLiveData<String> errorMessage = new MutableLiveData<>();
+
+	private boolean isLastPage = false;
 	private int resultLimit;
 
-	public void setResultLimit(int resultLimit) {
-		this.resultLimit = resultLimit;
+	public LiveData<List<Activity>> getActivities() {
+		return activities;
 	}
 
-	public LiveData<List<Activity>> getActivitiesList(
-			String username, Context ctx, ActivitiesActivity binding) {
-
-		activityList = new MutableLiveData<>();
-		loadActivityList(username, ctx, binding);
-		return activityList;
+	public LiveData<Boolean> getIsLoading() {
+		return isLoading;
 	}
 
-	public void loadActivityList(String username, Context ctx, ActivitiesActivity binding) {
-
-		Call<List<Activity>> call =
-				RetrofitClient.getApiInterface(ctx)
-						.userListActivityFeeds(username, false, null, 1, resultLimit);
-
-		call.enqueue(
-				new Callback<>() {
-
-					@Override
-					public void onResponse(
-							@NonNull Call<List<Activity>> call,
-							@NonNull Response<List<Activity>> response) {
-
-						if (response.isSuccessful()) {
-							activityList.postValue(response.body());
-						} else {
-							// binding.progressBar.setVisibility(View.GONE);
-							Toasty.show(ctx, ctx.getString(R.string.genericError));
-						}
-					}
-
-					@Override
-					public void onFailure(
-							@NonNull Call<List<Activity>> call, @NonNull Throwable t) {
-
-						Toasty.show(ctx, ctx.getString(R.string.genericServerResponseError));
-					}
-				});
+	public LiveData<String> getError() {
+		return errorMessage;
 	}
 
-	public void loadMoreActivities(
-			String username,
-			int page,
-			Context ctx,
-			ActivitiesAdapter adapter,
-			ActivitiesActivity binding) {
+	public void setResultLimit(int limit) {
+		this.resultLimit = limit;
+	}
 
-		Call<List<Activity>> call =
-				RetrofitClient.getApiInterface(ctx)
-						.userListActivityFeeds(username, false, null, page, resultLimit);
+	public void fetchActivities(Context ctx, String username, int page, boolean isRefresh) {
 
-		call.enqueue(
-				new Callback<>() {
+		if (Boolean.TRUE.equals(isLoading.getValue())) return;
+		if (!isRefresh && isLastPage) return;
 
-					@Override
-					public void onResponse(
-							@NonNull Call<List<Activity>> call,
-							@NonNull Response<List<Activity>> response) {
+		isLoading.setValue(true);
 
-						if (response.isSuccessful()) {
+		RetrofitClient.getApiInterface(ctx)
+				.userListActivityFeeds(username, false, null, page, resultLimit)
+				.enqueue(
+						new Callback<>() {
+							@Override
+							public void onResponse(
+									@NonNull Call<List<Activity>> call,
+									@NonNull Response<List<Activity>> response) {
+								isLoading.setValue(false);
+								if (response.isSuccessful() && response.body() != null) {
+									List<Activity> incoming = response.body();
+									List<Activity> current =
+											isRefresh
+													? new ArrayList<>()
+													: new ArrayList<>(
+															Objects.requireNonNull(
+																	activities.getValue()));
 
-							List<Activity> list = activityList.getValue();
-							assert list != null;
-							assert response.body() != null;
+									current.addAll(incoming);
+									activities.setValue(current);
 
-							if (!response.body().isEmpty()) {
-								list.addAll(response.body());
-								adapter.updateList(list);
-							} else {
-								adapter.setMoreDataAvailable(false);
+									if (incoming.size() < resultLimit) {
+										isLastPage = true;
+									} else if (isRefresh) {
+										isLastPage = false;
+									}
+								} else {
+									errorMessage.setValue("Error: " + response.code());
+								}
 							}
-						} else {
-							// binding.progressBar.setVisibility(View.GONE);
-							Toasty.show(ctx, ctx.getString(R.string.genericError));
-						}
-					}
 
-					@Override
-					public void onFailure(
-							@NonNull Call<List<Activity>> call, @NonNull Throwable t) {
-
-						Toasty.show(ctx, ctx.getString(R.string.genericServerResponseError));
-					}
-				});
+							@Override
+							public void onFailure(
+									@NonNull Call<List<Activity>> call, @NonNull Throwable t) {
+								isLoading.setValue(false);
+								errorMessage.setValue(t.getMessage());
+							}
+						});
 	}
 }

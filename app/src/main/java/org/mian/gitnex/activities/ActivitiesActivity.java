@@ -1,17 +1,16 @@
 package org.mian.gitnex.activities;
 
 import android.os.Bundle;
-import android.os.Handler;
-import android.os.Looper;
 import android.view.View;
 import androidx.lifecycle.ViewModelProvider;
 import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 import java.util.ArrayList;
-import java.util.List;
-import org.gitnex.tea4j.v2.models.Activity;
 import org.mian.gitnex.adapters.ActivitiesAdapter;
 import org.mian.gitnex.databinding.ActivityActivitiesBinding;
 import org.mian.gitnex.helpers.Constants;
+import org.mian.gitnex.helpers.EndlessRecyclerViewScrollListener;
+import org.mian.gitnex.helpers.Toasty;
 import org.mian.gitnex.viewmodels.ActivitiesViewModel;
 
 /**
@@ -22,10 +21,8 @@ public class ActivitiesActivity extends BaseActivity {
 	private ActivitiesViewModel viewModel;
 	private ActivityActivitiesBinding binding;
 	private ActivitiesAdapter adapter;
-	private List<Activity> activityList;
-	private int page = 1;
+	private EndlessRecyclerViewScrollListener scrollListener;
 	private String username;
-	private int resultLimit;
 
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
@@ -33,10 +30,8 @@ public class ActivitiesActivity extends BaseActivity {
 		binding = ActivityActivitiesBinding.inflate(getLayoutInflater());
 		setContentView(binding.getRoot());
 
-		resultLimit = Constants.getCurrentResultLimit(this);
-		activityList = new ArrayList<>();
-
 		viewModel = new ViewModelProvider(this).get(ActivitiesViewModel.class);
+		int resultLimit = Constants.getCurrentResultLimit(this);
 		viewModel.setResultLimit(resultLimit);
 
 		if (getAccount() != null && getAccount().getAccount() != null) {
@@ -44,65 +39,78 @@ public class ActivitiesActivity extends BaseActivity {
 		}
 
 		setupUI();
-		fetchDataAsync(username);
+		observeViewModel();
+		refreshData();
 	}
 
 	private void setupUI() {
 		binding.btnBack.setOnClickListener(v -> finish());
 
-		binding.recyclerView.setHasFixedSize(true);
-		binding.recyclerView.setLayoutManager(new LinearLayoutManager(this));
+		adapter = new ActivitiesAdapter(new ArrayList<>(), this);
+		LinearLayoutManager layoutManager = new LinearLayoutManager(this);
+		binding.recyclerView.setLayoutManager(layoutManager);
+		binding.recyclerView.setAdapter(adapter);
 
-		binding.pullToRefresh.setOnRefreshListener(
-				() ->
-						new Handler(Looper.getMainLooper())
-								.postDelayed(
-										() -> {
-											if (activityList != null) activityList.clear();
-											binding.pullToRefresh.setRefreshing(false);
-											binding.expressiveLoader.setVisibility(View.VISIBLE);
-											fetchDataAsync(username);
-										},
-										250));
+		scrollListener =
+				new EndlessRecyclerViewScrollListener(layoutManager) {
+					@Override
+					public void onLoadMore(int page, int totalItemsCount, RecyclerView view) {
+						viewModel.fetchActivities(
+								ActivitiesActivity.this, username, page + 1, false);
+					}
+				};
+		binding.recyclerView.addOnScrollListener(scrollListener);
+
+		binding.pullToRefresh.setOnRefreshListener(this::refreshData);
 	}
 
-	private void fetchDataAsync(String username) {
+	private void observeViewModel() {
 		viewModel
-				.getActivitiesList(username, this, null)
+				.getActivities()
 				.observe(
 						this,
-						activityListMain -> {
-							adapter = new ActivitiesAdapter(activityListMain, this);
-							adapter.setLoadMoreListener(
-									new ActivitiesAdapter.OnLoadMoreListener() {
-										@Override
-										public void onLoadMore() {
-											page += 1;
-											viewModel.loadMoreActivities(
-													username,
-													page,
-													ActivitiesActivity.this,
-													adapter,
-													null);
-											binding.expressiveLoader.setVisibility(View.VISIBLE);
-										}
+						list -> {
+							adapter.updateList(list);
+							updateEmptyState(list.isEmpty());
+							binding.pullToRefresh.setRefreshing(false);
+						});
 
-										@Override
-										public void onLoadFinished() {
-											binding.expressiveLoader.setVisibility(View.GONE);
-										}
-									});
-
-							if (adapter.getItemCount() > 0) {
-								binding.recyclerView.setAdapter(adapter);
+		viewModel
+				.getIsLoading()
+				.observe(
+						this,
+						loading -> {
+							if (loading) {
 								binding.layoutEmpty.getRoot().setVisibility(View.GONE);
+								if (adapter.getItemCount() == 0) {
+									binding.expressiveLoader.setVisibility(View.VISIBLE);
+								}
 							} else {
-								adapter.notifyDataChanged();
-								binding.recyclerView.setAdapter(adapter);
-								binding.layoutEmpty.getRoot().setVisibility(View.VISIBLE);
+								binding.expressiveLoader.setVisibility(View.GONE);
 							}
+						});
 
+		viewModel
+				.getError()
+				.observe(
+						this,
+						msg -> {
+							Toasty.show(this, msg);
+							binding.pullToRefresh.setRefreshing(false);
 							binding.expressiveLoader.setVisibility(View.GONE);
 						});
+	}
+
+	private void updateEmptyState(boolean isEmpty) {
+		boolean loading = Boolean.TRUE.equals(viewModel.getIsLoading().getValue());
+		if (!loading) {
+			binding.layoutEmpty.getRoot().setVisibility(isEmpty ? View.VISIBLE : View.GONE);
+		}
+	}
+
+	private void refreshData() {
+		scrollListener.resetState();
+		binding.layoutEmpty.getRoot().setVisibility(View.GONE);
+		viewModel.fetchActivities(this, username, 1, true);
 	}
 }

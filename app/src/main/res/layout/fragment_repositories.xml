@@ -2,14 +2,14 @@
 <androidx.coordinatorlayout.widget.CoordinatorLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:background="?attr/primaryBackgroundColor"
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
     <FrameLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:paddingVertical="@dimen/dimen8dp"
-        android:background="?attr/primaryBackgroundColor">
+        android:paddingVertical="@dimen/dimen8dp">
 
         <androidx.swiperefreshlayout.widget.SwipeRefreshLayout
             android:id="@+id/pullToRefresh"
@@ -46,7 +46,6 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:hint="@string/search"
-        android:layout_marginTop="-56dp"
         app:navigationIcon="@drawable/ic_arrow_back"
         app:backgroundTint="?attr/primaryBackgroundColor">
 

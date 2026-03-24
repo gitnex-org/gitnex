@@ -51,17 +51,17 @@ public class RepositoriesFragment extends Fragment {
 	public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
 		super.onViewCreated(view, savedInstanceState);
 
-		int paddingLeft = view.getPaddingLeft();
-		int paddingRight = view.getPaddingRight();
-		int paddingBottom = view.getPaddingBottom();
-
 		ViewCompat.setOnApplyWindowInsetsListener(
 				view,
 				(v, windowInsets) -> {
 					Insets systemBars =
 							windowInsets.getInsets(WindowInsetsCompat.Type.systemBars());
 
-					v.setPadding(paddingLeft, systemBars.top, paddingRight, paddingBottom);
+					binding.recyclerView.setPadding(
+							binding.recyclerView.getPaddingLeft(),
+							systemBars.top,
+							binding.recyclerView.getPaddingRight(),
+							binding.recyclerView.getPaddingBottom());
 
 					return windowInsets;
 				});

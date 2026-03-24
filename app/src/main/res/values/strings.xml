@@ -1092,4 +1092,6 @@
     <string name="dashboard_most_visited_repos_sub_title">View the repositories you visit most often</string>
     <string name="dashboard_notes_sub_title">Create and manage personal notes, and attach them to issues</string>
     <string name="dashboard_explore_sub_title">Explore public repositories, issues, organizations, and users</string>
+    <string name="forked_repository">forked repository</string>
+    <string name="mirrored_repository">mirrored repository</string>
 </resources>
