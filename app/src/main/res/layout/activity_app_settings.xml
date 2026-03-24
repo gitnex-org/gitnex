@@ -28,9 +28,9 @@
             <View
                 android:layout_width="match_parent"
                 android:layout_height="1dp"
-                android:layout_marginVertical="@dimen/dimen8dp"
+                android:layout_marginVertical="@dimen/dimen16dp"
                 android:background="?attr/colorOutlineVariant"
-                android:layout_marginHorizontal="@dimen/dimen16dp"/>
+                android:layout_marginHorizontal="@dimen/dimen24dp"/>
 
             <include android:id="@+id/rowAbout" layout="@layout/item_settings_row" />
             <include android:id="@+id/rowRateApp" layout="@layout/item_settings_row" />

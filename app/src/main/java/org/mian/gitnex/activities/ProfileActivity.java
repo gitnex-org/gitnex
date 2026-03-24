@@ -24,7 +24,6 @@ import org.mian.gitnex.fragments.profile.FollowingFragment;
 import org.mian.gitnex.fragments.profile.OrganizationsFragment;
 import org.mian.gitnex.fragments.profile.RepositoriesFragment;
 import org.mian.gitnex.fragments.profile.StarredRepositoriesFragment;
-import org.mian.gitnex.helpers.AppDatabaseSettings;
 import org.mian.gitnex.helpers.Toasty;
 import org.mian.gitnex.helpers.ViewPager2Transformers;
 import org.mian.gitnex.structs.BottomSheetListener;
@@ -72,11 +71,7 @@ public class ProfileActivity extends BaseActivity implements BottomSheetListener
 
 		viewPager.setAdapter(new ViewPagerAdapter(this));
 
-		ViewPager2Transformers.returnSelectedTransformer(
-				viewPager,
-				Integer.parseInt(
-						AppDatabaseSettings.getSettingsValue(
-								ctx, AppDatabaseSettings.APP_TABS_ANIMATION_KEY)));
+		ViewPager2Transformers.returnSelectedTransformer(viewPager);
 
 		String[] tabTitles = {
 			ctx.getResources().getString(R.string.tabTextInfo),

@@ -25,7 +25,6 @@ import org.mian.gitnex.fragments.OrganizationLabelsFragment;
 import org.mian.gitnex.fragments.OrganizationMembersFragment;
 import org.mian.gitnex.fragments.OrganizationRepositoriesFragment;
 import org.mian.gitnex.fragments.OrganizationTeamsFragment;
-import org.mian.gitnex.helpers.AppDatabaseSettings;
 import org.mian.gitnex.helpers.AppUtil;
 import org.mian.gitnex.helpers.ViewPager2Transformers;
 import org.mian.gitnex.structs.BottomSheetListener;
@@ -123,11 +122,7 @@ public class OrganizationDetailActivity extends BaseActivity implements BottomSh
 
 		viewPager.setAdapter(new OrganizationDetailActivity.ViewPagerAdapter(this));
 
-		ViewPager2Transformers.returnSelectedTransformer(
-				viewPager,
-				Integer.parseInt(
-						AppDatabaseSettings.getSettingsValue(
-								ctx, AppDatabaseSettings.APP_TABS_ANIMATION_KEY)));
+		ViewPager2Transformers.returnSelectedTransformer(viewPager);
 
 		List<String> tabsList = new ArrayList<>();
 		tabsList.add(getResources().getString(R.string.tabTextInfo));

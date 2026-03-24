@@ -13,7 +13,6 @@ import org.mian.gitnex.fragments.ExploreIssuesFragment;
 import org.mian.gitnex.fragments.ExplorePublicOrganizationsFragment;
 import org.mian.gitnex.fragments.ExploreRepositoriesFragment;
 import org.mian.gitnex.fragments.ExploreUsersFragment;
-import org.mian.gitnex.helpers.AppDatabaseSettings;
 import org.mian.gitnex.helpers.ViewPager2Transformers;
 
 /**
@@ -42,11 +41,7 @@ public class ExploreActivity extends BaseActivity {
 
 		ExplorePagerAdapter adapter = new ExplorePagerAdapter(this);
 		binding.containerExplore.setAdapter(adapter);
-		ViewPager2Transformers.returnSelectedTransformer(
-				binding.containerExplore,
-				Integer.parseInt(
-						AppDatabaseSettings.getSettingsValue(
-								this, AppDatabaseSettings.APP_TABS_ANIMATION_KEY)));
+		ViewPager2Transformers.returnSelectedTransformer(binding.containerExplore);
 
 		String[] tabTitles = {
 			getString(R.string.navRepos),

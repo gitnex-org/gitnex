@@ -131,31 +131,6 @@
 
         </LinearLayout>
 
-        <LinearLayout
-            android:id="@+id/fragmentTabsAnimationFrame"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="@dimen/dimen16dp"
-            android:orientation="vertical">
-
-            <TextView
-                android:id="@+id/fragmentTabsAnimationFrameHeaderSelector"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="@string/fragmentTabsAnimationHeader"
-                android:textColor="?attr/primaryTextColor"
-                android:textSize="@dimen/dimen16sp" />
-
-            <com.google.android.material.chip.ChipGroup
-                android:id="@+id/fragmentTabsAnimationChipGroup"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="@dimen/dimen8dp"
-                app:singleSelection="true"
-                app:selectionRequired="true" />
-
-        </LinearLayout>
-
         <!-- Counter Badge Frame -->
         <androidx.constraintlayout.widget.ConstraintLayout
             android:id="@+id/counterBadgeFrame"

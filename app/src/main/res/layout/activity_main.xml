@@ -5,8 +5,6 @@
     android:id="@+id/rootLayout"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:paddingTop="@dimen/dimen56dp"
-    android:paddingBottom="@dimen/dimen16dp"
     android:background="?attr/primaryBackgroundColor">
 
     <androidx.fragment.app.FragmentContainerView

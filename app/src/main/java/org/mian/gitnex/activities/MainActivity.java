@@ -284,7 +284,7 @@ public class MainActivity extends BaseActivity
 				NotificationsBadge.getBadgeCount(this, tinyDB.getInt("currentActiveAccountId"));
 		int badgeMargin =
 				(currentCount > 0)
-						? getResources().getDimensionPixelSize(R.dimen.dimen24dp)
+						? getResources().getDimensionPixelSize(R.dimen.dimen16dp)
 						: getResources().getDimensionPixelSize(R.dimen.dimen4dp);
 
 		if (activeBtnId == R.id.btn_nav_repos) {
@@ -601,6 +601,11 @@ public class MainActivity extends BaseActivity
 									getThemeColor(R.attr.primaryTextColor));
 							notificationBadge.setBadgeTextColor(
 									getThemeColor(R.attr.materialCardBackgroundColor));
+
+							int offset = getResources().getDimensionPixelSize(R.dimen.dimen20dp);
+							notificationBadge.setHorizontalOffset(offset);
+							notificationBadge.setVerticalOffset(offset);
+
 							binding.btnNavNotifications.post(
 									() ->
 											BadgeUtils.attachBadgeDrawable(
@@ -613,6 +618,7 @@ public class MainActivity extends BaseActivity
 					} else if (notificationBadge != null) {
 						notificationBadge.setVisible(false);
 					}
+
 					if (activeFragment == notifyFrag || activeFragment == repoFrag) {
 						updateContextualDockActions(
 								activeFragment == notifyFrag

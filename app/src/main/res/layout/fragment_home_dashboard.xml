@@ -1,10 +1,11 @@
 <?xml version="1.0" encoding="utf-8"?>
 <androidx.core.widget.NestedScrollView xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/nestedScrollView"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="?attr/primaryBackgroundColor"
-    android:fillViewport="true">
+    android:clipToPadding="false"
+    android:background="?attr/primaryBackgroundColor">
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -227,7 +228,7 @@
 
                     <include
                         android:id="@+id/repoStarredCard"
-                        layout="@layout/item_dashboard_card_large"
+                        layout="@layout/item_card_large"
                         android:layout_width="0dp"
                         android:layout_height="match_parent"
                         android:layout_marginEnd="@dimen/dimen4dp"
@@ -235,7 +236,7 @@
 
                     <include
                         android:id="@+id/repoWatchedCard"
-                        layout="@layout/item_dashboard_card_large"
+                        layout="@layout/item_card_large"
                         android:layout_width="0dp"
                         android:layout_height="match_parent"
                         android:layout_marginStart="@dimen/dimen4dp"
@@ -254,7 +255,7 @@
 
                     <include
                         android:id="@+id/myReposCard"
-                        layout="@layout/item_dashboard_card_large"
+                        layout="@layout/item_card_large"
                         android:layout_width="0dp"
                         android:layout_height="match_parent"
                         android:layout_marginEnd="@dimen/dimen4dp"
@@ -262,7 +263,7 @@
 
                     <include
                         android:id="@+id/myIssuesCard"
-                        layout="@layout/item_dashboard_card_large"
+                        layout="@layout/item_card_large"
                         android:layout_width="0dp"
                         android:layout_height="match_parent"
                         android:layout_marginStart="@dimen/dimen4dp"
@@ -281,7 +282,7 @@
 
                     <include
                         android:id="@+id/organizationsCard"
-                        layout="@layout/item_dashboard_card_large"
+                        layout="@layout/item_card_large"
                         android:layout_width="0dp"
                         android:layout_height="match_parent"
                         android:layout_marginEnd="@dimen/dimen4dp"
@@ -289,7 +290,7 @@
 
                     <include
                         android:id="@+id/activitiesCard"
-                        layout="@layout/item_dashboard_card_large"
+                        layout="@layout/item_card_large"
                         android:layout_width="0dp"
                         android:layout_height="match_parent"
                         android:layout_marginStart="@dimen/dimen4dp"
@@ -299,7 +300,7 @@
 
                 <include
                     android:id="@+id/exploreCard"
-                    layout="@layout/item_dashboard_card_full"
+                    layout="@layout/item_card_full"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="@dimen/dimen12dp"
@@ -310,7 +311,7 @@
 
                 <include
                     android:id="@+id/mostVisitedReposCard"
-                    layout="@layout/item_dashboard_card_full"
+                    layout="@layout/item_card_full"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="@dimen/dimen12dp"
@@ -321,7 +322,7 @@
 
                 <include
                     android:id="@+id/notesCard"
-                    layout="@layout/item_dashboard_card_full"
+                    layout="@layout/item_card_full"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="@dimen/dimen12dp"
@@ -341,7 +342,7 @@
 
                     <include
                         android:id="@+id/accountSettingsCard"
-                        layout="@layout/item_dashboard_card_large"
+                        layout="@layout/item_card_large"
                         android:layout_width="0dp"
                         android:layout_height="match_parent"
                         android:layout_marginEnd="@dimen/dimen4dp"
@@ -349,7 +350,7 @@
 
                     <include
                         android:id="@+id/instanceAdministrationCard"
-                        layout="@layout/item_dashboard_card_large"
+                        layout="@layout/item_card_large"
                         android:layout_width="0dp"
                         android:layout_height="match_parent"
                         android:layout_marginStart="@dimen/dimen4dp"

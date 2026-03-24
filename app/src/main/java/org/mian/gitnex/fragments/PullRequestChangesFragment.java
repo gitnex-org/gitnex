@@ -10,7 +10,6 @@ import androidx.viewpager2.adapter.FragmentStateAdapter;
 import com.google.android.material.tabs.TabLayoutMediator;
 import org.mian.gitnex.R;
 import org.mian.gitnex.databinding.FragmentPrChangesBinding;
-import org.mian.gitnex.helpers.AppDatabaseSettings;
 import org.mian.gitnex.helpers.ViewPager2Transformers;
 
 /**
@@ -59,11 +58,7 @@ public class PullRequestChangesFragment extends Fragment {
 		String[] tabs =
 				new String[] {getString(R.string.tabTextFiles), getString(R.string.commits)};
 
-		ViewPager2Transformers.returnSelectedTransformer(
-				binding.container,
-				Integer.parseInt(
-						AppDatabaseSettings.getSettingsValue(
-								getContext(), AppDatabaseSettings.APP_TABS_ANIMATION_KEY)));
+		ViewPager2Transformers.returnSelectedTransformer(binding.container);
 
 		new TabLayoutMediator(
 						binding.tabs,

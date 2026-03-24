@@ -9,7 +9,6 @@ import org.mian.gitnex.R;
 import org.mian.gitnex.databinding.ActivityAccountSettingsBinding;
 import org.mian.gitnex.fragments.AccountSettingsEmailsFragment;
 import org.mian.gitnex.fragments.SSHKeysFragment;
-import org.mian.gitnex.helpers.AppDatabaseSettings;
 import org.mian.gitnex.helpers.ViewPager2Transformers;
 
 /**
@@ -33,11 +32,7 @@ public class AccountSettingsActivity extends BaseActivity {
 		binding.accountSettingsContainer.setAdapter(adapter);
 		binding.accountSettingsContainer.setOffscreenPageLimit(1);
 
-		ViewPager2Transformers.returnSelectedTransformer(
-				binding.accountSettingsContainer,
-				Integer.parseInt(
-						AppDatabaseSettings.getSettingsValue(
-								this, AppDatabaseSettings.APP_TABS_ANIMATION_KEY)));
+		ViewPager2Transformers.returnSelectedTransformer(binding.accountSettingsContainer);
 
 		String[] tabTitles = {getString(R.string.accountEmails), getString(R.string.sshKeys)};
 

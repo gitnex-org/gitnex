@@ -670,11 +670,7 @@ public class RepoDetailActivity extends BaseActivity implements BottomSheetListe
 
 			viewPager.setAdapter(new ViewPagerAdapter(this));
 
-			ViewPager2Transformers.returnSelectedTransformer(
-					viewPager,
-					Integer.parseInt(
-							AppDatabaseSettings.getSettingsValue(
-									ctx, AppDatabaseSettings.APP_TABS_ANIMATION_KEY)));
+			ViewPager2Transformers.returnSelectedTransformer(viewPager);
 
 			String[] tabTitles = {
 				getString(R.string.tabTextInfo),

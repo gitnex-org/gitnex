@@ -22,8 +22,6 @@ public class AppDatabaseSettings {
 	public static String APP_THEME_AUTO_DARK_MIN_DEFAULT = "0";
 	public static String APP_FONT_KEY = "app_font";
 	public static String APP_FONT_DEFAULT = "3";
-	public static String APP_TABS_ANIMATION_KEY = "app_tabs_animation";
-	public static String APP_TABS_ANIMATION_DEFAULT = "0";
 	public static String APP_LOCALE_KEY = "app_locale";
 	public static String APP_LOCALE_KEY_DEFAULT = "0|sys";
 	public static String APP_COUNTER_KEY = "app_counter_badges";
@@ -105,10 +103,6 @@ public class AppDatabaseSettings {
 		}
 		if (appSettingsApi.fetchSettingCountByKey(APP_FONT_KEY) == 0) {
 			appSettingsApi.insertNewSetting(APP_FONT_KEY, APP_FONT_DEFAULT, APP_FONT_DEFAULT);
-		}
-		if (appSettingsApi.fetchSettingCountByKey(APP_TABS_ANIMATION_KEY) == 0) {
-			appSettingsApi.insertNewSetting(
-					APP_TABS_ANIMATION_KEY, APP_TABS_ANIMATION_DEFAULT, APP_TABS_ANIMATION_DEFAULT);
 		}
 		if (appSettingsApi.fetchSettingCountByKey(APP_LOCALE_KEY) == 0) {
 			appSettingsApi.insertNewSetting(

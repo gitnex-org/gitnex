@@ -14,7 +14,6 @@ import org.mian.gitnex.databinding.ActivityOrgTeamInfoBinding;
 import org.mian.gitnex.fragments.OrganizationTeamInfoMembersFragment;
 import org.mian.gitnex.fragments.OrganizationTeamInfoPermissionsFragment;
 import org.mian.gitnex.fragments.OrganizationTeamInfoReposFragment;
-import org.mian.gitnex.helpers.AppDatabaseSettings;
 import org.mian.gitnex.helpers.ViewPager2Transformers;
 
 /**
@@ -66,11 +65,7 @@ public class OrganizationTeamInfoActivity extends BaseActivity {
 					}
 				});
 
-		ViewPager2Transformers.returnSelectedTransformer(
-				binding.pager,
-				Integer.parseInt(
-						AppDatabaseSettings.getSettingsValue(
-								ctx, AppDatabaseSettings.APP_TABS_ANIMATION_KEY)));
+		ViewPager2Transformers.returnSelectedTransformer(binding.pager);
 
 		new TabLayoutMediator(
 						binding.tabs,

@@ -8,6 +8,10 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
+import androidx.core.graphics.Insets;
+import androidx.core.view.ViewCompat;
+import androidx.core.view.WindowInsetsCompat;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModelProvider;
 import androidx.recyclerview.widget.LinearLayoutManager;
@@ -42,6 +46,26 @@ public class RepositoriesFragment extends Fragment {
 	private String userLogin = null;
 	private String orgName = null;
 	private boolean isSearching = false;
+
+	@Override
+	public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
+		super.onViewCreated(view, savedInstanceState);
+
+		int paddingLeft = view.getPaddingLeft();
+		int paddingRight = view.getPaddingRight();
+		int paddingBottom = view.getPaddingBottom();
+
+		ViewCompat.setOnApplyWindowInsetsListener(
+				view,
+				(v, windowInsets) -> {
+					Insets systemBars =
+							windowInsets.getInsets(WindowInsetsCompat.Type.systemBars());
+
+					v.setPadding(paddingLeft, systemBars.top, paddingRight, paddingBottom);
+
+					return windowInsets;
+				});
+	}
 
 	@Override
 	public View onCreateView(

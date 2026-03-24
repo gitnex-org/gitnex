@@ -84,21 +84,21 @@
 
                 <include
                     android:id="@+id/homeCard"
-                    layout="@layout/item_dashboard_card_full"
+                    layout="@layout/item_card_full"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="@dimen/dimen24dp" />
 
                 <include
                     android:id="@+id/repositoryCard"
-                    layout="@layout/item_dashboard_card_full"
+                    layout="@layout/item_card_full"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="@dimen/dimen8dp" />
 
                 <include
                     android:id="@+id/notificationCard"
-                    layout="@layout/item_dashboard_card_full"
+                    layout="@layout/item_card_full"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="@dimen/dimen8dp" />

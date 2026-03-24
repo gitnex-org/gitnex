@@ -34,7 +34,6 @@ public class BottomSheetSettingsAppearanceFragment extends BottomSheetDialogFrag
 	private static String[] themeList;
 	private static int themeSelectedChoice;
 	private static int langSelectedChoice;
-	private static int fragmentTabsAnimationSelectedChoice;
 	private LinkedHashMap<String, String> lang;
 
 	@Override
@@ -57,8 +56,6 @@ public class BottomSheetSettingsAppearanceFragment extends BottomSheetDialogFrag
 		}
 
 		String[] customFontList = getResources().getStringArray(R.array.fonts);
-		String[] fragmentTabsAnimationList =
-				getResources().getStringArray(R.array.fragmentTabsAnimation);
 		themeList =
 				Build.VERSION.SDK_INT >= Build.VERSION_CODES.S || "S".equals(Build.VERSION.CODENAME)
 						? getResources().getStringArray(R.array.themesAndroid12)
@@ -72,10 +69,6 @@ public class BottomSheetSettingsAppearanceFragment extends BottomSheetDialogFrag
 				Integer.parseInt(
 						AppDatabaseSettings.getSettingsValue(
 								requireContext(), AppDatabaseSettings.APP_THEME_KEY));
-		fragmentTabsAnimationSelectedChoice =
-				Integer.parseInt(
-						AppDatabaseSettings.getSettingsValue(
-								requireContext(), AppDatabaseSettings.APP_TABS_ANIMATION_KEY));
 		String[] locale =
 				AppDatabaseSettings.getSettingsValue(
 								requireContext(), AppDatabaseSettings.APP_LOCALE_KEY)
@@ -128,22 +121,6 @@ public class BottomSheetSettingsAppearanceFragment extends BottomSheetDialogFrag
 			chip.setFocusable(true);
 			if (i == customFontSelectedChoice) chip.setChecked(true);
 			binding.customFontChipGroup.addView(chip);
-		}
-
-		for (int i = 0; i < fragmentTabsAnimationList.length; i++) {
-			Chip chip =
-					(Chip)
-							inflater.inflate(
-									R.layout.chip_item,
-									binding.fragmentTabsAnimationChipGroup,
-									false);
-			chip.setId(View.generateViewId());
-			chip.setText(fragmentTabsAnimationList[i]);
-			chip.setCheckable(true);
-			chip.setClickable(true);
-			chip.setFocusable(true);
-			if (i == fragmentTabsAnimationSelectedChoice) chip.setChecked(true);
-			binding.fragmentTabsAnimationChipGroup.addView(chip);
 		}
 
 		binding.lightThemeSelectedTime.setText(
@@ -226,24 +203,6 @@ public class BottomSheetSettingsAppearanceFragment extends BottomSheetDialogFrag
 												requireActivity().recreate();
 											},
 											1000);
-							Toasty.show(requireContext(), getString(R.string.settingsSave));
-						}
-					}
-				});
-
-		binding.fragmentTabsAnimationChipGroup.setOnCheckedStateChangeListener(
-				(group, checkedIds) -> {
-					if (checkedIds.size() == 1) {
-						int newSelection = getFragmentTabsAnimationChipPosition(checkedIds.get(0));
-						if (newSelection != fragmentTabsAnimationSelectedChoice) {
-							fragmentTabsAnimationSelectedChoice = newSelection;
-							AppDatabaseSettings.updateSettingsValue(
-									requireContext(),
-									String.valueOf(newSelection),
-									AppDatabaseSettings.APP_TABS_ANIMATION_KEY);
-							AppUIStateManager.invalidateUI();
-							dismiss();
-							requireActivity().recreate();
 							Toasty.show(requireContext(), getString(R.string.settingsSave));
 						}
 					}
@@ -437,14 +396,6 @@ public class BottomSheetSettingsAppearanceFragment extends BottomSheetDialogFrag
 			if (chip.getId() == checkedId) return i;
 		}
 		return customFontSelectedChoice;
-	}
-
-	private int getFragmentTabsAnimationChipPosition(int checkedId) {
-		for (int i = 0; i < binding.fragmentTabsAnimationChipGroup.getChildCount(); i++) {
-			Chip chip = (Chip) binding.fragmentTabsAnimationChipGroup.getChildAt(i);
-			if (chip.getId() == checkedId) return i;
-		}
-		return fragmentTabsAnimationSelectedChoice;
 	}
 
 	private String getLanguageDisplayName(String langCode) {

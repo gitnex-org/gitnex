@@ -6,6 +6,10 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
+import androidx.core.graphics.Insets;
+import androidx.core.view.ViewCompat;
+import androidx.core.view.WindowInsetsCompat;
 import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import com.bumptech.glide.Glide;
@@ -35,8 +39,8 @@ import org.mian.gitnex.database.api.UserAccountsApi;
 import org.mian.gitnex.database.models.UserAccount;
 import org.mian.gitnex.databinding.BottomsheetUserAccountsBinding;
 import org.mian.gitnex.databinding.FragmentHomeDashboardBinding;
-import org.mian.gitnex.databinding.ItemDashboardCardFullBinding;
-import org.mian.gitnex.databinding.ItemDashboardCardLargeBinding;
+import org.mian.gitnex.databinding.ItemCardFullBinding;
+import org.mian.gitnex.databinding.ItemCardLargeBinding;
 import org.mian.gitnex.helpers.TinyDB;
 import org.mian.gitnex.helpers.UrlHelper;
 
@@ -48,6 +52,26 @@ public class HomeDashboardFragment extends Fragment {
 	private FragmentHomeDashboardBinding binding;
 	private String username;
 	private TinyDB tinyDB;
+
+	@Override
+	public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
+		super.onViewCreated(view, savedInstanceState);
+
+		int paddingLeft = view.getPaddingLeft();
+		int paddingRight = view.getPaddingRight();
+		int paddingBottom = view.getPaddingBottom();
+
+		ViewCompat.setOnApplyWindowInsetsListener(
+				view,
+				(v, windowInsets) -> {
+					Insets systemBars =
+							windowInsets.getInsets(WindowInsetsCompat.Type.systemBars());
+
+					v.setPadding(paddingLeft, systemBars.top, paddingRight, paddingBottom);
+
+					return windowInsets;
+				});
+	}
 
 	@Override
 	public View onCreateView(
@@ -324,7 +348,7 @@ public class HomeDashboardFragment extends Fragment {
 	}
 
 	private void updateLargeCard(
-			ItemDashboardCardLargeBinding cardBinding, int titleRes, String subtext, int iconRes) {
+			ItemCardLargeBinding cardBinding, int titleRes, String subtext, int iconRes) {
 		cardBinding.tileTitle.setText(titleRes);
 		cardBinding.tileIcon.setImageResource(iconRes);
 		cardBinding.tileSubtitle.setVisibility(
@@ -333,7 +357,7 @@ public class HomeDashboardFragment extends Fragment {
 	}
 
 	private void updateFullCard(
-			ItemDashboardCardFullBinding cardBinding, int titleRes, String subtext, int iconRes) {
+			ItemCardFullBinding cardBinding, int titleRes, String subtext, int iconRes) {
 		cardBinding.cardTitle.setText(titleRes);
 		cardBinding.cardIcon.setImageResource(iconRes);
 		cardBinding.cardSubtext.setVisibility(
