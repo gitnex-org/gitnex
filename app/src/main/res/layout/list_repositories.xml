@@ -76,8 +76,8 @@
 
             <com.google.android.material.card.MaterialCardView
                 android:id="@+id/avatarFrame"
-                android:layout_width="@dimen/dimen24dp"
-                android:layout_height="@dimen/dimen24dp"
+                android:layout_width="@dimen/dimen36dp"
+                android:layout_height="@dimen/dimen36dp"
                 android:layout_marginTop="@dimen/dimen12dp"
                 android:backgroundTint="@android:color/transparent"
                 app:cardCornerRadius="@dimen/dimen6dp"
@@ -90,9 +90,7 @@
                     android:id="@+id/imageAvatar"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
-                    android:contentDescription="@string/generalImgContentText"
-                    android:scaleType="centerCrop"
-                    tools:src="@tools:sample/avatars" />
+                    android:contentDescription="@string/generalImgContentText" />
 
             </com.google.android.material.card.MaterialCardView>
 
@@ -101,12 +99,11 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="@dimen/dimen10dp"
-                android:alpha="0.6"
-                android:textAppearance="?attr/textAppearanceLabelLarge"
+                android:alpha="0.7"
+                android:textAppearance="?attr/textAppearanceTitleMedium"
                 app:layout_constraintBottom_toBottomOf="@id/avatarFrame"
                 app:layout_constraintStart_toEndOf="@id/avatarFrame"
-                app:layout_constraintTop_toTopOf="@id/avatarFrame"
-                tools:text="mmarif" />
+                app:layout_constraintTop_toTopOf="@id/avatarFrame" />
 
             <com.google.android.material.card.MaterialCardView
                 android:id="@+id/repo_is_archived_frame"

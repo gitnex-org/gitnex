@@ -5,12 +5,11 @@ import androidx.annotation.NonNull;
 import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MutableLiveData;
 import androidx.lifecycle.ViewModel;
+import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 import org.gitnex.tea4j.v2.models.Organization;
-import org.mian.gitnex.R;
-import org.mian.gitnex.adapters.OrganizationsListAdapter;
 import org.mian.gitnex.clients.RetrofitClient;
-import org.mian.gitnex.helpers.Toasty;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
@@ -20,81 +19,131 @@ import retrofit2.Response;
  */
 public class OrganizationsViewModel extends ViewModel {
 
-	private MutableLiveData<List<Organization>> orgList;
+	private final MutableLiveData<List<Organization>> orgs =
+			new MutableLiveData<>(new ArrayList<>());
+	private final MutableLiveData<Boolean> isLoading = new MutableLiveData<>(false);
+	private final MutableLiveData<String> errorMessage = new MutableLiveData<>();
 
-	public LiveData<List<Organization>> getUserOrg(int page, int resultLimit, Context ctx) {
+	private boolean isLastPage = false;
+	private int totalCount = -1;
 
-		orgList = new MutableLiveData<>();
-		loadOrgList(page, resultLimit, ctx);
-
-		return orgList;
+	public LiveData<List<Organization>> getOrgs() {
+		return orgs;
 	}
 
-	public void loadOrgList(int page, int resultLimit, Context ctx) {
-
-		Call<List<Organization>> call =
-				RetrofitClient.getApiInterface(ctx).orgListCurrentUserOrgs(page, resultLimit);
-
-		call.enqueue(
-				new Callback<>() {
-
-					@Override
-					public void onResponse(
-							@NonNull Call<List<Organization>> call,
-							@NonNull Response<List<Organization>> response) {
-
-						if (response.isSuccessful()) {
-							orgList.postValue(response.body());
-						} else {
-							Toasty.show(ctx, ctx.getString(R.string.genericError));
-						}
-					}
-
-					@Override
-					public void onFailure(
-							@NonNull Call<List<Organization>> call, @NonNull Throwable t) {
-
-						Toasty.show(ctx, ctx.getString(R.string.genericServerResponseError));
-					}
-				});
+	public LiveData<Boolean> getIsLoading() {
+		return isLoading;
 	}
 
-	public void loadMoreOrgList(
-			int page, int resultLimit, Context ctx, OrganizationsListAdapter adapter) {
+	public LiveData<String> getError() {
+		return errorMessage;
+	}
 
-		Call<List<Organization>> call =
-				RetrofitClient.getApiInterface(ctx).orgListCurrentUserOrgs(page, resultLimit);
+	public void fetchOrganizations(Context ctx, int page, int limit, boolean isRefresh) {
 
-		call.enqueue(
-				new Callback<>() {
+		if (Boolean.TRUE.equals(isLoading.getValue())) return;
+		if (!isRefresh && isLastPage) return;
 
-					@Override
-					public void onResponse(
-							@NonNull Call<List<Organization>> call,
-							@NonNull Response<List<Organization>> response) {
+		isLoading.setValue(true);
 
-						if (response.isSuccessful()) {
-							List<Organization> list = orgList.getValue();
-							assert list != null;
-							assert response.body() != null;
-
-							if (!response.body().isEmpty()) {
-								list.addAll(response.body());
-								adapter.updateList(list);
-							} else {
-								adapter.setMoreDataAvailable(false);
+		RetrofitClient.getApiInterface(ctx)
+				.orgListCurrentUserOrgs(page, limit)
+				.enqueue(
+						new Callback<>() {
+							@Override
+							public void onResponse(
+									@NonNull Call<List<Organization>> call,
+									@NonNull Response<List<Organization>> response) {
+								handleResponse(response, isRefresh, limit);
 							}
-						} else {
-							Toasty.show(ctx, ctx.getString(R.string.genericError));
-						}
-					}
 
-					@Override
-					public void onFailure(
-							@NonNull Call<List<Organization>> call, @NonNull Throwable t) {
+							@Override
+							public void onFailure(
+									@NonNull Call<List<Organization>> call, @NonNull Throwable t) {
+								isLoading.setValue(false);
+								errorMessage.setValue(t.getMessage());
+							}
+						});
+	}
 
-						Toasty.show(ctx, ctx.getString(R.string.genericServerResponseError));
-					}
-				});
+	public void fetchAllPublicOrgs(Context ctx, int page, int limit, boolean isRefresh) {
+		if (Boolean.TRUE.equals(isLoading.getValue())) return;
+		if (!isRefresh && isLastPage) return;
+
+		isLoading.setValue(true);
+		RetrofitClient.getApiInterface(ctx)
+				.orgGetAll(page, limit)
+				.enqueue(
+						new Callback<>() {
+							@Override
+							public void onResponse(
+									@NonNull Call<List<Organization>> call,
+									@NonNull Response<List<Organization>> response) {
+								handleResponse(response, isRefresh, limit);
+							}
+
+							@Override
+							public void onFailure(
+									@NonNull Call<List<Organization>> call, @NonNull Throwable t) {
+								isLoading.setValue(false);
+								errorMessage.setValue(t.getMessage());
+							}
+						});
+	}
+
+	public void fetchUserOrgs(
+			Context ctx, String username, int page, int limit, boolean isRefresh) {
+		if (Boolean.TRUE.equals(isLoading.getValue())) return;
+		if (!isRefresh && isLastPage) return;
+
+		isLoading.setValue(true);
+		RetrofitClient.getApiInterface(ctx)
+				.orgListUserOrgs(username, page, limit)
+				.enqueue(
+						new Callback<>() {
+							@Override
+							public void onResponse(
+									@NonNull Call<List<Organization>> call,
+									@NonNull Response<List<Organization>> response) {
+								handleResponse(response, isRefresh, limit);
+							}
+
+							@Override
+							public void onFailure(
+									@NonNull Call<List<Organization>> call, @NonNull Throwable t) {
+								isLoading.setValue(false);
+								errorMessage.setValue(t.getMessage());
+							}
+						});
+	}
+
+	private void handleResponse(
+			Response<List<Organization>> response, boolean isRefresh, int limit) {
+		isLoading.setValue(false);
+
+		if (response.isSuccessful() && response.body() != null) {
+			String totalHeader = response.headers().get("x-total-count");
+			if (totalHeader != null) {
+				totalCount = Integer.parseInt(totalHeader);
+			}
+
+			List<Organization> incomingList = response.body();
+			List<Organization> currentList =
+					isRefresh
+							? new ArrayList<>()
+							: new ArrayList<>(Objects.requireNonNull(orgs.getValue()));
+
+			currentList.addAll(incomingList);
+			orgs.setValue(currentList);
+
+			if (incomingList.size() < limit
+					|| (totalCount != -1 && currentList.size() >= totalCount)) {
+				isLastPage = true;
+			} else if (isRefresh) {
+				isLastPage = false;
+			}
+		} else {
+			errorMessage.setValue("Error: " + response.code());
+		}
 	}
 }

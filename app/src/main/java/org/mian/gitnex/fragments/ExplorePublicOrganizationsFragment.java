@@ -1,41 +1,31 @@
 package org.mian.gitnex.fragments;
 
-import android.content.Context;
 import android.os.Bundle;
-import android.os.Handler;
-import android.os.Looper;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
+import androidx.lifecycle.ViewModelProvider;
 import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 import java.util.ArrayList;
-import java.util.List;
-import org.gitnex.tea4j.v2.models.Organization;
-import org.mian.gitnex.R;
 import org.mian.gitnex.adapters.OrganizationsListAdapter;
-import org.mian.gitnex.clients.RetrofitClient;
 import org.mian.gitnex.databinding.FragmentOrganizationsBinding;
 import org.mian.gitnex.helpers.Constants;
-import org.mian.gitnex.helpers.Toasty;
-import retrofit2.Call;
-import retrofit2.Callback;
-import retrofit2.Response;
+import org.mian.gitnex.helpers.EndlessRecyclerViewScrollListener;
+import org.mian.gitnex.viewmodels.OrganizationsViewModel;
 
 /**
  * @author mmarif
  */
 public class ExplorePublicOrganizationsFragment extends Fragment {
 
-	private final String TAG = "PublicOrganizations";
-	private FragmentOrganizationsBinding fragmentPublicOrgBinding;
-	private List<Organization> organizationsList;
+	private FragmentOrganizationsBinding binding;
+	private OrganizationsViewModel viewModel;
 	private OrganizationsListAdapter adapter;
-	private Context context;
-	private int pageSize;
+	private EndlessRecyclerViewScrollListener scrollListener;
 	private int resultLimit;
 
 	@Nullable @Override
@@ -43,130 +33,62 @@ public class ExplorePublicOrganizationsFragment extends Fragment {
 			@NonNull LayoutInflater inflater,
 			@Nullable ViewGroup container,
 			@Nullable Bundle savedInstanceState) {
+		binding = FragmentOrganizationsBinding.inflate(inflater, container, false);
+		viewModel = new ViewModelProvider(this).get(OrganizationsViewModel.class);
+		resultLimit = Constants.getCurrentResultLimit(requireContext());
 
-		fragmentPublicOrgBinding = FragmentOrganizationsBinding.inflate(inflater, container, false);
-		context = getContext();
+		setupUI();
+		observeViewModel();
+		refreshData();
 
-		resultLimit = Constants.getCurrentResultLimit(context);
-
-		fragmentPublicOrgBinding.addNewOrganization.setVisibility(View.GONE);
-		organizationsList = new ArrayList<>();
-
-		fragmentPublicOrgBinding.pullToRefresh.setOnRefreshListener(
-				() ->
-						new Handler(Looper.getMainLooper())
-								.postDelayed(
-										() -> {
-											fragmentPublicOrgBinding.pullToRefresh.setRefreshing(
-													false);
-											loadInitial(resultLimit);
-											adapter.notifyDataChanged();
-										},
-										200));
-
-		adapter = new OrganizationsListAdapter(requireContext(), organizationsList);
-		adapter.setLoadMoreListener(
-				new OrganizationsListAdapter.OnLoadMoreListener() {
-
-					@Override
-					public void onLoadMore() {
-						fragmentPublicOrgBinding.recyclerView.post(
-								() -> {
-									if (organizationsList.size() == resultLimit
-											|| pageSize == resultLimit) {
-										int page =
-												(organizationsList.size() + resultLimit)
-														/ resultLimit;
-										loadMore(page, resultLimit);
-									}
-								});
-					}
-				});
-
-		fragmentPublicOrgBinding.recyclerView.setHasFixedSize(true);
-		fragmentPublicOrgBinding.recyclerView.setLayoutManager(new LinearLayoutManager(context));
-		fragmentPublicOrgBinding.recyclerView.setAdapter(adapter);
-
-		loadInitial(resultLimit);
-
-		return fragmentPublicOrgBinding.getRoot();
+		return binding.getRoot();
 	}
 
-	private void loadInitial(int resultLimit) {
+	private void setupUI() {
+		binding.addNewOrganization.setVisibility(View.GONE);
+		adapter = new OrganizationsListAdapter(requireContext(), new ArrayList<>());
+		LinearLayoutManager layoutManager = new LinearLayoutManager(requireContext());
+		binding.recyclerView.setLayoutManager(layoutManager);
+		binding.recyclerView.setAdapter(adapter);
 
-		Call<List<Organization>> call =
-				RetrofitClient.getApiInterface(context)
-						.orgGetAll(Constants.publicOrganizationsPageInit, resultLimit);
-		call.enqueue(
-				new Callback<List<Organization>>() {
-
+		scrollListener =
+				new EndlessRecyclerViewScrollListener(layoutManager) {
 					@Override
-					public void onResponse(
-							@NonNull Call<List<Organization>> call,
-							@NonNull Response<List<Organization>> response) {
-						if (response.isSuccessful()) {
-							if (response.body() != null && !response.body().isEmpty()) {
-								organizationsList.clear();
-								organizationsList.addAll(response.body());
-								adapter.notifyDataChanged();
-								fragmentPublicOrgBinding.noDataOrg.setVisibility(View.GONE);
-							} else {
-								organizationsList.clear();
-								adapter.notifyDataChanged();
-								fragmentPublicOrgBinding.noDataOrg.setVisibility(View.VISIBLE);
-							}
-							fragmentPublicOrgBinding.progressBar.setVisibility(View.GONE);
-						} else if (response.code() == 404) {
-							fragmentPublicOrgBinding.noDataOrg.setVisibility(View.VISIBLE);
-							fragmentPublicOrgBinding.progressBar.setVisibility(View.GONE);
-						} else {
-							Log.e(TAG, String.valueOf(response.code()));
-						}
+					public void onLoadMore(int page, int totalItemsCount, RecyclerView view) {
+						viewModel.fetchAllPublicOrgs(
+								requireContext(), page + 1, resultLimit, false);
 					}
+				};
+		binding.recyclerView.addOnScrollListener(scrollListener);
 
-					@Override
-					public void onFailure(
-							@NonNull Call<List<Organization>> call, @NonNull Throwable t) {
-						Log.e(TAG, t.toString());
-					}
-				});
+		binding.pullToRefresh.setOnRefreshListener(this::refreshData);
 	}
 
-	private void loadMore(int page, int resultLimit) {
+	private void observeViewModel() {
+		viewModel
+				.getOrgs()
+				.observe(
+						getViewLifecycleOwner(),
+						list -> {
+							adapter.updateList(list);
+							binding.noDataOrg.setVisibility(
+									list.isEmpty() ? View.VISIBLE : View.GONE);
+							binding.pullToRefresh.setRefreshing(false);
+						});
 
-		fragmentPublicOrgBinding.progressBar.setVisibility(View.VISIBLE);
-		Call<List<Organization>> call =
-				RetrofitClient.getApiInterface(context).orgGetAll(page, resultLimit);
-		call.enqueue(
-				new Callback<List<Organization>>() {
+		viewModel
+				.getIsLoading()
+				.observe(
+						getViewLifecycleOwner(),
+						loading ->
+								binding.progressBar.setVisibility(
+										loading && adapter.getItemCount() == 0
+												? View.VISIBLE
+												: View.GONE));
+	}
 
-					@Override
-					public void onResponse(
-							@NonNull Call<List<Organization>> call,
-							@NonNull Response<List<Organization>> response) {
-						if (response.isSuccessful()) {
-							List<Organization> result = response.body();
-							if (result != null) {
-								if (!result.isEmpty()) {
-									pageSize = result.size();
-									organizationsList.addAll(result);
-								} else {
-									Toasty.show(context, getString(R.string.noMoreData));
-									adapter.setMoreDataAvailable(false);
-								}
-							}
-							adapter.notifyDataChanged();
-							fragmentPublicOrgBinding.progressBar.setVisibility(View.GONE);
-						} else {
-							Log.e(TAG, String.valueOf(response.code()));
-						}
-					}
-
-					@Override
-					public void onFailure(
-							@NonNull Call<List<Organization>> call, @NonNull Throwable t) {
-						Log.e(TAG, t.toString());
-					}
-				});
+	private void refreshData() {
+		scrollListener.resetState();
+		viewModel.fetchAllPublicOrgs(requireContext(), 1, resultLimit, true);
 	}
 }

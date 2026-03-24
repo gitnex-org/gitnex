@@ -2,16 +2,20 @@ package org.mian.gitnex.activities;
 
 import android.content.Intent;
 import android.os.Bundle;
-import android.os.Handler;
-import android.os.Looper;
 import android.text.Editable;
 import android.text.TextWatcher;
 import android.view.View;
 import androidx.lifecycle.ViewModelProvider;
 import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
+import java.util.ArrayList;
+import java.util.List;
+import org.gitnex.tea4j.v2.models.Organization;
 import org.mian.gitnex.adapters.OrganizationsListAdapter;
 import org.mian.gitnex.databinding.ActivityOrganizationsBinding;
 import org.mian.gitnex.helpers.Constants;
+import org.mian.gitnex.helpers.EndlessRecyclerViewScrollListener;
+import org.mian.gitnex.helpers.Toasty;
 import org.mian.gitnex.viewmodels.OrganizationsViewModel;
 
 /**
@@ -20,10 +24,10 @@ import org.mian.gitnex.viewmodels.OrganizationsViewModel;
 public class OrganizationsActivity extends BaseActivity {
 
 	public static boolean orgCreated = false;
-	private OrganizationsViewModel organizationsViewModel;
 	private ActivityOrganizationsBinding binding;
+	private OrganizationsViewModel viewModel;
 	private OrganizationsListAdapter adapter;
-	private int page = 1;
+	private EndlessRecyclerViewScrollListener scrollListener;
 	private int resultLimit;
 
 	@Override
@@ -32,42 +36,122 @@ public class OrganizationsActivity extends BaseActivity {
 		binding = ActivityOrganizationsBinding.inflate(getLayoutInflater());
 		setContentView(binding.getRoot());
 
-		organizationsViewModel = new ViewModelProvider(this).get(OrganizationsViewModel.class);
+		viewModel = new ViewModelProvider(this).get(OrganizationsViewModel.class);
 		resultLimit = Constants.getCurrentResultLimit(this);
 
-		setupUI();
+		setupToolbar();
+		setupRecyclerView();
+		setupSwipeRefresh();
+		observeViewModel();
 		setupSearch();
-		fetchDataAsync();
+
+		refreshData();
 	}
 
-	private void setupUI() {
+	private void setupToolbar() {
 		binding.btnBack.setOnClickListener(v -> finish());
-
 		binding.btnNewOrg.setOnClickListener(
-				v -> {
-					startActivity(new Intent(this, CreateOrganizationActivity.class));
-				});
-
+				v -> startActivity(new Intent(this, CreateOrganizationActivity.class)));
 		binding.btnSearch.setOnClickListener(v -> binding.searchView.show());
+	}
 
-		binding.recyclerView.setHasFixedSize(true);
-		binding.recyclerView.setLayoutManager(new LinearLayoutManager(this));
-		binding.recyclerView.setClipToPadding(false);
+	private void setupRecyclerView() {
+		adapter = new OrganizationsListAdapter(this, new ArrayList<>());
+		LinearLayoutManager layoutManager = new LinearLayoutManager(this);
+		binding.recyclerView.setLayoutManager(layoutManager);
+		binding.recyclerView.setAdapter(adapter);
 
-		binding.pullToRefresh.setOnRefreshListener(
-				() ->
-						new Handler(Looper.getMainLooper())
-								.postDelayed(
-										() -> {
-											page = 1;
-											binding.pullToRefresh.setRefreshing(false);
-											fetchDataAsync();
-											binding.expressiveLoader.setVisibility(View.VISIBLE);
-										},
-										50));
+		scrollListener =
+				new EndlessRecyclerViewScrollListener(layoutManager) {
+					@Override
+					public void onLoadMore(int page, int totalItemsCount, RecyclerView view) {
+						if (binding.searchView.isShowing()) return;
+						viewModel.fetchOrganizations(
+								OrganizationsActivity.this, page + 1, resultLimit, false);
+					}
+				};
+		binding.recyclerView.addOnScrollListener(scrollListener);
+	}
+
+	private void setupSwipeRefresh() {
+		binding.pullToRefresh.setOnRefreshListener(this::refreshData);
+	}
+
+	private void observeViewModel() {
+		viewModel
+				.getOrgs()
+				.observe(
+						this,
+						list -> {
+							adapter.updateList(list);
+							updateEmptyState(list.isEmpty());
+							binding.pullToRefresh.setRefreshing(false);
+						});
+
+		viewModel
+				.getIsLoading()
+				.observe(
+						this,
+						loading -> {
+							if (loading) {
+								binding.layoutEmpty.getRoot().setVisibility(View.GONE);
+								if (adapter.getItemCount() == 0) {
+									binding.expressiveLoader.setVisibility(View.VISIBLE);
+								}
+							} else {
+								binding.expressiveLoader.setVisibility(View.GONE);
+							}
+						});
+
+		viewModel
+				.getError()
+				.observe(
+						this,
+						msg -> {
+							Toasty.show(this, msg);
+							binding.pullToRefresh.setRefreshing(false);
+							binding.expressiveLoader.setVisibility(View.GONE);
+						});
+	}
+
+	private void updateEmptyState(boolean isEmpty) {
+		boolean loading = Boolean.TRUE.equals(viewModel.getIsLoading().getValue());
+		if (!loading) {
+			binding.layoutEmpty.getRoot().setVisibility(isEmpty ? View.VISIBLE : View.GONE);
+		}
+	}
+
+	private void refreshData() {
+		scrollListener.resetState();
+		binding.layoutEmpty.getRoot().setVisibility(View.GONE);
+		viewModel.fetchOrganizations(this, 1, resultLimit, true);
 	}
 
 	private void setupSearch() {
+
+		OrganizationsListAdapter searchAdapter =
+				new OrganizationsListAdapter(this, new ArrayList<>());
+		binding.searchResultsRecycler.setLayoutManager(new LinearLayoutManager(this));
+		binding.searchResultsRecycler.setAdapter(searchAdapter);
+
+		binding.searchView.addTransitionListener(
+				(searchView, previousState, newState) -> {
+					if (newState
+							== com.google.android.material.search.SearchView.TransitionState
+									.SHOWN) {
+						List<Organization> currentOrgs = viewModel.getOrgs().getValue();
+						if (currentOrgs != null) {
+							searchAdapter.updateList(new ArrayList<>(currentOrgs));
+						}
+					} else if (newState
+							== com.google.android.material.search.SearchView.TransitionState
+									.HIDDEN) {
+						binding.searchView.setText("");
+						searchAdapter.updateList(new ArrayList<>());
+						binding.recyclerView.scrollToPosition(0);
+					}
+				});
+
 		binding.searchView
 				.getEditText()
 				.addTextChangedListener(
@@ -75,9 +159,34 @@ public class OrganizationsActivity extends BaseActivity {
 							@Override
 							public void onTextChanged(
 									CharSequence s, int start, int before, int count) {
-								if (adapter != null) {
-									adapter.getFilter().filter(s.toString().trim());
+								String query = s.toString().trim();
+								List<Organization> fullList = viewModel.getOrgs().getValue();
+
+								if (fullList == null) return;
+
+								if (query.isEmpty()) {
+									searchAdapter.updateList(new ArrayList<>(fullList));
+									return;
 								}
+
+								List<Organization> filtered = new ArrayList<>();
+								for (Organization org : fullList) {
+									String name =
+											org.getUsername() != null
+													? org.getUsername().toLowerCase()
+													: "";
+									String desc =
+											org.getDescription() != null
+													? org.getDescription().toLowerCase()
+													: "";
+									String filterPattern = query.toLowerCase();
+
+									if (name.contains(filterPattern)
+											|| desc.contains(filterPattern)) {
+										filtered.add(org);
+									}
+								}
+								searchAdapter.updateList(filtered);
 							}
 
 							@Override
@@ -88,46 +197,12 @@ public class OrganizationsActivity extends BaseActivity {
 							public void afterTextChanged(Editable s) {}
 						});
 
-		binding.searchResultsRecycler.setLayoutManager(new LinearLayoutManager(this));
-	}
-
-	private void fetchDataAsync() {
-		organizationsViewModel
-				.getUserOrg(page, resultLimit, this)
-				.observe(
-						this,
-						orgListMain -> {
-							adapter = new OrganizationsListAdapter(this, orgListMain);
-
-							adapter.setLoadMoreListener(
-									new OrganizationsListAdapter.OnLoadMoreListener() {
-										@Override
-										public void onLoadMore() {
-											page += 1;
-											organizationsViewModel.loadMoreOrgList(
-													page,
-													resultLimit,
-													OrganizationsActivity.this,
-													adapter);
-											binding.expressiveLoader.setVisibility(View.VISIBLE);
-										}
-
-										@Override
-										public void onLoadFinished() {
-											binding.expressiveLoader.setVisibility(View.GONE);
-										}
-									});
-
-							if (adapter.getItemCount() > 0) {
-								binding.recyclerView.setAdapter(adapter);
-								binding.layoutEmpty.getRoot().setVisibility(View.GONE);
-							} else {
-								adapter.notifyDataChanged();
-								binding.recyclerView.setAdapter(adapter);
-								binding.layoutEmpty.getRoot().setVisibility(View.VISIBLE);
-							}
-
-							binding.expressiveLoader.setVisibility(View.GONE);
+		binding.searchView
+				.getEditText()
+				.setOnEditorActionListener(
+						(v, actionId, event) -> {
+							binding.searchView.hide();
+							return false;
 						});
 	}
 
@@ -135,7 +210,7 @@ public class OrganizationsActivity extends BaseActivity {
 	public void onResume() {
 		super.onResume();
 		if (orgCreated) {
-			organizationsViewModel.loadOrgList(page, resultLimit, this);
+			refreshData();
 			orgCreated = false;
 		}
 	}

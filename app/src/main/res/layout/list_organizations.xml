@@ -1,64 +1,56 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:tools="http://schemas.android.com/tools"
+<com.google.android.material.listitem.ListItemLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    android:id="@+id/linearLayoutFrame"
     android:layout_width="match_parent"
-    android:layout_height="wrap_content"
-    android:orientation="vertical"
-    android:paddingTop="@dimen/dimen4dp"
-    android:paddingBottom="@dimen/dimen4dp">
+    android:layout_height="wrap_content">
 
-    <com.google.android.material.card.MaterialCardView
+    <com.google.android.material.listitem.ListItemCardView
+        android:id="@+id/card"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        style="?attr/materialCardViewElevatedStyle"
-        app:cardElevation="@dimen/dimen0dp">
+        android:checkable="false"
+        android:layout_marginVertical="@dimen/dimen1dp"
+        app:strokeWidth="0dp"
+        app:cardBackgroundColor="?attr/materialCardBackgroundColor">
 
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:foreground="?android:attr/selectableItemBackground"
-            android:background="?attr/materialCardBackgroundColor"
-            android:padding="@dimen/dimen12dp"
-            android:orientation="vertical">
+            android:orientation="vertical"
+            android:padding="@dimen/dimen8dp">
 
             <LinearLayout
-                android:id="@+id/orgInfoFrame"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:gravity="center_vertical"
-                android:orientation="horizontal"
-                tools:ignore="UseCompoundDrawables">
+                android:orientation="horizontal">
 
                 <com.google.android.material.card.MaterialCardView
-                    android:id="@+id/avatarFrame"
-                    android:layout_width="@dimen/dimen32dp"
-                    android:layout_height="@dimen/dimen32dp"
+                    android:layout_width="@dimen/dimen36dp"
+                    android:layout_height="@dimen/dimen36dp"
                     style="?attr/materialCardViewElevatedStyle"
                     android:backgroundTint="@android:color/transparent"
                     app:cardElevation="@dimen/dimen0dp"
-                    android:layout_marginEnd="@dimen/dimen12dp"
+                    app:strokeWidth="0dp"
                     app:cardCornerRadius="@dimen/dimen8dp">
 
                     <ImageView
                         android:id="@+id/imageAvatar"
-                        android:layout_width="@dimen/dimen32dp"
-                        android:layout_height="@dimen/dimen32dp"
-                        android:layout_marginStart="0dp"
-                        android:layout_marginEnd="10dp"
-                        android:contentDescription="@string/repoContentAvatar"
-                        android:src="@drawable/ic_android"/>
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:contentDescription="@string/repoContentAvatar" />
 
                 </com.google.android.material.card.MaterialCardView>
 
                 <TextView
                     android:id="@+id/orgName"
-                    android:layout_width="match_parent"
+                    android:layout_width="0dp"
                     android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:layout_marginStart="@dimen/dimen12dp"
                     android:textColor="?attr/primaryTextColor"
-                    android:textSize="14sp"
-                    tools:text="@string/orgName"/>
+                    android:textAppearance="?attr/textAppearanceTitleLarge"
+                    android:textStyle="bold" />
 
             </LinearLayout>
 
@@ -66,14 +58,16 @@
                 android:id="@+id/orgDescription"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="@string/noDataDescription"
                 android:textColor="?attr/primaryTextColor"
                 android:visibility="gone"
-                android:layout_marginTop="8dp"
-                android:textSize="15sp"/>
+                android:layout_marginTop="@dimen/dimen8dp"
+                android:alpha="0.7"
+                android:ellipsize="end"
+                android:maxLines="3"
+                android:textAppearance="?attr/textAppearanceBodyMedium" />
 
         </LinearLayout>
 
-    </com.google.android.material.card.MaterialCardView>
+    </com.google.android.material.listitem.ListItemCardView>
 
-</LinearLayout>
+</com.google.android.material.listitem.ListItemLayout>
