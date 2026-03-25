@@ -1,17 +1,34 @@
 package org.mian.gitnex.activities;
 
 import android.content.Intent;
+import android.graphics.Color;
 import android.os.Bundle;
 import android.view.LayoutInflater;
-import androidx.annotation.NonNull;
+import android.view.View;
+import android.widget.TextView;
+import androidx.core.content.ContextCompat;
+import androidx.lifecycle.ViewModelProvider;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 import com.google.android.material.bottomsheet.BottomSheetDialog;
-import org.mian.gitnex.api.clients.ApiRetrofitClient;
+import com.google.android.material.dialog.MaterialAlertDialogBuilder;
+import java.util.ArrayList;
+import java.util.Locale;
+import org.apache.commons.lang3.StringUtils;
+import org.gitnex.tea4j.v2.models.Cron;
+import org.mian.gitnex.R;
+import org.mian.gitnex.adapters.AdminCronTasksAdapter;
 import org.mian.gitnex.api.models.settings.RepositoryGlobal;
 import org.mian.gitnex.databinding.ActivityAdministrationBinding;
 import org.mian.gitnex.databinding.BottomSheetGlobalRepositorySettingsBinding;
-import retrofit2.Call;
-import retrofit2.Callback;
-import retrofit2.Response;
+import org.mian.gitnex.databinding.BottomsheetAdminCronTasksBinding;
+import org.mian.gitnex.databinding.ItemAdministrationRepoSettingRowBinding;
+import org.mian.gitnex.helpers.AppUtil;
+import org.mian.gitnex.helpers.Constants;
+import org.mian.gitnex.helpers.EndlessRecyclerViewScrollListener;
+import org.mian.gitnex.helpers.TimeHelper;
+import org.mian.gitnex.helpers.Toasty;
+import org.mian.gitnex.viewmodels.AdministrationViewModel;
 
 /**
  * @author mmarif
@@ -19,7 +36,8 @@ import retrofit2.Response;
 public class AdministrationActivity extends BaseActivity {
 
 	private ActivityAdministrationBinding binding;
-	private BottomSheetDialog settingsBottomSheet;
+	private AdministrationViewModel viewModel;
+	private int resultLimit;
 
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
@@ -27,80 +45,224 @@ public class AdministrationActivity extends BaseActivity {
 		binding = ActivityAdministrationBinding.inflate(getLayoutInflater());
 		setContentView(binding.getRoot());
 
+		resultLimit = Constants.getCurrentResultLimit(this);
+
+		viewModel = new ViewModelProvider(this).get(AdministrationViewModel.class);
+
+		initCards();
 		setupListeners();
-		handleIntentActions();
+		observeViewModel();
+	}
+
+	private void observeViewModel() {
+		viewModel
+				.getErrorMessage()
+				.observe(
+						this,
+						error -> {
+							if (error != null) Toasty.show(this, error);
+						});
+
+		viewModel
+				.getTaskSuccessMessage()
+				.observe(
+						this,
+						taskName -> {
+							if (taskName != null) {
+								Toasty.show(
+										this,
+										getString(R.string.adminCronTaskSuccessMsg, taskName));
+							}
+						});
 	}
 
 	private void setupListeners() {
-		binding.systemUsersFrame.setOnClickListener(
-				v -> startActivity(new Intent(this, AdminGetUsersActivity.class)));
+		binding.btnBack.setOnClickListener(v -> finish());
 
-		binding.adminCronFrame.setOnClickListener(
-				v -> startActivity(new Intent(this, AdminCronTasksActivity.class)));
+		binding.cardUsers
+				.getRoot()
+				.setOnClickListener(
+						v -> startActivity(new Intent(this, AdminGetUsersActivity.class)));
 
-		binding.unadoptedReposFrame.setOnClickListener(
-				v -> startActivity(new Intent(this, AdminUnadoptedReposActivity.class)));
+		binding.cardCron.getRoot().setOnClickListener(v -> showCronTasksSheet());
 
-		binding.adminRepositoryFrame.setOnClickListener(v -> showRepositorySettings());
+		binding.cardUnadopted
+				.getRoot()
+				.setOnClickListener(
+						v -> startActivity(new Intent(this, AdminUnadoptedReposActivity.class)));
+
+		binding.cardRepoSettings.getRoot().setOnClickListener(v -> showRepositorySettings());
 	}
 
-	private void handleIntentActions() {
-		String action = getIntent().getStringExtra("giteaAdminAction");
-		if (action != null) {
-			switch (action) {
-				case "users" -> startActivity(new Intent(this, AdminGetUsersActivity.class));
-				case "monitor" -> startActivity(new Intent(this, AdminCronTasksActivity.class));
-			}
-		}
+	private void showCronTasksSheet() {
+
+		BottomsheetAdminCronTasksBinding sheetBinding =
+				BottomsheetAdminCronTasksBinding.inflate(getLayoutInflater());
+		BottomSheetDialog dialog = new BottomSheetDialog(this);
+		dialog.setContentView(sheetBinding.getRoot());
+		AppUtil.applySheetStyle(dialog, true);
+
+		viewModel.resetCronPagination();
+
+		AdminCronTasksAdapter adapter =
+				new AdminCronTasksAdapter(
+						new ArrayList<>(),
+						new AdminCronTasksAdapter.OnCronTaskListener() {
+							@Override
+							public void onRunTask(String taskName) {
+								viewModel.runCronTask(AdministrationActivity.this, taskName);
+							}
+
+							@Override
+							public void onShowDetails(Cron task) {
+								showCronDetailDialog(task);
+							}
+						});
+
+		LinearLayoutManager layoutManager = new LinearLayoutManager(this);
+		sheetBinding.recyclerView.setLayoutManager(layoutManager);
+		sheetBinding.recyclerView.setAdapter(adapter);
+
+		EndlessRecyclerViewScrollListener scrollListener =
+				new EndlessRecyclerViewScrollListener(layoutManager) {
+					@Override
+					public void onLoadMore(int page, int totalItemsCount, RecyclerView view) {
+						viewModel.fetchCronTasks(
+								AdministrationActivity.this, page, resultLimit, false);
+					}
+				};
+		sheetBinding.recyclerView.addOnScrollListener(scrollListener);
+
+		viewModel
+				.getCronTasks()
+				.observe(
+						this,
+						list -> {
+							if (list != null) {
+								adapter.updateList(list);
+							}
+						});
+
+		viewModel
+				.getIsLoading()
+				.observe(
+						this,
+						loading ->
+								sheetBinding.expressiveLoader.setVisibility(
+										loading ? View.VISIBLE : View.GONE));
+
+		viewModel.fetchCronTasks(this, 1, resultLimit, true);
+		dialog.show();
+	}
+
+	private void showCronDetailDialog(Cron task) {
+
+		View view = LayoutInflater.from(this).inflate(R.layout.layout_cron_task_info, null);
+
+		TextView taskScheduleContent = view.findViewById(R.id.taskScheduleContent);
+		TextView nextRunContent = view.findViewById(R.id.nextRunContent);
+		TextView lastRunContent = view.findViewById(R.id.lastRunContent);
+		TextView execTimeContent = view.findViewById(R.id.execTimeContent);
+
+		Locale locale = Locale.getDefault();
+		String nextRun =
+				(task.getNext() != null) ? TimeHelper.getFullDateTime(task.getNext(), locale) : "";
+		String lastRun =
+				(task.getPrev() != null) ? TimeHelper.getFullDateTime(task.getPrev(), locale) : "";
+
+		taskScheduleContent.setText(task.getSchedule());
+		nextRunContent.setText(nextRun);
+		lastRunContent.setText(lastRun);
+		execTimeContent.setText(String.valueOf(task.getExecTimes()));
+
+		new MaterialAlertDialogBuilder(this)
+				.setTitle(StringUtils.capitalize(task.getName().replace("_", " ")))
+				.setView(view)
+				.setPositiveButton(R.string.close, null)
+				.show();
 	}
 
 	private void showRepositorySettings() {
-		settingsBottomSheet = new BottomSheetDialog(this);
+
 		BottomSheetGlobalRepositorySettingsBinding sheetBinding =
-				BottomSheetGlobalRepositorySettingsBinding.inflate(LayoutInflater.from(this));
-		settingsBottomSheet.setContentView(sheetBinding.getRoot());
+				BottomSheetGlobalRepositorySettingsBinding.inflate(getLayoutInflater());
 
-		loadRepositorySettings(sheetBinding);
-		settingsBottomSheet.show();
-	}
+		BottomSheetDialog dialog = new BottomSheetDialog(this);
+		dialog.setContentView(sheetBinding.getRoot());
+		AppUtil.applySheetStyle(dialog, false);
 
-	private void loadRepositorySettings(BottomSheetGlobalRepositorySettingsBinding sheetBinding) {
-		Call<RepositoryGlobal> call =
-				ApiRetrofitClient.getInstance(this).getRepositoryGlobalSettings();
+		sheetBinding.itemForks.settingLabel.setText(R.string.forks);
+		sheetBinding.itemMigrations.settingLabel.setText(R.string.migrations);
+		sheetBinding.itemHttpGit.settingLabel.setText(R.string.http_git);
+		sheetBinding.itemLfs.settingLabel.setText(R.string.lfs);
+		sheetBinding.itemMirrors.settingLabel.setText(R.string.mirrors);
+		sheetBinding.itemTime.settingLabel.setText(R.string.time_tracking);
+		sheetBinding.itemStars.settingLabel.setText(R.string.stars);
 
-		call.enqueue(
-				new Callback<>() {
-					@Override
-					public void onResponse(
-							@NonNull Call<RepositoryGlobal> call,
-							@NonNull Response<RepositoryGlobal> response) {
-						if (response.isSuccessful() && response.body() != null) {
-							updateSettingsUI(sheetBinding, response.body());
-						}
-					}
+		viewModel
+				.getRepositorySettings()
+				.observe(
+						this,
+						settings -> {
+							if (settings != null) {
+								updateSettingsUI(sheetBinding, settings);
+								sheetBinding.settingsContainer.setVisibility(View.VISIBLE);
+							}
+						});
 
-					@Override
-					public void onFailure(
-							@NonNull Call<RepositoryGlobal> call, @NonNull Throwable t) {
-						// Handle failure
-					}
-				});
+		viewModel
+				.getIsLoading()
+				.observe(
+						this,
+						loading -> {
+							sheetBinding.loadingIndicator.setVisibility(
+									loading ? View.VISIBLE : View.GONE);
+							if (loading) sheetBinding.settingsContainer.setVisibility(View.GONE);
+						});
+
+		viewModel.fetchRepositoryGlobalSettings(this);
+		dialog.show();
 	}
 
 	private void updateSettingsUI(
-			BottomSheetGlobalRepositorySettingsBinding sheetBinding, RepositoryGlobal settings) {
-		sheetBinding.forksDisabledValue.setText(
-				settings.isForksDisabled() ? "Disabled" : "Enabled");
-		sheetBinding.migrationsDisabledValue.setText(
-				settings.isMigrationsDisabled() ? "Disabled" : "Enabled");
-		sheetBinding.httpGitDisabledValue.setText(
-				settings.isHttpGitDisabled() ? "Disabled" : "Enabled");
-		sheetBinding.lfsDisabledValue.setText(settings.isLfsDisabled() ? "Disabled" : "Enabled");
-		sheetBinding.mirrorsDisabledValue.setText(
-				settings.isMirrorsDisabled() ? "Disabled" : "Enabled");
-		sheetBinding.timeTrackingDisabledValue.setText(
-				settings.isTimeTrackingDisabled() ? "Disabled" : "Enabled");
-		sheetBinding.starsDisabledValue.setText(
-				settings.isStarsDisabled() ? "Disabled" : "Enabled");
+			BottomSheetGlobalRepositorySettingsBinding binding, RepositoryGlobal settings) {
+		applyStatusStyle(binding.itemForks, !settings.isForksDisabled());
+		applyStatusStyle(binding.itemMigrations, !settings.isMigrationsDisabled());
+		applyStatusStyle(binding.itemHttpGit, !settings.isHttpGitDisabled());
+		applyStatusStyle(binding.itemLfs, !settings.isLfsDisabled());
+		applyStatusStyle(binding.itemMirrors, !settings.isMirrorsDisabled());
+		applyStatusStyle(binding.itemTime, !settings.isTimeTrackingDisabled());
+		applyStatusStyle(binding.itemStars, !settings.isStarsDisabled());
+	}
+
+	private void applyStatusStyle(
+			ItemAdministrationRepoSettingRowBinding itemBinding, boolean isEnabled) {
+		itemBinding.settingStatus.setText(isEnabled ? R.string.enabled : R.string.disabled);
+
+		if (isEnabled) {
+			itemBinding.statusContainer.setCardBackgroundColor(Color.parseColor("#1A2E7D32"));
+			itemBinding.settingStatus.setTextColor(ContextCompat.getColor(this, R.color.darkGreen));
+		} else {
+			itemBinding.statusContainer.setCardBackgroundColor(Color.parseColor("#1AC62828"));
+			itemBinding.settingStatus.setTextColor(ContextCompat.getColor(this, R.color.darkRed));
+		}
+	}
+
+	private void initCards() {
+		binding.cardUsers.cardIcon.setImageResource(R.drawable.ic_people);
+		binding.cardUsers.cardTitle.setText(R.string.adminUsers);
+		binding.cardUsers.cardSubtext.setText(R.string.adminUsersSubtext);
+
+		binding.cardCron.cardIcon.setImageResource(R.drawable.ic_tasks);
+		binding.cardCron.cardTitle.setText(R.string.adminCron);
+		binding.cardCron.cardSubtext.setText(R.string.adminCronSubtext);
+
+		binding.cardUnadopted.cardIcon.setImageResource(R.drawable.ic_directory_2);
+		binding.cardUnadopted.cardTitle.setText(R.string.unadoptedRepos);
+		binding.cardUnadopted.cardSubtext.setText(R.string.unadoptedReposSubtext);
+
+		binding.cardRepoSettings.cardIcon.setImageResource(R.drawable.ic_repo);
+		binding.cardRepoSettings.cardTitle.setText(R.string.repoSettingsTitle);
+		binding.cardRepoSettings.cardSubtext.setText(R.string.repoSettingsSubtext);
 	}
 }

@@ -616,6 +616,8 @@
     <string name="template">Template</string>
     <string name="accounts">Accounts</string>
     <string name="copied">Copied</string>
+    <string name="enabled">Enabled</string>
+    <string name="disabled">Disabled</string>
     <!-- generic copy -->
 
     <string name="exploreUsers">Explore users</string>
@@ -1098,4 +1100,8 @@
     <string name="forked_repository">forked repository</string>
     <string name="mirrored_repository">mirrored repository</string>
     <string name="copied_to_clipboard">Copied to clipboard</string>
+    <string name="adminUsersSubtext">Manage all system accounts and users</string>
+    <string name="adminCronSubtext">View and execute system scheduled maintenance tasks</string>
+    <string name="unadoptedReposSubtext">Search and claim repositories found on disk</string>
+    <string name="repoSettingsSubtext">View global repository and LFS settings</string>
 </resources>

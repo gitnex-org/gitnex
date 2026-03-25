@@ -50,7 +50,9 @@ public class AccountSettingsSSHKeysAdapter
 		holder.binding.copyFrame.setOnClickListener(
 				v -> {
 					AppUtil.copyToClipboard(
-							context, currentKey.getKey(), context.getString(R.string.copied_to_clipboard));
+							context,
+							currentKey.getKey(),
+							context.getString(R.string.copied_to_clipboard));
 				});
 
 		holder.binding.deleteFrame.setOnClickListener(

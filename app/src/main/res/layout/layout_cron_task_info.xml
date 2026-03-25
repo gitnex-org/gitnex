@@ -1,97 +1,97 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:orientation="vertical"
-    android:padding="25dp">
+    android:padding="@dimen/dimen24dp">
 
-    <LinearLayout
+    <TextView
+        android:id="@+id/taskScheduleHeader"
+        style="@style/TextAppearance.Material3.LabelMedium"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:alpha="0.7"
+        android:text="@string/adminCronScheduleHeader"
+        app:layout_constraintEnd_toStartOf="@+id/execTimeHeader"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <TextView
+        android:id="@+id/taskScheduleContent"
+        style="@style/TextAppearance.Material3.BodyLarge"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/dimen4dp"
+        android:textStyle="bold"
+        app:layout_constraintEnd_toEndOf="@+id/taskScheduleHeader"
+        app:layout_constraintStart_toStartOf="@+id/taskScheduleHeader"
+        app:layout_constraintTop_toBottomOf="@id/taskScheduleHeader" />
+
+    <TextView
+        android:id="@+id/execTimeHeader"
+        style="@style/TextAppearance.Material3.LabelMedium"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:alpha="0.7"
+        android:text="@string/adminCronExecutionHeader"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toEndOf="@+id/taskScheduleHeader"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <TextView
+        android:id="@+id/execTimeContent"
+        style="@style/TextAppearance.Material3.BodyLarge"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/dimen4dp"
+        android:textStyle="bold"
+        app:layout_constraintEnd_toEndOf="@+id/execTimeHeader"
+        app:layout_constraintStart_toStartOf="@+id/execTimeHeader"
+        app:layout_constraintTop_toBottomOf="@id/execTimeHeader" />
+
+    <com.google.android.material.divider.MaterialDivider
+        android:id="@+id/divider"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:orientation="vertical">
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/dimen16dp"
+        app:layout_constraintTop_toBottomOf="@id/taskScheduleContent" />
 
-        <TextView
-            android:id="@+id/taskScheduleHeader"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:text="@string/adminCronScheduleHeader"
-            android:textColor="?attr/primaryTextColor"
-            android:textSize="16sp"/>
-
-        <TextView
-            android:id="@+id/taskScheduleContent"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:textColor="?attr/primaryTextColor"/>
-
-    </LinearLayout>
-
-    <LinearLayout
+    <TextView
+        android:id="@+id/nextRunHeader"
+        style="@style/TextAppearance.Material3.LabelMedium"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:layout_marginTop="15dp"
-        android:orientation="vertical">
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/dimen16dp"
+        android:alpha="0.7"
+        android:text="@string/adminCronNextRunHeader"
+        app:layout_constraintTop_toBottomOf="@id/divider" />
 
-        <TextView
-            android:id="@+id/nextRunHeader"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:text="@string/adminCronNextRunHeader"
-            android:textColor="?attr/primaryTextColor"
-            android:textSize="16sp"/>
-
-        <TextView
-            android:id="@+id/nextRunContent"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:textColor="?attr/primaryTextColor"/>
-
-    </LinearLayout>
-
-    <LinearLayout
+    <TextView
+        android:id="@+id/nextRunContent"
+        style="@style/TextAppearance.Material3.BodyLarge"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:layout_marginTop="15dp"
-        android:orientation="vertical">
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/dimen4dp"
+        android:textColor="?attr/colorPrimary"
+        android:textStyle="bold"
+        app:layout_constraintTop_toBottomOf="@id/nextRunHeader" />
 
-        <TextView
-            android:id="@+id/lastRunHeader"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:text="@string/adminCronLastRunHeader"
-            android:textColor="?attr/primaryTextColor"
-            android:textSize="16sp"/>
-
-        <TextView
-            android:id="@+id/lastRunContent"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:textColor="?attr/primaryTextColor"/>
-
-    </LinearLayout>
-
-    <LinearLayout
+    <TextView
+        android:id="@+id/lastRunHeader"
+        style="@style/TextAppearance.Material3.LabelMedium"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:layout_marginTop="15dp"
-        android:orientation="vertical">
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/dimen16dp"
+        android:alpha="0.7"
+        android:text="@string/adminCronLastRunHeader"
+        app:layout_constraintTop_toBottomOf="@id/nextRunContent" />
 
-        <TextView
-            android:id="@+id/execTimeHeader"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:text="@string/adminCronExecutionHeader"
-            android:textColor="?attr/primaryTextColor"
-            android:textSize="16sp"/>
+    <TextView
+        android:id="@+id/lastRunContent"
+        style="@style/TextAppearance.Material3.BodyLarge"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/dimen4dp"
+        app:layout_constraintTop_toBottomOf="@id/lastRunHeader" />
 
-        <TextView
-            android:id="@+id/execTimeContent"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:autoLink="web"
-            android:textColor="?attr/primaryTextColor"
-            android:textColorLink="@color/lightBlue"/>
-
-    </LinearLayout>
-
-</LinearLayout>
+</androidx.constraintlayout.widget.ConstraintLayout>
