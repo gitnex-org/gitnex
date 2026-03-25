@@ -7,13 +7,13 @@ import android.view.View;
 import android.view.ViewGroup;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
-import com.google.android.material.bottomsheet.BottomSheetBehavior;
 import com.google.android.material.bottomsheet.BottomSheetDialog;
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment;
 import org.mian.gitnex.R;
 import org.mian.gitnex.databinding.BottomSheetSettingsGeneralBinding;
 import org.mian.gitnex.helpers.AppDatabaseSettings;
 import org.mian.gitnex.helpers.AppUIStateManager;
+import org.mian.gitnex.helpers.AppUtil;
 import org.mian.gitnex.helpers.Toasty;
 
 /**
@@ -172,16 +172,7 @@ public class BottomSheetSettingsGeneralFragment extends BottomSheetDialogFragmen
 		super.onStart();
 		Dialog dialog = getDialog();
 		if (dialog instanceof BottomSheetDialog) {
-			View bottomSheet =
-					((BottomSheetDialog) dialog)
-							.findViewById(com.google.android.material.R.id.design_bottom_sheet);
-			if (bottomSheet != null) {
-				BottomSheetBehavior<View> behavior = BottomSheetBehavior.from(bottomSheet);
-				behavior.setFitToContents(true);
-				behavior.setSkipCollapsed(true);
-				behavior.setExpandedOffset(0);
-				behavior.setState(BottomSheetBehavior.STATE_EXPANDED);
-			}
+			AppUtil.applySheetStyle((BottomSheetDialog) dialog, true);
 		}
 	}
 

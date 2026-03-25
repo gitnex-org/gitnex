@@ -20,10 +20,13 @@ import android.util.TypedValue;
 import android.view.View;
 import androidx.annotation.AttrRes;
 import androidx.annotation.ColorInt;
+import androidx.annotation.NonNull;
 import androidx.browser.customtabs.CustomTabColorSchemeParams;
 import androidx.browser.customtabs.CustomTabsIntent;
 import androidx.core.content.pm.PackageInfoCompat;
 import androidx.core.content.res.ResourcesCompat;
+import com.google.android.material.bottomsheet.BottomSheetBehavior;
+import com.google.android.material.bottomsheet.BottomSheetDialog;
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
@@ -724,5 +727,18 @@ public class AppUtil {
 			return majorVersion == 1 ? "gitea" : "forgejo";
 		}
 		return "gitea";
+	}
+
+	public static void applySheetStyle(@NonNull BottomSheetDialog dialog, boolean isDraggable) {
+		View bottomSheet =
+				dialog.findViewById(com.google.android.material.R.id.design_bottom_sheet);
+		if (bottomSheet != null) {
+			BottomSheetBehavior<View> behavior = BottomSheetBehavior.from(bottomSheet);
+			behavior.setFitToContents(true);
+			behavior.setSkipCollapsed(true);
+			behavior.setExpandedOffset(0);
+			behavior.setState(BottomSheetBehavior.STATE_EXPANDED);
+			behavior.setDraggable(isDraggable);
+		}
 	}
 }

@@ -9,7 +9,6 @@ import android.view.ViewGroup;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.biometric.BiometricManager;
-import com.google.android.material.bottomsheet.BottomSheetBehavior;
 import com.google.android.material.bottomsheet.BottomSheetDialog;
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment;
 import com.google.android.material.dialog.MaterialAlertDialogBuilder;
@@ -270,16 +269,7 @@ public class BottomSheetSettingsSecurityFragment extends BottomSheetDialogFragme
 		super.onStart();
 		Dialog dialog = getDialog();
 		if (dialog instanceof BottomSheetDialog) {
-			View bottomSheet =
-					((BottomSheetDialog) dialog)
-							.findViewById(com.google.android.material.R.id.design_bottom_sheet);
-			if (bottomSheet != null) {
-				BottomSheetBehavior<View> behavior = BottomSheetBehavior.from(bottomSheet);
-				behavior.setFitToContents(true);
-				behavior.setSkipCollapsed(true);
-				behavior.setExpandedOffset(0);
-				behavior.setState(BottomSheetBehavior.STATE_EXPANDED);
-			}
+			AppUtil.applySheetStyle((BottomSheetDialog) dialog, true);
 		}
 	}
 

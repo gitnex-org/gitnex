@@ -1,7 +1,6 @@
 package org.mian.gitnex.fragments;
 
 import android.os.Bundle;
-import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -18,10 +17,12 @@ import com.google.android.material.bottomsheet.BottomSheetDialog;
 import com.google.android.material.dialog.MaterialAlertDialogBuilder;
 import java.util.ArrayList;
 import java.util.Objects;
+import org.gitnex.tea4j.v2.models.CreateKeyOption;
+import org.gitnex.tea4j.v2.models.PublicKey;
 import org.mian.gitnex.R;
-import org.mian.gitnex.adapters.AccountSettingsEmailsAdapter;
-import org.mian.gitnex.databinding.BottomsheetAddEmailBinding;
-import org.mian.gitnex.databinding.FragmentAccountSettingsEmailsBinding;
+import org.mian.gitnex.adapters.AccountSettingsSSHKeysAdapter;
+import org.mian.gitnex.databinding.BottomsheetAddSshKeyBinding;
+import org.mian.gitnex.databinding.FragmentAccountSettingsSshKeysBinding;
 import org.mian.gitnex.helpers.AlertDialogs;
 import org.mian.gitnex.helpers.AppUtil;
 import org.mian.gitnex.helpers.Constants;
@@ -32,19 +33,19 @@ import org.mian.gitnex.viewmodels.AccountSettingsViewModel;
 /**
  * @author mmarif
  */
-public class AccountSettingsEmailsFragment extends Fragment {
+public class AccountSettingsSSHKeysFragment extends Fragment {
 
-	private FragmentAccountSettingsEmailsBinding binding;
+	private FragmentAccountSettingsSshKeysBinding binding;
 	private AccountSettingsViewModel viewModel;
-	private AccountSettingsEmailsAdapter adapter;
+	private AccountSettingsSSHKeysAdapter adapter;
 	private EndlessRecyclerViewScrollListener scrollListener;
 	private int resultLimit;
-	private BottomSheetDialog bottomSheetAddEmail;
+	private BottomSheetDialog bottomSheetAddKey;
 
 	@Override
 	public View onCreateView(
 			@NonNull LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-		binding = FragmentAccountSettingsEmailsBinding.inflate(inflater, container, false);
+		binding = FragmentAccountSettingsSshKeysBinding.inflate(inflater, container, false);
 		resultLimit = Constants.getCurrentResultLimit(requireContext());
 		viewModel = new ViewModelProvider(requireActivity()).get(AccountSettingsViewModel.class);
 
@@ -75,13 +76,10 @@ public class AccountSettingsEmailsFragment extends Fragment {
 
 	private void setupRecyclerView() {
 		adapter =
-				new AccountSettingsEmailsAdapter(
-						new ArrayList<>(),
-						requireContext(),
-						(email, position) -> showDeleteConfirmation(email.getEmail(), position));
+				new AccountSettingsSSHKeysAdapter(
+						new ArrayList<>(), requireContext(), this::showDeleteConfirmation);
 
 		LinearLayoutManager layoutManager = new LinearLayoutManager(requireContext());
-
 		binding.recyclerView.setLayoutManager(layoutManager);
 		binding.recyclerView.setAdapter(adapter);
 
@@ -89,16 +87,24 @@ public class AccountSettingsEmailsFragment extends Fragment {
 				new EndlessRecyclerViewScrollListener(layoutManager) {
 					@Override
 					public void onLoadMore(int page, int totalItemsCount, RecyclerView view) {
-						viewModel.fetchEmails(requireContext(), page, resultLimit, false);
+						viewModel.fetchSshKeys(requireContext(), page, resultLimit, false);
 					}
 				};
-
 		binding.recyclerView.addOnScrollListener(scrollListener);
+	}
+
+	private void setupSwipeRefresh() {
+		binding.pullToRefresh.setOnRefreshListener(this::refreshData);
+	}
+
+	private void refreshData() {
+		scrollListener.resetState();
+		viewModel.fetchSshKeys(requireContext(), 1, resultLimit, true);
 	}
 
 	private void observeViewModel() {
 		viewModel
-				.getEmails()
+				.getSshKeys()
 				.observe(
 						getViewLifecycleOwner(),
 						list -> {
@@ -126,13 +132,26 @@ public class AccountSettingsEmailsFragment extends Fragment {
 						});
 
 		viewModel
-				.getAddEmailStatus()
+				.getAddKeyStatus()
 				.observe(
 						getViewLifecycleOwner(),
 						status -> {
 							if (status == -1) return;
-							handlePostAddEmail(status);
-							viewModel.resetAddEmailStatus();
+							handlePostAddKey(status);
+							viewModel.resetAddKeyStatus();
+						});
+
+		viewModel
+				.getDeleteKeyStatus()
+				.observe(
+						getViewLifecycleOwner(),
+						status -> {
+							if (status == -1) return;
+							if (status == 204 || status == 200) {
+								Toasty.show(
+										requireContext(), getString(R.string.sshKeyDeleteSuccess));
+							}
+							viewModel.resetDeleteKeyStatus();
 						});
 
 		viewModel
@@ -140,44 +159,32 @@ public class AccountSettingsEmailsFragment extends Fragment {
 				.observe(
 						getViewLifecycleOwner(),
 						error -> {
-							if (error != null) Toasty.show(requireContext(), error);
-						});
-
-		viewModel
-				.getAddEmailStatus()
-				.observe(
-						getViewLifecycleOwner(),
-						status -> {
-							if (status == -1) return;
-							handlePostAddEmail(status);
-							viewModel.resetAddEmailStatus();
+							if (error != null) {
+								binding.pullToRefresh.setRefreshing(false);
+								Toasty.show(requireContext(), error);
+							}
 						});
 	}
 
-	private void showDeleteConfirmation(String email, int position) {
-		new MaterialAlertDialogBuilder(
-						requireContext(), R.style.ThemeOverlay_Material3_Dialog_Alert)
-				.setMessage(String.format(getString(R.string.deleteEmailPopupText), email))
-				.setPositiveButton(
-						R.string.menuDeleteText,
-						(dialog, which) -> {
-							viewModel.deleteEmail(requireContext(), email, position);
-						})
-				.setNeutralButton(R.string.cancelButton, null)
-				.show();
-	}
+	public void showNewSSHKeyDialog() {
+		BottomsheetAddSshKeyBinding sheetBinding =
+				BottomsheetAddSshKeyBinding.inflate(LayoutInflater.from(requireContext()));
 
-	public void showAddEmailDialog() {
-		BottomsheetAddEmailBinding sheetBinding =
-				BottomsheetAddEmailBinding.inflate(LayoutInflater.from(requireContext()));
+		bottomSheetAddKey = new BottomSheetDialog(requireContext());
+		bottomSheetAddKey.setContentView(sheetBinding.getRoot());
 
-		bottomSheetAddEmail = new BottomSheetDialog(requireContext());
-		bottomSheetAddEmail.setContentView(sheetBinding.getRoot());
+		AppUtil.applySheetStyle(bottomSheetAddKey, false);
 
-		AppUtil.applySheetStyle(bottomSheetAddEmail, false);
+		sheetBinding.keyStatus.setOnCheckedChangeListener(
+				(buttonView, isChecked) -> {
+					sheetBinding.keyStatus.setText(
+							isChecked
+									? getString(R.string.sshKeyStatusReadWrite)
+									: getString(R.string.sshKeyStatusReadOnly));
+				});
 
 		viewModel
-				.getIsAddingEmail()
+				.getIsAddingKey()
 				.observe(
 						getViewLifecycleOwner(),
 						loading -> {
@@ -186,57 +193,63 @@ public class AccountSettingsEmailsFragment extends Fragment {
 									loading ? "" : getString(R.string.saveButton));
 							sheetBinding.loadingIndicator.setVisibility(
 									loading ? View.VISIBLE : View.GONE);
-							sheetBinding.userEmail.setEnabled(!loading);
+							sheetBinding.keyTitle.setEnabled(!loading);
+							sheetBinding.key.setEnabled(!loading);
+							sheetBinding.keyStatus.setEnabled(!loading);
 						});
 
 		sheetBinding.save.setOnClickListener(
 				v -> {
-					String email =
-							Objects.requireNonNull(sheetBinding.userEmail.getText())
+					String title =
+							Objects.requireNonNull(sheetBinding.keyTitle.getText())
 									.toString()
 									.trim();
+					String key =
+							Objects.requireNonNull(sheetBinding.key.getText()).toString().trim();
 
-					if (email.isEmpty()) {
-						Toasty.show(requireContext(), getString(R.string.emailErrorEmpty));
-					} else if (!isValidEmail(email)) {
-						Toasty.show(requireContext(), getString(R.string.userInvalidEmail));
+					if (title.isEmpty() || key.isEmpty()) {
+						Toasty.show(requireContext(), getString(R.string.emptyFields));
 					} else {
-						viewModel.addNewEmail(requireContext(), email, resultLimit);
+						CreateKeyOption option = new CreateKeyOption();
+						option.setTitle(title);
+						option.setKey(key);
+						option.setReadOnly(!sheetBinding.keyStatus.isChecked());
+						viewModel.addNewSshKey(requireContext(), option, resultLimit);
 					}
 				});
 
-		sheetBinding.btnClose.setOnClickListener(v -> bottomSheetAddEmail.dismiss());
-		bottomSheetAddEmail.show();
+		sheetBinding.btnClose.setOnClickListener(v -> bottomSheetAddKey.dismiss());
+		bottomSheetAddKey.show();
 	}
 
-	private void handlePostAddEmail(int code) {
-		if (code == 201) {
-			if (bottomSheetAddEmail != null && bottomSheetAddEmail.isShowing()) {
-				bottomSheetAddEmail.dismiss();
+	private void handlePostAddKey(int code) {
+		if (code == 201 || code == 202) {
+			if (bottomSheetAddKey != null && bottomSheetAddKey.isShowing()) {
+				bottomSheetAddKey.dismiss();
 			}
-			Toasty.show(requireContext(), getString(R.string.emailAddedText));
+			Toasty.show(requireContext(), getString(R.string.sshKeySuccess));
 			refreshData();
 		} else if (code == 401) {
 			AlertDialogs.authorizationTokenRevokedDialog(requireContext());
 		} else if (code == 422) {
-			Toasty.show(requireContext(), getString(R.string.emailErrorInUse));
+			Toasty.show(requireContext(), getString(R.string.sshKeyError));
 		} else {
 			Toasty.show(requireContext(), getString(R.string.genericError));
 		}
 	}
 
-	private boolean isValidEmail(String email) {
-		return !TextUtils.isEmpty(email)
-				&& android.util.Patterns.EMAIL_ADDRESS.matcher(email).matches();
-	}
-
-	private void setupSwipeRefresh() {
-		binding.pullToRefresh.setOnRefreshListener(this::refreshData);
-	}
-
-	private void refreshData() {
-		scrollListener.resetState();
-		viewModel.fetchEmails(requireContext(), 1, resultLimit, true);
+	private void showDeleteConfirmation(PublicKey key, int position) {
+		new MaterialAlertDialogBuilder(
+						requireContext(), R.style.ThemeOverlay_Material3_Dialog_Alert)
+				.setMessage(
+						String.format(getString(R.string.deleteSshKeyPopupText), key.getTitle()))
+				.setPositiveButton(
+						R.string.menuDeleteText,
+						(dialog, which) -> {
+							viewModel.deleteSshKey(requireContext(), key.getId(), position);
+						})
+				.setNeutralButton(R.string.cancelButton, null)
+				.show();
 	}
 
 	private void updateUiState() {

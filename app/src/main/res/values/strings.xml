@@ -395,6 +395,8 @@
     <string name="sshKey">SSH Key</string>
     <string name="sshKeySuccess">New SSH key added successfully</string>
     <string name="sshKeyError">Invalid SSH key or SSH key already exists</string>
+    <string name="sshKeyDeleteSuccess">SSH key was deleted successfully</string>
+    <string name="deleteSshKeyPopupText">Are you sure you want to delete %1$s SSH key?</string>
     <!-- account settings -->
 
     <!-- single issue section -->
@@ -432,7 +434,7 @@
     <string name="userPassword">Password</string>
     <string name="userInvalidFullName">Invalid Full Name</string>
     <string name="userInvalidUserName">Invalid Username</string>
-    <string name="userInvalidEmail">Invalid Email</string>
+    <string name="userInvalidEmail">Invalid email</string>
     <string name="userCreatedText">New user added successfully</string>
     <string name="userExistsError">User already exists</string>
     <!-- create user -->
@@ -613,6 +615,7 @@
     <string name="stars">Stars</string>
     <string name="template">Template</string>
     <string name="accounts">Accounts</string>
+    <string name="copied">Copied</string>
     <!-- generic copy -->
 
     <string name="exploreUsers">Explore users</string>
@@ -1094,4 +1097,5 @@
     <string name="dashboard_explore_sub_title">Explore public repositories, issues, organizations, and users</string>
     <string name="forked_repository">forked repository</string>
     <string name="mirrored_repository">mirrored repository</string>
+    <string name="copied_to_clipboard">Copied to clipboard</string>
 </resources>

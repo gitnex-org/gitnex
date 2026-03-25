@@ -14,7 +14,6 @@ import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.load.engine.DiskCacheStrategy;
-import com.google.android.material.bottomsheet.BottomSheetBehavior;
 import com.google.android.material.bottomsheet.BottomSheetDialog;
 import java.util.Calendar;
 import org.mian.gitnex.R;
@@ -41,6 +40,7 @@ import org.mian.gitnex.databinding.BottomsheetUserAccountsBinding;
 import org.mian.gitnex.databinding.FragmentHomeDashboardBinding;
 import org.mian.gitnex.databinding.ItemCardFullBinding;
 import org.mian.gitnex.databinding.ItemCardLargeBinding;
+import org.mian.gitnex.helpers.AppUtil;
 import org.mian.gitnex.helpers.TinyDB;
 import org.mian.gitnex.helpers.UrlHelper;
 
@@ -144,16 +144,7 @@ public class HomeDashboardFragment extends Fragment {
 				BottomsheetUserAccountsBinding.inflate(getLayoutInflater());
 		bottomSheetDialog.setContentView(sheetBinding.getRoot());
 
-		View bottomSheet =
-				bottomSheetDialog.findViewById(
-						com.google.android.material.R.id.design_bottom_sheet);
-		if (bottomSheet != null) {
-			BottomSheetBehavior<View> behavior = BottomSheetBehavior.from(bottomSheet);
-			behavior.setFitToContents(true);
-			behavior.setSkipCollapsed(true);
-			behavior.setExpandedOffset(0);
-			behavior.setState(BottomSheetBehavior.STATE_EXPANDED);
-		}
+		AppUtil.applySheetStyle(bottomSheetDialog, true);
 
 		UserAccountsAdapter adapter = new UserAccountsAdapter(requireContext(), bottomSheetDialog);
 		sheetBinding.accountsList.setLayoutManager(new LinearLayoutManager(requireContext()));

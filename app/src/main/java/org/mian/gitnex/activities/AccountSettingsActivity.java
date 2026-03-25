@@ -1,15 +1,17 @@
 package org.mian.gitnex.activities;
 
 import android.os.Bundle;
-import androidx.annotation.NonNull;
+import android.view.View;
+import android.view.ViewGroup;
+import android.widget.LinearLayout;
+import androidx.activity.EdgeToEdge;
 import androidx.fragment.app.Fragment;
-import androidx.viewpager2.adapter.FragmentStateAdapter;
-import com.google.android.material.tabs.TabLayoutMediator;
+import androidx.fragment.app.FragmentManager;
+import com.google.android.material.button.MaterialButton;
 import org.mian.gitnex.R;
 import org.mian.gitnex.databinding.ActivityAccountSettingsBinding;
 import org.mian.gitnex.fragments.AccountSettingsEmailsFragment;
-import org.mian.gitnex.fragments.SSHKeysFragment;
-import org.mian.gitnex.helpers.ViewPager2Transformers;
+import org.mian.gitnex.fragments.AccountSettingsSSHKeysFragment;
 
 /**
  * @author mmarif
@@ -17,50 +19,123 @@ import org.mian.gitnex.helpers.ViewPager2Transformers;
 public class AccountSettingsActivity extends BaseActivity {
 
 	private ActivityAccountSettingsBinding binding;
+	private final Fragment emailFrag = new AccountSettingsEmailsFragment();
+	private final Fragment sshFrag = new AccountSettingsSSHKeysFragment();
+	private Fragment activeFragment = emailFrag;
+	private final FragmentManager fm = getSupportFragmentManager();
+	private View detachedDivider;
+	private View detachedAddBtn;
 
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
+		EdgeToEdge.enable(this);
+
 		binding = ActivityAccountSettingsBinding.inflate(getLayoutInflater());
 		setContentView(binding.getRoot());
 
-		setupViewPager();
+		detachedDivider = binding.dockDivider;
+		detachedAddBtn = binding.btnDockAdd;
+
+		setupFragments();
+		setupDockListeners();
+
+		updateDockUI(R.id.btn_nav_emails);
 	}
 
-	private void setupViewPager() {
-		ViewPagerAdapter adapter = new ViewPagerAdapter(this);
-		binding.accountSettingsContainer.setAdapter(adapter);
-		binding.accountSettingsContainer.setOffscreenPageLimit(1);
-
-		ViewPager2Transformers.returnSelectedTransformer(binding.accountSettingsContainer);
-
-		String[] tabTitles = {getString(R.string.accountEmails), getString(R.string.sshKeys)};
-
-		new TabLayoutMediator(
-						binding.tabs,
-						binding.accountSettingsContainer,
-						(tab, position) -> tab.setText(tabTitles[position]))
-				.attach();
+	private void setupFragments() {
+		fm.beginTransaction()
+				.add(R.id.account_settings_content, sshFrag, "ssh")
+				.hide(sshFrag)
+				.add(R.id.account_settings_content, emailFrag, "email")
+				.show(emailFrag)
+				.commitNow();
 	}
 
-	private static class ViewPagerAdapter extends FragmentStateAdapter {
+	private void setupDockListeners() {
+		prepareNavButton(binding.btnNavEmails);
+		prepareNavButton(binding.btnNavSshKeys);
+		prepareNavButton(binding.btnBack);
 
-		public ViewPagerAdapter(@NonNull BaseActivity activity) {
-			super(activity);
+		binding.btnBack.setOnClickListener(v -> finish());
+
+		binding.btnNavEmails.setOnClickListener(v -> switchTab(emailFrag, R.id.btn_nav_emails));
+		binding.btnNavSshKeys.setOnClickListener(v -> switchTab(sshFrag, R.id.btn_nav_ssh_keys));
+
+		binding.btnDockAdd.setOnClickListener(
+				v -> {
+					if (activeFragment instanceof AccountSettingsEmailsFragment ef) {
+						ef.showAddEmailDialog();
+					} else if (activeFragment instanceof AccountSettingsSSHKeysFragment sf) {
+						sf.showNewSSHKeyDialog();
+					}
+				});
+	}
+
+	private void prepareNavButton(MaterialButton btn) {
+		btn.setBackgroundResource(R.drawable.nav_pill_background);
+		btn.setBackgroundTintList(null);
+		btn.getBackground().setAlpha(0);
+	}
+
+	private void activatePill(MaterialButton btn) {
+		btn.setSelected(true);
+		if (btn.getBackground() != null) btn.getBackground().setAlpha(255);
+	}
+
+	private void resetPill(MaterialButton btn) {
+		btn.setSelected(false);
+		if (btn.getBackground() != null) btn.getBackground().setAlpha(0);
+	}
+
+	private void switchTab(Fragment target, int btnId) {
+		if (activeFragment == target) return;
+
+		fm.beginTransaction()
+				.setCustomAnimations(android.R.anim.fade_in, android.R.anim.fade_out)
+				.hide(activeFragment)
+				.show(target)
+				.commit();
+
+		activeFragment = target;
+		updateDockUI(btnId);
+	}
+
+	private void updateDockUI(int activeBtnId) {
+		resetPill(binding.btnNavEmails);
+		resetPill(binding.btnNavSshKeys);
+
+		if (activeBtnId == R.id.btn_nav_emails) {
+			activatePill(binding.btnNavEmails);
+		} else {
+			activatePill(binding.btnNavSshKeys);
 		}
 
-		@NonNull @Override
-		public Fragment createFragment(int position) {
-			return switch (position) {
-				case 0 -> new AccountSettingsEmailsFragment();
-				case 1 -> new SSHKeysFragment();
-				default -> throw new IllegalStateException("Unexpected position " + position);
-			};
-		}
+		updateContextualDockActions();
+	}
 
-		@Override
-		public int getItemCount() {
-			return 2;
+	private void updateContextualDockActions() {
+		ViewGroup parent = binding.dockedToolbarChild;
+
+		parent.removeView(detachedDivider);
+		parent.removeView(detachedAddBtn);
+
+		LinearLayout.LayoutParams dividerParams =
+				(LinearLayout.LayoutParams) detachedDivider.getLayoutParams();
+
+		if (activeFragment instanceof AccountSettingsSSHKeysFragment) {
+			dividerParams.setMarginStart(getResources().getDimensionPixelSize(R.dimen.dimen16dp));
+		} else {
+			dividerParams.setMarginStart(getResources().getDimensionPixelSize(R.dimen.dimen4dp));
 		}
+		detachedDivider.setLayoutParams(dividerParams);
+
+		parent.addView(detachedDivider);
+		parent.addView(detachedAddBtn);
+
+		detachedDivider.setVisibility(View.VISIBLE);
+		detachedAddBtn.setVisibility(View.VISIBLE);
+
+		binding.dockedToolbar.requestLayout();
 	}
 }

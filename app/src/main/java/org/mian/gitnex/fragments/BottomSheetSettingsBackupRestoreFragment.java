@@ -13,7 +13,6 @@ import androidx.activity.result.ActivityResultLauncher;
 import androidx.activity.result.contract.ActivityResultContracts;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
-import com.google.android.material.bottomsheet.BottomSheetBehavior;
 import com.google.android.material.bottomsheet.BottomSheetDialog;
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment;
 import java.io.File;
@@ -249,16 +248,7 @@ public class BottomSheetSettingsBackupRestoreFragment extends BottomSheetDialogF
 		super.onStart();
 		Dialog dialog = getDialog();
 		if (dialog instanceof BottomSheetDialog) {
-			View bottomSheet =
-					((BottomSheetDialog) dialog)
-							.findViewById(com.google.android.material.R.id.design_bottom_sheet);
-			if (bottomSheet != null) {
-				BottomSheetBehavior<View> behavior = BottomSheetBehavior.from(bottomSheet);
-				behavior.setFitToContents(true);
-				behavior.setSkipCollapsed(true);
-				behavior.setExpandedOffset(0);
-				behavior.setState(BottomSheetBehavior.STATE_EXPANDED);
-			}
+			AppUtil.applySheetStyle((BottomSheetDialog) dialog, true);
 		}
 	}
 

@@ -8,12 +8,12 @@ import android.view.ViewGroup;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.lifecycle.ViewModelProvider;
-import com.google.android.material.bottomsheet.BottomSheetBehavior;
 import com.google.android.material.bottomsheet.BottomSheetDialog;
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment;
 import org.gitnex.tea4j.v2.models.NotificationThread;
 import org.mian.gitnex.R;
 import org.mian.gitnex.databinding.BottomSheetNotificationsBinding;
+import org.mian.gitnex.helpers.AppUtil;
 import org.mian.gitnex.viewmodels.NotificationsViewModel;
 
 /**
@@ -86,16 +86,7 @@ public class BottomSheetNotificationsFragment extends BottomSheetDialogFragment 
 		super.onStart();
 		Dialog dialog = getDialog();
 		if (dialog instanceof BottomSheetDialog) {
-			View bottomSheet =
-					((BottomSheetDialog) dialog)
-							.findViewById(com.google.android.material.R.id.design_bottom_sheet);
-			if (bottomSheet != null) {
-				BottomSheetBehavior<View> behavior = BottomSheetBehavior.from(bottomSheet);
-				behavior.setFitToContents(true);
-				behavior.setSkipCollapsed(true);
-				behavior.setExpandedOffset(0);
-				behavior.setState(BottomSheetBehavior.STATE_EXPANDED);
-			}
+			AppUtil.applySheetStyle((BottomSheetDialog) dialog, true);
 		}
 	}
 }
