@@ -23,12 +23,20 @@ public class AdministrationViewModel extends ViewModel {
 
 	private final MutableLiveData<RepositoryGlobal> repositorySettings = new MutableLiveData<>();
 	private final MutableLiveData<List<Cron>> cronTasks = new MutableLiveData<>(new ArrayList<>());
-	private final MutableLiveData<Boolean> isLoading = new MutableLiveData<>(false);
+	private final MutableLiveData<List<String>> unadoptedRepos =
+			new MutableLiveData<>(new ArrayList<>());
+
+	private final MutableLiveData<Boolean> isSettingsLoading = new MutableLiveData<>(false);
+	private final MutableLiveData<Boolean> isCronLoading = new MutableLiveData<>(false);
+	private final MutableLiveData<Boolean> isUnadoptedLoading = new MutableLiveData<>(false);
 	private final MutableLiveData<String> errorMessage = new MutableLiveData<>();
 	private final MutableLiveData<String> taskSuccessMessage = new MutableLiveData<>();
+	private final MutableLiveData<RepoActionResult> repoActionSuccess = new MutableLiveData<>();
 
 	private int cronTotalCount = -1;
 	private boolean isCronLastPage = false;
+	private int unadoptedTotalCount = -1;
+	private boolean isUnadoptedLastPage = false;
 
 	public LiveData<RepositoryGlobal> getRepositorySettings() {
 		return repositorySettings;
@@ -38,8 +46,20 @@ public class AdministrationViewModel extends ViewModel {
 		return cronTasks;
 	}
 
-	public LiveData<Boolean> getIsLoading() {
-		return isLoading;
+	public LiveData<List<String>> getUnadoptedRepos() {
+		return unadoptedRepos;
+	}
+
+	public LiveData<Boolean> getIsSettingsLoading() {
+		return isSettingsLoading;
+	}
+
+	public LiveData<Boolean> getIsCronLoading() {
+		return isCronLoading;
+	}
+
+	public LiveData<Boolean> getIsUnadoptedLoading() {
+		return isUnadoptedLoading;
 	}
 
 	public LiveData<String> getErrorMessage() {
@@ -50,8 +70,12 @@ public class AdministrationViewModel extends ViewModel {
 		return taskSuccessMessage;
 	}
 
+	public LiveData<RepoActionResult> getRepoActionSuccess() {
+		return repoActionSuccess;
+	}
+
 	public void fetchRepositoryGlobalSettings(Context context) {
-		isLoading.setValue(true);
+		isSettingsLoading.setValue(true);
 		ApiRetrofitClient.getInstance(context)
 				.getRepositoryGlobalSettings()
 				.enqueue(
@@ -60,29 +84,26 @@ public class AdministrationViewModel extends ViewModel {
 							public void onResponse(
 									@NonNull Call<RepositoryGlobal> call,
 									@NonNull Response<RepositoryGlobal> response) {
-								isLoading.setValue(false);
-								if (response.isSuccessful()) {
+								isSettingsLoading.setValue(false);
+								if (response.isSuccessful())
 									repositorySettings.setValue(response.body());
-								} else {
-									errorMessage.setValue("Error: " + response.code());
-								}
+								else errorMessage.setValue("Error: " + response.code());
 							}
 
 							@Override
 							public void onFailure(
 									@NonNull Call<RepositoryGlobal> call, @NonNull Throwable t) {
-								isLoading.setValue(false);
+								isSettingsLoading.setValue(false);
 								errorMessage.setValue(t.getMessage());
 							}
 						});
 	}
 
 	public void fetchCronTasks(Context context, int page, int limit, boolean isRefresh) {
-		if (Boolean.TRUE.equals(isLoading.getValue())) return;
+		if (Boolean.TRUE.equals(isCronLoading.getValue())) return;
 		if (!isRefresh && isCronLastPage) return;
 
-		isLoading.setValue(true);
-
+		isCronLoading.setValue(true);
 		RetrofitClient.getApiInterface(context)
 				.adminCronList(page, limit)
 				.enqueue(
@@ -91,38 +112,142 @@ public class AdministrationViewModel extends ViewModel {
 							public void onResponse(
 									@NonNull Call<List<Cron>> call,
 									@NonNull Response<List<Cron>> response) {
-								isLoading.setValue(false);
+								isCronLoading.setValue(false);
 								if (response.isSuccessful() && response.body() != null) {
-									String totalHeader = response.headers().get("x-total-count");
-									if (totalHeader != null) {
-										cronTotalCount = Integer.parseInt(totalHeader);
-									}
-
-									List<Cron> currentList =
-											isRefresh
-													? new ArrayList<>()
-													: new ArrayList<>(
-															Objects.requireNonNull(
-																	cronTasks.getValue()));
-									currentList.addAll(response.body());
-									cronTasks.setValue(currentList);
-
-									if (response.body().size() < limit
-											|| currentList.size() >= cronTotalCount) {
-										isCronLastPage = true;
-									}
-								} else {
-									errorMessage.setValue("Error: " + response.code());
-								}
+									handleCronResponse(
+											response.body(),
+											response.headers().get("x-total-count"),
+											limit,
+											isRefresh);
+								} else errorMessage.setValue("Error: " + response.code());
 							}
 
 							@Override
 							public void onFailure(
 									@NonNull Call<List<Cron>> call, @NonNull Throwable t) {
-								isLoading.setValue(false);
+								isCronLoading.setValue(false);
 								errorMessage.setValue(t.getMessage());
 							}
 						});
+	}
+
+	private void handleCronResponse(
+			List<Cron> body, String totalHeader, int limit, boolean isRefresh) {
+		if (totalHeader != null) cronTotalCount = Integer.parseInt(totalHeader);
+		List<Cron> currentList =
+				isRefresh
+						? new ArrayList<>()
+						: new ArrayList<>(Objects.requireNonNull(cronTasks.getValue()));
+		currentList.addAll(body);
+		cronTasks.setValue(currentList);
+		if (body.size() < limit || currentList.size() >= cronTotalCount) isCronLastPage = true;
+	}
+
+	public void runCronTask(Context context, String taskName) {
+		isCronLoading.setValue(true);
+		RetrofitClient.getApiInterface(context)
+				.adminCronRun(taskName)
+				.enqueue(
+						new Callback<>() {
+							@Override
+							public void onResponse(
+									@NonNull Call<Void> call, @NonNull Response<Void> response) {
+								isCronLoading.setValue(false);
+								if (response.code() == 204) {
+									taskSuccessMessage.setValue(taskName);
+									taskSuccessMessage.setValue(null);
+								} else errorMessage.setValue("Error: " + response.code());
+							}
+
+							@Override
+							public void onFailure(@NonNull Call<Void> call, @NonNull Throwable t) {
+								isCronLoading.setValue(false);
+								errorMessage.setValue(t.getMessage());
+							}
+						});
+	}
+
+	public void fetchUnadoptedRepos(Context context, int page, int limit, boolean isRefresh) {
+		if (Boolean.TRUE.equals(isUnadoptedLoading.getValue())) return;
+		if (!isRefresh && isUnadoptedLastPage) return;
+
+		isUnadoptedLoading.setValue(true);
+		RetrofitClient.getApiInterface(context)
+				.adminUnadoptedList(page, limit, null)
+				.enqueue(
+						new Callback<>() {
+							@Override
+							public void onResponse(
+									@NonNull Call<List<String>> call,
+									@NonNull Response<List<String>> response) {
+								isUnadoptedLoading.setValue(false);
+								if (response.isSuccessful() && response.body() != null) {
+									handleUnadoptedResponse(
+											response.body(),
+											response.headers().get("x-total-count"),
+											limit,
+											isRefresh);
+								} else errorMessage.setValue("Error: " + response.code());
+							}
+
+							@Override
+							public void onFailure(
+									@NonNull Call<List<String>> call, @NonNull Throwable t) {
+								isUnadoptedLoading.setValue(false);
+								errorMessage.setValue(t.getMessage());
+							}
+						});
+	}
+
+	private void handleUnadoptedResponse(
+			List<String> body, String totalHeader, int limit, boolean isRefresh) {
+		if (totalHeader != null) unadoptedTotalCount = Integer.parseInt(totalHeader);
+		List<String> currentList =
+				isRefresh
+						? new ArrayList<>()
+						: new ArrayList<>(Objects.requireNonNull(unadoptedRepos.getValue()));
+		currentList.addAll(body);
+		unadoptedRepos.setValue(currentList);
+		if (body.size() < limit || currentList.size() >= unadoptedTotalCount)
+			isUnadoptedLastPage = true;
+	}
+
+	public void performRepoAction(Context context, String repoName, boolean isDelete) {
+		isUnadoptedLoading.setValue(true);
+		String[] parts = repoName.split("/");
+		Call<Void> call =
+				isDelete
+						? RetrofitClient.getApiInterface(context)
+								.adminDeleteUnadoptedRepository(parts[0], parts[1])
+						: RetrofitClient.getApiInterface(context)
+								.adminAdoptRepository(parts[0], parts[1]);
+
+		call.enqueue(
+				new Callback<>() {
+					@Override
+					public void onResponse(
+							@NonNull Call<Void> call, @NonNull Response<Void> response) {
+						isUnadoptedLoading.setValue(false);
+						if (response.code() == 204) {
+							List<String> current =
+									new ArrayList<>(
+											Objects.requireNonNull(unadoptedRepos.getValue()));
+							current.remove(repoName);
+							unadoptedRepos.setValue(current);
+
+							repoActionSuccess.setValue(new RepoActionResult(repoName, isDelete));
+							repoActionSuccess.setValue(null);
+						} else {
+							errorMessage.setValue("Error: " + response.code());
+						}
+					}
+
+					@Override
+					public void onFailure(@NonNull Call<Void> call, @NonNull Throwable t) {
+						isUnadoptedLoading.setValue(false);
+						errorMessage.setValue(t.getMessage());
+					}
+				});
 	}
 
 	public void resetCronPagination() {
@@ -131,29 +256,11 @@ public class AdministrationViewModel extends ViewModel {
 		this.cronTasks.setValue(new ArrayList<>());
 	}
 
-	public void runCronTask(Context context, String taskName) {
-		isLoading.setValue(true);
-		RetrofitClient.getApiInterface(context)
-				.adminCronRun(taskName)
-				.enqueue(
-						new Callback<>() {
-							@Override
-							public void onResponse(
-									@NonNull Call<Void> call, @NonNull Response<Void> response) {
-								isLoading.setValue(false);
-								if (response.code() == 204) {
-									taskSuccessMessage.setValue(taskName);
-									taskSuccessMessage.setValue(null);
-								} else {
-									errorMessage.setValue("Error: " + response.code());
-								}
-							}
-
-							@Override
-							public void onFailure(@NonNull Call<Void> call, @NonNull Throwable t) {
-								isLoading.setValue(false);
-								errorMessage.setValue(t.getMessage());
-							}
-						});
+	public void resetUnadoptedPagination() {
+		this.isUnadoptedLastPage = false;
+		this.unadoptedTotalCount = -1;
+		this.unadoptedRepos.setValue(new ArrayList<>());
 	}
+
+	public record RepoActionResult(String repoName, boolean isDelete) {}
 }

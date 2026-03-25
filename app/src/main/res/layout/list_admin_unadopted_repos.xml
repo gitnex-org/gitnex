@@ -1,35 +1,27 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:layout_width="match_parent"
-    android:layout_height="wrap_content"
+<com.google.android.material.listitem.ListItemLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    android:paddingTop="@dimen/dimen4dp"
-    android:paddingBottom="@dimen/dimen4dp">
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content">
 
-    <com.google.android.material.card.MaterialCardView
+    <com.google.android.material.listitem.ListItemCardView
+        android:id="@+id/card"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        style="?attr/materialCardViewElevatedStyle"
-        app:cardElevation="@dimen/dimen0dp">
+        android:checkable="false"
+        android:layout_marginVertical="@dimen/dimen1dp"
+        app:strokeWidth="0dp"
+        app:cardBackgroundColor="?attr/materialCardBackgroundColor">
 
-        <LinearLayout
+        <TextView
+            android:id="@+id/repo_name"
+            style="@style/TextAppearance.Material3.BodyLarge"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:foreground="?android:attr/selectableItemBackground"
-            android:background="?attr/materialCardBackgroundColor"
-            android:padding="@dimen/dimen12dp"
-            android:orientation="vertical">
+            android:padding="@dimen/dimen8dp"
+            android:textColor="?attr/primaryTextColor" />
 
-            <TextView
-                android:id="@+id/repo_name"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginBottom="@dimen/dimen6dp"
-                android:textColor="?attr/primaryTextColor"
-                android:textSize="@dimen/dimen16sp"/>
+    </com.google.android.material.listitem.ListItemCardView>
 
-        </LinearLayout>
-
-    </com.google.android.material.card.MaterialCardView>
-
-</RelativeLayout>
+</com.google.android.material.listitem.ListItemLayout>

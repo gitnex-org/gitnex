@@ -18,6 +18,7 @@ import org.apache.commons.lang3.StringUtils;
 import org.gitnex.tea4j.v2.models.Cron;
 import org.mian.gitnex.R;
 import org.mian.gitnex.adapters.AdminCronTasksAdapter;
+import org.mian.gitnex.adapters.AdminUnadoptedReposAdapter;
 import org.mian.gitnex.api.models.settings.RepositoryGlobal;
 import org.mian.gitnex.databinding.ActivityAdministrationBinding;
 import org.mian.gitnex.databinding.BottomSheetGlobalRepositorySettingsBinding;
@@ -86,10 +87,7 @@ public class AdministrationActivity extends BaseActivity {
 
 		binding.cardCron.getRoot().setOnClickListener(v -> showCronTasksSheet());
 
-		binding.cardUnadopted
-				.getRoot()
-				.setOnClickListener(
-						v -> startActivity(new Intent(this, AdminUnadoptedReposActivity.class)));
+		binding.cardUnadopted.getRoot().setOnClickListener(v -> showUnadoptedReposSheet());
 
 		binding.cardRepoSettings.getRoot().setOnClickListener(v -> showRepositorySettings());
 	}
@@ -144,7 +142,7 @@ public class AdministrationActivity extends BaseActivity {
 						});
 
 		viewModel
-				.getIsLoading()
+				.getIsCronLoading()
 				.observe(
 						this,
 						loading ->
@@ -211,7 +209,7 @@ public class AdministrationActivity extends BaseActivity {
 						});
 
 		viewModel
-				.getIsLoading()
+				.getIsSettingsLoading()
 				.observe(
 						this,
 						loading -> {
@@ -246,6 +244,88 @@ public class AdministrationActivity extends BaseActivity {
 			itemBinding.statusContainer.setCardBackgroundColor(Color.parseColor("#1AC62828"));
 			itemBinding.settingStatus.setTextColor(ContextCompat.getColor(this, R.color.darkRed));
 		}
+	}
+
+	private void showUnadoptedReposSheet() {
+
+		BottomsheetAdminCronTasksBinding sheetBinding =
+				BottomsheetAdminCronTasksBinding.inflate(getLayoutInflater());
+		BottomSheetDialog dialog = new BottomSheetDialog(this);
+		dialog.setContentView(sheetBinding.getRoot());
+		AppUtil.applySheetStyle(dialog, true);
+
+		sheetBinding.title.setText(R.string.unadoptedRepos);
+		viewModel.resetUnadoptedPagination();
+
+		AdminUnadoptedReposAdapter adapter =
+				new AdminUnadoptedReposAdapter(new ArrayList<>(), this::showUnadoptedActionDialog);
+		LinearLayoutManager layoutManager = new LinearLayoutManager(this);
+		sheetBinding.recyclerView.setLayoutManager(layoutManager);
+		sheetBinding.recyclerView.setAdapter(adapter);
+
+		EndlessRecyclerViewScrollListener scrollListener =
+				new EndlessRecyclerViewScrollListener(layoutManager) {
+					@Override
+					public void onLoadMore(int page, int totalItemsCount, RecyclerView view) {
+						viewModel.fetchUnadoptedRepos(
+								AdministrationActivity.this, page, resultLimit, false);
+					}
+				};
+		sheetBinding.recyclerView.addOnScrollListener(scrollListener);
+
+		viewModel
+				.getUnadoptedRepos()
+				.observe(
+						this,
+						list -> {
+							adapter.updateList(list);
+							sheetBinding
+									.layoutEmpty
+									.getRoot()
+									.setVisibility(list.isEmpty() ? View.VISIBLE : View.GONE);
+						});
+
+		viewModel
+				.getIsUnadoptedLoading()
+				.observe(
+						this,
+						loading ->
+								sheetBinding.expressiveLoader.setVisibility(
+										loading ? View.VISIBLE : View.GONE));
+
+		viewModel
+				.getRepoActionSuccess()
+				.observe(
+						this,
+						result -> {
+							if (result != null) {
+								String message;
+								if (result.isDelete()) {
+									message = getString(R.string.repoDeletionSuccess);
+								} else {
+									message = getString(R.string.repoAdopted, result.repoName());
+								}
+								Toasty.show(this, message);
+							}
+						});
+
+		viewModel.fetchUnadoptedRepos(this, 1, resultLimit, true);
+		dialog.show();
+	}
+
+	private void showUnadoptedActionDialog(String repoName) {
+		String[] parts = repoName.split("/");
+		new MaterialAlertDialogBuilder(this)
+				.setTitle(repoName)
+				.setMessage(getString(R.string.unadoptedReposMessage, parts[1], parts[0]))
+				.setNeutralButton(R.string.close, null)
+				.setPositiveButton(
+						R.string.menuDeleteText,
+						(d, w) -> viewModel.performRepoAction(this, repoName, true))
+				.setNegativeButton(
+						R.string.adoptRepo,
+						(d, w) -> viewModel.performRepoAction(this, repoName, false))
+				.show();
 	}
 
 	private void initCards() {

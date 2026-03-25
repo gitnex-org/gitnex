@@ -23,14 +23,28 @@
 
     <com.google.android.material.loadingindicator.LoadingIndicator
         android:id="@+id/expressive_loader"
-        android:layout_width="match_parent"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="@dimen/dimen24dp"
-        android:layout_marginBottom="@dimen/dimen24dp"
+        android:layout_marginTop="@dimen/dimen48dp"
+        android:layout_marginBottom="@dimen/dimen48dp"
         android:layout_gravity="center"
         app:indicatorSize="@dimen/dimen48dp"
         app:trackThickness="@dimen/dimen4dp"
         android:visibility="gone"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/title" />
+
+    <include
+        android:id="@+id/layout_empty"
+        layout="@layout/layout_empty_state"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/dimen32dp"
+        android:layout_marginBottom="@dimen/dimen32dp"
+        android:visibility="gone"
+        app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintTop_toBottomOf="@id/title" />
 
     <androidx.recyclerview.widget.RecyclerView
