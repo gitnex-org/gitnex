@@ -46,6 +46,8 @@ import java.util.Map;
 import java.util.Objects;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
+import org.json.JSONException;
+import org.json.JSONObject;
 import org.mian.gitnex.R;
 import org.mian.gitnex.activities.LoginActivity;
 import org.mian.gitnex.activities.MainActivity;
@@ -740,5 +742,27 @@ public class AppUtil {
 			behavior.setState(BottomSheetBehavior.STATE_EXPANDED);
 			behavior.setDraggable(isDraggable);
 		}
+	}
+
+	public static String parseErrorMessage(String errorBody) {
+		if (errorBody == null || errorBody.isEmpty()) {
+			return "Unknown error occurred";
+		}
+
+		String parsedMessage;
+		try {
+			JSONObject jsonObject = new JSONObject(errorBody);
+
+			if (jsonObject.has("message")) {
+				parsedMessage = jsonObject.getString("message");
+			} else if (jsonObject.has("errors")) {
+				parsedMessage = jsonObject.get("errors").toString();
+			} else {
+				parsedMessage = errorBody;
+			}
+		} catch (JSONException e) {
+			parsedMessage = errorBody.length() > 100 ? "Error parsing server response" : errorBody;
+		}
+		return "API error: " + parsedMessage;
 	}
 }

@@ -8,10 +8,14 @@ import androidx.lifecycle.ViewModel;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
+import okhttp3.ResponseBody;
+import org.gitnex.tea4j.v2.models.CreateUserOption;
 import org.gitnex.tea4j.v2.models.Cron;
+import org.gitnex.tea4j.v2.models.User;
 import org.mian.gitnex.api.clients.ApiRetrofitClient;
 import org.mian.gitnex.api.models.settings.RepositoryGlobal;
 import org.mian.gitnex.clients.RetrofitClient;
+import org.mian.gitnex.helpers.AppUtil;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
@@ -21,18 +25,25 @@ import retrofit2.Response;
  */
 public class AdministrationViewModel extends ViewModel {
 
+	public record RepoActionResult(String repoName, boolean isDelete) {}
+
 	private final MutableLiveData<RepositoryGlobal> repositorySettings = new MutableLiveData<>();
 	private final MutableLiveData<List<Cron>> cronTasks = new MutableLiveData<>(new ArrayList<>());
 	private final MutableLiveData<List<String>> unadoptedRepos =
 			new MutableLiveData<>(new ArrayList<>());
-
 	private final MutableLiveData<Boolean> isSettingsLoading = new MutableLiveData<>(false);
 	private final MutableLiveData<Boolean> isCronLoading = new MutableLiveData<>(false);
 	private final MutableLiveData<Boolean> isUnadoptedLoading = new MutableLiveData<>(false);
 	private final MutableLiveData<String> errorMessage = new MutableLiveData<>();
 	private final MutableLiveData<String> taskSuccessMessage = new MutableLiveData<>();
 	private final MutableLiveData<RepoActionResult> repoActionSuccess = new MutableLiveData<>();
+	private final MutableLiveData<List<User>> users = new MutableLiveData<>(new ArrayList<>());
+	private final MutableLiveData<Boolean> isUsersLoading = new MutableLiveData<>(false);
+	private final MutableLiveData<Integer> createUserStatus = new MutableLiveData<>(-1);
+	private final MutableLiveData<Boolean> isAddingUser = new MutableLiveData<>(false);
 
+	private int usersTotalCount = -1;
+	private boolean isUsersLastPage = false;
 	private int cronTotalCount = -1;
 	private boolean isCronLastPage = false;
 	private int unadoptedTotalCount = -1;
@@ -72,6 +83,22 @@ public class AdministrationViewModel extends ViewModel {
 
 	public LiveData<RepoActionResult> getRepoActionSuccess() {
 		return repoActionSuccess;
+	}
+
+	public LiveData<List<User>> getUsers() {
+		return users;
+	}
+
+	public LiveData<Boolean> getIsUsersLoading() {
+		return isUsersLoading;
+	}
+
+	public LiveData<Integer> getCreateUserStatus() {
+		return createUserStatus;
+	}
+
+	public LiveData<Boolean> getIsAddingUser() {
+		return isAddingUser;
 	}
 
 	public void fetchRepositoryGlobalSettings(Context context) {
@@ -262,5 +289,108 @@ public class AdministrationViewModel extends ViewModel {
 		this.unadoptedRepos.setValue(new ArrayList<>());
 	}
 
-	public record RepoActionResult(String repoName, boolean isDelete) {}
+	public void fetchUsers(Context context, int page, int limit, boolean isRefresh) {
+
+		if (Boolean.TRUE.equals(isUsersLoading.getValue())) return;
+		if (!isRefresh && isUsersLastPage) return;
+
+		isUsersLoading.setValue(true);
+
+		RetrofitClient.getApiInterface(context)
+				.adminSearchUsers(
+						null, null, page, limit, null, null, null, null, null, null, null, null,
+						null)
+				.enqueue(
+						new Callback<>() {
+							@Override
+							public void onResponse(
+									@NonNull Call<List<User>> call,
+									@NonNull Response<List<User>> response) {
+								isUsersLoading.setValue(false);
+								if (response.isSuccessful() && response.body() != null) {
+									handleUsersResponse(
+											response.body(),
+											response.headers().get("x-total-count"),
+											limit,
+											isRefresh);
+								} else {
+									errorMessage.setValue("Error: " + response.code());
+								}
+							}
+
+							@Override
+							public void onFailure(
+									@NonNull Call<List<User>> call, @NonNull Throwable t) {
+								isUsersLoading.setValue(false);
+								errorMessage.setValue(t.getMessage());
+							}
+						});
+	}
+
+	private void handleUsersResponse(
+			List<User> body, String totalHeader, int limit, boolean isRefresh) {
+		if (totalHeader != null) usersTotalCount = Integer.parseInt(totalHeader);
+
+		List<User> currentList =
+				isRefresh
+						? new ArrayList<>()
+						: new ArrayList<>(Objects.requireNonNull(users.getValue()));
+		currentList.addAll(body);
+		users.setValue(currentList);
+
+		if (body.size() < limit || currentList.size() >= usersTotalCount) {
+			isUsersLastPage = true;
+		}
+	}
+
+	public void resetUsersPagination() {
+		this.isUsersLastPage = false;
+		this.usersTotalCount = -1;
+		this.users.setValue(new ArrayList<>());
+	}
+
+	public void resetCreateUserStatus() {
+		createUserStatus.setValue(-1);
+	}
+
+	public void createNewUser(Context context, CreateUserOption option) {
+		if (Boolean.TRUE.equals(isAddingUser.getValue())) return;
+		isAddingUser.setValue(true);
+
+		RetrofitClient.getApiInterface(context)
+				.adminCreateUser(option)
+				.enqueue(
+						new Callback<>() {
+							@Override
+							public void onResponse(
+									@NonNull Call<User> call, @NonNull Response<User> response) {
+								isAddingUser.setValue(false);
+								if (response.isSuccessful()) {
+									createUserStatus.setValue(response.code());
+								} else {
+									if (response.code() == 400) {
+										try (ResponseBody body = response.errorBody()) {
+											if (body != null) {
+												String errorJson = body.string();
+												errorMessage.setValue(
+														AppUtil.parseErrorMessage(errorJson));
+											} else {
+												errorMessage.setValue("Bad Request (400)");
+											}
+										} catch (Exception e) {
+											errorMessage.setValue("Error parsing 400 response");
+										}
+									}
+									createUserStatus.setValue(response.code());
+								}
+							}
+
+							@Override
+							public void onFailure(@NonNull Call<User> call, @NonNull Throwable t) {
+								isAddingUser.setValue(false);
+								errorMessage.setValue(t.getMessage());
+								createUserStatus.setValue(0);
+							}
+						});
+	}
 }

@@ -7,97 +7,43 @@ import android.graphics.drawable.Drawable;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Filter;
-import android.widget.Filterable;
-import android.widget.ImageView;
-import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.core.content.res.ResourcesCompat;
 import androidx.recyclerview.widget.RecyclerView;
 import com.bumptech.glide.Glide;
-import java.util.ArrayList;
 import java.util.List;
 import org.gitnex.tea4j.v2.models.User;
 import org.mian.gitnex.R;
 import org.mian.gitnex.activities.ProfileActivity;
+import org.mian.gitnex.databinding.ListAdminUsersBinding;
 import org.mian.gitnex.helpers.AppUtil;
 import org.mian.gitnex.helpers.AvatarGenerator;
 
 /**
  * @author mmarif
  */
-public class AdminGetUsersAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder>
-		implements Filterable {
+public class AdminGetUsersAdapter extends RecyclerView.Adapter<AdminGetUsersAdapter.ViewHolder> {
 
-	private final List<User> usersListFull;
+	private final List<User> usersList;
 	private final Context context;
-	private List<User> usersList;
-	private OnLoadMoreListener loadMoreListener;
-	private boolean isLoading = false, isMoreDataAvailable = true;
-	private final Filter usersFilter =
-			new Filter() {
-				@Override
-				protected FilterResults performFiltering(CharSequence constraint) {
-					List<User> filteredList = new ArrayList<>();
 
-					if (constraint == null || constraint.length() == 0) {
-						filteredList.addAll(usersListFull);
-					} else {
-						String filterPattern = constraint.toString().toLowerCase().trim();
-
-						for (User item : usersListFull) {
-							if (item.getEmail().toLowerCase().contains(filterPattern)
-									|| item.getFullName().toLowerCase().contains(filterPattern)
-									|| item.getLogin().toLowerCase().contains(filterPattern)) {
-								filteredList.add(item);
-							}
-						}
-					}
-
-					FilterResults results = new FilterResults();
-					results.values = filteredList;
-
-					return results;
-				}
-
-				@Override
-				protected void publishResults(CharSequence constraint, FilterResults results) {
-
-					usersList.clear();
-					usersList.addAll((List) results.values);
-					notifyDataChanged();
-				}
-			};
-
-	public AdminGetUsersAdapter(List<User> usersListMain, Context ctx) {
-		this.context = ctx;
-		this.usersList = usersListMain;
-		usersListFull = new ArrayList<>(usersList);
+	public AdminGetUsersAdapter(List<User> usersList, Context context) {
+		this.context = context;
+		this.usersList = usersList;
 	}
 
 	@NonNull @Override
-	public RecyclerView.ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-		LayoutInflater inflater = LayoutInflater.from(context);
-		return new AdminGetUsersAdapter.ReposHolder(
-				inflater.inflate(R.layout.list_admin_users, parent, false));
+	public ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
+		ListAdminUsersBinding binding =
+				ListAdminUsersBinding.inflate(
+						LayoutInflater.from(parent.getContext()), parent, false);
+		return new ViewHolder(binding);
 	}
 
 	@Override
-	public void onBindViewHolder(@NonNull RecyclerView.ViewHolder holder, int position) {
-		if (position >= getItemCount() - 1
-				&& isMoreDataAvailable
-				&& !isLoading
-				&& loadMoreListener != null) {
-			isLoading = true;
-			loadMoreListener.onLoadMore();
-		}
-
-		((AdminGetUsersAdapter.ReposHolder) holder).bindData(usersList.get(position));
-	}
-
-	@Override
-	public int getItemViewType(int position) {
-		return position;
+	public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
+		User user = usersList.get(position);
+		holder.bind(user, position);
 	}
 
 	@Override
@@ -105,119 +51,77 @@ public class AdminGetUsersAdapter extends RecyclerView.Adapter<RecyclerView.View
 		return usersList.size();
 	}
 
-	public void setMoreDataAvailable(boolean moreDataAvailable) {
-		isMoreDataAvailable = moreDataAvailable;
-		if (!isMoreDataAvailable) {
-			loadMoreListener.onLoadFinished();
-		}
-	}
-
 	@SuppressLint("NotifyDataSetChanged")
-	public void notifyDataChanged() {
+	public void updateList(List<User> newList) {
+		this.usersList.clear();
+		this.usersList.addAll(newList);
 		notifyDataSetChanged();
-		isLoading = false;
-		loadMoreListener.onLoadFinished();
 	}
 
-	public void setLoadMoreListener(OnLoadMoreListener loadMoreListener) {
-		this.loadMoreListener = loadMoreListener;
-	}
+	public class ViewHolder extends RecyclerView.ViewHolder {
+		private final ListAdminUsersBinding binding;
 
-	public void updateList(List<User> list) {
-		usersList = list;
-		notifyDataChanged();
-	}
+		ViewHolder(ListAdminUsersBinding binding) {
+			super(binding.getRoot());
+			this.binding = binding;
+		}
 
-	@Override
-	public Filter getFilter() {
-		return usersFilter;
-	}
+		void bind(User user, int position) {
+			String loginId = user.getLogin();
 
-	public interface OnLoadMoreListener {
-		void onLoadMore();
-
-		void onLoadFinished();
-	}
-
-	class ReposHolder extends RecyclerView.ViewHolder {
-
-		private final ImageView userAvatar;
-		private final TextView userFullName;
-		private final TextView userEmail;
-		private final ImageView userRole;
-		private final TextView userName;
-		private String userLoginId;
-
-		ReposHolder(View itemView) {
-
-			super(itemView);
-			userAvatar = itemView.findViewById(R.id.userAvatar);
-			userFullName = itemView.findViewById(R.id.userFullName);
-			userName = itemView.findViewById(R.id.userName);
-			userEmail = itemView.findViewById(R.id.userEmail);
-			userRole = itemView.findViewById(R.id.userRole);
-
-			itemView.setOnClickListener(
-					loginId -> {
+			binding.card.setOnClickListener(
+					v -> {
 						Intent intent = new Intent(context, ProfileActivity.class);
-						intent.putExtra("username", userLoginId);
+						intent.putExtra("username", loginId);
 						context.startActivity(intent);
 					});
 
-			userAvatar.setOnLongClickListener(
-					loginId -> {
+			binding.userAvatar.setOnLongClickListener(
+					v -> {
 						AppUtil.copyToClipboard(
 								context,
-								userLoginId,
-								context.getString(R.string.copyLoginIdToClipBoard, userLoginId));
+								loginId,
+								context.getString(R.string.copyLoginIdToClipBoard, loginId));
 						return true;
 					});
-		}
 
-		void bindData(User users) {
-
-			userLoginId = users.getLogin();
-
-			if (!users.getFullName().isEmpty()) {
-
-				userFullName.setText(users.getFullName());
-				userName.setText(
-						context.getResources()
-								.getString(R.string.usernameWithAt, users.getLogin()));
+			if (user.getFullName() != null && !user.getFullName().isEmpty()) {
+				binding.userFullName.setText(user.getFullName());
+				binding.userName.setText(context.getString(R.string.usernameWithAt, loginId));
+				binding.userName.setVisibility(View.VISIBLE);
 			} else {
-
-				userFullName.setText(
-						context.getResources()
-								.getString(R.string.usernameWithAt, users.getLogin()));
-				userName.setVisibility(View.GONE);
+				binding.userFullName.setText(context.getString(R.string.usernameWithAt, loginId));
+				binding.userName.setVisibility(View.GONE);
 			}
 
-			if (!users.getEmail().isEmpty()) {
-				userEmail.setText(users.getEmail());
+			if (user.getEmail() != null && !user.getEmail().isEmpty()) {
+				binding.userEmail.setText(user.getEmail());
+				binding.userEmail.setVisibility(View.VISIBLE);
 			} else {
-				userEmail.setVisibility(View.GONE);
+				binding.userEmail.setVisibility(View.GONE);
 			}
 
-			if (users.isIsAdmin()) {
-				userRole.setVisibility(View.VISIBLE);
+			if (user.isIsAdmin()) {
+				binding.userRole.setVisibility(View.VISIBLE);
 				int badgeColor =
-						ResourcesCompat.getColor(context.getResources(), R.color.releasePre, null);
-				String badgeText = context.getString(R.string.userRoleAdmin).toLowerCase();
+						ResourcesCompat.getColor(context.getResources(), R.color.darkGreen, null);
+				String label = context.getString(R.string.userRoleAdmin).toUpperCase();
 
-				userRole.setImageDrawable(
-						AvatarGenerator.getLabelDrawable(context, badgeText, badgeColor, 28));
+				binding.userRole.setImageDrawable(
+						AvatarGenerator.getLabelDrawable(context, label, badgeColor, 20));
 			} else {
-				userRole.setVisibility(View.GONE);
+				binding.userRole.setVisibility(View.GONE);
 			}
 
-			Drawable userPlaceholder =
-					AvatarGenerator.getLetterAvatar(context, users.getLogin(), 44);
+			Drawable placeholder = AvatarGenerator.getLetterAvatar(context, loginId, 56);
 			Glide.with(context)
-					.load(users.getAvatarUrl())
-					.placeholder(userPlaceholder)
-					.error(userPlaceholder)
+					.load(user.getAvatarUrl())
+					.placeholder(R.drawable.loader_animated)
+					.error(placeholder)
 					.centerCrop()
-					.into(userAvatar);
+					.into(binding.userAvatar);
+
+			binding.getRoot().updateAppearance(position, getItemCount());
 		}
 	}
 }

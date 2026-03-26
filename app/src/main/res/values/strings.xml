@@ -618,6 +618,8 @@
     <string name="copied">Copied</string>
     <string name="enabled">Enabled</string>
     <string name="disabled">Disabled</string>
+    <string name="visibility">Visibility</string>
+    <string name="limited">Limited</string>
     <!-- generic copy -->
 
     <string name="exploreUsers">Explore users</string>
@@ -1104,4 +1106,8 @@
     <string name="adminCronSubtext">View and execute system scheduled maintenance tasks</string>
     <string name="unadoptedReposSubtext">Search and claim repositories found on disk</string>
     <string name="repoSettingsSubtext">View global repository and LFS settings</string>
+    <string name="send_welcome_email">Send welcome email</string>
+    <string name="must_change_password">Must change password</string>
+    <string name="restricted_account">Restricted account</string>
+    <string name="email_username_pw_required">Email, username, and password are required</string>
 </resources>
