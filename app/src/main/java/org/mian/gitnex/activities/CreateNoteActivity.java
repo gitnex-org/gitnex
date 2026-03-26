@@ -2,18 +2,14 @@ package org.mian.gitnex.activities;
 
 import android.content.Context;
 import android.os.Bundle;
+import android.os.Handler;
+import android.os.Looper;
 import android.text.Editable;
 import android.text.TextWatcher;
-import android.text.method.ScrollingMovementMethod;
-import android.view.Menu;
-import android.view.MenuInflater;
-import android.view.MenuItem;
 import android.view.View;
 import android.view.inputmethod.InputMethodManager;
-import androidx.annotation.NonNull;
 import com.vdurmont.emoji.EmojiParser;
 import java.time.Instant;
-import java.util.Objects;
 import org.mian.gitnex.R;
 import org.mian.gitnex.database.api.BaseApi;
 import org.mian.gitnex.database.api.NotesApi;
@@ -29,158 +25,138 @@ public class CreateNoteActivity extends BaseActivity {
 	private ActivityCreateNoteBinding binding;
 	private boolean renderMd = false;
 	private String action;
-	private Notes notes;
 	private NotesApi notesApi;
 	private int noteId;
+	private final Handler saveHandler = new Handler(Looper.getMainLooper());
+	private Runnable saveRunnable;
 
-	@Override
 	public void onCreate(Bundle savedInstanceState) {
-
 		super.onCreate(savedInstanceState);
-
 		binding = ActivityCreateNoteBinding.inflate(getLayoutInflater());
-		notesApi = BaseApi.getInstance(ctx, NotesApi.class);
-
 		setContentView(binding.getRoot());
-		setSupportActionBar(binding.toolbar);
 
+		notesApi = BaseApi.getInstance(ctx, NotesApi.class);
+		action =
+				getIntent().getStringExtra("action") != null
+						? getIntent().getStringExtra("action")
+						: "";
+
+		setupUI();
+		setupListeners();
+		loadInitialData();
+	}
+
+	private void setupUI() {
+		binding.noteContent.requestFocus();
 		InputMethodManager imm =
 				(InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
-		assert imm != null;
-		imm.showSoftInput(binding.noteContent, InputMethodManager.SHOW_IMPLICIT);
-		binding.noteContent.requestFocus();
-
-		binding.close.setOnClickListener(view -> finish());
-
-		if (getIntent().getStringExtra("action") != null) {
-			action = getIntent().getStringExtra("action");
-		} else {
-			action = "";
+		if (imm != null) {
+			imm.showSoftInput(binding.noteContent, InputMethodManager.SHOW_IMPLICIT);
 		}
 
-		binding.close.setOnClickListener(close -> finish());
-		binding.toolbarTitle.setMovementMethod(new ScrollingMovementMethod());
+		binding.markdownPreview.setVisibility(View.GONE);
+	}
 
-		assert action != null;
+	private void setupListeners() {
+
+		binding.btnBack.setOnClickListener(v -> finish());
+
+		binding.btnMdPreview.setBackgroundResource(R.drawable.nav_pill_background);
+		binding.btnMdPreview.setBackgroundTintList(null);
+		if (binding.btnMdPreview.getBackground() != null) {
+			binding.btnMdPreview.getBackground().setAlpha(0);
+		}
+
+		binding.btnMdPreview.setOnClickListener(v -> toggleMarkdownPreview());
+
+		binding.noteContent.addTextChangedListener(
+				new TextWatcher() {
+					@Override
+					public void onTextChanged(CharSequence s, int start, int before, int count) {
+						saveHandler.removeCallbacks(saveRunnable);
+					}
+
+					@Override
+					public void afterTextChanged(Editable s) {
+						String text = s.toString().trim();
+						if (text.isEmpty()) return;
+
+						saveRunnable =
+								() -> {
+									if (action.equalsIgnoreCase("edit")) {
+										updateNote(text);
+									} else if (action.equalsIgnoreCase("add")
+											&& text.length() > 4) {
+										if (noteId > 0) {
+											updateNote(text);
+										} else {
+											noteId =
+													(int)
+															notesApi.insertNote(
+																	text,
+																	(int)
+																			Instant.now()
+																					.getEpochSecond());
+										}
+									}
+								};
+						saveHandler.postDelayed(saveRunnable, 500);
+					}
+
+					@Override
+					public void beforeTextChanged(
+							CharSequence s, int start, int count, int after) {}
+				});
+	}
+
+	private void loadInitialData() {
 		if (action.equalsIgnoreCase("edit")) {
-
 			noteId = getIntent().getIntExtra("noteId", 0);
-			notes = notesApi.fetchNoteById(noteId);
-			binding.noteContent.setText(notes.getContent());
+			Notes notes = notesApi.fetchNoteById(noteId);
+			if (notes != null && notes.getContent() != null) {
+				binding.noteContent.setText(notes.getContent());
+				binding.noteContent.setSelection(notes.getContent().length());
+			}
+		}
+	}
 
-			assert notes.getContent() != null;
-			binding.noteContent.setSelection(notes.getContent().length());
+	private void toggleMarkdownPreview() {
+		renderMd = !renderMd;
 
-			binding.markdownPreview.setVisibility(View.GONE);
-			binding.toolbarTitle.setText(R.string.editNote);
-
-			binding.noteContent.addTextChangedListener(
-					new TextWatcher() {
-
-						@Override
-						public void afterTextChanged(Editable s) {
-
-							String text = binding.noteContent.getText().toString();
-
-							if (!text.isEmpty()) {
-
-								updateNote(text);
-							}
-						}
-
-						@Override
-						public void beforeTextChanged(
-								CharSequence s, int start, int count, int after) {}
-
-						@Override
-						public void onTextChanged(
-								CharSequence s, int start, int before, int count) {}
-					});
-		} else if (action.equalsIgnoreCase("add")) {
-
-			binding.markdownPreview.setVisibility(View.GONE);
-
-			binding.noteContent.addTextChangedListener(
-					new TextWatcher() {
-
-						@Override
-						public void afterTextChanged(Editable s) {
-
-							String text = binding.noteContent.getText().toString();
-
-							if (!text.isEmpty() && text.length() > 4) {
-
-								if (noteId > 0) {
-									updateNote(text);
-								} else {
-									noteId =
-											(int)
-													notesApi.insertNote(
-															text,
-															(int) Instant.now().getEpochSecond());
-								}
-							}
-						}
-
-						@Override
-						public void beforeTextChanged(
-								CharSequence s, int start, int count, int after) {}
-
-						@Override
-						public void onTextChanged(
-								CharSequence s, int start, int before, int count) {}
-					});
-		} else {
+		if (renderMd) {
+			Markdown.render(
+					ctx,
+					EmojiParser.parseToUnicode(binding.noteContent.getText().toString()),
+					binding.markdownPreview);
 			binding.markdownPreview.setVisibility(View.VISIBLE);
+			binding.noteContent.setVisibility(View.GONE);
+
+			binding.btnMdPreview.setSelected(true);
+			if (binding.btnMdPreview.getBackground() != null) {
+				binding.btnMdPreview.getBackground().setAlpha(255);
+			}
+			hideKeyboard();
+		} else {
+			binding.markdownPreview.setVisibility(View.GONE);
+			binding.noteContent.setVisibility(View.VISIBLE);
+
+			binding.btnMdPreview.setSelected(false);
+			if (binding.btnMdPreview.getBackground() != null) {
+				binding.btnMdPreview.getBackground().setAlpha(0);
+			}
+			binding.noteContent.requestFocus();
+		}
+	}
+
+	private void hideKeyboard() {
+		InputMethodManager imm =
+				(InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
+		if (imm != null && getCurrentFocus() != null) {
+			imm.hideSoftInputFromWindow(getCurrentFocus().getWindowToken(), 0);
 		}
 	}
 
 	private void updateNote(String content) {
 		notesApi.updateNote(content, Instant.now().getEpochSecond(), noteId);
-	}
-
-	@Override
-	public boolean onCreateOptionsMenu(@NonNull Menu menu) {
-
-		MenuInflater inflater = getMenuInflater();
-		inflater.inflate(R.menu.markdown_switcher, menu);
-
-		return true;
-	}
-
-	@Override
-	public boolean onOptionsItemSelected(MenuItem item) {
-
-		int id = item.getItemId();
-
-		if (id == android.R.id.home) {
-
-			finish();
-			return true;
-		} else if (id == R.id.markdown) {
-
-			if (action.equalsIgnoreCase("edit") || action.equalsIgnoreCase("add")) {
-				if (!renderMd) {
-					Markdown.render(
-							ctx,
-							EmojiParser.parseToUnicode(
-									Objects.requireNonNull(
-											binding.noteContent.getText().toString())),
-							binding.markdownPreview);
-
-					binding.markdownPreview.setVisibility(View.VISIBLE);
-					binding.noteContent.setVisibility(View.GONE);
-					renderMd = true;
-				} else {
-					binding.markdownPreview.setVisibility(View.GONE);
-					binding.noteContent.setVisibility(View.VISIBLE);
-					renderMd = false;
-				}
-			}
-
-			return true;
-		} else {
-			return super.onOptionsItemSelected(item);
-		}
 	}
 }

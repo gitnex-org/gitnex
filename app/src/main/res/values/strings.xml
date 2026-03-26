@@ -168,6 +168,7 @@
 
     <string name="timeAtText">at</string>
     <string name="hash" translatable="false">#</string>
+    <string name="hash_with_text" translatable="false">#%1$d</string>
     <string name="issueMilestone">Milestone %1$s</string>
     <string name="dueDate">Due on %1$s</string>
     <string name="assignedTo">Assigned to: %1$s</string>

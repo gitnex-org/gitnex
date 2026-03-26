@@ -3,17 +3,27 @@ package org.mian.gitnex.activities;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Looper;
+import android.text.Editable;
+import android.text.TextWatcher;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import androidx.annotation.NonNull;
 import androidx.lifecycle.ViewModelProvider;
 import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment;
-import org.mian.gitnex.adapters.ExploreIssuesAdapter;
+import com.google.android.material.search.SearchView;
+import java.util.ArrayList;
+import java.util.List;
+import org.gitnex.tea4j.v2.models.Issue;
+import org.mian.gitnex.adapters.IssuesAdapter;
 import org.mian.gitnex.databinding.ActivityMyIssuesBinding;
 import org.mian.gitnex.databinding.BottomSheetMyIssuesFilterBinding;
+import org.mian.gitnex.helpers.Constants;
+import org.mian.gitnex.helpers.EndlessRecyclerViewScrollListener;
 import org.mian.gitnex.helpers.TinyDB;
+import org.mian.gitnex.helpers.Toasty;
 import org.mian.gitnex.viewmodels.IssuesViewModel;
 
 /**
@@ -23,12 +33,14 @@ public class MyIssuesActivity extends BaseActivity {
 
 	private ActivityMyIssuesBinding binding;
 	private IssuesViewModel issuesViewModel;
-	private ExploreIssuesAdapter adapter;
+	private IssuesAdapter adapter;
 	private TinyDB tinyDB;
+	private EndlessRecyclerViewScrollListener scrollListener;
 	private String state = "open";
 	private boolean assignedToMe = false;
 	private boolean createdByMe = true;
-	private int page = 1;
+	private String currentQuery = null;
+	private int resultLimit;
 
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
@@ -37,6 +49,7 @@ public class MyIssuesActivity extends BaseActivity {
 		setContentView(binding.getRoot());
 
 		tinyDB = TinyDB.getInstance(this);
+		resultLimit = Constants.getCurrentResultLimit(this);
 		issuesViewModel = new ViewModelProvider(this).get(IssuesViewModel.class);
 
 		String savedFilter = tinyDB.getString("myIssuesFilter", "open_created_by_me");
@@ -44,7 +57,9 @@ public class MyIssuesActivity extends BaseActivity {
 
 		setupUI();
 		setupSearch();
-		fetchDataAsync(null);
+		observeViewModel();
+
+		fetchData(null);
 	}
 
 	private void setupUI() {
@@ -55,31 +70,151 @@ public class MyIssuesActivity extends BaseActivity {
 						new FilterBottomSheetDialogFragment()
 								.show(getSupportFragmentManager(), "MyIssuesFilter"));
 
+		adapter = new IssuesAdapter(this, new ArrayList<>(), "my_issues");
+		LinearLayoutManager layoutManager = new LinearLayoutManager(this);
 		binding.recyclerView.setHasFixedSize(true);
-		binding.recyclerView.setLayoutManager(new LinearLayoutManager(this));
+		binding.recyclerView.setLayoutManager(layoutManager);
+		binding.recyclerView.setAdapter(adapter);
+
+		scrollListener =
+				new EndlessRecyclerViewScrollListener(layoutManager) {
+					@Override
+					public void onLoadMore(int page, int totalItemsCount, RecyclerView view) {
+						issuesViewModel.fetchIssues(
+								MyIssuesActivity.this,
+								currentQuery,
+								state,
+								null,
+								null,
+								assignedToMe,
+								createdByMe,
+								page,
+								resultLimit,
+								false);
+					}
+				};
+		binding.recyclerView.addOnScrollListener(scrollListener);
 
 		binding.pullToRefresh.setOnRefreshListener(
-				() ->
-						new Handler(Looper.getMainLooper())
-								.postDelayed(
-										() -> {
-											page = 1;
-											binding.pullToRefresh.setRefreshing(false);
-											fetchDataAsync(null);
-										},
-										50));
+				() -> {
+					new Handler(Looper.getMainLooper())
+							.postDelayed(
+									() -> {
+										binding.pullToRefresh.setRefreshing(false);
+										fetchData(currentQuery);
+									},
+									50);
+				});
+	}
+
+	private void observeViewModel() {
+		issuesViewModel
+				.getIssues()
+				.observe(
+						this,
+						issues -> {
+							adapter.updateList(issues);
+							updateUiState();
+						});
+
+		issuesViewModel
+				.getIsLoading()
+				.observe(
+						this,
+						loading -> {
+							if (loading && adapter.getItemCount() == 0) {
+								binding.expressiveLoader.setVisibility(View.VISIBLE);
+							} else {
+								binding.expressiveLoader.setVisibility(View.GONE);
+							}
+							updateUiState();
+						});
+
+		issuesViewModel
+				.getError()
+				.observe(
+						this,
+						error -> {
+							if (error != null) {
+								Toasty.show(this, error);
+								updateUiState();
+							}
+						});
 	}
 
 	private void setupSearch() {
+
+		binding.searchResultsRecycler.setLayoutManager(new LinearLayoutManager(this));
+		binding.searchResultsRecycler.setAdapter(adapter);
+
+		binding.searchView
+				.getEditText()
+				.addTextChangedListener(
+						new TextWatcher() {
+							@Override
+							public void beforeTextChanged(
+									CharSequence s, int start, int count, int after) {}
+
+							@Override
+							public void onTextChanged(
+									CharSequence s, int start, int before, int count) {
+								filter(s.toString());
+							}
+
+							@Override
+							public void afterTextChanged(Editable s) {}
+						});
+
 		binding.searchView
 				.getEditText()
 				.setOnEditorActionListener(
 						(v, actionId, event) -> {
-							String query = binding.searchView.getText().toString().trim();
-							fetchDataAsync(query);
+							currentQuery = binding.searchView.getText().toString().trim();
+							fetchData(currentQuery);
 							binding.searchView.hide();
 							return true;
 						});
+
+		binding.searchView.addTransitionListener(
+				(searchView, previousState, newState) -> {
+					if (newState == SearchView.TransitionState.HIDDEN) {
+						List<Issue> originalList = issuesViewModel.getIssues().getValue();
+						if (originalList != null) {
+							adapter.updateList(originalList);
+						}
+						updateUiState();
+					}
+				});
+	}
+
+	private void filter(String text) {
+		List<Issue> originalList = issuesViewModel.getIssues().getValue();
+		if (originalList == null) return;
+
+		if (text.isEmpty()) {
+			adapter.updateList(originalList);
+			updateUiState();
+			return;
+		}
+
+		List<Issue> filtered = new ArrayList<>();
+		String query = text.toLowerCase().trim();
+
+		for (Issue issue : originalList) {
+			String title = (issue.getTitle() != null) ? issue.getTitle().toLowerCase() : "";
+			String body = (issue.getBody() != null) ? issue.getBody().toLowerCase() : "";
+			String number = String.valueOf(issue.getId());
+
+			if (title.contains(query) || body.contains(query) || number.contains(query)) {
+				filtered.add(issue);
+			}
+		}
+
+		adapter.updateList(filtered);
+
+		boolean isEmpty = filtered.isEmpty();
+		binding.layoutEmpty.getRoot().setVisibility(isEmpty ? View.VISIBLE : View.GONE);
+		binding.recyclerView.setVisibility(isEmpty ? View.GONE : View.VISIBLE);
 	}
 
 	public void updateFilterState(String filter) {
@@ -91,56 +226,44 @@ public class MyIssuesActivity extends BaseActivity {
 		assignedToMe = filterValue.equals("assigned_to_me");
 
 		tinyDB.putString("myIssuesFilter", getCurrentFilter());
-		page = 1;
 	}
 
 	public String getCurrentFilter() {
 		return state + "_" + (assignedToMe ? "assigned_to_me" : "created_by_me");
 	}
 
-	private void fetchDataAsync(String query) {
-		binding.expressiveLoader.setVisibility(View.VISIBLE);
+	private void fetchData(String query) {
+		currentQuery = (query != null && !query.isEmpty()) ? query : null;
+
 		binding.layoutEmpty.getRoot().setVisibility(View.GONE);
+		scrollListener.resetState();
+		issuesViewModel.resetPagination();
 
-		issuesViewModel
-				.getIssuesList(query, "issues", createdByMe, state, assignedToMe, this)
-				.observe(
-						this,
-						issuesListMain -> {
-							adapter = new ExploreIssuesAdapter(issuesListMain, this);
-							adapter.setLoadMoreListener(
-									new ExploreIssuesAdapter.OnLoadMoreListener() {
-										@Override
-										public void onLoadMore() {
-											page += 1;
-											issuesViewModel.loadMoreIssues(
-													query,
-													"issues",
-													createdByMe,
-													state,
-													page,
-													assignedToMe,
-													MyIssuesActivity.this,
-													adapter);
-											binding.expressiveLoader.setVisibility(View.VISIBLE);
-										}
+		issuesViewModel.fetchIssues(
+				this,
+				currentQuery,
+				state,
+				null,
+				null,
+				assignedToMe,
+				createdByMe,
+				1,
+				resultLimit,
+				true);
+	}
 
-										@Override
-										public void onLoadFinished() {
-											binding.expressiveLoader.setVisibility(View.GONE);
-										}
-									});
+	private void updateUiState() {
+		boolean isEmpty = adapter.getItemCount() == 0;
+		boolean hasLoaded = Boolean.TRUE.equals(issuesViewModel.getHasLoadedOnce().getValue());
+		boolean isLoading = Boolean.TRUE.equals(issuesViewModel.getIsLoading().getValue());
 
-							if (adapter.getItemCount() > 0) {
-								binding.recyclerView.setAdapter(adapter);
-								binding.layoutEmpty.getRoot().setVisibility(View.GONE);
-							} else {
-								adapter.notifyDataChanged();
-								binding.recyclerView.setAdapter(adapter);
-								binding.layoutEmpty.getRoot().setVisibility(View.VISIBLE);
-							}
-							binding.expressiveLoader.setVisibility(View.GONE);
-						});
+		if (hasLoaded && isEmpty && !isLoading) {
+			binding.layoutEmpty.getRoot().setVisibility(View.VISIBLE);
+			binding.recyclerView.setVisibility(View.GONE);
+		} else {
+			binding.layoutEmpty.getRoot().setVisibility(View.GONE);
+			binding.recyclerView.setVisibility(View.VISIBLE);
+		}
 	}
 
 	public static class FilterBottomSheetDialogFragment extends BottomSheetDialogFragment {
@@ -191,7 +314,7 @@ public class MyIssuesActivity extends BaseActivity {
 
 		private void applyFilter(MyIssuesActivity activity) {
 			activity.updateFilterState(selectedState + "_" + selectedFilter);
-			activity.fetchDataAsync(null);
+			activity.fetchData(activity.currentQuery);
 			dismiss();
 		}
 	}

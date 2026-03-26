@@ -47,6 +47,10 @@
     <dimen name="dimen200dp">200dp</dimen>
     <dimen name="dimen206dp">206dp</dimen>
     <dimen name="dimen320dp">320dp</dimen>
+    <dimen name="dimen340dp">340dp</dimen>
+    <dimen name="dimen360dp">360dp</dimen>
+    <dimen name="dimen380dp">380dp</dimen>
+    <dimen name="dimen400dp">400dp</dimen>
     <dimen name="dimen480dp">480dp</dimen>
 
     <!--SP-->
