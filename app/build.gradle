@@ -124,7 +124,7 @@ dependencies {
     implementation 'ch.acra:acra-notification:5.13.1'
     implementation 'androidx.room:room-runtime:2.8.4'
     annotationProcessor 'androidx.room:room-compiler:2.8.4'
-    implementation "androidx.work:work-runtime:2.11.1"
+    implementation "androidx.work:work-runtime:2.11.2"
     implementation "io.mikael:urlbuilder:2.0.9"
     //implementation "org.codeberg.gitnex-garage:emoji-java:v5.1.2"
     //noinspection GradleDependency
@@ -132,7 +132,7 @@ dependencies {
     implementation 'androidx.biometric:biometric:1.1.0'
     //noinspection NewerVersionAvailable,GradleDependency
     implementation 'com.github.chrisvest:stormpot:2.4.2'
-    implementation 'androidx.browser:browser:1.9.0'
+    implementation 'androidx.browser:browser:1.10.0'
     implementation 'com.google.android.flexbox:flexbox:3.0.0'
     //implementation('org.codeberg.gitnex:tea4j-autodeploy:a91978be6a') {
     //    exclude module: 'org.apache.oltu.oauth2.common'

@@ -5,6 +5,7 @@ import org.mian.gitnex.api.models.contents.RepoGetContentsList;
 import org.mian.gitnex.api.models.license.License;
 import org.mian.gitnex.api.models.settings.RepositoryGlobal;
 import org.mian.gitnex.api.models.topics.Topics;
+import org.mian.gitnex.api.models.users.UserSearchResponse;
 import retrofit2.Call;
 import retrofit2.http.DELETE;
 import retrofit2.http.GET;
@@ -51,4 +52,12 @@ public interface ApiInterface {
 
 	@GET("licenses") // get all licenses
 	Call<List<License>> getLicenses();
+
+	@GET("users/search") // get all users
+	Call<UserSearchResponse> customUserSearch(
+			@Query("q") String query,
+			@Query("uid") Long uid,
+			@Query("sort") String sort,
+			@Query("page") Integer page,
+			@Query("limit") Integer limit);
 }

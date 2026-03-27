@@ -80,7 +80,7 @@
                 android:layout_height="@dimen/dimen36dp"
                 android:layout_marginTop="@dimen/dimen12dp"
                 android:backgroundTint="@android:color/transparent"
-                app:cardCornerRadius="@dimen/dimen6dp"
+                app:cardCornerRadius="@dimen/dimen8dp"
                 app:cardElevation="0dp"
                 app:strokeWidth="0dp"
                 app:layout_constraintStart_toStartOf="parent"

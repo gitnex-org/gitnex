@@ -86,7 +86,7 @@ public class MostVisitedReposAdapter
 			binding.mostVisited.setText(AppUtil.numberFormatter(repo.getMostVisited()));
 
 			binding.image.setImageDrawable(
-					AvatarGenerator.getLetterAvatar(ctx, repo.getRepositoryOwner(), 44));
+					AvatarGenerator.getLetterAvatar(ctx, repo.getRepositoryOwner(), 32));
 		}
 
 		private void showResetDialog() {

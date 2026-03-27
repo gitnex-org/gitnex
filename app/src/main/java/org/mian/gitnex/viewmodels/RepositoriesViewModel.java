@@ -153,6 +153,7 @@ public class RepositoriesViewModel extends ViewModel {
 			boolean onlyArchived,
 			int page,
 			int limit,
+			String currentSort,
 			boolean isRefresh) {
 
 		if (Boolean.TRUE.equals(isLoading.getValue())) return;
@@ -176,7 +177,7 @@ public class RepositoriesViewModel extends ViewModel {
 								onlyArchived,
 								null,
 								null,
-								"updated",
+								currentSort,
 								"desc",
 								page,
 								limit);

@@ -621,6 +621,9 @@
     <string name="disabled">Disabled</string>
     <string name="visibility">Visibility</string>
     <string name="limited">Limited</string>
+    <string name="clear">Clear</string>
+    <string name="updated">Updated</string>
+    <string name="created">Created</string>
     <!-- generic copy -->
 
     <string name="exploreUsers">Explore users</string>

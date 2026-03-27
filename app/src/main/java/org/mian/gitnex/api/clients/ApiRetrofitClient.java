@@ -94,6 +94,9 @@ public class ApiRetrofitClient {
 					new OkHttpClient.Builder()
 							.sslSocketFactory(sslContext.getSocketFactory(), trustManager)
 							// .addInterceptor(logging)
+							.connectTimeout(60, TimeUnit.SECONDS)
+							.readTimeout(60, TimeUnit.SECONDS)
+							.writeTimeout(60, TimeUnit.SECONDS)
 							.hostnameVerifier(
 									trustManager.wrapHostnameVerifier(
 											HttpsURLConnection.getDefaultHostnameVerifier()))

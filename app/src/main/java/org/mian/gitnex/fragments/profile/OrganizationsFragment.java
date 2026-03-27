@@ -67,7 +67,7 @@ public class OrganizationsFragment extends Fragment {
 	}
 
 	private void setupUI() {
-		binding.addNewOrganization.setVisibility(View.GONE);
+		// binding.addNewOrganization.setVisibility(View.GONE);
 		adapter = new OrganizationsListAdapter(requireContext(), new ArrayList<>());
 		LinearLayoutManager layoutManager = new LinearLayoutManager(requireContext());
 		binding.recyclerView.setLayoutManager(layoutManager);
@@ -92,8 +92,9 @@ public class OrganizationsFragment extends Fragment {
 						getViewLifecycleOwner(),
 						list -> {
 							adapter.updateList(list);
-							binding.noDataOrg.setVisibility(
-									list.isEmpty() ? View.VISIBLE : View.GONE);
+							binding.layoutEmpty
+									.getRoot()
+									.setVisibility(list.isEmpty() ? View.VISIBLE : View.GONE);
 							binding.pullToRefresh.setRefreshing(false);
 						});
 
@@ -102,7 +103,7 @@ public class OrganizationsFragment extends Fragment {
 				.observe(
 						getViewLifecycleOwner(),
 						loading ->
-								binding.progressBar.setVisibility(
+								binding.expressiveLoader.setVisibility(
 										loading && adapter.getItemCount() == 0
 												? View.VISIBLE
 												: View.GONE));

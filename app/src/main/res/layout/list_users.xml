@@ -21,9 +21,9 @@
 
             <com.google.android.material.card.MaterialCardView
                 android:id="@+id/avatarContainer"
-                android:layout_width="@dimen/dimen48dp"
-                android:layout_height="@dimen/dimen48dp"
-                app:cardCornerRadius="@dimen/dimen12dp"
+                android:layout_width="@dimen/dimen36dp"
+                android:layout_height="@dimen/dimen36dp"
+                app:cardCornerRadius="@dimen/dimen8dp"
                 app:cardElevation="0dp"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent"

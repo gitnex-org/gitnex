@@ -80,6 +80,9 @@ public class RetrofitClient {
 			OkHttpClient.Builder okHttpClient =
 					new OkHttpClient.Builder()
 							// .addInterceptor(logging)
+							.connectTimeout(60, TimeUnit.SECONDS)
+							.readTimeout(60, TimeUnit.SECONDS)
+							.writeTimeout(60, TimeUnit.SECONDS)
 							.sslSocketFactory(sslContext.getSocketFactory(), memorizingTrustManager)
 							.hostnameVerifier(
 									memorizingTrustManager.wrapHostnameVerifier(

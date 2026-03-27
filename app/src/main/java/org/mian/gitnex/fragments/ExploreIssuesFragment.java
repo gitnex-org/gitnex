@@ -1,67 +1,87 @@
 package org.mian.gitnex.fragments;
 
+import android.app.Dialog;
 import android.os.Bundle;
-import android.os.Handler;
-import android.os.Looper;
+import android.text.Editable;
+import android.text.TextWatcher;
 import android.view.LayoutInflater;
-import android.view.Menu;
-import android.view.MenuInflater;
-import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
-import android.view.inputmethod.EditorInfo;
 import androidx.annotation.NonNull;
-import androidx.core.view.MenuProvider;
+import androidx.annotation.Nullable;
+import androidx.core.graphics.Insets;
+import androidx.core.view.ViewCompat;
+import androidx.core.view.WindowInsetsCompat;
 import androidx.fragment.app.Fragment;
-import androidx.lifecycle.Lifecycle;
 import androidx.lifecycle.ViewModelProvider;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
+import com.google.android.material.bottomsheet.BottomSheetDialog;
+import com.google.android.material.bottomsheet.BottomSheetDialogFragment;
 import java.util.ArrayList;
-import org.mian.gitnex.R;
+import java.util.Objects;
+import org.mian.gitnex.activities.ExploreActivity;
 import org.mian.gitnex.adapters.IssuesAdapter;
-import org.mian.gitnex.databinding.FragmentSearchIssuesBinding;
+import org.mian.gitnex.databinding.BottomsheetExploreIssuesBinding;
+import org.mian.gitnex.databinding.FragmentExploreIssuesBinding;
+import org.mian.gitnex.helpers.AppUtil;
 import org.mian.gitnex.helpers.Constants;
 import org.mian.gitnex.helpers.EndlessRecyclerViewScrollListener;
+import org.mian.gitnex.helpers.Toasty;
 import org.mian.gitnex.viewmodels.IssuesViewModel;
 
 /**
  * @author mmarif
  */
-public class ExploreIssuesFragment extends Fragment {
+public class ExploreIssuesFragment extends Fragment
+		implements ExploreActivity.ExploreActionInterface {
 
 	private IssuesViewModel issuesViewModel;
-	private FragmentSearchIssuesBinding viewBinding;
+	private FragmentExploreIssuesBinding viewBinding;
 	private IssuesAdapter adapter;
 	private EndlessRecyclerViewScrollListener scrollListener;
-
 	private String currentQuery = "";
 	private int resultLimit;
 
 	@Override
+	public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
+		super.onViewCreated(view, savedInstanceState);
+		ViewCompat.setOnApplyWindowInsetsListener(
+				view,
+				(v, windowInsets) -> {
+					Insets systemBars =
+							windowInsets.getInsets(WindowInsetsCompat.Type.systemBars());
+					viewBinding.recyclerView.setPadding(0, systemBars.top, 0, 0);
+					return windowInsets;
+				});
+	}
+
+	@Override
 	public View onCreateView(
 			@NonNull LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-		viewBinding = FragmentSearchIssuesBinding.inflate(inflater, container, false);
-
+		viewBinding = FragmentExploreIssuesBinding.inflate(inflater, container, false);
 		issuesViewModel = new ViewModelProvider(this).get(IssuesViewModel.class);
 		resultLimit = Constants.getCurrentResultLimit(requireContext());
 
-		setupMenu();
 		setupRecyclerView();
+		setupSwipeRefresh();
 		observeViewModel();
 
-		fetchDataAsync("");
+		refreshData(currentQuery);
 
 		return viewBinding.getRoot();
 	}
 
+	@Override
+	public void onSearchTriggered() {
+		showSearchBottomSheet();
+	}
+
 	private void setupRecyclerView() {
 		adapter = new IssuesAdapter(requireContext(), new ArrayList<>(), "explore");
-
-		LinearLayoutManager layoutManager = new LinearLayoutManager(requireActivity());
-		viewBinding.recyclerViewSearchIssues.setHasFixedSize(true);
-		viewBinding.recyclerViewSearchIssues.setLayoutManager(layoutManager);
-		viewBinding.recyclerViewSearchIssues.setAdapter(adapter);
+		LinearLayoutManager layoutManager = new LinearLayoutManager(requireContext());
+		viewBinding.recyclerView.setLayoutManager(layoutManager);
+		viewBinding.recyclerView.setAdapter(adapter);
 
 		scrollListener =
 				new EndlessRecyclerViewScrollListener(layoutManager) {
@@ -80,17 +100,7 @@ public class ExploreIssuesFragment extends Fragment {
 								false);
 					}
 				};
-		viewBinding.recyclerViewSearchIssues.addOnScrollListener(scrollListener);
-
-		viewBinding.pullToRefresh.setOnRefreshListener(
-				() ->
-						new Handler(Looper.getMainLooper())
-								.postDelayed(
-										() -> {
-											viewBinding.pullToRefresh.setRefreshing(false);
-											fetchDataAsync(currentQuery);
-										},
-										50));
+		viewBinding.recyclerView.addOnScrollListener(scrollListener);
 	}
 
 	private void observeViewModel() {
@@ -100,100 +110,156 @@ public class ExploreIssuesFragment extends Fragment {
 						getViewLifecycleOwner(),
 						issues -> {
 							adapter.updateList(issues);
-							updateUiState();
+							updateUiVisibility(
+									Boolean.TRUE.equals(issuesViewModel.getIsLoading().getValue()));
 						});
 
-		issuesViewModel
-				.getIsLoading()
-				.observe(
-						getViewLifecycleOwner(),
-						loading -> {
-							if (loading && adapter.getItemCount() == 0) {
-								viewBinding.progressBar.setVisibility(View.VISIBLE);
-							} else {
-								viewBinding.progressBar.setVisibility(View.GONE);
-							}
-							updateUiState();
-						});
+		issuesViewModel.getIsLoading().observe(getViewLifecycleOwner(), this::updateUiVisibility);
 
 		issuesViewModel
 				.getError()
 				.observe(
 						getViewLifecycleOwner(),
 						error -> {
-							if (error != null) {
-								// Toasty.show(getContext(), error);
-								updateUiState();
-							}
+							if (error != null) Toasty.show(requireContext(), error);
 						});
 	}
 
-	private void updateUiState() {
-		boolean isEmpty = adapter.getItemCount() == 0;
-		boolean hasLoaded = Boolean.TRUE.equals(issuesViewModel.getHasLoadedOnce().getValue());
-		boolean isLoading = Boolean.TRUE.equals(issuesViewModel.getIsLoading().getValue());
+	private void updateUiVisibility(boolean isLoading) {
+		boolean hasData = adapter.getItemCount() > 0;
+		viewBinding.expressiveLoader.setVisibility(
+				isLoading && !hasData ? View.VISIBLE : View.GONE);
 
-		if (hasLoaded && isEmpty && !isLoading) {
-			viewBinding.noData.setVisibility(View.VISIBLE);
-			viewBinding.recyclerViewSearchIssues.setVisibility(View.GONE);
-		} else {
-			viewBinding.noData.setVisibility(View.GONE);
-			viewBinding.recyclerViewSearchIssues.setVisibility(View.VISIBLE);
-		}
+		boolean hasLoadedOnce = Boolean.TRUE.equals(issuesViewModel.getHasLoadedOnce().getValue());
+		viewBinding
+				.layoutEmpty
+				.getRoot()
+				.setVisibility(!isLoading && !hasData && hasLoadedOnce ? View.VISIBLE : View.GONE);
+		viewBinding.pullToRefresh.setVisibility(
+				!hasData && !isLoading && hasLoadedOnce ? View.GONE : View.VISIBLE);
 	}
 
-	private void fetchDataAsync(String query) {
+	private void refreshData(String query) {
 		this.currentQuery = query;
-
-		viewBinding.noData.setVisibility(View.GONE);
-		scrollListener.resetState();
+		if (scrollListener != null) scrollListener.resetState();
 		issuesViewModel.resetPagination();
-
+		viewBinding.expressiveLoader.setVisibility(View.VISIBLE);
 		issuesViewModel.fetchIssues(
 				requireContext(), query, "open", null, null, null, null, 1, resultLimit, true);
 	}
 
-	private void setupMenu() {
-		requireActivity()
-				.addMenuProvider(
-						new MenuProvider() {
+	private void setupSwipeRefresh() {
+		viewBinding.pullToRefresh.setOnRefreshListener(
+				() -> {
+					viewBinding.pullToRefresh.setRefreshing(false);
+					refreshData(currentQuery);
+				});
+	}
+
+	private void showSearchBottomSheet() {
+		SearchIssueBottomSheet sheet =
+				SearchIssueBottomSheet.newInstance(
+						currentQuery,
+						new SearchIssueBottomSheet.SearchCallback() {
 							@Override
-							public void onCreateMenu(
-									@NonNull Menu menu, @NonNull MenuInflater menuInflater) {
-								menu.clear();
-								menuInflater.inflate(R.menu.search_menu, menu);
-
-								MenuItem searchItem = menu.findItem(R.id.action_search);
-								androidx.appcompat.widget.SearchView searchView =
-										(androidx.appcompat.widget.SearchView)
-												searchItem.getActionView();
-								if (searchView != null) {
-									searchView.setImeOptions(EditorInfo.IME_ACTION_DONE);
-									searchView.setOnQueryTextListener(
-											new androidx.appcompat.widget.SearchView
-													.OnQueryTextListener() {
-												@Override
-												public boolean onQueryTextSubmit(String query) {
-													fetchDataAsync(query);
-													searchView.setQuery(null, false);
-													searchItem.collapseActionView();
-													return false;
-												}
-
-												@Override
-												public boolean onQueryTextChange(String newText) {
-													return false;
-												}
-											});
-								}
+							public void onSearchApplied(String query) {
+								refreshData(query);
 							}
 
 							@Override
-							public boolean onMenuItemSelected(@NonNull MenuItem menuItem) {
-								return false;
+							public void onReset() {
+								refreshData("");
 							}
-						},
-						getViewLifecycleOwner(),
-						Lifecycle.State.RESUMED);
+						});
+		sheet.show(getChildFragmentManager(), "IssueSearchSheet");
+	}
+
+	public static class SearchIssueBottomSheet extends BottomSheetDialogFragment {
+		private SearchCallback callback;
+		private BottomsheetExploreIssuesBinding sheetBinding;
+
+		public interface SearchCallback {
+			void onSearchApplied(String query);
+
+			void onReset();
+		}
+
+		public static SearchIssueBottomSheet newInstance(String query, SearchCallback cb) {
+			SearchIssueBottomSheet fragment = new SearchIssueBottomSheet();
+			Bundle args = new Bundle();
+			args.putString("q", query);
+			fragment.setArguments(args);
+			fragment.callback = cb;
+			return fragment;
+		}
+
+		@NonNull @Override
+		public Dialog onCreateDialog(@Nullable Bundle savedInstanceState) {
+			BottomSheetDialog dialog = (BottomSheetDialog) super.onCreateDialog(savedInstanceState);
+			AppUtil.applySheetStyle(dialog, true);
+			return dialog;
+		}
+
+		@Nullable @Override
+		public View onCreateView(
+				@NonNull LayoutInflater inflater,
+				@Nullable ViewGroup container,
+				@Nullable Bundle savedInstanceState) {
+			sheetBinding = BottomsheetExploreIssuesBinding.inflate(inflater, container, false);
+
+			if (getArguments() != null) {
+				sheetBinding.searchQueryEdit.setText(getArguments().getString("q", ""));
+			}
+
+			setupValidation();
+
+			sheetBinding.btnApply.setOnClickListener(
+					v -> {
+						if (callback != null) {
+							callback.onSearchApplied(
+									Objects.requireNonNull(sheetBinding.searchQueryEdit.getText())
+											.toString()
+											.trim());
+						}
+						dismiss();
+					});
+
+			sheetBinding.btnClear.setOnClickListener(
+					v -> {
+						if (callback != null) {
+							callback.onReset();
+						}
+						dismiss();
+					});
+
+			return sheetBinding.getRoot();
+		}
+
+		private void setupValidation() {
+			validate();
+			sheetBinding.searchQueryEdit.addTextChangedListener(
+					new TextWatcher() {
+						@Override
+						public void beforeTextChanged(
+								CharSequence s, int start, int count, int after) {}
+
+						@Override
+						public void onTextChanged(
+								CharSequence s, int start, int before, int count) {
+							validate();
+						}
+
+						@Override
+						public void afterTextChanged(Editable s) {}
+					});
+		}
+
+		private void validate() {
+			String query =
+					Objects.requireNonNull(sheetBinding.searchQueryEdit.getText())
+							.toString()
+							.trim();
+			sheetBinding.btnApply.setEnabled(!query.isEmpty());
+		}
 	}
 }

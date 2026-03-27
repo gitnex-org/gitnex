@@ -1,24 +1,30 @@
 package org.mian.gitnex.fragments;
 
+import android.app.Dialog;
 import android.os.Bundle;
+import android.text.Editable;
+import android.text.TextWatcher;
 import android.view.LayoutInflater;
-import android.view.Menu;
-import android.view.MenuInflater;
-import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
-import android.view.inputmethod.EditorInfo;
 import androidx.annotation.NonNull;
-import androidx.core.view.MenuProvider;
+import androidx.annotation.Nullable;
+import androidx.core.graphics.Insets;
+import androidx.core.view.ViewCompat;
+import androidx.core.view.WindowInsetsCompat;
 import androidx.fragment.app.Fragment;
-import androidx.lifecycle.Lifecycle;
 import androidx.lifecycle.ViewModelProvider;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
+import com.google.android.material.bottomsheet.BottomSheetDialog;
+import com.google.android.material.bottomsheet.BottomSheetDialogFragment;
 import java.util.ArrayList;
-import org.mian.gitnex.R;
+import java.util.Objects;
+import org.mian.gitnex.activities.ExploreActivity;
 import org.mian.gitnex.adapters.UsersAdapter;
+import org.mian.gitnex.databinding.BottomsheetExploreUsersSearchBinding;
 import org.mian.gitnex.databinding.FragmentExploreUsersBinding;
+import org.mian.gitnex.helpers.AppUtil;
 import org.mian.gitnex.helpers.Constants;
 import org.mian.gitnex.helpers.EndlessRecyclerViewScrollListener;
 import org.mian.gitnex.helpers.Toasty;
@@ -27,7 +33,8 @@ import org.mian.gitnex.viewmodels.UserListViewModel;
 /**
  * @author mmarif
  */
-public class ExploreUsersFragment extends Fragment {
+public class ExploreUsersFragment extends Fragment
+		implements ExploreActivity.ExploreActionInterface {
 
 	private FragmentExploreUsersBinding binding;
 	private UserListViewModel viewModel;
@@ -35,6 +42,19 @@ public class ExploreUsersFragment extends Fragment {
 	private EndlessRecyclerViewScrollListener scrollListener;
 	private int resultLimit;
 	private String currentQuery = "";
+
+	@Override
+	public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
+		super.onViewCreated(view, savedInstanceState);
+		ViewCompat.setOnApplyWindowInsetsListener(
+				view,
+				(v, windowInsets) -> {
+					Insets systemBars =
+							windowInsets.getInsets(WindowInsetsCompat.Type.systemBars());
+					binding.recyclerView.setPadding(0, systemBars.top, 0, 0);
+					return windowInsets;
+				});
+	}
 
 	@Override
 	public View onCreateView(
@@ -45,19 +65,22 @@ public class ExploreUsersFragment extends Fragment {
 
 		setupRecyclerView();
 		setupSwipeRefresh();
-		setupMenu();
 		observeViewModel();
-
-		refreshData("");
+		refreshData(currentQuery);
 
 		return binding.getRoot();
+	}
+
+	@Override
+	public void onSearchTriggered() {
+		showSearchBottomSheet();
 	}
 
 	private void setupRecyclerView() {
 		adapter = new UsersAdapter(requireContext(), new ArrayList<>());
 		LinearLayoutManager layoutManager = new LinearLayoutManager(requireContext());
-		binding.recyclerViewExploreUsers.setLayoutManager(layoutManager);
-		binding.recyclerViewExploreUsers.setAdapter(adapter);
+		binding.recyclerView.setLayoutManager(layoutManager);
+		binding.recyclerView.setAdapter(adapter);
 
 		scrollListener =
 				new EndlessRecyclerViewScrollListener(layoutManager) {
@@ -74,15 +97,7 @@ public class ExploreUsersFragment extends Fragment {
 								false);
 					}
 				};
-		binding.recyclerViewExploreUsers.addOnScrollListener(scrollListener);
-	}
-
-	private void setupSwipeRefresh() {
-		binding.pullToRefresh.setOnRefreshListener(
-				() -> {
-					binding.pullToRefresh.setRefreshing(false);
-					refreshData(currentQuery);
-				});
+		binding.recyclerView.addOnScrollListener(scrollListener);
 	}
 
 	private void observeViewModel() {
@@ -109,8 +124,8 @@ public class ExploreUsersFragment extends Fragment {
 
 	private void updateUiVisibility(boolean isLoading) {
 		boolean hasData = adapter.getItemCount() > 0;
-
 		binding.expressiveLoader.setVisibility(isLoading && !hasData ? View.VISIBLE : View.GONE);
+
 		boolean hasLoadedOnce = Boolean.TRUE.equals(viewModel.getHasLoadedOnce().getValue());
 		binding.layoutEmpty
 				.getRoot()
@@ -121,51 +136,125 @@ public class ExploreUsersFragment extends Fragment {
 
 	private void refreshData(String query) {
 		currentQuery = query;
-		scrollListener.resetState();
+		if (scrollListener != null) scrollListener.resetState();
 		viewModel.resetPagination();
+		binding.expressiveLoader.setVisibility(View.VISIBLE);
 		viewModel.fetchUsers(requireContext(), "explore", null, null, query, 1, resultLimit, true);
 	}
 
-	private void setupMenu() {
-		requireActivity()
-				.addMenuProvider(
-						new MenuProvider() {
+	private void setupSwipeRefresh() {
+		binding.pullToRefresh.setOnRefreshListener(
+				() -> {
+					binding.pullToRefresh.setRefreshing(false);
+					refreshData(currentQuery);
+				});
+	}
+
+	private void showSearchBottomSheet() {
+		SearchUserBottomSheet sheet =
+				SearchUserBottomSheet.newInstance(
+						currentQuery,
+						new SearchUserBottomSheet.SearchCallback() {
 							@Override
-							public void onCreateMenu(
-									@NonNull Menu menu, @NonNull MenuInflater menuInflater) {
-								menu.clear();
-								menuInflater.inflate(R.menu.search_menu, menu);
-
-								MenuItem searchItem = menu.findItem(R.id.action_search);
-								androidx.appcompat.widget.SearchView searchView =
-										(androidx.appcompat.widget.SearchView)
-												searchItem.getActionView();
-								if (searchView != null) {
-									searchView.setImeOptions(EditorInfo.IME_ACTION_DONE);
-									searchView.setOnQueryTextListener(
-											new androidx.appcompat.widget.SearchView
-													.OnQueryTextListener() {
-												@Override
-												public boolean onQueryTextSubmit(String query) {
-													refreshData(query);
-													searchItem.collapseActionView();
-													return true;
-												}
-
-												@Override
-												public boolean onQueryTextChange(String newText) {
-													return false;
-												}
-											});
-								}
+							public void onSearchApplied(String query) {
+								refreshData(query);
 							}
 
 							@Override
-							public boolean onMenuItemSelected(@NonNull MenuItem menuItem) {
-								return false;
+							public void onReset() {
+								refreshData("");
 							}
-						},
-						getViewLifecycleOwner(),
-						Lifecycle.State.RESUMED);
+						});
+		sheet.show(getChildFragmentManager(), "UserSearchSheet");
+	}
+
+	public static class SearchUserBottomSheet extends BottomSheetDialogFragment {
+
+		private SearchCallback callback;
+		private BottomsheetExploreUsersSearchBinding sheetBinding;
+
+		public interface SearchCallback {
+			void onSearchApplied(String query);
+
+			void onReset();
+		}
+
+		public static SearchUserBottomSheet newInstance(String query, SearchCallback cb) {
+			SearchUserBottomSheet fragment = new SearchUserBottomSheet();
+			Bundle args = new Bundle();
+			args.putString("q", query);
+			fragment.setArguments(args);
+			fragment.callback = cb;
+			return fragment;
+		}
+
+		@NonNull @Override
+		public Dialog onCreateDialog(@Nullable Bundle savedInstanceState) {
+			BottomSheetDialog dialog = (BottomSheetDialog) super.onCreateDialog(savedInstanceState);
+			AppUtil.applySheetStyle(dialog, true);
+			return dialog;
+		}
+
+		@Nullable @Override
+		public View onCreateView(
+				@NonNull LayoutInflater inflater,
+				@Nullable ViewGroup container,
+				@Nullable Bundle savedInstanceState) {
+			sheetBinding = BottomsheetExploreUsersSearchBinding.inflate(inflater, container, false);
+
+			if (getArguments() != null) {
+				sheetBinding.searchQueryEdit.setText(getArguments().getString("q", ""));
+			}
+
+			setupValidation();
+
+			sheetBinding.btnApply.setOnClickListener(
+					v -> {
+						if (callback != null) {
+							callback.onSearchApplied(
+									Objects.requireNonNull(sheetBinding.searchQueryEdit.getText())
+											.toString()
+											.trim());
+						}
+						dismiss();
+					});
+
+			sheetBinding.btnClear.setOnClickListener(
+					v -> {
+						if (callback != null) {
+							callback.onReset();
+						}
+						dismiss();
+					});
+
+			return sheetBinding.getRoot();
+		}
+
+		private void setupValidation() {
+			validate();
+			sheetBinding.searchQueryEdit.addTextChangedListener(
+					new TextWatcher() {
+						@Override
+						public void beforeTextChanged(
+								CharSequence s, int start, int count, int after) {}
+
+						@Override
+						public void onTextChanged(
+								CharSequence s, int start, int before, int count) {
+							validate();
+						}
+
+						@Override
+						public void afterTextChanged(Editable s) {}
+					});
+		}
+
+		private void validate() {
+			String query =
+					Objects.requireNonNull(sheetBinding.searchQueryEdit.getText())
+							.toString()
+							.trim();
+			sheetBinding.btnApply.setEnabled(!query.isEmpty());
+		}
 	}
 }

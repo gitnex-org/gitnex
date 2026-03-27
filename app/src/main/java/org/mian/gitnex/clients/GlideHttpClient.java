@@ -2,6 +2,7 @@ package org.mian.gitnex.clients;
 
 import android.content.Context;
 import java.security.SecureRandom;
+import java.util.concurrent.TimeUnit;
 import javax.net.ssl.HttpsURLConnection;
 import javax.net.ssl.SSLContext;
 import javax.net.ssl.X509TrustManager;
@@ -31,6 +32,9 @@ public class GlideHttpClient {
 			OkHttpClient.Builder builder =
 					new OkHttpClient.Builder()
 							.sslSocketFactory(sslContext.getSocketFactory(), memorizingTrustManager)
+							.connectTimeout(60, TimeUnit.SECONDS)
+							.readTimeout(60, TimeUnit.SECONDS)
+							.writeTimeout(60, TimeUnit.SECONDS)
 							.hostnameVerifier(
 									memorizingTrustManager.wrapHostnameVerifier(
 											HttpsURLConnection.getDefaultHostnameVerifier()))

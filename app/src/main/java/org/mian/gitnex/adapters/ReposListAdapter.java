@@ -21,6 +21,7 @@ import org.mian.gitnex.databinding.ListRepositoriesBinding;
 import org.mian.gitnex.helpers.AppUtil;
 import org.mian.gitnex.helpers.AvatarGenerator;
 import org.mian.gitnex.helpers.TimeHelper;
+import org.mian.gitnex.helpers.Toasty;
 import org.mian.gitnex.helpers.contexts.RepositoryContext;
 
 /**
@@ -157,6 +158,12 @@ public class ReposListAdapter extends RecyclerView.Adapter<ReposListAdapter.Repo
 			if (repo.getUpdatedAt() != null) {
 				binding.repoLastUpdated.setText(
 						TimeHelper.formatTime(repo.getUpdatedAt(), Locale.getDefault()));
+				binding.repoLastUpdated.setOnClickListener(
+						v ->
+								Toasty.show(
+										context,
+										TimeHelper.getFullDateTime(
+												repo.getUpdatedAt(), Locale.getDefault())));
 			}
 
 			if (repo.getDescription() != null && !repo.getDescription().isEmpty()) {

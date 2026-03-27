@@ -6,6 +6,9 @@ import android.view.View;
 import android.view.ViewGroup;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.core.graphics.Insets;
+import androidx.core.view.ViewCompat;
+import androidx.core.view.WindowInsetsCompat;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModelProvider;
 import androidx.recyclerview.widget.LinearLayoutManager;
@@ -28,6 +31,23 @@ public class ExplorePublicOrganizationsFragment extends Fragment {
 	private EndlessRecyclerViewScrollListener scrollListener;
 	private int resultLimit;
 
+	@Override
+	public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
+		super.onViewCreated(view, savedInstanceState);
+		ViewCompat.setOnApplyWindowInsetsListener(
+				view,
+				(v, windowInsets) -> {
+					Insets systemBars =
+							windowInsets.getInsets(WindowInsetsCompat.Type.systemBars());
+					binding.recyclerView.setPadding(
+							binding.recyclerView.getPaddingLeft(),
+							systemBars.top,
+							binding.recyclerView.getPaddingRight(),
+							binding.recyclerView.getPaddingBottom());
+					return windowInsets;
+				});
+	}
+
 	@Nullable @Override
 	public View onCreateView(
 			@NonNull LayoutInflater inflater,
@@ -45,7 +65,7 @@ public class ExplorePublicOrganizationsFragment extends Fragment {
 	}
 
 	private void setupUI() {
-		binding.addNewOrganization.setVisibility(View.GONE);
+		// binding.addNewOrganization.setVisibility(View.GONE);
 		adapter = new OrganizationsListAdapter(requireContext(), new ArrayList<>());
 		LinearLayoutManager layoutManager = new LinearLayoutManager(requireContext());
 		binding.recyclerView.setLayoutManager(layoutManager);
@@ -71,8 +91,9 @@ public class ExplorePublicOrganizationsFragment extends Fragment {
 						getViewLifecycleOwner(),
 						list -> {
 							adapter.updateList(list);
-							binding.noDataOrg.setVisibility(
-									list.isEmpty() ? View.VISIBLE : View.GONE);
+							binding.layoutEmpty
+									.getRoot()
+									.setVisibility(list.isEmpty() ? View.VISIBLE : View.GONE);
 							binding.pullToRefresh.setRefreshing(false);
 						});
 
@@ -81,7 +102,7 @@ public class ExplorePublicOrganizationsFragment extends Fragment {
 				.observe(
 						getViewLifecycleOwner(),
 						loading ->
-								binding.progressBar.setVisibility(
+								binding.expressiveLoader.setVisibility(
 										loading && adapter.getItemCount() == 0
 												? View.VISIBLE
 												: View.GONE));

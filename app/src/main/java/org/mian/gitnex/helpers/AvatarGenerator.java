@@ -32,7 +32,7 @@ public class AvatarGenerator {
 
 		float density = context.getResources().getDisplayMetrics().density;
 		int sizePx = (int) (sizeDp * density);
-		int cornerRadius = (int) (12 * density);
+		int cornerRadius = (int) (8 * density);
 
 		Bitmap bitmap = Bitmap.createBitmap(sizePx, sizePx, Bitmap.Config.ARGB_8888);
 		Canvas canvas = new Canvas(bitmap);

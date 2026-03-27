@@ -4,37 +4,113 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:paddingBottom="@dimen/dimen16dp"
-    android:paddingTop="@dimen/dimen56dp"
     android:background="?attr/primaryBackgroundColor">
 
-    <com.google.android.material.appbar.AppBarLayout
+    <androidx.fragment.app.FragmentContainerView
+        android:id="@+id/explore_container"
         android:layout_width="match_parent"
+        android:layout_height="match_parent" />
+
+    <com.google.android.material.dockedtoolbar.DockedToolbarLayout
+        android:id="@+id/docked_toolbar"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:background="?attr/primaryBackgroundColor"
-        app:elevation="0dp">
+        app:paddingBottomSystemWindowInsets="false"
+        app:paddingLeftSystemWindowInsets="false"
+        app:paddingRightSystemWindowInsets="false"
+        app:paddingTopSystemWindowInsets="false"
+        android:layout_gravity="bottom|center_horizontal"
+        android:layout_marginBottom="@dimen/dimen32dp"
+        app:shapeAppearanceOverlay="@style/ShapeAppearance.RoundedDock"
+        android:backgroundTint="?attr/colorSurfaceContainerHigh"
+        app:layout_behavior="com.google.android.material.behavior.HideViewOnScrollBehavior">
 
-        <com.google.android.material.appbar.MaterialToolbar
-            android:id="@+id/toolbar"
-            android:layout_width="match_parent"
-            android:layout_height="?attr/actionBarSize"
-            app:title="@string/pageTitleExplore" />
-
-        <com.google.android.material.tabs.TabLayout
-            android:id="@+id/tabsExplore"
-            android:layout_width="match_parent"
+        <com.google.android.material.overflow.OverflowLinearLayout
+            android:id="@+id/docked_toolbar_child"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            app:tabMode="fixed"
-            app:tabGravity="fill"
-            app:tabIndicatorAnimationMode="elastic"
-            app:tabSelectedTextColor="?attr/colorPrimary" />
+            android:layout_gravity="center"
+            android:orientation="horizontal">
 
-    </com.google.android.material.appbar.AppBarLayout>
+            <com.google.android.material.button.MaterialButton
+                android:id="@+id/btn_back"
+                style="?attr/materialIconButtonStyle"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                app:icon="@drawable/ic_arrow_back"
+                app:iconGravity="textStart"
+                app:iconPadding="@dimen/dimen0dp"
+                android:backgroundTint="@android:color/transparent"
+                android:layout_gravity="center_horizontal"
+                android:background="?attr/selectableItemBackgroundBorderless"
+                android:layout_marginEnd="@dimen/dimen4dp"
+                android:insetLeft="@dimen/dimen0dp"
+                android:insetRight="@dimen/dimen0dp"
+                android:contentDescription="@string/close" />
 
-    <androidx.viewpager2.widget.ViewPager2
-        android:id="@+id/containerExplore"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        app:layout_behavior="@string/appbar_scrolling_view_behavior" />
+            <com.google.android.material.button.MaterialButton
+                android:id="@+id/btn_nav_repos"
+                style="@style/Widget.Material3.Button.IconButton"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                app:icon="@drawable/ic_repo"
+                app:iconTint="?attr/primaryTextColor"
+                android:paddingHorizontal="@dimen/dimen24dp"
+                android:minWidth="0dp" />
+
+            <com.google.android.material.button.MaterialButton
+                android:id="@+id/btn_nav_issues"
+                style="@style/Widget.Material3.Button.IconButton"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                app:icon="@drawable/ic_issue"
+                app:iconTint="?attr/primaryTextColor"
+                android:paddingHorizontal="@dimen/dimen24dp"
+                android:minWidth="0dp" />
+
+            <com.google.android.material.button.MaterialButton
+                android:id="@+id/btn_nav_organizations"
+                style="@style/Widget.Material3.Button.IconButton"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                app:icon="@drawable/ic_organization"
+                app:iconTint="?attr/primaryTextColor"
+                android:paddingHorizontal="@dimen/dimen24dp"
+                android:minWidth="0dp" />
+
+            <com.google.android.material.button.MaterialButton
+                android:id="@+id/btn_nav_users"
+                style="@style/Widget.Material3.Button.IconButton"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                app:icon="@drawable/ic_person"
+                app:iconTint="?attr/primaryTextColor"
+                android:paddingHorizontal="@dimen/dimen24dp"
+                android:minWidth="0dp" />
+
+            <View
+                android:id="@+id/dock_divider"
+                android:layout_width="@dimen/dimen1dp"
+                android:layout_height="@dimen/dimen24dp"
+                android:layout_gravity="center_vertical"
+                android:layout_marginHorizontal="@dimen/dimen4dp"
+                android:background="?attr/colorOutlineVariant"
+                android:visibility="gone" />
+
+            <com.google.android.material.button.MaterialButton
+                android:id="@+id/btn_dock_search"
+                style="?attr/materialIconButtonStyle"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                app:icon="@drawable/ic_search"
+                android:layout_gravity="center_vertical"
+                android:layout_marginStart="@dimen/dimen4dp"
+                android:backgroundTint="@android:color/transparent"
+                android:visibility="gone"
+                android:contentDescription="@string/search" />
+
+        </com.google.android.material.overflow.OverflowLinearLayout>
+
+    </com.google.android.material.dockedtoolbar.DockedToolbarLayout>
 
 </androidx.coordinatorlayout.widget.CoordinatorLayout>
