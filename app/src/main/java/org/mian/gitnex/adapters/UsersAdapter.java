@@ -6,10 +6,13 @@ import android.content.Intent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Filter;
+import android.widget.Filterable;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.load.engine.DiskCacheStrategy;
+import java.util.ArrayList;
 import java.util.List;
 import org.gitnex.tea4j.v2.models.User;
 import org.mian.gitnex.R;
@@ -19,14 +22,17 @@ import org.mian.gitnex.databinding.ListUsersBinding;
 /**
  * @author mmarif
  */
-public class UsersAdapter extends RecyclerView.Adapter<UsersAdapter.UserViewHolder> {
+public class UsersAdapter extends RecyclerView.Adapter<UsersAdapter.UserViewHolder>
+		implements Filterable {
 
 	private List<User> userList;
+	private List<User> userListFull;
 	private final Context context;
 
 	public UsersAdapter(Context ctx, List<User> userList) {
 		this.context = ctx;
 		this.userList = userList;
+		this.userListFull = new ArrayList<>(userList);
 	}
 
 	@NonNull @Override
@@ -51,7 +57,54 @@ public class UsersAdapter extends RecyclerView.Adapter<UsersAdapter.UserViewHold
 	@SuppressLint("NotifyDataSetChanged")
 	public void updateList(List<User> newList) {
 		this.userList = newList;
+		this.userListFull = new ArrayList<>(newList);
 		notifyDataSetChanged();
+	}
+
+	@Override
+	public Filter getFilter() {
+		return new Filter() {
+			@Override
+			protected FilterResults performFiltering(CharSequence constraint) {
+				List<User> filteredList = new ArrayList<>();
+
+				if (constraint == null || constraint.length() == 0) {
+					filteredList.addAll(userListFull);
+				} else {
+					String filterPattern = constraint.toString().toLowerCase().trim();
+					for (User item : userListFull) {
+						String login = item.getLogin() != null ? item.getLogin().toLowerCase() : "";
+						String fullName =
+								item.getFullName() != null ? item.getFullName().toLowerCase() : "";
+						String bio =
+								item.getDescription() != null
+										? item.getDescription().toLowerCase()
+										: "";
+
+						if (login.contains(filterPattern)
+								|| fullName.contains(filterPattern)
+								|| bio.contains(filterPattern)) {
+							filteredList.add(item);
+						}
+					}
+				}
+
+				FilterResults results = new FilterResults();
+				results.values = filteredList;
+				return results;
+			}
+
+			@SuppressLint("NotifyDataSetChanged")
+			@Override
+			protected void publishResults(CharSequence constraint, FilterResults results) {
+				if (results != null && results.values instanceof List) {
+					@SuppressWarnings("unchecked")
+					List<User> filtered = (List<User>) results.values;
+					userList = filtered;
+					notifyDataSetChanged();
+				}
+			}
+		};
 	}
 
 	public class UserViewHolder extends RecyclerView.ViewHolder {

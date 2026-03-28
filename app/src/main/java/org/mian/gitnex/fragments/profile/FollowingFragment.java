@@ -1,25 +1,24 @@
 package org.mian.gitnex.fragments.profile;
 
 import android.os.Bundle;
+import android.text.Editable;
+import android.text.TextWatcher;
 import android.view.LayoutInflater;
-import android.view.Menu;
-import android.view.MenuInflater;
-import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
-import android.view.inputmethod.EditorInfo;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
-import androidx.core.view.MenuProvider;
+import androidx.core.graphics.Insets;
+import androidx.core.view.ViewCompat;
+import androidx.core.view.WindowInsetsCompat;
 import androidx.fragment.app.Fragment;
-import androidx.lifecycle.Lifecycle;
 import androidx.lifecycle.ViewModelProvider;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
+import com.google.android.material.search.SearchView;
 import java.util.ArrayList;
-import java.util.List;
-import org.gitnex.tea4j.v2.models.User;
 import org.mian.gitnex.R;
+import org.mian.gitnex.activities.ProfileActivity;
 import org.mian.gitnex.adapters.UsersAdapter;
 import org.mian.gitnex.databinding.FragmentProfileFollowersFollowingBinding;
 import org.mian.gitnex.helpers.Constants;
@@ -30,7 +29,7 @@ import org.mian.gitnex.viewmodels.UserListViewModel;
 /**
  * @author mmarif
  */
-public class FollowingFragment extends Fragment {
+public class FollowingFragment extends Fragment implements ProfileActivity.ProfileActionInterface {
 
 	private static final String BUNDLE_USERNAME = "username";
 	private FragmentProfileFollowersFollowingBinding binding;
@@ -39,6 +38,9 @@ public class FollowingFragment extends Fragment {
 	private EndlessRecyclerViewScrollListener scrollListener;
 	private int resultLimit;
 	private String username;
+	private boolean isSearching = false;
+	private boolean isFirstLoad = true;
+	private SearchView searchView;
 
 	public FollowingFragment() {}
 
@@ -58,6 +60,27 @@ public class FollowingFragment extends Fragment {
 		}
 	}
 
+	@Override
+	public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
+		super.onViewCreated(view, savedInstanceState);
+
+		int paddingTopPx = getResources().getDimensionPixelSize(R.dimen.dimen56dp);
+
+		ViewCompat.setOnApplyWindowInsetsListener(
+				view,
+				(v, windowInsets) -> {
+					Insets systemBars =
+							windowInsets.getInsets(WindowInsetsCompat.Type.systemBars());
+					binding.recyclerView.setPadding(
+							binding.recyclerView.getPaddingLeft(),
+							paddingTopPx,
+							binding.recyclerView.getPaddingRight(),
+							binding.recyclerView.getPaddingBottom());
+
+					return windowInsets;
+				});
+	}
+
 	@Nullable @Override
 	public View onCreateView(
 			@NonNull LayoutInflater inflater,
@@ -70,14 +93,33 @@ public class FollowingFragment extends Fragment {
 
 		setupRecyclerView();
 		setupSwipeRefresh();
-		setupMenu();
+		setupSearch();
 		observeViewModel();
 
+		return binding.getRoot();
+	}
+
+	@Override
+	public void onResume() {
+		super.onResume();
+		if (!isHidden() && isFirstLoad) {
+			lazyLoad();
+		}
+	}
+
+	@Override
+	public void onHiddenChanged(boolean hidden) {
+		super.onHiddenChanged(hidden);
+		if (!hidden && isFirstLoad) {
+			lazyLoad();
+		}
+	}
+
+	private void lazyLoad() {
+		isFirstLoad = false;
 		if (viewModel.getUsers().getValue() == null || viewModel.getUsers().getValue().isEmpty()) {
 			refreshData();
 		}
-
-		return binding.getRoot();
 	}
 
 	private void setupRecyclerView() {
@@ -153,65 +195,64 @@ public class FollowingFragment extends Fragment {
 				requireContext(), "following", username, null, null, 1, resultLimit, true);
 	}
 
-	private void setupMenu() {
-		requireActivity()
-				.addMenuProvider(
-						new MenuProvider() {
+	private void setupSearch() {
+		searchView = binding.searchView;
+		RecyclerView searchRecycler = binding.searchResultsRecycler;
+
+		searchRecycler.setLayoutManager(new LinearLayoutManager(requireContext()));
+		searchRecycler.setAdapter(adapter);
+
+		searchView
+				.getEditText()
+				.addTextChangedListener(
+						new TextWatcher() {
 							@Override
-							public void onCreateMenu(
-									@NonNull Menu menu, @NonNull MenuInflater menuInflater) {
-								menu.clear();
-								menuInflater.inflate(R.menu.search_menu, menu);
+							public void onTextChanged(
+									CharSequence s, int start, int before, int count) {
+								String query = s.toString();
+								isSearching = !query.isEmpty();
 
-								MenuItem searchItem = menu.findItem(R.id.action_search);
-								androidx.appcompat.widget.SearchView searchView =
-										(androidx.appcompat.widget.SearchView)
-												searchItem.getActionView();
-
-								if (searchView != null) {
-									searchView.setImeOptions(EditorInfo.IME_ACTION_DONE);
-									searchView.setOnQueryTextListener(
-											new androidx.appcompat.widget.SearchView
-													.OnQueryTextListener() {
-												@Override
-												public boolean onQueryTextSubmit(String query) {
-													return false;
-												}
-
-												@Override
-												public boolean onQueryTextChange(String newText) {
-													filter(newText);
-													return false;
-												}
-											});
-								}
+								adapter.getFilter()
+										.filter(
+												query,
+												count1 -> {
+													if (isSearching) {
+														boolean noResults =
+																adapter.getItemCount() == 0;
+														binding.layoutEmpty
+																.getRoot()
+																.setVisibility(
+																		noResults
+																				? View.VISIBLE
+																				: View.GONE);
+													}
+												});
 							}
 
 							@Override
-							public boolean onMenuItemSelected(@NonNull MenuItem menuItem) {
-								return false;
-							}
-						},
-						getViewLifecycleOwner(),
-						Lifecycle.State.RESUMED);
+							public void beforeTextChanged(
+									CharSequence s, int start, int count, int after) {}
+
+							@Override
+							public void afterTextChanged(Editable s) {}
+						});
+
+		searchView.addTransitionListener(
+				(searchView, previousState, newState) -> {
+					if (newState
+							== com.google.android.material.search.SearchView.TransitionState
+									.HIDDEN) {
+						isSearching = false;
+						adapter.getFilter().filter("");
+						updateUiVisibility(false);
+					}
+				});
 	}
 
-	private void filter(String text) {
-		List<User> originalList = viewModel.getUsers().getValue();
-		if (originalList == null) return;
-		if (text.isEmpty()) {
-			adapter.updateList(originalList);
-			return;
+	@Override
+	public void onSearchTriggered() {
+		if (searchView != null) {
+			searchView.show();
 		}
-
-		String query = text.toLowerCase().trim();
-		List<User> filtered = new ArrayList<>();
-		for (User u : originalList) {
-			if ((u.getLogin() != null && u.getLogin().toLowerCase().contains(query))
-					|| (u.getFullName() != null && u.getFullName().toLowerCase().contains(query))) {
-				filtered.add(u);
-			}
-		}
-		adapter.updateList(filtered);
 	}
 }

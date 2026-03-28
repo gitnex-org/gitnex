@@ -1,20 +1,24 @@
 package org.mian.gitnex.fragments.profile;
 
 import android.os.Bundle;
+import android.text.Editable;
+import android.text.TextWatcher;
 import android.view.LayoutInflater;
-import android.view.Menu;
-import android.view.MenuInflater;
-import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.core.graphics.Insets;
+import androidx.core.view.ViewCompat;
+import androidx.core.view.WindowInsetsCompat;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModelProvider;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
+import com.google.android.material.search.SearchView;
 import java.util.ArrayList;
 import org.mian.gitnex.R;
+import org.mian.gitnex.activities.ProfileActivity;
 import org.mian.gitnex.adapters.OrganizationsListAdapter;
 import org.mian.gitnex.databinding.FragmentOrganizationsBinding;
 import org.mian.gitnex.helpers.Constants;
@@ -25,7 +29,8 @@ import org.mian.gitnex.viewmodels.OrganizationsViewModel;
 /**
  * @author mmarif
  */
-public class OrganizationsFragment extends Fragment {
+public class OrganizationsFragment extends Fragment
+		implements ProfileActivity.ProfileActionInterface {
 
 	private static final String BUNDLE_USERNAME = "username";
 	private FragmentOrganizationsBinding binding;
@@ -34,6 +39,9 @@ public class OrganizationsFragment extends Fragment {
 	private EndlessRecyclerViewScrollListener scrollListener;
 	private String username;
 	private int resultLimit;
+	private boolean isSearching = false;
+	private boolean isFirstLoad = true;
+	private SearchView searchView;
 
 	public static OrganizationsFragment newInstance(String username) {
 		OrganizationsFragment fragment = new OrganizationsFragment();
@@ -49,6 +57,27 @@ public class OrganizationsFragment extends Fragment {
 		if (getArguments() != null) username = getArguments().getString(BUNDLE_USERNAME);
 	}
 
+	@Override
+	public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
+		super.onViewCreated(view, savedInstanceState);
+
+		int paddingTopPx = getResources().getDimensionPixelSize(R.dimen.dimen56dp);
+
+		ViewCompat.setOnApplyWindowInsetsListener(
+				view,
+				(v, windowInsets) -> {
+					Insets systemBars =
+							windowInsets.getInsets(WindowInsetsCompat.Type.systemBars());
+					binding.recyclerView.setPadding(
+							binding.recyclerView.getPaddingLeft(),
+							paddingTopPx,
+							binding.recyclerView.getPaddingRight(),
+							binding.recyclerView.getPaddingBottom());
+
+					return windowInsets;
+				});
+	}
+
 	@Nullable @Override
 	public View onCreateView(
 			@NonNull LayoutInflater inflater,
@@ -57,13 +86,33 @@ public class OrganizationsFragment extends Fragment {
 		binding = FragmentOrganizationsBinding.inflate(inflater, container, false);
 		viewModel = new ViewModelProvider(this).get(OrganizationsViewModel.class);
 		resultLimit = Constants.getCurrentResultLimit(requireContext());
-		setHasOptionsMenu(true);
 
 		setupUI();
 		observeViewModel();
-		refreshData();
+		setupSearch();
 
 		return binding.getRoot();
+	}
+
+	@Override
+	public void onResume() {
+		super.onResume();
+		if (!isHidden() && isFirstLoad) {
+			lazyLoad();
+		}
+	}
+
+	@Override
+	public void onHiddenChanged(boolean hidden) {
+		super.onHiddenChanged(hidden);
+		if (!hidden && isFirstLoad) {
+			lazyLoad();
+		}
+	}
+
+	private void lazyLoad() {
+		isFirstLoad = false;
+		refreshData();
 	}
 
 	private void setupUI() {
@@ -86,31 +135,51 @@ public class OrganizationsFragment extends Fragment {
 	}
 
 	private void observeViewModel() {
+
 		viewModel
 				.getOrgs()
 				.observe(
 						getViewLifecycleOwner(),
 						list -> {
 							adapter.updateList(list);
+							binding.pullToRefresh.setRefreshing(false);
+							boolean isLoading =
+									Boolean.TRUE.equals(viewModel.getIsLoading().getValue());
 							binding.layoutEmpty
 									.getRoot()
-									.setVisibility(list.isEmpty() ? View.VISIBLE : View.GONE);
-							binding.pullToRefresh.setRefreshing(false);
+									.setVisibility(
+											!isLoading && list.isEmpty()
+													? View.VISIBLE
+													: View.GONE);
 						});
 
 		viewModel
 				.getIsLoading()
 				.observe(
 						getViewLifecycleOwner(),
-						loading ->
-								binding.expressiveLoader.setVisibility(
-										loading && adapter.getItemCount() == 0
-												? View.VISIBLE
-												: View.GONE));
+						loading -> {
+							boolean hasData = adapter.getItemCount() > 0;
+
+							binding.expressiveLoader.setVisibility(
+									loading && !hasData ? View.VISIBLE : View.GONE);
+
+							if (loading) {
+								binding.layoutEmpty.getRoot().setVisibility(View.GONE);
+							} else {
+								boolean isEmpty = adapter.getItemCount() == 0;
+								binding.layoutEmpty
+										.getRoot()
+										.setVisibility(isEmpty ? View.VISIBLE : View.GONE);
+							}
+						});
 
 		viewModel
 				.getError()
-				.observe(getViewLifecycleOwner(), msg -> Toasty.show(requireContext(), msg));
+				.observe(
+						getViewLifecycleOwner(),
+						msg -> {
+							if (msg != null) Toasty.show(requireContext(), msg);
+						});
 	}
 
 	private void refreshData() {
@@ -118,24 +187,67 @@ public class OrganizationsFragment extends Fragment {
 		viewModel.fetchUserOrgs(requireContext(), username, 1, resultLimit, true);
 	}
 
-	@Override
-	public void onCreateOptionsMenu(@NonNull Menu menu, @NonNull MenuInflater inflater) {
-		inflater.inflate(R.menu.search_menu, menu);
-		MenuItem searchItem = menu.findItem(R.id.action_search);
-		androidx.appcompat.widget.SearchView searchView =
-				(androidx.appcompat.widget.SearchView) searchItem.getActionView();
-		searchView.setOnQueryTextListener(
-				new androidx.appcompat.widget.SearchView.OnQueryTextListener() {
-					@Override
-					public boolean onQueryTextSubmit(String query) {
-						return false;
-					}
+	private void updateUiState() {
+		boolean isEmpty = adapter.getItemCount() == 0;
+		boolean loaded = Boolean.TRUE.equals(viewModel.getHasLoadedOnce().getValue());
+		binding.layoutEmpty.getRoot().setVisibility(loaded && isEmpty ? View.VISIBLE : View.GONE);
+	}
 
-					@Override
-					public boolean onQueryTextChange(String newText) {
-						adapter.getFilter().filter(newText);
-						return false;
+	private void setupSearch() {
+		searchView = binding.searchView;
+		RecyclerView searchRecycler = binding.searchResultsRecycler;
+
+		searchRecycler.setLayoutManager(new LinearLayoutManager(requireContext()));
+		searchRecycler.setAdapter(adapter);
+
+		searchView
+				.getEditText()
+				.addTextChangedListener(
+						new TextWatcher() {
+							@Override
+							public void beforeTextChanged(
+									CharSequence s, int start, int count, int after) {}
+
+							@Override
+							public void onTextChanged(
+									CharSequence s, int start, int before, int count) {
+								String query = s.toString();
+								isSearching = !query.isEmpty();
+
+								adapter.getFilter()
+										.filter(
+												query,
+												count1 -> {
+													boolean isEmpty = adapter.getItemCount() == 0;
+													binding.layoutEmpty
+															.getRoot()
+															.setVisibility(
+																	isSearching && isEmpty
+																			? View.VISIBLE
+																			: View.GONE);
+												});
+							}
+
+							@Override
+							public void afterTextChanged(Editable s) {}
+						});
+
+		searchView.addTransitionListener(
+				(searchView, previousState, newState) -> {
+					if (newState
+							== com.google.android.material.search.SearchView.TransitionState
+									.HIDDEN) {
+						isSearching = false;
+						adapter.getFilter().filter("");
+						updateUiState();
 					}
 				});
+	}
+
+	@Override
+	public void onSearchTriggered() {
+		if (searchView != null) {
+			searchView.show();
+		}
 	}
 }

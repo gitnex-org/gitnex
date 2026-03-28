@@ -1,23 +1,24 @@
 package org.mian.gitnex.fragments.profile;
 
 import android.os.Bundle;
+import android.text.Editable;
+import android.text.TextWatcher;
 import android.view.LayoutInflater;
-import android.view.Menu;
-import android.view.MenuInflater;
-import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
-import android.view.inputmethod.EditorInfo;
 import androidx.annotation.NonNull;
-import androidx.appcompat.widget.SearchView;
-import androidx.core.view.MenuProvider;
+import androidx.annotation.Nullable;
+import androidx.core.graphics.Insets;
+import androidx.core.view.ViewCompat;
+import androidx.core.view.WindowInsetsCompat;
 import androidx.fragment.app.Fragment;
-import androidx.lifecycle.Lifecycle;
 import androidx.lifecycle.ViewModelProvider;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
+import com.google.android.material.search.SearchView;
 import java.util.ArrayList;
 import org.mian.gitnex.R;
+import org.mian.gitnex.activities.ProfileActivity;
 import org.mian.gitnex.adapters.ReposListAdapter;
 import org.mian.gitnex.databinding.FragmentRepositoriesBinding;
 import org.mian.gitnex.helpers.Constants;
@@ -28,7 +29,8 @@ import org.mian.gitnex.viewmodels.RepositoriesViewModel;
 /**
  * @author mmarif
  */
-public class StarredRepositoriesFragment extends Fragment {
+public class StarredRepositoriesFragment extends Fragment
+		implements ProfileActivity.ProfileActionInterface {
 
 	private static final String ARG_USERNAME = "username";
 
@@ -40,6 +42,8 @@ public class StarredRepositoriesFragment extends Fragment {
 	private String username;
 	private int resultLimit;
 	private boolean isSearching = false;
+	private boolean isFirstLoad = true;
+	private SearchView searchView;
 
 	public StarredRepositoriesFragment() {}
 
@@ -60,6 +64,27 @@ public class StarredRepositoriesFragment extends Fragment {
 	}
 
 	@Override
+	public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
+		super.onViewCreated(view, savedInstanceState);
+
+		int paddingTopPx = getResources().getDimensionPixelSize(R.dimen.dimen56dp);
+
+		ViewCompat.setOnApplyWindowInsetsListener(
+				view,
+				(v, windowInsets) -> {
+					Insets systemBars =
+							windowInsets.getInsets(WindowInsetsCompat.Type.systemBars());
+					binding.recyclerView.setPadding(
+							binding.recyclerView.getPaddingLeft(),
+							paddingTopPx,
+							binding.recyclerView.getPaddingRight(),
+							binding.recyclerView.getPaddingBottom());
+
+					return windowInsets;
+				});
+	}
+
+	@Override
 	public View onCreateView(
 			@NonNull LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
 		binding = FragmentRepositoriesBinding.inflate(inflater, container, false);
@@ -68,11 +93,31 @@ public class StarredRepositoriesFragment extends Fragment {
 
 		setupRecyclerView();
 		setupSwipeRefresh();
-		setupMenu();
+		setupSearch();
 		observeViewModel();
 
-		refreshData();
 		return binding.getRoot();
+	}
+
+	@Override
+	public void onResume() {
+		super.onResume();
+		if (!isHidden() && isFirstLoad) {
+			lazyLoad();
+		}
+	}
+
+	@Override
+	public void onHiddenChanged(boolean hidden) {
+		super.onHiddenChanged(hidden);
+		if (!hidden && isFirstLoad) {
+			lazyLoad();
+		}
+	}
+
+	private void lazyLoad() {
+		isFirstLoad = false;
+		refreshData();
 	}
 
 	private void setupRecyclerView() {
@@ -101,43 +146,62 @@ public class StarredRepositoriesFragment extends Fragment {
 		binding.recyclerView.addOnScrollListener(scrollListener);
 	}
 
-	private void setupMenu() {
-		requireActivity()
-				.addMenuProvider(
-						new MenuProvider() {
+	private void setupSearch() {
+		searchView = binding.searchView;
+		RecyclerView searchRecycler = binding.searchResultsRecycler;
+
+		searchRecycler.setLayoutManager(new LinearLayoutManager(requireContext()));
+		searchRecycler.setAdapter(adapter);
+
+		searchView
+				.getEditText()
+				.addTextChangedListener(
+						new TextWatcher() {
 							@Override
-							public void onCreateMenu(
-									@NonNull Menu menu, @NonNull MenuInflater menuInflater) {
-								menuInflater.inflate(R.menu.search_menu, menu);
-								MenuItem searchItem = menu.findItem(R.id.action_search);
-								SearchView searchView = (SearchView) searchItem.getActionView();
+							public void beforeTextChanged(
+									CharSequence s, int start, int count, int after) {}
 
-								if (searchView != null) {
-									searchView.setImeOptions(EditorInfo.IME_ACTION_DONE);
-									searchView.setOnQueryTextListener(
-											new SearchView.OnQueryTextListener() {
-												@Override
-												public boolean onQueryTextSubmit(String query) {
-													return false;
-												}
+							@Override
+							public void onTextChanged(
+									CharSequence s, int start, int before, int count) {
+								String query = s.toString();
+								isSearching = !query.isEmpty();
 
-												@Override
-												public boolean onQueryTextChange(String newText) {
-													isSearching = !newText.isEmpty();
-													adapter.getFilter().filter(newText);
-													return true;
-												}
-											});
-								}
+								adapter.getFilter()
+										.filter(
+												query,
+												count1 -> {
+													boolean isEmpty = adapter.getItemCount() == 0;
+													binding.layoutEmpty
+															.getRoot()
+															.setVisibility(
+																	isSearching && isEmpty
+																			? View.VISIBLE
+																			: View.GONE);
+												});
 							}
 
 							@Override
-							public boolean onMenuItemSelected(@NonNull MenuItem menuItem) {
-								return false;
-							}
-						},
-						getViewLifecycleOwner(),
-						Lifecycle.State.RESUMED);
+							public void afterTextChanged(Editable s) {}
+						});
+
+		searchView.addTransitionListener(
+				(searchView, previousState, newState) -> {
+					if (newState
+							== com.google.android.material.search.SearchView.TransitionState
+									.HIDDEN) {
+						isSearching = false;
+						adapter.getFilter().filter("");
+						updateUiState();
+					}
+				});
+	}
+
+	@Override
+	public void onSearchTriggered() {
+		if (searchView != null) {
+			searchView.show();
+		}
 	}
 
 	private void observeViewModel() {
