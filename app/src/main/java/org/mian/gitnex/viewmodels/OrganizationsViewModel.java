@@ -23,6 +23,7 @@ public class OrganizationsViewModel extends ViewModel {
 			new MutableLiveData<>(new ArrayList<>());
 	private final MutableLiveData<Boolean> isLoading = new MutableLiveData<>(false);
 	private final MutableLiveData<String> errorMessage = new MutableLiveData<>();
+	private final MutableLiveData<Boolean> hasLoadedOnce = new MutableLiveData<>(false);
 
 	private boolean isLastPage = false;
 	private int totalCount = -1;
@@ -37,6 +38,10 @@ public class OrganizationsViewModel extends ViewModel {
 
 	public LiveData<String> getError() {
 		return errorMessage;
+	}
+
+	public LiveData<Boolean> getHasLoadedOnce() {
+		return hasLoadedOnce;
 	}
 
 	public void fetchOrganizations(Context ctx, int page, int limit, boolean isRefresh) {
@@ -80,12 +85,14 @@ public class OrganizationsViewModel extends ViewModel {
 									@NonNull Call<List<Organization>> call,
 									@NonNull Response<List<Organization>> response) {
 								handleResponse(response, isRefresh, limit);
+								hasLoadedOnce.setValue(true);
 							}
 
 							@Override
 							public void onFailure(
 									@NonNull Call<List<Organization>> call, @NonNull Throwable t) {
 								isLoading.setValue(false);
+								hasLoadedOnce.setValue(true);
 								errorMessage.setValue(t.getMessage());
 							}
 						});
@@ -120,6 +127,11 @@ public class OrganizationsViewModel extends ViewModel {
 	private void handleResponse(
 			Response<List<Organization>> response, boolean isRefresh, int limit) {
 		isLoading.setValue(false);
+
+		if (isRefresh) {
+			isLastPage = false;
+			totalCount = -1;
+		}
 
 		if (response.isSuccessful() && response.body() != null) {
 			String totalHeader = response.headers().get("x-total-count");

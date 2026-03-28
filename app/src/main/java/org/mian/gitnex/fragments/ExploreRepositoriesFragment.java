@@ -48,6 +48,7 @@ public class ExploreRepositoriesFragment extends Fragment
 	private boolean includeTemplate = false;
 	private boolean onlyArchived = false;
 	private String currentSort = "updated";
+	private boolean isFirstLoad = true;
 
 	@Override
 	public View onCreateView(
@@ -60,7 +61,6 @@ public class ExploreRepositoriesFragment extends Fragment
 		setupSwipeRefresh();
 		observeViewModel();
 
-		refreshData();
 		return viewBinding.getRoot();
 	}
 
@@ -75,6 +75,27 @@ public class ExploreRepositoriesFragment extends Fragment
 					viewBinding.recyclerView.setPadding(0, systemBars.top, 0, 0);
 					return windowInsets;
 				});
+	}
+
+	@Override
+	public void onResume() {
+		super.onResume();
+		if (!isHidden() && isFirstLoad) {
+			lazyLoad();
+		}
+	}
+
+	@Override
+	public void onHiddenChanged(boolean hidden) {
+		super.onHiddenChanged(hidden);
+		if (!hidden && isFirstLoad) {
+			lazyLoad();
+		}
+	}
+
+	private void lazyLoad() {
+		isFirstLoad = false;
+		refreshData();
 	}
 
 	@Override

@@ -42,6 +42,7 @@ public class ExploreIssuesFragment extends Fragment
 	private EndlessRecyclerViewScrollListener scrollListener;
 	private String currentQuery = "";
 	private int resultLimit;
+	private boolean isFirstLoad = true;
 
 	@Override
 	public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
@@ -67,9 +68,28 @@ public class ExploreIssuesFragment extends Fragment
 		setupSwipeRefresh();
 		observeViewModel();
 
-		refreshData(currentQuery);
-
 		return viewBinding.getRoot();
+	}
+
+	@Override
+	public void onResume() {
+		super.onResume();
+		if (!isHidden() && isFirstLoad) {
+			lazyLoad();
+		}
+	}
+
+	@Override
+	public void onHiddenChanged(boolean hidden) {
+		super.onHiddenChanged(hidden);
+		if (!hidden && isFirstLoad) {
+			lazyLoad();
+		}
+	}
+
+	private void lazyLoad() {
+		isFirstLoad = false;
+		refreshData(currentQuery);
 	}
 
 	@Override

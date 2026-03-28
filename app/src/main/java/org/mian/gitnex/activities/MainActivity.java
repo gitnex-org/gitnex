@@ -36,7 +36,6 @@ import org.mian.gitnex.databinding.FragmentHomeDashboardBinding;
 import org.mian.gitnex.fragments.HomeDashboardFragment;
 import org.mian.gitnex.fragments.NotificationsFragment;
 import org.mian.gitnex.fragments.RepositoriesFragment;
-import org.mian.gitnex.fragments.profile.DetailFragment;
 import org.mian.gitnex.helpers.AlertDialogs;
 import org.mian.gitnex.helpers.AppDatabaseSettings;
 import org.mian.gitnex.helpers.AppUtil;
@@ -431,10 +430,6 @@ public class MainActivity extends BaseActivity
 	public void onResume() {
 		super.onResume();
 		if (closeActivity) finishAndRemoveTask();
-		if (DetailFragment.refProfile) {
-			loadUserInfo(null, null, null, null);
-			DetailFragment.refProfile = false;
-		}
 		if (reloadRepos && activeFragment == repoFrag) {
 			((RepositoriesFragment) repoFrag).refreshData();
 			reloadRepos = false;

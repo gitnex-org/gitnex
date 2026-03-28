@@ -18,6 +18,7 @@ import org.mian.gitnex.adapters.OrganizationsListAdapter;
 import org.mian.gitnex.databinding.FragmentOrganizationsBinding;
 import org.mian.gitnex.helpers.Constants;
 import org.mian.gitnex.helpers.EndlessRecyclerViewScrollListener;
+import org.mian.gitnex.helpers.Toasty;
 import org.mian.gitnex.viewmodels.OrganizationsViewModel;
 
 /**
@@ -30,6 +31,7 @@ public class ExplorePublicOrganizationsFragment extends Fragment {
 	private OrganizationsListAdapter adapter;
 	private EndlessRecyclerViewScrollListener scrollListener;
 	private int resultLimit;
+	private boolean isFirstLoad = true;
 
 	@Override
 	public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
@@ -59,9 +61,29 @@ public class ExplorePublicOrganizationsFragment extends Fragment {
 
 		setupUI();
 		observeViewModel();
-		refreshData();
 
 		return binding.getRoot();
+	}
+
+	@Override
+	public void onResume() {
+		super.onResume();
+		if (!isHidden() && isFirstLoad) {
+			lazyLoad();
+		}
+	}
+
+	@Override
+	public void onHiddenChanged(boolean hidden) {
+		super.onHiddenChanged(hidden);
+		if (!hidden && isFirstLoad) {
+			lazyLoad();
+		}
+	}
+
+	private void lazyLoad() {
+		isFirstLoad = false;
+		refreshData();
 	}
 
 	private void setupUI() {
@@ -91,21 +113,37 @@ public class ExplorePublicOrganizationsFragment extends Fragment {
 						getViewLifecycleOwner(),
 						list -> {
 							adapter.updateList(list);
-							binding.layoutEmpty
-									.getRoot()
-									.setVisibility(list.isEmpty() ? View.VISIBLE : View.GONE);
 							binding.pullToRefresh.setRefreshing(false);
+							updateUiVisibility(
+									Boolean.TRUE.equals(viewModel.getIsLoading().getValue()));
 						});
 
+		viewModel.getIsLoading().observe(getViewLifecycleOwner(), this::updateUiVisibility);
+
 		viewModel
-				.getIsLoading()
+				.getError()
 				.observe(
 						getViewLifecycleOwner(),
-						loading ->
-								binding.expressiveLoader.setVisibility(
-										loading && adapter.getItemCount() == 0
-												? View.VISIBLE
-												: View.GONE));
+						error -> {
+							if (error != null) {
+								Toasty.show(requireContext(), error);
+								updateUiVisibility(false);
+							}
+						});
+	}
+
+	private void updateUiVisibility(boolean isLoading) {
+		boolean hasData = adapter.getItemCount() > 0;
+
+		binding.expressiveLoader.setVisibility(isLoading && !hasData ? View.VISIBLE : View.GONE);
+		boolean hasLoadedOnce = Boolean.TRUE.equals(viewModel.getHasLoadedOnce().getValue());
+
+		binding.layoutEmpty
+				.getRoot()
+				.setVisibility(!isLoading && !hasData && hasLoadedOnce ? View.VISIBLE : View.GONE);
+
+		binding.pullToRefresh.setVisibility(
+				!hasData && !isLoading && hasLoadedOnce ? View.GONE : View.VISIBLE);
 	}
 
 	private void refreshData() {

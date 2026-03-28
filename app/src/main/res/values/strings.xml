@@ -102,6 +102,7 @@
     <string name="malformedJson">Malformed JSON was received. Server response was not successful</string>
     <string name="emptyFieldURL">Instance URL is required</string>
     <string name="emptyFieldUsername">Username is required</string>
+    <string name="emptyFieldName">Name is required</string>
     <string name="emptyFieldPassword">Password is required</string>
     <string name="protocolEmptyError">Protocol is required</string>
     <string name="instanceHelperText">Enter URL without http or https. Example: codeberg.org</string>
@@ -624,6 +625,7 @@
     <string name="clear">Clear</string>
     <string name="updated">Updated</string>
     <string name="created">Created</string>
+    <string name="contributions">Contributions</string>
     <!-- generic copy -->
 
     <string name="exploreUsers">Explore users</string>
@@ -1114,4 +1116,10 @@
     <string name="must_change_password">Must change password</string>
     <string name="restricted_account">Restricted account</string>
     <string name="email_username_pw_required">Email, username, and password are required</string>
+    <string name="choose_image">Choose image</string>
+    <string name="userFollowed">You are now following %s</string>
+    <string name="userUnFollowed">Stopped following %s</string>
+    <string name="userInvalidWebsite">Please enter a valid URL</string>
+    <string name="update_avatar">Update profile avatar</string>
+    <string name="avatar_preview_hint">This is a preview of your new profile picture</string>
 </resources>
