@@ -299,7 +299,8 @@
     <string name="labelNameError">Label name is not valid</string>
     <string name="labelCreated">Label created</string>
     <string name="labelUpdated">Label updated</string>
-
+    <string name="labelDeleteTitle">Delete label</string>
+    <string name="labelDeleteConfirmText">Are you sure you want to delete label %1$s?</string>
     <string name="labelMenuContentDesc">Desc</string>
     <string name="labelDeleteText">Label deleted</string>
 
@@ -626,6 +627,8 @@
     <string name="updated">Updated</string>
     <string name="created">Created</string>
     <string name="contributions">Contributions</string>
+    <string name="write">Write</string>
+    <string name="code">Code</string>
     <!-- generic copy -->
 
     <string name="exploreUsers">Explore users</string>
@@ -1122,4 +1125,6 @@
     <string name="userInvalidWebsite">Please enter a valid URL</string>
     <string name="update_avatar">Update profile avatar</string>
     <string name="avatar_preview_hint">This is a preview of your new profile picture</string>
+    <string name="external_issues">External issues</string>
+    <string name="external_wiki">External wiki</string>
 </resources>

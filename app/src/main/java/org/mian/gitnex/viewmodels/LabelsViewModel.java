@@ -7,6 +7,8 @@ import androidx.lifecycle.MutableLiveData;
 import androidx.lifecycle.ViewModel;
 import java.util.ArrayList;
 import java.util.List;
+import org.gitnex.tea4j.v2.models.CreateLabelOption;
+import org.gitnex.tea4j.v2.models.EditLabelOption;
 import org.gitnex.tea4j.v2.models.Label;
 import org.mian.gitnex.clients.RetrofitClient;
 import retrofit2.Call;
@@ -22,8 +24,18 @@ public class LabelsViewModel extends ViewModel {
 	private final MutableLiveData<Boolean> isLoading = new MutableLiveData<>(false);
 	private final MutableLiveData<Boolean> hasLoadedOnce = new MutableLiveData<>(false);
 	private final MutableLiveData<String> error = new MutableLiveData<>();
+	private final MutableLiveData<Boolean> isActionLoading = new MutableLiveData<>(false);
+	private final MutableLiveData<Integer> actionResult = new MutableLiveData<>(-1);
 
 	private final List<Label> fullList = new ArrayList<>();
+
+	public LiveData<Boolean> getIsActionLoading() {
+		return isActionLoading;
+	}
+
+	public LiveData<Integer> getActionResult() {
+		return actionResult;
+	}
 
 	public LiveData<List<Label>> getLabels() {
 		return labels;
@@ -45,6 +57,10 @@ public class LabelsViewModel extends ViewModel {
 		fullList.clear();
 		labels.setValue(new ArrayList<>());
 		hasLoadedOnce.setValue(false);
+	}
+
+	public void resetActionResult() {
+		actionResult.setValue(-1);
 	}
 
 	public void fetchLabels(
@@ -99,6 +115,95 @@ public class LabelsViewModel extends ViewModel {
 						isLoading.setValue(false);
 						hasLoadedOnce.setValue(true);
 						error.setValue(t.getMessage());
+					}
+				});
+	}
+
+	public void saveLabel(
+			Context ctx,
+			String type,
+			String owner,
+			String repo,
+			Long labelId,
+			CreateLabelOption createOptions,
+			EditLabelOption editOptions) {
+		isActionLoading.setValue(true);
+		boolean isEdit = (labelId != null);
+
+		Call<Label> call;
+		if ("org".equalsIgnoreCase(type)) {
+			call =
+					isEdit
+							? RetrofitClient.getApiInterface(ctx)
+									.orgEditLabel(owner, labelId, editOptions)
+							: RetrofitClient.getApiInterface(ctx)
+									.orgCreateLabel(owner, createOptions);
+		} else {
+			call =
+					isEdit
+							? RetrofitClient.getApiInterface(ctx)
+									.issueEditLabel(owner, repo, labelId, editOptions)
+							: RetrofitClient.getApiInterface(ctx)
+									.issueCreateLabel(owner, repo, createOptions);
+		}
+
+		call.enqueue(
+				new Callback<>() {
+					@Override
+					public void onResponse(
+							@NonNull Call<Label> call, @NonNull Response<Label> response) {
+						isActionLoading.setValue(false);
+						if (response.isSuccessful()) {
+							actionResult.setValue(response.code());
+						} else {
+							error.setValue("Error: " + response.code());
+						}
+					}
+
+					@Override
+					public void onFailure(@NonNull Call<Label> call, @NonNull Throwable t) {
+						isActionLoading.setValue(false);
+						actionResult.setValue(500);
+					}
+				});
+	}
+
+	public void deleteLabel(Context ctx, String type, String owner, String repo, long labelId) {
+		isActionLoading.setValue(true);
+		Call<Void> call;
+
+		if ("org".equalsIgnoreCase(type)) {
+			call = RetrofitClient.getApiInterface(ctx).orgDeleteLabel(owner, labelId);
+		} else {
+			call = RetrofitClient.getApiInterface(ctx).issueDeleteLabel(owner, repo, labelId);
+		}
+
+		call.enqueue(
+				new Callback<>() {
+					@Override
+					public void onResponse(
+							@NonNull Call<Void> call, @NonNull Response<Void> response) {
+						isActionLoading.setValue(false);
+						if (response.isSuccessful()) {
+							if (response.code() == 204) {
+								List<Label> currentList = new ArrayList<>(fullList);
+								currentList.removeIf(l -> l.getId() == labelId);
+
+								fullList.clear();
+								fullList.addAll(currentList);
+								labels.setValue(currentList);
+
+								actionResult.setValue(204);
+							}
+						} else {
+							error.setValue("Error: " + response.code());
+						}
+					}
+
+					@Override
+					public void onFailure(@NonNull Call<Void> call, @NonNull Throwable t) {
+						isActionLoading.setValue(false);
+						actionResult.setValue(500);
 					}
 				});
 	}

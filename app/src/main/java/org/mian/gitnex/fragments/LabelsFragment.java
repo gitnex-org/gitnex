@@ -11,7 +11,6 @@ import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModelProvider;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
-import org.mian.gitnex.activities.CreateLabelActivity;
 import org.mian.gitnex.adapters.LabelsAdapter;
 import org.mian.gitnex.databinding.FragmentLabelsBinding;
 import org.mian.gitnex.helpers.Constants;
@@ -101,19 +100,19 @@ public class LabelsFragment extends Fragment {
 
 		super.onResume();
 
-		if (CreateLabelActivity.refreshLabels) {
+		// if (CreateLabelActivity.refreshLabels) {
 
-			page = 1;
-			/*LabelsViewModel.loadLabelsList(
-			repository.getOwner(),
-			repository.getName(),
-			"repo",
-			requireContext(),
-			null,
-			page,
-			resultLimit);*/
-			CreateLabelActivity.refreshLabels = false;
-		}
+		// page = 1;
+		/*LabelsViewModel.loadLabelsList(
+		repository.getOwner(),
+		repository.getName(),
+		"repo",
+		requireContext(),
+		null,
+		page,
+		resultLimit);*/
+		// CreateLabelActivity.refreshLabels = false;
+		// }
 	}
 
 	/*private void fetchDataAsync(String owner, String repo) {

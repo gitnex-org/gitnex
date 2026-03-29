@@ -19,7 +19,6 @@ import androidx.recyclerview.widget.RecyclerView;
 import java.util.ArrayList;
 import org.gitnex.tea4j.v2.models.OrganizationPermissions;
 import org.mian.gitnex.R;
-import org.mian.gitnex.activities.CreateLabelActivity;
 import org.mian.gitnex.activities.CreateRepoActivity;
 import org.mian.gitnex.activities.OrganizationDetailActivity;
 import org.mian.gitnex.adapters.ReposListAdapter;
@@ -106,9 +105,8 @@ public class OrganizationRepositoriesFragment extends Fragment
 	@Override
 	public void onResume() {
 		super.onResume();
-		if (!isHidden() && (isFirstLoad || CreateLabelActivity.refreshLabels)) {
+		if (!isHidden() && isFirstLoad) {
 			lazyLoad();
-			CreateLabelActivity.refreshLabels = false;
 		}
 	}
 

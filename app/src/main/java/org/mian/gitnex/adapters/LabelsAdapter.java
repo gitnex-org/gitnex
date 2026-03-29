@@ -2,7 +2,6 @@ package org.mian.gitnex.adapters;
 
 import android.annotation.SuppressLint;
 import android.content.Context;
-import android.content.Intent;
 import android.content.res.ColorStateList;
 import android.graphics.Color;
 import android.view.LayoutInflater;
@@ -17,10 +16,8 @@ import com.google.android.material.bottomsheet.BottomSheetDialog;
 import java.util.ArrayList;
 import java.util.List;
 import org.gitnex.tea4j.v2.models.Label;
-import org.mian.gitnex.activities.CreateLabelActivity;
 import org.mian.gitnex.databinding.BottomSheetLabelsInListBinding;
 import org.mian.gitnex.databinding.ListLabelsBinding;
-import org.mian.gitnex.helpers.AlertDialogs;
 import org.mian.gitnex.helpers.ColorInverter;
 
 /**
@@ -32,18 +29,26 @@ public class LabelsAdapter extends RecyclerView.Adapter<LabelsAdapter.DataHolder
 	private final Context context;
 	private List<Label> labelsList;
 	private List<Label> labelsListFull;
-	private final String type;
-	private final String orgName;
 	private boolean canEdit;
+	private final OnLabelAction onEdit;
+	private final OnLabelAction onDelete;
+
+	public interface OnLabelAction {
+		void run(Label label);
+	}
 
 	public LabelsAdapter(
-			Context ctx, List<Label> list, String type, String orgName, boolean canEdit) {
+			Context ctx,
+			List<Label> list,
+			boolean canEdit,
+			OnLabelAction onEdit,
+			OnLabelAction onDelete) {
 		this.context = ctx;
 		this.labelsList = list;
 		this.labelsListFull = new ArrayList<>(list);
-		this.type = type;
-		this.orgName = orgName;
 		this.canEdit = canEdit;
+		this.onEdit = onEdit;
+		this.onDelete = onDelete;
 	}
 
 	@NonNull @Override
@@ -123,29 +128,13 @@ public class LabelsAdapter extends RecyclerView.Adapter<LabelsAdapter.DataHolder
 
 						sheetB.labelMenuEdit.setOnClickListener(
 								v1 -> {
-									Intent i =
-											new Intent(context, CreateLabelActivity.class)
-													.putExtra(
-															"labelId",
-															String.valueOf(currentLabel.getId()))
-													.putExtra("labelTitle", currentLabel.getName())
-													.putExtra("labelColor", currentLabel.getColor())
-													.putExtra("labelAction", "edit")
-													.putExtra("type", type)
-													.putExtra("orgName", orgName);
-									context.startActivity(i);
+									onEdit.run(currentLabel);
 									dialog.dismiss();
 								});
 
 						sheetB.labelMenuDelete.setOnClickListener(
 								v1 -> {
-									AlertDialogs.labelDeleteDialog(
-											context,
-											currentLabel.getName(),
-											String.valueOf(currentLabel.getId()),
-											type,
-											orgName,
-											null);
+									onDelete.run(currentLabel);
 									dialog.dismiss();
 								});
 						dialog.show();
@@ -154,13 +143,21 @@ public class LabelsAdapter extends RecyclerView.Adapter<LabelsAdapter.DataHolder
 
 		void bindData(Label label) {
 			this.currentLabel = label;
+
 			int color = Color.parseColor("#" + label.getColor());
 			int contrast = new ColorInverter().getContrastColor(color);
 
-			ImageViewCompat.setImageTintList(binding.labelIcon, ColorStateList.valueOf(contrast));
-			binding.labelName.setTextColor(contrast);
-			binding.labelName.setText(label.getName());
 			binding.labelView.setCardBackgroundColor(color);
+			binding.labelName.setText(label.getName());
+			binding.labelName.setTextColor(contrast);
+			ImageViewCompat.setImageTintList(binding.labelIcon, ColorStateList.valueOf(contrast));
+
+			if (label.getDescription() != null && !label.getDescription().isEmpty()) {
+				binding.labelDescription.setVisibility(View.VISIBLE);
+				binding.labelDescription.setText(label.getDescription());
+			} else {
+				binding.labelDescription.setVisibility(View.GONE);
+			}
 		}
 	}
 }

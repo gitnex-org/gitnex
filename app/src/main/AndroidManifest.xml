@@ -50,19 +50,12 @@
             android:name=".activities.AddCollaboratorToRepositoryActivity"
             android:configChanges="orientation|screenSize|smallestScreenSize|density|screenLayout|keyboard|keyboardHidden|navigation"/>
         <activity
-            android:name=".activities.CreateTeamByOrgActivity"
-            android:configChanges="orientation|screenSize|smallestScreenSize|density|screenLayout|keyboard|keyboardHidden|navigation"/>
-        <activity
             android:name=".activities.OrganizationTeamInfoActivity"
             android:configChanges="orientation|screenSize|smallestScreenSize|density|screenLayout|keyboard|keyboardHidden|navigation"/>
         <activity
             android:name=".activities.OrganizationDetailActivity"
             android:configChanges="orientation|screenSize|smallestScreenSize|density|screenLayout|keyboard|keyboardHidden|navigation"
             android:theme="@style/AppTheme.NoActionBar"/>
-        <activity
-            android:name=".activities.CreateLabelActivity"
-            android:configChanges="orientation|screenSize|smallestScreenSize|density|screenLayout|keyboard|keyboardHidden|navigation"
-            android:windowSoftInputMode="adjustResize"/>
         <activity
             android:name=".activities.CreateIssueActivity"
             android:configChanges="orientation|screenSize|smallestScreenSize|density|screenLayout|keyboard|keyboardHidden|navigation"

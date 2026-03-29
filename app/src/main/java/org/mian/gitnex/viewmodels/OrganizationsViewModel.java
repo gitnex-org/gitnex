@@ -12,6 +12,7 @@ import java.util.Map;
 import java.util.Objects;
 import java.util.concurrent.atomic.AtomicInteger;
 import java.util.stream.Collectors;
+import org.gitnex.tea4j.v2.models.CreateTeamOption;
 import org.gitnex.tea4j.v2.models.Organization;
 import org.gitnex.tea4j.v2.models.OrganizationPermissions;
 import org.gitnex.tea4j.v2.models.Team;
@@ -39,6 +40,8 @@ public class OrganizationsViewModel extends ViewModel {
 	private final MutableLiveData<Boolean> teamsLoadedOnce = new MutableLiveData<>(false);
 	private final MutableLiveData<Map<Long, List<User>>> teamMembersMap =
 			new MutableLiveData<>(new HashMap<>());
+	private final MutableLiveData<Boolean> isCreatingTeam = new MutableLiveData<>(false);
+	private final MutableLiveData<Integer> createTeamResult = new MutableLiveData<>(-1);
 
 	private boolean isLastPage = false;
 	private int totalCount = -1;
@@ -85,6 +88,43 @@ public class OrganizationsViewModel extends ViewModel {
 
 	public LiveData<Map<Long, List<User>>> getTeamMembersMap() {
 		return teamMembersMap;
+	}
+
+	public LiveData<Boolean> getIsCreatingTeam() {
+		return isCreatingTeam;
+	}
+
+	public LiveData<Integer> getCreateTeamResult() {
+		return createTeamResult;
+	}
+
+	public void resetCreateTeamResult() {
+		createTeamResult.setValue(-1);
+	}
+
+	public void createTeam(Context ctx, String orgName, CreateTeamOption options) {
+		isCreatingTeam.setValue(true);
+		RetrofitClient.getApiInterface(ctx)
+				.orgCreateTeam(orgName, options)
+				.enqueue(
+						new Callback<>() {
+							@Override
+							public void onResponse(
+									@NonNull Call<Team> call, @NonNull Response<Team> response) {
+								isCreatingTeam.setValue(false);
+								if (response.isSuccessful() && response.code() == 201) {
+									createTeamResult.setValue(201);
+								} else {
+									createTeamResult.setValue(response.code());
+								}
+							}
+
+							@Override
+							public void onFailure(@NonNull Call<Team> call, @NonNull Throwable t) {
+								isCreatingTeam.setValue(false);
+								createTeamResult.setValue(500);
+							}
+						});
 	}
 
 	public void fetchTeams(Context ctx, String orgName) {

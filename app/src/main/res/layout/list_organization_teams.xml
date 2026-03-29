@@ -14,59 +14,71 @@
         app:strokeWidth="0dp"
         app:cardBackgroundColor="?attr/materialCardBackgroundColor">
 
-        <LinearLayout
+        <androidx.constraintlayout.widget.ConstraintLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:padding="@dimen/dimen8dp"
-            android:orientation="vertical">
+            android:padding="@dimen/dimen8dp">
 
             <TextView
                 android:id="@+id/teamTitle"
-                android:layout_width="match_parent"
+                style="@style/TextAppearance.Material3.TitleMedium"
+                android:layout_width="0dp"
                 android:layout_height="wrap_content"
-                android:text="@string/teamTitle"
+                android:textStyle="bold"
                 android:textColor="?attr/primaryTextColor"
-                android:textSize="@dimen/dimen18sp"
-                android:textStyle="bold" />
+                app:layout_constraintEnd_toStartOf="@+id/teamShowAll"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
 
             <TextView
                 android:id="@+id/teamDescription"
-                android:layout_width="match_parent"
+                style="@style/TextAppearance.Material3.BodyMedium"
+                android:layout_width="0dp"
                 android:layout_height="wrap_content"
-                android:text="@string/teamDescription"
-                android:textColor="?attr/primaryTextColor"
-                android:textSize="@dimen/dimen16sp"
                 android:layout_marginTop="@dimen/dimen4dp"
-                android:layout_marginBottom="@dimen/dimen4dp" />
+                android:textColor="?attr/primaryTextColor"
+                android:alpha=".8"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/teamTitle" />
 
             <LinearLayout
                 android:id="@+id/membersPreviewFrame"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:layout_marginTop="@dimen/dimen10dp"
-                android:gravity="bottom"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/dimen16dp"
+                android:gravity="center_vertical"
                 android:orientation="horizontal"
-                android:visibility="gone">
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/teamDescription">
 
                 <androidx.recyclerview.widget.RecyclerView
                     android:id="@+id/membersPreview"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
-                    android:layout_weight="1"/>
+                    android:layout_weight="1"
+                    android:orientation="horizontal" />
 
-                <TextView
+                <ImageView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:gravity="center_vertical"
-                    android:text="@string/teamShowAll"
-                    android:textColor="?attr/primaryTextColor"
-                    android:textSize="@dimen/dimen16sp"
-                    app:drawableEndCompat="@drawable/ic_chevron_right"
-                    app:drawableTint="?attr/primaryTextColor"/>
+                    android:contentDescription="@string/generalImgContentText"
+                    android:src="@drawable/ic_chevron_right"
+                    app:tint="?attr/primaryTextColor" />
 
             </LinearLayout>
 
-        </LinearLayout>
+            <TextView
+                android:id="@+id/teamShowAll"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:visibility="gone"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
 
     </com.google.android.material.listitem.ListItemCardView>
 

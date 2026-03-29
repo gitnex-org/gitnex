@@ -6,16 +6,15 @@
     android:orientation="vertical">
 
     <com.google.android.material.bottomsheet.BottomSheetDragHandleView
-        android:id="@+id/drag_handle"
         android:layout_width="match_parent"
         android:layout_height="wrap_content" />
 
     <androidx.core.widget.NestedScrollView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:clipToPadding="false"
         android:paddingHorizontal="@dimen/dimen24dp"
-        android:paddingBottom="@dimen/dimen32dp">
+        android:paddingBottom="@dimen/dimen32dp"
+        android:clipToPadding="false">
 
         <LinearLayout
             android:layout_width="match_parent"
@@ -31,71 +30,105 @@
                     style="@style/TextAppearance.Material3.HeadlineSmall"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
-                    android:text="@string/addSSHKey"
+                    android:text="@string/pageTitleCreateLabel"
                     android:textStyle="bold"
-                    app:layout_constraintBottom_toBottomOf="parent"
-                    app:layout_constraintEnd_toStartOf="@id/btn_close"
                     app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toTopOf="parent" />
+                    app:layout_constraintTop_toTopOf="parent"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintEnd_toStartOf="@id/btn_close"/>
 
                 <com.google.android.material.button.MaterialButton
                     android:id="@+id/btn_close"
                     style="@style/Widget.Material3Expressive.Button.IconButton.Tonal"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:contentDescription="@string/close"
                     app:icon="@drawable/ic_close"
-                    app:iconTint="?attr/primaryTextColor"
                     app:layout_constraintBottom_toBottomOf="parent"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintTop_toTopOf="parent" />
 
             </androidx.constraintlayout.widget.ConstraintLayout>
 
+            <com.google.android.material.card.MaterialCardView
+                android:id="@+id/previewCard"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/dimen24dp"
+                android:layout_gravity="center_horizontal"
+                app:cardCornerRadius="@dimen/dimen24dp"
+                app:strokeWidth="0dp">
+
+                <TextView
+                    android:id="@+id/labelPreviewText"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:paddingHorizontal="@dimen/dimen16dp"
+                    android:paddingVertical="@dimen/dimen6dp"
+                    android:text="@string/labelName"
+                    android:textStyle="bold" />
+
+            </com.google.android.material.card.MaterialCardView>
+
             <com.google.android.material.textfield.TextInputLayout
-                android:id="@+id/keyTitleLayout"
+                android:id="@+id/labelNameLayout"
                 style="@style/Widget.Material3.TextInputLayout.OutlinedBox"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="@dimen/dimen16dp"
-                android:hint="@string/title"
+                android:layout_marginTop="@dimen/dimen24dp"
+                android:hint="@string/labelName"
                 app:shapeAppearance="@style/ShapeAppearance.Material3.Corner.Medium">
 
                 <com.google.android.material.textfield.TextInputEditText
-                    android:id="@+id/keyTitle"
+                    android:id="@+id/labelName"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:inputType="text"
-                    android:singleLine="true" />
+                    android:inputType="text" />
 
             </com.google.android.material.textfield.TextInputLayout>
 
             <com.google.android.material.textfield.TextInputLayout
-                android:id="@+id/keyLayout"
+                android:id="@+id/labelDescLayout"
                 style="@style/Widget.Material3.TextInputLayout.OutlinedBox"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="@dimen/dimen12dp"
-                android:hint="@string/sshKey"
+                android:hint="@string/description"
                 app:shapeAppearance="@style/ShapeAppearance.Material3.Corner.Medium">
 
                 <com.google.android.material.textfield.TextInputEditText
-                    android:id="@+id/key"
+                    android:id="@+id/labelDesc"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:gravity="top"
-                    android:inputType="textMultiLine"
-                    android:minLines="3" />
+                    android:inputType="text" />
 
             </com.google.android.material.textfield.TextInputLayout>
 
-            <com.google.android.material.materialswitch.MaterialSwitch
-                android:id="@+id/keyStatus"
+            <LinearLayout
+                android:id="@+id/colorPickerTrigger"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="@dimen/dimen16dp"
-                android:text="@string/sshKeyStatusReadOnly"
-                android:textSize="@dimen/dimen16sp" />
+                android:background="?attr/selectableItemBackground"
+                android:clickable="true"
+                android:focusable="true"
+                android:gravity="center_vertical"
+                android:padding="@dimen/dimen8dp">
+
+                <TextView
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:text="@string/labelColor"
+                    style="@style/TextAppearance.Material3.BodyLarge"/>
+
+                <View
+                    android:id="@+id/selectedColorIndicator"
+                    android:layout_width="@dimen/dimen32dp"
+                    android:layout_height="@dimen/dimen32dp"
+                    android:background="@drawable/shape_circle"
+                    android:backgroundTint="@color/releasePre" />
+
+            </LinearLayout>
 
             <FrameLayout
                 android:layout_width="match_parent"
@@ -103,11 +136,11 @@
                 android:layout_marginTop="@dimen/dimen24dp">
 
                 <com.google.android.material.button.MaterialButton
-                    android:id="@+id/save"
+                    android:id="@+id/btn_save"
                     style="@style/Widget.Material3.Button"
                     android:layout_width="match_parent"
                     android:layout_height="@dimen/dimen56dp"
-                    android:text="@string/saveButton"
+                    android:text="@string/newCreateButtonCopy"
                     app:cornerRadius="@dimen/dimen32dp" />
 
                 <com.google.android.material.progressindicator.CircularProgressIndicator

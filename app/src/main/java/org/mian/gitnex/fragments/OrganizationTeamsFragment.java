@@ -1,6 +1,5 @@
 package org.mian.gitnex.fragments;
 
-import android.content.Intent;
 import android.os.Bundle;
 import android.text.Editable;
 import android.text.TextWatcher;
@@ -15,14 +14,20 @@ import androidx.core.view.WindowInsetsCompat;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModelProvider;
 import androidx.recyclerview.widget.LinearLayoutManager;
+import com.google.android.material.bottomsheet.BottomSheetDialog;
 import java.util.ArrayList;
+import java.util.List;
+import java.util.Objects;
+import org.gitnex.tea4j.v2.models.CreateTeamOption;
 import org.gitnex.tea4j.v2.models.OrganizationPermissions;
 import org.mian.gitnex.R;
-import org.mian.gitnex.activities.CreateLabelActivity;
-import org.mian.gitnex.activities.CreateTeamByOrgActivity;
 import org.mian.gitnex.activities.OrganizationDetailActivity;
 import org.mian.gitnex.adapters.OrganizationTeamsAdapter;
+import org.mian.gitnex.databinding.BottomsheetOrgCreateTeamBinding;
 import org.mian.gitnex.databinding.FragmentOrganizationTeamsBinding;
+import org.mian.gitnex.helpers.AlertDialogs;
+import org.mian.gitnex.helpers.AppUtil;
+import org.mian.gitnex.helpers.Toasty;
 import org.mian.gitnex.viewmodels.OrganizationsViewModel;
 
 /**
@@ -205,9 +210,8 @@ public class OrganizationTeamsFragment extends Fragment
 	@Override
 	public void onResume() {
 		super.onResume();
-		if (!isHidden() && (isFirstLoad || CreateLabelActivity.refreshLabels)) {
+		if (!isHidden() && isFirstLoad) {
 			lazyLoad();
-			CreateLabelActivity.refreshLabels = false;
 		}
 	}
 
@@ -229,14 +233,142 @@ public class OrganizationTeamsFragment extends Fragment
 
 	@Override
 	public void onAddRequested() {
-		Intent intent = new Intent(requireContext(), CreateTeamByOrgActivity.class);
-		intent.putExtra("orgName", orgName);
-		startActivity(intent);
+		showCreateTeamBottomSheet();
 	}
 
 	@Override
 	public boolean canAdd() {
 		OrganizationPermissions perms = viewModel.getPermissions().getValue();
 		return perms != null && perms.isIsOwner();
+	}
+
+	private void showCreateTeamBottomSheet() {
+		BottomSheetDialog bottomSheetDialog = new BottomSheetDialog(requireContext());
+		BottomsheetOrgCreateTeamBinding sheetBinding =
+				BottomsheetOrgCreateTeamBinding.inflate(getLayoutInflater());
+		bottomSheetDialog.setContentView(sheetBinding.getRoot());
+
+		AppUtil.applySheetStyle(bottomSheetDialog, false);
+
+		sheetBinding.btnCreate.setOnClickListener(
+				v -> {
+					if (validateInput(sheetBinding)) {
+						String name =
+								Objects.requireNonNull(sheetBinding.teamName.getText())
+										.toString()
+										.trim();
+						String desc =
+								Objects.requireNonNull(sheetBinding.teamDesc.getText())
+										.toString()
+										.trim();
+						String permission = getSelectedPermission(sheetBinding);
+						List<String> units = getSelectedUnits(sheetBinding);
+
+						CreateTeamOption options = new CreateTeamOption();
+						options.setName(name);
+						options.setDescription(desc);
+
+						if (permission.equalsIgnoreCase("admin"))
+							options.setPermission(CreateTeamOption.PermissionEnum.ADMIN);
+						else if (permission.equalsIgnoreCase("write"))
+							options.setPermission(CreateTeamOption.PermissionEnum.WRITE);
+						else options.setPermission(CreateTeamOption.PermissionEnum.READ);
+
+						options.setUnits(units);
+
+						performCreateTeam(options, bottomSheetDialog, sheetBinding);
+					}
+				});
+
+		sheetBinding.btnClose.setOnClickListener(v -> bottomSheetDialog.dismiss());
+		bottomSheetDialog.show();
+	}
+
+	private List<String> getSelectedUnits(BottomsheetOrgCreateTeamBinding sheetBinding) {
+		List<String> units = new ArrayList<>();
+		if (sheetBinding.chipCode.isChecked()) units.add("repo.code");
+		if (sheetBinding.chipIssues.isChecked()) units.add("repo.issues");
+		if (sheetBinding.chipPulls.isChecked()) units.add("repo.pulls");
+		if (sheetBinding.chipRelease.isChecked()) units.add("repo.releases");
+		if (sheetBinding.chipWiki.isChecked()) units.add("repo.wiki");
+		if (sheetBinding.chipExternalWiki.isChecked()) units.add("repo.ext_wiki");
+		if (sheetBinding.chipExternalIssues.isChecked()) units.add("repo.ext_issues");
+		return units;
+	}
+
+	private String getSelectedPermission(BottomsheetOrgCreateTeamBinding sheetBinding) {
+		int id = sheetBinding.permissionChipGroup.getCheckedChipId();
+		if (id == R.id.chip_perm_write) return "write";
+		if (id == R.id.chip_perm_admin) return "admin";
+		return "read";
+	}
+
+	private boolean validateInput(BottomsheetOrgCreateTeamBinding binding) {
+		String name = Objects.requireNonNull(binding.teamName.getText()).toString().trim();
+		String desc = Objects.requireNonNull(binding.teamDesc.getText()).toString().trim();
+
+		if (name.isEmpty()) {
+			Toasty.show(requireContext(), getString(R.string.teamNameEmpty));
+			return false;
+		}
+
+		if (!AppUtil.checkStringsWithAlphaNumericDashDotUnderscore(name)) {
+			Toasty.show(requireContext(), getString(R.string.teamNameError));
+			return false;
+		}
+
+		if (!desc.isEmpty()) {
+			if (!AppUtil.checkStrings(desc)) {
+				Toasty.show(requireContext(), getString(R.string.teamDescError));
+				return false;
+			}
+			if (desc.length() > 100) {
+				Toasty.show(requireContext(), getString(R.string.teamDescLimit));
+				return false;
+			}
+		}
+
+		return true;
+	}
+
+	private void performCreateTeam(
+			CreateTeamOption options,
+			BottomSheetDialog dialog,
+			BottomsheetOrgCreateTeamBinding binding) {
+
+		viewModel
+				.getIsCreatingTeam()
+				.observe(
+						getViewLifecycleOwner(),
+						isLoading -> {
+							binding.loadingIndicator.setVisibility(
+									isLoading ? View.VISIBLE : View.GONE);
+							binding.btnCreate.setEnabled(!isLoading);
+							binding.btnCreate.setText(
+									isLoading ? "" : getString(R.string.newCreateButtonCopy));
+						});
+
+		viewModel
+				.getCreateTeamResult()
+				.observe(
+						getViewLifecycleOwner(),
+						code -> {
+							if (code == -1) return;
+
+							if (code == 201) {
+								Toasty.show(requireContext(), getString(R.string.teamCreated));
+								dialog.dismiss();
+								viewModel.fetchTeams(requireContext(), orgName);
+							} else if (code == 404) {
+								Toasty.show(requireContext(), getString(R.string.apiNotFound));
+							} else if (code == 401) {
+								AlertDialogs.authorizationTokenRevokedDialog(requireContext());
+							} else {
+								Toasty.show(requireContext(), getString(R.string.genericError));
+							}
+						});
+
+		viewModel.createTeam(requireContext(), orgName, options);
+		viewModel.resetCreateTeamResult();
 	}
 }

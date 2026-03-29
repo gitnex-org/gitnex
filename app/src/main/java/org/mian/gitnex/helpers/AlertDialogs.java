@@ -10,7 +10,6 @@ import org.mian.gitnex.R;
 import org.mian.gitnex.actions.CollaboratorActions;
 import org.mian.gitnex.actions.PullRequestActions;
 import org.mian.gitnex.actions.TeamActions;
-import org.mian.gitnex.activities.CreateLabelActivity;
 import org.mian.gitnex.activities.LoginActivity;
 import org.mian.gitnex.databinding.CustomPrUpdateStrategyDialogBinding;
 import org.mian.gitnex.helpers.contexts.RepositoryContext;
@@ -40,36 +39,6 @@ public class AlertDialogs {
 							intent.putExtra("mode", "update_account");
 							context.startActivity(intent);
 						})
-				.show();
-	}
-
-	public static void labelDeleteDialog(
-			final Context context,
-			final String labelTitle,
-			final String labelId,
-			String type,
-			String orgName,
-			RepositoryContext repository) {
-
-		materialAlertDialogBuilder =
-				new MaterialAlertDialogBuilder(
-						context, R.style.ThemeOverlay_Material3_Dialog_Alert);
-
-		materialAlertDialogBuilder
-				.setTitle(context.getString(R.string.deleteGenericTitle, labelTitle))
-				.setMessage(R.string.labelDeleteMessage)
-				.setPositiveButton(
-						R.string.menuDeleteText,
-						(dialog, whichButton) -> {
-							Intent intent = new Intent(context, CreateLabelActivity.class);
-							intent.putExtra("labelId", labelId);
-							intent.putExtra("labelAction", "delete");
-							intent.putExtra("type", type);
-							intent.putExtra("orgName", orgName);
-							intent.putExtra(RepositoryContext.INTENT_EXTRA, repository);
-							context.startActivity(intent);
-						})
-				.setNeutralButton(R.string.cancelButton, null)
 				.show();
 	}
 

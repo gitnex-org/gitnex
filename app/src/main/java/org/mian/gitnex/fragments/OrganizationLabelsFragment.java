@@ -1,6 +1,5 @@
 package org.mian.gitnex.fragments;
 
-import android.content.Intent;
 import android.os.Bundle;
 import android.text.Editable;
 import android.text.TextWatcher;
@@ -16,9 +15,9 @@ import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModelProvider;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
+import com.google.android.material.dialog.MaterialAlertDialogBuilder;
 import org.gitnex.tea4j.v2.models.OrganizationPermissions;
 import org.mian.gitnex.R;
-import org.mian.gitnex.activities.CreateLabelActivity;
 import org.mian.gitnex.activities.OrganizationDetailActivity;
 import org.mian.gitnex.adapters.LabelsAdapter;
 import org.mian.gitnex.databinding.FragmentLabelsBinding;
@@ -89,7 +88,7 @@ public class OrganizationLabelsFragment extends Fragment
 		binding = FragmentLabelsBinding.inflate(inflater, container, false);
 
 		resultLimit = Constants.getCurrentResultLimit(requireContext());
-		viewModel = new ViewModelProvider(this).get(LabelsViewModel.class);
+		viewModel = new ViewModelProvider(requireActivity()).get(LabelsViewModel.class);
 		orgViewModel = new ViewModelProvider(requireActivity()).get(OrganizationsViewModel.class);
 
 		setupRecyclerView();
@@ -103,9 +102,8 @@ public class OrganizationLabelsFragment extends Fragment
 	@Override
 	public void onResume() {
 		super.onResume();
-		if (!isHidden() && (isFirstLoad || CreateLabelActivity.refreshLabels)) {
+		if (!isHidden() && (isFirstLoad)) {
 			lazyLoad();
-			CreateLabelActivity.refreshLabels = false;
 		}
 	}
 
@@ -160,12 +158,45 @@ public class OrganizationLabelsFragment extends Fragment
 
 								adapter =
 										new LabelsAdapter(
-												requireContext(), list, type, orgName, canEdit);
+												requireContext(),
+												list,
+												canEdit,
+												label -> {
+													BottomSheetCreateLabelFragment.newInstance(
+																	type, orgName, null, label)
+															.show(
+																	getChildFragmentManager(),
+																	"EditLabel");
+												},
+												label -> {
+													new MaterialAlertDialogBuilder(requireContext())
+															.setTitle(R.string.labelDeleteTitle)
+															.setMessage(
+																	getString(
+																			R.string
+																					.labelDeleteConfirmText,
+																			label.getName()))
+															.setPositiveButton(
+																	R.string.menuDeleteText,
+																	(d, w) -> {
+																		viewModel.deleteLabel(
+																				requireContext(),
+																				type,
+																				orgName,
+																				null,
+																				label.getId());
+																	})
+															.setNegativeButton(
+																	R.string.cancelButton, null)
+															.show();
+												});
 								binding.recyclerView.setAdapter(adapter);
 								binding.searchResultsRecycler.setAdapter(adapter);
 							} else {
 								adapter.updateList(list);
 							}
+
+							binding.pullToRefresh.setRefreshing(false);
 							updateUiVisibility(
 									Boolean.TRUE.equals(viewModel.getIsLoading().getValue()));
 						});
@@ -281,11 +312,9 @@ public class OrganizationLabelsFragment extends Fragment
 
 	@Override
 	public void onAddRequested() {
-		Intent intent =
-				new Intent(requireContext(), CreateLabelActivity.class)
-						.putExtra("orgName", orgName)
-						.putExtra("type", "org");
-		startActivity(intent);
+		BottomSheetCreateLabelFragment sheet =
+				BottomSheetCreateLabelFragment.newInstance("org", orgName, "", null);
+		sheet.show(getChildFragmentManager(), "CreateLabelSheet");
 	}
 
 	@Override
