@@ -9,7 +9,6 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:background="?attr/primaryBackgroundColor"
-        android:paddingVertical="@dimen/dimen8dp"
         android:paddingHorizontal="@dimen/dimen12dp">
 
         <androidx.swiperefreshlayout.widget.SwipeRefreshLayout
@@ -38,6 +37,23 @@
         android:id="@+id/layout_empty"
         layout="@layout/layout_empty_state"
         android:visibility="gone" />
+
+    <com.google.android.material.search.SearchView
+        android:id="@+id/search_view"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:hint="@string/search"
+        app:navigationIcon="@drawable/ic_arrow_back"
+        app:backgroundTint="?attr/primaryBackgroundColor">
+
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/search_results_recycler"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:padding="@dimen/dimen12dp"
+            app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager" />
+
+    </com.google.android.material.search.SearchView>
 
 </androidx.coordinatorlayout.widget.CoordinatorLayout>
 

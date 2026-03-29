@@ -2,184 +2,295 @@ package org.mian.gitnex.fragments;
 
 import android.content.Intent;
 import android.os.Bundle;
-import android.os.Handler;
-import android.os.Looper;
+import android.text.Editable;
+import android.text.TextWatcher;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
+import androidx.core.graphics.Insets;
+import androidx.core.view.ViewCompat;
+import androidx.core.view.WindowInsetsCompat;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModelProvider;
 import androidx.recyclerview.widget.LinearLayoutManager;
-import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
+import androidx.recyclerview.widget.RecyclerView;
 import org.gitnex.tea4j.v2.models.OrganizationPermissions;
+import org.mian.gitnex.R;
 import org.mian.gitnex.activities.CreateLabelActivity;
+import org.mian.gitnex.activities.OrganizationDetailActivity;
 import org.mian.gitnex.adapters.LabelsAdapter;
 import org.mian.gitnex.databinding.FragmentLabelsBinding;
 import org.mian.gitnex.helpers.Constants;
+import org.mian.gitnex.helpers.EndlessRecyclerViewScrollListener;
+import org.mian.gitnex.helpers.Toasty;
 import org.mian.gitnex.viewmodels.LabelsViewModel;
+import org.mian.gitnex.viewmodels.OrganizationsViewModel;
 
 /**
  * @author mmarif
  */
-public class OrganizationLabelsFragment extends Fragment {
+public class OrganizationLabelsFragment extends Fragment
+		implements OrganizationDetailActivity.OrgActionInterface {
 
-	private FragmentLabelsBinding fragmentLabelsBinding;
-	private OrganizationPermissions permissions;
-	private LabelsViewModel labelsViewModel;
+	private FragmentLabelsBinding binding;
+	private LabelsViewModel viewModel;
+	private OrganizationsViewModel orgViewModel;
 	private LabelsAdapter adapter;
-	private static final String getOrgName = null;
-	private String repoOwner;
+	private EndlessRecyclerViewScrollListener scrollListener;
+
+	private String orgName;
 	private final String type = "org";
-	private int page = 1;
 	private int resultLimit;
+	private boolean isSearching = false;
+	private boolean isFirstLoad = true;
 
-	public static OrganizationLabelsFragment newInstance(
-			String repoOwner, OrganizationPermissions permissions) {
-
+	public static OrganizationLabelsFragment newInstance(String orgName) {
 		OrganizationLabelsFragment fragment = new OrganizationLabelsFragment();
 		Bundle args = new Bundle();
-		args.putString(getOrgName, repoOwner);
-		args.putSerializable("permissions", permissions);
+		args.putString("orgName", orgName);
 		fragment.setArguments(args);
 		return fragment;
 	}
 
 	@Override
-	public void onCreate(Bundle savedInstanceState) {
+	public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
+		super.onViewCreated(view, savedInstanceState);
 
-		super.onCreate(savedInstanceState);
+		int paddingTopPx = getResources().getDimensionPixelSize(R.dimen.dimen56dp);
 
-		if (getArguments() != null) {
+		ViewCompat.setOnApplyWindowInsetsListener(
+				view,
+				(v, windowInsets) -> {
+					Insets systemBars =
+							windowInsets.getInsets(WindowInsetsCompat.Type.systemBars());
+					binding.recyclerView.setPadding(
+							binding.recyclerView.getPaddingLeft(),
+							paddingTopPx,
+							binding.recyclerView.getPaddingRight(),
+							binding.recyclerView.getPaddingBottom());
 
-			repoOwner = getArguments().getString(getOrgName);
-			permissions = (OrganizationPermissions) getArguments().getSerializable("permissions");
-		}
+					return windowInsets;
+				});
 	}
 
 	@Override
+	public void onCreate(Bundle savedInstanceState) {
+		super.onCreate(savedInstanceState);
+		if (getArguments() != null) orgName = getArguments().getString("orgName");
+	}
+
+	@Nullable @Override
 	public View onCreateView(
-			@NonNull LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-
-		fragmentLabelsBinding = FragmentLabelsBinding.inflate(inflater, container, false);
-		labelsViewModel = new ViewModelProvider(this).get(LabelsViewModel.class);
-
-		final SwipeRefreshLayout swipeRefresh = fragmentLabelsBinding.pullToRefresh;
+			@NonNull LayoutInflater inflater,
+			@Nullable ViewGroup container,
+			@Nullable Bundle savedInstanceState) {
+		binding = FragmentLabelsBinding.inflate(inflater, container, false);
 
 		resultLimit = Constants.getCurrentResultLimit(requireContext());
+		viewModel = new ViewModelProvider(this).get(LabelsViewModel.class);
+		orgViewModel = new ViewModelProvider(requireActivity()).get(OrganizationsViewModel.class);
 
-		fragmentLabelsBinding.recyclerView.setHasFixedSize(true);
-		fragmentLabelsBinding.recyclerView.setLayoutManager(
-				new LinearLayoutManager(requireContext()));
+		setupRecyclerView();
+		setupSwipeRefresh();
+		setupSearch();
+		observeViewModel();
 
-		swipeRefresh.setOnRefreshListener(
-				() ->
-						new Handler(Looper.getMainLooper())
-								.postDelayed(
-										() -> {
-											page = 1;
-											swipeRefresh.setRefreshing(false);
-											LabelsViewModel.loadLabelsList(
-													repoOwner,
-													null,
-													"org",
-													requireContext(),
-													fragmentLabelsBinding,
-													page,
-													resultLimit);
-										},
-										200));
-
-		fetchDataAsync(repoOwner);
-
-		if (!permissions.isIsOwner()) {
-			fragmentLabelsBinding.createLabel.setVisibility(View.GONE);
-		}
-
-		fragmentLabelsBinding.createLabel.setOnClickListener(
-				v1 -> {
-					Intent intent = new Intent(requireContext(), CreateLabelActivity.class);
-					intent.putExtra("orgName", repoOwner);
-					intent.putExtra("type", "org");
-					startActivity(intent);
-				});
-
-		return fragmentLabelsBinding.getRoot();
+		return binding.getRoot();
 	}
 
 	@Override
 	public void onResume() {
-
 		super.onResume();
-
-		if (CreateLabelActivity.refreshLabels) {
-
-			page = 1;
-			LabelsViewModel.loadLabelsList(
-					repoOwner,
-					null,
-					"org",
-					requireContext(),
-					fragmentLabelsBinding,
-					page,
-					resultLimit);
+		if (!isHidden() && (isFirstLoad || CreateLabelActivity.refreshLabels)) {
+			lazyLoad();
 			CreateLabelActivity.refreshLabels = false;
 		}
 	}
 
-	private void fetchDataAsync(String owner) {
+	@Override
+	public void onHiddenChanged(boolean hidden) {
+		super.onHiddenChanged(hidden);
+		if (!hidden && isFirstLoad) lazyLoad();
+	}
 
-		labelsViewModel
-				.getLabelsList(
-						owner,
-						null,
-						"org",
-						requireContext(),
-						fragmentLabelsBinding,
-						page,
-						resultLimit)
+	private void lazyLoad() {
+		isFirstLoad = false;
+		if (viewModel.getLabels().getValue() == null
+				|| viewModel.getLabels().getValue().isEmpty()) {
+			refreshData();
+		}
+	}
+
+	private void setupRecyclerView() {
+		LinearLayoutManager layoutManager = new LinearLayoutManager(requireContext());
+		binding.recyclerView.setLayoutManager(layoutManager);
+
+		scrollListener =
+				new EndlessRecyclerViewScrollListener(layoutManager) {
+					@Override
+					public void onLoadMore(int page, int totalItemsCount, RecyclerView view) {
+						if (!isSearching) {
+							viewModel.fetchLabels(
+									requireContext(),
+									orgName,
+									null,
+									type,
+									page,
+									resultLimit,
+									false);
+						}
+					}
+				};
+		binding.recyclerView.addOnScrollListener(scrollListener);
+	}
+
+	private void observeViewModel() {
+		viewModel
+				.getLabels()
 				.observe(
 						getViewLifecycleOwner(),
-						mainList -> {
-							adapter = new LabelsAdapter(requireContext(), mainList, type, owner);
-							adapter.setLoadMoreListener(
-									new LabelsAdapter.OnLoadMoreListener() {
+						list -> {
+							if (adapter == null) {
+								OrganizationPermissions perms =
+										orgViewModel.getPermissions().getValue();
+								boolean canEdit =
+										perms != null && (perms.isIsOwner() || perms.isIsAdmin());
 
-										@Override
-										public void onLoadMore() {
-
-											page += 1;
-											labelsViewModel.loadMore(
-													owner,
-													null,
-													"org",
-													requireContext(),
-													fragmentLabelsBinding,
-													page,
-													resultLimit,
-													adapter);
-											fragmentLabelsBinding.progressBar.setVisibility(
-													View.VISIBLE);
-										}
-
-										@Override
-										public void onLoadFinished() {
-
-											fragmentLabelsBinding.progressBar.setVisibility(
-													View.GONE);
-										}
-									});
-
-							if (adapter.getItemCount() > 0) {
-								fragmentLabelsBinding.recyclerView.setAdapter(adapter);
-								fragmentLabelsBinding.noData.setVisibility(View.GONE);
+								adapter =
+										new LabelsAdapter(
+												requireContext(), list, type, orgName, canEdit);
+								binding.recyclerView.setAdapter(adapter);
+								binding.searchResultsRecycler.setAdapter(adapter);
 							} else {
-								adapter.notifyDataChanged();
-								fragmentLabelsBinding.recyclerView.setAdapter(adapter);
-								fragmentLabelsBinding.noData.setVisibility(View.VISIBLE);
+								adapter.updateList(list);
+							}
+							updateUiVisibility(
+									Boolean.TRUE.equals(viewModel.getIsLoading().getValue()));
+						});
+
+		orgViewModel
+				.getPermissions()
+				.observe(
+						getViewLifecycleOwner(),
+						perms -> {
+							if (adapter != null && perms != null) {
+								boolean canEdit = perms.isIsOwner() || perms.isIsAdmin();
+								adapter.setCanEdit(canEdit);
+							}
+						});
+
+		viewModel.getIsLoading().observe(getViewLifecycleOwner(), this::updateUiVisibility);
+		viewModel
+				.getError()
+				.observe(
+						getViewLifecycleOwner(),
+						error -> {
+							if (error != null) Toasty.show(requireContext(), error);
+						});
+	}
+
+	private void updateUiVisibility(boolean isLoading) {
+		boolean hasData = adapter != null && adapter.getItemCount() > 0;
+		boolean hasLoadedOnce = Boolean.TRUE.equals(viewModel.getHasLoadedOnce().getValue());
+
+		binding.expressiveLoader.setVisibility(isLoading && !hasData ? View.VISIBLE : View.GONE);
+
+		if (isLoading) {
+			binding.layoutEmpty.getRoot().setVisibility(View.GONE);
+		} else {
+			binding.layoutEmpty
+					.getRoot()
+					.setVisibility(!hasData && hasLoadedOnce ? View.VISIBLE : View.GONE);
+		}
+
+		boolean showEmpty = !isLoading && !hasData && hasLoadedOnce;
+		binding.pullToRefresh.setVisibility(showEmpty ? View.GONE : View.VISIBLE);
+	}
+
+	private void setupSearch() {
+		binding.searchView
+				.getEditText()
+				.addTextChangedListener(
+						new TextWatcher() {
+							@Override
+							public void onTextChanged(
+									CharSequence s, int start, int before, int count) {
+								String query = s.toString();
+								isSearching = !query.isEmpty();
+								if (adapter != null) {
+									adapter.getFilter()
+											.filter(
+													query,
+													count1 -> {
+														if (isSearching
+																&& adapter.getItemCount() == 0) {
+															binding.layoutEmpty
+																	.getRoot()
+																	.setVisibility(View.VISIBLE);
+														} else {
+															updateUiVisibility(
+																	Boolean.TRUE.equals(
+																			viewModel
+																					.getIsLoading()
+																					.getValue()));
+														}
+													});
+								}
 							}
 
-							fragmentLabelsBinding.progressBar.setVisibility(View.GONE);
+							@Override
+							public void beforeTextChanged(
+									CharSequence s, int start, int count, int after) {}
+
+							@Override
+							public void afterTextChanged(Editable s) {}
 						});
+
+		binding.searchView.addTransitionListener(
+				(searchView, previousState, newState) -> {
+					if (newState
+							== com.google.android.material.search.SearchView.TransitionState
+									.HIDDEN) {
+						isSearching = false;
+						if (adapter != null) adapter.getFilter().filter("");
+						updateUiVisibility(false);
+					}
+				});
+	}
+
+	private void refreshData() {
+		scrollListener.resetState();
+		viewModel.resetPagination();
+		viewModel.fetchLabels(requireContext(), orgName, null, type, 1, resultLimit, true);
+	}
+
+	private void setupSwipeRefresh() {
+		binding.pullToRefresh.setOnRefreshListener(
+				() -> {
+					binding.pullToRefresh.setRefreshing(false);
+					refreshData();
+				});
+	}
+
+	@Override
+	public void onSearchTriggered() {
+		binding.searchView.show();
+	}
+
+	@Override
+	public void onAddRequested() {
+		Intent intent =
+				new Intent(requireContext(), CreateLabelActivity.class)
+						.putExtra("orgName", orgName)
+						.putExtra("type", "org");
+		startActivity(intent);
+	}
+
+	@Override
+	public boolean canAdd() {
+		OrganizationPermissions perms = orgViewModel.getPermissions().getValue();
+		return perms != null && (perms.isIsOwner() || perms.isIsAdmin());
 	}
 }

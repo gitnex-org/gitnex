@@ -15,7 +15,6 @@ import org.gitnex.tea4j.v2.models.Team;
 import org.mian.gitnex.R;
 import org.mian.gitnex.clients.RetrofitClient;
 import org.mian.gitnex.databinding.ActivityCreateTeamByOrgBinding;
-import org.mian.gitnex.fragments.OrganizationTeamsFragment;
 import org.mian.gitnex.helpers.AlertDialogs;
 import org.mian.gitnex.helpers.AppUtil;
 import org.mian.gitnex.helpers.Toasty;
@@ -324,7 +323,7 @@ public class CreateTeamByOrgActivity extends BaseActivity {
 
 							if (response2.code() == 201) {
 
-								OrganizationTeamsFragment.resumeTeams = true;
+								// OrganizationTeamsFragment.resumeTeams = true;
 
 								Toasty.show(ctx, getString(R.string.teamCreated));
 								new Handler().postDelayed(() -> finish(), 3000);

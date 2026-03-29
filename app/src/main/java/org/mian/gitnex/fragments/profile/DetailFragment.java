@@ -256,33 +256,31 @@ public class DetailFragment extends Fragment {
 		binding.userStarsLayout.statValue.setText(String.valueOf(user.getStarredReposCount()));
 		binding.userStarsLayout.statLabel.setText(R.string.pageTitleStarredRepos);
 
-		boolean hideEmailLang =
-				Boolean.parseBoolean(
-						AppDatabaseSettings.getSettingsValue(
-								requireContext(),
-								AppDatabaseSettings.APP_USER_PROFILE_HIDE_EMAIL_LANGUAGE_KEY));
+		boolean shouldHide =
+				itsMe
+						&& Boolean.parseBoolean(
+								AppDatabaseSettings.getSettingsValue(
+										requireContext(),
+										AppDatabaseSettings
+												.APP_USER_PROFILE_HIDE_EMAIL_LANGUAGE_KEY));
 
 		setupInfoItem(
 				binding.layoutEmail,
 				R.drawable.ic_email,
-				hideEmailLang ? getString(R.string.strPrivate).toUpperCase() : user.getEmail(),
-				hideEmailLang);
+				shouldHide ? getString(R.string.strPrivate).toUpperCase() : user.getEmail(),
+				shouldHide);
 
 		setupInfoItem(binding.layoutWebsite, R.drawable.ic_link, user.getWebsite(), false);
 		setupInfoItem(binding.layoutLocation, R.drawable.ic_location, user.getLocation(), false);
 
-		String langDisplay;
-		if (hideEmailLang) {
-			langDisplay = getString(R.string.strPrivate).toUpperCase();
-		} else if (user.getLanguage() != null && !user.getLanguage().isEmpty()) {
+		String langName = null;
+		if (user.getLanguage() != null && !user.getLanguage().isEmpty()) {
 			String[] codes = user.getLanguage().split("-");
 			Locale userLoc =
 					(codes.length >= 2) ? new Locale(codes[0], codes[1]) : Locale.getDefault();
-			langDisplay = userLoc.getDisplayLanguage();
-		} else {
-			langDisplay = getString(R.string.noDataLocale);
+			langName = userLoc.getDisplayLanguage();
 		}
-		setupInfoItem(binding.layoutLang, R.drawable.ic_language, langDisplay, hideEmailLang);
+		setupInfoItem(binding.layoutLang, R.drawable.ic_language, langName, shouldHide);
 
 		setupInfoItem(
 				binding.layoutJoined,

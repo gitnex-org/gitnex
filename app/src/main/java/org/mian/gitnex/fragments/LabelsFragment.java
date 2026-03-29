@@ -70,28 +70,28 @@ public class LabelsFragment extends Fragment {
 										() -> {
 											page = 1;
 											swipeRefresh.setRefreshing(false);
-											LabelsViewModel.loadLabelsList(
-													repository.getOwner(),
-													repository.getName(),
-													"repo",
-													requireContext(),
-													null,
-													page,
-													resultLimit);
+											/*LabelsViewModel.loadLabelsList(
+											repository.getOwner(),
+											repository.getName(),
+											"repo",
+											requireContext(),
+											null,
+											page,
+											resultLimit);*/
 										},
 										200));
 
-		fetchDataAsync(repository.getOwner(), repository.getName());
+		// fetchDataAsync(repository.getOwner(), repository.getName());
 
 		if (!canPush || archived) {
-			fragmentLabelsBinding.createLabel.setVisibility(View.GONE);
+			// fragmentLabelsBinding.createLabel.setVisibility(View.GONE);
 		}
 
-		fragmentLabelsBinding.createLabel.setOnClickListener(
-				v112 -> {
-					startActivity(
-							repository.getIntent(requireContext(), CreateLabelActivity.class));
-				});
+		/*fragmentLabelsBinding.createLabel.setOnClickListener(
+		v112 -> {
+			startActivity(
+					repository.getIntent(requireContext(), CreateLabelActivity.class));
+		});*/
 
 		return fragmentLabelsBinding.getRoot();
 	}
@@ -104,19 +104,19 @@ public class LabelsFragment extends Fragment {
 		if (CreateLabelActivity.refreshLabels) {
 
 			page = 1;
-			LabelsViewModel.loadLabelsList(
-					repository.getOwner(),
-					repository.getName(),
-					"repo",
-					requireContext(),
-					null,
-					page,
-					resultLimit);
+			/*LabelsViewModel.loadLabelsList(
+			repository.getOwner(),
+			repository.getName(),
+			"repo",
+			requireContext(),
+			null,
+			page,
+			resultLimit);*/
 			CreateLabelActivity.refreshLabels = false;
 		}
 	}
 
-	private void fetchDataAsync(String owner, String repo) {
+	/*private void fetchDataAsync(String owner, String repo) {
 
 		labelsViewModel
 				.getLabelsList(
@@ -170,5 +170,5 @@ public class LabelsFragment extends Fragment {
 
 							fragmentLabelsBinding.progressBar.setVisibility(View.GONE);
 						});
-	}
+	}*/
 }

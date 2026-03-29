@@ -1,62 +1,41 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout
-    xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
-    android:layout_height="wrap_content"
-    android:background="?attr/primaryBackgroundColor"
-    android:orientation="vertical"
-    android:paddingTop="@dimen/dimen6dp"
-    android:paddingBottom="@dimen/dimen12dp">
+    android:layout_height="wrap_content">
+
+    <com.google.android.material.bottomsheet.BottomSheetDragHandleView
+        android:id="@+id/drag_handle"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        app:layout_constraintTop_toTopOf="parent" />
 
     <androidx.core.widget.NestedScrollView
         android:layout_width="match_parent"
-        android:layout_height="wrap_content">
+        android:layout_height="wrap_content"
+        app:layout_constrainedHeight="true"
+        android:paddingHorizontal="@dimen/dimen24dp"
+        android:paddingBottom="@dimen/dimen32dp"
+        app:layout_constraintTop_toBottomOf="@id/drag_handle"
+        app:layout_constraintBottom_toBottomOf="parent">
 
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="vertical">
 
-            <LinearLayout
-                android:id="@+id/organizationShareHeadFrame"
-                android:layout_width="match_parent"
+            <TextView
+                android:id="@+id/sheet_title"
+                style="@style/TextAppearance.Material3.HeadlineSmall"
+                android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:orientation="vertical"
-                android:padding="@dimen/dimen8dp">
-
-                <TextView
-                    android:id="@+id/bottomSheetHeaderOrg"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:gravity="center"
-                    android:text="@string/organization"
-                    android:textColor="?attr/primaryTextColor"
-                    android:textSize="@dimen/dimen18sp" />
-
-                <com.google.android.material.card.MaterialCardView
-                    style="?attr/materialCardViewFilledStyle"
-                    android:layout_width="@dimen/dimen28dp"
-                    android:layout_height="@dimen/dimen4dp"
-                    android:layout_gravity="center_horizontal"
-                    android:layout_marginTop="@dimen/dimen8dp"
-                    android:layout_marginBottom="@dimen/dimen16dp"
-                    app:cardCornerRadius="@dimen/dimen24dp"
-                    app:cardElevation="@dimen/dimen0dp">
-
-                    <View
-                        android:layout_width="match_parent"
-                        android:layout_height="match_parent"
-                        android:background="?attr/fabColor" />
-
-                </com.google.android.material.card.MaterialCardView>
-
-            </LinearLayout>
+                android:text="@string/organization"
+                android:textStyle="bold" />
 
             <com.google.android.flexbox.FlexboxLayout
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:padding="@dimen/dimen4dp"
+                android:paddingTop="@dimen/dimen16dp"
                 app:alignContent="center"
                 app:alignItems="flex_start"
                 app:flexWrap="wrap"
@@ -68,10 +47,9 @@
                     android:layout_height="@dimen/dimen100dp"
                     android:background="?android:attr/selectableItemBackgroundBorderless"
                     android:gravity="center"
-                    android:padding="@dimen/dimen4dp"
                     android:text="@string/genericCopyUrl"
                     android:textColor="?attr/primaryTextColor"
-                    android:textSize="@dimen/dimen14sp"
+                    android:textAppearance="@style/TextAppearance.Material3.TitleMedium"
                     app:drawableTopCompat="@drawable/ic_copy"
                     app:layout_alignSelf="flex_start" />
 
@@ -81,10 +59,9 @@
                     android:layout_height="@dimen/dimen100dp"
                     android:background="?android:attr/selectableItemBackgroundBorderless"
                     android:gravity="center"
-                    android:padding="@dimen/dimen4dp"
                     android:text="@string/share"
                     android:textColor="?attr/primaryTextColor"
-                    android:textSize="@dimen/dimen14sp"
+                    android:textAppearance="@style/TextAppearance.Material3.TitleMedium"
                     app:drawableTopCompat="@drawable/ic_share"
                     app:layout_alignSelf="flex_start" />
 
@@ -94,10 +71,9 @@
                     android:layout_height="@dimen/dimen100dp"
                     android:background="?android:attr/selectableItemBackgroundBorderless"
                     android:gravity="center"
-                    android:padding="@dimen/dimen4dp"
                     android:text="@string/openInBrowser"
                     android:textColor="?attr/primaryTextColor"
-                    android:textSize="@dimen/dimen14sp"
+                    android:textAppearance="@style/TextAppearance.Material3.TitleMedium"
                     app:drawableTopCompat="@drawable/ic_browser"
                     app:layout_alignSelf="flex_start" />
 
@@ -107,4 +83,4 @@
 
     </androidx.core.widget.NestedScrollView>
 
-</LinearLayout>
+</androidx.constraintlayout.widget.ConstraintLayout>

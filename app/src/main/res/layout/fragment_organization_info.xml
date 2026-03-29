@@ -1,189 +1,159 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout
+<androidx.coordinatorlayout.widget.CoordinatorLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:tools="http://schemas.android.com/tools"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    android:layout_height="match_parent"
+    android:background="?attr/primaryBackgroundColor">
 
-    <FrameLayout
+    <androidx.core.widget.NestedScrollView
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:background="?attr/primaryBackgroundColor"
-        android:padding="@dimen/dimen8dp">
+        android:clipToPadding="false"
+        android:paddingTop="@dimen/dimen56dp"
+        android:paddingBottom="@dimen/dimen64dp">
 
-        <androidx.core.widget.NestedScrollView
+        <LinearLayout
+            android:id="@+id/orgInfoLayout"
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            app:layout_behavior="@string/appbar_scrolling_view_behavior">
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:padding="@dimen/dimen16dp"
+            android:visibility="gone">
 
-            <com.google.android.material.card.MaterialCardView
+            <androidx.constraintlayout.widget.ConstraintLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                style="?attr/materialCardViewElevatedStyle"
-                app:cardElevation="@dimen/dimen0dp">
+                android:layout_marginBottom="@dimen/dimen24dp">
+
+                <com.google.android.material.card.MaterialCardView
+                    android:id="@+id/avatarCard"
+                    android:layout_width="@dimen/dimen100dp"
+                    android:layout_height="@dimen/dimen100dp"
+                    app:cardCornerRadius="@dimen/dimen28dp"
+                    android:backgroundTint="@android:color/transparent"
+                    app:cardElevation="@dimen/dimen0dp"
+                    app:strokeWidth="@dimen/dimen0dp"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent">
+
+                    <ImageView
+                        android:id="@+id/orgAvatar"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:contentDescription="@string/generalImgContentText"
+                        android:scaleType="centerCrop" />
+
+                </com.google.android.material.card.MaterialCardView>
+
+                <TextView
+                    android:id="@+id/orgNameInfo"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="@dimen/dimen20dp"
+                    android:textColor="?attr/primaryTextColor"
+                    android:textAppearance="@style/TextAppearance.Material3.HeadlineMedium"
+                    android:textStyle="bold"
+                    app:layout_constraintBottom_toTopOf="@+id/orgUsername"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toEndOf="@id/avatarCard"
+                    app:layout_constraintTop_toTopOf="@id/avatarCard"
+                    app:layout_constraintVertical_chainStyle="packed" />
+
+                <TextView
+                    android:id="@+id/orgUsername"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="@dimen/dimen2dp"
+                    android:alpha="0.7"
+                    android:textColor="?attr/primaryTextColor"
+                    android:textAppearance="@style/TextAppearance.Material3.TitleMedium"
+                    app:layout_constraintBottom_toBottomOf="@id/avatarCard"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="@id/orgNameInfo"
+                    app:layout_constraintTop_toBottomOf="@id/orgNameInfo" />
+
+            </androidx.constraintlayout.widget.ConstraintLayout>
+
+            <com.google.android.material.card.MaterialCardView
+                android:id="@+id/about_section"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                style="?attr/materialCardViewFilledStyle"
+                app:cardCornerRadius="@dimen/dimen28dp"
+                app:cardBackgroundColor="?attr/materialCardBackgroundColor">
 
                 <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:orientation="vertical"
-                    android:foreground="?android:attr/selectableItemBackground"
-                    android:background="?attr/materialCardBackgroundColor">
+                    android:padding="@dimen/dimen24dp">
 
-                    <LinearLayout
-                        android:id="@+id/orgInfoLayout"
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="@string/navAbout"
+                        android:textAllCaps="true"
+                        android:letterSpacing="0.1"
+                        android:textAppearance="@style/TextAppearance.Material3.TitleMedium"
+                        android:textStyle="bold"
+                        android:textColor="?attr/colorPrimary"
+                        android:layout_marginBottom="@dimen/dimen12dp"/>
+
+                    <TextView
+                        android:id="@+id/orgDescInfo"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:orientation="vertical"
-                        android:padding="@dimen/dimen16dp"
-                        android:visibility="gone"
-                        tools:visibility="visible">
-
-                        <com.google.android.material.card.MaterialCardView
-                            android:layout_width="@dimen/dimen96dp"
-                            android:layout_height="@dimen/dimen96dp"
-                            style="?attr/materialCardViewFilledStyle"
-                            android:layout_gravity="center_horizontal"
-                            android:backgroundTint="@android:color/transparent"
-                            app:cardElevation="@dimen/dimen0dp"
-                            android:layout_marginTop="@dimen/dimen12dp"
-                            android:layout_marginBottom="@dimen/dimen12dp"
-                            app:cardCornerRadius="@dimen/dimen16dp">
-
-                            <ImageView
-                                android:id="@+id/orgAvatar"
-                                android:layout_width="match_parent"
-                                android:layout_height="match_parent"
-                                android:contentDescription="@string/orgContentAvatar"/>
-
-                        </com.google.android.material.card.MaterialCardView>
-
-                        <TextView
-                            android:id="@+id/orgNameInfo"
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            android:textColor="?attr/primaryTextColor"
-                            android:layout_marginBottom="@dimen/dimen4dp"
-                            android:textSize="@dimen/dimen22sp"
-                            android:textStyle="bold"/>
-
-                        <TextView
-                            android:id="@+id/orgDescInfo"
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            android:autoLink="web"
-                            android:ellipsize="end"
-                            android:maxLines="3"
-                            android:textColor="?attr/primaryTextColor"
-                            android:textColorLink="@color/lightBlue"
-                            android:textSize="@dimen/dimen16sp"/>
-
-                        <com.google.android.material.divider.MaterialDivider
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            android:layout_marginTop="@dimen/dimen24dp"
-                            android:layout_marginBottom="@dimen/dimen24dp" />
-
-                        <LinearLayout
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            android:layout_marginBottom="@dimen/dimen20dp"
-                            android:orientation="horizontal"
-                            android:paddingLeft="@dimen/dimen12dp"
-                            android:paddingRight="@dimen/dimen12dp">
-
-                            <ImageView
-                                android:layout_gravity="center"
-                                android:layout_width="wrap_content"
-                                android:layout_height="wrap_content"
-                                android:contentDescription="@string/websiteText"
-                                app:srcCompat="@drawable/ic_link"/>
-
-                            <LinearLayout
-                                android:layout_width="match_parent"
-                                android:layout_height="wrap_content"
-                                android:layout_marginStart="@dimen/dimen16dp"
-                                android:gravity="center_vertical"
-                                android:orientation="vertical">
-
-                                <TextView
-                                    android:layout_width="wrap_content"
-                                    android:layout_height="wrap_content"
-                                    android:text="@string/websiteText"
-                                    android:textColor="?attr/primaryTextColor"
-                                    android:textSize="@dimen/dimen16sp"/>
-
-                                <TextView
-                                    android:id="@+id/orgWebsiteInfo"
-                                    android:layout_width="match_parent"
-                                    android:layout_height="wrap_content"
-                                    android:alpha="0.9"
-                                    android:autoLink="web"
-                                    android:textColor="?attr/primaryTextColor"
-                                    android:textColorLink="@color/lightBlue"
-                                    android:textSize="@dimen/dimen14sp"
-                                    tools:text="29"/>
-                            </LinearLayout>
-
-                        </LinearLayout>
-
-                        <LinearLayout
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            android:layout_marginBottom="20dp"
-                            android:orientation="horizontal"
-                            android:paddingLeft="@dimen/dimen12dp"
-                            android:paddingRight="@dimen/dimen12dp">
-
-                            <ImageView
-                                android:layout_gravity="center"
-                                android:layout_width="wrap_content"
-                                android:layout_height="wrap_content"
-                                android:contentDescription="@string/locationText"
-                                app:srcCompat="@drawable/ic_location"/>
-
-                            <LinearLayout
-                                android:layout_width="match_parent"
-                                android:layout_height="wrap_content"
-                                android:layout_marginStart="@dimen/dimen16dp"
-                                android:gravity="center_vertical"
-                                android:orientation="vertical">
-
-                                <TextView
-                                    android:layout_width="wrap_content"
-                                    android:layout_height="wrap_content"
-                                    android:text="@string/locationText"
-                                    android:textColor="?attr/primaryTextColor"
-                                    android:textSize="@dimen/dimen16sp"/>
-
-                                <TextView
-                                    android:id="@+id/orgLocationInfo"
-                                    android:layout_width="match_parent"
-                                    android:layout_height="wrap_content"
-                                    android:alpha="0.9"
-                                    android:textColor="?attr/primaryTextColor"
-                                    android:textSize="@dimen/dimen14sp"
-                                    tools:text="29"/>
-                            </LinearLayout>
-
-                        </LinearLayout>
-
-                    </LinearLayout>
+                        android:textColor="?attr/primaryTextColor"
+                        android:lineSpacingExtra="@dimen/dimen4dp"
+                        android:text="@string/noDataDescription"
+                        android:textAppearance="@style/TextAppearance.Material3.TitleMedium" />
 
                 </LinearLayout>
 
             </com.google.android.material.card.MaterialCardView>
 
-        </androidx.core.widget.NestedScrollView>
+            <com.google.android.material.card.MaterialCardView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/dimen16dp"
+                style="?attr/materialCardViewOutlinedStyle"
+                app:cardCornerRadius="@dimen/dimen28dp"
+                app:strokeWidth="@dimen/dimen0dp"
+                android:backgroundTint="?attr/materialCardBackgroundColor">
 
-    </FrameLayout>
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical"
+                    android:padding="@dimen/dimen24dp">
 
-    <com.google.android.material.progressindicator.LinearProgressIndicator
-        android:id="@+id/progress_bar"
-        android:layout_width="match_parent"
+                    <include
+                        android:id="@+id/layoutEmail"
+                        layout="@layout/item_profile_info" />
+
+                    <include
+                        android:id="@+id/layoutWebsite"
+                        layout="@layout/item_profile_info" />
+
+                    <include
+                        android:id="@+id/layoutLocation"
+                        layout="@layout/item_profile_info" />
+
+                </LinearLayout>
+
+            </com.google.android.material.card.MaterialCardView>
+
+        </LinearLayout>
+
+    </androidx.core.widget.NestedScrollView>
+
+    <com.google.android.material.loadingindicator.LoadingIndicator
+        android:id="@+id/expressive_loader"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:indeterminate="true"
-        style="@style/Widget.Material3.LinearProgressIndicator"
-        app:indicatorColor="?attr/progressIndicatorColor"/>
+        android:layout_gravity="center"
+        app:indicatorSize="@dimen/dimen48dp"
+        app:trackThickness="@dimen/dimen4dp" />
 
-</RelativeLayout>
+</androidx.coordinatorlayout.widget.CoordinatorLayout>

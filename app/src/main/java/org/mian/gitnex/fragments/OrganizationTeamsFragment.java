@@ -1,196 +1,242 @@
 package org.mian.gitnex.fragments;
 
-import android.annotation.SuppressLint;
 import android.content.Intent;
 import android.os.Bundle;
-import android.os.Handler;
-import android.os.Looper;
+import android.text.Editable;
+import android.text.TextWatcher;
 import android.view.LayoutInflater;
-import android.view.Menu;
-import android.view.MenuInflater;
-import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
-import android.view.inputmethod.EditorInfo;
-import android.widget.ProgressBar;
-import android.widget.TextView;
 import androidx.annotation.NonNull;
-import androidx.core.view.MenuProvider;
+import androidx.annotation.Nullable;
+import androidx.core.graphics.Insets;
+import androidx.core.view.ViewCompat;
+import androidx.core.view.WindowInsetsCompat;
 import androidx.fragment.app.Fragment;
-import androidx.lifecycle.Lifecycle;
 import androidx.lifecycle.ViewModelProvider;
 import androidx.recyclerview.widget.LinearLayoutManager;
-import androidx.recyclerview.widget.RecyclerView;
-import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
-import java.util.Objects;
+import java.util.ArrayList;
 import org.gitnex.tea4j.v2.models.OrganizationPermissions;
 import org.mian.gitnex.R;
+import org.mian.gitnex.activities.CreateLabelActivity;
 import org.mian.gitnex.activities.CreateTeamByOrgActivity;
+import org.mian.gitnex.activities.OrganizationDetailActivity;
 import org.mian.gitnex.adapters.OrganizationTeamsAdapter;
 import org.mian.gitnex.databinding.FragmentOrganizationTeamsBinding;
-import org.mian.gitnex.viewmodels.TeamsByOrgViewModel;
+import org.mian.gitnex.viewmodels.OrganizationsViewModel;
 
 /**
  * @author mmarif
  */
-public class OrganizationTeamsFragment extends Fragment {
+public class OrganizationTeamsFragment extends Fragment
+		implements OrganizationDetailActivity.OrgActionInterface {
 
-	private TeamsByOrgViewModel teamsByOrgViewModel;
-	public static boolean resumeTeams = false;
-
-	private ProgressBar mProgressBar;
-	private RecyclerView mRecyclerView;
-	private TextView noDataTeams;
-	private static final String orgNameF = "param2";
-	private String orgName;
-	private OrganizationPermissions permissions;
+	private FragmentOrganizationTeamsBinding binding;
+	private OrganizationsViewModel viewModel;
 	private OrganizationTeamsAdapter adapter;
+	private String orgName;
+	private boolean isSearching = false;
+	private boolean isFirstLoad = true;
 
-	public OrganizationTeamsFragment() {}
-
-	public static OrganizationTeamsFragment newInstance(
-			String param1, OrganizationPermissions permissions) {
+	public static OrganizationTeamsFragment newInstance(String orgName) {
 		OrganizationTeamsFragment fragment = new OrganizationTeamsFragment();
 		Bundle args = new Bundle();
-		args.putString(orgNameF, param1);
-		args.putSerializable("permissions", permissions);
+		args.putString("orgName", orgName);
 		fragment.setArguments(args);
 		return fragment;
 	}
 
 	@Override
-	public void onCreate(Bundle savedInstanceState) {
-		super.onCreate(savedInstanceState);
-		if (getArguments() != null) {
-			orgName = getArguments().getString(orgNameF);
-			permissions = (OrganizationPermissions) getArguments().getSerializable("permissions");
-		}
+	public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
+		super.onViewCreated(view, savedInstanceState);
+
+		int paddingTopPx = getResources().getDimensionPixelSize(R.dimen.dimen56dp);
+
+		ViewCompat.setOnApplyWindowInsetsListener(
+				view,
+				(v, windowInsets) -> {
+					Insets systemBars =
+							windowInsets.getInsets(WindowInsetsCompat.Type.systemBars());
+					binding.recyclerView.setPadding(
+							binding.recyclerView.getPaddingLeft(),
+							paddingTopPx,
+							binding.recyclerView.getPaddingRight(),
+							binding.recyclerView.getPaddingBottom());
+
+					return windowInsets;
+				});
 	}
 
 	@Override
+	public void onCreate(Bundle savedInstanceState) {
+		super.onCreate(savedInstanceState);
+		if (getArguments() != null) orgName = getArguments().getString("orgName");
+	}
+
+	@Nullable @Override
 	public View onCreateView(
-			@NonNull LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
+			@NonNull LayoutInflater inflater,
+			@Nullable ViewGroup container,
+			@Nullable Bundle savedInstanceState) {
+		binding = FragmentOrganizationTeamsBinding.inflate(inflater, container, false);
 
-		FragmentOrganizationTeamsBinding fragmentTeamsByOrgBinding =
-				FragmentOrganizationTeamsBinding.inflate(inflater, container, false);
+		viewModel = new ViewModelProvider(requireActivity()).get(OrganizationsViewModel.class);
 
-		teamsByOrgViewModel = new ViewModelProvider(this).get(TeamsByOrgViewModel.class);
+		setupRecyclerView();
+		setupSearch();
+		setupSwipeRefresh();
+		observeViewModel();
 
-		noDataTeams = fragmentTeamsByOrgBinding.noDataTeams;
+		return binding.getRoot();
+	}
 
-		final SwipeRefreshLayout swipeRefresh = fragmentTeamsByOrgBinding.pullToRefresh;
+	private void setupRecyclerView() {
+		binding.recyclerView.setLayoutManager(new LinearLayoutManager(requireContext()));
+	}
 
-		mRecyclerView = fragmentTeamsByOrgBinding.recyclerView;
-		mRecyclerView.setHasFixedSize(true);
-		mRecyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
+	private void observeViewModel() {
+		viewModel
+				.getTeams()
+				.observe(
+						getViewLifecycleOwner(),
+						list -> {
+							if (adapter == null) {
+								adapter =
+										new OrganizationTeamsAdapter(
+												requireContext(),
+												new ArrayList<>(list),
+												viewModel.getPermissions().getValue(),
+												orgName);
+								binding.recyclerView.setAdapter(adapter);
+								binding.searchResultsRecycler.setAdapter(adapter);
+							} else {
+								adapter.updateTeams(list);
+							}
+							updateUiVisibility(
+									Boolean.TRUE.equals(viewModel.getIsTeamsLoading().getValue()));
+						});
 
-		mProgressBar = fragmentTeamsByOrgBinding.progressBar;
+		viewModel
+				.getTeamMembersMap()
+				.observe(
+						getViewLifecycleOwner(),
+						map -> {
+							if (adapter != null) {
+								adapter.updateMemberMap(map);
+							}
+						});
 
-		swipeRefresh.setOnRefreshListener(
-				() ->
-						new Handler(Looper.getMainLooper())
-								.postDelayed(
-										() -> {
-											swipeRefresh.setRefreshing(false);
-											teamsByOrgViewModel.loadTeamsByOrgList(
-													orgName,
-													getContext(),
-													noDataTeams,
-													mProgressBar);
-										},
-										200));
+		viewModel.getIsTeamsLoading().observe(getViewLifecycleOwner(), this::updateUiVisibility);
+	}
 
-		fetchDataAsync(orgName);
+	private void updateUiVisibility(boolean isLoading) {
+		boolean hasData = adapter != null && adapter.getItemCount() > 0;
+		boolean hasLoadedOnce = Boolean.TRUE.equals(viewModel.getTeamsLoadedOnce().getValue());
 
-		if (!permissions.isIsOwner()) {
-			fragmentTeamsByOrgBinding.createTeam.setVisibility(View.GONE);
+		binding.expressiveLoader.setVisibility(isLoading && !hasData ? View.VISIBLE : View.GONE);
+
+		if (isLoading) {
+			binding.layoutEmpty.getRoot().setVisibility(View.GONE);
+		} else {
+			binding.layoutEmpty
+					.getRoot()
+					.setVisibility(!hasData && hasLoadedOnce ? View.VISIBLE : View.GONE);
 		}
 
-		fragmentTeamsByOrgBinding.createTeam.setOnClickListener(
-				v1 -> {
-					Intent intentTeam = new Intent(getContext(), CreateTeamByOrgActivity.class);
-					intentTeam.putExtras(
-							Objects.requireNonNull(requireActivity().getIntent().getExtras()));
-					startActivity(intentTeam);
+		binding.pullToRefresh.setVisibility(hasData ? View.VISIBLE : View.GONE);
+	}
+
+	private void setupSearch() {
+		binding.searchView
+				.getEditText()
+				.addTextChangedListener(
+						new TextWatcher() {
+							@Override
+							public void onTextChanged(
+									CharSequence s, int start, int before, int count) {
+								String query = s.toString();
+								isSearching = !query.isEmpty();
+								if (adapter != null) {
+									adapter.getFilter()
+											.filter(
+													query,
+													count1 -> {
+														binding.layoutEmpty
+																.getRoot()
+																.setVisibility(
+																		isSearching
+																						&& adapter
+																										.getItemCount()
+																								== 0
+																				? View.VISIBLE
+																				: View.GONE);
+													});
+								}
+							}
+
+							@Override
+							public void beforeTextChanged(
+									CharSequence s, int start, int count, int after) {}
+
+							@Override
+							public void afterTextChanged(Editable s) {}
+						});
+
+		binding.searchView.addTransitionListener(
+				(searchView, previousState, newState) -> {
+					if (newState
+							== com.google.android.material.search.SearchView.TransitionState
+									.HIDDEN) {
+						isSearching = false;
+						if (adapter != null) adapter.getFilter().filter("");
+						updateUiVisibility(false);
+					}
 				});
+	}
 
-		requireActivity()
-				.addMenuProvider(
-						new MenuProvider() {
-
-							@Override
-							public void onCreateMenu(
-									@NonNull Menu menu, @NonNull MenuInflater menuInflater) {
-
-								menuInflater.inflate(R.menu.search_menu, menu);
-
-								MenuItem searchItem = menu.findItem(R.id.action_search);
-								androidx.appcompat.widget.SearchView searchView =
-										(androidx.appcompat.widget.SearchView)
-												searchItem.getActionView();
-								assert searchView != null;
-								searchView.setImeOptions(EditorInfo.IME_ACTION_DONE);
-
-								searchView.setOnQueryTextListener(
-										new androidx.appcompat.widget.SearchView
-												.OnQueryTextListener() {
-
-											@Override
-											public boolean onQueryTextSubmit(String query) {
-												return false;
-											}
-
-											@Override
-											public boolean onQueryTextChange(String newText) {
-												if (mRecyclerView.getAdapter() != null) {
-													adapter.getFilter().filter(newText);
-												}
-												return false;
-											}
-										});
-							}
-
-							@Override
-							public boolean onMenuItemSelected(@NonNull MenuItem menuItem) {
-								return false;
-							}
-						},
-						getViewLifecycleOwner(),
-						Lifecycle.State.RESUMED);
-
-		return fragmentTeamsByOrgBinding.getRoot();
+	private void setupSwipeRefresh() {
+		binding.pullToRefresh.setOnRefreshListener(
+				() -> {
+					binding.pullToRefresh.setRefreshing(false);
+					viewModel.fetchTeams(requireContext(), orgName);
+				});
 	}
 
 	@Override
 	public void onResume() {
 		super.onResume();
-		if (resumeTeams) {
-			teamsByOrgViewModel.loadTeamsByOrgList(
-					orgName, getContext(), noDataTeams, mProgressBar);
-			resumeTeams = false;
+		if (!isHidden() && (isFirstLoad || CreateLabelActivity.refreshLabels)) {
+			lazyLoad();
+			CreateLabelActivity.refreshLabels = false;
 		}
 	}
 
-	@SuppressLint("NotifyDataSetChanged")
-	private void fetchDataAsync(String owner) {
+	@Override
+	public void onHiddenChanged(boolean hidden) {
+		super.onHiddenChanged(hidden);
+		if (!hidden && isFirstLoad) lazyLoad();
+	}
 
-		teamsByOrgViewModel
-				.getTeamsByOrg(owner, getContext(), noDataTeams, mProgressBar)
-				.observe(
-						getViewLifecycleOwner(),
-						orgTeamsListMain -> {
-							adapter =
-									new OrganizationTeamsAdapter(
-											getContext(), orgTeamsListMain, permissions, orgName);
-							if (adapter.getItemCount() > 0) {
-								mRecyclerView.setAdapter(adapter);
-								noDataTeams.setVisibility(View.GONE);
-							} else {
-								adapter.notifyDataSetChanged();
-								mRecyclerView.setAdapter(adapter);
-								noDataTeams.setVisibility(View.VISIBLE);
-							}
-							mProgressBar.setVisibility(View.GONE);
-						});
+	private void lazyLoad() {
+		isFirstLoad = false;
+		viewModel.fetchTeams(requireContext(), orgName);
+	}
+
+	@Override
+	public void onSearchTriggered() {
+		binding.searchView.show();
+	}
+
+	@Override
+	public void onAddRequested() {
+		Intent intent = new Intent(requireContext(), CreateTeamByOrgActivity.class);
+		intent.putExtra("orgName", orgName);
+		startActivity(intent);
+	}
+
+	@Override
+	public boolean canAdd() {
+		OrganizationPermissions perms = viewModel.getPermissions().getValue();
+		return perms != null && perms.isIsOwner();
 	}
 }

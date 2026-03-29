@@ -124,19 +124,27 @@ public class RepositoriesViewModel extends ViewModel {
 
 	private void handleResponse(Response<List<Repository>> response, boolean isRefresh, int limit) {
 		isLoading.setValue(false);
+		hasLoadedOnce.setValue(true);
+
 		if (response.isSuccessful() && response.body() != null) {
+			if (isRefresh) {
+				isLastPage = false;
+				totalCount = 0;
+			}
+
 			String totalHeader = response.headers().get("x-total-count");
 			if (totalHeader != null) totalCount = Integer.parseInt(totalHeader);
 
 			List<Repository> currentList =
-					isRefresh
+					(isRefresh || repos.getValue() == null)
 							? new ArrayList<>()
-							: new ArrayList<>(Objects.requireNonNull(repos.getValue()));
+							: new ArrayList<>(repos.getValue());
 
 			currentList.addAll(response.body());
 			repos.setValue(currentList);
 
-			if (response.body().size() < limit || currentList.size() >= totalCount) {
+			if (response.body().size() < limit
+					|| (totalCount > 0 && currentList.size() >= totalCount)) {
 				isLastPage = true;
 			}
 		} else {

@@ -1,18 +1,14 @@
 package org.mian.gitnex.viewmodels;
 
 import android.content.Context;
-import android.view.View;
 import androidx.annotation.NonNull;
 import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MutableLiveData;
 import androidx.lifecycle.ViewModel;
+import java.util.ArrayList;
 import java.util.List;
 import org.gitnex.tea4j.v2.models.Label;
-import org.mian.gitnex.R;
-import org.mian.gitnex.adapters.LabelsAdapter;
 import org.mian.gitnex.clients.RetrofitClient;
-import org.mian.gitnex.databinding.FragmentLabelsBinding;
-import org.mian.gitnex.helpers.Toasty;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
@@ -22,113 +18,87 @@ import retrofit2.Response;
  */
 public class LabelsViewModel extends ViewModel {
 
-	private static MutableLiveData<List<Label>> orgLabelsList;
+	private final MutableLiveData<List<Label>> labels = new MutableLiveData<>();
+	private final MutableLiveData<Boolean> isLoading = new MutableLiveData<>(false);
+	private final MutableLiveData<Boolean> hasLoadedOnce = new MutableLiveData<>(false);
+	private final MutableLiveData<String> error = new MutableLiveData<>();
 
-	public LiveData<List<Label>> getLabelsList(
-			String owner,
-			String repo,
-			String type,
-			Context ctx,
-			FragmentLabelsBinding fragmentLabelsBinding,
-			int page,
-			int resultLimit) {
+	private final List<Label> fullList = new ArrayList<>();
 
-		orgLabelsList = new MutableLiveData<>();
-		loadLabelsList(owner, repo, type, ctx, fragmentLabelsBinding, page, resultLimit);
-
-		return orgLabelsList;
+	public LiveData<List<Label>> getLabels() {
+		return labels;
 	}
 
-	public static void loadLabelsList(
+	public LiveData<Boolean> getIsLoading() {
+		return isLoading;
+	}
+
+	public LiveData<Boolean> getHasLoadedOnce() {
+		return hasLoadedOnce;
+	}
+
+	public LiveData<String> getError() {
+		return error;
+	}
+
+	public void resetPagination() {
+		fullList.clear();
+		labels.setValue(new ArrayList<>());
+		hasLoadedOnce.setValue(false);
+	}
+
+	public void fetchLabels(
+			Context ctx,
 			String owner,
 			String repo,
 			String type,
-			Context ctx,
-			FragmentLabelsBinding fragmentLabelsBinding,
 			int page,
-			int resultLimit) {
+			int limit,
+			boolean isRefresh) {
+
+		if (isLoading.getValue() != null && isLoading.getValue() && !isRefresh) return;
+
+		isLoading.setValue(true);
 
 		Call<List<Label>> call;
 		if (type.equalsIgnoreCase("repo")) {
-			call =
-					RetrofitClient.getApiInterface(ctx)
-							.issueListLabels(owner, repo, page, resultLimit);
+			call = RetrofitClient.getApiInterface(ctx).issueListLabels(owner, repo, page, limit);
 		} else {
-			call = RetrofitClient.getApiInterface(ctx).orgListLabels(owner, page, resultLimit);
+			call = RetrofitClient.getApiInterface(ctx).orgListLabels(owner, page, limit);
 		}
 
 		call.enqueue(
 				new Callback<>() {
-
 					@Override
 					public void onResponse(
 							@NonNull Call<List<Label>> call,
 							@NonNull Response<List<Label>> response) {
 
-						if (response.isSuccessful()) {
+						isLoading.setValue(false);
+						hasLoadedOnce.setValue(true);
 
-							orgLabelsList.postValue(response.body());
-						} else {
-
-							fragmentLabelsBinding.progressBar.setVisibility(View.GONE);
-							fragmentLabelsBinding.noData.setVisibility(View.VISIBLE);
-						}
-					}
-
-					@Override
-					public void onFailure(@NonNull Call<List<Label>> call, @NonNull Throwable t) {
-
-						Toasty.show(ctx, ctx.getString(R.string.genericServerResponseError));
-					}
-				});
-	}
-
-	public void loadMore(
-			String owner,
-			String repo,
-			String type,
-			Context ctx,
-			FragmentLabelsBinding fragmentLabelsBinding,
-			int page,
-			int resultLimit,
-			LabelsAdapter adapter) {
-
-		Call<List<Label>> call;
-		if (type.equalsIgnoreCase("repo")) {
-			call =
-					RetrofitClient.getApiInterface(ctx)
-							.issueListLabels(owner, repo, page, resultLimit);
-		} else {
-			call = RetrofitClient.getApiInterface(ctx).orgListLabels(owner, page, resultLimit);
-		}
-
-		call.enqueue(
-				new Callback<>() {
-
-					@Override
-					public void onResponse(
-							@NonNull Call<List<Label>> call,
-							@NonNull Response<List<Label>> response) {
-
-						if (response.isSuccessful()) {
-
-							List<Label> list = orgLabelsList.getValue();
-							assert list != null;
-							assert response.body() != null;
-
-							if (!response.body().isEmpty()) {
-								list.addAll(response.body());
-								adapter.updateList(list);
-							} else {
-								adapter.setMoreDataAvailable(false);
+						if (response.isSuccessful() && response.body() != null) {
+							if (isRefresh) {
+								fullList.clear();
 							}
+
+							for (Label newLabel : response.body()) {
+								if (!fullList.contains(newLabel)) {
+									fullList.add(newLabel);
+								}
+							}
+
+							labels.setValue(new ArrayList<>(fullList));
+						} else {
+							error.setValue("Error: " + response.code());
 						}
 					}
 
 					@Override
 					public void onFailure(@NonNull Call<List<Label>> call, @NonNull Throwable t) {
-
-						Toasty.show(ctx, ctx.getString(R.string.genericServerResponseError));
+						isLoading.setValue(false);
+						hasLoadedOnce.setValue(true);
+						error.setValue(t.getMessage());
 					}
 				});
 	}

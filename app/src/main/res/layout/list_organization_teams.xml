@@ -1,26 +1,23 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools"
+<com.google.android.material.listitem.ListItemLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
-    android:layout_height="wrap_content"
-    android:id="@+id/orgTeamsFrame"
-    android:orientation="vertical"
-    android:paddingTop="@dimen/dimen4dp"
-    android:paddingBottom="@dimen/dimen4dp"
-    xmlns:android="http://schemas.android.com/apk/res/android">
+    android:layout_height="wrap_content">
 
-    <com.google.android.material.card.MaterialCardView
+    <com.google.android.material.listitem.ListItemCardView
+        android:id="@+id/card"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        style="?attr/materialCardViewElevatedStyle"
-        app:cardElevation="@dimen/dimen0dp">
+        android:checkable="false"
+        android:layout_marginVertical="@dimen/dimen1dp"
+        app:strokeWidth="0dp"
+        app:cardBackgroundColor="?attr/materialCardBackgroundColor">
 
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:foreground="?android:attr/selectableItemBackground"
-            android:background="?attr/materialCardBackgroundColor"
-            android:padding="@dimen/dimen12dp"
+            android:padding="@dimen/dimen8dp"
             android:orientation="vertical">
 
             <TextView
@@ -30,8 +27,7 @@
                 android:text="@string/teamTitle"
                 android:textColor="?attr/primaryTextColor"
                 android:textSize="@dimen/dimen18sp"
-                android:textStyle="bold"
-                tools:text="PR-Managers"/>
+                android:textStyle="bold" />
 
             <TextView
                 android:id="@+id/teamDescription"
@@ -41,8 +37,7 @@
                 android:textColor="?attr/primaryTextColor"
                 android:textSize="@dimen/dimen16sp"
                 android:layout_marginTop="@dimen/dimen4dp"
-                android:layout_marginBottom="@dimen/dimen4dp"
-                tools:text="Managing pull requests and related issues"/>
+                android:layout_marginBottom="@dimen/dimen4dp" />
 
             <LinearLayout
                 android:id="@+id/membersPreviewFrame"
@@ -51,8 +46,7 @@
                 android:layout_marginTop="@dimen/dimen10dp"
                 android:gravity="bottom"
                 android:orientation="horizontal"
-                android:visibility="gone"
-                tools:visibility="visible">
+                android:visibility="gone">
 
                 <androidx.recyclerview.widget.RecyclerView
                     android:id="@+id/membersPreview"
@@ -74,6 +68,6 @@
 
         </LinearLayout>
 
-    </com.google.android.material.card.MaterialCardView>
+    </com.google.android.material.listitem.ListItemCardView>
 
-</LinearLayout>
+</com.google.android.material.listitem.ListItemLayout>

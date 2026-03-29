@@ -184,7 +184,7 @@ public class CreateRepoActivity extends BaseActivity {
 						if (response.code() == 201) {
 
 							MainActivity.reloadRepos = true;
-							OrganizationDetailActivity.updateOrgFABActions = true;
+							// OrganizationDetailActivity.updateOrgFABActions = true;
 
 							Toasty.show(ctx, getString(R.string.repoCreated));
 

@@ -22,7 +22,6 @@ import org.mian.gitnex.helpers.AppUtil;
 import org.mian.gitnex.helpers.Constants;
 import org.mian.gitnex.helpers.Toasty;
 import org.mian.gitnex.helpers.contexts.RepositoryContext;
-import org.mian.gitnex.viewmodels.LabelsViewModel;
 import retrofit2.Call;
 import retrofit2.Callback;
 
@@ -371,24 +370,24 @@ public class CreateLabelActivity extends BaseActivity {
 														getIntent().getStringExtra("type"))
 												.equals("org")) {
 
-									LabelsViewModel.loadLabelsList(
-											getIntent().getStringExtra("orgName"),
-											null,
-											"org",
-											ctx,
-											null,
-											page,
-											resultLimit);
+									/*LabelsViewModel.loadLabelsList(
+									getIntent().getStringExtra("orgName"),
+									null,
+									"org",
+									ctx,
+									null,
+									page,
+									resultLimit);*/
 								} else {
 
-									LabelsViewModel.loadLabelsList(
-											repository.getOwner(),
-											repository.getName(),
-											"repo",
-											ctx,
-											null,
-											page,
-											resultLimit);
+									/*LabelsViewModel.loadLabelsList(
+									repository.getOwner(),
+									repository.getName(),
+									"repo",
+									ctx,
+									null,
+									page,
+									resultLimit);*/
 								}
 							}
 						} else if (response.code() == 401) {
