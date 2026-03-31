@@ -11,7 +11,11 @@ import androidx.activity.EdgeToEdge;
 import androidx.activity.OnBackPressedCallback;
 import androidx.annotation.NonNull;
 import androidx.annotation.OptIn;
+import androidx.coordinatorlayout.widget.CoordinatorLayout;
+import androidx.core.graphics.Insets;
 import androidx.core.text.HtmlCompat;
+import androidx.core.view.ViewCompat;
+import androidx.core.view.WindowInsetsCompat;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 import com.bumptech.glide.Glide;
@@ -103,6 +107,19 @@ public class MainActivity extends BaseActivity
 		binding = ActivityMainBinding.inflate(getLayoutInflater());
 		setContentView(binding.getRoot());
 		tinyDB = TinyDB.getInstance(this);
+
+		int baseMargin = (int) getResources().getDimension(R.dimen.dimen28dp);
+		ViewCompat.setOnApplyWindowInsetsListener(
+				binding.dockedToolbar,
+				(v, windowInsets) -> {
+					Insets navInsets =
+							windowInsets.getInsets(WindowInsetsCompat.Type.navigationBars());
+					CoordinatorLayout.LayoutParams params =
+							(CoordinatorLayout.LayoutParams) v.getLayoutParams();
+					params.bottomMargin = navInsets.bottom + baseMargin;
+					v.setLayoutParams(params);
+					return windowInsets;
+				});
 
 		detachedDivider = binding.dockRepoDivider;
 		detachedAddBtn = binding.btnDockNewRepo;

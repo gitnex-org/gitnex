@@ -1,6 +1,5 @@
 package org.mian.gitnex.activities;
 
-import android.content.Intent;
 import android.os.Bundle;
 import android.text.Editable;
 import android.text.TextWatcher;
@@ -13,6 +12,7 @@ import java.util.List;
 import org.gitnex.tea4j.v2.models.Organization;
 import org.mian.gitnex.adapters.OrganizationsListAdapter;
 import org.mian.gitnex.databinding.ActivityOrganizationsBinding;
+import org.mian.gitnex.fragments.BottomSheetCreateOrganization;
 import org.mian.gitnex.helpers.Constants;
 import org.mian.gitnex.helpers.EndlessRecyclerViewScrollListener;
 import org.mian.gitnex.helpers.Toasty;
@@ -23,7 +23,6 @@ import org.mian.gitnex.viewmodels.OrganizationsViewModel;
  */
 public class OrganizationsActivity extends BaseActivity {
 
-	public static boolean orgCreated = false;
 	private ActivityOrganizationsBinding binding;
 	private OrganizationsViewModel viewModel;
 	private OrganizationsListAdapter adapter;
@@ -51,7 +50,9 @@ public class OrganizationsActivity extends BaseActivity {
 	private void setupToolbar() {
 		binding.btnBack.setOnClickListener(v -> finish());
 		binding.btnNewOrg.setOnClickListener(
-				v -> startActivity(new Intent(this, CreateOrganizationActivity.class)));
+				v ->
+						BottomSheetCreateOrganization.newInstance()
+								.show(getSupportFragmentManager(), "create_org"));
 		binding.btnSearch.setOnClickListener(v -> binding.searchView.show());
 	}
 
@@ -204,14 +205,5 @@ public class OrganizationsActivity extends BaseActivity {
 							binding.searchView.hide();
 							return false;
 						});
-	}
-
-	@Override
-	public void onResume() {
-		super.onResume();
-		if (orgCreated) {
-			refreshData();
-			orgCreated = false;
-		}
 	}
 }

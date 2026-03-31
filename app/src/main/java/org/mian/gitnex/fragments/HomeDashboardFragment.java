@@ -57,17 +57,21 @@ public class HomeDashboardFragment extends Fragment {
 	public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
 		super.onViewCreated(view, savedInstanceState);
 
-		int paddingLeft = view.getPaddingLeft();
-		int paddingRight = view.getPaddingRight();
-		int paddingBottom = view.getPaddingBottom();
-
 		ViewCompat.setOnApplyWindowInsetsListener(
-				view,
+				binding.nestedScrollView,
 				(v, windowInsets) -> {
 					Insets systemBars =
 							windowInsets.getInsets(WindowInsetsCompat.Type.systemBars());
-
-					v.setPadding(paddingLeft, systemBars.top, paddingRight, paddingBottom);
+					v.setPadding(
+							v.getPaddingLeft(),
+							v.getPaddingTop(),
+							v.getPaddingRight(),
+							systemBars.bottom);
+					binding.mainLayout.setPadding(
+							binding.mainLayout.getPaddingLeft(),
+							systemBars.top + (int) getResources().getDimension(R.dimen.dimen20dp),
+							binding.mainLayout.getPaddingRight(),
+							binding.mainLayout.getPaddingBottom());
 
 					return windowInsets;
 				});

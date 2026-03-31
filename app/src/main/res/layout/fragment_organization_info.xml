@@ -4,84 +4,80 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="?attr/primaryBackgroundColor">
+    android:background="?attr/colorPrimaryContainer">
 
     <androidx.core.widget.NestedScrollView
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:clipToPadding="false"
-        android:paddingTop="@dimen/dimen56dp"
-        android:paddingBottom="@dimen/dimen64dp">
+        android:fillViewport="true"
+        android:clipToPadding="false">
 
         <LinearLayout
-            android:id="@+id/orgInfoLayout"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:orientation="vertical"
-            android:padding="@dimen/dimen16dp"
-            android:visibility="gone">
+            android:orientation="vertical">
 
             <androidx.constraintlayout.widget.ConstraintLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginBottom="@dimen/dimen24dp">
+                android:background="?attr/colorPrimaryContainer"
+                android:paddingBottom="@dimen/dimen32dp">
 
-                <com.google.android.material.card.MaterialCardView
-                    android:id="@+id/avatarCard"
+                <View
+                    android:id="@+id/headerBackground"
+                    android:layout_width="match_parent"
+                    android:layout_height="@dimen/dimen120dp"
+                    android:background="?attr/colorPrimaryContainer"
+                    app:layout_constraintTop_toTopOf="parent" />
+
+                <com.google.android.material.imageview.ShapeableImageView
+                    android:id="@+id/orgAvatar"
                     android:layout_width="@dimen/dimen100dp"
                     android:layout_height="@dimen/dimen100dp"
-                    app:cardCornerRadius="@dimen/dimen28dp"
-                    android:backgroundTint="@android:color/transparent"
-                    app:cardElevation="@dimen/dimen0dp"
+                    android:layout_marginTop="@dimen/dimen72dp"
+                    android:layout_marginStart="@dimen/dimen24dp"
+                    android:padding="@dimen/dimen4dp"
                     app:strokeWidth="@dimen/dimen0dp"
+                    android:background="?attr/primaryBackgroundColor"
+                    android:scaleType="centerCrop"
                     app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toTopOf="parent">
-
-                    <ImageView
-                        android:id="@+id/orgAvatar"
-                        android:layout_width="match_parent"
-                        android:layout_height="match_parent"
-                        android:contentDescription="@string/generalImgContentText"
-                        android:scaleType="centerCrop" />
-
-                </com.google.android.material.card.MaterialCardView>
+                    app:layout_constraintTop_toTopOf="parent"
+                    app:shapeAppearanceOverlay="@style/ShapeAppearance.Material3.Corner.ExtraLarge" />
 
                 <TextView
                     android:id="@+id/orgNameInfo"
+                    style="@style/TextAppearance.Material3.HeadlineMedium"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
-                    android:layout_marginStart="@dimen/dimen20dp"
-                    android:textColor="?attr/primaryTextColor"
-                    android:textAppearance="@style/TextAppearance.Material3.HeadlineMedium"
+                    android:layout_marginTop="@dimen/dimen12dp"
+                    android:layout_marginHorizontal="@dimen/dimen24dp"
                     android:textStyle="bold"
-                    app:layout_constraintBottom_toTopOf="@+id/orgUsername"
+                    android:textColor="?attr/primaryTextColor"
                     app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintStart_toEndOf="@id/avatarCard"
-                    app:layout_constraintTop_toTopOf="@id/avatarCard"
-                    app:layout_constraintVertical_chainStyle="packed" />
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@id/orgAvatar" />
 
                 <TextView
                     android:id="@+id/orgUsername"
+                    style="@style/TextAppearance.Material3.TitleMedium"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
-                    android:layout_marginTop="@dimen/dimen2dp"
-                    android:alpha="0.7"
+                    android:alpha="0.6"
                     android:textColor="?attr/primaryTextColor"
-                    android:textAppearance="@style/TextAppearance.Material3.TitleMedium"
-                    app:layout_constraintBottom_toBottomOf="@id/avatarCard"
-                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintEnd_toEndOf="@id/orgNameInfo"
                     app:layout_constraintStart_toStartOf="@id/orgNameInfo"
                     app:layout_constraintTop_toBottomOf="@id/orgNameInfo" />
 
             </androidx.constraintlayout.widget.ConstraintLayout>
 
             <com.google.android.material.card.MaterialCardView
-                android:id="@+id/about_section"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                style="?attr/materialCardViewFilledStyle"
-                app:cardCornerRadius="@dimen/dimen28dp"
-                app:cardBackgroundColor="?attr/materialCardBackgroundColor">
+                android:layout_height="0dp"
+                android:layout_weight="1"
+                app:cardBackgroundColor="?attr/materialCardBackgroundColor"
+                app:cardElevation="0dp"
+                app:shapeAppearance="@style/ShapeAppearance.TopRounded"
+                app:strokeWidth="0dp">
 
                 <LinearLayout
                     android:layout_width="match_parent"
@@ -90,51 +86,43 @@
                     android:padding="@dimen/dimen24dp">
 
                     <TextView
+                        style="@style/TextAppearance.Material3.LabelLarge"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:text="@string/navAbout"
                         android:textAllCaps="true"
-                        android:letterSpacing="0.1"
-                        android:textAppearance="@style/TextAppearance.Material3.TitleMedium"
-                        android:textStyle="bold"
                         android:textColor="?attr/colorPrimary"
-                        android:layout_marginBottom="@dimen/dimen12dp"/>
+                        android:letterSpacing="0.1" />
 
                     <TextView
                         android:id="@+id/orgDescInfo"
+                        style="@style/TextAppearance.Material3.BodyLarge"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:textColor="?attr/primaryTextColor"
-                        android:lineSpacingExtra="@dimen/dimen4dp"
-                        android:text="@string/noDataDescription"
-                        android:textAppearance="@style/TextAppearance.Material3.TitleMedium" />
+                        android:layout_marginTop="@dimen/dimen8dp"
+                        android:textColor="?attr/primaryTextColor" />
 
-                </LinearLayout>
-
-            </com.google.android.material.card.MaterialCardView>
-
-            <com.google.android.material.card.MaterialCardView
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="@dimen/dimen16dp"
-                style="?attr/materialCardViewOutlinedStyle"
-                app:cardCornerRadius="@dimen/dimen28dp"
-                app:strokeWidth="@dimen/dimen0dp"
-                android:backgroundTint="?attr/materialCardBackgroundColor">
-
-                <LinearLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:orientation="vertical"
-                    android:padding="@dimen/dimen24dp">
+                    <com.google.android.material.divider.MaterialDivider
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginVertical="@dimen/dimen24dp"
+                        app:dividerColor="?attr/colorOutlineVariant" />
 
                     <include
                         android:id="@+id/layoutEmail"
                         layout="@layout/item_profile_info" />
 
+                    <View
+                        android:layout_width="match_parent"
+                        android:layout_height="@dimen/dimen12dp" />
+
                     <include
                         android:id="@+id/layoutWebsite"
                         layout="@layout/item_profile_info" />
+
+                    <View
+                        android:layout_width="match_parent"
+                        android:layout_height="@dimen/dimen12dp" />
 
                     <include
                         android:id="@+id/layoutLocation"

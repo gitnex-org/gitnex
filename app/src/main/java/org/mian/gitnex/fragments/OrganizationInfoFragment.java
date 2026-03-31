@@ -61,14 +61,12 @@ public class OrganizationInfoFragment extends Fragment {
 						loading -> {
 							if (loading) {
 								binding.expressiveLoader.setVisibility(View.VISIBLE);
-								binding.orgInfoLayout.setVisibility(View.GONE);
 							}
 						});
 	}
 
 	private void populateUi(Organization org) {
 		binding.expressiveLoader.setVisibility(View.GONE);
-		binding.orgInfoLayout.setVisibility(View.VISIBLE);
 
 		binding.orgNameInfo.setText(
 				org.getFullName().isEmpty() ? org.getUsername() : org.getFullName());

@@ -1129,4 +1129,5 @@
     <string name="external_wiki">External wiki</string>
     <string name="add_team_member">Add Team Member</string>
     <string name="add_team_repo">Add Team Repository</string>
+    <string name="repo_admin_change_team_access">Repository admin can change team access</string>
 </resources>

@@ -24,7 +24,7 @@
         app:paddingRightSystemWindowInsets="false"
         app:paddingTopSystemWindowInsets="false"
         android:layout_gravity="bottom|center_horizontal"
-        android:layout_marginBottom="@dimen/dimen28dp"
+        android:layout_marginBottom="0dp"
         app:shapeAppearanceOverlay="@style/ShapeAppearance.RoundedDock"
         android:backgroundTint="?attr/colorSurfaceContainerHigh"
         app:layout_behavior="com.google.android.material.behavior.HideViewOnScrollBehavior">
@@ -125,21 +125,5 @@
         </com.google.android.material.overflow.OverflowLinearLayout>
 
     </com.google.android.material.dockedtoolbar.DockedToolbarLayout>
-
-    <com.google.android.material.search.SearchView
-        android:id="@+id/search_view"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:hint="@string/search"
-        app:navigationIcon="@drawable/ic_arrow_back"
-        app:backgroundTint="?attr/primaryBackgroundColor">
-
-        <androidx.recyclerview.widget.RecyclerView
-            android:id="@+id/search_results_recycler"
-            android:padding="@dimen/dimen16dp"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent" />
-
-    </com.google.android.material.search.SearchView>
 
 </androidx.coordinatorlayout.widget.CoordinatorLayout>

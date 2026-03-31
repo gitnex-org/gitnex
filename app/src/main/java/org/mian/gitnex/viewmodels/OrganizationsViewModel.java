@@ -12,12 +12,15 @@ import java.util.Map;
 import java.util.Objects;
 import java.util.concurrent.atomic.AtomicInteger;
 import java.util.stream.Collectors;
+import org.gitnex.tea4j.v2.models.CreateOrgOption;
 import org.gitnex.tea4j.v2.models.CreateTeamOption;
 import org.gitnex.tea4j.v2.models.Organization;
 import org.gitnex.tea4j.v2.models.OrganizationPermissions;
 import org.gitnex.tea4j.v2.models.Team;
 import org.gitnex.tea4j.v2.models.User;
+import org.mian.gitnex.R;
 import org.mian.gitnex.clients.RetrofitClient;
+import org.mian.gitnex.helpers.Constants;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
@@ -42,6 +45,9 @@ public class OrganizationsViewModel extends ViewModel {
 			new MutableLiveData<>(new HashMap<>());
 	private final MutableLiveData<Boolean> isCreatingTeam = new MutableLiveData<>(false);
 	private final MutableLiveData<Integer> createTeamResult = new MutableLiveData<>(-1);
+	private final MutableLiveData<Boolean> isCreating = new MutableLiveData<>(false);
+	private final MutableLiveData<String> createError = new MutableLiveData<>();
+	private final MutableLiveData<Boolean> createSuccess = new MutableLiveData<>(false);
 
 	private boolean isLastPage = false;
 	private int totalCount = -1;
@@ -98,8 +104,72 @@ public class OrganizationsViewModel extends ViewModel {
 		return createTeamResult;
 	}
 
+	public LiveData<Boolean> getIsCreating() {
+		return isCreating;
+	}
+
+	public LiveData<String> getCreateError() {
+		return createError;
+	}
+
+	public LiveData<Boolean> getCreateSuccess() {
+		return createSuccess;
+	}
+
 	public void resetCreateTeamResult() {
 		createTeamResult.setValue(-1);
+	}
+
+	public void createOrganization(Context ctx, CreateOrgOption option, String visibilityStr) {
+		isCreating.setValue(true);
+
+		CreateOrgOption.VisibilityEnum visibility;
+		if ("private".equalsIgnoreCase(visibilityStr)) {
+			visibility = CreateOrgOption.VisibilityEnum.PRIVATE;
+		} else if ("limited".equalsIgnoreCase(visibilityStr)) {
+			visibility = CreateOrgOption.VisibilityEnum.LIMITED;
+		} else {
+			visibility = CreateOrgOption.VisibilityEnum.PUBLIC;
+		}
+		option.setVisibility(visibility);
+
+		RetrofitClient.getApiInterface(ctx)
+				.orgCreate(option)
+				.enqueue(
+						new Callback<>() {
+							@Override
+							public void onResponse(
+									@NonNull Call<Organization> call,
+									@NonNull Response<Organization> response) {
+								isCreating.setValue(false);
+								if (response.isSuccessful() && response.code() == 201) {
+									createSuccess.setValue(true);
+									fetchOrganizations(
+											ctx, 1, Constants.getCurrentResultLimit(ctx), true);
+								} else {
+									if (response.code() == 409 || response.code() == 422) {
+										createError.setValue(
+												ctx.getString(R.string.orgExistsError));
+									} else if (response.code() == 403) {
+										createError.setValue("Permission denied");
+									} else {
+										createError.setValue("Error: " + response.code());
+									}
+								}
+							}
+
+							@Override
+							public void onFailure(
+									@NonNull Call<Organization> call, @NonNull Throwable t) {
+								isCreating.setValue(false);
+								createError.setValue(t.getMessage());
+							}
+						});
+	}
+
+	public void resetCreateStatus() {
+		createSuccess.setValue(false);
+		createError.setValue(null);
 	}
 
 	public void createTeam(Context ctx, String orgName, CreateTeamOption options) {
