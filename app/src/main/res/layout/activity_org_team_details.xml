@@ -8,12 +8,9 @@
     android:background="?attr/primaryBackgroundColor">
 
     <androidx.fragment.app.FragmentContainerView
-        android:id="@+id/nav_host_fragment"
-        android:name="androidx.navigation.fragment.NavHostFragment"
+        android:id="@+id/org_teams_details_container"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        app:navGraph="@navigation/nav_graph"
-        app:defaultNavHost="true" />
+        android:layout_height="match_parent" />
 
     <com.google.android.material.dockedtoolbar.DockedToolbarLayout
         android:id="@+id/docked_toolbar"
@@ -38,14 +35,15 @@
             android:paddingHorizontal="@dimen/dimen4dp">
 
             <com.google.android.material.button.MaterialButton
-                android:id="@+id/btn_nav_home"
-                style="@style/Widget.Material3.Button.IconButton"
+                android:id="@+id/btn_back"
+                style="?attr/materialIconButtonStyle"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                app:icon="@drawable/ic_home"
-                app:iconTint="?attr/primaryTextColor"
-                android:paddingHorizontal="@dimen/dimen24dp"
-                android:minWidth="0dp" />
+                app:icon="@drawable/ic_arrow_back"
+                android:layout_gravity="center_vertical"
+                android:backgroundTint="@android:color/transparent"
+                android:insetLeft="0dp"
+                android:insetRight="0dp" />
 
             <com.google.android.material.button.MaterialButton
                 android:id="@+id/btn_nav_repos"
@@ -53,43 +51,34 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 app:icon="@drawable/ic_repo"
-                app:iconTint="?attr/primaryTextColor"
-                android:paddingHorizontal="@dimen/dimen24dp"
-                android:minWidth="0dp" />
+                app:iconTint="?attr/primaryTextColor" />
 
             <com.google.android.material.button.MaterialButton
-                android:id="@+id/btn_nav_notifications"
+                android:id="@+id/btn_nav_members"
                 style="@style/Widget.Material3.Button.IconButton"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                app:icon="@drawable/ic_notifications"
-                app:iconTint="?attr/primaryTextColor"
-                android:paddingHorizontal="@dimen/dimen24dp"
-                android:minWidth="0dp" />
+                app:icon="@drawable/ic_person"
+                app:iconTint="?attr/primaryTextColor" />
+
+            <com.google.android.material.button.MaterialButton
+                android:id="@+id/btn_nav_permissions"
+                style="@style/Widget.Material3.Button.IconButton"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                app:icon="@drawable/ic_lock"
+                app:iconTint="?attr/primaryTextColor" />
 
             <View
-                android:id="@+id/dock_repo_divider"
+                android:id="@+id/dock_divider"
                 android:layout_width="@dimen/dimen1dp"
                 android:layout_height="@dimen/dimen24dp"
                 android:layout_gravity="center_vertical"
                 android:layout_marginHorizontal="@dimen/dimen4dp"
-                android:background="?attr/colorOutlineVariant"
-                android:visibility="gone" />
+                android:background="?attr/colorOutlineVariant" />
 
             <com.google.android.material.button.MaterialButton
-                android:id="@+id/btn_dock_mark_read"
-                style="?attr/materialIconButtonStyle"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                app:icon="@drawable/ic_done"
-                android:layout_gravity="center_vertical"
-                android:layout_marginStart="@dimen/dimen4dp"
-                android:backgroundTint="@android:color/transparent"
-                android:visibility="gone"
-                android:contentDescription="@string/markAsRead" />
-
-            <com.google.android.material.button.MaterialButton
-                android:id="@+id/btn_dock_new_repo"
+                android:id="@+id/btn_dock_add"
                 style="?attr/materialIconButtonStyle"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
@@ -111,35 +100,8 @@
                 android:visibility="gone"
                 android:contentDescription="@string/search" />
 
-            <com.google.android.material.button.MaterialButton
-                android:id="@+id/btn_dock_sort"
-                style="?attr/materialIconButtonStyle"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                app:icon="@drawable/ic_dotted_menu"
-                android:layout_gravity="center_vertical"
-                android:backgroundTint="@android:color/transparent"
-                android:visibility="gone"
-                android:contentDescription="@string/sort" />
-
         </com.google.android.material.overflow.OverflowLinearLayout>
 
     </com.google.android.material.dockedtoolbar.DockedToolbarLayout>
-
-    <com.google.android.material.search.SearchView
-        android:id="@+id/search_view"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:hint="@string/search"
-        app:navigationIcon="@drawable/ic_arrow_back"
-        app:backgroundTint="?attr/primaryBackgroundColor">
-
-        <androidx.recyclerview.widget.RecyclerView
-            android:id="@+id/search_results_recycler"
-            android:padding="@dimen/dimen16dp"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent" />
-
-    </com.google.android.material.search.SearchView>
 
 </androidx.coordinatorlayout.widget.CoordinatorLayout>

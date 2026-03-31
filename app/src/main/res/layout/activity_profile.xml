@@ -36,8 +36,9 @@
         <com.google.android.material.button.MaterialButton
             android:id="@+id/btn_back"
             style="?attr/materialIconButtonStyle"
-            android:layout_width="48dp"
-            android:layout_height="48dp"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_vertical"
             app:icon="@drawable/ic_arrow_back"
             android:backgroundTint="@android:color/transparent"
             android:insetLeft="0dp"

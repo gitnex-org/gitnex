@@ -50,7 +50,7 @@
             android:name=".activities.AddCollaboratorToRepositoryActivity"
             android:configChanges="orientation|screenSize|smallestScreenSize|density|screenLayout|keyboard|keyboardHidden|navigation"/>
         <activity
-            android:name=".activities.OrganizationTeamInfoActivity"
+            android:name=".activities.OrganizationTeamDetailsActivity"
             android:configChanges="orientation|screenSize|smallestScreenSize|density|screenLayout|keyboard|keyboardHidden|navigation"/>
         <activity
             android:name=".activities.OrganizationDetailActivity"
@@ -113,12 +113,6 @@
             android:theme="@android:style/Theme.NoTitleBar"/>
         <activity
             android:name=".activities.ProfileActivity"
-            android:configChanges="orientation|screenSize|smallestScreenSize|density|screenLayout|keyboard|keyboardHidden|navigation"/>
-        <activity
-            android:name=".activities.AddNewTeamMemberActivity"
-            android:configChanges="orientation|screenSize|smallestScreenSize|density|screenLayout|keyboard|keyboardHidden|navigation"/>
-        <activity
-            android:name=".activities.AddNewTeamRepoActivity"
             android:configChanges="orientation|screenSize|smallestScreenSize|density|screenLayout|keyboard|keyboardHidden|navigation"/>
         <activity
             android:name=".activities.RepoForksActivity"

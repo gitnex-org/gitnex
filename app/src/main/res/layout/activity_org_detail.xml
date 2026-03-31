@@ -20,7 +20,7 @@
         app:paddingRightSystemWindowInsets="false"
         app:paddingTopSystemWindowInsets="false"
         android:layout_gravity="bottom|center_horizontal"
-        android:layout_marginBottom="@dimen/dimen32dp"
+        android:layout_marginBottom="@dimen/dimen28dp"
         app:shapeAppearanceOverlay="@style/ShapeAppearance.RoundedDock"
         app:layout_behavior="com.google.android.material.behavior.HideViewOnScrollBehavior"
         android:backgroundTint="?attr/colorSurfaceContainerHigh">
@@ -36,8 +36,9 @@
             <com.google.android.material.button.MaterialButton
                 android:id="@+id/btn_back"
                 style="?attr/materialIconButtonStyle"
-                android:layout_width="48dp"
-                android:layout_height="48dp"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_vertical"
                 app:icon="@drawable/ic_arrow_back"
                 android:backgroundTint="@android:color/transparent"
                 android:insetLeft="0dp"
@@ -45,7 +46,7 @@
 
             <HorizontalScrollView
                 android:id="@+id/dock_scroll_view"
-                android:layout_width="@dimen/dimen150dp"
+                android:layout_width="@dimen/dimen132dp"
                 android:layout_height="match_parent"
                 android:scrollbars="none"
                 android:fadingEdgeLength="@dimen/dimen24dp"
@@ -112,20 +113,22 @@
             <com.google.android.material.button.MaterialButton
                 android:id="@+id/btn_dock_add"
                 style="?attr/materialIconButtonStyle"
-                android:layout_width="48dp"
-                android:layout_height="48dp"
+                android:layout_width="@dimen/dimen48dp"
+                android:layout_height="@dimen/dimen48dp"
                 app:icon="@drawable/ic_add"
                 android:backgroundTint="@android:color/transparent"
                 android:layout_marginStart="@dimen/dimen8dp"
+                android:visibility="gone"
                 android:insetLeft="0dp"
                 android:insetRight="0dp" />
 
             <com.google.android.material.button.MaterialButton
                 android:id="@+id/btn_dock_search"
                 style="?attr/materialIconButtonStyle"
-                android:layout_width="48dp"
-                android:layout_height="48dp"
+                android:layout_width="@dimen/dimen48dp"
+                android:layout_height="@dimen/dimen48dp"
                 app:icon="@drawable/ic_search"
+                android:visibility="gone"
                 android:backgroundTint="@android:color/transparent"
                 android:layout_marginStart="@dimen/dimen8dp"
                 android:insetLeft="0dp"
@@ -134,8 +137,8 @@
             <com.google.android.material.button.MaterialButton
                 android:id="@+id/btn_dock_menu"
                 style="?attr/materialIconButtonStyle"
-                android:layout_width="48dp"
-                android:layout_height="48dp"
+                android:layout_width="@dimen/dimen48dp"
+                android:layout_height="@dimen/dimen48dp"
                 app:icon="@drawable/ic_dotted_menu"
                 android:backgroundTint="@android:color/transparent"
                 android:layout_marginStart="@dimen/dimen8dp"

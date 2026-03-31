@@ -18,6 +18,8 @@ import android.os.Build;
 import android.util.Base64;
 import android.util.TypedValue;
 import android.view.View;
+import android.view.ViewGroup;
+import android.view.inputmethod.InputMethodManager;
 import androidx.annotation.AttrRes;
 import androidx.annotation.ColorInt;
 import androidx.annotation.NonNull;
@@ -744,6 +746,24 @@ public class AppUtil {
 		}
 	}
 
+	public static void applyFullScreenSheetStyle(
+			@NonNull BottomSheetDialog dialog, boolean isDraggable) {
+		View bottomSheet =
+				dialog.findViewById(com.google.android.material.R.id.design_bottom_sheet);
+		if (bottomSheet != null) {
+			ViewGroup.LayoutParams layoutParams = bottomSheet.getLayoutParams();
+			layoutParams.height = ViewGroup.LayoutParams.MATCH_PARENT;
+			bottomSheet.setLayoutParams(layoutParams);
+
+			BottomSheetBehavior<View> behavior = BottomSheetBehavior.from(bottomSheet);
+			behavior.setFitToContents(false);
+			behavior.setSkipCollapsed(true);
+			behavior.setExpandedOffset(0);
+			behavior.setState(BottomSheetBehavior.STATE_EXPANDED);
+			behavior.setDraggable(isDraggable);
+		}
+	}
+
 	public static String parseErrorMessage(String errorBody) {
 		if (errorBody == null || errorBody.isEmpty()) {
 			return "Unknown error occurred";
@@ -764,5 +784,13 @@ public class AppUtil {
 			parsedMessage = errorBody.length() > 100 ? "Error parsing server response" : errorBody;
 		}
 		return "API error: " + parsedMessage;
+	}
+
+	public static void hideKeyboard(Activity activity) {
+		if (activity != null && activity.getCurrentFocus() != null) {
+			InputMethodManager imm =
+					(InputMethodManager) activity.getSystemService(Context.INPUT_METHOD_SERVICE);
+			imm.hideSoftInputFromWindow(activity.getCurrentFocus().getWindowToken(), 0);
+		}
 	}
 }

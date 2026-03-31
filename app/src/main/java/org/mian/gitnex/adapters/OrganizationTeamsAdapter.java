@@ -18,8 +18,9 @@ import java.util.Map;
 import org.gitnex.tea4j.v2.models.OrganizationPermissions;
 import org.gitnex.tea4j.v2.models.Team;
 import org.gitnex.tea4j.v2.models.User;
-import org.mian.gitnex.activities.OrganizationTeamInfoActivity;
+import org.mian.gitnex.activities.OrganizationTeamDetailsActivity;
 import org.mian.gitnex.databinding.ListOrganizationTeamsBinding;
+import org.mian.gitnex.viewmodels.OrganizationsViewModel;
 
 /**
  * @author mmarif
@@ -33,7 +34,7 @@ public class OrganizationTeamsAdapter
 	private final Context context;
 	private final OrganizationPermissions permissions;
 	private final String orgName;
-	private Map<Long, List<User>> teamMembersMap = new HashMap<>();
+	private Map<Long, OrganizationsViewModel.TeamMemberData> teamMembersMap = new HashMap<>();
 
 	public OrganizationTeamsAdapter(
 			Context ctx, List<Team> teamList, OrganizationPermissions permissions, String orgName) {
@@ -71,13 +72,13 @@ public class OrganizationTeamsAdapter
 	}
 
 	@SuppressLint("NotifyDataSetChanged")
-	public void updateMemberMap(Map<Long, List<User>> map) {
+	public void updateMemberMap(Map<Long, OrganizationsViewModel.TeamMemberData> map) {
 		this.teamMembersMap = map;
 		notifyDataSetChanged();
 	}
 
 	public class TeamViewHolder extends RecyclerView.ViewHolder {
-		private final ListOrganizationTeamsBinding binding;
+		public final ListOrganizationTeamsBinding binding;
 		private final OrganizationTeamMembersPreviewAdapter previewAdapter;
 		private final List<User> userInfos = new ArrayList<>();
 
@@ -90,18 +91,19 @@ public class OrganizationTeamsAdapter
 			previewAdapter = new OrganizationTeamMembersPreviewAdapter(context, userInfos);
 			binding.membersPreview.setAdapter(previewAdapter);
 
+			binding.previewOverlay.setOnClickListener(v -> itemView.performClick());
+
 			itemView.setOnClickListener(
 					v -> {
 						Team team = teamList.get(getAbsoluteAdapterPosition());
-						Intent intent = new Intent(context, OrganizationTeamInfoActivity.class);
+						Intent intent = new Intent(context, OrganizationTeamDetailsActivity.class);
 						intent.putExtra("team", team);
-						intent.putExtra("permissions", permissions);
 						intent.putExtra("orgName", orgName);
 						context.startActivity(intent);
 					});
 		}
 
-		@SuppressLint("NotifyDataSetChanged")
+		@SuppressLint({"NotifyDataSetChanged", "DefaultLocale"})
 		void bind(Team team) {
 			binding.teamTitle.setText(team.getName());
 
@@ -112,14 +114,31 @@ public class OrganizationTeamsAdapter
 				binding.teamDescription.setVisibility(View.GONE);
 			}
 
-			List<User> members = teamMembersMap.get(team.getId());
-			if (members != null && !members.isEmpty()) {
+			OrganizationsViewModel.TeamMemberData memberData = teamMembersMap.get(team.getId());
+
+			if (memberData != null
+					&& memberData.previewMembers() != null
+					&& !memberData.previewMembers().isEmpty()) {
 				binding.membersPreviewFrame.setVisibility(View.VISIBLE);
+				binding.previewOverlay.setVisibility(View.VISIBLE);
+
+				int totalCount = memberData.membersPreviewTotalCount();
+				int displayedCount = memberData.previewMembers().size();
+
+				if (totalCount > displayedCount) {
+					binding.membersCount.setVisibility(View.VISIBLE);
+					binding.membersCount.setText(
+							String.format("+%d", (totalCount - displayedCount)));
+				} else {
+					binding.membersCount.setVisibility(View.GONE);
+				}
+
 				userInfos.clear();
-				userInfos.addAll(members);
+				userInfos.addAll(memberData.previewMembers());
 				previewAdapter.notifyDataSetChanged();
 			} else {
 				binding.membersPreviewFrame.setVisibility(View.GONE);
+				binding.previewOverlay.setVisibility(View.GONE);
 			}
 		}
 	}
@@ -150,9 +169,14 @@ public class OrganizationTeamsAdapter
 			@SuppressLint("NotifyDataSetChanged")
 			@Override
 			protected void publishResults(CharSequence constraint, FilterResults results) {
-				teamList.clear();
-				teamList.addAll((List<Team>) results.values);
-				notifyDataSetChanged();
+				if (results != null && results.values instanceof List) {
+					@SuppressWarnings("unchecked")
+					List<Team> filteredTeams = (List<Team>) results.values;
+
+					teamList.clear();
+					teamList.addAll(filteredTeams);
+					notifyDataSetChanged();
+				}
 			}
 		};
 	}

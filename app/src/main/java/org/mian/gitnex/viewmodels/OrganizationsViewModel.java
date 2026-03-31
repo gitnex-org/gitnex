@@ -38,7 +38,7 @@ public class OrganizationsViewModel extends ViewModel {
 	private final MutableLiveData<List<Team>> teams = new MutableLiveData<>();
 	private final MutableLiveData<Boolean> isTeamsLoading = new MutableLiveData<>(false);
 	private final MutableLiveData<Boolean> teamsLoadedOnce = new MutableLiveData<>(false);
-	private final MutableLiveData<Map<Long, List<User>>> teamMembersMap =
+	private final MutableLiveData<Map<Long, TeamMemberData>> teamMembersMap =
 			new MutableLiveData<>(new HashMap<>());
 	private final MutableLiveData<Boolean> isCreatingTeam = new MutableLiveData<>(false);
 	private final MutableLiveData<Integer> createTeamResult = new MutableLiveData<>(-1);
@@ -86,7 +86,7 @@ public class OrganizationsViewModel extends ViewModel {
 		return teamsLoadedOnce;
 	}
 
-	public LiveData<Map<Long, List<User>>> getTeamMembersMap() {
+	public LiveData<Map<Long, OrganizationsViewModel.TeamMemberData>> getTeamMembersMap() {
 		return teamMembersMap;
 	}
 
@@ -166,13 +166,24 @@ public class OrganizationsViewModel extends ViewModel {
 									@NonNull Call<List<User>> call,
 									@NonNull Response<List<User>> response) {
 								if (response.isSuccessful() && response.body() != null) {
-									Map<Long, List<User>> currentMap = teamMembersMap.getValue();
+
+									String totalCountHeader =
+											response.headers().get("x-total-count");
+									int totalCount =
+											(totalCountHeader != null)
+													? Integer.parseInt(totalCountHeader)
+													: response.body().size();
+
+									List<User> limited =
+											response.body().stream()
+													.limit(6)
+													.collect(Collectors.toList());
+
+									Map<Long, TeamMemberData> currentMap =
+											teamMembersMap.getValue();
 									if (currentMap != null) {
-										List<User> limited =
-												response.body().stream()
-														.limit(6)
-														.collect(Collectors.toList());
-										currentMap.put(teamId, limited);
+										currentMap.put(
+												teamId, new TeamMemberData(limited, totalCount));
 										teamMembersMap.postValue(currentMap);
 									}
 								}
@@ -183,6 +194,8 @@ public class OrganizationsViewModel extends ViewModel {
 									@NonNull Call<List<User>> call, @NonNull Throwable t) {}
 						});
 	}
+
+	public record TeamMemberData(List<User> previewMembers, int membersPreviewTotalCount) {}
 
 	public void loadOrganizationContext(Context ctx, String orgName, String userName) {
 		isLoading.setValue(true);

@@ -1,25 +1,13 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<com.google.android.material.imageview.ShapeableImageView
+    xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    android:layout_width="wrap_content"
-    android:layout_height="wrap_content"
-    android:layout_marginEnd="10dp"
-    android:orientation="vertical">
-
-    <com.google.android.material.card.MaterialCardView
-        style="?attr/materialCardViewElevatedStyle"
-        android:backgroundTint="@android:color/transparent"
-        android:layout_width="@dimen/dimen32dp"
-        android:layout_height="@dimen/dimen32dp"
-        app:cardCornerRadius="@dimen/dimen8dp"
-        app:cardElevation="@dimen/dimen0dp">
-
-        <ImageView
-            android:id="@+id/avatar"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:contentDescription="@string/generalImgContentText"/>
-
-    </com.google.android.material.card.MaterialCardView>
-
-</LinearLayout>
+    android:id="@+id/avatar"
+    android:layout_width="@dimen/dimen32dp"
+    android:layout_height="@dimen/dimen32dp"
+    android:padding="@dimen/dimen1dp"
+    android:background="@android:color/transparent"
+    android:scaleType="centerCrop"
+    app:shapeAppearanceOverlay="@style/ShapeAppearance.Material3.Corner.Medium"
+    app:strokeColor="?attr/colorSurface"
+    app:strokeWidth="0dp" />

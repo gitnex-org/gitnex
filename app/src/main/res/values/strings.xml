@@ -316,11 +316,11 @@
     <string name="teamTitle">Team name</string>
     <string name="teamDescription">Team desc</string>
     <string name="teamPermissions">Permissions</string>
-    <string name="teamPermissionNone">• Members of this team do not have any permissions.</string>
-    <string name="teamPermissionRead">• Members of this team can view team repositories.</string>
-    <string name="teamPermissionWrite">• Members of this team can view and push to team repositories.</string>
-    <string name="teamPermissionAdmin">• Team members can push to and pull from team repositories and add collaborators to them.</string>
-    <string name="teamPermissionOwner">• Members of this team have owner permissions.</string>
+    <string name="teamPermissionNone">Members of this team do not have any permissions.</string>
+    <string name="teamPermissionRead">Members of this team can view team repositories.</string>
+    <string name="teamPermissionWrite">Members of this team can view and push to team repositories.</string>
+    <string name="teamPermissionAdmin">Team members can push to and pull from team repositories and add collaborators to them.</string>
+    <string name="teamPermissionOwner">Members of this team have owner permissions.</string>
     <string name="teamShowAll">show all</string>
     <string name="orgMember">Org members</string>
     <string name="orgTeamMembers">Organization team members</string>
@@ -1127,4 +1127,6 @@
     <string name="avatar_preview_hint">This is a preview of your new profile picture</string>
     <string name="external_issues">External issues</string>
     <string name="external_wiki">External wiki</string>
+    <string name="add_team_member">Add Team Member</string>
+    <string name="add_team_repo">Add Team Repository</string>
 </resources>

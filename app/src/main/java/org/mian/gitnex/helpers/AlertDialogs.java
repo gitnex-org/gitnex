@@ -9,7 +9,6 @@ import com.google.android.material.dialog.MaterialAlertDialogBuilder;
 import org.mian.gitnex.R;
 import org.mian.gitnex.actions.CollaboratorActions;
 import org.mian.gitnex.actions.PullRequestActions;
-import org.mian.gitnex.actions.TeamActions;
 import org.mian.gitnex.activities.LoginActivity;
 import org.mian.gitnex.databinding.CustomPrUpdateStrategyDialogBinding;
 import org.mian.gitnex.helpers.contexts.RepositoryContext;
@@ -58,82 +57,6 @@ public class AlertDialogs {
 								CollaboratorActions.deleteCollaborator(
 										context, userNameMain, repository))
 				.setNeutralButton(R.string.cancelButton, null)
-				.show();
-	}
-
-	public static void addMemberDialog(
-			final Context context, final String userNameMain, int teamId) {
-
-		materialAlertDialogBuilder =
-				new MaterialAlertDialogBuilder(
-						context, R.style.ThemeOverlay_Material3_Dialog_Alert);
-
-		materialAlertDialogBuilder
-				.setTitle(context.getResources().getString(R.string.addTeamMember, userNameMain))
-				.setMessage(R.string.addTeamMemberMessage)
-				.setPositiveButton(
-						R.string.addButton,
-						(dialog, whichButton) ->
-								TeamActions.addTeamMember(context, userNameMain, teamId))
-				.setNeutralButton(R.string.cancelButton, null)
-				.show();
-	}
-
-	public static void removeMemberDialog(
-			final Context context, final String userNameMain, int teamId) {
-
-		materialAlertDialogBuilder =
-				new MaterialAlertDialogBuilder(
-						context, R.style.ThemeOverlay_Material3_Dialog_Alert);
-
-		materialAlertDialogBuilder
-				.setTitle(context.getResources().getString(R.string.removeTeamMember, userNameMain))
-				.setMessage(R.string.removeTeamMemberMessage)
-				.setPositiveButton(
-						R.string.removeButton,
-						(dialog, whichButton) ->
-								TeamActions.removeTeamMember(context, userNameMain, teamId))
-				.setNeutralButton(R.string.cancelButton, null)
-				.show();
-	}
-
-	public static void addRepoDialog(
-			final Context context, final String orgName, String repo, int teamId, String teamName) {
-
-		materialAlertDialogBuilder =
-				new MaterialAlertDialogBuilder(
-						context, R.style.ThemeOverlay_Material3_Dialog_Alert);
-
-		materialAlertDialogBuilder
-				.setTitle(context.getResources().getString(R.string.addTeamMember, repo))
-				.setMessage(
-						context.getResources()
-								.getString(R.string.repoAddToTeamMessage, repo, orgName, teamName))
-				.setPositiveButton(
-						context.getResources().getString(R.string.addButton),
-						(dialog, whichButton) ->
-								TeamActions.addTeamRepo(context, orgName, teamId, repo))
-				.setNeutralButton(context.getResources().getString(R.string.cancelButton), null)
-				.show();
-	}
-
-	public static void removeRepoDialog(
-			final Context context, final String orgName, String repo, int teamId, String teamName) {
-
-		materialAlertDialogBuilder =
-				new MaterialAlertDialogBuilder(
-						context, R.style.ThemeOverlay_Material3_Dialog_Alert);
-
-		materialAlertDialogBuilder
-				.setTitle(context.getResources().getString(R.string.removeTeamMember, repo))
-				.setMessage(
-						context.getResources()
-								.getString(R.string.repoRemoveTeamMessage, repo, teamName))
-				.setPositiveButton(
-						context.getResources().getString(R.string.removeButton),
-						(dialog, whichButton) ->
-								TeamActions.removeTeamRepo(context, orgName, teamId, repo))
-				.setNeutralButton(context.getResources().getString(R.string.cancelButton), null)
 				.show();
 	}
 

@@ -126,7 +126,7 @@ public class BottomSheetCreateLabelFragment extends BottomSheetDialogFragment {
 							Objects.requireNonNull(binding.labelDesc.getText()).toString().trim();
 
 					if (name.isEmpty()) {
-						binding.labelNameLayout.setError(getString(R.string.labelEmptyError));
+						Toasty.show(requireContext(), getString(R.string.labelEmptyError));
 						return;
 					}
 

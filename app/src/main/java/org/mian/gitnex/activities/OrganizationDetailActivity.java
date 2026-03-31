@@ -207,6 +207,10 @@ public class OrganizationDetailActivity extends BaseActivity {
 			prepareNavButton(btn);
 		}
 
+		binding.btnDockSearch.setVisibility(View.GONE);
+		binding.btnDockAdd.setVisibility(View.GONE);
+		binding.dockDivider.setVisibility(View.GONE);
+
 		binding.btnNavDetails.setOnClickListener(v -> switchTab(infoFrag, R.id.btn_nav_details));
 		binding.btnNavRepos.setOnClickListener(v -> switchTab(repoFrag, R.id.btn_nav_repos));
 		binding.btnNavLabels.setOnClickListener(v -> switchTab(labelFrag, R.id.btn_nav_labels));

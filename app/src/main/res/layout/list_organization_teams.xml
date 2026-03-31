@@ -26,7 +26,6 @@
                 android:layout_height="wrap_content"
                 android:textStyle="bold"
                 android:textColor="?attr/primaryTextColor"
-                app:layout_constraintEnd_toStartOf="@+id/teamShowAll"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent" />
 
@@ -42,13 +41,13 @@
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@id/teamTitle" />
 
-            <LinearLayout
+            <androidx.constraintlayout.widget.ConstraintLayout
                 android:id="@+id/membersPreviewFrame"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="@dimen/dimen16dp"
-                android:gravity="center_vertical"
-                android:orientation="horizontal"
+                android:clipChildren="false"
+                android:clipToPadding="false"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
@@ -56,27 +55,49 @@
 
                 <androidx.recyclerview.widget.RecyclerView
                     android:id="@+id/membersPreview"
-                    android:layout_width="0dp"
+                    android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_weight="1"
-                    android:orientation="horizontal" />
+                    android:orientation="horizontal"
+                    android:clipToPadding="false"
+                    android:clipChildren="false"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent"
+                    app:layout_constraintBottom_toBottomOf="parent" />
+
+                <TextView
+                    android:id="@+id/membersCount"
+                    style="@style/TextAppearance.Material3.LabelLarge"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="@dimen/dimen8dp"
+                    android:textColor="?attr/colorOutline"
+                    android:visibility="gone"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintStart_toEndOf="@id/membersPreview"
+                    app:layout_constraintTop_toTopOf="parent" />
 
                 <ImageView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:contentDescription="@string/generalImgContentText"
                     android:src="@drawable/ic_chevron_right"
-                    app:tint="?attr/primaryTextColor" />
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintTop_toTopOf="parent"
+                    app:tint="?attr/colorOutline" />
 
-            </LinearLayout>
+            </androidx.constraintlayout.widget.ConstraintLayout>
 
-            <TextView
-                android:id="@+id/teamShowAll"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:visibility="gone"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintTop_toTopOf="parent" />
+            <View
+                android:id="@+id/previewOverlay"
+                android:layout_width="0dp"
+                android:layout_height="0dp"
+                android:clickable="true"
+                android:focusable="true"
+                app:layout_constraintTop_toTopOf="@id/membersPreviewFrame"
+                app:layout_constraintBottom_toBottomOf="@id/membersPreviewFrame"
+                app:layout_constraintStart_toStartOf="@id/membersPreviewFrame"
+                app:layout_constraintEnd_toEndOf="@id/membersPreviewFrame" />
 
         </androidx.constraintlayout.widget.ConstraintLayout>
 

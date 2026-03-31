@@ -1,175 +1,97 @@
 package org.mian.gitnex.adapters;
 
+import android.annotation.SuppressLint;
 import android.content.Context;
-import android.os.Handler;
-import android.os.Looper;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.ImageView;
-import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 import com.bumptech.glide.Glide;
-import com.bumptech.glide.load.engine.DiskCacheStrategy;
-import java.util.ArrayList;
 import java.util.List;
-import java.util.Objects;
 import org.gitnex.tea4j.v2.models.Repository;
-import org.mian.gitnex.R;
-import org.mian.gitnex.clients.RetrofitClient;
-import org.mian.gitnex.helpers.AlertDialogs;
+import org.mian.gitnex.databinding.ListItemSearchActionBinding;
 import org.mian.gitnex.helpers.AvatarGenerator;
-import retrofit2.Call;
-import retrofit2.Callback;
-import retrofit2.Response;
+import org.mian.gitnex.viewmodels.OrgTeamsViewModel;
 
 /**
  * @author mmarif
  */
 public class OrganizationTeamRepositoriesAdapter
-		extends RecyclerView.Adapter<OrganizationTeamRepositoriesAdapter.TeamReposViewHolder> {
-
-	private final List<Repository> reposList;
+		extends RecyclerView.Adapter<OrganizationTeamRepositoriesAdapter.ViewHolder> {
+	private List<Repository> list;
 	private final Context context;
 	private final int teamId;
 	private final String orgName;
-	private final String teamName;
-	private final List<Repository> reposArr;
+	private final OrgTeamsViewModel viewModel;
 
 	public OrganizationTeamRepositoriesAdapter(
-			List<Repository> dataList, Context ctx, int teamId, String orgName, String teamName) {
-		this.context = ctx;
-		this.reposList = dataList;
+			List<Repository> list,
+			Context context,
+			int teamId,
+			String orgName,
+			OrgTeamsViewModel viewModel) {
+		this.list = list;
+		this.context = context;
 		this.teamId = teamId;
 		this.orgName = orgName;
-		this.teamName = teamName;
-		reposArr = new ArrayList<>();
+		this.viewModel = viewModel;
 	}
 
-	public class TeamReposViewHolder extends RecyclerView.ViewHolder {
-
-		private Repository repoInfo;
-
-		private final ImageView repoAvatar;
-		private final TextView name;
-		private final ImageView addRepoButtonAdd;
-
-		private TeamReposViewHolder(View itemView) {
-
-			super(itemView);
-			repoAvatar = itemView.findViewById(R.id.userAvatar);
-			name = itemView.findViewById(R.id.userFullName);
-			itemView.findViewById(R.id.userName).setVisibility(View.GONE);
-			addRepoButtonAdd = itemView.findViewById(R.id.addCollaboratorButtonAdd);
-			ImageView addRepoButtonRemove = itemView.findViewById(R.id.addCollaboratorButtonRemove);
-			// addRepoButtonAdd.setVisibility(View.VISIBLE);
-			// addRepoButtonRemove.setVisibility(View.GONE);
-
-			new Handler(Looper.getMainLooper())
-					.postDelayed(OrganizationTeamRepositoriesAdapter.this::getTeamRepos, 200);
-
-			new Handler(Looper.getMainLooper())
-					.postDelayed(
-							() -> {
-								if (!reposArr.isEmpty()) {
-									for (int i = 0; i < reposArr.size(); i++) {
-										if (!reposArr.get(i).getName().equals(repoInfo.getName())) {
-											addRepoButtonAdd.setVisibility(View.VISIBLE);
-										} else {
-											addRepoButtonAdd.setVisibility(View.GONE);
-										}
-									}
-								} else {
-									addRepoButtonAdd.setVisibility(View.VISIBLE);
-								}
-							},
-							500);
-
-			addRepoButtonAdd.setOnClickListener(
-					v ->
-							AlertDialogs.addRepoDialog(
-									context,
-									orgName,
-									repoInfo.getName(),
-									Integer.parseInt(String.valueOf(teamId)),
-									teamName));
-
-			addRepoButtonRemove.setOnClickListener(
-					v ->
-							AlertDialogs.removeRepoDialog(
-									context,
-									orgName,
-									repoInfo.getName(),
-									Integer.parseInt(String.valueOf(teamId)),
-									teamName));
-		}
+	@SuppressLint("NotifyDataSetChanged")
+	public void updateList(List<Repository> newList) {
+		this.list = newList;
+		notifyDataSetChanged();
 	}
 
 	@NonNull @Override
-	public OrganizationTeamRepositoriesAdapter.TeamReposViewHolder onCreateViewHolder(
-			@NonNull ViewGroup parent, int viewType) {
-		View v =
-				LayoutInflater.from(parent.getContext())
-						.inflate(R.layout.list_collaborators_search, parent, false);
-		return new OrganizationTeamRepositoriesAdapter.TeamReposViewHolder(v);
+	public ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
+		ListItemSearchActionBinding binding =
+				ListItemSearchActionBinding.inflate(
+						LayoutInflater.from(parent.getContext()), parent, false);
+		return new ViewHolder(binding);
 	}
 
 	@Override
-	public void onBindViewHolder(
-			@NonNull final OrganizationTeamRepositoriesAdapter.TeamReposViewHolder holder,
-			int position) {
+	public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
+		Repository repo = list.get(position);
+		ListItemSearchActionBinding b = holder.binding;
 
-		Repository currentItem = reposList.get(position);
-		holder.repoInfo = currentItem;
+		b.userFullName.setText(repo.getName());
+		b.userName.setVisibility(View.GONE);
 
-		holder.name.setText(currentItem.getName());
-
-		if (currentItem.getAvatarUrl() != null && !currentItem.getAvatarUrl().isEmpty()) {
-			Glide.with(context)
-					.load(currentItem.getAvatarUrl())
-					.diskCacheStrategy(DiskCacheStrategy.ALL)
-					.placeholder(R.drawable.loader_animated)
-					.centerCrop()
-					.into(holder.repoAvatar);
+		if (repo.getAvatarUrl() != null && !repo.getAvatarUrl().isEmpty()) {
+			Glide.with(context).load(repo.getAvatarUrl()).centerCrop().into(b.userAvatar);
 		} else {
-			holder.repoAvatar.setImageDrawable(
-					AvatarGenerator.getLetterAvatar(context, currentItem.getFullName(), 44));
+			b.userAvatar.setImageDrawable(
+					AvatarGenerator.getLetterAvatar(context, repo.getName(), 40));
 		}
+
+		boolean isAdded = viewModel.isRepoInTeam(repo.getName());
+
+		b.addCollaboratorButtonAdd.setVisibility(isAdded ? View.GONE : View.VISIBLE);
+		b.addCollaboratorButtonRemove.setVisibility(isAdded ? View.VISIBLE : View.GONE);
+
+		b.addCollaboratorButtonAdd.setOnClickListener(
+				v -> viewModel.addRepoToTeam(context, orgName, repo.getName(), teamId));
+
+		b.addCollaboratorButtonRemove.setOnClickListener(
+				v -> viewModel.removeRepoFromTeam(context, orgName, repo.getName(), teamId));
+
+		holder.binding.getRoot().updateAppearance(position, getItemCount());
 	}
 
 	@Override
 	public int getItemCount() {
-		return reposList.size();
+		return list.size();
 	}
 
-	private void getTeamRepos() {
+	public static class ViewHolder extends RecyclerView.ViewHolder {
+		ListItemSearchActionBinding binding;
 
-		if (getItemCount() > 0) {
-			Call<List<Repository>> call =
-					RetrofitClient.getApiInterface(context).orgListTeamRepos((long) teamId, 1, 100);
-
-			call.enqueue(
-					new Callback<>() {
-						@Override
-						public void onResponse(
-								@NonNull Call<List<Repository>> call,
-								@NonNull Response<List<Repository>> response) {
-
-							if (response.code() == 200) {
-
-								for (int i = 0;
-										i < Objects.requireNonNull(response.body()).size();
-										i++) {
-									reposArr.addAll(response.body());
-								}
-							}
-						}
-
-						@Override
-						public void onFailure(
-								@NonNull Call<List<Repository>> call, @NonNull Throwable t) {}
-					});
+		ViewHolder(ListItemSearchActionBinding binding) {
+			super(binding.getRoot());
+			this.binding = binding;
 		}
 	}
 }
