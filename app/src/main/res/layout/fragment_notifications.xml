@@ -53,8 +53,7 @@
                     android:id="@+id/notifications"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
-                    android:clipToPadding="false"
-                    android:paddingBottom="@dimen/dimen80dp" />
+                    android:clipToPadding="false" />
 
             </androidx.swiperefreshlayout.widget.SwipeRefreshLayout>
 

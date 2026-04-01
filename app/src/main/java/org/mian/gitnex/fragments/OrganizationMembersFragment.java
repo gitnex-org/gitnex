@@ -14,13 +14,13 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 import java.util.ArrayList;
 import org.gitnex.tea4j.v2.models.OrganizationPermissions;
-import org.mian.gitnex.R;
 import org.mian.gitnex.activities.OrganizationDetailActivity;
 import org.mian.gitnex.adapters.UsersAdapter;
 import org.mian.gitnex.databinding.FragmentOrganizationMembersBinding;
 import org.mian.gitnex.helpers.Constants;
 import org.mian.gitnex.helpers.EndlessRecyclerViewScrollListener;
 import org.mian.gitnex.helpers.Toasty;
+import org.mian.gitnex.helpers.UIHelper;
 import org.mian.gitnex.viewmodels.OrganizationsViewModel;
 import org.mian.gitnex.viewmodels.UserListViewModel;
 
@@ -80,9 +80,7 @@ public class OrganizationMembersFragment extends Fragment
 	@Override
 	public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
 		super.onViewCreated(view, savedInstanceState);
-		int paddingTopPx = getResources().getDimensionPixelSize(R.dimen.dimen56dp);
-		binding.recyclerView.setPadding(0, paddingTopPx, 0, 0);
-		binding.recyclerView.setClipToPadding(false);
+		UIHelper.applyInsets(view, null, binding.recyclerView, binding.pullToRefresh, null);
 	}
 
 	private void setupRecyclerView() {

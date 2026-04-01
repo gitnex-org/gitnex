@@ -8,9 +8,6 @@ import android.view.View;
 import android.view.ViewGroup;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
-import androidx.core.graphics.Insets;
-import androidx.core.view.ViewCompat;
-import androidx.core.view.WindowInsetsCompat;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModelProvider;
 import androidx.recyclerview.widget.LinearLayoutManager;
@@ -28,6 +25,7 @@ import org.mian.gitnex.databinding.FragmentOrganizationTeamsBinding;
 import org.mian.gitnex.helpers.AlertDialogs;
 import org.mian.gitnex.helpers.AppUtil;
 import org.mian.gitnex.helpers.Toasty;
+import org.mian.gitnex.helpers.UIHelper;
 import org.mian.gitnex.viewmodels.OrganizationsViewModel;
 
 /**
@@ -55,21 +53,7 @@ public class OrganizationTeamsFragment extends Fragment
 	public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
 		super.onViewCreated(view, savedInstanceState);
 
-		int paddingTopPx = getResources().getDimensionPixelSize(R.dimen.dimen56dp);
-
-		ViewCompat.setOnApplyWindowInsetsListener(
-				view,
-				(v, windowInsets) -> {
-					Insets systemBars =
-							windowInsets.getInsets(WindowInsetsCompat.Type.systemBars());
-					binding.recyclerView.setPadding(
-							binding.recyclerView.getPaddingLeft(),
-							paddingTopPx,
-							binding.recyclerView.getPaddingRight(),
-							binding.recyclerView.getPaddingBottom());
-
-					return windowInsets;
-				});
+		UIHelper.applyInsets(view, null, binding.recyclerView, binding.pullToRefresh, null);
 	}
 
 	@Override

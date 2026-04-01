@@ -20,8 +20,6 @@
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:clipToPadding="false"
-                android:paddingTop="@dimen/dimen54dp"
-                android:paddingBottom="@dimen/dimen80dp"
                 android:paddingHorizontal="@dimen/dimen12dp"
                 app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"/>
 
@@ -51,7 +49,6 @@
         app:paddingRightSystemWindowInsets="false"
         app:paddingTopSystemWindowInsets="false"
         android:layout_gravity="bottom|center_horizontal"
-        android:layout_marginBottom="@dimen/dimen32dp"
         app:shapeAppearanceOverlay="@style/ShapeAppearance.RoundedDock"
         android:backgroundTint="?attr/colorSurfaceContainerHigh"
         app:layout_behavior="com.google.android.material.behavior.HideViewOnScrollBehavior">

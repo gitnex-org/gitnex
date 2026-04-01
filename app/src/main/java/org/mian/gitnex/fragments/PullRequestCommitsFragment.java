@@ -9,6 +9,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModelProvider;
 import androidx.recyclerview.widget.LinearLayoutManager;
@@ -20,10 +21,11 @@ import org.mian.gitnex.R;
 import org.mian.gitnex.activities.CommitDetailActivity;
 import org.mian.gitnex.activities.PullRequestDiffActivity;
 import org.mian.gitnex.adapters.CommitsAdapter;
-import org.mian.gitnex.databinding.ActivityCommitsBinding;
+import org.mian.gitnex.databinding.FragmentPullRequestCommitsBinding;
 import org.mian.gitnex.helpers.Constants;
 import org.mian.gitnex.helpers.EndlessRecyclerViewScrollListener;
 import org.mian.gitnex.helpers.Toasty;
+import org.mian.gitnex.helpers.UIHelper;
 import org.mian.gitnex.helpers.contexts.IssueContext;
 import org.mian.gitnex.viewmodels.PullRequestDiffViewModel;
 
@@ -33,7 +35,7 @@ import org.mian.gitnex.viewmodels.PullRequestDiffViewModel;
  */
 public class PullRequestCommitsFragment extends Fragment {
 
-	private ActivityCommitsBinding binding;
+	private FragmentPullRequestCommitsBinding binding;
 	private PullRequestDiffViewModel viewModel;
 	private CommitsAdapter adapter;
 	private IssueContext issue;
@@ -47,9 +49,16 @@ public class PullRequestCommitsFragment extends Fragment {
 	}
 
 	@Override
+	public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
+		super.onViewCreated(view, savedInstanceState);
+
+		UIHelper.applyInsets(view, null, binding.recyclerView, null, null);
+	}
+
+	@Override
 	public View onCreateView(
 			@NonNull LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-		binding = ActivityCommitsBinding.inflate(inflater, container, false);
+		binding = FragmentPullRequestCommitsBinding.inflate(inflater, container, false);
 		ctx = requireContext();
 		issue = IssueContext.fromIntent(requireActivity().getIntent());
 		resultLimit = Constants.getCurrentResultLimit(ctx);

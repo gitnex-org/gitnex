@@ -42,6 +42,7 @@ import org.mian.gitnex.helpers.AppUtil;
 import org.mian.gitnex.helpers.NetworkStatusObserver;
 import org.mian.gitnex.helpers.PathsHelper;
 import org.mian.gitnex.helpers.Toasty;
+import org.mian.gitnex.helpers.UIHelper;
 import org.mian.gitnex.helpers.UrlHelper;
 import org.mian.gitnex.helpers.Version;
 import org.mian.gitnex.structs.Protocol;
@@ -73,6 +74,9 @@ public class LoginActivity extends BaseActivity {
 
 		activityLoginBinding = ActivityLoginBinding.inflate(getLayoutInflater());
 		setContentView(activityLoginBinding.getRoot());
+
+		UIHelper.applyEdgeToEdge(
+				this, null, activityLoginBinding.mainScrollView, null, activityLoginBinding.topRow);
 
 		String mode = getIntent().getStringExtra("mode");
 		if (mode == null) {

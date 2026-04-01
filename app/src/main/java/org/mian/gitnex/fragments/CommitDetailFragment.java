@@ -35,6 +35,7 @@ import org.mian.gitnex.helpers.FileDiffView;
 import org.mian.gitnex.helpers.ParseDiff;
 import org.mian.gitnex.helpers.TimeHelper;
 import org.mian.gitnex.helpers.Toasty;
+import org.mian.gitnex.helpers.UIHelper;
 import org.mian.gitnex.helpers.contexts.IssueContext;
 import org.mian.gitnex.helpers.contexts.RepositoryContext;
 import retrofit2.Call;
@@ -57,6 +58,13 @@ public class CommitDetailFragment extends Fragment {
 
 	public static CommitDetailFragment newInstance() {
 		return new CommitDetailFragment();
+	}
+
+	@Override
+	public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
+		super.onViewCreated(view, savedInstanceState);
+
+		UIHelper.applyInsets(view, null, binding.diffFiles, null, binding.contentScrollView);
 	}
 
 	@Nullable @Override
@@ -299,26 +307,43 @@ public class CommitDetailFragment extends Fragment {
 	}
 
 	private void loadAvatar(Commit commit, android.widget.ImageView view, View frame) {
-		if (isAdded()
-				&& commit != null
-				&& commit.getAuthor().getAvatarUrl() != null
-				&& !commit.getAuthor().getAvatarUrl().isEmpty()) {
-			frame.setVisibility(View.VISIBLE);
+		if (!isAdded() || commit == null || view == null) return;
+		if (frame != null) frame.setVisibility(View.VISIBLE);
+
+		String avatarUrl = null;
+		String login = null;
+
+		if (commit.getAuthor() != null) {
+			avatarUrl = commit.getAuthor().getAvatarUrl();
+			login = commit.getAuthor().getLogin();
+		}
+
+		if (avatarUrl != null && !avatarUrl.isEmpty()) {
 			Glide.with(this)
-					.load(commit.getAuthor().getAvatarUrl())
+					.load(avatarUrl)
 					.diskCacheStrategy(DiskCacheStrategy.ALL)
 					.placeholder(R.drawable.loader_animated)
+					.error(R.drawable.ic_person)
 					.centerCrop()
 					.into(view);
+		} else {
+			Glide.with(this)
+					.load(R.drawable.ic_person)
+					.placeholder(R.drawable.loader_animated)
+					.into(view);
+		}
 
+		if (login != null) {
+			final String finalLogin = login;
 			view.setOnClickListener(
 					v -> {
 						Intent intent = new Intent(requireContext(), ProfileActivity.class);
-						intent.putExtra("username", commit.getAuthor().getLogin());
+						intent.putExtra("username", finalLogin);
 						startActivity(intent);
 					});
-		} else if (frame != null) {
-			frame.setVisibility(View.GONE);
+		} else {
+			view.setOnClickListener(null);
+			view.setClickable(false);
 		}
 	}
 

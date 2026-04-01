@@ -11,6 +11,7 @@ import org.mian.gitnex.databinding.ActivityActivitiesBinding;
 import org.mian.gitnex.helpers.Constants;
 import org.mian.gitnex.helpers.EndlessRecyclerViewScrollListener;
 import org.mian.gitnex.helpers.Toasty;
+import org.mian.gitnex.helpers.UIHelper;
 import org.mian.gitnex.viewmodels.ActivitiesViewModel;
 
 /**
@@ -29,6 +30,9 @@ public class ActivitiesActivity extends BaseActivity {
 		super.onCreate(savedInstanceState);
 		binding = ActivityActivitiesBinding.inflate(getLayoutInflater());
 		setContentView(binding.getRoot());
+
+		UIHelper.applyEdgeToEdge(
+				this, binding.dockedToolbar, binding.recyclerView, binding.pullToRefresh, null);
 
 		viewModel = new ViewModelProvider(this).get(ActivitiesViewModel.class);
 		int resultLimit = Constants.getCurrentResultLimit(this);

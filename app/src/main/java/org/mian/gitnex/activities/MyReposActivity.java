@@ -24,6 +24,7 @@ import org.mian.gitnex.databinding.ActivityRepositoriesBinding;
 import org.mian.gitnex.helpers.Constants;
 import org.mian.gitnex.helpers.EndlessRecyclerViewScrollListener;
 import org.mian.gitnex.helpers.Toasty;
+import org.mian.gitnex.helpers.UIHelper;
 import org.mian.gitnex.viewmodels.RepositoriesViewModel;
 
 /**
@@ -45,6 +46,9 @@ public class MyReposActivity extends BaseActivity {
 		super.onCreate(savedInstanceState);
 		binding = ActivityRepositoriesBinding.inflate(getLayoutInflater());
 		setContentView(binding.getRoot());
+
+		UIHelper.applyEdgeToEdge(
+				this, binding.dockedToolbar, binding.recyclerView, binding.pullToRefresh, null);
 
 		if (getAccount() != null && getAccount().getAccount() != null) {
 			userLogin = getAccount().getAccount().getUserName();

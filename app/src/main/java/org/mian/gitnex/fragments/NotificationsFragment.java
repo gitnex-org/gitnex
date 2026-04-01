@@ -9,9 +9,6 @@ import android.view.ViewGroup;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.core.graphics.Insets;
-import androidx.core.view.ViewCompat;
-import androidx.core.view.WindowInsetsCompat;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModelProvider;
 import androidx.recyclerview.widget.LinearLayoutManager;
@@ -27,6 +24,7 @@ import org.mian.gitnex.databinding.FragmentNotificationsBinding;
 import org.mian.gitnex.helpers.Constants;
 import org.mian.gitnex.helpers.EndlessRecyclerViewScrollListener;
 import org.mian.gitnex.helpers.Toasty;
+import org.mian.gitnex.helpers.UIHelper;
 import org.mian.gitnex.helpers.contexts.IssueContext;
 import org.mian.gitnex.helpers.contexts.RepositoryContext;
 import org.mian.gitnex.viewmodels.NotificationsViewModel;
@@ -58,20 +56,8 @@ public class NotificationsFragment extends Fragment
 	public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
 		super.onViewCreated(view, savedInstanceState);
 
-		int paddingLeft = view.getPaddingLeft();
-		int paddingRight = view.getPaddingRight();
-		int paddingBottom = view.getPaddingBottom();
-
-		ViewCompat.setOnApplyWindowInsetsListener(
-				view,
-				(v, windowInsets) -> {
-					Insets systemBars =
-							windowInsets.getInsets(WindowInsetsCompat.Type.systemBars());
-
-					v.setPadding(paddingLeft, systemBars.top, paddingRight, paddingBottom);
-
-					return windowInsets;
-				});
+		UIHelper.applyInsets(
+				view, null, binding.notifications, binding.pullToRefresh, binding.mainLayout);
 	}
 
 	@Nullable @Override

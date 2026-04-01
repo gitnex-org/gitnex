@@ -20,7 +20,6 @@
         app:paddingRightSystemWindowInsets="false"
         app:paddingTopSystemWindowInsets="false"
         android:layout_gravity="bottom|center_horizontal"
-        android:layout_marginBottom="@dimen/dimen32dp"
         app:shapeAppearanceOverlay="@style/ShapeAppearance.RoundedDock"
         app:layout_behavior="com.google.android.material.behavior.HideViewOnScrollBehavior"
         android:backgroundTint="?attr/colorSurfaceContainerHigh">

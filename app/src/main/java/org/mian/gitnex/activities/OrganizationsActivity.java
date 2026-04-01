@@ -16,6 +16,7 @@ import org.mian.gitnex.fragments.BottomSheetCreateOrganization;
 import org.mian.gitnex.helpers.Constants;
 import org.mian.gitnex.helpers.EndlessRecyclerViewScrollListener;
 import org.mian.gitnex.helpers.Toasty;
+import org.mian.gitnex.helpers.UIHelper;
 import org.mian.gitnex.viewmodels.OrganizationsViewModel;
 
 /**
@@ -34,6 +35,9 @@ public class OrganizationsActivity extends BaseActivity {
 		super.onCreate(savedInstanceState);
 		binding = ActivityOrganizationsBinding.inflate(getLayoutInflater());
 		setContentView(binding.getRoot());
+
+		UIHelper.applyEdgeToEdge(
+				this, binding.dockedToolbar, binding.recyclerView, binding.pullToRefresh, null);
 
 		viewModel = new ViewModelProvider(this).get(OrganizationsViewModel.class);
 		resultLimit = Constants.getCurrentResultLimit(this);

@@ -2,9 +2,7 @@
 <FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:paddingTop="@dimen/dimen56dp"
-    android:paddingBottom="@dimen/dimen16dp">
+    android:layout_height="match_parent">
 
     <LinearLayout
         android:orientation="vertical"
@@ -15,8 +13,7 @@
             android:id="@+id/toolbar_title"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginStart="@dimen/dimen20dp"
-            android:layout_marginTop="@dimen/dimen8dp"
+            android:layout_marginStart="@dimen/dimen16dp"
             android:layout_marginBottom="@dimen/dimen8dp"
             android:textAppearance="?attr/textAppearanceTitleMedium"
             android:textColor="?attr/primaryTextColor"
@@ -26,8 +23,7 @@
             android:id="@+id/diff_files"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:paddingBottom="@dimen/dimen72dp"
-            android:paddingHorizontal="@dimen/dimen16dp"
+            android:paddingHorizontal="@dimen/dimen12dp"
             android:clipToPadding="false"/>
 
     </LinearLayout>

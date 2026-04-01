@@ -4,7 +4,6 @@ import android.os.Bundle;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.LinearLayout;
-import androidx.activity.EdgeToEdge;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 import com.google.android.material.button.MaterialButton;
@@ -14,6 +13,7 @@ import org.mian.gitnex.fragments.ExploreIssuesFragment;
 import org.mian.gitnex.fragments.ExplorePublicOrganizationsFragment;
 import org.mian.gitnex.fragments.ExploreRepositoriesFragment;
 import org.mian.gitnex.fragments.ExploreUsersFragment;
+import org.mian.gitnex.helpers.UIHelper;
 
 /**
  * @author mmarif
@@ -33,9 +33,10 @@ public class ExploreActivity extends BaseActivity {
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
-		EdgeToEdge.enable(this);
 		binding = ActivityExploreBinding.inflate(getLayoutInflater());
 		setContentView(binding.getRoot());
+
+		UIHelper.applyEdgeToEdge(this, binding.dockedToolbar, null, null, null);
 
 		detachedDivider = binding.dockDivider;
 		detachedSearchBtn = binding.btnDockSearch;

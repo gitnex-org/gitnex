@@ -17,6 +17,7 @@ import org.mian.gitnex.database.models.Repository;
 import org.mian.gitnex.databinding.ActivityMostVisitedReposBinding;
 import org.mian.gitnex.helpers.TinyDB;
 import org.mian.gitnex.helpers.Toasty;
+import org.mian.gitnex.helpers.UIHelper;
 
 /**
  * @author mmarif
@@ -34,6 +35,9 @@ public class MostVisitedReposActivity extends BaseActivity {
 		super.onCreate(savedInstanceState);
 		binding = ActivityMostVisitedReposBinding.inflate(getLayoutInflater());
 		setContentView(binding.getRoot());
+
+		UIHelper.applyEdgeToEdge(
+				this, binding.dockedToolbar, binding.recyclerView, binding.pullToRefresh, null);
 
 		currentActiveAccountId = TinyDB.getInstance(this).getInt("currentActiveAccountId");
 		repositoriesApi = BaseApi.getInstance(this, RepositoriesApi.class);

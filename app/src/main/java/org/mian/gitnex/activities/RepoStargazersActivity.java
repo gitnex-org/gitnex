@@ -15,6 +15,7 @@ import org.mian.gitnex.databinding.ActivityRepoWatchersStargazersBinding;
 import org.mian.gitnex.helpers.Constants;
 import org.mian.gitnex.helpers.EndlessRecyclerViewScrollListener;
 import org.mian.gitnex.helpers.Toasty;
+import org.mian.gitnex.helpers.UIHelper;
 import org.mian.gitnex.helpers.contexts.RepositoryContext;
 import org.mian.gitnex.viewmodels.UserListViewModel;
 
@@ -35,6 +36,8 @@ public class RepoStargazersActivity extends BaseActivity {
 		super.onCreate(savedInstanceState);
 		binding = ActivityRepoWatchersStargazersBinding.inflate(getLayoutInflater());
 		setContentView(binding.getRoot());
+
+		UIHelper.applyEdgeToEdge(this, binding.dockedToolbar, binding.recyclerView, null, null);
 
 		repository = RepositoryContext.fromIntent(getIntent());
 		resultLimit = Constants.getCurrentResultLimit(ctx);

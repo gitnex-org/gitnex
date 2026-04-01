@@ -24,6 +24,7 @@ import org.mian.gitnex.helpers.Constants;
 import org.mian.gitnex.helpers.EndlessRecyclerViewScrollListener;
 import org.mian.gitnex.helpers.TinyDB;
 import org.mian.gitnex.helpers.Toasty;
+import org.mian.gitnex.helpers.UIHelper;
 import org.mian.gitnex.viewmodels.IssuesViewModel;
 
 /**
@@ -47,6 +48,9 @@ public class MyIssuesActivity extends BaseActivity {
 		super.onCreate(savedInstanceState);
 		binding = ActivityMyIssuesBinding.inflate(getLayoutInflater());
 		setContentView(binding.getRoot());
+
+		UIHelper.applyEdgeToEdge(
+				this, binding.dockedToolbar, binding.recyclerView, binding.pullToRefresh, null);
 
 		tinyDB = TinyDB.getInstance(this);
 		resultLimit = Constants.getCurrentResultLimit(this);

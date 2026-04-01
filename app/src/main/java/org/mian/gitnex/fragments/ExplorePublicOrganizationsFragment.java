@@ -6,9 +6,6 @@ import android.view.View;
 import android.view.ViewGroup;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
-import androidx.core.graphics.Insets;
-import androidx.core.view.ViewCompat;
-import androidx.core.view.WindowInsetsCompat;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModelProvider;
 import androidx.recyclerview.widget.LinearLayoutManager;
@@ -19,6 +16,7 @@ import org.mian.gitnex.databinding.FragmentOrganizationsBinding;
 import org.mian.gitnex.helpers.Constants;
 import org.mian.gitnex.helpers.EndlessRecyclerViewScrollListener;
 import org.mian.gitnex.helpers.Toasty;
+import org.mian.gitnex.helpers.UIHelper;
 import org.mian.gitnex.viewmodels.OrganizationsViewModel;
 
 /**
@@ -36,18 +34,7 @@ public class ExplorePublicOrganizationsFragment extends Fragment {
 	@Override
 	public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
 		super.onViewCreated(view, savedInstanceState);
-		ViewCompat.setOnApplyWindowInsetsListener(
-				view,
-				(v, windowInsets) -> {
-					Insets systemBars =
-							windowInsets.getInsets(WindowInsetsCompat.Type.systemBars());
-					binding.recyclerView.setPadding(
-							binding.recyclerView.getPaddingLeft(),
-							systemBars.top,
-							binding.recyclerView.getPaddingRight(),
-							binding.recyclerView.getPaddingBottom());
-					return windowInsets;
-				});
+		UIHelper.applyInsets(view, null, binding.recyclerView, binding.pullToRefresh, null);
 	}
 
 	@Nullable @Override

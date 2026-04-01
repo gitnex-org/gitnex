@@ -3,7 +3,6 @@ package org.mian.gitnex.activities;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.LinearLayout;
-import androidx.activity.EdgeToEdge;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentTransaction;
@@ -20,6 +19,7 @@ import org.mian.gitnex.fragments.OrganizationMembersFragment;
 import org.mian.gitnex.fragments.OrganizationRepositoriesFragment;
 import org.mian.gitnex.fragments.OrganizationTeamsFragment;
 import org.mian.gitnex.helpers.AppUtil;
+import org.mian.gitnex.helpers.UIHelper;
 import org.mian.gitnex.viewmodels.OrganizationsViewModel;
 
 /**
@@ -38,9 +38,10 @@ public class OrganizationDetailActivity extends BaseActivity {
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
-		EdgeToEdge.enable(this);
 		binding = ActivityOrgDetailBinding.inflate(getLayoutInflater());
 		setContentView(binding.getRoot());
+
+		UIHelper.applyEdgeToEdge(this, binding.dockedToolbar, null, null, null);
 
 		orgName = getIntent().getStringExtra("orgName");
 		viewModel = new ViewModelProvider(this).get(OrganizationsViewModel.class);

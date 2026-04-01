@@ -18,9 +18,7 @@
                 android:id="@+id/recyclerView"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:paddingTop="@dimen/dimen54dp"
                 android:paddingHorizontal="@dimen/dimen12dp"
-                android:paddingBottom="@dimen/dimen80dp"
                 android:clipToPadding="false" />
 
             <com.google.android.material.loadingindicator.LoadingIndicator
@@ -49,7 +47,6 @@
         app:paddingRightSystemWindowInsets="false"
         app:paddingTopSystemWindowInsets="false"
         android:layout_gravity="bottom|center_horizontal"
-        android:layout_marginBottom="@dimen/dimen28dp"
         app:shapeAppearanceOverlay="@style/ShapeAppearance.RoundedDock"
         android:backgroundTint="?attr/colorSurfaceContainerHigh"
         app:layout_behavior="com.google.android.material.behavior.HideViewOnScrollBehavior">

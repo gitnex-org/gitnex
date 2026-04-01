@@ -9,6 +9,7 @@ import org.mian.gitnex.R;
 import org.mian.gitnex.databinding.ActivityPullRequestDiffBinding;
 import org.mian.gitnex.fragments.DiffFilesFragment;
 import org.mian.gitnex.fragments.PullRequestCommitsFragment;
+import org.mian.gitnex.helpers.UIHelper;
 import org.mian.gitnex.viewmodels.PullRequestDiffViewModel;
 
 /**
@@ -25,6 +26,8 @@ public class PullRequestDiffActivity extends BaseActivity {
 		super.onCreate(savedInstanceState);
 		binding = ActivityPullRequestDiffBinding.inflate(getLayoutInflater());
 		setContentView(binding.getRoot());
+
+		UIHelper.applyEdgeToEdge(this, binding.dockedToolbar, null, null, null);
 
 		PullRequestDiffViewModel viewModel =
 				new ViewModelProvider(this).get(PullRequestDiffViewModel.class);

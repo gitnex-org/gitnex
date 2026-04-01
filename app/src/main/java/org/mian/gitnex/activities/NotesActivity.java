@@ -16,6 +16,7 @@ import org.mian.gitnex.database.api.NotesApi;
 import org.mian.gitnex.database.models.Notes;
 import org.mian.gitnex.databinding.ActivityNotesBinding;
 import org.mian.gitnex.helpers.Toasty;
+import org.mian.gitnex.helpers.UIHelper;
 
 /**
  * @author mmarif
@@ -32,6 +33,9 @@ public class NotesActivity extends BaseActivity {
 		super.onCreate(savedInstanceState);
 		binding = ActivityNotesBinding.inflate(getLayoutInflater());
 		setContentView(binding.getRoot());
+
+		UIHelper.applyEdgeToEdge(
+				this, binding.dockedToolbar, binding.recyclerView, binding.pullToRefresh, null);
 
 		notesApi = BaseApi.getInstance(this, NotesApi.class);
 

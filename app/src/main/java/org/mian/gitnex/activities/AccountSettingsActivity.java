@@ -4,7 +4,6 @@ import android.os.Bundle;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.LinearLayout;
-import androidx.activity.EdgeToEdge;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 import com.google.android.material.button.MaterialButton;
@@ -12,6 +11,7 @@ import org.mian.gitnex.R;
 import org.mian.gitnex.databinding.ActivityAccountSettingsBinding;
 import org.mian.gitnex.fragments.AccountSettingsEmailsFragment;
 import org.mian.gitnex.fragments.AccountSettingsSSHKeysFragment;
+import org.mian.gitnex.helpers.UIHelper;
 
 /**
  * @author mmarif
@@ -29,10 +29,11 @@ public class AccountSettingsActivity extends BaseActivity {
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
-		EdgeToEdge.enable(this);
 
 		binding = ActivityAccountSettingsBinding.inflate(getLayoutInflater());
 		setContentView(binding.getRoot());
+
+		UIHelper.applyEdgeToEdge(this, binding.dockedToolbar, null, null, null);
 
 		detachedDivider = binding.dockDivider;
 		detachedAddBtn = binding.btnDockAdd;

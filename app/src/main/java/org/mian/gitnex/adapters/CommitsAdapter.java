@@ -187,17 +187,24 @@ public class CommitsAdapter extends RecyclerView.Adapter<CommitsAdapter.CommitsH
 		}
 
 		private void loadAvatar(Context context, User user, ImageView imageView, View frame) {
-			if (user != null && user.getAvatarUrl() != null && !user.getAvatarUrl().isEmpty()) {
+			if (context == null || imageView == null) return;
+			if (frame != null) {
 				frame.setVisibility(View.VISIBLE);
+			}
+
+			if (user != null && user.getAvatarUrl() != null && !user.getAvatarUrl().isEmpty()) {
 				Glide.with(context)
 						.load(user.getAvatarUrl())
 						.diskCacheStrategy(DiskCacheStrategy.ALL)
 						.placeholder(R.drawable.loader_animated)
+						.error(R.drawable.ic_person)
 						.centerCrop()
 						.into(imageView);
 			} else {
-				imageView.setImageDrawable(null);
-				frame.setVisibility(View.GONE);
+				Glide.with(context)
+						.load(R.drawable.ic_person)
+						.placeholder(R.drawable.loader_animated)
+						.into(imageView);
 			}
 		}
 	}

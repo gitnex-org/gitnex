@@ -13,6 +13,7 @@ import org.mian.gitnex.databinding.ActivityOrgTeamDetailsBinding;
 import org.mian.gitnex.databinding.BottomsheetOrgTeamDetailPermissionsBinding;
 import org.mian.gitnex.fragments.OrganizationTeamDetailsMembersFragment;
 import org.mian.gitnex.fragments.OrganizationTeamDetailsReposFragment;
+import org.mian.gitnex.helpers.UIHelper;
 
 /**
  * @author mmarif
@@ -32,6 +33,8 @@ public class OrganizationTeamDetailsActivity extends BaseActivity {
 		super.onCreate(savedInstanceState);
 		binding = ActivityOrgTeamDetailsBinding.inflate(getLayoutInflater());
 		setContentView(binding.getRoot());
+
+		UIHelper.applyEdgeToEdge(this, binding.dockedToolbar, null, null, null);
 
 		team = (Team) getIntent().getSerializableExtra("team");
 		orgName = getIntent().getStringExtra("orgName");

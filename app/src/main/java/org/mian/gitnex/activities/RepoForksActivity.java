@@ -15,6 +15,7 @@ import org.mian.gitnex.databinding.ActivityRepoForksBinding;
 import org.mian.gitnex.helpers.Constants;
 import org.mian.gitnex.helpers.EndlessRecyclerViewScrollListener;
 import org.mian.gitnex.helpers.Toasty;
+import org.mian.gitnex.helpers.UIHelper;
 import org.mian.gitnex.helpers.contexts.RepositoryContext;
 import org.mian.gitnex.viewmodels.RepositoriesViewModel;
 
@@ -35,6 +36,9 @@ public class RepoForksActivity extends BaseActivity {
 		super.onCreate(savedInstanceState);
 		binding = ActivityRepoForksBinding.inflate(getLayoutInflater());
 		setContentView(binding.getRoot());
+
+		UIHelper.applyEdgeToEdge(
+				this, binding.dockedToolbar, binding.recyclerView, binding.pullToRefresh, null);
 
 		resultLimit = Constants.getCurrentResultLimit(ctx);
 		repository = RepositoryContext.fromIntent(getIntent());

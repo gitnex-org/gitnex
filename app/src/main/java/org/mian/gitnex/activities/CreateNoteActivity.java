@@ -16,6 +16,7 @@ import org.mian.gitnex.database.api.NotesApi;
 import org.mian.gitnex.database.models.Notes;
 import org.mian.gitnex.databinding.ActivityCreateNoteBinding;
 import org.mian.gitnex.helpers.Markdown;
+import org.mian.gitnex.helpers.UIHelper;
 
 /**
  * @author mmarif
@@ -34,6 +35,8 @@ public class CreateNoteActivity extends BaseActivity {
 		super.onCreate(savedInstanceState);
 		binding = ActivityCreateNoteBinding.inflate(getLayoutInflater());
 		setContentView(binding.getRoot());
+
+		UIHelper.applyEdgeToEdge(this, binding.dockedToolbar, null, null, null);
 
 		notesApi = BaseApi.getInstance(ctx, NotesApi.class);
 		action =

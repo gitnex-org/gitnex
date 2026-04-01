@@ -10,14 +10,12 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:visibility="gone"
-        android:paddingTop="@dimen/dimen56dp"
-        android:paddingBottom="@dimen/dimen80dp"
         android:clipToPadding="false">
 
         <androidx.constraintlayout.widget.ConstraintLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:paddingHorizontal="@dimen/dimen16dp">
+            android:paddingHorizontal="@dimen/dimen12dp">
 
             <com.google.android.material.card.MaterialCardView
                 android:id="@+id/mainCommitCard"
@@ -68,6 +66,7 @@
                         app:cardCornerRadius="@dimen/dimen6dp"
                         app:cardElevation="0dp"
                         app:strokeWidth="0dp"
+                        android:backgroundTint="@android:color/transparent"
                         app:layout_constraintStart_toStartOf="parent"
                         app:layout_constraintTop_toBottomOf="@id/commitBody">
 
@@ -89,6 +88,7 @@
                         app:cardCornerRadius="@dimen/dimen6dp"
                         app:cardElevation="0dp"
                         app:strokeWidth="0dp"
+                        android:backgroundTint="@android:color/transparent"
                         app:layout_constraintBottom_toBottomOf="@id/commitAuthorAvatarFrame"
                         app:layout_constraintStart_toEndOf="@id/commitAuthorAvatarFrame"
                         app:layout_constraintTop_toTopOf="@id/commitAuthorAvatarFrame">

@@ -15,6 +15,7 @@ import org.mian.gitnex.adapters.ReposListAdapter;
 import org.mian.gitnex.databinding.ActivityRepositoriesBinding;
 import org.mian.gitnex.helpers.Constants;
 import org.mian.gitnex.helpers.EndlessRecyclerViewScrollListener;
+import org.mian.gitnex.helpers.UIHelper;
 import org.mian.gitnex.viewmodels.RepositoriesViewModel;
 
 /**
@@ -33,6 +34,9 @@ public class StarredReposActivity extends BaseActivity {
 		super.onCreate(savedInstanceState);
 		binding = ActivityRepositoriesBinding.inflate(getLayoutInflater());
 		setContentView(binding.getRoot());
+
+		UIHelper.applyEdgeToEdge(
+				this, binding.dockedToolbar, binding.recyclerView, binding.pullToRefresh, null);
 
 		resultLimit = Constants.getCurrentResultLimit(this);
 		viewModel = new ViewModelProvider(this).get(RepositoriesViewModel.class);

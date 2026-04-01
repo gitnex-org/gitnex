@@ -29,6 +29,7 @@ import org.mian.gitnex.helpers.Constants;
 import org.mian.gitnex.helpers.EndlessRecyclerViewScrollListener;
 import org.mian.gitnex.helpers.TimeHelper;
 import org.mian.gitnex.helpers.Toasty;
+import org.mian.gitnex.helpers.UIHelper;
 import org.mian.gitnex.viewmodels.AdministrationViewModel;
 
 /**
@@ -45,6 +46,8 @@ public class AdministrationActivity extends BaseActivity {
 		super.onCreate(savedInstanceState);
 		binding = ActivityAdministrationBinding.inflate(getLayoutInflater());
 		setContentView(binding.getRoot());
+
+		UIHelper.applyEdgeToEdge(this, binding.dockedToolbar, null, null, binding.mainFrame);
 
 		resultLimit = Constants.getCurrentResultLimit(this);
 
@@ -187,7 +190,7 @@ public class AdministrationActivity extends BaseActivity {
 
 		BottomSheetDialog dialog = new BottomSheetDialog(this);
 		dialog.setContentView(sheetBinding.getRoot());
-		AppUtil.applySheetStyle(dialog, false);
+		AppUtil.applySheetStyle(dialog, true);
 
 		sheetBinding.itemForks.settingLabel.setText(R.string.forks);
 		sheetBinding.itemMigrations.settingLabel.setText(R.string.migrations);

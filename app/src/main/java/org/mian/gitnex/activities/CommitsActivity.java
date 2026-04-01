@@ -16,6 +16,7 @@ import org.mian.gitnex.databinding.ActivityCommitsBinding;
 import org.mian.gitnex.helpers.Constants;
 import org.mian.gitnex.helpers.EndlessRecyclerViewScrollListener;
 import org.mian.gitnex.helpers.Toasty;
+import org.mian.gitnex.helpers.UIHelper;
 import org.mian.gitnex.helpers.contexts.RepositoryContext;
 import org.mian.gitnex.viewmodels.CommitsViewModel;
 
@@ -36,6 +37,9 @@ public class CommitsActivity extends BaseActivity {
 		super.onCreate(savedInstanceState);
 		binding = ActivityCommitsBinding.inflate(getLayoutInflater());
 		setContentView(binding.getRoot());
+
+		UIHelper.applyEdgeToEdge(
+				this, binding.dockedToolbar, binding.recyclerView, binding.pullToRefresh, null);
 
 		repository = RepositoryContext.fromIntent(getIntent());
 		resultLimit = Constants.getCurrentResultLimit(ctx);

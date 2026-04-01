@@ -12,6 +12,7 @@ import org.mian.gitnex.adapters.DiffAdapter;
 import org.mian.gitnex.clients.RetrofitClient;
 import org.mian.gitnex.databinding.ActivityDiffBinding;
 import org.mian.gitnex.helpers.Toasty;
+import org.mian.gitnex.helpers.UIHelper;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
@@ -33,6 +34,8 @@ public class DiffActivity extends BaseActivity {
 		super.onCreate(savedInstanceState);
 		binding = ActivityDiffBinding.inflate(getLayoutInflater());
 		setContentView(binding.getRoot());
+
+		UIHelper.applyEdgeToEdge(this, binding.dockedToolbar, binding.diffRecyclerView, null, null);
 
 		type = getIntent().getStringExtra("type");
 		owner = getIntent().getStringExtra("owner");

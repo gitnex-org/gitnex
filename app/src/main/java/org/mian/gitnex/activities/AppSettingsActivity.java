@@ -17,6 +17,7 @@ import org.mian.gitnex.fragments.BottomSheetSettingsCodeEditorFragment;
 import org.mian.gitnex.fragments.BottomSheetSettingsGeneralFragment;
 import org.mian.gitnex.fragments.BottomSheetSettingsNotificationsFragment;
 import org.mian.gitnex.fragments.BottomSheetSettingsSecurityFragment;
+import org.mian.gitnex.helpers.UIHelper;
 
 /**
  * @author mmarif
@@ -30,6 +31,8 @@ public class AppSettingsActivity extends BaseActivity {
 		super.onCreate(savedInstanceState);
 		binding = ActivityAppSettingsBinding.inflate(getLayoutInflater());
 		setContentView(binding.getRoot());
+
+		UIHelper.applyEdgeToEdge(this, binding.dockedToolbar, binding.scrollView, null, null);
 
 		getOnBackPressedDispatcher()
 				.addCallback(
