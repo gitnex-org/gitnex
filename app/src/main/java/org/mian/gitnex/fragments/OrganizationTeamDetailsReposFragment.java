@@ -43,6 +43,16 @@ public class OrganizationTeamDetailsReposFragment extends Fragment
 		super.onViewCreated(view, savedInstanceState);
 
 		UIHelper.applyInsets(view, null, binding.recyclerView, binding.pullToRefresh, null);
+
+		getChildFragmentManager()
+				.setFragmentResultListener(
+						"repo_changed",
+						this,
+						(requestKey, bundle) -> {
+							if (bundle.getBoolean("shouldRefresh")) {
+								refreshData();
+							}
+						});
 	}
 
 	public static OrganizationTeamDetailsReposFragment newInstance(Team team, String orgName) {
@@ -207,16 +217,6 @@ public class OrganizationTeamDetailsReposFragment extends Fragment
 
 	@Override
 	public void onAddRequested() {
-		getChildFragmentManager()
-				.setFragmentResultListener(
-						"repo_changed",
-						this,
-						(requestKey, bundle) -> {
-							if (bundle.getBoolean("shouldRefresh")) {
-								refreshData();
-							}
-						});
-
 		BottomSheetAddTeamRepo sheet = BottomSheetAddTeamRepo.newInstance(team.getId(), orgName);
 		sheet.show(getChildFragmentManager(), "AddTeamRepoSheet");
 	}

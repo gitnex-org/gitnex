@@ -1,6 +1,5 @@
 package org.mian.gitnex.fragments;
 
-import android.content.Intent;
 import android.os.Bundle;
 import android.text.Editable;
 import android.text.TextWatcher;
@@ -15,7 +14,6 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 import java.util.ArrayList;
 import org.gitnex.tea4j.v2.models.OrganizationPermissions;
-import org.mian.gitnex.activities.CreateRepoActivity;
 import org.mian.gitnex.activities.OrganizationDetailActivity;
 import org.mian.gitnex.adapters.ReposListAdapter;
 import org.mian.gitnex.databinding.FragmentRepositoriesBinding;
@@ -37,7 +35,6 @@ public class OrganizationRepositoriesFragment extends Fragment
 	private OrganizationsViewModel orgViewModel;
 	private ReposListAdapter adapter;
 	private EndlessRecyclerViewScrollListener scrollListener;
-
 	private String orgName;
 	private int resultLimit;
 	private boolean isSearching = false;
@@ -56,6 +53,16 @@ public class OrganizationRepositoriesFragment extends Fragment
 		super.onViewCreated(view, savedInstanceState);
 
 		UIHelper.applyInsets(view, null, binding.recyclerView, binding.pullToRefresh, null);
+
+		getChildFragmentManager()
+				.setFragmentResultListener(
+						"repo_created",
+						getViewLifecycleOwner(),
+						(requestKey, bundle) -> {
+							if (bundle.getBoolean("refresh")) {
+								refreshData();
+							}
+						});
 	}
 
 	@Override
@@ -246,9 +253,8 @@ public class OrganizationRepositoriesFragment extends Fragment
 
 	@Override
 	public void onAddRequested() {
-		Intent intent = new Intent(requireContext(), CreateRepoActivity.class);
-		intent.putExtra("orgName", orgName);
-		startActivity(intent);
+		BottomSheetCreateRepo.newInstance(orgName, true)
+				.show(getChildFragmentManager(), "create_repo");
 	}
 
 	@Override

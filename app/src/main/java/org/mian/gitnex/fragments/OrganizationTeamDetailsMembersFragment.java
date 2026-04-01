@@ -55,6 +55,17 @@ public class OrganizationTeamDetailsMembersFragment extends Fragment
 		super.onViewCreated(view, savedInstanceState);
 
 		UIHelper.applyInsets(view, null, binding.recyclerView, binding.pullToRefresh, null);
+
+		getChildFragmentManager()
+				.setFragmentResultListener(
+						"member_changed",
+						this,
+						(requestKey, bundle) -> {
+							boolean shouldRefresh = bundle.getBoolean("shouldRefresh", false);
+							if (shouldRefresh) {
+								refreshData();
+							}
+						});
 	}
 
 	@Override
@@ -230,18 +241,6 @@ public class OrganizationTeamDetailsMembersFragment extends Fragment
 
 	private void openAddMemberSheet() {
 		if (team == null) return;
-
-		getChildFragmentManager()
-				.setFragmentResultListener(
-						"member_changed",
-						this,
-						(requestKey, bundle) -> {
-							boolean shouldRefresh = bundle.getBoolean("shouldRefresh", false);
-							if (shouldRefresh) {
-								refreshData();
-							}
-						});
-
 		BottomSheetAddTeamMember addMemberSheet =
 				BottomSheetAddTeamMember.newInstance(team.getId());
 		addMemberSheet.show(getChildFragmentManager(), "AddTeamMemberBottomSheet");

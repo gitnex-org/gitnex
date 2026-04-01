@@ -1,6 +1,5 @@
 package org.mian.gitnex.fragments;
 
-import android.content.Intent;
 import android.os.Bundle;
 import android.text.Editable;
 import android.text.TextWatcher;
@@ -18,7 +17,6 @@ import com.google.android.material.chip.Chip;
 import com.google.android.material.chip.ChipGroup;
 import java.util.ArrayList;
 import org.mian.gitnex.R;
-import org.mian.gitnex.activities.CreateRepoActivity;
 import org.mian.gitnex.activities.MainActivity;
 import org.mian.gitnex.adapters.ReposListAdapter;
 import org.mian.gitnex.databinding.FragmentRepositoriesBinding;
@@ -50,6 +48,16 @@ public class RepositoriesFragment extends Fragment {
 		super.onViewCreated(view, savedInstanceState);
 
 		UIHelper.applyInsets(view, null, binding.recyclerView, binding.pullToRefresh, null);
+
+		getChildFragmentManager()
+				.setFragmentResultListener(
+						"repo_created",
+						getViewLifecycleOwner(),
+						(requestKey, bundle) -> {
+							if (bundle.getBoolean("refresh")) {
+								refreshData();
+							}
+						});
 	}
 
 	@Override
@@ -229,7 +237,8 @@ public class RepositoriesFragment extends Fragment {
 	}
 
 	public void createNewRepo() {
-		startActivity(new Intent(getContext(), CreateRepoActivity.class));
+		BottomSheetCreateRepo.newInstance(null, false)
+				.show(getChildFragmentManager(), "create_repo");
 	}
 
 	public static class SortBottomSheetDialogFragment extends BottomSheetDialogFragment {

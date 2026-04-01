@@ -1,6 +1,5 @@
 package org.mian.gitnex.activities;
 
-import android.content.Intent;
 import android.os.Bundle;
 import android.text.Editable;
 import android.text.TextWatcher;
@@ -21,6 +20,7 @@ import org.gitnex.tea4j.v2.models.Repository;
 import org.mian.gitnex.R;
 import org.mian.gitnex.adapters.ReposListAdapter;
 import org.mian.gitnex.databinding.ActivityRepositoriesBinding;
+import org.mian.gitnex.fragments.BottomSheetCreateRepo;
 import org.mian.gitnex.helpers.Constants;
 import org.mian.gitnex.helpers.EndlessRecyclerViewScrollListener;
 import org.mian.gitnex.helpers.Toasty;
@@ -57,6 +57,17 @@ public class MyReposActivity extends BaseActivity {
 		resultLimit = Constants.getCurrentResultLimit(this);
 		viewModel = new ViewModelProvider(this).get(RepositoriesViewModel.class);
 
+		getSupportFragmentManager()
+				.setFragmentResultListener(
+						"repo_created",
+						this,
+						(requestKey, bundle) -> {
+							boolean shouldRefresh = bundle.getBoolean("refresh");
+							if (shouldRefresh) {
+								refreshData();
+							}
+						});
+
 		setupUI();
 		setupSearch();
 		observeViewModel();
@@ -68,7 +79,9 @@ public class MyReposActivity extends BaseActivity {
 		binding.btnBack.setOnClickListener(v -> finish());
 		binding.btnSearch.setOnClickListener(v -> binding.searchView.show());
 		binding.btnNewRepository.setOnClickListener(
-				v -> startActivity(new Intent(this, CreateRepoActivity.class)));
+				v ->
+						BottomSheetCreateRepo.newInstance(null, false)
+								.show(getSupportFragmentManager(), "create_repo"));
 
 		binding.btnMore.setOnClickListener(
 				v -> {
