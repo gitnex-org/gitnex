@@ -175,7 +175,6 @@
                     android:layout_height="wrap_content"
                     android:layout_marginEnd="@dimen/dimen12dp"
                     android:visibility="gone"
-                    app:cardBackgroundColor="?attr/colorSurfaceContainerLow"
                     app:cardCornerRadius="@dimen/dimen4dp"
                     app:cardElevation="0dp"
                     app:strokeWidth="0dp"
@@ -189,7 +188,6 @@
                         android:paddingHorizontal="@dimen/dimen8dp"
                         android:paddingVertical="@dimen/dimen2dp"
                         android:textAppearance="?attr/textAppearanceLabelMedium"
-                        android:textColor="?attr/colorPrimary"
                         android:textStyle="bold"
                         tools:text="Java" />
 

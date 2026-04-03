@@ -56,6 +56,8 @@
     <dimen name="negative8dp">-8dp</dimen>
 
     <!--SP-->
+    <dimen name="dimen10sp">10sp</dimen>
+    <dimen name="dimen11sp">11sp</dimen>
     <dimen name="dimen12sp">12sp</dimen>
     <dimen name="dimen14sp">14sp</dimen>
     <dimen name="dimen16sp">16sp</dimen>

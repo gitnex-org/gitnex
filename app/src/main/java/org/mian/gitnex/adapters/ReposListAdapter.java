@@ -3,6 +3,8 @@ package org.mian.gitnex.adapters;
 import android.annotation.SuppressLint;
 import android.content.Context;
 import android.content.Intent;
+import android.content.res.ColorStateList;
+import android.graphics.Color;
 import android.graphics.drawable.Drawable;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -23,6 +25,7 @@ import org.mian.gitnex.helpers.AvatarGenerator;
 import org.mian.gitnex.helpers.TimeHelper;
 import org.mian.gitnex.helpers.Toasty;
 import org.mian.gitnex.helpers.contexts.RepositoryContext;
+import org.mian.gitnex.helpers.languagestatistics.LanguageColor;
 
 /**
  * @author mmarif
@@ -151,6 +154,17 @@ public class ReposListAdapter extends RecyclerView.Adapter<ReposListAdapter.Repo
 			if (repo.getLanguage() != null && !repo.getLanguage().trim().isEmpty()) {
 				binding.repoLanguageFrame.setVisibility(View.VISIBLE);
 				binding.repoStars2.setText(repo.getLanguage());
+
+				int colorRes = LanguageColor.languageColor(repo.getLanguage());
+				int bgColor = context.getColor(colorRes);
+
+				binding.repoLanguageFrame.setCardBackgroundColor(ColorStateList.valueOf(bgColor));
+
+				if (AppUtil.isLightColor(bgColor)) {
+					binding.repoStars2.setTextColor(Color.BLACK);
+				} else {
+					binding.repoStars2.setTextColor(Color.WHITE);
+				}
 			} else {
 				binding.repoLanguageFrame.setVisibility(View.GONE);
 			}

@@ -132,20 +132,24 @@
     <string name="diffStatistics">%1$s addition(s) and %2$s deletion(s)</string>
 
     <plurals name="repoStars">
-        <item quantity="one">%1$s star</item>
-        <item quantity="other">%1$s stars</item>
+        <item quantity="one">Star</item>
+        <item quantity="other">Stars</item>
     </plurals>
     <plurals name="repoWatchers">
-        <item quantity="one">%1$s watcher</item>
-        <item quantity="other">%1$s watchers</item>
+        <item quantity="one">Watcher</item>
+        <item quantity="other">Watchers</item>
     </plurals>
     <plurals name="repoForks">
-        <item quantity="one">%1$s fork</item>
-        <item quantity="other">%1$s forks</item>
+        <item quantity="one">Fork</item>
+        <item quantity="other">Forks</item>
     </plurals>
     <plurals name="repoPullRequests">
-        <item quantity="one">%1$s open pull request</item>
-        <item quantity="other">%1$s open pull requests</item>
+        <item quantity="one">Pull request</item>
+        <item quantity="other">Pull requests</item>
+    </plurals>
+    <plurals name="repoOpenIssues">
+        <item quantity="one">Issue</item>
+        <item quantity="other">Issues</item>
     </plurals>
 
     <string name="genericApiError">Instance has returned an error. Code %d</string>
@@ -629,6 +633,7 @@
     <string name="contributions">Contributions</string>
     <string name="write">Write</string>
     <string name="code">Code</string>
+    <string name="topics">Topics</string>
     <!-- generic copy -->
 
     <string name="exploreUsers">Explore users</string>
@@ -897,7 +902,7 @@
     <string name="followSystemBlack">Follow system (Light/Pitch Black)</string>
     <string name="dynamicColorsFollowSystem">Dynamic colors - Follow system (Light/Dark)</string>
     <string name="codebergDark">Codeberg (Dark)</string>
-    <string name="repoForkOf">Fork of: %s</string>
+    <string name="repoForkOf">This repository is fork of %s.</string>
     <string name="adoptRepo">Adopt</string>
     <string name="repoAdopted">Adopted repository %s</string>
     <string name="unadoptedRepos">Unadopted Repositories</string>

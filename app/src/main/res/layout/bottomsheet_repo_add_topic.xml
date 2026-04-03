@@ -21,7 +21,7 @@
             style="@style/TextAppearance.Material3.HeadlineSmall"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:text="@string/pageTitleAddEmail"
+            android:text="@string/addNewTopic"
             android:textStyle="bold"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toStartOf="@id/btn_close"
@@ -44,8 +44,7 @@
 
     <androidx.core.widget.NestedScrollView
         android:layout_width="match_parent"
-        android:layout_height="0dp"
-        android:layout_weight="1"
+        android:layout_height="wrap_content"
         android:clipToPadding="false"
         android:paddingHorizontal="@dimen/dimen24dp"
         android:paddingBottom="@dimen/dimen32dp">
@@ -56,20 +55,21 @@
             android:orientation="vertical">
 
             <com.google.android.material.textfield.TextInputLayout
-                android:id="@+id/userEmailLayout"
+                android:id="@+id/topicInputLayout"
                 style="@style/Widget.Material3.TextInputLayout.OutlinedBox"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="@dimen/dimen16dp"
-                android:hint="@string/accountEmailTitle"
+                android:hint="@string/topicName"
                 app:endIconMode="clear_text"
                 app:shapeAppearance="@style/ShapeAppearance.Material3.Corner.Medium">
 
                 <com.google.android.material.textfield.TextInputEditText
-                    android:id="@+id/userEmail"
+                    android:id="@+id/topicInput"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:inputType="textEmailAddress" />
+                    android:inputType="text"
+                    android:maxLines="1" />
 
             </com.google.android.material.textfield.TextInputLayout>
 
@@ -79,18 +79,19 @@
                 android:layout_marginTop="@dimen/dimen24dp">
 
                 <com.google.android.material.button.MaterialButton
-                    android:id="@+id/save"
+                    android:id="@+id/btn_add_topic"
                     style="@style/Widget.Material3.Button"
                     android:layout_width="match_parent"
                     android:layout_height="@dimen/dimen56dp"
-                    android:text="@string/saveButton"
+                    android:text="@string/addButton"
                     app:cornerRadius="@dimen/dimen32dp" />
 
                 <com.google.android.material.loadingindicator.LoadingIndicator
-                    android:id="@+id/expressive_loader"
+                    android:id="@+id/topic_loader"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_gravity="center"
+                    android:visibility="gone"
                     app:indicatorSize="@dimen/dimen48dp"
                     app:trackThickness="@dimen/dimen4dp" />
 

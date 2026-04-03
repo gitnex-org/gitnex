@@ -172,7 +172,7 @@ public class AccountSettingsEmailsFragment extends Fragment {
 							sheetBinding.save.setEnabled(!loading);
 							sheetBinding.save.setText(
 									loading ? "" : getString(R.string.saveButton));
-							sheetBinding.loadingIndicator.setVisibility(
+							sheetBinding.expressiveLoader.setVisibility(
 									loading ? View.VISIBLE : View.GONE);
 							sheetBinding.userEmail.setEnabled(!loading);
 						});

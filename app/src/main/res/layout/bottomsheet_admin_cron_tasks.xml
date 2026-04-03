@@ -6,10 +6,10 @@
     android:paddingHorizontal="@dimen/dimen24dp">
 
     <com.google.android.material.bottomsheet.BottomSheetDragHandleView
-    android:id="@+id/drag_handle"
-    android:layout_width="match_parent"
-    android:layout_height="wrap_content"
-    app:layout_constraintTop_toTopOf="parent" />
+        android:id="@+id/drag_handle"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        app:layout_constraintTop_toTopOf="parent" />
 
     <TextView
         android:id="@+id/title"
