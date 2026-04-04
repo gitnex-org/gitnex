@@ -1,38 +1,33 @@
 package org.mian.gitnex.fragments;
 
-import android.content.Context;
 import android.os.Bundle;
-import android.os.Handler;
-import android.os.Looper;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
-import android.view.inputmethod.EditorInfo;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.core.view.MenuProvider;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.Lifecycle;
+import androidx.lifecycle.ViewModelProvider;
 import androidx.recyclerview.widget.LinearLayoutManager;
-import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
+import androidx.recyclerview.widget.RecyclerView;
 import java.util.ArrayList;
 import java.util.List;
 import org.gitnex.tea4j.v2.models.PullRequest;
 import org.mian.gitnex.R;
-import org.mian.gitnex.activities.CreatePullRequestActivity;
 import org.mian.gitnex.activities.RepoDetailActivity;
 import org.mian.gitnex.adapters.PullRequestsAdapter;
-import org.mian.gitnex.clients.RetrofitClient;
 import org.mian.gitnex.databinding.FragmentPullRequestsBinding;
 import org.mian.gitnex.helpers.Constants;
+import org.mian.gitnex.helpers.EndlessRecyclerViewScrollListener;
 import org.mian.gitnex.helpers.Toasty;
+import org.mian.gitnex.helpers.UIHelper;
 import org.mian.gitnex.helpers.contexts.RepositoryContext;
-import retrofit2.Call;
-import retrofit2.Callback;
-import retrofit2.Response;
+import org.mian.gitnex.viewmodels.PullRequestsViewModel;
 
 /**
  * @author mmarif
@@ -40,13 +35,18 @@ import retrofit2.Response;
 public class PullRequestsFragment extends Fragment {
 
 	public static boolean resumePullRequests = false;
-	private FragmentPullRequestsBinding fragmentPullRequestsBinding;
-	private List<PullRequest> prList;
+	private FragmentPullRequestsBinding binding;
+	private PullRequestsViewModel viewModel;
 	private PullRequestsAdapter adapter;
-	private Context context;
-	private int pageSize = Constants.prPageInit;
-	private int resultLimit;
 	private RepositoryContext repository;
+	private int resultLimit;
+	private EndlessRecyclerViewScrollListener scrollListener;
+
+	@Override
+	public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
+		super.onViewCreated(view, savedInstanceState);
+		UIHelper.applyInsets(view, null, binding.recyclerView, binding.pullToRefresh, null);
+	}
 
 	public static PullRequestsFragment newInstance(RepositoryContext repository) {
 		PullRequestsFragment f = new PullRequestsFragment();
@@ -59,113 +59,137 @@ public class PullRequestsFragment extends Fragment {
 			@NonNull LayoutInflater inflater,
 			@Nullable ViewGroup container,
 			@Nullable Bundle savedInstanceState) {
+		binding = FragmentPullRequestsBinding.inflate(inflater, container, false);
+		viewModel = new ViewModelProvider(this).get(PullRequestsViewModel.class);
 
-		fragmentPullRequestsBinding =
-				FragmentPullRequestsBinding.inflate(inflater, container, false);
-		context = getContext();
-
-		final SwipeRefreshLayout swipeRefresh = fragmentPullRequestsBinding.pullToRefresh;
-
-		resultLimit = Constants.getCurrentResultLimit(context);
-		prList = new ArrayList<>();
 		repository = RepositoryContext.fromBundle(requireArguments());
+		resultLimit = Constants.getCurrentResultLimit(requireContext());
 
-		boolean archived = repository.getRepository().isArchived();
+		setupAdapter();
+		setupListeners();
+		observeViewModel();
 
-		swipeRefresh.setOnRefreshListener(
-				() ->
-						new Handler(Looper.getMainLooper())
-								.postDelayed(
-										() -> {
-											swipeRefresh.setRefreshing(false);
-											loadInitial(
-													repository.getOwner(),
-													repository.getName(),
-													pageSize,
-													repository.getPrState().toString(),
-													resultLimit);
-											adapter.notifyDataChanged();
-										},
-										200));
+		refreshData();
+		handleArchivedState();
+		setupMenu();
 
-		adapter = new PullRequestsAdapter(context, prList);
-		adapter.setLoadMoreListener(
-				() ->
-						fragmentPullRequestsBinding.recyclerView.post(
-								() -> {
-									if (prList.size() == resultLimit || pageSize == resultLimit) {
-										int page = (prList.size() + resultLimit) / resultLimit;
-										loadMore(
-												repository.getOwner(),
-												repository.getName(),
-												page,
-												repository.getPrState().toString(),
-												resultLimit);
-									}
-								}));
+		return binding.getRoot();
+	}
 
-		fragmentPullRequestsBinding.recyclerView.setHasFixedSize(true);
-		fragmentPullRequestsBinding.recyclerView.setLayoutManager(new LinearLayoutManager(context));
-		fragmentPullRequestsBinding.recyclerView.setAdapter(adapter);
+	private void setupAdapter() {
+		adapter = new PullRequestsAdapter(requireContext(), new ArrayList<>());
+		LinearLayoutManager layoutManager = new LinearLayoutManager(requireContext());
+		binding.recyclerView.setLayoutManager(layoutManager);
+		binding.recyclerView.setHasFixedSize(true);
+		binding.recyclerView.setAdapter(adapter);
+
+		scrollListener =
+				new EndlessRecyclerViewScrollListener(layoutManager) {
+					@Override
+					public void onLoadMore(int page, int totalItemsCount, RecyclerView view) {
+						viewModel.fetchPullRequests(
+								requireContext(),
+								repository.getOwner(),
+								repository.getName(),
+								repository.getPrState().toString(),
+								page,
+								resultLimit,
+								false);
+					}
+				};
+		binding.recyclerView.addOnScrollListener(scrollListener);
+	}
+
+	private void observeViewModel() {
+		viewModel
+				.getPrList()
+				.observe(
+						getViewLifecycleOwner(),
+						list -> {
+							adapter.updateList(list);
+							updateUiState();
+						});
+
+		viewModel
+				.getIsLoading()
+				.observe(
+						getViewLifecycleOwner(),
+						loading -> {
+							if (loading && adapter.getItemCount() == 0) {
+								binding.expressiveLoader.setVisibility(View.VISIBLE);
+								binding.layoutEmpty.getRoot().setVisibility(View.GONE);
+							} else {
+								binding.expressiveLoader.setVisibility(View.GONE);
+							}
+						});
+
+		viewModel
+				.getError()
+				.observe(
+						getViewLifecycleOwner(),
+						err -> {
+							if (err != null) {
+								Toasty.show(requireContext(), err);
+								binding.expressiveLoader.setVisibility(View.GONE);
+							}
+						});
+	}
+
+	private void updateUiState() {
+		boolean isEmpty = adapter.getItemCount() == 0;
+		boolean hasLoaded = Boolean.TRUE.equals(viewModel.getHasLoadedOnce().getValue());
+		boolean isLoading = Boolean.TRUE.equals(viewModel.getIsLoading().getValue());
+
+		if (!isLoading && hasLoaded && isEmpty) {
+			binding.layoutEmpty.getRoot().setVisibility(View.VISIBLE);
+			binding.recyclerView.setVisibility(View.GONE);
+		} else {
+			binding.layoutEmpty.getRoot().setVisibility(View.GONE);
+			binding.recyclerView.setVisibility(View.VISIBLE);
+		}
+	}
+
+	private void refreshData() {
+		scrollListener.resetState();
+		viewModel.resetPagination();
+
+		binding.layoutEmpty.getRoot().setVisibility(View.GONE);
+
+		viewModel.fetchPullRequests(
+				requireContext(),
+				repository.getOwner(),
+				repository.getName(),
+				repository.getPrState().toString(),
+				1,
+				resultLimit,
+				true);
+	}
+
+	private void setupListeners() {
+		binding.pullToRefresh.setOnRefreshListener(this::refreshData);
 
 		((RepoDetailActivity) requireActivity())
 				.setFragmentRefreshListenerPr(
-						prState -> {
-							prList.clear();
-							adapter = new PullRequestsAdapter(context, prList);
-							adapter.setLoadMoreListener(
-									() ->
-											fragmentPullRequestsBinding.recyclerView.post(
-													() -> {
-														if (prList.size() == resultLimit
-																|| pageSize == resultLimit) {
-															int page =
-																	(prList.size() + resultLimit)
-																			/ resultLimit;
-															loadMore(
-																	repository.getOwner(),
-																	repository.getName(),
-																	page,
-																	repository
-																			.getPrState()
-																			.toString(),
-																	resultLimit);
-														}
-													}));
-							fragmentPullRequestsBinding.progressBar.setVisibility(View.VISIBLE);
-							fragmentPullRequestsBinding.noData.setVisibility(View.GONE);
-							loadInitial(
-									repository.getOwner(),
-									repository.getName(),
-									pageSize,
-									prState,
-									resultLimit);
-							fragmentPullRequestsBinding.recyclerView.setAdapter(adapter);
+						state -> {
+							repository.setPrState(
+									RepositoryContext.State.valueOf(state.toUpperCase()));
+							refreshData();
 						});
+	}
 
-		loadInitial(
-				repository.getOwner(),
-				repository.getName(),
-				pageSize,
-				repository.getPrState().toString(),
-				resultLimit);
-
-		if (archived) {
-			fragmentPullRequestsBinding.createPullRequest.setVisibility(View.GONE);
-		}
-
+	private void handleArchivedState() {
+		boolean archived = repository.getRepository().isArchived();
 		if (repository.getRepository().isHasPullRequests() && !archived) {
-			fragmentPullRequestsBinding.createPullRequest.setVisibility(View.VISIBLE);
-			fragmentPullRequestsBinding.createPullRequest.setOnClickListener(
-					v ->
-							((RepoDetailActivity) requireActivity())
-									.createPrLauncher.launch(
-											repository.getIntent(
-													context, CreatePullRequestActivity.class)));
+			// binding.createPullRequest.setVisibility(View.VISIBLE);
+			// binding.createPullRequest.setOnClickListener(v ->
+			// ((RepoDetailActivity) requireActivity()).createPrLauncher.launch(
+			//	repository.getIntent(requireContext(), CreatePullRequestActivity.class)));
 		} else {
-			fragmentPullRequestsBinding.createPullRequest.setVisibility(View.GONE);
+			// binding.createPullRequest.setVisibility(View.GONE);
 		}
+	}
 
+	private void setupMenu() {
 		requireActivity()
 				.addMenuProvider(
 						new MenuProvider() {
@@ -177,31 +201,28 @@ public class PullRequestsFragment extends Fragment {
 
 								if (repository.getPrState().toString().equals("closed")) {
 									menu.getItem(1).setIcon(R.drawable.ic_filter_closed);
-								} else {
-									menu.getItem(1).setIcon(R.drawable.ic_filter);
 								}
 
 								MenuItem searchItem = menu.findItem(R.id.action_search);
 								androidx.appcompat.widget.SearchView searchView =
 										(androidx.appcompat.widget.SearchView)
 												searchItem.getActionView();
-								assert searchView != null;
-								searchView.setImeOptions(EditorInfo.IME_ACTION_DONE);
+								if (searchView != null) {
+									searchView.setOnQueryTextListener(
+											new androidx.appcompat.widget.SearchView
+													.OnQueryTextListener() {
+												@Override
+												public boolean onQueryTextSubmit(String query) {
+													return false;
+												}
 
-								searchView.setOnQueryTextListener(
-										new androidx.appcompat.widget.SearchView
-												.OnQueryTextListener() {
-											@Override
-											public boolean onQueryTextSubmit(String query) {
-												return false;
-											}
-
-											@Override
-											public boolean onQueryTextChange(String newText) {
-												filter(newText);
-												return false;
-											}
-										});
+												@Override
+												public boolean onQueryTextChange(String newText) {
+													filterLocal(newText);
+													return false;
+												}
+											});
+								}
 							}
 
 							@Override
@@ -211,128 +232,34 @@ public class PullRequestsFragment extends Fragment {
 						},
 						getViewLifecycleOwner(),
 						Lifecycle.State.RESUMED);
+	}
 
-		return fragmentPullRequestsBinding.getRoot();
+	private void filterLocal(String text) {
+		List<PullRequest> fullList = viewModel.getPrList().getValue();
+		if (fullList == null) return;
+
+		List<PullRequest> filtered = new ArrayList<>();
+		for (PullRequest pr : fullList) {
+			if (pr.getTitle().toLowerCase().contains(text.toLowerCase())
+					|| String.valueOf(pr.getNumber()).startsWith(text)) {
+				filtered.add(pr);
+			}
+		}
+		adapter.updateList(filtered);
 	}
 
 	@Override
 	public void onResume() {
 		super.onResume();
 		if (resumePullRequests) {
-			loadInitial(
-					repository.getOwner(),
-					repository.getName(),
-					pageSize,
-					repository.getPrState().toString(),
-					resultLimit);
+			refreshData();
 			resumePullRequests = false;
 		}
 	}
 
-	private void loadInitial(
-			String repoOwner, String repoName, int page, String prState, int resultLimit) {
-		Call<List<PullRequest>> call =
-				RetrofitClient.getApiInterface(context)
-						.repoListPullRequests(
-								repoOwner,
-								repoName,
-								null,
-								prState,
-								null,
-								null,
-								null,
-								null,
-								page,
-								resultLimit);
-
-		call.enqueue(
-				new Callback<>() {
-					@Override
-					public void onResponse(
-							@NonNull Call<List<PullRequest>> call,
-							@NonNull Response<List<PullRequest>> response) {
-						if (response.code() == 200) {
-							assert response.body() != null;
-							if (!response.body().isEmpty()) {
-								prList.clear();
-								prList.addAll(response.body());
-								adapter.notifyDataChanged();
-								fragmentPullRequestsBinding.noData.setVisibility(View.GONE);
-							} else {
-								prList.clear();
-								adapter.notifyDataChanged();
-								fragmentPullRequestsBinding.noData.setVisibility(View.VISIBLE);
-							}
-							fragmentPullRequestsBinding.progressBar.setVisibility(View.GONE);
-						} else if (response.code() == 404) {
-							fragmentPullRequestsBinding.noData.setVisibility(View.VISIBLE);
-							fragmentPullRequestsBinding.progressBar.setVisibility(View.GONE);
-						}
-					}
-
-					@Override
-					public void onFailure(
-							@NonNull Call<List<PullRequest>> call, @NonNull Throwable t) {}
-				});
-	}
-
-	private void loadMore(
-			String repoOwner, String repoName, int page, String prState, int resultLimit) {
-		fragmentPullRequestsBinding.progressBar.setVisibility(View.VISIBLE);
-		Call<List<PullRequest>> call =
-				RetrofitClient.getApiInterface(context)
-						.repoListPullRequests(
-								repoOwner,
-								repoName,
-								null,
-								prState,
-								null,
-								null,
-								null,
-								null,
-								page,
-								resultLimit);
-
-		call.enqueue(
-				new Callback<>() {
-					@Override
-					public void onResponse(
-							@NonNull Call<List<PullRequest>> call,
-							@NonNull Response<List<PullRequest>> response) {
-						if (response.code() == 200) {
-							prList.remove(prList.size() - 1);
-							List<PullRequest> result = response.body();
-							assert result != null;
-							if (!result.isEmpty()) {
-								pageSize = result.size();
-								prList.addAll(result);
-							} else {
-								Toasty.show(context, getString(R.string.noMoreData));
-								adapter.setMoreDataAvailable(false);
-							}
-							adapter.notifyDataChanged();
-							fragmentPullRequestsBinding.progressBar.setVisibility(View.GONE);
-						}
-					}
-
-					@Override
-					public void onFailure(
-							@NonNull Call<List<PullRequest>> call, @NonNull Throwable t) {}
-				});
-	}
-
-	private void filter(String text) {
-		List<PullRequest> arr = new ArrayList<>();
-		for (PullRequest d : prList) {
-			if (d == null || d.getTitle() == null || d.getBody() == null) {
-				continue;
-			}
-			if (d.getTitle().toLowerCase().contains(text)
-					|| d.getBody().toLowerCase().contains(text)
-					|| String.valueOf(d.getNumber()).startsWith(text)) {
-				arr.add(d);
-			}
-		}
-		adapter.updateList(arr);
+	@Override
+	public void onDestroyView() {
+		super.onDestroyView();
+		binding = null;
 	}
 }

@@ -256,7 +256,6 @@
 
                                 <com.google.android.material.chip.Chip
                                     android:id="@+id/addTopicChip"
-                                    style="@style/Widget.MaterialComponents.Chip.Action"
                                     android:layout_width="@dimen/dimen48dp"
                                     android:layout_height="@dimen/dimen48dp"
                                     android:text=""

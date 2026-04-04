@@ -636,6 +636,7 @@
     <string name="write">Write</string>
     <string name="code">Code</string>
     <string name="topics">Topics</string>
+    <string name="merged">Merged</string>
     <!-- generic copy -->
 
     <string name="exploreUsers">Explore users</string>

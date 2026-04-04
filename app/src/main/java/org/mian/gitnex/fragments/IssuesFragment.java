@@ -10,15 +10,19 @@ import android.view.View;
 import android.view.ViewGroup;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.core.graphics.Insets;
 import androidx.core.view.MenuProvider;
+import androidx.core.view.ViewCompat;
+import androidx.core.view.WindowInsetsCompat;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.Lifecycle;
 import androidx.lifecycle.ViewModelProvider;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 import java.util.ArrayList;
+import java.util.List;
+import org.gitnex.tea4j.v2.models.Issue;
 import org.mian.gitnex.R;
-import org.mian.gitnex.activities.CreateIssueActivity;
 import org.mian.gitnex.activities.RepoDetailActivity;
 import org.mian.gitnex.adapters.IssuesAdapter;
 import org.mian.gitnex.databinding.FragmentIssuesBinding;
@@ -44,11 +48,26 @@ public class IssuesFragment extends Fragment {
 	private String mentionedBy;
 	private int resultLimit;
 	private EndlessRecyclerViewScrollListener scrollListener;
+	private int systemTopInset = 0;
 
 	public static IssuesFragment newInstance(RepositoryContext repository) {
 		IssuesFragment f = new IssuesFragment();
 		f.setArguments(repository.getBundle());
 		return f;
+	}
+
+	@Override
+	public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
+		super.onViewCreated(view, savedInstanceState);
+		ViewCompat.setOnApplyWindowInsetsListener(
+				binding.insetContainer,
+				(v, insets) -> {
+					Insets systemBars = insets.getInsets(WindowInsetsCompat.Type.systemBars());
+					systemTopInset = systemBars.top;
+					refreshPaddingLogic();
+
+					return insets;
+				});
 	}
 
 	@Nullable @Override
@@ -133,8 +152,25 @@ public class IssuesFragment extends Fragment {
 				});
 	}
 
-	private void observeRepoViewModel() {
+	private void refreshPaddingLogic() {
+		if (binding == null) return;
 
+		int dimen12 = getResources().getDimensionPixelSize(R.dimen.dimen12dp);
+		if (dimen12 == 0) dimen12 = 36;
+
+		List<Issue> pinnedList = viewModel.getPinnedIssues().getValue();
+		boolean hasPinned = pinnedList != null && !pinnedList.isEmpty();
+
+		if (hasPinned) {
+			binding.rvPinnedIssues.setPadding(0, systemTopInset, 0, 0);
+			binding.recyclerView.setPadding(dimen12, 0, dimen12, dimen12);
+		} else {
+			binding.recyclerView.setPadding(dimen12, systemTopInset, dimen12, dimen12);
+			binding.rvPinnedIssues.setPadding(0, 0, 0, 0);
+		}
+	}
+
+	private void observeRepoViewModel() {
 		viewModel
 				.getRepoIssues()
 				.observe(
@@ -152,6 +188,9 @@ public class IssuesFragment extends Fragment {
 							binding.pinnedIssuesFrame.setVisibility(
 									list.isEmpty() ? View.GONE : View.VISIBLE);
 							adapterPinned.updateList(list);
+
+							refreshPaddingLogic();
+							updateUiState();
 						});
 
 		viewModel
@@ -159,14 +198,12 @@ public class IssuesFragment extends Fragment {
 				.observe(
 						getViewLifecycleOwner(),
 						loading -> {
-							binding.pullToRefresh.setRefreshing(loading);
-
 							if (loading && adapter.getItemCount() == 0) {
-								binding.progressBar.setVisibility(View.VISIBLE);
+								binding.expressiveLoader.setVisibility(View.VISIBLE);
+								binding.layoutEmpty.getRoot().setVisibility(View.GONE);
 							} else {
-								binding.progressBar.setVisibility(View.GONE);
+								binding.expressiveLoader.setVisibility(View.GONE);
 							}
-							updateUiState();
 						});
 
 		viewModel
@@ -174,22 +211,34 @@ public class IssuesFragment extends Fragment {
 				.observe(
 						getViewLifecycleOwner(),
 						err -> {
-							if (err != null) Toasty.show(requireContext(), err);
+							if (err != null) {
+								Toasty.show(requireContext(), err);
+								binding.expressiveLoader.setVisibility(View.GONE);
+							}
 						});
 	}
 
 	private void updateUiState() {
-		boolean isEmpty = adapter.getItemCount() == 0;
+		boolean isMainListEmpty = adapter.getItemCount() == 0;
+		boolean isPinnedListEmpty = adapterPinned.getItemCount() == 0;
 		boolean hasLoaded = Boolean.TRUE.equals(viewModel.getHasRepoLoadedOnce().getValue());
 		boolean isLoading = Boolean.TRUE.equals(viewModel.getIsRepoLoading().getValue());
 
-		binding.noDataIssues.setVisibility(
-				hasLoaded && isEmpty && !isLoading ? View.VISIBLE : View.GONE);
+		if (!isLoading && hasLoaded && isMainListEmpty && isPinnedListEmpty) {
+			binding.layoutEmpty.getRoot().setVisibility(View.VISIBLE);
+			binding.recyclerView.setVisibility(View.GONE);
+		} else {
+			binding.layoutEmpty.getRoot().setVisibility(View.GONE);
+			binding.recyclerView.setVisibility(View.VISIBLE);
+		}
 	}
 
 	private void refreshData(String query) {
 		scrollListener.resetState();
 		viewModel.resetRepoPagination();
+
+		binding.layoutEmpty.getRoot().setVisibility(View.GONE);
+
 		viewModel.fetchRepoIssues(
 				requireContext(),
 				repository.getOwner(),
@@ -203,6 +252,8 @@ public class IssuesFragment extends Fragment {
 				1,
 				resultLimit,
 				true);
+
+		viewModel.fetchPinnedIssues(requireContext(), repository.getOwner(), repository.getName());
 	}
 
 	private void setupRepoListeners() {
@@ -238,7 +289,7 @@ public class IssuesFragment extends Fragment {
 
 	private void handleArchivedState() {
 		boolean archived = repository.getRepository().isArchived();
-		if (repository.getRepository().isHasIssues() && !archived) {
+		/*if (repository.getRepository().isHasIssues() && !archived) {
 			binding.createNewIssue.setVisibility(View.VISIBLE);
 			binding.createNewIssue.setOnClickListener(
 					v ->
@@ -248,7 +299,7 @@ public class IssuesFragment extends Fragment {
 													getContext(), CreateIssueActivity.class)));
 		} else {
 			binding.createNewIssue.setVisibility(View.GONE);
-		}
+		}*/
 	}
 
 	private void setupMenu() {

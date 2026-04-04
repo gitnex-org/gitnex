@@ -3,22 +3,15 @@ package org.mian.gitnex.adapters;
 import android.annotation.SuppressLint;
 import android.content.Context;
 import android.content.Intent;
-import android.content.res.ColorStateList;
 import android.graphics.Color;
 import android.os.Handler;
-import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.HorizontalScrollView;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
-import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.core.content.ContextCompat;
-import androidx.core.content.res.ResourcesCompat;
-import androidx.core.text.HtmlCompat;
-import androidx.core.widget.ImageViewCompat;
 import androidx.recyclerview.widget.RecyclerView;
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.load.engine.DiskCacheStrategy;
@@ -30,6 +23,7 @@ import org.mian.gitnex.R;
 import org.mian.gitnex.activities.IssueDetailActivity;
 import org.mian.gitnex.activities.ProfileActivity;
 import org.mian.gitnex.activities.RepoDetailActivity;
+import org.mian.gitnex.databinding.ListPrBinding;
 import org.mian.gitnex.helpers.AppDatabaseSettings;
 import org.mian.gitnex.helpers.AppUtil;
 import org.mian.gitnex.helpers.AvatarGenerator;
@@ -41,7 +35,8 @@ import org.mian.gitnex.helpers.contexts.IssueContext;
 /**
  * @author mmarif
  */
-public class PullRequestsAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
+public class PullRequestsAdapter
+		extends RecyclerView.Adapter<PullRequestsAdapter.PullRequestsHolder> {
 
 	private final Context context;
 	private List<PullRequest> prList;
@@ -54,15 +49,13 @@ public class PullRequestsAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
 	}
 
 	@NonNull @Override
-	public RecyclerView.ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-		LayoutInflater inflater = LayoutInflater.from(context);
-		return new PullRequestsAdapter.PullRequestsHolder(
-				inflater.inflate(R.layout.list_pr, parent, false));
+	public PullRequestsHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
+		ListPrBinding binding = ListPrBinding.inflate(LayoutInflater.from(context), parent, false);
+		return new PullRequestsHolder(binding);
 	}
 
 	@Override
-	public void onBindViewHolder(@NonNull RecyclerView.ViewHolder holder, int position) {
-
+	public void onBindViewHolder(@NonNull PullRequestsHolder holder, int position) {
 		if (position >= getItemCount() - 1
 				&& isMoreDataAvailable
 				&& !isLoading
@@ -70,17 +63,13 @@ public class PullRequestsAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
 			isLoading = true;
 			loadMoreListener.run();
 		}
-		((PullRequestsAdapter.PullRequestsHolder) holder).bindData(prList.get(position));
-	}
-
-	@Override
-	public int getItemViewType(int position) {
-		return position;
+		holder.bindData(prList.get(position));
+		holder.binding.getRoot().updateAppearance(position, getItemCount());
 	}
 
 	@Override
 	public int getItemCount() {
-		return prList.size();
+		return prList != null ? prList.size() : 0;
 	}
 
 	public void setMoreDataAvailable(boolean moreDataAvailable) {
@@ -102,206 +91,176 @@ public class PullRequestsAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
 		notifyDataChanged();
 	}
 
-	class PullRequestsHolder extends RecyclerView.ViewHolder {
+	public class PullRequestsHolder extends RecyclerView.ViewHolder {
+		final ListPrBinding binding;
+		private PullRequest prObject;
 
-		private final ImageView assigneeAvatar;
-		private final TextView prTitle;
-		private final ImageView issuePrState;
-		private final TextView prCreatedTime;
-		private final TextView prCommentsCount;
-		private final HorizontalScrollView labelsScrollViewWithText;
-		private final LinearLayout frameLabels;
-		private final HorizontalScrollView labelsScrollViewDots;
-		private final LinearLayout frameLabelsDots;
-		private final ImageView commentIcon;
-		private PullRequest pullRequestObject;
-
-		PullRequestsHolder(View itemView) {
-
-			super(itemView);
-			assigneeAvatar = itemView.findViewById(R.id.assigneeAvatar);
-			prTitle = itemView.findViewById(R.id.prTitle);
-			issuePrState = itemView.findViewById(R.id.issuePrState);
-			prCommentsCount = itemView.findViewById(R.id.prCommentsCount);
-			prCreatedTime = itemView.findViewById(R.id.prCreatedTime);
-			labelsScrollViewWithText = itemView.findViewById(R.id.labelsScrollViewWithText);
-			frameLabels = itemView.findViewById(R.id.frameLabels);
-			labelsScrollViewDots = itemView.findViewById(R.id.labelsScrollViewDots);
-			frameLabelsDots = itemView.findViewById(R.id.frameLabelsDots);
-			commentIcon = itemView.findViewById(R.id.comment_icon);
+		PullRequestsHolder(ListPrBinding binding) {
+			super(binding.getRoot());
+			this.binding = binding;
 
 			View.OnClickListener openPr =
 					v -> {
-						Intent intentPrDetail =
-								new IssueContext(
-												pullRequestObject,
-												((RepoDetailActivity) context).repository)
-										.getIntent(context, IssueDetailActivity.class);
-						context.startActivity(intentPrDetail);
+						if (context instanceof RepoDetailActivity) {
+							Intent intent =
+									new IssueContext(
+													prObject,
+													((RepoDetailActivity) context).repository)
+											.getIntent(context, IssueDetailActivity.class);
+							context.startActivity(intent);
+						}
 					};
 
-			itemView.setOnClickListener(openPr);
-			frameLabels.setOnClickListener(openPr);
-			frameLabelsDots.setOnClickListener(openPr);
+			binding.getRoot().setOnClickListener(openPr);
+			binding.frameLabels.setOnClickListener(openPr);
+			binding.frameLabelsDots.setOnClickListener(openPr);
+		}
 
+		void bindData(PullRequest pr) {
+			this.prObject = pr;
+			Locale locale = Locale.getDefault();
+
+			if (pr.getMilestone() != null) {
+				binding.milestoneLayout.setVisibility(View.VISIBLE);
+				binding.milestoneTitle.setText(pr.getMilestone().getTitle());
+			} else {
+				binding.milestoneLayout.setVisibility(View.GONE);
+			}
+
+			if (isDraftOrWip(pr)) {
+				binding.prStateIcon.setVisibility(View.VISIBLE);
+				binding.prStateIcon.setImageResource(R.drawable.ic_draft);
+				binding.prStateIcon.setOnClickListener(
+						v -> {
+							Toasty.show(
+									context,
+									context.getResources().getString(R.string.releaseDraftText));
+						});
+			} else {
+				binding.prStateIcon.setVisibility(View.GONE);
+			}
+
+			if (pr.isMerged()) {
+				binding.mergedBadge.setVisibility(View.VISIBLE);
+				int mergedColor = ContextCompat.getColor(context, R.color.alert_important_border);
+				binding.mergedBadge.setImageDrawable(
+						AvatarGenerator.getLabelDrawable(
+								context,
+								context.getString(R.string.merged).toUpperCase(),
+								mergedColor,
+								16));
+
+			} else if (pr.getState().equalsIgnoreCase("closed")) {
+				binding.mergedBadge.setVisibility(View.VISIBLE);
+				int closedColor = ContextCompat.getColor(context, R.color.colorRed);
+				binding.mergedBadge.setImageDrawable(
+						AvatarGenerator.getLabelDrawable(
+								context,
+								context.getString(R.string.isClosed).toUpperCase(),
+								closedColor,
+								16));
+
+			} else {
+				binding.mergedBadge.setVisibility(View.GONE);
+			}
+
+			binding.userName.setText(pr.getUser().getLogin());
+			binding.repoFullName.setText(pr.getBase().getRepo().getFullName());
+			binding.prNumber.setText(context.getString(R.string.hash_with_text, pr.getNumber()));
+			binding.prCommentsCount.setText(String.valueOf(pr.getComments()));
+			binding.prCreatedTime.setText(TimeHelper.formatTime(pr.getCreatedAt(), locale));
+
+			binding.prCreatedTime.setOnClickListener(
+					v -> {
+						Toasty.show(
+								context,
+								TimeHelper.getFullDateTime(pr.getCreatedAt(), Locale.getDefault()));
+					});
+
+			if (pr.getComments() > 10) {
+				binding.commentIcon.setImageDrawable(
+						ContextCompat.getDrawable(context, R.drawable.ic_flame));
+				binding.commentIcon.setColorFilter(
+						ContextCompat.getColor(context, R.color.releasePre));
+			} else {
+				binding.commentIcon.setImageDrawable(
+						ContextCompat.getDrawable(context, R.drawable.ic_comment));
+				binding.commentIcon.setColorFilter(null);
+			}
+
+			Glide.with(context)
+					.load(pr.getUser().getAvatarUrl())
+					.diskCacheStrategy(DiskCacheStrategy.ALL)
+					.placeholder(R.drawable.loader_animated)
+					.centerCrop()
+					.into(binding.assigneeAvatar);
+
+			setupUserClicks(pr);
+			Markdown.render(context, EmojiParser.parseToUnicode(pr.getTitle()), binding.prTitle);
+			renderLabels(pr);
+		}
+
+		private boolean isDraftOrWip(PullRequest pr) {
+			String title = pr.getTitle().toLowerCase().trim();
+			return title.startsWith("[wip]")
+					|| title.startsWith("wip:")
+					|| title.startsWith("draft:")
+					|| title.startsWith("(draft)")
+					|| title.startsWith("[draft]")
+					|| pr.isDraft();
+		}
+
+		private void setupUserClicks(PullRequest pr) {
 			new Handler()
 					.postDelayed(
 							() -> {
-								if (!AppUtil.checkGhostUsers(
-										pullRequestObject.getUser().getLogin())) {
-
-									assigneeAvatar.setOnClickListener(
+								if (!AppUtil.checkGhostUsers(pr.getUser().getLogin())) {
+									binding.assigneeAvatar.setOnClickListener(
 											v -> {
-												Intent intent =
+												Intent i =
 														new Intent(context, ProfileActivity.class);
-												intent.putExtra(
-														"username",
-														pullRequestObject.getUser().getLogin());
-												context.startActivity(intent);
-											});
-
-									assigneeAvatar.setOnLongClickListener(
-											loginId -> {
-												AppUtil.copyToClipboard(
-														context,
-														pullRequestObject.getUser().getLogin(),
-														context.getString(
-																R.string.copyLoginIdToClipBoard,
-																pullRequestObject
-																		.getUser()
-																		.getLogin()));
-												return true;
+												i.putExtra("username", pr.getUser().getLogin());
+												context.startActivity(i);
 											});
 								}
 							},
 							500);
 		}
 
-		void bindData(PullRequest pullRequest) {
+		private void renderLabels(PullRequest pr) {
+			binding.frameLabels.removeAllViews();
+			binding.frameLabelsDots.removeAllViews();
 
-			Locale locale = context.getResources().getConfiguration().getLocales().get(0);
+			if (pr.getLabels() == null || pr.getLabels().isEmpty()) {
+				binding.labelsScrollViewWithText.setVisibility(View.GONE);
+				binding.labelsScrollViewDots.setVisibility(View.GONE);
+				return;
+			}
 
-			Glide.with(context)
-					.load(pullRequest.getUser().getAvatarUrl())
-					.diskCacheStrategy(DiskCacheStrategy.ALL)
-					.placeholder(R.drawable.loader_animated)
-					.centerCrop()
-					.into(this.assigneeAvatar);
+			boolean showText =
+					Boolean.parseBoolean(
+							AppDatabaseSettings.getSettingsValue(
+									context, AppDatabaseSettings.APP_LABELS_IN_LIST_KEY));
+			binding.labelsScrollViewWithText.setVisibility(showText ? View.VISIBLE : View.GONE);
+			binding.labelsScrollViewDots.setVisibility(showText ? View.GONE : View.VISIBLE);
 
-			this.pullRequestObject = pullRequest;
-
-			LinearLayout.LayoutParams params =
-					new LinearLayout.LayoutParams(
-							LinearLayout.LayoutParams.WRAP_CONTENT,
-							LinearLayout.LayoutParams.WRAP_CONTENT);
+			LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(-2, -2);
 			params.setMargins(0, 0, 15, 0);
 
-			if (pullRequest.getLabels() != null) {
+			for (org.gitnex.tea4j.v2.models.Label label : pr.getLabels()) {
+				ImageView iv = new ImageView(context);
+				iv.setLayoutParams(params);
+				int color = Color.parseColor("#" + label.getColor());
 
-				if (!Boolean.parseBoolean(
-						AppDatabaseSettings.getSettingsValue(
-								context, AppDatabaseSettings.APP_LABELS_IN_LIST_KEY))) {
-
-					labelsScrollViewWithText.setVisibility(View.GONE);
-					labelsScrollViewDots.setVisibility(View.VISIBLE);
-					frameLabelsDots.removeAllViews();
-
-					for (int i = 0; i < pullRequest.getLabels().size(); i++) {
-						String labelColor = pullRequest.getLabels().get(i).getColor();
-						int color = Color.parseColor("#" + labelColor);
-
-						ImageView labelsView = new ImageView(context);
-						frameLabelsDots.setOrientation(LinearLayout.HORIZONTAL);
-						frameLabelsDots.setGravity(Gravity.START | Gravity.TOP);
-						labelsView.setLayoutParams(params);
-
-						labelsView.setImageDrawable(
-								AvatarGenerator.getCircleColorDrawable(context, color, 14));
-
-						frameLabelsDots.addView(labelsView);
-					}
+				if (showText) {
+					iv.setImageDrawable(
+							AvatarGenerator.getLabelDrawable(context, label.getName(), color, 20));
+					binding.frameLabels.addView(iv);
 				} else {
-
-					labelsScrollViewDots.setVisibility(View.GONE);
-					labelsScrollViewWithText.setVisibility(View.VISIBLE);
-					frameLabels.removeAllViews();
-
-					for (int i = 0; i < pullRequest.getLabels().size(); i++) {
-						String labelColor = pullRequest.getLabels().get(i).getColor();
-						String labelName = pullRequest.getLabels().get(i).getName();
-						int color = Color.parseColor("#" + labelColor);
-
-						ImageView labelsView = new ImageView(context);
-						frameLabels.setOrientation(LinearLayout.HORIZONTAL);
-						frameLabels.setGravity(Gravity.START | Gravity.TOP);
-						labelsView.setLayoutParams(params);
-
-						labelsView.setImageDrawable(
-								AvatarGenerator.getLabelDrawable(context, labelName, color, 20));
-
-						frameLabels.addView(labelsView);
-					}
+					iv.setImageDrawable(AvatarGenerator.getCircleColorDrawable(context, color, 14));
+					binding.frameLabelsDots.addView(iv);
 				}
 			}
-
-			String prNumber_ =
-					"<font color='"
-							+ ResourcesCompat.getColor(
-									context.getResources(), R.color.lightGray, null)
-							+ "'>"
-							+ context.getResources().getString(R.string.hash)
-							+ pullRequest.getNumber()
-							+ "</font>";
-
-			if (pullRequest.getTitle().contains("[WIP]")
-					|| pullRequest.getTitle().contains("[wip]")) {
-				this.issuePrState.setVisibility(View.VISIBLE);
-				this.issuePrState.setImageResource(R.drawable.ic_draft);
-				ImageViewCompat.setImageTintList(
-						this.issuePrState,
-						ColorStateList.valueOf(
-								context.getResources().getColor(R.color.colorWhite, null)));
-				this.issuePrState.setBackgroundResource(R.drawable.shape_draft_release);
-				this.issuePrState.setPadding(
-						(int) context.getResources().getDimension(R.dimen.dimen4dp),
-						(int) context.getResources().getDimension(R.dimen.dimen0dp),
-						(int) context.getResources().getDimension(R.dimen.dimen4dp),
-						(int) context.getResources().getDimension(R.dimen.dimen0dp));
-				this.prTitle.setPadding(
-						(int) context.getResources().getDimension(R.dimen.dimen12dp),
-						(int) context.getResources().getDimension(R.dimen.dimen0dp),
-						(int) context.getResources().getDimension(R.dimen.dimen0dp),
-						(int) context.getResources().getDimension(R.dimen.dimen0dp));
-			} else {
-				this.issuePrState.setVisibility(View.GONE);
-			}
-
-			Markdown.render(
-					context,
-					HtmlCompat.fromHtml(
-									prNumber_
-											+ " "
-											+ EmojiParser.parseToUnicode(pullRequest.getTitle()),
-									HtmlCompat.FROM_HTML_MODE_LEGACY)
-							.toString(),
-					this.prTitle);
-
-			this.prCommentsCount.setText(String.valueOf(pullRequest.getComments()));
-			this.prCreatedTime.setText(TimeHelper.formatTime(pullRequest.getCreatedAt(), locale));
-
-			if (pullRequest.getComments() > 15) {
-				commentIcon.setImageDrawable(
-						ContextCompat.getDrawable(context, R.drawable.ic_flame));
-				commentIcon.setColorFilter(
-						context.getResources().getColor(R.color.releasePre, null));
-			}
-
-			this.prCreatedTime.setOnClickListener(
-					v ->
-							Toasty.show(
-									context,
-									TimeHelper.getFullDateTime(
-											pullRequest.getCreatedAt(), Locale.getDefault())));
 		}
 	}
 }

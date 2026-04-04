@@ -125,7 +125,7 @@ public class IssuesAdapter extends RecyclerView.Adapter<IssuesAdapter.IssuesHold
 		}
 
 		void bindData(Issue issue) {
-			Locale locale = context.getResources().getConfiguration().getLocales().get(0);
+			Locale locale = Locale.getDefault();
 
 			binding.issueNumber.setText(
 					context.getString(R.string.hash_with_text, issue.getNumber()));
@@ -144,7 +144,7 @@ public class IssuesAdapter extends RecyclerView.Adapter<IssuesAdapter.IssuesHold
 				binding.milestoneLayout.setVisibility(View.GONE);
 			}
 
-			if (issue.getComments() > 15) {
+			if (issue.getComments() > 10) {
 				binding.commentIcon.setImageDrawable(
 						ContextCompat.getDrawable(context, R.drawable.ic_flame));
 				binding.commentIcon.setColorFilter(

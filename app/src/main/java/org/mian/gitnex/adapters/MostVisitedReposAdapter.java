@@ -11,13 +11,10 @@ import com.google.android.material.dialog.MaterialAlertDialogBuilder;
 import java.util.List;
 import org.mian.gitnex.R;
 import org.mian.gitnex.activities.RepoDetailActivity;
-import org.mian.gitnex.database.api.BaseApi;
-import org.mian.gitnex.database.api.RepositoriesApi;
 import org.mian.gitnex.database.models.Repository;
 import org.mian.gitnex.databinding.ListMostVisitedReposBinding;
 import org.mian.gitnex.helpers.AppUtil;
 import org.mian.gitnex.helpers.AvatarGenerator;
-import org.mian.gitnex.helpers.Toasty;
 import org.mian.gitnex.helpers.contexts.RepositoryContext;
 
 /**
@@ -28,10 +25,13 @@ public class MostVisitedReposAdapter
 
 	private List<Repository> mostVisitedReposList;
 	private final Context ctx;
+	private final OnRepoActionListener listener;
 
-	public MostVisitedReposAdapter(Context ctx, List<Repository> reposList) {
+	public MostVisitedReposAdapter(
+			Context ctx, List<Repository> reposList, OnRepoActionListener listener) {
 		this.ctx = ctx;
 		this.mostVisitedReposList = reposList;
+		this.listener = listener;
 	}
 
 	@NonNull @Override
@@ -46,6 +46,10 @@ public class MostVisitedReposAdapter
 	public void onBindViewHolder(@NonNull MostVisitedViewHolder holder, int position) {
 		holder.bind(mostVisitedReposList.get(position));
 		holder.binding.getRoot().updateAppearance(position, getItemCount());
+	}
+
+	public interface OnRepoActionListener {
+		void onReset(int position, Repository repository);
 	}
 
 	@Override
@@ -99,18 +103,8 @@ public class MostVisitedReposAdapter
 					.setPositiveButton(
 							R.string.reset,
 							(dialog, which) -> {
-								int pos = getBindingAdapterPosition();
-								int repoId = repository.getRepositoryId();
-
-								mostVisitedReposList.remove(pos);
-								notifyItemRemoved(pos);
-								notifyItemRangeChanged(pos, mostVisitedReposList.size());
-								Toasty.show(ctx, ctx.getString(R.string.resetMostReposCounter));
-
-								RepositoriesApi api =
-										BaseApi.getInstance(ctx, RepositoriesApi.class);
-								if (api != null) {
-									api.updateRepositoryMostVisited(0, repoId);
+								if (listener != null) {
+									listener.onReset(getBindingAdapterPosition(), repository);
 								}
 							})
 					.setNeutralButton(R.string.cancelButton, null)

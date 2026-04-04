@@ -19,7 +19,6 @@ import com.bumptech.glide.Glide;
 import com.bumptech.glide.load.engine.DiskCacheStrategy;
 import com.google.android.material.bottomsheet.BottomSheetDialog;
 import com.google.android.material.chip.Chip;
-import com.google.android.material.dialog.MaterialAlertDialogBuilder;
 import com.google.android.material.shape.CornerFamily;
 import com.google.android.material.shape.ShapeAppearanceModel;
 import java.util.List;
@@ -35,6 +34,7 @@ import org.mian.gitnex.activities.RepoStargazersActivity;
 import org.mian.gitnex.activities.RepoWatchersActivity;
 import org.mian.gitnex.databinding.BottomsheetRepoAddTopicBinding;
 import org.mian.gitnex.databinding.FragmentRepoInfoBinding;
+import org.mian.gitnex.databinding.LayoutRepoLanguageStatisticsBinding;
 import org.mian.gitnex.helpers.AppUtil;
 import org.mian.gitnex.helpers.AvatarGenerator;
 import org.mian.gitnex.helpers.Markdown;
@@ -442,6 +442,7 @@ public class RepoInfoFragment extends Fragment {
 				BottomsheetRepoAddTopicBinding.inflate(getLayoutInflater());
 		BottomSheetDialog dialog = new BottomSheetDialog(ctx);
 		dialog.setContentView(sheetBinding.getRoot());
+		AppUtil.applySheetStyle(dialog, false);
 		sheetBinding.btnClose.setOnClickListener(v -> dialog.dismiss());
 		sheetBinding.btnAddTopic.setOnClickListener(
 				v -> {
@@ -476,37 +477,50 @@ public class RepoInfoFragment extends Fragment {
 
 	private void showLanguageDetailDialog() {
 		Map<String, Long> langMap = viewModel.getLanguagesData().getValue();
-		if (langMap == null) return;
+		if (langMap == null || langMap.isEmpty()) return;
 
-		View view =
-				LayoutInflater.from(ctx).inflate(R.layout.layout_repo_language_statistics, null);
-		LinearLayout layout = view.findViewById(R.id.lang_color);
-		layout.removeAllViews();
+		LayoutRepoLanguageStatisticsBinding binding =
+				LayoutRepoLanguageStatisticsBinding.inflate(LayoutInflater.from(ctx));
 
+		BottomSheetDialog dialog = new BottomSheetDialog(ctx);
+		dialog.setContentView(binding.getRoot());
+
+		AppUtil.applySheetStyle(dialog, true);
+
+		binding.langColor.removeAllViews();
 		float totalSpan = (float) langMap.values().stream().mapToDouble(a -> a).sum();
+
+		int margin8 = ctx.getResources().getDimensionPixelSize(R.dimen.dimen2dp);
+
 		for (Map.Entry<String, Long> entry : langMap.entrySet()) {
 			Chip chip = new Chip(ctx);
-			chip.setLayoutParams(new LinearLayout.LayoutParams(-1, -2));
-			((LinearLayout.LayoutParams) chip.getLayoutParams()).setMargins(0, 8, 0, 0);
-			chip.setText(
-					String.format(
-							"%s - %s%%",
-							entry.getKey(),
-							LanguageStatisticsHelper.calculatePercentage(
-									entry.getValue(), totalSpan)));
+			LinearLayout.LayoutParams params =
+					new LinearLayout.LayoutParams(
+							ViewGroup.LayoutParams.MATCH_PARENT,
+							ViewGroup.LayoutParams.WRAP_CONTENT);
+			params.setMargins(0, margin8, 0, 0);
+			chip.setLayoutParams(params);
+
+			String percentage =
+					LanguageStatisticsHelper.calculatePercentage(entry.getValue(), totalSpan);
+			chip.setText(String.format("%s — %s%%", entry.getKey(), percentage));
+
 			int color = ContextCompat.getColor(ctx, LanguageColor.languageColor(entry.getKey()));
 			chip.setChipBackgroundColor(ColorStateList.valueOf(color));
 			chip.setTextColor(AppUtil.isLightColor(color) ? Color.BLACK : Color.WHITE);
+
 			chip.setShapeAppearanceModel(
-					new ShapeAppearanceModel()
-							.toBuilder().setAllCorners(CornerFamily.ROUNDED, 48).build());
-			chip.setEnabled(false);
-			layout.addView(chip);
+					chip.getShapeAppearanceModel().toBuilder()
+							.setAllCorners(CornerFamily.ROUNDED, 48f)
+							.build());
+
+			chip.setClickable(false);
+			chip.setFocusable(false);
+			chip.setCheckable(false);
+
+			binding.langColor.addView(chip);
 		}
-		new MaterialAlertDialogBuilder(ctx)
-				.setTitle(R.string.lang_statistics)
-				.setView(view)
-				.setNeutralButton(R.string.close, null)
-				.show();
+
+		dialog.show();
 	}
 }

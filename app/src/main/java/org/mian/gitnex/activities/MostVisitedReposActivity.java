@@ -28,6 +28,7 @@ public class MostVisitedReposActivity extends BaseActivity {
 	private MostVisitedReposAdapter adapter;
 	private RepositoriesApi repositoriesApi;
 	private final List<Repository> mostVisitedReposList = new ArrayList<>();
+	private MostVisitedReposAdapter searchAdapter;
 	private int currentActiveAccountId;
 
 	@Override
@@ -51,8 +52,9 @@ public class MostVisitedReposActivity extends BaseActivity {
 	}
 
 	private void setupRecyclerView() {
-		adapter = new MostVisitedReposAdapter(this, mostVisitedReposList);
-		binding.recyclerView.setHasFixedSize(true);
+		adapter =
+				new MostVisitedReposAdapter(
+						this, mostVisitedReposList, (pos, repo) -> handleRepoReset(repo));
 		binding.recyclerView.setAdapter(adapter);
 	}
 
@@ -65,7 +67,11 @@ public class MostVisitedReposActivity extends BaseActivity {
 	}
 
 	private void setupSearchOverlay() {
-		binding.searchResultsRecycler.setAdapter(adapter);
+
+		searchAdapter =
+				new MostVisitedReposAdapter(
+						this, new ArrayList<>(), (pos, repo) -> handleRepoReset(repo));
+		binding.searchResultsRecycler.setAdapter(searchAdapter);
 
 		binding.searchView
 				.getEditText()
@@ -115,10 +121,11 @@ public class MostVisitedReposActivity extends BaseActivity {
 				.observe(
 						this,
 						repos -> {
+							mostVisitedReposList.clear();
+
 							binding.pullToRefresh.setRefreshing(false);
 							binding.expressiveLoader.setVisibility(View.GONE);
 
-							mostVisitedReposList.clear();
 							if (repos != null && !repos.isEmpty()) {
 								mostVisitedReposList.addAll(repos);
 								adapter.updateList(new ArrayList<>(mostVisitedReposList));
@@ -146,13 +153,13 @@ public class MostVisitedReposActivity extends BaseActivity {
 			}
 		}
 
-		adapter.updateList(filteredList);
+		searchAdapter.updateList(filteredList);
 		updateUiVisibility(filteredList.isEmpty());
 	}
 
 	private void handleResetAction() {
 		if (mostVisitedReposList.isEmpty()) {
-			Toasty.show(this, getString(R.string.noDataFound));
+			Toasty.show(this, getString(R.string.empty_state_title));
 			return;
 		}
 
@@ -162,6 +169,23 @@ public class MostVisitedReposActivity extends BaseActivity {
 				.setPositiveButton(R.string.reset, (dialog, which) -> resetAllCounters())
 				.setNeutralButton(R.string.cancelButton, null)
 				.show();
+	}
+
+	private void handleRepoReset(Repository repo) {
+		mostVisitedReposList.remove(repo);
+		adapter.updateList(new ArrayList<>(mostVisitedReposList));
+
+		if (binding.searchView.isShowing()) {
+			filter(binding.searchView.getEditText().getText().toString().trim());
+		}
+
+		updateUiVisibility(mostVisitedReposList.isEmpty());
+
+		if (repositoriesApi != null) {
+			repositoriesApi.updateRepositoryMostVisited(0, repo.getRepositoryId());
+		}
+
+		Toasty.show(this, getString(R.string.resetMostReposCounter));
 	}
 
 	private void resetAllCounters() {
