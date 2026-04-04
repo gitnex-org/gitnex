@@ -76,6 +76,10 @@ public class ApiRetrofitClient {
 		return createApi(context, url, token, cacheFile, null, null);
 	}
 
+	public static void clearInterfaces() {
+		instances.clear();
+	}
+
 	private static OkHttpClient buildOkHttpClient(
 			Context context,
 			String token,
@@ -90,10 +94,17 @@ public class ApiRetrofitClient {
 			// HttpLoggingInterceptor logging = new HttpLoggingInterceptor();
 			// logging.setLevel(HttpLoggingInterceptor.Level.BODY);
 
+			long requestTimeout =
+					Long.parseLong(
+							AppDatabaseSettings.getSettingsValue(
+									context, AppDatabaseSettings.API_REQUEST_TIMEOUT_KEY));
 			OkHttpClient.Builder builder =
 					new OkHttpClient.Builder()
-							.sslSocketFactory(sslContext.getSocketFactory(), trustManager)
 							// .addInterceptor(logging)
+							.connectTimeout(requestTimeout, TimeUnit.SECONDS)
+							.readTimeout(requestTimeout, TimeUnit.SECONDS)
+							.writeTimeout(requestTimeout, TimeUnit.SECONDS)
+							.sslSocketFactory(sslContext.getSocketFactory(), trustManager)
 							.hostnameVerifier(
 									trustManager.wrapHostnameVerifier(
 											HttpsURLConnection.getDefaultHostnameVerifier()))

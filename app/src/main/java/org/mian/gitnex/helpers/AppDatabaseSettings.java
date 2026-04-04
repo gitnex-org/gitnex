@@ -62,6 +62,8 @@ public class AppDatabaseSettings {
 	public static String APP_IMAGES_CACHE_DEFAULT = "1";
 	public static String APP_IMAGES_CACHE_SIZE_KEY = "app_images_cache_size";
 	public static String APP_IMAGES_CACHE_SIZE_DEFAULT = "100 MB";
+	public static String API_REQUEST_TIMEOUT_KEY = "api_request_timeout";
+	public static String API_REQUEST_TIMEOUT_DEFAULT = "30";
 	public static String APP_USER_PROFILE_HIDE_EMAIL_LANGUAGE_KEY =
 			"app_user_profile_hide_email_lang";
 	public static String APP_USER_PROFILE_HIDE_EMAIL_LANGUAGE_DEFAULT = "false";
@@ -197,6 +199,24 @@ public class AppDatabaseSettings {
 					APP_IMAGES_CACHE_SIZE_DEFAULT,
 					APP_IMAGES_CACHE_SIZE_DEFAULT);
 		}
+
+		if (appSettingsApi.fetchSettingCountByKey(API_REQUEST_TIMEOUT_KEY) == 0) {
+			appSettingsApi.insertNewSetting(
+					API_REQUEST_TIMEOUT_KEY,
+					API_REQUEST_TIMEOUT_DEFAULT,
+					API_REQUEST_TIMEOUT_DEFAULT);
+		} else {
+			try {
+				Long.parseLong(
+						appSettingsApi
+								.fetchSettingByKey(API_REQUEST_TIMEOUT_KEY)
+								.getSettingValue());
+			} catch (NumberFormatException _ex) {
+				appSettingsApi.updateSettingValueByKey(
+						API_REQUEST_TIMEOUT_DEFAULT, API_REQUEST_TIMEOUT_KEY);
+			}
+		}
+
 		if (appSettingsApi.fetchSettingCountByKey(APP_USER_PROFILE_HIDE_EMAIL_LANGUAGE_KEY) == 0) {
 			appSettingsApi.insertNewSetting(
 					APP_USER_PROFILE_HIDE_EMAIL_LANGUAGE_KEY,

@@ -77,9 +77,16 @@ public class RetrofitClient {
 			ApiKeyAuth auth = new ApiKeyAuth("header", "Authorization");
 			auth.setApiKey(token);
 
+			long requestTimeout =
+					Long.parseLong(
+							AppDatabaseSettings.getSettingsValue(
+									context, AppDatabaseSettings.API_REQUEST_TIMEOUT_KEY));
 			OkHttpClient.Builder okHttpClient =
 					new OkHttpClient.Builder()
 							// .addInterceptor(logging)
+							.connectTimeout(requestTimeout, TimeUnit.SECONDS)
+							.readTimeout(requestTimeout, TimeUnit.SECONDS)
+							.writeTimeout(requestTimeout, TimeUnit.SECONDS)
 							.sslSocketFactory(sslContext.getSocketFactory(), memorizingTrustManager)
 							.hostnameVerifier(
 									memorizingTrustManager.wrapHostnameVerifier(
@@ -352,6 +359,11 @@ public class RetrofitClient {
 			}
 		}
 		return webInterfaces.get(key);
+	}
+
+	public static void clearInterfaces() {
+		apiInterfaces.clear();
+		webInterfaces.clear();
 	}
 
 	public interface ApiInterface
