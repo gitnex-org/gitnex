@@ -158,6 +158,41 @@
 
     </LinearLayout>
 
+    <LinearLayout
+        android:id="@+id/requestTimeoutFrame"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/dimen24dp"
+        android:orientation="vertical">
+
+        <TextView
+            android:id="@+id/requestTimeoutHeader"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/settingsAPIRequestTimeoutHeader"
+            android:textColor="?attr/primaryTextColor"
+            android:textSize="@dimen/dimen16sp" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/dimen4dp"
+            android:text="@string/settingsAPIRequestTimeoutHintText"
+            android:textColor="?attr/hintColor"
+            android:textSize="@dimen/dimen12sp" />
+
+        <com.google.android.material.slider.Slider
+            android:id="@+id/requestTimeoutSlider"
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_marginTop="@dimen/dimen12dp"
+            android:contentDescription="@string/settingsAPIRequestTimeoutHeader"
+            style="@style/m3SliderStyle"
+            android:valueFrom="0"
+            android:stepSize="1" />
+
+    </LinearLayout>
+
     <com.google.android.material.button.MaterialButton
         android:id="@+id/clearCacheButton"
         style="@style/Widget.Material3.Button"

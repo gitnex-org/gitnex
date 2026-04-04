@@ -258,6 +258,8 @@
     <string name="cacheSizeDataSelectionHeaderText">Data Cache Size</string>
     <string name="cacheSizeImagesDialogHeader">Images Cache Size</string>
     <string name="cacheSizeImagesSelectionHeaderText">Images Cache Size</string>
+    <string name="settingsAPIRequestTimeoutHeader">API Request Timeout</string>
+    <string name="settingsAPIRequestTimeoutHintText">Maximum amount of time to wait for a server response.</string>
     <string name="clearCacheSelectionHeaderText">Clear Cache</string>
     <string name="clearCacheSelectionSelectedText" translatable="false">0 B</string>
     <string name="clearCacheDialogHeader">Clear Cache?</string>

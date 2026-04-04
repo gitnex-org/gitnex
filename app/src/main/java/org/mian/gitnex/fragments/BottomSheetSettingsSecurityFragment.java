@@ -16,6 +16,8 @@ import java.io.File;
 import java.io.IOException;
 import org.apache.commons.io.FileUtils;
 import org.mian.gitnex.R;
+import org.mian.gitnex.api.clients.ApiRetrofitClient;
+import org.mian.gitnex.clients.RetrofitClient;
 import org.mian.gitnex.databinding.BottomSheetSettingsSecurityBinding;
 import org.mian.gitnex.helpers.AppDatabaseSettings;
 import org.mian.gitnex.helpers.AppUIStateManager;
@@ -33,6 +35,7 @@ public class BottomSheetSettingsSecurityFragment extends BottomSheetDialogFragme
 	private static int cacheSizeDataSelectedChoice;
 	private static String[] cacheSizeImagesList;
 	private static int cacheSizeImagesSelectedChoice;
+	private static int[] requestTimeoutDataList;
 
 	@Override
 	public void onCreate(@Nullable Bundle savedInstanceState) {
@@ -160,6 +163,35 @@ public class BottomSheetSettingsSecurityFragment extends BottomSheetDialogFragme
 							AppUIStateManager.invalidateUI();
 							Toasty.show(requireContext(), getString(R.string.settingsSave));
 						}
+					}
+				});
+
+		requestTimeoutDataList = getResources().getIntArray(R.array.apiRequestTimeoutList);
+		int storedTimeout =
+				Integer.parseInt(
+						AppDatabaseSettings.getSettingsValue(
+								requireContext(), AppDatabaseSettings.API_REQUEST_TIMEOUT_KEY));
+		int requestTimeoutIndex = 0;
+		for (int i = 0; i < requestTimeoutDataList.length; i++) {
+			if (requestTimeoutDataList[i] == storedTimeout) {
+				requestTimeoutIndex = i;
+				break;
+			}
+		}
+
+		binding.requestTimeoutSlider.setValueTo(requestTimeoutDataList.length - 1);
+		binding.requestTimeoutSlider.setValue(requestTimeoutIndex);
+		binding.requestTimeoutSlider.setLabelFormatter(
+				index -> requestTimeoutDataList[(int) index] + "s");
+		binding.requestTimeoutSlider.addOnChangeListener(
+				(slider, value, fromUser) -> {
+					if (fromUser) {
+						AppDatabaseSettings.updateSettingsValue(
+								requireContext(),
+								String.valueOf(requestTimeoutDataList[(int) value]),
+								AppDatabaseSettings.API_REQUEST_TIMEOUT_KEY);
+						RetrofitClient.clearInterfaces();
+						ApiRetrofitClient.clearInterfaces();
 					}
 				});
 

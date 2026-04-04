@@ -68,6 +68,18 @@
         <item>@string/cacheSize3</item>
     </string-array>
 
+    <integer-array name="apiRequestTimeoutList">
+        <item>10</item>
+        <item>15</item>
+        <item>30</item>
+        <item>45</item>
+        <item>60</item>
+        <item>75</item>
+        <item>90</item>
+        <item>120</item>
+        <item>180</item>
+    </integer-array>
+
     <string-array name="ceColors">
         <item>@string/ceColorFive</item>
         <item>@string/ceColorBlueMoon</item>

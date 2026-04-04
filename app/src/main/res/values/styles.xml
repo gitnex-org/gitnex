@@ -18,6 +18,16 @@
         <item name="thumbTint">@color/colorWhite</item>
     </style>
 
+    <style name="Widget.App.Slider" parent="Widget.Material3.Slider">
+        <item name="thumbTint">@color/colorWhite</item>
+        <item name="colorPrimary">?attr/fabColor</item>
+    </style>
+
+    <style name="m3SliderStyle" parent="Widget.Material3.Slider">
+        <item name="materialThemeOverlay">@style/Widget.App.Slider</item>
+        <item name="thumbTint">@color/colorWhite</item>
+    </style>
+
     <!-- Custom Material cards -->
     <style name="CustomMaterCardViewStyle" parent="@style/Widget.MaterialComponents.CardView">
         <item name="shapeAppearanceOverlay">@style/ShapeAppearanceOverlay.card.custom.corners</item>
