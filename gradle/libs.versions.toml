@@ -39,8 +39,6 @@ gson = "2.13.2"
 retrofit = "3.0.0"
 
 # Utils
-prettytime = "5.0.7.Final"
-colorpickerview = "2.4.0"
 markwon = "4.6.2"
 glide = "5.0.5"
 androidsvg = "1.4"
@@ -94,8 +92,6 @@ retrofit-converter-gson = { module = "com.squareup.retrofit2:converter-gson", ve
 retrofit-converter-scalars = { module = "com.squareup.retrofit2:converter-scalars", version.ref = "retrofit" }
 
 # Utils
-prettytime = { module = "org.ocpsoft.prettytime:prettytime", version.ref = "prettytime" }
-colorpickerview = { module = "com.github.skydoves:colorpickerview", version.ref = "colorpickerview" }
 markwon-core = { module = "io.noties.markwon:core", version.ref = "markwon" }
 markwon-latex = { module = "io.noties.markwon:ext-latex", version.ref = "markwon" }
 markwon-strikethrough = { module = "io.noties.markwon:ext-strikethrough", version.ref = "markwon" }

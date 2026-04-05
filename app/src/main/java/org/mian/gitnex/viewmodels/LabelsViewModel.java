@@ -154,9 +154,10 @@ public class LabelsViewModel extends ViewModel {
 							@NonNull Call<Label> call, @NonNull Response<Label> response) {
 						isActionLoading.setValue(false);
 						if (response.isSuccessful()) {
-							actionResult.setValue(response.code());
+							actionResult.postValue(response.code());
 						} else {
 							error.setValue("Error: " + response.code());
+							actionResult.postValue(response.code());
 						}
 					}
 
@@ -193,7 +194,7 @@ public class LabelsViewModel extends ViewModel {
 								fullList.addAll(currentList);
 								labels.setValue(currentList);
 
-								actionResult.setValue(204);
+								actionResult.postValue(204);
 							}
 						} else {
 							error.setValue("Error: " + response.code());

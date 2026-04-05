@@ -1,6 +1,8 @@
 package org.mian.gitnex.fragments;
 
 import android.os.Bundle;
+import android.os.Handler;
+import android.os.Looper;
 import android.text.Editable;
 import android.text.TextWatcher;
 import android.view.LayoutInflater;
@@ -183,6 +185,34 @@ public class OrganizationLabelsFragment extends Fragment
 							binding.pullToRefresh.setRefreshing(false);
 							updateUiVisibility(
 									Boolean.TRUE.equals(viewModel.getIsLoading().getValue()));
+						});
+
+		viewModel
+				.getActionResult()
+				.observe(
+						getViewLifecycleOwner(),
+						code -> {
+							if (code == 200 || code == 201 || code == 204) {
+								int messageRes;
+								if (code == 201) {
+									messageRes = R.string.labelCreated;
+								} else if (code == 200) {
+									messageRes = R.string.labelUpdated;
+								} else {
+									messageRes = R.string.labelDeleteText;
+								}
+								Toasty.show(requireContext(), messageRes);
+
+								refreshData();
+								new Handler(Looper.getMainLooper())
+										.postDelayed(
+												() -> {
+													if (isAdded()) {
+														viewModel.resetActionResult();
+													}
+												},
+												100);
+							}
 						});
 
 		orgViewModel

@@ -1,8 +1,6 @@
 package org.mian.gitnex.helpers;
 
-import java.text.DateFormat;
-import java.text.ParseException;
-import java.text.SimpleDateFormat;
+import android.content.res.Resources;
 import java.time.Instant;
 import java.time.LocalDateTime;
 import java.time.ZoneId;
@@ -11,45 +9,80 @@ import java.time.format.FormatStyle;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.Locale;
-import org.ocpsoft.prettytime.PrettyTime;
+import org.mian.gitnex.R;
+import org.mian.gitnex.core.MainApplication;
 
 /**
  * @author mmarif
  */
 public class TimeHelper {
 
-	public static String customDateFormatForToast(String customDate) {
-
-		String[] parts = customDate.split("\\+");
-		String part1 = parts[0] + "Z";
-		SimpleDateFormat formatter =
-				new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss'Z'", Locale.ENGLISH);
-		Date createdTime = null;
-
-		try {
-			createdTime = formatter.parse(part1);
-		} catch (ParseException ignored) {
-		}
-
-		assert createdTime != null;
-
-		return customDateFormatForToastDateFormat(createdTime);
-	}
-
 	public static String formatTime(Date date, Locale locale) {
+		if (date == null) return "";
 
-		if (date != null) {
-			PrettyTime prettyTime = new PrettyTime(locale);
-			return prettyTime.format(date);
+		Resources res = MainApplication.getInstance().getResources();
+		long time = date.getTime();
+		long now = System.currentTimeMillis();
+		long diff = now - time;
+		boolean isFuture = diff < 0;
+		diff = Math.abs(diff);
+
+		long minute = 60000;
+		long hour = 3600000;
+		long day = 86400000;
+		long month = 2592000000L;
+		long year = 31536000000L;
+
+		if (diff < minute) {
+			return res.getString(isFuture ? R.string.time_in_moments : R.string.time_moments_ago);
 		}
 
-		return "";
-	}
+		if (diff < hour) {
+			long count = diff / minute;
+			int resId =
+					isFuture
+							? (count == 1 ? R.string.time_in_minute : R.string.time_in_minutes)
+							: (count == 1 ? R.string.time_minute_ago : R.string.time_minutes_ago);
+			return res.getString(resId, count);
+		}
 
-	public static String customDateFormatForToastDateFormat(Date customDate) {
+		if (diff < day) {
+			long count = diff / hour;
+			int resId =
+					isFuture
+							? (count == 1 ? R.string.time_in_hour : R.string.time_in_hours)
+							: (count == 1 ? R.string.time_hour_ago : R.string.time_hours_ago);
+			return res.getString(resId, count);
+		}
 
-		DateFormat format = DateFormat.getDateTimeInstance();
-		return format.format(customDate);
+		if (diff < month) {
+			long count = diff / day;
+			int resId =
+					isFuture
+							? (count == 1 ? R.string.time_in_day : R.string.time_in_days)
+							: (count == 1 ? R.string.time_day_ago : R.string.time_days_ago);
+			return res.getString(resId, count);
+		}
+
+		if (diff < year) {
+			long count = diff / month;
+			int resId;
+			if (isFuture) {
+				resId = (count == 1) ? R.string.time_in_month : R.string.time_in_months;
+			} else {
+				resId = (count == 1) ? R.string.time_month_ago : R.string.time_months_ago;
+			}
+			return res.getString(resId, count);
+		}
+
+		long count = diff / year;
+		int resId;
+		if (isFuture) {
+			resId = (count == 1) ? R.string.time_in_year : R.string.time_in_years;
+		} else {
+			resId = (count == 1) ? R.string.time_year_ago : R.string.time_years_ago;
+		}
+		return res.getString(resId, count);
 	}
 
 	public static boolean timeBetweenHours(int fromHour, int toHour, int fromMinute, int toMinute) {

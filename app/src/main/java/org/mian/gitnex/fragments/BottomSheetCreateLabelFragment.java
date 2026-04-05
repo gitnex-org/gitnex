@@ -1,5 +1,6 @@
 package org.mian.gitnex.fragments;
 
+import android.app.Dialog;
 import android.content.res.ColorStateList;
 import android.graphics.Color;
 import android.os.Bundle;
@@ -11,15 +12,15 @@ import android.view.ViewGroup;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.lifecycle.ViewModelProvider;
+import com.google.android.material.bottomsheet.BottomSheetDialog;
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment;
-import com.skydoves.colorpickerview.ColorPickerDialog;
-import com.skydoves.colorpickerview.listeners.ColorEnvelopeListener;
 import java.util.Objects;
 import org.gitnex.tea4j.v2.models.CreateLabelOption;
 import org.gitnex.tea4j.v2.models.EditLabelOption;
 import org.gitnex.tea4j.v2.models.Label;
 import org.mian.gitnex.R;
 import org.mian.gitnex.databinding.BottomsheetCreateLabelBinding;
+import org.mian.gitnex.helpers.AppUtil;
 import org.mian.gitnex.helpers.ColorInverter;
 import org.mian.gitnex.helpers.Toasty;
 import org.mian.gitnex.viewmodels.LabelsViewModel;
@@ -33,7 +34,7 @@ public class BottomSheetCreateLabelFragment extends BottomSheetDialogFragment {
 	private LabelsViewModel viewModel;
 	private String type, owner, repo, orgName;
 	private Long labelId = null;
-	private String selectedColor = "#c62828";
+	private String selectedColor = "#2E7D32";
 	private String initialName = "";
 	private String initialDesc = "";
 
@@ -165,19 +166,17 @@ public class BottomSheetCreateLabelFragment extends BottomSheetDialogFragment {
 	}
 
 	private void openColorPicker() {
-		new ColorPickerDialog.Builder(requireContext())
-				.setPositiveButton(
-						R.string.okButton,
-						(ColorEnvelopeListener)
-								(envelope, fromUser) -> {
-									selectedColor = "#" + envelope.getHexCode().substring(2);
-									updateLivePreview(
-											Objects.requireNonNull(binding.labelName.getText())
-													.toString(),
-											selectedColor);
-								})
-				.attachAlphaSlideBar(false)
-				.show();
+		BottomSheetColorPicker picker = BottomSheetColorPicker.newInstance(selectedColor);
+
+		picker.setOnColorSelectedListener(
+				hexColor -> {
+					selectedColor = hexColor;
+					updateLivePreview(
+							Objects.requireNonNull(binding.labelName.getText()).toString(),
+							selectedColor);
+				});
+
+		picker.show(getChildFragmentManager(), "color_picker");
 	}
 
 	private void setupObservers() {
@@ -195,21 +194,20 @@ public class BottomSheetCreateLabelFragment extends BottomSheetDialogFragment {
 		viewModel
 				.getActionResult()
 				.observe(
-						getViewLifecycleOwner(),
+						this,
 						code -> {
-							if (code == 200 || code == 201) {
-								Toasty.show(
-										requireContext(),
-										labelId == null
-												? R.string.labelCreated
-												: R.string.labelUpdated);
-								viewModel.fetchLabels(
-										requireContext(), owner, repo, type, 1, 50, true);
-								viewModel.resetActionResult();
+							if (code != null && (code == 200 || code == 201)) {
 								dismiss();
-							} else if (code != -1) {
-								Toasty.show(requireContext(), R.string.genericError);
 							}
 						});
+	}
+
+	@Override
+	public void onStart() {
+		super.onStart();
+		Dialog dialog = getDialog();
+		if (dialog instanceof BottomSheetDialog) {
+			AppUtil.applySheetStyle((BottomSheetDialog) dialog, false);
+		}
 	}
 }

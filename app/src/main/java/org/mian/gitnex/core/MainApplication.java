@@ -26,11 +26,13 @@ public class MainApplication extends Application {
 
 	public AccountContext currentAccount;
 	private TinyDB tinyDB;
+	private static MainApplication instance;
 
 	@Override
 	public void onCreate() {
 
 		super.onCreate();
+		instance = this;
 
 		Context appCtx = getApplicationContext();
 		tinyDB = TinyDB.getInstance(appCtx);
@@ -84,6 +86,10 @@ public class MainApplication extends Application {
 
 			ACRA.init(this, ACRABuilder);
 		}
+	}
+
+	public static MainApplication getInstance() {
+		return instance;
 	}
 
 	@Override

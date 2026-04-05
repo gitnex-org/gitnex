@@ -120,8 +120,6 @@ dependencies {
     implementation libs.gson
 
     // Utils
-    implementation libs.prettytime
-    implementation libs.colorpickerview
     implementation libs.androidsvg
     implementation libs.android.gif.drawable
     implementation libs.guava
