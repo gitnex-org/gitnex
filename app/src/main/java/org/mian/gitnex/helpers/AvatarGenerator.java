@@ -6,7 +6,6 @@ import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.Paint;
 import android.graphics.Rect;
-import android.graphics.Typeface;
 import android.graphics.drawable.BitmapDrawable;
 import android.graphics.drawable.Drawable;
 
@@ -45,7 +44,6 @@ public class AvatarGenerator {
 
 		textPaint.setColor(getContrastColor(color));
 		textPaint.setTextSize(sizePx * 0.55f);
-		textPaint.setTypeface(Typeface.create(Typeface.DEFAULT, Typeface.BOLD));
 		textPaint.setTextAlign(Paint.Align.CENTER);
 
 		Rect bounds = new Rect();
@@ -72,7 +70,6 @@ public class AvatarGenerator {
 
 		textPaint.setColor(getContrastColor(color));
 		textPaint.setTextSize(textSizePx);
-		textPaint.setTypeface(Typeface.create(Typeface.DEFAULT, Typeface.BOLD));
 		textPaint.setTextAlign(Paint.Align.CENTER);
 
 		Rect textBounds = new Rect();

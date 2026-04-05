@@ -257,7 +257,7 @@ public class AdministrationActivity extends BaseActivity {
 		dialog.setContentView(sheetBinding.getRoot());
 		AppUtil.applySheetStyle(dialog, true);
 
-		sheetBinding.title.setText(R.string.unadoptedRepos);
+		sheetBinding.sheetTitle.setText(R.string.unadoptedRepos);
 		viewModel.resetUnadoptedPagination();
 
 		AdminUnadoptedReposAdapter adapter =

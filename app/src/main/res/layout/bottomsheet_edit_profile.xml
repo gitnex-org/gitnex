@@ -1,21 +1,21 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
-    android:layout_height="wrap_content"
-    android:orientation="vertical"
-    android:paddingHorizontal="@dimen/dimen24dp"
-    android:paddingBottom="@dimen/dimen32dp">
+    android:layout_height="wrap_content">
 
     <com.google.android.material.bottomsheet.BottomSheetDragHandleView
         android:id="@+id/drag_handle"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content" />
+        android:layout_height="wrap_content"
+        app:layout_constraintTop_toTopOf="parent" />
 
     <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/header_layout"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginBottom="@dimen/dimen16dp">
+        android:paddingHorizontal="@dimen/dimen24dp"
+        app:layout_constraintTop_toBottomOf="@id/drag_handle">
 
         <TextView
             android:id="@+id/sheet_title"
@@ -44,7 +44,13 @@
     <androidx.core.widget.NestedScrollView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:maxHeight="500dp">
+        android:layout_marginTop="@dimen/dimen16dp"
+        android:clipToPadding="false"
+        android:paddingHorizontal="@dimen/dimen24dp"
+        android:paddingBottom="@dimen/dimen32dp"
+        app:layout_constrainedHeight="true"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/header_layout">
 
         <LinearLayout
             android:layout_width="match_parent"
@@ -55,6 +61,7 @@
                 style="@style/Widget.Material3.TextInputLayout.OutlinedBox"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/dimen8dp"
                 android:hint="@string/userFullNameText"
                 app:shapeAppearance="@style/ShapeAppearance.Material3.Corner.Medium">
 
@@ -130,7 +137,7 @@
             <FrameLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="@dimen/dimen24dp">
+                android:layout_marginTop="@dimen/dimen32dp">
 
                 <com.google.android.material.button.MaterialButton
                     android:id="@+id/save"
@@ -146,7 +153,8 @@
                     android:layout_height="@dimen/dimen24dp"
                     android:layout_gravity="center"
                     android:indeterminate="true"
-                    android:visibility="gone" />
+                    android:visibility="gone"
+                    app:indicatorSize="@dimen/dimen24dp" />
 
             </FrameLayout>
 
@@ -154,4 +162,4 @@
 
     </androidx.core.widget.NestedScrollView>
 
-</LinearLayout>
+</androidx.constraintlayout.widget.ConstraintLayout>

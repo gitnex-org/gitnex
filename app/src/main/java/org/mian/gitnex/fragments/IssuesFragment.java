@@ -203,6 +203,7 @@ public class IssuesFragment extends Fragment {
 								binding.layoutEmpty.getRoot().setVisibility(View.GONE);
 							} else {
 								binding.expressiveLoader.setVisibility(View.GONE);
+								binding.pullToRefresh.setRefreshing(false);
 							}
 						});
 
@@ -214,6 +215,7 @@ public class IssuesFragment extends Fragment {
 							if (err != null) {
 								Toasty.show(requireContext(), err);
 								binding.expressiveLoader.setVisibility(View.GONE);
+								binding.pullToRefresh.setRefreshing(false);
 							}
 						});
 	}
@@ -238,6 +240,7 @@ public class IssuesFragment extends Fragment {
 		viewModel.resetRepoPagination();
 
 		binding.layoutEmpty.getRoot().setVisibility(View.GONE);
+		binding.expressiveLoader.setVisibility(View.VISIBLE);
 
 		viewModel.fetchRepoIssues(
 				requireContext(),

@@ -16,7 +16,7 @@ import com.google.android.material.bottomsheet.BottomSheetDialog;
 import java.util.ArrayList;
 import java.util.List;
 import org.gitnex.tea4j.v2.models.Label;
-import org.mian.gitnex.databinding.BottomSheetLabelsInListBinding;
+import org.mian.gitnex.databinding.BottomsheetLabelsItemMenuBinding;
 import org.mian.gitnex.databinding.ListLabelsBinding;
 import org.mian.gitnex.helpers.ColorInverter;
 
@@ -119,12 +119,12 @@ public class LabelsAdapter extends RecyclerView.Adapter<LabelsAdapter.DataHolder
 			binding.labelsOptionsMenu.setVisibility(canEdit ? View.VISIBLE : View.GONE);
 			binding.labelsOptionsMenu.setOnClickListener(
 					v -> {
-						BottomSheetLabelsInListBinding sheetB =
-								BottomSheetLabelsInListBinding.inflate(
+						BottomsheetLabelsItemMenuBinding sheetB =
+								BottomsheetLabelsItemMenuBinding.inflate(
 										LayoutInflater.from(context));
 						BottomSheetDialog dialog = new BottomSheetDialog(context);
 						dialog.setContentView(sheetB.getRoot());
-						sheetB.bottomSheetHeader.setText(currentLabel.getName());
+						sheetB.sheetTitle.setText(currentLabel.getName());
 
 						sheetB.labelMenuEdit.setOnClickListener(
 								v1 -> {

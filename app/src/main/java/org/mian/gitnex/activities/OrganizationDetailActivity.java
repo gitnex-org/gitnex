@@ -12,7 +12,7 @@ import com.google.android.material.button.MaterialButton;
 import io.mikael.urlbuilder.UrlBuilder;
 import org.mian.gitnex.R;
 import org.mian.gitnex.databinding.ActivityOrgDetailBinding;
-import org.mian.gitnex.databinding.BottomSheetOrganizationBinding;
+import org.mian.gitnex.databinding.BottomsheetOrganizationMenuBinding;
 import org.mian.gitnex.fragments.OrganizationInfoFragment;
 import org.mian.gitnex.fragments.OrganizationLabelsFragment;
 import org.mian.gitnex.fragments.OrganizationMembersFragment;
@@ -240,8 +240,8 @@ public class OrganizationDetailActivity extends BaseActivity {
 
 	private void showOrganizationBottomSheet() {
 		BottomSheetDialog bottomSheetDialog = new BottomSheetDialog(this);
-		BottomSheetOrganizationBinding sheetBinding =
-				BottomSheetOrganizationBinding.inflate(getLayoutInflater());
+		BottomsheetOrganizationMenuBinding sheetBinding =
+				BottomsheetOrganizationMenuBinding.inflate(getLayoutInflater());
 		bottomSheetDialog.setContentView(sheetBinding.getRoot());
 
 		AppUtil.applySheetStyle(bottomSheetDialog, true);

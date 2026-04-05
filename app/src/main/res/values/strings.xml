@@ -34,6 +34,7 @@
     <string name="na" translatable="false">N/A</string>
     <string name="default_branch_name" translatable="false">main</string>
     <string name="discover_apps" translatable="false">Discover More Apps</string>
+    <string name="dot" translatable="false">•</string>
 
     <!-- menu items -->
     <string name="navMyRepos">My Repositories</string>

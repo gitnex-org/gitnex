@@ -120,6 +120,7 @@ public class PullRequestsFragment extends Fragment {
 								binding.layoutEmpty.getRoot().setVisibility(View.GONE);
 							} else {
 								binding.expressiveLoader.setVisibility(View.GONE);
+								binding.pullToRefresh.setRefreshing(false);
 							}
 						});
 
@@ -131,6 +132,7 @@ public class PullRequestsFragment extends Fragment {
 							if (err != null) {
 								Toasty.show(requireContext(), err);
 								binding.expressiveLoader.setVisibility(View.GONE);
+								binding.pullToRefresh.setRefreshing(false);
 							}
 						});
 	}
@@ -154,6 +156,7 @@ public class PullRequestsFragment extends Fragment {
 		viewModel.resetPagination();
 
 		binding.layoutEmpty.getRoot().setVisibility(View.GONE);
+		binding.expressiveLoader.setVisibility(View.VISIBLE);
 
 		viewModel.fetchPullRequests(
 				requireContext(),

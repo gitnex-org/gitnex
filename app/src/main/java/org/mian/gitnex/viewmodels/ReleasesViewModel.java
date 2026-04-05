@@ -5,16 +5,11 @@ import androidx.annotation.NonNull;
 import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MutableLiveData;
 import androidx.lifecycle.ViewModel;
-import java.util.Collections;
+import java.util.ArrayList;
 import java.util.List;
 import org.gitnex.tea4j.v2.models.Release;
 import org.gitnex.tea4j.v2.models.Tag;
-import org.mian.gitnex.R;
-import org.mian.gitnex.adapters.ReleasesAdapter;
-import org.mian.gitnex.adapters.TagsAdapter;
 import org.mian.gitnex.clients.RetrofitClient;
-import org.mian.gitnex.helpers.Constants;
-import org.mian.gitnex.helpers.Toasty;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
@@ -24,162 +19,211 @@ import retrofit2.Response;
  */
 public class ReleasesViewModel extends ViewModel {
 
-	private MutableLiveData<List<Release>> releasesList;
-	private int resultLimit;
-	private MutableLiveData<List<Tag>> tagsList;
+	private final MutableLiveData<List<Release>> releases = new MutableLiveData<>();
+	private final MutableLiveData<List<Tag>> tags = new MutableLiveData<>();
+	private final MutableLiveData<Boolean> isLoading = new MutableLiveData<>(false);
+	private final MutableLiveData<String> errorMessage = new MutableLiveData<>();
+	private final MutableLiveData<Boolean> hasLoadedOnce = new MutableLiveData<>(false);
+	private final MutableLiveData<Boolean> isTagsLoading = new MutableLiveData<>(false);
+	private final MutableLiveData<Integer> deleteActionSuccess = new MutableLiveData<>();
 
-	public LiveData<List<Release>> getReleasesList(String owner, String repo, Context ctx) {
+	private int totalCount = -1;
+	private boolean isLastPage = false;
+	private int tagsTotalCount = -1;
+	private boolean isTagsLastPage = false;
 
-		releasesList = new MutableLiveData<>();
-		resultLimit = Constants.getCurrentResultLimit(ctx);
-		loadReleasesList(owner, repo, ctx);
-		return releasesList;
+	public LiveData<List<Release>> getReleases() {
+		return releases;
 	}
 
-	public void loadReleasesList(String owner, String repo, Context ctx) {
-
-		Call<List<Release>> call =
-				RetrofitClient.getApiInterface(ctx)
-						.repoListReleases(owner, repo, null, null, 1, resultLimit);
-
-		call.enqueue(
-				new Callback<>() {
-
-					@Override
-					public void onResponse(
-							@NonNull Call<List<Release>> call,
-							@NonNull Response<List<Release>> response) {
-
-						if (response.isSuccessful()) {
-							releasesList.postValue(response.body());
-						} else if (response.code() == 404) {
-							releasesList.postValue(Collections.emptyList());
-						} else {
-							Toasty.show(ctx, ctx.getString(R.string.genericError));
-						}
-					}
-
-					@Override
-					public void onFailure(@NonNull Call<List<Release>> call, @NonNull Throwable t) {
-
-						Toasty.show(ctx, ctx.getString(R.string.genericServerResponseError));
-					}
-				});
+	public LiveData<List<Tag>> getTags() {
+		return tags;
 	}
 
-	public void loadMoreReleases(
-			String owner, String repo, int page, Context ctx, ReleasesAdapter adapter) {
+	public LiveData<Boolean> getIsLoading() {
+		return isLoading;
+	}
 
-		Call<List<Release>> call =
-				RetrofitClient.getApiInterface(ctx)
-						.repoListReleases(owner, repo, null, null, page, resultLimit);
+	public LiveData<Boolean> getIsTagsLoading() {
+		return isTagsLoading;
+	}
 
-		call.enqueue(
-				new Callback<>() {
+	public LiveData<String> getError() {
+		return errorMessage;
+	}
 
-					@Override
-					public void onResponse(
-							@NonNull Call<List<Release>> call,
-							@NonNull Response<List<Release>> response) {
+	public LiveData<Integer> getDeleteActionSuccess() {
+		return deleteActionSuccess;
+	}
 
-						if (response.isSuccessful()) {
-							List<Release> list = releasesList.getValue();
-							assert list != null;
+	public void resetPagination() {
+		this.isLastPage = false;
+		this.totalCount = -1;
+		this.hasLoadedOnce.setValue(false);
+		this.releases.setValue(null);
+	}
 
-							if (response.body() != null && !response.body().isEmpty()) {
-								list.addAll(response.body());
-								adapter.updateList(list);
-							} else {
-								adapter.setMoreDataAvailable(false);
+	public void resetTagsPagination() {
+		this.isTagsLastPage = false;
+		this.tagsTotalCount = -1;
+		this.tags.setValue(null);
+	}
+
+	public void fetchReleases(
+			Context ctx, String owner, String repo, int page, int limit, boolean isRefresh) {
+		if (Boolean.TRUE.equals(isLoading.getValue()) && !isRefresh) return;
+		if (!isRefresh && (isLastPage || (totalCount != -1 && getListSize(releases) >= totalCount)))
+			return;
+
+		isLoading.setValue(true);
+		RetrofitClient.getApiInterface(ctx)
+				.repoListReleases(owner, repo, null, null, page, limit)
+				.enqueue(
+						new Callback<>() {
+							@Override
+							public void onResponse(
+									@NonNull Call<List<Release>> call,
+									@NonNull Response<List<Release>> response) {
+								handleResponse(
+										response,
+										releases,
+										isLoading,
+										isRefresh,
+										limit,
+										total -> totalCount = total,
+										last -> isLastPage = last);
 							}
-						} else if (response.code() == 404) {
-							adapter.setMoreDataAvailable(false);
-						} else {
-							Toasty.show(ctx, ctx.getString(R.string.genericError));
-						}
-					}
 
-					@Override
-					public void onFailure(@NonNull Call<List<Release>> call, @NonNull Throwable t) {
-
-						Toasty.show(ctx, ctx.getString(R.string.genericServerResponseError));
-					}
-				});
-	}
-
-	public LiveData<List<Tag>> getTagsList(String owner, String repo, Context ctx) {
-
-		tagsList = new MutableLiveData<>();
-		resultLimit = Constants.getCurrentResultLimit(ctx);
-		loadTagsList(owner, repo, ctx);
-		return tagsList;
-	}
-
-	public void loadTagsList(String owner, String repo, Context ctx) {
-
-		Call<List<Tag>> call =
-				RetrofitClient.getApiInterface(ctx).repoListTags(owner, repo, 1, resultLimit);
-
-		call.enqueue(
-				new Callback<>() {
-
-					@Override
-					public void onResponse(
-							@NonNull Call<List<Tag>> call, @NonNull Response<List<Tag>> response) {
-
-						if (response.isSuccessful()) {
-							tagsList.postValue(response.body());
-						} else if (response.code() == 404) {
-							tagsList.postValue(Collections.emptyList());
-						} else {
-							Toasty.show(ctx, ctx.getString(R.string.genericError));
-						}
-					}
-
-					@Override
-					public void onFailure(@NonNull Call<List<Tag>> call, @NonNull Throwable t) {
-
-						Toasty.show(ctx, ctx.getString(R.string.genericServerResponseError));
-					}
-				});
-	}
-
-	public void loadMoreTags(
-			String owner, String repo, int page, Context ctx, TagsAdapter adapter) {
-
-		Call<List<Tag>> call =
-				RetrofitClient.getApiInterface(ctx).repoListTags(owner, repo, page, resultLimit);
-
-		call.enqueue(
-				new Callback<>() {
-
-					@Override
-					public void onResponse(
-							@NonNull Call<List<Tag>> call, @NonNull Response<List<Tag>> response) {
-
-						if (response.isSuccessful()) {
-
-							List<Tag> list = tagsList.getValue();
-							assert list != null;
-
-							if (response.body() != null && !response.body().isEmpty()) {
-								list.addAll(response.body());
-								adapter.updateList(list);
-							} else {
-								adapter.setMoreDataAvailable(false);
+							@Override
+							public void onFailure(
+									@NonNull Call<List<Release>> call, @NonNull Throwable t) {
+								handleError(isLoading, t);
 							}
-						} else if (response.code() == 404) {
-							adapter.setMoreDataAvailable(false);
-						} else {
-							Toasty.show(ctx, ctx.getString(R.string.genericError));
-						}
-					}
+						});
+	}
 
-					@Override
-					public void onFailure(@NonNull Call<List<Tag>> call, @NonNull Throwable t) {
+	public void fetchTags(
+			Context ctx, String owner, String repo, int page, int limit, boolean isRefresh) {
+		if (Boolean.TRUE.equals(isTagsLoading.getValue()) && !isRefresh) return;
+		if (!isRefresh
+				&& (isTagsLastPage
+						|| (tagsTotalCount != -1 && getListSize(tags) >= tagsTotalCount))) return;
 
-						Toasty.show(ctx, ctx.getString(R.string.genericServerResponseError));
-					}
-				});
+		isTagsLoading.setValue(true);
+		RetrofitClient.getApiInterface(ctx)
+				.repoListTags(owner, repo, page, limit)
+				.enqueue(
+						new Callback<>() {
+							@Override
+							public void onResponse(
+									@NonNull Call<List<Tag>> call,
+									@NonNull Response<List<Tag>> response) {
+								handleResponse(
+										response,
+										tags,
+										isTagsLoading,
+										isRefresh,
+										limit,
+										total -> tagsTotalCount = total,
+										last -> isTagsLastPage = last);
+							}
+
+							@Override
+							public void onFailure(
+									@NonNull Call<List<Tag>> call, @NonNull Throwable t) {
+								handleError(isTagsLoading, t);
+							}
+						});
+	}
+
+	private <T> int getListSize(MutableLiveData<List<T>> data) {
+		return data.getValue() != null ? data.getValue().size() : 0;
+	}
+
+	private <T> void handleResponse(
+			Response<List<T>> response,
+			MutableLiveData<List<T>> liveData,
+			MutableLiveData<Boolean> loading,
+			boolean isRefresh,
+			int limit,
+			java.util.function.Consumer<Integer> totalSetter,
+			java.util.function.Consumer<Boolean> lastPageSetter) {
+
+		loading.setValue(false);
+		hasLoadedOnce.setValue(true);
+
+		if (response.isSuccessful() && response.body() != null) {
+			String totalHeader = response.headers().get("x-total-count");
+			int total = totalHeader != null ? Integer.parseInt(totalHeader) : -1;
+			totalSetter.accept(total);
+
+			List<T> body = response.body();
+			List<T> currentList =
+					(isRefresh || liveData.getValue() == null)
+							? new ArrayList<>()
+							: new ArrayList<>(liveData.getValue());
+
+			currentList.addAll(body);
+			liveData.setValue(currentList);
+
+			lastPageSetter.accept(
+					body.size() < limit || (total != -1 && currentList.size() >= total));
+
+		} else if (response.code() == 404 && isRefresh) {
+			liveData.setValue(new ArrayList<>());
+			lastPageSetter.accept(true);
+		} else {
+			errorMessage.setValue("API error: " + response.code());
+		}
+	}
+
+	private void handleError(MutableLiveData<Boolean> loading, Throwable t) {
+		loading.setValue(false);
+		errorMessage.setValue(t.getMessage());
+	}
+
+	public void deleteTag(Context ctx, String owner, String repo, String tagName, int position) {
+		RetrofitClient.getApiInterface(ctx)
+				.repoDeleteTag(owner, repo, tagName)
+				.enqueue(
+						new Callback<>() {
+							@Override
+							public void onResponse(
+									@NonNull Call<Void> call, @NonNull Response<Void> response) {
+								if (response.isSuccessful()) {
+									deleteActionSuccess.setValue(position);
+								} else {
+									errorMessage.setValue("Delete failed: " + response.code());
+								}
+							}
+
+							@Override
+							public void onFailure(@NonNull Call<Void> call, @NonNull Throwable t) {
+								errorMessage.setValue(t.getMessage());
+							}
+						});
+	}
+
+	public void deleteRelease(
+			Context ctx, String owner, String repo, long releaseId, int position) {
+		RetrofitClient.getApiInterface(ctx)
+				.repoDeleteRelease(owner, repo, releaseId)
+				.enqueue(
+						new Callback<>() {
+							@Override
+							public void onResponse(
+									@NonNull Call<Void> call, @NonNull Response<Void> response) {
+								if (response.isSuccessful()) {
+									deleteActionSuccess.setValue(position);
+								} else {
+									errorMessage.setValue("Delete failed: " + response.code());
+								}
+							}
+
+							@Override
+							public void onFailure(@NonNull Call<Void> call, @NonNull Throwable t) {
+								errorMessage.setValue(t.getMessage());
+							}
+						});
 	}
 }

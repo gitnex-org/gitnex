@@ -1,17 +1,14 @@
 <?xml version="1.0" encoding="utf-8"?>
 <androidx.coordinatorlayout.widget.CoordinatorLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:tools="http://schemas.android.com/tools"
-    android:layout_width="match_parent"
-    android:layout_height="wrap_content"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    tools:context=".activities.RepoDetailActivity">
+    android:background="?attr/primaryBackgroundColor"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
 
     <FrameLayout
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:background="?attr/primaryBackgroundColor"
-        android:padding="@dimen/dimen8dp">
+        android:layout_height="match_parent">
 
         <androidx.swiperefreshlayout.widget.SwipeRefreshLayout
             android:id="@+id/pullToRefresh"
@@ -22,43 +19,25 @@
                 android:id="@+id/recyclerView"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:clipToPadding="false"
-                android:paddingBottom="@dimen/dimen72dp"/>
+                android:paddingHorizontal="@dimen/dimen12dp"
+                android:clipToPadding="false" />
 
         </androidx.swiperefreshlayout.widget.SwipeRefreshLayout>
 
     </FrameLayout>
 
-    <com.google.android.material.progressindicator.LinearProgressIndicator
-        android:id="@+id/progress_bar"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:indeterminate="true"
-        style="@style/Widget.MaterialComponents.LinearProgressIndicator"
-        app:indicatorColor="?attr/progressIndicatorColor"/>
-
-    <TextView
-        android:id="@+id/noDataReleases"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:layout_margin="@dimen/dimen16dp"
-        android:gravity="center"
-        android:text="@string/noDataFound"
-        android:textColor="?attr/primaryTextColor"
-        android:textSize="@dimen/dimen18sp"
-        android:visibility="gone"/>
-
-    <com.google.android.material.floatingactionbutton.ExtendedFloatingActionButton
-        android:id="@+id/createRelease"
+    <com.google.android.material.loadingindicator.LoadingIndicator
+        android:id="@+id/expressive_loader"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_gravity="end|bottom"
-        android:layout_margin="@dimen/dimen16dp"
-        android:text="@string/createRelease"
-        android:contentDescription="@string/createRelease"
-        android:textColor="?attr/materialCardBackgroundColor"
-        app:iconTint="?attr/materialCardBackgroundColor"
-        android:backgroundTint="?attr/fabColor"
-        app:icon="@drawable/ic_add" />
+        android:layout_gravity="center"
+        app:indicatorSize="@dimen/dimen48dp"
+        app:trackThickness="@dimen/dimen4dp" />
+
+    <include
+        android:id="@+id/layout_empty"
+        layout="@layout/layout_empty_state"
+        android:visibility="gone" />
 
 </androidx.coordinatorlayout.widget.CoordinatorLayout>
+
