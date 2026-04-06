@@ -7,11 +7,9 @@ import android.view.View;
 import androidx.appcompat.app.AlertDialog;
 import com.google.android.material.dialog.MaterialAlertDialogBuilder;
 import org.mian.gitnex.R;
-import org.mian.gitnex.actions.CollaboratorActions;
 import org.mian.gitnex.actions.PullRequestActions;
 import org.mian.gitnex.activities.LoginActivity;
 import org.mian.gitnex.databinding.CustomPrUpdateStrategyDialogBinding;
-import org.mian.gitnex.helpers.contexts.RepositoryContext;
 
 /**
  * @author mmarif
@@ -38,25 +36,6 @@ public class AlertDialogs {
 							intent.putExtra("mode", "update_account");
 							context.startActivity(intent);
 						})
-				.show();
-	}
-
-	public static void collaboratorRemoveDialog(
-			final Context context, final String userNameMain, RepositoryContext repository) {
-
-		materialAlertDialogBuilder =
-				new MaterialAlertDialogBuilder(
-						context, R.style.ThemeOverlay_Material3_Dialog_Alert);
-
-		materialAlertDialogBuilder
-				.setTitle(context.getString(R.string.removeCollaboratorDialogTitle, userNameMain))
-				.setMessage(R.string.removeCollaboratorMessage)
-				.setPositiveButton(
-						R.string.removeButton,
-						(dialog, whichButton) ->
-								CollaboratorActions.deleteCollaborator(
-										context, userNameMain, repository))
-				.setNeutralButton(R.string.cancelButton, null)
 				.show();
 	}
 

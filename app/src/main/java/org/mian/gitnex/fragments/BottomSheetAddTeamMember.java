@@ -90,6 +90,8 @@ public class BottomSheetAddTeamMember extends BottomSheetDialogFragment {
 	private void setupListeners() {
 		binding.searchInputLayout.setEndIconOnClickListener(v -> performSearch());
 
+		binding.btnClose.setOnClickListener(v -> dismiss());
+
 		binding.searchInput.setOnEditorActionListener(
 				(v, actionId, event) -> {
 					if (actionId == EditorInfo.IME_ACTION_SEARCH) {
@@ -160,7 +162,7 @@ public class BottomSheetAddTeamMember extends BottomSheetDialogFragment {
 		super.onStart();
 		Dialog dialog = getDialog();
 		if (dialog instanceof BottomSheetDialog) {
-			AppUtil.applyFullScreenSheetStyle((BottomSheetDialog) dialog, true);
+			AppUtil.applyFullScreenSheetStyle((BottomSheetDialog) dialog, false);
 		}
 	}
 }

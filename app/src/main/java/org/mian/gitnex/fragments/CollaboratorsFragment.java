@@ -58,12 +58,24 @@ public class CollaboratorsFragment extends Fragment {
 		viewModel = new ViewModelProvider(this).get(CollaboratorsViewModel.class);
 		resultLimit = Constants.getCurrentResultLimit(requireContext());
 
+		setupUI();
 		setupRecyclerView();
 		setupSwipeRefresh();
 		observeViewModel();
 
 		refreshData();
 		return binding.getRoot();
+	}
+
+	private void setupUI() {
+		if (repository.getPermissions().isAdmin()) {
+			binding.fabAddCollaborator.setVisibility(View.VISIBLE);
+			binding.fabAddCollaborator.setOnClickListener(
+					v -> {
+						BottomSheetAddCollaborator.newInstance(repository)
+								.show(getChildFragmentManager(), "AddCollaborator");
+					});
+		}
 	}
 
 	private void setupRecyclerView() {
