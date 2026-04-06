@@ -16,8 +16,6 @@ import org.gitnex.tea4j.v2.models.WikiPage;
 import org.mian.gitnex.R;
 import org.mian.gitnex.clients.RetrofitClient;
 import org.mian.gitnex.databinding.ActivityWikiBinding;
-import org.mian.gitnex.fragments.BottomSheetWikiFragment;
-import org.mian.gitnex.fragments.WikiFragment;
 import org.mian.gitnex.helpers.AlertDialogs;
 import org.mian.gitnex.helpers.AppUtil;
 import org.mian.gitnex.helpers.Markdown;
@@ -121,7 +119,7 @@ public class WikiActivity extends BaseActivity implements BottomSheetListener {
 							if (response.code() == 201) {
 
 								Toasty.show(ctx, getString(R.string.wikiCreated));
-								WikiFragment.resumeWiki = true;
+								// WikiFragment.resumeWiki = true;
 								finish();
 							} else {
 
@@ -194,7 +192,7 @@ public class WikiActivity extends BaseActivity implements BottomSheetListener {
 							if (response.code() == 200) {
 
 								Toasty.show(ctx, getString(R.string.wikiUpdated));
-								WikiFragment.resumeWiki = true;
+								// WikiFragment.resumeWiki = true;
 								finish();
 							} else {
 
@@ -361,7 +359,8 @@ public class WikiActivity extends BaseActivity implements BottomSheetListener {
 																			getString(
 																					R.string
 																							.wikiPageDeleted));
-																	WikiFragment.resumeWiki = true;
+																	// WikiFragment.resumeWiki =
+																	// true;
 																	finish();
 																} else if (response.code() == 403) {
 																	Toasty.show(
@@ -438,8 +437,8 @@ public class WikiActivity extends BaseActivity implements BottomSheetListener {
 			return true;
 		} else if (id == R.id.genericMenu) {
 
-			BottomSheetWikiFragment bottomSheet = new BottomSheetWikiFragment();
-			bottomSheet.show(getSupportFragmentManager(), "wikiBottomSheet");
+			// BottomSheetWikiFragment bottomSheet = new BottomSheetWikiFragment();
+			// bottomSheet.show(getSupportFragmentManager(), "wikiBottomSheet");
 			return true;
 		} else if (id == R.id.save) {
 

@@ -22,6 +22,7 @@ import org.mian.gitnex.fragments.ReleasesFragment;
 import org.mian.gitnex.helpers.AvatarGenerator;
 import org.mian.gitnex.helpers.Markdown;
 import org.mian.gitnex.helpers.TimeHelper;
+import org.mian.gitnex.helpers.Toasty;
 
 /**
  * @author mmarif
@@ -101,7 +102,7 @@ public class ReleasesAdapter extends RecyclerView.Adapter<ReleasesAdapter.Releas
 				Glide.with(context)
 						.load(release.getAuthor().getAvatarUrl())
 						.diskCacheStrategy(DiskCacheStrategy.ALL)
-						.circleCrop()
+						.centerCrop()
 						.into(binding.authorAvatar);
 			}
 
@@ -109,6 +110,12 @@ public class ReleasesAdapter extends RecyclerView.Adapter<ReleasesAdapter.Releas
 			if (release.getPublishedAt() != null) {
 				binding.releaseDate.setText(
 						TimeHelper.formatTime(release.getPublishedAt(), Locale.getDefault()));
+				binding.releaseDate.setOnClickListener(
+						v ->
+								Toasty.show(
+										context,
+										TimeHelper.getFullDateTime(
+												release.getPublishedAt(), Locale.getDefault())));
 			}
 
 			if (release.getBody() != null && !release.getBody().isEmpty()) {

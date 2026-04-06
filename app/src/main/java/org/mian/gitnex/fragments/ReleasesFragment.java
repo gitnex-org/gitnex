@@ -296,6 +296,8 @@ public class ReleasesFragment extends Fragment {
 
 		AppUtil.applySheetStyle(dialog, true);
 
+		menuBinding.sheetTitle.setText(release.getName());
+
 		menuBinding.deleteRelease.setOnClickListener(
 				v -> {
 					dialog.dismiss();

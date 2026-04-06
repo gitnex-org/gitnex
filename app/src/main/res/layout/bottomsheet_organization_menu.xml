@@ -17,7 +17,6 @@
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginHorizontal="@dimen/dimen24dp"
-        android:layout_marginBottom="@dimen/dimen16dp"
         android:text="@string/organization"
         android:textStyle="bold"
         app:layout_constraintEnd_toEndOf="parent"
@@ -29,6 +28,7 @@
         android:layout_height="wrap_content"
         app:layout_constrainedHeight="true"
         android:paddingHorizontal="@dimen/dimen24dp"
+        android:layout_marginTop="@dimen/dimen16dp"
         android:paddingBottom="@dimen/dimen32dp"
         android:clipToPadding="false"
         app:layout_constraintBottom_toBottomOf="parent"
@@ -44,7 +44,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:orientation="horizontal"
-                android:weightSum="3"
+                android:weightSum="4"
                 tools:ignore="UselessParent">
 
                 <com.google.android.material.card.MaterialCardView
@@ -55,7 +55,7 @@
                     android:layout_weight="1"
                     android:layout_margin="@dimen/dimen4dp"
                     app:cardCornerRadius="@dimen/dimen24dp"
-                    app:cardBackgroundColor="?attr/colorSecondaryContainer"
+                    app:cardBackgroundColor="?attr/colorPrimary"
                     app:strokeWidth="0dp">
 
                     <LinearLayout
@@ -74,7 +74,7 @@
                             android:layout_height="@dimen/dimen24dp"
                             app:srcCompat="@drawable/ic_copy"
                             android:contentDescription="@string/generalImgContentText"
-                            app:tint="?attr/colorOnSecondaryContainer" />
+                            app:tint="?attr/colorOnPrimary" />
 
                         <TextView
                             android:layout_width="wrap_content"
@@ -82,7 +82,10 @@
                             android:layout_marginTop="@dimen/dimen8dp"
                             android:fontFamily="sans-serif-medium"
                             android:text="@string/genericCopyUrl"
-                            android:textColor="?attr/colorOnSecondaryContainer"
+                            android:paddingHorizontal="@dimen/dimen6dp"
+                            android:maxLines="1"
+                            android:ellipsize="end"
+                            android:textColor="?attr/colorOnPrimary"
                             android:textAppearance="@style/TextAppearance.Material3.BodySmall"
                             android:gravity="center" />
 
@@ -98,7 +101,7 @@
                     android:layout_weight="1"
                     android:layout_margin="@dimen/dimen4dp"
                     app:cardCornerRadius="@dimen/dimen24dp"
-                    app:cardBackgroundColor="?attr/colorSecondaryContainer"
+                    app:cardBackgroundColor="?attr/colorPrimary"
                     app:strokeWidth="0dp">
 
                     <LinearLayout
@@ -117,15 +120,18 @@
                             android:layout_height="@dimen/dimen24dp"
                             android:contentDescription="@string/generalImgContentText"
                             app:srcCompat="@drawable/ic_share"
-                            app:tint="?attr/colorOnSecondaryContainer" />
+                            app:tint="?attr/colorOnPrimary" />
 
                         <TextView
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:layout_marginTop="@dimen/dimen8dp"
                             android:fontFamily="sans-serif-medium"
+                            android:paddingHorizontal="@dimen/dimen6dp"
+                            android:maxLines="1"
+                            android:ellipsize="end"
                             android:text="@string/share"
-                            android:textColor="?attr/colorOnSecondaryContainer"
+                            android:textColor="?attr/colorOnPrimary"
                             android:textAppearance="@style/TextAppearance.Material3.BodySmall"
                             android:gravity="center" />
 
@@ -141,7 +147,7 @@
                     android:layout_weight="1"
                     android:layout_margin="@dimen/dimen4dp"
                     app:cardCornerRadius="@dimen/dimen24dp"
-                    app:cardBackgroundColor="?attr/colorSecondaryContainer"
+                    app:cardBackgroundColor="?attr/colorPrimary"
                     app:strokeWidth="0dp">
 
                     <LinearLayout
@@ -160,7 +166,7 @@
                             android:layout_height="@dimen/dimen24dp"
                             app:srcCompat="@drawable/ic_browser"
                             android:contentDescription="@string/generalImgContentText"
-                            app:tint="?attr/colorOnSecondaryContainer" />
+                            app:tint="?attr/colorOnPrimary" />
 
                         <TextView
                             android:layout_width="wrap_content"
@@ -168,7 +174,10 @@
                             android:layout_marginTop="@dimen/dimen8dp"
                             android:fontFamily="sans-serif-medium"
                             android:text="@string/openInBrowser"
-                            android:textColor="?attr/colorOnSecondaryContainer"
+                            android:paddingHorizontal="@dimen/dimen6dp"
+                            android:maxLines="1"
+                            android:ellipsize="end"
+                            android:textColor="?attr/colorOnPrimary"
                             android:textAppearance="@style/TextAppearance.Material3.BodySmall"
                             android:gravity="center" />
 

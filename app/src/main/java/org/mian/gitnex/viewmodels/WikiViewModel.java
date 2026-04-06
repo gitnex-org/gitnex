@@ -1,21 +1,14 @@
 package org.mian.gitnex.viewmodels;
 
 import android.content.Context;
-import android.view.View;
 import androidx.annotation.NonNull;
 import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MutableLiveData;
 import androidx.lifecycle.ViewModel;
-import java.io.IOException;
+import java.util.ArrayList;
 import java.util.List;
 import org.gitnex.tea4j.v2.models.WikiPageMetaData;
-import org.json.JSONException;
-import org.json.JSONObject;
-import org.mian.gitnex.R;
-import org.mian.gitnex.adapters.WikiListAdapter;
 import org.mian.gitnex.clients.RetrofitClient;
-import org.mian.gitnex.databinding.FragmentWikiBinding;
-import org.mian.gitnex.helpers.Toasty;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
@@ -25,114 +18,113 @@ import retrofit2.Response;
  */
 public class WikiViewModel extends ViewModel {
 
-	private MutableLiveData<List<WikiPageMetaData>> wikiList;
+	private final MutableLiveData<List<WikiPageMetaData>> wikiPages = new MutableLiveData<>();
+	private final MutableLiveData<Boolean> isLoading = new MutableLiveData<>(false);
+	private final MutableLiveData<Boolean> hasLoadedOnce = new MutableLiveData<>(false);
+	private final MutableLiveData<String> error = new MutableLiveData<>();
+	private final MutableLiveData<Integer> actionResult = new MutableLiveData<>(-1);
 
-	public LiveData<List<WikiPageMetaData>> getWiki(
-			String owner,
-			String repo,
-			int page,
-			int resultLimit,
-			Context ctx,
-			FragmentWikiBinding fragmentWikiBinding) {
+	private final List<WikiPageMetaData> fullList = new ArrayList<>();
 
-		wikiList = new MutableLiveData<>();
-		loadWikiList(owner, repo, page, resultLimit, ctx, fragmentWikiBinding);
-
-		return wikiList;
+	public LiveData<List<WikiPageMetaData>> getWikiPages() {
+		return wikiPages;
 	}
 
-	public void loadWikiList(
-			String owner,
-			String repo,
-			int page,
-			int resultLimit,
-			Context ctx,
-			FragmentWikiBinding fragmentWikiBinding) {
-
-		Call<List<WikiPageMetaData>> call;
-		call = RetrofitClient.getApiInterface(ctx).repoGetWikiPages(owner, repo, page, resultLimit);
-
-		call.enqueue(
-				new Callback<>() {
-
-					@Override
-					public void onResponse(
-							@NonNull Call<List<WikiPageMetaData>> call,
-							@NonNull Response<List<WikiPageMetaData>> response) {
-
-						if (response.isSuccessful()) {
-							if (response.code() == 200) {
-								wikiList.postValue(response.body());
-							}
-						} else if (response.code() == 404) {
-							fragmentWikiBinding.progressBar.setVisibility(View.GONE);
-							fragmentWikiBinding.noData.setVisibility(View.VISIBLE);
-							fragmentWikiBinding.recyclerView.setVisibility(View.GONE);
-						} else {
-							Toasty.show(ctx, ctx.getString(R.string.genericError));
-						}
-
-						try {
-							if (response.errorBody() != null) {
-								new JSONObject(response.errorBody().string());
-							}
-						} catch (IOException | JSONException e) {
-							fragmentWikiBinding.noData.setText(
-									ctx.getResources().getString(R.string.apiNotFound));
-						}
-					}
-
-					@Override
-					public void onFailure(
-							@NonNull Call<List<WikiPageMetaData>> call, @NonNull Throwable t) {
-
-						Toasty.show(ctx, ctx.getString(R.string.genericServerResponseError));
-					}
-				});
+	public LiveData<Boolean> getIsLoading() {
+		return isLoading;
 	}
 
-	public void loadMoreWiki(
-			String owner,
-			String repo,
-			int page,
-			int resultLimit,
-			Context ctx,
-			FragmentWikiBinding fragmentWikiBinding,
-			WikiListAdapter adapter) {
+	public LiveData<Boolean> getHasLoadedOnce() {
+		return hasLoadedOnce;
+	}
 
-		Call<List<WikiPageMetaData>> call;
-		call = RetrofitClient.getApiInterface(ctx).repoGetWikiPages(owner, repo, page, resultLimit);
+	public LiveData<String> getError() {
+		return error;
+	}
 
-		call.enqueue(
-				new Callback<>() {
+	public LiveData<Integer> getActionResult() {
+		return actionResult;
+	}
 
-					@Override
-					public void onResponse(
-							@NonNull Call<List<WikiPageMetaData>> call,
-							@NonNull Response<List<WikiPageMetaData>> response) {
+	public void resetPagination() {
+		fullList.clear();
+		wikiPages.setValue(new ArrayList<>());
+		hasLoadedOnce.setValue(false);
+	}
 
-						if (response.isSuccessful()) {
-							List<WikiPageMetaData> list = wikiList.getValue();
-							assert list != null;
-							assert response.body() != null;
+	public void fetchWikiPages(
+			Context ctx, String owner, String repo, int page, int limit, boolean isRefresh) {
+		if (Boolean.TRUE.equals(isLoading.getValue()) && !isRefresh) return;
 
-							if (!response.body().isEmpty()) {
-								list.addAll(response.body());
-								adapter.updateList(list);
-							} else {
-								adapter.setMoreDataAvailable(false);
+		isLoading.setValue(true);
+
+		RetrofitClient.getApiInterface(ctx)
+				.repoGetWikiPages(owner, repo, page, limit)
+				.enqueue(
+						new Callback<>() {
+							@Override
+							public void onResponse(
+									@NonNull Call<List<WikiPageMetaData>> call,
+									@NonNull Response<List<WikiPageMetaData>> response) {
+								isLoading.setValue(false);
+								hasLoadedOnce.setValue(true);
+
+								if (response.isSuccessful() && response.body() != null) {
+									if (isRefresh) {
+										fullList.clear();
+									}
+									for (WikiPageMetaData pageData : response.body()) {
+										if (!fullList.contains(pageData)) {
+											fullList.add(pageData);
+										}
+									}
+									wikiPages.setValue(new ArrayList<>(fullList));
+								} else if (response.code() != 404) {
+									error.setValue("Error: " + response.code());
+								} else {
+									wikiPages.setValue(new ArrayList<>(fullList));
+								}
 							}
-						} else {
-							Toasty.show(ctx, ctx.getString(R.string.genericError));
-						}
-					}
 
-					@Override
-					public void onFailure(
-							@NonNull Call<List<WikiPageMetaData>> call, @NonNull Throwable t) {
+							@Override
+							public void onFailure(
+									@NonNull Call<List<WikiPageMetaData>> call,
+									@NonNull Throwable t) {
+								isLoading.setValue(false);
+								hasLoadedOnce.setValue(true);
+								error.setValue(t.getMessage());
+							}
+						});
+	}
 
-						Toasty.show(ctx, ctx.getString(R.string.genericServerResponseError));
-					}
-				});
+	public void deleteWikiPage(Context ctx, String owner, String repo, String pageName) {
+		isLoading.setValue(true);
+		RetrofitClient.getApiInterface(ctx)
+				.repoDeleteWikiPage(owner, repo, pageName)
+				.enqueue(
+						new Callback<>() {
+							@Override
+							public void onResponse(
+									@NonNull Call<Void> call, @NonNull Response<Void> response) {
+								isLoading.setValue(false);
+								if (response.isSuccessful()) {
+									fullList.removeIf(p -> p.getTitle().equals(pageName));
+									wikiPages.setValue(new ArrayList<>(fullList));
+									actionResult.setValue(204);
+								} else {
+									error.setValue("Error: " + response.code());
+								}
+							}
+
+							@Override
+							public void onFailure(@NonNull Call<Void> call, @NonNull Throwable t) {
+								isLoading.setValue(false);
+								error.setValue(t.getMessage());
+							}
+						});
+	}
+
+	public void resetActionResult() {
+		actionResult.setValue(-1);
 	}
 }

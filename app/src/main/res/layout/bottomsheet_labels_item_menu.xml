@@ -17,7 +17,6 @@
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginHorizontal="@dimen/dimen24dp"
-        android:layout_marginBottom="@dimen/dimen16dp"
         android:text="@string/labelName"
         android:textStyle="bold"
         app:layout_constraintEnd_toEndOf="parent"
@@ -28,6 +27,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         app:layout_constrainedHeight="true"
+        android:layout_marginTop="@dimen/dimen16dp"
         android:paddingHorizontal="@dimen/dimen24dp"
         android:paddingBottom="@dimen/dimen32dp"
         android:clipToPadding="false"
@@ -44,7 +44,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:orientation="horizontal"
-                android:weightSum="3"
+                android:weightSum="4"
                 tools:ignore="UselessParent">
 
                 <com.google.android.material.card.MaterialCardView
@@ -55,7 +55,7 @@
                     android:layout_weight="1"
                     android:layout_margin="@dimen/dimen4dp"
                     app:cardCornerRadius="@dimen/dimen24dp"
-                    app:cardBackgroundColor="?attr/colorSecondaryContainer"
+                    app:cardBackgroundColor="?attr/colorPrimary"
                     app:strokeWidth="0dp">
 
                     <LinearLayout
@@ -73,7 +73,7 @@
                             android:layout_width="@dimen/dimen24dp"
                             android:layout_height="@dimen/dimen24dp"
                             app:srcCompat="@drawable/ic_edit"
-                            app:tint="?attr/colorOnSecondaryContainer"
+                            app:tint="?attr/colorOnPrimary"
                             android:contentDescription="@string/menuEditText" />
 
                         <TextView
@@ -83,7 +83,10 @@
                             android:fontFamily="sans-serif-medium"
                             android:gravity="center"
                             android:text="@string/menuEditText"
-                            android:textColor="?attr/colorOnSecondaryContainer"
+                            android:paddingHorizontal="@dimen/dimen6dp"
+                            android:maxLines="1"
+                            android:ellipsize="end"
+                            android:textColor="?attr/colorOnPrimary"
                             android:textAppearance="@style/TextAppearance.Material3.BodySmall" />
 
                     </LinearLayout>
@@ -126,6 +129,9 @@
                             android:fontFamily="sans-serif-medium"
                             android:gravity="center"
                             android:text="@string/menuDeleteText"
+                            android:paddingHorizontal="@dimen/dimen6dp"
+                            android:maxLines="1"
+                            android:ellipsize="end"
                             android:textColor="?attr/colorOnErrorContainer"
                             android:textAppearance="@style/TextAppearance.Material3.BodySmall" />
 

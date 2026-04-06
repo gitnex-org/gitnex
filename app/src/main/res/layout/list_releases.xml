@@ -38,14 +38,21 @@
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toTopOf="parent" />
 
-                <ImageView
+                <com.google.android.material.button.MaterialButton
                     android:id="@+id/releasesOptionsMenu"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:contentDescription="@string/generalImgContentText"
-                    android:src="@drawable/ic_dotted_menu"
-                    android:layout_marginTop="@dimen/dimen4dp"
-                    android:background="?attr/selectableItemBackgroundBorderless"
+                    style="@style/Widget.Material3.Button.IconButton"
+                    android:layout_width="@dimen/dimen52dp"
+                    android:layout_height="@dimen/dimen52dp"
+                    android:padding="0dp"
+                    android:insetTop="0dp"
+                    android:insetBottom="0dp"
+                    android:insetLeft="0dp"
+                    android:insetRight="0dp"
+                    app:icon="@drawable/ic_dotted_menu"
+                    app:iconSize="@dimen/dimen26dp"
+                    app:iconGravity="textStart"
+                    app:iconPadding="0dp"
+                    app:iconTint="?attr/iconsColor"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintTop_toTopOf="parent" />
 
@@ -70,15 +77,15 @@
                     app:layout_constraintTop_toTopOf="@id/releaseTypeBadge">
 
                     <ImageView
-                        android:layout_width="@dimen/dimen14dp"
-                        android:layout_height="@dimen/dimen14dp"
+                        android:layout_width="@dimen/dimen18dp"
+                        android:layout_height="@dimen/dimen18dp"
                         android:contentDescription="@string/generalImgContentText"
                         app:srcCompat="@drawable/ic_tag"
                         app:tint="?attr/colorPrimary" />
 
                     <TextView
                         android:id="@+id/releaseTag"
-                        style="@style/TextAppearance.Material3.LabelMedium"
+                        style="@style/TextAppearance.Material3.LabelLarge"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_marginStart="@dimen/dimen4dp"
@@ -93,7 +100,7 @@
 
                     <TextView
                         android:id="@+id/releaseDate"
-                        style="@style/TextAppearance.Material3.LabelMedium"
+                        style="@style/TextAppearance.Material3.LabelLarge"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:textColor="?attr/colorOnSurfaceVariant" />
