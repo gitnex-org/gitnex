@@ -197,7 +197,6 @@
     <string name="releasePublishedBy">Published by @%1$s</string>
     <string name="noReleaseBodyContent">Release notes are not provided by the publisher.</string>
 
-    <string name="newMilestoneTitle">Title</string>
     <string name="newMilestoneDueDate">Due Date</string>
     <string name="setDueDate" translatable="false">%1$d-%2$d-%3$d</string>
     <string name="milestoneNameErrorEmpty">Milestone title is empty</string>
@@ -215,13 +214,17 @@
     <string name="newIssueTitle">Title</string>
     <string name="newIssueAssigneesListTitle">Assignees</string>
     <string name="newIssueDueDateTitle">Due Date</string>
-    <string name="newIssueMilestoneTitle">Milestone</string>
     <string name="newIssueLabelsTitle">Labels</string>
     <string name="issueTitleEmpty">Issue title is empty</string>
     <string name="issueDescriptionEmpty">Issue description is empty</string>
     <string name="issueCreated">New issue created successfully</string>
     <string name="issueCreatedNoMilestone">No milestone</string>
     <string name="noAssigneesFound">No assignees found</string>
+    <string name="delete_milestone">>Delete milestone</string>
+    <string name="milestone_delete_confirm_text">Are you sure you want to delete milestone %1$s?</string>
+    <string name="close_milestone_msg">You are about to close milestone %1$s. Press Close to continue.</string>
+    <string name="open_milestone_msg">This action will reopen milestone %1$s. Press Open to continue.</string>
+    <string name="milestone_deleted">Milestone deleted</string>
 
     <!-- settings -->
     <string name="settingsLanguageHeaderText">Translation</string>
@@ -638,6 +641,7 @@
     <string name="code">Code</string>
     <string name="topics">Topics</string>
     <string name="merged">Merged</string>
+    <string name="milestone">Milestone</string>
     <!-- generic copy -->
 
     <string name="exploreUsers">Explore users</string>

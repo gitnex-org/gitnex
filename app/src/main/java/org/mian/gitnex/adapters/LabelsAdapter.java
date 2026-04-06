@@ -116,8 +116,8 @@ public class LabelsAdapter extends RecyclerView.Adapter<LabelsAdapter.DataHolder
 		DataHolder(ListLabelsBinding binding) {
 			super(binding.getRoot());
 			this.binding = binding;
-			binding.labelsOptionsMenu.setVisibility(canEdit ? View.VISIBLE : View.GONE);
-			binding.labelsOptionsMenu.setOnClickListener(
+			binding.itemMenu.setVisibility(canEdit ? View.VISIBLE : View.GONE);
+			binding.itemMenu.setOnClickListener(
 					v -> {
 						BottomsheetLabelsItemMenuBinding sheetB =
 								BottomsheetLabelsItemMenuBinding.inflate(

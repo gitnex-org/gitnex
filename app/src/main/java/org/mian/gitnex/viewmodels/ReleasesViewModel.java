@@ -7,6 +7,7 @@ import androidx.lifecycle.MutableLiveData;
 import androidx.lifecycle.ViewModel;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 import org.gitnex.tea4j.v2.models.Release;
 import org.gitnex.tea4j.v2.models.Tag;
 import org.mian.gitnex.clients.RetrofitClient;
@@ -25,7 +26,7 @@ public class ReleasesViewModel extends ViewModel {
 	private final MutableLiveData<String> errorMessage = new MutableLiveData<>();
 	private final MutableLiveData<Boolean> hasLoadedOnce = new MutableLiveData<>(false);
 	private final MutableLiveData<Boolean> isTagsLoading = new MutableLiveData<>(false);
-	private final MutableLiveData<Integer> deleteActionSuccess = new MutableLiveData<>();
+	private final MutableLiveData<Integer> actionResult = new MutableLiveData<>(-1);
 
 	private int totalCount = -1;
 	private boolean isLastPage = false;
@@ -52,8 +53,8 @@ public class ReleasesViewModel extends ViewModel {
 		return errorMessage;
 	}
 
-	public LiveData<Integer> getDeleteActionSuccess() {
-		return deleteActionSuccess;
+	public LiveData<Integer> getActionResult() {
+		return actionResult;
 	}
 
 	public void resetPagination() {
@@ -67,6 +68,10 @@ public class ReleasesViewModel extends ViewModel {
 		this.isTagsLastPage = false;
 		this.tagsTotalCount = -1;
 		this.tags.setValue(null);
+	}
+
+	public void resetActionResult() {
+		actionResult.setValue(-1);
 	}
 
 	public void fetchReleases(
@@ -163,7 +168,11 @@ public class ReleasesViewModel extends ViewModel {
 							? new ArrayList<>()
 							: new ArrayList<>(liveData.getValue());
 
-			currentList.addAll(body);
+			for (T item : body) {
+				if (!currentList.contains(item)) {
+					currentList.add(item);
+				}
+			}
 			liveData.setValue(currentList);
 
 			lastPageSetter.accept(
@@ -191,7 +200,17 @@ public class ReleasesViewModel extends ViewModel {
 							public void onResponse(
 									@NonNull Call<Void> call, @NonNull Response<Void> response) {
 								if (response.isSuccessful()) {
-									deleteActionSuccess.setValue(position);
+									List<Tag> current =
+											new ArrayList<>(
+													Objects.requireNonNull(tags.getValue()));
+									if (position >= 0 && position < current.size()) {
+										current.remove(position);
+										tags.setValue(current);
+										if (tagsTotalCount > 0) {
+											tagsTotalCount--;
+										}
+									}
+									actionResult.setValue(204);
 								} else {
 									errorMessage.setValue("Delete failed: " + response.code());
 								}
@@ -214,7 +233,17 @@ public class ReleasesViewModel extends ViewModel {
 							public void onResponse(
 									@NonNull Call<Void> call, @NonNull Response<Void> response) {
 								if (response.isSuccessful()) {
-									deleteActionSuccess.setValue(position);
+									List<Release> current =
+											new ArrayList<>(
+													Objects.requireNonNull(releases.getValue()));
+									if (position >= 0 && position < current.size()) {
+										current.remove(position);
+										releases.setValue(current);
+										if (totalCount > 0) {
+											totalCount--;
+										}
+									}
+									actionResult.setValue(204);
 								} else {
 									errorMessage.setValue("Delete failed: " + response.code());
 								}

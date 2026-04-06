@@ -136,8 +136,8 @@ public class ReleasesAdapter extends RecyclerView.Adapter<ReleasesAdapter.Releas
 				binding.downloadList.setVisibility(View.GONE);
 			}
 
-			binding.releasesOptionsMenu.setVisibility(canDelete ? View.VISIBLE : View.GONE);
-			binding.releasesOptionsMenu.setOnClickListener(
+			binding.itemMenu.setVisibility(canDelete ? View.VISIBLE : View.GONE);
+			binding.itemMenu.setOnClickListener(
 					v -> listener.onDelete(release, getBindingAdapterPosition()));
 
 			binding.btnAssets.setOnClickListener(

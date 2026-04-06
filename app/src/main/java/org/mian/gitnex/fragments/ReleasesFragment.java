@@ -233,16 +233,23 @@ public class ReleasesFragment extends Fragment {
 						});
 
 		viewModel
-				.getDeleteActionSuccess()
+				.getActionResult()
 				.observe(
 						getViewLifecycleOwner(),
-						position -> {
-							if (repository.isReleasesViewTypeIsTag()) {
-								if (tagsAdapter != null) tagsAdapter.removeItem(position);
+						code -> {
+							if (code == -1) return;
+							if (code == 204) {
+								int messageRes =
+										repository.isReleasesViewTypeIsTag()
+												? R.string.tagDeleted
+												: R.string.releaseDeleted;
+
+								Toasty.show(requireContext(), messageRes);
 							} else {
-								if (releasesAdapter != null) releasesAdapter.removeItem(position);
+								Toasty.show(requireContext(), R.string.genericError);
 							}
-							updateEmptyState(getAdapterCount() == 0);
+
+							viewModel.resetActionResult();
 						});
 	}
 

@@ -269,7 +269,7 @@ public class OrganizationDetailActivity extends BaseActivity {
 					bottomSheetDialog.dismiss();
 				});
 
-		sheetBinding.open.setOnClickListener(
+		sheetBinding.openInBrowser.setOnClickListener(
 				v -> {
 					AppUtil.openUrlInBrowser(this, url);
 					bottomSheetDialog.dismiss();

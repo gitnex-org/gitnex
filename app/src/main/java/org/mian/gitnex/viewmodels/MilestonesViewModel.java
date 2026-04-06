@@ -5,13 +5,12 @@ import androidx.annotation.NonNull;
 import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MutableLiveData;
 import androidx.lifecycle.ViewModel;
+import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
+import org.gitnex.tea4j.v2.models.EditMilestoneOption;
 import org.gitnex.tea4j.v2.models.Milestone;
-import org.mian.gitnex.R;
-import org.mian.gitnex.adapters.MilestonesAdapter;
 import org.mian.gitnex.clients.RetrofitClient;
-import org.mian.gitnex.helpers.Constants;
-import org.mian.gitnex.helpers.Toasty;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
@@ -21,94 +20,177 @@ import retrofit2.Response;
  */
 public class MilestonesViewModel extends ViewModel {
 
-	private static MutableLiveData<List<Milestone>> milestonesList;
-	private static int resultLimit;
+	private final MutableLiveData<List<Milestone>> milestones =
+			new MutableLiveData<>(new ArrayList<>());
+	private final MutableLiveData<Boolean> isLoading = new MutableLiveData<>(false);
+	private final MutableLiveData<Boolean> hasLoadedOnce = new MutableLiveData<>(false);
+	private final MutableLiveData<String> error = new MutableLiveData<>();
+	private final MutableLiveData<Integer> actionResult = new MutableLiveData<>(-1);
 
-	public LiveData<List<Milestone>> getMilestonesList(
-			String repoOwner, String repoName, String milestoneState, Context ctx) {
+	private boolean isLastPage = false;
+	private int totalCount = -1;
 
-		milestonesList = new MutableLiveData<>();
-		loadMilestonesList(repoOwner, repoName, milestoneState, ctx);
-		resultLimit = Constants.getCurrentResultLimit(ctx);
-		return milestonesList;
+	public LiveData<List<Milestone>> getMilestones() {
+		return milestones;
 	}
 
-	public static void loadMilestonesList(
-			String repoOwner, String repoName, String milestoneState, Context ctx) {
-
-		Call<List<Milestone>> call =
-				RetrofitClient.getApiInterface(ctx)
-						.issueGetMilestonesList(
-								repoOwner, repoName, milestoneState, null, 1, resultLimit);
-
-		call.enqueue(
-				new Callback<>() {
-
-					@Override
-					public void onResponse(
-							@NonNull Call<List<Milestone>> call,
-							@NonNull Response<List<Milestone>> response) {
-
-						if (response.isSuccessful()) {
-							milestonesList.postValue(response.body());
-						} else {
-							Toasty.show(ctx, ctx.getString(R.string.genericError));
-						}
-					}
-
-					@Override
-					public void onFailure(
-							@NonNull Call<List<Milestone>> call, @NonNull Throwable t) {
-
-						Toasty.show(ctx, ctx.getString(R.string.genericServerResponseError));
-					}
-				});
+	public LiveData<Boolean> getIsLoading() {
+		return isLoading;
 	}
 
-	public void loadMoreMilestones(
-			String repoOwner,
-			String repoName,
-			int page,
-			String milestoneState,
+	public LiveData<Boolean> getHasLoadedOnce() {
+		return hasLoadedOnce;
+	}
+
+	public LiveData<String> getError() {
+		return error;
+	}
+
+	public LiveData<Integer> getActionResult() {
+		return actionResult;
+	}
+
+	public void resetActionResult() {
+		actionResult.setValue(-1);
+	}
+
+	public void resetPagination() {
+		isLastPage = false;
+		totalCount = -1;
+		milestones.setValue(new ArrayList<>());
+		hasLoadedOnce.setValue(false);
+	}
+
+	public void fetchMilestones(
 			Context ctx,
-			MilestonesAdapter adapter) {
+			String owner,
+			String repo,
+			String state,
+			int page,
+			int limit,
+			boolean isRefresh) {
+		if (Boolean.TRUE.equals(isLoading.getValue()) && !isRefresh) return;
+		if (!isRefresh && isLastPage) return;
 
-		Call<List<Milestone>> call =
-				RetrofitClient.getApiInterface(ctx)
-						.issueGetMilestonesList(
-								repoOwner, repoName, milestoneState, null, page, resultLimit);
+		isLoading.setValue(true);
 
-		call.enqueue(
-				new Callback<>() {
+		RetrofitClient.getApiInterface(ctx)
+				.issueGetMilestonesList(owner, repo, state, null, page, limit)
+				.enqueue(
+						new Callback<>() {
+							@Override
+							public void onResponse(
+									@NonNull Call<List<Milestone>> call,
+									@NonNull Response<List<Milestone>> response) {
+								isLoading.setValue(false);
+								hasLoadedOnce.setValue(true);
 
-					@Override
-					public void onResponse(
-							@NonNull Call<List<Milestone>> call,
-							@NonNull Response<List<Milestone>> response) {
+								if (response.isSuccessful() && response.body() != null) {
+									String totalHeader = response.headers().get("x-total-count");
+									if (totalHeader != null) {
+										totalCount = Integer.parseInt(totalHeader);
+									}
 
-						if (response.isSuccessful()) {
+									List<Milestone> body = response.body();
+									List<Milestone> currentList =
+											isRefresh
+													? new ArrayList<>()
+													: new ArrayList<>(
+															Objects.requireNonNull(
+																	milestones.getValue()));
 
-							List<Milestone> list = milestonesList.getValue();
-							assert list != null;
-							assert response.body() != null;
+									for (Milestone m : body) {
+										if (!currentList.contains(m)) {
+											currentList.add(m);
+										}
+									}
+									milestones.setValue(currentList);
 
-							if (!response.body().isEmpty()) {
-								list.addAll(response.body());
-								adapter.updateList(list);
-							} else {
-								adapter.setMoreDataAvailable(false);
+									if (body.size() < limit
+											|| (totalCount != -1
+													&& currentList.size() >= totalCount)) {
+										isLastPage = true;
+									}
+								} else {
+									if (response.code() == 404 && isRefresh) {
+										milestones.setValue(new ArrayList<>());
+									}
+									isLastPage = true;
+									if (response.code() != 404) {
+										error.setValue("Error: " + response.code());
+									}
+								}
 							}
-						} else {
-							Toasty.show(ctx, ctx.getString(R.string.genericError));
-						}
-					}
 
-					@Override
-					public void onFailure(
-							@NonNull Call<List<Milestone>> call, @NonNull Throwable t) {
+							@Override
+							public void onFailure(
+									@NonNull Call<List<Milestone>> call, @NonNull Throwable t) {
+								isLoading.setValue(false);
+								hasLoadedOnce.setValue(true);
+								error.setValue(t.getMessage());
+							}
+						});
+	}
 
-						Toasty.show(ctx, ctx.getString(R.string.genericServerResponseError));
-					}
-				});
+	public void toggleMilestoneState(
+			Context ctx, String owner, String repo, Milestone milestone, String newState) {
+		EditMilestoneOption body = new EditMilestoneOption();
+		body.setState(newState);
+
+		RetrofitClient.getApiInterface(ctx)
+				.issueEditMilestone(owner, repo, String.valueOf(milestone.getId()), body)
+				.enqueue(
+						new Callback<>() {
+							@Override
+							public void onResponse(
+									@NonNull Call<Milestone> call,
+									@NonNull Response<Milestone> response) {
+								if (response.isSuccessful()) {
+									List<Milestone> current =
+											new ArrayList<>(
+													Objects.requireNonNull(milestones.getValue()));
+									current.remove(milestone);
+									milestones.setValue(current);
+
+									actionResult.setValue(200);
+								} else {
+									error.setValue("Update failed: " + response.code());
+								}
+							}
+
+							@Override
+							public void onFailure(
+									@NonNull Call<Milestone> call, @NonNull Throwable t) {
+								error.setValue(t.getMessage());
+							}
+						});
+	}
+
+	public void deleteMilestone(
+			Context ctx, String owner, String repo, long milestoneId, Milestone milestone) {
+		RetrofitClient.getApiInterface(ctx)
+				.issueDeleteMilestone(owner, repo, String.valueOf(milestoneId))
+				.enqueue(
+						new Callback<>() {
+							@Override
+							public void onResponse(
+									@NonNull Call<Void> call, @NonNull Response<Void> response) {
+								if (response.isSuccessful()) {
+									List<Milestone> current =
+											new ArrayList<>(
+													Objects.requireNonNull(milestones.getValue()));
+									current.remove(milestone);
+									milestones.setValue(current);
+									actionResult.setValue(204);
+								} else {
+									error.setValue("Delete failed: " + response.code());
+								}
+							}
+
+							@Override
+							public void onFailure(@NonNull Call<Void> call, @NonNull Throwable t) {
+								error.setValue(t.getMessage());
+							}
+						});
 	}
 }

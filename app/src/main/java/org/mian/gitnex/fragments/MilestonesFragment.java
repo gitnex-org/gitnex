@@ -1,6 +1,5 @@
 package org.mian.gitnex.fragments;
 
-import android.content.Context;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Looper;
@@ -10,7 +9,6 @@ import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
-import android.view.inputmethod.EditorInfo;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.core.view.MenuProvider;
@@ -18,14 +16,19 @@ import androidx.fragment.app.Fragment;
 import androidx.lifecycle.Lifecycle;
 import androidx.lifecycle.ViewModelProvider;
 import androidx.recyclerview.widget.LinearLayoutManager;
-import java.util.ArrayList;
+import androidx.recyclerview.widget.RecyclerView;
+import com.google.android.material.bottomsheet.BottomSheetDialog;
+import com.google.android.material.dialog.MaterialAlertDialogBuilder;
 import java.util.List;
 import org.gitnex.tea4j.v2.models.Milestone;
 import org.mian.gitnex.R;
-import org.mian.gitnex.activities.CreateMilestoneActivity;
-import org.mian.gitnex.activities.RepoDetailActivity;
 import org.mian.gitnex.adapters.MilestonesAdapter;
+import org.mian.gitnex.databinding.BottomsheetMilestonesItemMenuBinding;
 import org.mian.gitnex.databinding.FragmentMilestonesBinding;
+import org.mian.gitnex.helpers.Constants;
+import org.mian.gitnex.helpers.EndlessRecyclerViewScrollListener;
+import org.mian.gitnex.helpers.Toasty;
+import org.mian.gitnex.helpers.UIHelper;
 import org.mian.gitnex.helpers.contexts.RepositoryContext;
 import org.mian.gitnex.viewmodels.MilestonesViewModel;
 
@@ -34,14 +37,14 @@ import org.mian.gitnex.viewmodels.MilestonesViewModel;
  */
 public class MilestonesFragment extends Fragment {
 
-	private MilestonesViewModel milestonesViewModel;
-	private FragmentMilestonesBinding viewBinding;
-	private List<Milestone> dataList;
+	private FragmentMilestonesBinding binding;
+	private MilestonesViewModel viewModel;
 	private MilestonesAdapter adapter;
+	private EndlessRecyclerViewScrollListener scrollListener;
 	private RepositoryContext repository;
-	private String milestoneId;
-	private int page = 1;
-	public String state = "open";
+	private int resultLimit;
+	private String currentState = "open";
+	private String milestoneIdToScroll;
 
 	public static MilestonesFragment newInstance(RepositoryContext repository) {
 		MilestonesFragment fragment = new MilestonesFragment();
@@ -50,212 +53,304 @@ public class MilestonesFragment extends Fragment {
 	}
 
 	@Override
-	public void onCreate(@Nullable Bundle savedInstanceState) {
-		repository = RepositoryContext.fromBundle(requireArguments());
-		super.onCreate(savedInstanceState);
+	public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
+		super.onViewCreated(view, savedInstanceState);
+		UIHelper.applyInsets(view, null, binding.recyclerView, binding.pullToRefresh, null);
 	}
 
 	@Override
-	public View onCreateView(
-			@NonNull LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
+	public void onCreate(@Nullable Bundle savedInstanceState) {
+		super.onCreate(savedInstanceState);
+		repository = RepositoryContext.fromBundle(requireArguments());
 
-		viewBinding = FragmentMilestonesBinding.inflate(inflater, container, false);
-		Context ctx = getContext();
-		milestonesViewModel = new ViewModelProvider(this).get(MilestonesViewModel.class);
-
-		boolean canPush = repository.getPermissions().isPush();
-		boolean archived = repository.getRepository().isArchived();
-
-		milestoneId = requireActivity().getIntent().getStringExtra("milestoneId");
-		requireActivity().getIntent().removeExtra("milestoneId");
-
-		viewBinding.recyclerView.setHasFixedSize(true);
-		viewBinding.recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
-
-		dataList = new ArrayList<>();
-
-		viewBinding.recyclerView.setHasFixedSize(true);
-		viewBinding.recyclerView.setLayoutManager(new LinearLayoutManager(ctx));
-
-		viewBinding.pullToRefresh.setOnRefreshListener(
-				() ->
-						new Handler(Looper.getMainLooper())
-								.postDelayed(
-										() -> {
-											page = 1;
-											dataList.clear();
-											viewBinding.pullToRefresh.setRefreshing(false);
-											fetchDataAsync(
-													repository.getOwner(),
-													repository.getName(),
-													state);
-										},
-										50));
-
-		((RepoDetailActivity) requireActivity())
-				.setFragmentRefreshListenerMilestone(
-						milestoneState -> {
-							state = milestoneState;
-
-							page = 1;
-							dataList.clear();
-							viewBinding.progressBar.setVisibility(View.VISIBLE);
-							viewBinding.noDataMilestone.setVisibility(View.GONE);
-
-							fetchDataAsync(
-									repository.getOwner(), repository.getName(), milestoneState);
+		// remove later
+		getParentFragmentManager()
+				.setFragmentResultListener(
+						"filter_request",
+						this,
+						(requestKey, bundle) -> {
+							String state = bundle.getString("state");
+							if (state != null) {
+								currentState = state;
+								requireActivity().invalidateMenu();
+								refreshData();
+							}
 						});
 
-		if (!canPush || archived) {
-			viewBinding.createNewMilestone.setVisibility(View.GONE);
+		milestoneIdToScroll = requireActivity().getIntent().getStringExtra("milestoneId");
+		requireActivity().getIntent().removeExtra("milestoneId");
+	}
+
+	@Nullable @Override
+	public View onCreateView(
+			@NonNull LayoutInflater inflater,
+			@Nullable ViewGroup container,
+			@Nullable Bundle savedInstanceState) {
+		binding = FragmentMilestonesBinding.inflate(inflater, container, false);
+		viewModel = new ViewModelProvider(this).get(MilestonesViewModel.class);
+		resultLimit = Constants.getCurrentResultLimit(requireContext());
+
+		setupRecyclerView();
+		setupSwipeRefresh();
+		observeViewModel();
+		setupMenu();
+
+		refreshData();
+
+		return binding.getRoot();
+	}
+
+	private void setupRecyclerView() {
+		LinearLayoutManager layoutManager = new LinearLayoutManager(requireContext());
+		binding.recyclerView.setLayoutManager(layoutManager);
+
+		scrollListener =
+				new EndlessRecyclerViewScrollListener(layoutManager) {
+					@Override
+					public void onLoadMore(int page, int totalItemsCount, RecyclerView view) {
+						viewModel.fetchMilestones(
+								requireContext(),
+								repository.getOwner(),
+								repository.getName(),
+								currentState,
+								page,
+								resultLimit,
+								false);
+					}
+				};
+		binding.recyclerView.addOnScrollListener(scrollListener);
+	}
+
+	private void observeViewModel() {
+		viewModel
+				.getMilestones()
+				.observe(
+						getViewLifecycleOwner(),
+						list -> {
+							binding.pullToRefresh.setRefreshing(false);
+
+							if (adapter == null) {
+								boolean canEdit =
+										repository.getPermissions().isPush()
+												&& !repository.getRepository().isArchived();
+
+								adapter =
+										new MilestonesAdapter(
+												requireContext(),
+												list,
+												canEdit,
+												milestone -> {
+													BottomsheetMilestonesItemMenuBinding sheetB =
+															BottomsheetMilestonesItemMenuBinding
+																	.inflate(getLayoutInflater());
+													BottomSheetDialog dialog =
+															new BottomSheetDialog(requireContext());
+													dialog.setContentView(sheetB.getRoot());
+
+													sheetB.sheetTitle.setText(milestone.getTitle());
+
+													boolean isOpen =
+															"open".equals(milestone.getState());
+
+													if (isOpen) {
+														sheetB.closeIcon.setImageResource(
+																R.drawable.ic_close);
+														sheetB.closeText.setText(R.string.close);
+													} else {
+														sheetB.closeIcon.setImageResource(
+																R.drawable.ic_refresh);
+														sheetB.closeText.setText(R.string.isOpen);
+													}
+
+													sheetB.editMenu.setOnClickListener(
+															v -> {
+																dialog.dismiss();
+																// TODO: Open Edit Fragment
+															});
+
+													sheetB.deleteMenu.setOnClickListener(
+															v -> {
+																dialog.dismiss();
+																showDeleteConfirmation(milestone);
+															});
+
+													sheetB.closeMenu.setOnClickListener(
+															v -> {
+																dialog.dismiss();
+																showCloseConfirmation(milestone);
+															});
+
+													dialog.show();
+												});
+								binding.recyclerView.setAdapter(adapter);
+							} else {
+								adapter.updateList(list);
+							}
+
+							if (milestoneIdToScroll != null) scrollToMilestone(list);
+							updateUiVisibility(
+									Boolean.TRUE.equals(viewModel.getIsLoading().getValue()));
+						});
+
+		viewModel
+				.getActionResult()
+				.observe(
+						getViewLifecycleOwner(),
+						code -> {
+							if (code == -1) return;
+
+							if (code == 200 || code == 204) {
+								int messageRes =
+										(code == 200)
+												? R.string.milestoneStatusUpdate
+												: R.string.milestone_deleted;
+								Toasty.show(requireContext(), messageRes);
+
+								new Handler(Looper.getMainLooper())
+										.postDelayed(
+												() -> {
+													if (isAdded()) viewModel.resetActionResult();
+												},
+												100);
+							}
+						});
+
+		viewModel.getIsLoading().observe(getViewLifecycleOwner(), this::updateUiVisibility);
+
+		viewModel
+				.getError()
+				.observe(
+						getViewLifecycleOwner(),
+						err -> {
+							if (err != null) Toasty.show(requireContext(), err);
+						});
+	}
+
+	private void showDeleteConfirmation(Milestone milestone) {
+		new MaterialAlertDialogBuilder(requireContext())
+				.setTitle(R.string.delete_milestone)
+				.setMessage(getString(R.string.milestone_delete_confirm_text, milestone.getTitle()))
+				.setPositiveButton(
+						R.string.menuDeleteText,
+						(dialog, which) -> {
+							viewModel.deleteMilestone(
+									requireContext(),
+									repository.getOwner(),
+									repository.getName(),
+									milestone.getId(),
+									milestone);
+						})
+				.setNegativeButton(R.string.cancelButton, null)
+				.show();
+	}
+
+	private void showCloseConfirmation(Milestone milestone) {
+		boolean isOpen = "open".equals(milestone.getState());
+		int titleRes = isOpen ? R.string.closeMilestone : R.string.openMilestone;
+		int msgRes = isOpen ? R.string.close_milestone_msg : R.string.open_milestone_msg;
+
+		new MaterialAlertDialogBuilder(requireContext())
+				.setTitle(titleRes)
+				.setMessage(getString(msgRes, milestone.getTitle()))
+				.setPositiveButton(
+						isOpen ? R.string.close : R.string.isOpen,
+						(dialog, which) -> {
+							String newState = isOpen ? "closed" : "open";
+							viewModel.toggleMilestoneState(
+									requireContext(),
+									repository.getOwner(),
+									repository.getName(),
+									milestone,
+									newState);
+						})
+				.setNegativeButton(R.string.cancelButton, null)
+				.show();
+	}
+
+	private void updateUiVisibility(boolean isLoading) {
+		boolean hasData = adapter != null && adapter.getItemCount() > 0;
+		boolean hasLoadedOnce = Boolean.TRUE.equals(viewModel.getHasLoadedOnce().getValue());
+
+		binding.expressiveLoader.setVisibility(isLoading && !hasData ? View.VISIBLE : View.GONE);
+
+		if (isLoading) {
+			binding.layoutEmpty.getRoot().setVisibility(View.GONE);
+		} else {
+			boolean showEmpty = !hasData && hasLoadedOnce;
+			binding.layoutEmpty.getRoot().setVisibility(showEmpty ? View.VISIBLE : View.GONE);
 		}
 
-		viewBinding.createNewMilestone.setOnClickListener(
-				v13 -> startActivity(repository.getIntent(ctx, CreateMilestoneActivity.class)));
+		binding.recyclerView.setVisibility(hasData ? View.VISIBLE : View.GONE);
+	}
 
-		fetchDataAsync(repository.getOwner(), repository.getName(), state);
+	private void scrollToMilestone(List<Milestone> list) {
+		try {
+			int id = Integer.parseInt(milestoneIdToScroll);
+			for (int i = 0; i < list.size(); i++) {
+				if (list.get(i).getId() == id) {
+					binding.recyclerView.scrollToPosition(i);
+					milestoneIdToScroll = null;
+					break;
+				}
+			}
+		} catch (NumberFormatException ignored) {
+		}
+	}
 
+	private void refreshData() {
+		scrollListener.resetState();
+		viewModel.resetPagination();
+		viewModel.fetchMilestones(
+				requireContext(),
+				repository.getOwner(),
+				repository.getName(),
+				currentState,
+				1,
+				resultLimit,
+				true);
+	}
+
+	private void setupSwipeRefresh() {
+		binding.pullToRefresh.setOnRefreshListener(this::refreshData);
+	}
+
+	private void setupMenu() {
 		requireActivity()
 				.addMenuProvider(
 						new MenuProvider() {
-
 							@Override
 							public void onCreateMenu(
 									@NonNull Menu menu, @NonNull MenuInflater menuInflater) {
-
+								menu.clear();
 								menuInflater.inflate(R.menu.search_menu, menu);
 								menuInflater.inflate(R.menu.filter_menu_milestone, menu);
 
-								if (repository.getMilestoneState().toString().equals("open")) {
-									menu.getItem(1).setIcon(R.drawable.ic_filter);
-								} else {
-									menu.getItem(1).setIcon(R.drawable.ic_filter_closed);
+								MenuItem filterItem = menu.findItem(R.id.filter);
+								if (filterItem != null) {
+									filterItem.setIcon(
+											currentState.equals("open")
+													? R.drawable.ic_filter
+													: R.drawable.ic_filter_closed);
 								}
-
-								MenuItem searchItem = menu.findItem(R.id.action_search);
-								androidx.appcompat.widget.SearchView searchView =
-										(androidx.appcompat.widget.SearchView)
-												searchItem.getActionView();
-								assert searchView != null;
-								searchView.setImeOptions(EditorInfo.IME_ACTION_DONE);
-
-								searchView.setOnQueryTextListener(
-										new androidx.appcompat.widget.SearchView
-												.OnQueryTextListener() {
-
-											@Override
-											public boolean onQueryTextSubmit(String query) {
-												return false;
-											}
-
-											@Override
-											public boolean onQueryTextChange(String newText) {
-												filter(newText);
-												return false;
-											}
-										});
 							}
 
 							@Override
 							public boolean onMenuItemSelected(@NonNull MenuItem menuItem) {
+								if (menuItem.getItemId() == R.id.filter) {
+									BottomSheetMilestonesFilterFragment.newInstance(repository)
+											.show(getParentFragmentManager(), "filter");
+									return true;
+								}
 								return false;
 							}
 						},
 						getViewLifecycleOwner(),
 						Lifecycle.State.RESUMED);
-
-		return viewBinding.getRoot();
 	}
 
 	@Override
-	public void onResume() {
-		super.onResume();
-
-		if (RepoDetailActivity.updateFABActions) {
-			page = 1;
-			MilestonesViewModel.loadMilestonesList(
-					repository.getOwner(), repository.getName(), state, requireContext());
-			RepoDetailActivity.updateFABActions = false;
-		}
-	}
-
-	private void fetchDataAsync(String repoOwner, String repoName, String state) {
-
-		milestonesViewModel
-				.getMilestonesList(repoOwner, repoName, state, getContext())
-				.observe(
-						getViewLifecycleOwner(),
-						milestonesListMain -> {
-							adapter =
-									new MilestonesAdapter(
-											getContext(), milestonesListMain, repository);
-							adapter.setLoadMoreListener(
-									new MilestonesAdapter.OnLoadMoreListener() {
-
-										@Override
-										public void onLoadMore() {
-
-											page += 1;
-											milestonesViewModel.loadMoreMilestones(
-													repoOwner,
-													repoName,
-													page,
-													state,
-													getContext(),
-													adapter);
-											viewBinding.progressBar.setVisibility(View.VISIBLE);
-										}
-
-										@Override
-										public void onLoadFinished() {
-
-											viewBinding.progressBar.setVisibility(View.GONE);
-										}
-									});
-
-							if (adapter.getItemCount() > 0) {
-								viewBinding.recyclerView.setAdapter(adapter);
-								viewBinding.noDataMilestone.setVisibility(View.GONE);
-								dataList.addAll(milestonesListMain);
-								if (milestoneId != null) {
-									viewBinding.recyclerView.scrollToPosition(
-											getMilestoneIndex(
-													Integer.parseInt(milestoneId),
-													milestonesListMain));
-								}
-							} else {
-								adapter.notifyDataChanged();
-								viewBinding.recyclerView.setAdapter(adapter);
-								viewBinding.noDataMilestone.setVisibility(View.VISIBLE);
-							}
-
-							viewBinding.progressBar.setVisibility(View.GONE);
-						});
-	}
-
-	private static int getMilestoneIndex(int milestoneId, List<Milestone> milestones) {
-		for (Milestone milestone : milestones) {
-			if (milestone.getId() == milestoneId) {
-				return milestones.indexOf(milestone);
-			}
-		}
-		return -1;
-	}
-
-	private void filter(String text) {
-
-		List<Milestone> arr = new ArrayList<>();
-
-		for (Milestone d : dataList) {
-			if (d == null || d.getTitle() == null || d.getDescription() == null) {
-				continue;
-			}
-			if (d.getTitle().toLowerCase().contains(text)
-					|| d.getDescription().toLowerCase().contains(text)) {
-				arr.add(d);
-			}
-		}
-
-		adapter.updateList(arr);
+	public void onDestroyView() {
+		super.onDestroyView();
+		binding = null;
 	}
 }

@@ -48,7 +48,7 @@
                 tools:ignore="UselessParent">
 
                 <com.google.android.material.card.MaterialCardView
-                    android:id="@+id/deleteReleaseCard"
+                    android:id="@+id/delete_release_card"
                     style="?attr/materialCardViewFilledStyle"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
@@ -59,7 +59,7 @@
                     app:strokeWidth="0dp">
 
                     <LinearLayout
-                        android:id="@+id/deleteRelease"
+                        android:id="@+id/delete_release"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:background="?attr/selectableItemBackground"
@@ -70,6 +70,7 @@
                         android:paddingVertical="@dimen/dimen16dp">
 
                         <ImageView
+                            android:id="@+id/delete_icon"
                             android:layout_width="24dp"
                             android:layout_height="24dp"
                             android:contentDescription="@string/generalImgContentText"
@@ -77,6 +78,7 @@
                             app:tint="?attr/colorOnErrorContainer" />
 
                         <TextView
+                            android:id="@+id/delete_text"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:layout_marginTop="@dimen/dimen8dp"

@@ -29,6 +29,9 @@ public class LabelsViewModel extends ViewModel {
 
 	private final List<Label> fullList = new ArrayList<>();
 
+	private boolean isLastPage = false;
+	private int totalCount = -1;
+
 	public LiveData<Boolean> getIsActionLoading() {
 		return isActionLoading;
 	}
@@ -55,6 +58,8 @@ public class LabelsViewModel extends ViewModel {
 
 	public void resetPagination() {
 		fullList.clear();
+		isLastPage = false;
+		totalCount = -1;
 		labels.setValue(new ArrayList<>());
 		hasLoadedOnce.setValue(false);
 	}
@@ -71,8 +76,9 @@ public class LabelsViewModel extends ViewModel {
 			int page,
 			int limit,
 			boolean isRefresh) {
+		if (Boolean.TRUE.equals(isLoading.getValue()) && !isRefresh) return;
 
-		if (isLoading.getValue() != null && isLoading.getValue() && !isRefresh) return;
+		if (!isRefresh && isLastPage) return;
 
 		isLoading.setValue(true);
 
@@ -89,24 +95,39 @@ public class LabelsViewModel extends ViewModel {
 					public void onResponse(
 							@NonNull Call<List<Label>> call,
 							@NonNull Response<List<Label>> response) {
-
 						isLoading.setValue(false);
 						hasLoadedOnce.setValue(true);
 
 						if (response.isSuccessful() && response.body() != null) {
+							String totalHeader = response.headers().get("x-total-count");
+							if (totalHeader != null) {
+								totalCount = Integer.parseInt(totalHeader);
+							}
+
+							List<Label> body = response.body();
 							if (isRefresh) {
 								fullList.clear();
 							}
 
-							for (Label newLabel : response.body()) {
+							for (Label newLabel : body) {
 								if (!fullList.contains(newLabel)) {
 									fullList.add(newLabel);
 								}
 							}
-
 							labels.setValue(new ArrayList<>(fullList));
+
+							if (body.size() < limit
+									|| (totalCount != -1 && fullList.size() >= totalCount)) {
+								isLastPage = true;
+							}
 						} else {
-							error.setValue("Error: " + response.code());
+							if (response.code() == 404 && isRefresh) {
+								labels.setValue(new ArrayList<>());
+							}
+							isLastPage = true;
+							if (response.code() != 404) {
+								error.setValue("Error: " + response.code());
+							}
 						}
 					}
 
@@ -185,17 +206,15 @@ public class LabelsViewModel extends ViewModel {
 					public void onResponse(
 							@NonNull Call<Void> call, @NonNull Response<Void> response) {
 						isActionLoading.setValue(false);
-						if (response.isSuccessful()) {
-							if (response.code() == 204) {
-								List<Label> currentList = new ArrayList<>(fullList);
-								currentList.removeIf(l -> l.getId() == labelId);
+						if (response.isSuccessful() && response.code() == 204) {
+							fullList.removeIf(l -> l.getId() == labelId);
+							labels.setValue(new ArrayList<>(fullList));
 
-								fullList.clear();
-								fullList.addAll(currentList);
-								labels.setValue(currentList);
-
-								actionResult.postValue(204);
+							if (totalCount > 0) {
+								totalCount--;
 							}
+
+							actionResult.postValue(204);
 						} else {
 							error.setValue("Error: " + response.code());
 						}

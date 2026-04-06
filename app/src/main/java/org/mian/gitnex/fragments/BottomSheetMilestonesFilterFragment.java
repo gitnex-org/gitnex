@@ -1,6 +1,5 @@
 package org.mian.gitnex.fragments;
 
-import android.content.Context;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -10,14 +9,12 @@ import androidx.annotation.Nullable;
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment;
 import org.mian.gitnex.databinding.BottomSheetMilestonesFilterBinding;
 import org.mian.gitnex.helpers.contexts.RepositoryContext;
-import org.mian.gitnex.structs.BottomSheetListener;
 
 /**
  * @author mmarif
  */
 public class BottomSheetMilestonesFilterFragment extends BottomSheetDialogFragment {
 
-	private BottomSheetListener bmListener;
 	private BottomSheetMilestonesFilterBinding binding;
 	private RepositoryContext repository;
 
@@ -52,39 +49,25 @@ public class BottomSheetMilestonesFilterFragment extends BottomSheetDialogFragme
 
 		binding.openChip.setOnCheckedChangeListener(
 				(buttonView, isChecked) -> {
-					if (isChecked
-							&& repository.getMilestoneState() != RepositoryContext.State.OPEN) {
-						repository.setMilestoneState(RepositoryContext.State.OPEN);
-						bmListener.onButtonClicked("openMilestone");
+					if (isChecked) {
+						Bundle result = new Bundle();
+						result.putString("state", "open");
+						getParentFragmentManager().setFragmentResult("filter_request", result);
 						dismiss();
-					} else if (!isChecked) {
-						buttonView.setChecked(true);
 					}
 				});
 
 		binding.closedChip.setOnCheckedChangeListener(
 				(buttonView, isChecked) -> {
-					if (isChecked
-							&& repository.getMilestoneState() != RepositoryContext.State.CLOSED) {
-						repository.setMilestoneState(RepositoryContext.State.CLOSED);
-						bmListener.onButtonClicked("closedMilestone");
+					if (isChecked) {
+						Bundle result = new Bundle();
+						result.putString("state", "closed");
+						getParentFragmentManager().setFragmentResult("filter_request", result);
 						dismiss();
-					} else if (!isChecked) {
-						buttonView.setChecked(true);
 					}
 				});
 
 		return binding.getRoot();
-	}
-
-	@Override
-	public void onAttach(@NonNull Context context) {
-		super.onAttach(context);
-		try {
-			bmListener = (BottomSheetListener) context;
-		} catch (ClassCastException e) {
-			throw new ClassCastException(context + " must implement BottomSheetListener");
-		}
 	}
 
 	@Override

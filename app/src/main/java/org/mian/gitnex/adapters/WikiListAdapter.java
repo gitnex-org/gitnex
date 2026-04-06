@@ -84,8 +84,8 @@ public class WikiListAdapter extends RecyclerView.Adapter<WikiListAdapter.WikisH
 
 			binding.getRoot().setOnClickListener(v -> onClick.run(wikiPageMeta));
 
-			binding.wikiMenu.setVisibility(canEdit ? View.VISIBLE : View.GONE);
-			binding.wikiMenu.setOnClickListener(v -> onMenuClick.run(wikiPageMeta));
+			binding.itemMenu.setVisibility(canEdit ? View.VISIBLE : View.GONE);
+			binding.itemMenu.setOnClickListener(v -> onMenuClick.run(wikiPageMeta));
 		}
 
 		void bindData(WikiPageMetaData wikiPageMetaData) {

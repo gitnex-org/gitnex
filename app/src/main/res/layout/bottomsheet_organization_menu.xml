@@ -48,7 +48,7 @@
                 tools:ignore="UselessParent">
 
                 <com.google.android.material.card.MaterialCardView
-                    android:id="@+id/copyOrgUrlCard"
+                    android:id="@+id/copy_org_url_card"
                     style="?attr/materialCardViewFilledStyle"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
@@ -59,7 +59,7 @@
                     app:strokeWidth="0dp">
 
                     <LinearLayout
-                        android:id="@+id/copyOrgUrl"
+                        android:id="@+id/copy_org_url"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:background="?attr/selectableItemBackground"
@@ -70,6 +70,7 @@
                         android:paddingVertical="@dimen/dimen16dp">
 
                         <ImageView
+                            android:id="@+id/copy_icon"
                             android:layout_width="@dimen/dimen24dp"
                             android:layout_height="@dimen/dimen24dp"
                             app:srcCompat="@drawable/ic_copy"
@@ -77,6 +78,7 @@
                             app:tint="?attr/colorOnPrimary" />
 
                         <TextView
+                            android:id="@+id/copy_text"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:layout_marginTop="@dimen/dimen8dp"
@@ -94,7 +96,7 @@
                 </com.google.android.material.card.MaterialCardView>
 
                 <com.google.android.material.card.MaterialCardView
-                    android:id="@+id/shareCard"
+                    android:id="@+id/share_card"
                     style="?attr/materialCardViewFilledStyle"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
@@ -116,6 +118,7 @@
                         android:paddingVertical="@dimen/dimen16dp">
 
                         <ImageView
+                            android:id="@+id/share_icon"
                             android:layout_width="@dimen/dimen24dp"
                             android:layout_height="@dimen/dimen24dp"
                             android:contentDescription="@string/generalImgContentText"
@@ -123,6 +126,7 @@
                             app:tint="?attr/colorOnPrimary" />
 
                         <TextView
+                            android:id="@+id/share_text"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:layout_marginTop="@dimen/dimen8dp"
@@ -140,7 +144,7 @@
                 </com.google.android.material.card.MaterialCardView>
 
                 <com.google.android.material.card.MaterialCardView
-                    android:id="@+id/openCard"
+                    android:id="@+id/open_browser_card"
                     style="?attr/materialCardViewFilledStyle"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
@@ -151,7 +155,7 @@
                     app:strokeWidth="0dp">
 
                     <LinearLayout
-                        android:id="@+id/open"
+                        android:id="@+id/open_in_browser"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:background="?attr/selectableItemBackground"
@@ -162,6 +166,7 @@
                         android:paddingVertical="@dimen/dimen16dp">
 
                         <ImageView
+                            android:id="@+id/open_in_browser_icon"
                             android:layout_width="@dimen/dimen24dp"
                             android:layout_height="@dimen/dimen24dp"
                             app:srcCompat="@drawable/ic_browser"
@@ -169,6 +174,7 @@
                             app:tint="?attr/colorOnPrimary" />
 
                         <TextView
+                            android:id="@+id/open_in_browser_text"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:layout_marginTop="@dimen/dimen8dp"

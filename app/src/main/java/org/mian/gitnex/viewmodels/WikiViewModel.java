@@ -26,6 +26,9 @@ public class WikiViewModel extends ViewModel {
 
 	private final List<WikiPageMetaData> fullList = new ArrayList<>();
 
+	private boolean isLastPage = false;
+	private int totalCount = -1;
+
 	public LiveData<List<WikiPageMetaData>> getWikiPages() {
 		return wikiPages;
 	}
@@ -48,6 +51,8 @@ public class WikiViewModel extends ViewModel {
 
 	public void resetPagination() {
 		fullList.clear();
+		isLastPage = false;
+		totalCount = -1;
 		wikiPages.setValue(new ArrayList<>());
 		hasLoadedOnce.setValue(false);
 	}
@@ -55,6 +60,8 @@ public class WikiViewModel extends ViewModel {
 	public void fetchWikiPages(
 			Context ctx, String owner, String repo, int page, int limit, boolean isRefresh) {
 		if (Boolean.TRUE.equals(isLoading.getValue()) && !isRefresh) return;
+
+		if (!isRefresh && isLastPage) return;
 
 		isLoading.setValue(true);
 
@@ -70,19 +77,35 @@ public class WikiViewModel extends ViewModel {
 								hasLoadedOnce.setValue(true);
 
 								if (response.isSuccessful() && response.body() != null) {
+									String totalHeader = response.headers().get("x-total-count");
+									if (totalHeader != null) {
+										totalCount = Integer.parseInt(totalHeader);
+									}
+
+									List<WikiPageMetaData> body = response.body();
 									if (isRefresh) {
 										fullList.clear();
 									}
-									for (WikiPageMetaData pageData : response.body()) {
+
+									for (WikiPageMetaData pageData : body) {
 										if (!fullList.contains(pageData)) {
 											fullList.add(pageData);
 										}
 									}
 									wikiPages.setValue(new ArrayList<>(fullList));
-								} else if (response.code() != 404) {
-									error.setValue("Error: " + response.code());
+
+									if (body.size() < limit
+											|| (totalCount != -1
+													&& fullList.size() >= totalCount)) {
+										isLastPage = true;
+									}
+								} else if (response.code() == 404) {
+									if (isRefresh) {
+										wikiPages.setValue(new ArrayList<>());
+									}
+									isLastPage = true;
 								} else {
-									wikiPages.setValue(new ArrayList<>(fullList));
+									error.setValue("API error: " + response.code());
 								}
 							}
 
@@ -110,6 +133,11 @@ public class WikiViewModel extends ViewModel {
 								if (response.isSuccessful()) {
 									fullList.removeIf(p -> p.getTitle().equals(pageName));
 									wikiPages.setValue(new ArrayList<>(fullList));
+
+									if (totalCount > 0) {
+										totalCount--;
+									}
+
 									actionResult.setValue(204);
 								} else {
 									error.setValue("Error: " + response.code());

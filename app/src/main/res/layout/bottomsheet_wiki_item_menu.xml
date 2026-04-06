@@ -41,6 +41,7 @@
             android:weightSum="4">
 
             <com.google.android.material.card.MaterialCardView
+                android:id="@+id/edit_card"
                 style="?attr/materialCardViewFilledStyle"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
@@ -62,6 +63,7 @@
                     android:paddingVertical="@dimen/dimen16dp">
 
                     <ImageView
+                        android:id="@+id/edit_icon"
                         android:layout_width="@dimen/dimen24dp"
                         android:layout_height="@dimen/dimen24dp"
                         app:srcCompat="@drawable/ic_edit"
@@ -69,6 +71,7 @@
                         android:contentDescription="@string/menuEditText" />
 
                     <TextView
+                        android:id="@+id/edit_text"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_marginTop="@dimen/dimen8dp"
@@ -86,6 +89,7 @@
             </com.google.android.material.card.MaterialCardView>
 
             <com.google.android.material.card.MaterialCardView
+                android:id="@+id/delete_wiki_card"
                 style="?attr/materialCardViewFilledStyle"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
@@ -107,6 +111,7 @@
                     android:paddingVertical="@dimen/dimen16dp">
 
                     <ImageView
+                        android:id="@+id/delete_icon"
                         android:layout_width="@dimen/dimen24dp"
                         android:layout_height="@dimen/dimen24dp"
                         app:srcCompat="@drawable/ic_delete"
@@ -114,6 +119,7 @@
                         android:contentDescription="@string/menuDeleteText" />
 
                     <TextView
+                        android:id="@+id/delete_text"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_marginTop="@dimen/dimen8dp"
