@@ -5,13 +5,17 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModelProvider;
-import androidx.recyclerview.widget.GridLayoutManager;
-import org.mian.gitnex.activities.AddCollaboratorToRepositoryActivity;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 import org.mian.gitnex.adapters.CollaboratorsAdapter;
 import org.mian.gitnex.databinding.FragmentCollaboratorsBinding;
 import org.mian.gitnex.helpers.Constants;
+import org.mian.gitnex.helpers.EndlessRecyclerViewScrollListener;
+import org.mian.gitnex.helpers.Toasty;
+import org.mian.gitnex.helpers.UIHelper;
 import org.mian.gitnex.helpers.contexts.RepositoryContext;
 import org.mian.gitnex.viewmodels.CollaboratorsViewModel;
 
@@ -20,15 +24,12 @@ import org.mian.gitnex.viewmodels.CollaboratorsViewModel;
  */
 public class CollaboratorsFragment extends Fragment {
 
-	public static boolean refreshCollaborators = false;
-	private FragmentCollaboratorsBinding fragmentCollaboratorsBinding;
+	private FragmentCollaboratorsBinding binding;
+	private CollaboratorsViewModel viewModel;
 	private CollaboratorsAdapter adapter;
+	private EndlessRecyclerViewScrollListener scrollListener;
 	private RepositoryContext repository;
-	private CollaboratorsViewModel collaboratorsModel;
-	private int page = 1;
 	private int resultLimit;
-
-	public CollaboratorsFragment() {}
 
 	public static CollaboratorsFragment newInstance(RepositoryContext repository) {
 		CollaboratorsFragment fragment = new CollaboratorsFragment();
@@ -37,106 +38,118 @@ public class CollaboratorsFragment extends Fragment {
 	}
 
 	@Override
+	public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
+		super.onViewCreated(view, savedInstanceState);
+		UIHelper.applyInsets(view, null, binding.recyclerView, binding.pullToRefresh, null);
+	}
+
+	@Override
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		repository = RepositoryContext.fromBundle(requireArguments());
 	}
 
-	@Override
+	@Nullable @Override
 	public View onCreateView(
-			@NonNull LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-
-		fragmentCollaboratorsBinding =
-				FragmentCollaboratorsBinding.inflate(inflater, container, false);
-
-		collaboratorsModel = new ViewModelProvider(this).get(CollaboratorsViewModel.class);
+			@NonNull LayoutInflater inflater,
+			@Nullable ViewGroup container,
+			@Nullable Bundle savedInstanceState) {
+		binding = FragmentCollaboratorsBinding.inflate(inflater, container, false);
+		viewModel = new ViewModelProvider(this).get(CollaboratorsViewModel.class);
 		resultLimit = Constants.getCurrentResultLimit(requireContext());
 
-		if (repository.getPermissions().isAdmin()) {
+		setupRecyclerView();
+		setupSwipeRefresh();
+		observeViewModel();
 
-			fragmentCollaboratorsBinding.addCollaborator.setOnClickListener(
-					v1 -> {
-						startActivity(
-								repository.getIntent(
-										getContext(), AddCollaboratorToRepositoryActivity.class));
-					});
-		} else {
-
-			fragmentCollaboratorsBinding.addCollaborator.setVisibility(View.GONE);
-		}
-
-		fetchDataAsync(repository.getOwner(), repository.getName());
-		return fragmentCollaboratorsBinding.getRoot();
+		refreshData();
+		return binding.getRoot();
 	}
 
-	private void fetchDataAsync(String repoOwner, String repoName) {
+	private void setupRecyclerView() {
+		LinearLayoutManager layoutManager = new LinearLayoutManager(requireContext());
+		binding.recyclerView.setLayoutManager(layoutManager);
 
-		collaboratorsModel
-				.getCollaboratorsList(repoOwner, repoName, requireContext(), page, resultLimit)
+		scrollListener =
+				new EndlessRecyclerViewScrollListener(layoutManager) {
+					@Override
+					public void onLoadMore(int page, int totalItemsCount, RecyclerView view) {
+						viewModel.fetchCollaborators(
+								requireContext(),
+								repository.getOwner(),
+								repository.getName(),
+								page,
+								resultLimit,
+								false);
+					}
+				};
+		binding.recyclerView.addOnScrollListener(scrollListener);
+	}
+
+	private void observeViewModel() {
+		viewModel
+				.getCollaborators()
 				.observe(
 						getViewLifecycleOwner(),
-						mainList -> {
-							adapter = new CollaboratorsAdapter(requireContext(), mainList);
-
-							adapter.setLoadMoreListener(
-									new CollaboratorsAdapter.OnLoadMoreListener() {
-
-										@Override
-										public void onLoadMore() {
-
-											page += 1;
-											collaboratorsModel.loadMore(
-													repoOwner,
-													repoName,
-													requireContext(),
-													page,
-													resultLimit,
-													adapter,
-													fragmentCollaboratorsBinding);
-											fragmentCollaboratorsBinding.progressBar.setVisibility(
-													View.VISIBLE);
-										}
-
-										@Override
-										public void onLoadFinished() {
-
-											fragmentCollaboratorsBinding.progressBar.setVisibility(
-													View.GONE);
-										}
-									});
-
-							GridLayoutManager layoutManager =
-									new GridLayoutManager(requireContext(), 2);
-							fragmentCollaboratorsBinding.gridView.setLayoutManager(layoutManager);
-
-							if (adapter.getItemCount() > 0) {
-								fragmentCollaboratorsBinding.gridView.setAdapter(adapter);
-								fragmentCollaboratorsBinding.noDataCollaborators.setVisibility(
-										View.GONE);
+						list -> {
+							if (adapter == null) {
+								adapter = new CollaboratorsAdapter(requireContext(), list);
+								binding.recyclerView.setAdapter(adapter);
 							} else {
-								adapter.notifyDataChanged();
-								fragmentCollaboratorsBinding.gridView.setAdapter(adapter);
-								fragmentCollaboratorsBinding.noDataCollaborators.setVisibility(
-										View.VISIBLE);
+								adapter.updateList(list);
 							}
+							binding.pullToRefresh.setRefreshing(false);
+							updateUiVisibility(
+									Boolean.TRUE.equals(viewModel.getIsLoading().getValue()));
+						});
 
-							fragmentCollaboratorsBinding.progressBar.setVisibility(View.GONE);
+		viewModel.getIsLoading().observe(getViewLifecycleOwner(), this::updateUiVisibility);
+		viewModel
+				.getError()
+				.observe(
+						getViewLifecycleOwner(),
+						err -> {
+							if (err != null) Toasty.show(requireContext(), err);
 						});
 	}
 
-	@Override
-	public void onResume() {
+	private void updateUiVisibility(boolean isLoading) {
+		boolean hasData = adapter != null && adapter.getItemCount() > 0;
+		boolean hasLoadedOnce = Boolean.TRUE.equals(viewModel.getHasLoadedOnce().getValue());
 
-		super.onResume();
-		if (refreshCollaborators) {
-			page = 1;
-			CollaboratorsViewModel.loadCollaboratorsListList(
-					repository.getOwner(),
-					repository.getName(),
-					requireContext(),
-					page,
-					resultLimit);
-			refreshCollaborators = false;
+		binding.expressiveLoader.setVisibility(isLoading && !hasData ? View.VISIBLE : View.GONE);
+
+		if (isLoading) {
+			binding.layoutEmpty.getRoot().setVisibility(View.GONE);
+		} else {
+			binding.layoutEmpty
+					.getRoot()
+					.setVisibility(!hasData && hasLoadedOnce ? View.VISIBLE : View.GONE);
 		}
+
+		boolean showEmpty = !isLoading && !hasData && hasLoadedOnce;
+		binding.pullToRefresh.setVisibility(showEmpty ? View.GONE : View.VISIBLE);
+	}
+
+	private void refreshData() {
+		scrollListener.resetState();
+		viewModel.resetPagination();
+		viewModel.fetchCollaborators(
+				requireContext(),
+				repository.getOwner(),
+				repository.getName(),
+				1,
+				resultLimit,
+				true);
+	}
+
+	private void setupSwipeRefresh() {
+		binding.pullToRefresh.setOnRefreshListener(this::refreshData);
+	}
+
+	@Override
+	public void onDestroyView() {
+		super.onDestroyView();
+		binding = null;
 	}
 }

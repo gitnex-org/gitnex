@@ -6,7 +6,6 @@ import org.gitnex.tea4j.v2.models.AddCollaboratorOption;
 import org.mian.gitnex.R;
 import org.mian.gitnex.activities.AddCollaboratorToRepositoryActivity;
 import org.mian.gitnex.clients.RetrofitClient;
-import org.mian.gitnex.fragments.CollaboratorsFragment;
 import org.mian.gitnex.helpers.AlertDialogs;
 import org.mian.gitnex.helpers.Toasty;
 import org.mian.gitnex.helpers.contexts.RepositoryContext;
@@ -36,7 +35,7 @@ public class CollaboratorActions {
 						if (response.isSuccessful()) {
 							if (response.code() == 204) {
 
-								CollaboratorsFragment.refreshCollaborators = true;
+								// CollaboratorsFragment.refreshCollaborators = true;
 								Toasty.show(
 										context,
 										context.getString(R.string.removeCollaboratorToastText));
@@ -96,7 +95,7 @@ public class CollaboratorActions {
 						if (response.isSuccessful()) {
 							if (response.code() == 204) {
 
-								CollaboratorsFragment.refreshCollaborators = true;
+								// CollaboratorsFragment.refreshCollaborators = true;
 								Toasty.show(
 										context,
 										context.getString(R.string.addCollaboratorToastText));
