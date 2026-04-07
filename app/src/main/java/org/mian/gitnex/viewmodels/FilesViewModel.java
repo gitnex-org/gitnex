@@ -1,20 +1,18 @@
 package org.mian.gitnex.viewmodels;
 
 import android.content.Context;
-import android.view.View;
-import android.widget.ProgressBar;
-import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MutableLiveData;
 import androidx.lifecycle.ViewModel;
-import java.util.Collections;
-import java.util.Comparator;
+import java.util.ArrayList;
 import java.util.List;
-import org.gitnex.tea4j.v2.models.ContentsResponse;
-import org.mian.gitnex.R;
+import java.util.Objects;
+import org.gitnex.tea4j.v2.models.Branch;
+import org.mian.gitnex.api.clients.ApiRetrofitClient;
+import org.mian.gitnex.api.models.contents.RepoGetContentsList;
 import org.mian.gitnex.clients.RetrofitClient;
-import org.mian.gitnex.helpers.Toasty;
+import org.mian.gitnex.helpers.Constants;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
@@ -24,116 +22,131 @@ import retrofit2.Response;
  */
 public class FilesViewModel extends ViewModel {
 
-	private MutableLiveData<List<ContentsResponse>> filesList;
-	private MutableLiveData<List<ContentsResponse>> filesList2;
+	private final MutableLiveData<List<RepoGetContentsList>> files = new MutableLiveData<>();
+	private final MutableLiveData<Boolean> isFilesLoading = new MutableLiveData<>();
+	private final MutableLiveData<List<Branch>> branches = new MutableLiveData<>(new ArrayList<>());
+	private final MutableLiveData<Boolean> isBranchesLoading = new MutableLiveData<>(false);
+	private final MutableLiveData<Boolean> isLastPageBranches = new MutableLiveData<>(false);
+	private final MutableLiveData<String> errorMessage = new MutableLiveData<>();
 
-	public LiveData<List<ContentsResponse>> getFilesList(
-			String owner,
-			String repo,
-			String ref,
-			Context ctx,
-			ProgressBar progressBar,
-			TextView noDataFiles) {
+	private int currentBranchPage = 1;
 
-		filesList = new MutableLiveData<>();
-		loadFilesList(owner, repo, ref, ctx, progressBar, noDataFiles);
-
-		return filesList;
+	public LiveData<List<RepoGetContentsList>> getFiles() {
+		return files;
 	}
 
-	private void loadFilesList(
-			String owner,
-			String repo,
-			String ref,
-			final Context ctx,
-			ProgressBar progressBar,
-			TextView noDataFiles) {
+	public LiveData<Boolean> getIsFilesLoading() {
+		return isFilesLoading;
+	}
 
-		Call<List<ContentsResponse>> call =
-				RetrofitClient.getApiInterface(ctx).repoGetContentsList(owner, repo, ref);
+	public LiveData<List<Branch>> getBranches() {
+		return branches;
+	}
+
+	public LiveData<Boolean> getIsBranchesLoading() {
+		return isBranchesLoading;
+	}
+
+	public LiveData<Boolean> getIsLastPageBranches() {
+		return isLastPageBranches;
+	}
+
+	public LiveData<String> getErrorMessage() {
+		return errorMessage;
+	}
+
+	public void loadFiles(Context ctx, String owner, String repo, String ref, String path) {
+		isFilesLoading.setValue(true);
+
+		Call<List<RepoGetContentsList>> call =
+				(path == null || path.isEmpty())
+						? ApiRetrofitClient.getInstance(ctx).getRepoContents(owner, repo, ref)
+						: ApiRetrofitClient.getInstance(ctx)
+								.getRepoContents(owner, repo, path, ref);
 
 		call.enqueue(
 				new Callback<>() {
 					@Override
 					public void onResponse(
-							@NonNull Call<List<ContentsResponse>> call,
-							@NonNull Response<List<ContentsResponse>> response) {
+							@NonNull Call<List<RepoGetContentsList>> call,
+							@NonNull Response<List<RepoGetContentsList>> response) {
+						isFilesLoading.setValue(false);
+						if (response.isSuccessful() && response.body() != null) {
+							List<RepoGetContentsList> list = response.body();
 
-						if (response.isSuccessful()
-								&& response.body() != null
-								&& !response.body().isEmpty()) {
-							Collections.sort(
-									response.body(),
-									Comparator.comparing(ContentsResponse::getType));
-							filesList.postValue(response.body());
+							list.sort(
+									(o1, o2) -> {
+										if (o1.getType().equals(o2.getType())) {
+											return o1.getName().compareToIgnoreCase(o2.getName());
+										}
+										return o1.getType().equals("dir") ? -1 : 1;
+									});
+
+							files.setValue(list);
 						} else {
-							progressBar.setVisibility(View.GONE);
-							noDataFiles.setVisibility(View.VISIBLE);
+							files.setValue(new ArrayList<>());
 						}
 					}
 
 					@Override
 					public void onFailure(
-							@NonNull Call<List<ContentsResponse>> call, @NonNull Throwable t) {
-
-						Toasty.show(ctx, ctx.getString(R.string.genericServerResponseError));
+							@NonNull Call<List<RepoGetContentsList>> call, @NonNull Throwable t) {
+						isFilesLoading.setValue(false);
+						errorMessage.setValue(t.getMessage());
 					}
 				});
 	}
 
-	public LiveData<List<ContentsResponse>> getFilesList2(
-			String owner,
-			String repo,
-			String filesDir,
-			String ref,
-			Context ctx,
-			ProgressBar progressBar,
-			TextView noDataFiles) {
+	public void loadBranches(Context ctx, String owner, String repo) {
+		if (Boolean.TRUE.equals(isBranchesLoading.getValue())
+				|| Boolean.TRUE.equals(isLastPageBranches.getValue())) return;
 
-		filesList2 = new MutableLiveData<>();
-		loadFilesList2(owner, repo, filesDir, ref, ctx, progressBar, noDataFiles);
+		isBranchesLoading.setValue(true);
+		int limit = Constants.getCurrentResultLimit(ctx);
 
-		return filesList2;
+		RetrofitClient.getApiInterface(ctx)
+				.repoListBranches(owner, repo, currentBranchPage, limit)
+				.enqueue(
+						new Callback<>() {
+							@Override
+							public void onResponse(
+									@NonNull Call<List<Branch>> call,
+									@NonNull Response<List<Branch>> response) {
+								isBranchesLoading.setValue(false);
+								if (response.isSuccessful() && response.body() != null) {
+									List<Branch> newBranches = response.body();
+
+									List<Branch> currentList =
+											new ArrayList<>(
+													Objects.requireNonNull(branches.getValue()));
+									currentList.addAll(newBranches);
+									branches.setValue(currentList);
+
+									String totalHeader = response.headers().get("x-total-count");
+									if (totalHeader != null) {
+										int totalItems = Integer.parseInt(totalHeader);
+										isLastPageBranches.setValue(
+												currentBranchPage
+														>= Math.ceil((double) totalItems / limit));
+									} else {
+										isLastPageBranches.setValue(newBranches.size() < limit);
+									}
+									currentBranchPage++;
+								}
+							}
+
+							@Override
+							public void onFailure(
+									@NonNull Call<List<Branch>> call, @NonNull Throwable t) {
+								isBranchesLoading.setValue(false);
+								errorMessage.setValue(t.getMessage());
+							}
+						});
 	}
 
-	private void loadFilesList2(
-			String owner,
-			String repo,
-			String filesDir,
-			String ref,
-			final Context ctx,
-			ProgressBar progressBar,
-			TextView noDataFiles) {
-
-		Call<List<ContentsResponse>> call =
-				RetrofitClient.getApiInterface(ctx).repoGetContentsList(owner, repo, filesDir, ref);
-
-		call.enqueue(
-				new Callback<>() {
-					@Override
-					public void onResponse(
-							@NonNull Call<List<ContentsResponse>> call,
-							@NonNull Response<List<ContentsResponse>> response) {
-
-						if (response.isSuccessful()
-								&& response.body() != null
-								&& !response.body().isEmpty()) {
-							Collections.sort(
-									response.body(),
-									Comparator.comparing(ContentsResponse::getType));
-							filesList2.postValue(response.body());
-						} else {
-							progressBar.setVisibility(View.GONE);
-							noDataFiles.setVisibility(View.VISIBLE);
-						}
-					}
-
-					@Override
-					public void onFailure(
-							@NonNull Call<List<ContentsResponse>> call, @NonNull Throwable t) {
-
-						Toasty.show(ctx, ctx.getString(R.string.genericServerResponseError));
-					}
-				});
+	public void resetBranches() {
+		branches.setValue(new ArrayList<>());
+		currentBranchPage = 1;
+		isLastPageBranches.setValue(false);
 	}
 }

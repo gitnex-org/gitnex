@@ -1,11 +1,12 @@
 package org.mian.gitnex.api.models.settings;
 
 import com.google.gson.annotations.SerializedName;
+import java.io.Serializable;
 
 /**
  * @author mmarif
  */
-public class RepositoryGlobal {
+public class RepositoryGlobal implements Serializable {
 
 	@SerializedName("forks_disabled")
 	private boolean forksDisabled;

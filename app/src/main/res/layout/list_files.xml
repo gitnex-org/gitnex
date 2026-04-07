@@ -1,62 +1,87 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:id="@+id/fileFrame"
+<com.google.android.material.listitem.ListItemLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
-    android:layout_height="wrap_content"
-    android:padding="@dimen/dimen12dp"
-    android:gravity="center_vertical"
-    android:orientation="horizontal">
+    android:layout_height="wrap_content">
 
-    <ImageView
-        android:id="@+id/fileTypeIs"
-        android:layout_width="wrap_content"
+    <com.google.android.material.listitem.ListItemCardView
+        android:id="@+id/card"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginEnd="@dimen/dimen16dp"
-        android:contentDescription="@string/generalImgContentText"
-        android:backgroundTint="?attr/iconsColor"
-        android:src="@drawable/ic_document"/>
+        android:checkable="false"
+        android:layout_marginVertical="@dimen/dimen1dp"
+        app:strokeWidth="0dp"
+        app:cardBackgroundColor="?attr/materialCardBackgroundColor">
 
-    <LinearLayout
-        android:id="@+id/infoSection"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:layout_weight="1"
-        android:orientation="vertical">
-
-        <LinearLayout
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:id="@+id/fileFrame"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:orientation="horizontal">
+            android:padding="@dimen/dimen8dp">
 
+            <!-- TOP ROW: Size + Date as header -->
             <TextView
-                android:id="@+id/fileName"
-                android:layout_width="0dp"
+                android:id="@+id/fileInfo"
+                style="@style/TextAppearance.Material3.LabelLarge"
+                android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_weight="1"
-                android:text="@string/defaultFilename"
-                android:textColor="?attr/primaryTextColor"
-                android:textSize="@dimen/dimen16sp" />
+                android:text="@string/size"
+                android:textColor="?attr/colorOnSurfaceVariant"
+                android:alpha="0.8"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
 
             <TextView
                 android:id="@+id/fileDate"
+                style="@style/TextAppearance.Material3.LabelLarge"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:textColor="?attr/hintColor"
-                android:textSize="@dimen/dimen12sp"
+                android:textColor="?attr/colorOnSurfaceVariant"
+                android:alpha="0.8"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
+
+            <ImageView
+                android:id="@+id/fileTypeIs"
+                android:layout_width="@dimen/dimen24dp"
+                android:layout_height="@dimen/dimen24dp"
+                android:layout_marginTop="@dimen/dimen16dp"
+                android:contentDescription="@string/generalImgContentText"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/fileInfo"
+                app:srcCompat="@drawable/ic_document" />
+
+            <TextView
+                android:id="@+id/fileName"
+                style="@style/TextAppearance.Material3.BodyLarge"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
                 android:layout_marginStart="@dimen/dimen12dp"
-                android:visibility="gone" />
+                android:layout_marginEnd="@dimen/dimen12dp"
+                android:ellipsize="end"
+                android:maxLines="2"
+                android:text="@string/defaultFilename"
+                app:layout_constraintEnd_toStartOf="@+id/iv_chevron"
+                app:layout_constraintStart_toEndOf="@id/fileTypeIs"
+                app:layout_constraintTop_toTopOf="@id/fileTypeIs"
+                app:layout_constraintBottom_toBottomOf="@id/fileTypeIs" />
 
-        </LinearLayout>
+            <ImageView
+                android:id="@+id/iv_chevron"
+                android:layout_width="@dimen/dimen20dp"
+                android:layout_height="@dimen/dimen20dp"
+                android:alpha="0.5"
+                android:contentDescription="@string/generalImgContentText"
+                android:visibility="gone"
+                app:tint="?attr/colorOnSurfaceVariant"
+                app:layout_constraintBottom_toBottomOf="@id/fileName"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintTop_toTopOf="@id/fileName"
+                app:srcCompat="@drawable/ic_chevron_right" />
 
-        <TextView
-            android:id="@+id/fileInfo"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="@string/size"
-            android:textColor="?attr/hintColor"
-            android:textSize="@dimen/dimen12sp"
-            android:visibility="gone" />
+        </androidx.constraintlayout.widget.ConstraintLayout>
 
-    </LinearLayout>
+    </com.google.android.material.listitem.ListItemCardView>
 
-</LinearLayout>
+</com.google.android.material.listitem.ListItemLayout>

@@ -1,12 +1,13 @@
 package org.mian.gitnex.api.models.users;
 
 import com.google.gson.annotations.SerializedName;
+import java.io.Serializable;
 import java.util.List;
 
 /**
  * @author mmarif
  */
-public class UserSearchResponse {
+public class UserSearchResponse implements Serializable {
 
 	@SerializedName("data")
 	private List<User> data;

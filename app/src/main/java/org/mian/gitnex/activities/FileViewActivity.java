@@ -27,8 +27,8 @@ import java.util.Arrays;
 import java.util.Objects;
 import okhttp3.ResponseBody;
 import org.apache.commons.io.FilenameUtils;
-import org.gitnex.tea4j.v2.models.ContentsResponse;
 import org.mian.gitnex.R;
+import org.mian.gitnex.api.models.contents.RepoGetContentsList;
 import org.mian.gitnex.clients.RetrofitClient;
 import org.mian.gitnex.databinding.ActivityFileViewBinding;
 import org.mian.gitnex.fragments.BottomSheetFileViewerFragment;
@@ -51,7 +51,7 @@ import retrofit2.Response;
 public class FileViewActivity extends BaseActivity implements BottomSheetListener {
 
 	private ActivityFileViewBinding binding;
-	private ContentsResponse file;
+	private RepoGetContentsList file;
 	private RepositoryContext repository;
 	private FileContentSearcher searcher;
 	private String fileContent;
@@ -212,7 +212,7 @@ public class FileViewActivity extends BaseActivity implements BottomSheetListene
 		setContentView(binding.getRoot());
 		setSupportActionBar(binding.toolbar);
 
-		file = (ContentsResponse) getIntent().getSerializableExtra("file");
+		file = (RepoGetContentsList) getIntent().getSerializableExtra("file");
 
 		binding.close.setOnClickListener(view -> finish());
 

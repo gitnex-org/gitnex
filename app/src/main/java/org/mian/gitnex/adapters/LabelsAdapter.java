@@ -145,7 +145,7 @@ public class LabelsAdapter extends RecyclerView.Adapter<LabelsAdapter.DataHolder
 			this.currentLabel = label;
 
 			int color = Color.parseColor("#" + label.getColor());
-			int contrast = new ColorInverter().getContrastColor(color);
+			int contrast = ColorInverter.getContrastColor(color);
 
 			binding.labelView.setCardBackgroundColor(color);
 			binding.labelName.setText(label.getName());

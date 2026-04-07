@@ -153,7 +153,7 @@ public class BottomSheetCreateLabelFragment extends BottomSheetDialogFragment {
 		try {
 			String formattedColor = colorStr.startsWith("#") ? colorStr : "#" + colorStr;
 			int color = Color.parseColor(formattedColor);
-			int contrast = new ColorInverter().getContrastColor(color);
+			int contrast = ColorInverter.getContrastColor(color);
 
 			binding.previewCard.setCardBackgroundColor(color);
 			binding.labelPreviewText.setTextColor(contrast);

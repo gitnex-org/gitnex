@@ -31,7 +31,6 @@
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_marginEnd="@dimen/dimen8dp"
-                    android:fontFamily="sans-serif-medium"
                     android:textColor="?attr/colorOnSurface"
                     android:textStyle="bold"
                     app:layout_constraintEnd_toStartOf="@+id/item_menu"
@@ -86,12 +85,15 @@
                         android:layout_marginStart="@dimen/dimen4dp"
                         android:textColor="?attr/colorOnSurfaceVariant" />
 
-                    <TextView
+                    <ImageView
+                        android:id="@+id/meta_divider"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_marginHorizontal="@dimen/dimen8dp"
-                        android:text="@string/dot"
-                        android:textColor="?attr/colorOutlineVariant" />
+                        android:contentDescription="@null"
+                        android:layout_gravity="center_vertical"
+                        android:src="@drawable/shape_dot_separator"
+                        app:tint="?attr/colorOutlineVariant" />
 
                     <TextView
                         android:id="@+id/releaseDate"
@@ -104,8 +106,8 @@
 
                 <com.google.android.material.imageview.ShapeableImageView
                     android:id="@+id/authorAvatar"
-                    android:layout_width="@dimen/dimen24dp"
-                    android:layout_height="@dimen/dimen24dp"
+                    android:layout_width="@dimen/dimen28dp"
+                    android:layout_height="@dimen/dimen28dp"
                     android:layout_marginTop="@dimen/dimen12dp"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toBottomOf="@id/releaseTypeBadge"
@@ -113,7 +115,7 @@
 
                 <TextView
                     android:id="@+id/authorName"
-                    style="@style/TextAppearance.Material3.LabelMedium"
+                    style="@style/TextAppearance.Material3.BodyMedium"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginStart="@dimen/dimen8dp"
@@ -152,8 +154,7 @@
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
                     android:text="@string/releaseDownloadText"
-                    android:textColor="?attr/colorPrimary"
-                    android:textStyle="bold" />
+                    android:textColor="?attr/colorPrimary" />
 
                 <ImageView
                     android:id="@+id/imgExpand"

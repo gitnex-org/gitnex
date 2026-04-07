@@ -3,7 +3,6 @@ package org.mian.gitnex.helpers;
 import android.content.Context;
 import android.graphics.Bitmap;
 import android.graphics.Canvas;
-import android.graphics.Color;
 import android.graphics.Paint;
 import android.graphics.Rect;
 import android.graphics.drawable.BitmapDrawable;
@@ -42,7 +41,7 @@ public class AvatarGenerator {
 
 		Paint textPaint = new Paint(Paint.ANTI_ALIAS_FLAG);
 
-		textPaint.setColor(getContrastColor(color));
+		textPaint.setColor(ColorInverter.getContrastColor(color));
 		textPaint.setTextSize(sizePx * 0.55f);
 		textPaint.setTextAlign(Paint.Align.CENTER);
 
@@ -62,13 +61,13 @@ public class AvatarGenerator {
 
 		float density = context.getResources().getDisplayMetrics().density;
 		int heightPx = (int) (heightDp * density);
-		int paddingPx = (int) (8 * density);
-		int cornerRadius = (int) (6 * density);
+		int paddingPx = (int) (10 * density);
+		int cornerRadius = (int) (16 * density);
 		int textSizePx = (int) (heightPx * 0.6f);
 
 		Paint textPaint = new Paint(Paint.ANTI_ALIAS_FLAG);
 
-		textPaint.setColor(getContrastColor(color));
+		textPaint.setColor(ColorInverter.getContrastColor(color));
 		textPaint.setTextSize(textSizePx);
 		textPaint.setTextAlign(Paint.Align.CENTER);
 
@@ -104,13 +103,6 @@ public class AvatarGenerator {
 		canvas.drawCircle(center, center, center, paint);
 
 		return new BitmapDrawable(context.getResources(), bitmap);
-	}
-
-	private static int getContrastColor(int color) {
-		double luminance =
-				(0.299 * Color.red(color) + 0.587 * Color.green(color) + 0.114 * Color.blue(color))
-						/ 255;
-		return luminance > 0.5 ? Color.BLACK : Color.WHITE;
 	}
 
 	private static int getColorForString(String key) {

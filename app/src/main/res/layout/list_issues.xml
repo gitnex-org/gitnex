@@ -34,7 +34,6 @@
                     android:id="@+id/comment_icon"
                     android:layout_width="@dimen/dimen14dp"
                     android:layout_height="@dimen/dimen14dp"
-                    android:alpha="0.6"
                     android:contentDescription="@string/generalImgContentText"
                     app:srcCompat="@drawable/ic_comment"
                     app:tint="?attr/iconsColor" />
@@ -61,7 +60,6 @@
                     <ImageView
                         android:layout_width="@dimen/dimen14dp"
                         android:layout_height="@dimen/dimen14dp"
-                        android:alpha="0.6"
                         app:srcCompat="@drawable/ic_milestone"
                         android:contentDescription="@string/generalImgContentText"
                         app:tint="?attr/iconsColor" />
@@ -83,10 +81,10 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:textAppearance="?attr/textAppearanceLabelLarge"
-                android:textColor="?attr/colorPrimary"
+                android:textColor="?attr/colorOnSurfaceVariant"
+                android:alpha="0.8"
                 app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintTop_toTopOf="parent"
-                tools:text="Jan 17, 2026" />
+                app:layout_constraintTop_toTopOf="parent" />
 
             <com.google.android.material.card.MaterialCardView
                 android:id="@+id/avatarFrame"
@@ -140,10 +138,8 @@
                 android:layout_marginTop="@dimen/dimen16dp"
                 android:alpha="0.7"
                 android:textAppearance="?attr/textAppearanceTitleMedium"
-                android:textStyle="bold"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@id/avatarFrame"
-                tools:text="#3" />
+                app:layout_constraintTop_toBottomOf="@id/avatarFrame" />
 
             <TextView
                 android:id="@+id/issueTitle"
@@ -151,7 +147,6 @@
                 android:layout_height="wrap_content"
                 android:layout_marginStart="@dimen/dimen4dp"
                 android:textAppearance="?attr/textAppearanceTitleMedium"
-                android:textStyle="bold"
                 android:ellipsize="end"
                 android:maxLines="2"
                 app:layout_constraintBaseline_toBaselineOf="@id/issueNumber"

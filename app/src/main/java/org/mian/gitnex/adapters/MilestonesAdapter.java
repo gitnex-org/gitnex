@@ -15,7 +15,6 @@ import java.util.Locale;
 import org.gitnex.tea4j.v2.models.Milestone;
 import org.mian.gitnex.R;
 import org.mian.gitnex.databinding.ListMilestonesBinding;
-import org.mian.gitnex.helpers.AppUtil;
 import org.mian.gitnex.helpers.Markdown;
 import org.mian.gitnex.helpers.TimeHelper;
 import org.mian.gitnex.helpers.Toasty;
@@ -119,17 +118,9 @@ public class MilestonesAdapter extends RecyclerView.Adapter<MilestonesAdapter.Da
 										TimeHelper.getFullDateTime(milestone.getDueOn(), locale)));
 
 				if (milestone.getDueOn().before(new Date())) {
-					binding.milestoneDueDate.setTextColor(context.getColor(R.color.colorRed));
+					binding.milestoneDueDate.setTextColor(context.getColor(R.color.darkRed));
 					binding.dateIcon.setImageTintList(
-							ColorStateList.valueOf(context.getColor(R.color.colorRed)));
-				} else {
-					binding.milestoneDueDate.setTextColor(
-							AppUtil.getColorFromAttribute(
-									context, android.R.attr.textColorSecondary));
-					binding.dateIcon.setImageTintList(
-							ColorStateList.valueOf(
-									AppUtil.getColorFromAttribute(
-											context, android.R.attr.textColorSecondary)));
+							ColorStateList.valueOf(context.getColor(R.color.darkRed)));
 				}
 			} else {
 				binding.milestoneDueDate.setText(context.getString(R.string.milestoneNoDueDate));

@@ -35,8 +35,7 @@
                     android:layout_height="@dimen/dimen14dp"
                     android:contentDescription="@string/generalImgContentText"
                     app:srcCompat="@drawable/ic_issue"
-                    app:tint="?attr/iconsColor"
-                    android:alpha="0.6"/>
+                    app:tint="?attr/iconsColor" />
 
                 <TextView
                     android:id="@+id/repoOpenIssues"
@@ -52,8 +51,7 @@
                     android:layout_marginStart="@dimen/dimen12dp"
                     android:contentDescription="@string/generalImgContentText"
                     app:srcCompat="@drawable/ic_pull_request"
-                    app:tint="?attr/iconsColor"
-                    android:alpha="0.6"/>
+                    app:tint="?attr/iconsColor" />
 
                 <TextView
                     android:id="@+id/repoOpenPRs"
@@ -62,6 +60,7 @@
                     android:layout_marginStart="@dimen/dimen4dp"
                     android:textAppearance="?attr/textAppearanceLabelMedium"
                     tools:text="5"/>
+
             </LinearLayout>
 
             <TextView
@@ -69,10 +68,10 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:textAppearance="?attr/textAppearanceLabelLarge"
-                android:textColor="?attr/colorPrimary"
+                android:textColor="?attr/colorOnSurfaceVariant"
+                android:alpha="0.8"
                 app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintTop_toTopOf="parent"
-                tools:text="Mar 16, 2026" />
+                app:layout_constraintTop_toTopOf="parent" />
 
             <com.google.android.material.card.MaterialCardView
                 android:id="@+id/avatarFrame"
@@ -219,7 +218,6 @@
                     android:id="@+id/repoIsPrivate"
                     android:layout_width="@dimen/dimen14dp"
                     android:layout_height="@dimen/dimen14dp"
-                    android:alpha="0.6"
                     android:contentDescription="@string/generalImgContentText"
                     android:visibility="gone"
                     app:srcCompat="@drawable/ic_lock"

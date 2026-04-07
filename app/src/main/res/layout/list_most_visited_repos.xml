@@ -19,14 +19,25 @@
             android:layout_height="wrap_content"
             android:padding="@dimen/dimen8dp">
 
-            <ImageView
-                android:id="@+id/image"
-                android:layout_width="@dimen/dimen40dp"
-                android:layout_height="@dimen/dimen40dp"
-                android:contentDescription="@string/repoContentAvatar"
+            <com.google.android.material.card.MaterialCardView
+                android:id="@+id/avatar_frame"
+                android:layout_width="@dimen/dimen36dp"
+                android:layout_height="@dimen/dimen36dp"
+                android:layout_marginTop="@dimen/dimen12dp"
+                android:backgroundTint="@android:color/transparent"
+                app:cardCornerRadius="@dimen/dimen8dp"
+                app:cardElevation="0dp"
+                app:strokeWidth="0dp"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="parent"
-                tools:src="@drawable/ic_android" />
+                app:layout_constraintTop_toTopOf="parent">
+
+                <ImageView
+                    android:id="@+id/image"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:contentDescription="@string/repoContentAvatar" />
+
+            </com.google.android.material.card.MaterialCardView>
 
             <TextView
                 android:id="@+id/org_name"
@@ -34,12 +45,12 @@
                 android:layout_height="wrap_content"
                 android:layout_marginStart="@dimen/dimen12dp"
                 android:layout_marginEnd="@dimen/dimen8dp"
-                android:alpha="0.7"
-                android:textAppearance="?attr/textAppearanceLabelMedium"
+                android:alpha="0.8"
+                android:textAppearance="?attr/textAppearanceLabelLarge"
                 android:textColor="?attr/primaryTextColor"
                 app:layout_constraintEnd_toStartOf="@id/repo_info_end_frame"
-                app:layout_constraintStart_toEndOf="@id/image"
-                app:layout_constraintTop_toTopOf="@id/image"
+                app:layout_constraintStart_toEndOf="@id/avatar_frame"
+                app:layout_constraintTop_toTopOf="@id/avatar_frame"
                 tools:text="Organization Name" />
 
             <TextView
@@ -92,7 +103,7 @@
                 app:drawableStartCompat="@drawable/ic_trending"
                 app:drawableTint="?attr/colorPrimary"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@id/image" />
+                app:layout_constraintTop_toBottomOf="@id/avatar_frame" />
 
         </androidx.constraintlayout.widget.ConstraintLayout>
 

@@ -653,7 +653,7 @@ public class CreateFileActivity extends BaseActivity {
 					}
 				});
 
-		adapter.clear();
+		// adapter.clear();
 		fetchBranches.run();
 	}
 

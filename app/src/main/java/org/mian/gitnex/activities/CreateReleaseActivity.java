@@ -470,7 +470,7 @@ public class CreateReleaseActivity extends BaseActivity {
 					}
 				});
 
-		adapter.clear();
+		// adapter.clear();
 		fetchBranches.run();
 	}
 

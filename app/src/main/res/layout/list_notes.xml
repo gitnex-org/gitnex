@@ -27,7 +27,7 @@
                 android:ellipsize="end"
                 android:maxLines="3"
                 android:textColor="?attr/primaryTextColor"
-                android:textSize="@dimen/dimen14sp"
+                style="@style/TextAppearance.Material3.BodyLarge"
                 app:layout_constraintEnd_toStartOf="@id/deleteNote"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent" />
@@ -43,16 +43,16 @@
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintTop_toTopOf="@id/noteContent"
                 app:srcCompat="@drawable/ic_delete"
-                app:tint="?attr/iconsColor" />
+                app:tint="?attr/colorError" />
 
             <TextView
                 android:id="@+id/noteDate"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="@dimen/dimen4dp"
+                android:layout_marginTop="@dimen/dimen8dp"
+                android:textColor="?attr/colorOnSurfaceVariant"
                 android:alpha="0.7"
-                android:textColor="?attr/primaryTextColor"
-                android:textSize="@dimen/dimen12sp"
+                style="@style/TextAppearance.Material3.LabelLarge"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"

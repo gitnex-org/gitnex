@@ -1,11 +1,12 @@
 package org.mian.gitnex.api.models.license;
 
 import com.google.gson.annotations.SerializedName;
+import java.io.Serializable;
 
 /**
  * @author mmarif
  */
-public class License {
+public class License implements Serializable {
 
 	@SerializedName("key")
 	private String key;

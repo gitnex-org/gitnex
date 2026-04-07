@@ -68,8 +68,7 @@
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
                     android:text="@string/releaseDownloadText"
-                    android:textColor="?attr/colorPrimary"
-                    android:textStyle="bold" />
+                    android:textColor="?attr/colorPrimary" />
 
                 <ImageView
                     android:id="@+id/downloadDropdownIcon"

@@ -642,6 +642,7 @@
     <string name="topics">Topics</string>
     <string name="merged">Merged</string>
     <string name="milestone">Milestone</string>
+    <string name="directory">Directory</string>
     <!-- generic copy -->
 
     <string name="exploreUsers">Explore users</string>

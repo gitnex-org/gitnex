@@ -36,13 +36,13 @@
                     android:layout_height="wrap_content"
                     android:gravity="center_vertical"
                     android:paddingHorizontal="@dimen/dimen12dp"
-                    android:paddingVertical="@dimen/dimen4dp"
+                    android:paddingVertical="@dimen/dimen6dp"
                     tools:ignore="UseCompoundDrawables">
 
                     <ImageView
                         android:id="@+id/labelIcon"
-                        android:layout_width="@dimen/dimen14dp"
-                        android:layout_height="@dimen/dimen14dp"
+                        android:layout_width="@dimen/dimen16dp"
+                        android:layout_height="@dimen/dimen16dp"
                         android:contentDescription="@string/generalImgContentText"
                         app:srcCompat="@drawable/ic_tag" />
 
@@ -51,7 +51,7 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_marginStart="@dimen/dimen6dp"
-                        android:textSize="@dimen/dimen12sp"
+                        android:textAppearance="@style/TextAppearance.Material3.LabelMedium"
                         android:textStyle="bold" />
 
                 </LinearLayout>

@@ -19,13 +19,25 @@
             android:layout_height="wrap_content"
             android:padding="@dimen/dimen8dp">
 
-            <ImageView
-                android:id="@+id/image_avatar"
-                android:layout_width="@dimen/dimen40dp"
-                android:layout_height="@dimen/dimen40dp"
-                android:contentDescription="@string/wiki"
+            <com.google.android.material.card.MaterialCardView
+                android:id="@+id/avatar_frame"
+                android:layout_width="@dimen/dimen36dp"
+                android:layout_height="@dimen/dimen36dp"
+                android:layout_marginTop="@dimen/dimen12dp"
+                android:backgroundTint="@android:color/transparent"
+                app:cardCornerRadius="@dimen/dimen8dp"
+                app:cardElevation="0dp"
+                app:strokeWidth="0dp"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="parent" />
+                app:layout_constraintTop_toTopOf="parent">
+
+                <ImageView
+                    android:id="@+id/image_avatar"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:contentDescription="@string/wiki" />
+
+            </com.google.android.material.card.MaterialCardView>
 
             <TextView
                 android:id="@+id/page_name"
@@ -34,12 +46,11 @@
                 android:layout_marginStart="@dimen/dimen12dp"
                 android:layout_marginEnd="@dimen/dimen8dp"
                 android:ellipsize="end"
-                android:maxLines="1"
+                android:maxLines="2"
                 android:textAppearance="@style/TextAppearance.Material3.TitleMedium"
                 android:textColor="?attr/colorOnSurface"
-                android:textStyle="bold"
                 app:layout_constraintEnd_toStartOf="@+id/item_menu"
-                app:layout_constraintStart_toEndOf="@+id/image_avatar"
+                app:layout_constraintStart_toEndOf="@+id/avatar_frame"
                 app:layout_constraintTop_toTopOf="parent"
                 app:layout_constraintBottom_toTopOf="@id/wiki_last_updated_by"
                 app:layout_constraintVertical_chainStyle="packed" />
@@ -49,9 +60,9 @@
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="@dimen/dimen4dp"
-                android:alpha=".8"
-                android:textAppearance="@style/TextAppearance.Material3.BodySmall"
+                android:textAppearance="@style/TextAppearance.Material3.LabelLarge"
                 android:textColor="?attr/colorOnSurfaceVariant"
+                android:alpha="0.7"
                 app:layout_constraintEnd_toEndOf="@+id/page_name"
                 app:layout_constraintStart_toStartOf="@+id/page_name"
                 app:layout_constraintTop_toBottomOf="@+id/page_name" />

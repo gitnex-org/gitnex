@@ -1,6 +1,8 @@
 package org.mian.gitnex.api.models.contents;
 
 import com.google.gson.annotations.SerializedName;
+import java.io.Serial;
+import java.io.Serializable;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
@@ -9,7 +11,9 @@ import java.util.Locale;
 /**
  * @author mmarif
  */
-public class RepoGetContentsList {
+public class RepoGetContentsList implements Serializable {
+
+	@Serial private static final long serialVersionUID = 1L;
 
 	@SerializedName("last_commit_when")
 	private String lastCommitWhen;

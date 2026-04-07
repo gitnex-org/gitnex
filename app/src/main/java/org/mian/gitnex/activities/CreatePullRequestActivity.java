@@ -704,7 +704,7 @@ public class CreatePullRequestActivity extends BaseActivity
 					}
 				});
 
-		adapter.clear();
+		// adapter.clear();
 		fetchBranches.run();
 	}
 
