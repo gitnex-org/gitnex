@@ -217,7 +217,7 @@ public class CreateReleaseActivity extends BaseActivity {
 
 						if (response.code() == 201) {
 
-							RepoDetailActivity.updateFABActions = true;
+							// RepoDetailActivity.updateFABActions = true;
 							Toasty.show(ctx, getString(R.string.tagCreated));
 							new Handler().postDelayed(() -> finish(), 3000);
 						} else if (response.code() == 401) {
@@ -305,7 +305,7 @@ public class CreateReleaseActivity extends BaseActivity {
 
 						if (response.code() == 201) {
 
-							RepoDetailActivity.updateFABActions = true;
+							// RepoDetailActivity.updateFABActions = true;
 							Toasty.show(ctx, getString(R.string.releaseCreatedText));
 							new Handler().postDelayed(() -> finish(), 3000);
 						} else if (response.code() == 401) {

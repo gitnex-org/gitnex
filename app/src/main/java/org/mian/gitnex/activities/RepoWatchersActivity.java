@@ -14,6 +14,7 @@ import org.mian.gitnex.adapters.UsersAdapter;
 import org.mian.gitnex.databinding.ActivityRepoWatchersStargazersBinding;
 import org.mian.gitnex.helpers.Constants;
 import org.mian.gitnex.helpers.EndlessRecyclerViewScrollListener;
+import org.mian.gitnex.helpers.Toasty;
 import org.mian.gitnex.helpers.UIHelper;
 import org.mian.gitnex.helpers.contexts.RepositoryContext;
 import org.mian.gitnex.viewmodels.UserListViewModel;
@@ -84,8 +85,12 @@ public class RepoWatchersActivity extends BaseActivity {
 				.observe(
 						this,
 						list -> {
-							adapter.updateList(list);
-							updateUiState();
+							if (list != null) {
+								adapter.updateList(list);
+								if (!Boolean.TRUE.equals(viewModel.getIsLoading().getValue())) {
+									updateUiState();
+								}
+							}
 						});
 
 		viewModel
@@ -93,10 +98,31 @@ public class RepoWatchersActivity extends BaseActivity {
 				.observe(
 						this,
 						loading -> {
+							boolean isLoading = Boolean.TRUE.equals(loading);
 							boolean hasData = adapter.getItemCount() > 0;
+
 							binding.expressiveLoader.setVisibility(
-									loading && !hasData ? View.VISIBLE : View.GONE);
+									isLoading && !hasData ? View.VISIBLE : View.GONE);
+
+							if (!isLoading) {
+								updateUiState();
+							} else {
+								binding.layoutEmpty.getRoot().setVisibility(View.GONE);
+							}
 						});
+
+		if (viewModel.getError() != null) {
+			viewModel
+					.getError()
+					.observe(
+							this,
+							error -> {
+								if (error != null) {
+									Toasty.show(ctx, error);
+									updateUiState();
+								}
+							});
+		}
 	}
 
 	private void refreshData() {
@@ -114,9 +140,16 @@ public class RepoWatchersActivity extends BaseActivity {
 	}
 
 	private void updateUiState() {
+		if (binding.searchView.isShowing()) return;
+
 		boolean isEmpty = adapter.getItemCount() == 0;
-		boolean loaded = Boolean.TRUE.equals(viewModel.getHasLoadedOnce().getValue());
-		binding.layoutEmpty.getRoot().setVisibility(loaded && isEmpty ? View.VISIBLE : View.GONE);
+		boolean isLoading = Boolean.TRUE.equals(viewModel.getIsLoading().getValue());
+
+		if (!isLoading && isEmpty) {
+			binding.layoutEmpty.getRoot().setVisibility(View.VISIBLE);
+		} else {
+			binding.layoutEmpty.getRoot().setVisibility(View.GONE);
+		}
 	}
 
 	private void setupSearch() {
@@ -176,6 +209,7 @@ public class RepoWatchersActivity extends BaseActivity {
 
 		if (query.isEmpty()) {
 			adapter.updateList(originalList);
+			binding.layoutEmpty.getRoot().setVisibility(View.GONE);
 			return;
 		}
 
@@ -192,5 +226,7 @@ public class RepoWatchersActivity extends BaseActivity {
 		}
 
 		adapter.updateList(filtered);
+
+		binding.layoutEmpty.getRoot().setVisibility(filtered.isEmpty() ? View.VISIBLE : View.GONE);
 	}
 }

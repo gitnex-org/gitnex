@@ -464,7 +464,7 @@ public class CreatePullRequestActivity extends BaseActivity
 						if (response.code() == 201) {
 
 							Toasty.show(ctx, getString(R.string.prCreateSuccess));
-							RepoDetailActivity.updateRepo = true;
+							// RepoDetailActivity.updateRepo = true;
 							PullRequestsFragment.resumePullRequests = true;
 							MainActivity.reloadRepos = true;
 

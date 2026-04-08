@@ -37,6 +37,7 @@ public class BranchAdapter extends RecyclerView.Adapter<BranchAdapter.BranchView
 	@Override
 	public void onBindViewHolder(@NonNull BranchViewHolder holder, int position) {
 		holder.bind(branches.get(position));
+		holder.binding.getRoot().updateAppearance(position, getItemCount());
 	}
 
 	@Override

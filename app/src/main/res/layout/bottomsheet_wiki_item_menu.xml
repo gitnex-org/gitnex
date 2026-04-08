@@ -67,7 +67,7 @@
                         android:layout_width="@dimen/dimen24dp"
                         android:layout_height="@dimen/dimen24dp"
                         app:srcCompat="@drawable/ic_edit"
-                        app:tint="?attr/colorOnPrimary"
+                        app:tint="?attr/colorPrimarySurface"
                         android:contentDescription="@string/menuEditText" />
 
                     <TextView
@@ -81,7 +81,7 @@
                         android:paddingHorizontal="@dimen/dimen6dp"
                         android:maxLines="1"
                         android:ellipsize="end"
-                        android:textColor="?attr/colorOnPrimary"
+                        android:textColor="?attr/colorOnPrimarySurface"
                         android:textAppearance="@style/TextAppearance.Material3.BodySmall" />
 
                 </LinearLayout>

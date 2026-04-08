@@ -463,7 +463,6 @@
     <string name="releaseTitleText">Title</string>
     <string name="releaseContentText">Content</string>
     <string name="releaseTypeText">Mark as Pre-Release</string>
-    <string name="releaseBranchText">Select Branch</string>
     <string name="releaseDraftText">Draft</string>
     <string name="tagNameErrorEmpty">Tag name is empty</string>
     <string name="titleErrorEmpty">Title is empty</string>

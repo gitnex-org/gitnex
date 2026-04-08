@@ -86,8 +86,12 @@ public class RepoStargazersActivity extends BaseActivity {
 				.observe(
 						this,
 						list -> {
-							adapter.updateList(list);
-							updateUiState();
+							if (list != null) {
+								adapter.updateList(list);
+								if (!Boolean.TRUE.equals(viewModel.getIsLoading().getValue())) {
+									updateUiState();
+								}
+							}
 						});
 
 		viewModel
@@ -95,18 +99,31 @@ public class RepoStargazersActivity extends BaseActivity {
 				.observe(
 						this,
 						loading -> {
+							boolean isLoading = Boolean.TRUE.equals(loading);
 							boolean hasData = adapter.getItemCount() > 0;
+
 							binding.expressiveLoader.setVisibility(
-									loading && !hasData ? View.VISIBLE : View.GONE);
+									isLoading && !hasData ? View.VISIBLE : View.GONE);
+
+							if (!isLoading) {
+								updateUiState();
+							} else {
+								binding.layoutEmpty.getRoot().setVisibility(View.GONE);
+							}
 						});
 
-		viewModel
-				.getError()
-				.observe(
-						this,
-						error -> {
-							if (error != null) Toasty.show(ctx, error);
-						});
+		if (viewModel.getError() != null) {
+			viewModel
+					.getError()
+					.observe(
+							this,
+							error -> {
+								if (error != null) {
+									Toasty.show(ctx, error);
+									updateUiState();
+								}
+							});
+		}
 	}
 
 	private void refreshData() {
@@ -124,12 +141,16 @@ public class RepoStargazersActivity extends BaseActivity {
 	}
 
 	private void updateUiState() {
+		if (binding.searchView.isShowing()) return;
+
 		boolean isEmpty = adapter.getItemCount() == 0;
-		boolean loaded = Boolean.TRUE.equals(viewModel.getHasLoadedOnce().getValue());
-		boolean loading = Boolean.TRUE.equals(viewModel.getIsLoading().getValue());
-		binding.layoutEmpty
-				.getRoot()
-				.setVisibility(loaded && isEmpty && !loading ? View.VISIBLE : View.GONE);
+		boolean isLoading = Boolean.TRUE.equals(viewModel.getIsLoading().getValue());
+
+		if (!isLoading && isEmpty) {
+			binding.layoutEmpty.getRoot().setVisibility(View.VISIBLE);
+		} else {
+			binding.layoutEmpty.getRoot().setVisibility(View.GONE);
+		}
 	}
 
 	private void setupSearch() {
@@ -182,6 +203,7 @@ public class RepoStargazersActivity extends BaseActivity {
 
 		if (query.isEmpty()) {
 			adapter.updateList(originalList);
+			binding.layoutEmpty.getRoot().setVisibility(View.GONE);
 			return;
 		}
 
@@ -199,7 +221,6 @@ public class RepoStargazersActivity extends BaseActivity {
 
 		adapter.updateList(filtered);
 
-		boolean hasResults = !filtered.isEmpty();
-		binding.layoutEmpty.getRoot().setVisibility(hasResults ? View.GONE : View.VISIBLE);
+		binding.layoutEmpty.getRoot().setVisibility(filtered.isEmpty() ? View.VISIBLE : View.GONE);
 	}
 }

@@ -198,7 +198,7 @@ public class CreateMilestoneActivity extends BaseActivity {
 
 							if (response.code() == 201) {
 
-								RepoDetailActivity.updateFABActions = true;
+								// RepoDetailActivity.updateFABActions = true;
 								Toasty.show(ctx, getString(R.string.milestoneCreated));
 
 								new Handler().postDelayed(() -> finish(), 3000);

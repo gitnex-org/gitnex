@@ -218,10 +218,10 @@ public class WikiFragment extends Fragment {
 
 	private void setupFab() {
 		AccountContext account = ((BaseActivity) requireActivity()).getAccount();
-		boolean canCreate =
-				repository.getPermissions().isAdmin()
-						&& !repository.getRepository().isArchived()
-						&& account.requiresVersion("1.16");
+		/*boolean canCreate =
+		repository.getPermissions().isAdmin()
+				&& !repository.getRepository().isArchived()
+				&& account.requiresVersion("1.16");*/
 
 		/*binding.createWiki.setVisibility(canCreate ? View.VISIBLE : View.GONE);
 		binding.createWiki.setOnClickListener(v -> {

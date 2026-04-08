@@ -19,7 +19,6 @@ import java.util.ArrayList;
 import java.util.List;
 import org.gitnex.tea4j.v2.models.PullRequest;
 import org.mian.gitnex.R;
-import org.mian.gitnex.activities.RepoDetailActivity;
 import org.mian.gitnex.adapters.PullRequestsAdapter;
 import org.mian.gitnex.databinding.FragmentPullRequestsBinding;
 import org.mian.gitnex.helpers.Constants;
@@ -171,25 +170,25 @@ public class PullRequestsFragment extends Fragment {
 	private void setupListeners() {
 		binding.pullToRefresh.setOnRefreshListener(this::refreshData);
 
-		((RepoDetailActivity) requireActivity())
-				.setFragmentRefreshListenerPr(
-						state -> {
-							repository.setPrState(
-									RepositoryContext.State.valueOf(state.toUpperCase()));
-							refreshData();
-						});
+		/*((RepoDetailActivity) requireActivity())
+		.setFragmentRefreshListenerPr(
+				state -> {
+					repository.setPrState(
+							RepositoryContext.State.valueOf(state.toUpperCase()));
+					refreshData();
+				});*/
 	}
 
 	private void handleArchivedState() {
-		boolean archived = repository.getRepository().isArchived();
-		if (repository.getRepository().isHasPullRequests() && !archived) {
-			// binding.createPullRequest.setVisibility(View.VISIBLE);
-			// binding.createPullRequest.setOnClickListener(v ->
-			// ((RepoDetailActivity) requireActivity()).createPrLauncher.launch(
-			//	repository.getIntent(requireContext(), CreatePullRequestActivity.class)));
-		} else {
-			// binding.createPullRequest.setVisibility(View.GONE);
-		}
+		// boolean archived = repository.getRepository().isArchived();
+		// if (repository.getRepository().isHasPullRequests() && !archived) {
+		// binding.createPullRequest.setVisibility(View.VISIBLE);
+		// binding.createPullRequest.setOnClickListener(v ->
+		// ((RepoDetailActivity) requireActivity()).createPrLauncher.launch(
+		//	repository.getIntent(requireContext(), CreatePullRequestActivity.class)));
+		// } else {
+		// binding.createPullRequest.setVisibility(View.GONE);
+		// }
 	}
 
 	private void setupMenu() {

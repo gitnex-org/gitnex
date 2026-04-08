@@ -532,7 +532,7 @@ public class CreateIssueActivity extends BaseActivity
 						if (response2.code() == 201) {
 
 							IssuesFragment.resumeIssues = true;
-							RepoDetailActivity.updateRepo = true;
+							// RepoDetailActivity.updateRepo = true;
 							MainActivity.reloadRepos = true;
 
 							Toasty.show(ctx, getString(R.string.issueCreated));

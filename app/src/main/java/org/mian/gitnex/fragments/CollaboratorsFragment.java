@@ -10,10 +10,15 @@ import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModelProvider;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
+import java.util.ArrayList;
+import java.util.List;
+import org.mian.gitnex.R;
+import org.mian.gitnex.activities.RepoDetailActivity;
 import org.mian.gitnex.adapters.CollaboratorsAdapter;
 import org.mian.gitnex.databinding.FragmentCollaboratorsBinding;
 import org.mian.gitnex.helpers.Constants;
 import org.mian.gitnex.helpers.EndlessRecyclerViewScrollListener;
+import org.mian.gitnex.helpers.RepositoryMenuItemModel;
 import org.mian.gitnex.helpers.Toasty;
 import org.mian.gitnex.helpers.UIHelper;
 import org.mian.gitnex.helpers.contexts.RepositoryContext;
@@ -22,7 +27,7 @@ import org.mian.gitnex.viewmodels.CollaboratorsViewModel;
 /**
  * @author mmarif
  */
-public class CollaboratorsFragment extends Fragment {
+public class CollaboratorsFragment extends Fragment implements RepoDetailActivity.RepoHubProvider {
 
 	private FragmentCollaboratorsBinding binding;
 	private CollaboratorsViewModel viewModel;
@@ -30,6 +35,7 @@ public class CollaboratorsFragment extends Fragment {
 	private EndlessRecyclerViewScrollListener scrollListener;
 	private RepositoryContext repository;
 	private int resultLimit;
+	private boolean isFirstLoad = true;
 
 	public static CollaboratorsFragment newInstance(RepositoryContext repository) {
 		CollaboratorsFragment fragment = new CollaboratorsFragment();
@@ -58,24 +64,57 @@ public class CollaboratorsFragment extends Fragment {
 		viewModel = new ViewModelProvider(this).get(CollaboratorsViewModel.class);
 		resultLimit = Constants.getCurrentResultLimit(requireContext());
 
-		setupUI();
 		setupRecyclerView();
 		setupSwipeRefresh();
 		observeViewModel();
 
-		refreshData();
 		return binding.getRoot();
 	}
 
-	private void setupUI() {
-		if (repository.getPermissions().isAdmin()) {
-			binding.fabAddCollaborator.setVisibility(View.VISIBLE);
-			binding.fabAddCollaborator.setOnClickListener(
-					v -> {
-						BottomSheetAddCollaborator.newInstance(repository)
-								.show(getChildFragmentManager(), "AddCollaborator");
-					});
+	@Override
+	public List<RepositoryMenuItemModel> getRepoHubItems() {
+		List<RepositoryMenuItemModel> items = new ArrayList<>();
+
+		if (repository.getPermissions().isAdmin() && !repository.getRepository().isArchived()) {
+			items.add(
+					new RepositoryMenuItemModel(
+							"COLLABORATOR_ADD_NEW",
+							R.string.addButton,
+							R.drawable.ic_add,
+							R.attr.colorPrimaryContainer,
+							R.attr.colorOnPrimaryContainer));
 		}
+
+		return items;
+	}
+
+	@Override
+	public void onHubActionSelected(String actionId) {
+		if (actionId.equals("COLLABORATOR_ADD_NEW")) {
+			BottomSheetAddCollaborator.newInstance(repository)
+					.show(getChildFragmentManager(), "AddCollaborator");
+		}
+	}
+
+	@Override
+	public void onResume() {
+		super.onResume();
+		if (!isHidden() && isFirstLoad) {
+			lazyLoad();
+		}
+	}
+
+	@Override
+	public void onHiddenChanged(boolean hidden) {
+		super.onHiddenChanged(hidden);
+		if (!hidden && isFirstLoad) {
+			lazyLoad();
+		}
+	}
+
+	private void lazyLoad() {
+		isFirstLoad = false;
+		refreshData();
 	}
 
 	private void setupRecyclerView() {

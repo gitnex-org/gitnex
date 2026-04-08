@@ -45,10 +45,10 @@
 
             <HorizontalScrollView
                 android:id="@+id/dock_scroll_view"
-                android:layout_width="224dp"
+                android:layout_width="@dimen/dimen224dp"
                 android:layout_height="match_parent"
                 android:scrollbars="none"
-                android:fadingEdgeLength="24dp"
+                android:fadingEdgeLength="@dimen/dimen24dp"
                 android:requiresFadingEdge="horizontal"
                 android:clipToPadding="false">
 

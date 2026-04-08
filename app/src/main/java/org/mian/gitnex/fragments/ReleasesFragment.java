@@ -159,14 +159,14 @@ public class ReleasesFragment extends Fragment {
 		binding.pullToRefresh.setOnRefreshListener(this::refreshData);
 
 		RepoDetailActivity activity = (RepoDetailActivity) requireActivity();
-		activity.setFragmentRefreshListenerReleases(
-				type -> {
-					if (type != null) {
-						repository.setReleasesViewTypeIsTag(type.equals("tags"));
-						isInitialLoad = false;
-						refreshData();
-					}
-				});
+		/*activity.setFragmentRefreshListenerReleases(
+		type -> {
+			if (type != null) {
+				repository.setReleasesViewTypeIsTag(type.equals("tags"));
+				isInitialLoad = false;
+				refreshData();
+			}
+		});*/
 	}
 
 	private void initDataFetch() {
@@ -431,8 +431,8 @@ public class ReleasesFragment extends Fragment {
 	}
 
 	private void handlePermissions() {
-		boolean canPush = repository.getPermissions().isPush();
-		boolean archived = repository.getRepository().isArchived();
+		// boolean canPush = repository.getPermissions().isPush();
+		// boolean archived = repository.getRepository().isArchived();
 		// binding.createRelease.setVisibility(!canPush || archived ? View.GONE : View.VISIBLE);
 		// binding.createRelease.setOnClickListener(v ->
 		//	startActivity(repository.getIntent(getContext(), CreateReleaseActivity.class)));
@@ -460,10 +460,10 @@ public class ReleasesFragment extends Fragment {
 	@Override
 	public void onResume() {
 		super.onResume();
-		if (RepoDetailActivity.updateFABActions) {
-			refreshData();
-			RepoDetailActivity.updateFABActions = false;
-		}
+		// if (RepoDetailActivity.updateFABActions) {
+		//	refreshData();
+		//	RepoDetailActivity.updateFABActions = false;
+		// }
 	}
 
 	@Override

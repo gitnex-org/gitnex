@@ -55,7 +55,15 @@ public class CommitsActivity extends BaseActivity {
 	}
 
 	private void setupToolbar() {
-		binding.toolbarTitle.setText(repository.getBranchRef());
+		if (repository != null) {
+			String branch = repository.getBranchRef();
+			if (branch == null || branch.isEmpty()) {
+				branch = repository.getRepository().getDefaultBranch();
+			}
+
+			binding.toolbarTitle.setText(branch);
+		}
+
 		binding.close.setOnClickListener(v -> finish());
 		binding.actionSearchDock.setOnClickListener(v -> binding.searchView.show());
 	}

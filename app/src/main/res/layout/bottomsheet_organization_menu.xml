@@ -75,7 +75,7 @@
                             android:layout_height="@dimen/dimen24dp"
                             app:srcCompat="@drawable/ic_copy"
                             android:contentDescription="@string/generalImgContentText"
-                            app:tint="?attr/colorOnPrimary" />
+                            app:tint="?attr/colorPrimarySurface" />
 
                         <TextView
                             android:id="@+id/copy_text"
@@ -87,7 +87,7 @@
                             android:paddingHorizontal="@dimen/dimen6dp"
                             android:maxLines="1"
                             android:ellipsize="end"
-                            android:textColor="?attr/colorOnPrimary"
+                            android:textColor="?attr/colorOnPrimarySurface"
                             android:textAppearance="@style/TextAppearance.Material3.BodySmall"
                             android:gravity="center" />
 
@@ -123,7 +123,7 @@
                             android:layout_height="@dimen/dimen24dp"
                             android:contentDescription="@string/generalImgContentText"
                             app:srcCompat="@drawable/ic_share"
-                            app:tint="?attr/colorOnPrimary" />
+                            app:tint="?attr/colorPrimarySurface" />
 
                         <TextView
                             android:id="@+id/share_text"
@@ -135,7 +135,7 @@
                             android:maxLines="1"
                             android:ellipsize="end"
                             android:text="@string/share"
-                            android:textColor="?attr/colorOnPrimary"
+                            android:textColor="?attr/colorOnPrimarySurface"
                             android:textAppearance="@style/TextAppearance.Material3.BodySmall"
                             android:gravity="center" />
 
@@ -171,7 +171,7 @@
                             android:layout_height="@dimen/dimen24dp"
                             app:srcCompat="@drawable/ic_browser"
                             android:contentDescription="@string/generalImgContentText"
-                            app:tint="?attr/colorOnPrimary" />
+                            app:tint="?attr/colorPrimarySurface" />
 
                         <TextView
                             android:id="@+id/open_in_browser_text"
@@ -183,7 +183,7 @@
                             android:paddingHorizontal="@dimen/dimen6dp"
                             android:maxLines="1"
                             android:ellipsize="end"
-                            android:textColor="?attr/colorOnPrimary"
+                            android:textColor="?attr/colorOnPrimarySurface"
                             android:textAppearance="@style/TextAppearance.Material3.BodySmall"
                             android:gravity="center" />
 

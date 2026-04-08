@@ -97,12 +97,17 @@ public class FilesAdapter extends RecyclerView.Adapter<FilesAdapter.FilesViewHol
 					alteredFiles.addAll((List<RepoGetContentsList>) results.values);
 				}
 				notifyDataSetChanged();
+				if (filesListener != null) {
+					filesListener.onSearchFilterCompleted(alteredFiles.size());
+				}
 			}
 		};
 	}
 
 	public interface FilesAdapterListener {
 		void onClickFile(RepoGetContentsList file);
+
+		void onSearchFilterCompleted(int count);
 	}
 
 	public class FilesViewHolder extends RecyclerView.ViewHolder {

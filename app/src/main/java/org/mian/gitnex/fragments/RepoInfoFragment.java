@@ -40,6 +40,7 @@ import org.mian.gitnex.helpers.AvatarGenerator;
 import org.mian.gitnex.helpers.Markdown;
 import org.mian.gitnex.helpers.TimeHelper;
 import org.mian.gitnex.helpers.Toasty;
+import org.mian.gitnex.helpers.UIHelper;
 import org.mian.gitnex.helpers.contexts.RepositoryContext;
 import org.mian.gitnex.helpers.languagestatistics.LanguageColor;
 import org.mian.gitnex.helpers.languagestatistics.LanguageStatisticsHelper;
@@ -83,7 +84,9 @@ public class RepoInfoFragment extends Fragment {
 		super.onViewCreated(view, savedInstanceState);
 		ctx = requireContext();
 		locale = getResources().getConfiguration().getLocales().get(0);
-		viewModel = new ViewModelProvider(this).get(RepositoryDetailsViewModel.class);
+		viewModel = new ViewModelProvider(requireActivity()).get(RepositoryDetailsViewModel.class);
+
+		UIHelper.applyInsets(view, null, null, null, binding.repoInfoLayout);
 
 		setupStatHeaders();
 		setupClickListeners();
@@ -97,6 +100,40 @@ public class RepoInfoFragment extends Fragment {
 	}
 
 	private void setupObservers() {
+		viewModel
+				.getIsStarred()
+				.observe(
+						getViewLifecycleOwner(),
+						starred -> {
+							binding.statStars.statIcon.setImageResource(
+									starred ? R.drawable.ic_star : R.drawable.ic_star_unfilled);
+							viewModel.updateStarCountLocal(starred);
+						});
+		viewModel
+				.getIsWatched()
+				.observe(
+						getViewLifecycleOwner(),
+						watched -> {
+							binding.statWatchers.statIcon.setImageResource(
+									watched ? R.drawable.ic_unwatch : R.drawable.ic_watchers);
+							viewModel.updateWatchCountLocal(watched);
+						});
+
+		viewModel
+				.getLocalStarCount()
+				.observe(
+						getViewLifecycleOwner(),
+						count -> {
+							binding.statStars.statCount.setText(AppUtil.numberFormatter(count));
+						});
+		viewModel
+				.getLocalWatchCount()
+				.observe(
+						getViewLifecycleOwner(),
+						count -> {
+							binding.statWatchers.statCount.setText(AppUtil.numberFormatter(count));
+						});
+
 		viewModel
 				.getRepoData()
 				.observe(
@@ -230,18 +267,32 @@ public class RepoInfoFragment extends Fragment {
 						v ->
 								ctx.startActivity(
 										repositoryContext.getIntent(ctx, RepoForksActivity.class)));
-		binding.statPRs
-				.getRoot()
-				.setOnClickListener(
-						v -> ((RepoDetailActivity) requireActivity()).viewPager.setCurrentItem(3));
 		binding.statIssues
 				.getRoot()
 				.setOnClickListener(
-						v -> ((RepoDetailActivity) requireActivity()).viewPager.setCurrentItem(2));
+						v -> {
+							if (getActivity() instanceof RepoDetailActivity activity) {
+								activity.switchTab(activity.issuesFrag, R.id.btn_nav_issues);
+							}
+						});
+
+		binding.statPRs
+				.getRoot()
+				.setOnClickListener(
+						v -> {
+							if (getActivity() instanceof RepoDetailActivity activity) {
+								activity.switchTab(activity.prFrag, R.id.btn_nav_prs);
+							}
+						});
+
 		binding.statBranch
 				.getRoot()
 				.setOnClickListener(
-						v -> ((RepoDetailActivity) requireActivity()).viewPager.setCurrentItem(1));
+						v -> {
+							if (getActivity() instanceof RepoDetailActivity activity) {
+								activity.switchTab(activity.filesFrag, R.id.btn_nav_files);
+							}
+						});
 		binding.statUpdatedAt
 				.getRoot()
 				.setOnClickListener(
@@ -292,6 +343,8 @@ public class RepoInfoFragment extends Fragment {
 
 		binding.repoMetaName.setText(repo.getName());
 		binding.repoMetaOwner.setText(repo.getOwner().getLogin());
+
+		viewModel.setInitialCounts(repo.getStarsCount(), repo.getWatchersCount());
 
 		int lockIcon = repo.isPrivate() ? R.drawable.ic_lock : 0;
 		binding.repoMetaName.setCompoundDrawablesWithIntrinsicBounds(lockIcon, 0, 0, 0);

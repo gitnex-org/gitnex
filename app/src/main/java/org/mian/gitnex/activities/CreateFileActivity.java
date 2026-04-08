@@ -374,7 +374,7 @@ public class CreateFileActivity extends BaseActivity {
 								result.putExtra("fileModified", true);
 								result.putExtra("fileAction", fileAction);
 								setResult(200, result);
-								RepoDetailActivity.updateFABActions = true;
+								// RepoDetailActivity.updateFABActions = true;
 								new Handler().postDelayed(() -> finish(), 3000);
 								break;
 

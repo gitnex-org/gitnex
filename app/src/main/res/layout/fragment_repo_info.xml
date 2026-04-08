@@ -36,7 +36,6 @@
                     android:id="@+id/repoAvatar"
                     android:layout_width="@dimen/dimen80dp"
                     android:layout_height="@dimen/dimen80dp"
-                    android:layout_marginTop="@dimen/dimen48dp"
                     android:layout_marginStart="@dimen/dimen24dp"
                     android:background="@android:color/transparent"
                     android:scaleType="centerCrop"

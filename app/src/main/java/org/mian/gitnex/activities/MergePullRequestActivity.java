@@ -222,7 +222,7 @@ public class MergePullRequestActivity extends BaseActivity {
 							Intent result = new Intent();
 							PullRequestsFragment.resumePullRequests = true;
 							IssueDetailActivity.singleIssueUpdate = true;
-							RepoDetailActivity.updateRepo = true;
+							// RepoDetailActivity.updateRepo = true;
 							setResult(200, result);
 							new Handler().postDelayed(() -> finish(), 3000);
 						} else if (response.code() == 401) {

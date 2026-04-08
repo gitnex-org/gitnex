@@ -264,7 +264,7 @@ public class IssuesFragment extends Fragment {
 
 		RepoDetailActivity activity = (RepoDetailActivity) requireActivity();
 
-		activity.setFragmentRefreshListener(
+		/*activity.setFragmentRefreshListener(
 				state -> {
 					repository.setIssueState(RepositoryContext.State.valueOf(state.toUpperCase()));
 					refreshData(null);
@@ -287,11 +287,11 @@ public class IssuesFragment extends Fragment {
 					mentionedBy = username;
 					repository.setMentionedBy(username);
 					refreshData(null);
-				});
+				});*/
 	}
 
 	private void handleArchivedState() {
-		boolean archived = repository.getRepository().isArchived();
+		// boolean archived = repository.getRepository().isArchived();
 		/*if (repository.getRepository().isHasIssues() && !archived) {
 			binding.createNewIssue.setVisibility(View.VISIBLE);
 			binding.createNewIssue.setOnClickListener(

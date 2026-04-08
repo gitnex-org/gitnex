@@ -12,7 +12,6 @@ import org.gitnex.tea4j.v2.models.Issue;
 import org.mian.gitnex.R;
 import org.mian.gitnex.activities.BaseActivity;
 import org.mian.gitnex.activities.IssueDetailActivity;
-import org.mian.gitnex.activities.RepoDetailActivity;
 import org.mian.gitnex.clients.RetrofitClient;
 import org.mian.gitnex.fragments.IssuesFragment;
 import org.mian.gitnex.fragments.PullRequestsFragment;
@@ -136,7 +135,7 @@ public class IssueActions {
 														.getIntent()
 														.getStringExtra("openedFromLink"),
 												"true")) {
-									RepoDetailActivity.updateRepo = true;
+									// RepoDetailActivity.updateRepo = true;
 								}
 							}
 						} else if (response.code() == 401) {
