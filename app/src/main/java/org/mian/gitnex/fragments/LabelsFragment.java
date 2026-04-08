@@ -15,11 +15,15 @@ import androidx.lifecycle.ViewModelProvider;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 import com.google.android.material.dialog.MaterialAlertDialogBuilder;
+import java.util.ArrayList;
+import java.util.List;
 import org.mian.gitnex.R;
+import org.mian.gitnex.activities.RepoDetailActivity;
 import org.mian.gitnex.adapters.LabelsAdapter;
 import org.mian.gitnex.databinding.FragmentLabelsBinding;
 import org.mian.gitnex.helpers.Constants;
 import org.mian.gitnex.helpers.EndlessRecyclerViewScrollListener;
+import org.mian.gitnex.helpers.RepositoryMenuItemModel;
 import org.mian.gitnex.helpers.Toasty;
 import org.mian.gitnex.helpers.UIHelper;
 import org.mian.gitnex.helpers.contexts.RepositoryContext;
@@ -28,7 +32,7 @@ import org.mian.gitnex.viewmodels.LabelsViewModel;
 /**
  * @author mmarif
  */
-public class LabelsFragment extends Fragment {
+public class LabelsFragment extends Fragment implements RepoDetailActivity.RepoHubProvider {
 
 	private FragmentLabelsBinding binding;
 	private LabelsViewModel viewModel;
@@ -39,6 +43,7 @@ public class LabelsFragment extends Fragment {
 	private final String type = "repo";
 	private int resultLimit;
 	private boolean isSearching = false;
+	private boolean isFirstLoad = true;
 
 	public static LabelsFragment newInstance(RepositoryContext repository) {
 		LabelsFragment fragment = new LabelsFragment();
@@ -67,8 +72,6 @@ public class LabelsFragment extends Fragment {
 		setupSearch();
 		observeViewModel();
 
-		refreshData();
-
 		return binding.getRoot();
 	}
 
@@ -76,6 +79,65 @@ public class LabelsFragment extends Fragment {
 	public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
 		super.onViewCreated(view, savedInstanceState);
 		UIHelper.applyInsets(view, null, binding.recyclerView, binding.pullToRefresh, null);
+	}
+
+	@Override
+	public List<RepositoryMenuItemModel> getRepoHubItems() {
+		List<RepositoryMenuItemModel> items = new ArrayList<>();
+
+		items.add(
+				new RepositoryMenuItemModel(
+						"LABEL_SEARCH",
+						R.string.search,
+						R.drawable.ic_search,
+						R.attr.colorPrimarySurface,
+						R.attr.colorOnPrimarySurface));
+
+		if (repository.getPermissions().isAdmin() && !repository.getRepository().isArchived()) {
+			items.add(
+					new RepositoryMenuItemModel(
+							"LABEL_ADD_NEW",
+							R.string.addButton,
+							R.drawable.ic_add,
+							R.attr.colorPrimaryContainer,
+							R.attr.colorOnPrimaryContainer));
+		}
+
+		return items;
+	}
+
+	@Override
+	public void onHubActionSelected(String actionId) {
+		if (actionId.equals("LABEL_ADD_NEW")) {
+			BottomSheetCreateLabelFragment sheet =
+					BottomSheetCreateLabelFragment.newInstance(
+							"repo", repository.getOwner(), repository.getName(), null);
+			sheet.show(getChildFragmentManager(), "CreateLabelSheet");
+		}
+		if (actionId.equals("LABEL_SEARCH")) {
+			binding.searchView.show();
+		}
+	}
+
+	@Override
+	public void onResume() {
+		super.onResume();
+		if (!isHidden() && isFirstLoad) {
+			lazyLoad();
+		}
+	}
+
+	@Override
+	public void onHiddenChanged(boolean hidden) {
+		super.onHiddenChanged(hidden);
+		if (!hidden && isFirstLoad) {
+			lazyLoad();
+		}
+	}
+
+	private void lazyLoad() {
+		isFirstLoad = false;
+		refreshData();
 	}
 
 	private void setupRecyclerView() {

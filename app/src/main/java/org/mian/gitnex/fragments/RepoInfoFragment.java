@@ -272,7 +272,7 @@ public class RepoInfoFragment extends Fragment {
 				.setOnClickListener(
 						v -> {
 							if (getActivity() instanceof RepoDetailActivity activity) {
-								activity.switchTab(activity.issuesFrag, R.id.btn_nav_issues);
+								activity.switchTab("issues", R.id.btn_nav_issues);
 							}
 						});
 
@@ -281,7 +281,7 @@ public class RepoInfoFragment extends Fragment {
 				.setOnClickListener(
 						v -> {
 							if (getActivity() instanceof RepoDetailActivity activity) {
-								activity.switchTab(activity.prFrag, R.id.btn_nav_prs);
+								activity.switchTab("prs", R.id.btn_nav_prs);
 							}
 						});
 
@@ -290,7 +290,7 @@ public class RepoInfoFragment extends Fragment {
 				.setOnClickListener(
 						v -> {
 							if (getActivity() instanceof RepoDetailActivity activity) {
-								activity.switchTab(activity.filesFrag, R.id.btn_nav_files);
+								activity.switchTab("files", R.id.btn_nav_files);
 							}
 						});
 		binding.statUpdatedAt

@@ -23,7 +23,7 @@
 
         <TextView
             android:id="@+id/repo_name_title"
-            style="@style/TextAppearance.Material3.TitleLarge"
+            style="@style/TextAppearance.Material3.HeadlineSmall"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:textStyle="bold" />
@@ -37,8 +37,8 @@
             tools:ignore="UseCompoundDrawables">
 
             <ImageView
-                android:layout_width="@dimen/dimen16dp"
-                android:layout_height="@dimen/dimen16dp"
+                android:layout_width="@dimen/dimen18dp"
+                android:layout_height="@dimen/dimen18dp"
                 android:contentDescription="@string/branch"
                 android:src="@drawable/ic_branch"
                 android:alpha=".7"
@@ -47,7 +47,7 @@
 
             <TextView
                 android:id="@+id/repo_current_branch"
-                style="@style/TextAppearance.Material3.TitleSmall"
+                style="@style/TextAppearance.Material3.TitleMedium"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:alpha=".7" />

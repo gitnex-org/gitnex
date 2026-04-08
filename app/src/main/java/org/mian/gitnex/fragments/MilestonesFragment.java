@@ -4,29 +4,28 @@ import android.os.Bundle;
 import android.os.Handler;
 import android.os.Looper;
 import android.view.LayoutInflater;
-import android.view.Menu;
-import android.view.MenuInflater;
-import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
-import androidx.core.view.MenuProvider;
 import androidx.fragment.app.Fragment;
-import androidx.lifecycle.Lifecycle;
 import androidx.lifecycle.ViewModelProvider;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 import com.google.android.material.bottomsheet.BottomSheetDialog;
 import com.google.android.material.dialog.MaterialAlertDialogBuilder;
+import java.util.ArrayList;
 import java.util.List;
 import org.gitnex.tea4j.v2.models.Milestone;
 import org.mian.gitnex.R;
+import org.mian.gitnex.activities.CreateMilestoneActivity;
+import org.mian.gitnex.activities.RepoDetailActivity;
 import org.mian.gitnex.adapters.MilestonesAdapter;
 import org.mian.gitnex.databinding.BottomsheetMilestonesItemMenuBinding;
 import org.mian.gitnex.databinding.FragmentMilestonesBinding;
 import org.mian.gitnex.helpers.Constants;
 import org.mian.gitnex.helpers.EndlessRecyclerViewScrollListener;
+import org.mian.gitnex.helpers.RepositoryMenuItemModel;
 import org.mian.gitnex.helpers.Toasty;
 import org.mian.gitnex.helpers.UIHelper;
 import org.mian.gitnex.helpers.contexts.RepositoryContext;
@@ -35,7 +34,7 @@ import org.mian.gitnex.viewmodels.MilestonesViewModel;
 /**
  * @author mmarif
  */
-public class MilestonesFragment extends Fragment {
+public class MilestonesFragment extends Fragment implements RepoDetailActivity.RepoHubProvider {
 
 	private FragmentMilestonesBinding binding;
 	private MilestonesViewModel viewModel;
@@ -45,6 +44,7 @@ public class MilestonesFragment extends Fragment {
 	private int resultLimit;
 	private String currentState = "open";
 	private String milestoneIdToScroll;
+	private boolean isFirstLoad = true;
 
 	public static MilestonesFragment newInstance(RepositoryContext repository) {
 		MilestonesFragment fragment = new MilestonesFragment();
@@ -63,20 +63,6 @@ public class MilestonesFragment extends Fragment {
 		super.onCreate(savedInstanceState);
 		repository = RepositoryContext.fromBundle(requireArguments());
 
-		// remove later
-		getParentFragmentManager()
-				.setFragmentResultListener(
-						"filter_request",
-						this,
-						(requestKey, bundle) -> {
-							String state = bundle.getString("state");
-							if (state != null) {
-								currentState = state;
-								requireActivity().invalidateMenu();
-								refreshData();
-							}
-						});
-
 		milestoneIdToScroll = requireActivity().getIntent().getStringExtra("milestoneId");
 		requireActivity().getIntent().removeExtra("milestoneId");
 	}
@@ -93,11 +79,73 @@ public class MilestonesFragment extends Fragment {
 		setupRecyclerView();
 		setupSwipeRefresh();
 		observeViewModel();
-		setupMenu();
-
-		refreshData();
 
 		return binding.getRoot();
+	}
+
+	@Override
+	public List<RepositoryMenuItemModel> getRepoHubItems() {
+		List<RepositoryMenuItemModel> items = new ArrayList<>();
+
+		boolean isCurrentlyOpen = "open".equals(currentState);
+		items.add(
+				new RepositoryMenuItemModel(
+						"MILESTONE_FILTER_TOGGLE",
+						isCurrentlyOpen ? R.string.isClosed : R.string.isOpen,
+						R.drawable.ic_filter,
+						isCurrentlyOpen
+								? R.attr.colorTertiaryContainer
+								: R.attr.colorSurfaceVariant,
+						isCurrentlyOpen
+								? R.attr.colorOnTertiaryContainer
+								: R.attr.colorOnSurfaceVariant));
+
+		if (repository.getPermissions().isAdmin() && !repository.getRepository().isArchived()) {
+			items.add(
+					new RepositoryMenuItemModel(
+							"MILESTONE_ADD_NEW",
+							R.string.addButton,
+							R.drawable.ic_add,
+							R.attr.colorPrimaryContainer,
+							R.attr.colorOnPrimaryContainer));
+		}
+
+		return items;
+	}
+
+	@Override
+	public void onHubActionSelected(String actionId) {
+		switch (actionId) {
+			case "MILESTONE_FILTER_TOGGLE":
+				currentState = currentState.equals("open") ? "closed" : "open";
+				refreshData();
+				break;
+
+			case "MILESTONE_ADD_NEW":
+				startActivity(repository.getIntent(getContext(), CreateMilestoneActivity.class));
+				break;
+		}
+	}
+
+	@Override
+	public void onResume() {
+		super.onResume();
+		if (!isHidden() && isFirstLoad) {
+			lazyLoad();
+		}
+	}
+
+	@Override
+	public void onHiddenChanged(boolean hidden) {
+		super.onHiddenChanged(hidden);
+		if (!hidden && isFirstLoad) {
+			lazyLoad();
+		}
+	}
+
+	private void lazyLoad() {
+		isFirstLoad = false;
+		refreshData();
 	}
 
 	private void setupRecyclerView() {
@@ -312,40 +360,6 @@ public class MilestonesFragment extends Fragment {
 
 	private void setupSwipeRefresh() {
 		binding.pullToRefresh.setOnRefreshListener(this::refreshData);
-	}
-
-	private void setupMenu() {
-		requireActivity()
-				.addMenuProvider(
-						new MenuProvider() {
-							@Override
-							public void onCreateMenu(
-									@NonNull Menu menu, @NonNull MenuInflater menuInflater) {
-								menu.clear();
-								menuInflater.inflate(R.menu.search_menu, menu);
-								menuInflater.inflate(R.menu.filter_menu_milestone, menu);
-
-								MenuItem filterItem = menu.findItem(R.id.filter);
-								if (filterItem != null) {
-									filterItem.setIcon(
-											currentState.equals("open")
-													? R.drawable.ic_filter
-													: R.drawable.ic_filter_closed);
-								}
-							}
-
-							@Override
-							public boolean onMenuItemSelected(@NonNull MenuItem menuItem) {
-								if (menuItem.getItemId() == R.id.filter) {
-									BottomSheetMilestonesFilterFragment.newInstance(repository)
-											.show(getParentFragmentManager(), "filter");
-									return true;
-								}
-								return false;
-							}
-						},
-						getViewLifecycleOwner(),
-						Lifecycle.State.RESUMED);
 	}
 
 	@Override

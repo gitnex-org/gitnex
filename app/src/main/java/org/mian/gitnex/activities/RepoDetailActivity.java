@@ -6,8 +6,10 @@ import android.view.View;
 import android.widget.LinearLayout;
 import androidx.activity.result.ActivityResultLauncher;
 import androidx.activity.result.contract.ActivityResultContracts;
+import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
+import androidx.fragment.app.FragmentTransaction;
 import androidx.lifecycle.ViewModelProvider;
 import com.google.android.material.button.MaterialButton;
 import java.util.ArrayList;
@@ -57,6 +59,13 @@ public class RepoDetailActivity extends BaseActivity
 	private boolean isWatched = false;
 	private boolean isGiteaRepoActionsVisible = false;
 	private boolean adminStatus = false;
+	private int activeTabId = R.id.btn_nav_details;
+
+	@Override
+	protected void onSaveInstanceState(@NonNull Bundle outState) {
+		super.onSaveInstanceState(outState);
+		outState.putInt("active_tab_id", activeTabId);
+	}
 
 	private final ActivityResultLauncher<Intent> settingsLauncher =
 			registerForActivityResult(
@@ -72,6 +81,9 @@ public class RepoDetailActivity extends BaseActivity
 
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
+		if (savedInstanceState != null) {
+			activeTabId = savedInstanceState.getInt("active_tab_id");
+		}
 		super.onCreate(savedInstanceState);
 		binding = ActivityRepoDetailBinding.inflate(getLayoutInflater());
 		setContentView(binding.getRoot());
@@ -87,11 +99,11 @@ public class RepoDetailActivity extends BaseActivity
 
 		if (repository.hasRepository()) {
 			completeInitialization(repository.getRepository());
+			viewModel.checkRepoStatus(this, repository.getOwner(), repository.getName());
 		} else {
 			viewModel.fetchRepository(this, repository.getOwner(), repository.getName());
+			viewModel.checkRepoStatus(this, repository.getOwner(), repository.getName());
 		}
-
-		viewModel.checkRepoStatus(this, repository.getOwner(), repository.getName());
 
 		getSupportFragmentManager()
 				.setFragmentResultListener(
@@ -190,50 +202,102 @@ public class RepoDetailActivity extends BaseActivity
 
 		if (fm.findFragmentByTag("info") == null) {
 			setupFragments();
-			initializeDefaultTab();
+			updateDockUI(R.id.btn_nav_details);
+		} else {
+			restoreState();
 		}
 
 		viewModel.loadRepositoryDetails(
 				this, repository.getOwner(), repository.getName(), repository.getBranchRef());
 	}
 
-	private void initializeDefaultTab() {
-		updateDockUI(R.id.btn_nav_details);
-		binding.dockScrollView.post(() -> centerDockIcon(binding.btnNavDetails));
+	private void setupFragments() {
+		infoFrag = fm.findFragmentByTag("info");
+		filesFrag = fm.findFragmentByTag("files");
+		issuesFrag = fm.findFragmentByTag("issues");
+		prFrag = fm.findFragmentByTag("prs");
+		releaseFrag = fm.findFragmentByTag("releases");
+		wikiFrag = fm.findFragmentByTag("wiki");
+		milestoneFrag = fm.findFragmentByTag("milestones");
+		labelFrag = fm.findFragmentByTag("labels");
+		collabFrag = fm.findFragmentByTag("collab");
+
+		if (infoFrag == null) {
+			infoFrag = RepoInfoFragment.newInstance(repository);
+			filesFrag = FilesFragment.newInstance(repository);
+			issuesFrag = IssuesFragment.newInstance(repository);
+			prFrag = PullRequestsFragment.newInstance(repository);
+			releaseFrag = ReleasesFragment.newInstance(repository);
+			wikiFrag = WikiFragment.newInstance(repository);
+			milestoneFrag = MilestonesFragment.newInstance(repository);
+			labelFrag = LabelsFragment.newInstance(repository);
+			collabFrag = CollaboratorsFragment.newInstance(repository);
+
+			fm.beginTransaction()
+					.add(R.id.repo_details_container, collabFrag, "collab")
+					.hide(collabFrag)
+					.add(R.id.repo_details_container, labelFrag, "labels")
+					.hide(labelFrag)
+					.add(R.id.repo_details_container, milestoneFrag, "milestones")
+					.hide(milestoneFrag)
+					.add(R.id.repo_details_container, wikiFrag, "wiki")
+					.hide(wikiFrag)
+					.add(R.id.repo_details_container, releaseFrag, "releases")
+					.hide(releaseFrag)
+					.add(R.id.repo_details_container, prFrag, "prs")
+					.hide(prFrag)
+					.add(R.id.repo_details_container, issuesFrag, "issues")
+					.hide(issuesFrag)
+					.add(R.id.repo_details_container, filesFrag, "files")
+					.hide(filesFrag)
+					.add(R.id.repo_details_container, infoFrag, "info")
+					.commitNow();
+
+			activeFragment = infoFrag;
+		} else {
+			restoreState();
+		}
 	}
 
-	private void setupFragments() {
-		infoFrag = RepoInfoFragment.newInstance(repository);
-		filesFrag = FilesFragment.newInstance(repository);
-		issuesFrag = IssuesFragment.newInstance(repository);
-		prFrag = PullRequestsFragment.newInstance(repository);
-		releaseFrag = ReleasesFragment.newInstance(repository);
-		wikiFrag = WikiFragment.newInstance(repository);
-		milestoneFrag = MilestonesFragment.newInstance(repository);
-		labelFrag = LabelsFragment.newInstance(repository);
-		collabFrag = CollaboratorsFragment.newInstance(repository);
+	private void restoreState() {
+		infoFrag = fm.findFragmentByTag("info");
+		filesFrag = fm.findFragmentByTag("files");
+		issuesFrag = fm.findFragmentByTag("issues");
+		prFrag = fm.findFragmentByTag("prs");
+		releaseFrag = fm.findFragmentByTag("releases");
+		wikiFrag = fm.findFragmentByTag("wiki");
+		milestoneFrag = fm.findFragmentByTag("milestones");
+		labelFrag = fm.findFragmentByTag("labels");
+		collabFrag = fm.findFragmentByTag("collab");
 
-		fm.beginTransaction()
-				.add(R.id.repo_details_container, collabFrag, "collab")
-				.hide(collabFrag)
-				.add(R.id.repo_details_container, labelFrag, "labels")
-				.hide(labelFrag)
-				.add(R.id.repo_details_container, milestoneFrag, "milestones")
-				.hide(milestoneFrag)
-				.add(R.id.repo_details_container, wikiFrag, "wiki")
-				.hide(wikiFrag)
-				.add(R.id.repo_details_container, releaseFrag, "releases")
-				.hide(releaseFrag)
-				.add(R.id.repo_details_container, prFrag, "prs")
-				.hide(prFrag)
-				.add(R.id.repo_details_container, issuesFrag, "issues")
-				.hide(issuesFrag)
-				.add(R.id.repo_details_container, filesFrag, "files")
-				.hide(filesFrag)
-				.add(R.id.repo_details_container, infoFrag, "info")
-				.commitNow();
+		String[] tags = {
+			"info", "files", "issues", "prs", "releases", "wiki", "milestones", "labels", "collab"
+		};
+		int[] ids = {
+			R.id.btn_nav_details,
+			R.id.btn_nav_files,
+			R.id.btn_nav_issues,
+			R.id.btn_nav_prs,
+			R.id.btn_nav_releases,
+			R.id.btn_nav_wiki,
+			R.id.btn_nav_milestones,
+			R.id.btn_nav_labels,
+			R.id.btn_nav_collaborators
+		};
 
-		activeFragment = infoFrag;
+		for (int i = 0; i < tags.length; i++) {
+			Fragment f = fm.findFragmentByTag(tags[i]);
+			if (f != null && !f.isHidden()) {
+				activeFragment = f;
+				final int activeId = ids[i];
+				binding.dockScrollView.post(
+						() -> {
+							updateDockUI(activeId);
+							centerDockIcon(findViewById(activeId));
+						});
+				break;
+			}
+		}
 	}
 
 	private void setupDockListeners() {
@@ -249,23 +313,31 @@ public class RepoDetailActivity extends BaseActivity
 			prepareNavButton(btn);
 		}
 
-		binding.btnNavDetails.setOnClickListener(v -> switchTab(infoFrag, R.id.btn_nav_details));
-		binding.btnNavFiles.setOnClickListener(v -> switchTab(filesFrag, R.id.btn_nav_files));
-		binding.btnNavIssues.setOnClickListener(v -> switchTab(issuesFrag, R.id.btn_nav_issues));
-		binding.btnNavPrs.setOnClickListener(v -> switchTab(prFrag, R.id.btn_nav_prs));
+		binding.btnNavDetails.setOnClickListener(v -> switchTab("info", R.id.btn_nav_details));
+		binding.btnNavFiles.setOnClickListener(v -> switchTab("files", R.id.btn_nav_files));
+		binding.btnNavIssues.setOnClickListener(v -> switchTab("issues", R.id.btn_nav_issues));
+		binding.btnNavPrs.setOnClickListener(v -> switchTab("prs", R.id.btn_nav_prs));
 		binding.btnNavReleases.setOnClickListener(
-				v -> switchTab(releaseFrag, R.id.btn_nav_releases));
-		binding.btnNavWiki.setOnClickListener(v -> switchTab(wikiFrag, R.id.btn_nav_wiki));
+				v -> switchTab("releases", R.id.btn_nav_releases));
+		binding.btnNavWiki.setOnClickListener(v -> switchTab("wiki", R.id.btn_nav_wiki));
 		binding.btnNavMilestones.setOnClickListener(
-				v -> switchTab(milestoneFrag, R.id.btn_nav_milestones));
-		binding.btnNavLabels.setOnClickListener(v -> switchTab(labelFrag, R.id.btn_nav_labels));
+				v -> switchTab("milestones", R.id.btn_nav_milestones));
+		binding.btnNavLabels.setOnClickListener(v -> switchTab("labels", R.id.btn_nav_labels));
 		binding.btnNavCollaborators.setOnClickListener(
-				v -> switchTab(collabFrag, R.id.btn_nav_collaborators));
+				v -> switchTab("collab", R.id.btn_nav_collaborators));
 
 		binding.btnDockMenu.setOnClickListener(
 				v -> {
 					List<RepositoryMenuItemModel> items = new ArrayList<>();
-					if (activeFragment instanceof RepoHubProvider provider) {
+					Fragment currentVisible = null;
+					for (Fragment f : fm.getFragments()) {
+						if (f != null && f.isAdded() && !f.isHidden()) {
+							currentVisible = f;
+							break;
+						}
+					}
+
+					if (currentVisible instanceof RepoHubProvider provider) {
 						items = provider.getRepoHubItems();
 					}
 
@@ -328,21 +400,41 @@ public class RepoDetailActivity extends BaseActivity
 				break;
 		}
 
-		if (activeFragment instanceof RepoHubProvider) {
-			((RepoHubProvider) activeFragment).onHubActionSelected(actionId);
+		for (Fragment f : fm.getFragments()) {
+			if (f != null && f.isAdded() && !f.isHidden() && f instanceof RepoHubProvider) {
+				((RepoHubProvider) f).onHubActionSelected(actionId);
+				break;
+			}
 		}
 	}
 
-	public void switchTab(Fragment target, int btnId) {
-		if (activeFragment == target) return;
+	public void switchTab(String targetTag, int btnId) {
+		Fragment target = fm.findFragmentByTag(targetTag);
 
-		fm.beginTransaction()
-				.setCustomAnimations(android.R.anim.fade_in, android.R.anim.fade_out)
-				.hide(activeFragment)
-				.show(target)
-				.commit();
+		if (target == null) return;
 
-		activeFragment = target;
+		Fragment currentVisible = null;
+		List<Fragment> fragments = fm.getFragments();
+		for (Fragment f : fragments) {
+			if (f != null && f.isAdded() && !f.isHidden()) {
+				currentVisible = f;
+				break;
+			}
+		}
+
+		if (currentVisible == target) return;
+
+		FragmentTransaction ft =
+				fm.beginTransaction()
+						.setCustomAnimations(android.R.anim.fade_in, android.R.anim.fade_out);
+
+		if (currentVisible != null) {
+			ft.hide(currentVisible);
+		}
+
+		ft.show(target).commit();
+
+		this.activeTabId = btnId;
 		updateDockUI(btnId);
 		centerDockIcon(findViewById(btnId));
 	}

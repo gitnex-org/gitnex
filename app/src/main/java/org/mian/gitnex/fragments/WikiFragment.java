@@ -13,9 +13,11 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 import com.google.android.material.bottomsheet.BottomSheetDialog;
 import com.google.android.material.dialog.MaterialAlertDialogBuilder;
+import java.util.ArrayList;
+import java.util.List;
 import org.gitnex.tea4j.v2.models.WikiPageMetaData;
 import org.mian.gitnex.R;
-import org.mian.gitnex.activities.BaseActivity;
+import org.mian.gitnex.activities.RepoDetailActivity;
 import org.mian.gitnex.activities.WikiActivity;
 import org.mian.gitnex.adapters.WikiListAdapter;
 import org.mian.gitnex.databinding.BottomsheetWikiItemMenuBinding;
@@ -23,16 +25,16 @@ import org.mian.gitnex.databinding.FragmentWikiBinding;
 import org.mian.gitnex.helpers.AppUtil;
 import org.mian.gitnex.helpers.Constants;
 import org.mian.gitnex.helpers.EndlessRecyclerViewScrollListener;
+import org.mian.gitnex.helpers.RepositoryMenuItemModel;
 import org.mian.gitnex.helpers.Toasty;
 import org.mian.gitnex.helpers.UIHelper;
-import org.mian.gitnex.helpers.contexts.AccountContext;
 import org.mian.gitnex.helpers.contexts.RepositoryContext;
 import org.mian.gitnex.viewmodels.WikiViewModel;
 
 /**
  * @author mmarif
  */
-public class WikiFragment extends Fragment {
+public class WikiFragment extends Fragment implements RepoDetailActivity.RepoHubProvider {
 
 	private FragmentWikiBinding binding;
 	private WikiViewModel viewModel;
@@ -40,6 +42,7 @@ public class WikiFragment extends Fragment {
 	private EndlessRecyclerViewScrollListener scrollListener;
 	private RepositoryContext repository;
 	private int resultLimit;
+	private boolean isFirstLoad = true;
 
 	public static WikiFragment newInstance(RepositoryContext repository) {
 		WikiFragment fragment = new WikiFragment();
@@ -72,11 +75,56 @@ public class WikiFragment extends Fragment {
 		setupRecyclerView();
 		setupSwipeRefresh();
 		observeViewModel();
-		setupFab();
-
-		refreshData();
 
 		return binding.getRoot();
+	}
+
+	@Override
+	public List<RepositoryMenuItemModel> getRepoHubItems() {
+		List<RepositoryMenuItemModel> items = new ArrayList<>();
+
+		if (repository.getPermissions().isAdmin() && !repository.getRepository().isArchived()) {
+			items.add(
+					new RepositoryMenuItemModel(
+							"WIKI_ADD_NEW",
+							R.string.addButton,
+							R.drawable.ic_add,
+							R.attr.colorPrimaryContainer,
+							R.attr.colorOnPrimaryContainer));
+		}
+
+		return items;
+	}
+
+	@Override
+	public void onHubActionSelected(String actionId) {
+		if (actionId.equals("WIKI_ADD_NEW")) {
+			Intent intent = new Intent(getContext(), WikiActivity.class);
+			intent.putExtra("action", "add");
+			intent.putExtra(RepositoryContext.INTENT_EXTRA, repository);
+			startActivity(intent);
+		}
+	}
+
+	@Override
+	public void onResume() {
+		super.onResume();
+		if (!isHidden() && isFirstLoad) {
+			lazyLoad();
+		}
+	}
+
+	@Override
+	public void onHiddenChanged(boolean hidden) {
+		super.onHiddenChanged(hidden);
+		if (!hidden && isFirstLoad) {
+			lazyLoad();
+		}
+	}
+
+	private void lazyLoad() {
+		isFirstLoad = false;
+		refreshData();
 	}
 
 	private void setupRecyclerView() {
@@ -214,22 +262,6 @@ public class WikiFragment extends Fragment {
 					.getRoot()
 					.setVisibility(!hasData && hasLoadedOnce ? View.VISIBLE : View.GONE);
 		}
-	}
-
-	private void setupFab() {
-		AccountContext account = ((BaseActivity) requireActivity()).getAccount();
-		/*boolean canCreate =
-		repository.getPermissions().isAdmin()
-				&& !repository.getRepository().isArchived()
-				&& account.requiresVersion("1.16");*/
-
-		/*binding.createWiki.setVisibility(canCreate ? View.VISIBLE : View.GONE);
-		binding.createWiki.setOnClickListener(v -> {
-			Intent intent = new Intent(getContext(), WikiActivity.class);
-			intent.putExtra("action", "add");
-			intent.putExtra(RepositoryContext.INTENT_EXTRA, repository);
-			startActivity(intent);
-		});*/
 	}
 
 	private void refreshData() {

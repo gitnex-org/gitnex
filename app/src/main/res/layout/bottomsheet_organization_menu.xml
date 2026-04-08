@@ -55,7 +55,7 @@
                     android:layout_weight="1"
                     android:layout_margin="@dimen/dimen4dp"
                     app:cardCornerRadius="@dimen/dimen24dp"
-                    app:cardBackgroundColor="?attr/colorPrimary"
+                    app:cardBackgroundColor="?attr/colorPrimarySurface"
                     app:strokeWidth="0dp">
 
                     <LinearLayout
@@ -75,7 +75,7 @@
                             android:layout_height="@dimen/dimen24dp"
                             app:srcCompat="@drawable/ic_copy"
                             android:contentDescription="@string/generalImgContentText"
-                            app:tint="?attr/colorPrimarySurface" />
+                            app:tint="?attr/colorOnPrimarySurface" />
 
                         <TextView
                             android:id="@+id/copy_text"
@@ -103,7 +103,7 @@
                     android:layout_weight="1"
                     android:layout_margin="@dimen/dimen4dp"
                     app:cardCornerRadius="@dimen/dimen24dp"
-                    app:cardBackgroundColor="?attr/colorPrimary"
+                    app:cardBackgroundColor="?attr/colorPrimarySurface"
                     app:strokeWidth="0dp">
 
                     <LinearLayout
@@ -123,7 +123,7 @@
                             android:layout_height="@dimen/dimen24dp"
                             android:contentDescription="@string/generalImgContentText"
                             app:srcCompat="@drawable/ic_share"
-                            app:tint="?attr/colorPrimarySurface" />
+                            app:tint="?attr/colorOnPrimarySurface" />
 
                         <TextView
                             android:id="@+id/share_text"
@@ -151,7 +151,7 @@
                     android:layout_weight="1"
                     android:layout_margin="@dimen/dimen4dp"
                     app:cardCornerRadius="@dimen/dimen24dp"
-                    app:cardBackgroundColor="?attr/colorPrimary"
+                    app:cardBackgroundColor="?attr/colorPrimarySurface"
                     app:strokeWidth="0dp">
 
                     <LinearLayout
@@ -171,7 +171,7 @@
                             android:layout_height="@dimen/dimen24dp"
                             app:srcCompat="@drawable/ic_browser"
                             android:contentDescription="@string/generalImgContentText"
-                            app:tint="?attr/colorPrimarySurface" />
+                            app:tint="?attr/colorOnPrimarySurface" />
 
                         <TextView
                             android:id="@+id/open_in_browser_text"

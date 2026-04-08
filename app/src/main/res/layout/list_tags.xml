@@ -32,11 +32,11 @@
 
             <ImageView
                 android:id="@+id/deleteTag"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
+                android:layout_width="@dimen/dimen24dp"
+                android:layout_height="@dimen/dimen24dp"
                 android:background="?attr/selectableItemBackgroundBorderless"
                 android:contentDescription="@string/generalImgContentText"
-                android:padding="@dimen/dimen4dp"
+                android:padding="@dimen/dimen2dp"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintTop_toTopOf="parent"
                 app:srcCompat="@drawable/ic_delete"

@@ -7,9 +7,6 @@ import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
 import android.view.LayoutInflater;
-import android.view.Menu;
-import android.view.MenuInflater;
-import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import androidx.activity.result.ActivityResultLauncher;
@@ -17,9 +14,7 @@ import androidx.activity.result.contract.ActivityResultContracts;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.core.app.NotificationCompat;
-import androidx.core.view.MenuProvider;
 import androidx.fragment.app.Fragment;
-import androidx.lifecycle.Lifecycle;
 import androidx.lifecycle.ViewModelProvider;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
@@ -28,6 +23,7 @@ import com.google.android.material.dialog.MaterialAlertDialogBuilder;
 import java.io.IOException;
 import java.io.OutputStream;
 import java.security.SecureRandom;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 import javax.net.ssl.HttpsURLConnection;
@@ -43,6 +39,7 @@ import org.gitnex.tea4j.v2.models.Release;
 import org.gitnex.tea4j.v2.models.Tag;
 import org.mian.gitnex.R;
 import org.mian.gitnex.activities.BaseActivity;
+import org.mian.gitnex.activities.CreateReleaseActivity;
 import org.mian.gitnex.activities.RepoDetailActivity;
 import org.mian.gitnex.adapters.ReleasesAdapter;
 import org.mian.gitnex.adapters.TagsAdapter;
@@ -51,6 +48,7 @@ import org.mian.gitnex.databinding.FragmentReleasesBinding;
 import org.mian.gitnex.helpers.AppUtil;
 import org.mian.gitnex.helpers.Constants;
 import org.mian.gitnex.helpers.EndlessRecyclerViewScrollListener;
+import org.mian.gitnex.helpers.RepositoryMenuItemModel;
 import org.mian.gitnex.helpers.Toasty;
 import org.mian.gitnex.helpers.UIHelper;
 import org.mian.gitnex.helpers.contexts.RepositoryContext;
@@ -62,7 +60,7 @@ import org.mian.gitnex.viewmodels.ReleasesViewModel;
 /**
  * @author mmarif
  */
-public class ReleasesFragment extends Fragment {
+public class ReleasesFragment extends Fragment implements RepoDetailActivity.RepoHubProvider {
 
 	private FragmentReleasesBinding binding;
 	private ReleasesViewModel viewModel;
@@ -73,6 +71,7 @@ public class ReleasesFragment extends Fragment {
 	private EndlessRecyclerViewScrollListener scrollListener;
 	private boolean isInitialLoad = true;
 	public static String currentDownloadUrl = null;
+	private boolean isFirstLoad = true;
 
 	public interface OnReleaseItemClickListener extends FragmentRefreshListener {
 		void onDelete(Object item, int position);
@@ -116,12 +115,71 @@ public class ReleasesFragment extends Fragment {
 		setupAdapters();
 		setupListeners();
 		observeViewModel();
-		initDataFetch();
-
-		handlePermissions();
-		setupMenu();
 
 		return binding.getRoot();
+	}
+
+	@Override
+	public List<RepositoryMenuItemModel> getRepoHubItems() {
+		List<RepositoryMenuItemModel> items = new ArrayList<>();
+
+		boolean isShowingTags = repository.isReleasesViewTypeIsTag();
+		items.add(
+				new RepositoryMenuItemModel(
+						"RELEASE_VIEW_TOGGLE",
+						isShowingTags ? R.string.tabTextReleases : R.string.tags,
+						isShowingTags ? R.drawable.ic_release : R.drawable.ic_tag,
+						isShowingTags ? R.attr.colorTertiaryContainer : R.attr.colorSurfaceVariant,
+						isShowingTags
+								? R.attr.colorOnTertiaryContainer
+								: R.attr.colorOnSurfaceVariant));
+
+		if (repository.getPermissions().isPush() && !repository.getRepository().isArchived()) {
+			items.add(
+					new RepositoryMenuItemModel(
+							"RELEASE_CREATE_NEW",
+							R.string.createRelease,
+							R.drawable.ic_add,
+							R.attr.colorPrimaryContainer,
+							R.attr.colorOnPrimaryContainer));
+		}
+
+		return items;
+	}
+
+	@Override
+	public void onHubActionSelected(String actionId) {
+		switch (actionId) {
+			case "RELEASE_VIEW_TOGGLE":
+				repository.setReleasesViewTypeIsTag(!repository.isReleasesViewTypeIsTag());
+				refreshData();
+				break;
+
+			case "RELEASE_CREATE_NEW":
+				startActivity(repository.getIntent(requireContext(), CreateReleaseActivity.class));
+				break;
+		}
+	}
+
+	@Override
+	public void onResume() {
+		super.onResume();
+		if (!isHidden() && isFirstLoad) {
+			lazyLoad();
+		}
+	}
+
+	@Override
+	public void onHiddenChanged(boolean hidden) {
+		super.onHiddenChanged(hidden);
+		if (!hidden && isFirstLoad) {
+			lazyLoad();
+		}
+	}
+
+	private void lazyLoad() {
+		isFirstLoad = false;
+		initDataFetch();
 	}
 
 	private void setupAdapters() {
@@ -157,31 +215,31 @@ public class ReleasesFragment extends Fragment {
 
 	private void setupListeners() {
 		binding.pullToRefresh.setOnRefreshListener(this::refreshData);
-
-		RepoDetailActivity activity = (RepoDetailActivity) requireActivity();
-		/*activity.setFragmentRefreshListenerReleases(
-		type -> {
-			if (type != null) {
-				repository.setReleasesViewTypeIsTag(type.equals("tags"));
-				isInitialLoad = false;
-				refreshData();
-			}
-		});*/
 	}
 
 	private void initDataFetch() {
 		isInitialLoad = true;
-		repository.setReleasesViewTypeIsTag(false);
 		scrollListener.resetState();
 		viewModel.resetPagination();
 		viewModel.resetTagsPagination();
-		viewModel.fetchReleases(
-				requireContext(),
-				repository.getOwner(),
-				repository.getName(),
-				1,
-				resultLimit,
-				true);
+
+		if (repository.isReleasesViewTypeIsTag()) {
+			viewModel.fetchTags(
+					requireContext(),
+					repository.getOwner(),
+					repository.getName(),
+					1,
+					resultLimit,
+					true);
+		} else {
+			viewModel.fetchReleases(
+					requireContext(),
+					repository.getOwner(),
+					repository.getName(),
+					1,
+					resultLimit,
+					true);
+		}
 	}
 
 	private void observeViewModel() {
@@ -414,56 +472,6 @@ public class ReleasesFragment extends Fragment {
 			binding.layoutEmpty.getRoot().setVisibility(View.GONE);
 			binding.recyclerView.setVisibility(View.GONE);
 		}
-	}
-
-	private int getAdapterCount() {
-		if (repository.isReleasesViewTypeIsTag()) {
-			return tagsAdapter != null ? tagsAdapter.getItemCount() : 0;
-		}
-		return releasesAdapter != null ? releasesAdapter.getItemCount() : 0;
-	}
-
-	private int getReleaseIndex(String tag, List<Release> list) {
-		for (int i = 0; i < list.size(); i++) {
-			if (list.get(i).getTagName().equals(tag)) return i;
-		}
-		return -1;
-	}
-
-	private void handlePermissions() {
-		// boolean canPush = repository.getPermissions().isPush();
-		// boolean archived = repository.getRepository().isArchived();
-		// binding.createRelease.setVisibility(!canPush || archived ? View.GONE : View.VISIBLE);
-		// binding.createRelease.setOnClickListener(v ->
-		//	startActivity(repository.getIntent(getContext(), CreateReleaseActivity.class)));
-	}
-
-	private void setupMenu() {
-		requireActivity()
-				.addMenuProvider(
-						new MenuProvider() {
-							@Override
-							public void onCreateMenu(
-									@NonNull Menu menu, @NonNull MenuInflater menuInflater) {
-								menuInflater.inflate(R.menu.filter_menu_releases, menu);
-							}
-
-							@Override
-							public boolean onMenuItemSelected(@NonNull MenuItem menuItem) {
-								return false;
-							}
-						},
-						getViewLifecycleOwner(),
-						Lifecycle.State.RESUMED);
-	}
-
-	@Override
-	public void onResume() {
-		super.onResume();
-		// if (RepoDetailActivity.updateFABActions) {
-		//	refreshData();
-		//	RepoDetailActivity.updateFABActions = false;
-		// }
 	}
 
 	@Override
