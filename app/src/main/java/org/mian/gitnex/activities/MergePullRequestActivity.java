@@ -15,7 +15,6 @@ import org.mian.gitnex.R;
 import org.mian.gitnex.actions.PullRequestActions;
 import org.mian.gitnex.clients.RetrofitClient;
 import org.mian.gitnex.databinding.ActivityMergePullRequestBinding;
-import org.mian.gitnex.fragments.PullRequestsFragment;
 import org.mian.gitnex.helpers.AlertDialogs;
 import org.mian.gitnex.helpers.MergePullRequestSpinner;
 import org.mian.gitnex.helpers.Toasty;
@@ -220,7 +219,7 @@ public class MergePullRequestActivity extends BaseActivity {
 							Toasty.show(ctx, getString(R.string.mergePRSuccessMsg));
 
 							Intent result = new Intent();
-							PullRequestsFragment.resumePullRequests = true;
+							// PullRequestsFragment.resumePullRequests = true;
 							IssueDetailActivity.singleIssueUpdate = true;
 							// RepoDetailActivity.updateRepo = true;
 							setResult(200, result);

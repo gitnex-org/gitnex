@@ -354,7 +354,7 @@ public class RepoDetailActivity extends BaseActivity
 
 		LinearLayout.LayoutParams params =
 				(LinearLayout.LayoutParams) binding.btnNavCollaborators.getLayoutParams();
-		params.setMarginEnd((int) getResources().getDimension(R.dimen.dimen16dp));
+		params.setMarginEnd((int) getResources().getDimension(R.dimen.dimen12dp));
 		binding.btnNavCollaborators.setLayoutParams(params);
 	}
 

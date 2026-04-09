@@ -14,7 +14,6 @@ import org.mian.gitnex.activities.BaseActivity;
 import org.mian.gitnex.activities.IssueDetailActivity;
 import org.mian.gitnex.clients.RetrofitClient;
 import org.mian.gitnex.fragments.IssuesFragment;
-import org.mian.gitnex.fragments.PullRequestsFragment;
 import org.mian.gitnex.helpers.AlertDialogs;
 import org.mian.gitnex.helpers.Toasty;
 import org.mian.gitnex.helpers.contexts.IssueContext;
@@ -104,8 +103,8 @@ public class IssueActions {
 								if (issue.hasIssue()) {
 									IssuesFragment.resumeIssues =
 											issue.getIssue().getPullRequest() == null;
-									PullRequestsFragment.resumePullRequests =
-											issue.getIssue().getPullRequest() != null;
+									//	PullRequestsFragment.resumePullRequests =
+									//		issue.getIssue().getPullRequest() != null;
 								}
 								if (issue.getIssueType().equalsIgnoreCase("Pull")) {
 									if (issueState.equals("closed")) {
@@ -378,8 +377,8 @@ public class IssueActions {
 							if (issue.hasIssue()) {
 								IssuesFragment.resumeIssues =
 										issue.getIssue().getPullRequest() == null;
-								PullRequestsFragment.resumePullRequests =
-										issue.getIssue().getPullRequest() != null;
+								// PullRequestsFragment.resumePullRequests =
+								//		issue.getIssue().getPullRequest() != null;
 							}
 						} else if (response.code() == 401) {
 

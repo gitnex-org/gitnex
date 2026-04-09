@@ -42,8 +42,6 @@ public class IssuesAdapter extends RecyclerView.Adapter<IssuesAdapter.IssuesHold
 	private final Context context;
 	private List<Issue> issuesList;
 	private final String type;
-	private Runnable loadMoreListener;
-	private boolean isLoading = false, isMoreDataAvailable = true;
 
 	public IssuesAdapter(Context ctx, List<Issue> issuesListMain, String type) {
 		this.context = ctx;
@@ -75,14 +73,6 @@ public class IssuesAdapter extends RecyclerView.Adapter<IssuesAdapter.IssuesHold
 
 	@Override
 	public void onBindViewHolder(@NonNull IssuesHolder holder, int position) {
-		if (position >= getItemCount() - 1
-				&& isMoreDataAvailable
-				&& !isLoading
-				&& loadMoreListener != null) {
-			isLoading = true;
-			loadMoreListener.run();
-		}
-
 		holder.bindData(issuesList.get(position));
 
 		if (type.equalsIgnoreCase("pinned")) {
@@ -97,18 +87,9 @@ public class IssuesAdapter extends RecyclerView.Adapter<IssuesAdapter.IssuesHold
 		return issuesList != null ? issuesList.size() : 0;
 	}
 
-	public void setMoreDataAvailable(boolean moreDataAvailable) {
-		isMoreDataAvailable = moreDataAvailable;
-	}
-
 	@SuppressLint("NotifyDataSetChanged")
 	public void notifyDataChanged() {
 		notifyDataSetChanged();
-		isLoading = false;
-	}
-
-	public void setLoadMoreListener(Runnable loadMoreListener) {
-		this.loadMoreListener = loadMoreListener;
 	}
 
 	public void updateList(List<Issue> list) {

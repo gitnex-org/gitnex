@@ -1147,6 +1147,7 @@
     <string name="labelColorHex">Hex Color</string>
     <string name="invalid_color">Invalid color code</string>
     <string name="invalid_length">Must be 6 characters</string>
+    <string name="create_pr">Create PR</string>
 
     <string name="time_in_moments">in moments</string>
     <string name="time_in_minute">in %d minute</string>

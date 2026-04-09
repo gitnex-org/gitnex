@@ -55,7 +55,6 @@ import org.mian.gitnex.databinding.ActivityCreatePrBinding;
 import org.mian.gitnex.databinding.BottomSheetAttachmentsBinding;
 import org.mian.gitnex.databinding.CustomInsertNoteBinding;
 import org.mian.gitnex.databinding.CustomLabelsSelectionDialogBinding;
-import org.mian.gitnex.fragments.PullRequestsFragment;
 import org.mian.gitnex.helpers.AlertDialogs;
 import org.mian.gitnex.helpers.AppDatabaseSettings;
 import org.mian.gitnex.helpers.Constants;
@@ -465,7 +464,7 @@ public class CreatePullRequestActivity extends BaseActivity
 
 							Toasty.show(ctx, getString(R.string.prCreateSuccess));
 							// RepoDetailActivity.updateRepo = true;
-							PullRequestsFragment.resumePullRequests = true;
+							// PullRequestsFragment.resumePullRequests = true;
 							MainActivity.reloadRepos = true;
 
 							if (!contentUri.isEmpty()) {

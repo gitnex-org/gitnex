@@ -64,7 +64,6 @@ import org.mian.gitnex.databinding.ActivityEditIssueBinding;
 import org.mian.gitnex.databinding.BottomSheetAttachmentsBinding;
 import org.mian.gitnex.databinding.CustomImageViewDialogBinding;
 import org.mian.gitnex.fragments.IssuesFragment;
-import org.mian.gitnex.fragments.PullRequestsFragment;
 import org.mian.gitnex.helpers.AlertDialogs;
 import org.mian.gitnex.helpers.AppDatabaseSettings;
 import org.mian.gitnex.helpers.AppUtil;
@@ -520,8 +519,8 @@ public class EditIssueActivity extends BaseActivity
 							Intent result = new Intent();
 							result.putExtra("issueEdited", true);
 							IssuesFragment.resumeIssues = issue.getIssue().getPullRequest() == null;
-							PullRequestsFragment.resumePullRequests =
-									issue.getIssue().getPullRequest() != null;
+							// PullRequestsFragment.resumePullRequests =
+							//		issue.getIssue().getPullRequest() != null;
 							setResult(200, result);
 							new Handler().postDelayed(() -> finish(), 3000);
 						} else if (response.code() == 401) {

@@ -40,8 +40,6 @@ public class PullRequestsAdapter
 
 	private final Context context;
 	private List<PullRequest> prList;
-	private Runnable loadMoreListener;
-	private boolean isLoading = false, isMoreDataAvailable = true;
 
 	public PullRequestsAdapter(Context context, List<PullRequest> prListMain) {
 		this.context = context;
@@ -56,13 +54,6 @@ public class PullRequestsAdapter
 
 	@Override
 	public void onBindViewHolder(@NonNull PullRequestsHolder holder, int position) {
-		if (position >= getItemCount() - 1
-				&& isMoreDataAvailable
-				&& !isLoading
-				&& loadMoreListener != null) {
-			isLoading = true;
-			loadMoreListener.run();
-		}
 		holder.bindData(prList.get(position));
 		holder.binding.getRoot().updateAppearance(position, getItemCount());
 	}
@@ -72,18 +63,9 @@ public class PullRequestsAdapter
 		return prList != null ? prList.size() : 0;
 	}
 
-	public void setMoreDataAvailable(boolean moreDataAvailable) {
-		isMoreDataAvailable = moreDataAvailable;
-	}
-
 	@SuppressLint("NotifyDataSetChanged")
 	public void notifyDataChanged() {
 		notifyDataSetChanged();
-		isLoading = false;
-	}
-
-	public void setLoadMoreListener(Runnable loadMoreListener) {
-		this.loadMoreListener = loadMoreListener;
 	}
 
 	public void updateList(List<PullRequest> list) {
