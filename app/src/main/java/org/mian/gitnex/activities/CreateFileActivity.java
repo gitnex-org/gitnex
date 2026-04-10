@@ -211,7 +211,7 @@ public class CreateFileActivity extends BaseActivity {
 			return;
 		}
 
-		if (!AppUtil.checkStringsWithDash(newFileBranchName)) {
+		if (!AppUtil.isValidGitBranchName(newFileBranchName)) {
 			Toasty.show(ctx, getString(R.string.newFileInvalidBranchName));
 			return;
 		}

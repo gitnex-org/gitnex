@@ -493,7 +493,7 @@
     <string name="newFileButtonCopy">Create New File</string>
     <string name="newFileNameHintMessage">with folder: app/test.md</string>
     <string name="newFileMessageTintCopy">Commit Message</string>
-    <string name="newFileInvalidBranchName">Invalid branch name, may only contain &#8211;, a&#8211;z, 0&#8211;9</string>
+    <string name="newFileInvalidBranchName">Invalid branch name, may only contain a–z, 0–9, hyphens (-), underscores (_), forward slashes (/), and periods (.)</string>
     <string name="newFileCommitMessageError">Commit message is too long</string>
     <string name="newFileSuccessMessage">New file created</string>
     <string name="newFileBranches">Select or create a branch</string>
@@ -642,6 +642,8 @@
     <string name="merged">Merged</string>
     <string name="milestone">Milestone</string>
     <string name="directory">Directory</string>
+    <string name="apply">Apply</string>
+    <string name="state">State</string>
     <!-- generic copy -->
 
     <string name="exploreUsers">Explore users</string>
@@ -1148,6 +1150,10 @@
     <string name="invalid_color">Invalid color code</string>
     <string name="invalid_length">Must be 6 characters</string>
     <string name="create_pr">Create PR</string>
+    <string name="search_filter">Search &amp; filter</string>
+    <string name="create_issue">Create Issue</string>
+    <string name="search_repos">Search Repositories</string>
+    <string name="dashboard_search_repos_sub_title">Search within your repositories with filters for more precise results</string>
 
     <string name="time_in_moments">in moments</string>
     <string name="time_in_minute">in %d minute</string>

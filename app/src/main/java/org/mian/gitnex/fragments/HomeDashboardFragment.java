@@ -42,6 +42,7 @@ import org.mian.gitnex.databinding.ItemCardFullBinding;
 import org.mian.gitnex.databinding.ItemCardLargeBinding;
 import org.mian.gitnex.helpers.AppUtil;
 import org.mian.gitnex.helpers.TinyDB;
+import org.mian.gitnex.helpers.Toasty;
 import org.mian.gitnex.helpers.UrlHelper;
 
 /**
@@ -221,6 +222,12 @@ public class HomeDashboardFragment extends Fragment {
 							Intent intent = new Intent(requireContext(), ActivitiesActivity.class);
 							startActivity(intent);
 						});
+		binding.searchReposCard
+				.getRoot()
+				.setOnClickListener(
+						v -> {
+							Toasty.show(requireContext(), "WIP");
+						});
 		binding.exploreCard
 				.getRoot()
 				.setOnClickListener(
@@ -307,6 +314,11 @@ public class HomeDashboardFragment extends Fragment {
 				null,
 				R.drawable.ic_tool);
 
+		updateFullCard(
+				binding.searchReposCard,
+				R.string.search_repos,
+				getString(R.string.dashboard_search_repos_sub_title),
+				R.drawable.ic_repo);
 		updateFullCard(
 				binding.exploreCard,
 				R.string.pageTitleExplore,

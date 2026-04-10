@@ -1,4 +1,4 @@
-package org.mian.gitnex.helpers;
+package org.mian.gitnex.models;
 
 import android.os.Parcel;
 import android.os.Parcelable;

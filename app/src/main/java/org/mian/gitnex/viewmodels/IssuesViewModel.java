@@ -10,6 +10,8 @@ import java.util.List;
 import java.util.Objects;
 import org.gitnex.tea4j.v2.models.Issue;
 import org.mian.gitnex.clients.RetrofitClient;
+import org.mian.gitnex.helpers.Constants;
+import org.mian.gitnex.models.IssueFilterState;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
@@ -29,6 +31,7 @@ public class IssuesViewModel extends ViewModel {
 	private final MutableLiveData<List<Issue>> pinnedIssues =
 			new MutableLiveData<>(new ArrayList<>());
 	private final MutableLiveData<Boolean> hasRepoLoadedOnce = new MutableLiveData<>(false);
+	private final IssueFilterState currentFilterState = new IssueFilterState();
 
 	private int repoTotalCount = -1;
 	private boolean isRepoLastPage = false;
@@ -67,11 +70,38 @@ public class IssuesViewModel extends ViewModel {
 		return hasRepoLoadedOnce;
 	}
 
+	public IssueFilterState getFilterState() {
+		return currentFilterState;
+	}
+
 	public void resetRepoPagination() {
 		isRepoLastPage = false;
 		repoTotalCount = -1;
 		repoIssues.setValue(new ArrayList<>());
 		hasRepoLoadedOnce.setValue(false);
+	}
+
+	public void applyFilters(Context ctx, String owner, String repo, int limit) {
+		resetRepoPagination();
+
+		String labelsParam =
+				currentFilterState.selectedLabels.isEmpty()
+						? null
+						: String.join(",", currentFilterState.selectedLabels);
+
+		fetchRepoIssues(
+				ctx,
+				owner,
+				repo,
+				currentFilterState.state,
+				labelsParam,
+				currentFilterState.query.isEmpty() ? null : currentFilterState.query,
+				Constants.issuesRequestType,
+				currentFilterState.milestoneTitle,
+				currentFilterState.mentionedBy,
+				1,
+				limit,
+				true);
 	}
 
 	public void fetchRepoIssues(

@@ -21,8 +21,8 @@ import org.mian.gitnex.R;
 import org.mian.gitnex.databinding.BottomsheetRepoMenuBinding;
 import org.mian.gitnex.databinding.ItemRepoHubCardBinding;
 import org.mian.gitnex.helpers.AppUtil;
-import org.mian.gitnex.helpers.RepositoryMenuItemModel;
 import org.mian.gitnex.helpers.contexts.RepositoryContext;
+import org.mian.gitnex.models.RepositoryMenuItemModel;
 
 /**
  * @author mmarif

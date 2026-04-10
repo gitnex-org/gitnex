@@ -7,6 +7,7 @@ import androidx.lifecycle.MutableLiveData;
 import androidx.lifecycle.ViewModel;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 import org.gitnex.tea4j.v2.models.CreateLabelOption;
 import org.gitnex.tea4j.v2.models.EditLabelOption;
 import org.gitnex.tea4j.v2.models.Label;
@@ -138,6 +139,82 @@ public class LabelsViewModel extends ViewModel {
 						error.setValue(t.getMessage());
 					}
 				});
+	}
+
+	public void fetchLabelsMerged(Context ctx, String owner, String repo, int page, int limit) {
+		if (Boolean.TRUE.equals(isLoading.getValue())) return;
+		isLoading.setValue(true);
+
+		RetrofitClient.getApiInterface(ctx)
+				.issueListLabels(owner, repo, page, limit)
+				.enqueue(
+						new Callback<>() {
+							@Override
+							public void onResponse(
+									@NonNull Call<List<Label>> call,
+									@NonNull Response<List<Label>> repoResponse) {
+								List<Label> tempMergedList = new ArrayList<>();
+
+								if (repoResponse.isSuccessful() && repoResponse.body() != null) {
+									tempMergedList.addAll(repoResponse.body());
+								}
+
+								RetrofitClient.getApiInterface(ctx)
+										.orgListLabels(owner, 1, 100)
+										.enqueue(
+												new Callback<>() {
+													@Override
+													public void onResponse(
+															@NonNull Call<List<Label>> call,
+															@NonNull Response<List<Label>>
+																			orgResponse) {
+														if (orgResponse.isSuccessful()
+																&& orgResponse.body() != null) {
+															for (Label orgLabel :
+																	orgResponse.body()) {
+																if (!listContainsLabel(
+																		tempMergedList, orgLabel)) {
+																	tempMergedList.add(orgLabel);
+																}
+															}
+														}
+
+														processAndPublish(tempMergedList);
+													}
+
+													@Override
+													public void onFailure(
+															@NonNull Call<List<Label>> call,
+															@NonNull Throwable t) {
+														processAndPublish(tempMergedList);
+													}
+												});
+							}
+
+							@Override
+							public void onFailure(
+									@NonNull Call<List<Label>> call, @NonNull Throwable t) {
+								isLoading.setValue(false);
+								error.setValue(t.getMessage());
+							}
+						});
+	}
+
+	private void processAndPublish(List<Label> mergedList) {
+		fullList.clear();
+		if (mergedList != null) {
+			fullList.addAll(mergedList);
+		}
+		labels.setValue(new ArrayList<>(fullList));
+		isLoading.setValue(false);
+		hasLoadedOnce.setValue(true);
+	}
+
+	private boolean listContainsLabel(List<Label> list, Label target) {
+		for (Label l : list) {
+			if (Objects.equals(l.getId(), target.getId())) return true;
+		}
+		return false;
 	}
 
 	public void saveLabel(

@@ -353,6 +353,20 @@ public class AppUtil {
 		return str.matches("^[\\w-]+$");
 	}
 
+	public static Boolean isValidGitBranchName(String str) {
+		if (str == null || str.isEmpty()) return false;
+
+		if (str.contains("..")
+				|| str.startsWith("/")
+				|| str.endsWith("/")
+				|| str.startsWith("-")
+				|| str.endsWith(".")) {
+			return false;
+		}
+
+		return str.matches("^[a-zA-Z0-9\\-_. /]+$");
+	}
+
 	public static Boolean checkIntegers(String str) {
 		return str.matches("\\d+");
 	}

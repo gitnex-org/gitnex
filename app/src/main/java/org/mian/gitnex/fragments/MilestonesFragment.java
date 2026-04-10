@@ -25,10 +25,10 @@ import org.mian.gitnex.databinding.BottomsheetMilestonesItemMenuBinding;
 import org.mian.gitnex.databinding.FragmentMilestonesBinding;
 import org.mian.gitnex.helpers.Constants;
 import org.mian.gitnex.helpers.EndlessRecyclerViewScrollListener;
-import org.mian.gitnex.helpers.RepositoryMenuItemModel;
 import org.mian.gitnex.helpers.Toasty;
 import org.mian.gitnex.helpers.UIHelper;
 import org.mian.gitnex.helpers.contexts.RepositoryContext;
+import org.mian.gitnex.models.RepositoryMenuItemModel;
 import org.mian.gitnex.viewmodels.MilestonesViewModel;
 
 /**
