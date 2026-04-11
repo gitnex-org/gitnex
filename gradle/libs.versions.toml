@@ -7,7 +7,7 @@ compileSdk = "36"
 minSdk = "26"
 targetSdk = "36"
 versionCode = "1295"
-versionName = "13.0.0-dev"
+versionName = "13.0.0-rc1"
 javaVersion = "17"
 
 # Plugins
@@ -15,7 +15,7 @@ spotless = "8.4.0"
 
 # AndroidX
 appcompat = "1.7.1"
-material = "1.14.0-alpha10"
+material = "1.14.0-beta01"
 compose-material3 = "1.4.0"
 viewpager2 = "1.1.0"
 constraintlayout = "2.2.1"

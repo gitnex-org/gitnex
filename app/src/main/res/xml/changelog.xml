@@ -1,15 +1,15 @@
 <?xml version="1.0" encoding="utf-8"?>
 <changelog>
 
-     <release version="13.0.0-dev" versioncode="1295">
+     <release version="13.0.0-rc1" versioncode="1295">
         <type name="🎉 Features 🎉">
-            <change>DEV</change>
+            <change>Release notes will be updated with a stable release!</change>
         </type>
         <type name="v🚀 Improvements 🚀">
-            <change>DEV</change>
+            <change>Release notes will be updated with a stable release!</change>
         </type>
         <type name="🐛 Bug Fixes 🐛">
-            <change>DEV</change>
+            <change>Release notes will be updated with a stable release!</change>
         </type>
     </release>
 
