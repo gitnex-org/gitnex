@@ -1,68 +1,58 @@
 package org.mian.gitnex.adapters;
 
 import android.view.LayoutInflater;
-import android.view.View;
 import android.view.ViewGroup;
-import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 import java.util.List;
 import org.gitnex.tea4j.v2.models.Attachment;
-import org.mian.gitnex.R;
+import org.mian.gitnex.databinding.ListReleasesDownloadsBinding;
 import org.mian.gitnex.structs.FragmentRefreshListener;
 
 /**
- * @author M M Arif
+ * @author mmarif
  */
 public class ReleasesDownloadsAdapter
-		extends RecyclerView.Adapter<ReleasesDownloadsAdapter.ReleasesDownloadsViewHolder> {
+		extends RecyclerView.Adapter<ReleasesDownloadsAdapter.ViewHolder> {
 
-	private final List<Attachment> releasesDownloadsList;
-	private final FragmentRefreshListener startDownload;
+	private final List<Attachment> list;
+	private final FragmentRefreshListener listener;
 
-	ReleasesDownloadsAdapter(
-			List<Attachment> releasesDownloadsMain, FragmentRefreshListener startDownload) {
-
-		this.releasesDownloadsList = releasesDownloadsMain;
-		this.startDownload = startDownload;
+	public ReleasesDownloadsAdapter(List<Attachment> list, FragmentRefreshListener listener) {
+		this.list = list;
+		this.listener = listener;
 	}
 
 	@NonNull @Override
-	public ReleasesDownloadsAdapter.ReleasesDownloadsViewHolder onCreateViewHolder(
-			@NonNull ViewGroup parent, int viewType) {
-		View v =
-				LayoutInflater.from(parent.getContext())
-						.inflate(R.layout.list_releases_downloads, parent, false);
-		return new ReleasesDownloadsAdapter.ReleasesDownloadsViewHolder(v);
+	public ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
+		return new ViewHolder(
+				ListReleasesDownloadsBinding.inflate(
+						LayoutInflater.from(parent.getContext()), parent, false));
 	}
 
 	@Override
-	public void onBindViewHolder(
-			@NonNull ReleasesDownloadsAdapter.ReleasesDownloadsViewHolder holder, int position) {
-
-		Attachment currentItem = releasesDownloadsList.get(position);
-
-		if (currentItem.getName() != null) {
-
-			holder.downloadName.setText(currentItem.getName());
-			holder.downloadName.setOnClickListener(
-					v -> startDownload.onRefresh(currentItem.getBrowserDownloadUrl()));
-		}
+	public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
+		Attachment item = list.get(position);
+		holder.binding.downloadName.setText(item.getName());
+		holder.itemView.setOnClickListener(
+				v -> {
+					if (listener != null) {
+						listener.onRefresh(item.getBrowserDownloadUrl());
+					}
+				});
 	}
 
 	@Override
 	public int getItemCount() {
-		return releasesDownloadsList.size();
+		return list != null ? list.size() : 0;
 	}
 
-	public static class ReleasesDownloadsViewHolder extends RecyclerView.ViewHolder {
+	public static class ViewHolder extends RecyclerView.ViewHolder {
+		final ListReleasesDownloadsBinding binding;
 
-		private final TextView downloadName;
-
-		private ReleasesDownloadsViewHolder(View itemView) {
-
-			super(itemView);
-			downloadName = itemView.findViewById(R.id.downloadName);
+		ViewHolder(ListReleasesDownloadsBinding binding) {
+			super(binding.getRoot());
+			this.binding = binding;
 		}
 	}
 }

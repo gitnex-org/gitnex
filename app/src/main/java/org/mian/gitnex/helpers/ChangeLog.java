@@ -21,7 +21,7 @@ import org.xmlpull.v1.XmlPullParser;
 import org.xmlpull.v1.XmlPullParserException;
 
 /**
- * @author M M Arif
+ * @author mmarif
  */
 public class ChangeLog {
 

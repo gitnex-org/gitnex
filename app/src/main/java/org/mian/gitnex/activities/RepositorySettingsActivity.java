@@ -27,7 +27,7 @@ import retrofit2.Call;
 import retrofit2.Callback;
 
 /**
- * @author M M Arif
+ * @author mmarif
  */
 public class RepositorySettingsActivity extends BaseActivity {
 
@@ -88,10 +88,10 @@ public class RepositorySettingsActivity extends BaseActivity {
 
 					if (!repository.getName().equals(repoName)) {
 
-						Toasty.error(ctx, getString(R.string.repoSettingsDeleteError));
+						Toasty.show(ctx, getString(R.string.repoSettingsDeleteError));
 					} else if (newOwner.matches("")) {
 
-						Toasty.error(ctx, getString(R.string.repoTransferOwnerError));
+						Toasty.show(ctx, getString(R.string.repoTransferOwnerError));
 					} else {
 
 						transferRepository(newOwner);
@@ -125,7 +125,7 @@ public class RepositorySettingsActivity extends BaseActivity {
 						if (response.code() == 202 || response.code() == 201) {
 
 							dialogRepo.dismiss();
-							Toasty.success(ctx, getString(R.string.repoTransferSuccess));
+							Toasty.show(ctx, getString(R.string.repoTransferSuccess));
 
 							Objects.requireNonNull(BaseApi.getInstance(ctx, RepositoriesApi.class))
 									.deleteRepository(repository.getRepositoryId());
@@ -137,12 +137,12 @@ public class RepositorySettingsActivity extends BaseActivity {
 
 							transferRepoBinding.transfer.setVisibility(View.VISIBLE);
 							transferRepoBinding.processingRequest.setVisibility(View.GONE);
-							Toasty.error(ctx, getString(R.string.repoTransferError));
+							Toasty.show(ctx, getString(R.string.repoTransferError));
 						} else {
 
 							transferRepoBinding.transfer.setVisibility(View.VISIBLE);
 							transferRepoBinding.processingRequest.setVisibility(View.GONE);
-							Toasty.error(ctx, getString(R.string.genericError));
+							Toasty.show(ctx, getString(R.string.genericError));
 						}
 					}
 
@@ -151,7 +151,7 @@ public class RepositorySettingsActivity extends BaseActivity {
 
 						transferRepoBinding.transfer.setVisibility(View.VISIBLE);
 						transferRepoBinding.processingRequest.setVisibility(View.GONE);
-						Toasty.error(ctx, getString(R.string.genericServerResponseError));
+						Toasty.show(ctx, getString(R.string.genericServerResponseError));
 					}
 				});
 	}
@@ -171,7 +171,7 @@ public class RepositorySettingsActivity extends BaseActivity {
 									String.valueOf(
 											deleteRepoBinding.repoNameForDeletion.getText()))) {
 
-						Toasty.error(ctx, getString(R.string.repoSettingsDeleteError));
+						Toasty.show(ctx, getString(R.string.repoSettingsDeleteError));
 					} else {
 
 						deleteRepository();
@@ -200,7 +200,7 @@ public class RepositorySettingsActivity extends BaseActivity {
 						if (response.code() == 204) {
 
 							dialogRepo.dismiss();
-							Toasty.success(ctx, getString(R.string.repoDeletionSuccess));
+							Toasty.show(ctx, getString(R.string.repoDeletionSuccess));
 
 							Objects.requireNonNull(BaseApi.getInstance(ctx, RepositoriesApi.class))
 									.deleteRepository(repository.getRepositoryId());
@@ -212,7 +212,7 @@ public class RepositorySettingsActivity extends BaseActivity {
 
 							deleteRepoBinding.delete.setVisibility(View.VISIBLE);
 							deleteRepoBinding.processingRequest.setVisibility(View.GONE);
-							Toasty.error(ctx, getString(R.string.genericError));
+							Toasty.show(ctx, getString(R.string.genericError));
 						}
 					}
 
@@ -221,7 +221,7 @@ public class RepositorySettingsActivity extends BaseActivity {
 
 						deleteRepoBinding.delete.setVisibility(View.VISIBLE);
 						deleteRepoBinding.processingRequest.setVisibility(View.GONE);
-						Toasty.error(ctx, getString(R.string.genericServerResponseError));
+						Toasty.show(ctx, getString(R.string.genericServerResponseError));
 					}
 				});
 	}
@@ -342,7 +342,7 @@ public class RepositorySettingsActivity extends BaseActivity {
 						if (response.code() == 200) {
 
 							dialogRepo.dismiss();
-							Toasty.success(ctx, getString(R.string.repoPropertiesSaveSuccess));
+							Toasty.show(ctx, getString(R.string.repoPropertiesSaveSuccess));
 
 							if (!repository.getName().equals(repoName)) {
 
@@ -365,7 +365,7 @@ public class RepositorySettingsActivity extends BaseActivity {
 
 							propBinding.save.setVisibility(View.VISIBLE);
 							propBinding.processingRequest.setVisibility(View.GONE);
-							Toasty.error(ctx, getString(R.string.genericError));
+							Toasty.show(ctx, getString(R.string.genericError));
 						}
 					}
 
@@ -374,7 +374,7 @@ public class RepositorySettingsActivity extends BaseActivity {
 
 						propBinding.save.setVisibility(View.VISIBLE);
 						propBinding.processingRequest.setVisibility(View.GONE);
-						Toasty.error(ctx, getString(R.string.genericServerResponseError));
+						Toasty.show(ctx, getString(R.string.genericServerResponseError));
 					}
 				});
 	}

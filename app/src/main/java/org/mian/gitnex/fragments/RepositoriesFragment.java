@@ -1,209 +1,244 @@
 package org.mian.gitnex.fragments;
 
-import android.content.Intent;
 import android.os.Bundle;
-import android.os.Handler;
-import android.os.Looper;
+import android.text.Editable;
+import android.text.TextWatcher;
 import android.view.LayoutInflater;
-import android.view.Menu;
-import android.view.MenuInflater;
-import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
-import android.view.inputmethod.EditorInfo;
 import androidx.annotation.NonNull;
-import androidx.core.view.MenuProvider;
+import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
-import androidx.lifecycle.Lifecycle;
 import androidx.lifecycle.ViewModelProvider;
 import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment;
 import com.google.android.material.chip.Chip;
 import com.google.android.material.chip.ChipGroup;
+import java.util.ArrayList;
 import org.mian.gitnex.R;
-import org.mian.gitnex.activities.CreateRepoActivity;
 import org.mian.gitnex.activities.MainActivity;
 import org.mian.gitnex.adapters.ReposListAdapter;
 import org.mian.gitnex.databinding.FragmentRepositoriesBinding;
 import org.mian.gitnex.helpers.Constants;
+import org.mian.gitnex.helpers.EndlessRecyclerViewScrollListener;
+import org.mian.gitnex.helpers.Toasty;
+import org.mian.gitnex.helpers.UIHelper;
 import org.mian.gitnex.viewmodels.RepositoriesViewModel;
 
 /**
- * @author M M Arif
+ * @author mmarif
  */
 public class RepositoriesFragment extends Fragment {
 
-	private RepositoriesViewModel repositoriesViewModel;
-	private FragmentRepositoriesBinding fragmentRepositoriesBinding;
+	private FragmentRepositoriesBinding binding;
+	private RepositoriesViewModel viewModel;
 	private ReposListAdapter adapter;
-	private int page = 1;
-	private int resultLimit;
+	private EndlessRecyclerViewScrollListener scrollListener;
+
 	private String currentSort = "recentupdate";
+	private int resultLimit;
+	private String type = "repos";
+	private String userLogin = null;
+	private String orgName = null;
+	private boolean isSearching = false;
+
+	@Override
+	public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
+		super.onViewCreated(view, savedInstanceState);
+
+		UIHelper.applyInsets(view, null, binding.recyclerView, binding.pullToRefresh, null);
+
+		getChildFragmentManager()
+				.setFragmentResultListener(
+						"repo_created",
+						getViewLifecycleOwner(),
+						(requestKey, bundle) -> {
+							if (bundle.getBoolean("refresh")) {
+								refreshData();
+							}
+						});
+	}
 
 	@Override
 	public View onCreateView(
 			@NonNull LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
+		binding = FragmentRepositoriesBinding.inflate(inflater, container, false);
+		resultLimit = Constants.getCurrentResultLimit(requireContext());
+		viewModel = new ViewModelProvider(this).get(RepositoriesViewModel.class);
 
-		fragmentRepositoriesBinding =
-				FragmentRepositoriesBinding.inflate(inflater, container, false);
+		if (getArguments() != null) {
+			type = getArguments().getString("type", "repos");
+			userLogin = getArguments().getString("userLogin");
+			orgName = getArguments().getString("orgName");
+		}
 
-		requireActivity()
-				.addMenuProvider(
-						new MenuProvider() {
-							@Override
-							public void onCreateMenu(
-									@NonNull Menu menu, @NonNull MenuInflater menuInflater) {
-								menuInflater.inflate(R.menu.search_menu, menu);
-								menuInflater.inflate(R.menu.generic_nav_dotted_menu, menu);
+		setupRecyclerView();
+		setupSwipeRefresh();
+		setupSearch();
+		observeViewModel();
 
-								MenuItem searchItem = menu.findItem(R.id.action_search);
-								androidx.appcompat.widget.SearchView searchView =
-										(androidx.appcompat.widget.SearchView)
-												searchItem.getActionView();
-								assert searchView != null;
-								searchView.setImeOptions(EditorInfo.IME_ACTION_DONE);
-
-								searchView.setOnQueryTextListener(
-										new androidx.appcompat.widget.SearchView
-												.OnQueryTextListener() {
-											@Override
-											public boolean onQueryTextSubmit(String query) {
-												return false;
-											}
-
-											@Override
-											public boolean onQueryTextChange(String newText) {
-												if (fragmentRepositoriesBinding.recyclerView
-																.getAdapter()
-														!= null) {
-													adapter.getFilter().filter(newText);
-												}
-												return false;
-											}
-										});
-							}
-
-							@Override
-							public boolean onMenuItemSelected(@NonNull MenuItem menuItem) {
-								if (menuItem.getItemId() == R.id.genericMenu) {
-									SortBottomSheetDialogFragment bottomSheet =
-											new SortBottomSheetDialogFragment();
-									bottomSheet.setSortListener(
-											sort -> {
-												currentSort = sort;
-												page = 1;
-												fragmentRepositoriesBinding.progressBar
-														.setVisibility(View.VISIBLE);
-												fetchDataAsync();
-											});
-									bottomSheet.show(getChildFragmentManager(), "SortBottomSheet");
-									return true;
-								}
-								return false;
-							}
-						},
-						getViewLifecycleOwner(),
-						Lifecycle.State.RESUMED);
-
-		repositoriesViewModel = new ViewModelProvider(this).get(RepositoriesViewModel.class);
-
-		resultLimit = Constants.getCurrentResultLimit(getContext());
-
-		fragmentRepositoriesBinding.addNewRepo.setOnClickListener(
-				view -> {
-					Intent intent = new Intent(view.getContext(), CreateRepoActivity.class);
-					startActivity(intent);
-				});
-
-		fragmentRepositoriesBinding.recyclerView.setHasFixedSize(true);
-		fragmentRepositoriesBinding.recyclerView.setLayoutManager(
-				new LinearLayoutManager(getContext()));
-
-		fragmentRepositoriesBinding.pullToRefresh.setOnRefreshListener(
-				() ->
-						new Handler(Looper.getMainLooper())
-								.postDelayed(
-										() -> {
-											page = 1;
-											fragmentRepositoriesBinding.pullToRefresh.setRefreshing(
-													false);
-											fetchDataAsync();
-											fragmentRepositoriesBinding.progressBar.setVisibility(
-													View.VISIBLE);
-										},
-										50));
-
-		fetchDataAsync();
-
-		return fragmentRepositoriesBinding.getRoot();
+		refreshData();
+		return binding.getRoot();
 	}
 
-	private void fetchDataAsync() {
+	private void setupRecyclerView() {
+		adapter = new ReposListAdapter(new ArrayList<>(), requireContext());
+		LinearLayoutManager layoutManager = new LinearLayoutManager(requireContext());
+		binding.recyclerView.setLayoutManager(layoutManager);
+		binding.recyclerView.setAdapter(adapter);
 
-		repositoriesViewModel
-				.getRepositories(
-						page,
-						resultLimit,
-						null,
-						"repos",
-						null,
-						getContext(),
-						fragmentRepositoriesBinding,
-						currentSort)
+		scrollListener =
+				new EndlessRecyclerViewScrollListener(layoutManager) {
+					@Override
+					public void onLoadMore(int page, int totalItemsCount, RecyclerView view) {
+						if (isSearching) return;
+
+						viewModel.fetchRepos(
+								requireContext(),
+								type,
+								userLogin,
+								orgName,
+								page,
+								resultLimit,
+								currentSort,
+								false);
+					}
+				};
+		binding.recyclerView.addOnScrollListener(scrollListener);
+	}
+
+	private void observeViewModel() {
+		viewModel
+				.getRepos()
 				.observe(
 						getViewLifecycleOwner(),
-						reposListMain -> {
-							adapter = new ReposListAdapter(reposListMain, getContext());
-							adapter.setLoadMoreListener(
-									new ReposListAdapter.OnLoadMoreListener() {
-
-										@Override
-										public void onLoadMore() {
-
-											page += 1;
-											repositoriesViewModel.loadMoreRepos(
-													page,
-													resultLimit,
-													null,
-													"repos",
-													null,
-													getContext(),
-													adapter,
-													currentSort);
-											fragmentRepositoriesBinding.progressBar.setVisibility(
-													View.VISIBLE);
-										}
-
-										@Override
-										public void onLoadFinished() {
-
-											fragmentRepositoriesBinding.progressBar.setVisibility(
-													View.GONE);
-										}
-									});
-
-							if (adapter.getItemCount() > 0) {
-								fragmentRepositoriesBinding.recyclerView.setAdapter(adapter);
-								fragmentRepositoriesBinding.noData.setVisibility(View.GONE);
-							} else {
-								adapter.notifyDataChanged();
-								fragmentRepositoriesBinding.recyclerView.setAdapter(adapter);
-								fragmentRepositoriesBinding.noData.setVisibility(View.VISIBLE);
-							}
-
-							fragmentRepositoriesBinding.progressBar.setVisibility(View.GONE);
+						list -> {
+							adapter.updateList(list);
+							updateUiState();
 						});
+
+		viewModel.getHasLoadedOnce().observe(getViewLifecycleOwner(), hasLoaded -> updateUiState());
+
+		viewModel
+				.getIsLoading()
+				.observe(
+						getViewLifecycleOwner(),
+						loading -> {
+							boolean hasData = adapter.getItemCount() > 0;
+							binding.expressiveLoader.setVisibility(
+									loading && !hasData ? View.VISIBLE : View.GONE);
+						});
+
+		viewModel
+				.getError()
+				.observe(
+						getViewLifecycleOwner(),
+						error -> {
+							if (error != null) Toasty.show(requireContext(), error);
+						});
+	}
+
+	private void updateUiState() {
+		boolean isEmpty = adapter.getItemCount() == 0;
+		boolean loaded = Boolean.TRUE.equals(viewModel.getHasLoadedOnce().getValue());
+		binding.layoutEmpty.getRoot().setVisibility(loaded && isEmpty ? View.VISIBLE : View.GONE);
+	}
+
+	public void refreshData() {
+		if (scrollListener != null) scrollListener.resetState();
+		viewModel.resetPagination();
+		viewModel.fetchRepos(
+				requireContext(), type, userLogin, orgName, 1, resultLimit, currentSort, true);
+	}
+
+	private void setupSwipeRefresh() {
+		binding.pullToRefresh.setOnRefreshListener(
+				() -> {
+					binding.pullToRefresh.setRefreshing(false);
+					refreshData();
+				});
 	}
 
 	@Override
 	public void onResume() {
 		super.onResume();
-
 		if (MainActivity.reloadRepos) {
-			page = 1;
-			fetchDataAsync();
+			refreshData();
 			MainActivity.reloadRepos = false;
 		}
+	}
+
+	public void toggleSearch() {
+		if (binding.searchView.isShowing()) {
+			binding.searchView.hide();
+		} else {
+			binding.searchView.show();
+		}
+	}
+
+	private void setupSearch() {
+		binding.searchResultsRecycler.setLayoutManager(new LinearLayoutManager(requireContext()));
+		binding.searchResultsRecycler.setAdapter(adapter);
+
+		binding.searchView
+				.getEditText()
+				.addTextChangedListener(
+						new TextWatcher() {
+							@Override
+							public void beforeTextChanged(
+									CharSequence s, int start, int count, int after) {}
+
+							@Override
+							public void onTextChanged(
+									CharSequence s, int start, int before, int count) {
+								filter(s.toString());
+							}
+
+							@Override
+							public void afterTextChanged(Editable s) {}
+						});
+
+		binding.searchView.addTransitionListener(
+				(searchView, previousState, newState) -> {
+					if (newState.toString().equals("HIDDEN")) {
+						binding.searchView.setText("");
+						filter("");
+						isSearching = false;
+						binding.recyclerView.scrollToPosition(0);
+					} else if (newState.toString().equals("SHOWN")) {
+						isSearching = true;
+					}
+				});
+
+		binding.searchView
+				.getEditText()
+				.setOnEditorActionListener(
+						(v, actionId, event) -> {
+							binding.searchView.hide();
+							return false;
+						});
+	}
+
+	private void filter(String text) {
+		if (adapter != null && adapter.getFilter() != null) {
+			adapter.getFilter().filter(text);
+		}
+	}
+
+	public void openSortMenu() {
+		SortBottomSheetDialogFragment bottomSheet = new SortBottomSheetDialogFragment();
+		bottomSheet.setSortListener(
+				sort -> {
+					currentSort = sort;
+					refreshData();
+				});
+		bottomSheet.show(getChildFragmentManager(), "SortBottomSheet");
+	}
+
+	public void createNewRepo() {
+		BottomSheetCreateRepo.newInstance(null, false)
+				.show(getChildFragmentManager(), "create_repo");
 	}
 
 	public static class SortBottomSheetDialogFragment extends BottomSheetDialogFragment {

@@ -3,37 +3,49 @@ package org.mian.gitnex.fragments;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Looper;
+import android.text.Editable;
+import android.text.TextWatcher;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModelProvider;
 import androidx.recyclerview.widget.LinearLayoutManager;
-import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
-import org.mian.gitnex.activities.CreateLabelActivity;
+import androidx.recyclerview.widget.RecyclerView;
+import com.google.android.material.dialog.MaterialAlertDialogBuilder;
+import java.util.ArrayList;
+import java.util.List;
+import org.mian.gitnex.R;
+import org.mian.gitnex.activities.RepoDetailActivity;
 import org.mian.gitnex.adapters.LabelsAdapter;
 import org.mian.gitnex.databinding.FragmentLabelsBinding;
 import org.mian.gitnex.helpers.Constants;
+import org.mian.gitnex.helpers.EndlessRecyclerViewScrollListener;
+import org.mian.gitnex.helpers.Toasty;
+import org.mian.gitnex.helpers.UIHelper;
 import org.mian.gitnex.helpers.contexts.RepositoryContext;
+import org.mian.gitnex.models.RepositoryMenuItemModel;
 import org.mian.gitnex.viewmodels.LabelsViewModel;
 
 /**
- * @author M M Arif
+ * @author mmarif
  */
-public class LabelsFragment extends Fragment {
+public class LabelsFragment extends Fragment implements RepoDetailActivity.RepoHubProvider {
 
-	private FragmentLabelsBinding fragmentLabelsBinding;
-	private LabelsViewModel labelsViewModel;
+	private FragmentLabelsBinding binding;
+	private LabelsViewModel viewModel;
 	private LabelsAdapter adapter;
-	private int page = 1;
-	private int resultLimit;
-	private RepositoryContext repository;
+	private EndlessRecyclerViewScrollListener scrollListener;
 
-	public LabelsFragment() {}
+	private RepositoryContext repository;
+	private final String type = "repo";
+	private int resultLimit;
+	private boolean isSearching = false;
+	private boolean isFirstLoad = true;
 
 	public static LabelsFragment newInstance(RepositoryContext repository) {
-
 		LabelsFragment fragment = new LabelsFragment();
 		fragment.setArguments(repository.getBundle());
 		return fragment;
@@ -45,130 +57,278 @@ public class LabelsFragment extends Fragment {
 		repository = RepositoryContext.fromBundle(requireArguments());
 	}
 
-	@Override
+	@Nullable @Override
 	public View onCreateView(
-			@NonNull LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
+			@NonNull LayoutInflater inflater,
+			@Nullable ViewGroup container,
+			@Nullable Bundle savedInstanceState) {
+		binding = FragmentLabelsBinding.inflate(inflater, container, false);
 
-		fragmentLabelsBinding = FragmentLabelsBinding.inflate(inflater, container, false);
-
-		boolean canPush = repository.getPermissions().isPush();
-		boolean archived = repository.getRepository().isArchived();
-
-		final SwipeRefreshLayout swipeRefresh = fragmentLabelsBinding.pullToRefresh;
-
-		labelsViewModel = new ViewModelProvider(this).get(LabelsViewModel.class);
 		resultLimit = Constants.getCurrentResultLimit(requireContext());
+		viewModel = new ViewModelProvider(requireActivity()).get(LabelsViewModel.class);
 
-		fragmentLabelsBinding.recyclerView.setHasFixedSize(true);
-		fragmentLabelsBinding.recyclerView.setLayoutManager(
-				new LinearLayoutManager(requireContext()));
+		setupRecyclerView();
+		setupSwipeRefresh();
+		setupSearch();
+		observeViewModel();
 
-		swipeRefresh.setOnRefreshListener(
-				() ->
-						new Handler(Looper.getMainLooper())
-								.postDelayed(
-										() -> {
-											page = 1;
-											swipeRefresh.setRefreshing(false);
-											LabelsViewModel.loadLabelsList(
-													repository.getOwner(),
-													repository.getName(),
-													"repo",
-													requireContext(),
-													null,
-													page,
-													resultLimit);
-										},
-										200));
+		return binding.getRoot();
+	}
 
-		fetchDataAsync(repository.getOwner(), repository.getName());
+	@Override
+	public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
+		super.onViewCreated(view, savedInstanceState);
+		UIHelper.applyInsets(view, null, binding.recyclerView, binding.pullToRefresh, null);
+	}
 
-		if (!canPush || archived) {
-			fragmentLabelsBinding.createLabel.setVisibility(View.GONE);
+	@Override
+	public List<RepositoryMenuItemModel> getRepoHubItems() {
+		List<RepositoryMenuItemModel> items = new ArrayList<>();
+
+		items.add(
+				new RepositoryMenuItemModel(
+						"LABEL_SEARCH",
+						R.string.search,
+						R.drawable.ic_search,
+						R.attr.colorPrimarySurface,
+						R.attr.colorOnPrimarySurface));
+
+		if (repository.getPermissions().isAdmin() && !repository.getRepository().isArchived()) {
+			items.add(
+					new RepositoryMenuItemModel(
+							"LABEL_ADD_NEW",
+							R.string.addButton,
+							R.drawable.ic_add,
+							R.attr.colorPrimaryContainer,
+							R.attr.colorOnPrimaryContainer));
 		}
 
-		fragmentLabelsBinding.createLabel.setOnClickListener(
-				v112 -> {
-					startActivity(
-							repository.getIntent(requireContext(), CreateLabelActivity.class));
-				});
+		return items;
+	}
 
-		return fragmentLabelsBinding.getRoot();
+	@Override
+	public void onHubActionSelected(String actionId) {
+		if (actionId.equals("LABEL_ADD_NEW")) {
+			BottomSheetCreateLabelFragment sheet =
+					BottomSheetCreateLabelFragment.newInstance(
+							"repo", repository.getOwner(), repository.getName(), null);
+			sheet.show(getChildFragmentManager(), "CreateLabelSheet");
+		}
+		if (actionId.equals("LABEL_SEARCH")) {
+			binding.searchView.show();
+		}
 	}
 
 	@Override
 	public void onResume() {
-
 		super.onResume();
-
-		if (CreateLabelActivity.refreshLabels) {
-
-			page = 1;
-			LabelsViewModel.loadLabelsList(
-					repository.getOwner(),
-					repository.getName(),
-					"repo",
-					requireContext(),
-					null,
-					page,
-					resultLimit);
-			CreateLabelActivity.refreshLabels = false;
+		if (!isHidden() && isFirstLoad) {
+			lazyLoad();
 		}
 	}
 
-	private void fetchDataAsync(String owner, String repo) {
+	@Override
+	public void onHiddenChanged(boolean hidden) {
+		super.onHiddenChanged(hidden);
+		if (!hidden && isFirstLoad) {
+			lazyLoad();
+		}
+	}
 
-		labelsViewModel
-				.getLabelsList(
-						owner,
-						repo,
-						"repo",
-						requireContext(),
-						fragmentLabelsBinding,
-						page,
-						resultLimit)
+	private void lazyLoad() {
+		isFirstLoad = false;
+		refreshData();
+	}
+
+	private void setupRecyclerView() {
+		LinearLayoutManager layoutManager = new LinearLayoutManager(requireContext());
+		binding.recyclerView.setLayoutManager(layoutManager);
+
+		scrollListener =
+				new EndlessRecyclerViewScrollListener(layoutManager) {
+					@Override
+					public void onLoadMore(int page, int totalItemsCount, RecyclerView view) {
+						if (!isSearching) {
+							viewModel.fetchLabels(
+									requireContext(),
+									repository.getOwner(),
+									repository.getName(),
+									type,
+									page,
+									resultLimit,
+									false);
+						}
+					}
+				};
+		binding.recyclerView.addOnScrollListener(scrollListener);
+	}
+
+	private void observeViewModel() {
+		viewModel
+				.getLabels()
 				.observe(
 						getViewLifecycleOwner(),
-						mainList -> {
-							adapter = new LabelsAdapter(requireContext(), mainList, "repo", owner);
-							adapter.setLoadMoreListener(
-									new LabelsAdapter.OnLoadMoreListener() {
+						list -> {
+							if (adapter == null) {
+								boolean canEdit =
+										repository.getPermissions().isPush()
+												&& !repository.getRepository().isArchived();
 
-										@Override
-										public void onLoadMore() {
-
-											page += 1;
-											labelsViewModel.loadMore(
-													owner,
-													repo,
-													"repo",
-													requireContext(),
-													fragmentLabelsBinding,
-													page,
-													resultLimit,
-													adapter);
-											fragmentLabelsBinding.progressBar.setVisibility(
-													View.VISIBLE);
-										}
-
-										@Override
-										public void onLoadFinished() {
-
-											fragmentLabelsBinding.progressBar.setVisibility(
-													View.GONE);
-										}
-									});
-
-							if (adapter.getItemCount() > 0) {
-								fragmentLabelsBinding.recyclerView.setAdapter(adapter);
-								fragmentLabelsBinding.noData.setVisibility(View.GONE);
+								adapter =
+										new LabelsAdapter(
+												requireContext(),
+												list,
+												canEdit,
+												label -> {
+													BottomSheetCreateLabelFragment.newInstance(
+																	type,
+																	repository.getOwner(),
+																	repository.getName(),
+																	label)
+															.show(
+																	getChildFragmentManager(),
+																	"EditLabel");
+												},
+												label -> {
+													new MaterialAlertDialogBuilder(requireContext())
+															.setTitle(R.string.labelDeleteTitle)
+															.setMessage(
+																	getString(
+																			R.string
+																					.labelDeleteConfirmText,
+																			label.getName()))
+															.setPositiveButton(
+																	R.string.menuDeleteText,
+																	(d, w) -> {
+																		viewModel.deleteLabel(
+																				requireContext(),
+																				type,
+																				repository
+																						.getOwner(),
+																				repository
+																						.getName(),
+																				label.getId());
+																	})
+															.setNegativeButton(
+																	R.string.cancelButton, null)
+															.show();
+												});
+								binding.recyclerView.setAdapter(adapter);
+								binding.searchResultsRecycler.setAdapter(adapter);
 							} else {
-								adapter.notifyDataChanged();
-								fragmentLabelsBinding.recyclerView.setAdapter(adapter);
-								fragmentLabelsBinding.noData.setVisibility(View.VISIBLE);
+								adapter.updateList(list);
 							}
 
-							fragmentLabelsBinding.progressBar.setVisibility(View.GONE);
+							binding.pullToRefresh.setRefreshing(false);
+							updateUiVisibility(
+									Boolean.TRUE.equals(viewModel.getIsLoading().getValue()));
 						});
+
+		viewModel.getIsLoading().observe(getViewLifecycleOwner(), this::updateUiVisibility);
+
+		viewModel
+				.getError()
+				.observe(
+						getViewLifecycleOwner(),
+						error -> {
+							if (error != null) Toasty.show(requireContext(), error);
+						});
+
+		viewModel
+				.getActionResult()
+				.observe(
+						getViewLifecycleOwner(),
+						code -> {
+							if (code == 200 || code == 201 || code == 204) {
+								int messageRes;
+								if (code == 201) {
+									messageRes = R.string.labelCreated;
+								} else if (code == 200) {
+									messageRes = R.string.labelUpdated;
+								} else {
+									messageRes = R.string.labelDeleteText;
+								}
+								Toasty.show(requireContext(), messageRes);
+
+								refreshData();
+								new Handler(Looper.getMainLooper())
+										.postDelayed(
+												() -> {
+													if (isAdded()) {
+														viewModel.resetActionResult();
+													}
+												},
+												100);
+							}
+						});
+	}
+
+	private void updateUiVisibility(boolean isLoading) {
+		boolean hasData = adapter != null && adapter.getItemCount() > 0;
+		boolean hasLoadedOnce = Boolean.TRUE.equals(viewModel.getHasLoadedOnce().getValue());
+
+		binding.expressiveLoader.setVisibility(isLoading && !hasData ? View.VISIBLE : View.GONE);
+
+		if (isLoading) {
+			binding.layoutEmpty.getRoot().setVisibility(View.GONE);
+		} else {
+			binding.layoutEmpty
+					.getRoot()
+					.setVisibility(!hasData && hasLoadedOnce ? View.VISIBLE : View.GONE);
+		}
+
+		boolean showEmpty = !isLoading && !hasData && hasLoadedOnce;
+		binding.pullToRefresh.setVisibility(showEmpty ? View.GONE : View.VISIBLE);
+	}
+
+	private void setupSearch() {
+		binding.searchView
+				.getEditText()
+				.addTextChangedListener(
+						new TextWatcher() {
+							@Override
+							public void onTextChanged(
+									CharSequence s, int start, int before, int count) {
+								String query = s.toString();
+								isSearching = !query.isEmpty();
+								if (adapter != null) {
+									adapter.getFilter().filter(query);
+								}
+							}
+
+							@Override
+							public void beforeTextChanged(
+									CharSequence s, int start, int count, int after) {}
+
+							@Override
+							public void afterTextChanged(Editable s) {}
+						});
+	}
+
+	private void refreshData() {
+		scrollListener.resetState();
+		viewModel.resetPagination();
+		viewModel.fetchLabels(
+				requireContext(),
+				repository.getOwner(),
+				repository.getName(),
+				type,
+				1,
+				resultLimit,
+				true);
+	}
+
+	private void setupSwipeRefresh() {
+		binding.pullToRefresh.setOnRefreshListener(
+				() -> {
+					binding.pullToRefresh.setRefreshing(false);
+					refreshData();
+				});
+	}
+
+	@Override
+	public void onDestroyView() {
+		super.onDestroyView();
+		binding = null;
 	}
 }

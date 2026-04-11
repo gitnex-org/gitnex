@@ -1,17 +1,20 @@
 package org.mian.gitnex.fragments;
 
+import android.app.Dialog;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import com.google.android.material.bottomsheet.BottomSheetDialog;
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment;
 import org.mian.gitnex.R;
-import org.mian.gitnex.databinding.BottomSheetSettingsNotificationsBinding;
+import org.mian.gitnex.databinding.BottomsheetSettingsNotificationsBinding;
 import org.mian.gitnex.helpers.AppDatabaseSettings;
+import org.mian.gitnex.helpers.AppUIStateManager;
 import org.mian.gitnex.helpers.AppUtil;
-import org.mian.gitnex.helpers.SnackBar;
+import org.mian.gitnex.helpers.Toasty;
 import org.mian.gitnex.notifications.Notifications;
 
 /**
@@ -19,15 +22,21 @@ import org.mian.gitnex.notifications.Notifications;
  */
 public class BottomSheetSettingsNotificationsFragment extends BottomSheetDialogFragment {
 
-	private BottomSheetSettingsNotificationsBinding binding;
+	private BottomsheetSettingsNotificationsBinding binding;
 	private static int pollingDelayListSelectedChoice;
+
+	@Override
+	public void onCreate(@Nullable Bundle savedInstanceState) {
+		super.onCreate(savedInstanceState);
+		setStyle(STYLE_NORMAL, R.style.Custom_BottomSheet);
+	}
 
 	@Nullable @Override
 	public View onCreateView(
 			@NonNull LayoutInflater inflater,
 			@Nullable ViewGroup container,
 			@Nullable Bundle savedInstanceState) {
-		binding = BottomSheetSettingsNotificationsBinding.inflate(inflater, container, false);
+		binding = BottomsheetSettingsNotificationsBinding.inflate(inflater, container, false);
 
 		// Initialize polling delay
 		pollingDelayListSelectedChoice =
@@ -61,10 +70,7 @@ public class BottomSheetSettingsNotificationsFragment extends BottomSheetDialogF
 						AppUtil.setMultiVisibility(View.GONE, binding.pollingDelayFrame);
 					}
 
-					SnackBar.success(
-							requireContext(),
-							requireActivity().findViewById(android.R.id.content),
-							getString(R.string.settingsSave));
+					Toasty.show(requireContext(), getString(R.string.settingsSave));
 				});
 
 		binding.enableNotificationsFrame.setOnClickListener(
@@ -73,24 +79,26 @@ public class BottomSheetSettingsNotificationsFragment extends BottomSheetDialogF
 								!binding.enableNotificationsMode.isChecked()));
 
 		// Polling delay selection
-		binding.pollingDelayChipGroup.setOnCheckedChangeListener(
-				(group, checkedId) -> {
-					int newSelection = getChipPosition(checkedId);
-					if (newSelection != pollingDelayListSelectedChoice) {
-						pollingDelayListSelectedChoice = newSelection;
-						AppDatabaseSettings.updateSettingsValue(
-								requireContext(),
-								String.valueOf(newSelection),
-								AppDatabaseSettings.APP_NOTIFICATIONS_DELAY_KEY);
+		binding.pollingDelayChipGroup.setOnCheckedStateChangeListener(
+				(group, checkedIds) -> {
+					if (!checkedIds.isEmpty()) {
+						int checkedId = checkedIds.get(0);
+						int newSelection = getChipPosition(checkedId);
 
-						Notifications.stopWorker(requireContext());
-						Notifications.startWorker(requireContext());
+						if (newSelection != pollingDelayListSelectedChoice) {
+							pollingDelayListSelectedChoice = newSelection;
 
-						SettingsFragment.refreshParent = true;
-						SnackBar.success(
-								requireContext(),
-								requireActivity().findViewById(android.R.id.content),
-								getString(R.string.settingsSave));
+							AppDatabaseSettings.updateSettingsValue(
+									requireContext(),
+									String.valueOf(newSelection),
+									AppDatabaseSettings.APP_NOTIFICATIONS_DELAY_KEY);
+
+							Notifications.stopWorker(requireContext());
+							Notifications.startWorker(requireContext());
+
+							AppUIStateManager.invalidateUI();
+							Toasty.show(requireContext(), getString(R.string.settingsSave));
+						}
 					}
 				});
 
@@ -123,8 +131,17 @@ public class BottomSheetSettingsNotificationsFragment extends BottomSheetDialogF
 	}
 
 	@Override
+	public void onStart() {
+		super.onStart();
+		Dialog dialog = getDialog();
+		if (dialog instanceof BottomSheetDialog) {
+			AppUtil.applySheetStyle((BottomSheetDialog) dialog, true);
+		}
+	}
+
+	@Override
 	public void onDestroyView() {
 		super.onDestroyView();
-		binding = null; // Prevent memory leaks
+		binding = null;
 	}
 }

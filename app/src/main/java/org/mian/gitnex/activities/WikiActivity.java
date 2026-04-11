@@ -16,8 +16,6 @@ import org.gitnex.tea4j.v2.models.WikiPage;
 import org.mian.gitnex.R;
 import org.mian.gitnex.clients.RetrofitClient;
 import org.mian.gitnex.databinding.ActivityWikiBinding;
-import org.mian.gitnex.fragments.BottomSheetWikiFragment;
-import org.mian.gitnex.fragments.WikiFragment;
 import org.mian.gitnex.helpers.AlertDialogs;
 import org.mian.gitnex.helpers.AppUtil;
 import org.mian.gitnex.helpers.Markdown;
@@ -29,7 +27,7 @@ import retrofit2.Callback;
 import retrofit2.Response;
 
 /**
- * @author M M Arif
+ * @author mmarif
  */
 public class WikiActivity extends BaseActivity implements BottomSheetListener {
 
@@ -87,7 +85,7 @@ public class WikiActivity extends BaseActivity implements BottomSheetListener {
 						: "";
 
 		if (wikiTitle.isEmpty() || wikiContent.isEmpty()) {
-			Toasty.error(ctx, getString(R.string.wikiPageNameAndContentError));
+			Toasty.show(ctx, getString(R.string.wikiPageNameAndContentError));
 			return;
 		}
 
@@ -120,8 +118,8 @@ public class WikiActivity extends BaseActivity implements BottomSheetListener {
 						if (response.isSuccessful()) {
 							if (response.code() == 201) {
 
-								Toasty.success(ctx, getString(R.string.wikiCreated));
-								WikiFragment.resumeWiki = true;
+								Toasty.show(ctx, getString(R.string.wikiCreated));
+								// WikiFragment.resumeWiki = true;
 								finish();
 							} else {
 
@@ -136,7 +134,7 @@ public class WikiActivity extends BaseActivity implements BottomSheetListener {
 									case 403:
 										runOnUiThread(
 												() ->
-														Toasty.error(
+														Toasty.show(
 																ctx,
 																ctx.getString(
 																		R.string.authorizeError)));
@@ -144,7 +142,7 @@ public class WikiActivity extends BaseActivity implements BottomSheetListener {
 									case 404:
 										runOnUiThread(
 												() ->
-														Toasty.warning(
+														Toasty.show(
 																ctx,
 																ctx.getString(
 																		R.string.apiNotFound)));
@@ -152,7 +150,7 @@ public class WikiActivity extends BaseActivity implements BottomSheetListener {
 									default:
 										runOnUiThread(
 												() ->
-														Toasty.error(
+														Toasty.show(
 																ctx,
 																getString(R.string.genericError)));
 								}
@@ -163,7 +161,7 @@ public class WikiActivity extends BaseActivity implements BottomSheetListener {
 					@Override
 					public void onFailure(@NonNull Call<WikiPage> call, @NonNull Throwable t) {
 
-						Toasty.error(ctx, ctx.getString(R.string.genericServerResponseError));
+						Toasty.show(ctx, ctx.getString(R.string.genericServerResponseError));
 					}
 				});
 	}
@@ -193,8 +191,8 @@ public class WikiActivity extends BaseActivity implements BottomSheetListener {
 						if (response.isSuccessful()) {
 							if (response.code() == 200) {
 
-								Toasty.success(ctx, getString(R.string.wikiUpdated));
-								WikiFragment.resumeWiki = true;
+								Toasty.show(ctx, getString(R.string.wikiUpdated));
+								// WikiFragment.resumeWiki = true;
 								finish();
 							} else {
 
@@ -209,7 +207,7 @@ public class WikiActivity extends BaseActivity implements BottomSheetListener {
 									case 403:
 										runOnUiThread(
 												() ->
-														Toasty.error(
+														Toasty.show(
 																ctx,
 																ctx.getString(
 																		R.string.authorizeError)));
@@ -217,7 +215,7 @@ public class WikiActivity extends BaseActivity implements BottomSheetListener {
 									case 404:
 										runOnUiThread(
 												() ->
-														Toasty.warning(
+														Toasty.show(
 																ctx,
 																ctx.getString(
 																		R.string.apiNotFound)));
@@ -225,7 +223,7 @@ public class WikiActivity extends BaseActivity implements BottomSheetListener {
 									default:
 										runOnUiThread(
 												() ->
-														Toasty.error(
+														Toasty.show(
 																ctx,
 																getString(R.string.genericError)));
 								}
@@ -236,7 +234,7 @@ public class WikiActivity extends BaseActivity implements BottomSheetListener {
 					@Override
 					public void onFailure(@NonNull Call<WikiPage> call, @NonNull Throwable t) {
 
-						Toasty.error(ctx, ctx.getString(R.string.genericServerResponseError));
+						Toasty.show(ctx, ctx.getString(R.string.genericServerResponseError));
 					}
 				});
 	}
@@ -299,7 +297,7 @@ public class WikiActivity extends BaseActivity implements BottomSheetListener {
 									case 403:
 										runOnUiThread(
 												() ->
-														Toasty.error(
+														Toasty.show(
 																ctx,
 																ctx.getString(
 																		R.string.authorizeError)));
@@ -307,7 +305,7 @@ public class WikiActivity extends BaseActivity implements BottomSheetListener {
 									case 404:
 										runOnUiThread(
 												() ->
-														Toasty.warning(
+														Toasty.show(
 																ctx,
 																ctx.getString(
 																		R.string.apiNotFound)));
@@ -315,7 +313,7 @@ public class WikiActivity extends BaseActivity implements BottomSheetListener {
 									default:
 										runOnUiThread(
 												() ->
-														Toasty.error(
+														Toasty.show(
 																ctx,
 																getString(R.string.genericError)));
 								}
@@ -328,7 +326,7 @@ public class WikiActivity extends BaseActivity implements BottomSheetListener {
 					@Override
 					public void onFailure(@NonNull Call<WikiPage> call, @NonNull Throwable t) {
 
-						Toasty.error(ctx, ctx.getString(R.string.genericServerResponseError));
+						Toasty.show(ctx, ctx.getString(R.string.genericServerResponseError));
 					}
 				});
 	}
@@ -356,21 +354,22 @@ public class WikiActivity extends BaseActivity implements BottomSheetListener {
 																					response) {
 
 																if (response.isSuccessful()) {
-																	Toasty.success(
+																	Toasty.show(
 																			ctx,
 																			getString(
 																					R.string
 																							.wikiPageDeleted));
-																	WikiFragment.resumeWiki = true;
+																	// WikiFragment.resumeWiki =
+																	// true;
 																	finish();
 																} else if (response.code() == 403) {
-																	Toasty.error(
+																	Toasty.show(
 																			ctx,
 																			ctx.getString(
 																					R.string
 																							.authorizeError));
 																} else {
-																	Toasty.error(
+																	Toasty.show(
 																			ctx,
 																			ctx.getString(
 																					R.string
@@ -383,7 +382,7 @@ public class WikiActivity extends BaseActivity implements BottomSheetListener {
 																	@NonNull Call<Void> call,
 																	@NonNull Throwable t) {
 
-																Toasty.error(
+																Toasty.show(
 																		ctx,
 																		ctx.getString(
 																				R.string
@@ -438,8 +437,8 @@ public class WikiActivity extends BaseActivity implements BottomSheetListener {
 			return true;
 		} else if (id == R.id.genericMenu) {
 
-			BottomSheetWikiFragment bottomSheet = new BottomSheetWikiFragment();
-			bottomSheet.show(getSupportFragmentManager(), "wikiBottomSheet");
+			// BottomSheetWikiFragment bottomSheet = new BottomSheetWikiFragment();
+			// bottomSheet.show(getSupportFragmentManager(), "wikiBottomSheet");
 			return true;
 		} else if (id == R.id.save) {
 

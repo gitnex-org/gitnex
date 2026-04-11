@@ -71,25 +71,6 @@
         <item name="closeIcon">@drawable/ic_close</item>
     </style>
 
-    <style name="AppThemeDarkBottomSheetDialog" parent="Theme.Material3.Dark.BottomSheetDialog">
-        <item name="android:windowIsFloating">false</item>
-        <item name="android:windowSoftInputMode">adjustResize</item>
-        <item name="bottomSheetStyle">@style/AppBottomSheetModalStyle</item>
-        <item name="android:statusBarColor">@android:color/transparent</item>
-    </style>
-
-    <style name="AppThemeLightBottomSheetDialog" parent="Theme.Material3.Light.BottomSheetDialog">
-        <item name="android:windowIsFloating">false</item>
-        <item name="android:windowSoftInputMode">adjustResize</item>
-        <item name="bottomSheetStyle">@style/AppBottomSheetModalStyle</item>
-        <item name="android:statusBarColor">@android:color/transparent</item>
-    </style>
-
-    <style name="AppBottomSheetModalStyle" parent="Widget.Design.BottomSheet.Modal">
-        <item name="android:background">@drawable/shape_bottom_sheet_top_corners</item>
-        <item name="behavior_peekHeight">420dp</item>
-    </style>
-
     <style name="AppThemeLightSearchAutoCompleteTextView" parent="Widget.AppCompat.Light.AutoCompleteTextView">
         <item name="android:textColor">@color/lightThemeTextColor</item>
         <item name="android:textColorHint">@color/lightThemeTextColor</item>
@@ -158,11 +139,6 @@
 
     <style name="AppThemeCheckBoxStyle" parent="Widget.Material3.CompoundButton.CheckBox">
         <item name="buttonTint">?attr/iconsColor</item>
-    </style>
-
-    <style name="WindowAnimationTransition">
-        <item name="android:windowEnterAnimation">@android:anim/fade_in</item>
-        <item name="android:windowExitAnimation">@android:anim/fade_out</item>
     </style>
 
     <!-- Retro theme styles -->
@@ -266,5 +242,34 @@
         <item name="android:textColor">?attr/primaryTextColor</item>
         <item name="rippleColor">@android:color/transparent</item>
         <item name="checkedIconTint">?attr/iconsColor</item>
+    </style>
+
+    <style name="ShapeAppearance.RoundedDock" parent="ShapeAppearance.Material3.MediumComponent">
+        <item name="cornerFamily">rounded</item>
+        <item name="cornerSize">@dimen/dimen32dp</item>
+    </style>
+
+    <style name="ShapeAppearance.TopRounded" parent="ShapeAppearance.Material3.MediumComponent">
+        <item name="cornerFamily">rounded</item>
+        <item name="cornerSizeTopLeft">@dimen/dimen32dp</item>
+        <item name="cornerSizeTopRight">@dimen/dimen32dp</item>
+        <item name="cornerSizeBottomLeft">0dp</item>
+        <item name="cornerSizeBottomRight">0dp</item>
+    </style>
+
+    <style name="Widget.BottomSheet" parent="Widget.Material3.BottomSheet.Modal">
+        <item name="shapeAppearance">@style/ShapeAppearance.TopRounded</item>
+        <item name="backgroundTint">?attr/primaryBackgroundColor</item>
+    </style>
+
+    <style name="Custom.BottomSheet" parent="Theme.Material3.DayNight.BottomSheetDialog">
+        <item name="bottomSheetStyle">@style/Widget.BottomSheet</item>
+    </style>
+
+    <style name="CustomActivityAnimation" parent="@android:style/Animation.Activity">
+        <item name="android:activityOpenEnterAnimation">@android:anim/fade_in</item>
+        <item name="android:activityOpenExitAnimation">@android:anim/fade_out</item>
+        <item name="android:activityCloseEnterAnimation">@android:anim/fade_in</item>
+        <item name="android:activityCloseExitAnimation">@android:anim/fade_out</item>
     </style>
 </resources>

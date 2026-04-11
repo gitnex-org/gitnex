@@ -9,7 +9,6 @@ import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.core.widget.NestedScrollView;
 import androidx.lifecycle.ViewModelProvider;
-import com.google.android.material.bottomsheet.BottomSheetBehavior;
 import com.google.android.material.bottomsheet.BottomSheetDialog;
 import java.util.List;
 import org.gitnex.tea4j.v2.models.ActionArtifactsResponse;
@@ -24,7 +23,7 @@ import org.gitnex.tea4j.v2.models.CreateVariableOption;
 import org.mian.gitnex.R;
 import org.mian.gitnex.clients.RetrofitClient;
 import org.mian.gitnex.databinding.ActivityRepositoryActionsBinding;
-import org.mian.gitnex.databinding.BottomSheetCreateActionVariableBinding;
+import org.mian.gitnex.databinding.BottomsheetCreateRepoActionVariableBinding;
 import org.mian.gitnex.helpers.AppUtil;
 import org.mian.gitnex.helpers.Constants;
 import org.mian.gitnex.helpers.Toasty;
@@ -94,22 +93,16 @@ public class RepositoryActions extends BaseActivity {
 	}
 
 	private void showCreateVariableBottomSheet() {
-		BottomSheetCreateActionVariableBinding sheetBinding =
-				BottomSheetCreateActionVariableBinding.inflate(
+		BottomsheetCreateRepoActionVariableBinding sheetBinding =
+				BottomsheetCreateRepoActionVariableBinding.inflate(
 						LayoutInflater.from(this), null, false);
 		BottomSheetDialog bottomSheetDialog = new BottomSheetDialog(this);
 		bottomSheetDialog.setContentView(sheetBinding.getRoot());
 
-		View bottomSheetView =
-				bottomSheetDialog.findViewById(
-						com.google.android.material.R.id.design_bottom_sheet);
-		if (bottomSheetView != null) {
-			BottomSheetBehavior<View> behavior = BottomSheetBehavior.from(bottomSheetView);
-			behavior.setState(BottomSheetBehavior.STATE_EXPANDED);
-			behavior.setFitToContents(true);
-		}
+		AppUtil.applySheetStyle(bottomSheetDialog, false);
 
-		sheetBinding.cancelButton.setOnClickListener(v -> bottomSheetDialog.dismiss());
+		sheetBinding.btnClose.setOnClickListener(v -> bottomSheetDialog.dismiss());
+
 		sheetBinding.createButton.setOnClickListener(
 				v -> createVariable(sheetBinding, bottomSheetDialog));
 
@@ -117,7 +110,7 @@ public class RepositoryActions extends BaseActivity {
 	}
 
 	private void createVariable(
-			BottomSheetCreateActionVariableBinding binding, BottomSheetDialog dialog) {
+			BottomsheetCreateRepoActionVariableBinding binding, BottomSheetDialog dialog) {
 
 		String name =
 				binding.variableName.getText() != null
@@ -133,15 +126,15 @@ public class RepositoryActions extends BaseActivity {
 						: "";
 
 		if (name.isEmpty()) {
-			Toasty.error(this, getString(R.string.variable_name_error));
+			Toasty.show(this, getString(R.string.variable_name_error));
 			return;
 		}
 		if (!name.matches("^[a-zA-Z0-9_]+$")) {
-			Toasty.error(this, getString(R.string.variable_name_invalid));
+			Toasty.show(this, getString(R.string.variable_name_invalid));
 			return;
 		}
 		if (value.isEmpty()) {
-			Toasty.error(this, getString(R.string.variable_value_error));
+			Toasty.show(this, getString(R.string.variable_value_error));
 			return;
 		}
 
@@ -165,14 +158,14 @@ public class RepositoryActions extends BaseActivity {
 					public void onResponse(
 							@NonNull Call<Void> call, @NonNull Response<Void> response) {
 						if (response.isSuccessful()) {
-							Toasty.success(
+							Toasty.show(
 									RepositoryActions.this,
 									getString(R.string.variable_create_success));
 							variablesViewModel.resetPagination();
 							fetchVariables();
 							dialog.dismiss();
 						} else {
-							Toasty.error(
+							Toasty.show(
 									RepositoryActions.this,
 									getString(R.string.variable_create_failed));
 						}
@@ -180,7 +173,7 @@ public class RepositoryActions extends BaseActivity {
 
 					@Override
 					public void onFailure(@NonNull Call<Void> call, @NonNull Throwable t) {
-						Toasty.error(
+						Toasty.show(
 								RepositoryActions.this, getString(R.string.variable_create_failed));
 					}
 				});

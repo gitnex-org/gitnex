@@ -4,23 +4,18 @@ import android.annotation.SuppressLint;
 import android.content.Intent;
 import android.os.Bundle;
 import android.os.Handler;
-import android.util.TypedValue;
+import android.os.Looper;
 import android.view.View;
-import android.widget.ImageView;
-import android.widget.TextView;
-import androidx.activity.EdgeToEdge;
+import android.view.ViewGroup;
 import androidx.activity.OnBackPressedCallback;
 import androidx.annotation.NonNull;
 import androidx.core.text.HtmlCompat;
-import androidx.navigation.NavController;
-import androidx.navigation.NavOptions;
-import androidx.navigation.fragment.NavHostFragment;
-import androidx.navigation.ui.NavigationUI;
-import androidx.work.OneTimeWorkRequest;
-import androidx.work.WorkManager;
+import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentManager;
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.load.engine.DiskCacheStrategy;
 import com.google.android.material.badge.BadgeDrawable;
+import com.google.android.material.button.MaterialButton;
 import java.util.List;
 import java.util.Objects;
 import org.gitnex.tea4j.v2.models.GeneralAPISettings;
@@ -29,8 +24,6 @@ import org.gitnex.tea4j.v2.models.NotificationCount;
 import org.gitnex.tea4j.v2.models.ServerVersion;
 import org.gitnex.tea4j.v2.models.User;
 import org.mian.gitnex.R;
-import org.mian.gitnex.adapters.HomeDashboardAdapter;
-import org.mian.gitnex.adapters.UserAccountsNavAdapter;
 import org.mian.gitnex.clients.RetrofitClient;
 import org.mian.gitnex.database.api.BaseApi;
 import org.mian.gitnex.database.api.UserAccountsApi;
@@ -39,16 +32,17 @@ import org.mian.gitnex.databinding.ActivityMainBinding;
 import org.mian.gitnex.databinding.FragmentHomeDashboardBinding;
 import org.mian.gitnex.fragments.HomeDashboardFragment;
 import org.mian.gitnex.fragments.NotificationsFragment;
-import org.mian.gitnex.fragments.profile.DetailFragment;
+import org.mian.gitnex.fragments.RepositoriesFragment;
 import org.mian.gitnex.helpers.AlertDialogs;
 import org.mian.gitnex.helpers.AppDatabaseSettings;
 import org.mian.gitnex.helpers.AppUtil;
+import org.mian.gitnex.helpers.BadgeHelper;
 import org.mian.gitnex.helpers.ChangeLog;
 import org.mian.gitnex.helpers.TinyDB;
 import org.mian.gitnex.helpers.Toasty;
+import org.mian.gitnex.helpers.UIHelper;
 import org.mian.gitnex.notifications.Notifications;
 import org.mian.gitnex.notifications.NotificationsBadge;
-import org.mian.gitnex.notifications.NotificationsBadgeWorker;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
@@ -61,16 +55,35 @@ public class MainActivity extends BaseActivity
 
 	public ActivityMainBinding binding;
 	private TinyDB tinyDB;
-	private NavController navController;
-	private boolean noConnection;
-	public static boolean refActivity;
 	public static boolean reloadRepos;
 	public static boolean closeActivity;
+	private final Fragment homeFrag = new HomeDashboardFragment();
+	private final Fragment repoFrag = new RepositoriesFragment();
+	private final Fragment notifyFrag = new NotificationsFragment();
+	private Fragment activeFragment = homeFrag;
+	private final FragmentManager fm = getSupportFragmentManager();
+	private View detachedDivider;
+	private View detachedAddBtn;
+	private View detachedSearchBtn;
+	private View detachedSortBtn;
+	private BadgeDrawable notificationBadge;
 
 	public interface UserInfoCallback {
-		void onUserInfoLoaded(String username, boolean isAdmin, String serverVersion);
+		void onUserInfoLoaded(
+				String username,
+				boolean isAdmin,
+				String serverVersion,
+				long followers,
+				long following);
 
 		void onUserAccountsLoaded();
+	}
+
+	@Override
+	public void onUpdateNotificationActionVisibility(boolean visible) {
+		if (activeFragment instanceof NotificationsFragment) {
+			updateContextualDockActions(R.id.btn_nav_notifications);
+		}
 	}
 
 	@Override
@@ -81,158 +94,24 @@ public class MainActivity extends BaseActivity
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
-		EdgeToEdge.enable(this);
 
 		binding = ActivityMainBinding.inflate(getLayoutInflater());
 		setContentView(binding.getRoot());
 		tinyDB = TinyDB.getInstance(this);
 
-		Intent mainIntent = getIntent();
-		Handler handler = new Handler();
+		UIHelper.applyEdgeToEdge(this, binding.dockedToolbar, null, null, null);
 
-		if (mainIntent.hasExtra("switchAccountId")
-				&& AppUtil.switchToAccount(
-						this,
-						Objects.requireNonNull(BaseApi.getInstance(this, UserAccountsApi.class))
-								.getAccountById(mainIntent.getIntExtra("switchAccountId", 0)))) {
-			mainIntent.removeExtra("switchAccountId");
-			recreate();
-			return;
-		}
+		detachedDivider = binding.dockRepoDivider;
+		detachedAddBtn = binding.btnDockNewRepo;
+		detachedSearchBtn = binding.btnDockSearch;
+		detachedSortBtn = binding.btnDockSort;
 
-		int currentAccountId = tinyDB.getInt("currentActiveAccountId", -1);
-		if (currentAccountId <= 0) {
-			AppUtil.logout(this);
-			return;
-		}
+		if (handleAccountSetup()) return;
 
-		UserAccountsApi userAccountsApi = BaseApi.getInstance(this, UserAccountsApi.class);
-		if (userAccountsApi != null) {
-			UserAccount currentAccount = userAccountsApi.getAccountById(currentAccountId);
-			if (currentAccount != null
-					&& (currentAccount.getProvider() == null
-							|| currentAccount.getProvider().isEmpty())) {
-				String inferredProvider = AppUtil.inferProvider(currentAccount.getServerVersion());
-				userAccountsApi.updateProvider(inferredProvider, currentAccountId);
-			}
-		}
-
-		loadSavedBadgeCount();
-		if (Boolean.parseBoolean(
-				AppDatabaseSettings.getSettingsValue(
-						this, AppDatabaseSettings.APP_NOTIFICATIONS_KEY))) {
-			Notifications.startBadgeWorker(this);
-		}
-
-		setSupportActionBar(binding.toolbar);
-		binding.toolbar.setVisibility(View.GONE);
-		binding.toolbar.invalidate();
-
-		NavHostFragment navHostFragment =
-				(NavHostFragment)
-						getSupportFragmentManager().findFragmentById(R.id.nav_host_fragment);
-		if (navHostFragment != null) {
-			navController = navHostFragment.getNavController();
-			NavigationUI.setupWithNavController(binding.bottomNavigation, navController);
-
-			binding.bottomNavigation.setOnItemSelectedListener(
-					item -> {
-						int itemId = item.getItemId();
-						NavOptions navOptions =
-								new NavOptions.Builder()
-										.setPopUpTo(R.id.nav_graph, true)
-										.setLaunchSingleTop(true)
-										.build();
-
-						try {
-							if (itemId == R.id.homeDashboardFragment) {
-								navController.navigate(
-										R.id.homeDashboardFragment, null, navOptions);
-								binding.bottomNavigation.setSelectedItemId(0);
-								return true;
-							} else if (itemId == R.id.repositoriesFragment) {
-								navController.navigate(R.id.repositoriesFragment, null, navOptions);
-								return true;
-							} else if (itemId == R.id.notificationsFragment) {
-								navController.navigate(
-										R.id.notificationsFragment, null, navOptions);
-								return true;
-							} else if (itemId == R.id.exploreFragment) {
-								navController.navigate(R.id.exploreFragment, null, navOptions);
-								return true;
-							}
-						} catch (IllegalArgumentException ignored) {
-						}
-						return false;
-					});
-
-			navController.addOnDestinationChangedListener(
-					(controller, destination, arguments) -> {
-						boolean isHomeDashboard = destination.getId() == R.id.homeDashboardFragment;
-						boolean isBottomNav =
-								destination.getId() == R.id.homeDashboardFragment
-										|| destination.getId() == R.id.repositoriesFragment
-										|| destination.getId() == R.id.notificationsFragment
-										|| destination.getId() == R.id.exploreFragment;
-
-						if (!isBottomNav) {
-							binding.bottomNavigation.setSelectedItemId(0);
-						}
-
-						binding.toolbar.setVisibility(isHomeDashboard ? View.GONE : View.VISIBLE);
-						binding.toolbar.invalidate();
-
-						if (!isHomeDashboard) {
-							binding.toolbarTitle.setText(destination.getLabel());
-							Objects.requireNonNull(getSupportActionBar())
-									.setDisplayHomeAsUpEnabled(!isBottomNav);
-						}
-					});
-		}
-
-		loadUserInfo(
-				null,
-				null,
-				null,
-				null,
-				null,
-				new UserInfoCallback() {
-					@Override
-					public void onUserInfoLoaded(
-							String username, boolean isAdmin, String serverVersion) {
-						tinyDB.putString("username", username);
-					}
-
-					@Override
-					public void onUserAccountsLoaded() {}
-				});
-
-		getNotificationsCount();
-
-		handler.postDelayed(
-				() -> {
-					boolean connToInternet = AppUtil.hasNetworkConnection(this);
-					if (!connToInternet) {
-						if (!noConnection) {
-							Toasty.error(
-									this, getResources().getString(R.string.checkNetConnection));
-						}
-						noConnection = true;
-					} else {
-						giteaVersion();
-						serverPageLimitSettings();
-						updateGeneralAttachmentSettings();
-					}
-				},
-				1500);
-
-		int versionCode = AppUtil.getAppBuildNo(this);
-		if (versionCode > tinyDB.getInt("versionCode")) {
-			tinyDB.putInt("versionCode", versionCode);
-			new ChangeLog(this).showDialog();
-		}
-
-		handleLaunchFragments(mainIntent);
+		setupFragments();
+		setupDockListeners();
+		loadInitialState(savedInstanceState);
+		handleLaunchIntent(getIntent());
 
 		getOnBackPressedDispatcher()
 				.addCallback(
@@ -240,17 +119,8 @@ public class MainActivity extends BaseActivity
 						new OnBackPressedCallback(true) {
 							@Override
 							public void handleOnBackPressed() {
-								if (navController.getCurrentDestination() != null
-										&& navController.getCurrentDestination().getId()
-												!= R.id.homeDashboardFragment) {
-									NavOptions navOptions =
-											new NavOptions.Builder()
-													.setPopUpTo(R.id.nav_graph, true)
-													.setLaunchSingleTop(true)
-													.build();
-									navController.navigate(
-											R.id.homeDashboardFragment, null, navOptions);
-									binding.bottomNavigation.setSelectedItemId(0);
+								if (activeFragment != homeFrag) {
+									switchTab(homeFrag, R.id.btn_nav_home);
 								} else {
 									finish();
 								}
@@ -258,57 +128,323 @@ public class MainActivity extends BaseActivity
 						});
 	}
 
-	@Override
-	public void onResume() {
-		super.onResume();
-		if (closeActivity) {
-			finishAndRemoveTask();
-			closeActivity = false;
-		}
-		if (refActivity) {
-			recreate();
-			overridePendingTransition(0, 0);
-			refActivity = false;
-		}
-		if (DetailFragment.refProfile) {
-			loadUserInfo(
-					null,
-					null,
-					null,
-					null,
-					null,
-					new UserInfoCallback() {
-						@Override
-						public void onUserInfoLoaded(
-								String username, boolean isAdmin, String serverVersion) {
-							tinyDB.putString("username", username);
-						}
-
-						@Override
-						public void onUserAccountsLoaded() {}
-					});
-			DetailFragment.refProfile = false;
-		}
-
-		getNotificationsCount();
-		loadSavedBadgeCount();
-		WorkManager.getInstance(this)
-				.enqueue(new OneTimeWorkRequest.Builder(NotificationsBadgeWorker.class).build());
+	private void setupFragments() {
+		fm.beginTransaction()
+				.add(R.id.nav_host_fragment, notifyFrag, "3")
+				.hide(notifyFrag)
+				.add(R.id.nav_host_fragment, repoFrag, "2")
+				.hide(repoFrag)
+				.add(R.id.nav_host_fragment, homeFrag, "1")
+				.hide(homeFrag)
+				.commitNow();
 	}
 
 	@Override
-	protected void onDestroy() {
-		super.onDestroy();
-		Notifications.stopBadgeWorker(this);
+	protected void onNewIntent(Intent intent) {
+		super.onNewIntent(intent);
+		setIntent(intent);
+		handleLaunchIntent(intent);
+	}
+
+	private void handleLaunchIntent(Intent intent) {
+		if (intent == null) return;
+
+		if (intent.hasExtra("switchAccountId")) {
+			int targetAccountId = intent.getIntExtra("switchAccountId", -1);
+			int currentAccountId = tinyDB.getInt("currentActiveAccountId", -1);
+
+			if (targetAccountId != -1 && targetAccountId != currentAccountId) {
+				UserAccountsApi api = BaseApi.getInstance(this, UserAccountsApi.class);
+				if (api != null) {
+					UserAccount targetAccount = api.getAccountById(targetAccountId);
+					if (targetAccount != null && AppUtil.switchToAccount(this, targetAccount)) {
+						intent.removeExtra("switchAccountId");
+						recreate();
+						return;
+					}
+				}
+			}
+		}
+
+		String launch = intent.getStringExtra("launchFragment");
+		String link = intent.getStringExtra("launchFragmentByLink");
+
+		if ("notifications".equals(launch) || "notification".equals(link)) {
+			updateDockUI(R.id.btn_nav_notifications);
+
+			fm.beginTransaction().hide(activeFragment).show(notifyFrag).commitNow();
+
+			activeFragment = notifyFrag;
+
+			if (notifyFrag instanceof NotificationsFragment nf) {
+				nf.forceUnreadFilter();
+			}
+
+			intent.removeExtra("launchFragment");
+			intent.removeExtra("launchFragmentByLink");
+		}
+	}
+
+	private void setupDockListeners() {
+		prepareNavButton(binding.btnNavHome);
+		prepareNavButton(binding.btnNavRepos);
+		prepareNavButton(binding.btnNavNotifications);
+
+		binding.btnNavHome.setOnClickListener(v -> switchTab(homeFrag, R.id.btn_nav_home));
+		binding.btnNavRepos.setOnClickListener(v -> switchTab(repoFrag, R.id.btn_nav_repos));
+		binding.btnNavNotifications.setOnClickListener(
+				v -> switchTab(notifyFrag, R.id.btn_nav_notifications));
+
+		binding.btnDockNewRepo.setOnClickListener(
+				v -> {
+					if (activeFragment instanceof RepositoriesFragment rf) {
+						rf.createNewRepo();
+					}
+				});
+
+		binding.btnDockSearch.setOnClickListener(
+				v -> {
+					if (activeFragment instanceof RepositoriesFragment rf) {
+						rf.toggleSearch();
+					}
+				});
+
+		binding.btnDockSort.setOnClickListener(
+				v -> {
+					if (activeFragment instanceof RepositoriesFragment rf) {
+						rf.openSortMenu();
+					} else if (activeFragment instanceof NotificationsFragment nf) {
+						nf.openNotificationMenu();
+					}
+				});
+	}
+
+	private void prepareNavButton(MaterialButton btn) {
+		btn.setBackgroundResource(R.drawable.nav_pill_background);
+		btn.setBackgroundTintList(null);
+		btn.getBackground().setAlpha(0);
+	}
+
+	private void activatePill(MaterialButton btn) {
+		btn.setSelected(true);
+		if (btn.getBackground() != null) {
+			btn.getBackground().setAlpha(255);
+		}
+	}
+
+	private void resetPill(MaterialButton btn) {
+		btn.setSelected(false);
+		if (btn.getBackground() != null) {
+			btn.getBackground().setAlpha(0);
+		}
+	}
+
+	private void switchTab(Fragment target, int btnId) {
+		if (target.isVisible() && activeFragment == target) {
+			if (target instanceof NotificationsFragment nf) {
+				nf.refreshData();
+			}
+			updateDockUI(btnId);
+			return;
+		}
+
+		fm.beginTransaction()
+				.setCustomAnimations(android.R.anim.fade_in, android.R.anim.fade_out)
+				.hide(activeFragment)
+				.show(target)
+				.commit();
+
+		activeFragment = target;
+		updateDockUI(btnId);
+	}
+
+	private void updateDockUI(int activeBtnId) {
+		resetPill(binding.btnNavHome);
+		resetPill(binding.btnNavRepos);
+		resetPill(binding.btnNavNotifications);
+
+		if (activeBtnId == R.id.btn_nav_home) {
+			activatePill(binding.btnNavHome);
+		} else if (activeBtnId == R.id.btn_nav_repos) {
+			activatePill(binding.btnNavRepos);
+		} else if (activeBtnId == R.id.btn_nav_notifications) {
+			activatePill(binding.btnNavNotifications);
+		}
+
+		updateContextualDockActions(activeBtnId);
+	}
+
+	private void updateContextualDockActions(int activeBtnId) {
+		ViewGroup parent = binding.dockContainer;
+
+		parent.removeView(detachedDivider);
+		parent.removeView(detachedAddBtn);
+		parent.removeView(detachedSearchBtn);
+		parent.removeView(detachedSortBtn);
+
+		int currentCount =
+				NotificationsBadge.getBadgeCount(this, tinyDB.getInt("currentActiveAccountId"));
+		int badgeMargin =
+				(currentCount > 0)
+						? getResources().getDimensionPixelSize(R.dimen.dimen8dp)
+						: getResources().getDimensionPixelSize(R.dimen.dimen12dp);
+
+		if (activeBtnId == R.id.btn_nav_repos) {
+			parent.addView(detachedDivider);
+			setDividerMargin(badgeMargin);
+
+			parent.addView(detachedAddBtn);
+			parent.addView(detachedSearchBtn);
+			parent.addView(detachedSortBtn);
+
+		} else if (activeBtnId == R.id.btn_nav_notifications) {
+			parent.addView(detachedDivider);
+			setDividerMargin(badgeMargin);
+			parent.addView(detachedSortBtn);
+		}
+
+		binding.dockedToolbar.requestLayout();
+	}
+
+	private void setDividerMargin(int margin) {
+		ViewGroup.MarginLayoutParams params =
+				(ViewGroup.MarginLayoutParams) detachedDivider.getLayoutParams();
+		params.setMarginStart(margin);
+		detachedDivider.setLayoutParams(params);
+	}
+
+	private boolean handleAccountSetup() {
+		Intent intent = getIntent();
+		if (intent != null && intent.hasExtra("switchAccountId")) {
+			int targetId = intent.getIntExtra("switchAccountId", -1);
+			int currentId = tinyDB.getInt("currentActiveAccountId", -1);
+
+			if (targetId != -1 && targetId != currentId) {
+				UserAccountsApi api = BaseApi.getInstance(this, UserAccountsApi.class);
+				if (api != null && AppUtil.switchToAccount(this, api.getAccountById(targetId))) {
+					intent.removeExtra("switchAccountId");
+					recreate();
+					return true;
+				}
+			}
+		}
+
+		if (tinyDB.getInt("currentActiveAccountId", -1) <= 0) {
+			AppUtil.logout(this);
+			return true;
+		}
+		return false;
+	}
+
+	private void loadInitialState(Bundle savedInstanceState) {
+		loadSavedBadgeCount();
+		if (Boolean.parseBoolean(
+				AppDatabaseSettings.getSettingsValue(
+						this, AppDatabaseSettings.APP_NOTIFICATIONS_KEY))) {
+			Notifications.startBadgeWorker(this);
+		}
+		getNotificationsCount();
+
+		new Handler(Looper.getMainLooper())
+				.postDelayed(
+						() -> {
+							if (AppUtil.hasNetworkConnection(this)) {
+								giteaVersion();
+								serverPageLimitSettings();
+								updateGeneralAttachmentSettings();
+							} else {
+								Toasty.show(this, getString(R.string.checkNetConnection));
+							}
+						},
+						1500);
+
+		int versionCode = AppUtil.getAppBuildNo(this);
+		if (versionCode > tinyDB.getInt("versionCode")) {
+			tinyDB.putInt("versionCode", versionCode);
+			new ChangeLog(this).showDialog();
+		}
+
+		if (savedInstanceState == null) {
+			String linkHandlerExtra = getIntent().getStringExtra("launchFragmentByLinkHandler");
+
+			if (linkHandlerExtra != null) {
+				handleDeepLinkNavigation(linkHandlerExtra);
+			} else {
+				handleHomeScreenSettingNavigation();
+			}
+		} else {
+			restoreFragmentState();
+		}
+	}
+
+	private void handleDeepLinkNavigation(String destination) {
+		switch (destination) {
+			case "repos":
+				switchTab(repoFrag, R.id.btn_nav_repos);
+				break;
+			case "notification":
+				switchTab(notifyFrag, R.id.btn_nav_notifications);
+				break;
+			case "home":
+			default:
+				updateDockUI(R.id.btn_nav_home);
+				break;
+		}
+	}
+
+	private void handleHomeScreenSettingNavigation() {
+		int val = 0;
+		try {
+			String savedValue =
+					AppDatabaseSettings.getSettingsValue(
+							this, AppDatabaseSettings.APP_HOME_SCREEN_KEY);
+			val = Integer.parseInt(savedValue);
+		} catch (Exception ignored) {
+		}
+
+		switch (val) {
+			case 1:
+				switchTab(repoFrag, R.id.btn_nav_repos);
+				break;
+			case 2:
+				switchTab(notifyFrag, R.id.btn_nav_notifications);
+				break;
+			case 0:
+			default:
+				updateDockUI(R.id.btn_nav_home);
+				break;
+		}
+	}
+
+	private void restoreFragmentState() {
+		if (repoFrag != null && repoFrag.isVisible()) {
+			activeFragment = repoFrag;
+			updateDockUI(R.id.btn_nav_repos);
+		} else if (notifyFrag != null && notifyFrag.isVisible()) {
+			activeFragment = notifyFrag;
+			updateDockUI(R.id.btn_nav_notifications);
+		} else {
+			activeFragment = homeFrag;
+			updateDockUI(R.id.btn_nav_home);
+		}
+	}
+
+	@Override
+	public void onResume() {
+		super.onResume();
+		if (closeActivity) finishAndRemoveTask();
+		if (reloadRepos && activeFragment == repoFrag) {
+			((RepositoriesFragment) repoFrag).refreshData();
+			reloadRepos = false;
+		}
+		getNotificationsCount();
 	}
 
 	@SuppressLint("NotifyDataSetChanged")
 	public void loadUserInfo(
 			HomeDashboardFragment fragment,
-			FragmentHomeDashboardBinding binding,
-			HomeDashboardAdapter dashboardAdapter,
+			FragmentHomeDashboardBinding b,
 			List<UserAccount> userAccountsList,
-			UserAccountsNavAdapter accountsAdapter,
 			UserInfoCallback callback) {
 		Call<User> call = RetrofitClient.getApiInterface(this).userGetCurrent();
 		call.enqueue(
@@ -316,84 +452,21 @@ public class MainActivity extends BaseActivity
 					@Override
 					public void onResponse(
 							@NonNull Call<User> call, @NonNull Response<User> response) {
-						if (fragment != null && !fragment.isAdded()) {
-							return;
-						}
-
-						if (binding != null
-								&& userAccountsList != null
-								&& accountsAdapter != null) {
-							assert fragment != null;
-							loadUserAccounts(
-									fragment, binding, userAccountsList, accountsAdapter, callback);
-						}
+						if (fragment != null && !fragment.isAdded()) return;
+						if (b != null && userAccountsList != null)
+							loadUserAccounts(fragment, b, userAccountsList, callback);
 
 						User userDetails = response.body();
 						if (response.isSuccessful()
 								&& response.code() == 200
 								&& userDetails != null) {
-							int accountId = tinyDB.getInt("currentActiveAccountId");
-							UserAccountsApi userApi =
-									BaseApi.getInstance(MainActivity.this, UserAccountsApi.class);
-							assert userApi != null;
-							UserAccount account = userApi.getAccountById(accountId);
-
-							if (account == null) {
-								return;
-							}
-
-							String username = userDetails.getLogin();
-							String userEmail = userDetails.getEmail();
-							String name = userDetails.getFullName();
-							String avatarUrl = userDetails.getAvatarUrl();
-
-							if (!account.getUserName().equals(username)) {
-								userApi.updateUsername(accountId, username);
-							}
-
-							if (binding != null) {
-								TextView userFullname = binding.userFullname;
-								TextView userEmailView = binding.userEmail;
-								ImageView userAvatar = binding.userAvatar;
-
-								if (name != null && !name.isEmpty()) {
-									userFullname.setText(
-											HtmlCompat.fromHtml(
-													name, HtmlCompat.FROM_HTML_MODE_LEGACY));
-								} else {
-									userFullname.setText(username);
-								}
-
-								if (Boolean.parseBoolean(
-										AppDatabaseSettings.getSettingsValue(
-												MainActivity.this,
-												AppDatabaseSettings
-														.APP_USER_HIDE_EMAIL_IN_NAV_KEY))) {
-									userEmailView.setVisibility(View.GONE);
-								} else {
-									userEmailView.setVisibility(View.VISIBLE);
-									if (userEmail != null && !userEmail.isEmpty()) {
-										userEmailView.setText(userEmail);
-									} else {
-										userEmailView.setText("");
-									}
-								}
-
-								if (avatarUrl != null && !avatarUrl.isEmpty()) {
-									Glide.with(MainActivity.this)
-											.load(avatarUrl)
-											.diskCacheStrategy(DiskCacheStrategy.ALL)
-											.placeholder(R.drawable.loader_animated)
-											.centerCrop()
-											.into(userAvatar);
-								}
-							}
-
+							updateUserUI(b, userDetails);
 							fetchServerVersion(
 									fragment,
-									dashboardAdapter,
-									username,
+									userDetails.getLogin(),
 									userDetails.isIsAdmin(),
+									userDetails.getFollowersCount(),
+									userDetails.getFollowingCount(),
 									callback);
 						} else if (response.code() == 401) {
 							AlertDialogs.authorizationTokenRevokedDialog(MainActivity.this);
@@ -402,413 +475,244 @@ public class MainActivity extends BaseActivity
 
 					@Override
 					public void onFailure(@NonNull Call<User> call, @NonNull Throwable t) {
-						if (fragment == null || !fragment.isAdded() || fragment.getView() == null) {
-							if (callback != null) {
-								callback.onUserAccountsLoaded();
-							}
-							return;
-						}
-						if (binding != null
-								&& userAccountsList != null
-								&& accountsAdapter != null) {
-							loadUserAccounts(
-									fragment, binding, userAccountsList, accountsAdapter, callback);
-						}
+						if (callback != null) callback.onUserAccountsLoaded();
 					}
 				});
 	}
 
-	@SuppressLint("NotifyDataSetChanged")
-	private void loadUserAccounts(
-			HomeDashboardFragment fragment,
-			FragmentHomeDashboardBinding binding,
-			List<UserAccount> userAccountsList,
-			UserAccountsNavAdapter accountsAdapter,
-			UserInfoCallback callback) {
-		if (!fragment.isAdded() || fragment.getView() == null) {
-			if (callback != null) {
-				callback.onUserAccountsLoaded();
-			}
-			return;
+	private void updateUserUI(FragmentHomeDashboardBinding b, User userDetails) {
+		int accountId = tinyDB.getInt("currentActiveAccountId");
+		UserAccountsApi userApi = BaseApi.getInstance(this, UserAccountsApi.class);
+		if (userApi == null) return;
+
+		if (!userApi.getAccountById(accountId).getUserName().equals(userDetails.getLogin())) {
+			userApi.updateUsername(accountId, userDetails.getLogin());
 		}
 
-		UserAccountsApi userAccountsApi = BaseApi.getInstance(this, UserAccountsApi.class);
-		assert userAccountsApi != null;
-		userAccountsApi
-				.getAllAccounts()
+		if (b != null) {
+			b.userFullname.setText(
+					userDetails.getFullName() != null && !userDetails.getFullName().isEmpty()
+							? HtmlCompat.fromHtml(
+									userDetails.getFullName(), HtmlCompat.FROM_HTML_MODE_LEGACY)
+							: userDetails.getLogin());
+
+			boolean hideEmail =
+					Boolean.parseBoolean(
+							AppDatabaseSettings.getSettingsValue(
+									this, AppDatabaseSettings.APP_USER_HIDE_EMAIL_IN_NAV_KEY));
+			b.userEmail.setVisibility(hideEmail ? View.GONE : View.VISIBLE);
+			b.userEmail.setText(userDetails.getEmail() != null ? userDetails.getEmail() : "");
+
+			Glide.with(this)
+					.load(userDetails.getAvatarUrl())
+					.diskCacheStrategy(DiskCacheStrategy.ALL)
+					.placeholder(R.drawable.loader_animated)
+					.centerCrop()
+					.into(b.userAvatar);
+		}
+	}
+
+	private void loadUserAccounts(
+			HomeDashboardFragment fragment,
+			FragmentHomeDashboardBinding b,
+			List<UserAccount> list,
+			UserInfoCallback cb) {
+		UserAccountsApi api = BaseApi.getInstance(this, UserAccountsApi.class);
+		if (api == null || fragment == null) return;
+		api.getAllAccounts()
 				.observe(
 						fragment.getViewLifecycleOwner(),
-						userAccounts -> {
-							if (!fragment.isAdded() || fragment.getView() == null) {
-								if (callback != null) {
-									callback.onUserAccountsLoaded();
-								}
-								return;
+						accounts -> {
+							if (accounts != null) {
+								list.clear();
+								list.addAll(accounts);
 							}
-							if (userAccounts != null && !userAccounts.isEmpty()) {
-								userAccountsList.clear();
-								userAccountsList.addAll(userAccounts);
-								accountsAdapter.notifyDataSetChanged();
-								binding.userAccountsRecyclerView.setVisibility(View.VISIBLE);
-							} else {
-								binding.userAccountsRecyclerView.setVisibility(View.GONE);
-							}
-							if (callback != null) {
-								callback.onUserAccountsLoaded();
-							}
+							if (cb != null) cb.onUserAccountsLoaded();
 						});
 	}
 
 	private void fetchServerVersion(
 			HomeDashboardFragment fragment,
-			HomeDashboardAdapter dashboardAdapter,
 			String username,
 			boolean isAdmin,
+			long followers,
+			long following,
 			UserInfoCallback callback) {
-		Call<ServerVersion> call = RetrofitClient.getApiInterface(this).getVersion();
-		call.enqueue(
-				new Callback<>() {
-					@Override
-					public void onResponse(
-							@NonNull Call<ServerVersion> call,
-							@NonNull Response<ServerVersion> response) {
-						if (fragment != null && !fragment.isAdded()) {
-							return;
-						}
-						if (response.isSuccessful()
-								&& response.code() == 200
-								&& response.body() != null) {
-							String version = response.body().getVersion();
-							tinyDB.putString("serverVersion", version);
-							if (dashboardAdapter != null) {
-								dashboardAdapter.updateUserInfo(username, isAdmin, version);
+		RetrofitClient.getApiInterface(this)
+				.getVersion()
+				.enqueue(
+						new Callback<>() {
+							@Override
+							public void onResponse(
+									@NonNull Call<ServerVersion> call,
+									@NonNull Response<ServerVersion> response) {
+								if (response.isSuccessful() && response.body() != null) {
+									String version = response.body().getVersion();
+									tinyDB.putString("serverVersion", version);
+									if (callback != null)
+										callback.onUserInfoLoaded(
+												username, isAdmin, version, followers, following);
+								}
 							}
-							if (callback != null) {
-								callback.onUserInfoLoaded(username, isAdmin, version);
+
+							@Override
+							public void onFailure(
+									@NonNull Call<ServerVersion> call, @NonNull Throwable t) {}
+						});
+	}
+
+	public void getNotificationsCount() {
+		RetrofitClient.getApiInterface(this)
+				.notifyNewAvailable()
+				.enqueue(
+						new Callback<>() {
+							@Override
+							public void onResponse(
+									@NonNull Call<NotificationCount> call,
+									@NonNull Response<NotificationCount> response) {
+								if (response.isSuccessful() && response.body() != null) {
+									int count = Math.toIntExact(response.body().getNew());
+
+									NotificationsBadge.saveBadgeCount(
+											MainActivity.this,
+											tinyDB.getInt("currentActiveAccountId"),
+											count);
+
+									updateBadgeUI(count);
+								}
 							}
-						}
-					}
 
-					@Override
-					public void onFailure(
-							@NonNull Call<ServerVersion> call, @NonNull Throwable t) {}
-				});
-	}
-
-	private void handleLaunchFragments(Intent mainIntent) {
-		String launchFragment = mainIntent.getStringExtra("launchFragment");
-
-		if (launchFragment != null) {
-			mainIntent.removeExtra("launchFragment");
-			if (launchFragment.equals("notifications")) {
-				binding.toolbarTitle.setText(
-						getResources().getString(R.string.pageTitleNotifications));
-				navController.navigate(R.id.notificationsFragment);
-				return;
-			}
-		}
-
-		String launchFragmentByHandler = mainIntent.getStringExtra("launchFragmentByLink");
-		if (launchFragmentByHandler != null) {
-			mainIntent.removeExtra("launchFragmentByLink");
-			NavOptions navOptions =
-					new NavOptions.Builder()
-							.setPopUpTo(R.id.nav_graph, true)
-							.setLaunchSingleTop(true)
-							.build();
-			switch (launchFragmentByHandler) {
-				case "repos":
-					navController.navigate(R.id.repositoriesFragment, null, navOptions);
-					break;
-				case "org":
-					navController.navigate(R.id.organizationsFragment, null, navOptions);
-					break;
-				case "notification":
-					binding.toolbarTitle.setText(
-							getResources().getString(R.string.pageTitleNotifications));
-					navController.navigate(R.id.notificationsFragment, null, navOptions);
-					break;
-				case "explore":
-					navController.navigate(R.id.exploreFragment, null, navOptions);
-					break;
-				case "profile":
-					Intent intentProfile = new Intent(this, ProfileActivity.class);
-					intentProfile.putExtra("username", tinyDB.getString("username"));
-					startActivity(intentProfile);
-					break;
-				case "admin":
-					navController.navigate(R.id.administrationFragment, null, navOptions);
-					break;
-			}
-			return;
-		}
-
-		if (navController.getCurrentDestination() != null && mainIntent.getExtras() == null) {
-			int currentDestinationId = navController.getCurrentDestination().getId();
-
-			if (currentDestinationId == R.id.homeDashboardFragment
-					|| currentDestinationId == navController.getGraph().getStartDestinationId()) {
-				navigateToDefaultFragment();
-			} else {
-				binding.toolbarTitle.setText(navController.getCurrentDestination().getLabel());
-			}
-			return;
-		}
-
-		if (mainIntent.getExtras() == null) {
-			navigateToDefaultFragment();
-		}
-	}
-
-	private void navigateToDefaultFragment() {
-		int homeScreenValue;
-		try {
-			homeScreenValue =
-					Integer.parseInt(
-							AppDatabaseSettings.getSettingsValue(
-									this, AppDatabaseSettings.APP_HOME_SCREEN_KEY));
-		} catch (NumberFormatException e) {
-			homeScreenValue = 0;
-		}
-
-		NavOptions navOptions =
-				new NavOptions.Builder()
-						.setPopUpTo(navController.getGraph().getId(), true)
-						.setLaunchSingleTop(true)
-						.build();
-
-		switch (homeScreenValue) {
-			case 1:
-				binding.toolbarTitle.setText(getResources().getString(R.string.navMyRepos));
-				navController.navigate(R.id.myRepositoriesFragment, null, navOptions);
-				break;
-			case 2:
-				binding.toolbarTitle.setText(
-						getResources().getString(R.string.pageTitleStarredRepos));
-				navController.navigate(R.id.starredRepositoriesFragment, null, navOptions);
-				break;
-			case 3:
-				binding.toolbarTitle.setText(getResources().getString(R.string.navOrg));
-				navController.navigate(R.id.organizationsFragment, null, navOptions);
-				break;
-			case 4:
-				binding.toolbarTitle.setText(getResources().getString(R.string.navRepos));
-				navController.navigate(R.id.repositoriesFragment, null, navOptions);
-				break;
-			case 5:
-				binding.toolbarTitle.setText(getResources().getString(R.string.pageTitleExplore));
-				navController.navigate(R.id.exploreFragment, null, navOptions);
-				break;
-			case 6:
-				binding.toolbarTitle.setText(
-						getResources().getString(R.string.pageTitleNotifications));
-				navController.navigate(R.id.notificationsFragment, null, navOptions);
-				break;
-			case 7:
-				binding.toolbarTitle.setText(getResources().getString(R.string.navMyIssues));
-				navController.navigate(R.id.myIssuesFragment, null, navOptions);
-				break;
-			case 8:
-				binding.toolbarTitle.setText(getResources().getString(R.string.navMostVisited));
-				navController.navigate(R.id.mostVisitedReposFragment, null, navOptions);
-				break;
-			case 9:
-				binding.toolbarTitle.setText(getResources().getString(R.string.navNotes));
-				navController.navigate(R.id.notesFragment, null, navOptions);
-				break;
-			case 10:
-				binding.toolbarTitle.setText(getResources().getString(R.string.activities));
-				navController.navigate(R.id.activitiesFragment, null, navOptions);
-				break;
-			case 11:
-				binding.toolbarTitle.setText(
-						getResources().getString(R.string.navWatchedRepositories));
-				navController.navigate(R.id.watchedRepositoriesFragment, null, navOptions);
-				break;
-			default:
-				navController.navigate(R.id.homeDashboardFragment, null, navOptions);
-				break;
-		}
-	}
-
-	private void loadSavedBadgeCount() {
-		TinyDB tinyDB = TinyDB.getInstance(this);
-		int currentAccountId = tinyDB.getInt("currentActiveAccountId", -1);
-
-		if (currentAccountId > 0) {
-			int savedCount = NotificationsBadge.getBadgeCount(this, currentAccountId);
-			if (savedCount > 0) {
-				updateBadgeUI(savedCount);
-			}
-		}
+							@Override
+							public void onFailure(
+									@NonNull Call<NotificationCount> call, @NonNull Throwable t) {}
+						});
 	}
 
 	private void updateBadgeUI(int count) {
 		runOnUiThread(
 				() -> {
-					if (count > 0) {
-						BadgeDrawable badge =
-								binding.bottomNavigation.getOrCreateBadge(
-										R.id.notificationsFragment);
-						badge.setNumber(count);
-						badge.setBackgroundColor(getThemeColor(R.attr.primaryTextColor));
-						badge.setBadgeTextColor(getThemeColor(R.attr.materialCardBackgroundColor));
-						badge.setVisible(true);
-					} else {
-						if (binding.bottomNavigation.getBadge(R.id.notificationsFragment) != null) {
-							binding.bottomNavigation.removeBadge(R.id.notificationsFragment);
-						}
+					notificationBadge =
+							BadgeHelper.updateBadge(
+									this, binding.btnNavNotifications, notificationBadge, count);
+
+					if (activeFragment == notifyFrag || activeFragment == repoFrag) {
+						updateContextualDockActions(
+								activeFragment == notifyFrag
+										? R.id.btn_nav_notifications
+										: R.id.btn_nav_repos);
 					}
 				});
 	}
 
-	public void getNotificationsCount() {
-		Call<NotificationCount> call = RetrofitClient.getApiInterface(this).notifyNewAvailable();
-		call.enqueue(
-				new Callback<>() {
-					@Override
-					public void onResponse(
-							@NonNull Call<NotificationCount> call,
-							@NonNull Response<NotificationCount> response) {
-						if (response.code() == 200 && response.body() != null) {
-							int newCount = Math.toIntExact(response.body().getNew());
-
-							TinyDB tinyDB = TinyDB.getInstance(MainActivity.this);
-							int accountId = tinyDB.getInt("currentActiveAccountId", -1);
-							if (accountId > 0) {
-								NotificationsBadge.saveBadgeCount(
-										MainActivity.this, accountId, newCount);
-							}
-
-							updateBadgeUI(newCount);
-						} else {
-							updateBadgeUI(0);
-						}
-					}
-
-					@Override
-					public void onFailure(
-							@NonNull Call<NotificationCount> call, @NonNull Throwable t) {
-						loadSavedBadgeCount();
-					}
-				});
-	}
-
-	public int getThemeColor(int attr) {
-		TypedValue typedValue = new TypedValue();
-		getTheme().resolveAttribute(attr, typedValue, true);
-		return typedValue.data;
+	private void loadSavedBadgeCount() {
+		int count = NotificationsBadge.getBadgeCount(this, tinyDB.getInt("currentActiveAccountId"));
+		if (count > 0) {
+			updateBadgeUI(count);
+		}
 	}
 
 	public void giteaVersion() {
-		Call<ServerVersion> call = RetrofitClient.getApiInterface(this).getVersion();
-		call.enqueue(
-				new Callback<>() {
-					@Override
-					public void onResponse(
-							@NonNull Call<ServerVersion> call,
-							@NonNull Response<ServerVersion> response) {
-						if (response.isSuccessful()
-								&& response.code() == 200
-								&& response.body() != null) {
-							String version = response.body().getVersion();
-							Objects.requireNonNull(
-											BaseApi.getInstance(
-													MainActivity.this, UserAccountsApi.class))
-									.updateServerVersion(
-											version, tinyDB.getInt("currentActiveAccountId"));
-							getAccount()
-									.setAccount(
-											Objects.requireNonNull(
-															BaseApi.getInstance(
-																	MainActivity.this,
-																	UserAccountsApi.class))
-													.getAccountById(
-															tinyDB.getInt(
-																	"currentActiveAccountId")));
-						}
-					}
+		RetrofitClient.getApiInterface(this)
+				.getVersion()
+				.enqueue(
+						new Callback<>() {
+							@Override
+							public void onResponse(
+									@NonNull Call<ServerVersion> call,
+									@NonNull Response<ServerVersion> response) {
+								if (response.isSuccessful() && response.body() != null) {
+									Objects.requireNonNull(
+													BaseApi.getInstance(
+															MainActivity.this,
+															UserAccountsApi.class))
+											.updateServerVersion(
+													response.body().getVersion(),
+													tinyDB.getInt("currentActiveAccountId"));
+								}
+							}
 
-					@Override
-					public void onFailure(
-							@NonNull Call<ServerVersion> call, @NonNull Throwable t) {}
-				});
+							@Override
+							public void onFailure(
+									@NonNull Call<ServerVersion> call, @NonNull Throwable t) {}
+						});
 	}
 
 	public void serverPageLimitSettings() {
-		Call<GeneralAPISettings> call =
-				RetrofitClient.getApiInterface(this).getGeneralAPISettings();
-		call.enqueue(
-				new Callback<>() {
-					@Override
-					public void onResponse(
-							@NonNull Call<GeneralAPISettings> call,
-							@NonNull Response<GeneralAPISettings> response) {
-						if (response.isSuccessful()
-								&& response.code() == 200
-								&& response.body() != null) {
-							int maxResponseItems =
-									response.body().getMaxResponseItems() != null
-											? Math.toIntExact(response.body().getMaxResponseItems())
-											: 50;
-							int defaultPagingNumber =
-									response.body().getDefaultPagingNum() != null
-											? Math.toIntExact(response.body().getDefaultPagingNum())
-											: 25;
-							Objects.requireNonNull(
-											BaseApi.getInstance(
-													MainActivity.this, UserAccountsApi.class))
-									.updateServerPagingLimit(
-											maxResponseItems,
-											defaultPagingNumber,
-											tinyDB.getInt("currentActiveAccountId"));
-						}
-					}
+		RetrofitClient.getApiInterface(this)
+				.getGeneralAPISettings()
+				.enqueue(
+						new Callback<>() {
+							@Override
+							public void onResponse(
+									@NonNull Call<GeneralAPISettings> call,
+									@NonNull Response<GeneralAPISettings> response) {
+								if (response.isSuccessful() && response.body() != null) {
+									int max =
+											response.body().getMaxResponseItems() != null
+													? Math.toIntExact(
+															response.body().getMaxResponseItems())
+													: 50;
+									int def =
+											response.body().getDefaultPagingNum() != null
+													? Math.toIntExact(
+															response.body().getDefaultPagingNum())
+													: 25;
+									Objects.requireNonNull(
+													BaseApi.getInstance(
+															MainActivity.this,
+															UserAccountsApi.class))
+											.updateServerPagingLimit(
+													max,
+													def,
+													tinyDB.getInt("currentActiveAccountId"));
+								}
+							}
 
-					@Override
-					public void onFailure(
-							@NonNull Call<GeneralAPISettings> call, @NonNull Throwable t) {}
-				});
+							@Override
+							public void onFailure(
+									@NonNull Call<GeneralAPISettings> call, @NonNull Throwable t) {}
+						});
 	}
 
 	public void updateGeneralAttachmentSettings() {
-		Call<GeneralAttachmentSettings> call =
-				RetrofitClient.getApiInterface(this).getGeneralAttachmentSettings();
-		call.enqueue(
-				new Callback<>() {
-					@Override
-					public void onResponse(
-							@NonNull Call<GeneralAttachmentSettings> call,
-							@NonNull Response<GeneralAttachmentSettings> response) {
-						if (response.isSuccessful()
-								&& response.code() == 200
-								&& response.body() != null) {
-							int maxSize =
-									response.body().getMaxSize() != null
-											? Math.toIntExact(response.body().getMaxSize())
-											: 2;
-							int maxFiles =
-									response.body().getMaxFiles() != null
-											? Math.toIntExact(response.body().getMaxFiles())
-											: 5;
-							Objects.requireNonNull(
-											BaseApi.getInstance(
-													MainActivity.this, UserAccountsApi.class))
-									.updateGeneralAttachmentSettings(
-											maxSize,
-											maxFiles,
-											tinyDB.getInt("currentActiveAccountId"));
-						}
-					}
+		RetrofitClient.getApiInterface(this)
+				.getGeneralAttachmentSettings()
+				.enqueue(
+						new Callback<>() {
+							@Override
+							public void onResponse(
+									@NonNull Call<GeneralAttachmentSettings> call,
+									@NonNull Response<GeneralAttachmentSettings> response) {
+								if (response.isSuccessful() && response.body() != null) {
+									int size =
+											response.body().getMaxSize() != null
+													? Math.toIntExact(response.body().getMaxSize())
+													: 2;
+									int files =
+											response.body().getMaxFiles() != null
+													? Math.toIntExact(response.body().getMaxFiles())
+													: 5;
+									Objects.requireNonNull(
+													BaseApi.getInstance(
+															MainActivity.this,
+															UserAccountsApi.class))
+											.updateGeneralAttachmentSettings(
+													size,
+													files,
+													tinyDB.getInt("currentActiveAccountId"));
+								}
+							}
 
-					@Override
-					public void onFailure(
-							@NonNull Call<GeneralAttachmentSettings> call, @NonNull Throwable t) {}
-				});
+							@Override
+							public void onFailure(
+									@NonNull Call<GeneralAttachmentSettings> call,
+									@NonNull Throwable t) {}
+						});
 	}
 
 	@Override
-	public boolean onSupportNavigateUp() {
-		return navController.navigateUp() || super.onSupportNavigateUp();
+	protected void onDestroy() {
+		super.onDestroy();
+		Notifications.stopBadgeWorker(this);
 	}
 }

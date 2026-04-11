@@ -15,16 +15,15 @@ import org.mian.gitnex.R;
 import org.mian.gitnex.actions.PullRequestActions;
 import org.mian.gitnex.clients.RetrofitClient;
 import org.mian.gitnex.databinding.ActivityMergePullRequestBinding;
-import org.mian.gitnex.fragments.PullRequestsFragment;
 import org.mian.gitnex.helpers.AlertDialogs;
 import org.mian.gitnex.helpers.MergePullRequestSpinner;
-import org.mian.gitnex.helpers.SnackBar;
+import org.mian.gitnex.helpers.Toasty;
 import org.mian.gitnex.helpers.contexts.IssueContext;
 import retrofit2.Call;
 import retrofit2.Callback;
 
 /**
- * @author M M Arif
+ * @author mmarif
  */
 public class MergePullRequestActivity extends BaseActivity {
 
@@ -143,10 +142,7 @@ public class MergePullRequestActivity extends BaseActivity {
 
 		if (Do == null) {
 
-			SnackBar.error(
-					ctx,
-					findViewById(android.R.id.content),
-					getString(R.string.selectMergeStrategy));
+			Toasty.show(ctx, getString(R.string.selectMergeStrategy));
 		} else {
 
 			mergeFunction(Do, mergePRDesc, mergePRTitle, deleteBranch);
@@ -220,15 +216,12 @@ public class MergePullRequestActivity extends BaseActivity {
 								}
 							}
 
-							SnackBar.success(
-									ctx,
-									findViewById(android.R.id.content),
-									getString(R.string.mergePRSuccessMsg));
+							Toasty.show(ctx, getString(R.string.mergePRSuccessMsg));
 
 							Intent result = new Intent();
-							PullRequestsFragment.resumePullRequests = true;
+							// PullRequestsFragment.resumePullRequests = true;
 							IssueDetailActivity.singleIssueUpdate = true;
-							RepoDetailActivity.updateRepo = true;
+							// RepoDetailActivity.updateRepo = true;
 							setResult(200, result);
 							new Handler().postDelayed(() -> finish(), 3000);
 						} else if (response.code() == 401) {
@@ -236,22 +229,13 @@ public class MergePullRequestActivity extends BaseActivity {
 							AlertDialogs.authorizationTokenRevokedDialog(ctx);
 						} else if (response.code() == 404) {
 
-							SnackBar.error(
-									ctx,
-									findViewById(android.R.id.content),
-									getString(R.string.mergePR404ErrorMsg));
+							Toasty.show(ctx, getString(R.string.mergePR404ErrorMsg));
 						} else if (response.code() == 405) {
 
-							SnackBar.error(
-									ctx,
-									findViewById(android.R.id.content),
-									getString(R.string.mergeNotAllowed));
+							Toasty.show(ctx, getString(R.string.mergeNotAllowed));
 						} else {
 
-							SnackBar.error(
-									ctx,
-									findViewById(android.R.id.content),
-									getString(R.string.genericError));
+							Toasty.show(ctx, getString(R.string.genericError));
 						}
 					}
 

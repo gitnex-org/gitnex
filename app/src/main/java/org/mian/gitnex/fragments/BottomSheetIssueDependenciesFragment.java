@@ -180,10 +180,9 @@ public class BottomSheetIssueDependenciesFragment extends BottomSheetDialogFragm
 								binding.dependenciesRecyclerView.setVisibility(View.GONE);
 								binding.noDependenciesText.setVisibility(View.VISIBLE);
 							}
-							Toasty.success(
-									requireContext(), getString(R.string.dependency_removed));
+							Toasty.show(requireContext(), getString(R.string.dependency_removed));
 						} else {
-							Toasty.error(
+							Toasty.show(
 									requireContext(),
 									getString(R.string.dependency_removal_failed));
 						}
@@ -191,7 +190,7 @@ public class BottomSheetIssueDependenciesFragment extends BottomSheetDialogFragm
 
 					@Override
 					public void onFailure(@NonNull Call<Void> call, @NonNull Throwable t) {
-						Toasty.error(
+						Toasty.show(
 								requireContext(), getString(R.string.genericServerResponseError));
 					}
 				});
@@ -245,7 +244,7 @@ public class BottomSheetIssueDependenciesFragment extends BottomSheetDialogFragm
 
 							if (searchResultsList.isEmpty()) {
 								binding.searchResultsRecyclerView.setVisibility(View.GONE);
-								Toasty.info(
+								Toasty.show(
 										requireContext(),
 										getString(R.string.no_dependency_search_results));
 							} else {
@@ -260,7 +259,7 @@ public class BottomSheetIssueDependenciesFragment extends BottomSheetDialogFragm
 								searchResultsAdapter.notifyItemRangeRemoved(0, oldSize);
 							}
 							binding.searchResultsRecyclerView.setVisibility(View.GONE);
-							Toasty.error(requireContext(), getString(R.string.search_failed));
+							Toasty.show(requireContext(), getString(R.string.search_failed));
 						}
 					}
 
@@ -272,7 +271,7 @@ public class BottomSheetIssueDependenciesFragment extends BottomSheetDialogFragm
 							searchResultsAdapter.notifyItemRangeRemoved(0, oldSize);
 						}
 						binding.searchResultsRecyclerView.setVisibility(View.GONE);
-						Toasty.error(
+						Toasty.show(
 								requireContext(), getString(R.string.genericServerResponseError));
 					}
 				});
@@ -307,16 +306,16 @@ public class BottomSheetIssueDependenciesFragment extends BottomSheetDialogFragm
 							binding.searchResultsRecyclerView.setVisibility(View.GONE);
 
 							loadDependencies();
-							Toasty.success(requireContext(), getString(R.string.dependency_added));
+							Toasty.show(requireContext(), getString(R.string.dependency_added));
 						} else {
-							Toasty.error(
+							Toasty.show(
 									requireContext(), getString(R.string.dependency_add_failed));
 						}
 					}
 
 					@Override
 					public void onFailure(@NonNull Call<Issue> call, @NonNull Throwable t) {
-						Toasty.error(
+						Toasty.show(
 								requireContext(), getString(R.string.genericServerResponseError));
 					}
 				});

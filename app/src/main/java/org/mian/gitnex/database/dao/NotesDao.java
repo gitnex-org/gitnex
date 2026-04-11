@@ -8,7 +8,7 @@ import java.util.List;
 import org.mian.gitnex.database.models.Notes;
 
 /**
- * @author M M Arif
+ * @author mmarif
  */
 @Dao
 public interface NotesDao {

@@ -2,370 +2,179 @@ package org.mian.gitnex.adapters;
 
 import android.annotation.SuppressLint;
 import android.content.Context;
-import android.content.Intent;
-import android.os.Handler;
+import android.transition.AutoTransition;
+import android.transition.TransitionManager;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.ImageView;
-import android.widget.LinearLayout;
-import android.widget.TextView;
 import androidx.annotation.NonNull;
+import androidx.core.content.ContextCompat;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.load.engine.DiskCacheStrategy;
-import com.google.android.material.bottomsheet.BottomSheetDialog;
-import com.google.android.material.dialog.MaterialAlertDialogBuilder;
 import java.util.List;
 import java.util.Locale;
 import org.gitnex.tea4j.v2.models.Release;
 import org.mian.gitnex.R;
-import org.mian.gitnex.activities.MainActivity;
-import org.mian.gitnex.activities.ProfileActivity;
-import org.mian.gitnex.activities.RepoDetailActivity;
-import org.mian.gitnex.clients.RetrofitClient;
-import org.mian.gitnex.databinding.FragmentReleasesBinding;
-import org.mian.gitnex.helpers.AppUtil;
-import org.mian.gitnex.helpers.ClickListener;
+import org.mian.gitnex.databinding.ListReleasesBinding;
+import org.mian.gitnex.fragments.ReleasesFragment;
+import org.mian.gitnex.helpers.AvatarGenerator;
 import org.mian.gitnex.helpers.Markdown;
 import org.mian.gitnex.helpers.TimeHelper;
 import org.mian.gitnex.helpers.Toasty;
-import org.mian.gitnex.structs.FragmentRefreshListener;
-import retrofit2.Call;
-import retrofit2.Callback;
-import retrofit2.Response;
 
 /**
- * @author M M Arif
+ * @author mmarif
  */
 public class ReleasesAdapter extends RecyclerView.Adapter<ReleasesAdapter.ReleasesViewHolder> {
 
 	private final Context context;
-	private final String repoOwner;
-	private final String repoName;
-	private final FragmentRefreshListener startDownload;
-	private final FragmentReleasesBinding fragmentReleasesBinding;
 	private List<Release> releasesList;
-	private OnLoadMoreListener loadMoreListener;
-	private boolean isLoading = false, isMoreDataAvailable = true;
+	private final boolean canDelete;
+	private final ReleasesFragment.OnReleaseItemClickListener listener;
 
 	public ReleasesAdapter(
-			Context ctx,
-			List<Release> releasesMain,
-			FragmentRefreshListener startDownload,
-			String repoOwner,
-			String repoName,
-			FragmentReleasesBinding fragmentReleasesBinding) {
-		this.context = ctx;
-		this.releasesList = releasesMain;
-		this.startDownload = startDownload;
-		this.repoOwner = repoOwner;
-		this.repoName = repoName;
-		this.fragmentReleasesBinding = fragmentReleasesBinding;
+			Context context,
+			List<Release> releases,
+			boolean canDelete,
+			ReleasesFragment.OnReleaseItemClickListener listener) {
+		this.context = context;
+		this.releasesList = releases;
+		this.canDelete = canDelete;
+		this.listener = listener;
 	}
 
 	@NonNull @Override
-	public ReleasesAdapter.ReleasesViewHolder onCreateViewHolder(
-			@NonNull ViewGroup parent, int viewType) {
-		View v =
-				LayoutInflater.from(parent.getContext())
-						.inflate(R.layout.list_releases, parent, false);
-		return new ReleasesAdapter.ReleasesViewHolder(v);
+	public ReleasesViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
+		ListReleasesBinding binding =
+				ListReleasesBinding.inflate(LayoutInflater.from(context), parent, false);
+		return new ReleasesViewHolder(binding);
 	}
 
 	@Override
-	public void onBindViewHolder(@NonNull ReleasesAdapter.ReleasesViewHolder holder, int position) {
-
-		final Locale locale = context.getResources().getConfiguration().locale;
-
-		Release currentItem = releasesList.get(position);
-		holder.releases = currentItem;
-
-		holder.releaseName.setText(currentItem.getName());
-
-		if (currentItem.isPrerelease()) {
-			holder.releaseType.setBackgroundResource(R.drawable.shape_pre_release);
-			holder.releaseType.setText(R.string.releaseTypePre);
-		} else if (currentItem.isDraft()) {
-			holder.releaseType.setBackgroundResource(R.drawable.shape_draft_release);
-			holder.releaseType.setText(R.string.releaseDraftText);
-		} else {
-			holder.releaseType.setBackgroundResource(R.drawable.shape_stable_release);
-			holder.releaseType.setText(R.string.releaseTypeStable);
-		}
-
-		if (currentItem.getAuthor().getAvatarUrl() != null) {
-			Glide.with(context)
-					.load(currentItem.getAuthor().getAvatarUrl())
-					.diskCacheStrategy(DiskCacheStrategy.ALL)
-					.placeholder(R.drawable.loader_animated)
-					.centerCrop()
-					.into(holder.authorAvatar);
-		}
-
-		holder.authorName.setText(
-				context.getResources()
-						.getString(
-								R.string.releasePublishedBy, currentItem.getAuthor().getLogin()));
-
-		if (currentItem.getTagName() != null) {
-			holder.releaseTag.setText(currentItem.getTagName());
-		}
-
-		if (currentItem.getPublishedAt() != null) {
-			holder.releaseDate.setText(TimeHelper.formatTime(currentItem.getPublishedAt(), locale));
-		}
-
-		holder.releaseDate.setOnClickListener(
-				new ClickListener(
-						TimeHelper.customDateFormatForToastDateFormat(currentItem.getPublishedAt()),
-						context));
-
-		if (!currentItem.getBody().isEmpty()) {
-			Markdown.render(context, currentItem.getBody(), holder.releaseBodyContent);
-		} else {
-			holder.releaseBodyContent.setText(R.string.noReleaseBodyContent);
-		}
-
-		holder.downloadCopyFrame.setOnClickListener(
-				v -> {
-					if (holder.downloads.getVisibility() == View.GONE) {
-
-						holder.downloadDropdownIcon.setImageResource(R.drawable.ic_chevron_down);
-						holder.downloads.setVisibility(View.VISIBLE);
-					} else {
-
-						holder.downloadDropdownIcon.setImageResource(R.drawable.ic_chevron_right);
-						holder.downloads.setVisibility(View.GONE);
-					}
-				});
-
-		holder.releaseZipDownloadFrame.setOnClickListener(
-				v -> startDownload.onRefresh(currentItem.getZipballUrl()));
-		holder.releaseTarDownloadFrame.setOnClickListener(
-				v -> startDownload.onRefresh(currentItem.getTarballUrl()));
-
-		ReleasesDownloadsAdapter adapter =
-				new ReleasesDownloadsAdapter(currentItem.getAssets(), startDownload);
-		holder.downloadList.setAdapter(adapter);
-
-		if (position >= getItemCount() - 1
-				&& isMoreDataAvailable
-				&& !isLoading
-				&& loadMoreListener != null) {
-			isLoading = true;
-			loadMoreListener.onLoadMore();
-		}
-
-		if (!((RepoDetailActivity) context).repository.getPermissions().isPush()) {
-			holder.optionsMenu.setVisibility(View.GONE);
-		}
+	public void onBindViewHolder(@NonNull ReleasesViewHolder holder, int position) {
+		Release release = releasesList.get(position);
+		holder.bind(release);
+		holder.binding.getRoot().updateAppearance(position, getItemCount());
 	}
 
 	@Override
 	public int getItemCount() {
-		return releasesList.size();
-	}
-
-	public void setMoreDataAvailable(boolean moreDataAvailable) {
-		isMoreDataAvailable = moreDataAvailable;
-		if (!isMoreDataAvailable) {
-			loadMoreListener.onLoadFinished();
-		}
+		return releasesList != null ? releasesList.size() : 0;
 	}
 
 	@SuppressLint("NotifyDataSetChanged")
-	public void notifyDataChanged() {
-		notifyDataSetChanged();
-		isLoading = false;
-		loadMoreListener.onLoadFinished();
-	}
-
-	public void setLoadMoreListener(OnLoadMoreListener loadMoreListener) {
-		this.loadMoreListener = loadMoreListener;
-	}
-
 	public void updateList(List<Release> list) {
-		releasesList = list;
-		notifyDataChanged();
+		this.releasesList = list;
+		notifyDataSetChanged();
 	}
 
-	private void updateAdapter(int position) {
-		releasesList.remove(position);
-		notifyItemRemoved(position);
-		notifyItemRangeChanged(position, releasesList.size());
-	}
-
-	private void deleteRelease(
-			final Context context,
-			final String releaseName,
-			final Long releaseId,
-			final String owner,
-			final String repo,
-			int position) {
-
-		MaterialAlertDialogBuilder materialAlertDialogBuilder =
-				new MaterialAlertDialogBuilder(
-						context, R.style.ThemeOverlay_Material3_Dialog_Alert);
-
-		materialAlertDialogBuilder
-				.setTitle(
-						String.format(context.getString(R.string.deleteGenericTitle), releaseName))
-				.setMessage(R.string.deleteReleaseConfirmation)
-				.setPositiveButton(
-						R.string.menuDeleteText,
-						(dialog, whichButton) ->
-								RetrofitClient.getApiInterface(context)
-										.repoDeleteRelease(owner, repo, releaseId)
-										.enqueue(
-												new Callback<>() {
-
-													@Override
-													public void onResponse(
-															@NonNull Call<Void> call,
-															@NonNull Response<Void> response) {
-
-														if (response.isSuccessful()) {
-															updateAdapter(position);
-															Toasty.success(
-																	context,
-																	context.getString(
-																			R.string
-																					.releaseDeleted));
-															MainActivity.reloadRepos = true;
-															if (getItemCount() == 0) {
-																fragmentReleasesBinding
-																		.noDataReleases
-																		.setVisibility(
-																				View.VISIBLE);
-															}
-														} else if (response.code() == 403) {
-															Toasty.error(
-																	context,
-																	context.getString(
-																			R.string
-																					.authorizeError));
-														} else {
-															Toasty.error(
-																	context,
-																	context.getString(
-																			R.string.genericError));
-														}
-													}
-
-													@Override
-													public void onFailure(
-															@NonNull Call<Void> call,
-															@NonNull Throwable t) {
-
-														Toasty.error(
-																context,
-																context.getString(
-																		R.string.genericError));
-													}
-												}))
-				.setNeutralButton(R.string.cancelButton, null)
-				.show();
-	}
-
-	public interface OnLoadMoreListener {
-
-		void onLoadMore();
-
-		void onLoadFinished();
+	public void removeItem(int position) {
+		if (position >= 0 && position < releasesList.size()) {
+			releasesList.remove(position);
+			notifyItemRemoved(position);
+			notifyItemRangeChanged(position, releasesList.size());
+		}
 	}
 
 	public class ReleasesViewHolder extends RecyclerView.ViewHolder {
+		private final ListReleasesBinding binding;
 
-		private final TextView releaseType;
-		private final TextView releaseName;
-		private final ImageView authorAvatar;
-		private final TextView authorName;
-		private final TextView releaseTag;
-		private final TextView releaseDate;
-		private final TextView releaseBodyContent;
-		private final LinearLayout downloadCopyFrame;
-		private final LinearLayout downloads;
-		private final LinearLayout releaseZipDownloadFrame;
-		private final LinearLayout releaseTarDownloadFrame;
-		private final ImageView downloadDropdownIcon;
-		private final RecyclerView downloadList;
-		private final ImageView optionsMenu;
-		private Release releases;
+		public ReleasesViewHolder(ListReleasesBinding binding) {
+			super(binding.getRoot());
+			this.binding = binding;
+		}
 
-		private ReleasesViewHolder(View itemView) {
+		void bind(Release release) {
+			String name =
+					(release.getName() == null || release.getName().isEmpty())
+							? release.getTagName()
+							: release.getName();
+			binding.releaseName.setText(name);
 
-			super(itemView);
+			setupTypeBadge(release);
 
-			releaseType = itemView.findViewById(R.id.releaseType);
-			releaseName = itemView.findViewById(R.id.releaseName);
-			authorAvatar = itemView.findViewById(R.id.authorAvatar);
-			authorName = itemView.findViewById(R.id.authorName);
-			releaseTag = itemView.findViewById(R.id.releaseTag);
-			TextView releaseCommitSha = itemView.findViewById(R.id.releaseCommitSha);
-			releaseDate = itemView.findViewById(R.id.releaseDate);
-			releaseBodyContent = itemView.findViewById(R.id.releaseBodyContent);
-			downloadCopyFrame = itemView.findViewById(R.id.downloadCopyFrame);
-			downloads = itemView.findViewById(R.id.downloads);
-			releaseZipDownloadFrame = itemView.findViewById(R.id.releaseZipDownloadFrame);
-			releaseTarDownloadFrame = itemView.findViewById(R.id.releaseTarDownloadFrame);
-			downloadDropdownIcon = itemView.findViewById(R.id.downloadDropdownIcon);
-			downloadList = itemView.findViewById(R.id.downloadList);
-			optionsMenu = itemView.findViewById(R.id.releasesOptionsMenu);
+			if (release.getAuthor() != null) {
+				binding.authorName.setText(
+						context.getString(
+								R.string.releasePublishedBy, release.getAuthor().getLogin()));
+				Glide.with(context)
+						.load(release.getAuthor().getAvatarUrl())
+						.diskCacheStrategy(DiskCacheStrategy.ALL)
+						.centerCrop()
+						.into(binding.authorAvatar);
+			}
 
-			downloadList.setHasFixedSize(true);
-			downloadList.setLayoutManager(new LinearLayoutManager(itemView.getContext()));
+			binding.releaseTag.setText(release.getTagName());
+			if (release.getPublishedAt() != null) {
+				binding.releaseDate.setText(
+						TimeHelper.formatTime(release.getPublishedAt(), Locale.getDefault()));
+				binding.releaseDate.setOnClickListener(
+						v ->
+								Toasty.show(
+										context,
+										TimeHelper.getFullDateTime(
+												release.getPublishedAt(), Locale.getDefault())));
+			}
 
-			new Handler()
-					.postDelayed(
-							() -> {
-								if (!AppUtil.checkGhostUsers(releases.getAuthor().getLogin())) {
+			if (release.getBody() != null && !release.getBody().isEmpty()) {
+				Markdown.render(context, release.getBody(), binding.releaseBodyContent);
+			} else {
+				binding.releaseBodyContent.setText(R.string.noReleaseBodyContent);
+			}
 
-									authorAvatar.setOnClickListener(
-											loginId -> {
-												Context context = loginId.getContext();
+			if (release.getAssets() != null && !release.getAssets().isEmpty()) {
+				binding.downloadList.setVisibility(View.VISIBLE);
+				ReleasesDownloadsAdapter downloadsAdapter =
+						new ReleasesDownloadsAdapter(release.getAssets(), listener);
 
-												Intent intent =
-														new Intent(context, ProfileActivity.class);
-												intent.putExtra(
-														"username",
-														releases.getAuthor().getLogin());
-												context.startActivity(intent);
-											});
-								}
-							},
-							500);
+				binding.downloadList.setLayoutManager(new LinearLayoutManager(context));
+				binding.downloadList.setAdapter(downloadsAdapter);
+				binding.downloadList.setNestedScrollingEnabled(false);
+			} else {
+				binding.downloadList.setVisibility(View.GONE);
+			}
 
-			optionsMenu.setOnClickListener(
+			binding.itemMenu.setVisibility(canDelete ? View.VISIBLE : View.GONE);
+			binding.itemMenu.setOnClickListener(
+					v -> listener.onDelete(release, getBindingAdapterPosition()));
+
+			binding.btnAssets.setOnClickListener(
 					v -> {
-						final Context context = v.getContext();
-
-						View view =
-								LayoutInflater.from(context)
-										.inflate(
-												R.layout.bottom_sheet_release_in_list,
-												itemView.findViewById(android.R.id.content),
-												false);
-
-						TextView deleteRelease = view.findViewById(R.id.deleteRelease);
-
-						BottomSheetDialog dialog = new BottomSheetDialog(context);
-						dialog.setContentView(view);
-						dialog.show();
-
-						deleteRelease.setOnClickListener(
-								v1 -> {
-									deleteRelease(
-											context,
-											releases.getName(),
-											releases.getId(),
-											repoOwner,
-											repoName,
-											getBindingAdapterPosition());
-									dialog.dismiss();
-								});
+						boolean isVisible =
+								binding.downloadsContainer.getVisibility() == View.VISIBLE;
+						TransitionManager.beginDelayedTransition(
+								binding.card, new AutoTransition());
+						binding.downloadsContainer.setVisibility(
+								isVisible ? View.GONE : View.VISIBLE);
+						binding.imgExpand.setImageResource(
+								isVisible
+										? R.drawable.ic_chevron_right
+										: R.drawable.ic_chevron_down);
 					});
+
+			binding.sourceZipLayout.downloadName.setText(R.string.zipArchiveDownloadReleasesTab);
+			binding.sourceZipLayout
+					.getRoot()
+					.setOnClickListener(v -> listener.onDownload(release.getZipballUrl()));
+		}
+
+		private void setupTypeBadge(Release release) {
+			String label;
+			int color;
+			if (release.isPrerelease()) {
+				label = context.getString(R.string.releaseTypePre).toUpperCase();
+				color = ContextCompat.getColor(context, R.color.releasePre);
+			} else if (release.isDraft()) {
+				label = context.getString(R.string.releaseDraftText).toUpperCase();
+				color = ContextCompat.getColor(context, R.color.lightYellow);
+			} else {
+				label = context.getString(R.string.releaseTypeStable).toUpperCase();
+				color = ContextCompat.getColor(context, R.color.darkGreen);
+			}
+			binding.releaseTypeBadge.setImageDrawable(
+					AvatarGenerator.getLabelDrawable(context, label, color, 20));
 		}
 	}
 }

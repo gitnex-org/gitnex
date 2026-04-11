@@ -16,7 +16,7 @@ import retrofit2.Call;
 import retrofit2.Callback;
 
 /**
- * @author M M Arif
+ * @author mmarif
  */
 public class LabelsActions {
 
@@ -53,14 +53,14 @@ public class LabelsActions {
 								}
 							}
 						} else {
-							Toasty.error(ctx, ctx.getString(R.string.genericError));
+							Toasty.show(ctx, ctx.getString(R.string.genericError));
 						}
 					}
 
 					@Override
 					public void onFailure(@NonNull Call<List<Label>> call, @NonNull Throwable t) {
 
-						Toasty.error(ctx, ctx.getString(R.string.genericServerResponseError));
+						Toasty.show(ctx, ctx.getString(R.string.genericServerResponseError));
 					}
 				});
 	}
@@ -117,7 +117,7 @@ public class LabelsActions {
 
 											if (labelsList.isEmpty()) {
 
-												Toasty.warning(
+												Toasty.show(
 														ctx,
 														ctx.getResources()
 																.getString(R.string.noDataFound));
@@ -134,7 +134,7 @@ public class LabelsActions {
 												@NonNull Call<List<Label>> call,
 												@NonNull Throwable t) {
 
-											Toasty.error(
+											Toasty.show(
 													ctx,
 													ctx.getString(
 															R.string.genericServerResponseError));
@@ -142,7 +142,7 @@ public class LabelsActions {
 									});
 						} else {
 
-							Toasty.error(ctx, ctx.getResources().getString(R.string.genericError));
+							Toasty.show(ctx, ctx.getResources().getString(R.string.genericError));
 						}
 						if (progressBar != null) {
 							progressBar.setVisibility(View.GONE);
@@ -155,7 +155,7 @@ public class LabelsActions {
 						if (progressBar != null) {
 							progressBar.setVisibility(View.GONE);
 						}
-						Toasty.error(
+						Toasty.show(
 								ctx,
 								ctx.getResources().getString(R.string.genericServerResponseError));
 					}

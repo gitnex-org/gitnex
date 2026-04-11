@@ -1,91 +1,77 @@
 package org.mian.gitnex.adapters;
 
+import android.annotation.SuppressLint;
 import android.content.Context;
+import android.util.TypedValue;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.ImageView;
-import android.widget.LinearLayout;
-import android.widget.TextView;
 import androidx.annotation.NonNull;
-import androidx.core.content.res.ResourcesCompat;
 import androidx.recyclerview.widget.RecyclerView;
-import com.amulyakhare.textdrawable.TextDrawable;
-import com.google.android.material.dialog.MaterialAlertDialogBuilder;
 import java.util.List;
-import org.gitnex.tea4j.v2.models.DeleteEmailOption;
 import org.gitnex.tea4j.v2.models.Email;
 import org.mian.gitnex.R;
-import org.mian.gitnex.clients.RetrofitClient;
-import org.mian.gitnex.helpers.Toasty;
-import retrofit2.Call;
-import retrofit2.Callback;
-import retrofit2.Response;
+import org.mian.gitnex.databinding.ListAccountSettingsEmailsBinding;
+import org.mian.gitnex.helpers.AvatarGenerator;
 
 /**
- * @author M M Arif
+ * @author mmarif
  */
 public class AccountSettingsEmailsAdapter
 		extends RecyclerView.Adapter<AccountSettingsEmailsAdapter.EmailsViewHolder> {
 
 	private final List<Email> emailsList;
 	private final Context context;
+	private final OnEmailInteractionListener listener;
 
-	public AccountSettingsEmailsAdapter(Context ctx, List<Email> emailsListMain) {
+	public interface OnEmailInteractionListener {
+		void onDeleteEmail(Email email, int position);
+	}
+
+	public AccountSettingsEmailsAdapter(
+			List<Email> emailsList, Context ctx, OnEmailInteractionListener listener) {
 		this.context = ctx;
-		this.emailsList = emailsListMain;
+		this.emailsList = emailsList;
+		this.listener = listener;
 	}
 
 	@NonNull @Override
 	public EmailsViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-		View v =
-				LayoutInflater.from(parent.getContext())
-						.inflate(R.layout.list_account_settings_emails, parent, false);
-		return new EmailsViewHolder(v);
+		ListAccountSettingsEmailsBinding binding =
+				ListAccountSettingsEmailsBinding.inflate(
+						LayoutInflater.from(parent.getContext()), parent, false);
+		return new EmailsViewHolder(binding);
 	}
 
 	@Override
 	public void onBindViewHolder(@NonNull EmailsViewHolder holder, int position) {
-
 		Email currentItem = emailsList.get(position);
-
-		holder.userEmail.setText(currentItem.getEmail());
-
-		LinearLayout.LayoutParams param =
-				new LinearLayout.LayoutParams(
-						ViewGroup.LayoutParams.WRAP_CONTENT,
-						ViewGroup.LayoutParams.WRAP_CONTENT,
-						.1f);
+		holder.binding.userEmail.setText(currentItem.getEmail());
 
 		if (currentItem.isPrimary()) {
-			holder.primaryFrame.setVisibility(View.VISIBLE);
-			TextDrawable drawable =
-					TextDrawable.builder()
-							.beginConfig()
-							.textColor(
-									ResourcesCompat.getColor(
-											context.getResources(), R.color.colorWhite, null))
-							.fontSize(36)
-							.width(220)
-							.height(60)
-							.endConfig()
-							.buildRoundRect(
-									context.getResources().getString(R.string.emailTypeText),
-									ResourcesCompat.getColor(
-											context.getResources(),
-											R.color.tooltipBackground,
-											null),
-									8);
-			holder.emailPrimary.setImageDrawable(drawable);
-			holder.deleteFrame.setVisibility(View.GONE);
-			holder.primaryFrame.setLayoutParams(param);
+			holder.binding.primaryFrame.setVisibility(View.VISIBLE);
+			holder.binding.deleteFrame.setVisibility(View.GONE);
+
+			int labelColor =
+					getThemeColor(com.google.android.material.R.attr.colorPrimaryContainer);
+			String labelText = context.getString(R.string.emailTypeText);
+
+			holder.binding.emailPrimary.setImageDrawable(
+					AvatarGenerator.getLabelDrawable(context, labelText, labelColor, 24));
 		} else {
-			holder.primaryFrame.setVisibility(View.GONE);
-			holder.deleteFrame.setVisibility(View.VISIBLE);
+			holder.binding.primaryFrame.setVisibility(View.GONE);
+			holder.binding.deleteFrame.setVisibility(View.VISIBLE);
+			holder.binding.deleteFrame.setOnClickListener(
+					v -> listener.onDeleteEmail(currentItem, position));
 		}
 
-		holder.deleteFrame.setOnClickListener(
-				delEmail -> deleteEmailAddress(currentItem.getEmail(), position));
+		holder.binding.getRoot().updateAppearance(position, getItemCount());
+	}
+
+	private int getThemeColor(int attr) {
+		TypedValue typedValue = new TypedValue();
+		context.getTheme().resolveAttribute(attr, typedValue, true);
+		return typedValue.data;
 	}
 
 	@Override
@@ -93,88 +79,19 @@ public class AccountSettingsEmailsAdapter
 		return emailsList.size();
 	}
 
+	@SuppressLint("NotifyDataSetChanged")
+	public void updateList(List<Email> newList) {
+		this.emailsList.clear();
+		this.emailsList.addAll(newList);
+		notifyDataSetChanged();
+	}
+
 	public static class EmailsViewHolder extends RecyclerView.ViewHolder {
+		final ListAccountSettingsEmailsBinding binding;
 
-		private final ImageView emailPrimary;
-		private final TextView userEmail;
-		private final LinearLayout deleteFrame;
-		private final LinearLayout primaryFrame;
-
-		private EmailsViewHolder(View itemView) {
-			super(itemView);
-
-			emailPrimary = itemView.findViewById(R.id.emailPrimary);
-			userEmail = itemView.findViewById(R.id.userEmail);
-			deleteFrame = itemView.findViewById(R.id.deleteFrame);
-			primaryFrame = itemView.findViewById(R.id.primaryFrame);
+		private EmailsViewHolder(ListAccountSettingsEmailsBinding binding) {
+			super(binding.getRoot());
+			this.binding = binding;
 		}
-	}
-
-	private void updateAdapter(int position) {
-		emailsList.remove(position);
-		notifyItemRemoved(position);
-		notifyItemRangeChanged(position, emailsList.size());
-	}
-
-	private void deleteEmailAddress(final String emailAddress, int position) {
-
-		MaterialAlertDialogBuilder materialAlertDialogBuilder =
-				new MaterialAlertDialogBuilder(
-						context, R.style.ThemeOverlay_Material3_Dialog_Alert);
-
-		DeleteEmailOption deleteEmailOption = new DeleteEmailOption();
-		deleteEmailOption.addEmailsItem(emailAddress);
-
-		materialAlertDialogBuilder
-				.setMessage(
-						String.format(
-								context.getString(R.string.deleteEmailPopupText), emailAddress))
-				.setPositiveButton(
-						R.string.menuDeleteText,
-						(dialog, whichButton) ->
-								RetrofitClient.getApiInterface(context)
-										.userDeleteEmailWithBody(deleteEmailOption)
-										.enqueue(
-												new Callback<>() {
-
-													@Override
-													public void onResponse(
-															@NonNull Call<Void> call,
-															@NonNull Response<Void> response) {
-
-														if (response.isSuccessful()) {
-															updateAdapter(position);
-															Toasty.success(
-																	context,
-																	context.getString(
-																			R.string
-																					.deleteEmailSuccess));
-														} else if (response.code() == 403) {
-															Toasty.error(
-																	context,
-																	context.getString(
-																			R.string
-																					.authorizeError));
-														} else {
-															Toasty.error(
-																	context,
-																	context.getString(
-																			R.string.genericError));
-														}
-													}
-
-													@Override
-													public void onFailure(
-															@NonNull Call<Void> call,
-															@NonNull Throwable t) {
-
-														Toasty.error(
-																context,
-																context.getString(
-																		R.string.genericError));
-													}
-												}))
-				.setNeutralButton(R.string.cancelButton, null)
-				.show();
 	}
 }

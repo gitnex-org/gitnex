@@ -3,20 +3,19 @@ package org.mian.gitnex.adapters;
 import android.annotation.SuppressLint;
 import android.content.Context;
 import android.content.Intent;
-import android.os.Handler;
+import android.text.SpannableStringBuilder;
+import android.text.Spanned;
+import android.text.style.ForegroundColorSpan;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 import androidx.annotation.NonNull;
-import androidx.core.content.res.ResourcesCompat;
-import androidx.core.text.HtmlCompat;
+import androidx.core.graphics.ColorUtils;
 import androidx.recyclerview.widget.RecyclerView;
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.load.engine.DiskCacheStrategy;
-import com.google.android.material.card.MaterialCardView;
 import com.vdurmont.emoji.EmojiParser;
 import java.util.List;
 import java.util.Locale;
@@ -28,42 +27,40 @@ import org.mian.gitnex.R;
 import org.mian.gitnex.activities.IssueDetailActivity;
 import org.mian.gitnex.activities.ProfileActivity;
 import org.mian.gitnex.activities.RepoDetailActivity;
+import org.mian.gitnex.databinding.ListActivitiesBinding;
 import org.mian.gitnex.helpers.AppUtil;
-import org.mian.gitnex.helpers.ClickListener;
 import org.mian.gitnex.helpers.Markdown;
 import org.mian.gitnex.helpers.TimeHelper;
-import org.mian.gitnex.helpers.TinyDB;
+import org.mian.gitnex.helpers.Toasty;
 import org.mian.gitnex.helpers.contexts.IssueContext;
 import org.mian.gitnex.helpers.contexts.RepositoryContext;
 
 /**
  * @author mmarif
  */
-public class ActivitiesAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
+public class ActivitiesAdapter extends RecyclerView.Adapter<ActivitiesAdapter.DashboardHolder> {
 
 	private final Context context;
-	TinyDB tinyDb;
 	private List<Activity> activityList;
 	private OnLoadMoreListener loadMoreListener;
-	private boolean isLoading = false, isMoreDataAvailable = true;
-	private Intent intent;
+	private boolean isLoading = false;
+	private boolean isMoreDataAvailable = true;
 	public boolean isUserOrg = false;
 
 	public ActivitiesAdapter(List<Activity> dataList, Context ctx) {
 		this.context = ctx;
 		this.activityList = dataList;
-		this.tinyDb = TinyDB.getInstance(ctx);
 	}
 
 	@NonNull @Override
-	public RecyclerView.ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-		LayoutInflater inflater = LayoutInflater.from(context);
-		return new ActivitiesAdapter.DashboardHolder(
-				inflater.inflate(R.layout.list_activities, parent, false));
+	public DashboardHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
+		ListActivitiesBinding binding =
+				ListActivitiesBinding.inflate(LayoutInflater.from(context), parent, false);
+		return new DashboardHolder(binding);
 	}
 
 	@Override
-	public void onBindViewHolder(@NonNull RecyclerView.ViewHolder holder, int position) {
+	public void onBindViewHolder(@NonNull DashboardHolder holder, int position) {
 		if (position >= getItemCount() - 1
 				&& isMoreDataAvailable
 				&& !isLoading
@@ -71,13 +68,8 @@ public class ActivitiesAdapter extends RecyclerView.Adapter<RecyclerView.ViewHol
 			isLoading = true;
 			loadMoreListener.onLoadMore();
 		}
-
-		((ActivitiesAdapter.DashboardHolder) holder).bindData(activityList.get(position), position);
-	}
-
-	@Override
-	public int getItemViewType(int position) {
-		return position;
+		holder.bindData(activityList.get(position));
+		holder.binding.getRoot().updateAppearance(position, getItemCount());
 	}
 
 	@Override
@@ -85,439 +77,41 @@ public class ActivitiesAdapter extends RecyclerView.Adapter<RecyclerView.ViewHol
 		return activityList.size();
 	}
 
-	public void setMoreDataAvailable(boolean moreDataAvailable) {
-		isMoreDataAvailable = moreDataAvailable;
-		if (!isMoreDataAvailable) {
-			loadMoreListener.onLoadFinished();
-		}
+	@SuppressLint("NotifyDataSetChanged")
+	public void updateList(List<Activity> list) {
+		this.activityList = list;
+		this.isLoading = false;
+		notifyDataSetChanged();
 	}
 
-	@SuppressLint("NotifyDataSetChanged")
-	public void notifyDataChanged() {
-		notifyDataSetChanged();
-		isLoading = false;
-		loadMoreListener.onLoadFinished();
+	public void setMoreDataAvailable(boolean moreDataAvailable) {
+		this.isMoreDataAvailable = moreDataAvailable;
+		if (!isMoreDataAvailable && loadMoreListener != null) {
+			loadMoreListener.onLoadFinished();
+		}
 	}
 
 	public void setLoadMoreListener(OnLoadMoreListener loadMoreListener) {
 		this.loadMoreListener = loadMoreListener;
 	}
 
-	public void updateList(List<Activity> list) {
-		activityList = list;
-		notifyDataChanged();
-	}
-
 	public interface OnLoadMoreListener {
-
 		void onLoadMore();
 
 		void onLoadFinished();
 	}
 
-	class DashboardHolder extends RecyclerView.ViewHolder {
+	public class DashboardHolder extends RecyclerView.ViewHolder {
+		private final ListActivitiesBinding binding;
+		private Activity activity;
 
-		private final ImageView userAvatar;
-		private final TextView typeDetails;
-		private final TextView createdTime;
-		private final ImageView typeIcon;
-		private final TextView dashText;
-		private final LinearLayout dashTextFrame;
-
-		private Activity activityObject;
-
-		DashboardHolder(View itemView) {
-
-			super(itemView);
-			userAvatar = itemView.findViewById(R.id.user_avatar);
-			typeDetails = itemView.findViewById(R.id.type_details);
-			typeIcon = itemView.findViewById(R.id.type_icon);
-			createdTime = itemView.findViewById(R.id.created_time);
-			dashText = itemView.findViewById(R.id.text);
-			dashTextFrame = itemView.findViewById(R.id.dash_text_frame);
-			LinearLayout dashboardLayoutCardsFrame =
-					itemView.findViewById(R.id.dashboardLayoutCardsFrame);
-			MaterialCardView cardLayout = itemView.findViewById(R.id.cardLayout);
-
-			new Handler()
-					.postDelayed(
-							() -> {
-								if (!AppUtil.checkGhostUsers(
-										activityObject.getActUser().getLogin())) {
-
-									userAvatar.setOnLongClickListener(
-											loginId -> {
-												AppUtil.copyToClipboard(
-														context,
-														activityObject.getActUser().getLogin(),
-														context.getString(
-																R.string.copyLoginIdToClipBoard,
-																activityObject
-																		.getActUser()
-																		.getLogin()));
-												return true;
-											});
-
-									userAvatar.setOnClickListener(
-											v -> {
-												intent = new Intent(context, ProfileActivity.class);
-												intent.putExtra(
-														"username",
-														activityObject.getActUser().getLogin());
-												context.startActivity(intent);
-											});
-								}
-
-								if (activityObject
-												.getOpType()
-												.getValue()
-												.equalsIgnoreCase("create_repo")
-										|| activityObject
-												.getOpType()
-												.getValue()
-												.equalsIgnoreCase("rename_repo")
-										|| activityObject
-												.getOpType()
-												.getValue()
-												.equalsIgnoreCase("star_repo")
-										|| activityObject
-												.getOpType()
-												.getValue()
-												.equalsIgnoreCase("transfer_repo")) {
-
-									itemView.setOnClickListener(
-											v -> {
-												Context context = v.getContext();
-												RepositoryContext repo =
-														new RepositoryContext(
-																activityObject.getRepo(), context);
-												repo.saveToDB(context);
-												Intent intent =
-														repo.getIntent(
-																context, RepoDetailActivity.class);
-												if (isUserOrg) {
-													intent.putExtra("openedFromUserOrg", true);
-												}
-												context.startActivity(intent);
-											});
-								}
-
-								if (activityObject
-												.getOpType()
-												.getValue()
-												.equalsIgnoreCase("create_issue")
-										|| activityObject
-												.getOpType()
-												.getValue()
-												.equalsIgnoreCase("comment_issue")
-										|| activityObject
-												.getOpType()
-												.getValue()
-												.equalsIgnoreCase("close_issue")
-										|| activityObject
-												.getOpType()
-												.getValue()
-												.equalsIgnoreCase("reopen_issue")) {
-
-									String[] parts =
-											activityObject.getRepo().getFullName().split("/");
-									final String repoOwner = parts[0];
-									final String repoName = parts[1];
-
-									RepositoryContext repo =
-											new RepositoryContext(repoOwner, repoName, context);
-
-									String id = getString();
-
-									try {
-										Intent intentIssueDetail =
-												new IssueContext(repo, Integer.parseInt(id), "open")
-														.getIntent(
-																context, IssueDetailActivity.class);
-										intentIssueDetail.putExtra("openedFromLink", "true");
-
-										itemView.setOnClickListener(
-												v -> {
-													repo.saveToDB(context);
-													context.startActivity(intentIssueDetail);
-												});
-									} catch (NumberFormatException e) {
-										itemView.setOnClickListener(null);
-									}
-								}
-
-								if (activityObject
-												.getOpType()
-												.getValue()
-												.equalsIgnoreCase("create_pull_request")
-										|| activityObject
-												.getOpType()
-												.getValue()
-												.equalsIgnoreCase("close_pull_request")
-										|| activityObject
-												.getOpType()
-												.getValue()
-												.equalsIgnoreCase("reopen_pull_request")
-										|| activityObject
-												.getOpType()
-												.getValue()
-												.equalsIgnoreCase("approve_pull_request")
-										|| activityObject
-												.getOpType()
-												.getValue()
-												.equalsIgnoreCase("reject_pull_request")
-										|| activityObject
-												.getOpType()
-												.getValue()
-												.equalsIgnoreCase("comment_pull")
-										|| activityObject
-												.getOpType()
-												.getValue()
-												.equalsIgnoreCase("auto_merge_pull_request")
-										|| activityObject
-												.getOpType()
-												.getValue()
-												.equalsIgnoreCase("merge_pull_request")) {
-
-									String[] parts =
-											activityObject.getRepo().getFullName().split("/");
-									final String repoOwner = parts[0];
-									final String repoName = parts[1];
-
-									RepositoryContext repo =
-											new RepositoryContext(repoOwner, repoName, context);
-
-									String id = getString();
-
-									try {
-										Intent intentIssueDetail =
-												new IssueContext(repo, Integer.parseInt(id), "open")
-														.getIntent(
-																context, IssueDetailActivity.class);
-										intentIssueDetail.putExtra("openedFromLink", "true");
-
-										itemView.setOnClickListener(
-												v -> {
-													repo.saveToDB(context);
-													context.startActivity(intentIssueDetail);
-												});
-									} catch (NumberFormatException e) {
-										itemView.setOnClickListener(null);
-									}
-								}
-
-								if (activityObject
-										.getOpType()
-										.getValue()
-										.equalsIgnoreCase("commit_repo")) {
-
-									if (activityObject.getContent().isEmpty()) {
-
-										itemView.setOnClickListener(
-												v -> {
-													RepositoryContext repo =
-															new RepositoryContext(
-																	activityObject.getRepo(),
-																	context);
-
-													Intent repoIntent =
-															new Intent(
-																	context,
-																	RepoDetailActivity.class);
-													repoIntent.putExtra("goToSection", "yes");
-													repoIntent.putExtra(
-															"goToSectionType", "commitsList");
-													repoIntent.putExtra(
-															"branchName",
-															activityObject
-																	.getRefName()
-																	.substring(
-																			activityObject
-																							.getRefName()
-																							.lastIndexOf(
-																									"/")
-																					+ 1)
-																	.trim());
-
-													repo.saveToDB(context);
-													repoIntent.putExtra(
-															RepositoryContext.INTENT_EXTRA, repo);
-
-													context.startActivity(repoIntent);
-												});
-									}
-								}
-
-								if (activityObject
-												.getOpType()
-												.getValue()
-												.equalsIgnoreCase("publish_release")
-										|| activityObject
-												.getOpType()
-												.getValue()
-												.equalsIgnoreCase("push_tag")) {
-
-									itemView.setOnClickListener(
-											v -> {
-												RepositoryContext repo =
-														new RepositoryContext(
-																activityObject.getRepo(), context);
-
-												Intent repoIntent =
-														new Intent(
-																context, RepoDetailActivity.class);
-												repoIntent.putExtra("goToSection", "yes");
-												repoIntent.putExtra("goToSectionType", "releases");
-												repoIntent.putExtra(
-														"releaseTagName",
-														activityObject
-																.getRefName()
-																.substring(
-																		activityObject
-																						.getRefName()
-																						.lastIndexOf(
-																								"/")
-																				+ 1)
-																.trim());
-
-												repo.saveToDB(context);
-												repoIntent.putExtra(
-														RepositoryContext.INTENT_EXTRA, repo);
-
-												context.startActivity(repoIntent);
-											});
-								}
-							},
-							200);
+		DashboardHolder(ListActivitiesBinding binding) {
+			super(binding.getRoot());
+			this.binding = binding;
 		}
 
-		private static class ExtractedData {
-			String id = "";
-			String content = "";
-		}
-
-		private String getString() {
-			String content = activityObject.getContent();
-			ExtractedData data = extractIdAndContent(content);
-			return data.id;
-		}
-
-		private String cleanRawContent(String input) {
-			if (input == null) return "";
-
-			String cleaned = input.trim();
-
-			if (cleaned.startsWith("\"")) {
-				cleaned = cleaned.substring(1);
-			}
-			if (cleaned.endsWith("\"")) {
-				cleaned = cleaned.substring(0, cleaned.length() - 1);
-			}
-
-			cleaned = unescapeJson(cleaned);
-			cleaned = cleaned.replace("```", "");
-			cleaned = cleaned.replace("`", "");
-
-			return cleaned.replaceAll("[\\n\\r\\t]+", " ").replaceAll("\\s+", " ").trim();
-		}
-
-		private String unescapeJson(String input) {
-			StringBuilder result = new StringBuilder();
-			int i = 0;
-			while (i < input.length()) {
-				char c = input.charAt(i);
-				if (c == '\\' && i + 1 < input.length()) {
-					char next = input.charAt(i + 1);
-					switch (next) {
-						case '\\' -> {
-							result.append('\\');
-							i += 2;
-							continue;
-						}
-						case '"' -> {
-							result.append('"');
-							i += 2;
-							continue;
-						}
-						case '\'' -> {
-							result.append('\'');
-							i += 2;
-							continue;
-						}
-						case 'n' -> {
-							result.append('\n');
-							i += 2;
-							continue;
-						}
-						case 'r' -> {
-							result.append('\r');
-							i += 2;
-							continue;
-						}
-						case 't' -> {
-							result.append('\t');
-							i += 2;
-							continue;
-						}
-						case 'u' -> {
-							if (i + 5 < input.length()) {
-								try {
-									String hex = input.substring(i + 2, i + 6);
-									int code = Integer.parseInt(hex, 16);
-									result.append((char) code);
-									i += 6;
-									continue;
-								} catch (NumberFormatException ignored) {
-								}
-							}
-						}
-					}
-					result.append('\\').append(next);
-					i += 2;
-					continue;
-				}
-				result.append(c);
-				i++;
-			}
-			return result.toString();
-		}
-
-		private ExtractedData extractIdAndContent(String rawContent) {
-			ExtractedData data = new ExtractedData();
-			if (rawContent == null || rawContent.isEmpty()) return data;
-
-			String trimmed = rawContent.trim();
-
-			if (trimmed.startsWith("[\"")) {
-				try {
-					String contentInside = trimmed.substring(1, trimmed.length() - 1);
-
-					String[] parts = contentInside.split("\",\"", 2);
-
-					data.id = cleanRawContent(parts[0]);
-
-					if (parts.length > 1) {
-						String content = parts[1];
-						if (content.endsWith("\"")) {
-							content = content.substring(0, content.length() - 1);
-						}
-						data.content = cleanRawContent(content);
-					}
-				} catch (Exception e) {
-					data.id = "0";
-				}
-			} else {
-				String[] parts = trimmed.split("\\|");
-				data.id = cleanRawContent(parts[0]);
-				if (parts.length > 1) {
-					data.content = cleanRawContent(parts[1]);
-				}
-			}
-			return data;
-		}
-
-		void bindData(Activity activity, int position) {
-			this.activityObject = activity;
+		void bindData(Activity activity) {
+			this.activity = activity;
 			Locale locale = context.getResources().getConfiguration().getLocales().get(0);
 
 			Glide.with(context)
@@ -525,222 +119,299 @@ public class ActivitiesAdapter extends RecyclerView.Adapter<RecyclerView.ViewHol
 					.diskCacheStrategy(DiskCacheStrategy.ALL)
 					.placeholder(R.drawable.loader_animated)
 					.centerCrop()
-					.into(userAvatar);
+					.into(binding.userAvatar);
 
-			int lightGray =
-					ResourcesCompat.getColor(context.getResources(), R.color.lightGray, null);
-			String grayHex = String.format("#%06X", (0xFFFFFF & lightGray));
-			String username =
-					"<font color='" + grayHex + "'>" + activity.getActUser().getLogin() + "</font>";
+			setupUserActions(activity);
 
-			String headerString = "";
-			String typeString = "";
+			for (int i = binding.dashTextFrame.getChildCount() - 1; i >= 0; i--) {
+				View child = binding.dashTextFrame.getChildAt(i);
+				if (child.getId() != binding.text.getId()) {
+					binding.dashTextFrame.removeViewAt(i);
+				}
+			}
+			binding.dashTextFrame.setVisibility(View.GONE);
+			binding.text.setVisibility(View.GONE);
+			binding.text.setText("");
+
 			String opType = activity.getOpType().getValue().toLowerCase();
+			ExtractedData data = extractIdAndContent(activity.getContent());
 
-			dashTextFrame.setVisibility(View.GONE);
-			dashText.setVisibility(View.VISIBLE);
+			setupTypeAndHeader(opType, data);
+			handleContentPreview(opType, data);
 
-			if (opType.contains("repo")) {
-				headerString =
-						"<font color='"
-								+ grayHex
-								+ "'>"
-								+ activity.getRepo().getFullName()
-								+ "</font>";
-				switch (opType) {
-					case "create_repo" -> {
-						typeString = context.getString(R.string.createdRepository);
-						typeIcon.setImageResource(R.drawable.ic_repo);
+			binding.getRoot().setOnClickListener(v -> handleItemClick(opType, data));
+			binding.createdTime.setText(TimeHelper.formatTime(activity.getCreated(), locale));
+			binding.createdTime.setOnClickListener(
+					v ->
+							Toasty.show(
+									context,
+									TimeHelper.getFullDateTime(
+											activity.getCreated(), Locale.getDefault())));
+		}
+
+		private void setupUserActions(Activity activity) {
+			String login = activity.getActUser().getLogin();
+			if (AppUtil.checkGhostUsers(login)) return;
+
+			binding.userAvatar.setOnClickListener(
+					v -> {
+						Intent intent = new Intent(context, ProfileActivity.class);
+						intent.putExtra("username", login);
+						context.startActivity(intent);
+					});
+
+			binding.userAvatar.setOnLongClickListener(
+					v -> {
+						AppUtil.copyToClipboard(
+								context,
+								login,
+								context.getString(R.string.copyLoginIdToClipBoard, login));
+						return true;
+					});
+		}
+
+		private void setupTypeAndHeader(String opType, ExtractedData data) {
+
+			String login = activity.getActUser().getLogin();
+			String repoName = activity.getRepo() != null ? activity.getRepo().getFullName() : "";
+			String action = "";
+			String metadata = "";
+			String branch = getRawBranchName(activity.getRefName());
+			String displayBranch = branch.isEmpty() ? "---" : branch;
+
+			switch (opType) {
+				case "push_tag":
+				case "create_tag":
+					binding.typeIcon.setImageResource(R.drawable.ic_tag);
+					action = safeFormat(R.string.pushedTag, displayBranch);
+					metadata = repoName + " (" + displayBranch + ")";
+					break;
+
+				case "delete_tag":
+					binding.typeIcon.setImageResource(R.drawable.ic_tag);
+					action = safeFormat(R.string.deletedBranch, displayBranch);
+					metadata = repoName + " (" + displayBranch + ")";
+					break;
+
+				case "publish_release":
+				case "create_release":
+					binding.typeIcon.setImageResource(R.drawable.ic_tag);
+					action = safeFormat(R.string.releasedBranch, displayBranch);
+					metadata = repoName + " (" + displayBranch + ")";
+					break;
+
+				case "commit_repo":
+				case "push_repo":
+					binding.typeIcon.setImageResource(R.drawable.ic_commit);
+					action = safeFormat(R.string.pushedTo, displayBranch);
+					metadata = repoName + " (" + displayBranch + ")";
+					break;
+
+				case "create_branch":
+					binding.typeIcon.setImageResource(R.drawable.ic_fork);
+					action = context.getString(R.string.createdBranch) + " " + displayBranch;
+					metadata = repoName;
+					break;
+
+				case "delete_branch":
+					binding.typeIcon.setImageResource(R.drawable.ic_commit);
+					action = safeFormat(R.string.deletedBranch, displayBranch);
+					metadata = repoName;
+					break;
+
+				case "star_repo":
+					binding.typeIcon.setImageResource(R.drawable.ic_star);
+					action = context.getString(R.string.starredRepository);
+					metadata = repoName;
+					break;
+
+				case "fork_repo":
+					binding.typeIcon.setImageResource(R.drawable.ic_fork);
+					action = context.getString(R.string.forked_repository);
+					metadata = repoName;
+					break;
+
+				case "comment_issue":
+					binding.typeIcon.setImageResource(R.drawable.ic_comment);
+					action = context.getString(R.string.commentedOnIssue);
+					metadata = repoName + context.getString(R.string.hash) + data.id;
+					break;
+
+				case "comment_pull":
+					binding.typeIcon.setImageResource(R.drawable.ic_comment);
+					action = context.getString(R.string.commentedOnPR);
+					metadata = repoName + context.getString(R.string.hash) + data.id;
+					break;
+
+				case "close_issue":
+					binding.typeIcon.setImageResource(R.drawable.ic_issue_closed);
+					action = context.getString(R.string.closedIssue);
+					metadata = repoName + context.getString(R.string.hash) + data.id;
+					break;
+
+				case "close_pull_request":
+					binding.typeIcon.setImageResource(R.drawable.ic_issue_closed);
+					action = context.getString(R.string.closedPR);
+					metadata = repoName + context.getString(R.string.hash) + data.id;
+					break;
+
+				case "merge_pull_request":
+					binding.typeIcon.setImageResource(R.drawable.ic_pull_request);
+					action = context.getString(R.string.mergedPR);
+					metadata = repoName + context.getString(R.string.hash) + data.id;
+					break;
+
+				case "auto_merge_pull_request":
+					binding.typeIcon.setImageResource(R.drawable.ic_issue_closed);
+					action = context.getString(R.string.autoMergePR);
+					metadata = repoName + context.getString(R.string.hash) + data.id;
+					break;
+
+				case "approve_pull_request":
+					binding.typeIcon.setImageResource(R.drawable.ic_done);
+					action = context.getString(R.string.approved);
+					metadata = repoName + context.getString(R.string.hash) + data.id;
+					break;
+
+				case "reject_pull_request":
+					binding.typeIcon.setImageResource(R.drawable.ic_diff);
+					action = context.getString(R.string.suggestedChanges);
+					metadata = repoName + context.getString(R.string.hash) + data.id;
+					break;
+
+				case "rename_repo":
+					binding.typeIcon.setImageResource(R.drawable.ic_edit);
+					action = safeFormat(R.string.renamedRepository, activity.getContent());
+					metadata = repoName;
+					break;
+
+				case "transfer_repo":
+					binding.typeIcon.setImageResource(R.drawable.ic_arrow_up);
+					action = safeFormat(R.string.transferredRepository, activity.getContent());
+					metadata = repoName;
+					break;
+
+				case "mirror_sync_push":
+					binding.typeIcon.setImageResource(R.drawable.ic_refresh);
+					action = safeFormat(R.string.syncedCommits, repoName);
+					metadata = "";
+					break;
+
+				case "mirror_sync_create":
+					binding.typeIcon.setImageResource(R.drawable.ic_refresh);
+					action = safeFormat(R.string.syncedRefs, repoName);
+					metadata = "";
+					break;
+
+				case "mirror_sync_delete":
+					binding.typeIcon.setImageResource(R.drawable.ic_refresh);
+					action = safeFormat(R.string.syncedDeletedRefs, repoName);
+					metadata = "";
+					break;
+
+				default:
+					if (opType.contains("issue")) {
+						binding.typeIcon.setImageResource(R.drawable.ic_issue);
+						action = context.getString(R.string.openedIssue);
+						metadata =
+								repoName
+										+ (data.id.isEmpty()
+												? ""
+												: context.getString(R.string.hash) + data.id);
+					} else if (opType.contains("pull")) {
+						binding.typeIcon.setImageResource(R.drawable.ic_pull_request);
+						action = context.getString(R.string.createdPR);
+						metadata =
+								repoName
+										+ (data.id.isEmpty()
+												? ""
+												: context.getString(R.string.hash) + data.id);
+					} else {
+						binding.typeIcon.setImageResource(R.drawable.ic_repo);
+						action = opType;
+						metadata = repoName;
 					}
-					case "rename_repo" -> {
-						typeString =
-								String.format(
-										context.getString(R.string.renamedRepository),
-										activity.getContent());
-						typeIcon.setImageResource(R.drawable.ic_repo);
-					}
-					case "star_repo" -> {
-						typeString = context.getString(R.string.starredRepository);
-						typeIcon.setImageResource(R.drawable.ic_star);
-					}
-					case "transfer_repo" -> {
-						typeString =
-								String.format(
-										context.getString(R.string.transferredRepository),
-										activity.getContent());
-						typeIcon.setImageResource(R.drawable.ic_arrow_up);
-					}
-					case "commit_repo" -> {
-						handleCommitRepo(activity, grayHex);
-						typeString =
-								String.format(
-										context.getString(R.string.pushedTo),
-										getShortBranch(activity.getRefName(), grayHex));
-						typeIcon.setImageResource(R.drawable.ic_commit);
-					}
-				}
-
-			} else if (opType.contains("issue") || opType.contains("pull")) {
-				ExtractedData data = extractIdAndContent(activity.getContent());
-				headerString =
-						"<font color='"
-								+ grayHex
-								+ "'>"
-								+ activity.getRepo().getFullName()
-								+ context.getString(R.string.hash)
-								+ data.id
-								+ "</font>";
-
-				if (!data.content.isEmpty()) {
-					dashTextFrame.setVisibility(View.VISIBLE);
-					Markdown.render(context, EmojiParser.parseToUnicode(data.content), dashText);
-				}
-
-				if (opType.contains("issue")) {
-					switch (opType) {
-						case "create_issue" -> {
-							typeString = context.getString(R.string.openedIssue);
-							typeIcon.setImageResource(R.drawable.ic_issue);
-						}
-						case "comment_issue" -> {
-							typeString = context.getString(R.string.commentedOnIssue);
-							typeIcon.setImageResource(R.drawable.ic_comment);
-						}
-						case "close_issue" -> {
-							typeString = context.getString(R.string.closedIssue);
-							typeIcon.setImageResource(R.drawable.ic_issue_closed);
-						}
-						default -> { // reopen_issue
-							typeString = context.getString(R.string.reopenedIssue);
-							typeIcon.setImageResource(R.drawable.ic_refresh);
-						}
-					}
-				} else { // Pull Requests
-					switch (opType) {
-						case "create_pull_request" -> {
-							typeString = context.getString(R.string.createdPR);
-							typeIcon.setImageResource(R.drawable.ic_pull_request);
-						}
-						case "close_pull_request" -> {
-							typeString = context.getString(R.string.closedPR);
-							typeIcon.setImageResource(R.drawable.ic_issue_closed);
-						}
-						case "reopen_pull_request" -> {
-							typeString = context.getString(R.string.reopenedPR);
-							typeIcon.setImageResource(R.drawable.ic_refresh);
-						}
-						case "merge_pull_request" -> {
-							typeString = context.getString(R.string.mergedPR);
-							typeIcon.setImageResource(R.drawable.ic_pull_request);
-						}
-						case "approve_pull_request" -> {
-							typeString = context.getString(R.string.approved);
-							typeIcon.setImageResource(R.drawable.ic_done);
-						}
-						case "reject_pull_request" -> {
-							typeString = context.getString(R.string.suggestedChanges);
-							typeIcon.setImageResource(R.drawable.ic_diff);
-						}
-						case "comment_pull" -> {
-							typeString = context.getString(R.string.commentedOnPR);
-							typeIcon.setImageResource(R.drawable.ic_comment);
-						}
-						case "auto_merge_pull_request" -> {
-							typeString = context.getString(R.string.autoMergePR);
-							typeIcon.setImageResource(R.drawable.ic_issue_closed);
-						}
-					}
-				}
-
-			} else if (opType.contains("branch")
-					|| opType.contains("tag")
-					|| opType.contains("release")) {
-				String branch = getShortBranch(activity.getRefName(), grayHex);
-				headerString =
-						"<font color='"
-								+ grayHex
-								+ "'>"
-								+ activity.getRepo().getFullName()
-								+ "</font>";
-
-				if (opType.contains("release")) {
-					typeString = String.format(context.getString(R.string.releasedBranch), branch);
-					typeIcon.setImageResource(R.drawable.ic_tag);
-				} else if (opType.contains("delete")) {
-					typeString = String.format(context.getString(R.string.deletedBranch), branch);
-					typeIcon.setImageResource(R.drawable.ic_commit);
-				} else { // push_tag, etc
-					typeString = String.format(context.getString(R.string.pushedTag), branch);
-					typeIcon.setImageResource(R.drawable.ic_commit);
-				}
-
-			} else if (opType.contains("mirror")) {
-				headerString =
-						"<font color='"
-								+ grayHex
-								+ "'>"
-								+ activity.getRepo().getFullName()
-								+ "</font>";
-				typeIcon.setImageResource(R.drawable.ic_tag);
-				typeString =
-						switch (opType) {
-							case "mirror_sync_push" ->
-									String.format(
-											context.getString(R.string.syncedCommits),
-											headerString);
-							case "mirror_sync_create" ->
-									String.format(
-											context.getString(R.string.syncedRefs), headerString);
-							case "mirror_sync_delete" ->
-									String.format(
-											context.getString(R.string.syncedDeletedRefs),
-											headerString);
-							default -> typeString;
-						};
-			} else {
-				dashTextFrame.setVisibility(View.GONE);
-				dashText.setVisibility(View.GONE);
+					break;
 			}
 
-			typeDetails.setText(
-					HtmlCompat.fromHtml(
-							username + " " + typeString + " " + headerString,
-							HtmlCompat.FROM_HTML_MODE_LEGACY));
-			this.createdTime.setText(TimeHelper.formatTime(activity.getCreated(), locale));
-			this.createdTime.setOnClickListener(
-					new ClickListener(
-							TimeHelper.customDateFormatForToastDateFormat(activity.getCreated()),
-							context));
+			String fullText = login + " " + action + " " + metadata;
+			SpannableStringBuilder builder = new SpannableStringBuilder(fullText);
+			int currentTextColor = binding.typeDetails.getCurrentTextColor();
+			int alphaColor = ColorUtils.setAlphaComponent(currentTextColor, 179);
+
+			builder.setSpan(
+					new ForegroundColorSpan(alphaColor),
+					0,
+					login.length(),
+					Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
+			int metadataStart = fullText.lastIndexOf(metadata);
+			if (metadataStart != -1) {
+				builder.setSpan(
+						new ForegroundColorSpan(alphaColor),
+						metadataStart,
+						fullText.length(),
+						Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
+			}
+			binding.typeDetails.setText(builder);
 		}
 
-		private String getShortBranch(String refName, String color) {
-			if (refName == null || !refName.contains("/")) return refName != null ? refName : "";
-			String name = refName.substring(refName.lastIndexOf("/") + 1).trim();
-			return "<font color='" + color + "'>" + name + "</font>";
+		private void handleContentPreview(String opType, ExtractedData data) {
+			String displayContent = "";
+
+			if (activity.getComment() != null && activity.getComment().getBody() != null) {
+				displayContent = activity.getComment().getBody();
+			} else if (!data.content.isEmpty()) {
+				displayContent = data.content;
+			}
+
+			binding.text.setText("");
+
+			if (!displayContent.isEmpty()) {
+				binding.dashTextFrame.setVisibility(View.VISIBLE);
+				binding.text.setVisibility(View.VISIBLE);
+				Markdown.render(context, EmojiParser.parseToUnicode(displayContent), binding.text);
+			} else if (opType.equals("commit_repo")) {
+				handleCommitRepo();
+			} else {
+				binding.dashTextFrame.setVisibility(View.GONE);
+				binding.text.setVisibility(View.GONE);
+			}
 		}
 
-		private void handleCommitRepo(Activity activity, String blueColor) {
+		private void handleCommitRepo() {
 			if (activity.getContent() == null || activity.getContent().isEmpty()) return;
 			try {
 				JSONObject commitsObj = new JSONObject(activity.getContent());
-				JSONArray commitsShaArray = commitsObj.getJSONArray("Commits");
+				JSONArray commitsArray = commitsObj.getJSONArray("Commits");
 
-				dashTextFrame.setVisibility(View.VISIBLE);
-				dashTextFrame.setOrientation(LinearLayout.VERTICAL);
-				dashTextFrame.removeAllViews();
+				binding.dashTextFrame.setVisibility(View.VISIBLE);
+				binding.dashTextFrame.setOrientation(LinearLayout.VERTICAL);
 
-				for (int i = 0; i < commitsShaArray.length(); i++) {
-					JSONObject commitItem = commitsShaArray.getJSONObject(i);
+				int currentTextColor = binding.typeDetails.getCurrentTextColor();
+				int alphaColor = ColorUtils.setAlphaComponent(currentTextColor, 179);
+
+				for (int i = 0; i < Math.min(commitsArray.length(), 10); i++) {
+					JSONObject commitItem = commitsArray.getJSONObject(i);
 					String sha = commitItem.getString("Sha1");
-					String displaySha = sha.length() > 10 ? sha.substring(0, 10) : sha;
+					String displaySha = sha.length() > 7 ? sha.substring(0, 7) : sha;
+					String message = commitItem.optString("Message", "");
 
-					TextView dynamicCommitTv = new TextView(context);
-					dynamicCommitTv.setText(
-							HtmlCompat.fromHtml(
-									"<font color='" + blueColor + "'>" + displaySha + "</font>",
-									HtmlCompat.FROM_HTML_MODE_LEGACY));
+					TextView commitTv = new TextView(context);
+					SpannableStringBuilder shaBuilder =
+							new SpannableStringBuilder(displaySha + " " + message);
+					shaBuilder.setSpan(
+							new ForegroundColorSpan(alphaColor),
+							0,
+							displaySha.length(),
+							Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
 
-					dynamicCommitTv.setOnClickListener(
+					commitTv.setText(shaBuilder);
+					commitTv.setTextAppearance(
+							com.google.android.material.R.style
+									.TextAppearance_Material3_LabelMedium);
+					commitTv.setPadding(0, 8, 0, 8);
+
+					commitTv.setOnClickListener(
 							v -> {
 								RepositoryContext repo =
 										new RepositoryContext(activity.getRepo(), context);
@@ -752,10 +423,146 @@ public class ActivitiesAdapter extends RecyclerView.Adapter<RecyclerView.ViewHol
 								intent.putExtra(RepositoryContext.INTENT_EXTRA, repo);
 								context.startActivity(intent);
 							});
-					dashTextFrame.addView(dynamicCommitTv);
+
+					binding.dashTextFrame.addView(commitTv);
 				}
 			} catch (JSONException ignored) {
 			}
 		}
+
+		private void handleItemClick(String opType, ExtractedData data) {
+			if (opType.contains("repo") || opType.contains("mirror")) {
+				RepositoryContext repo = new RepositoryContext(activity.getRepo(), context);
+				repo.saveToDB(context);
+
+				if (opType.equals("commit_repo") && activity.getContent().isEmpty()) {
+					Intent intent = new Intent(context, RepoDetailActivity.class);
+					intent.putExtra("goToSection", "yes");
+					intent.putExtra("goToSectionType", "commitsList");
+					intent.putExtra("branchName", getRawBranchName(activity.getRefName()));
+					intent.putExtra(RepositoryContext.INTENT_EXTRA, repo);
+					context.startActivity(intent);
+				} else if (opType.contains("release") || opType.contains("tag")) {
+					Intent intent = new Intent(context, RepoDetailActivity.class);
+					intent.putExtra("goToSection", "yes");
+					intent.putExtra("goToSectionType", "releases");
+					intent.putExtra("releaseTagName", getRawBranchName(activity.getRefName()));
+					intent.putExtra(RepositoryContext.INTENT_EXTRA, repo);
+					context.startActivity(intent);
+				} else {
+					Intent intent = repo.getIntent(context, RepoDetailActivity.class);
+					if (isUserOrg) intent.putExtra("openedFromUserOrg", true);
+					context.startActivity(intent);
+				}
+			} else if (opType.contains("issue") || opType.contains("pull")) {
+				try {
+					String[] parts = activity.getRepo().getFullName().split("/");
+					RepositoryContext repo = new RepositoryContext(parts[0], parts[1], context);
+					IssueContext issueCtx =
+							new IssueContext(repo, Integer.parseInt(data.id), "open");
+					Intent intent = issueCtx.getIntent(context, IssueDetailActivity.class);
+					intent.putExtra("openedFromLink", "true");
+					if (activity.getCommentId() > 0) {
+						intent.putExtra("commentId", String.valueOf(activity.getCommentId()));
+					}
+					repo.saveToDB(context);
+					context.startActivity(intent);
+				} catch (Exception ignored) {
+				}
+			}
+		}
+
+		private String getRawBranchName(String refName) {
+			if (refName == null || refName.isEmpty()) return "";
+			if (refName.contains("/")) {
+				return refName.substring(refName.lastIndexOf("/") + 1).trim();
+			}
+			return refName.trim();
+		}
+
+		private String safeFormat(int resId, String arg) {
+			String base = context.getString(resId);
+			if (base.contains("%s") || base.contains("%1$s")) {
+				return String.format(base, arg);
+			}
+			return base + " " + arg;
+		}
+	}
+
+	private static class ExtractedData {
+		String id = "";
+		String content = "";
+	}
+
+	private ExtractedData extractIdAndContent(String rawContent) {
+		ExtractedData data = new ExtractedData();
+		if (rawContent == null || rawContent.isEmpty()) return data;
+
+		String trimmed = rawContent.trim();
+		if (trimmed.startsWith("[\"")) {
+			try {
+				String contentInside = trimmed.substring(1, trimmed.length() - 1);
+				String[] parts = contentInside.split("\",\"", 2);
+				data.id = cleanRawContent(parts[0]);
+				if (parts.length > 1) {
+					data.content =
+							cleanRawContent(
+									parts[1].endsWith("\"")
+											? parts[1].substring(0, parts[1].length() - 1)
+											: parts[1]);
+				}
+			} catch (Exception e) {
+				data.id = "0";
+			}
+		} else {
+			String[] parts = trimmed.split("\\|");
+			data.id = cleanRawContent(parts[0]);
+			if (parts.length > 1) data.content = cleanRawContent(parts[1]);
+		}
+		return data;
+	}
+
+	private String cleanRawContent(String input) {
+		if (input == null) return "";
+		String cleaned = input.trim();
+		if (cleaned.startsWith("\"")) cleaned = cleaned.substring(1);
+		if (cleaned.endsWith("\"")) cleaned = cleaned.substring(0, cleaned.length() - 1);
+		cleaned = unescapeJson(cleaned).replace("```", "").replace("`", "");
+		return cleaned.replaceAll("[\\n\\r\\t]+", " ").replaceAll("\\s+", " ").trim();
+	}
+
+	private String unescapeJson(String input) {
+		StringBuilder result = new StringBuilder();
+		int i = 0;
+		while (i < input.length()) {
+			char c = input.charAt(i);
+			if (c == '\\' && i + 1 < input.length()) {
+				char next = input.charAt(i + 1);
+				switch (next) {
+					case '\\' -> result.append('\\');
+					case '"' -> result.append('"');
+					case '\'' -> result.append('\'');
+					case 'n' -> result.append('\n');
+					case 'r' -> result.append('\r');
+					case 't' -> result.append('\t');
+					case 'u' -> {
+						if (i + 5 < input.length()) {
+							try {
+								result.append(
+										(char) Integer.parseInt(input.substring(i + 2, i + 6), 16));
+								i += 5;
+							} catch (NumberFormatException ignored) {
+							}
+						}
+					}
+					default -> result.append('\\').append(next);
+				}
+				i += 2;
+				continue;
+			}
+			result.append(c);
+			i++;
+		}
+		return result.toString();
 	}
 }

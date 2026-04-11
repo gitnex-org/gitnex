@@ -1,0 +1,101 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.coordinatorlayout.widget.CoordinatorLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="?attr/primaryBackgroundColor">
+
+    <androidx.core.widget.NestedScrollView
+        android:id="@+id/scrollView"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:clipToPadding="false">
+
+        <LinearLayout
+            android:id="@+id/main_frame"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
+
+            <include android:id="@+id/rowGeneral" layout="@layout/item_settings_row" />
+            <include android:id="@+id/rowAppearance" layout="@layout/item_settings_row" />
+            <include android:id="@+id/rowCodeEditor" layout="@layout/item_settings_row" />
+            <include android:id="@+id/rowSecurity" layout="@layout/item_settings_row" />
+            <include android:id="@+id/rowNotifications" layout="@layout/item_settings_row" />
+            <include android:id="@+id/rowBackup" layout="@layout/item_settings_row" />
+
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="1dp"
+                android:layout_marginVertical="@dimen/dimen16dp"
+                android:background="?attr/colorOutlineVariant"
+                android:layout_marginHorizontal="@dimen/dimen24dp"/>
+
+            <include android:id="@+id/rowAbout" layout="@layout/item_settings_row" />
+            <include android:id="@+id/rowRateApp" layout="@layout/item_settings_row" />
+
+        </LinearLayout>
+
+    </androidx.core.widget.NestedScrollView>
+
+    <com.google.android.material.dockedtoolbar.DockedToolbarLayout
+        android:id="@+id/docked_toolbar"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:paddingBottomSystemWindowInsets="false"
+        app:paddingLeftSystemWindowInsets="false"
+        app:paddingRightSystemWindowInsets="false"
+        app:paddingTopSystemWindowInsets="false"
+        android:layout_gravity="bottom|center_horizontal"
+        app:shapeAppearanceOverlay="@style/ShapeAppearance.RoundedDock"
+        android:backgroundTint="?attr/colorSurfaceContainerHigh"
+        app:layout_behavior="com.google.android.material.behavior.HideViewOnScrollBehavior">
+
+        <com.google.android.material.overflow.OverflowLinearLayout
+            android:id="@+id/docked_toolbar_child"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:orientation="horizontal">
+
+            <com.google.android.material.button.MaterialButton
+                android:id="@+id/btn_back"
+                style="?attr/materialIconButtonStyle"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                app:icon="@drawable/ic_arrow_back"
+                app:iconGravity="textStart"
+                app:iconPadding="@dimen/dimen0dp"
+                android:layout_gravity="center_horizontal"
+                android:backgroundTint="@android:color/transparent"
+                android:background="?attr/selectableItemBackgroundBorderless"
+                android:insetLeft="@dimen/dimen0dp"
+                android:insetRight="@dimen/dimen0dp"
+                android:contentDescription="@string/close" />
+
+            <View
+                android:layout_width="@dimen/dimen1dp"
+                android:layout_height="@dimen/dimen24dp"
+                android:layout_marginHorizontal="@dimen/dimen8dp"
+                android:layout_gravity="center_vertical|center_horizontal"
+                android:background="?attr/colorOutlineVariant" />
+
+            <TextView
+                android:id="@+id/title"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:ellipsize="end"
+                android:singleLine="true"
+                android:text="@string/navSettings"
+                android:layout_gravity="center_vertical|center_horizontal"
+                android:textAppearance="@style/TextAppearance.Material3.TitleMedium"
+                android:textColor="?attr/primaryTextColor"
+                android:layout_marginStart="@dimen/dimen8dp"
+                android:layout_marginEnd="@dimen/dimen8dp" />
+
+        </com.google.android.material.overflow.OverflowLinearLayout>
+
+    </com.google.android.material.dockedtoolbar.DockedToolbarLayout>
+
+</androidx.coordinatorlayout.widget.CoordinatorLayout>

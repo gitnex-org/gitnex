@@ -1,0 +1,62 @@
+<?xml version="1.0" encoding="utf-8"?>
+<com.google.android.material.card.MaterialCardView
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/fileContentsFrameHeader"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_marginHorizontal="@dimen/dimen8dp"
+    android:layout_marginTop="@dimen/dimen32dp"
+    android:layout_marginBottom="@dimen/dimen16dp"
+    app:cardCornerRadius="@dimen/dimen16dp"
+    app:cardElevation="0dp"
+    app:strokeWidth="@dimen/dimen1dp"
+    app:strokeColor="?attr/colorOutlineVariant">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="center_vertical"
+            android:paddingHorizontal="@dimen/dimen16dp"
+            android:paddingVertical="@dimen/dimen16dp"
+            android:background="?attr/colorSurfaceVariant">
+
+            <ImageView
+                android:layout_width="@dimen/dimen20dp"
+                android:layout_height="@dimen/dimen20dp"
+                android:contentDescription="@string/generalImgContentText"
+                app:srcCompat="@drawable/ic_file"
+                app:tint="?attr/iconsColor" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="@dimen/dimen8dp"
+                android:text="@string/defaultFilename"
+                style="@style/TextAppearance.Material3.TitleMedium"
+                android:textColor="?attr/primaryTextColor" />
+
+        </LinearLayout>
+
+        <FrameLayout
+            android:id="@+id/fileContentsFrame"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:padding="@dimen/dimen16dp">
+
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/repoFileContents"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:nestedScrollingEnabled="false" />
+
+        </FrameLayout>
+
+    </LinearLayout>
+
+</com.google.android.material.card.MaterialCardView>

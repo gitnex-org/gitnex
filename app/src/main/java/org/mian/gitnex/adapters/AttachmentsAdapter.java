@@ -20,7 +20,7 @@ import org.mian.gitnex.R;
 import org.mian.gitnex.helpers.attachments.AttachmentsModel;
 
 /**
- * @author M M Arif
+ * @author mmarif
  */
 public class AttachmentsAdapter extends RecyclerView.Adapter<AttachmentsAdapter.ViewHolder> {
 

@@ -5,7 +5,6 @@ import android.app.NotificationManager;
 import android.content.Context;
 import android.content.Intent;
 import android.graphics.Bitmap;
-import android.graphics.Typeface;
 import android.os.Bundle;
 import android.text.method.ScrollingMovementMethod;
 import android.util.TypedValue;
@@ -28,8 +27,8 @@ import java.util.Arrays;
 import java.util.Objects;
 import okhttp3.ResponseBody;
 import org.apache.commons.io.FilenameUtils;
-import org.gitnex.tea4j.v2.models.ContentsResponse;
 import org.mian.gitnex.R;
+import org.mian.gitnex.api.models.contents.RepoGetContentsList;
 import org.mian.gitnex.clients.RetrofitClient;
 import org.mian.gitnex.databinding.ActivityFileViewBinding;
 import org.mian.gitnex.fragments.BottomSheetFileViewerFragment;
@@ -39,7 +38,6 @@ import org.mian.gitnex.helpers.Constants;
 import org.mian.gitnex.helpers.FileContentSearcher;
 import org.mian.gitnex.helpers.Images;
 import org.mian.gitnex.helpers.Markdown;
-import org.mian.gitnex.helpers.SnackBar;
 import org.mian.gitnex.helpers.Toasty;
 import org.mian.gitnex.helpers.contexts.RepositoryContext;
 import org.mian.gitnex.notifications.Notifications;
@@ -48,12 +46,12 @@ import retrofit2.Call;
 import retrofit2.Response;
 
 /**
- * @author M M Arif
+ * @author mmarif
  */
 public class FileViewActivity extends BaseActivity implements BottomSheetListener {
 
 	private ActivityFileViewBinding binding;
-	private ContentsResponse file;
+	private RepoGetContentsList file;
 	private RepositoryContext repository;
 	private FileContentSearcher searcher;
 	private String fileContent;
@@ -214,7 +212,7 @@ public class FileViewActivity extends BaseActivity implements BottomSheetListene
 		setContentView(binding.getRoot());
 		setSupportActionBar(binding.toolbar);
 
-		file = (ContentsResponse) getIntent().getSerializableExtra("file");
+		file = (RepoGetContentsList) getIntent().getSerializableExtra("file");
 
 		binding.close.setOnClickListener(view -> finish());
 
@@ -357,8 +355,6 @@ public class FileViewActivity extends BaseActivity implements BottomSheetListene
 																				.excludeFilesInFileViewer));
 														binding.markdownTv.setGravity(
 																Gravity.CENTER);
-														binding.markdownTv.setTypeface(
-																null, Typeface.BOLD);
 													});
 										}
 									} else {
@@ -383,7 +379,7 @@ public class FileViewActivity extends BaseActivity implements BottomSheetListene
 										case 403:
 											runOnUiThread(
 													() ->
-															Toasty.error(
+															Toasty.show(
 																	ctx,
 																	ctx.getString(
 																			R.string
@@ -393,7 +389,7 @@ public class FileViewActivity extends BaseActivity implements BottomSheetListene
 										case 404:
 											runOnUiThread(
 													() ->
-															Toasty.warning(
+															Toasty.show(
 																	ctx,
 																	ctx.getString(
 																			R.string.apiNotFound)));
@@ -402,7 +398,7 @@ public class FileViewActivity extends BaseActivity implements BottomSheetListene
 										default:
 											runOnUiThread(
 													() ->
-															Toasty.error(
+															Toasty.show(
 																	ctx,
 																	getString(
 																			R.string
@@ -430,13 +426,9 @@ public class FileViewActivity extends BaseActivity implements BottomSheetListene
 			if (isSubmit || !query.equals(lastQuery)) {
 				if (!query.isEmpty()) {
 					if (matches > 0) {
-						SnackBar.success(
-								this,
-								binding.getRoot(),
-								getString(R.string.search_matches_found, matches));
+						Toasty.show(this, getString(R.string.search_matches_found, matches));
 					} else {
-						SnackBar.warning(
-								this, binding.getRoot(), getString(R.string.search_no_matches));
+						Toasty.show(this, getString(R.string.search_no_matches));
 					}
 				}
 				lastQuery = query;
@@ -701,7 +693,7 @@ public class FileViewActivity extends BaseActivity implements BottomSheetListene
 				editFileLauncher.launch(intent);
 
 			} else {
-				Toasty.error(ctx, getString(R.string.fileTypeCannotBeEdited));
+				Toasty.show(ctx, getString(R.string.fileTypeCannotBeEdited));
 			}
 		}
 

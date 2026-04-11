@@ -5,12 +5,12 @@ import android.net.Uri;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Looper;
-import android.util.Log;
 import android.view.View;
+import android.widget.ImageView;
+import android.widget.TextView;
 import androidx.annotation.NonNull;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Objects;
 import org.apache.commons.lang3.StringUtils;
 import org.gitnex.tea4j.v2.models.ContentsResponse;
 import org.gitnex.tea4j.v2.models.Organization;
@@ -47,615 +47,438 @@ public class DeepLinksActivity extends BaseActivity {
 
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
-
 		super.onCreate(savedInstanceState);
 
 		viewBinding = ActivityDeeplinksBinding.inflate(getLayoutInflater());
 		setContentView(viewBinding.getRoot());
 
+		initNavigationIntents();
+
+		Intent intent = getIntent();
+		if (intent == null || intent.getData() == null) {
+			startActivity(mainIntent);
+			finish();
+			return;
+		}
+
+		data = normalizeUri(intent.getData());
+
+		if (tinyDB.getInt("currentActiveAccountId", -1) <= -1) {
+			goToLogin(data.getHost());
+			return;
+		}
+
+		UserAccountsApi userAccountsApi = BaseApi.getInstance(ctx, UserAccountsApi.class);
+		if (userAccountsApi == null) {
+			startActivity(mainIntent);
+			finish();
+			return;
+		}
+
+		matchAndSwitchAccount(userAccountsApi.loggedInUserAccounts());
+
+		if (accountFound) {
+			handleRouting(data);
+		} else {
+			handleAccountNotFound();
+		}
+	}
+
+	private Uri normalizeUri(Uri incomingData) {
+		if ("gitnex".equals(incomingData.getScheme())) {
+			return Uri.parse(incomingData.toString().replaceFirst("gitnex://", "https://"));
+		}
+		return incomingData;
+	}
+
+	private void matchAndSwitchAccount(List<UserAccount> userAccounts) {
+		if (userAccounts == null) return;
+
+		String hostExternal = data.getHost();
+		int portExternal = data.getPort();
+		String hostUrlExternal =
+				(portExternal > 0) ? hostExternal + ":" + portExternal : hostExternal;
+
+		if (hostUrlExternal == null) hostUrlExternal = "";
+
+		for (UserAccount userAccount : userAccounts) {
+			String hostUri = userAccount.getInstanceUrl();
+			if (hostUri != null && hostUri.toLowerCase().contains(hostUrlExternal.toLowerCase())) {
+				accountFound = true;
+				AppUtil.switchToAccount(ctx, userAccount, false);
+				break;
+			}
+		}
+	}
+
+	private void handleRouting(Uri uri) {
+		List<String> segments = uri.getPathSegments();
+		int size = segments.size();
+		String last = uri.getLastPathSegment();
+
+		if (size == 0) {
+			showNoActionButtons();
+			return;
+		}
+
+		if (size == 1) {
+			handlePathSizeOne(last);
+		} else if (size == 2) {
+			handlePathSizeTwo(segments, last);
+		} else {
+			handlePathSizeThreePlus(segments, last);
+		}
+	}
+
+	private void handlePathSizeOne(String last) {
+		if (last == null) return;
+		switch (last) {
+			case "notifications":
+				launchMainWithFragment("notification");
+				break;
+			case "explore":
+				launchMainWithFragment("explore");
+				break;
+			case "admin":
+				launchMainWithFragment("admin");
+				break;
+			default:
+				delayedTask(() -> getUserOrOrg(last));
+				break;
+		}
+	}
+
+	private void handlePathSizeTwo(List<String> segments, String last) {
+		String first = segments.get(0);
+
+		if ("explore".equals(first)) {
+			if ("organizations".equals(last)) {
+				mainIntent.putExtra("exploreOrgs", true);
+			}
+			launchMainWithFragment("explore");
+		} else if ("user".equals(first) && "login".equals(last)) {
+			goToLogin(data.getHost());
+		} else if ("admin".equals(first)) {
+			mainIntent.putExtra("launchFragmentByLinkHandler", "admin");
+			mainIntent.putExtra("giteaAdminAction", last);
+			startActivity(mainIntent);
+			finish();
+		} else if (!first.isEmpty() && last != null && !last.isEmpty()) {
+			String repo = last;
+			if (repo.endsWith(".git")) {
+				repo = repo.substring(0, repo.length() - 4);
+			}
+			String finalRepo = repo;
+			delayedTask(() -> goToRepoSection(first, finalRepo, "repo"));
+		} else {
+			showNoActionButtons();
+		}
+	}
+
+	private void handlePathSizeThreePlus(List<String> segments, String last) {
+		String owner = segments.get(0);
+		String repo = segments.get(1);
+		String action = segments.get(2);
+
+		switch (action) {
+			case "issues":
+				handleIssues(owner, repo, last);
+				break;
+			case "pulls":
+				handlePulls(segments);
+				break;
+			case "compare":
+				delayedTask(() -> goToRepoSection(owner, repo, "pullNew"));
+				break;
+			case "commit":
+				repoIntent.putExtra("sha", last);
+				delayedTask(() -> goToRepoSection(owner, repo, "commit"));
+				break;
+			case "commits":
+				repoIntent.putExtra("branchName", last);
+				delayedTask(() -> goToRepoSection(owner, repo, "commitsList"));
+				break;
+			case "milestones":
+				String mType = "new".equals(last) ? "milestonesNew" : "milestones";
+				delayedTask(() -> goToRepoSection(owner, repo, mType));
+				break;
+			case "milestone":
+				repoIntent.putExtra("milestoneId", last);
+				delayedTask(() -> goToRepoSection(owner, repo, "milestones"));
+				break;
+			case "releases":
+				handleReleases(segments, last);
+				break;
+			case "labels":
+				delayedTask(() -> goToRepoSection(owner, repo, "labels"));
+				break;
+			case "settings":
+				delayedTask(() -> goToRepoSection(owner, repo, "settings"));
+				break;
+			case "wiki":
+				handleWiki(owner, repo);
+				break;
+			case "src":
+				handleSource(segments, last);
+				break;
+			default:
+				if ("branches".equals(last)) {
+					delayedTask(() -> goToRepoSection(owner, repo, "branchesList"));
+				} else {
+					showNoActionButtons();
+				}
+				break;
+		}
+	}
+
+	private void handleIssues(String owner, String repo, String last) {
+		if (last != null && !last.contains("issues") && StringUtils.isNumeric(last)) {
+			issueIntent.putExtra("issueNumber", last);
+			issueIntent.putExtra("openedFromLink", "true");
+
+			String[] urlSplitted = data.toString().split("#");
+			if (urlSplitted.length == 2) {
+				issueIntent.putExtra("issueComment", urlSplitted[1]);
+			}
+
+			IssueContext issue =
+					new IssueContext(
+							new RepositoryContext(owner, repo, ctx),
+							Integer.parseInt(last),
+							"Issue");
+			issue.getRepository().saveToDB(ctx);
+			issueIntent.putExtra(IssueContext.INTENT_EXTRA, issue);
+			startActivity(issueIntent);
+			finish();
+		} else {
+			String type = "new".equals(last) ? "issueNew" : "issue";
+			delayedTask(() -> goToRepoSection(owner, repo, type));
+		}
+	}
+
+	private void handlePulls(List<String> segments) {
+		String owner = segments.get(0);
+		String repo = segments.get(1);
+		String last = segments.get(segments.size() - 1);
+
+		if (last != null && !last.contains("pulls") && StringUtils.isNumeric(last)) {
+			delayedTask(
+					() -> {
+						String[] urlSplitted = data.toString().split("#");
+						if (urlSplitted.length == 2) {
+							issueIntent.putExtra("issueComment", urlSplitted[1]);
+						}
+						getPullRequest(owner, repo, Integer.parseInt(last));
+					});
+		} else if ("files".equals(last)) {
+			delayedTask(
+					() -> {
+						issueIntent.putExtra("openPrDiff", "true");
+						getPullRequest(owner, repo, Integer.parseInt(segments.get(3)));
+					});
+		} else {
+			delayedTask(() -> goToRepoSection(owner, repo, "pull"));
+		}
+	}
+
+	private void handleSource(List<String> segments, String last) {
+		if (segments.size() == 5 && "branch".equals(segments.get(3))) {
+			repoIntent.putExtra("selectedBranch", last);
+			delayedTask(() -> goToRepoSection(segments.get(0), segments.get(1), "branch"));
+		} else if (segments.size() > 4 && "branch".equals(segments.get(3))) {
+			StringBuilder filePath = new StringBuilder();
+			ArrayList<String> fileSegments = new ArrayList<>(segments);
+			fileSegments.subList(0, 5).clear();
+			for (String item : fileSegments) {
+				filePath.append(item).append("/");
+			}
+			if (filePath.length() > 0) filePath.deleteCharAt(filePath.length() - 1);
+			delayedTask(
+					() ->
+							getFile(
+									segments.get(0),
+									segments.get(1),
+									filePath.toString(),
+									segments.get(4)));
+		}
+	}
+
+	private void handleWiki(String owner, String repo) {
+		String action = data.getQueryParameter("action");
+		String type = (action != null && action.equalsIgnoreCase("_new")) ? "wikiNew" : "wiki";
+		delayedTask(() -> goToRepoSection(owner, repo, type));
+	}
+
+	private void handleReleases(List<String> segments, String last) {
+		if (segments.size() == 5 && "tag".equals(segments.get(3))) {
+			repoIntent.putExtra("releaseTagName", last);
+		}
+		String type = "new".equals(last) ? "newRelease" : "releases";
+		delayedTask(() -> goToRepoSection(segments.get(0), segments.get(1), type));
+	}
+
+	private void handleAccountNotFound() {
+		viewBinding.progressBar.setVisibility(View.GONE);
+		viewBinding.addNewAccountFrame.setVisibility(View.VISIBLE);
+		viewBinding.noActionFrame.setVisibility(View.GONE);
+		viewBinding.addAccountText.setText(
+				String.format(getString(R.string.accountDoesNotExist), data.getHost()));
+
+		viewBinding.addNewAccount.setOnClickListener(
+				v -> {
+					Intent loginIntent = new Intent(ctx, LoginActivity.class);
+					loginIntent.putExtra("instanceUrl", data.getHost());
+					loginIntent.putExtra("mode", "new_account");
+					startActivity(loginIntent);
+					finish();
+				});
+
+		viewBinding.openInBrowser.setOnClickListener(
+				v -> {
+					AppUtil.openUrlInBrowser(this, String.valueOf(data));
+					finish();
+				});
+	}
+
+	private void initNavigationIntents() {
 		mainIntent = new Intent(ctx, MainActivity.class);
 		issueIntent = new Intent(ctx, IssueDetailActivity.class);
 		repoIntent = new Intent(ctx, RepoDetailActivity.class);
 		orgIntent = new Intent(ctx, OrganizationDetailActivity.class);
 		userIntent = new Intent(ctx, ProfileActivity.class);
-
-		Intent intent = getIntent();
-		data = intent.getData();
-		assert data != null;
-
-		if ("gitnex".equals(data.getScheme())) {
-			StringBuilder httpsUrl = getStringBuilder();
-			data = Uri.parse(httpsUrl.toString());
-		}
-
-		// check for login
-		if (tinyDB.getInt("currentActiveAccountId", -1) <= -1) {
-			Intent loginIntent = new Intent(ctx, LoginActivity.class);
-			loginIntent.putExtra("instanceUrl", data.getHost());
-			ctx.startActivity(loginIntent);
-			finish();
-			return;
-		}
-
-		// check for the links(URI) to be in the db
-		UserAccountsApi userAccountsApi = BaseApi.getInstance(ctx, UserAccountsApi.class);
-		assert userAccountsApi != null;
-		List<UserAccount> userAccounts = userAccountsApi.loggedInUserAccounts();
-
-		for (UserAccount userAccount : userAccounts) {
-
-			String hostUri = userAccount.getInstanceUrl();
-
-			String hostExternal = data.getHost();
-			int portExternal = data.getPort();
-
-			String hostUrlExternal;
-			if (portExternal > 0) {
-				hostUrlExternal = hostExternal + ":" + portExternal;
-			} else {
-				hostUrlExternal = hostExternal;
-			}
-
-			if (hostUrlExternal == null) {
-				hostUrlExternal = "";
-			}
-
-			if (hostUri.toLowerCase().contains(hostUrlExternal.toLowerCase())) {
-
-				accountFound = true;
-
-				AppUtil.switchToAccount(ctx, userAccount, false);
-				break;
-			}
-		}
-
-		if (accountFound) {
-
-			// redirect to proper fragment/activity, if no action is there, show options where user
-			// to want to go like repos, profile, notifications etc
-			if (data.getPathSegments().size() == 1) {
-				if (Objects.equals(data.getLastPathSegment(), "notifications")) { // notifications
-					mainIntent.putExtra("launchFragmentByLinkHandler", "notification");
-					ctx.startActivity(mainIntent);
-					finish();
-				} else if (Objects.equals(data.getLastPathSegment(), "explore")) { // explore
-					mainIntent.putExtra("launchFragmentByLinkHandler", "explore");
-					ctx.startActivity(mainIntent);
-					finish();
-				} else if (Objects.equals(
-						data.getLastPathSegment(),
-						getAccount().getAccount().getUserName())) { // user profile
-					new Handler(Looper.getMainLooper())
-							.postDelayed(() -> getUserOrOrg(data.getLastPathSegment()), 500);
-				} else if (Objects.equals(data.getLastPathSegment(), "admin")) {
-					mainIntent.putExtra("launchFragmentByLinkHandler", "admin");
-					ctx.startActivity(mainIntent);
-					finish();
-				} else {
-					new Handler(Looper.getMainLooper())
-							.postDelayed(() -> getUserOrOrg(data.getLastPathSegment()), 500);
-				}
-			} else if (data.getPathSegments().size() == 2) {
-				if (data.getPathSegments().get(0).equals("explore")) { // specific explore tab
-					if (data.getPathSegments().get(1).equals("organizations")) { // orgs
-						mainIntent.putExtra("exploreOrgs", true);
-					}
-					mainIntent.putExtra("launchFragmentByLinkHandler", "explore");
-					ctx.startActivity(mainIntent);
-					finish();
-				} else if (data.getPathSegments().get(0).equals("user")
-						&& data.getPathSegments().get(1).equals("login")) { // open login
-					Intent loginIntent = new Intent(ctx, LoginActivity.class);
-					intent.putExtra("mode", "new_account");
-					loginIntent.putExtra("instanceUrl", data.getHost());
-					loginIntent.putExtra("instanceProtocol", data.getScheme());
-					ctx.startActivity(loginIntent);
-					finish();
-				} else if (data.getPathSegments().get(0).equals("admin")) {
-					mainIntent.putExtra("launchFragmentByLinkHandler", "admin");
-					mainIntent.putExtra("giteaAdminAction", data.getLastPathSegment());
-					ctx.startActivity(mainIntent);
-					finish();
-				} else if (!data.getPathSegments().get(0).isEmpty()
-						& !Objects.equals(data.getLastPathSegment(), "")) { // go to repo
-					String repo = data.getLastPathSegment();
-					assert repo != null;
-					if (repo.endsWith(".git")) { // Git clone URL
-						repo = repo.substring(0, repo.length() - 4);
-					}
-					String finalRepo = repo;
-					new Handler(Looper.getMainLooper())
-							.postDelayed(
-									() ->
-											goToRepoSection(
-													data.getPathSegments().get(0),
-													finalRepo,
-													"repo"),
-									500);
-				} else { // no action, show options
-					showNoActionButtons();
-				}
-			} else if (data.getPathSegments().size() >= 3) {
-				if (data.getPathSegments().get(2).equals("issues")) { // issue
-
-					if (!Objects.requireNonNull(data.getLastPathSegment()).contains("issues")
-							& StringUtils.isNumeric(data.getLastPathSegment())) {
-
-						issueIntent.putExtra("issueNumber", data.getLastPathSegment());
-						issueIntent.putExtra("openedFromLink", "true");
-
-						String[] urlSplitted = data.toString().split("#");
-						if (urlSplitted.length == 2) {
-							issueIntent.putExtra("issueComment", urlSplitted[1]);
-						}
-
-						IssueContext issue =
-								new IssueContext(
-										new RepositoryContext(
-												data.getPathSegments().get(0),
-												data.getPathSegments().get(1),
-												ctx),
-										Integer.parseInt(data.getLastPathSegment()),
-										"Issue");
-
-						issue.getRepository().saveToDB(ctx);
-
-						issueIntent.putExtra(IssueContext.INTENT_EXTRA, issue);
-
-						ctx.startActivity(issueIntent);
-						finish();
-					} else if (Objects.requireNonNull(data.getLastPathSegment())
-							.contains("issues")) {
-						new Handler(Looper.getMainLooper())
-								.postDelayed(
-										() ->
-												goToRepoSection(
-														data.getPathSegments().get(0),
-														data.getPathSegments().get(1),
-														"issue"),
-										500);
-					} else if (data.getLastPathSegment().equals("new")) {
-						new Handler(Looper.getMainLooper())
-								.postDelayed(
-										() ->
-												goToRepoSection(
-														data.getPathSegments().get(0),
-														data.getPathSegments().get(1),
-														"issueNew"),
-										500);
-					} else {
-						ctx.startActivity(mainIntent);
-						finish();
-					}
-				} else if (data.getPathSegments().get(2).equals("pulls")) { // pr
-
-					if (!Objects.requireNonNull(data.getLastPathSegment()).contains("pulls")
-							& StringUtils.isNumeric(data.getLastPathSegment())) {
-
-						new Handler(Looper.getMainLooper())
-								.postDelayed(
-										() -> {
-											String[] urlSplitted = data.toString().split("#");
-											if (urlSplitted.length == 2) {
-												issueIntent.putExtra(
-														"issueComment", urlSplitted[1]);
-											}
-
-											getPullRequest(
-													data.getPathSegments().get(0),
-													data.getPathSegments().get(1),
-													Integer.parseInt(data.getLastPathSegment()));
-										},
-										500);
-
-					} else if (Objects.requireNonNull(data.getLastPathSegment())
-							.contains("pulls")) {
-						new Handler(Looper.getMainLooper())
-								.postDelayed(
-										() ->
-												goToRepoSection(
-														data.getPathSegments().get(0),
-														data.getPathSegments().get(1),
-														"pull"),
-										500);
-					} else if (data.getLastPathSegment().equals("files")) { // pr diff
-						new Handler(Looper.getMainLooper())
-								.postDelayed(
-										() -> {
-											issueIntent.putExtra("openPrDiff", "true");
-											getPullRequest(
-													data.getPathSegments().get(0),
-													data.getPathSegments().get(1),
-													Integer.parseInt(
-															data.getPathSegments().get(3)));
-										},
-										500);
-					} else {
-						ctx.startActivity(mainIntent);
-						finish();
-					}
-				} else if (data.getPathSegments().get(2).equals("compare")) { // new pull request
-					new Handler(Looper.getMainLooper())
-							.postDelayed(
-									() ->
-											goToRepoSection(
-													data.getPathSegments().get(0),
-													data.getPathSegments().get(1),
-													"pullNew"),
-									500);
-				} else if (data.getPathSegments().get(2).equals("commit")) {
-					repoIntent.putExtra("sha", data.getLastPathSegment());
-					new Handler(Looper.getMainLooper())
-							.postDelayed(
-									() ->
-											goToRepoSection(
-													data.getPathSegments().get(0),
-													data.getPathSegments().get(1),
-													"commit"),
-									500);
-				} else if (data.getPathSegments().get(2).equals("commits")) { // commits list
-					String branch = data.getLastPathSegment();
-					repoIntent.putExtra("branchName", branch);
-					new Handler(Looper.getMainLooper())
-							.postDelayed(
-									() ->
-											goToRepoSection(
-													data.getPathSegments().get(0),
-													data.getPathSegments().get(1),
-													"commitsList"),
-									500);
-				} else if (data.getPathSegments().get(2).equals("milestones")
-						&& Objects.equals(data.getLastPathSegment(), "new")) { // new milestone
-					new Handler(Looper.getMainLooper())
-							.postDelayed(
-									() ->
-											goToRepoSection(
-													data.getPathSegments().get(0),
-													data.getPathSegments().get(1),
-													"milestonesNew"),
-									500);
-				} else if (data.getPathSegments().get(2).equals("milestones")) { // milestones
-					new Handler(Looper.getMainLooper())
-							.postDelayed(
-									() ->
-											goToRepoSection(
-													data.getPathSegments().get(0),
-													data.getPathSegments().get(1),
-													"milestones"),
-									500);
-				} else if (data.getPathSegments().get(2).equals("milestone")) { // milestone
-					repoIntent.putExtra("milestoneId", data.getLastPathSegment());
-					new Handler(Looper.getMainLooper())
-							.postDelayed(
-									() ->
-											goToRepoSection(
-													data.getPathSegments().get(0),
-													data.getPathSegments().get(1),
-													"milestones"),
-									500);
-				} else if (data.getPathSegments().get(2).equals("releases")
-						&& Objects.equals(data.getLastPathSegment(), "new")) { // new release
-					new Handler(Looper.getMainLooper())
-							.postDelayed(
-									() ->
-											goToRepoSection(
-													data.getPathSegments().get(0),
-													data.getPathSegments().get(1),
-													"newRelease"),
-									500);
-				} else if (data.getPathSegments().get(2).equals("releases")) { // releases
-					if (data.getPathSegments().size() == 5) {
-						if (data.getPathSegments().get(2).equals("releases")
-								&& data.getPathSegments().get(3).equals("tag")) {
-							repoIntent.putExtra("releaseTagName", data.getLastPathSegment());
-						}
-					}
-					new Handler(Looper.getMainLooper())
-							.postDelayed(
-									() ->
-											goToRepoSection(
-													data.getPathSegments().get(0),
-													data.getPathSegments().get(1),
-													"releases"),
-									500);
-				} else if (data.getPathSegments().get(2).equals("labels")) { // labels
-					new Handler(Looper.getMainLooper())
-							.postDelayed(
-									() ->
-											goToRepoSection(
-													data.getPathSegments().get(0),
-													data.getPathSegments().get(1),
-													"labels"),
-									500);
-				} else if (data.getPathSegments().get(2).equals("settings")) { // repo settings
-					new Handler(Looper.getMainLooper())
-							.postDelayed(
-									() ->
-											goToRepoSection(
-													data.getPathSegments().get(0),
-													data.getPathSegments().get(1),
-													"settings"),
-									500);
-				} else if (Objects.equals(data.getLastPathSegment(), "branches")) { // branches list
-					new Handler(Looper.getMainLooper())
-							.postDelayed(
-									() ->
-											goToRepoSection(
-													data.getPathSegments().get(0),
-													data.getPathSegments().get(1),
-													"branchesList"),
-									500);
-				} else if (data.getPathSegments().size() == 5
-						&& data.getPathSegments().get(2).equals("src")
-						&& data.getPathSegments().get(3).equals("branch")) { // branch
-					repoIntent.putExtra("selectedBranch", data.getLastPathSegment());
-					new Handler(Looper.getMainLooper())
-							.postDelayed(
-									() ->
-											goToRepoSection(
-													data.getPathSegments().get(0),
-													data.getPathSegments().get(1),
-													"branch"),
-									500);
-				} else if (data.getPathSegments().get(2).equals("src")
-						&& data.getPathSegments().get(3).equals("branch")) { // file/dir
-					StringBuilder filePath = new StringBuilder();
-					ArrayList<String> segments = new ArrayList<>(data.getPathSegments());
-					segments.subList(0, 5).clear();
-					for (String item : segments) {
-						filePath.append(item);
-						filePath.append("/");
-					}
-					filePath.deleteCharAt(filePath.toString().length() - 1);
-					new Handler(Looper.getMainLooper())
-							.postDelayed(
-									() ->
-											getFile(
-													data.getPathSegments().get(0),
-													data.getPathSegments().get(1),
-													filePath.toString(),
-													data.getPathSegments().get(4)),
-									500);
-				} else if (data.getPathSegments().get(2).equals("wiki")) { // wiki
-
-					if (data.getQueryParameter("action") != null
-							&& Objects.requireNonNull(data.getQueryParameter("action"))
-									.equalsIgnoreCase("_new")) {
-						new Handler(Looper.getMainLooper())
-								.postDelayed(
-										() ->
-												goToRepoSection(
-														data.getPathSegments().get(0),
-														data.getPathSegments().get(1),
-														"wikiNew"),
-										500);
-					} else {
-						new Handler(Looper.getMainLooper())
-								.postDelayed(
-										() ->
-												goToRepoSection(
-														data.getPathSegments().get(0),
-														data.getPathSegments().get(1),
-														"wiki"),
-										500);
-					}
-				} else { // no action, show options
-					showNoActionButtons();
-				}
-			} else {
-
-				startActivity(mainIntent);
-				finish();
-			}
-		} else {
-
-			viewBinding.progressBar.setVisibility(View.GONE);
-			viewBinding.addNewAccountFrame.setVisibility(View.VISIBLE);
-			viewBinding.noActionFrame.setVisibility(View.GONE);
-			viewBinding.addAccountText.setText(
-					String.format(
-							getResources().getString(R.string.accountDoesNotExist),
-							data.getHost()));
-
-			viewBinding.addNewAccount.setOnClickListener(
-					addNewAccount -> {
-						Intent accountIntent = new Intent(ctx, LoginActivity.class);
-						accountIntent.putExtra("instanceUrl", data.getHost());
-						intent.putExtra("mode", "new_account");
-						startActivity(accountIntent);
-						finish();
-					});
-
-			viewBinding.openInBrowser.setOnClickListener(
-					addNewAccount -> {
-						AppUtil.openUrlInBrowser(this, String.valueOf(data));
-						finish();
-					});
-
-			viewBinding.launchApp.setOnClickListener(
-					launchApp -> {
-						startActivity(mainIntent);
-						finish();
-					});
-		}
 	}
 
-	@NonNull private StringBuilder getStringBuilder() {
-		String originalHost = data.getHost();
-		String originalPath = data.getPath();
-		String query = data.getQuery();
-		String fragment = data.getFragment();
+	private void launchMainWithFragment(String fragmentKey) {
+		mainIntent.putExtra("launchFragmentByLinkHandler", fragmentKey);
+		startActivity(mainIntent);
+		finish();
+	}
 
-		StringBuilder httpsUrl = new StringBuilder("https://");
-		httpsUrl.append(originalHost);
+	private void goToLogin(String host) {
+		Intent loginIntent = new Intent(ctx, LoginActivity.class);
+		loginIntent.putExtra("instanceUrl", host);
+		startActivity(loginIntent);
+		finish();
+	}
 
-		if (originalPath != null) {
-			httpsUrl.append(originalPath);
-		}
-
-		if (query != null) {
-			httpsUrl.append("?").append(query);
-		}
-
-		if (fragment != null) {
-			httpsUrl.append("#").append(fragment);
-		}
-		return httpsUrl;
+	private void delayedTask(Runnable task) {
+		new Handler(Looper.getMainLooper()).postDelayed(task, 500);
 	}
 
 	private void getPullRequest(String repoOwner, String repoName, int index) {
-
 		Call<PullRequest> call =
 				RetrofitClient.getApiInterface(ctx)
 						.repoGetPullRequest(repoOwner, repoName, (long) index);
-
 		call.enqueue(
 				new Callback<>() {
-
 					@Override
 					public void onResponse(
 							@NonNull Call<PullRequest> call,
-							@NonNull retrofit2.Response<PullRequest> response) {
-
-						PullRequest prInfo = response.body();
-
-						if (response.code() == 200) {
-
-							assert prInfo != null;
-
+							@NonNull Response<PullRequest> response) {
+						if (response.isSuccessful() && response.body() != null) {
+							PullRequest prInfo = response.body();
 							issueIntent.putExtra("openedFromLink", "true");
-
 							IssueContext issue =
 									new IssueContext(
 											prInfo,
 											new RepositoryContext(repoOwner, repoName, ctx));
-
 							issue.getRepository().saveToDB(ctx);
-
 							issueIntent.putExtra(IssueContext.INTENT_EXTRA, issue);
-							ctx.startActivity(issueIntent);
+							startActivity(issueIntent);
 							finish();
 						} else {
-
-							ctx.startActivity(mainIntent);
+							startActivity(mainIntent);
 							finish();
-							Log.e("onFailure-links-pr", String.valueOf(response.code()));
 						}
 					}
 
 					@Override
 					public void onFailure(@NonNull Call<PullRequest> call, @NonNull Throwable t) {
-
-						ctx.startActivity(issueIntent);
+						startActivity(mainIntent);
 						finish();
-						Log.e("onFailure-links-pr", t.toString());
 					}
 				});
 	}
 
 	private void goToRepoSection(String repoOwner, String repoName, String type) {
-
 		Call<Repository> call = RetrofitClient.getApiInterface(ctx).repoGet(repoOwner, repoName);
-
 		call.enqueue(
 				new Callback<>() {
-
 					@Override
 					public void onResponse(
 							@NonNull Call<Repository> call,
-							@NonNull retrofit2.Response<Repository> response) {
-						Repository repoInfo = response.body();
-
-						if (response.code() == 200) {
-							assert repoInfo != null;
-
-							RepositoryContext repo = new RepositoryContext(repoInfo, ctx);
-
+							@NonNull Response<Repository> response) {
+						if (response.isSuccessful() && response.body() != null) {
+							RepositoryContext repo = new RepositoryContext(response.body(), ctx);
 							repoIntent.putExtra("goToSection", "yes");
 							repoIntent.putExtra("goToSectionType", type);
-
 							repo.saveToDB(ctx);
 							repoIntent.putExtra(RepositoryContext.INTENT_EXTRA, repo);
-
-							ctx.startActivity(repoIntent);
+							startActivity(repoIntent);
 							finish();
 						} else {
-							ctx.startActivity(mainIntent);
+							startActivity(mainIntent);
 							finish();
-							Log.e("error-goToRepo", response.message());
 						}
 					}
 
 					@Override
 					public void onFailure(@NonNull Call<Repository> call, @NonNull Throwable t) {
-
-						ctx.startActivity(mainIntent);
+						startActivity(mainIntent);
 						finish();
-						Log.e("onFailure-goToRepo", t.toString());
 					}
 				});
 	}
 
 	private void getUserOrOrg(String userOrgName) {
 		Call<Organization> call = RetrofitClient.getApiInterface(ctx).orgGet(userOrgName);
-
 		call.enqueue(
 				new Callback<>() {
-
 					@Override
 					public void onResponse(
 							@NonNull Call<Organization> call,
 							@NonNull Response<Organization> response) {
-						if (response.code() == 404
-								|| response.code()
-										== 504) { // org doesn't exist or it's a user user
-							Log.d("getUserOrOrg-404", String.valueOf(response.code()));
+						if (response.code() == 404 || response.code() == 504) {
 							getUser(userOrgName);
-						} else if (response.code() == 200) { // org
-							assert response.body() != null;
+						} else if (response.isSuccessful() && response.body() != null) {
 							orgIntent.putExtra("orgName", response.body().getUsername());
 							orgIntent.putExtra("organizationId", response.body().getId());
 							orgIntent.putExtra("organizationAction", true);
-							ctx.startActivity(orgIntent);
+							startActivity(orgIntent);
 							finish();
 						} else {
-							Log.e("getUserOrOrg-code", String.valueOf(response.code()));
-							ctx.startActivity(mainIntent);
+							startActivity(mainIntent);
 							finish();
 						}
 					}
 
 					@Override
 					public void onFailure(@NonNull Call<Organization> call, @NonNull Throwable t) {
-						Log.e("onFailure-getUserOrOrg", t.toString());
+						startActivity(mainIntent);
+						finish();
 					}
 				});
 	}
 
 	private void getUser(String userName) {
 		Call<User> call = RetrofitClient.getApiInterface(ctx).userGet(userName);
-
 		call.enqueue(
 				new Callback<>() {
-
 					@Override
 					public void onResponse(
 							@NonNull Call<User> call, @NonNull Response<User> response) {
-						if (response.code() == 200) {
-							assert response.body() != null;
+						if (response.isSuccessful() && response.body() != null) {
 							userIntent.putExtra("username", response.body().getLogin());
-							ctx.startActivity(userIntent);
+							startActivity(userIntent);
 						} else {
-							Log.e("getUser-code", String.valueOf(response.code()));
-							ctx.startActivity(mainIntent);
+							startActivity(mainIntent);
 						}
 						finish();
 					}
 
 					@Override
 					public void onFailure(@NonNull Call<User> call, @NonNull Throwable t) {
-						Log.e("onFailure-getUser", t.toString());
-						ctx.startActivity(mainIntent);
+						startActivity(mainIntent);
 						finish();
 					}
 				});
@@ -664,26 +487,21 @@ public class DeepLinksActivity extends BaseActivity {
 	private void getFile(String owner, String repo, String filePath, String branch) {
 		Call<ContentsResponse> call =
 				RetrofitClient.getApiInterface(ctx).repoGetContents(owner, repo, filePath, branch);
-
 		call.enqueue(
 				new Callback<>() {
-
 					@Override
 					public void onResponse(
 							@NonNull Call<ContentsResponse> call,
 							@NonNull Response<ContentsResponse> response) {
-						if (response.code() == 200) {
-							// check if file and open file/dir
+						if (response.isSuccessful() && response.body() != null) {
 							ContentsResponse file = response.body();
-							assert file != null;
-							if (file.getType().equals("file")) {
+							if ("file".equals(file.getType())) {
 								repoIntent.putExtra("file", file);
 								repoIntent.putExtra("branch", branch);
 								goToRepoSection(owner, repo, "file");
 							}
 						} else {
-							Log.e("getFile-onFailure", String.valueOf(response.code()));
-							ctx.startActivity(mainIntent);
+							startActivity(mainIntent);
 							finish();
 						}
 					}
@@ -691,8 +509,6 @@ public class DeepLinksActivity extends BaseActivity {
 					@Override
 					public void onFailure(
 							@NonNull Call<ContentsResponse> call, @NonNull Throwable t) {
-						Log.e("getFile-onFailure", t.toString());
-						// maybe it's a directory
 						getDir(owner, repo, filePath, branch);
 					}
 				});
@@ -707,92 +523,80 @@ public class DeepLinksActivity extends BaseActivity {
 	private void showNoActionButtons() {
 		viewBinding.progressBar.setVisibility(View.GONE);
 
-		switch (Integer.parseInt(
-				AppDatabaseSettings.getSettingsValue(
-						ctx, AppDatabaseSettings.APP_LINK_HANDLER_KEY))) {
-			case 1: // repos
-				mainIntent.putExtra("launchFragmentByLinkHandler", "repos");
-				ctx.startActivity(mainIntent);
+		String savedValue =
+				AppDatabaseSettings.getSettingsValue(ctx, AppDatabaseSettings.APP_LINK_HANDLER_KEY);
+		int handler = 0;
+		try {
+			if (savedValue != null) handler = Integer.parseInt(savedValue);
+		} catch (NumberFormatException ignored) {
+		}
+
+		switch (handler) {
+			case 1: // Home
+				startActivity(mainIntent);
 				finish();
 				break;
-			case 2: // org
-				mainIntent.putExtra("launchFragmentByLinkHandler", "org");
-				ctx.startActivity(mainIntent);
-				finish();
+			case 2: // Repos
+				launchMainWithFragment("repos");
 				break;
-			case 3: // notifications
-				mainIntent.putExtra("launchFragmentByLinkHandler", "notification");
-				ctx.startActivity(mainIntent);
-				finish();
+			case 3: // Notifications
+				launchMainWithFragment("notification");
 				break;
-			case 4: // explore
-				mainIntent.putExtra("launchFragmentByLinkHandler", "explore");
-				ctx.startActivity(mainIntent);
-				finish();
-				break;
-			default: // show options
+			default:
 				viewBinding.noActionFrame.setVisibility(View.VISIBLE);
 				viewBinding.addNewAccountFrame.setVisibility(View.GONE);
 
+				setupActionCard(
+						viewBinding.homeCard.getRoot(),
+						R.string.home,
+						R.drawable.ic_home,
+						() -> {
+							saveLinkPreference(1);
+							startActivity(mainIntent);
+							finish();
+						});
+
+				setupActionCard(
+						viewBinding.repositoryCard.getRoot(),
+						R.string.navRepos,
+						R.drawable.ic_repo,
+						() -> {
+							saveLinkPreference(2);
+							launchMainWithFragment("repos");
+						});
+
+				setupActionCard(
+						viewBinding.notificationCard.getRoot(),
+						R.string.pageTitleNotifications,
+						R.drawable.ic_notifications,
+						() -> {
+							saveLinkPreference(3);
+							launchMainWithFragment("notification");
+						});
+
 				viewBinding.openInBrowserNoActionFrame.setOnClickListener(
-						noActionFrameOpenInBrowser -> {
+						v -> {
 							AppUtil.openUrlInBrowser(this, String.valueOf(data));
 							finish();
 						});
-
-				viewBinding.repository.setOnClickListener(
-						repository -> {
-							AppDatabaseSettings.updateSettingsValue(
-									ctx,
-									String.valueOf(1),
-									AppDatabaseSettings.APP_LINK_HANDLER_KEY);
-							mainIntent.putExtra("launchFragmentByLinkHandler", "repos");
-							ctx.startActivity(mainIntent);
-							finish();
-						});
-
-				viewBinding.organization.setOnClickListener(
-						organization -> {
-							AppDatabaseSettings.updateSettingsValue(
-									ctx,
-									String.valueOf(2),
-									AppDatabaseSettings.APP_LINK_HANDLER_KEY);
-							mainIntent.putExtra("launchFragmentByLinkHandler", "org");
-							ctx.startActivity(mainIntent);
-							finish();
-						});
-
-				viewBinding.notification.setOnClickListener(
-						notification -> {
-							AppDatabaseSettings.updateSettingsValue(
-									ctx,
-									String.valueOf(3),
-									AppDatabaseSettings.APP_LINK_HANDLER_KEY);
-							mainIntent.putExtra("launchFragmentByLinkHandler", "notification");
-							ctx.startActivity(mainIntent);
-							finish();
-						});
-
-				viewBinding.explore.setOnClickListener(
-						explore -> {
-							AppDatabaseSettings.updateSettingsValue(
-									ctx,
-									String.valueOf(4),
-									AppDatabaseSettings.APP_LINK_HANDLER_KEY);
-							mainIntent.putExtra("launchFragmentByLinkHandler", "explore");
-							ctx.startActivity(mainIntent);
-							finish();
-						});
-
-				viewBinding.launchApp2.setOnClickListener(
-						launchApp2 -> {
-							AppDatabaseSettings.updateSettingsValue(
-									ctx,
-									String.valueOf(0),
-									AppDatabaseSettings.APP_LINK_HANDLER_KEY);
-							ctx.startActivity(mainIntent);
-							finish();
-						});
+				break;
 		}
+	}
+
+	private void setupActionCard(View cardRoot, int titleRes, int iconRes, Runnable action) {
+		TextView title = cardRoot.findViewById(R.id.cardTitle);
+		TextView subtext = cardRoot.findViewById(R.id.cardSubtext);
+		ImageView icon = cardRoot.findViewById(R.id.cardIcon);
+
+		if (title != null) title.setText(getString(titleRes));
+		if (icon != null) icon.setImageResource(iconRes);
+		if (subtext != null) subtext.setVisibility(View.GONE);
+
+		cardRoot.setOnClickListener(v -> action.run());
+	}
+
+	private void saveLinkPreference(int value) {
+		AppDatabaseSettings.updateSettingsValue(
+				ctx, String.valueOf(value), AppDatabaseSettings.APP_LINK_HANDLER_KEY);
 	}
 }

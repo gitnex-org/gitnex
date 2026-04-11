@@ -13,7 +13,6 @@ import androidx.annotation.NonNull;
 import androidx.core.app.ActivityCompat;
 import androidx.core.app.NotificationCompat;
 import androidx.core.app.NotificationManagerCompat;
-import androidx.core.app.TaskStackBuilder;
 import androidx.work.Worker;
 import androidx.work.WorkerParameters;
 import com.google.android.material.dialog.MaterialAlertDialogBuilder;
@@ -250,17 +249,17 @@ public class NotificationsWorker extends Worker {
 	}
 
 	private PendingIntent getPendingIntent(@NonNull UserAccount userAccount) {
-
 		Intent intent = new Intent(context, MainActivity.class);
 
 		intent.putExtra("launchFragment", "notifications");
 		intent.putExtra("switchAccountId", userAccount.getAccountId());
-		intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
 
-		TaskStackBuilder stackBuilder = TaskStackBuilder.create(context);
-		stackBuilder.addNextIntentWithParentStack(intent);
+		intent.setFlags(Intent.FLAG_ACTIVITY_SINGLE_TOP | Intent.FLAG_ACTIVITY_CLEAR_TOP);
 
-		return stackBuilder.getPendingIntent(
-				1, PendingIntent.FLAG_UPDATE_CURRENT | PendingIntent.FLAG_IMMUTABLE);
+		return PendingIntent.getActivity(
+				context,
+				userAccount.getAccountId(),
+				intent,
+				PendingIntent.FLAG_UPDATE_CURRENT | PendingIntent.FLAG_MUTABLE);
 	}
 }

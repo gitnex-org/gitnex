@@ -20,9 +20,11 @@
     <dimen name="dimen36dp">36dp</dimen>
     <dimen name="dimen38dp">38dp</dimen>
     <dimen name="dimen40dp">40dp</dimen>
+    <dimen name="dimen42dp">42dp</dimen>
     <dimen name="dimen44dp">44dp</dimen>
     <dimen name="dimen48dp">48dp</dimen>
     <dimen name="dimen50dp">50dp</dimen>
+    <dimen name="dimen52dp">52dp</dimen>
     <dimen name="dimen54dp">54dp</dimen>
     <dimen name="dimen56dp">56dp</dimen>
     <dimen name="dimen60dp">60dp</dimen>
@@ -45,10 +47,19 @@
     <dimen name="dimen186dp">186dp</dimen>
     <dimen name="dimen200dp">200dp</dimen>
     <dimen name="dimen206dp">206dp</dimen>
+    <dimen name="dimen224dp">224dp</dimen>
     <dimen name="dimen320dp">320dp</dimen>
+    <dimen name="dimen340dp">340dp</dimen>
+    <dimen name="dimen360dp">360dp</dimen>
+    <dimen name="dimen380dp">380dp</dimen>
+    <dimen name="dimen400dp">400dp</dimen>
     <dimen name="dimen480dp">480dp</dimen>
 
+    <dimen name="negative8dp">-8dp</dimen>
+
     <!--SP-->
+    <dimen name="dimen10sp">10sp</dimen>
+    <dimen name="dimen11sp">11sp</dimen>
     <dimen name="dimen12sp">12sp</dimen>
     <dimen name="dimen14sp">14sp</dimen>
     <dimen name="dimen16sp">16sp</dimen>

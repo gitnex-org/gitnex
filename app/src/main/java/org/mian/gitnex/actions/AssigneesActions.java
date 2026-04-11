@@ -17,7 +17,7 @@ import retrofit2.Call;
 import retrofit2.Callback;
 
 /**
- * @author M M Arif
+ * @author mmarif
  */
 public class AssigneesActions {
 
@@ -63,14 +63,14 @@ public class AssigneesActions {
 							}
 						} else {
 
-							Toasty.error(ctx, ctx.getResources().getString(R.string.genericError));
+							Toasty.show(ctx, ctx.getResources().getString(R.string.genericError));
 						}
 					}
 
 					@Override
 					public void onFailure(@NonNull Call<Issue> call, @NonNull Throwable t) {
 
-						Toasty.error(
+						Toasty.show(
 								ctx,
 								ctx.getResources().getString(R.string.genericServerResponseError));
 					}
@@ -111,7 +111,7 @@ public class AssigneesActions {
 								materialAlertDialogBuilder.show();
 							} else {
 
-								Toasty.warning(
+								Toasty.show(
 										ctx,
 										ctx.getResources().getString(R.string.noAssigneesFound));
 							}
@@ -120,7 +120,7 @@ public class AssigneesActions {
 
 						} else {
 
-							Toasty.error(ctx, ctx.getResources().getString(R.string.genericError));
+							Toasty.show(ctx, ctx.getResources().getString(R.string.genericError));
 						}
 						if (progressBar != null) {
 							progressBar.setVisibility(View.GONE);
@@ -133,7 +133,7 @@ public class AssigneesActions {
 						if (progressBar != null) {
 							progressBar.setVisibility(View.GONE);
 						}
-						Toasty.error(
+						Toasty.show(
 								ctx,
 								ctx.getResources().getString(R.string.genericServerResponseError));
 					}

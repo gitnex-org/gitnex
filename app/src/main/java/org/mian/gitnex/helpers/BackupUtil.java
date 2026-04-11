@@ -19,7 +19,7 @@ import java.util.zip.ZipInputStream;
 import java.util.zip.ZipOutputStream;
 
 /**
- * @author M M Arif
+ * @author mmarif
  */
 public class BackupUtil {
 

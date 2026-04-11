@@ -1,256 +1,272 @@
 package org.mian.gitnex.fragments;
 
-import android.content.Context;
+import android.app.Dialog;
 import android.os.Bundle;
-import android.os.Handler;
-import android.os.Looper;
+import android.text.Editable;
+import android.text.TextWatcher;
 import android.view.LayoutInflater;
-import android.view.Menu;
-import android.view.MenuInflater;
-import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
-import android.view.inputmethod.EditorInfo;
 import androidx.annotation.NonNull;
-import androidx.core.view.MenuProvider;
+import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
-import androidx.lifecycle.Lifecycle;
+import androidx.lifecycle.ViewModelProvider;
 import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
+import com.google.android.material.bottomsheet.BottomSheetDialog;
+import com.google.android.material.bottomsheet.BottomSheetDialogFragment;
 import java.util.ArrayList;
-import java.util.List;
-import org.gitnex.tea4j.v2.models.InlineResponse2001;
-import org.gitnex.tea4j.v2.models.User;
-import org.mian.gitnex.R;
+import java.util.Objects;
+import org.mian.gitnex.activities.ExploreActivity;
 import org.mian.gitnex.adapters.UsersAdapter;
-import org.mian.gitnex.clients.RetrofitClient;
+import org.mian.gitnex.databinding.BottomsheetExploreUsersSearchBinding;
 import org.mian.gitnex.databinding.FragmentExploreUsersBinding;
+import org.mian.gitnex.helpers.AppUtil;
 import org.mian.gitnex.helpers.Constants;
-import org.mian.gitnex.helpers.SnackBar;
+import org.mian.gitnex.helpers.EndlessRecyclerViewScrollListener;
 import org.mian.gitnex.helpers.Toasty;
-import retrofit2.Call;
-import retrofit2.Callback;
-import retrofit2.Response;
+import org.mian.gitnex.helpers.UIHelper;
+import org.mian.gitnex.viewmodels.UserListViewModel;
 
 /**
- * @author M M Arif
+ * @author mmarif
  */
-public class ExploreUsersFragment extends Fragment {
+public class ExploreUsersFragment extends Fragment
+		implements ExploreActivity.ExploreActionInterface {
 
-	private FragmentExploreUsersBinding viewBinding;
-	private Context context;
-
-	private List<User> usersList;
+	private FragmentExploreUsersBinding binding;
+	private UserListViewModel viewModel;
 	private UsersAdapter adapter;
-	private int pageSize;
+	private EndlessRecyclerViewScrollListener scrollListener;
 	private int resultLimit;
+	private String currentQuery = "";
+	private boolean isFirstLoad = true;
+
+	@Override
+	public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
+		super.onViewCreated(view, savedInstanceState);
+		UIHelper.applyInsets(view, null, binding.recyclerView, binding.pullToRefresh, null);
+	}
 
 	@Override
 	public View onCreateView(
 			@NonNull LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
+		binding = FragmentExploreUsersBinding.inflate(inflater, container, false);
+		resultLimit = Constants.getCurrentResultLimit(requireContext());
+		viewModel = new ViewModelProvider(this).get(UserListViewModel.class);
 
-		viewBinding = FragmentExploreUsersBinding.inflate(inflater, container, false);
-		context = getContext();
+		setupRecyclerView();
+		setupSwipeRefresh();
+		observeViewModel();
 
-		resultLimit = Constants.getCurrentResultLimit(context);
+		return binding.getRoot();
+	}
 
-		usersList = new ArrayList<>();
-		adapter = new UsersAdapter(usersList, context);
+	@Override
+	public void onResume() {
+		super.onResume();
+		if (!isHidden() && isFirstLoad) {
+			lazyLoad();
+		}
+	}
 
-		requireActivity()
-				.addMenuProvider(
-						new MenuProvider() {
-							@Override
-							public void onCreateMenu(
-									@NonNull Menu menu, @NonNull MenuInflater menuInflater) {
+	@Override
+	public void onHiddenChanged(boolean hidden) {
+		super.onHiddenChanged(hidden);
+		if (!hidden && isFirstLoad) {
+			lazyLoad();
+		}
+	}
 
-								menu.clear();
-								menuInflater.inflate(R.menu.search_menu, menu);
+	private void lazyLoad() {
+		isFirstLoad = false;
+		refreshData(currentQuery);
+	}
 
-								MenuItem searchItem = menu.findItem(R.id.action_search);
-								androidx.appcompat.widget.SearchView searchView =
-										(androidx.appcompat.widget.SearchView)
-												searchItem.getActionView();
-								assert searchView != null;
-								searchView.setImeOptions(EditorInfo.IME_ACTION_DONE);
+	@Override
+	public void onSearchTriggered() {
+		showSearchBottomSheet();
+	}
 
-								searchView.setOnQueryTextListener(
-										new androidx.appcompat.widget.SearchView
-												.OnQueryTextListener() {
+	private void setupRecyclerView() {
+		adapter = new UsersAdapter(requireContext(), new ArrayList<>());
+		LinearLayoutManager layoutManager = new LinearLayoutManager(requireContext());
+		binding.recyclerView.setLayoutManager(layoutManager);
+		binding.recyclerView.setAdapter(adapter);
 
-											@Override
-											public boolean onQueryTextSubmit(String query) {
-												viewBinding.progressBar.setVisibility(View.VISIBLE);
-												loadInitial(query, resultLimit);
-												adapter.setLoadMoreListener(
-														() ->
-																viewBinding.recyclerViewExploreUsers
-																		.post(
-																				() -> {
-																					if (usersList
-																											.size()
-																									== resultLimit
-																							|| pageSize
-																									== resultLimit) {
-																						int page =
-																								(usersList
-																														.size()
-																												+ resultLimit)
-																										/ resultLimit;
-																						loadMore(
-																								query,
-																								resultLimit,
-																								page);
-																					}
-																				}));
-												searchView.setQuery(null, false);
-												searchItem.collapseActionView();
-												return false;
-											}
+		scrollListener =
+				new EndlessRecyclerViewScrollListener(layoutManager) {
+					@Override
+					public void onLoadMore(int page, int totalItemsCount, RecyclerView view) {
+						viewModel.fetchUsers(
+								requireContext(),
+								"explore",
+								null,
+								null,
+								currentQuery,
+								page,
+								resultLimit,
+								false);
+					}
+				};
+		binding.recyclerView.addOnScrollListener(scrollListener);
+	}
 
-											@Override
-											public boolean onQueryTextChange(String newText) {
-												return false;
-											}
-										});
-							}
-
-							@Override
-							public boolean onMenuItemSelected(@NonNull MenuItem menuItem) {
-								return false;
-							}
-						},
+	private void observeViewModel() {
+		viewModel
+				.getUsers()
+				.observe(
 						getViewLifecycleOwner(),
-						Lifecycle.State.RESUMED);
+						list -> {
+							adapter.updateList(list);
+							updateUiVisibility(
+									Boolean.TRUE.equals(viewModel.getIsLoading().getValue()));
+						});
 
-		viewBinding.pullToRefresh.setOnRefreshListener(
-				() ->
-						new Handler(Looper.getMainLooper())
-								.postDelayed(
-										() -> {
-											viewBinding.pullToRefresh.setRefreshing(false);
-											loadInitial("", resultLimit);
-											adapter.notifyDataChanged();
-										},
-										200));
+		viewModel.getIsLoading().observe(getViewLifecycleOwner(), this::updateUiVisibility);
 
-		adapter.setLoadMoreListener(
-				() ->
-						viewBinding.recyclerViewExploreUsers.post(
-								() -> {
-									if (usersList.size() == resultLimit
-											|| pageSize == resultLimit) {
-										int page = (usersList.size() + resultLimit) / resultLimit;
-										loadMore("", resultLimit, page);
-									}
-								}));
-
-		viewBinding.recyclerViewExploreUsers.setHasFixedSize(true);
-		viewBinding.recyclerViewExploreUsers.setLayoutManager(new LinearLayoutManager(context));
-		viewBinding.recyclerViewExploreUsers.setAdapter(adapter);
-
-		loadInitial("", resultLimit);
-
-		return viewBinding.getRoot();
+		viewModel
+				.getError()
+				.observe(
+						getViewLifecycleOwner(),
+						error -> {
+							if (error != null) Toasty.show(requireContext(), error);
+						});
 	}
 
-	private void loadInitial(String searchKeyword, int resultLimit) {
+	private void updateUiVisibility(boolean isLoading) {
+		boolean hasData = adapter.getItemCount() > 0;
+		binding.expressiveLoader.setVisibility(isLoading && !hasData ? View.VISIBLE : View.GONE);
 
-		Call<InlineResponse2001> call =
-				RetrofitClient.getApiInterface(context)
-						.userSearch(searchKeyword, null, 1, resultLimit);
-		call.enqueue(
-				new Callback<>() {
+		boolean hasLoadedOnce = Boolean.TRUE.equals(viewModel.getHasLoadedOnce().getValue());
+		binding.layoutEmpty
+				.getRoot()
+				.setVisibility(!isLoading && !hasData && hasLoadedOnce ? View.VISIBLE : View.GONE);
+		binding.pullToRefresh.setVisibility(
+				!hasData && !isLoading && hasLoadedOnce ? View.GONE : View.VISIBLE);
+	}
 
-					@Override
-					public void onResponse(
-							@NonNull Call<InlineResponse2001> call,
-							@NonNull Response<InlineResponse2001> response) {
-						if (response.isSuccessful()) {
-							if (response.body() != null && !response.body().getData().isEmpty()) {
-								usersList.clear();
-								usersList.addAll(response.body().getData());
-								adapter.notifyDataChanged();
-								viewBinding.noData.setVisibility(View.GONE);
-							} else {
-								usersList.clear();
-								adapter.notifyDataChanged();
-								viewBinding.noData.setVisibility(View.VISIBLE);
-							}
-							viewBinding.progressBar.setVisibility(View.GONE);
-						} else if (response.code() == 404) {
-							viewBinding.noData.setVisibility(View.VISIBLE);
-							viewBinding.progressBar.setVisibility(View.GONE);
-						} else {
-							Toasty.error(
-									requireActivity(),
-									requireActivity()
-											.getResources()
-											.getString(R.string.genericError));
-						}
-					}
+	private void refreshData(String query) {
+		currentQuery = query;
+		if (scrollListener != null) scrollListener.resetState();
+		viewModel.resetPagination();
+		binding.expressiveLoader.setVisibility(View.VISIBLE);
+		viewModel.fetchUsers(requireContext(), "explore", null, null, query, 1, resultLimit, true);
+	}
 
-					@Override
-					public void onFailure(
-							@NonNull Call<InlineResponse2001> call, @NonNull Throwable t) {
-
-						Toasty.error(
-								requireActivity(),
-								requireActivity()
-										.getResources()
-										.getString(R.string.genericServerResponseError));
-					}
+	private void setupSwipeRefresh() {
+		binding.pullToRefresh.setOnRefreshListener(
+				() -> {
+					binding.pullToRefresh.setRefreshing(false);
+					refreshData(currentQuery);
 				});
 	}
 
-	private void loadMore(String searchKeyword, int resultLimit, int page) {
-
-		viewBinding.progressBar.setVisibility(View.VISIBLE);
-		Call<InlineResponse2001> call =
-				RetrofitClient.getApiInterface(context)
-						.userSearch(searchKeyword, null, page, resultLimit);
-		call.enqueue(
-				new Callback<>() {
-
-					@Override
-					public void onResponse(
-							@NonNull Call<InlineResponse2001> call,
-							@NonNull Response<InlineResponse2001> response) {
-						if (response.isSuccessful()) {
-							assert response.body() != null;
-							List<User> result = response.body().getData();
-							if (result != null) {
-								if (!result.isEmpty()) {
-									pageSize = result.size();
-									usersList.addAll(result);
-								} else {
-									SnackBar.info(
-											context,
-											viewBinding.getRoot(),
-											getString(R.string.noMoreData));
-									adapter.setMoreDataAvailable(false);
-								}
+	private void showSearchBottomSheet() {
+		SearchUserBottomSheet sheet =
+				SearchUserBottomSheet.newInstance(
+						currentQuery,
+						new SearchUserBottomSheet.SearchCallback() {
+							@Override
+							public void onSearchApplied(String query) {
+								refreshData(query);
 							}
-							adapter.notifyDataChanged();
-							viewBinding.progressBar.setVisibility(View.GONE);
-						} else {
-							Toasty.error(
-									requireActivity(),
-									requireActivity()
-											.getResources()
-											.getString(R.string.genericError));
+
+							@Override
+							public void onReset() {
+								refreshData("");
+							}
+						});
+		sheet.show(getChildFragmentManager(), "UserSearchSheet");
+	}
+
+	public static class SearchUserBottomSheet extends BottomSheetDialogFragment {
+
+		private SearchCallback callback;
+		private BottomsheetExploreUsersSearchBinding sheetBinding;
+
+		public interface SearchCallback {
+			void onSearchApplied(String query);
+
+			void onReset();
+		}
+
+		public static SearchUserBottomSheet newInstance(String query, SearchCallback cb) {
+			SearchUserBottomSheet fragment = new SearchUserBottomSheet();
+			Bundle args = new Bundle();
+			args.putString("q", query);
+			fragment.setArguments(args);
+			fragment.callback = cb;
+			return fragment;
+		}
+
+		@NonNull @Override
+		public Dialog onCreateDialog(@Nullable Bundle savedInstanceState) {
+			BottomSheetDialog dialog = (BottomSheetDialog) super.onCreateDialog(savedInstanceState);
+			AppUtil.applySheetStyle(dialog, true);
+			return dialog;
+		}
+
+		@Nullable @Override
+		public View onCreateView(
+				@NonNull LayoutInflater inflater,
+				@Nullable ViewGroup container,
+				@Nullable Bundle savedInstanceState) {
+			sheetBinding = BottomsheetExploreUsersSearchBinding.inflate(inflater, container, false);
+
+			if (getArguments() != null) {
+				sheetBinding.searchQueryEdit.setText(getArguments().getString("q", ""));
+			}
+
+			setupValidation();
+
+			sheetBinding.btnApply.setOnClickListener(
+					v -> {
+						if (callback != null) {
+							callback.onSearchApplied(
+									Objects.requireNonNull(sheetBinding.searchQueryEdit.getText())
+											.toString()
+											.trim());
 						}
-					}
+						dismiss();
+					});
 
-					@Override
-					public void onFailure(
-							@NonNull Call<InlineResponse2001> call, @NonNull Throwable t) {
+			sheetBinding.btnClear.setOnClickListener(
+					v -> {
+						if (callback != null) {
+							callback.onReset();
+						}
+						dismiss();
+					});
 
-						Toasty.error(
-								requireActivity(),
-								requireActivity()
-										.getResources()
-										.getString(R.string.genericServerResponseError));
-					}
-				});
+			return sheetBinding.getRoot();
+		}
+
+		private void setupValidation() {
+			validate();
+			sheetBinding.searchQueryEdit.addTextChangedListener(
+					new TextWatcher() {
+						@Override
+						public void beforeTextChanged(
+								CharSequence s, int start, int count, int after) {}
+
+						@Override
+						public void onTextChanged(
+								CharSequence s, int start, int before, int count) {
+							validate();
+						}
+
+						@Override
+						public void afterTextChanged(Editable s) {}
+					});
+		}
+
+		private void validate() {
+			String query =
+					Objects.requireNonNull(sheetBinding.searchQueryEdit.getText())
+							.toString()
+							.trim();
+			sheetBinding.btnApply.setEnabled(!query.isEmpty());
+		}
 	}
 }

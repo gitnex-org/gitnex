@@ -1,389 +1,387 @@
 package org.mian.gitnex.fragments;
 
-import android.content.Context;
+import android.app.Dialog;
 import android.os.Bundle;
-import android.os.Handler;
-import android.os.Looper;
+import android.text.Editable;
+import android.text.TextWatcher;
 import android.view.LayoutInflater;
-import android.view.Menu;
-import android.view.MenuInflater;
-import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
-import android.view.inputmethod.EditorInfo;
 import androidx.annotation.NonNull;
-import androidx.core.view.MenuProvider;
+import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
-import androidx.lifecycle.Lifecycle;
+import androidx.lifecycle.ViewModelProvider;
 import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
+import com.google.android.material.bottomsheet.BottomSheetDialog;
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment;
 import java.util.ArrayList;
-import java.util.List;
-import org.gitnex.tea4j.v2.models.Repository;
-import org.gitnex.tea4j.v2.models.SearchResults;
+import java.util.Objects;
 import org.mian.gitnex.R;
-import org.mian.gitnex.activities.MainActivity;
-import org.mian.gitnex.adapters.ExploreRepositoriesAdapter;
-import org.mian.gitnex.clients.RetrofitClient;
-import org.mian.gitnex.databinding.BottomSheetExploreFiltersBinding;
+import org.mian.gitnex.activities.ExploreActivity;
+import org.mian.gitnex.adapters.ReposListAdapter;
+import org.mian.gitnex.databinding.BottomsheetExploreReposSearchBinding;
 import org.mian.gitnex.databinding.FragmentExploreRepoBinding;
+import org.mian.gitnex.helpers.AppUtil;
 import org.mian.gitnex.helpers.Constants;
-import org.mian.gitnex.helpers.SnackBar;
+import org.mian.gitnex.helpers.EndlessRecyclerViewScrollListener;
 import org.mian.gitnex.helpers.Toasty;
-import retrofit2.Call;
-import retrofit2.Callback;
-import retrofit2.Response;
+import org.mian.gitnex.helpers.UIHelper;
+import org.mian.gitnex.viewmodels.RepositoriesViewModel;
 
 /**
  * @author mmarif
  */
-public class ExploreRepositoriesFragment extends Fragment {
+public class ExploreRepositoriesFragment extends Fragment
+		implements ExploreActivity.ExploreActionInterface {
 
-	private final boolean repoTypeInclude = true;
-	private final String sort = "updated";
-	private final String order = "desc";
 	private FragmentExploreRepoBinding viewBinding;
-	private Context context;
-	private int pageSize;
+	private RepositoriesViewModel viewModel;
+	private ReposListAdapter adapter;
+	private EndlessRecyclerViewScrollListener scrollListener;
 	private int resultLimit;
-	private List<Repository> dataList;
-	private ExploreRepositoriesAdapter adapter;
+	private String searchQuery = "";
 	private boolean includeTopic = false;
 	private boolean includeDescription = false;
 	private boolean includeTemplate = false;
 	private boolean onlyArchived = false;
-	private String searchQuery = "";
+	private String currentSort = "updated";
+	private boolean isFirstLoad = true;
 
 	@Override
 	public View onCreateView(
 			@NonNull LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-
 		viewBinding = FragmentExploreRepoBinding.inflate(inflater, container, false);
+		resultLimit = Constants.getCurrentResultLimit(requireContext());
+		viewModel = new ViewModelProvider(this).get(RepositoriesViewModel.class);
 
-		context = getContext();
-		dataList = new ArrayList<>();
-		adapter = new ExploreRepositoriesAdapter(dataList, context);
-
-		resultLimit = Constants.getCurrentResultLimit(context);
-
-		requireActivity()
-				.addMenuProvider(
-						new MenuProvider() {
-							@Override
-							public void onCreateMenu(
-									@NonNull Menu menu, @NonNull MenuInflater menuInflater) {
-								menu.clear();
-								menuInflater.inflate(R.menu.search_menu, menu);
-								menuInflater.inflate(R.menu.generic_nav_dotted_menu, menu);
-
-								MenuItem filterItem = menu.findItem(R.id.genericMenu);
-								filterItem.setOnMenuItemClickListener(
-										item -> {
-											showFilterBottomSheet();
-											return true;
-										});
-
-								MenuItem searchItem = menu.findItem(R.id.action_search);
-								androidx.appcompat.widget.SearchView searchView =
-										(androidx.appcompat.widget.SearchView)
-												searchItem.getActionView();
-								assert searchView != null;
-								searchView.setImeOptions(EditorInfo.IME_ACTION_DONE);
-
-								searchView.setOnQueryTextListener(
-										new androidx.appcompat.widget.SearchView
-												.OnQueryTextListener() {
-											@Override
-											public boolean onQueryTextSubmit(String query) {
-												viewBinding.progressBar.setVisibility(View.VISIBLE);
-												loadInitial(query, resultLimit);
-												adapter.setLoadMoreListener(
-														() ->
-																viewBinding.recyclerViewReposSearch
-																		.post(
-																				() -> {
-																					if (dataList
-																											.size()
-																									== resultLimit
-																							|| pageSize
-																									== resultLimit) {
-																						int page =
-																								(dataList
-																														.size()
-																												+ resultLimit)
-																										/ resultLimit;
-																						loadMore(
-																								query,
-																								resultLimit,
-																								page);
-																					}
-																				}));
-												searchQuery = query;
-												searchView.setQuery(null, false);
-												searchItem.collapseActionView();
-												return true;
-											}
-
-											@Override
-											public boolean onQueryTextChange(String newText) {
-												return false;
-											}
-										});
-							}
-
-							@Override
-							public boolean onMenuItemSelected(@NonNull MenuItem menuItem) {
-								return false;
-							}
-						},
-						getViewLifecycleOwner(),
-						Lifecycle.State.RESUMED);
-
-		viewBinding.pullToRefresh.setOnRefreshListener(
-				() ->
-						new Handler(Looper.getMainLooper())
-								.postDelayed(
-										() -> {
-											viewBinding.pullToRefresh.setRefreshing(false);
-											loadInitial("", resultLimit);
-											adapter.notifyDataChanged();
-										},
-										200));
-
-		adapter.setLoadMoreListener(
-				() ->
-						viewBinding.recyclerViewReposSearch.post(
-								() -> {
-									if (dataList.size() == resultLimit || pageSize == resultLimit) {
-										int page = (dataList.size() + resultLimit) / resultLimit;
-										loadMore("", resultLimit, page);
-									}
-								}));
-
-		viewBinding.recyclerViewReposSearch.setHasFixedSize(true);
-		viewBinding.recyclerViewReposSearch.setLayoutManager(new LinearLayoutManager(context));
-		viewBinding.recyclerViewReposSearch.setAdapter(adapter);
-
-		loadInitial("", resultLimit);
+		setupRecyclerView();
+		setupSwipeRefresh();
+		observeViewModel();
 
 		return viewBinding.getRoot();
 	}
 
-	private void loadInitial(String searchKeyword, int resultLimit) {
-		Call<SearchResults> call =
-				RetrofitClient.getApiInterface(context)
-						.repoSearch(
-								searchKeyword,
-								includeTopic,
-								includeDescription,
-								null,
-								null,
-								null,
-								null,
-								repoTypeInclude,
-								null,
-								includeTemplate,
-								onlyArchived,
-								null,
-								null,
-								sort,
-								order,
-								1,
-								resultLimit);
-		call.enqueue(
-				new Callback<>() {
-					@Override
-					public void onResponse(
-							@NonNull Call<SearchResults> call,
-							@NonNull Response<SearchResults> response) {
-						if (response.isSuccessful()) {
-							if (response.body() != null && !response.body().getData().isEmpty()) {
-								dataList.clear();
-								dataList.addAll(response.body().getData());
-								adapter.notifyDataChanged();
-								viewBinding.noData.setVisibility(View.GONE);
-							} else {
-								dataList.clear();
-								adapter.notifyDataChanged();
-								viewBinding.noData.setVisibility(View.VISIBLE);
-							}
-							viewBinding.progressBar.setVisibility(View.GONE);
-						} else if (response.code() == 404) {
-							viewBinding.noData.setVisibility(View.VISIBLE);
-							viewBinding.progressBar.setVisibility(View.GONE);
-						} else {
-							if (isAdded() && getContext() != null) {
-								Toasty.error(getContext(), getString(R.string.genericError));
-							}
-						}
-					}
-
-					@Override
-					public void onFailure(@NonNull Call<SearchResults> call, @NonNull Throwable t) {
-						if (isAdded() && getContext() != null) {
-							Toasty.error(
-									getContext(), getString(R.string.genericServerResponseError));
-						}
-						viewBinding.progressBar.setVisibility(View.GONE);
-					}
-				});
-	}
-
-	private void loadMore(String searchKeyword, int resultLimit, int page) {
-		viewBinding.progressBar.setVisibility(View.VISIBLE);
-		Call<SearchResults> call =
-				RetrofitClient.getApiInterface(context)
-						.repoSearch(
-								searchKeyword,
-								includeTopic,
-								includeDescription,
-								null,
-								null,
-								null,
-								null,
-								repoTypeInclude,
-								null,
-								includeTemplate,
-								onlyArchived,
-								null,
-								null,
-								sort,
-								order,
-								page,
-								resultLimit);
-
-		call.enqueue(
-				new Callback<>() {
-					@Override
-					public void onResponse(
-							@NonNull Call<SearchResults> call,
-							@NonNull Response<SearchResults> response) {
-						if (response.isSuccessful()) {
-							assert response.body() != null;
-							List<Repository> result = response.body().getData();
-							if (!result.isEmpty()) {
-								pageSize = result.size();
-								dataList.addAll(result);
-							} else {
-								SnackBar.info(
-										context,
-										viewBinding.getRoot(),
-										getString(R.string.noMoreData));
-								adapter.setMoreDataAvailable(false);
-							}
-							adapter.notifyDataChanged();
-							viewBinding.progressBar.setVisibility(View.GONE);
-						} else {
-							if (isAdded() && getContext() != null) {
-								Toasty.error(getContext(), getString(R.string.genericError));
-							}
-						}
-					}
-
-					@Override
-					public void onFailure(@NonNull Call<SearchResults> call, @NonNull Throwable t) {
-						if (isAdded() && getContext() != null) {
-							Toasty.error(
-									getContext(), getString(R.string.genericServerResponseError));
-						}
-						viewBinding.progressBar.setVisibility(View.GONE);
-					}
-				});
-	}
-
-	private void showFilterBottomSheet() {
-		BottomSheetFilterFragment bottomSheet =
-				BottomSheetFilterFragment.newInstance(
-						includeTopic,
-						includeDescription,
-						includeTemplate,
-						onlyArchived,
-						(topic, desc, template, archived) -> {
-							includeTopic = topic;
-							includeDescription = desc;
-							includeTemplate = template;
-							onlyArchived = archived;
-							loadInitial(searchQuery, resultLimit);
-						});
-		bottomSheet.show(getChildFragmentManager(), "exploreFiltersBottomSheet");
+	@Override
+	public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
+		super.onViewCreated(view, savedInstanceState);
+		UIHelper.applyInsets(view, null, viewBinding.recyclerView, viewBinding.pullToRefresh, null);
 	}
 
 	@Override
 	public void onResume() {
 		super.onResume();
-		if (MainActivity.reloadRepos) {
-			dataList.clear();
-			loadInitial(searchQuery, resultLimit);
-			MainActivity.reloadRepos = false;
+		if (!isHidden() && isFirstLoad) {
+			lazyLoad();
 		}
 	}
 
-	public static class BottomSheetFilterFragment extends BottomSheetDialogFragment {
+	@Override
+	public void onHiddenChanged(boolean hidden) {
+		super.onHiddenChanged(hidden);
+		if (!hidden && isFirstLoad) {
+			lazyLoad();
+		}
+	}
 
-		private static final String ARG_INCLUDE_TOPIC = "includeTopic";
-		private static final String ARG_INCLUDE_DESC = "includeDescription";
-		private static final String ARG_INCLUDE_TEMPLATE = "includeTemplate";
-		private static final String ARG_ONLY_ARCHIVED = "onlyArchived";
-		private FilterCallback callback;
+	private void lazyLoad() {
+		isFirstLoad = false;
+		refreshData();
+	}
 
-		public static BottomSheetFilterFragment newInstance(
-				boolean includeTopic,
-				boolean includeDescription,
-				boolean includeTemplate,
-				boolean onlyArchived,
-				FilterCallback callback) {
-			BottomSheetFilterFragment fragment = new BottomSheetFilterFragment();
+	@Override
+	public void onSearchTriggered() {
+		showSearchBottomSheet();
+	}
+
+	private void setupRecyclerView() {
+		adapter = new ReposListAdapter(new ArrayList<>(), requireContext());
+		LinearLayoutManager layoutManager = new LinearLayoutManager(requireContext());
+		viewBinding.recyclerView.setLayoutManager(layoutManager);
+		viewBinding.recyclerView.setAdapter(adapter);
+
+		scrollListener =
+				new EndlessRecyclerViewScrollListener(layoutManager) {
+					@Override
+					public void onLoadMore(int page, int totalItemsCount, RecyclerView view) {
+						viewModel.searchExploreRepos(
+								requireContext(),
+								searchQuery,
+								includeTopic,
+								includeDescription,
+								includeTemplate,
+								onlyArchived,
+								page,
+								resultLimit,
+								currentSort,
+								false);
+					}
+				};
+		viewBinding.recyclerView.addOnScrollListener(scrollListener);
+	}
+
+	private void observeViewModel() {
+		viewModel
+				.getRepos()
+				.observe(
+						getViewLifecycleOwner(),
+						list -> {
+							adapter.updateList(list);
+							updateUiState();
+						});
+
+		viewModel
+				.getIsLoading()
+				.observe(
+						getViewLifecycleOwner(),
+						loading -> {
+							if (loading && adapter.getItemCount() == 0) {
+								viewBinding.expressiveLoader.setVisibility(View.VISIBLE);
+								viewBinding.recyclerView.setVisibility(View.GONE);
+								viewBinding.layoutEmpty.getRoot().setVisibility(View.GONE);
+							} else {
+								viewBinding.expressiveLoader.setVisibility(View.GONE);
+								viewBinding.recyclerView.setVisibility(View.VISIBLE);
+								updateUiState();
+							}
+						});
+
+		viewModel.getHasLoadedOnce().observe(getViewLifecycleOwner(), hasLoaded -> updateUiState());
+
+		viewModel
+				.getError()
+				.observe(
+						getViewLifecycleOwner(),
+						error -> {
+							if (error != null) Toasty.show(requireContext(), error);
+						});
+	}
+
+	private void updateUiState() {
+		boolean isEmpty = adapter.getItemCount() == 0;
+		boolean loaded = Boolean.TRUE.equals(viewModel.getHasLoadedOnce().getValue());
+		viewBinding
+				.layoutEmpty
+				.getRoot()
+				.setVisibility(loaded && isEmpty ? View.VISIBLE : View.GONE);
+	}
+
+	private void refreshData() {
+		if (scrollListener != null) scrollListener.resetState();
+		viewModel.resetPagination();
+
+		adapter.updateList(new ArrayList<>());
+		viewBinding.recyclerView.setVisibility(View.GONE);
+		viewBinding.expressiveLoader.setVisibility(View.VISIBLE);
+
+		viewModel.searchExploreRepos(
+				requireContext(),
+				searchQuery,
+				includeTopic,
+				includeDescription,
+				includeTemplate,
+				onlyArchived,
+				1,
+				resultLimit,
+				currentSort,
+				true);
+	}
+
+	private void setupSwipeRefresh() {
+		viewBinding.pullToRefresh.setOnRefreshListener(
+				() -> {
+					viewBinding.pullToRefresh.setRefreshing(false);
+					refreshData();
+				});
+	}
+
+	private void showSearchBottomSheet() {
+		SearchBottomSheet sheet =
+				SearchBottomSheet.newInstance(
+						searchQuery,
+						includeTopic,
+						includeDescription,
+						includeTemplate,
+						onlyArchived,
+						currentSort,
+						new SearchBottomSheet.SearchCallback() {
+							@Override
+							public void onSearchApplied(
+									String q,
+									boolean t,
+									boolean d,
+									boolean temp,
+									boolean arch,
+									String sort) {
+								searchQuery = q;
+								includeTopic = t;
+								includeDescription = d;
+								includeTemplate = temp;
+								onlyArchived = arch;
+								currentSort = sort;
+								refreshData();
+							}
+
+							@Override
+							public void onReset() {
+								searchQuery = "";
+								includeTopic = false;
+								includeDescription = false;
+								includeTemplate = false;
+								onlyArchived = false;
+								currentSort = "updated";
+								refreshData();
+							}
+						});
+		sheet.show(getChildFragmentManager(), "ExploreSearchSheet");
+	}
+
+	public static class SearchBottomSheet extends BottomSheetDialogFragment {
+		private SearchCallback callback;
+		private BottomsheetExploreReposSearchBinding sheet;
+
+		@NonNull @Override
+		public Dialog onCreateDialog(@Nullable Bundle savedInstanceState) {
+			BottomSheetDialog dialog = (BottomSheetDialog) super.onCreateDialog(savedInstanceState);
+			AppUtil.applySheetStyle(dialog, true);
+			return dialog;
+		}
+
+		public static SearchBottomSheet newInstance(
+				String query,
+				boolean topic,
+				boolean desc,
+				boolean template,
+				boolean archived,
+				String sort,
+				SearchCallback cb) {
+			SearchBottomSheet fragment = new SearchBottomSheet();
 			Bundle args = new Bundle();
-			args.putBoolean(ARG_INCLUDE_TOPIC, includeTopic);
-			args.putBoolean(ARG_INCLUDE_DESC, includeDescription);
-			args.putBoolean(ARG_INCLUDE_TEMPLATE, includeTemplate);
-			args.putBoolean(ARG_ONLY_ARCHIVED, onlyArchived);
+			args.putString("q", query);
+			args.putBoolean("t", topic);
+			args.putBoolean("d", desc);
+			args.putBoolean("temp", template);
+			args.putBoolean("arch", archived);
+			args.putString("sort", sort);
 			fragment.setArguments(args);
-			fragment.callback = callback;
+			fragment.callback = cb;
 			return fragment;
 		}
 
-		@Override
+		@Nullable @Override
 		public View onCreateView(
-				@NonNull LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-			BottomSheetExploreFiltersBinding binding =
-					BottomSheetExploreFiltersBinding.inflate(inflater, container, false);
+				@NonNull LayoutInflater inflater,
+				@Nullable ViewGroup container,
+				@Nullable Bundle savedInstanceState) {
+			sheet = BottomsheetExploreReposSearchBinding.inflate(inflater, container, false);
 
 			Bundle args = getArguments();
-			boolean includeTopic = args != null && args.getBoolean(ARG_INCLUDE_TOPIC, false);
-			boolean includeDescription = args != null && args.getBoolean(ARG_INCLUDE_DESC, false);
-			boolean includeTemplate = args != null && args.getBoolean(ARG_INCLUDE_TEMPLATE, false);
-			boolean onlyArchived = args != null && args.getBoolean(ARG_ONLY_ARCHIVED, false);
+			if (args != null) {
+				sheet.searchQueryEdit.setText(args.getString("q"));
+				sheet.includeTopicChip.setChecked(args.getBoolean("t"));
+				sheet.includeDescChip.setChecked(args.getBoolean("d"));
+				sheet.includeTemplateChip.setChecked(args.getBoolean("temp"));
+				sheet.onlyArchivedChip.setChecked(args.getBoolean("arch"));
 
-			binding.includeTopicChip.setChecked(includeTopic);
-			binding.includeDescChip.setChecked(includeDescription);
-			binding.includeTemplateChip.setChecked(includeTemplate);
-			binding.onlyArchivedChip.setChecked(onlyArchived);
+				String sort = args.getString("sort", "updated");
+				setupSortSelection(sort);
+			}
 
-			binding.filterChipGroup.setOnCheckedStateChangeListener(
-					(group, checkedIds) -> {
-						boolean newIncludeTopic = checkedIds.contains(R.id.includeTopicChip);
-						boolean newIncludeDescription = checkedIds.contains(R.id.includeDescChip);
-						boolean newIncludeTemplate = checkedIds.contains(R.id.includeTemplateChip);
-						boolean newOnlyArchived = checkedIds.contains(R.id.onlyArchivedChip);
+			setupValidation();
+
+			sheet.btnApply.setOnClickListener(
+					v -> {
 						if (callback != null) {
-							callback.onFiltersApplied(
-									newIncludeTopic,
-									newIncludeDescription,
-									newIncludeTemplate,
-									newOnlyArchived);
+							callback.onSearchApplied(
+									Objects.requireNonNull(sheet.searchQueryEdit.getText())
+											.toString()
+											.trim(),
+									sheet.includeTopicChip.isChecked(),
+									sheet.includeDescChip.isChecked(),
+									sheet.includeTemplateChip.isChecked(),
+									sheet.onlyArchivedChip.isChecked(),
+									getSelectedSort());
 						}
+						dismiss();
 					});
 
-			return binding.getRoot();
+			sheet.btnClear.setOnClickListener(
+					v -> {
+						if (callback != null) {
+							callback.onReset();
+						}
+						dismiss();
+					});
+
+			return sheet.getRoot();
 		}
 
-		public interface FilterCallback {
-			void onFiltersApplied(
-					boolean includeTopic,
-					boolean includeDescription,
-					boolean includeTemplate,
-					boolean onlyArchived);
+		private void setupSortSelection(String sort) {
+			if ("created".equals(sort)) sheet.sortCreated.setChecked(true);
+			else if ("stars".equals(sort)) sheet.sortStars.setChecked(true);
+			else if ("forks".equals(sort)) sheet.sortForks.setChecked(true);
+			else if ("size".equals(sort)) sheet.sortSize.setChecked(true);
+			else sheet.sortUpdated.setChecked(true);
+		}
+
+		private String getSelectedSort() {
+			int id = sheet.sortChipGroup.getCheckedChipId();
+			if (id == R.id.sortCreated) return "created";
+			if (id == R.id.sortStars) return "stars";
+			if (id == R.id.sortForks) return "forks";
+			if (id == R.id.sortSize) return "size";
+			return "updated";
+		}
+
+		private void setupValidation() {
+			validate();
+
+			sheet.searchQueryEdit.addTextChangedListener(
+					new TextWatcher() {
+						@Override
+						public void beforeTextChanged(
+								CharSequence s, int start, int count, int after) {}
+
+						@Override
+						public void onTextChanged(
+								CharSequence s, int start, int before, int count) {
+							validate();
+						}
+
+						@Override
+						public void afterTextChanged(Editable s) {}
+					});
+
+			sheet.filterChipGroup.setOnCheckedStateChangeListener(
+					(group, checkedIds) -> validate());
+			sheet.sortChipGroup.setOnCheckedStateChangeListener((group, checkedIds) -> validate());
+		}
+
+		private void validate() {
+			String query =
+					Objects.requireNonNull(sheet.searchQueryEdit.getText()).toString().trim();
+
+			boolean hasFilterChips =
+					sheet.includeTopicChip.isChecked()
+							|| sheet.includeDescChip.isChecked()
+							|| sheet.includeTemplateChip.isChecked()
+							|| sheet.onlyArchivedChip.isChecked();
+
+			boolean isSortChanged = !getSelectedSort().equals("updated");
+
+			sheet.btnApply.setEnabled(!query.isEmpty() || hasFilterChips || isSortChanged);
+		}
+
+		public interface SearchCallback {
+			void onSearchApplied(
+					String query,
+					boolean topic,
+					boolean desc,
+					boolean template,
+					boolean archived,
+					String sort);
+
+			void onReset();
 		}
 	}
 }

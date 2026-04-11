@@ -1,257 +1,280 @@
 package org.mian.gitnex.activities;
 
-import android.graphics.Typeface;
 import android.os.Bundle;
-import android.view.Menu;
-import android.view.MenuInflater;
-import android.view.MenuItem;
 import android.view.View;
-import android.view.ViewGroup;
-import android.widget.TextView;
-import androidx.annotation.NonNull;
+import android.widget.LinearLayout;
 import androidx.fragment.app.Fragment;
-import androidx.fragment.app.FragmentActivity;
-import androidx.viewpager2.adapter.FragmentStateAdapter;
-import androidx.viewpager2.widget.ViewPager2;
-import com.google.android.material.tabs.TabLayoutMediator;
+import androidx.fragment.app.FragmentManager;
+import androidx.fragment.app.FragmentTransaction;
+import androidx.lifecycle.ViewModelProvider;
+import com.google.android.material.bottomsheet.BottomSheetDialog;
+import com.google.android.material.button.MaterialButton;
 import io.mikael.urlbuilder.UrlBuilder;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Objects;
-import org.gitnex.tea4j.v2.models.OrganizationPermissions;
 import org.mian.gitnex.R;
-import org.mian.gitnex.clients.RetrofitClient;
 import org.mian.gitnex.databinding.ActivityOrgDetailBinding;
-import org.mian.gitnex.fragments.BottomSheetOrganizationFragment;
+import org.mian.gitnex.databinding.BottomsheetOrganizationMenuBinding;
 import org.mian.gitnex.fragments.OrganizationInfoFragment;
 import org.mian.gitnex.fragments.OrganizationLabelsFragment;
 import org.mian.gitnex.fragments.OrganizationMembersFragment;
 import org.mian.gitnex.fragments.OrganizationRepositoriesFragment;
 import org.mian.gitnex.fragments.OrganizationTeamsFragment;
-import org.mian.gitnex.helpers.AppDatabaseSettings;
 import org.mian.gitnex.helpers.AppUtil;
-import org.mian.gitnex.helpers.ViewPager2Transformers;
-import org.mian.gitnex.structs.BottomSheetListener;
-import retrofit2.Call;
-import retrofit2.Callback;
-import retrofit2.Response;
+import org.mian.gitnex.helpers.UIHelper;
+import org.mian.gitnex.viewmodels.OrganizationsViewModel;
 
 /**
- * @author M M Arif
+ * @author mmarif
  */
-public class OrganizationDetailActivity extends BaseActivity implements BottomSheetListener {
+public class OrganizationDetailActivity extends BaseActivity {
 
-	public static boolean updateOrgFABActions = false;
-	public OrganizationPermissions permissions;
+	private ActivityOrgDetailBinding binding;
+	private OrganizationsViewModel viewModel;
 	private String orgName;
-	private boolean isMember = false;
-	private ActivityOrgDetailBinding activityOrgDetailBinding;
+
+	private final FragmentManager fm = getSupportFragmentManager();
+	private Fragment infoFrag, repoFrag, labelFrag, teamFrag, memberFrag;
+	private Fragment activeFragment;
 
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
-
 		super.onCreate(savedInstanceState);
+		binding = ActivityOrgDetailBinding.inflate(getLayoutInflater());
+		setContentView(binding.getRoot());
 
-		activityOrgDetailBinding = ActivityOrgDetailBinding.inflate(getLayoutInflater());
-		setContentView(activityOrgDetailBinding.getRoot());
+		UIHelper.applyEdgeToEdge(this, binding.dockedToolbar, null, null, null);
 
 		orgName = getIntent().getStringExtra("orgName");
+		viewModel = new ViewModelProvider(this).get(OrganizationsViewModel.class);
 
-		setSupportActionBar(activityOrgDetailBinding.toolbar);
-		Objects.requireNonNull(getSupportActionBar()).setTitle(orgName);
-		getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+		setupDockListeners();
+		observeViewModel();
 
-		checkIsMember();
-
-		if (getAccount().requiresVersion("1.16.0")) {
-			RetrofitClient.getApiInterface(this)
-					.orgGetUserPermissions(getAccount().getAccount().getUserName(), orgName)
-					.enqueue(
-							new Callback<>() {
-
-								@Override
-								public void onResponse(
-										@NonNull Call<OrganizationPermissions> call,
-										@NonNull Response<OrganizationPermissions> response) {
-
-									if (response.isSuccessful()) {
-										permissions = response.body();
-									} else {
-										permissions = null;
-									}
-								}
-
-								@Override
-								public void onFailure(
-										@NonNull Call<OrganizationPermissions> call,
-										@NonNull Throwable t) {
-
-									permissions = null;
-								}
-							});
-		} else {
-			permissions = null;
-		}
+		viewModel.loadOrganizationContext(this, orgName, getAccount().getAccount().getUserName());
 	}
 
-	public void checkIsMember() {
-		RetrofitClient.getApiInterface(this)
-				.orgIsMember(orgName, getAccount().getAccount().getUserName())
-				.enqueue(
-						new Callback<>() {
-
-							@Override
-							public void onResponse(
-									@NonNull Call<Void> call, @NonNull Response<Void> response) {
-								isMember = response.code() != 404;
-								init();
+	private void observeViewModel() {
+		viewModel
+				.getIsLoading()
+				.observe(
+						this,
+						loading -> {
+							if (!loading && activeFragment == null) {
+								Boolean memberStatus = viewModel.getIsMember().getValue();
+								boolean isMember = (memberStatus != null && memberStatus);
+								setupFragments(isMember);
+								initializeDefaultTab();
 							}
+						});
 
-							@Override
-							public void onFailure(@NonNull Call<Void> call, @NonNull Throwable t) {
-								isMember = false;
-								init();
+		viewModel
+				.getIsMember()
+				.observe(
+						this,
+						member -> {
+							if (member == null || activeFragment == null) return;
+							binding.btnNavTeams.setVisibility(member ? View.VISIBLE : View.GONE);
+							if (member && teamFrag == null) {
+								teamFrag = OrganizationTeamsFragment.newInstance(orgName);
+								fm.beginTransaction()
+										.add(R.id.user_profile_container, teamFrag, "teams")
+										.hide(teamFrag)
+										.commitNow();
 							}
 						});
 	}
 
-	public void init() {
+	private void setupFragments(boolean isMember) {
+		infoFrag = OrganizationInfoFragment.newInstance(orgName);
+		repoFrag = OrganizationRepositoriesFragment.newInstance(orgName);
+		labelFrag = OrganizationLabelsFragment.newInstance(orgName);
+		memberFrag = OrganizationMembersFragment.newInstance(orgName);
 
-		ViewPager2 viewPager = activityOrgDetailBinding.container;
-		viewPager.setOffscreenPageLimit(1);
+		FragmentTransaction ft = fm.beginTransaction();
 
-		ViewGroup vg = (ViewGroup) activityOrgDetailBinding.tabs.getChildAt(0);
+		ft.add(R.id.user_profile_container, memberFrag, "members").hide(memberFrag);
+		ft.add(R.id.user_profile_container, labelFrag, "labels").hide(labelFrag);
+		ft.add(R.id.user_profile_container, repoFrag, "repos").hide(repoFrag);
 
-		Typeface myTypeface = AppUtil.getTypeface(ctx);
-
-		activityOrgDetailBinding.toolbarTitle.setTypeface(myTypeface);
-		activityOrgDetailBinding.toolbarTitle.setText(orgName);
-
-		viewPager.setAdapter(new OrganizationDetailActivity.ViewPagerAdapter(this));
-
-		ViewPager2Transformers.returnSelectedTransformer(
-				viewPager,
-				Integer.parseInt(
-						AppDatabaseSettings.getSettingsValue(
-								ctx, AppDatabaseSettings.APP_TABS_ANIMATION_KEY)));
-
-		List<String> tabsList = new ArrayList<>();
-		tabsList.add(getResources().getString(R.string.tabTextInfo));
-		tabsList.add(getResources().getString(R.string.navRepos));
-		tabsList.add(getResources().getString(R.string.newIssueLabelsTitle));
-		tabsList.add(getResources().getString(R.string.orgTabTeams));
-		tabsList.add(getResources().getString(R.string.orgTabMembers));
-
-		if (!isMember) {
-			tabsList.remove(3);
+		if (isMember) {
+			teamFrag = OrganizationTeamsFragment.newInstance(orgName);
+			ft.add(R.id.user_profile_container, teamFrag, "teams").hide(teamFrag);
 		}
 
-		new TabLayoutMediator(
-						activityOrgDetailBinding.tabs,
-						viewPager,
-						(tab, position) -> tab.setText(tabsList.get(position)))
-				.attach();
+		binding.btnNavTeams.setVisibility(isMember ? View.VISIBLE : View.GONE);
 
-		for (int j = 0; j < tabsList.size(); j++) {
+		ft.add(R.id.user_profile_container, infoFrag, "info");
+		ft.commitNow();
 
-			ViewGroup vgTab = (ViewGroup) vg.getChildAt(j);
-			int tabChildCount = vgTab.getChildCount();
-
-			for (int i = 0; i < tabChildCount; i++) {
-				View tabViewChild = vgTab.getChildAt(i);
-				if (tabViewChild instanceof TextView) {
-					((TextView) tabViewChild).setTypeface(myTypeface);
-				}
-			}
-		}
+		activeFragment = infoFrag;
 	}
 
-	public class ViewPagerAdapter extends FragmentStateAdapter {
+	private void switchTab(Fragment target, int btnId) {
+		if (activeFragment == target || target == null) return;
 
-		public ViewPagerAdapter(@NonNull FragmentActivity fa) {
-			super(fa);
-		}
+		fm.beginTransaction()
+				.setCustomAnimations(android.R.anim.fade_in, android.R.anim.fade_out)
+				.hide(activeFragment)
+				.show(target)
+				.commit();
 
-		@NonNull @Override
-		public Fragment createFragment(int position) {
-			switch (position) {
-				case 0: // info
-					return OrganizationInfoFragment.newInstance(orgName);
-				case 1: // repos
-					return OrganizationRepositoriesFragment.newInstance(orgName, permissions);
-				case 2: // labels
-					return OrganizationLabelsFragment.newInstance(orgName, permissions);
-				case 3: // teams / members
-					if (isMember) {
-						return OrganizationTeamsFragment.newInstance(orgName, permissions);
-					} else {
-						return OrganizationMembersFragment.newInstance(orgName);
-					}
-				case 4: // members
-					if (isMember) {
-						return OrganizationMembersFragment.newInstance(orgName);
-					}
-			}
-			return null;
-		}
-
-		@Override
-		public int getItemCount() {
-			if (isMember) {
-				return 5;
-			} else {
-				return 4;
-			}
-		}
+		activeFragment = target;
+		updateDockUI(btnId);
+		centerDockIcon(findViewById(btnId));
 	}
 
-	@Override
-	public boolean onCreateOptionsMenu(@NonNull Menu menu) {
+	private void updateDockUI(int activeBtnId) {
+		int[] navIds = {
+			R.id.btn_nav_details,
+			R.id.btn_nav_repos,
+			R.id.btn_nav_labels,
+			R.id.btn_nav_teams,
+			R.id.btn_nav_members
+		};
 
-		MenuInflater inflater = getMenuInflater();
-		inflater.inflate(R.menu.repo_dotted_menu, menu);
-		return true;
-	}
+		for (int id : navIds) {
+			MaterialButton btn = findViewById(id);
+			if (btn != null) {
+				if (id == activeBtnId) activatePill(btn);
+				else resetPill(btn);
+			}
+		}
 
-	@Override
-	public boolean onOptionsItemSelected(MenuItem item) {
+		boolean isInfo = activeBtnId == R.id.btn_nav_details;
+		binding.btnDockSearch.setVisibility(isInfo ? View.GONE : View.VISIBLE);
+		binding.dockDivider.setVisibility(isInfo ? View.GONE : View.VISIBLE);
 
-		int id = item.getItemId();
-
-		if (id == android.R.id.home) {
-
-			finish();
-			return true;
-		} else if (id == R.id.repoMenu) {
-
-			BottomSheetOrganizationFragment bottomSheet = new BottomSheetOrganizationFragment();
-			bottomSheet.show(getSupportFragmentManager(), "orgBottomSheet");
-			return true;
+		if (isInfo || activeBtnId == R.id.btn_nav_members) {
+			binding.btnDockAdd.setVisibility(View.GONE);
+		} else if (activeFragment instanceof OrgActionInterface) {
+			binding.btnDockAdd.setVisibility(
+					((OrgActionInterface) activeFragment).canAdd() ? View.VISIBLE : View.GONE);
 		} else {
-
-			return super.onOptionsItemSelected(item);
+			binding.btnDockAdd.setVisibility(View.GONE);
 		}
 	}
 
-	@Override
-	public void onButtonClicked(String text) {
+	private void prepareNavButton(MaterialButton btn) {
+		btn.setBackgroundResource(R.drawable.nav_pill_background);
+		btn.setBackgroundTintList(null);
+		if (btn.getBackground() != null) btn.getBackground().setAlpha(0);
+	}
 
-		String url =
+	private void activatePill(MaterialButton btn) {
+		btn.setSelected(true);
+		if (btn.getBackground() != null) btn.getBackground().setAlpha(255);
+	}
+
+	private void resetPill(MaterialButton btn) {
+		btn.setSelected(false);
+		if (btn.getBackground() != null) btn.getBackground().setAlpha(0);
+	}
+
+	private void initializeDefaultTab() {
+		updateDockUI(R.id.btn_nav_details);
+		binding.dockScrollView.post(() -> centerDockIcon(binding.btnNavDetails));
+	}
+
+	private void centerDockIcon(View btn) {
+		if (btn == null) return;
+		binding.dockScrollView.post(
+				() -> {
+					int scrollX =
+							(btn.getLeft() - (binding.dockScrollView.getWidth() / 2))
+									+ (btn.getWidth() / 2);
+					binding.dockScrollView.smoothScrollTo(scrollX, 0);
+				});
+	}
+
+	public interface OrgActionInterface {
+		void onSearchTriggered();
+
+		void onAddRequested();
+
+		boolean canAdd();
+	}
+
+	private void setupDockListeners() {
+		binding.btnBack.setOnClickListener(v -> finish());
+
+		MaterialButton[] navButtons = {
+			binding.btnNavDetails,
+			binding.btnNavRepos,
+			binding.btnNavLabels,
+			binding.btnNavTeams,
+			binding.btnNavMembers
+		};
+
+		for (MaterialButton btn : navButtons) {
+			prepareNavButton(btn);
+		}
+
+		binding.btnDockSearch.setVisibility(View.GONE);
+		binding.btnDockAdd.setVisibility(View.GONE);
+		binding.dockDivider.setVisibility(View.GONE);
+
+		binding.btnNavDetails.setOnClickListener(v -> switchTab(infoFrag, R.id.btn_nav_details));
+		binding.btnNavRepos.setOnClickListener(v -> switchTab(repoFrag, R.id.btn_nav_repos));
+		binding.btnNavLabels.setOnClickListener(v -> switchTab(labelFrag, R.id.btn_nav_labels));
+		binding.btnNavTeams.setOnClickListener(v -> switchTab(teamFrag, R.id.btn_nav_teams));
+		binding.btnNavMembers.setOnClickListener(v -> switchTab(memberFrag, R.id.btn_nav_members));
+
+		binding.btnDockSearch.setOnClickListener(
+				v -> {
+					if (activeFragment instanceof OrgActionInterface)
+						((OrgActionInterface) activeFragment).onSearchTriggered();
+				});
+
+		binding.btnDockAdd.setOnClickListener(
+				v -> {
+					if (activeFragment instanceof OrgActionInterface)
+						((OrgActionInterface) activeFragment).onAddRequested();
+				});
+
+		binding.btnDockMenu.setOnClickListener(v -> showOrganizationBottomSheet());
+
+		LinearLayout.LayoutParams params =
+				(LinearLayout.LayoutParams) binding.btnNavMembers.getLayoutParams();
+		params.setMarginEnd((int) getResources().getDimension(R.dimen.dimen16dp));
+		binding.btnNavMembers.setLayoutParams(params);
+	}
+
+	private void showOrganizationBottomSheet() {
+		BottomSheetDialog bottomSheetDialog = new BottomSheetDialog(this);
+		BottomsheetOrganizationMenuBinding sheetBinding =
+				BottomsheetOrganizationMenuBinding.inflate(getLayoutInflater());
+		bottomSheetDialog.setContentView(sheetBinding.getRoot());
+
+		AppUtil.applySheetStyle(bottomSheetDialog, true);
+
+		if (orgName != null && !orgName.isEmpty()) {
+			sheetBinding.sheetTitle.setText(orgName);
+		}
+
+		String baseUrl =
 				UrlBuilder.fromString(getAccount().getAccount().getInstanceUrl())
 						.withPath("/")
 						.toString();
-		url = url + getIntent().getStringExtra("orgName");
 
-		switch (text) {
-			case "copyOrgUrl":
-				AppUtil.copyToClipboard(this, url, ctx.getString(R.string.copyIssueUrlToastMsg));
-				break;
-			case "share":
-				AppUtil.sharingIntent(this, url);
-				break;
-			case "open":
-				AppUtil.openUrlInBrowser(this, url);
-				break;
-		}
+		String url = baseUrl.endsWith("/") ? baseUrl + orgName : baseUrl + "/" + orgName;
+
+		sheetBinding.copyOrgUrl.setOnClickListener(
+				v -> {
+					AppUtil.copyToClipboard(this, url, getString(R.string.genericCopyUrl));
+					bottomSheetDialog.dismiss();
+				});
+
+		sheetBinding.share.setOnClickListener(
+				v -> {
+					AppUtil.sharingIntent(this, url);
+					bottomSheetDialog.dismiss();
+				});
+
+		sheetBinding.openInBrowser.setOnClickListener(
+				v -> {
+					AppUtil.openUrlInBrowser(this, url);
+					bottomSheetDialog.dismiss();
+				});
+
+		bottomSheetDialog.show();
 	}
 }

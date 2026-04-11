@@ -1,7 +1,7 @@
 package org.mian.gitnex.database.models;
 
 /**
- * @author M M Arif
+ * @author mmarif
  */
 public class DraftWithRepository {
 

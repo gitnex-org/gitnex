@@ -1,34 +1,44 @@
 package org.mian.gitnex.fragments;
 
+import android.app.Dialog;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import com.google.android.material.bottomsheet.BottomSheetDialog;
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment;
 import org.mian.gitnex.R;
-import org.mian.gitnex.databinding.BottomSheetSettingsCodeEditorBinding;
+import org.mian.gitnex.databinding.BottomsheetSettingsCodeEditorBinding;
 import org.mian.gitnex.helpers.AppDatabaseSettings;
-import org.mian.gitnex.helpers.SnackBar;
+import org.mian.gitnex.helpers.AppUIStateManager;
+import org.mian.gitnex.helpers.AppUtil;
+import org.mian.gitnex.helpers.Toasty;
 
 /**
  * @author mmarif
  */
 public class BottomSheetSettingsCodeEditorFragment extends BottomSheetDialogFragment {
 
-	private BottomSheetSettingsCodeEditorBinding binding;
+	private BottomsheetSettingsCodeEditorBinding binding;
 	private static int colorSelectedChoice;
 	private static int indentationSelectedChoice;
 	private static int indentationTabsSelectedChoice;
 	private static String[] indentationList;
+
+	@Override
+	public void onCreate(@Nullable Bundle savedInstanceState) {
+		super.onCreate(savedInstanceState);
+		setStyle(STYLE_NORMAL, R.style.Custom_BottomSheet);
+	}
 
 	@Nullable @Override
 	public View onCreateView(
 			@NonNull LayoutInflater inflater,
 			@Nullable ViewGroup container,
 			@Nullable Bundle savedInstanceState) {
-		binding = BottomSheetSettingsCodeEditorBinding.inflate(inflater, container, false);
+		binding = BottomsheetSettingsCodeEditorBinding.inflate(inflater, container, false);
 
 		indentationList = getResources().getStringArray(R.array.ceIndentation);
 		colorSelectedChoice =
@@ -60,11 +70,8 @@ public class BottomSheetSettingsCodeEditorFragment extends BottomSheetDialogFrag
 									requireContext(),
 									String.valueOf(newSelection),
 									AppDatabaseSettings.APP_CE_SYNTAX_HIGHLIGHT_KEY);
-							SettingsFragment.refreshParent = true;
-							SnackBar.success(
-									requireContext(),
-									requireActivity().findViewById(android.R.id.content),
-									getString(R.string.settingsSave));
+							AppUIStateManager.invalidateUI();
+							Toasty.show(requireContext(), getString(R.string.settingsSave));
 						}
 					}
 				});
@@ -80,11 +87,8 @@ public class BottomSheetSettingsCodeEditorFragment extends BottomSheetDialogFrag
 									String.valueOf(newSelection),
 									AppDatabaseSettings.APP_CE_INDENTATION_KEY);
 							updateTabsWidthVisibility();
-							SettingsFragment.refreshParent = true;
-							SnackBar.success(
-									requireContext(),
-									requireActivity().findViewById(android.R.id.content),
-									getString(R.string.settingsSave));
+							AppUIStateManager.invalidateUI();
+							Toasty.show(requireContext(), getString(R.string.settingsSave));
 						}
 					}
 				});
@@ -99,11 +103,8 @@ public class BottomSheetSettingsCodeEditorFragment extends BottomSheetDialogFrag
 									requireContext(),
 									String.valueOf(newSelection),
 									AppDatabaseSettings.APP_CE_TABS_WIDTH_KEY);
-							SettingsFragment.refreshParent = true;
-							SnackBar.success(
-									requireContext(),
-									requireActivity().findViewById(android.R.id.content),
-									getString(R.string.settingsSave));
+							AppUIStateManager.invalidateUI();
+							Toasty.show(requireContext(), getString(R.string.settingsSave));
 						}
 					}
 				});
@@ -176,6 +177,15 @@ public class BottomSheetSettingsCodeEditorFragment extends BottomSheetDialogFrag
 						getString(R.string.ceIndentationTabs));
 		binding.indentationTabsSelectionFrame.setVisibility(
 				isTabsSelected ? View.VISIBLE : View.GONE);
+	}
+
+	@Override
+	public void onStart() {
+		super.onStart();
+		Dialog dialog = getDialog();
+		if (dialog instanceof BottomSheetDialog) {
+			AppUtil.applySheetStyle((BottomSheetDialog) dialog, true);
+		}
 	}
 
 	@Override

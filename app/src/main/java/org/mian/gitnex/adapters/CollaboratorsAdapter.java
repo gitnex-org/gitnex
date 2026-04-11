@@ -7,8 +7,6 @@ import android.text.Html;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.ImageView;
-import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 import com.bumptech.glide.Glide;
@@ -17,138 +15,103 @@ import java.util.List;
 import org.gitnex.tea4j.v2.models.User;
 import org.mian.gitnex.R;
 import org.mian.gitnex.activities.ProfileActivity;
+import org.mian.gitnex.databinding.ListCollaboratorsBinding;
 import org.mian.gitnex.helpers.AppUtil;
 
 /**
- * @author M M Arif
+ * @author mmarif
  */
-public class CollaboratorsAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
+public class CollaboratorsAdapter
+		extends RecyclerView.Adapter<CollaboratorsAdapter.CollaboratorViewHolder> {
 
 	private List<User> collaboratorsList;
 	private final Context context;
-	private OnLoadMoreListener loadMoreListener;
-	private boolean isLoading = false, isMoreDataAvailable = true;
 
-	public CollaboratorsAdapter(Context ctx, List<User> collaboratorsListMain) {
-
+	public CollaboratorsAdapter(Context ctx, List<User> collaboratorsList) {
 		this.context = ctx;
-		this.collaboratorsList = collaboratorsListMain;
+		this.collaboratorsList = collaboratorsList;
 	}
 
 	@NonNull @Override
-	public RecyclerView.ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-		LayoutInflater inflater = LayoutInflater.from(context);
-		return new CollaboratorsAdapter.DataHolder(
-				inflater.inflate(R.layout.list_collaborators, parent, false));
+	public CollaboratorViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
+		ListCollaboratorsBinding binding =
+				ListCollaboratorsBinding.inflate(LayoutInflater.from(context), parent, false);
+		return new CollaboratorViewHolder(binding);
 	}
 
 	@Override
-	public void onBindViewHolder(@NonNull RecyclerView.ViewHolder holder, int position) {
-
-		if (position >= getItemCount() - 1
-				&& isMoreDataAvailable
-				&& !isLoading
-				&& loadMoreListener != null) {
-
-			isLoading = true;
-			loadMoreListener.onLoadMore();
-		}
-		((CollaboratorsAdapter.DataHolder) holder).bindData(collaboratorsList.get(position));
-	}
-
-	@Override
-	public int getItemViewType(int position) {
-		return position;
+	public void onBindViewHolder(@NonNull CollaboratorViewHolder holder, int position) {
+		User collaborator = collaboratorsList.get(position);
+		holder.bind(collaborator);
+		holder.binding.getRoot().updateAppearance(position, getItemCount());
 	}
 
 	@Override
 	public int getItemCount() {
-		return collaboratorsList.size();
-	}
-
-	public void setMoreDataAvailable(boolean moreDataAvailable) {
-		isMoreDataAvailable = moreDataAvailable;
-		if (!isMoreDataAvailable) {
-			loadMoreListener.onLoadFinished();
-		}
+		return collaboratorsList != null ? collaboratorsList.size() : 0;
 	}
 
 	@SuppressLint("NotifyDataSetChanged")
-	public void notifyDataChanged() {
+	public void updateList(List<User> newList) {
+		this.collaboratorsList = newList;
 		notifyDataSetChanged();
-		isLoading = false;
-		loadMoreListener.onLoadFinished();
 	}
 
-	public void setLoadMoreListener(OnLoadMoreListener loadMoreListener) {
-		this.loadMoreListener = loadMoreListener;
-	}
+	public class CollaboratorViewHolder extends RecyclerView.ViewHolder {
+		private final ListCollaboratorsBinding binding;
 
-	public void updateList(List<User> list) {
-		collaboratorsList = list;
-		notifyDataChanged();
-	}
+		CollaboratorViewHolder(ListCollaboratorsBinding binding) {
+			super(binding.getRoot());
+			this.binding = binding;
 
-	public interface OnLoadMoreListener {
+			binding.getRoot()
+					.setOnClickListener(
+							v -> {
+								int position = getBindingAdapterPosition();
+								if (position != RecyclerView.NO_POSITION) {
+									User user = collaboratorsList.get(position);
+									Intent intent = new Intent(context, ProfileActivity.class);
+									intent.putExtra("username", user.getLogin());
+									context.startActivity(intent);
+								}
+							});
 
-		void onLoadMore();
-
-		void onLoadFinished();
-	}
-
-	class DataHolder extends RecyclerView.ViewHolder {
-
-		private final ImageView collaboratorAvatar;
-		private final TextView collaboratorName;
-		private final TextView userName;
-		private String userLoginId;
-
-		DataHolder(View v) {
-			super(v);
-
-			collaboratorAvatar = v.findViewById(R.id.collaboratorAvatar);
-			collaboratorName = v.findViewById(R.id.collaboratorName);
-			userName = v.findViewById(R.id.userName);
-
-			v.setOnClickListener(
-					loginId -> {
-						Intent intent = new Intent(context, ProfileActivity.class);
-						intent.putExtra("username", userLoginId);
-						context.startActivity(intent);
-					});
-
-			v.setOnLongClickListener(
-					loginId -> {
-						AppUtil.copyToClipboard(
-								context,
-								userLoginId,
-								context.getString(R.string.copyLoginIdToClipBoard, userLoginId));
-						return true;
-					});
+			binding.getRoot()
+					.setOnLongClickListener(
+							v -> {
+								int position = getBindingAdapterPosition();
+								if (position != RecyclerView.NO_POSITION) {
+									User user = collaboratorsList.get(position);
+									AppUtil.copyToClipboard(
+											context,
+											user.getLogin(),
+											context.getString(
+													R.string.copyLoginIdToClipBoard,
+													user.getLogin()));
+								}
+								return true;
+							});
 		}
 
-		void bindData(User dataModel) {
+		void bind(User user) {
+			if (user.getFullName() != null && !user.getFullName().isEmpty()) {
+				binding.userFullname.setText(
+						Html.fromHtml(user.getFullName(), Html.FROM_HTML_MODE_COMPACT));
+				binding.username.setText(
+						context.getString(R.string.usernameWithAt, user.getLogin()));
+				binding.username.setVisibility(View.VISIBLE);
+			} else {
+				binding.userFullname.setText(user.getLogin());
+				binding.username.setVisibility(View.GONE);
+			}
 
 			Glide.with(context)
-					.load(dataModel.getAvatarUrl())
+					.load(user.getAvatarUrl())
 					.diskCacheStrategy(DiskCacheStrategy.ALL)
 					.placeholder(R.drawable.loader_animated)
+					.error(R.drawable.ic_person)
 					.centerCrop()
-					.into(collaboratorAvatar);
-
-			userLoginId = dataModel.getLogin();
-
-			if (!dataModel.getFullName().isEmpty()) {
-
-				collaboratorName.setText(Html.fromHtml(dataModel.getFullName()));
-				userName.setText(
-						context.getResources()
-								.getString(R.string.usernameWithAt, dataModel.getLogin()));
-			} else {
-
-				collaboratorName.setText(dataModel.getLogin());
-				userName.setVisibility(View.GONE);
-			}
+					.into(binding.userAvatar);
 		}
 	}
 }

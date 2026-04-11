@@ -1,87 +1,94 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<com.google.android.material.listitem.ListItemLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    android:id="@+id/linearLayoutMainFrame"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:background="?attr/primaryBackgroundColor"
-    android:orientation="horizontal"
-    android:paddingTop="@dimen/dimen4dp"
-    android:paddingBottom="@dimen/dimen4dp">
+    xmlns:tools="http://schemas.android.com/tools">
 
-    <com.google.android.material.card.MaterialCardView
+    <com.google.android.material.listitem.ListItemCardView
+        android:id="@+id/card"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        style="?attr/materialCardViewElevatedStyle"
-        app:cardElevation="@dimen/dimen0dp">
+        android:checkable="false"
+        android:layout_marginVertical="@dimen/dimen1dp"
+        app:strokeWidth="0dp"
+        app:cardBackgroundColor="?attr/materialCardBackgroundColor">
 
-        <LinearLayout
+        <androidx.constraintlayout.widget.ConstraintLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:foreground="?android:attr/selectableItemBackground"
-            android:background="?attr/materialCardBackgroundColor"
-            android:padding="@dimen/dimen12dp"
-            android:orientation="horizontal">
+            android:padding="@dimen/dimen8dp">
 
             <com.google.android.material.card.MaterialCardView
                 android:id="@+id/labelView"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                style="?attr/materialCardViewElevatedStyle"
-                app:cardCornerRadius="@dimen/dimen8dp"
-                app:cardElevation="@dimen/dimen0dp"
-                app:contentPaddingBottom="@dimen/dimen4dp"
-                app:contentPaddingLeft="@dimen/dimen12dp"
-                app:contentPaddingRight="@dimen/dimen12dp"
-                app:contentPaddingTop="@dimen/dimen4dp">
+                app:cardElevation="0dp"
+                app:cardCornerRadius="@dimen/dimen24dp"
+                app:strokeWidth="0dp"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
+                app:layout_constraintBottom_toTopOf="@id/labelDescription"
+                app:layout_constraintVertical_chainStyle="packed">
 
                 <LinearLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
                     android:gravity="center_vertical"
-                    android:orientation="horizontal">
+                    android:paddingHorizontal="@dimen/dimen12dp"
+                    android:paddingVertical="@dimen/dimen6dp"
+                    tools:ignore="UseCompoundDrawables">
 
                     <ImageView
                         android:id="@+id/labelIcon"
                         android:layout_width="@dimen/dimen16dp"
                         android:layout_height="@dimen/dimen16dp"
-                        android:layout_marginTop="@dimen/dimen4dp"
-                        android:layout_marginBottom="@dimen/dimen4dp"
-                        android:layout_weight="0"
                         android:contentDescription="@string/generalImgContentText"
-                        app:tint="@color/colorWhite"
-                        app:srcCompat="@drawable/ic_tag"/>
+                        app:srcCompat="@drawable/ic_tag" />
 
                     <TextView
                         android:id="@+id/labelName"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:layout_marginStart="@dimen/dimen8dp"
-                        android:layout_weight="1"
-                        android:textColor="@color/colorWhite"
-                        android:textSize="@dimen/dimen14sp"
-                        android:textStyle="bold"/>
+                        android:layout_marginStart="@dimen/dimen6dp"
+                        android:textAppearance="@style/TextAppearance.Material3.LabelMedium"
+                        android:textStyle="bold" />
+
                 </LinearLayout>
 
             </com.google.android.material.card.MaterialCardView>
 
-            <androidx.legacy.widget.Space
+            <TextView
+                android:id="@+id/labelDescription"
+                style="@style/TextAppearance.Material3.BodySmall"
                 android:layout_width="0dp"
-                android:layout_height="0dp"
-                android:layout_weight="1"/>
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/dimen4dp"
+                android:textColor="?attr/primaryTextColor"
+                android:alpha=".8"
+                android:ellipsize="end"
+                android:maxLines="3"
+                app:layout_goneMarginTop="0dp"
+                app:layout_constraintEnd_toStartOf="@+id/item_menu"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/labelView"
+                app:layout_constraintBottom_toBottomOf="parent" />
 
             <ImageView
-                android:id="@+id/labelsOptionsMenu"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_gravity="center_vertical|end"
-                android:contentDescription="@string/labelMenuContentDesc"
-                android:background="?android:attr/selectableItemBackgroundBorderless"
-                android:src="@drawable/ic_dotted_menu_horizontal"/>
+                android:id="@+id/item_menu"
+                android:layout_width="@dimen/dimen32dp"
+                android:layout_height="@dimen/dimen32dp"
+                android:background="?attr/selectableItemBackgroundBorderless"
+                android:contentDescription="@string/generalImgContentText"
+                android:padding="@dimen/dimen2dp"
+                android:scaleType="centerInside"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
+                app:srcCompat="@drawable/ic_dotted_menu"
+                app:tint="?attr/iconsColor" />
 
-        </LinearLayout>
+        </androidx.constraintlayout.widget.ConstraintLayout>
 
-    </com.google.android.material.card.MaterialCardView>
+    </com.google.android.material.listitem.ListItemCardView>
 
-</LinearLayout>
-
+</com.google.android.material.listitem.ListItemLayout>

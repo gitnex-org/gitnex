@@ -1,45 +1,40 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    android:orientation="vertical"
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
-    <com.google.android.material.progressindicator.LinearProgressIndicator
-        android:id="@+id/progress_bar"
-        style="@style/Widget.MaterialComponents.LinearProgressIndicator"
+    <LinearLayout
+        android:orientation="vertical"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:indeterminate="true"
-        app:indicatorColor="?attr/progressIndicatorColor"/>
+        android:layout_height="match_parent">
 
-    <TextView
-        android:id="@+id/toolbar_title"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_gravity="center_vertical"
-        android:text="@string/fileDiffViewHeader"
-        android:textColor="?attr/primaryTextColor"
-        android:ellipsize="none"
-        android:scrollbars="horizontal"
-        android:singleLine="true"
-        android:layout_marginStart="@dimen/dimen20dp"
-        android:layout_marginTop="@dimen/dimen8dp"
-        android:layout_marginBottom="@dimen/dimen8dp"
-        android:textSize="@dimen/dimen16sp"
-        android:visibility="gone"/>
-
-    <FrameLayout
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:background="?attr/primaryBackgroundColor"
-        android:padding="@dimen/dimen8dp">
+        <TextView
+            android:id="@+id/toolbar_title"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="@dimen/dimen16dp"
+            android:layout_marginBottom="@dimen/dimen8dp"
+            android:textAppearance="?attr/textAppearanceTitleMedium"
+            android:textColor="?attr/primaryTextColor"
+            android:visibility="gone"/>
 
         <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/diff_files"
             android:layout_width="match_parent"
-            android:layout_height="match_parent"/>
+            android:layout_height="match_parent"
+            android:paddingHorizontal="@dimen/dimen12dp"
+            android:clipToPadding="false"/>
 
-    </FrameLayout>
+    </LinearLayout>
 
-</LinearLayout>
+    <com.google.android.material.loadingindicator.LoadingIndicator
+        android:id="@+id/expressive_loader"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:visibility="gone"
+        app:indicatorSize="@dimen/dimen48dp"
+        app:trackThickness="@dimen/dimen4dp" />
+
+</FrameLayout>

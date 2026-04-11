@@ -7,7 +7,7 @@ import org.mian.gitnex.database.dao.RepositoriesDao;
 import org.mian.gitnex.database.models.Repository;
 
 /**
- * @author M M Arif
+ * @author mmarif
  */
 public class RepositoriesApi extends BaseApi {
 

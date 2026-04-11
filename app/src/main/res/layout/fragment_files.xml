@@ -2,145 +2,58 @@
 <androidx.coordinatorlayout.widget.CoordinatorLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="wrap_content"
-    tools:context=".activities.RepoDetailActivity">
+    android:layout_height="match_parent">
 
-    <LinearLayout
-        android:id="@+id/filesFrame"
+    <FrameLayout
+        android:id="@+id/files_frame"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:orientation="vertical"
-        android:visibility="gone"
-        tools:visibility="visible">
+        android:layout_height="match_parent">
 
-        <!-- branch section -->
-        <com.google.android.material.card.MaterialCardView
-            android:id="@+id/branch_section"
+        <androidx.swiperefreshlayout.widget.SwipeRefreshLayout
+            android:id="@+id/pullToRefresh"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="@dimen/dimen8dp"
-            android:layout_marginBottom="@dimen/dimen0dp"
-            android:layout_marginStart="@dimen/dimen8dp"
-            android:layout_marginEnd="@dimen/dimen8dp"
-            style="?attr/materialCardViewElevatedStyle"
-            app:strokeWidth="@dimen/dimen0dp"
-            app:cardElevation="@dimen/dimen0dp">
+            android:layout_height="wrap_content">
 
-            <LinearLayout
-                android:id="@+id/files_branches_main_frame"
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/recyclerView"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:gravity="center_vertical"
-                android:orientation="horizontal"
-                android:background="?attr/materialCardBackgroundColor"
-                android:padding="@dimen/dimen12dp">
+                android:layout_height="match_parent"
+                android:clipToPadding="false"
+                android:paddingHorizontal="@dimen/dimen12dp" />
 
-                <ImageView
-                    android:layout_width="@dimen/dimen24dp"
-                    android:layout_height="@dimen/dimen24dp"
-                    android:contentDescription="@string/branch"
-                    android:layout_marginEnd="@dimen/dimen16dp"
-                    app:tint="?attr/iconsColor"
-                    app:srcCompat="@drawable/ic_branch" />
+        </androidx.swiperefreshlayout.widget.SwipeRefreshLayout>
 
-                <LinearLayout
-                    android:id="@+id/files_branches_frame"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:orientation="horizontal"
-                    tools:ignore="UseCompoundDrawables">
+    </FrameLayout>
 
-                    <TextView
-                        android:id="@+id/branch_title"
-                        android:layout_width="0dp"
-                        android:layout_height="wrap_content"
-                        android:layout_weight="1"
-                        android:layout_marginEnd="@dimen/dimen16dp"
-                        android:text="@string/branch"
-                        android:textSize="@dimen/dimen16sp" />
-
-                    <TextView
-                        android:id="@+id/switch_branch"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:text="@string/switch_branch"
-                        android:textAllCaps="true"
-                        android:textSize="@dimen/dimen14sp" />
-
-                </LinearLayout>
-
-            </LinearLayout>
-
-        </com.google.android.material.card.MaterialCardView>
-        <!-- branch section -->
-
-        <com.google.android.material.card.MaterialCardView
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            style="?attr/materialCardViewElevatedStyle"
-            android:layout_margin="@dimen/dimen8dp"
-            app:cardElevation="@dimen/dimen0dp">
-
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:foreground="?android:attr/selectableItemBackground"
-                android:background="?attr/materialCardBackgroundColor"
-                android:orientation="horizontal">
-
-                    <androidx.swiperefreshlayout.widget.SwipeRefreshLayout
-                        android:id="@+id/pullToRefresh"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content">
-
-                        <androidx.recyclerview.widget.RecyclerView
-                            android:id="@+id/recyclerView"
-                            android:layout_width="match_parent"
-                            android:layout_height="match_parent"
-                            android:clipToPadding="false"
-                            android:paddingBottom="@dimen/dimen72dp" />
-
-                    </androidx.swiperefreshlayout.widget.SwipeRefreshLayout>
-
-            </LinearLayout>
-
-        </com.google.android.material.card.MaterialCardView>
-
-    </LinearLayout>
-
-    <TextView
-        android:id="@+id/noDataFiles"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:layout_margin="@dimen/dimen16dp"
-        android:gravity="center"
-        android:text="@string/noDataFound"
-        android:textColor="?attr/primaryTextColor"
-        android:textSize="@dimen/dimen18sp"
-        android:visibility="gone" />
-
-    <com.google.android.material.progressindicator.LinearProgressIndicator
-        android:id="@+id/progress_bar"
-        style="@style/Widget.MaterialComponents.LinearProgressIndicator"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_alignTop="@id/filesFrame"
-        android:indeterminate="true"
-        app:indicatorColor="?attr/progressIndicatorColor" />
-
-    <com.google.android.material.floatingactionbutton.ExtendedFloatingActionButton
-        android:id="@+id/newFile"
+    <com.google.android.material.loadingindicator.LoadingIndicator
+        android:id="@+id/expressive_loader"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_gravity="end|bottom"
-        android:layout_margin="@dimen/dimen16dp"
-        android:text="@string/pageTitleNewFile"
-        android:contentDescription="@string/pageTitleNewFile"
-        android:textColor="?attr/materialCardBackgroundColor"
-        app:iconTint="?attr/materialCardBackgroundColor"
-        android:backgroundTint="?attr/fabColor"
-        app:icon="@drawable/ic_add" />
+        android:layout_gravity="center"
+        app:indicatorSize="@dimen/dimen48dp"
+        app:trackThickness="@dimen/dimen4dp" />
+
+    <include
+        android:id="@+id/layout_empty"
+        layout="@layout/layout_empty_state"
+        android:visibility="gone" />
+
+    <com.google.android.material.search.SearchView
+        android:id="@+id/search_view"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:hint="@string/search"
+        app:navigationIcon="@drawable/ic_arrow_back"
+        app:backgroundTint="?attr/primaryBackgroundColor">
+
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/search_results_recycler"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:padding="@dimen/dimen12dp"
+            app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager" />
+
+    </com.google.android.material.search.SearchView>
 
 </androidx.coordinatorlayout.widget.CoordinatorLayout>

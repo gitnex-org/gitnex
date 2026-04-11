@@ -1,49 +1,46 @@
 package org.mian.gitnex.fragments;
 
 import android.content.Context;
+import android.content.Intent;
 import android.os.Bundle;
-import android.os.Handler;
-import android.os.Looper;
-import android.util.Log;
+import android.text.Editable;
+import android.text.TextWatcher;
 import android.view.LayoutInflater;
-import android.view.Menu;
-import android.view.MenuInflater;
-import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
-import android.view.inputmethod.EditorInfo;
 import androidx.annotation.NonNull;
-import androidx.coordinatorlayout.widget.CoordinatorLayout;
-import androidx.core.view.MenuProvider;
+import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
-import androidx.lifecycle.Lifecycle;
+import androidx.lifecycle.ViewModelProvider;
 import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 import java.util.ArrayList;
 import java.util.List;
 import org.gitnex.tea4j.v2.models.Commit;
 import org.mian.gitnex.R;
+import org.mian.gitnex.activities.CommitDetailActivity;
+import org.mian.gitnex.activities.PullRequestDiffActivity;
 import org.mian.gitnex.adapters.CommitsAdapter;
-import org.mian.gitnex.clients.RetrofitClient;
-import org.mian.gitnex.databinding.ActivityCommitsBinding;
+import org.mian.gitnex.databinding.FragmentPullRequestCommitsBinding;
 import org.mian.gitnex.helpers.Constants;
+import org.mian.gitnex.helpers.EndlessRecyclerViewScrollListener;
 import org.mian.gitnex.helpers.Toasty;
+import org.mian.gitnex.helpers.UIHelper;
 import org.mian.gitnex.helpers.contexts.IssueContext;
-import retrofit2.Call;
-import retrofit2.Callback;
-import retrofit2.Response;
+import org.mian.gitnex.viewmodels.PullRequestDiffViewModel;
 
 /**
  * @author qwerty287
+ * @author mmarif
  */
 public class PullRequestCommitsFragment extends Fragment {
 
-	private final String TAG = "PullRequestCommitsFragment";
-	private final List<Commit> commitsList = new ArrayList<>();
-	private ActivityCommitsBinding binding;
-	private Context ctx;
-	private int resultLimit;
-	private int pageSize = 1;
+	private FragmentPullRequestCommitsBinding binding;
+	private PullRequestDiffViewModel viewModel;
 	private CommitsAdapter adapter;
+	private IssueContext issue;
+	private int resultLimit;
+	private Context ctx;
 
 	public PullRequestCommitsFragment() {}
 
@@ -52,242 +49,195 @@ public class PullRequestCommitsFragment extends Fragment {
 	}
 
 	@Override
+	public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
+		super.onViewCreated(view, savedInstanceState);
+
+		UIHelper.applyInsets(view, null, binding.recyclerView, null, null);
+	}
+
+	@Override
 	public View onCreateView(
 			@NonNull LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-
-		if (binding != null) {
-			ctx = requireContext();
-			return binding.getRoot();
-		}
-
-		binding = ActivityCommitsBinding.inflate(inflater, container, false);
+		binding = FragmentPullRequestCommitsBinding.inflate(inflater, container, false);
 		ctx = requireContext();
-		IssueContext issue = IssueContext.fromIntent(requireActivity().getIntent());
-		binding.toolbar.setVisibility(View.GONE);
-
+		issue = IssueContext.fromIntent(requireActivity().getIntent());
 		resultLimit = Constants.getCurrentResultLimit(ctx);
 
-		binding.pullToRefresh.setOnRefreshListener(
-				() ->
-						new Handler(Looper.getMainLooper())
-								.postDelayed(
-										() -> {
-											binding.pullToRefresh.setRefreshing(false);
-											loadInitial(issue, resultLimit);
-											adapter.notifyDataChanged();
-										},
-										200));
+		viewModel = new ViewModelProvider(requireActivity()).get(PullRequestDiffViewModel.class);
 
-		CoordinatorLayout.LayoutParams params =
-				new CoordinatorLayout.LayoutParams(
-						CoordinatorLayout.LayoutParams.MATCH_PARENT,
-						CoordinatorLayout.LayoutParams.WRAP_CONTENT);
-		params.setMargins(0, 0, 0, 0);
-		binding.pullToRefresh.setLayoutParams(params);
+		setupRecyclerView();
+		setupSwipeRefresh();
+		setupSearch();
+		observeViewModel();
 
-		CoordinatorLayout.LayoutParams paramsProgressBar =
-				new CoordinatorLayout.LayoutParams(
-						CoordinatorLayout.LayoutParams.MATCH_PARENT,
-						CoordinatorLayout.LayoutParams.WRAP_CONTENT);
-		paramsProgressBar.setMargins(0, 0, 0, 0);
-		binding.progressBar.setLayoutParams(paramsProgressBar);
-
-		adapter = new CommitsAdapter(ctx, commitsList);
-		adapter.setLoadMoreListener(
-				() ->
-						binding.recyclerView.post(
-								() -> {
-									if (commitsList.size() == resultLimit
-											|| pageSize == resultLimit) {
-
-										int page = (commitsList.size() + resultLimit) / resultLimit;
-										loadMore(page, issue, resultLimit);
-									}
-								}));
-
-		binding.recyclerView.setHasFixedSize(true);
-		binding.recyclerView.setLayoutManager(new LinearLayoutManager(ctx));
-		binding.recyclerView.setAdapter(adapter);
-
-		loadInitial(issue, resultLimit);
-
-		requireActivity()
-				.addMenuProvider(
-						new MenuProvider() {
-
-							@Override
-							public void onCreateMenu(
-									@NonNull Menu menu, @NonNull MenuInflater menuInflater) {
-
-								menuInflater.inflate(R.menu.search_menu, menu);
-
-								MenuItem searchItem = menu.findItem(R.id.action_search);
-								androidx.appcompat.widget.SearchView searchView =
-										(androidx.appcompat.widget.SearchView)
-												searchItem.getActionView();
-								assert searchView != null;
-								searchView.setImeOptions(EditorInfo.IME_ACTION_DONE);
-
-								searchView.setOnQueryTextListener(
-										new androidx.appcompat.widget.SearchView
-												.OnQueryTextListener() {
-
-											@Override
-											public boolean onQueryTextSubmit(String query) {
-												return false;
-											}
-
-											@Override
-											public boolean onQueryTextChange(String newText) {
-												filter(newText);
-												return false;
-											}
-										});
-							}
-
-							@Override
-							public boolean onMenuItemSelected(@NonNull MenuItem menuItem) {
-								return false;
-							}
-						},
-						getViewLifecycleOwner(),
-						Lifecycle.State.RESUMED);
+		if (viewModel.getCommits().getValue() == null
+				|| viewModel.getCommits().getValue().isEmpty()) {
+			refreshData();
+		}
 
 		return binding.getRoot();
 	}
 
-	@Override
-	public void onCreate(Bundle savedInstanceState) {
+	private void observeViewModel() {
+		viewModel
+				.getCommits()
+				.observe(
+						getViewLifecycleOwner(),
+						list -> {
+							adapter.updateList(list);
+							binding.pullToRefresh.setRefreshing(false);
 
-		super.onCreate(savedInstanceState);
-		this.getClass().getName();
+							boolean isLoading =
+									Boolean.TRUE.equals(viewModel.getIsCommitsLoading().getValue());
+							binding.layoutEmpty
+									.getRoot()
+									.setVisibility(
+											!isLoading && list.isEmpty()
+													? View.VISIBLE
+													: View.GONE);
+						});
+
+		viewModel
+				.getIsCommitsLoading()
+				.observe(
+						getViewLifecycleOwner(),
+						loading -> {
+							binding.expressiveLoader.setVisibility(
+									loading ? View.VISIBLE : View.GONE);
+							if (loading) {
+								binding.layoutEmpty.getRoot().setVisibility(View.GONE);
+							}
+						});
+
+		viewModel
+				.getError()
+				.observe(
+						getViewLifecycleOwner(),
+						msg -> {
+							if (msg != null) {
+								Toasty.show(ctx, msg);
+								binding.pullToRefresh.setRefreshing(false);
+							}
+						});
 	}
 
-	private void loadInitial(IssueContext issue, int resultLimit) {
+	private void setupRecyclerView() {
+		adapter =
+				new CommitsAdapter(
+						ctx,
+						new ArrayList<>(),
+						commit -> {
+							Intent intent =
+									issue.getRepository()
+											.getIntent(ctx, CommitDetailActivity.class);
+							intent.putExtra("sha", commit.getSha());
+							startActivity(intent);
+						});
 
-		Call<List<Commit>> call =
-				RetrofitClient.getApiInterface(ctx)
-						.repoGetPullRequestCommits(
+		LinearLayoutManager layoutManager = new LinearLayoutManager(ctx);
+		binding.recyclerView.setLayoutManager(layoutManager);
+		binding.recyclerView.setAdapter(adapter);
+
+		binding.recyclerView.addOnScrollListener(
+				new EndlessRecyclerViewScrollListener(layoutManager) {
+					@Override
+					public void onLoadMore(int page, int totalItemsCount, RecyclerView view) {
+						viewModel.fetchPRCommits(
+								ctx,
 								issue.getRepository().getOwner(),
 								issue.getRepository().getName(),
-								(long) issue.getIssueIndex(),
-								1,
+								issue.getIssueIndex(),
 								resultLimit,
-								null,
-								null);
-
-		call.enqueue(
-				new Callback<>() {
-
-					@Override
-					public void onResponse(
-							@NonNull Call<List<Commit>> call,
-							@NonNull Response<List<Commit>> response) {
-
-						if (response.code() == 200) {
-
-							assert response.body() != null;
-							if (!response.body().isEmpty()) {
-
-								commitsList.clear();
-								commitsList.addAll(response.body());
-								adapter.notifyDataChanged();
-								binding.noDataCommits.setVisibility(View.GONE);
-							} else {
-
-								commitsList.clear();
-								adapter.notifyDataChanged();
-								binding.noDataCommits.setVisibility(View.VISIBLE);
-							}
-						}
-						if (response.code() == 409) {
-
-							binding.noDataCommits.setVisibility(View.VISIBLE);
-						} else {
-
-							Log.e(TAG, String.valueOf(response.code()));
-						}
-
-						binding.progressBar.setVisibility(View.GONE);
-					}
-
-					@Override
-					public void onFailure(@NonNull Call<List<Commit>> call, @NonNull Throwable t) {
-
-						Toasty.error(
-								ctx, getResources().getString(R.string.genericServerResponseError));
+								false);
 					}
 				});
 	}
 
-	private void loadMore(final int page, IssueContext issue, int resultLimit) {
+	private void refreshData() {
+		viewModel.fetchPRCommits(
+				ctx,
+				issue.getRepository().getOwner(),
+				issue.getRepository().getName(),
+				issue.getIssueIndex(),
+				resultLimit,
+				true);
+	}
 
-		binding.progressBar.setVisibility(View.VISIBLE);
+	private void setupSearch() {
+		if (!(getActivity() instanceof PullRequestDiffActivity)) return;
 
-		Call<List<Commit>> call =
-				RetrofitClient.getApiInterface(ctx)
-						.repoGetPullRequestCommits(
-								issue.getRepository().getOwner(),
-								issue.getRepository().getName(),
-								(long) issue.getIssueIndex(),
-								page,
-								resultLimit,
-								null,
-								null);
+		com.google.android.material.search.SearchView activitySearchView =
+				getActivity().findViewById(R.id.search_view);
+		RecyclerView activitySearchRecycler =
+				getActivity().findViewById(R.id.search_results_recycler);
 
-		call.enqueue(
-				new Callback<>() {
+		activitySearchRecycler.setLayoutManager(new LinearLayoutManager(ctx));
+		activitySearchRecycler.setAdapter(adapter);
 
-					@Override
-					public void onResponse(
-							@NonNull Call<List<Commit>> call,
-							@NonNull Response<List<Commit>> response) {
-
-						if (response.isSuccessful()) {
-
-							List<Commit> result = response.body();
-							assert result != null;
-
-							if (!result.isEmpty()) {
-
-								pageSize = result.size();
-								commitsList.addAll(result);
-							} else {
-
-								adapter.setMoreDataAvailable(false);
+		activitySearchView
+				.getEditText()
+				.addTextChangedListener(
+						new TextWatcher() {
+							@Override
+							public void onTextChanged(
+									CharSequence s, int start, int before, int count) {
+								filter(s.toString());
 							}
 
-							adapter.notifyDataChanged();
-						} else {
+							@Override
+							public void beforeTextChanged(
+									CharSequence s, int start, int count, int after) {}
 
-							Log.e(TAG, String.valueOf(response.code()));
-						}
+							@Override
+							public void afterTextChanged(Editable s) {}
+						});
 
-						binding.progressBar.setVisibility(View.GONE);
-					}
-
-					@Override
-					public void onFailure(@NonNull Call<List<Commit>> call, @NonNull Throwable t) {
-
-						Toasty.error(
-								ctx, getResources().getString(R.string.genericServerResponseError));
+		activitySearchView.addTransitionListener(
+				(searchView, previousState, newState) -> {
+					if (newState
+							== com.google.android.material.search.SearchView.TransitionState
+									.HIDDEN) {
+						activitySearchView.setText("");
+						filter("");
 					}
 				});
 	}
 
 	private void filter(String text) {
+		if (binding == null) return;
 
-		List<Commit> arr = new ArrayList<>();
+		List<Commit> originalList = viewModel.getCommits().getValue();
+		if (originalList == null) return;
 
-		for (Commit d : commitsList) {
+		if (text.isEmpty()) {
+			adapter.updateList(originalList);
+			binding.layoutEmpty
+					.getRoot()
+					.setVisibility(originalList.isEmpty() ? View.VISIBLE : View.GONE);
+			return;
+		}
 
-			if (d.getCommit().getMessage().toLowerCase().contains(text)
-					|| d.getSha().toLowerCase().contains(text)) {
-
-				arr.add(d);
+		List<Commit> filtered = new ArrayList<>();
+		String query = text.toLowerCase().trim();
+		for (Commit c : originalList) {
+			String msg = (c.getCommit() != null) ? c.getCommit().getMessage().toLowerCase() : "";
+			if (msg.contains(query) || c.getSha().toLowerCase().contains(query)) {
+				filtered.add(c);
 			}
 		}
 
-		adapter.updateList(arr);
+		adapter.updateList(filtered);
+
+		binding.layoutEmpty.getRoot().setVisibility(filtered.isEmpty() ? View.VISIBLE : View.GONE);
+	}
+
+	private void setupSwipeRefresh() {
+		binding.pullToRefresh.setOnRefreshListener(this::refreshData);
+	}
+
+	@Override
+	public void onDestroyView() {
+		super.onDestroyView();
+		binding = null;
 	}
 }

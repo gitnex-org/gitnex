@@ -1,22 +1,17 @@
 package org.mian.gitnex.fragments;
 
-import android.content.Context;
 import android.os.Bundle;
-import android.os.Handler;
-import android.os.Looper;
 import android.view.LayoutInflater;
-import android.view.Menu;
-import android.view.MenuInflater;
-import android.view.MenuItem;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
-import android.view.inputmethod.EditorInfo;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
-import androidx.core.view.MenuProvider;
+import androidx.core.graphics.Insets;
+import androidx.core.view.ViewCompat;
+import androidx.core.view.WindowInsetsCompat;
 import androidx.fragment.app.Fragment;
-import androidx.lifecycle.Lifecycle;
+import androidx.lifecycle.ViewModelProvider;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 import java.util.ArrayList;
@@ -26,34 +21,31 @@ import org.mian.gitnex.R;
 import org.mian.gitnex.activities.CreateIssueActivity;
 import org.mian.gitnex.activities.RepoDetailActivity;
 import org.mian.gitnex.adapters.IssuesAdapter;
-import org.mian.gitnex.clients.RetrofitClient;
 import org.mian.gitnex.databinding.FragmentIssuesBinding;
 import org.mian.gitnex.helpers.Constants;
-import org.mian.gitnex.helpers.SnackBar;
+import org.mian.gitnex.helpers.EndlessRecyclerViewScrollListener;
 import org.mian.gitnex.helpers.Toasty;
 import org.mian.gitnex.helpers.contexts.RepositoryContext;
-import retrofit2.Call;
-import retrofit2.Callback;
-import retrofit2.Response;
+import org.mian.gitnex.models.IssueFilterState;
+import org.mian.gitnex.models.RepositoryMenuItemModel;
+import org.mian.gitnex.viewmodels.IssuesViewModel;
 
 /**
- * @author M M Arif
+ * @author mmarif
  */
-public class IssuesFragment extends Fragment {
+public class IssuesFragment extends Fragment implements RepoDetailActivity.RepoHubProvider {
 
 	public static boolean resumeIssues = false;
 	private final String requestType = Constants.issuesRequestType;
-	private FragmentIssuesBinding fragmentIssuesBinding;
-	private Context context;
-	private List<Issue> issuesList;
-	private List<Issue> pinnedIssuesList;
+	private FragmentIssuesBinding binding;
+	private IssuesViewModel viewModel;
 	private IssuesAdapter adapter;
 	private IssuesAdapter adapterPinned;
-	private int pageSize = Constants.issuesPageInit;
-	private int resultLimit;
 	private RepositoryContext repository;
-	private String selectedLabels = null;
-	private String mentionedBy;
+	private int resultLimit;
+	private EndlessRecyclerViewScrollListener scrollListener;
+	private int systemTopInset = 0;
+	private boolean isFirstLoad = true;
 
 	public static IssuesFragment newInstance(RepositoryContext repository) {
 		IssuesFragment f = new IssuesFragment();
@@ -61,83 +53,152 @@ public class IssuesFragment extends Fragment {
 		return f;
 	}
 
+	@Override
+	public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
+		super.onViewCreated(view, savedInstanceState);
+		ViewCompat.setOnApplyWindowInsetsListener(
+				binding.insetContainer,
+				(v, insets) -> {
+					Insets systemBars = insets.getInsets(WindowInsetsCompat.Type.systemBars());
+					systemTopInset = systemBars.top;
+					refreshPaddingLogic();
+
+					return insets;
+				});
+	}
+
 	@Nullable @Override
 	public View onCreateView(
 			@NonNull LayoutInflater inflater,
 			@Nullable ViewGroup container,
 			@Nullable Bundle savedInstanceState) {
+		binding = FragmentIssuesBinding.inflate(inflater, container, false);
 
-		fragmentIssuesBinding = FragmentIssuesBinding.inflate(inflater, container, false);
-		context = getContext();
+		viewModel = new ViewModelProvider(requireActivity()).get(IssuesViewModel.class);
 
 		repository = RepositoryContext.fromBundle(requireArguments());
-		mentionedBy = repository.getMentionedBy();
+		resultLimit = Constants.getCurrentResultLimit(requireContext());
 
-		boolean archived = repository.getRepository().isArchived();
+		setupAdapters();
+		setupRepoListeners();
+		observeRepoViewModel();
 
-		resultLimit = Constants.getCurrentResultLimit(context);
+		return binding.getRoot();
+	}
 
-		issuesList = new ArrayList<>();
-		pinnedIssuesList = new ArrayList<>();
+	@Override
+	public List<RepositoryMenuItemModel> getRepoHubItems() {
+		List<RepositoryMenuItemModel> items = new ArrayList<>();
 
-		fragmentIssuesBinding.pullToRefresh.setOnRefreshListener(
-				() ->
-						new Handler(Looper.getMainLooper())
-								.postDelayed(
-										() -> {
-											fragmentIssuesBinding.pullToRefresh.setRefreshing(
-													false);
-											loadInitial(
-													repository.getOwner(),
-													repository.getName(),
-													resultLimit,
-													requestType,
-													repository.getIssueState().toString(),
-													repository.getIssueMilestoneFilterName(),
-													null,
-													selectedLabels,
-													mentionedBy);
-											adapter.notifyDataChanged();
-										},
-										200));
+		items.add(
+				new RepositoryMenuItemModel(
+						"ISSUES_SEARCH",
+						R.string.search_filter,
+						R.drawable.ic_search,
+						R.attr.colorPrimarySurface,
+						R.attr.colorOnPrimarySurface));
 
-		adapter = new IssuesAdapter(context, issuesList, "");
-		adapter.setLoadMoreListener(
-				() ->
-						fragmentIssuesBinding.recyclerView.post(
-								() -> {
-									if (issuesList.size() == resultLimit
-											|| pageSize == resultLimit) {
-										int page = (issuesList.size() + resultLimit) / resultLimit;
-										loadMore(
-												repository.getOwner(),
-												repository.getName(),
-												page,
-												resultLimit,
-												requestType,
-												repository.getIssueState().toString(),
-												repository.getIssueMilestoneFilterName(),
-												selectedLabels,
-												mentionedBy);
-									}
-								}));
+		if (repository.getRepository().isHasIssues() && !repository.getRepository().isArchived()) {
+			items.add(
+					new RepositoryMenuItemModel(
+							"ISSUE_CREATE_NEW",
+							R.string.create_issue,
+							R.drawable.ic_add,
+							R.attr.colorPrimaryContainer,
+							R.attr.colorOnPrimaryContainer));
+		}
 
-		fragmentIssuesBinding.recyclerView.setHasFixedSize(true);
-		fragmentIssuesBinding.recyclerView.setLayoutManager(new LinearLayoutManager(context));
-		fragmentIssuesBinding.recyclerView.setAdapter(adapter);
+		return items;
+	}
 
-		adapterPinned = new IssuesAdapter(context, pinnedIssuesList, "pinned");
-		LinearLayoutManager horizontalLayoutManager =
-				new LinearLayoutManager(context, LinearLayoutManager.HORIZONTAL, false);
-		fragmentIssuesBinding.rvPinnedIssues.setLayoutManager(horizontalLayoutManager);
-		fragmentIssuesBinding.rvPinnedIssues.setAdapter(adapterPinned);
+	@Override
+	public void onHubActionSelected(String actionId) {
+		switch (actionId) {
+			case "ISSUES_SEARCH":
+				BottomSheetIssuesFilter.newInstance(repository)
+						.show(getChildFragmentManager(), "issues_filter");
+				break;
 
-		fragmentIssuesBinding.rvPinnedIssues.setHasFixedSize(true);
-		fragmentIssuesBinding.rvPinnedIssues.setNestedScrollingEnabled(false);
+			case "ISSUE_CREATE_NEW":
+				startActivity(repository.getIntent(requireContext(), CreateIssueActivity.class));
+				break;
+		}
+	}
 
-		fragmentIssuesBinding.rvPinnedIssues.addOnItemTouchListener(
+	@Override
+	public void onResume() {
+		super.onResume();
+		if (!isHidden() && isFirstLoad) {
+			lazyLoad();
+		}
+	}
+
+	@Override
+	public void onHiddenChanged(boolean hidden) {
+		super.onHiddenChanged(hidden);
+		if (!hidden && isFirstLoad) {
+			lazyLoad();
+		}
+	}
+
+	private void lazyLoad() {
+		isFirstLoad = false;
+		List<Issue> currentIssues = viewModel.getRepoIssues().getValue();
+
+		if (currentIssues == null || currentIssues.size() <= 1) {
+			refreshData();
+		} else {
+			binding.expressiveLoader.setVisibility(View.GONE);
+			binding.recyclerView.setVisibility(View.VISIBLE);
+		}
+
+		viewModel.fetchPinnedIssues(requireContext(), repository.getOwner(), repository.getName());
+	}
+
+	private void setupAdapters() {
+
+		adapter = new IssuesAdapter(requireContext(), new ArrayList<>(), "");
+		LinearLayoutManager layoutManager = new LinearLayoutManager(requireContext());
+		binding.recyclerView.setHasFixedSize(true);
+		binding.recyclerView.setLayoutManager(layoutManager);
+		binding.recyclerView.setAdapter(adapter);
+
+		scrollListener =
+				new EndlessRecyclerViewScrollListener(layoutManager) {
+					@Override
+					public void onLoadMore(int page, int totalItemsCount, RecyclerView view) {
+						IssueFilterState state = viewModel.getFilterState();
+						String labelsParam =
+								state.selectedLabels.isEmpty()
+										? null
+										: String.join(",", state.selectedLabels);
+
+						viewModel.fetchRepoIssues(
+								requireContext(),
+								repository.getOwner(),
+								repository.getName(),
+								state.state,
+								labelsParam,
+								state.query,
+								requestType,
+								state.milestoneTitle,
+								state.mentionedBy,
+								page,
+								resultLimit,
+								false);
+					}
+				};
+		binding.recyclerView.addOnScrollListener(scrollListener);
+
+		adapterPinned = new IssuesAdapter(requireContext(), new ArrayList<>(), "pinned");
+		binding.rvPinnedIssues.setLayoutManager(
+				new LinearLayoutManager(requireContext(), LinearLayoutManager.HORIZONTAL, false));
+		binding.rvPinnedIssues.setHasFixedSize(true);
+		binding.rvPinnedIssues.setNestedScrollingEnabled(false);
+		binding.rvPinnedIssues.setAdapter(adapterPinned);
+
+		binding.rvPinnedIssues.addOnItemTouchListener(
 				new RecyclerView.OnItemTouchListener() {
-
 					@Override
 					public boolean onInterceptTouchEvent(
 							@NonNull RecyclerView rv, @NonNull MotionEvent e) {
@@ -154,385 +215,122 @@ public class IssuesFragment extends Fragment {
 					@Override
 					public void onRequestDisallowInterceptTouchEvent(boolean disallowIntercept) {}
 				});
+	}
 
-		((RepoDetailActivity) requireActivity())
-				.setFragmentRefreshListener(
-						issueState -> refreshIssues(issueState, selectedLabels, mentionedBy));
+	private void refreshPaddingLogic() {
+		if (binding == null) return;
 
-		((RepoDetailActivity) requireActivity())
-				.setFragmentRefreshListenerFilterIssuesByMilestone(
-						filterIssueByMilestone ->
-								refreshIssues(
-										repository.getIssueState().toString(),
-										selectedLabels,
-										mentionedBy,
-										filterIssueByMilestone));
+		int dimen12 = getResources().getDimensionPixelSize(R.dimen.dimen12dp);
+		if (dimen12 == 0) dimen12 = 36;
 
-		((RepoDetailActivity) requireActivity())
-				.setFragmentRefreshListenerFilterIssuesByLabels(
-						filterLabels -> {
-							selectedLabels = filterLabels;
-							refreshIssues(
-									repository.getIssueState().toString(),
-									selectedLabels,
-									mentionedBy);
-						});
+		List<Issue> pinnedList = viewModel.getPinnedIssues().getValue();
+		boolean hasPinned = pinnedList != null && !pinnedList.isEmpty();
 
-		((RepoDetailActivity) requireActivity())
-				.setFragmentRefreshListenerFilterIssuesByMentions(
-						username -> {
-							mentionedBy = username;
-							repository.setMentionedBy(username);
-							refreshIssues(
-									repository.getIssueState().toString(),
-									selectedLabels,
-									mentionedBy);
-						});
+		ViewGroup.MarginLayoutParams params =
+				(ViewGroup.MarginLayoutParams) binding.recyclerView.getLayoutParams();
 
-		loadInitial(
-				repository.getOwner(),
-				repository.getName(),
-				resultLimit,
-				requestType,
-				repository.getIssueState().toString(),
-				repository.getIssueMilestoneFilterName(),
-				null,
-				selectedLabels,
-				mentionedBy);
-
-		getPinnedIssues(repository.getOwner(), repository.getName());
-
-		if (archived) {
-			fragmentIssuesBinding.createNewIssue.setVisibility(View.GONE);
-		}
-
-		if (repository.getRepository().isHasIssues() && !archived) {
-			fragmentIssuesBinding.createNewIssue.setVisibility(View.VISIBLE);
-			fragmentIssuesBinding.createNewIssue.setOnClickListener(
-					v12 -> {
-						((RepoDetailActivity) requireActivity())
-								.createIssueLauncher.launch(
-										repository.getIntent(
-												getContext(), CreateIssueActivity.class));
-					});
+		if (hasPinned) {
+			binding.rvPinnedIssues.setPadding(0, systemTopInset, 0, 0);
+			params.topMargin = 0;
+			binding.recyclerView.setPadding(dimen12, 0, dimen12, dimen12);
 		} else {
-			fragmentIssuesBinding.createNewIssue.setVisibility(View.GONE);
+			binding.rvPinnedIssues.setPadding(0, 0, 0, 0);
+			params.topMargin = systemTopInset + dimen12;
+			binding.recyclerView.setPadding(dimen12, 0, dimen12, dimen12);
 		}
 
-		requireActivity()
-				.addMenuProvider(
-						new MenuProvider() {
-							@Override
-							public void onCreateMenu(
-									@NonNull Menu menu, @NonNull MenuInflater menuInflater) {
-								menuInflater.inflate(R.menu.search_menu, menu);
-								menuInflater.inflate(R.menu.filter_menu, menu);
+		binding.recyclerView.setLayoutParams(params);
+	}
 
-								if (repository.getIssueState().toString().equals("closed")) {
-									menu.getItem(1).setIcon(R.drawable.ic_filter_closed);
-								} else {
-									menu.getItem(1).setIcon(R.drawable.ic_filter);
-								}
-
-								MenuItem searchItem = menu.findItem(R.id.action_search);
-								androidx.appcompat.widget.SearchView searchView =
-										(androidx.appcompat.widget.SearchView)
-												searchItem.getActionView();
-								assert searchView != null;
-								searchView.setImeOptions(EditorInfo.IME_ACTION_DONE);
-
-								searchView.setOnQueryTextListener(
-										new androidx.appcompat.widget.SearchView
-												.OnQueryTextListener() {
-											@Override
-											public boolean onQueryTextSubmit(String query) {
-												loadInitial(
-														repository.getOwner(),
-														repository.getName(),
-														resultLimit,
-														requestType,
-														repository.getIssueState().toString(),
-														repository.getIssueMilestoneFilterName(),
-														query,
-														selectedLabels,
-														mentionedBy);
-												searchView.setQuery(null, false);
-												searchItem.collapseActionView();
-												return false;
-											}
-
-											@Override
-											public boolean onQueryTextChange(String newText) {
-												return false;
-											}
-										});
-							}
-
-							@Override
-							public boolean onMenuItemSelected(@NonNull MenuItem menuItem) {
-								return false;
-							}
-						},
+	private void observeRepoViewModel() {
+		viewModel
+				.getRepoIssues()
+				.observe(
 						getViewLifecycleOwner(),
-						Lifecycle.State.RESUMED);
+						list -> {
+							adapter.updateList(list != null ? list : new ArrayList<>());
+							updateUiState();
+						});
 
-		return fragmentIssuesBinding.getRoot();
+		viewModel
+				.getPinnedIssues()
+				.observe(
+						getViewLifecycleOwner(),
+						list -> {
+							binding.pinnedIssuesFrame.setVisibility(
+									list.isEmpty() ? View.GONE : View.VISIBLE);
+							adapterPinned.updateList(list);
+
+							refreshPaddingLogic();
+							updateUiState();
+						});
+
+		viewModel
+				.getIsRepoLoading()
+				.observe(
+						getViewLifecycleOwner(),
+						loading -> {
+							if (loading) {
+								if (adapter.getItemCount() == 0) {
+									binding.expressiveLoader.setVisibility(View.VISIBLE);
+									binding.layoutEmpty.getRoot().setVisibility(View.GONE);
+									binding.recyclerView.setVisibility(View.GONE);
+								}
+							} else {
+								binding.expressiveLoader.setVisibility(View.GONE);
+								binding.pullToRefresh.setRefreshing(false);
+								updateUiState();
+							}
+						});
+
+		viewModel
+				.getError()
+				.observe(
+						getViewLifecycleOwner(),
+						err -> {
+							if (err != null) {
+								Toasty.show(requireContext(), err);
+								binding.expressiveLoader.setVisibility(View.GONE);
+								binding.pullToRefresh.setRefreshing(false);
+							}
+						});
+	}
+
+	private void updateUiState() {
+		boolean isMainListEmpty = adapter.getItemCount() == 0;
+		boolean hasLoaded = Boolean.TRUE.equals(viewModel.getHasRepoLoadedOnce().getValue());
+		boolean isLoading = Boolean.TRUE.equals(viewModel.getIsRepoLoading().getValue());
+
+		if (!isLoading && hasLoaded && isMainListEmpty) {
+			binding.layoutEmpty.getRoot().setVisibility(View.VISIBLE);
+			binding.recyclerView.setVisibility(View.GONE);
+		} else {
+			binding.layoutEmpty.getRoot().setVisibility(View.GONE);
+			binding.recyclerView.setVisibility(View.VISIBLE);
+		}
+	}
+
+	private void refreshData() {
+		scrollListener.resetState();
+
+		adapter.updateList(new ArrayList<>());
+
+		binding.recyclerView.setVisibility(View.GONE);
+		binding.layoutEmpty.getRoot().setVisibility(View.GONE);
+		binding.expressiveLoader.setVisibility(View.VISIBLE);
+
+		viewModel.applyFilters(
+				requireContext(), repository.getOwner(), repository.getName(), resultLimit);
+		viewModel.fetchPinnedIssues(requireContext(), repository.getOwner(), repository.getName());
+	}
+
+	private void setupRepoListeners() {
+		binding.pullToRefresh.setOnRefreshListener(this::refreshData);
 	}
 
 	@Override
-	public void onResume() {
-		super.onResume();
-		if (resumeIssues) {
-			loadInitial(
-					repository.getOwner(),
-					repository.getName(),
-					resultLimit,
-					requestType,
-					repository.getIssueState().toString(),
-					repository.getIssueMilestoneFilterName(),
-					"",
-					selectedLabels,
-					mentionedBy);
-			getPinnedIssues(repository.getOwner(), repository.getName());
-			resumeIssues = false;
-		}
-	}
-
-	private void refreshIssues(String issueState, String labels, String mentionedBy) {
-		issuesList.clear();
-		adapter = new IssuesAdapter(context, issuesList, "");
-		adapter.setLoadMoreListener(
-				() ->
-						fragmentIssuesBinding.recyclerView.post(
-								() -> {
-									if (issuesList.size() == resultLimit
-											|| pageSize == resultLimit) {
-										int page = (issuesList.size() + resultLimit) / resultLimit;
-										loadMore(
-												repository.getOwner(),
-												repository.getName(),
-												page,
-												resultLimit,
-												requestType,
-												issueState,
-												repository.getIssueMilestoneFilterName(),
-												labels,
-												mentionedBy);
-									}
-								}));
-		fragmentIssuesBinding.recyclerView.setAdapter(adapter);
-		fragmentIssuesBinding.progressBar.setVisibility(View.VISIBLE);
-		fragmentIssuesBinding.noDataIssues.setVisibility(View.GONE);
-		loadInitial(
-				repository.getOwner(),
-				repository.getName(),
-				resultLimit,
-				requestType,
-				issueState,
-				repository.getIssueMilestoneFilterName(),
-				null,
-				labels,
-				mentionedBy);
-	}
-
-	private void refreshIssues(
-			String issueState, String labels, String mentionedBy, String filterByMilestone) {
-		issuesList.clear();
-		adapter = new IssuesAdapter(context, issuesList, "");
-		adapter.setLoadMoreListener(
-				() ->
-						fragmentIssuesBinding.recyclerView.post(
-								() -> {
-									if (issuesList.size() == resultLimit
-											|| pageSize == resultLimit) {
-										int page = (issuesList.size() + resultLimit) / resultLimit;
-										loadMore(
-												repository.getOwner(),
-												repository.getName(),
-												page,
-												resultLimit,
-												requestType,
-												issueState,
-												filterByMilestone,
-												labels,
-												mentionedBy);
-									}
-								}));
-		fragmentIssuesBinding.recyclerView.setAdapter(adapter);
-		fragmentIssuesBinding.progressBar.setVisibility(View.VISIBLE);
-		fragmentIssuesBinding.noDataIssues.setVisibility(View.GONE);
-		loadInitial(
-				repository.getOwner(),
-				repository.getName(),
-				resultLimit,
-				requestType,
-				issueState,
-				filterByMilestone,
-				null,
-				labels,
-				mentionedBy);
-	}
-
-	private void getPinnedIssues(String repoOwner, String repoName) {
-		Call<List<Issue>> call =
-				RetrofitClient.getApiInterface(context).repoListPinnedIssues(repoOwner, repoName);
-		call.enqueue(
-				new Callback<>() {
-					@Override
-					public void onResponse(
-							@NonNull Call<List<Issue>> call,
-							@NonNull Response<List<Issue>> response) {
-						if (response.code() == 200) {
-							assert response.body() != null;
-							if (!response.body().isEmpty()) {
-								fragmentIssuesBinding.pinnedIssuesFrame.setVisibility(View.VISIBLE);
-								pinnedIssuesList.clear();
-								pinnedIssuesList.addAll(response.body());
-								adapterPinned.notifyDataChanged();
-							} else {
-								pinnedIssuesList.clear();
-								adapterPinned.notifyDataChanged();
-							}
-						}
-					}
-
-					@Override
-					public void onFailure(@NonNull Call<List<Issue>> call, @NonNull Throwable t) {
-						Toasty.error(context, getString(R.string.genericServerResponseError));
-					}
-				});
-	}
-
-	private void loadInitial(
-			String repoOwner,
-			String repoName,
-			int resultLimit,
-			String requestType,
-			String issueState,
-			String filterByMilestone,
-			String query,
-			String labels,
-			String mentionedBy) {
-
-		fragmentIssuesBinding.progressBar.setVisibility(View.VISIBLE);
-
-		Call<List<Issue>> call =
-				RetrofitClient.getApiInterface(context)
-						.issueListIssues(
-								repoOwner,
-								repoName,
-								issueState,
-								labels,
-								query,
-								requestType,
-								filterByMilestone,
-								null, // since
-								null, // before
-								null, // created_by
-								null, // assigned_by
-								mentionedBy, // mentioned_by
-								1,
-								resultLimit);
-
-		call.enqueue(
-				new Callback<>() {
-					@Override
-					public void onResponse(
-							@NonNull Call<List<Issue>> call,
-							@NonNull Response<List<Issue>> response) {
-						if (response.code() == 200) {
-							assert response.body() != null;
-							if (!response.body().isEmpty()) {
-								issuesList.clear();
-								issuesList.addAll(response.body());
-								adapter.notifyDataChanged();
-								adapterPinned.notifyDataChanged();
-								fragmentIssuesBinding.noDataIssues.setVisibility(View.GONE);
-							} else {
-								issuesList.clear();
-								adapter.notifyDataChanged();
-								adapterPinned.notifyDataChanged();
-								fragmentIssuesBinding.noDataIssues.setVisibility(View.VISIBLE);
-							}
-							fragmentIssuesBinding.progressBar.setVisibility(View.GONE);
-						} else if (response.code() == 404) {
-							fragmentIssuesBinding.noDataIssues.setVisibility(View.VISIBLE);
-							fragmentIssuesBinding.progressBar.setVisibility(View.GONE);
-						} else {
-							Toasty.error(context, getString(R.string.genericError));
-						}
-					}
-
-					@Override
-					public void onFailure(@NonNull Call<List<Issue>> call, @NonNull Throwable t) {
-						Toasty.error(context, getString(R.string.genericServerResponseError));
-					}
-				});
-	}
-
-	private void loadMore(
-			String repoOwner,
-			String repoName,
-			int page,
-			int resultLimit,
-			String requestType,
-			String issueState,
-			String filterByMilestone,
-			String labels,
-			String mentionedBy) {
-
-		fragmentIssuesBinding.progressBar.setVisibility(View.VISIBLE);
-
-		Call<List<Issue>> call =
-				RetrofitClient.getApiInterface(context)
-						.issueListIssues(
-								repoOwner,
-								repoName,
-								issueState,
-								labels,
-								null,
-								requestType,
-								filterByMilestone,
-								null, // since
-								null, // before
-								null, // created_by
-								null, // assigned_by
-								mentionedBy, // mentioned_by
-								page,
-								resultLimit);
-
-		call.enqueue(
-				new Callback<>() {
-					@Override
-					public void onResponse(
-							@NonNull Call<List<Issue>> call,
-							@NonNull Response<List<Issue>> response) {
-						if (response.code() == 200) {
-							List<Issue> result = response.body();
-							assert result != null;
-							if (!result.isEmpty()) {
-								pageSize = result.size();
-								issuesList.addAll(result);
-							} else {
-								SnackBar.info(
-										context,
-										fragmentIssuesBinding.getRoot(),
-										getString(R.string.noMoreData));
-								adapter.setMoreDataAvailable(false);
-								adapterPinned.setMoreDataAvailable(false);
-							}
-							adapter.notifyDataChanged();
-							adapterPinned.notifyDataChanged();
-							fragmentIssuesBinding.progressBar.setVisibility(View.GONE);
-						} else {
-							Toasty.error(context, getString(R.string.genericError));
-						}
-					}
-
-					@Override
-					public void onFailure(@NonNull Call<List<Issue>> call, @NonNull Throwable t) {
-						Toasty.error(context, getString(R.string.genericServerResponseError));
-					}
-				});
+	public void onDestroyView() {
+		super.onDestroyView();
+		binding = null;
 	}
 }

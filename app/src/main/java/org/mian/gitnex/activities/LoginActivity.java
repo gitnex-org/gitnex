@@ -6,22 +6,22 @@ import static org.mian.gitnex.helpers.BackupUtil.getTempDir;
 import static org.mian.gitnex.helpers.BackupUtil.unzip;
 
 import android.app.Activity;
+import android.app.Dialog;
 import android.content.Context;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
-import android.util.TypedValue;
+import android.view.LayoutInflater;
 import android.view.View;
+import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
-import android.widget.Button;
-import android.widget.TextView;
 import androidx.activity.result.ActivityResultLauncher;
 import androidx.activity.result.contract.ActivityResultContracts;
 import androidx.annotation.NonNull;
-import androidx.appcompat.app.AlertDialog;
-import androidx.core.text.HtmlCompat;
+import androidx.annotation.Nullable;
+import com.google.android.material.bottomsheet.BottomSheetDialog;
+import com.google.android.material.bottomsheet.BottomSheetDialogFragment;
 import com.google.android.material.dialog.MaterialAlertDialogBuilder;
-import com.google.android.material.textfield.TextInputEditText;
 import io.mikael.urlbuilder.UrlBuilder;
 import java.io.File;
 import java.io.FileNotFoundException;
@@ -38,10 +38,13 @@ import org.mian.gitnex.database.api.BaseApi;
 import org.mian.gitnex.database.api.UserAccountsApi;
 import org.mian.gitnex.database.models.UserAccount;
 import org.mian.gitnex.databinding.ActivityLoginBinding;
+import org.mian.gitnex.databinding.BottomsheetProxyAuthBinding;
+import org.mian.gitnex.databinding.BottomsheetTokenHelpBinding;
 import org.mian.gitnex.helpers.AppUtil;
 import org.mian.gitnex.helpers.NetworkStatusObserver;
 import org.mian.gitnex.helpers.PathsHelper;
-import org.mian.gitnex.helpers.SnackBar;
+import org.mian.gitnex.helpers.Toasty;
+import org.mian.gitnex.helpers.UIHelper;
 import org.mian.gitnex.helpers.UrlHelper;
 import org.mian.gitnex.helpers.Version;
 import org.mian.gitnex.structs.Protocol;
@@ -73,6 +76,9 @@ public class LoginActivity extends BaseActivity {
 
 		activityLoginBinding = ActivityLoginBinding.inflate(getLayoutInflater());
 		setContentView(activityLoginBinding.getRoot());
+
+		UIHelper.applyEdgeToEdge(
+				this, null, activityLoginBinding.mainScrollView, null, activityLoginBinding.topRow);
 
 		String mode = getIntent().getStringExtra("mode");
 		if (mode == null) {
@@ -116,7 +122,8 @@ public class LoginActivity extends BaseActivity {
 						}
 
 						String url = account.getInstanceUrl();
-						activityLoginBinding.instanceUrl.setText(getCleanUrlForDisplay(url));
+						activityLoginBinding.instanceUrl.setText(
+								UrlHelper.getCleanUrlForDisplay(url));
 
 						try {
 							URI uri = new URI(url);
@@ -173,10 +180,7 @@ public class LoginActivity extends BaseActivity {
 				(parent, view, position, id) -> {
 					selectedProtocol = String.valueOf(parent.getItemAtPosition(position));
 					if (selectedProtocol.equals(String.valueOf(Protocol.HTTP))) {
-						SnackBar.warning(
-								ctx,
-								findViewById(android.R.id.content),
-								getString(R.string.protocolError));
+						Toasty.show(ctx, getString(R.string.protocolError));
 					}
 				});
 
@@ -208,10 +212,8 @@ public class LoginActivity extends BaseActivity {
 										disableProcessButton();
 										activityLoginBinding.loginButton.setText(btnText);
 										if (hasShownInitialNetworkError) {
-											SnackBar.error(
-													ctx,
-													findViewById(android.R.id.content),
-													getString(R.string.checkNetConnection));
+											Toasty.show(
+													ctx, getString(R.string.checkNetConnection));
 										}
 									}
 									hasShownInitialNetworkError = true;
@@ -242,169 +244,135 @@ public class LoginActivity extends BaseActivity {
 				});
 	}
 
-	public static String getCleanUrlForDisplay(String rawUrl) {
-
-		if (rawUrl == null || rawUrl.isEmpty()) return "";
-
-		try {
-			URI uri = new URI(rawUrl);
-			String host = uri.getHost();
-			int port = uri.getPort();
-			String path = uri.getPath();
-
-			StringBuilder displayUrl = new StringBuilder(host != null ? host : "");
-
-			if (port != -1) {
-				displayUrl.append(":").append(port);
-			}
-
-			if (path != null && !path.isEmpty()) {
-				String cleanPath = path;
-				if (cleanPath.endsWith("/api/v1/")) {
-					cleanPath = cleanPath.substring(0, cleanPath.length() - 8);
-				} else if (cleanPath.endsWith("/api/v1")) {
-					cleanPath = cleanPath.substring(0, cleanPath.length() - 7);
-				}
-
-				if (!cleanPath.equals("/") && !cleanPath.isEmpty()) {
-					displayUrl.append(cleanPath);
-				}
-			}
-			return displayUrl.toString();
-
-		} catch (Exception e) {
-			String fallback = rawUrl.replace("https://", "").replace("http://", "");
-			if (fallback.endsWith("/api/v1/"))
-				fallback = fallback.substring(0, fallback.length() - 8);
-			if (fallback.endsWith("/api/v1"))
-				fallback = fallback.substring(0, fallback.length() - 7);
-			return fallback;
-		}
+	private void showProxyAuthDialog() {
+		ProxyAuthSheet sheet = ProxyAuthSheet.newInstance(proxyAuthUsername, proxyAuthPassword);
+		sheet.setCallback(
+				(username, password) -> {
+					this.proxyAuthUsername = username;
+					this.proxyAuthPassword = password;
+				});
+		sheet.show(getSupportFragmentManager(), "ProxyAuthSheet");
 	}
 
-	private void showProxyAuthDialog() {
-		View dialogView = getLayoutInflater().inflate(R.layout.custom_dialog_proxy_auth, null);
+	public static class ProxyAuthSheet extends BottomSheetDialogFragment {
+		private BottomsheetProxyAuthBinding binding;
+		private String initialUser, initialPass;
+		private ProxyAuthCallback callback;
 
-		TextInputEditText usernameInput = dialogView.findViewById(R.id.proxyUsername);
-		TextInputEditText passwordInput = dialogView.findViewById(R.id.proxyPassword);
-
-		if (proxyAuthUsername != null && !proxyAuthUsername.isEmpty()) {
-			usernameInput.setText(proxyAuthUsername);
-		}
-		if (proxyAuthPassword != null && !proxyAuthPassword.isEmpty()) {
-			passwordInput.setText(proxyAuthPassword);
+		public interface ProxyAuthCallback {
+			void onResult(String username, String password);
 		}
 
-		MaterialAlertDialogBuilder dialogBuilder =
-				new MaterialAlertDialogBuilder(this)
-						.setView(dialogView)
-						.setNegativeButton(R.string.clear_proxy_creds, null)
-						.setNeutralButton(R.string.skip_proxy_creds, null)
-						.setPositiveButton(R.string.save_proxy_creds, null);
+		public static ProxyAuthSheet newInstance(String user, String pass) {
+			ProxyAuthSheet fragment = new ProxyAuthSheet();
+			fragment.initialUser = user;
+			fragment.initialPass = pass;
+			return fragment;
+		}
 
-		AlertDialog dialog = dialogBuilder.create();
+		public void setCallback(ProxyAuthCallback callback) {
+			this.callback = callback;
+		}
 
-		dialog.setOnShowListener(
-				dialogInterface -> {
-					Button positiveButton = dialog.getButton(AlertDialog.BUTTON_POSITIVE);
-					Button negativeButton = dialog.getButton(AlertDialog.BUTTON_NEGATIVE);
-					Button neutralButton = dialog.getButton(AlertDialog.BUTTON_NEUTRAL);
+		@Nullable @Override
+		public View onCreateView(
+				@NonNull LayoutInflater inflater,
+				@Nullable ViewGroup container,
+				@Nullable Bundle savedInstanceState) {
+			binding = BottomsheetProxyAuthBinding.inflate(inflater, container, false);
+			return binding.getRoot();
+		}
 
-					positiveButton.setOnClickListener(
-							view -> {
-								String enteredUsername =
-										usernameInput.getText() != null
-												? usernameInput.getText().toString().trim()
-												: "";
-								String enteredPassword =
-										passwordInput.getText() != null
-												? passwordInput.getText().toString().trim()
-												: "";
+		@Override
+		public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
+			super.onViewCreated(view, savedInstanceState);
 
-								if (enteredUsername.isEmpty() && enteredPassword.isEmpty()) {
-									proxyAuthUsername = null;
-									proxyAuthPassword = null;
-									SnackBar.info(
-											ctx,
-											findViewById(android.R.id.content),
-											getString(R.string.proxy_creds_cleared));
-									dialog.dismiss();
-									return;
-								}
+			if (initialUser != null) binding.proxyUsername.setText(initialUser);
+			if (initialPass != null) binding.proxyPassword.setText(initialPass);
 
-								boolean usernameFilled = !enteredUsername.isEmpty();
-								boolean passwordFilled = !enteredPassword.isEmpty();
+			binding.btnSave.setOnClickListener(
+					v -> {
+						String u =
+								binding.proxyUsername.getText() != null
+										? binding.proxyUsername.getText().toString().trim()
+										: "";
+						String p =
+								binding.proxyPassword.getText() != null
+										? binding.proxyPassword.getText().toString().trim()
+										: "";
 
-								if (usernameFilled != passwordFilled) {
-									SnackBar.error(
-											ctx,
-											findViewById(android.R.id.content),
-											getString(R.string.proxy_creds_required_msg));
+						if (!u.isEmpty() && !p.isEmpty()) {
+							if (callback != null) callback.onResult(u, p);
+							Toasty.show(getContext(), getString(R.string.proxy_creds_saved));
+							dismiss();
+						} else if (u.isEmpty() && p.isEmpty()) {
+							handleClear();
+						} else {
+							Toasty.show(getContext(), getString(R.string.proxy_creds_required_msg));
+						}
+					});
 
-									if (usernameFilled) {
-										passwordInput.setText("");
-										passwordInput.requestFocus();
-									} else {
-										usernameInput.setText("");
-										usernameInput.requestFocus();
-									}
-									return;
-								}
+			binding.btnClear.setOnClickListener(v -> handleClear());
+			binding.btnClose.setOnClickListener(v -> dismiss());
+		}
 
-								proxyAuthUsername = enteredUsername;
-								proxyAuthPassword = enteredPassword;
-								SnackBar.info(
-										ctx,
-										findViewById(android.R.id.content),
-										getString(R.string.proxy_creds_saved));
-								dialog.dismiss();
-							});
+		@Override
+		public void onStart() {
+			super.onStart();
+			Dialog dialog = getDialog();
+			if (dialog instanceof BottomSheetDialog) {
+				AppUtil.applySheetStyle((BottomSheetDialog) dialog, false);
+			}
+		}
 
-					negativeButton.setOnClickListener(
-							view -> {
-								proxyAuthUsername = null;
-								proxyAuthPassword = null;
-								SnackBar.info(
-										ctx,
-										findViewById(android.R.id.content),
-										getString(R.string.proxy_creds_cleared));
-								dialog.dismiss();
-							});
+		private void handleClear() {
+			if (callback != null) callback.onResult(null, null);
+			Toasty.show(getContext(), getString(R.string.proxy_creds_cleared));
+			dismiss();
+		}
 
-					neutralButton.setOnClickListener(view -> dialog.dismiss());
-				});
-
-		dialog.show();
+		@Override
+		public void onDestroyView() {
+			super.onDestroyView();
+			binding = null;
+		}
 	}
 
 	private void showTokenHelpDialog() {
+		TokenHelpSheet sheet = new TokenHelpSheet();
+		sheet.show(getSupportFragmentManager(), "TokenHelpSheet");
+	}
 
-		MaterialAlertDialogBuilder dialogBuilder =
-				new MaterialAlertDialogBuilder(this)
-						.setMessage(
-								HtmlCompat.fromHtml(
-										getString(R.string.where_to_get_token_message),
-										HtmlCompat.FROM_HTML_MODE_LEGACY))
-						.setPositiveButton(R.string.close, null)
-						.setCancelable(true);
+	public static class TokenHelpSheet extends BottomSheetDialogFragment {
+		private BottomsheetTokenHelpBinding binding;
 
-		AlertDialog dialog = dialogBuilder.create();
-		dialog.show();
+		@Nullable @Override
+		public View onCreateView(
+				@NonNull LayoutInflater inflater,
+				@Nullable ViewGroup container,
+				@Nullable Bundle savedInstanceState) {
+			binding = BottomsheetTokenHelpBinding.inflate(inflater, container, false);
+			return binding.getRoot();
+		}
 
-		TextView messageView = dialog.findViewById(android.R.id.message);
-		if (messageView != null) {
-			messageView.setTextSize(TypedValue.COMPLEX_UNIT_SP, 14);
-			int paddingTop =
-					(int)
-							TypedValue.applyDimension(
-									TypedValue.COMPLEX_UNIT_DIP,
-									16,
-									getResources().getDisplayMetrics());
-			messageView.setPadding(
-					messageView.getPaddingLeft(),
-					paddingTop,
-					messageView.getPaddingRight(),
-					messageView.getPaddingBottom());
+		@Override
+		public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
+			super.onViewCreated(view, savedInstanceState);
+		}
+
+		@Override
+		public void onStart() {
+			super.onStart();
+			Dialog dialog = getDialog();
+			if (dialog instanceof BottomSheetDialog) {
+				AppUtil.applySheetStyle((BottomSheetDialog) dialog, true);
+			}
+		}
+
+		@Override
+		public void onDestroyView() {
+			super.onDestroyView();
+			binding = null;
 		}
 	}
 
@@ -413,20 +381,14 @@ public class LoginActivity extends BaseActivity {
 		try {
 
 			if (selectedProvider == null || selectedProvider.isEmpty()) {
-				SnackBar.error(
-						ctx,
-						findViewById(android.R.id.content),
-						getString(R.string.provider_empty_error));
+				Toasty.show(ctx, getString(R.string.provider_empty_error));
 				enableProcessButton();
 				return;
 			}
 
 			if (selectedProtocol == null) {
 
-				SnackBar.error(
-						ctx,
-						findViewById(android.R.id.content),
-						getString(R.string.protocolEmptyError));
+				Toasty.show(ctx, getString(R.string.protocolEmptyError));
 				enableProcessButton();
 				return;
 			}
@@ -435,8 +397,7 @@ public class LoginActivity extends BaseActivity {
 					.toString()
 					.isEmpty()) {
 
-				SnackBar.error(
-						ctx, findViewById(android.R.id.content), getString(R.string.emptyFieldURL));
+				Toasty.show(ctx, getString(R.string.emptyFieldURL));
 				enableProcessButton();
 				return;
 			}
@@ -449,10 +410,7 @@ public class LoginActivity extends BaseActivity {
 
 			if (loginToken.isEmpty()) {
 
-				SnackBar.error(
-						ctx,
-						findViewById(android.R.id.content),
-						getString(R.string.loginTokenError));
+				Toasty.show(ctx, getString(R.string.loginTokenError));
 				enableProcessButton();
 				return;
 			}
@@ -480,8 +438,7 @@ public class LoginActivity extends BaseActivity {
 
 		} catch (Exception e) {
 
-			SnackBar.error(
-					ctx, findViewById(android.R.id.content), getString(R.string.malformedUrl));
+			Toasty.show(ctx, getString(R.string.malformedUrl));
 			enableProcessButton();
 		}
 	}
@@ -551,10 +508,7 @@ public class LoginActivity extends BaseActivity {
 
 							if (!Version.valid(version.getVersion())) {
 
-								SnackBar.error(
-										ctx,
-										findViewById(android.R.id.content),
-										getString(R.string.versionUnknown));
+								Toasty.show(ctx, getString(R.string.versionUnknown));
 								enableProcessButton();
 								return;
 							}
@@ -596,10 +550,7 @@ public class LoginActivity extends BaseActivity {
 								login(loginToken);
 							} else {
 
-								SnackBar.warning(
-										ctx,
-										findViewById(android.R.id.content),
-										getString(R.string.versionUnsupportedNew));
+								Toasty.show(ctx, getString(R.string.versionUnsupportedNew));
 								login(loginToken);
 							}
 
@@ -618,10 +569,7 @@ public class LoginActivity extends BaseActivity {
 					public void onFailure(
 							@NonNull Call<ServerVersion> callVersion, @NonNull Throwable t) {
 
-						SnackBar.error(
-								ctx,
-								findViewById(android.R.id.content),
-								getString(R.string.genericServerResponseError));
+						Toasty.show(ctx, getString(R.string.genericServerResponseError));
 						enableProcessButton();
 					}
 				});
@@ -729,17 +677,12 @@ public class LoginActivity extends BaseActivity {
 								finish();
 								break;
 							case 401:
-								SnackBar.error(
-										ctx,
-										findViewById(android.R.id.content),
-										getString(R.string.unauthorizedApiError));
+								Toasty.show(ctx, getString(R.string.unauthorizedApiError));
 								enableProcessButton();
 								break;
 							default:
-								SnackBar.error(
-										ctx,
-										findViewById(android.R.id.content),
-										getString(R.string.genericApiError, response.code()));
+								Toasty.show(
+										ctx, getString(R.string.genericApiError, response.code()));
 								enableProcessButton();
 						}
 					}
@@ -747,25 +690,28 @@ public class LoginActivity extends BaseActivity {
 					@Override
 					public void onFailure(@NonNull Call<User> call, @NonNull Throwable t) {
 
-						SnackBar.error(
-								ctx,
-								findViewById(android.R.id.content),
-								getString(R.string.genericServerResponseError));
+						Toasty.show(ctx, getString(R.string.genericServerResponseError));
 						enableProcessButton();
 					}
 				});
 	}
 
 	private void disableProcessButton() {
-
-		activityLoginBinding.loginButton.setText(R.string.processingText);
+		activityLoginBinding.loginButton.setText("");
 		activityLoginBinding.loginButton.setEnabled(false);
+		activityLoginBinding.loadingIndicator.setVisibility(View.VISIBLE);
+
+		activityLoginBinding.setupProxyAuth.setEnabled(false);
+		activityLoginBinding.restoreFromBackup.setEnabled(false);
 	}
 
 	private void enableProcessButton() {
-
 		activityLoginBinding.loginButton.setText(btnText);
 		activityLoginBinding.loginButton.setEnabled(true);
+		activityLoginBinding.loadingIndicator.setVisibility(View.GONE);
+
+		activityLoginBinding.setupProxyAuth.setEnabled(true);
+		activityLoginBinding.restoreFromBackup.setEnabled(true);
 	}
 
 	private void requestRestoreFile() {
@@ -795,10 +741,7 @@ public class LoginActivity extends BaseActivity {
 										getContentResolver().openInputStream(restoreFileUri);
 								restoreDatabaseThread(inputStream);
 							} catch (FileNotFoundException e) {
-								SnackBar.error(
-										ctx,
-										findViewById(android.R.id.content),
-										getString(R.string.restoreError));
+								Toasty.show(ctx, getString(R.string.restoreError));
 							}
 						}
 					});
@@ -826,10 +769,7 @@ public class LoginActivity extends BaseActivity {
 							} catch (final Exception e) {
 
 								exceptionOccurred = true;
-								SnackBar.error(
-										ctx,
-										findViewById(android.R.id.content),
-										getString(R.string.restoreError));
+								Toasty.show(ctx, getString(R.string.restoreError));
 							} finally {
 								if (!exceptionOccurred) {
 

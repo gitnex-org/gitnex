@@ -12,28 +12,32 @@ import android.content.pm.PackageManager;
 import android.content.pm.ResolveInfo;
 import android.content.res.Configuration;
 import android.graphics.Bitmap;
+import android.graphics.Color;
 import android.graphics.Typeface;
 import android.net.Uri;
 import android.os.Build;
 import android.util.Base64;
 import android.util.TypedValue;
 import android.view.View;
+import android.view.ViewGroup;
+import android.view.inputmethod.InputMethodManager;
 import androidx.annotation.AttrRes;
 import androidx.annotation.ColorInt;
+import androidx.annotation.NonNull;
 import androidx.browser.customtabs.CustomTabColorSchemeParams;
 import androidx.browser.customtabs.CustomTabsIntent;
 import androidx.core.content.pm.PackageInfoCompat;
+import androidx.core.content.res.ResourcesCompat;
+import com.google.android.material.bottomsheet.BottomSheetBehavior;
+import com.google.android.material.bottomsheet.BottomSheetDialog;
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
-import java.net.HttpURLConnection;
-import java.net.URL;
 import java.nio.charset.StandardCharsets;
 import java.text.DecimalFormat;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
-import java.util.Calendar;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
@@ -42,6 +46,8 @@ import java.util.Map;
 import java.util.Objects;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
+import org.json.JSONException;
+import org.json.JSONObject;
 import org.mian.gitnex.R;
 import org.mian.gitnex.activities.LoginActivity;
 import org.mian.gitnex.activities.MainActivity;
@@ -344,6 +350,20 @@ public class AppUtil {
 		return str.matches("^[\\w-]+$");
 	}
 
+	public static Boolean isValidGitBranchName(String str) {
+		if (str == null || str.isEmpty()) return false;
+
+		if (str.contains("..")
+				|| str.startsWith("/")
+				|| str.endsWith("/")
+				|| str.startsWith("-")
+				|| str.endsWith(".")) {
+			return false;
+		}
+
+		return str.matches("^[a-zA-Z0-9\\-_. /]+$");
+	}
+
 	public static Boolean checkIntegers(String str) {
 		return str.matches("\\d+");
 	}
@@ -382,54 +402,6 @@ public class AppUtil {
 		return typedValue.data;
 	}
 
-	public static String customDateFormat(String customDate) {
-
-		String[] parts = customDate.split("-");
-		final String year = parts[0];
-		final String month = parts[1];
-		final String day = parts[2];
-
-		String sMonth;
-		if (Integer.parseInt(month) < 10) {
-			sMonth = "0" + month;
-		} else {
-			sMonth = month;
-		}
-
-		String sDay;
-		if (Integer.parseInt(day) < 10) {
-			sDay = "0" + day;
-		} else {
-			sDay = day;
-		}
-
-		return year + "-" + sMonth + "-" + sDay;
-	}
-
-	public static String customDateCombine(String customDate) {
-
-		final Calendar c = Calendar.getInstance();
-		int mHour = c.get(Calendar.HOUR_OF_DAY);
-		int mMinute = c.get(Calendar.MINUTE);
-		int mSeconds = c.get(Calendar.SECOND);
-
-		String sMin;
-		if ((mMinute) < 10) {
-			sMin = "0" + mMinute;
-		} else {
-			sMin = String.valueOf(mMinute);
-		}
-
-		String sSec;
-		if ((mSeconds) < 10) {
-			sSec = "0" + mSeconds;
-		} else {
-			sSec = String.valueOf(mSeconds);
-		}
-
-		return (customDate + "T" + mHour + ":" + sMin + ":" + sSec + "Z");
-	}
-
 	public static String encodeBase64(String str) {
 
 		String base64Str = str;
@@ -461,10 +433,6 @@ public class AppUtil {
 		return base64Str;
 	}
 
-	public static String getLastCharactersOfWord(String str, int count) {
-		return str.substring(str.length() - count);
-	}
-
 	public static void setMultiVisibility(int visibility, View... views) {
 		for (View view : views) {
 			view.setVisibility(visibility);
@@ -473,10 +441,6 @@ public class AppUtil {
 
 	public static int getPixelsFromDensity(Context context, int dp) {
 		return (int) (context.getResources().getDisplayMetrics().density * dp);
-	}
-
-	public static int getPixelsFromScaledDensity(Context context, int sp) {
-		return (int) (context.getResources().getDisplayMetrics().scaledDensity * sp);
 	}
 
 	public static long getLineCount(String s) {
@@ -505,7 +469,7 @@ public class AppUtil {
 		ClipData clip = ClipData.newPlainText(data, data);
 		clipboard.setPrimaryClip(clip);
 
-		Toasty.info(ctx, message);
+		Toasty.show(ctx, message);
 	}
 
 	public static boolean switchToAccount(Context context, UserAccount userAccount) {
@@ -602,13 +566,13 @@ public class AppUtil {
 		try {
 			Intent browserIntent = wrapBrowserIntent(context, i);
 			if (browserIntent == null) {
-				Toasty.error(context, context.getString(R.string.genericError));
+				Toasty.show(context, context.getString(R.string.genericError));
 			}
 			context.startActivity(browserIntent);
 		} catch (ActivityNotFoundException e) {
-			Toasty.error(context, context.getString(R.string.browserOpenFailed));
+			Toasty.show(context, context.getString(R.string.browserOpenFailed));
 		} catch (Exception e) {
-			Toasty.error(context, context.getString(R.string.genericError));
+			Toasty.show(context, context.getString(R.string.genericError));
 		}
 	}
 
@@ -640,30 +604,20 @@ public class AppUtil {
 	}
 
 	public static Typeface getTypeface(Context context) {
-
-		if (typeface == null) {
-			switch (Integer.parseInt(
-					AppDatabaseSettings.getSettingsValue(
-							context, AppDatabaseSettings.APP_FONT_KEY))) {
-				case 0:
-					typeface = Typeface.createFromAsset(context.getAssets(), "fonts/roboto.ttf");
-					break;
-				case 2:
-					typeface =
-							Typeface.createFromAsset(
-									context.getAssets(), "fonts/sourcecodeproregular.ttf");
-					break;
-				case 3:
-					typeface = Typeface.DEFAULT;
-					break;
-				default:
-					typeface =
-							Typeface.createFromAsset(
-									context.getAssets(), "fonts/manroperegular.ttf");
-					break;
-			}
+		int fontIndex =
+				Integer.parseInt(
+						AppDatabaseSettings.getSettingsValue(
+								context, AppDatabaseSettings.APP_FONT_KEY));
+		try {
+			return switch (fontIndex) {
+				case 0 -> ResourcesCompat.getFont(context, R.font.roboto);
+				case 2 -> ResourcesCompat.getFont(context, R.font.sourcecodeproregular);
+				case 3 -> Typeface.DEFAULT;
+				default -> ResourcesCompat.getFont(context, R.font.manroperegular);
+			};
+		} catch (Exception e) {
+			return Typeface.DEFAULT;
 		}
-		return typeface;
 	}
 
 	/** Pretty number format Example, 1200 = 1.2k */
@@ -692,13 +646,6 @@ public class AppUtil {
 		ArrayList<String> restrictedUsers = new ArrayList<>();
 		restrictedUsers.add("Ghost");
 		return restrictedUsers.contains(str);
-	}
-
-	public int getResponseStatusCode(String u) throws Exception {
-
-		URL url = new URL(u);
-		HttpURLConnection http = (HttpURLConnection) url.openConnection();
-		return (http.getResponseCode());
 	}
 
 	public interface ProgressListener {
@@ -733,5 +680,73 @@ public class AppUtil {
 			return majorVersion == 1 ? "gitea" : "forgejo";
 		}
 		return "gitea";
+	}
+
+	public static void applySheetStyle(@NonNull BottomSheetDialog dialog, boolean isDraggable) {
+		View bottomSheet =
+				dialog.findViewById(com.google.android.material.R.id.design_bottom_sheet);
+		if (bottomSheet != null) {
+			BottomSheetBehavior<View> behavior = BottomSheetBehavior.from(bottomSheet);
+			behavior.setFitToContents(true);
+			behavior.setSkipCollapsed(true);
+			behavior.setExpandedOffset(0);
+			behavior.setState(BottomSheetBehavior.STATE_EXPANDED);
+			behavior.setDraggable(isDraggable);
+		}
+	}
+
+	public static void applyFullScreenSheetStyle(
+			@NonNull BottomSheetDialog dialog, boolean isDraggable) {
+		View bottomSheet =
+				dialog.findViewById(com.google.android.material.R.id.design_bottom_sheet);
+		if (bottomSheet != null) {
+			ViewGroup.LayoutParams layoutParams = bottomSheet.getLayoutParams();
+			layoutParams.height = ViewGroup.LayoutParams.MATCH_PARENT;
+			bottomSheet.setLayoutParams(layoutParams);
+
+			BottomSheetBehavior<View> behavior = BottomSheetBehavior.from(bottomSheet);
+			behavior.setFitToContents(false);
+			behavior.setSkipCollapsed(true);
+			behavior.setExpandedOffset(0);
+			behavior.setState(BottomSheetBehavior.STATE_EXPANDED);
+			behavior.setDraggable(isDraggable);
+		}
+	}
+
+	public static String parseErrorMessage(String errorBody) {
+		if (errorBody == null || errorBody.isEmpty()) {
+			return "Unknown error occurred";
+		}
+
+		String parsedMessage;
+		try {
+			JSONObject jsonObject = new JSONObject(errorBody);
+
+			if (jsonObject.has("message")) {
+				parsedMessage = jsonObject.getString("message");
+			} else if (jsonObject.has("errors")) {
+				parsedMessage = jsonObject.get("errors").toString();
+			} else {
+				parsedMessage = errorBody;
+			}
+		} catch (JSONException e) {
+			parsedMessage = errorBody.length() > 100 ? "Error parsing server response" : errorBody;
+		}
+		return "API error: " + parsedMessage;
+	}
+
+	public static void hideKeyboard(Activity activity) {
+		if (activity != null && activity.getCurrentFocus() != null) {
+			InputMethodManager imm =
+					(InputMethodManager) activity.getSystemService(Context.INPUT_METHOD_SERVICE);
+			imm.hideSoftInputFromWindow(activity.getCurrentFocus().getWindowToken(), 0);
+		}
+	}
+
+	public static boolean isLightColor(int color) {
+		double luminance =
+				(0.299 * Color.red(color) + 0.587 * Color.green(color) + 0.114 * Color.blue(color))
+						/ 255;
+		return luminance > 0.5;
 	}
 }

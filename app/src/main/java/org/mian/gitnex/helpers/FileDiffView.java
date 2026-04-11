@@ -6,7 +6,7 @@ import java.util.List;
 import org.jetbrains.annotations.NotNull;
 
 /**
- * @author M M Arif
+ * @author mmarif
  * @author 6543
  */
 public class FileDiffView implements Serializable {

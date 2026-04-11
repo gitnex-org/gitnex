@@ -12,7 +12,7 @@ import java.io.OutputStream;
 import java.util.Objects;
 
 /**
- * @author M M Arif
+ * @author mmarif
  */
 public class AttachmentUtils {
 

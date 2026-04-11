@@ -1,180 +1,217 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout
+<com.google.android.material.listitem.ListItemLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
-    android:id="@+id/relativeLayoutFrame"
     android:layout_width="match_parent"
-    android:layout_height="wrap_content"
-    android:paddingTop="@dimen/dimen4dp"
-    android:paddingBottom="@dimen/dimen4dp"
-    android:orientation="vertical">
+    android:layout_height="wrap_content">
 
-    <com.google.android.material.card.MaterialCardView
+    <com.google.android.material.listitem.ListItemCardView
+        android:id="@+id/card_view"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        style="?attr/materialCardViewElevatedStyle"
-        app:cardElevation="@dimen/dimen0dp">
+        android:checkable="false"
+        app:strokeWidth="0dp"
+        android:layout_marginVertical="@dimen/dimen1dp"
+        app:cardBackgroundColor="?attr/materialCardBackgroundColor">
 
-        <LinearLayout
+        <androidx.constraintlayout.widget.ConstraintLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:foreground="?android:attr/selectableItemBackground"
-            android:background="?attr/materialCardBackgroundColor"
-            android:padding="@dimen/dimen12dp"
-            android:orientation="vertical">
+            android:padding="@dimen/dimen8dp">
 
             <LinearLayout
-                android:id="@+id/framePrNameStatus"
-                android:layout_width="match_parent"
+                android:id="@+id/topStatsRow"
+                android:layout_width="0dp"
                 android:layout_height="wrap_content"
+                android:gravity="center_vertical"
                 android:orientation="horizontal"
-                tools:ignore="UseCompoundDrawables">
+                app:layout_constraintEnd_toStartOf="@id/prCreatedTime"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent">
 
-                <com.google.android.material.card.MaterialCardView
-                    android:layout_width="@dimen/dimen32dp"
-                    android:layout_height="@dimen/dimen32dp"
-                    style="?attr/materialCardViewElevatedStyle"
-                    android:backgroundTint="@android:color/transparent"
-                    app:cardElevation="@dimen/dimen0dp"
-                    android:layout_marginEnd="@dimen/dimen12dp"
-                    app:cardCornerRadius="@dimen/dimen8dp">
+                <ImageView
+                    android:id="@+id/comment_icon"
+                    android:layout_width="@dimen/dimen14dp"
+                    android:layout_height="@dimen/dimen14dp"
+                    android:contentDescription="@string/generalImgContentText"
+                    app:srcCompat="@drawable/ic_comment"
+                    app:tint="?attr/iconsColor" />
 
-                    <ImageView
-                        android:id="@+id/assigneeAvatar"
-                        android:layout_width="match_parent"
-                        android:layout_height="match_parent"
-                        android:contentDescription="@string/generalImgContentText"
-                        android:src="@drawable/ic_android" />
-
-                </com.google.android.material.card.MaterialCardView>
+                <TextView
+                    android:id="@+id/prCommentsCount"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="@dimen/dimen4dp"
+                    android:textAppearance="?attr/textAppearanceLabelMedium" />
 
                 <LinearLayout
-                    android:id="@+id/titleLabelsSection"
-                    android:layout_width="match_parent"
+                    android:id="@+id/milestoneLayout"
+                    android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:orientation="vertical">
+                    android:layout_marginStart="@dimen/dimen12dp"
+                    android:gravity="center_vertical"
+                    android:orientation="horizontal"
+                    android:visibility="gone"
+                    tools:visibility="visible"
+                    tools:ignore="UseCompoundDrawables">
 
-                    <LinearLayout
-                        android:id="@+id/titleStateSection"
-                        android:layout_width="match_parent"
+                    <ImageView
+                        android:layout_width="@dimen/dimen14dp"
+                        android:layout_height="@dimen/dimen14dp"
+                        android:contentDescription="@string/generalImgContentText"
+                        app:srcCompat="@drawable/ic_milestone"
+                        app:tint="?attr/iconsColor" />
+
+                    <TextView
+                        android:id="@+id/milestoneTitle"
+                        android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:orientation="horizontal">
-
-                        <ImageView
-                            android:id="@+id/issuePrState"
-                            android:layout_width="@dimen/dimen26dp"
-                            android:layout_height="@dimen/dimen26dp"
-                            android:contentDescription="@string/generalImgContentText"
-                            android:src="@drawable/ic_draft"
-                            android:visibility="gone" />
-
-                        <TextView
-                            android:id="@+id/prTitle"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:gravity="top|center_vertical"
-                            android:textAlignment="gravity"
-                            android:text="@string/newIssueTitle"
-                            android:textColor="?attr/primaryTextColor"
-                            android:textSize="@dimen/dimen16sp" />
-
-                    </LinearLayout>
-
-                    <HorizontalScrollView
-                        android:id="@+id/labelsScrollViewDots"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:layout_marginBottom="@dimen/dimen8dp"
-                        android:fillViewport="true"
-                        android:foregroundGravity="right"
-                        android:scrollbarThumbHorizontal="@android:color/transparent">
-
-                        <LinearLayout
-                            android:id="@+id/frameLabelsDots"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_marginTop="@dimen/dimen10dp"
-                            android:orientation="horizontal" />
-
-                    </HorizontalScrollView>
+                        android:layout_marginStart="@dimen/dimen4dp"
+                        android:textAppearance="?attr/textAppearanceLabelMedium"
+                        tools:text="v2.0-beta" />
 
                 </LinearLayout>
 
+                <ImageView
+                    android:id="@+id/prStateIcon"
+                    android:layout_width="@dimen/dimen16dp"
+                    android:layout_height="@dimen/dimen16dp"
+                    android:layout_marginStart="@dimen/dimen12dp"
+                    android:visibility="gone"
+                    android:contentDescription="@string/generalImgContentText"
+                    app:srcCompat="@drawable/ic_draft"
+                    tools:visibility="visible" />
+
+                <ImageView
+                    android:id="@+id/mergedBadge"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="@dimen/dimen12dp"
+                    android:visibility="gone"
+                    android:contentDescription="@string/generalImgContentText"
+                    tools:visibility="visible" />
+
             </LinearLayout>
+
+            <TextView
+                android:id="@+id/prCreatedTime"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textAppearance="?attr/textAppearanceLabelLarge"
+                android:textColor="?attr/colorOnSurfaceVariant"
+                android:alpha="0.8"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
+
+            <com.google.android.material.card.MaterialCardView
+                android:id="@+id/avatarFrame"
+                android:layout_width="@dimen/dimen36dp"
+                android:layout_height="@dimen/dimen36dp"
+                android:layout_marginTop="@dimen/dimen12dp"
+                android:backgroundTint="@android:color/transparent"
+                app:cardCornerRadius="@dimen/dimen8dp"
+                app:cardElevation="0dp"
+                app:strokeWidth="0dp"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/topStatsRow">
+
+                <ImageView
+                    android:id="@+id/assigneeAvatar"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:contentDescription="@string/generalImgContentText" />
+
+            </com.google.android.material.card.MaterialCardView>
+
+            <TextView
+                android:id="@+id/userName"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="@dimen/dimen10dp"
+                android:textAppearance="?attr/textAppearanceTitleSmall"
+                android:textStyle="bold"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toEndOf="@id/avatarFrame"
+                app:layout_constraintTop_toTopOf="@id/avatarFrame"
+                tools:text="mian" />
+
+            <TextView
+                android:id="@+id/repoFullName"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:alpha="0.8"
+                android:maxLines="2"
+                android:ellipsize="end"
+                android:textAppearance="?attr/textAppearanceLabelMedium"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="@id/userName"
+                app:layout_constraintTop_toBottomOf="@id/userName" />
+
+            <TextView
+                android:id="@+id/prNumber"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/dimen16dp"
+                android:alpha="0.7"
+                android:textAppearance="?attr/textAppearanceTitleMedium"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/avatarFrame"
+                tools:text="#142" />
+
+            <TextView
+                android:id="@+id/prTitle"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="@dimen/dimen4dp"
+                android:textAppearance="?attr/textAppearanceTitleMedium"
+                android:ellipsize="end"
+                android:maxLines="2"
+                app:layout_constraintBaseline_toBaselineOf="@id/prNumber"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toEndOf="@id/prNumber"
+                tools:text="Implement modern PR adapter" />
 
             <HorizontalScrollView
                 android:id="@+id/labelsScrollViewWithText"
-                android:layout_width="match_parent"
+                android:layout_width="0dp"
                 android:layout_height="wrap_content"
-                android:layout_marginBottom="@dimen/dimen8dp"
-                android:fillViewport="true"
-                android:foregroundGravity="right"
-                android:scrollbarThumbHorizontal="@android:color/transparent"
-                android:visibility="gone">
+                android:layout_marginTop="@dimen/dimen12dp"
+                android:scrollbars="none"
+                android:visibility="gone"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/prTitle">
 
                 <LinearLayout
                     android:id="@+id/frameLabels"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_marginTop="@dimen/dimen10dp"
                     android:orientation="horizontal" />
 
             </HorizontalScrollView>
 
-            <LinearLayout
-                android:id="@+id/issueInfoFrame"
-                android:layout_width="match_parent"
+            <HorizontalScrollView
+                android:id="@+id/labelsScrollViewDots"
+                android:layout_width="0dp"
                 android:layout_height="wrap_content"
-                android:gravity="center_vertical"
-                android:orientation="horizontal">
-
-                <TextView
-                    android:id="@+id/prCreatedTime"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:gravity="start"
-                    android:textColor="?attr/hintColor"
-                    android:textSize="@dimen/dimen12sp" />
+                android:layout_marginTop="@dimen/dimen12dp"
+                android:scrollbars="none"
+                android:visibility="gone"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/prTitle">
 
                 <LinearLayout
-                    android:id="@+id/frameCommentsCount"
-                    android:layout_width="0dp"
+                    android:id="@+id/frameLabelsDots"
+                    android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_gravity="end"
-                    android:layout_marginStart="@dimen/dimen10dp"
-                    android:layout_marginEnd="@dimen/dimen6dp"
-                    android:layout_weight="1"
-                    android:gravity="end"
-                    android:orientation="horizontal"
-                    android:paddingLeft="@dimen/dimen4dp"
-                    android:paddingRight="@dimen/dimen4dp"
-                    tools:ignore="UseCompoundDrawables">
+                    android:orientation="horizontal" />
 
-                    <ImageView
-                        android:id="@+id/comment_icon"
-                        android:layout_width="@dimen/dimen16dp"
-                        android:layout_height="@dimen/dimen16dp"
-                        android:layout_marginStart="@dimen/dimen2dp"
-                        android:layout_marginEnd="@dimen/dimen4dp"
-                        android:contentDescription="@string/generalImgContentText"
-                        app:srcCompat="@drawable/ic_comment"
-                        app:tint="?attr/iconsColor"/>
+            </HorizontalScrollView>
 
-                    <TextView
-                        android:id="@+id/prCommentsCount"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:gravity="center_vertical"
-                        android:textColor="?attr/primaryTextColor"
-                        android:textSize="@dimen/dimen14sp" />
+        </androidx.constraintlayout.widget.ConstraintLayout>
 
-                </LinearLayout>
+    </com.google.android.material.listitem.ListItemCardView>
 
-            </LinearLayout>
-
-        </LinearLayout>
-
-    </com.google.android.material.card.MaterialCardView>
-
-</LinearLayout>
+</com.google.android.material.listitem.ListItemLayout>

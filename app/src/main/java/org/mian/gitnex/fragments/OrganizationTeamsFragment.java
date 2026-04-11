@@ -1,196 +1,358 @@
 package org.mian.gitnex.fragments;
 
-import android.annotation.SuppressLint;
-import android.content.Intent;
 import android.os.Bundle;
-import android.os.Handler;
-import android.os.Looper;
+import android.text.Editable;
+import android.text.TextWatcher;
 import android.view.LayoutInflater;
-import android.view.Menu;
-import android.view.MenuInflater;
-import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
-import android.view.inputmethod.EditorInfo;
-import android.widget.ProgressBar;
-import android.widget.TextView;
 import androidx.annotation.NonNull;
-import androidx.core.view.MenuProvider;
+import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
-import androidx.lifecycle.Lifecycle;
 import androidx.lifecycle.ViewModelProvider;
 import androidx.recyclerview.widget.LinearLayoutManager;
-import androidx.recyclerview.widget.RecyclerView;
-import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
+import com.google.android.material.bottomsheet.BottomSheetDialog;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Objects;
+import org.gitnex.tea4j.v2.models.CreateTeamOption;
 import org.gitnex.tea4j.v2.models.OrganizationPermissions;
 import org.mian.gitnex.R;
-import org.mian.gitnex.activities.CreateTeamByOrgActivity;
+import org.mian.gitnex.activities.OrganizationDetailActivity;
 import org.mian.gitnex.adapters.OrganizationTeamsAdapter;
+import org.mian.gitnex.databinding.BottomsheetOrgCreateTeamBinding;
 import org.mian.gitnex.databinding.FragmentOrganizationTeamsBinding;
-import org.mian.gitnex.viewmodels.TeamsByOrgViewModel;
+import org.mian.gitnex.helpers.AlertDialogs;
+import org.mian.gitnex.helpers.AppUtil;
+import org.mian.gitnex.helpers.Toasty;
+import org.mian.gitnex.helpers.UIHelper;
+import org.mian.gitnex.viewmodels.OrganizationsViewModel;
 
 /**
- * @author M M Arif
+ * @author mmarif
  */
-public class OrganizationTeamsFragment extends Fragment {
+public class OrganizationTeamsFragment extends Fragment
+		implements OrganizationDetailActivity.OrgActionInterface {
 
-	private TeamsByOrgViewModel teamsByOrgViewModel;
-	public static boolean resumeTeams = false;
-
-	private ProgressBar mProgressBar;
-	private RecyclerView mRecyclerView;
-	private TextView noDataTeams;
-	private static final String orgNameF = "param2";
-	private String orgName;
-	private OrganizationPermissions permissions;
+	private FragmentOrganizationTeamsBinding binding;
+	private OrganizationsViewModel viewModel;
 	private OrganizationTeamsAdapter adapter;
+	private String orgName;
+	private boolean isSearching = false;
+	private boolean isFirstLoad = true;
 
-	public OrganizationTeamsFragment() {}
-
-	public static OrganizationTeamsFragment newInstance(
-			String param1, OrganizationPermissions permissions) {
+	public static OrganizationTeamsFragment newInstance(String orgName) {
 		OrganizationTeamsFragment fragment = new OrganizationTeamsFragment();
 		Bundle args = new Bundle();
-		args.putString(orgNameF, param1);
-		args.putSerializable("permissions", permissions);
+		args.putString("orgName", orgName);
 		fragment.setArguments(args);
 		return fragment;
 	}
 
 	@Override
-	public void onCreate(Bundle savedInstanceState) {
-		super.onCreate(savedInstanceState);
-		if (getArguments() != null) {
-			orgName = getArguments().getString(orgNameF);
-			permissions = (OrganizationPermissions) getArguments().getSerializable("permissions");
-		}
+	public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
+		super.onViewCreated(view, savedInstanceState);
+
+		UIHelper.applyInsets(view, null, binding.recyclerView, binding.pullToRefresh, null);
 	}
 
 	@Override
+	public void onCreate(Bundle savedInstanceState) {
+		super.onCreate(savedInstanceState);
+		if (getArguments() != null) orgName = getArguments().getString("orgName");
+	}
+
+	@Nullable @Override
 	public View onCreateView(
-			@NonNull LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
+			@NonNull LayoutInflater inflater,
+			@Nullable ViewGroup container,
+			@Nullable Bundle savedInstanceState) {
+		binding = FragmentOrganizationTeamsBinding.inflate(inflater, container, false);
 
-		FragmentOrganizationTeamsBinding fragmentTeamsByOrgBinding =
-				FragmentOrganizationTeamsBinding.inflate(inflater, container, false);
+		viewModel = new ViewModelProvider(requireActivity()).get(OrganizationsViewModel.class);
 
-		teamsByOrgViewModel = new ViewModelProvider(this).get(TeamsByOrgViewModel.class);
+		setupRecyclerView();
+		setupSearch();
+		setupSwipeRefresh();
+		observeViewModel();
 
-		noDataTeams = fragmentTeamsByOrgBinding.noDataTeams;
+		return binding.getRoot();
+	}
 
-		final SwipeRefreshLayout swipeRefresh = fragmentTeamsByOrgBinding.pullToRefresh;
+	private void setupRecyclerView() {
+		binding.recyclerView.setLayoutManager(new LinearLayoutManager(requireContext()));
+	}
 
-		mRecyclerView = fragmentTeamsByOrgBinding.recyclerView;
-		mRecyclerView.setHasFixedSize(true);
-		mRecyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
+	private void observeViewModel() {
+		viewModel
+				.getTeams()
+				.observe(
+						getViewLifecycleOwner(),
+						list -> {
+							if (adapter == null) {
+								adapter =
+										new OrganizationTeamsAdapter(
+												requireContext(),
+												new ArrayList<>(list),
+												viewModel.getPermissions().getValue(),
+												orgName);
+								binding.recyclerView.setAdapter(adapter);
+								binding.searchResultsRecycler.setAdapter(adapter);
+							} else {
+								adapter.updateTeams(list);
+							}
+							updateUiVisibility(
+									Boolean.TRUE.equals(viewModel.getIsTeamsLoading().getValue()));
+						});
 
-		mProgressBar = fragmentTeamsByOrgBinding.progressBar;
+		viewModel
+				.getTeamMembersMap()
+				.observe(
+						getViewLifecycleOwner(),
+						map -> {
+							if (adapter != null) {
+								adapter.updateMemberMap(map);
+							}
+						});
 
-		swipeRefresh.setOnRefreshListener(
-				() ->
-						new Handler(Looper.getMainLooper())
-								.postDelayed(
-										() -> {
-											swipeRefresh.setRefreshing(false);
-											teamsByOrgViewModel.loadTeamsByOrgList(
-													orgName,
-													getContext(),
-													noDataTeams,
-													mProgressBar);
-										},
-										200));
+		viewModel.getIsTeamsLoading().observe(getViewLifecycleOwner(), this::updateUiVisibility);
+	}
 
-		fetchDataAsync(orgName);
+	private void updateUiVisibility(boolean isLoading) {
+		boolean hasData = adapter != null && adapter.getItemCount() > 0;
+		boolean hasLoadedOnce = Boolean.TRUE.equals(viewModel.getTeamsLoadedOnce().getValue());
 
-		if (!permissions.isIsOwner()) {
-			fragmentTeamsByOrgBinding.createTeam.setVisibility(View.GONE);
+		binding.expressiveLoader.setVisibility(isLoading && !hasData ? View.VISIBLE : View.GONE);
+
+		if (isLoading) {
+			binding.layoutEmpty.getRoot().setVisibility(View.GONE);
+		} else {
+			binding.layoutEmpty
+					.getRoot()
+					.setVisibility(!hasData && hasLoadedOnce ? View.VISIBLE : View.GONE);
 		}
 
-		fragmentTeamsByOrgBinding.createTeam.setOnClickListener(
-				v1 -> {
-					Intent intentTeam = new Intent(getContext(), CreateTeamByOrgActivity.class);
-					intentTeam.putExtras(
-							Objects.requireNonNull(requireActivity().getIntent().getExtras()));
-					startActivity(intentTeam);
+		binding.pullToRefresh.setVisibility(hasData ? View.VISIBLE : View.GONE);
+	}
+
+	private void setupSearch() {
+		binding.searchView
+				.getEditText()
+				.addTextChangedListener(
+						new TextWatcher() {
+							@Override
+							public void onTextChanged(
+									CharSequence s, int start, int before, int count) {
+								String query = s.toString();
+								isSearching = !query.isEmpty();
+								if (adapter != null) {
+									adapter.getFilter()
+											.filter(
+													query,
+													count1 -> {
+														binding.layoutEmpty
+																.getRoot()
+																.setVisibility(
+																		isSearching
+																						&& adapter
+																										.getItemCount()
+																								== 0
+																				? View.VISIBLE
+																				: View.GONE);
+													});
+								}
+							}
+
+							@Override
+							public void beforeTextChanged(
+									CharSequence s, int start, int count, int after) {}
+
+							@Override
+							public void afterTextChanged(Editable s) {}
+						});
+
+		binding.searchView.addTransitionListener(
+				(searchView, previousState, newState) -> {
+					if (newState
+							== com.google.android.material.search.SearchView.TransitionState
+									.HIDDEN) {
+						isSearching = false;
+						if (adapter != null) adapter.getFilter().filter("");
+						updateUiVisibility(false);
+					}
 				});
+	}
 
-		requireActivity()
-				.addMenuProvider(
-						new MenuProvider() {
-
-							@Override
-							public void onCreateMenu(
-									@NonNull Menu menu, @NonNull MenuInflater menuInflater) {
-
-								menuInflater.inflate(R.menu.search_menu, menu);
-
-								MenuItem searchItem = menu.findItem(R.id.action_search);
-								androidx.appcompat.widget.SearchView searchView =
-										(androidx.appcompat.widget.SearchView)
-												searchItem.getActionView();
-								assert searchView != null;
-								searchView.setImeOptions(EditorInfo.IME_ACTION_DONE);
-
-								searchView.setOnQueryTextListener(
-										new androidx.appcompat.widget.SearchView
-												.OnQueryTextListener() {
-
-											@Override
-											public boolean onQueryTextSubmit(String query) {
-												return false;
-											}
-
-											@Override
-											public boolean onQueryTextChange(String newText) {
-												if (mRecyclerView.getAdapter() != null) {
-													adapter.getFilter().filter(newText);
-												}
-												return false;
-											}
-										});
-							}
-
-							@Override
-							public boolean onMenuItemSelected(@NonNull MenuItem menuItem) {
-								return false;
-							}
-						},
-						getViewLifecycleOwner(),
-						Lifecycle.State.RESUMED);
-
-		return fragmentTeamsByOrgBinding.getRoot();
+	private void setupSwipeRefresh() {
+		binding.pullToRefresh.setOnRefreshListener(
+				() -> {
+					binding.pullToRefresh.setRefreshing(false);
+					viewModel.fetchTeams(requireContext(), orgName);
+				});
 	}
 
 	@Override
 	public void onResume() {
 		super.onResume();
-		if (resumeTeams) {
-			teamsByOrgViewModel.loadTeamsByOrgList(
-					orgName, getContext(), noDataTeams, mProgressBar);
-			resumeTeams = false;
+		if (!isHidden() && isFirstLoad) {
+			lazyLoad();
 		}
 	}
 
-	@SuppressLint("NotifyDataSetChanged")
-	private void fetchDataAsync(String owner) {
+	@Override
+	public void onHiddenChanged(boolean hidden) {
+		super.onHiddenChanged(hidden);
+		if (!hidden && isFirstLoad) lazyLoad();
+	}
 
-		teamsByOrgViewModel
-				.getTeamsByOrg(owner, getContext(), noDataTeams, mProgressBar)
+	private void lazyLoad() {
+		isFirstLoad = false;
+		viewModel.fetchTeams(requireContext(), orgName);
+	}
+
+	@Override
+	public void onSearchTriggered() {
+		binding.searchView.show();
+	}
+
+	@Override
+	public void onAddRequested() {
+		showCreateTeamBottomSheet();
+	}
+
+	@Override
+	public boolean canAdd() {
+		OrganizationPermissions perms = viewModel.getPermissions().getValue();
+		return perms != null && perms.isIsOwner();
+	}
+
+	private void showCreateTeamBottomSheet() {
+		BottomSheetDialog bottomSheetDialog = new BottomSheetDialog(requireContext());
+		BottomsheetOrgCreateTeamBinding sheetBinding =
+				BottomsheetOrgCreateTeamBinding.inflate(getLayoutInflater());
+		bottomSheetDialog.setContentView(sheetBinding.getRoot());
+
+		AppUtil.applySheetStyle(bottomSheetDialog, false);
+
+		sheetBinding.btnCreate.setOnClickListener(
+				v -> {
+					if (validateInput(sheetBinding)) {
+						String name =
+								Objects.requireNonNull(sheetBinding.teamName.getText())
+										.toString()
+										.trim();
+						String desc =
+								Objects.requireNonNull(sheetBinding.teamDesc.getText())
+										.toString()
+										.trim();
+						String permission = getSelectedPermission(sheetBinding);
+						List<String> units = getSelectedUnits(sheetBinding);
+
+						CreateTeamOption options = new CreateTeamOption();
+						options.setName(name);
+						options.setDescription(desc);
+
+						if (permission.equalsIgnoreCase("admin"))
+							options.setPermission(CreateTeamOption.PermissionEnum.ADMIN);
+						else if (permission.equalsIgnoreCase("write"))
+							options.setPermission(CreateTeamOption.PermissionEnum.WRITE);
+						else options.setPermission(CreateTeamOption.PermissionEnum.READ);
+
+						options.setUnits(units);
+
+						performCreateTeam(options, bottomSheetDialog, sheetBinding);
+					}
+				});
+
+		sheetBinding.btnClose.setOnClickListener(v -> bottomSheetDialog.dismiss());
+		bottomSheetDialog.show();
+	}
+
+	private List<String> getSelectedUnits(BottomsheetOrgCreateTeamBinding sheetBinding) {
+		List<String> units = new ArrayList<>();
+		if (sheetBinding.chipCode.isChecked()) units.add("repo.code");
+		if (sheetBinding.chipIssues.isChecked()) units.add("repo.issues");
+		if (sheetBinding.chipPulls.isChecked()) units.add("repo.pulls");
+		if (sheetBinding.chipRelease.isChecked()) units.add("repo.releases");
+		if (sheetBinding.chipWiki.isChecked()) units.add("repo.wiki");
+		if (sheetBinding.chipExternalWiki.isChecked()) units.add("repo.ext_wiki");
+		if (sheetBinding.chipExternalIssues.isChecked()) units.add("repo.ext_issues");
+		return units;
+	}
+
+	private String getSelectedPermission(BottomsheetOrgCreateTeamBinding sheetBinding) {
+		int id = sheetBinding.permissionChipGroup.getCheckedChipId();
+		if (id == R.id.chip_perm_write) return "write";
+		if (id == R.id.chip_perm_admin) return "admin";
+		return "read";
+	}
+
+	private boolean validateInput(BottomsheetOrgCreateTeamBinding binding) {
+		String name = Objects.requireNonNull(binding.teamName.getText()).toString().trim();
+		String desc = Objects.requireNonNull(binding.teamDesc.getText()).toString().trim();
+
+		if (name.isEmpty()) {
+			Toasty.show(requireContext(), getString(R.string.teamNameEmpty));
+			return false;
+		}
+
+		if (!AppUtil.checkStringsWithAlphaNumericDashDotUnderscore(name)) {
+			Toasty.show(requireContext(), getString(R.string.teamNameError));
+			return false;
+		}
+
+		if (!desc.isEmpty()) {
+			if (!AppUtil.checkStrings(desc)) {
+				Toasty.show(requireContext(), getString(R.string.teamDescError));
+				return false;
+			}
+			if (desc.length() > 100) {
+				Toasty.show(requireContext(), getString(R.string.teamDescLimit));
+				return false;
+			}
+		}
+
+		return true;
+	}
+
+	private void performCreateTeam(
+			CreateTeamOption options,
+			BottomSheetDialog dialog,
+			BottomsheetOrgCreateTeamBinding binding) {
+
+		viewModel
+				.getIsCreatingTeam()
 				.observe(
 						getViewLifecycleOwner(),
-						orgTeamsListMain -> {
-							adapter =
-									new OrganizationTeamsAdapter(
-											getContext(), orgTeamsListMain, permissions, orgName);
-							if (adapter.getItemCount() > 0) {
-								mRecyclerView.setAdapter(adapter);
-								noDataTeams.setVisibility(View.GONE);
-							} else {
-								adapter.notifyDataSetChanged();
-								mRecyclerView.setAdapter(adapter);
-								noDataTeams.setVisibility(View.VISIBLE);
-							}
-							mProgressBar.setVisibility(View.GONE);
+						isLoading -> {
+							binding.loadingIndicator.setVisibility(
+									isLoading ? View.VISIBLE : View.GONE);
+							binding.btnCreate.setEnabled(!isLoading);
+							binding.btnCreate.setText(
+									isLoading ? "" : getString(R.string.newCreateButtonCopy));
 						});
+
+		viewModel
+				.getCreateTeamResult()
+				.observe(
+						getViewLifecycleOwner(),
+						code -> {
+							if (code == -1) return;
+
+							if (code == 201) {
+								Toasty.show(requireContext(), getString(R.string.teamCreated));
+								dialog.dismiss();
+								viewModel.fetchTeams(requireContext(), orgName);
+							} else if (code == 404) {
+								Toasty.show(requireContext(), getString(R.string.apiNotFound));
+							} else if (code == 401) {
+								AlertDialogs.authorizationTokenRevokedDialog(requireContext());
+							} else {
+								Toasty.show(requireContext(), getString(R.string.genericError));
+							}
+						});
+
+		viewModel.createTeam(requireContext(), orgName, options);
+		viewModel.resetCreateTeamResult();
 	}
 }

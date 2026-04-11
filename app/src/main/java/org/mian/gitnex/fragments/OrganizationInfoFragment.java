@@ -1,39 +1,34 @@
 package org.mian.gitnex.fragments;
 
-import android.content.Context;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
+import androidx.lifecycle.ViewModelProvider;
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.load.engine.DiskCacheStrategy;
 import org.gitnex.tea4j.v2.models.Organization;
 import org.mian.gitnex.R;
-import org.mian.gitnex.clients.RetrofitClient;
 import org.mian.gitnex.databinding.FragmentOrganizationInfoBinding;
+import org.mian.gitnex.databinding.ItemProfileInfoBinding;
 import org.mian.gitnex.helpers.Markdown;
-import retrofit2.Call;
-import retrofit2.Callback;
+import org.mian.gitnex.viewmodels.OrganizationsViewModel;
 
 /**
- * @author M M Arif
+ * @author mmarif
  */
 public class OrganizationInfoFragment extends Fragment {
 
-	FragmentOrganizationInfoBinding fragmentOrganizationInfoBinding;
-	private static final String orgNameF = "param1";
-	private Context ctx;
+	private FragmentOrganizationInfoBinding binding;
+	private OrganizationsViewModel viewModel;
 	private String orgName;
 
-	public OrganizationInfoFragment() {}
-
-	public static OrganizationInfoFragment newInstance(String param1) {
+	public static OrganizationInfoFragment newInstance(String name) {
 		OrganizationInfoFragment fragment = new OrganizationInfoFragment();
 		Bundle args = new Bundle();
-		args.putString(orgNameF, param1);
+		args.putString("org_name", name);
 		fragment.setArguments(args);
 		return fragment;
 	}
@@ -41,102 +36,62 @@ public class OrganizationInfoFragment extends Fragment {
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
-		if (getArguments() != null) {
-			orgName = getArguments().getString(orgNameF);
-		}
+		if (getArguments() != null) orgName = getArguments().getString("org_name");
 	}
 
 	@Override
 	public View onCreateView(
 			@NonNull LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
+		binding = FragmentOrganizationInfoBinding.inflate(inflater, container, false);
+		viewModel = new ViewModelProvider(this).get(OrganizationsViewModel.class);
 
-		fragmentOrganizationInfoBinding =
-				FragmentOrganizationInfoBinding.inflate(inflater, container, false);
+		observeViewModel();
+		viewModel.fetchOrgDetails(requireContext(), orgName);
 
-		ctx = getContext();
-
-		getOrgInfo(orgName);
-
-		return fragmentOrganizationInfoBinding.getRoot();
+		return binding.getRoot();
 	}
 
-	private void getOrgInfo(final String owner) {
+	private void observeViewModel() {
+		viewModel.getSingleOrg().observe(getViewLifecycleOwner(), this::populateUi);
 
-		Call<Organization> call = RetrofitClient.getApiInterface(getContext()).orgGet(owner);
-
-		call.enqueue(
-				new Callback<>() {
-
-					@Override
-					public void onResponse(
-							@NonNull Call<Organization> call,
-							@NonNull retrofit2.Response<Organization> response) {
-
-						Organization orgInfo = response.body();
-
-						if (response.code() == 200) {
-
-							fragmentOrganizationInfoBinding.orgInfoLayout.setVisibility(
-									View.VISIBLE);
-
-							assert orgInfo != null;
-
-							Glide.with(requireContext())
-									.load(orgInfo.getAvatarUrl())
-									.diskCacheStrategy(DiskCacheStrategy.ALL)
-									.placeholder(R.drawable.loader_animated)
-									.centerCrop()
-									.into(fragmentOrganizationInfoBinding.orgAvatar);
-
-							if (orgInfo.getFullName() != null && !orgInfo.getFullName().isEmpty()) {
-								fragmentOrganizationInfoBinding.orgNameInfo.setText(
-										getString(
-												R.string.organizationFullname,
-												orgInfo.getFullName(),
-												orgName));
-							} else {
-								fragmentOrganizationInfoBinding.orgNameInfo.setText(orgName);
+		viewModel
+				.getIsLoading()
+				.observe(
+						getViewLifecycleOwner(),
+						loading -> {
+							if (loading) {
+								binding.expressiveLoader.setVisibility(View.VISIBLE);
 							}
+						});
+	}
 
-							if (!orgInfo.getDescription().isEmpty()) {
-								Markdown.render(
-										ctx,
-										orgInfo.getDescription(),
-										fragmentOrganizationInfoBinding.orgDescInfo);
-							} else {
-								fragmentOrganizationInfoBinding.orgDescInfo.setText(
-										getString(R.string.noDataDescription));
-							}
+	private void populateUi(Organization org) {
+		binding.expressiveLoader.setVisibility(View.GONE);
 
-							if (!orgInfo.getWebsite().isEmpty()) {
-								fragmentOrganizationInfoBinding.orgWebsiteInfo.setText(
-										orgInfo.getWebsite());
-							} else {
-								fragmentOrganizationInfoBinding.orgWebsiteInfo.setText(
-										getString(R.string.noDataWebsite));
-							}
+		binding.orgNameInfo.setText(
+				org.getFullName().isEmpty() ? org.getUsername() : org.getFullName());
+		binding.orgUsername.setText(getString(R.string.usernameWithAt, org.getUsername()));
 
-							if (!orgInfo.getLocation().isEmpty()) {
-								fragmentOrganizationInfoBinding.orgLocationInfo.setText(
-										orgInfo.getLocation());
-							} else {
-								fragmentOrganizationInfoBinding.orgLocationInfo.setText(
-										getString(R.string.noDataLocation));
-							}
+		Glide.with(this)
+				.load(org.getAvatarUrl())
+				.diskCacheStrategy(DiskCacheStrategy.ALL)
+				.placeholder(R.drawable.loader_animated)
+				.into(binding.orgAvatar);
 
-							fragmentOrganizationInfoBinding.progressBar.setVisibility(View.GONE);
+		if (org.getDescription() != null && !org.getDescription().trim().isEmpty()) {
+			Markdown.render(requireContext(), org.getDescription(), binding.orgDescInfo);
+		}
 
-						} else if (response.code() == 404) {
+		setupInfoItem(binding.layoutEmail, R.drawable.ic_email, org.getEmail(), false);
+		setupInfoItem(binding.layoutWebsite, R.drawable.ic_link, org.getWebsite(), false);
+		setupInfoItem(binding.layoutLocation, R.drawable.ic_location, org.getLocation(), false);
+	}
 
-							fragmentOrganizationInfoBinding.progressBar.setVisibility(View.GONE);
-
-						} else {
-							Log.e("onFailure", String.valueOf(response.code()));
-						}
-					}
-
-					@Override
-					public void onFailure(@NonNull Call<Organization> call, @NonNull Throwable t) {}
-				});
+	private void setupInfoItem(
+			ItemProfileInfoBinding item, int iconRes, String value, boolean isPrivate) {
+		item.infoIcon.setImageResource(iconRes);
+		boolean isEmpty = (value == null || value.trim().isEmpty());
+		item.infoText.setText(isEmpty ? "—" : value);
+		item.getRoot().setAlpha(isEmpty ? 0.6f : 1.0f);
 	}
 }

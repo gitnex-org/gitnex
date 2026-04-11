@@ -1,14 +1,15 @@
 package org.mian.gitnex.fragments;
 
+import android.app.Dialog;
 import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import com.google.android.material.bottomsheet.BottomSheetDialog;
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment;
 import com.google.android.material.chip.Chip;
 import com.google.android.material.dialog.MaterialAlertDialogBuilder;
@@ -16,32 +17,36 @@ import com.google.android.material.timepicker.MaterialTimePicker;
 import java.util.LinkedHashMap;
 import java.util.Locale;
 import org.mian.gitnex.R;
-import org.mian.gitnex.databinding.BottomSheetSettingsAppearanceBinding;
+import org.mian.gitnex.databinding.BottomsheetSettingsAppearanceBinding;
 import org.mian.gitnex.helpers.AppDatabaseSettings;
+import org.mian.gitnex.helpers.AppUIStateManager;
 import org.mian.gitnex.helpers.AppUtil;
-import org.mian.gitnex.helpers.FontsOverride;
-import org.mian.gitnex.helpers.SnackBar;
+import org.mian.gitnex.helpers.Toasty;
 
 /**
  * @author mmarif
  */
 public class BottomSheetSettingsAppearanceFragment extends BottomSheetDialogFragment {
 
-	private static final String TAG = "BottomSheetSettingsAppearance";
-	private BottomSheetSettingsAppearanceBinding binding;
+	private BottomsheetSettingsAppearanceBinding binding;
 	private static int customFontSelectedChoice;
 	private static String[] themeList;
 	private static int themeSelectedChoice;
 	private static int langSelectedChoice;
-	private static int fragmentTabsAnimationSelectedChoice;
 	private LinkedHashMap<String, String> lang;
+
+	@Override
+	public void onCreate(@Nullable Bundle savedInstanceState) {
+		super.onCreate(savedInstanceState);
+		setStyle(STYLE_NORMAL, R.style.Custom_BottomSheet);
+	}
 
 	@Nullable @Override
 	public View onCreateView(
 			@NonNull LayoutInflater inflater,
 			@Nullable ViewGroup container,
 			@Nullable Bundle savedInstanceState) {
-		binding = BottomSheetSettingsAppearanceBinding.inflate(inflater, container, false);
+		binding = BottomsheetSettingsAppearanceBinding.inflate(inflater, container, false);
 
 		lang = new LinkedHashMap<>();
 		lang.put("sys", getString(R.string.settingsLanguageSystem));
@@ -50,8 +55,6 @@ public class BottomSheetSettingsAppearanceFragment extends BottomSheetDialogFrag
 		}
 
 		String[] customFontList = getResources().getStringArray(R.array.fonts);
-		String[] fragmentTabsAnimationList =
-				getResources().getStringArray(R.array.fragmentTabsAnimation);
 		themeList =
 				Build.VERSION.SDK_INT >= Build.VERSION_CODES.S || "S".equals(Build.VERSION.CODENAME)
 						? getResources().getStringArray(R.array.themesAndroid12)
@@ -65,10 +68,6 @@ public class BottomSheetSettingsAppearanceFragment extends BottomSheetDialogFrag
 				Integer.parseInt(
 						AppDatabaseSettings.getSettingsValue(
 								requireContext(), AppDatabaseSettings.APP_THEME_KEY));
-		fragmentTabsAnimationSelectedChoice =
-				Integer.parseInt(
-						AppDatabaseSettings.getSettingsValue(
-								requireContext(), AppDatabaseSettings.APP_TABS_ANIMATION_KEY));
 		String[] locale =
 				AppDatabaseSettings.getSettingsValue(
 								requireContext(), AppDatabaseSettings.APP_LOCALE_KEY)
@@ -123,22 +122,6 @@ public class BottomSheetSettingsAppearanceFragment extends BottomSheetDialogFrag
 			binding.customFontChipGroup.addView(chip);
 		}
 
-		for (int i = 0; i < fragmentTabsAnimationList.length; i++) {
-			Chip chip =
-					(Chip)
-							inflater.inflate(
-									R.layout.chip_item,
-									binding.fragmentTabsAnimationChipGroup,
-									false);
-			chip.setId(View.generateViewId());
-			chip.setText(fragmentTabsAnimationList[i]);
-			chip.setCheckable(true);
-			chip.setClickable(true);
-			chip.setFocusable(true);
-			if (i == fragmentTabsAnimationSelectedChoice) chip.setChecked(true);
-			binding.fragmentTabsAnimationChipGroup.addView(chip);
-		}
-
 		binding.lightThemeSelectedTime.setText(
 				getResources()
 						.getString(R.string.settingsThemeTimeSelectedHint, lightHour, lightMinute));
@@ -147,10 +130,6 @@ public class BottomSheetSettingsAppearanceFragment extends BottomSheetDialogFrag
 						.getString(R.string.settingsThemeTimeSelectedHint, darkHour, darkMinute));
 		binding.tvLanguageSelected.setText(
 				lang.get(lang.keySet().toArray(new String[0])[langSelectedChoice]));
-		binding.switchCounterBadge.setChecked(
-				Boolean.parseBoolean(
-						AppDatabaseSettings.getSettingsValue(
-								requireContext(), AppDatabaseSettings.APP_COUNTER_KEY)));
 		binding.switchHideEmailLangInProfile.setChecked(
 				Boolean.parseBoolean(
 						AppDatabaseSettings.getSettingsValue(
@@ -173,10 +152,8 @@ public class BottomSheetSettingsAppearanceFragment extends BottomSheetDialogFrag
 
 		binding.themeChipGroup.setOnCheckedStateChangeListener(
 				(group, checkedIds) -> {
-					Log.d(TAG, "Theme chip checked: " + checkedIds);
 					if (checkedIds.size() == 1) {
 						int newSelection = getThemeChipPosition(checkedIds.get(0));
-						Log.d(TAG, "Theme new selection: " + newSelection);
 						if (newSelection != themeSelectedChoice) {
 							themeSelectedChoice = newSelection;
 							AppDatabaseSettings.updateSettingsValue(
@@ -191,12 +168,10 @@ public class BottomSheetSettingsAppearanceFragment extends BottomSheetDialogFrag
 									themeList[newSelection].startsWith("Auto")
 											? View.VISIBLE
 											: View.GONE);
-							SettingsFragment.refreshParent = true;
+							AppUIStateManager.invalidateUI();
+							dismiss();
 							requireActivity().recreate();
-							SnackBar.success(
-									requireContext(),
-									requireActivity().findViewById(android.R.id.content),
-									getString(R.string.settingsSave));
+							Toasty.show(requireContext(), getString(R.string.settingsSave));
 						}
 					}
 				});
@@ -206,10 +181,8 @@ public class BottomSheetSettingsAppearanceFragment extends BottomSheetDialogFrag
 
 		binding.customFontChipGroup.setOnCheckedStateChangeListener(
 				(group, checkedIds) -> {
-					Log.d(TAG, "Font chip checked: " + checkedIds);
 					if (checkedIds.size() == 1) {
 						int newSelection = getCustomFontChipPosition(checkedIds.get(0));
-						Log.d(TAG, "Font new selection: " + newSelection);
 						if (newSelection != customFontSelectedChoice) {
 							customFontSelectedChoice = newSelection;
 							AppDatabaseSettings.updateSettingsValue(
@@ -220,55 +193,14 @@ public class BottomSheetSettingsAppearanceFragment extends BottomSheetDialogFrag
 									.postDelayed(
 											() -> {
 												AppUtil.typeface = null; // reset typeface
-												FontsOverride.setDefaultFont(requireContext());
-												SettingsFragment.refreshParent = true;
+												AppUIStateManager.invalidateUI();
+												dismiss();
 												requireActivity().recreate();
 											},
 											1000);
-							SnackBar.success(
-									requireContext(),
-									requireActivity().findViewById(android.R.id.content),
-									getString(R.string.settingsSave));
+							Toasty.show(requireContext(), getString(R.string.settingsSave));
 						}
 					}
-				});
-
-		binding.fragmentTabsAnimationChipGroup.setOnCheckedStateChangeListener(
-				(group, checkedIds) -> {
-					Log.d(TAG, "Tabs animation chip checked: " + checkedIds);
-					if (checkedIds.size() == 1) {
-						int newSelection = getFragmentTabsAnimationChipPosition(checkedIds.get(0));
-						Log.d(TAG, "Tabs animation new selection: " + newSelection);
-						if (newSelection != fragmentTabsAnimationSelectedChoice) {
-							fragmentTabsAnimationSelectedChoice = newSelection;
-							AppDatabaseSettings.updateSettingsValue(
-									requireContext(),
-									String.valueOf(newSelection),
-									AppDatabaseSettings.APP_TABS_ANIMATION_KEY);
-							SettingsFragment.refreshParent = true;
-							requireActivity().recreate();
-							SnackBar.success(
-									requireContext(),
-									requireActivity().findViewById(android.R.id.content),
-									getString(R.string.settingsSave));
-						}
-					}
-				});
-
-		binding.counterBadgeFrame.setOnClickListener(
-				v ->
-						binding.switchCounterBadge.setChecked(
-								!binding.switchCounterBadge.isChecked()));
-		binding.switchCounterBadge.setOnCheckedChangeListener(
-				(buttonView, isChecked) -> {
-					AppDatabaseSettings.updateSettingsValue(
-							requireContext(),
-							String.valueOf(isChecked),
-							AppDatabaseSettings.APP_COUNTER_KEY);
-					SnackBar.success(
-							requireContext(),
-							requireActivity().findViewById(android.R.id.content),
-							getString(R.string.settingsSave));
 				});
 
 		binding.hideEmailLangInProfileFrame.setOnClickListener(
@@ -281,10 +213,7 @@ public class BottomSheetSettingsAppearanceFragment extends BottomSheetDialogFrag
 							requireContext(),
 							String.valueOf(isChecked),
 							AppDatabaseSettings.APP_USER_PROFILE_HIDE_EMAIL_LANGUAGE_KEY);
-					SnackBar.success(
-							requireContext(),
-							requireActivity().findViewById(android.R.id.content),
-							getString(R.string.settingsSave));
+					Toasty.show(requireContext(), getString(R.string.settingsSave));
 				});
 
 		binding.hideEmailNavDrawerFrame.setOnClickListener(
@@ -297,10 +226,7 @@ public class BottomSheetSettingsAppearanceFragment extends BottomSheetDialogFrag
 							requireContext(),
 							String.valueOf(isChecked),
 							AppDatabaseSettings.APP_USER_HIDE_EMAIL_IN_NAV_KEY);
-					SnackBar.success(
-							requireContext(),
-							requireActivity().findViewById(android.R.id.content),
-							getString(R.string.settingsSave));
+					Toasty.show(requireContext(), getString(R.string.settingsSave));
 				});
 
 		binding.labelsInListFrame.setOnClickListener(
@@ -313,10 +239,7 @@ public class BottomSheetSettingsAppearanceFragment extends BottomSheetDialogFrag
 							requireContext(),
 							String.valueOf(isChecked),
 							AppDatabaseSettings.APP_LABELS_IN_LIST_KEY);
-					SnackBar.success(
-							requireContext(),
-							requireActivity().findViewById(android.R.id.content),
-							getString(R.string.settingsSave));
+					Toasty.show(requireContext(), getString(R.string.settingsSave));
 				});
 
 		binding.langFrame.setOnClickListener(
@@ -336,13 +259,11 @@ public class BottomSheetSettingsAppearanceFragment extends BottomSheetDialogFrag
 														requireContext(),
 														i + "|" + selectedLanguage,
 														AppDatabaseSettings.APP_LOCALE_KEY);
-												SettingsFragment.refreshParent = true;
+												AppUIStateManager.invalidateUI();
 												requireActivity().recreate();
 												dialog.dismiss();
-												SnackBar.success(
+												Toasty.show(
 														requireContext(),
-														requireActivity()
-																.findViewById(android.R.id.content),
 														getString(R.string.settingsSave));
 											});
 					builder.create().show();
@@ -379,7 +300,7 @@ public class BottomSheetSettingsAppearanceFragment extends BottomSheetDialogFrag
 							requireContext(),
 							String.valueOf(picker.getMinute()),
 							AppDatabaseSettings.APP_THEME_AUTO_LIGHT_MIN_KEY);
-					SettingsFragment.refreshParent = true;
+					AppUIStateManager.invalidateUI();
 					requireActivity().recreate();
 					String minuteStr =
 							picker.getMinute() < 10
@@ -395,10 +316,7 @@ public class BottomSheetSettingsAppearanceFragment extends BottomSheetDialogFrag
 											R.string.settingsThemeTimeSelectedHint,
 											hourStr,
 											minuteStr));
-					SnackBar.success(
-							requireContext(),
-							requireActivity().findViewById(android.R.id.content),
-							getString(R.string.settingsSave));
+					Toasty.show(requireContext(), getString(R.string.settingsSave));
 				});
 		picker.show(getParentFragmentManager(), "lightTimePicker");
 	}
@@ -425,7 +343,7 @@ public class BottomSheetSettingsAppearanceFragment extends BottomSheetDialogFrag
 							requireContext(),
 							String.valueOf(picker.getMinute()),
 							AppDatabaseSettings.APP_THEME_AUTO_DARK_MIN_KEY);
-					SettingsFragment.refreshParent = true;
+					AppUIStateManager.invalidateUI();
 					requireActivity().recreate();
 					String minuteStr =
 							picker.getMinute() < 10
@@ -441,10 +359,7 @@ public class BottomSheetSettingsAppearanceFragment extends BottomSheetDialogFrag
 											R.string.settingsThemeTimeSelectedHint,
 											hourStr,
 											minuteStr));
-					SnackBar.success(
-							requireContext(),
-							requireActivity().findViewById(android.R.id.content),
-							getString(R.string.settingsSave));
+					Toasty.show(requireContext(), getString(R.string.settingsSave));
 				});
 		picker.show(getParentFragmentManager(), "darkTimePicker");
 	}
@@ -465,14 +380,6 @@ public class BottomSheetSettingsAppearanceFragment extends BottomSheetDialogFrag
 		return customFontSelectedChoice;
 	}
 
-	private int getFragmentTabsAnimationChipPosition(int checkedId) {
-		for (int i = 0; i < binding.fragmentTabsAnimationChipGroup.getChildCount(); i++) {
-			Chip chip = (Chip) binding.fragmentTabsAnimationChipGroup.getChildAt(i);
-			if (chip.getId() == checkedId) return i;
-		}
-		return fragmentTabsAnimationSelectedChoice;
-	}
-
 	private String getLanguageDisplayName(String langCode) {
 		Locale english = new Locale("en");
 		String[] multiCodeLang = langCode.split("-");
@@ -482,6 +389,15 @@ public class BottomSheetSettingsAppearanceFragment extends BottomSheetDialogFrag
 		return String.format(
 				"%s (%s)",
 				translated.getDisplayName(translated), translated.getDisplayName(english));
+	}
+
+	@Override
+	public void onStart() {
+		super.onStart();
+		Dialog dialog = getDialog();
+		if (dialog instanceof BottomSheetDialog) {
+			AppUtil.applySheetStyle((BottomSheetDialog) dialog, true);
+		}
 	}
 
 	@Override

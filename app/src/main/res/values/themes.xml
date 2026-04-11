@@ -2,11 +2,10 @@
 <resources>
 
     <!-- Dark theme - default -->
-    <style name="AppTheme" parent="Theme.Material3.Dark.NoActionBar">
+    <style name="AppTheme" parent="Theme.Material3Expressive.Dark.NoActionBar">
         <item name="android:navigationBarColor">@color/cardBackground</item>
         <item name="android:statusBarColor">@color/colorPrimary</item>
         <item name="android:windowLightStatusBar">false</item>
-        <item name="android:typeface">monospace</item>
         <item name="colorAccent">@color/colorAccent</item>
         <item name="android:textColorSecondary">@color/colorWhite</item>
         <item name="android:textColorPrimary">@color/colorWhite</item>
@@ -34,7 +33,6 @@
         <item name="hintColor">@color/hintColor</item>
         <item name="colorControlActivated">@color/darkGreen</item>
         <item name="dividerColor">@color/dividerColorDark</item>
-        <item name="bottomSheetDialogTheme">@style/AppThemeDarkBottomSheetDialog</item>
         <item name="searchViewStyle">@style/AppSearchViewStyle</item>
         <item name="progressIndicatorColor">@color/darkGreen</item>
         <item name="fabColor">@color/darkGreen</item>
@@ -44,7 +42,8 @@
         <item name="actionOverflowMenuStyle">@style/customOverflowMenuStyle</item>
         <item name="colorSurface">@color/inputBackground</item>
         <item name="shapeAppearanceSmallComponent">@style/inputsMaterialComponentCorner</item>
-        <item name="android:windowAnimationStyle">@style/WindowAnimationTransition</item>
+        <item name="android:windowAnimationStyle">@style/CustomActivityAnimation</item>
+        <item name="motionEasingEmphasizedInterpolator">@android:interpolator/fast_out_slow_in</item>
         <item name="materialSwitchStyle">@style/m3SwitchStyle</item>
         <item name="chipStyle">@style/CustomChipFilter</item>
         <item name="isDark">1</item>
@@ -52,11 +51,10 @@
     <!-- Dark theme - default -->
 
     <!-- Light theme -->
-    <style name="AppThemeLight" parent="Theme.Material3.Light.NoActionBar">
+    <style name="AppThemeLight" parent="Theme.Material3Expressive.Light.NoActionBar">
         <item name="android:navigationBarColor">@color/lightThemeCardBackground</item>
         <item name="android:statusBarColor">@color/lightThemeBackground</item>
         <item name="android:windowLightStatusBar">true</item>
-        <item name="android:typeface">monospace</item>
         <item name="colorAccent">@color/colorAccent</item>
         <item name="android:textColorSecondary">@color/lightThemeTextColor</item>
         <item name="android:textColorPrimary">@color/lightThemeTextColor</item>
@@ -84,7 +82,6 @@
         <item name="hintColor">@color/hintColor</item>
         <item name="colorControlActivated">@color/darkGreen</item>
         <item name="dividerColor">@color/lightThemeDividerColor</item>
-        <item name="bottomSheetDialogTheme">@style/AppThemeLightBottomSheetDialog</item>
         <item name="searchViewStyle">@style/AppSearchViewStyle</item>
         <item name="progressIndicatorColor">@color/darkGreen</item>
         <item name="fabColor">@color/darkGreen</item>
@@ -94,18 +91,18 @@
         <item name="actionOverflowMenuStyle">@style/customOverflowMenuStyle</item>
         <item name="colorSurface">@color/lightThemeInputBackground</item>
         <item name="shapeAppearanceSmallComponent">@style/inputsMaterialComponentCorner</item>
-        <item name="android:windowAnimationStyle">@style/WindowAnimationTransition</item>
+        <item name="android:windowAnimationStyle">@style/CustomActivityAnimation</item>
+        <item name="motionEasingEmphasizedInterpolator">@android:interpolator/fast_out_slow_in</item>
         <item name="chipStyle">@style/CustomChipFilter</item>
         <item name="isDark">0</item>
     </style>
     <!-- Light theme -->
 
     <!-- Retro theme -->
-    <style name="AppThemeRetro" parent="Theme.Material3.Light.NoActionBar">
+    <style name="AppThemeRetro" parent="Theme.Material3Expressive.Light.NoActionBar">
         <item name="android:statusBarColor">@color/retroThemeBackground</item>
         <item name="android:navigationBarColor">@color/retroThemeCardBackground</item>
         <item name="android:windowLightStatusBar">true</item>
-        <item name="android:typeface">monospace</item>
         <item name="colorAccent">@color/colorAccent</item>
         <item name="android:textColorSecondary">@color/retroThemeTextColor</item>
         <item name="android:textColorPrimary">@color/retroThemeTextColor</item>
@@ -132,7 +129,6 @@
         <item name="hintColor">@color/hintColor</item>
         <item name="colorControlActivated">@color/retroThemeColorPrimary</item>
         <item name="dividerColor">@color/retroThemeDividerColor</item>
-        <item name="bottomSheetDialogTheme">@style/AppThemeLightBottomSheetDialog</item>
         <item name="searchViewStyle">@style/AppSearchViewStyle</item>
         <item name="progressIndicatorColor">@color/retroThemeColorPrimary</item>
         <item name="fabColor">@color/retroThemeColorPrimary</item>
@@ -142,18 +138,18 @@
         <item name="actionOverflowMenuStyle">@style/customOverflowMenuStyle</item>
         <item name="colorSurface">@color/retroThemeInputBackground</item>
         <item name="shapeAppearanceSmallComponent">@style/inputsMaterialComponentCorner</item>
-        <item name="android:windowAnimationStyle">@style/WindowAnimationTransition</item>
+        <item name="android:windowAnimationStyle">@style/CustomActivityAnimation</item>
+        <item name="motionEasingEmphasizedInterpolator">@android:interpolator/fast_out_slow_in</item>
         <item name="chipStyle">@style/CustomChipFilter</item>
         <item name="isDark">0</item>
     </style>
     <!-- Retro theme -->
 
     <!-- Pitch black theme -->
-    <style name="AppThemePitchBlack" parent="Theme.Material3.Dark.NoActionBar">
+    <style name="AppThemePitchBlack" parent="Theme.Material3Expressive.Dark.NoActionBar">
         <item name="android:statusBarColor">@color/pitchBlackThemeBackground</item>
         <item name="android:navigationBarColor">@color/pitchBlackThemeCardBackground</item>
         <item name="android:windowLightStatusBar">false</item>
-        <item name="android:typeface">monospace</item>
         <item name="colorAccent">@color/colorAccent</item>
         <item name="android:textColorSecondary">@color/pitchBlackThemeTextColor</item>
         <item name="android:textColorPrimary">@color/pitchBlackThemeTextColor</item>
@@ -181,7 +177,6 @@
         <item name="hintColor">@color/hintColor</item>
         <item name="colorControlActivated">@color/darkGreen</item>
         <item name="dividerColor">@color/pitchBlackThemeDividerColor</item>
-        <item name="bottomSheetDialogTheme">@style/AppThemeDarkBottomSheetDialog</item>
         <item name="searchViewStyle">@style/AppSearchViewStyle</item>
         <item name="progressIndicatorColor">@color/darkGreen</item>
         <item name="fabColor">@color/darkGreen</item>
@@ -191,7 +186,8 @@
         <item name="actionOverflowMenuStyle">@style/customOverflowMenuStyle</item>
         <item name="colorSurface">@color/inputBackground</item>
         <item name="shapeAppearanceSmallComponent">@style/inputsMaterialComponentCorner</item>
-        <item name="android:windowAnimationStyle">@style/WindowAnimationTransition</item>
+        <item name="android:windowAnimationStyle">@style/CustomActivityAnimation</item>
+        <item name="motionEasingEmphasizedInterpolator">@android:interpolator/fast_out_slow_in</item>
         <item name="materialSwitchStyle">@style/m3SwitchStyle</item>
         <item name="chipStyle">@style/CustomChipFilter</item>
         <item name="isDark">1</item>
@@ -199,11 +195,10 @@
     <!-- Pitch black theme -->
 
     <!-- Codeberg dark theme -->
-    <style name="AppThemeCodebergDark" parent="Theme.Material3.Dark.NoActionBar">
+    <style name="AppThemeCodebergDark" parent="Theme.Material3Expressive.Dark.NoActionBar">
         <item name="android:statusBarColor">@color/codebergDarkThemeBackground</item>
         <item name="android:navigationBarColor">@color/codebergDarkThemeBackground</item>
         <item name="android:windowLightStatusBar">false</item>
-        <item name="android:typeface">monospace</item>
         <item name="colorAccent">@color/colorAccent</item>
         <item name="android:textColorSecondary">@color/codebergDarkThemeTextColor</item>
         <item name="android:textColorPrimary">@color/codebergDarkThemeTextColor</item>
@@ -231,7 +226,6 @@
         <item name="hintColor">@color/codebergDarkHintColor</item>
         <item name="colorControlActivated">@color/codebergDarkColorPrimary</item>
         <item name="dividerColor">@color/codebergDarkThemeDividerColor</item>
-        <item name="bottomSheetDialogTheme">@style/AppThemeDarkBottomSheetDialog</item>
         <item name="searchViewStyle">@style/AppSearchViewStyle</item>
         <item name="progressIndicatorColor">@color/codebergDarkColorPrimary</item>
         <item name="fabColor">@color/codebergDarkThemeIconsColors</item>
@@ -241,10 +235,26 @@
         <item name="actionOverflowMenuStyle">@style/customOverflowMenuStyle</item>
         <item name="colorSurface">@color/codebergDarkInputBackground</item>
         <item name="shapeAppearanceSmallComponent">@style/inputsMaterialComponentCorner</item>
-        <item name="android:windowAnimationStyle">@style/WindowAnimationTransition</item>
+        <item name="android:windowAnimationStyle">@style/CustomActivityAnimation</item>
+        <item name="motionEasingEmphasizedInterpolator">@android:interpolator/fast_out_slow_in</item>
         <item name="materialSwitchStyle">@style/m3SwitchStyle</item>
         <item name="chipStyle">@style/CustomChipFilter</item>
         <item name="isDark">1</item>
     </style>
     <!-- Codeberg dark theme -->
+
+    <style name="FontManrope">
+        <item name="android:fontFamily">@font/manroperegular</item>
+        <item name="fontFamily">@font/manroperegular</item>
+    </style>
+
+    <style name="FontRoboto">
+        <item name="android:fontFamily">@font/roboto</item>
+        <item name="fontFamily">@font/roboto</item>
+    </style>
+
+    <style name="FontSourceCode">
+        <item name="android:fontFamily">@font/sourcecodeproregular</item>
+        <item name="fontFamily">@font/sourcecodeproregular</item>
+    </style>
 </resources>

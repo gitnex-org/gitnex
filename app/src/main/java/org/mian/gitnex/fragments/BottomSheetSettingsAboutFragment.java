@@ -1,15 +1,18 @@
 package org.mian.gitnex.fragments;
 
+import android.app.Dialog;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import com.google.android.material.bottomsheet.BottomSheetDialog;
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment;
 import org.mian.gitnex.R;
 import org.mian.gitnex.activities.BaseActivity;
-import org.mian.gitnex.databinding.BottomSheetSettingsAboutBinding;
+import org.mian.gitnex.databinding.BottomsheetSettingsAboutBinding;
+import org.mian.gitnex.databinding.ItemSettingsMoreAppsBinding;
 import org.mian.gitnex.helpers.AppUtil;
 
 /**
@@ -17,14 +20,20 @@ import org.mian.gitnex.helpers.AppUtil;
  */
 public class BottomSheetSettingsAboutFragment extends BottomSheetDialogFragment {
 
-	private BottomSheetSettingsAboutBinding binding;
+	private BottomsheetSettingsAboutBinding binding;
+
+	@Override
+	public void onCreate(@Nullable Bundle savedInstanceState) {
+		super.onCreate(savedInstanceState);
+		setStyle(STYLE_NORMAL, R.style.Custom_BottomSheet);
+	}
 
 	@Nullable @Override
 	public View onCreateView(
 			@NonNull LayoutInflater inflater,
 			@Nullable ViewGroup container,
 			@Nullable Bundle savedInstanceState) {
-		binding = BottomSheetSettingsAboutBinding.inflate(inflater, container, false);
+		binding = BottomsheetSettingsAboutBinding.inflate(inflater, container, false);
 
 		// Set app version and build
 		binding.appVersionBuild.setText(
@@ -63,17 +72,46 @@ public class BottomSheetSettingsAboutFragment extends BottomSheetDialogFragment 
 					dismiss();
 				});
 
-		// Hide donation link for pro users
+		setupMiniApp(binding.appLabNex, "LabNex", R.drawable.app_labnex, "https://labnex.app");
+		setupMiniApp(
+				binding.appOceanNex,
+				"OceanNex",
+				R.drawable.app_oceannex,
+				"https://oceannex.swatian.com");
+		setupMiniApp(
+				binding.appNexNode,
+				"NexNode",
+				R.drawable.app_nexnode,
+				"https://nexnode.swatian.com");
+
 		if (AppUtil.isPro(requireContext())) {
-			binding.layoutFrame1.setVisibility(View.GONE);
+			binding.donationLinkPatreon.setVisibility(View.GONE);
 		}
 
 		return binding.getRoot();
 	}
 
+	private void setupMiniApp(
+			ItemSettingsMoreAppsBinding itemBinding, String name, int iconRes, String url) {
+		itemBinding.appName.setText(name);
+		itemBinding.appIcon.setImageResource(iconRes);
+		itemBinding
+				.getRoot()
+				.setOnClickListener(v -> AppUtil.openUrlInBrowser(requireContext(), url));
+	}
+
+	@Override
+	public void onStart() {
+		super.onStart();
+		Dialog dialog = getDialog();
+		if (dialog instanceof BottomSheetDialog) {
+			AppUtil.applySheetStyle((BottomSheetDialog) dialog, true);
+		}
+	}
+
 	@Override
 	public void onDestroyView() {
 		super.onDestroyView();
-		binding = null; // Prevent memory leaks
+		binding = null;
 	}
 }

@@ -1,459 +1,325 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.coordinatorlayout.widget.CoordinatorLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    xmlns:app="http://schemas.android.com/apk/res-auto">
+    android:background="?attr/primaryBackgroundColor">
 
     <androidx.core.widget.NestedScrollView
-        android:orientation="vertical"
-        android:background="?attr/primaryBackgroundColor"
         android:layout_width="match_parent"
-        android:layout_height="match_parent">
+        android:layout_height="match_parent"
+        android:fillViewport="true"
+        android:clipToPadding="false">
 
         <LinearLayout
-            android:padding="@dimen/dimen8dp"
-            android:orientation="vertical"
             android:id="@+id/repoInfoLayout"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content">
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
 
-            <TextView
-                android:id="@+id/repoIsArchived"
-                android:layout_width="wrap_content"
+            <androidx.constraintlayout.widget.ConstraintLayout
+                android:id="@+id/hero_section"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:gravity="center_vertical"
-                android:layout_gravity="center"
-                android:text="@string/archivedRepositoryMessage"
-                android:background="@drawable/shape_archived"
-                android:padding="@dimen/dimen12dp"
-                android:layout_marginTop="@dimen/dimen4dp"
-                android:layout_marginBottom="@dimen/dimen12dp"
-                android:textColor="@color/colorWhite"
-                android:textSize="@dimen/dimen14sp" />
+                android:paddingBottom="@dimen/dimen32dp">
+
+                <View
+                    android:id="@+id/headerBackground"
+                    android:layout_width="match_parent"
+                    android:layout_height="@dimen/dimen100dp"
+                    android:background="?attr/primaryBackgroundColor"
+                    app:layout_constraintTop_toTopOf="parent" />
+
+                <com.google.android.material.imageview.ShapeableImageView
+                    android:id="@+id/repoAvatar"
+                    android:layout_width="@dimen/dimen80dp"
+                    android:layout_height="@dimen/dimen80dp"
+                    android:layout_marginStart="@dimen/dimen24dp"
+                    android:background="@android:color/transparent"
+                    android:scaleType="centerCrop"
+                    app:strokeWidth="@dimen/dimen0dp"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent"
+                    app:shapeAppearanceOverlay="@style/ShapeAppearance.Material3.Corner.Large"
+                    android:contentDescription="@string/generalImgContentText" />
+
+                <TextView
+                    android:id="@+id/repoMetaName"
+                    style="@style/TextAppearance.Material3.HeadlineSmall"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="@dimen/dimen16dp"
+                    android:layout_marginEnd="@dimen/dimen24dp"
+                    android:textStyle="bold"
+                    android:textColor="?attr/primaryTextColor"
+                    android:drawablePadding="@dimen/dimen8dp"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toEndOf="@id/repoAvatar"
+                    app:layout_constraintTop_toTopOf="@id/repoAvatar"
+                    app:layout_constraintBottom_toTopOf="@id/repoMetaOwner"
+                    app:layout_constraintVertical_chainStyle="packed"
+                    tools:text="GitNex"
+                    tools:drawableStart="@drawable/ic_lock" />
+
+                <TextView
+                    android:id="@+id/repoMetaOwner"
+                    style="@style/TextAppearance.Material3.BodyMedium"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:alpha="0.8"
+                    android:textColor="?attr/primaryTextColor"
+                    app:layout_constraintEnd_toEndOf="@id/repoMetaName"
+                    app:layout_constraintStart_toStartOf="@id/repoMetaName"
+                    app:layout_constraintTop_toBottomOf="@id/repoMetaName"
+                    app:layout_constraintBottom_toBottomOf="@id/repoAvatar"
+                    tools:text="GitNex" />
+
+                <TextView
+                    android:id="@+id/repoMetaDescription"
+                    style="@style/TextAppearance.Material3.BodyMedium"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="@dimen/dimen16dp"
+                    android:layout_marginHorizontal="@dimen/dimen24dp"
+                    android:lineSpacingExtra="@dimen/dimen4dp"
+                    android:textColor="?attr/primaryTextColor"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@id/repoAvatar"
+                    tools:text="A modern Android client for Git services." />
+
+                <TextView
+                    android:id="@+id/repoIsArchived"
+                    style="@style/TextAppearance.Material3.BodyMedium"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="@dimen/dimen16dp"
+                    android:layout_marginHorizontal="@dimen/dimen24dp"
+                    android:background="@drawable/shape_archived"
+                    android:paddingHorizontal="@dimen/dimen12dp"
+                    android:paddingVertical="@dimen/dimen8dp"
+                    android:text="@string/archivedRepositoryMessage"
+                    android:textColor="@color/colorWhite"
+                    app:drawableStartCompat="@drawable/ic_archive"
+                    android:drawablePadding="@dimen/dimen8dp"
+                    app:drawableTint="@color/colorWhite"
+                    android:visibility="gone"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@id/repoMetaDescription"
+                    tools:visibility="visible" />
+
+                <TextView
+                    android:id="@+id/repoIsFork"
+                    style="@style/TextAppearance.Material3.BodyMedium"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="@dimen/dimen16dp"
+                    android:layout_marginHorizontal="@dimen/dimen24dp"
+                    android:background="@drawable/shape_archived"
+                    android:paddingHorizontal="@dimen/dimen12dp"
+                    android:paddingVertical="@dimen/dimen12dp"
+                    android:textColor="@color/colorWhite"
+                    app:drawableStartCompat="@drawable/ic_fork"
+                    android:drawablePadding="@dimen/dimen8dp"
+                    app:drawableTint="@color/colorWhite"
+                    android:visibility="gone"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@id/repoMetaDescription"
+                    tools:visibility="visible" />
+
+            </androidx.constraintlayout.widget.ConstraintLayout>
 
             <com.google.android.material.card.MaterialCardView
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                style="?attr/materialCardViewElevatedStyle"
-                app:cardElevation="@dimen/dimen0dp">
+                android:layout_height="0dp"
+                android:layout_weight="1"
+                app:cardBackgroundColor="?attr/materialCardBackgroundColor"
+                app:cardElevation="@dimen/dimen0dp"
+                app:shapeAppearance="@style/ShapeAppearance.TopRounded"
+                app:strokeWidth="@dimen/dimen0dp">
 
                 <LinearLayout
-                    android:id="@+id/repoMetaFrame"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:background="?attr/materialCardBackgroundColor"
-                    android:padding="@dimen/dimen16dp"
+                    android:paddingTop="@dimen/dimen32dp"
                     android:orientation="vertical">
 
                     <LinearLayout
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:orientation="horizontal">
-
-                        <TextView
-                            android:id="@+id/repoMetaOwner"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:textColor="?attr/primaryTextColor"
-                            android:textSize="@dimen/dimen22sp"
-                            android:textStyle="bold"/>
-
-                        <TextView
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:textColor="?attr/primaryTextColor"
-                            android:layout_marginBottom="@dimen/dimen6dp"
-                            android:layout_marginStart="@dimen/dimen6dp"
-                            android:layout_marginEnd="@dimen/dimen6dp"
-                            android:text="/"
-                            android:textSize="@dimen/dimen22sp"
-                            android:textStyle="bold"
-                            tools:ignore="HardcodedText"/>
-
-                        <TextView
-                            android:id="@+id/repoMetaName"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:textColor="?attr/primaryTextColor"
-                            android:layout_marginBottom="@dimen/dimen6dp"
-                            android:textSize="@dimen/dimen22sp"
-                            android:textStyle="bold"/>
-
-                    </LinearLayout>
-
-                    <TextView
-                        android:id="@+id/repoMetaDescription"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:layout_marginBottom="@dimen/dimen16dp"
-                        android:autoLink="web"
-                        android:ellipsize="end"
-                        android:maxLines="3"
-                        android:textColor="?attr/primaryTextColor"
-                        android:textColorLink="@color/lightBlue"
-                        android:textSize="@dimen/dimen16sp"/>
-
-                    <LinearLayout
-                        android:id="@+id/repoTopicsContainer"
+                        android:id="@+id/language_stats_container"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:orientation="vertical"
-                        android:visibility="gone"
-                        android:clipChildren="false"
-                        android:clipToPadding="false">
+                        android:layout_marginHorizontal="@dimen/dimen20dp"
+                        android:layout_marginBottom="@dimen/dimen24dp"
+                        android:visibility="gone">
 
-                        <com.google.android.material.chip.ChipGroup
-                            android:id="@+id/repoTopicsChipGroup"
+                        <com.google.android.material.card.MaterialCardView
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
-                            android:paddingBottom="@dimen/dimen4dp"
-                            app:singleLine="false"
-                            app:chipSpacingHorizontal="@dimen/dimen8dp"
-                            app:chipSpacingVertical="@dimen/dimen2dp">
+                            app:cardCornerRadius="@dimen/dimen16dp"
+                            app:cardElevation="0dp"
+                            app:strokeWidth="0dp"
+                            app:cardBackgroundColor="@android:color/transparent">
 
-                            <com.google.android.material.chip.Chip
-                                android:id="@+id/addTopicChip"
-                                style="@style/Widget.MaterialComponents.Chip.Action"
-                                android:layout_width="@dimen/dimen48dp"
-                                android:layout_height="@dimen/dimen48dp"
-                                android:text=""
-                                android:clickable="true"
-                                android:focusable="true"
-                                app:chipIcon="@drawable/ic_add"
-                                app:chipIconVisible="true"
-                                app:chipIconSize="@dimen/dimen20dp"
-                                app:chipIconTint="?attr/primaryTextColor"
-                                app:chipBackgroundColor="@android:color/transparent"
-                                app:chipSurfaceColor="@android:color/transparent"
-                                app:chipStrokeWidth="0dp"
-                                app:checkedIconVisible="false"
-                                app:rippleColor="@android:color/transparent"
-                                app:closeIconVisible="false"
-                                app:ensureMinTouchTargetSize="false" />
+                            <org.mian.gitnex.helpers.languagestatistics.LanguageStatisticsView
+                                android:id="@+id/languages_statistic"
+                                android:layout_width="match_parent"
+                                android:layout_height="@dimen/dimen16dp" />
 
-                        </com.google.android.material.chip.ChipGroup>
-
-                    </LinearLayout>
-
-                    <com.google.android.material.card.MaterialCardView
-                        android:id="@+id/language_stats_card"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        app:cardCornerRadius="@dimen/dimen16dp"
-                        app:cardElevation="@dimen/dimen0dp"
-                        app:strokeWidth="@dimen/dimen0dp"
-                        android:layout_marginTop="@dimen/dimen16dp"
-                        android:visibility="gone"
-                        app:cardBackgroundColor="@android:color/transparent">
-
-                        <org.mian.gitnex.helpers.languagestatistics.LanguageStatisticsView
-                            android:id="@+id/languages_statistic"
-                            android:layout_width="match_parent"
-                            android:layout_height="@dimen/dimen14dp" />
-
-                    </com.google.android.material.card.MaterialCardView>
-
-                    <LinearLayout
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:layout_marginTop="@dimen/dimen16dp"
-                        android:layout_marginBottom="@dimen/dimen16dp"
-                        android:orientation="horizontal"
-                        tools:ignore="UseCompoundDrawables">
-
-                        <ImageView
-                            android:id="@+id/repoMetaStarsIcon"
-                            android:layout_gravity="center"
-                            android:layout_width="@dimen/dimen18dp"
-                            android:layout_height="@dimen/dimen18dp"
-                            android:contentDescription="@string/size"
-                            app:srcCompat="@drawable/ic_star_unfilled"/>
+                        </com.google.android.material.card.MaterialCardView>
 
                         <TextView
-                            android:id="@+id/repoMetaStars"
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            android:layout_marginStart="@dimen/dimen16dp"
-                            android:textColor="?attr/primaryTextColor"
-                            android:textSize="@dimen/dimen14sp" />
-
-                    </LinearLayout>
-
-                    <LinearLayout
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:layout_marginBottom="@dimen/dimen16dp"
-                        android:orientation="horizontal"
-                        tools:ignore="UseCompoundDrawables">
-
-                        <ImageView
-                            android:id="@+id/repoMetaWatchersIcon"
-                            android:layout_gravity="center"
-                            android:layout_width="@dimen/dimen18dp"
-                            android:layout_height="@dimen/dimen18dp"
-                            android:contentDescription="@string/size"
-                            app:srcCompat="@drawable/ic_watchers"/>
-
-                        <TextView
-                            android:id="@+id/repoMetaWatchers"
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            android:layout_marginStart="@dimen/dimen16dp"
-                            android:textColor="?attr/primaryTextColor"
-                            android:textSize="@dimen/dimen14sp" />
-
-                    </LinearLayout>
-
-                    <LinearLayout
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:layout_marginBottom="@dimen/dimen16dp"
-                        android:orientation="horizontal"
-                        tools:ignore="UseCompoundDrawables">
-
-                        <ImageView
-                            android:id="@+id/repoMetaForksIcon"
-                            android:layout_gravity="center"
-                            android:layout_width="@dimen/dimen18dp"
-                            android:layout_height="@dimen/dimen18dp"
-                            android:contentDescription="@string/size"
-                            app:srcCompat="@drawable/ic_fork"/>
-
-                        <TextView
-                            android:id="@+id/repoMetaForks"
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            android:layout_marginStart="@dimen/dimen16dp"
-                            android:textColor="?attr/primaryTextColor"
-                            android:textSize="@dimen/dimen14sp" />
-
-                    </LinearLayout>
-
-                    <LinearLayout
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:layout_marginBottom="@dimen/dimen16dp"
-                        android:orientation="horizontal"
-                        tools:ignore="UseCompoundDrawables">
-
-                        <ImageView
-                            android:id="@+id/repoMetaPullRequestsIcon"
-                            android:layout_gravity="center"
-                            android:layout_width="@dimen/dimen18dp"
-                            android:layout_height="@dimen/dimen18dp"
-                            android:contentDescription="@string/size"
-                            app:srcCompat="@drawable/ic_pull_request"/>
-
-                        <TextView
-                            android:id="@+id/repoMetaPullRequests"
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            android:layout_marginStart="@dimen/dimen16dp"
-                            android:textColor="?attr/primaryTextColor"
-                            android:textSize="@dimen/dimen14sp" />
-
-                    </LinearLayout>
-
-                    <LinearLayout
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:layout_marginBottom="@dimen/dimen16dp"
-                        android:orientation="horizontal"
-                        tools:ignore="UseCompoundDrawables">
-
-                        <ImageView
-                            android:id="@+id/repoMetaDefaultBranchIcon"
-                            android:layout_gravity="center"
-                            android:layout_width="@dimen/dimen18dp"
-                            android:layout_height="@dimen/dimen18dp"
-                            android:contentDescription="@string/size"
-                            app:srcCompat="@drawable/ic_branch"/>
-
-                        <TextView
-                            android:id="@+id/repoMetaDefaultBranch"
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            android:layout_marginStart="@dimen/dimen16dp"
-                            android:textColor="?attr/primaryTextColor"
-                            android:textSize="@dimen/dimen14sp" />
-
-                    </LinearLayout>
-
-                    <LinearLayout
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:layout_marginBottom="@dimen/dimen16dp"
-                        android:orientation="horizontal"
-                        tools:ignore="UseCompoundDrawables">
-
-                        <ImageView
-                            android:id="@+id/repoMetaLastUpdatedIcon"
-                            android:layout_gravity="center"
-                            android:layout_width="@dimen/dimen18dp"
-                            android:layout_height="@dimen/dimen18dp"
-                            android:contentDescription="@string/size"
-                            app:srcCompat="@drawable/ic_clock"/>
-
-                        <TextView
-                            android:id="@+id/repoMetaLastUpdated"
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            android:layout_marginStart="@dimen/dimen16dp"
-                            android:textColor="?attr/primaryTextColor"
-                            android:textSize="@dimen/dimen14sp" />
-
-                    </LinearLayout>
-
-                    <LinearLayout
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:layout_marginBottom="@dimen/dimen16dp"
-                        android:orientation="horizontal"
-                        tools:ignore="UseCompoundDrawables">
-
-                        <ImageView
-                            android:layout_gravity="center"
-                            android:layout_width="@dimen/dimen18dp"
-                            android:layout_height="@dimen/dimen18dp"
-                            android:contentDescription="@string/size"
-                            app:srcCompat="@drawable/ic_download"/>
-
-                        <TextView
-                            android:id="@+id/repoMetaSize"
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            android:layout_marginStart="@dimen/dimen16dp"
-                            android:textColor="?attr/primaryTextColor"
-                            android:textSize="@dimen/dimen14sp"
-                            tools:text="29"/>
-
-                    </LinearLayout>
-
-                    <LinearLayout
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:layout_marginBottom="@dimen/dimen16dp"
-                        android:orientation="horizontal"
-                        tools:ignore="UseCompoundDrawables">
-
-                        <ImageView
-                            android:layout_gravity="center"
-                            android:layout_width="@dimen/dimen18dp"
-                            android:layout_height="@dimen/dimen18dp"
-                            android:contentDescription="@string/infoTabRepoCreatedAt"
-                            app:srcCompat="@drawable/ic_calendar"/>
-
-                        <TextView
-                            android:id="@+id/repoMetaCreatedAt"
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            android:layout_marginStart="@dimen/dimen16dp"
-                            android:textColor="?attr/primaryTextColor"
-                            android:textSize="@dimen/dimen14sp"
-                            tools:text="29"/>
-
-                    </LinearLayout>
-
-                    <LinearLayout
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:layout_marginBottom="@dimen/dimen16dp"
-                        android:orientation="horizontal"
-                        tools:ignore="UseCompoundDrawables">
-
-                        <ImageView
-                            android:layout_gravity="center"
-                            android:layout_width="@dimen/dimen18dp"
-                            android:layout_height="@dimen/dimen18dp"
-                            android:contentDescription="@string/websiteText"
-                            app:srcCompat="@drawable/ic_link"/>
-
-                        <TextView
-                            android:id="@+id/repoMetaWebsite"
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            android:layout_marginStart="@dimen/dimen16dp"
-                            android:autoLink="web"
-                            android:textColorLink="@color/lightBlue"
-                            android:textColor="?attr/primaryTextColor"
-                            android:textSize="@dimen/dimen14sp"
-                            tools:text="29"/>
-
-                    </LinearLayout>
-
-                    <LinearLayout
-                        android:id="@+id/repo_fork_frame"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:layout_marginBottom="@dimen/dimen16dp"
-                        android:orientation="horizontal"
-                        tools:ignore="UseCompoundDrawables">
-
-                        <ImageView
-                            android:layout_gravity="center"
-                            android:layout_width="@dimen/dimen18dp"
-                            android:layout_height="@dimen/dimen18dp"
-                            app:srcCompat="@drawable/ic_fork"
-                            android:contentDescription="@string/generalImgContentText"/>
-
-                        <TextView
-                            android:id="@+id/repo_fork"
-                            android:layout_marginStart="@dimen/dimen16dp"
+                            android:id="@+id/primaryLanguageText"
+                            style="@style/TextAppearance.Material3.LabelMedium"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:textColor="?attr/primaryTextColor"
-                            android:textSize="@dimen/dimen14sp"/>
+                            android:layout_marginTop="@dimen/dimen8dp"
+                            android:gravity="center_vertical"
+                            android:drawablePadding="@dimen/dimen8dp"
+                            android:alpha="0.8"
+                            android:textColor="?attr/colorOnSurface"
+                            tools:text="Java 85%" />
 
                     </LinearLayout>
 
-                    <com.google.android.material.button.MaterialButtonToggleGroup
-                        android:id="@+id/moreInfoFrame"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_marginTop="@dimen/dimen8dp"
-                        android:layout_marginBottom="@dimen/dimen12dp"
-                        android:layout_gravity="center">
-
-                            <Button
-                                android:id="@+id/repoAdditionalButton"
-                                style="?attr/materialButtonToggleGroupStyle"
-                                android:layout_width="wrap_content"
-                                android:layout_height="wrap_content"
-                                android:textSize="@dimen/dimen14sp"
-                                android:textStyle="bold"
-                                app:icon="@drawable/ic_info"
-                                android:text="@string/infoMoreInformation" />
-
-                        </com.google.android.material.button.MaterialButtonToggleGroup>
-
-                </LinearLayout>
-
-            </com.google.android.material.card.MaterialCardView>
-
-            <com.google.android.material.card.MaterialCardView
-                android:id="@+id/fileContentsFrameHeader"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                style="?attr/materialCardViewElevatedStyle"
-                android:layout_marginTop="@dimen/dimen8dp"
-                app:cardElevation="@dimen/dimen0dp">
-
-                <LinearLayout
-                    android:id="@+id/fileContentsFrame"
-                    android:orientation="vertical"
-                    android:padding="@dimen/dimen16dp"
-                    android:background="?attr/materialCardBackgroundColor"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content">
-
-                    <androidx.recyclerview.widget.RecyclerView
-                        android:id="@+id/repoFileContents"
+                    <LinearLayout
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:textIsSelectable="true"
-                        android:textSize="@dimen/dimen16sp"
-                        android:textColor="?attr/primaryTextColor"/>
+                        android:orientation="vertical">
+
+                        <LinearLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:orientation="vertical"
+                            android:paddingHorizontal="@dimen/dimen12dp"
+                            android:layout_marginTop="@dimen/dimen16dp">
+
+                            <LinearLayout
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:orientation="horizontal">
+                                <include android:id="@+id/statStars" layout="@layout/layout_repo_stat_item" />
+                                <include android:id="@+id/statForks" layout="@layout/layout_repo_stat_item" />
+                                <include android:id="@+id/statWatchers" layout="@layout/layout_repo_stat_item" />
+                            </LinearLayout>
+
+                            <LinearLayout
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:orientation="horizontal">
+                                <include android:id="@+id/statPRs" layout="@layout/layout_repo_stat_item" />
+                                <include android:id="@+id/statIssues" layout="@layout/layout_repo_stat_item" />
+                                <include android:id="@+id/statSize" layout="@layout/layout_repo_stat_item" />
+                            </LinearLayout>
+
+                            <LinearLayout
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:orientation="horizontal">
+
+                                <include android:id="@+id/statUpdatedAt" layout="@layout/layout_repo_stat_item" />
+                                <include android:id="@+id/statBranch" layout="@layout/layout_repo_stat_item" />
+
+                            </LinearLayout>
+
+                        </LinearLayout>
+
+                        <LinearLayout
+                            android:id="@+id/repoTopicsContainer"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:orientation="vertical"
+                            android:layout_marginTop="@dimen/dimen24dp"
+                            android:paddingHorizontal="@dimen/dimen20dp"
+                            android:visibility="gone">
+
+                            <TextView
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                style="@style/TextAppearance.Material3.TitleLarge"
+                                android:layout_marginBottom="@dimen/dimen12dp"
+                                android:text="@string/topics"/>
+
+                            <com.google.android.material.chip.ChipGroup
+                                android:id="@+id/repoTopicsChipGroup"
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:paddingBottom="@dimen/dimen4dp"
+                                app:singleLine="false"
+                                app:chipSpacingHorizontal="@dimen/dimen8dp"
+                                app:chipSpacingVertical="@dimen/dimen2dp">
+
+                                <com.google.android.material.chip.Chip
+                                    android:id="@+id/addTopicChip"
+                                    android:layout_width="@dimen/dimen48dp"
+                                    android:layout_height="@dimen/dimen48dp"
+                                    android:text=""
+                                    android:clickable="true"
+                                    android:focusable="true"
+                                    app:chipIcon="@drawable/ic_add"
+                                    app:chipIconVisible="true"
+                                    app:chipIconSize="@dimen/dimen20dp"
+                                    app:chipIconTint="?attr/primaryTextColor"
+                                    app:chipBackgroundColor="@android:color/transparent"
+                                    app:chipSurfaceColor="@android:color/transparent"
+                                    app:chipStrokeWidth="0dp"
+                                    app:checkedIconVisible="false"
+                                    app:rippleColor="@android:color/transparent"
+                                    app:closeIconVisible="false"
+                                    app:ensureMinTouchTargetSize="false" />
+
+                            </com.google.android.material.chip.ChipGroup>
+
+                        </LinearLayout>
+
+                        <LinearLayout
+                            android:id="@+id/moreInfoFrame"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:orientation="vertical"
+                            android:paddingHorizontal="@dimen/dimen20dp"
+                            android:layout_marginTop="@dimen/dimen24dp">
+
+                            <com.google.android.material.divider.MaterialDivider
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:layout_marginBottom="@dimen/dimen16dp"
+                                app:dividerColor="?attr/colorOutlineVariant"
+                                android:alpha="0.5" />
+
+                            <include android:id="@+id/layoutCreatedAt" layout="@layout/item_profile_info" />
+                            <View android:layout_width="match_parent" android:layout_height="@dimen/dimen12dp" />
+
+                            <include android:id="@+id/layoutWebsite" layout="@layout/item_profile_info" />
+                            <View android:layout_width="match_parent" android:layout_height="@dimen/dimen12dp" />
+
+                            <include android:id="@+id/layoutHtmlUrl" layout="@layout/item_profile_info" />
+                            <View android:layout_width="match_parent" android:layout_height="@dimen/dimen12dp" />
+
+                            <include android:id="@+id/layoutSshUrl" layout="@layout/item_profile_info" />
+                            <View android:layout_width="match_parent" android:layout_height="@dimen/dimen12dp" />
+
+                        </LinearLayout>
+
+                        <com.google.android.material.button.MaterialButton
+                            android:id="@+id/repoAdditionalButton"
+                            style="@style/Widget.Material3.Button.TextButton"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_gravity="center_horizontal"
+                            android:layout_marginTop="@dimen/dimen8dp"
+                            android:text="@string/infoMoreInformation"
+                            app:icon="@drawable/ic_arrow_down" />
+
+                        <include
+                            android:id="@+id/layoutReadme"
+                            layout="@layout/layout_repo_readme" />
+
+                    </LinearLayout>
 
                 </LinearLayout>
 
@@ -463,4 +329,13 @@
 
     </androidx.core.widget.NestedScrollView>
 
-</RelativeLayout>
+    <com.google.android.material.loadingindicator.LoadingIndicator
+        android:id="@+id/expressive_loader"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:visibility="gone"
+        app:indicatorSize="@dimen/dimen48dp"
+        app:trackThickness="@dimen/dimen4dp" />
+
+</androidx.coordinatorlayout.widget.CoordinatorLayout>

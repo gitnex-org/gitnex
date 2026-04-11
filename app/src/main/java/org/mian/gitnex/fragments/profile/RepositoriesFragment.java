@@ -1,55 +1,50 @@
 package org.mian.gitnex.fragments.profile;
 
-import android.content.Context;
 import android.os.Bundle;
-import android.os.Handler;
-import android.os.Looper;
+import android.text.Editable;
+import android.text.TextWatcher;
 import android.view.LayoutInflater;
-import android.view.Menu;
-import android.view.MenuInflater;
-import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
-import android.view.inputmethod.EditorInfo;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
+import androidx.lifecycle.ViewModelProvider;
 import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
+import com.google.android.material.search.SearchView;
 import java.util.ArrayList;
-import java.util.List;
-import org.gitnex.tea4j.v2.models.Repository;
-import org.mian.gitnex.R;
+import org.mian.gitnex.activities.ProfileActivity;
 import org.mian.gitnex.adapters.ReposListAdapter;
-import org.mian.gitnex.clients.RetrofitClient;
 import org.mian.gitnex.databinding.FragmentRepositoriesBinding;
-import org.mian.gitnex.helpers.AlertDialogs;
 import org.mian.gitnex.helpers.Constants;
-import org.mian.gitnex.helpers.SnackBar;
-import org.mian.gitnex.helpers.Toasty;
-import retrofit2.Call;
-import retrofit2.Callback;
-import retrofit2.Response;
+import org.mian.gitnex.helpers.EndlessRecyclerViewScrollListener;
+import org.mian.gitnex.helpers.UIHelper;
+import org.mian.gitnex.viewmodels.RepositoriesViewModel;
 
 /**
- * @author M M Arif
+ * @author mmarif
  */
-public class RepositoriesFragment extends Fragment {
+public class RepositoriesFragment extends Fragment
+		implements ProfileActivity.ProfileActionInterface {
 
-	private static final String usernameBundle = "";
-	private Context context;
-	private FragmentRepositoriesBinding fragmentRepositoriesBinding;
-	private List<Repository> reposList;
+	private static final String ARG_USERNAME = "username";
+	private FragmentRepositoriesBinding binding;
+	private RepositoriesViewModel viewModel;
 	private ReposListAdapter adapter;
-	private int pageSize;
-	private int resultLimit;
+	private EndlessRecyclerViewScrollListener scrollListener;
 	private String username;
+	private int resultLimit;
+	private boolean isSearching = false;
+	private boolean isFirstLoad = true;
+	private SearchView searchView;
 
 	public RepositoriesFragment() {}
 
 	public static RepositoriesFragment newInstance(String username) {
 		RepositoriesFragment fragment = new RepositoriesFragment();
 		Bundle args = new Bundle();
-		args.putString(usernameBundle, username);
+		args.putString(ARG_USERNAME, username);
 		fragment.setArguments(args);
 		return fragment;
 	}
@@ -58,237 +53,182 @@ public class RepositoriesFragment extends Fragment {
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		if (getArguments() != null) {
-			username = getArguments().getString(usernameBundle);
+			username = getArguments().getString(ARG_USERNAME);
 		}
 	}
 
-	@Nullable @Override
+	@Override
+	public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
+		super.onViewCreated(view, savedInstanceState);
+
+		UIHelper.applyInsets(view, null, binding.recyclerView, binding.pullToRefresh, null);
+	}
+
+	@Override
 	public View onCreateView(
-			@NonNull LayoutInflater inflater,
-			@Nullable ViewGroup container,
-			@Nullable Bundle savedInstanceState) {
+			@NonNull LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
+		binding = FragmentRepositoriesBinding.inflate(inflater, container, false);
+		resultLimit = Constants.getCurrentResultLimit(requireContext());
+		viewModel = new ViewModelProvider(this).get(RepositoriesViewModel.class);
 
-		fragmentRepositoriesBinding =
-				FragmentRepositoriesBinding.inflate(inflater, container, false);
-		setHasOptionsMenu(true);
-		context = getContext();
+		setupRecyclerView();
+		setupSwipeRefresh();
+		setupSearch();
+		observeViewModel();
 
-		resultLimit = Constants.getCurrentResultLimit(context);
-		reposList = new ArrayList<>();
+		return binding.getRoot();
+	}
 
-		fragmentRepositoriesBinding.addNewRepo.setVisibility(View.GONE);
+	@Override
+	public void onResume() {
+		super.onResume();
+		if (!isHidden() && isFirstLoad) {
+			lazyLoad();
+		}
+	}
 
-		fragmentRepositoriesBinding.pullToRefresh.setOnRefreshListener(
-				() ->
-						new Handler(Looper.getMainLooper())
-								.postDelayed(
-										() -> {
-											fragmentRepositoriesBinding.pullToRefresh.setRefreshing(
-													false);
-											loadInitial(username, resultLimit);
-											adapter.notifyDataChanged();
-										},
-										200));
+	@Override
+	public void onHiddenChanged(boolean hidden) {
+		super.onHiddenChanged(hidden);
+		if (!hidden && isFirstLoad) {
+			lazyLoad();
+		}
+	}
 
-		adapter = new ReposListAdapter(reposList, context);
+	private void lazyLoad() {
+		isFirstLoad = false;
+		refreshData();
+	}
+
+	private void setupRecyclerView() {
+		adapter = new ReposListAdapter(new ArrayList<>(), requireContext());
 		adapter.isUserOrg = true;
-		adapter.setLoadMoreListener(
-				new ReposListAdapter.OnLoadMoreListener() {
 
+		LinearLayoutManager layoutManager = new LinearLayoutManager(requireContext());
+		binding.recyclerView.setLayoutManager(layoutManager);
+		binding.recyclerView.setAdapter(adapter);
+
+		scrollListener =
+				new EndlessRecyclerViewScrollListener(layoutManager) {
 					@Override
-					public void onLoadMore() {
-						fragmentRepositoriesBinding.recyclerView.post(
-								() -> {
-									if (reposList.size() == resultLimit
-											|| pageSize == resultLimit) {
-										int page = (reposList.size() + resultLimit) / resultLimit;
-										loadMore(username, page, resultLimit);
-									}
-								});
-					}
-
-					@Override
-					public void onLoadFinished() {}
-				});
-
-		fragmentRepositoriesBinding.recyclerView.setHasFixedSize(true);
-		fragmentRepositoriesBinding.recyclerView.setLayoutManager(new LinearLayoutManager(context));
-		fragmentRepositoriesBinding.recyclerView.setAdapter(adapter);
-
-		loadInitial(username, resultLimit);
-
-		return fragmentRepositoriesBinding.getRoot();
-	}
-
-	private void loadInitial(String username, int resultLimit) {
-
-		Call<List<Repository>> call =
-				RetrofitClient.getApiInterface(context).userListRepos(username, 1, resultLimit);
-
-		call.enqueue(
-				new Callback<>() {
-
-					@Override
-					public void onResponse(
-							@NonNull Call<List<Repository>> call,
-							@NonNull Response<List<Repository>> response) {
-
-						if (response.isSuccessful()) {
-
-							switch (response.code()) {
-								case 200:
-									assert response.body() != null;
-									if (response.body().size() > 0) {
-										reposList.clear();
-										reposList.addAll(response.body());
-										adapter.notifyDataChanged();
-										fragmentRepositoriesBinding.noData.setVisibility(View.GONE);
-									} else {
-										reposList.clear();
-										adapter.notifyDataChanged();
-										fragmentRepositoriesBinding.noData.setVisibility(
-												View.VISIBLE);
-									}
-									fragmentRepositoriesBinding.progressBar.setVisibility(
-											View.GONE);
-									break;
-
-								case 401:
-									AlertDialogs.authorizationTokenRevokedDialog(context);
-									break;
-
-								case 403:
-									Toasty.error(
-											context, context.getString(R.string.authorizeError));
-									break;
-
-								case 404:
-									fragmentRepositoriesBinding.noData.setVisibility(View.VISIBLE);
-									fragmentRepositoriesBinding.progressBar.setVisibility(
-											View.GONE);
-									break;
-
-								default:
-									Toasty.error(context, getString(R.string.genericError));
-									break;
-							}
+					public void onLoadMore(int page, int totalItemsCount, RecyclerView view) {
+						if (!isSearching && username != null) {
+							viewModel.fetchRepos(
+									requireContext(),
+									"userRepos",
+									username,
+									null,
+									page,
+									resultLimit,
+									null,
+									false);
 						}
 					}
-
-					@Override
-					public void onFailure(
-							@NonNull Call<List<Repository>> call, @NonNull Throwable t) {
-						Toasty.error(context, getString(R.string.genericError));
-					}
-				});
+				};
+		binding.recyclerView.addOnScrollListener(scrollListener);
 	}
 
-	private void loadMore(String username, int page, int resultLimit) {
+	private void setupSearch() {
+		searchView = binding.searchView;
+		RecyclerView searchRecycler = binding.searchResultsRecycler;
 
-		fragmentRepositoriesBinding.progressBar.setVisibility(View.VISIBLE);
+		searchRecycler.setLayoutManager(new LinearLayoutManager(requireContext()));
+		searchRecycler.setAdapter(adapter);
 
-		Call<List<Repository>> call =
-				RetrofitClient.getApiInterface(context).userListRepos(username, page, resultLimit);
+		searchView
+				.getEditText()
+				.addTextChangedListener(
+						new TextWatcher() {
+							@Override
+							public void beforeTextChanged(
+									CharSequence s, int start, int count, int after) {}
 
-		call.enqueue(
-				new Callback<>() {
+							@Override
+							public void onTextChanged(
+									CharSequence s, int start, int before, int count) {
+								String query = s.toString();
+								isSearching = !query.isEmpty();
 
-					@Override
-					public void onResponse(
-							@NonNull Call<List<Repository>> call,
-							@NonNull Response<List<Repository>> response) {
-
-						if (response.isSuccessful()) {
-
-							switch (response.code()) {
-								case 200:
-									List<Repository> result = response.body();
-									assert result != null;
-									if (result.size() > 0) {
-										pageSize = result.size();
-										reposList.addAll(result);
-									} else {
-										SnackBar.info(
-												context,
-												fragmentRepositoriesBinding.getRoot(),
-												getString(R.string.noMoreData));
-										adapter.setMoreDataAvailable(false);
-									}
-									adapter.notifyDataChanged();
-									fragmentRepositoriesBinding.progressBar.setVisibility(
-											View.GONE);
-									break;
-
-								case 401:
-									AlertDialogs.authorizationTokenRevokedDialog(context);
-									break;
-
-								case 403:
-									Toasty.error(
-											context, context.getString(R.string.authorizeError));
-									break;
-
-								case 404:
-									fragmentRepositoriesBinding.noData.setVisibility(View.VISIBLE);
-									fragmentRepositoriesBinding.progressBar.setVisibility(
-											View.GONE);
-									break;
-
-								default:
-									Toasty.error(context, getString(R.string.genericError));
-									break;
+								adapter.getFilter()
+										.filter(
+												query,
+												count1 -> {
+													boolean isEmpty = adapter.getItemCount() == 0;
+													binding.layoutEmpty
+															.getRoot()
+															.setVisibility(
+																	isSearching && isEmpty
+																			? View.VISIBLE
+																			: View.GONE);
+												});
 							}
-						}
-					}
 
-					@Override
-					public void onFailure(
-							@NonNull Call<List<Repository>> call, @NonNull Throwable t) {
-						Toasty.error(context, getString(R.string.genericError));
+							@Override
+							public void afterTextChanged(Editable s) {}
+						});
+
+		searchView.addTransitionListener(
+				(searchView, previousState, newState) -> {
+					if (newState
+							== com.google.android.material.search.SearchView.TransitionState
+									.HIDDEN) {
+						isSearching = false;
+						adapter.getFilter().filter("");
+						updateUiState();
 					}
 				});
 	}
 
 	@Override
-	public void onCreateOptionsMenu(@NonNull Menu menu, @NonNull MenuInflater inflater) {
-
-		inflater.inflate(R.menu.search_menu, menu);
-		super.onCreateOptionsMenu(menu, inflater);
-
-		MenuItem searchItem = menu.findItem(R.id.action_search);
-		androidx.appcompat.widget.SearchView searchView =
-				(androidx.appcompat.widget.SearchView) searchItem.getActionView();
-		searchView.setImeOptions(EditorInfo.IME_ACTION_DONE);
-
-		searchView.setOnQueryTextListener(
-				new androidx.appcompat.widget.SearchView.OnQueryTextListener() {
-
-					@Override
-					public boolean onQueryTextSubmit(String query) {
-						return false;
-					}
-
-					@Override
-					public boolean onQueryTextChange(String newText) {
-						filter(newText);
-						return false;
-					}
-				});
+	public void onSearchTriggered() {
+		if (searchView != null) {
+			searchView.show();
+		}
 	}
 
-	private void filter(String text) {
+	private void observeViewModel() {
+		viewModel
+				.getRepos()
+				.observe(
+						getViewLifecycleOwner(),
+						list -> {
+							adapter.updateList(list);
+							updateUiState();
+						});
 
-		List<Repository> arr = new ArrayList<>();
+		viewModel
+				.getIsLoading()
+				.observe(
+						getViewLifecycleOwner(),
+						loading -> {
+							boolean hasData = adapter.getItemCount() > 0;
+							binding.expressiveLoader.setVisibility(
+									loading && !hasData ? View.VISIBLE : View.GONE);
+						});
 
-		for (Repository d : reposList) {
-			if (d == null || d.getFullName() == null || d.getDescription() == null) {
-				continue;
-			}
-			if (d.getFullName().toLowerCase().contains(text)
-					|| d.getDescription().toLowerCase().contains(text)) {
-				arr.add(d);
-			}
+		viewModel.getHasLoadedOnce().observe(getViewLifecycleOwner(), hasLoaded -> updateUiState());
+	}
+
+	private void updateUiState() {
+		boolean isEmpty = adapter.getItemCount() == 0;
+		boolean loaded = Boolean.TRUE.equals(viewModel.getHasLoadedOnce().getValue());
+		binding.layoutEmpty.getRoot().setVisibility(loaded && isEmpty ? View.VISIBLE : View.GONE);
+	}
+
+	private void refreshData() {
+		if (scrollListener != null) scrollListener.resetState();
+		viewModel.resetPagination();
+		if (username != null) {
+			viewModel.fetchRepos(
+					requireContext(), "userRepos", username, null, 1, resultLimit, null, true);
 		}
-		adapter.updateList(arr);
+	}
+
+	private void setupSwipeRefresh() {
+		binding.pullToRefresh.setOnRefreshListener(
+				() -> {
+					binding.pullToRefresh.setRefreshing(false);
+					refreshData();
+				});
 	}
 }

@@ -11,7 +11,7 @@ import java.io.IOException;
 import java.util.Map;
 
 /**
- * @author M M Arif
+ * @author mmarif
  */
 public class TinyDB {
 

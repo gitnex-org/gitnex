@@ -37,14 +37,14 @@ import org.mian.gitnex.databinding.ActivityCreateFileBinding;
 import org.mian.gitnex.helpers.AlertDialogs;
 import org.mian.gitnex.helpers.AppUtil;
 import org.mian.gitnex.helpers.Constants;
-import org.mian.gitnex.helpers.SnackBar;
+import org.mian.gitnex.helpers.Toasty;
 import org.mian.gitnex.helpers.contexts.RepositoryContext;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
 
 /**
- * @author M M Arif
+ * @author mmarif
  */
 public class CreateFileActivity extends BaseActivity {
 
@@ -200,36 +200,24 @@ public class CreateFileActivity extends BaseActivity {
 						: "";
 
 		if (!AppUtil.hasNetworkConnection(appCtx)) {
-			SnackBar.error(
-					ctx,
-					findViewById(android.R.id.content),
-					getString(R.string.checkNetConnection));
+			Toasty.show(ctx, getString(R.string.checkNetConnection));
 			return;
 		}
 
 		if (((newFileName.isEmpty() || newFileContent.isEmpty())
 						&& fileAction != FILE_ACTION_DELETE)
 				|| newFileCommitMessage.isEmpty()) {
-			SnackBar.error(
-					ctx,
-					findViewById(android.R.id.content),
-					getString(R.string.newFileRequiredFields));
+			Toasty.show(ctx, getString(R.string.newFileRequiredFields));
 			return;
 		}
 
-		if (!AppUtil.checkStringsWithDash(newFileBranchName)) {
-			SnackBar.error(
-					ctx,
-					findViewById(android.R.id.content),
-					getString(R.string.newFileInvalidBranchName));
+		if (!AppUtil.isValidGitBranchName(newFileBranchName)) {
+			Toasty.show(ctx, getString(R.string.newFileInvalidBranchName));
 			return;
 		}
 
 		if (newFileCommitMessage.length() > 255) {
-			SnackBar.error(
-					ctx,
-					findViewById(android.R.id.content),
-					getString(R.string.newFileCommitMessageError));
+			Toasty.show(ctx, getString(R.string.newFileCommitMessageError));
 			return;
 		}
 
@@ -295,10 +283,7 @@ public class CreateFileActivity extends BaseActivity {
 					String ref = Objects.requireNonNull(ref_.getText()).toString().trim();
 
 					if (branchName.isEmpty() || ref.isEmpty()) {
-						SnackBar.error(
-								ctx,
-								findViewById(android.R.id.content),
-								getString(R.string.create_branch_empty_fields));
+						Toasty.show(ctx, getString(R.string.create_branch_empty_fields));
 					} else {
 						createBranch(branchName, ref, dialog);
 					}
@@ -326,53 +311,33 @@ public class CreateFileActivity extends BaseActivity {
 						switch (response.code()) {
 							case 201:
 								binding.newFileBranches.setText(branchName);
-								SnackBar.success(
-										ctx,
-										findViewById(android.R.id.content),
-										getString(R.string.branch_created));
+								Toasty.show(ctx, getString(R.string.branch_created));
 								dialog.dismiss();
 								break;
 							case 401:
 								AlertDialogs.authorizationTokenRevokedDialog(ctx);
 								break;
 							case 403:
-								SnackBar.error(
-										ctx,
-										findViewById(android.R.id.content),
-										getString(R.string.branch_error_archive_mirror));
+								Toasty.show(ctx, getString(R.string.branch_error_archive_mirror));
 								break;
 							case 404:
-								SnackBar.error(
-										ctx,
-										findViewById(android.R.id.content),
-										getString(R.string.branch_error_ref_not_found));
+								Toasty.show(ctx, getString(R.string.branch_error_ref_not_found));
 								break;
 							case 409:
-								SnackBar.error(
-										ctx,
-										findViewById(android.R.id.content),
-										getString(R.string.branch_error_exists, branchName));
+								Toasty.show(
+										ctx, getString(R.string.branch_error_exists, branchName));
 								break;
 							case 423:
-								SnackBar.error(
-										ctx,
-										findViewById(android.R.id.content),
-										getString(R.string.branch_error_repo_locked));
+								Toasty.show(ctx, getString(R.string.branch_error_repo_locked));
 								break;
 							default:
-								SnackBar.error(
-										ctx,
-										findViewById(android.R.id.content),
-										getString(R.string.genericError));
+								Toasty.show(ctx, getString(R.string.genericError));
 						}
 					}
 
 					@Override
 					public void onFailure(@NonNull Call<Branch> call, @NonNull Throwable t) {
-						SnackBar.error(
-								ctx,
-								findViewById(android.R.id.content),
-								getString(R.string.genericServerResponseError));
+						Toasty.show(ctx, getString(R.string.genericServerResponseError));
 					}
 				});
 	}
@@ -404,15 +369,12 @@ public class CreateFileActivity extends BaseActivity {
 
 						switch (response.code()) {
 							case 201:
-								SnackBar.success(
-										ctx,
-										findViewById(android.R.id.content),
-										getString(R.string.newFileSuccessMessage));
+								Toasty.show(ctx, getString(R.string.newFileSuccessMessage));
 								Intent result = new Intent();
 								result.putExtra("fileModified", true);
 								result.putExtra("fileAction", fileAction);
 								setResult(200, result);
-								RepoDetailActivity.updateFABActions = true;
+								// RepoDetailActivity.updateFABActions = true;
 								new Handler().postDelayed(() -> finish(), 3000);
 								break;
 
@@ -421,17 +383,11 @@ public class CreateFileActivity extends BaseActivity {
 								break;
 
 							case 404:
-								SnackBar.error(
-										ctx,
-										findViewById(android.R.id.content),
-										getString(R.string.apiNotFound));
+								Toasty.show(ctx, getString(R.string.apiNotFound));
 								break;
 
 							default:
-								SnackBar.error(
-										ctx,
-										findViewById(android.R.id.content),
-										getString(R.string.genericError));
+								Toasty.show(ctx, getString(R.string.genericError));
 								break;
 						}
 					}
@@ -468,9 +424,8 @@ public class CreateFileActivity extends BaseActivity {
 
 						switch (response.code()) {
 							case 200:
-								SnackBar.success(
+								Toasty.show(
 										ctx,
-										findViewById(android.R.id.content),
 										getString(
 												R.string.deleteFileMessage,
 												repository.getBranchRef()));
@@ -486,17 +441,11 @@ public class CreateFileActivity extends BaseActivity {
 								break;
 
 							case 404:
-								SnackBar.error(
-										ctx,
-										findViewById(android.R.id.content),
-										getString(R.string.apiNotFound));
+								Toasty.show(ctx, getString(R.string.apiNotFound));
 								break;
 
 							default:
-								SnackBar.error(
-										ctx,
-										findViewById(android.R.id.content),
-										getString(R.string.genericError));
+								Toasty.show(ctx, getString(R.string.genericError));
 								break;
 						}
 					}
@@ -536,10 +485,7 @@ public class CreateFileActivity extends BaseActivity {
 
 						switch (response.code()) {
 							case 200:
-								SnackBar.success(
-										ctx,
-										findViewById(android.R.id.content),
-										getString(R.string.editFileMessage, branchName));
+								Toasty.show(ctx, getString(R.string.editFileMessage, branchName));
 								Intent result = new Intent();
 								result.putExtra("fileModified", true);
 								result.putExtra("fileAction", fileAction);
@@ -552,17 +498,11 @@ public class CreateFileActivity extends BaseActivity {
 								break;
 
 							case 404:
-								SnackBar.error(
-										ctx,
-										findViewById(android.R.id.content),
-										getString(R.string.apiNotFound));
+								Toasty.show(ctx, getString(R.string.apiNotFound));
 								break;
 
 							default:
-								SnackBar.error(
-										ctx,
-										findViewById(android.R.id.content),
-										getString(R.string.genericError));
+								Toasty.show(ctx, getString(R.string.genericError));
 								break;
 						}
 					}
@@ -713,7 +653,7 @@ public class CreateFileActivity extends BaseActivity {
 					}
 				});
 
-		adapter.clear();
+		// adapter.clear();
 		fetchBranches.run();
 	}
 

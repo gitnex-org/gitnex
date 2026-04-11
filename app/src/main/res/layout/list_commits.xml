@@ -1,119 +1,126 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<com.google.android.material.listitem.ListItemLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="wrap_content"
-    android:paddingTop="@dimen/dimen4dp"
-    android:paddingBottom="@dimen/dimen4dp"
-    android:orientation="vertical">
+    android:layout_height="wrap_content">
 
-    <com.google.android.material.card.MaterialCardView
+    <com.google.android.material.listitem.ListItemCardView
+        android:id="@+id/card"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        style="?attr/materialCardViewElevatedStyle"
-        app:cardElevation="@dimen/dimen0dp">
+        android:checkable="false"
+        android:layout_marginVertical="@dimen/dimen1dp"
+        app:strokeWidth="0dp"
+        app:cardBackgroundColor="?attr/materialCardBackgroundColor">
 
-        <LinearLayout
-            android:id="@+id/linearLayoutFrame"
+        <androidx.constraintlayout.widget.ConstraintLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:foreground="?android:attr/selectableItemBackground"
-            android:background="?attr/materialCardBackgroundColor"
-            android:padding="@dimen/dimen12dp"
-            android:orientation="vertical">
+            android:padding="@dimen/dimen8dp">
+
+            <ImageView
+                android:id="@+id/commitShaIcon"
+                android:layout_width="@dimen/dimen14dp"
+                android:layout_height="@dimen/dimen14dp"
+                android:layout_marginEnd="@dimen/dimen4dp"
+                android:alpha="0.8"
+                android:contentDescription="@string/generalImgContentText"
+                android:src="@drawable/ic_commit"
+                app:layout_constraintBottom_toBottomOf="@id/commitSha"
+                app:layout_constraintEnd_toStartOf="@id/commitSha"
+                app:layout_constraintTop_toTopOf="@id/commitSha"
+                app:tint="?attr/colorPrimary" />
+
+            <TextView
+                android:id="@+id/commitSha"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:alpha="0.8"
+                android:fontFamily="monospace"
+                android:textAppearance="?attr/textAppearanceLabelSmall"
+                android:textColor="?attr/colorPrimary"
+                android:textStyle="bold"
+                app:layout_constraintBaseline_toBaselineOf="@id/commitSubject"
+                app:layout_constraintEnd_toEndOf="parent"
+                tools:text="357f3qd" />
 
             <TextView
                 android:id="@+id/commitSubject"
-                android:layout_width="wrap_content"
+                android:layout_width="0dp"
                 android:layout_height="wrap_content"
-                android:layout_marginBottom="@dimen/dimen8dp"
+                android:layout_marginEnd="@dimen/dimen8dp"
+                android:ellipsize="end"
+                android:maxLines="2"
+                android:textAppearance="?attr/textAppearanceTitleMedium"
                 android:textColor="?attr/primaryTextColor"
-                android:textSize="@dimen/dimen18sp"
-                tools:text="This is a test"/>
+                app:layout_constraintEnd_toStartOf="@id/commitShaIcon"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
+                tools:text="Refactor commit list with modern ConstraintLayout" />
 
-            <LinearLayout
-                android:layout_width="match_parent"
+            <com.google.android.material.card.MaterialCardView
+                android:id="@+id/commitAuthorAvatarFrame"
+                android:layout_width="@dimen/dimen24dp"
+                android:layout_height="@dimen/dimen24dp"
+                android:layout_marginTop="@dimen/dimen16dp"
+                app:cardCornerRadius="@dimen/dimen6dp"
+                app:cardElevation="0dp"
+                app:strokeWidth="0dp"
+                android:backgroundTint="@android:color/transparent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/commitSubject">
+
+                <ImageView
+                    android:id="@+id/commitAuthorAvatar"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:contentDescription="@string/generalImgContentText"
+                    android:scaleType="centerCrop"
+                    tools:src="@tools:sample/avatars" />
+
+            </com.google.android.material.card.MaterialCardView>
+
+            <com.google.android.material.card.MaterialCardView
+                android:id="@+id/commitCommitterAvatarFrame"
+                android:layout_width="@dimen/dimen24dp"
+                android:layout_height="@dimen/dimen24dp"
+                android:layout_marginStart="-10dp"
+                app:cardCornerRadius="@dimen/dimen6dp"
+                app:cardElevation="0dp"
+                app:strokeWidth="@dimen/dimen0dp"
+                android:backgroundTint="@android:color/transparent"
+                app:layout_constraintBottom_toBottomOf="@id/commitAuthorAvatarFrame"
+                app:layout_constraintStart_toEndOf="@id/commitAuthorAvatarFrame"
+                app:layout_constraintTop_toTopOf="@id/commitAuthorAvatarFrame">
+
+                <ImageView
+                    android:id="@+id/commitCommitterAvatar"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:contentDescription="@string/generalImgContentText"
+                    android:scaleType="centerCrop"
+                    tools:src="@tools:sample/avatars" />
+
+            </com.google.android.material.card.MaterialCardView>
+
+            <TextView
+                android:id="@+id/commitAuthorAndCommitter"
+                android:layout_width="0dp"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="@dimen/dimen6dp"
-                android:gravity="center_vertical"
-                android:orientation="horizontal">
+                android:layout_marginStart="@dimen/dimen8dp"
+                android:alpha="0.8"
+                android:textAppearance="?attr/textAppearanceBodySmall"
+                android:textColor="?attr/primaryTextColor"
+                app:layout_constraintBottom_toBottomOf="@id/commitAuthorAvatarFrame"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toEndOf="@id/commitCommitterAvatarFrame"
+                app:layout_constraintTop_toTopOf="@id/commitAuthorAvatarFrame"
+                tools:text="mian authored 2 hours ago" />
 
-                <LinearLayout
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_weight="1"
-                    android:gravity="center_vertical"
-                    android:orientation="horizontal"
-                    tools:ignore="UseCompoundDrawables">
+        </androidx.constraintlayout.widget.ConstraintLayout>
 
-                    <com.google.android.material.card.MaterialCardView
-                        android:id="@+id/commitAuthorAvatarFrame"
-                        android:layout_width="@dimen/dimen32dp"
-                        android:layout_height="@dimen/dimen32dp"
-                        style="?attr/materialCardViewElevatedStyle"
-                        android:backgroundTint="@android:color/transparent"
-                        app:cardElevation="@dimen/dimen0dp"
-                        android:layout_marginEnd="@dimen/dimen6dp"
-                        app:cardCornerRadius="@dimen/dimen8dp">
+    </com.google.android.material.listitem.ListItemCardView>
 
-                        <ImageView
-                            android:id="@+id/commitAuthorAvatar"
-                            android:layout_width="match_parent"
-                            android:layout_height="match_parent"
-                            android:contentDescription="@string/generalImgContentText"
-                            tools:srcCompat="@tools:sample/avatars" />
-
-                    </com.google.android.material.card.MaterialCardView>
-
-                    <com.google.android.material.card.MaterialCardView
-                        android:id="@+id/commitCommitterAvatarFrame"
-                        android:layout_width="@dimen/dimen32dp"
-                        android:layout_height="@dimen/dimen32dp"
-                        style="?attr/materialCardViewElevatedStyle"
-                        app:cardElevation="@dimen/dimen0dp"
-                        android:layout_marginEnd="@dimen/dimen6dp"
-                        app:cardCornerRadius="@dimen/dimen8dp">
-
-                        <ImageView
-                            android:id="@+id/commitCommitterAvatar"
-                            android:layout_width="@dimen/dimen24dp"
-                            android:layout_height="@dimen/dimen24dp"
-                            android:layout_marginEnd="5dp"
-                            android:contentDescription="@string/generalImgContentText"
-                            tools:srcCompat="@tools:sample/avatars" />
-
-                    </com.google.android.material.card.MaterialCardView>
-
-                    <TextView
-                        android:id="@+id/commitAuthorAndCommitter"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_marginEnd="@dimen/dimen10dp"
-                        android:textSize="@dimen/dimen12sp"
-                        android:textColor="?attr/primaryTextColor"
-                        tools:text="opyale authored and opyale committed"/>
-
-                </LinearLayout>
-
-                <TextView
-                    android:id="@+id/commitSha"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_weight="0"
-                    android:layout_marginStart="@dimen/dimen10dp"
-                    android:alpha=".8"
-                    android:drawablePadding="@dimen/dimen10dp"
-                    android:gravity="center_vertical"
-                    android:textColor="?attr/primaryTextColor"
-                    android:textSize="@dimen/dimen12sp"
-                    app:drawableLeftCompat="@drawable/ic_commit"
-                    tools:text="357f3qd5s"/>
-
-            </LinearLayout>
-
-        </LinearLayout>
-
-    </com.google.android.material.card.MaterialCardView>
-
-</LinearLayout>
+</com.google.android.material.listitem.ListItemLayout>

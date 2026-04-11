@@ -1,333 +1,195 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<com.google.android.material.listitem.ListItemLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="wrap_content"
-    android:orientation="vertical"
-    android:paddingTop="@dimen/dimen4dp"
-    android:paddingBottom="@dimen/dimen4dp">
+    android:layout_height="wrap_content">
 
-    <com.google.android.material.card.MaterialCardView
-        style="?attr/materialCardViewElevatedStyle"
+    <com.google.android.material.listitem.ListItemCardView
+        android:id="@+id/card"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        app:cardElevation="@dimen/dimen0dp">
+        android:checkable="false"
+        android:layout_marginVertical="@dimen/dimen1dp"
+        app:strokeWidth="0dp"
+        app:cardBackgroundColor="?attr/materialCardBackgroundColor">
 
-        <LinearLayout
+        <androidx.constraintlayout.widget.ConstraintLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:background="?attr/materialCardBackgroundColor"
-            android:foreground="?android:attr/selectableItemBackground"
-            android:orientation="vertical"
-            android:padding="@dimen/dimen12dp">
+            android:padding="@dimen/dimen8dp">
 
-            <LinearLayout
-                android:id="@+id/headerFrame"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:orientation="vertical">
-
-                <LinearLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_marginBottom="@dimen/dimen10dp"
-                    android:orientation="horizontal">
-
-                    <TextView
-                        android:id="@+id/releaseName"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_weight="1"
-                        android:singleLine="true"
-                        android:textColor="?attr/primaryTextColor"
-                        android:textSize="@dimen/dimen16sp"
-                        android:textStyle="bold" />
-
-                    <ImageView
-                        android:id="@+id/releasesOptionsMenu"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_gravity="center_vertical|end"
-                        android:layout_weight="0"
-                        android:background="?android:attr/selectableItemBackgroundBorderless"
-                        android:contentDescription="@string/labelMenuContentDesc"
-                        android:src="@drawable/ic_dotted_menu_horizontal" />
-
-                </LinearLayout>
-
-                <LinearLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent"
-                    android:orientation="horizontal">
-
-                    <LinearLayout
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:gravity="center_vertical"
-                        android:orientation="horizontal"
-                        tools:ignore="UseCompoundDrawables">
-
-                        <com.google.android.material.card.MaterialCardView
-                            style="?attr/materialCardViewElevatedStyle"
-                            android:backgroundTint="@android:color/transparent"
-                            android:layout_width="@dimen/dimen32dp"
-                            android:layout_height="@dimen/dimen32dp"
-                            app:cardCornerRadius="@dimen/dimen8dp"
-                            app:cardElevation="@dimen/dimen0dp">
-
-                            <ImageView
-                                android:id="@+id/authorAvatar"
-                                android:layout_width="match_parent"
-                                android:layout_height="match_parent"
-                                android:contentDescription="@string/generalImgContentText"
-                                tools:srcCompat="@tools:sample/avatars[7]" />
-
-                        </com.google.android.material.card.MaterialCardView>
-
-                        <TextView
-                            android:id="@+id/authorName"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_marginStart="@dimen/dimen6dp"
-                            android:textColor="?attr/primaryTextColor"
-                            android:textSize="@dimen/dimen14sp" />
-
-                    </LinearLayout>
-
-                    <LinearLayout
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:gravity="end"
-                        android:orientation="vertical">
-
-                        <LinearLayout
-                            android:layout_width="match_parent"
-                            android:layout_height="match_parent"
-                            android:layout_marginBottom="@dimen/dimen6dp"
-                            android:gravity="end|center_vertical"
-                            android:orientation="horizontal">
-
-                            <TextView
-                                android:id="@+id/releaseType"
-                                android:layout_width="wrap_content"
-                                android:layout_height="wrap_content"
-                                android:background="@drawable/shape_stable_release"
-                                android:paddingStart="@dimen/dimen6dp"
-                                android:paddingEnd="@dimen/dimen6dp"
-                                android:paddingTop="@dimen/dimen2dp"
-                                android:paddingBottom="@dimen/dimen2dp"
-                                android:textColor="@color/colorWhite"
-                                android:textSize="@dimen/dimen14sp" />
-
-                        </LinearLayout>
-
-                        <LinearLayout
-                            android:layout_width="match_parent"
-                            android:layout_height="match_parent"
-                            android:gravity="end|center_vertical"
-                            android:orientation="horizontal"
-                            tools:ignore="UseCompoundDrawables">
-
-                            <ImageView
-                                android:layout_width="@dimen/dimen18dp"
-                                android:layout_height="wrap_content"
-                                android:contentDescription="@string/generalImgContentText"
-                                app:srcCompat="@drawable/ic_tag" />
-
-                            <TextView
-                                android:id="@+id/releaseTag"
-                                android:layout_width="wrap_content"
-                                android:layout_height="wrap_content"
-                                android:layout_marginStart="@dimen/dimen8dp"
-                                android:singleLine="true"
-                                android:textColor="?attr/primaryTextColor"
-                                android:textSize="@dimen/dimen14sp" />
-
-                        </LinearLayout>
-
-                        <LinearLayout
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:gravity="end|center_vertical"
-                            android:orientation="horizontal"
-                            android:visibility="gone"
-                            tools:ignore="UseCompoundDrawables">
-
-                            <ImageView
-                                android:layout_width="@dimen/dimen18dp"
-                                android:layout_height="wrap_content"
-                                android:contentDescription="@string/generalImgContentText"
-                                app:srcCompat="@drawable/ic_code" />
-
-                            <TextView
-                                android:id="@+id/releaseCommitSha"
-                                android:layout_width="wrap_content"
-                                android:layout_height="wrap_content"
-                                android:layout_marginStart="@dimen/dimen8dp"
-                                android:singleLine="true"
-                                android:textColor="?attr/primaryTextColor"
-                                android:textSize="@dimen/dimen14sp" />
-
-                        </LinearLayout>
-
-                        <LinearLayout
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:gravity="end|center_vertical"
-                            android:orientation="horizontal"
-                            tools:ignore="UseCompoundDrawables">
-
-                            <ImageView
-                                android:layout_width="@dimen/dimen18dp"
-                                android:layout_height="wrap_content"
-                                android:contentDescription="@string/generalImgContentText"
-                                app:srcCompat="@drawable/ic_calendar" />
-
-                            <TextView
-                                android:id="@+id/releaseDate"
-                                android:layout_width="wrap_content"
-                                android:layout_height="wrap_content"
-                                android:layout_marginStart="@dimen/dimen8dp"
-                                android:singleLine="true"
-                                android:textColor="?attr/primaryTextColor"
-                                android:textSize="@dimen/dimen14sp" />
-
-                        </LinearLayout>
-
-                    </LinearLayout>
-
-                </LinearLayout>
-
-            </LinearLayout>
-
-            <LinearLayout
-                android:id="@+id/bodyFrame"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:layout_marginTop="@dimen/dimen10dp"
-                android:orientation="vertical">
-
-                <TextView
-                    android:id="@+id/releaseBodyContent"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:autoLink="web|email"
-                    android:textColor="?attr/primaryTextColor"
-                    android:textColorLink="@color/lightBlue"
-                    android:textSize="@dimen/dimen14sp" />
-
-            </LinearLayout>
-
-            <LinearLayout
-                android:id="@+id/downloadFrame"
+            <androidx.constraintlayout.widget.ConstraintLayout
+                android:id="@+id/headerCard"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="@dimen/dimen10dp"
-                android:orientation="vertical">
+                app:layout_constraintTop_toTopOf="parent">
+
+                <TextView
+                    android:id="@+id/releaseName"
+                    style="@style/TextAppearance.Material3.TitleLarge"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginEnd="@dimen/dimen8dp"
+                    android:textColor="?attr/colorOnSurface"
+                    android:textStyle="bold"
+                    app:layout_constraintEnd_toStartOf="@+id/item_menu"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent" />
+
+                <ImageView
+                    android:id="@+id/item_menu"
+                    android:layout_width="@dimen/dimen32dp"
+                    android:layout_height="@dimen/dimen32dp"
+                    android:background="?attr/selectableItemBackgroundBorderless"
+                    android:contentDescription="@string/generalImgContentText"
+                    android:padding="@dimen/dimen2dp"
+                    android:scaleType="centerInside"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintTop_toTopOf="parent"
+                    app:srcCompat="@drawable/ic_dotted_menu"
+                    app:tint="?attr/iconsColor" />
+
+                <ImageView
+                    android:id="@+id/releaseTypeBadge"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="@dimen/dimen8dp"
+                    android:adjustViewBounds="true"
+                    android:contentDescription="@string/generalImgContentText"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@id/releaseName" />
 
                 <LinearLayout
-                    android:id="@+id/downloadCopyFrame"
-                    android:layout_width="match_parent"
+                    android:id="@+id/metaRow"
+                    android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
+                    android:layout_marginStart="@dimen/dimen12dp"
                     android:gravity="center_vertical"
-                    android:orientation="horizontal"
-                    tools:ignore="UseCompoundDrawables">
+                    app:layout_constraintBottom_toBottomOf="@id/releaseTypeBadge"
+                    app:layout_constraintStart_toEndOf="@id/releaseTypeBadge"
+                    app:layout_constraintTop_toTopOf="@id/releaseTypeBadge">
 
                     <ImageView
-                        android:id="@+id/downloadDropdownIcon"
-                        android:layout_width="@dimen/dimen16dp"
-                        android:layout_height="wrap_content"
+                        android:layout_width="@dimen/dimen18dp"
+                        android:layout_height="@dimen/dimen18dp"
                         android:contentDescription="@string/generalImgContentText"
-                        android:src="@drawable/ic_chevron_right"
-                        app:srcCompat="@drawable/ic_chevron_right"
-                        app:tint="?attr/primaryTextColor" />
+                        app:srcCompat="@drawable/ic_tag"
+                        app:tint="?attr/colorPrimary" />
 
                     <TextView
-                        android:layout_width="match_parent"
+                        android:id="@+id/releaseTag"
+                        style="@style/TextAppearance.Material3.LabelLarge"
+                        android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_marginStart="@dimen/dimen4dp"
-                        android:text="@string/releaseDownloadText"
-                        android:textColor="?attr/primaryTextColor"
-                        android:textSize="@dimen/dimen14sp" />
+                        android:textColor="?attr/colorOnSurfaceVariant" />
+
+                    <ImageView
+                        android:id="@+id/meta_divider"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginHorizontal="@dimen/dimen8dp"
+                        android:contentDescription="@null"
+                        android:layout_gravity="center_vertical"
+                        android:src="@drawable/shape_dot_separator"
+                        app:tint="?attr/colorOutlineVariant" />
+
+                    <TextView
+                        android:id="@+id/releaseDate"
+                        style="@style/TextAppearance.Material3.LabelLarge"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:textColor="?attr/colorOnSurfaceVariant" />
 
                 </LinearLayout>
 
-                <LinearLayout
-                    android:id="@+id/downloads"
-                    android:layout_width="match_parent"
+                <com.google.android.material.imageview.ShapeableImageView
+                    android:id="@+id/authorAvatar"
+                    android:layout_width="@dimen/dimen28dp"
+                    android:layout_height="@dimen/dimen28dp"
+                    android:layout_marginTop="@dimen/dimen12dp"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@id/releaseTypeBadge"
+                    app:shapeAppearanceOverlay="@style/ShapeAppearance.Material3.Corner.Small" />
+
+                <TextView
+                    android:id="@+id/authorName"
+                    style="@style/TextAppearance.Material3.BodyMedium"
+                    android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:gravity="center_vertical"
-                    android:orientation="vertical"
-                    android:paddingTop="@dimen/dimen8dp"
-                    android:visibility="gone">
+                    android:layout_marginStart="@dimen/dimen8dp"
+                    android:alpha="0.8"
+                    app:layout_constraintBottom_toBottomOf="@id/authorAvatar"
+                    app:layout_constraintStart_toEndOf="@id/authorAvatar"
+                    app:layout_constraintTop_toTopOf="@id/authorAvatar" />
 
-                    <LinearLayout
-                        android:id="@+id/releaseZipDownloadFrame"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:layout_marginStart="@dimen/dimen8dp"
-                        android:layout_marginBottom="@dimen/dimen8dp"
-                        android:gravity="center_vertical"
-                        android:orientation="horizontal"
-                        tools:ignore="UseCompoundDrawables">
+            </androidx.constraintlayout.widget.ConstraintLayout>
 
-                        <ImageView
-                            android:layout_width="@dimen/dimen16dp"
-                            android:layout_height="@dimen/dimen16dp"
-                            android:contentDescription="@string/generalImgContentText"
-                            app:srcCompat="@drawable/ic_download" />
+            <TextView
+                android:id="@+id/releaseBodyContent"
+                style="@style/TextAppearance.Material3.BodyMedium"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:paddingTop="@dimen/dimen20dp"
+                android:paddingBottom="@dimen/dimen16dp"
+                android:lineSpacingExtra="@dimen/dimen2dp"
+                android:textColor="?attr/colorOnSurface"
+                app:layout_constraintTop_toBottomOf="@id/headerCard" />
 
-                        <TextView
-                            android:id="@+id/releaseZipDownload"
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            android:layout_marginStart="@dimen/dimen8dp"
-                            android:text="@string/zipArchiveDownloadReleasesTab"
-                            android:textColor="?attr/primaryTextColor"
-                            android:textSize="@dimen/dimen12sp" />
+            <LinearLayout
+                android:id="@+id/btnAssets"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/dimen8dp"
+                android:gravity="center_vertical"
+                android:orientation="horizontal"
+                android:paddingVertical="@dimen/dimen12dp"
+                app:layout_constraintTop_toBottomOf="@id/releaseBodyContent"
+                tools:ignore="UseCompoundDrawables">
 
-                    </LinearLayout>
+                <TextView
+                    style="@style/TextAppearance.Material3.TitleMedium"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:text="@string/releaseDownloadText"
+                    android:textColor="?attr/colorPrimary" />
 
-                    <LinearLayout
-                        android:id="@+id/releaseTarDownloadFrame"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:layout_marginStart="@dimen/dimen8dp"
-                        android:gravity="center_vertical"
-                        android:orientation="horizontal"
-                        tools:ignore="UseCompoundDrawables">
-
-                        <ImageView
-                            android:layout_width="@dimen/dimen16dp"
-                            android:layout_height="@dimen/dimen16dp"
-                            android:contentDescription="@string/generalImgContentText"
-                            app:srcCompat="@drawable/ic_download" />
-
-                        <TextView
-                            android:id="@+id/releaseTarDownload"
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            android:layout_marginStart="@dimen/dimen8dp"
-                            android:text="@string/tarArchiveDownloadReleasesTab"
-                            android:textColor="?attr/primaryTextColor"
-                            android:textSize="@dimen/dimen12sp" />
-
-                    </LinearLayout>
-
-                    <androidx.recyclerview.widget.RecyclerView
-                        android:id="@+id/downloadList"
-                        android:layout_width="match_parent"
-                        android:layout_height="match_parent"
-                        android:background="?attr/materialCardBackgroundColor"
-                        android:scrollbars="vertical" />
-
-                </LinearLayout>
+                <ImageView
+                    android:id="@+id/imgExpand"
+                    android:layout_width="@dimen/dimen20dp"
+                    android:layout_height="@dimen/dimen20dp"
+                    android:contentDescription="@string/generalImgContentText"
+                    app:srcCompat="@drawable/ic_chevron_right"
+                    app:tint="?attr/colorPrimary" />
 
             </LinearLayout>
 
-        </LinearLayout>
+            <LinearLayout
+                android:id="@+id/downloadsContainer"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:paddingBottom="@dimen/dimen16dp"
+                android:visibility="gone"
+                android:animateLayoutChanges="true"
+                app:layout_constraintTop_toBottomOf="@id/btnAssets">
 
-    </com.google.android.material.card.MaterialCardView>
+                <include
+                    android:id="@+id/sourceZipLayout"
+                    layout="@layout/list_releases_downloads" />
 
-</LinearLayout>
+                <androidx.recyclerview.widget.RecyclerView
+                    android:id="@+id/downloadList"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:nestedScrollingEnabled="false" />
+
+            </LinearLayout>
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
+
+    </com.google.android.material.listitem.ListItemCardView>
+
+</com.google.android.material.listitem.ListItemLayout>

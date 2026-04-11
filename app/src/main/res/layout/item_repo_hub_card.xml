@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="utf-8"?>
+<com.google.android.material.card.MaterialCardView
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/hub_card"
+    style="?attr/materialCardViewFilledStyle"
+    android:layout_width="0dp"
+    android:layout_height="wrap_content"
+    android:layout_columnWeight="1"
+    android:layout_margin="@dimen/dimen4dp"
+    app:cardCornerRadius="@dimen/dimen24dp"
+    app:strokeWidth="0dp">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="?attr/selectableItemBackground"
+        android:clickable="false"
+        android:focusable="false"
+        android:gravity="center"
+        android:orientation="vertical"
+        android:paddingVertical="@dimen/dimen16dp">
+
+        <ImageView
+            android:id="@+id/hub_icon"
+            android:layout_width="@dimen/dimen22dp"
+            android:layout_height="@dimen/dimen22dp"
+            android:contentDescription="@null" />
+
+        <TextView
+            android:id="@+id/hub_text"
+            style="@style/TextAppearance.Material3.BodySmall"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/dimen8dp"
+            android:ellipsize="end"
+            android:gravity="center"
+            android:maxLines="1"
+            android:paddingHorizontal="@dimen/dimen6dp" />
+
+    </LinearLayout>
+
+</com.google.android.material.card.MaterialCardView>

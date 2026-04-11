@@ -15,7 +15,6 @@ import org.mian.gitnex.R;
 import org.mian.gitnex.database.models.UserAccount;
 import org.mian.gitnex.helpers.AppDatabaseSettings;
 import org.mian.gitnex.helpers.AppUtil;
-import org.mian.gitnex.helpers.FontsOverride;
 import org.mian.gitnex.helpers.TinyDB;
 import org.mian.gitnex.helpers.contexts.AccountContext;
 import org.mian.gitnex.notifications.Notifications;
@@ -27,11 +26,13 @@ public class MainApplication extends Application {
 
 	public AccountContext currentAccount;
 	private TinyDB tinyDB;
+	private static MainApplication instance;
 
 	@Override
 	public void onCreate() {
 
 		super.onCreate();
+		instance = this;
 
 		Context appCtx = getApplicationContext();
 		tinyDB = TinyDB.getInstance(appCtx);
@@ -40,15 +41,8 @@ public class MainApplication extends Application {
 
 		AppDatabaseSettings.initDefaultSettings(getApplicationContext());
 
-		if (Boolean.parseBoolean(
-				AppDatabaseSettings.getSettingsValue(getApplicationContext(), "prefsMigration"))) {
-			AppDatabaseSettings.prefsMigration(getApplicationContext());
-		}
-
 		AppDatabaseSettings.updateSettingsValue(
 				getApplicationContext(), "false", AppDatabaseSettings.APP_BIOMETRIC_LIFE_CYCLE_KEY);
-
-		FontsOverride.setDefaultFont(getBaseContext());
 
 		Notifications.createChannels(appCtx);
 		DynamicColors.applyToActivitiesIfAvailable(this);
@@ -92,6 +86,10 @@ public class MainApplication extends Application {
 
 			ACRA.init(this, ACRABuilder);
 		}
+	}
+
+	public static MainApplication getInstance() {
+		return instance;
 	}
 
 	@Override

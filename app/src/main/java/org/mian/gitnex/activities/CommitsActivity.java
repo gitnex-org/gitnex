@@ -1,343 +1,215 @@
 package org.mian.gitnex.activities;
 
-import android.graphics.Color;
+import android.content.Intent;
 import android.os.Bundle;
-import android.os.Handler;
-import android.os.Looper;
-import android.text.method.ScrollingMovementMethod;
-import android.util.Log;
-import android.view.Menu;
-import android.view.MenuInflater;
-import android.view.MenuItem;
+import android.text.Editable;
+import android.text.TextWatcher;
 import android.view.View;
-import android.view.Window;
-import android.view.WindowManager;
-import android.view.inputmethod.EditorInfo;
-import android.widget.ImageView;
-import android.widget.ProgressBar;
-import android.widget.TextView;
-import androidx.annotation.NonNull;
-import androidx.appcompat.widget.Toolbar;
-import androidx.coordinatorlayout.widget.CoordinatorLayout;
+import androidx.lifecycle.ViewModelProvider;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
-import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 import java.util.ArrayList;
 import java.util.List;
 import org.gitnex.tea4j.v2.models.Commit;
-import org.mian.gitnex.R;
 import org.mian.gitnex.adapters.CommitsAdapter;
-import org.mian.gitnex.clients.RetrofitClient;
 import org.mian.gitnex.databinding.ActivityCommitsBinding;
 import org.mian.gitnex.helpers.Constants;
+import org.mian.gitnex.helpers.EndlessRecyclerViewScrollListener;
 import org.mian.gitnex.helpers.Toasty;
+import org.mian.gitnex.helpers.UIHelper;
 import org.mian.gitnex.helpers.contexts.RepositoryContext;
-import retrofit2.Call;
-import retrofit2.Callback;
-import retrofit2.Response;
+import org.mian.gitnex.viewmodels.CommitsViewModel;
 
 /**
- * @author M M Arif
+ * @author mmarif
  */
 public class CommitsActivity extends BaseActivity {
 
-	private final String TAG = "CommitsActivity";
-	public RepositoryContext repository;
-	private View.OnClickListener onClickListener;
-	private TextView noData;
-	private ProgressBar progressBar;
-	private int resultLimit;
-	private int pageSize = 1;
-	private RecyclerView recyclerView;
-	private List<Commit> commitsList;
+	private ActivityCommitsBinding binding;
+	private CommitsViewModel viewModel;
 	private CommitsAdapter adapter;
+	private EndlessRecyclerViewScrollListener scrollListener;
+	private RepositoryContext repository;
+	private int resultLimit;
 
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
-
 		super.onCreate(savedInstanceState);
-		this.getClass().getName();
+		binding = ActivityCommitsBinding.inflate(getLayoutInflater());
+		setContentView(binding.getRoot());
 
-		ActivityCommitsBinding activityCommitsBinding =
-				ActivityCommitsBinding.inflate(getLayoutInflater());
-		setContentView(activityCommitsBinding.getRoot());
-
-		Toolbar toolbar = activityCommitsBinding.toolbar;
-		setSupportActionBar(toolbar);
+		UIHelper.applyEdgeToEdge(
+				this, binding.dockedToolbar, binding.recyclerView, binding.pullToRefresh, null);
 
 		repository = RepositoryContext.fromIntent(getIntent());
-		String branchName = repository.getBranchRef();
-
-		Window window = getWindow();
-		window.clearFlags(WindowManager.LayoutParams.FLAG_TRANSLUCENT_STATUS);
-		window.addFlags(WindowManager.LayoutParams.FLAG_DRAWS_SYSTEM_BAR_BACKGROUNDS);
-		window.setStatusBarColor(Color.TRANSPARENT);
-
-		window.getDecorView()
-				.setSystemUiVisibility(
-						View.SYSTEM_UI_FLAG_LAYOUT_STABLE | View.SYSTEM_UI_FLAG_LAYOUT_FULLSCREEN);
-
-		int statusBarHeight = 36;
-		int extraSpacing = (int) (36 * getResources().getDisplayMetrics().density);
-		int totalTopMargin = statusBarHeight + extraSpacing;
-		CoordinatorLayout.LayoutParams params =
-				(CoordinatorLayout.LayoutParams) activityCommitsBinding.appbar.getLayoutParams();
-		params.setMargins(0, totalTopMargin, 0, 0);
-		activityCommitsBinding.appbar.setLayoutParams(params);
-
-		activityCommitsBinding.appbar.post(
-				() -> {
-					int adjustedTopMargin =
-							activityCommitsBinding.appbar.getHeight() + totalTopMargin;
-					CoordinatorLayout.LayoutParams refreshParams =
-							(CoordinatorLayout.LayoutParams)
-									activityCommitsBinding.pullToRefresh.getLayoutParams();
-					refreshParams.setMargins(0, adjustedTopMargin, 0, 0);
-					activityCommitsBinding.pullToRefresh.setLayoutParams(refreshParams);
-
-					CoordinatorLayout.LayoutParams progressParams =
-							(CoordinatorLayout.LayoutParams)
-									activityCommitsBinding.progressBar.getLayoutParams();
-					progressParams.setMargins(0, adjustedTopMargin, 0, 0);
-					activityCommitsBinding.progressBar.setLayoutParams(progressParams);
-				});
-
-		TextView toolbar_title = activityCommitsBinding.toolbarTitle;
-		toolbar_title.setMovementMethod(new ScrollingMovementMethod());
-		toolbar_title.setText(branchName);
-
-		ImageView closeActivity = activityCommitsBinding.close;
-		noData = activityCommitsBinding.noDataCommits;
-		progressBar = activityCommitsBinding.progressBar;
-		SwipeRefreshLayout swipeRefresh = activityCommitsBinding.pullToRefresh;
-
-		initCloseListener();
-		closeActivity.setOnClickListener(onClickListener);
-
 		resultLimit = Constants.getCurrentResultLimit(ctx);
+		viewModel = new ViewModelProvider(this).get(CommitsViewModel.class);
 
-		recyclerView = activityCommitsBinding.recyclerView;
-		commitsList = new ArrayList<>();
+		setupToolbar();
+		setupRecyclerView();
+		setupSwipeRefresh();
+		observeViewModel();
+		setupSearch();
 
-		swipeRefresh.setOnRefreshListener(
-				() ->
-						new Handler(Looper.getMainLooper())
-								.postDelayed(
-										() -> {
-											swipeRefresh.setRefreshing(false);
-											loadInitial(
-													repository.getOwner(),
-													repository.getName(),
-													branchName,
-													resultLimit);
-											adapter.notifyDataChanged();
-										},
-										200));
-
-		adapter = new CommitsAdapter(ctx, commitsList);
-		adapter.setLoadMoreListener(
-				() ->
-						recyclerView.post(
-								() -> {
-									if (commitsList.size() == resultLimit
-											|| pageSize == resultLimit) {
-
-										int page = (commitsList.size() + resultLimit) / resultLimit;
-										loadMore(
-												repository.getOwner(),
-												repository.getName(),
-												page,
-												branchName,
-												resultLimit);
-									}
-								}));
-
-		recyclerView.setHasFixedSize(true);
-		recyclerView.setLayoutManager(new LinearLayoutManager(ctx));
-		recyclerView.setAdapter(adapter);
-
-		loadInitial(repository.getOwner(), repository.getName(), branchName, resultLimit);
+		refreshData();
 	}
 
-	private void loadInitial(
-			String repoOwner, String repoName, String branchName, int resultLimit) {
+	private void setupToolbar() {
+		if (repository != null) {
+			String branch = repository.getBranchRef();
+			if (branch == null || branch.isEmpty()) {
+				branch = repository.getRepository().getDefaultBranch();
+			}
 
-		Call<List<Commit>> call =
-				RetrofitClient.getApiInterface(ctx)
-						.repoGetAllCommits(
-								repoOwner,
-								repoName,
-								branchName,
-								null,
-								null,
-								null,
-								true,
-								true,
-								true,
-								pageSize,
-								resultLimit,
-								"");
+			binding.toolbarTitle.setText(branch);
+		}
 
-		call.enqueue(
-				new Callback<>() {
-
-					@Override
-					public void onResponse(
-							@NonNull Call<List<Commit>> call,
-							@NonNull Response<List<Commit>> response) {
-
-						if (response.code() == 200) {
-
-							assert response.body() != null;
-							if (!response.body().isEmpty()) {
-
-								commitsList.clear();
-								commitsList.addAll(response.body());
-								adapter.notifyDataChanged();
-								noData.setVisibility(View.GONE);
-							} else {
-
-								commitsList.clear();
-								adapter.notifyDataChanged();
-								noData.setVisibility(View.VISIBLE);
-							}
-						}
-						if (response.code() == 409) {
-
-							noData.setVisibility(View.VISIBLE);
-						} else {
-
-							Log.e(TAG, String.valueOf(response.code()));
-						}
-
-						progressBar.setVisibility(View.GONE);
-					}
-
-					@Override
-					public void onFailure(@NonNull Call<List<Commit>> call, @NonNull Throwable t) {
-
-						Toasty.error(
-								ctx, getResources().getString(R.string.genericServerResponseError));
-					}
-				});
+		binding.close.setOnClickListener(v -> finish());
+		binding.actionSearchDock.setOnClickListener(v -> binding.searchView.show());
 	}
 
-	private void loadMore(
-			String repoOwner, String repoName, final int page, String branchName, int resultLimit) {
+	private void setupSearch() {
+		binding.searchResultsRecycler.setLayoutManager(new LinearLayoutManager(this));
+		binding.searchResultsRecycler.setAdapter(adapter);
 
-		progressBar.setVisibility(View.VISIBLE);
+		binding.searchView
+				.getEditText()
+				.addTextChangedListener(
+						new TextWatcher() {
+							@Override
+							public void beforeTextChanged(
+									CharSequence s, int start, int count, int after) {}
 
-		Call<List<Commit>> call =
-				RetrofitClient.getApiInterface(ctx)
-						.repoGetAllCommits(
-								repoOwner,
-								repoName,
-								branchName,
-								null,
-								null,
-								null,
-								true,
-								true,
-								true,
-								page,
-								resultLimit,
-								"");
-
-		call.enqueue(
-				new Callback<>() {
-
-					@Override
-					public void onResponse(
-							@NonNull Call<List<Commit>> call,
-							@NonNull Response<List<Commit>> response) {
-
-						if (response.isSuccessful()) {
-
-							List<Commit> result = response.body();
-							assert result != null;
-
-							if (!result.isEmpty()) {
-
-								pageSize = result.size();
-								commitsList.addAll(result);
-							} else {
-
-								adapter.setMoreDataAvailable(false);
+							@Override
+							public void onTextChanged(
+									CharSequence s, int start, int before, int count) {
+								filter(s.toString());
 							}
 
-							adapter.notifyDataChanged();
-						} else {
+							@Override
+							public void afterTextChanged(Editable s) {}
+						});
 
-							Log.e(TAG, String.valueOf(response.code()));
-						}
-
-						progressBar.setVisibility(View.GONE);
-					}
-
-					@Override
-					public void onFailure(@NonNull Call<List<Commit>> call, @NonNull Throwable t) {
-
-						Toasty.error(
-								ctx, getResources().getString(R.string.genericServerResponseError));
+		binding.searchView.addTransitionListener(
+				(searchView, previousState, newState) -> {
+					if (newState.toString().equals("HIDDEN")) {
+						binding.searchView.setText("");
+						filter("");
+						binding.recyclerView.scrollToPosition(0);
 					}
 				});
+
+		binding.searchView
+				.getEditText()
+				.setOnEditorActionListener(
+						(v, actionId, event) -> {
+							binding.searchView.hide();
+							return false;
+						});
 	}
 
-	@Override
-	public boolean onCreateOptionsMenu(Menu menu) {
+	private void setupRecyclerView() {
+		adapter = new CommitsAdapter(this, new ArrayList<>(), this::navigateToCommitDetail);
+		LinearLayoutManager layoutManager = new LinearLayoutManager(this);
+		binding.recyclerView.setLayoutManager(layoutManager);
+		binding.recyclerView.setAdapter(adapter);
 
-		MenuInflater inflater = getMenuInflater();
-		inflater.inflate(R.menu.search_menu, menu);
-
-		MenuItem searchItem = menu.findItem(R.id.action_search);
-		androidx.appcompat.widget.SearchView searchView =
-				(androidx.appcompat.widget.SearchView) searchItem.getActionView();
-		searchView.setImeOptions(EditorInfo.IME_ACTION_DONE);
-
-		searchView.setOnQueryTextListener(
-				new androidx.appcompat.widget.SearchView.OnQueryTextListener() {
-
+		scrollListener =
+				new EndlessRecyclerViewScrollListener(layoutManager) {
 					@Override
-					public boolean onQueryTextSubmit(String query) {
-
-						return false;
+					public void onLoadMore(int page, int totalItemsCount, RecyclerView view) {
+						if (binding.searchView.isShowing()) return;
+						viewModel.fetchCommits(ctx, repository, page, resultLimit, false);
 					}
+				};
+		binding.recyclerView.addOnScrollListener(scrollListener);
+	}
 
-					@Override
-					public boolean onQueryTextChange(String newText) {
+	private void setupSwipeRefresh() {
+		binding.pullToRefresh.setOnRefreshListener(this::refreshData);
+	}
 
-						filter(newText);
-						return true;
-					}
-				});
+	private void observeViewModel() {
+		viewModel
+				.getCommits()
+				.observe(
+						this,
+						list -> {
+							adapter.updateList(list);
+							updateEmptyState(list.isEmpty());
+							binding.pullToRefresh.setRefreshing(false);
+						});
 
-		return super.onCreateOptionsMenu(menu);
+		viewModel
+				.getIsLoading()
+				.observe(
+						this,
+						loading -> {
+							if (loading) {
+								binding.layoutEmpty.getRoot().setVisibility(View.GONE);
+								if (adapter.getItemCount() == 0) {
+									binding.expressiveLoader.setVisibility(View.VISIBLE);
+								}
+							} else {
+								binding.expressiveLoader.setVisibility(View.GONE);
+								List<Commit> current = viewModel.getCommits().getValue();
+								updateEmptyState(current == null || current.isEmpty());
+							}
+						});
+
+		viewModel
+				.getError()
+				.observe(
+						this,
+						msg -> {
+							Toasty.show(ctx, msg);
+							binding.pullToRefresh.setRefreshing(false);
+							binding.expressiveLoader.setVisibility(View.GONE);
+						});
+	}
+
+	private void updateEmptyState(boolean isEmpty) {
+		boolean loading = Boolean.TRUE.equals(viewModel.getIsLoading().getValue());
+		if (!loading) {
+			binding.layoutEmpty.getRoot().setVisibility(isEmpty ? View.VISIBLE : View.GONE);
+		}
+	}
+
+	private void refreshData() {
+		scrollListener.resetState();
+		binding.layoutEmpty.getRoot().setVisibility(View.GONE);
+		viewModel.fetchCommits(ctx, repository, 1, resultLimit, true);
+	}
+
+	private void navigateToCommitDetail(Commit commit) {
+		Intent intent = repository.getIntent(this, CommitDetailActivity.class);
+		intent.putExtra("sha", commit.getSha());
+		startActivity(intent);
 	}
 
 	private void filter(String text) {
+		List<Commit> originalList = viewModel.getCommits().getValue();
+		if (originalList == null) return;
 
-		List<Commit> arr = new ArrayList<>();
-
-		for (Commit d : commitsList) {
-
-			if (d.getCommit().getMessage().toLowerCase().contains(text)
-					|| d.getSha().toLowerCase().contains(text)) {
-
-				arr.add(d);
-			}
+		if (text == null || text.isEmpty()) {
+			adapter.updateList(originalList);
+			return;
 		}
 
-		adapter.updateList(arr);
-	}
+		List<Commit> filtered = new ArrayList<>();
+		String query = text.toLowerCase().trim();
 
-	private void initCloseListener() {
+		for (Commit c : originalList) {
+			String message =
+					(c.getCommit() != null && c.getCommit().getMessage() != null)
+							? c.getCommit().getMessage().toLowerCase()
+							: "";
+			String sha = (c.getSha() != null) ? c.getSha().toLowerCase() : "";
 
-		onClickListener = view -> finish();
-	}
-
-	@Override
-	public void onResume() {
-		super.onResume();
-		repository.checkAccountSwitch(this);
+			if (message.contains(query) || sha.contains(query)) {
+				filtered.add(c);
+			}
+		}
+		adapter.updateList(filtered);
 	}
 }

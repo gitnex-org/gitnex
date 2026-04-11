@@ -117,7 +117,7 @@
                 android:layout_height="wrap_content"
                 android:layout_marginTop="@dimen/dimen8dp"
                 android:layout_marginBottom="@dimen/dimen8dp"
-                android:hint="@string/newIssueMilestoneTitle"
+                android:hint="@string/milestone"
                 android:textColorHint="?attr/hintColor"
                 app:endIconTint="?attr/iconsColor"
                 app:hintTextColor="?attr/hintColor">

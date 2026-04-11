@@ -10,7 +10,6 @@ import android.content.Context;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.Color;
-import android.graphics.Typeface;
 import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.os.Handler;
@@ -34,7 +33,6 @@ import androidx.core.content.ContextCompat;
 import androidx.core.content.res.ResourcesCompat;
 import androidx.core.text.HtmlCompat;
 import androidx.recyclerview.widget.RecyclerView;
-import com.amulyakhare.textdrawable.TextDrawable;
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.load.engine.DiskCacheStrategy;
 import com.bumptech.glide.request.target.CustomTarget;
@@ -66,9 +64,7 @@ import org.mian.gitnex.fragments.IssuesFragment;
 import org.mian.gitnex.helpers.AlertDialogs;
 import org.mian.gitnex.helpers.AppDatabaseSettings;
 import org.mian.gitnex.helpers.AppUtil;
-import org.mian.gitnex.helpers.ClickListener;
-import org.mian.gitnex.helpers.ColorInverter;
-import org.mian.gitnex.helpers.LabelWidthCalculator;
+import org.mian.gitnex.helpers.AvatarGenerator;
 import org.mian.gitnex.helpers.Markdown;
 import org.mian.gitnex.helpers.TimeHelper;
 import org.mian.gitnex.helpers.TinyDB;
@@ -303,10 +299,11 @@ public class IssueCommentsAdapter extends RecyclerView.Adapter<RecyclerView.View
 					new StringBuilder(TimeHelper.formatTime(issueComment.getCreatedAt(), locale));
 
 			information.setOnClickListener(
-					new ClickListener(
-							TimeHelper.customDateFormatForToastDateFormat(
-									issueComment.getCreatedAt()),
-							context));
+					v ->
+							Toasty.show(
+									context,
+									TimeHelper.getFullDateTime(
+											issueComment.getCreatedAt(), Locale.getDefault())));
 
 			if (!issueComment.getCreatedAt().equals(issueComment.getUpdatedAt())) {
 				infoBuilder
@@ -460,37 +457,22 @@ public class IssueCommentsAdapter extends RecyclerView.Adapter<RecyclerView.View
 
 		private SpannableString createLabelSpannable(
 				String text, TimelineComment timelineComment, int color) {
-			Typeface typeface = AppUtil.getTypeface(context);
-			int height = AppUtil.getPixelsFromDensity(context, 20);
-			int textSize = AppUtil.getPixelsFromScaledDensity(context, 12);
-
-			TextDrawable drawable =
-					TextDrawable.builder()
-							.beginConfig()
-							.useFont(typeface)
-							.textColor(new ColorInverter().getContrastColor(color))
-							.fontSize(textSize)
-							.width(
-									LabelWidthCalculator.calculateLabelWidth(
-											timelineComment.getLabel().getName(),
-											typeface,
-											textSize,
-											AppUtil.getPixelsFromDensity(context, 10)))
-							.height(height)
-							.endConfig()
-							.buildRoundRect(
-									timelineComment.getLabel().getName(),
-									color,
-									AppUtil.getPixelsFromDensity(context, 6));
+			Drawable labelDrawable =
+					AvatarGenerator.getLabelDrawable(
+							context, timelineComment.getLabel().getName(), color, 20);
 
 			SpannableString spannableString = new SpannableString(text.replace('|', ' '));
 			int placeholderIndex = text.indexOf('|');
 
 			if (placeholderIndex != -1) {
-				drawable.setBounds(
-						0, 0, drawable.getIntrinsicWidth(), drawable.getIntrinsicHeight());
+				labelDrawable.setBounds(
+						0,
+						0,
+						labelDrawable.getIntrinsicWidth(),
+						labelDrawable.getIntrinsicHeight());
+
 				spannableString.setSpan(
-						new ImageSpan(drawable),
+						new ImageSpan(labelDrawable, ImageSpan.ALIGN_BOTTOM),
 						placeholderIndex,
 						placeholderIndex + 1,
 						Spannable.SPAN_INCLUSIVE_EXCLUSIVE);
@@ -1272,7 +1254,7 @@ public class IssueCommentsAdapter extends RecyclerView.Adapter<RecyclerView.View
 			clipboard.setPrimaryClip(clip);
 
 			dialog.dismiss();
-			Toasty.success(context, context.getString(R.string.copyIssueCommentToastMsg));
+			Toasty.show(context, context.getString(R.string.copyIssueCommentToastMsg));
 		}
 
 		private void handleDeleteComment(BottomSheetDialog dialog) {
@@ -1482,7 +1464,7 @@ public class IssueCommentsAdapter extends RecyclerView.Adapter<RecyclerView.View
 						switch (response.code()) {
 							case 204:
 								updateAdapter(position);
-								Toasty.success(
+								Toasty.show(
 										ctx,
 										ctx.getResources()
 												.getString(R.string.deleteCommentSuccess));
@@ -1492,19 +1474,19 @@ public class IssueCommentsAdapter extends RecyclerView.Adapter<RecyclerView.View
 								AlertDialogs.authorizationTokenRevokedDialog(ctx);
 								break;
 							case 403:
-								Toasty.error(ctx, ctx.getString(R.string.authorizeError));
+								Toasty.show(ctx, ctx.getString(R.string.authorizeError));
 								break;
 							case 404:
-								Toasty.warning(ctx, ctx.getString(R.string.apiNotFound));
+								Toasty.show(ctx, ctx.getString(R.string.apiNotFound));
 								break;
 							default:
-								Toasty.error(ctx, ctx.getString(R.string.genericError));
+								Toasty.show(ctx, ctx.getString(R.string.genericError));
 						}
 					}
 
 					@Override
 					public void onFailure(@NonNull Call<Void> call, @NonNull Throwable t) {
-						Toasty.error(
+						Toasty.show(
 								ctx,
 								ctx.getResources().getString(R.string.genericServerResponseError));
 					}

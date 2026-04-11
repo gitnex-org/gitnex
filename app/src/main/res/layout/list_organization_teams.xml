@@ -1,79 +1,106 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools"
+<com.google.android.material.listitem.ListItemLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
-    android:layout_height="wrap_content"
-    android:id="@+id/orgTeamsFrame"
-    android:orientation="vertical"
-    android:paddingTop="@dimen/dimen4dp"
-    android:paddingBottom="@dimen/dimen4dp"
-    xmlns:android="http://schemas.android.com/apk/res/android">
+    android:layout_height="wrap_content">
 
-    <com.google.android.material.card.MaterialCardView
+    <com.google.android.material.listitem.ListItemCardView
+        android:id="@+id/card"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        style="?attr/materialCardViewElevatedStyle"
-        app:cardElevation="@dimen/dimen0dp">
+        android:checkable="false"
+        android:layout_marginVertical="@dimen/dimen1dp"
+        app:strokeWidth="0dp"
+        app:cardBackgroundColor="?attr/materialCardBackgroundColor">
 
-        <LinearLayout
+        <androidx.constraintlayout.widget.ConstraintLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:foreground="?android:attr/selectableItemBackground"
-            android:background="?attr/materialCardBackgroundColor"
-            android:padding="@dimen/dimen12dp"
-            android:orientation="vertical">
+            android:padding="@dimen/dimen8dp">
 
             <TextView
                 android:id="@+id/teamTitle"
-                android:layout_width="match_parent"
+                style="@style/TextAppearance.Material3.TitleMedium"
+                android:layout_width="0dp"
                 android:layout_height="wrap_content"
-                android:text="@string/teamTitle"
-                android:textColor="?attr/primaryTextColor"
-                android:textSize="@dimen/dimen18sp"
                 android:textStyle="bold"
-                tools:text="PR-Managers"/>
+                android:textColor="?attr/primaryTextColor"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
 
             <TextView
                 android:id="@+id/teamDescription"
-                android:layout_width="match_parent"
+                style="@style/TextAppearance.Material3.BodyMedium"
+                android:layout_width="0dp"
                 android:layout_height="wrap_content"
-                android:text="@string/teamDescription"
-                android:textColor="?attr/primaryTextColor"
-                android:textSize="@dimen/dimen16sp"
                 android:layout_marginTop="@dimen/dimen4dp"
-                android:layout_marginBottom="@dimen/dimen4dp"
-                tools:text="Managing pull requests and related issues"/>
+                android:textColor="?attr/primaryTextColor"
+                android:alpha=".8"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/teamTitle" />
 
-            <LinearLayout
+            <androidx.constraintlayout.widget.ConstraintLayout
                 android:id="@+id/membersPreviewFrame"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:layout_marginTop="@dimen/dimen10dp"
-                android:gravity="bottom"
-                android:orientation="horizontal"
-                android:visibility="gone"
-                tools:visibility="visible">
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/dimen16dp"
+                android:clipChildren="false"
+                android:clipToPadding="false"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/teamDescription">
 
                 <androidx.recyclerview.widget.RecyclerView
                     android:id="@+id/membersPreview"
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:layout_weight="1"/>
-
-                <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:gravity="center_vertical"
-                    android:text="@string/teamShowAll"
-                    android:textColor="?attr/primaryTextColor"
-                    android:textSize="@dimen/dimen16sp"
-                    app:drawableEndCompat="@drawable/ic_chevron_right"
-                    app:drawableTint="?attr/primaryTextColor"/>
+                    android:orientation="horizontal"
+                    android:clipToPadding="false"
+                    android:clipChildren="false"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent"
+                    app:layout_constraintBottom_toBottomOf="parent" />
 
-            </LinearLayout>
+                <TextView
+                    android:id="@+id/membersCount"
+                    style="@style/TextAppearance.Material3.LabelLarge"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="@dimen/dimen8dp"
+                    android:textColor="?attr/colorOutline"
+                    android:visibility="gone"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintStart_toEndOf="@id/membersPreview"
+                    app:layout_constraintTop_toTopOf="parent" />
 
-        </LinearLayout>
+                <ImageView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:contentDescription="@string/generalImgContentText"
+                    android:src="@drawable/ic_chevron_right"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintTop_toTopOf="parent"
+                    app:tint="?attr/colorOutline" />
 
-    </com.google.android.material.card.MaterialCardView>
+            </androidx.constraintlayout.widget.ConstraintLayout>
 
-</LinearLayout>
+            <View
+                android:id="@+id/previewOverlay"
+                android:layout_width="0dp"
+                android:layout_height="0dp"
+                android:clickable="true"
+                android:focusable="true"
+                app:layout_constraintTop_toTopOf="@id/membersPreviewFrame"
+                app:layout_constraintBottom_toBottomOf="@id/membersPreviewFrame"
+                app:layout_constraintStart_toStartOf="@id/membersPreviewFrame"
+                app:layout_constraintEnd_toEndOf="@id/membersPreviewFrame" />
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
+
+    </com.google.android.material.listitem.ListItemCardView>
+
+</com.google.android.material.listitem.ListItemLayout>

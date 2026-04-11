@@ -1,82 +1,65 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<com.google.android.material.listitem.ListItemLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="wrap_content"
-    android:orientation="vertical"
-    android:paddingTop="@dimen/dimen4dp"
-    android:paddingBottom="@dimen/dimen4dp">
+    android:layout_height="wrap_content">
 
-    <com.google.android.material.card.MaterialCardView
+    <com.google.android.material.listitem.ListItemCardView
+        android:id="@+id/noteCard"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        style="?attr/materialCardViewElevatedStyle"
-        app:cardElevation="@dimen/dimen0dp">
+        android:checkable="false"
+        android:layout_marginVertical="@dimen/dimen1dp"
+        app:strokeWidth="0dp"
+        app:cardBackgroundColor="?attr/materialCardBackgroundColor">
 
-        <LinearLayout
+        <androidx.constraintlayout.widget.ConstraintLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:foreground="?android:attr/selectableItemBackground"
-            android:background="?attr/materialCardBackgroundColor"
-            android:padding="@dimen/dimen12dp"
-            android:orientation="vertical">
+            android:padding="@dimen/dimen8dp">
 
             <TextView
-                android:id="@+id/content"
-                android:layout_width="wrap_content"
+                android:id="@+id/noteContent"
+                android:layout_width="0dp"
                 android:layout_height="wrap_content"
-                android:text="@string/repoName"
+                android:layout_marginEnd="@dimen/dimen8dp"
+                android:ellipsize="end"
+                android:maxLines="3"
                 android:textColor="?attr/primaryTextColor"
-                android:textSize="@dimen/dimen14sp" />
+                style="@style/TextAppearance.Material3.BodyLarge"
+                app:layout_constraintEnd_toStartOf="@id/deleteNote"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
 
-            <View
-                android:id="@+id/spacer_view"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:layout_marginBottom="@dimen/dimen8dp" />
+            <ImageView
+                android:id="@+id/deleteNote"
+                android:layout_width="@dimen/dimen24dp"
+                android:layout_height="@dimen/dimen24dp"
+                android:background="?android:attr/selectableItemBackgroundBorderless"
+                android:contentDescription="@string/menuDeleteText"
+                android:padding="@dimen/dimen2dp"
+                app:layout_constraintBottom_toBottomOf="@id/noteContent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintTop_toTopOf="@id/noteContent"
+                app:srcCompat="@drawable/ic_delete"
+                app:tint="?attr/colorError" />
 
-            <LinearLayout
-                android:id="@+id/note_info_frame"
-                android:layout_width="match_parent"
+            <TextView
+                android:id="@+id/noteDate"
+                android:layout_width="0dp"
                 android:layout_height="wrap_content"
-                android:orientation="horizontal">
+                android:layout_marginTop="@dimen/dimen8dp"
+                android:textColor="?attr/colorOnSurfaceVariant"
+                android:alpha="0.7"
+                style="@style/TextAppearance.Material3.LabelLarge"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/noteContent" />
 
-                <TextView
-                    android:id="@+id/datetime"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:gravity="center_vertical"
-                    android:textColor="?attr/primaryTextColor"
-                    android:textSize="@dimen/dimen12sp"
-                    tools:text="@string/noteDateTime" />
+        </androidx.constraintlayout.widget.ConstraintLayout>
 
-                <LinearLayout
-                    android:id="@+id/note_info_end_frame"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_marginStart="@dimen/dimen10dp"
-                    android:gravity="center_vertical|end"
-                    android:orientation="horizontal"
-                    android:paddingStart="@dimen/dimen6dp"
-                    android:paddingEnd="@dimen/dimen0dp">
+    </com.google.android.material.listitem.ListItemCardView>
 
-                    <ImageView
-                        android:id="@+id/delete_note"
-                        android:layout_width="@dimen/dimen18dp"
-                        android:layout_height="@dimen/dimen18dp"
-                        android:layout_marginStart="@dimen/dimen16dp"
-                        android:layout_marginEnd="@dimen/dimen2dp"
-                        android:contentDescription="@string/generalImgContentText"
-                        app:srcCompat="@drawable/ic_delete"
-                        app:tint="?attr/iconsColor" />
-
-                </LinearLayout>
-
-            </LinearLayout>
-
-        </LinearLayout>
-
-    </com.google.android.material.card.MaterialCardView>
-
-</LinearLayout>
+</com.google.android.material.listitem.ListItemLayout>

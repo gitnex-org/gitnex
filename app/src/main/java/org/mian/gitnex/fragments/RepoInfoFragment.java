@@ -1,63 +1,50 @@
 package org.mian.gitnex.fragments;
 
-import static org.mian.gitnex.helpers.languagestatistics.LanguageColor.languageColor;
-
 import android.content.Context;
-import android.content.Intent;
 import android.content.res.ColorStateList;
 import android.graphics.Color;
+import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.view.ViewParent;
 import android.widget.LinearLayout;
-import android.widget.TextView;
 import androidx.annotation.NonNull;
-import androidx.annotation.PluralsRes;
+import androidx.annotation.Nullable;
 import androidx.core.content.ContextCompat;
+import androidx.core.widget.TextViewCompat;
 import androidx.fragment.app.Fragment;
+import androidx.lifecycle.ViewModelProvider;
+import com.bumptech.glide.Glide;
+import com.bumptech.glide.load.engine.DiskCacheStrategy;
+import com.google.android.material.bottomsheet.BottomSheetDialog;
 import com.google.android.material.chip.Chip;
-import com.google.android.material.dialog.MaterialAlertDialogBuilder;
 import com.google.android.material.shape.CornerFamily;
 import com.google.android.material.shape.ShapeAppearanceModel;
-import com.google.android.material.textfield.TextInputEditText;
-import java.io.IOException;
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Locale;
 import java.util.Map;
 import java.util.Objects;
-import okhttp3.ResponseBody;
 import org.apache.commons.io.FileUtils;
-import org.gitnex.tea4j.v2.models.Organization;
 import org.gitnex.tea4j.v2.models.Repository;
-import org.jetbrains.annotations.NotNull;
 import org.mian.gitnex.R;
-import org.mian.gitnex.activities.OrganizationDetailActivity;
-import org.mian.gitnex.activities.ProfileActivity;
 import org.mian.gitnex.activities.RepoDetailActivity;
 import org.mian.gitnex.activities.RepoForksActivity;
 import org.mian.gitnex.activities.RepoStargazersActivity;
 import org.mian.gitnex.activities.RepoWatchersActivity;
-import org.mian.gitnex.api.clients.ApiRetrofitClient;
-import org.mian.gitnex.api.models.topics.Topics;
-import org.mian.gitnex.clients.RetrofitClient;
+import org.mian.gitnex.databinding.BottomsheetRepoAddTopicBinding;
 import org.mian.gitnex.databinding.FragmentRepoInfoBinding;
-import org.mian.gitnex.helpers.AlertDialogs;
+import org.mian.gitnex.databinding.LayoutRepoLanguageStatisticsBinding;
 import org.mian.gitnex.helpers.AppUtil;
-import org.mian.gitnex.helpers.ClickListener;
-import org.mian.gitnex.helpers.Constants;
+import org.mian.gitnex.helpers.AvatarGenerator;
 import org.mian.gitnex.helpers.Markdown;
 import org.mian.gitnex.helpers.TimeHelper;
 import org.mian.gitnex.helpers.Toasty;
+import org.mian.gitnex.helpers.UIHelper;
 import org.mian.gitnex.helpers.contexts.RepositoryContext;
 import org.mian.gitnex.helpers.languagestatistics.LanguageColor;
 import org.mian.gitnex.helpers.languagestatistics.LanguageStatisticsHelper;
-import org.mian.gitnex.helpers.languagestatistics.SeekbarItem;
-import retrofit2.Call;
-import retrofit2.Callback;
-import retrofit2.Response;
+import org.mian.gitnex.viewmodels.RepositoryDetailsViewModel;
 
 /**
  * @author mmarif
@@ -65,10 +52,11 @@ import retrofit2.Response;
 public class RepoInfoFragment extends Fragment {
 
 	private Context ctx;
-	private LinearLayout pageContent;
 	private FragmentRepoInfoBinding binding;
-	private RepositoryContext repository;
-	boolean isAdmin;
+	private RepositoryContext repositoryContext;
+	private RepositoryDetailsViewModel viewModel;
+	private boolean isAdmin;
+	private Locale locale;
 
 	public RepoInfoFragment() {}
 
@@ -81,495 +69,381 @@ public class RepoInfoFragment extends Fragment {
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
-		repository = RepositoryContext.fromBundle(requireArguments());
+		repositoryContext = RepositoryContext.fromBundle(requireArguments());
 	}
 
 	@Override
 	public View onCreateView(
 			@NonNull LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-
 		binding = FragmentRepoInfoBinding.inflate(inflater, container, false);
-		ctx = getContext();
-		Locale locale = getResources().getConfiguration().getLocales().get(0);
-
-		pageContent = binding.repoInfoLayout;
-		pageContent.setVisibility(View.GONE);
-
-		setRepoInfo(locale);
-
-		isAdmin = repository.getPermissions() != null && repository.getPermissions().isAdmin();
-
-		loadRepoTopics();
-		binding.addTopicChip.setOnClickListener(v -> showAddTopicDialog());
-
-		if (repository.isStarred()) {
-			binding.repoMetaStarsIcon.setImageDrawable(
-					ContextCompat.getDrawable(requireContext(), R.drawable.ic_star));
-		} else {
-			binding.repoMetaStarsIcon.setImageDrawable(
-					ContextCompat.getDrawable(requireContext(), R.drawable.ic_star_unfilled));
-		}
-
-		binding.repoMetaStars.setOnClickListener(
-				metaStars ->
-						ctx.startActivity(repository.getIntent(ctx, RepoStargazersActivity.class)));
-
-		binding.repoMetaWatchers.setOnClickListener(
-				metaWatchers ->
-						ctx.startActivity(repository.getIntent(ctx, RepoWatchersActivity.class)));
-
-		binding.repoMetaForks.setOnClickListener(
-				metaForks -> ctx.startActivity(repository.getIntent(ctx, RepoForksActivity.class)));
-
-		binding.repoMetaPullRequests.setOnClickListener(
-				metaPR -> ((RepoDetailActivity) requireActivity()).viewPager.setCurrentItem(3));
-
-		setLanguageStatistics();
-
 		return binding.getRoot();
 	}
 
-	private void setLanguageStatistics() {
+	@Override
+	public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
+		super.onViewCreated(view, savedInstanceState);
+		ctx = requireContext();
+		locale = getResources().getConfiguration().getLocales().get(0);
+		viewModel = new ViewModelProvider(requireActivity()).get(RepositoryDetailsViewModel.class);
 
-		Call<Map<String, Long>> call =
-				RetrofitClient.getApiInterface(getContext())
-						.repoGetLanguages(repository.getOwner(), repository.getName());
+		UIHelper.applyInsets(view, null, null, null, binding.repoInfoLayout);
 
-		call.enqueue(
-				new Callback<>() {
+		setupStatHeaders();
+		setupClickListeners();
+		setupObservers();
 
-					@Override
-					public void onResponse(
-							@NonNull Call<Map<String, Long>> call,
-							@NonNull Response<Map<String, Long>> response) {
+		Repository repo = repositoryContext.getRepository();
+		setRepoInfo(repo);
 
-						if (isAdded()) {
+		viewModel.loadRepositoryDetails(
+				ctx, repositoryContext.getOwner(), repo.getName(), repo.getDefaultBranch());
+	}
 
-							switch (response.code()) {
-								case 200:
-									assert response.body() != null;
-									if (!response.body().isEmpty()) {
+	private void setupObservers() {
+		viewModel
+				.getIsStarred()
+				.observe(
+						getViewLifecycleOwner(),
+						starred -> {
+							binding.statStars.statIcon.setImageResource(
+									starred ? R.drawable.ic_star : R.drawable.ic_star_unfilled);
+							viewModel.updateStarCountLocal(starred);
+						});
+		viewModel
+				.getIsWatched()
+				.observe(
+						getViewLifecycleOwner(),
+						watched -> {
+							binding.statWatchers.statIcon.setImageResource(
+									watched ? R.drawable.ic_unwatch : R.drawable.ic_watchers);
+							viewModel.updateWatchCountLocal(watched);
+						});
 
-										ArrayList<SeekbarItem> seekbarItemList = new ArrayList<>();
+		viewModel
+				.getLocalStarCount()
+				.observe(
+						getViewLifecycleOwner(),
+						count -> {
+							binding.statStars.statCount.setText(AppUtil.numberFormatter(count));
+						});
+		viewModel
+				.getLocalWatchCount()
+				.observe(
+						getViewLifecycleOwner(),
+						count -> {
+							binding.statWatchers.statCount.setText(AppUtil.numberFormatter(count));
+						});
 
-										float totalSpan =
-												(float)
-														response.body().values().stream()
-																.mapToDouble(a -> a)
-																.sum();
+		viewModel
+				.getRepoData()
+				.observe(
+						getViewLifecycleOwner(),
+						repo -> {
+							if (repo != null) setRepoInfo(repo);
+						});
 
-										for (Map.Entry<String, Long> entry :
-												response.body().entrySet()) {
+		viewModel
+				.getIsLoading()
+				.observe(
+						getViewLifecycleOwner(),
+						loading -> {
+							binding.expressiveLoader.setVisibility(
+									loading ? View.VISIBLE : View.GONE);
+							binding.repoInfoLayout.setVisibility(
+									loading ? View.GONE : View.VISIBLE);
+						});
 
-											SeekbarItem seekbarItem = new SeekbarItem();
-
-											seekbarItem.progressItemPercentage =
-													(entry.getValue() / totalSpan) * 100;
-											seekbarItem.color = languageColor(entry.getKey());
-											seekbarItemList.add(seekbarItem);
-										}
-
-										binding.languageStatsCard.setVisibility(View.VISIBLE);
-										binding.languagesStatistic.setData(seekbarItemList);
-
-										binding.languageStatsCard.setOnClickListener(
-												v -> {
-													View view =
-															LayoutInflater.from(ctx)
-																	.inflate(
-																			R.layout
-																					.layout_repo_language_statistics,
-																			null);
-													LinearLayout layout =
-															view.findViewById(R.id.lang_color);
-													layout.removeAllViews();
-
-													for (Map.Entry<String, Long> entry :
-															response.body().entrySet()) {
-														Chip chip = new Chip(ctx);
-														LinearLayout.LayoutParams params =
-																new LinearLayout.LayoutParams(
-																		LinearLayout.LayoutParams
-																				.MATCH_PARENT,
-																		LinearLayout.LayoutParams
-																				.WRAP_CONTENT);
-														params.setMargins(0, 8, 0, 0);
-														chip.setLayoutParams(params);
-														chip.setText(
-																String.format(
-																		"%s - %s%%",
-																		entry.getKey(),
-																		LanguageStatisticsHelper
-																				.calculatePercentage(
-																						entry
-																								.getValue(),
-																						totalSpan)));
-														int bgColor =
-																ctx.getResources()
-																		.getColor(
-																				LanguageColor
-																						.languageColor(
-																								entry
-																										.getKey()),
-																				null);
-														chip.setChipBackgroundColor(
-																ColorStateList.valueOf(bgColor));
-														chip.setTextColor(
-																isLightColor(bgColor)
-																		? Color.BLACK
-																		: Color.WHITE);
-														chip.setShapeAppearanceModel(
-																new ShapeAppearanceModel()
-																		.toBuilder()
-																				.setAllCorners(
-																						CornerFamily
-																								.ROUNDED,
-																						48)
-																				.build());
-														chip.setEnabled(false);
-
-														layout.addView(chip);
-													}
-
-													new MaterialAlertDialogBuilder(ctx)
-															.setTitle(R.string.lang_statistics)
-															.setView(view)
-															.setNeutralButton(
-																	getString(R.string.close), null)
-															.create()
-															.show();
-												});
-									}
-
-									break;
-
-								case 401:
-									AlertDialogs.authorizationTokenRevokedDialog(ctx);
-									break;
-
-								case 404:
-									binding.languageStatsCard.setVisibility(View.GONE);
-									break;
+		viewModel
+				.getReadmeData()
+				.observe(
+						getViewLifecycleOwner(),
+						content -> {
+							if (content != null) {
+								binding.layoutReadme.getRoot().setVisibility(View.VISIBLE);
+								binding.moreInfoFrame.setVisibility(View.GONE);
+								binding.repoAdditionalButton.setIconResource(
+										R.drawable.ic_arrow_down);
+								Markdown.render(
+										ctx,
+										content,
+										binding.layoutReadme.repoFileContents,
+										repositoryContext);
+							} else {
+								binding.layoutReadme.getRoot().setVisibility(View.GONE);
+								binding.moreInfoFrame.setVisibility(View.VISIBLE);
+								binding.repoAdditionalButton.setVisibility(View.GONE);
 							}
-						}
-					}
+						});
 
-					@Override
-					public void onFailure(
-							@NonNull Call<Map<String, Long>> call, @NonNull Throwable t) {
-						Toasty.error(ctx, ctx.getString(R.string.genericServerResponseError));
-					}
+		viewModel
+				.getProcessedLanguages()
+				.observe(
+						getViewLifecycleOwner(),
+						items -> {
+							Map<String, Long> langMap = viewModel.getLanguagesData().getValue();
+
+							if (items != null && !items.isEmpty() && langMap != null) {
+								binding.languageStatsContainer.setVisibility(View.VISIBLE);
+								binding.languagesStatistic.setData(items);
+
+								Map.Entry<String, Long> topLang = null;
+								long totalBytes = 0;
+								for (Map.Entry<String, Long> entry : langMap.entrySet()) {
+									totalBytes += entry.getValue();
+									if (topLang == null || entry.getValue() > topLang.getValue()) {
+										topLang = entry;
+									}
+								}
+
+								if (topLang != null) {
+									String langName = topLang.getKey();
+									float totalSpan = (float) totalBytes;
+									String percentage =
+											LanguageStatisticsHelper.calculatePercentage(
+													topLang.getValue(), totalSpan);
+									int color =
+											ContextCompat.getColor(
+													ctx, LanguageColor.languageColor(langName));
+
+									binding.primaryLanguageText.setText(
+											String.format("%s %s%%", langName, percentage));
+									Drawable dot =
+											AvatarGenerator.getCircleColorDrawable(ctx, color, 12);
+									binding.primaryLanguageText
+											.setCompoundDrawablesWithIntrinsicBounds(
+													dot, null, null, null);
+								}
+
+								binding.languageStatsContainer.setOnClickListener(
+										v -> showLanguageDetailDialog());
+							} else {
+								binding.languageStatsContainer.setVisibility(View.GONE);
+							}
+						});
+
+		viewModel.getTopicsData().observe(getViewLifecycleOwner(), this::displayTopics);
+
+		viewModel
+				.getActionSuccessEvent()
+				.observe(
+						getViewLifecycleOwner(),
+						resId -> {
+							if (resId != null) {
+								Toasty.show(ctx, getString(resId));
+								viewModel.consumeActionEvents();
+							}
+						});
+
+		viewModel
+				.getErrorMessage()
+				.observe(
+						getViewLifecycleOwner(),
+						error -> {
+							if (error != null) {
+								Toasty.show(ctx, error);
+								viewModel.consumeActionEvents();
+							}
+						});
+	}
+
+	private void setupClickListeners() {
+		binding.statStars
+				.getRoot()
+				.setOnClickListener(
+						v ->
+								ctx.startActivity(
+										repositoryContext.getIntent(
+												ctx, RepoStargazersActivity.class)));
+		binding.statWatchers
+				.getRoot()
+				.setOnClickListener(
+						v ->
+								ctx.startActivity(
+										repositoryContext.getIntent(
+												ctx, RepoWatchersActivity.class)));
+		binding.statForks
+				.getRoot()
+				.setOnClickListener(
+						v ->
+								ctx.startActivity(
+										repositoryContext.getIntent(ctx, RepoForksActivity.class)));
+		binding.statIssues
+				.getRoot()
+				.setOnClickListener(
+						v -> {
+							if (getActivity() instanceof RepoDetailActivity activity) {
+								activity.switchTab("issues", R.id.btn_nav_issues);
+							}
+						});
+
+		binding.statPRs
+				.getRoot()
+				.setOnClickListener(
+						v -> {
+							if (getActivity() instanceof RepoDetailActivity activity) {
+								activity.switchTab("prs", R.id.btn_nav_prs);
+							}
+						});
+
+		binding.statBranch
+				.getRoot()
+				.setOnClickListener(
+						v -> {
+							if (getActivity() instanceof RepoDetailActivity activity) {
+								activity.switchTab("files", R.id.btn_nav_files);
+							}
+						});
+		binding.statUpdatedAt
+				.getRoot()
+				.setOnClickListener(
+						v ->
+								Toasty.show(
+										ctx,
+										TimeHelper.getFullDateTime(
+												repositoryContext.getRepository().getUpdatedAt(),
+												locale)));
+		binding.layoutCreatedAt
+				.getRoot()
+				.setOnClickListener(
+						v ->
+								Toasty.show(
+										ctx,
+										TimeHelper.getFullDateTime(
+												repositoryContext.getRepository().getCreatedAt(),
+												locale)));
+
+		binding.layoutWebsite
+				.getRoot()
+				.setOnClickListener(
+						v ->
+								AppUtil.openUrlInBrowser(
+										ctx, repositoryContext.getRepository().getWebsite()));
+		binding.layoutHtmlUrl
+				.getRoot()
+				.setOnClickListener(
+						v ->
+								AppUtil.copyToClipboard(
+										ctx,
+										repositoryContext.getRepository().getWebsite(),
+										getString(R.string.copied)));
+
+		binding.addTopicChip.setOnClickListener(v -> showAddTopicDialog());
+		binding.repoAdditionalButton.setOnClickListener(
+				v -> {
+					boolean isVisible = binding.moreInfoFrame.getVisibility() == View.VISIBLE;
+					binding.moreInfoFrame.setVisibility(isVisible ? View.GONE : View.VISIBLE);
+					binding.repoAdditionalButton.setIconResource(
+							isVisible ? R.drawable.ic_arrow_down : R.drawable.ic_arrow_up);
 				});
 	}
 
-	private boolean isLightColor(int color) {
-		double luminance =
-				(0.299 * Color.red(color) + 0.587 * Color.green(color) + 0.114 * Color.blue(color))
-						/ 255;
-		return luminance > 0.5;
-	}
+	private void setRepoInfo(Repository repo) {
+		isAdmin = repo.getPermissions() != null && repo.getPermissions().isAdmin();
+		loadAvatar(repo);
 
-	private void setRepoInfo(Locale locale) {
-		Repository repoInfo = repository.getRepository();
+		binding.repoMetaName.setText(repo.getName());
+		binding.repoMetaOwner.setText(repo.getOwner().getLogin());
 
-		if (isAdded()) {
-			assert repoInfo != null;
-			binding.repoMetaOwner.setText(repoInfo.getOwner().getLogin());
-			binding.repoMetaOwner.setOnClickListener(
-					(v) ->
-							RetrofitClient.getApiInterface(ctx)
-									.orgGet(repository.getOwner())
-									.enqueue(
-											new Callback<>() {
+		viewModel.setInitialCounts(repo.getStarsCount(), repo.getWatchersCount());
 
-												@Override
-												public void onResponse(
-														@NotNull Call<Organization> call,
-														@NotNull Response<Organization> response) {
-													Intent intent =
-															new Intent(
-																	ctx,
-																	response.isSuccessful()
-																			? OrganizationDetailActivity
-																					.class
-																			: ProfileActivity
-																					.class);
-													intent.putExtra(
-															response.isSuccessful()
-																	? "orgName"
-																	: "username",
-															repository.getOwner());
-													intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
-													startActivity(intent);
-												}
+		int lockIcon = repo.isPrivate() ? R.drawable.ic_lock : 0;
+		binding.repoMetaName.setCompoundDrawablesWithIntrinsicBounds(lockIcon, 0, 0, 0);
+		TextViewCompat.setCompoundDrawableTintList(
+				binding.repoMetaName,
+				ColorStateList.valueOf(
+						AppUtil.getColorFromAttribute(ctx, android.R.attr.textColorPrimary)));
 
-												@Override
-												public void onFailure(
-														@NotNull Call<Organization> call,
-														@NotNull Throwable t) {}
-											}));
-			binding.repoMetaName.setText(repoInfo.getName());
+		if (!repo.getDescription().isEmpty()) {
+			Markdown.render(ctx, repo.getDescription(), binding.repoMetaDescription);
+		} else {
+			binding.repoMetaDescription.setText(getString(R.string.noDataDescription));
+		}
 
-			if (!repoInfo.getDescription().isEmpty()) {
-				Markdown.render(ctx, repoInfo.getDescription(), binding.repoMetaDescription);
-			} else {
-				binding.repoMetaDescription.setText(getString(R.string.noDataDescription));
-			}
+		setPluralStats(repo);
 
-			setPluralText(
-					binding.repoMetaStars,
-					R.plurals.repoStars,
-					Math.toIntExact(repoInfo.getStarsCount()));
-			setPluralText(
-					binding.repoMetaWatchers,
-					R.plurals.repoWatchers,
-					Math.toIntExact(repoInfo.getWatchersCount()));
-			setPluralText(
-					binding.repoMetaPullRequests,
-					R.plurals.repoPullRequests,
-					Math.toIntExact(repoInfo.getOpenPrCounter()));
-			setPluralText(
-					binding.repoMetaForks,
-					R.plurals.repoForks,
-					Math.toIntExact(repoInfo.getForksCount()));
+		binding.statSize.statCount.setText(FileUtils.byteCountToDisplaySize(repo.getSize() * 1024));
+		binding.statBranch.statCount.setText(repo.getDefaultBranch());
+		binding.statUpdatedAt.statCount.setText(TimeHelper.formatTime(repo.getUpdatedAt(), locale));
 
-			binding.repoMetaLastUpdated.setText(
-					getString(
-							R.string.infoTabRepoUpdatedAt,
-							TimeHelper.formatTime(repoInfo.getUpdatedAt(), locale)));
+		binding.layoutCreatedAt.infoText.setText(
+				TimeHelper.formatTime(repo.getCreatedAt(), locale));
+		binding.layoutCreatedAt.infoIcon.setImageResource(R.drawable.ic_calendar);
 
-			binding.repoMetaDefaultBranch.setText(
-					getString(R.string.infoTabRepoDefaultBranch, repoInfo.getDefaultBranch()));
+		binding.layoutWebsite.infoText.setText(
+				repo.getWebsite().isEmpty()
+						? getString(R.string.noDataWebsite)
+						: repo.getWebsite());
+		binding.layoutWebsite.infoIcon.setImageResource(R.drawable.ic_browser);
 
-			binding.repoMetaSize.setText(
-					FileUtils.byteCountToDisplaySize(repoInfo.getSize() * 1024));
+		binding.layoutHtmlUrl.infoText.setText(repo.getHtmlUrl());
+		binding.layoutHtmlUrl.infoIcon.setImageResource(R.drawable.ic_link);
 
-			binding.repoMetaCreatedAt.setText(
-					getString(
-							R.string.noteDateTime,
-							TimeHelper.formatTime(repoInfo.getCreatedAt(), locale)));
-			binding.repoMetaCreatedAt.setOnClickListener(
-					new ClickListener(
-							TimeHelper.customDateFormatForToastDateFormat(repoInfo.getCreatedAt()),
-							ctx));
+		binding.layoutSshUrl.infoText.setText(repo.getSshUrl());
+		binding.layoutSshUrl.infoIcon.setImageResource(R.drawable.ic_code);
 
-			String website =
-					(repoInfo.getWebsite().isEmpty())
-							? getResources().getString(R.string.noDataWebsite)
-							: repoInfo.getWebsite();
-			binding.repoMetaWebsite.setText(website);
-			binding.repoMetaWebsite.setLinksClickable(false);
-			binding.repoMetaWebsite.setOnClickListener(
-					(v) -> {
-						if (!repoInfo.getWebsite().isEmpty()) {
-							AppUtil.openUrlInBrowser(requireContext(), repoInfo.getWebsite());
-						}
-					});
+		binding.repoIsArchived.setVisibility(repo.isArchived() ? View.VISIBLE : View.GONE);
 
-			binding.repoAdditionalButton.setOnClickListener(
-					v -> {
-						View view =
-								LayoutInflater.from(ctx)
-										.inflate(R.layout.layout_repo_more_info, null);
-
-						TextView sshUrlHeader = view.findViewById(R.id.sshUrlHeader);
-						TextView sshUrlContent = view.findViewById(R.id.sshUrlContent);
-
-						TextView cloneUrlHeader = view.findViewById(R.id.cloneUrlHeader);
-						TextView cloneUrlContent = view.findViewById(R.id.cloneUrlContent);
-
-						TextView repoUrlHeader = view.findViewById(R.id.repoUrlHeader);
-						TextView repoUrlContent = view.findViewById(R.id.repoUrlContent);
-
-						sshUrlHeader.setText(getString(R.string.infoTabRepoSshUrl));
-						sshUrlContent.setText(repoInfo.getSshUrl());
-
-						cloneUrlHeader.setText(getString(R.string.infoTabRepoCloneUrl));
-						cloneUrlContent.setText(repoInfo.getCloneUrl());
-
-						repoUrlHeader.setText(getString(R.string.infoTabRepoRepoUrl));
-						repoUrlContent.setText(repoInfo.getHtmlUrl());
-
-						MaterialAlertDialogBuilder materialAlertDialogBuilder =
-								new MaterialAlertDialogBuilder(ctx)
-										.setTitle(R.string.infoMoreInformation)
-										.setView(view)
-										.setNeutralButton(getString(R.string.close), null);
-
-						materialAlertDialogBuilder.create().show();
-					});
-
-			if (repoInfo.isArchived()) {
-				binding.repoIsArchived.setVisibility(View.VISIBLE);
-			} else {
-				binding.repoIsArchived.setVisibility(View.GONE);
-			}
-
-			if (repoInfo.isFork()) {
-				binding.repoForkFrame.setVisibility(View.VISIBLE);
-				binding.repoForkFrame.setOnClickListener(
-						(v) -> {
-							Intent parent =
-									new RepositoryContext(repoInfo.getParent(), requireContext())
-											.getIntent(requireContext(), RepoDetailActivity.class);
-							startActivity(parent);
-						});
-				binding.repoFork.setText(
-						getString(R.string.repoForkOf, repoInfo.getParent().getFullName()));
-			} else {
-				binding.repoForkFrame.setVisibility(View.GONE);
-			}
-
-			getFileContents(
-					repository.getOwner(),
-					repository.getName(),
-					getResources().getString(R.string.defaultFilename),
-					repoInfo.getDefaultBranch());
-
-			pageContent.setVisibility(View.VISIBLE);
+		if (repo.isFork()) {
+			binding.repoIsFork.setVisibility(View.VISIBLE);
+			binding.repoIsFork.setText(
+					getString(R.string.repoForkOf, repo.getParent().getFullName()));
+		} else {
+			binding.repoIsFork.setVisibility(View.GONE);
 		}
 	}
 
-	private void setPluralText(TextView view, @PluralsRes int pluralId, int count) {
-		String formatted = AppUtil.numberFormatter(count);
-		view.setText(getResources().getQuantityString(pluralId, count, formatted));
+	private void setupStatHeaders() {
+		binding.statStars.statIcon.setImageResource(R.drawable.ic_star);
+		binding.statForks.statIcon.setImageResource(R.drawable.ic_fork);
+		binding.statWatchers.statIcon.setImageResource(R.drawable.ic_watchers);
+		binding.statPRs.statIcon.setImageResource(R.drawable.ic_pull_request);
+		binding.statIssues.statIcon.setImageResource(R.drawable.ic_issue);
+		binding.statSize.statIcon.setImageResource(R.drawable.ic_download);
+		binding.statUpdatedAt.statIcon.setImageResource(R.drawable.ic_clock);
+		binding.statBranch.statIcon.setImageResource(R.drawable.ic_branch);
+
+		binding.statSize.statLabel.setText(getString(R.string.size));
+		binding.statBranch.statLabel.setText(getString(R.string.default_branch));
+		binding.statUpdatedAt.statLabel.setText(getString(R.string.updated));
 	}
 
-	private void getFileContents(
-			final String owner, String repo, final String filename, final String defBranch) {
+	private void setPluralStats(Repository repo) {
+		int stars = Math.toIntExact(repo.getStarsCount());
+		int forks = Math.toIntExact(repo.getForksCount());
+		int watchers = Math.toIntExact(repo.getWatchersCount());
+		int prs = Math.toIntExact(repo.getOpenPrCounter());
+		int issues = Math.toIntExact(repo.getOpenIssuesCount());
 
-		Call<ResponseBody> call =
-				RetrofitClient.getWebInterface(getContext())
-						.getFileContents(owner, repo, defBranch, filename);
+		binding.statStars.statLabel.setText(
+				getResources().getQuantityString(R.plurals.repoStars, stars));
+		binding.statStars.statCount.setText(AppUtil.numberFormatter(stars));
 
-		call.enqueue(
-				new Callback<>() {
+		binding.statForks.statLabel.setText(
+				getResources().getQuantityString(R.plurals.repoForks, forks));
+		binding.statForks.statCount.setText(AppUtil.numberFormatter(forks));
 
-					@Override
-					public void onResponse(
-							@NonNull Call<ResponseBody> call,
-							@NonNull retrofit2.Response<ResponseBody> response) {
+		binding.statWatchers.statLabel.setText(
+				getResources().getQuantityString(R.plurals.repoWatchers, watchers));
+		binding.statWatchers.statCount.setText(AppUtil.numberFormatter(watchers));
 
-						if (isAdded()) {
+		binding.statPRs.statLabel.setText(
+				getResources().getQuantityString(R.plurals.repoPullRequests, prs));
+		binding.statPRs.statCount.setText(AppUtil.numberFormatter(prs));
 
-							switch (response.code()) {
-								case 200:
-									assert response.body() != null;
-									new Thread(
-													() -> {
-														try {
-															Markdown.render(
-																	ctx,
-																	response.body().string(),
-																	binding.repoFileContents,
-																	repository);
-														} catch (IOException e) {
-															requireActivity()
-																	.runOnUiThread(
-																			() -> {
-																				binding
-																						.fileContentsFrameHeader
-																						.setVisibility(
-																								View
-																										.GONE);
-																				binding
-																						.fileContentsFrame
-																						.setVisibility(
-																								View
-																										.GONE);
-																			});
-														}
-													})
-											.start();
-									break;
-
-								case 401:
-									AlertDialogs.authorizationTokenRevokedDialog(ctx);
-									break;
-
-								case 404:
-									binding.fileContentsFrameHeader.setVisibility(View.GONE);
-									binding.fileContentsFrame.setVisibility(View.GONE);
-									break;
-							}
-						}
-					}
-
-					@Override
-					public void onFailure(@NonNull Call<ResponseBody> call, @NonNull Throwable t) {
-						Toasty.error(ctx, ctx.getString(R.string.genericServerResponseError));
-					}
-				});
-	}
-
-	private void loadRepoTopics() {
-		int resultLimit = Constants.getCurrentResultLimit(requireContext());
-
-		Call<Topics> call =
-				Objects.requireNonNull(ApiRetrofitClient.getInstance(getContext()))
-						.getRepoTopics(repository.getOwner(), repository.getName(), 1, resultLimit);
-
-		call.enqueue(
-				new Callback<>() {
-					@Override
-					public void onResponse(
-							@NonNull Call<Topics> call, @NonNull Response<Topics> response) {
-						if (isAdded()) {
-							switch (response.code()) {
-								case 200:
-									List<String> topics = new ArrayList<>();
-									if (response.body() != null
-											&& !response.body().getTopics().isEmpty()) {
-										topics = response.body().getTopics();
-									}
-
-									boolean hasTopics = !topics.isEmpty();
-
-									if (hasTopics || isAdmin) {
-										binding.repoTopicsContainer.setVisibility(View.VISIBLE);
-										displayTopics(topics);
-									} else {
-										binding.repoTopicsContainer.setVisibility(View.GONE);
-									}
-									break;
-								case 401:
-									AlertDialogs.authorizationTokenRevokedDialog(ctx);
-									if (isAdmin) {
-										binding.repoTopicsContainer.setVisibility(View.VISIBLE);
-										displayTopics(new ArrayList<>());
-									} else {
-										binding.repoTopicsContainer.setVisibility(View.GONE);
-									}
-									break;
-								default:
-									if (isAdmin) {
-										binding.repoTopicsContainer.setVisibility(View.VISIBLE);
-										displayTopics(new ArrayList<>());
-									} else {
-										binding.repoTopicsContainer.setVisibility(View.GONE);
-									}
-									break;
-							}
-						}
-					}
-
-					@Override
-					public void onFailure(@NonNull Call<Topics> call, @NonNull Throwable t) {
-						if (isAdded()) {
-							if (isAdmin) {
-								binding.repoTopicsContainer.setVisibility(View.VISIBLE);
-								displayTopics(new ArrayList<>());
-							} else {
-								binding.repoTopicsContainer.setVisibility(View.GONE);
-							}
-							Toasty.error(ctx, ctx.getString(R.string.errorLoadingTopics));
-						}
-					}
-				});
+		binding.statIssues.statLabel.setText(
+				getResources().getQuantityString(R.plurals.repoOpenIssues, issues));
+		binding.statIssues.statCount.setText(AppUtil.numberFormatter(issues));
 	}
 
 	private void displayTopics(List<String> topics) {
 		binding.repoTopicsChipGroup.removeAllViews();
+
+		if ((topics == null || topics.isEmpty()) && !isAdmin) {
+			binding.repoTopicsContainer.setVisibility(View.GONE);
+			return;
+		}
+
+		binding.repoTopicsContainer.setVisibility(View.VISIBLE);
 
 		int[] chipColors = {
 			ContextCompat.getColor(ctx, R.color.chipColor1),
@@ -579,48 +453,33 @@ public class RepoInfoFragment extends Fragment {
 			ContextCompat.getColor(ctx, R.color.chipColor5)
 		};
 
-		for (int i = 0; i < topics.size(); i++) {
-			String topic = topics.get(i);
-			Chip chip = createTopicChip(topic, chipColors[i % chipColors.length]);
+		for (int i = 0; i < Objects.requireNonNull(topics).size(); i++) {
+			Chip chip = createTopicChip(topics.get(i), chipColors[i % chipColors.length]);
 			binding.repoTopicsChipGroup.addView(chip);
 		}
 
-		Chip plusChip = binding.addTopicChip;
-		ViewParent parent = plusChip.getParent();
-		if (parent instanceof ViewGroup) {
-			((ViewGroup) parent).removeView(plusChip);
-		}
-
-		plusChip.setChipBackgroundColorResource(android.R.color.transparent);
-		plusChip.setRippleColorResource(android.R.color.transparent);
-		plusChip.setBackgroundResource(android.R.color.transparent);
-		plusChip.setForeground(null);
-		plusChip.setBackgroundTintList(ColorStateList.valueOf(Color.TRANSPARENT));
-		plusChip.setStateListAnimator(null);
-		plusChip.setElevation(0f);
-
 		if (isAdmin) {
-			binding.repoTopicsChipGroup.addView(plusChip);
+			binding.repoTopicsChipGroup.addView(binding.addTopicChip);
 		}
 	}
 
-	private Chip createTopicChip(String topic, int backgroundColor) {
+	private Chip createTopicChip(String topic, int color) {
 		Chip chip = new Chip(ctx);
-		chip.setCheckable(false);
-		chip.setClickable(false);
-		chip.setSelected(false);
 		chip.setText(topic);
 		chip.setCloseIconVisible(isAdmin);
-
 		if (isAdmin) {
 			chip.setCloseIconTint(
 					ColorStateList.valueOf(ContextCompat.getColor(ctx, R.color.colorRed)));
-			chip.setOnCloseIconClickListener(v -> deleteTopic(topic));
+			chip.setOnCloseIconClickListener(
+					v ->
+							viewModel.deleteTopic(
+									ctx,
+									repositoryContext.getOwner(),
+									repositoryContext.getName(),
+									topic));
 		}
-
-		chip.setChipBackgroundColor(ColorStateList.valueOf(backgroundColor));
-		chip.setTextColor(isLightColor(backgroundColor) ? Color.BLACK : Color.WHITE);
-
+		chip.setChipBackgroundColor(ColorStateList.valueOf(color));
+		chip.setTextColor(AppUtil.isLightColor(color) ? Color.BLACK : Color.WHITE);
 		chip.setShapeAppearanceModel(
 				new ShapeAppearanceModel()
 						.toBuilder()
@@ -628,112 +487,93 @@ public class RepoInfoFragment extends Fragment {
 										CornerFamily.ROUNDED,
 										getResources().getDimension(R.dimen.dimen8dp))
 								.build());
-
 		return chip;
 	}
 
-	private void deleteTopic(String topic) {
-		Call<Void> call =
-				Objects.requireNonNull(ApiRetrofitClient.getInstance(getContext()))
-						.deleteRepoTopic(repository.getOwner(), repository.getName(), topic);
-
-		call.enqueue(
-				new Callback<>() {
-					@Override
-					public void onResponse(
-							@NonNull Call<Void> call, @NonNull Response<Void> response) {
-						if (isAdded()) {
-							switch (response.code()) {
-								case 204:
-									Toasty.success(
-											ctx, ctx.getString(R.string.topicDeletedSuccessfully));
-									loadRepoTopics();
-									break;
-								case 401:
-									AlertDialogs.authorizationTokenRevokedDialog(ctx);
-									break;
-								case 403:
-									Toasty.error(ctx, ctx.getString(R.string.unauthorizedApiError));
-									break;
-								default:
-									Toasty.error(ctx, ctx.getString(R.string.errorDeletingTopic));
-									break;
-							}
-						}
-					}
-
-					@Override
-					public void onFailure(@NonNull Call<Void> call, @NonNull Throwable t) {
-						if (isAdded()) {
-							Toasty.error(ctx, ctx.getString(R.string.errorDeletingTopic));
-						}
-					}
-				});
-	}
-
 	private void showAddTopicDialog() {
-		View dialogView = LayoutInflater.from(ctx).inflate(R.layout.custom_dialog_add_topic, null);
-		TextInputEditText topicInput = dialogView.findViewById(R.id.topicInput);
-
-		MaterialAlertDialogBuilder dialogBuilder =
-				new MaterialAlertDialogBuilder(ctx)
-						.setTitle(R.string.addNewTopic)
-						.setView(dialogView)
-						.setPositiveButton(
-								R.string.addButton,
-								(dialog, which) -> {
-									String topicName =
-											Objects.requireNonNull(topicInput.getText())
-													.toString()
-													.trim();
-									if (!topicName.isEmpty()) {
-										addNewTopic(topicName);
-									}
-								})
-						.setNegativeButton(R.string.cancelButton, null);
-
-		dialogBuilder.create().show();
-	}
-
-	private void addNewTopic(String topic) {
-		Call<Void> call =
-				Objects.requireNonNull(ApiRetrofitClient.getInstance(getContext()))
-						.addRepoTopic(repository.getOwner(), repository.getName(), topic);
-
-		call.enqueue(
-				new Callback<>() {
-					@Override
-					public void onResponse(
-							@NonNull Call<Void> call, @NonNull Response<Void> response) {
-						if (isAdded()) {
-							switch (response.code()) {
-								case 204:
-									Toasty.success(
-											ctx, ctx.getString(R.string.topicAddedSuccessfully));
-									loadRepoTopics();
-									break;
-								case 401:
-									AlertDialogs.authorizationTokenRevokedDialog(ctx);
-									break;
-								case 403:
-									Toasty.error(ctx, ctx.getString(R.string.unauthorizedApiError));
-									break;
-								case 422:
-									Toasty.error(ctx, ctx.getString(R.string.invalidTopicName));
-									break;
-								default:
-									Toasty.error(ctx, ctx.getString(R.string.errorAddingTopic));
-									break;
-							}
-						}
-					}
-
-					@Override
-					public void onFailure(@NonNull Call<Void> call, @NonNull Throwable t) {
-						if (isAdded()) {
-							Toasty.error(ctx, ctx.getString(R.string.errorAddingTopic));
-						}
+		BottomsheetRepoAddTopicBinding sheetBinding =
+				BottomsheetRepoAddTopicBinding.inflate(getLayoutInflater());
+		BottomSheetDialog dialog = new BottomSheetDialog(ctx);
+		dialog.setContentView(sheetBinding.getRoot());
+		AppUtil.applySheetStyle(dialog, false);
+		sheetBinding.btnClose.setOnClickListener(v -> dialog.dismiss());
+		sheetBinding.btnAddTopic.setOnClickListener(
+				v -> {
+					String name =
+							Objects.requireNonNull(sheetBinding.topicInput.getText())
+									.toString()
+									.trim();
+					if (!name.isEmpty()) {
+						viewModel.addNewTopic(
+								ctx,
+								repositoryContext.getOwner(),
+								repositoryContext.getName(),
+								name);
+						dialog.dismiss();
+					} else {
+						Toasty.show(ctx, getString(R.string.emptyFields));
 					}
 				});
+		dialog.show();
+	}
+
+	private void loadAvatar(Repository repo) {
+		Drawable placeholder = AvatarGenerator.getLetterAvatar(ctx, repo.getName(), 44);
+		Glide.with(this)
+				.load(repo.getAvatarUrl())
+				.diskCacheStrategy(DiskCacheStrategy.ALL)
+				.placeholder(R.drawable.loader_animated)
+				.error(placeholder)
+				.centerCrop()
+				.into(binding.repoAvatar);
+	}
+
+	private void showLanguageDetailDialog() {
+		Map<String, Long> langMap = viewModel.getLanguagesData().getValue();
+		if (langMap == null || langMap.isEmpty()) return;
+
+		LayoutRepoLanguageStatisticsBinding binding =
+				LayoutRepoLanguageStatisticsBinding.inflate(LayoutInflater.from(ctx));
+
+		BottomSheetDialog dialog = new BottomSheetDialog(ctx);
+		dialog.setContentView(binding.getRoot());
+
+		AppUtil.applySheetStyle(dialog, true);
+
+		binding.langColor.removeAllViews();
+		float totalSpan = (float) langMap.values().stream().mapToDouble(a -> a).sum();
+
+		int margin8 = ctx.getResources().getDimensionPixelSize(R.dimen.dimen2dp);
+
+		for (Map.Entry<String, Long> entry : langMap.entrySet()) {
+			Chip chip = new Chip(ctx);
+			LinearLayout.LayoutParams params =
+					new LinearLayout.LayoutParams(
+							ViewGroup.LayoutParams.MATCH_PARENT,
+							ViewGroup.LayoutParams.WRAP_CONTENT);
+			params.setMargins(0, margin8, 0, 0);
+			chip.setLayoutParams(params);
+
+			String percentage =
+					LanguageStatisticsHelper.calculatePercentage(entry.getValue(), totalSpan);
+			chip.setText(String.format("%s — %s%%", entry.getKey(), percentage));
+
+			int color = ContextCompat.getColor(ctx, LanguageColor.languageColor(entry.getKey()));
+			chip.setChipBackgroundColor(ColorStateList.valueOf(color));
+			chip.setTextColor(AppUtil.isLightColor(color) ? Color.BLACK : Color.WHITE);
+
+			chip.setShapeAppearanceModel(
+					chip.getShapeAppearanceModel().toBuilder()
+							.setAllCorners(CornerFamily.ROUNDED, 48f)
+							.build());
+
+			chip.setClickable(false);
+			chip.setFocusable(false);
+			chip.setCheckable(false);
+
+			binding.langColor.addView(chip);
+		}
+
+		dialog.show();
 	}
 }

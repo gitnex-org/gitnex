@@ -7,7 +7,6 @@ import android.content.Intent;
 import android.content.res.ColorStateList;
 import android.graphics.Bitmap;
 import android.graphics.Color;
-import android.graphics.Typeface;
 import android.graphics.drawable.Drawable;
 import android.net.Uri;
 import android.os.Build;
@@ -37,7 +36,6 @@ import androidx.core.text.HtmlCompat;
 import androidx.core.widget.ImageViewCompat;
 import androidx.lifecycle.ViewModelProvider;
 import androidx.recyclerview.widget.LinearLayoutManager;
-import com.amulyakhare.textdrawable.TextDrawable;
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.load.engine.DiskCacheStrategy;
 import com.bumptech.glide.load.resource.bitmap.RoundedCorners;
@@ -94,17 +92,13 @@ import org.mian.gitnex.databinding.CustomImageViewDialogBinding;
 import org.mian.gitnex.databinding.CustomLabelsSelectionDialogBinding;
 import org.mian.gitnex.fragments.BottomSheetSingleIssueFragment;
 import org.mian.gitnex.fragments.IssuesFragment;
-import org.mian.gitnex.fragments.PullRequestsFragment;
 import org.mian.gitnex.helpers.AlertDialogs;
 import org.mian.gitnex.helpers.AppDatabaseSettings;
 import org.mian.gitnex.helpers.AppUtil;
-import org.mian.gitnex.helpers.ClickListener;
-import org.mian.gitnex.helpers.ColorInverter;
+import org.mian.gitnex.helpers.AvatarGenerator;
 import org.mian.gitnex.helpers.Constants;
-import org.mian.gitnex.helpers.LabelWidthCalculator;
 import org.mian.gitnex.helpers.Markdown;
 import org.mian.gitnex.helpers.MentionHelper;
-import org.mian.gitnex.helpers.SnackBar;
 import org.mian.gitnex.helpers.TimeHelper;
 import org.mian.gitnex.helpers.TinyDB;
 import org.mian.gitnex.helpers.Toasty;
@@ -120,7 +114,7 @@ import retrofit2.Callback;
 import retrofit2.Response;
 
 /**
- * @author M M Arif
+ * @author mmarif
  */
 public class IssueDetailActivity extends BaseActivity
 		implements LabelsListAdapter.LabelsListAdapterListener,
@@ -128,7 +122,6 @@ public class IssueDetailActivity extends BaseActivity
 				BottomSheetListener,
 				AttachmentsAdapter.AttachmentsReceiverListener {
 
-	private Typeface myTypeface;
 	public static boolean singleIssueUpdate = false;
 	public static boolean commentPosted = false;
 	private final List<Label> labelsList = new ArrayList<>();
@@ -389,8 +382,6 @@ public class IssueDetailActivity extends BaseActivity
 										},
 										50));
 
-		myTypeface = AppUtil.getTypeface(this);
-		viewBinding.toolbarTitle.setTypeface(myTypeface);
 		viewBinding.toolbarTitle.setText(repoName);
 
 		getSingleIssue(repoOwner, repoName, issueIndex);
@@ -532,7 +523,7 @@ public class IssueDetailActivity extends BaseActivity
 																				ctx,
 																				null));
 
-												Toasty.success(
+												Toasty.show(
 														ctx,
 														getString(R.string.editCommentUpdatedText));
 
@@ -545,7 +536,7 @@ public class IssueDetailActivity extends BaseActivity
 														InputMethodManager.SHOW_IMPLICIT, 0);
 											} else {
 
-												Toasty.error(ctx, getString(R.string.genericError));
+												Toasty.show(ctx, getString(R.string.genericError));
 											}
 										});
 					}
@@ -642,10 +633,7 @@ public class IssueDetailActivity extends BaseActivity
 					@Override
 					public void onFailure(@NonNull Call<Attachment> call, @NonNull Throwable t) {
 
-						SnackBar.error(
-								ctx,
-								findViewById(android.R.id.content),
-								getString(R.string.genericServerResponseError));
+						Toasty.show(ctx, getString(R.string.genericServerResponseError));
 					}
 				});
 	}
@@ -769,7 +757,7 @@ public class IssueDetailActivity extends BaseActivity
 
 						if (response2.code() == 201) {
 
-							Toasty.success(ctx, ctx.getString(R.string.assigneesUpdated));
+							Toasty.show(ctx, ctx.getString(R.string.assigneesUpdated));
 
 							viewBinding.frameAssignees.removeAllViews();
 							viewBinding.frameLabels.removeAllViews();
@@ -791,13 +779,13 @@ public class IssueDetailActivity extends BaseActivity
 							AlertDialogs.authorizationTokenRevokedDialog(ctx);
 						} else if (response2.code() == 403) {
 
-							Toasty.error(ctx, ctx.getString(R.string.authorizeError));
+							Toasty.show(ctx, ctx.getString(R.string.authorizeError));
 						} else if (response2.code() == 404) {
 
-							Toasty.warning(ctx, ctx.getString(R.string.apiNotFound));
+							Toasty.show(ctx, ctx.getString(R.string.apiNotFound));
 						} else {
 
-							Toasty.error(ctx, getString(R.string.genericError));
+							Toasty.show(ctx, getString(R.string.genericError));
 						}
 					}
 
@@ -833,7 +821,7 @@ public class IssueDetailActivity extends BaseActivity
 
 						if (response.code() == 200) {
 
-							Toasty.success(ctx, ctx.getString(R.string.labelsUpdated));
+							Toasty.show(ctx, ctx.getString(R.string.labelsUpdated));
 
 							viewBinding.frameAssignees.removeAllViews();
 							viewBinding.frameLabels.removeAllViews();
@@ -856,13 +844,13 @@ public class IssueDetailActivity extends BaseActivity
 							AlertDialogs.authorizationTokenRevokedDialog(ctx);
 						} else if (response.code() == 403) {
 
-							Toasty.error(ctx, ctx.getString(R.string.authorizeError));
+							Toasty.show(ctx, ctx.getString(R.string.authorizeError));
 						} else if (response.code() == 404) {
 
-							Toasty.warning(ctx, ctx.getString(R.string.apiNotFound));
+							Toasty.show(ctx, ctx.getString(R.string.apiNotFound));
 						} else {
 
-							Toasty.error(ctx, getString(R.string.genericError));
+							Toasty.show(ctx, getString(R.string.genericError));
 						}
 					}
 
@@ -1051,7 +1039,7 @@ public class IssueDetailActivity extends BaseActivity
 							AlertDialogs.authorizationTokenRevokedDialog(ctx);
 						} else if (response.code() == 404) {
 
-							Toasty.warning(ctx, getResources().getString(R.string.noDataFound));
+							Toasty.show(ctx, getResources().getString(R.string.noDataFound));
 							finish();
 						}
 					}
@@ -1427,27 +1415,8 @@ public class IssueDetailActivity extends BaseActivity
 				viewBinding.frameLabels.setGravity(Gravity.START | Gravity.TOP);
 				labelsView.setLayoutParams(paramsLabels);
 
-				int height = AppUtil.getPixelsFromDensity(ctx, 20);
-				int textSize = AppUtil.getPixelsFromScaledDensity(ctx, 12);
-
-				TextDrawable drawable =
-						TextDrawable.builder()
-								.beginConfig()
-								.useFont(myTypeface)
-								.textColor(new ColorInverter().getContrastColor(color))
-								.fontSize(textSize)
-								.width(
-										LabelWidthCalculator.calculateLabelWidth(
-												labelName,
-												myTypeface,
-												textSize,
-												AppUtil.getPixelsFromDensity(ctx, 10)))
-								.height(height)
-								.endConfig()
-								.buildRoundRect(
-										labelName, color, AppUtil.getPixelsFromDensity(ctx, 6));
-
-				labelsView.setImageDrawable(drawable);
+				labelsView.setImageDrawable(
+						AvatarGenerator.getLabelDrawable(ctx, labelName, color, 20));
 				viewBinding.frameLabels.addView(labelsView);
 			}
 		} else {
@@ -1462,10 +1431,11 @@ public class IssueDetailActivity extends BaseActivity
 			String dueDate = formatter.format(issue.getIssue().getDueDate());
 			viewBinding.issueDueDate.setText(dueDate);
 			viewBinding.issueDueDate.setOnClickListener(
-					new ClickListener(
-							TimeHelper.customDateFormatForToastDateFormat(
-									issue.getIssue().getDueDate()),
-							ctx));
+					v ->
+							Toasty.show(
+									ctx,
+									TimeHelper.getFullDateTime(
+											issue.getIssue().getDueDate(), Locale.getDefault())));
 		} else {
 
 			viewBinding.dueDateFrame.setVisibility(View.GONE);
@@ -1479,10 +1449,11 @@ public class IssueDetailActivity extends BaseActivity
 			viewBinding.issueModified.setVisibility(View.VISIBLE);
 			viewBinding.issueModified.setText(edited);
 			viewBinding.issueModified.setOnClickListener(
-					new ClickListener(
-							TimeHelper.customDateFormatForToastDateFormat(
-									issue.getIssue().getUpdatedAt()),
-							ctx));
+					v ->
+							Toasty.show(
+									ctx,
+									TimeHelper.getFullDateTime(
+											issue.getIssue().getUpdatedAt(), Locale.getDefault())));
 		} else {
 
 			viewBinding.issueModified.setVisibility(View.INVISIBLE);
@@ -1492,10 +1463,11 @@ public class IssueDetailActivity extends BaseActivity
 		viewBinding.issueCreatedTime.setText(
 				TimeHelper.formatTime(issue.getIssue().getCreatedAt(), locale));
 		viewBinding.issueCreatedTime.setOnClickListener(
-				new ClickListener(
-						TimeHelper.customDateFormatForToastDateFormat(
-								issue.getIssue().getCreatedAt()),
-						ctx));
+				v ->
+						Toasty.show(
+								ctx,
+								TimeHelper.getFullDateTime(
+										issue.getIssue().getCreatedAt(), Locale.getDefault())));
 
 		Bundle bundle = new Bundle();
 		bundle.putString("repoOwner", repoOwner);
@@ -1609,14 +1581,14 @@ public class IssueDetailActivity extends BaseActivity
 							loadingFinishedRepo = true;
 							updateMenuState();
 						} else {
-							Toasty.error(ctx, getString(R.string.genericError));
+							Toasty.show(ctx, getString(R.string.genericError));
 						}
 					}
 
 					@Override
 					public void onFailure(@NonNull Call<Repository> call, @NonNull Throwable t) {
 
-						Toasty.error(ctx, getString(R.string.genericError));
+						Toasty.show(ctx, getString(R.string.genericError));
 					}
 				});
 	}
@@ -1792,8 +1764,8 @@ public class IssueDetailActivity extends BaseActivity
 							if (issue.hasIssue()) {
 								IssuesFragment.resumeIssues =
 										issue.getIssue().getPullRequest() == null;
-								PullRequestsFragment.resumePullRequests =
-										issue.getIssue().getPullRequest() != null;
+								// PullRequestsFragment.resumePullRequests =
+								//		issue.getIssue().getPullRequest() != null;
 							}
 
 							if (!contentUri.isEmpty()) {
@@ -1815,7 +1787,7 @@ public class IssueDetailActivity extends BaseActivity
 																			ScrollView
 																					.FOCUS_DOWN)));
 
-							Toasty.success(ctx, getString(R.string.commentSuccess));
+							Toasty.show(ctx, getString(R.string.commentSuccess));
 
 							viewBinding.send.setAlpha(buttonAlphaStatDisabled);
 							viewBinding.send.setEnabled(false);
@@ -1829,14 +1801,14 @@ public class IssueDetailActivity extends BaseActivity
 
 						} else {
 
-							Toasty.error(ctx, getString(R.string.genericError));
+							Toasty.show(ctx, getString(R.string.genericError));
 						}
 					}
 
 					@Override
 					public void onFailure(@NonNull Call<Comment> call, @NonNull Throwable t) {
 
-						Toasty.error(
+						Toasty.show(
 								ctx,
 								ctx.getResources().getString(R.string.genericServerResponseError));
 					}
@@ -1911,7 +1883,7 @@ public class IssueDetailActivity extends BaseActivity
 								viewBinding.statusesLvMain.setVisibility(View.GONE);
 								checkLoading();
 								if (ctx != null) {
-									Toasty.error(ctx, getString(R.string.genericError));
+									Toasty.show(ctx, getString(R.string.genericError));
 								}
 							}
 						});

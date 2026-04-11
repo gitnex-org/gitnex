@@ -13,7 +13,7 @@ import org.mian.gitnex.databinding.ActivityUnlockBinding;
 import org.mian.gitnex.helpers.AppDatabaseSettings;
 
 /**
- * @author M M Arif
+ * @author mmarif
  */
 public class BiometricUnlock extends AppCompatActivity {
 

@@ -1,5 +1,6 @@
 package org.mian.gitnex.fragments;
 
+import android.app.Dialog;
 import android.content.Context;
 import android.os.Bundle;
 import android.view.LayoutInflater;
@@ -8,6 +9,7 @@ import android.view.ViewGroup;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.biometric.BiometricManager;
+import com.google.android.material.bottomsheet.BottomSheetDialog;
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment;
 import com.google.android.material.dialog.MaterialAlertDialogBuilder;
 import java.io.File;
@@ -16,10 +18,11 @@ import org.apache.commons.io.FileUtils;
 import org.mian.gitnex.R;
 import org.mian.gitnex.api.clients.ApiRetrofitClient;
 import org.mian.gitnex.clients.RetrofitClient;
-import org.mian.gitnex.databinding.BottomSheetSettingsSecurityBinding;
+import org.mian.gitnex.databinding.BottomsheetSettingsSecurityBinding;
 import org.mian.gitnex.helpers.AppDatabaseSettings;
+import org.mian.gitnex.helpers.AppUIStateManager;
 import org.mian.gitnex.helpers.AppUtil;
-import org.mian.gitnex.helpers.SnackBar;
+import org.mian.gitnex.helpers.Toasty;
 import org.mian.gitnex.helpers.ssl.MemorizingTrustManager;
 
 /**
@@ -27,19 +30,25 @@ import org.mian.gitnex.helpers.ssl.MemorizingTrustManager;
  */
 public class BottomSheetSettingsSecurityFragment extends BottomSheetDialogFragment {
 
-	private BottomSheetSettingsSecurityBinding binding;
+	private BottomsheetSettingsSecurityBinding binding;
 	private static String[] cacheSizeDataList;
 	private static int cacheSizeDataSelectedChoice;
 	private static String[] cacheSizeImagesList;
 	private static int cacheSizeImagesSelectedChoice;
 	private static int[] requestTimeoutDataList;
 
+	@Override
+	public void onCreate(@Nullable Bundle savedInstanceState) {
+		super.onCreate(savedInstanceState);
+		setStyle(STYLE_NORMAL, R.style.Custom_BottomSheet);
+	}
+
 	@Nullable @Override
 	public View onCreateView(
 			@NonNull LayoutInflater inflater,
 			@Nullable ViewGroup container,
 			@Nullable Bundle savedInstanceState) {
-		binding = BottomSheetSettingsSecurityBinding.inflate(inflater, container, false);
+		binding = BottomsheetSettingsSecurityBinding.inflate(inflater, container, false);
 
 		cacheSizeDataList = getResources().getStringArray(R.array.cacheSizeList);
 		cacheSizeImagesList = getResources().getStringArray(R.array.cacheSizeList);
@@ -72,10 +81,7 @@ public class BottomSheetSettingsSecurityFragment extends BottomSheetDialogFragme
 					if (!isChecked) {
 						AppDatabaseSettings.updateSettingsValue(
 								requireContext(), "false", AppDatabaseSettings.APP_BIOMETRIC_KEY);
-						SnackBar.success(
-								requireContext(),
-								requireActivity().findViewById(android.R.id.content),
-								getString(R.string.settingsSave));
+						Toasty.show(requireContext(), getString(R.string.settingsSave));
 						return;
 					}
 
@@ -92,37 +98,27 @@ public class BottomSheetSettingsSecurityFragment extends BottomSheetDialogFragme
 									requireContext(),
 									"true",
 									AppDatabaseSettings.APP_BIOMETRIC_KEY);
-							SnackBar.success(
-									requireContext(),
-									requireActivity().findViewById(android.R.id.content),
-									getString(R.string.settingsSave));
+							Toasty.show(requireContext(), getString(R.string.settingsSave));
 							break;
 
 						case BiometricManager.BIOMETRIC_ERROR_NONE_ENROLLED:
 							binding.switchBiometric.setChecked(false);
-							SnackBar.info(
-									requireContext(),
-									requireActivity().findViewById(android.R.id.content),
-									getString(R.string.enrollBiometric));
+							Toasty.show(requireContext(), getString(R.string.enrollBiometric));
 							break;
 
 						case BiometricManager.BIOMETRIC_ERROR_NO_HARDWARE:
 						case BiometricManager.BIOMETRIC_ERROR_UNSUPPORTED:
 						case BiometricManager.BIOMETRIC_ERROR_SECURITY_UPDATE_REQUIRED:
 							binding.switchBiometric.setChecked(false);
-							SnackBar.error(
-									requireContext(),
-									requireActivity().findViewById(android.R.id.content),
-									getString(R.string.biometricNotSupported));
+							Toasty.show(
+									requireContext(), getString(R.string.biometricNotSupported));
 							break;
 
 						case BiometricManager.BIOMETRIC_ERROR_HW_UNAVAILABLE:
 						default:
 							binding.switchBiometric.setChecked(false);
-							SnackBar.error(
-									requireContext(),
-									requireActivity().findViewById(android.R.id.content),
-									getString(R.string.biometricNotAvailable));
+							Toasty.show(
+									requireContext(), getString(R.string.biometricNotAvailable));
 							break;
 					}
 				});
@@ -144,11 +140,8 @@ public class BottomSheetSettingsSecurityFragment extends BottomSheetDialogFragme
 									requireContext(),
 									String.valueOf(newSelection),
 									AppDatabaseSettings.APP_DATA_CACHE_KEY);
-							SettingsFragment.refreshParent = true;
-							SnackBar.success(
-									requireContext(),
-									requireActivity().findViewById(android.R.id.content),
-									getString(R.string.settingsSave));
+							AppUIStateManager.invalidateUI();
+							Toasty.show(requireContext(), getString(R.string.settingsSave));
 						}
 					}
 				});
@@ -167,11 +160,8 @@ public class BottomSheetSettingsSecurityFragment extends BottomSheetDialogFragme
 									requireContext(),
 									String.valueOf(newSelection),
 									AppDatabaseSettings.APP_IMAGES_CACHE_KEY);
-							SettingsFragment.refreshParent = true;
-							SnackBar.success(
-									requireContext(),
-									requireActivity().findViewById(android.R.id.content),
-									getString(R.string.settingsSave));
+							AppUIStateManager.invalidateUI();
+							Toasty.show(requireContext(), getString(R.string.settingsSave));
 						}
 					}
 				});
@@ -304,6 +294,15 @@ public class BottomSheetSettingsSecurityFragment extends BottomSheetDialogFragme
 		if (checkedId == R.id.chipImagesCache2) return 2;
 		if (checkedId == R.id.chipImagesCache3) return 3;
 		return cacheSizeImagesSelectedChoice;
+	}
+
+	@Override
+	public void onStart() {
+		super.onStart();
+		Dialog dialog = getDialog();
+		if (dialog instanceof BottomSheetDialog) {
+			AppUtil.applySheetStyle((BottomSheetDialog) dialog, true);
+		}
 	}
 
 	@Override

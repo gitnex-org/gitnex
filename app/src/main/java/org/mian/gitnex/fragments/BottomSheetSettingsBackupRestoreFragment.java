@@ -1,6 +1,7 @@
 package org.mian.gitnex.fragments;
 
 import android.app.Activity;
+import android.app.Dialog;
 import android.content.Context;
 import android.content.Intent;
 import android.net.Uri;
@@ -12,6 +13,7 @@ import androidx.activity.result.ActivityResultLauncher;
 import androidx.activity.result.contract.ActivityResultContracts;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import com.google.android.material.bottomsheet.BottomSheetDialog;
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment;
 import java.io.File;
 import java.io.FileNotFoundException;
@@ -25,27 +27,33 @@ import org.mian.gitnex.R;
 import org.mian.gitnex.database.api.BaseApi;
 import org.mian.gitnex.database.api.UserAccountsApi;
 import org.mian.gitnex.database.models.UserAccount;
-import org.mian.gitnex.databinding.BottomSheetSettingsBackupRestoreBinding;
+import org.mian.gitnex.databinding.BottomsheetSettingsBackupRestoreBinding;
 import org.mian.gitnex.helpers.AppUtil;
 import org.mian.gitnex.helpers.BackupUtil;
-import org.mian.gitnex.helpers.SnackBar;
+import org.mian.gitnex.helpers.Toasty;
 
 /**
  * @author mmarif
  */
 public class BottomSheetSettingsBackupRestoreFragment extends BottomSheetDialogFragment {
 
-	private BottomSheetSettingsBackupRestoreBinding binding;
+	private BottomsheetSettingsBackupRestoreBinding binding;
 	private Context ctx;
 	private final String DATABASE_NAME = "gitnex";
 	private String BACKUP_DATABASE_NAME;
+
+	@Override
+	public void onCreate(@Nullable Bundle savedInstanceState) {
+		super.onCreate(savedInstanceState);
+		setStyle(STYLE_NORMAL, R.style.Custom_BottomSheet);
+	}
 
 	@Nullable @Override
 	public View onCreateView(
 			@NonNull LayoutInflater inflater,
 			@Nullable ViewGroup container,
 			@Nullable Bundle savedInstanceState) {
-		binding = BottomSheetSettingsBackupRestoreBinding.inflate(inflater, container, false);
+		binding = BottomsheetSettingsBackupRestoreBinding.inflate(inflater, container, false);
 		ctx = requireContext();
 
 		BACKUP_DATABASE_NAME = ctx.getString(R.string.appName) + "-" + LocalDate.now() + ".backup";
@@ -53,7 +61,7 @@ public class BottomSheetSettingsBackupRestoreFragment extends BottomSheetDialogF
 		binding.backupButton.setOnClickListener(v -> requestBackupFileDownload());
 		binding.restoreButton.setOnClickListener(v -> requestRestoreFile());
 
-		binding.bottomSheetHeader.setText(
+		binding.sheetTitle.setText(
 				getString(
 						R.string.backupRestore,
 						getString(R.string.backup),
@@ -113,22 +121,14 @@ public class BottomSheetSettingsBackupRestoreFragment extends BottomSheetDialogF
 											.runOnUiThread(
 													() -> {
 														if (copySucceeded) {
-															SnackBar.success(
+															Toasty.show(
 																	ctx,
-																	requireActivity()
-																			.findViewById(
-																					android.R.id
-																							.content),
 																	getString(
 																			R.string
 																					.backupFileSuccess));
 														} else {
-															SnackBar.error(
+															Toasty.show(
 																	ctx,
-																	requireActivity()
-																			.findViewById(
-																					android.R.id
-																							.content),
 																	getString(
 																			R.string
 																					.backupFileError));
@@ -141,12 +141,8 @@ public class BottomSheetSettingsBackupRestoreFragment extends BottomSheetDialogF
 									requireActivity()
 											.runOnUiThread(
 													() ->
-															SnackBar.error(
+															Toasty.show(
 																	ctx,
-																	requireActivity()
-																			.findViewById(
-																					android.R.id
-																							.content),
 																	getString(
 																			R.string
 																					.backupFileError)));
@@ -155,12 +151,8 @@ public class BottomSheetSettingsBackupRestoreFragment extends BottomSheetDialogF
 								requireActivity()
 										.runOnUiThread(
 												() ->
-														SnackBar.error(
+														Toasty.show(
 																ctx,
-																requireActivity()
-																		.findViewById(
-																				android.R.id
-																						.content),
 																getString(
 																		R.string.backupFileError)));
 							} finally {
@@ -188,10 +180,7 @@ public class BottomSheetSettingsBackupRestoreFragment extends BottomSheetDialogF
 										ctx.getContentResolver().openInputStream(restoreFileUri);
 								restoreDatabaseThread(inputStream);
 							} catch (FileNotFoundException e) {
-								SnackBar.error(
-										ctx,
-										requireActivity().findViewById(android.R.id.content),
-										getString(R.string.restoreError));
+								Toasty.show(ctx, getString(R.string.restoreError));
 							}
 						}
 					});
@@ -225,12 +214,8 @@ public class BottomSheetSettingsBackupRestoreFragment extends BottomSheetDialogF
 								requireActivity()
 										.runOnUiThread(
 												() ->
-														SnackBar.error(
+														Toasty.show(
 																ctx,
-																requireActivity()
-																		.findViewById(
-																				android.R.id
-																						.content),
 																getString(R.string.restoreError)));
 							} finally {
 								if (!exceptionOccurred) {
@@ -259,8 +244,17 @@ public class BottomSheetSettingsBackupRestoreFragment extends BottomSheetDialogF
 	}
 
 	@Override
+	public void onStart() {
+		super.onStart();
+		Dialog dialog = getDialog();
+		if (dialog instanceof BottomSheetDialog) {
+			AppUtil.applySheetStyle((BottomSheetDialog) dialog, true);
+		}
+	}
+
+	@Override
 	public void onDestroyView() {
 		super.onDestroyView();
-		binding = null; // Prevent memory leaks
+		binding = null;
 	}
 }

@@ -6,7 +6,6 @@ import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
 import android.os.Handler;
-import android.os.Looper;
 import android.view.LayoutInflater;
 import android.view.MotionEvent;
 import android.view.View;
@@ -62,7 +61,6 @@ import org.mian.gitnex.helpers.AppDatabaseSettings;
 import org.mian.gitnex.helpers.Constants;
 import org.mian.gitnex.helpers.Markdown;
 import org.mian.gitnex.helpers.MentionHelper;
-import org.mian.gitnex.helpers.SnackBar;
 import org.mian.gitnex.helpers.Toasty;
 import org.mian.gitnex.helpers.attachments.AttachmentUtils;
 import org.mian.gitnex.helpers.attachments.AttachmentsModel;
@@ -71,7 +69,7 @@ import retrofit2.Call;
 import retrofit2.Callback;
 
 /**
- * @author M M Arif
+ * @author mmarif
  */
 public class CreateIssueActivity extends BaseActivity
 		implements LabelsListAdapter.LabelsListAdapterListener,
@@ -98,7 +96,6 @@ public class CreateIssueActivity extends BaseActivity
 	private CustomInsertNoteBinding customInsertNoteBinding;
 	private NotesAdapter adapter;
 	private NotesApi notesApi;
-	private List<Notes> notesList;
 	public AlertDialog dialogNotes;
 	private MentionHelper mentionHelper;
 
@@ -215,58 +212,46 @@ public class CreateIssueActivity extends BaseActivity
 	}
 
 	private void showAllNotes() {
-
-		notesList = new ArrayList<>();
+		List<Notes> notesList = new ArrayList<>();
 		notesApi = BaseApi.getInstance(ctx, NotesApi.class);
-
 		customInsertNoteBinding = CustomInsertNoteBinding.inflate(LayoutInflater.from(ctx));
 
-		View view = customInsertNoteBinding.getRoot();
-		materialAlertDialogBuilderNotes.setView(view);
+		materialAlertDialogBuilderNotes.setView(customInsertNoteBinding.getRoot());
 
-		customInsertNoteBinding.recyclerView.setHasFixedSize(true);
 		customInsertNoteBinding.recyclerView.setLayoutManager(new LinearLayoutManager(ctx));
-
 		adapter = new NotesAdapter(ctx, notesList, "insert", "issue");
-
-		customInsertNoteBinding.pullToRefresh.setOnRefreshListener(
-				() ->
-						new Handler(Looper.getMainLooper())
-								.postDelayed(
-										() -> {
-											notesList.clear();
-											customInsertNoteBinding.pullToRefresh.setRefreshing(
-													false);
-											customInsertNoteBinding.progressBar.setVisibility(
-													View.VISIBLE);
-											fetchNotes();
-										},
-										250));
+		customInsertNoteBinding.recyclerView.setAdapter(adapter);
 
 		if (notesApi.getCount() > 0) {
 			fetchNotes();
 			dialogNotes = materialAlertDialogBuilderNotes.show();
 		} else {
-			Toasty.warning(ctx, getResources().getString(R.string.noNotes));
+			Toasty.show(ctx, getString(R.string.noNotes));
 		}
 	}
 
 	private void fetchNotes() {
+		customInsertNoteBinding.expressiveLoader.setVisibility(View.VISIBLE);
 
 		notesApi.fetchAllNotes()
 				.observe(
 						this,
 						allNotes -> {
-							assert allNotes != null;
-							if (!allNotes.isEmpty()) {
+							customInsertNoteBinding.expressiveLoader.setVisibility(View.GONE);
 
-								notesList.clear();
-
-								notesList.addAll(allNotes);
-								adapter.notifyDataChanged();
-								customInsertNoteBinding.recyclerView.setAdapter(adapter);
+							if (allNotes != null && !allNotes.isEmpty()) {
+								adapter.updateList(allNotes);
+								customInsertNoteBinding
+										.layoutEmpty
+										.getRoot()
+										.setVisibility(View.GONE);
+							} else {
+								adapter.updateList(new ArrayList<>());
+								customInsertNoteBinding
+										.layoutEmpty
+										.getRoot()
+										.setVisibility(View.VISIBLE);
 							}
-							customInsertNoteBinding.progressBar.setVisibility(View.GONE);
 						});
 	}
 
@@ -374,20 +359,14 @@ public class CreateIssueActivity extends BaseActivity
 							AlertDialogs.authorizationTokenRevokedDialog(ctx);
 						} else {
 
-							SnackBar.error(
-									ctx,
-									findViewById(android.R.id.content),
-									getString(R.string.attachmentsSaveError));
+							Toasty.show(ctx, getString(R.string.attachmentsSaveError));
 						}
 					}
 
 					@Override
 					public void onFailure(@NonNull Call<Attachment> call, @NonNull Throwable t) {
 
-						SnackBar.error(
-								ctx,
-								findViewById(android.R.id.content),
-								getString(R.string.genericServerResponseError));
+						Toasty.show(ctx, getString(R.string.genericServerResponseError));
 					}
 				});
 	}
@@ -494,8 +473,7 @@ public class CreateIssueActivity extends BaseActivity
 
 		if (newIssueTitleForm.isEmpty()) {
 
-			SnackBar.error(
-					ctx, findViewById(android.R.id.content), getString(R.string.issueTitleEmpty));
+			Toasty.show(ctx, getString(R.string.issueTitleEmpty));
 			return;
 		}
 
@@ -554,13 +532,10 @@ public class CreateIssueActivity extends BaseActivity
 						if (response2.code() == 201) {
 
 							IssuesFragment.resumeIssues = true;
-							RepoDetailActivity.updateRepo = true;
+							// RepoDetailActivity.updateRepo = true;
 							MainActivity.reloadRepos = true;
 
-							SnackBar.success(
-									ctx,
-									findViewById(android.R.id.content),
-									getString(R.string.issueCreated));
+							Toasty.show(ctx, getString(R.string.issueCreated));
 
 							assert response2.body() != null;
 
@@ -578,10 +553,7 @@ public class CreateIssueActivity extends BaseActivity
 						} else {
 
 							viewBinding.topAppBar.getMenu().getItem(2).setVisible(true);
-							SnackBar.error(
-									ctx,
-									findViewById(android.R.id.content),
-									getString(R.string.genericError));
+							Toasty.show(ctx, getString(R.string.genericError));
 						}
 					}
 
@@ -589,10 +561,7 @@ public class CreateIssueActivity extends BaseActivity
 					public void onFailure(@NonNull Call<Issue> call, @NonNull Throwable t) {
 
 						viewBinding.topAppBar.getMenu().getItem(2).setVisible(true);
-						SnackBar.error(
-								ctx,
-								findViewById(android.R.id.content),
-								getString(R.string.genericServerResponseError));
+						Toasty.show(ctx, getString(R.string.genericServerResponseError));
 					}
 				});
 	}
@@ -668,10 +637,7 @@ public class CreateIssueActivity extends BaseActivity
 					public void onFailure(
 							@NonNull Call<List<Milestone>> call, @NonNull Throwable t) {
 
-						SnackBar.error(
-								ctx,
-								findViewById(android.R.id.content),
-								getString(R.string.genericServerResponseError));
+						Toasty.show(ctx, getString(R.string.genericServerResponseError));
 					}
 				});
 	}

@@ -104,7 +104,7 @@
                     android:background="?android:attr/selectableItemBackgroundBorderless"
                     android:gravity="center"
                     android:padding="@dimen/dimen4dp"
-                    android:text="@string/newUpdateButtonCopy"
+                    android:text="@string/update"
                     android:textColor="?attr/primaryTextColor"
                     android:textSize="@dimen/dimen14sp"
                     android:visibility="gone"

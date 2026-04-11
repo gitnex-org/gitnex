@@ -1,71 +1,77 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:layout_width="match_parent"
-    android:layout_height="wrap_content"
+<com.google.android.material.listitem.ListItemLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    android:gravity="center_vertical"
-    android:paddingTop="@dimen/dimen4dp"
-    android:paddingBottom="@dimen/dimen4dp">
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content">
 
-    <com.google.android.material.card.MaterialCardView
+    <com.google.android.material.listitem.ListItemCardView
         android:id="@+id/card"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        style="?attr/materialCardViewFilledStyle">
+        android:checkable="false"
+        android:layout_marginVertical="@dimen/dimen1dp"
+        app:strokeWidth="0dp"
+        app:cardBackgroundColor="?attr/materialCardBackgroundColor">
 
-        <LinearLayout
+        <androidx.constraintlayout.widget.ConstraintLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:background="?attr/materialCardBackgroundColor"
-            android:foreground="?android:attr/selectableItemBackground"
-            android:padding="@dimen/dimen12dp"
-            android:orientation="horizontal">
+            android:padding="@dimen/dimen8dp">
 
             <com.google.android.material.card.MaterialCardView
-                android:layout_width="@dimen/dimen32dp"
-                android:layout_height="@dimen/dimen32dp"
-                style="?attr/materialCardViewFilledStyle"
+                android:id="@+id/avatarContainer"
+                android:layout_width="@dimen/dimen36dp"
+                android:layout_height="@dimen/dimen36dp"
+                app:cardCornerRadius="@dimen/dimen8dp"
+                app:cardElevation="0dp"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
                 android:backgroundTint="@android:color/transparent"
-                app:cardElevation="@dimen/dimen0dp"
-                android:layout_marginEnd="@dimen/dimen12dp"
-                app:cardCornerRadius="@dimen/dimen8dp">
+                app:strokeWidth="0dp">
 
                 <ImageView
-                    android:id="@+id/userAvatar"
+                    android:id="@+id/userAvatarImageView"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
                     android:contentDescription="@string/generalImgContentText"
-                    android:src="@drawable/ic_android"/>
+                    android:src="@drawable/loader_animated"/>
 
             </com.google.android.material.card.MaterialCardView>
 
-            <LinearLayout
-                android:id="@+id/userInfoSection"
-                android:layout_width="wrap_content"
+            <TextView
+                android:id="@+id/userNameTv"
+                android:layout_width="0dp"
                 android:layout_height="wrap_content"
-                android:orientation="vertical">
+                android:layout_marginStart="@dimen/dimen12dp"
+                android:ellipsize="end"
+                android:maxLines="1"
+                android:textColor="?attr/primaryTextColor"
+                android:textAppearance="@style/TextAppearance.Material3.TitleMedium"
+                android:textStyle="bold"
+                app:layout_constraintBottom_toTopOf="@+id/userName"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toEndOf="@+id/avatarContainer"
+                app:layout_constraintTop_toTopOf="@+id/avatarContainer"
+                app:layout_constraintVertical_chainStyle="packed" />
 
-                <TextView
-                    android:id="@+id/userFullName"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:text="@string/userName"
-                    android:textColor="?attr/primaryTextColor"
-                    android:textSize="@dimen/dimen16sp"
-                    android:textStyle="bold"/>
+            <TextView
+                android:id="@+id/userName"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="@dimen/dimen12dp"
+                android:ellipsize="end"
+                android:maxLines="1"
+                android:textColor="?attr/primaryTextColor"
+                android:alpha=".7"
+                android:textAppearance="@style/TextAppearance.Material3.BodySmall"
+                app:layout_constraintBottom_toBottomOf="@+id/avatarContainer"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toEndOf="@+id/avatarContainer"
+                app:layout_constraintTop_toBottomOf="@+id/userNameTv" />
 
-                <TextView
-                    android:id="@+id/userName"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:text="@string/userName"
-                    android:textColor="?attr/primaryTextColor"
-                    android:textSize="@dimen/dimen14sp"/>
+        </androidx.constraintlayout.widget.ConstraintLayout>
 
-            </LinearLayout>
+    </com.google.android.material.listitem.ListItemCardView>
 
-        </LinearLayout>
-
-    </com.google.android.material.card.MaterialCardView>
-
-</LinearLayout>
+</com.google.android.material.listitem.ListItemLayout>

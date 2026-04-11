@@ -1,520 +1,377 @@
 package org.mian.gitnex.fragments;
 
-import android.app.Dialog;
 import android.content.Intent;
-import android.graphics.Rect;
 import android.net.Uri;
 import android.os.Bundle;
+import android.text.Editable;
+import android.text.TextWatcher;
 import android.view.LayoutInflater;
-import android.view.Menu;
-import android.view.MenuInflater;
-import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
-import android.view.inputmethod.EditorInfo;
 import androidx.activity.OnBackPressedCallback;
 import androidx.annotation.NonNull;
-import androidx.appcompat.app.AlertDialog;
-import androidx.appcompat.widget.SearchView;
-import androidx.core.view.MenuProvider;
+import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
-import androidx.lifecycle.Lifecycle;
 import androidx.lifecycle.ViewModelProvider;
 import androidx.recyclerview.widget.LinearLayoutManager;
-import androidx.recyclerview.widget.RecyclerView;
-import com.google.android.material.dialog.MaterialAlertDialogBuilder;
+import com.google.android.material.search.SearchView;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
-import org.gitnex.tea4j.v2.models.Branch;
-import org.gitnex.tea4j.v2.models.ContentsResponse;
 import org.mian.gitnex.R;
+import org.mian.gitnex.activities.CommitsActivity;
 import org.mian.gitnex.activities.CreateFileActivity;
 import org.mian.gitnex.activities.FileViewActivity;
 import org.mian.gitnex.activities.RepoDetailActivity;
-import org.mian.gitnex.adapters.BranchAdapter;
 import org.mian.gitnex.adapters.FilesAdapter;
-import org.mian.gitnex.clients.RetrofitClient;
+import org.mian.gitnex.api.models.contents.RepoGetContentsList;
 import org.mian.gitnex.database.api.BaseApi;
 import org.mian.gitnex.database.api.UserAccountsApi;
 import org.mian.gitnex.database.models.UserAccount;
 import org.mian.gitnex.databinding.FragmentFilesBinding;
 import org.mian.gitnex.helpers.AppUtil;
-import org.mian.gitnex.helpers.Constants;
 import org.mian.gitnex.helpers.Path;
+import org.mian.gitnex.helpers.Toasty;
+import org.mian.gitnex.helpers.UIHelper;
 import org.mian.gitnex.helpers.contexts.RepositoryContext;
+import org.mian.gitnex.models.RepositoryMenuItemModel;
 import org.mian.gitnex.viewmodels.FilesViewModel;
-import retrofit2.Call;
-import retrofit2.Callback;
-import retrofit2.Response;
 
 /**
- * @author M M Arif
+ * @author mmarif
  */
-public class FilesFragment extends Fragment implements FilesAdapter.FilesAdapterListener {
+public class FilesFragment extends Fragment
+		implements FilesAdapter.FilesAdapterListener, RepoDetailActivity.RepoHubProvider {
 
-	private final Path path = new Path();
 	private FragmentFilesBinding binding;
-	private RepositoryContext repository;
+	private FilesViewModel viewModel;
 	private FilesAdapter filesAdapter;
-
-	public FilesFragment() {}
+	private RepositoryContext repository;
+	private final Path path = new Path();
 
 	public static FilesFragment newInstance(RepositoryContext repository) {
-
 		FilesFragment fragment = new FilesFragment();
 		fragment.setArguments(repository.getBundle());
-
 		return fragment;
 	}
 
 	@Override
+	public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
+		super.onViewCreated(view, savedInstanceState);
+		UIHelper.applyInsets(view, null, binding.recyclerView, binding.pullToRefresh, null);
+	}
+
+	@Override
 	public void onCreate(Bundle savedInstanceState) {
-		repository = RepositoryContext.fromBundle(requireArguments());
 		super.onCreate(savedInstanceState);
+		if (getArguments() != null) {
+			repository = RepositoryContext.fromBundle(getArguments());
+		}
 	}
 
 	@Override
 	public View onCreateView(
 			@NonNull LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-
 		binding = FragmentFilesBinding.inflate(inflater, container, false);
+		viewModel = new ViewModelProvider(this).get(FilesViewModel.class);
 
-		boolean canPush = repository.getPermissions().isPush();
-		boolean archived = repository.getRepository().isArchived();
+		setupRecyclerView();
+		setupListeners();
+		setupBackNavigation();
+		observeViewModel();
 
-		filesAdapter = new FilesAdapter(getContext(), this);
+		String dir = requireActivity().getIntent().getStringExtra("dir");
+		if (dir != null && path.size() == 0) {
+			for (String segment : dir.split("/")) {
+				path.addWithoutEncoding(segment);
+			}
+		}
+
+		refresh();
+		return binding.getRoot();
+	}
+
+	@Override
+	public List<RepositoryMenuItemModel> getRepoHubItems() {
+		List<RepositoryMenuItemModel> items = new ArrayList<>();
+
+		items.add(
+				new RepositoryMenuItemModel(
+						"FILES_COMMITS",
+						R.string.commits,
+						R.drawable.ic_commit,
+						R.attr.colorPrimarySurface,
+						R.attr.colorOnPrimarySurface));
+
+		items.add(
+				new RepositoryMenuItemModel(
+						"FILES_SWITCH_BRANCH",
+						R.string.branches,
+						R.drawable.ic_branch,
+						R.attr.colorPrimarySurface,
+						R.attr.colorOnPrimarySurface));
+
+		items.add(
+				new RepositoryMenuItemModel(
+						"FILES_SEARCH",
+						R.string.search,
+						R.drawable.ic_search,
+						R.attr.colorPrimarySurface,
+						R.attr.colorOnPrimarySurface));
+
+		if (repository.getPermissions().isAdmin() && !repository.getRepository().isArchived()) {
+			items.add(
+					new RepositoryMenuItemModel(
+							"FILES_ADD_NEW",
+							R.string.addButton,
+							R.drawable.ic_add,
+							R.attr.colorPrimaryContainer,
+							R.attr.colorOnPrimaryContainer));
+		}
+
+		return items;
+	}
+
+	@Override
+	public void onHubActionSelected(String actionId) {
+		switch (actionId) {
+			case "FILES_COMMITS":
+				startActivity(repository.getIntent(getContext(), CommitsActivity.class));
+				break;
+
+			case "FILES_SWITCH_BRANCH":
+				chooseBranch();
+				break;
+
+			case "FILES_SEARCH":
+				binding.searchView.show();
+				break;
+
+			case "FILES_ADD_NEW":
+				startActivity(repository.getIntent(getContext(), CreateFileActivity.class));
+				break;
+		}
+	}
+
+	@Override
+	public void onSearchFilterCompleted(int count) {
+		boolean isSearching = binding.searchView.isShowing();
+		if (isSearching) {
+			binding.searchResultsRecycler.setVisibility(count == 0 ? View.GONE : View.VISIBLE);
+		} else {
+			binding.recyclerView.setVisibility(count == 0 ? View.GONE : View.VISIBLE);
+		}
+	}
+
+	private void setupRecyclerView() {
+		filesAdapter = new FilesAdapter(requireContext(), this);
 
 		binding.recyclerView.setHasFixedSize(true);
 		binding.recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
 		binding.recyclerView.setAdapter(filesAdapter);
 
-		binding.branchTitle.setText(repository.getBranchRef());
+		binding.searchResultsRecycler.setHasFixedSize(true);
+		binding.searchResultsRecycler.setLayoutManager(new LinearLayoutManager(getContext()));
+		binding.searchResultsRecycler.setAdapter(filesAdapter);
+	}
 
+	private void setupListeners() {
+		binding.pullToRefresh.setOnRefreshListener(this::refresh);
+
+		binding.searchView
+				.getEditText()
+				.addTextChangedListener(
+						new TextWatcher() {
+							@Override
+							public void beforeTextChanged(
+									CharSequence s, int start, int count, int after) {}
+
+							@Override
+							public void afterTextChanged(Editable s) {}
+
+							@Override
+							public void onTextChanged(
+									CharSequence s, int start, int before, int count) {
+								filesAdapter.getFilter().filter(s);
+							}
+						});
+
+		binding.searchView.addTransitionListener(
+				(searchView, previousState, newState) -> {
+					if (newState == SearchView.TransitionState.HIDDEN) {
+						filesAdapter.getFilter().filter("");
+						boolean hasFiles = filesAdapter.getItemCount() > 0;
+						binding.recyclerView.setVisibility(hasFiles ? View.VISIBLE : View.GONE);
+					}
+				});
+	}
+
+	private void setupBackNavigation() {
 		requireActivity()
 				.getOnBackPressedDispatcher()
 				.addCallback(
 						getViewLifecycleOwner(),
 						new OnBackPressedCallback(true) {
-
 							@Override
 							public void handleOnBackPressed() {
-								if (path.size() == 0
-										|| ((RepoDetailActivity) requireActivity())
-														.viewPager.getCurrentItem()
-												!= 1) {
-									requireActivity().finish();
+								if (binding.searchView.isShowing()) {
+									binding.searchView.hide();
 									return;
 								}
-								path.remove(path.size() - 1);
-								if (path.size() == 0) {
-									fetchDataAsync(
-											repository.getOwner(),
-											repository.getName(),
-											repository.getBranchRef());
+								if (path.size() > 0) {
+									path.remove(path.size() - 1);
+									refresh();
 								} else {
-									fetchDataAsyncSub(
-											repository.getOwner(),
-											repository.getName(),
-											path.toString(),
-											repository.getBranchRef());
+									setEnabled(false);
+									requireActivity().getOnBackPressedDispatcher().onBackPressed();
 								}
 							}
 						});
+	}
 
-		binding.pullToRefresh.setOnRefreshListener(
-				() -> {
-					refresh();
-					binding.pullToRefresh.setRefreshing(false);
-				});
+	private void observeViewModel() {
+		viewModel
+				.getFiles()
+				.observe(
+						getViewLifecycleOwner(),
+						list -> {
+							binding.pullToRefresh.setRefreshing(false);
+							filesAdapter.setFiles(list);
 
-		((RepoDetailActivity) requireActivity())
-				.setFragmentRefreshListenerFiles(
-						repoBranch -> {
-							repository.setBranchRef(repoBranch);
-							path.clear();
-							refresh();
+							boolean isEmpty = list.isEmpty();
+							binding.recyclerView.setVisibility(isEmpty ? View.GONE : View.VISIBLE);
+							binding.filesFrame.setVisibility(View.VISIBLE);
+							binding.layoutEmpty
+									.getRoot()
+									.setVisibility(isEmpty ? View.VISIBLE : View.GONE);
 						});
 
-		String dir = requireActivity().getIntent().getStringExtra("dir");
-		if (dir != null) {
-			for (String segment : dir.split("/")) {
-				path.add(segment);
-			}
-		}
-		refresh();
-
-		if (!canPush || archived) {
-			binding.newFile.setVisibility(View.GONE);
-		}
-
-		binding.newFile.setOnClickListener(
-				v17 -> startActivity(repository.getIntent(getContext(), CreateFileActivity.class)));
-
-		binding.switchBranch.setOnClickListener(switchBranch -> chooseBranch());
-
-		requireActivity()
-				.addMenuProvider(
-						new MenuProvider() {
-							@Override
-							public void onCreateMenu(
-									@NonNull Menu menu, @NonNull MenuInflater menuInflater) {
-
-								menuInflater.inflate(R.menu.search_menu, menu);
-								menuInflater.inflate(R.menu.files_switch_branches_menu, menu);
-
-								MenuItem searchItem = menu.findItem(R.id.action_search);
-								androidx.appcompat.widget.SearchView searchView =
-										(androidx.appcompat.widget.SearchView)
-												searchItem.getActionView();
-								assert searchView != null;
-								searchView.setImeOptions(EditorInfo.IME_ACTION_DONE);
-
-								searchView.setOnQueryTextListener(
-										new SearchView.OnQueryTextListener() {
-
-											@Override
-											public boolean onQueryTextChange(String newText) {
-
-												if (binding.recyclerView.getAdapter() != null) {
-													filesAdapter.getFilter().filter(newText);
-												}
-
-												return false;
-											}
-
-											@Override
-											public boolean onQueryTextSubmit(String query) {
-												return false;
-											}
-										});
-							}
-
-							@Override
-							public boolean onMenuItemSelected(@NonNull MenuItem menuItem) {
-								return false;
-							}
-						},
+		viewModel
+				.getIsFilesLoading()
+				.observe(
 						getViewLifecycleOwner(),
-						Lifecycle.State.RESUMED);
+						loading -> {
+							binding.expressiveLoader.setVisibility(
+									loading ? View.VISIBLE : View.GONE);
+							if (loading) {
+								binding.recyclerView.setVisibility(View.GONE);
+								binding.layoutEmpty.getRoot().setVisibility(View.GONE);
+							}
+						});
 
-		return binding.getRoot();
+		viewModel
+				.getErrorMessage()
+				.observe(
+						getViewLifecycleOwner(),
+						msg -> {
+							if (msg != null) Toasty.show(requireContext(), msg);
+						});
+	}
+
+	public void refresh() {
+		viewModel.loadFiles(
+				requireContext(),
+				repository.getOwner(),
+				repository.getName(),
+				repository.getBranchRef(),
+				path.toString());
 	}
 
 	@Override
 	public void onResume() {
 		super.onResume();
-
-		if (RepoDetailActivity.updateFABActions) {
-			refresh();
-			RepoDetailActivity.updateFABActions = false;
-		}
 	}
 
 	@Override
-	public void onClickFile(ContentsResponse file) {
-
+	public void onClickFile(RepoGetContentsList file) {
 		switch (file.getType()) {
 			case "dir":
 				path.addWithoutEncoding(file.getName());
 				refresh();
 				break;
-
 			case "file":
 			case "symlink":
 				Intent intent = repository.getIntent(getContext(), FileViewActivity.class);
 				intent.putExtra("file", file);
-
-				requireContext().startActivity(intent);
+				startActivity(intent);
 				break;
-
 			case "submodule":
-				String rawUrl = file.getSubmoduleGitUrl();
-				if (rawUrl == null) {
-					return;
-				}
-				Uri url = AppUtil.getUriFromGitUrl(rawUrl);
-				String host = url.getHost();
-
-				UserAccountsApi userAccountsApi =
-						BaseApi.getInstance(requireContext(), UserAccountsApi.class);
-				assert userAccountsApi != null;
-				List<UserAccount> userAccounts = userAccountsApi.loggedInUserAccounts();
-				UserAccount account = null;
-
-				for (UserAccount userAccount : userAccounts) {
-					Uri instanceUri = Uri.parse(userAccount.getInstanceUrl());
-					if (Objects.requireNonNull(instanceUri.getHost()).toLowerCase().equals(host)) {
-						account = userAccount;
-						// if scheme is wrong fix it
-						if (!Objects.equals(url.getScheme(), instanceUri.getScheme())) {
-							url = AppUtil.changeScheme(url, instanceUri.getScheme());
-						}
-						break;
-					}
-				}
-
-				if (account != null) {
-					AppUtil.switchToAccount(requireContext(), account, true);
-					List<String> splittedUrl = url.getPathSegments();
-					if (splittedUrl.size() < 2) {
-						AppUtil.openUrlInBrowser(requireContext(), url.toString());
-					}
-					String owner = splittedUrl.get(splittedUrl.size() - 2);
-					String repo = splittedUrl.get(splittedUrl.size() - 1);
-					if (repo.endsWith(".git")) { // Git clone URL
-						repo = repo.substring(0, repo.length() - 4);
-					}
-
-					startActivity(
-							new RepositoryContext(owner, repo, requireContext())
-									.getIntent(requireContext(), RepoDetailActivity.class));
-				} else {
-					AppUtil.openUrlInBrowser(requireContext(), url.toString());
-				}
+				handleSubmodule(file);
 				break;
 		}
 	}
 
-	public void refresh() {
-		if (path.size() > 0) {
-			fetchDataAsyncSub(
-					repository.getOwner(),
-					repository.getName(),
-					path.toString(),
-					repository.getBranchRef());
-		} else {
-			fetchDataAsync(repository.getOwner(), repository.getName(), repository.getBranchRef());
+	private void handleSubmodule(RepoGetContentsList file) {
+		String rawUrl = file.getSubmoduleGitUrl();
+		if (rawUrl == null) return;
+
+		Uri url = AppUtil.getUriFromGitUrl(rawUrl);
+		String host = url.getHost();
+		if (host == null) return;
+
+		UserAccountsApi userAccountsApi =
+				BaseApi.getInstance(requireContext(), UserAccountsApi.class);
+
+		if (userAccountsApi == null) return;
+
+		List<UserAccount> userAccounts = userAccountsApi.loggedInUserAccounts();
+
+		if (userAccounts == null || userAccounts.isEmpty()) {
+			AppUtil.openUrlInBrowser(requireContext(), url.toString());
+			return;
 		}
-	}
 
-	private void fetchDataAsync(String owner, String repo, String ref) {
+		UserAccount targetAccount = null;
 
-		binding.recyclerView.setVisibility(View.GONE);
-		binding.progressBar.setVisibility(View.VISIBLE);
+		for (UserAccount account : userAccounts) {
+			Uri instanceUri = Uri.parse(account.getInstanceUrl());
+			if (Objects.requireNonNull(instanceUri.getHost()).equalsIgnoreCase(host)) {
+				targetAccount = account;
+				if (!Objects.equals(url.getScheme(), instanceUri.getScheme())) {
+					url = AppUtil.changeScheme(url, instanceUri.getScheme());
+				}
+				break;
+			}
+		}
 
-		FilesViewModel filesModel = new ViewModelProvider(this).get(FilesViewModel.class);
+		if (targetAccount != null) {
+			AppUtil.switchToAccount(requireContext(), targetAccount, true);
+			List<String> pathSegments = url.getPathSegments();
+			if (pathSegments.size() < 2) {
+				AppUtil.openUrlInBrowser(requireContext(), url.toString());
+				return;
+			}
 
-		filesModel
-				.getFilesList(
-						owner, repo, ref, getContext(), binding.progressBar, binding.noDataFiles)
-				.observe(
-						getViewLifecycleOwner(),
-						filesListMain -> {
-							filesAdapter.getOriginalFiles().clear();
-							filesAdapter.getOriginalFiles().addAll(filesListMain);
-							filesAdapter.notifyOriginalDataSetChanged();
+			String owner = pathSegments.get(pathSegments.size() - 2);
+			String repo = pathSegments.get(pathSegments.size() - 1);
+			if (repo.endsWith(".git")) repo = repo.substring(0, repo.length() - 4);
 
-							if (!filesListMain.isEmpty()) {
-
-								AppUtil.setMultiVisibility(
-										View.VISIBLE, binding.recyclerView, binding.filesFrame);
-								binding.noDataFiles.setVisibility(View.GONE);
-
-							} else {
-								AppUtil.setMultiVisibility(
-										View.VISIBLE,
-										binding.recyclerView,
-										binding.filesFrame,
-										binding.noDataFiles);
-							}
-
-							binding.filesFrame.setVisibility(View.VISIBLE);
-							binding.progressBar.setVisibility(View.GONE);
-						});
-	}
-
-	private void fetchDataAsyncSub(String owner, String repo, String filesDir, String ref) {
-
-		binding.recyclerView.setVisibility(View.GONE);
-		binding.progressBar.setVisibility(View.VISIBLE);
-
-		FilesViewModel filesModel = new ViewModelProvider(this).get(FilesViewModel.class);
-		filesModel
-				.getFilesList2(
-						owner,
-						repo,
-						filesDir,
-						ref,
-						getContext(),
-						binding.progressBar,
-						binding.noDataFiles)
-				.observe(
-						getViewLifecycleOwner(),
-						filesListMain2 -> {
-							filesAdapter.getOriginalFiles().clear();
-							filesAdapter.getOriginalFiles().addAll(filesListMain2);
-							filesAdapter.notifyOriginalDataSetChanged();
-
-							if (!filesListMain2.isEmpty()) {
-
-								AppUtil.setMultiVisibility(
-										View.VISIBLE, binding.recyclerView, binding.filesFrame);
-								binding.noDataFiles.setVisibility(View.GONE);
-							} else {
-								AppUtil.setMultiVisibility(
-										View.VISIBLE,
-										binding.recyclerView,
-										binding.filesFrame,
-										binding.noDataFiles);
-							}
-
-							binding.filesFrame.setVisibility(View.VISIBLE);
-							binding.progressBar.setVisibility(View.GONE);
-						});
+			startActivity(
+					new RepositoryContext(owner, repo, requireContext())
+							.getIntent(requireContext(), RepoDetailActivity.class));
+		} else {
+			AppUtil.openUrlInBrowser(requireContext(), url.toString());
+		}
 	}
 
 	private void chooseBranch() {
+		BottomsheetBranchPicker picker =
+				BottomsheetBranchPicker.newInstance(
+						repository.getOwner(), repository.getName(), repository.getBranchRef());
 
-		Dialog progressDialog = new Dialog(requireContext());
-		progressDialog.setCancelable(false);
-		progressDialog.setContentView(R.layout.custom_progress_loader);
-		progressDialog.show();
-
-		MaterialAlertDialogBuilder dialogBuilder = new MaterialAlertDialogBuilder(requireContext());
-		View dialogView = getLayoutInflater().inflate(R.layout.custom_branches_dialog, null);
-		dialogBuilder.setView(dialogView);
-
-		RecyclerView recyclerView = dialogView.findViewById(R.id.recyclerView);
-		recyclerView.setLayoutManager(new LinearLayoutManager(requireContext()));
-
-		recyclerView.addItemDecoration(
-				new RecyclerView.ItemDecoration() {
-					@Override
-					public void getItemOffsets(
-							@NonNull Rect outRect,
-							@NonNull View view,
-							@NonNull RecyclerView parent,
-							@NonNull RecyclerView.State state) {
-
-						int position = parent.getChildAdapterPosition(view);
-						int spacingSides =
-								(int)
-										requireContext()
-												.getResources()
-												.getDimension(R.dimen.dimen4dp);
-						int spacingTop =
-								(int)
-										requireContext()
-												.getResources()
-												.getDimension(R.dimen.dimen8dp);
-
-						outRect.right = spacingSides;
-						outRect.left = spacingSides;
-
-						if (position > 0) {
-							outRect.top = spacingTop;
-						}
-					}
+		picker.setOnBranchSelectedListener(
+				branchName -> {
+					repository.setBranchRef(branchName);
+					path.clear();
+					refresh();
 				});
 
-		dialogBuilder.setNeutralButton(R.string.close, (dialog, which) -> dialog.dismiss());
-		AlertDialog dialog = dialogBuilder.create();
-		dialog.setCancelable(false);
-		dialog.setCanceledOnTouchOutside(false);
+		picker.show(getChildFragmentManager(), "branch_picker");
+	}
 
-		final int[] page = {1};
-		final int resultLimit = Constants.getCurrentResultLimit(requireContext());
-		final boolean[] isLoading = {false};
-		final boolean[] isLastPage = {false};
-
-		BranchAdapter adapter =
-				new BranchAdapter(
-						branchName -> {
-							repository.setBranchRef(branchName);
-							binding.branchTitle.setText(branchName);
-							refresh();
-							dialog.dismiss();
-						});
-		recyclerView.setAdapter(adapter);
-
-		Runnable fetchBranches =
-				() -> {
-					if (isLoading[0] || isLastPage[0]) return;
-					isLoading[0] = true;
-
-					Call<List<Branch>> call =
-							RetrofitClient.getApiInterface(requireContext())
-									.repoListBranches(
-											repository.getOwner(),
-											repository.getName(),
-											page[0],
-											resultLimit);
-
-					call.enqueue(
-							new Callback<>() {
-								@Override
-								public void onResponse(
-										@NonNull Call<List<Branch>> call,
-										@NonNull Response<List<Branch>> response) {
-
-									isLoading[0] = false;
-
-									if (response.code() == 200 && response.body() != null) {
-										List<Branch> newBranches = response.body();
-										adapter.addBranches(newBranches);
-
-										String totalCountStr =
-												response.headers().get("X-Total-Count");
-
-										if (totalCountStr != null) {
-
-											int totalItems = Integer.parseInt(totalCountStr);
-											int totalPages =
-													(int)
-															Math.ceil(
-																	(double) totalItems
-																			/ resultLimit);
-											isLastPage[0] = page[0] >= totalPages;
-										} else {
-											isLastPage[0] = newBranches.size() < resultLimit;
-										}
-										page[0]++;
-
-										if (page[0] == 2 && !dialog.isShowing()) {
-											progressDialog.dismiss();
-											dialog.show();
-										}
-									} else {
-										progressDialog.dismiss();
-									}
-								}
-
-								@Override
-								public void onFailure(
-										@NonNull Call<List<Branch>> call, @NonNull Throwable t) {
-									isLoading[0] = false;
-									progressDialog.dismiss();
-								}
-							});
-				};
-
-		recyclerView.addOnScrollListener(
-				new RecyclerView.OnScrollListener() {
-					@Override
-					public void onScrolled(@NonNull RecyclerView recyclerView, int dx, int dy) {
-
-						super.onScrolled(recyclerView, dx, dy);
-						LinearLayoutManager layoutManager =
-								(LinearLayoutManager) recyclerView.getLayoutManager();
-
-						if (layoutManager != null) {
-
-							int visibleItemCount = layoutManager.getChildCount();
-							int totalItemCount = layoutManager.getItemCount();
-							int firstVisibleItemPosition =
-									layoutManager.findFirstVisibleItemPosition();
-
-							if (!isLoading[0]
-									&& !isLastPage[0]
-									&& (visibleItemCount + firstVisibleItemPosition)
-											>= totalItemCount - 5) {
-								fetchBranches.run();
-							}
-						}
-					}
-				});
-
-		adapter.clear();
-		fetchBranches.run();
+	@Override
+	public void onDestroyView() {
+		super.onDestroyView();
+		binding = null;
 	}
 }

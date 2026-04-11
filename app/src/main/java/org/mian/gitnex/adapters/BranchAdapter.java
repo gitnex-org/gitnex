@@ -1,15 +1,14 @@
 package org.mian.gitnex.adapters;
 
+import android.annotation.SuppressLint;
 import android.view.LayoutInflater;
-import android.view.View;
 import android.view.ViewGroup;
-import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 import java.util.ArrayList;
 import java.util.List;
 import org.gitnex.tea4j.v2.models.Branch;
-import org.mian.gitnex.R;
+import org.mian.gitnex.databinding.ListBranchesBinding;
 
 /**
  * @author mmarif
@@ -28,16 +27,29 @@ public class BranchAdapter extends RecyclerView.Adapter<BranchAdapter.BranchView
 	}
 
 	@NonNull @Override
-	public BranchViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
-		View view =
-				LayoutInflater.from(parent.getContext())
-						.inflate(R.layout.list_branches, parent, false);
-		return new BranchViewHolder(view);
+	public BranchViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
+		ListBranchesBinding binding =
+				ListBranchesBinding.inflate(
+						LayoutInflater.from(parent.getContext()), parent, false);
+		return new BranchViewHolder(binding);
+	}
+
+	@Override
+	public void onBindViewHolder(@NonNull BranchViewHolder holder, int position) {
+		holder.bind(branches.get(position));
+		holder.binding.getRoot().updateAppearance(position, getItemCount());
 	}
 
 	@Override
 	public int getItemCount() {
 		return branches.size();
+	}
+
+	@SuppressLint("NotifyDataSetChanged")
+	public void setBranches(List<Branch> newBranches) {
+		this.branches.clear();
+		this.branches.addAll(newBranches);
+		notifyDataSetChanged();
 	}
 
 	public void addBranches(List<Branch> newBranches) {
@@ -46,31 +58,22 @@ public class BranchAdapter extends RecyclerView.Adapter<BranchAdapter.BranchView
 		notifyItemRangeInserted(startPosition, newBranches.size());
 	}
 
-	public void clear() {
-		int oldSize = branches.size();
-		branches.clear();
-		notifyItemRangeRemoved(0, oldSize);
-	}
+	public class BranchViewHolder extends RecyclerView.ViewHolder {
+		private final ListBranchesBinding binding;
 
-	public static class BranchViewHolder extends RecyclerView.ViewHolder {
-		TextView textView;
-
-		BranchViewHolder(View itemView) {
-			super(itemView);
-			textView = itemView.findViewById(R.id.branch_name);
+		BranchViewHolder(ListBranchesBinding binding) {
+			super(binding.getRoot());
+			this.binding = binding;
 		}
-	}
 
-	@Override
-	public void onBindViewHolder(BranchViewHolder holder, int position) {
-
-		Branch branch = branches.get(position);
-		holder.textView.setText(branch.getName());
-		holder.textView.setOnClickListener(
-				v -> {
-					if (listener != null) {
-						listener.onBranchClick(branch.getName());
-					}
-				});
+		void bind(Branch branch) {
+			binding.branchName.setText(branch.getName());
+			binding.branchName.setOnClickListener(
+					v -> {
+						if (listener != null) {
+							listener.onBranchClick(branch.getName());
+						}
+					});
+		}
 	}
 }

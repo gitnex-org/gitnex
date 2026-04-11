@@ -9,7 +9,7 @@ import androidx.room.PrimaryKey;
 import java.io.Serializable;
 
 /**
- * @author M M Arif
+ * @author mmarif
  */
 @Entity(
 		tableName = "Repositories",

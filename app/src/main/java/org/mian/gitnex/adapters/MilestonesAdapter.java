@@ -2,270 +2,140 @@ package org.mian.gitnex.adapters;
 
 import android.annotation.SuppressLint;
 import android.content.Context;
+import android.content.res.ColorStateList;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.ImageView;
-import android.widget.ProgressBar;
-import android.widget.TextView;
 import androidx.annotation.NonNull;
-import androidx.core.content.res.ResourcesCompat;
 import androidx.recyclerview.widget.RecyclerView;
-import com.google.android.material.bottomsheet.BottomSheetDialog;
 import com.vdurmont.emoji.EmojiParser;
-import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.List;
 import java.util.Locale;
 import org.gitnex.tea4j.v2.models.Milestone;
 import org.mian.gitnex.R;
-import org.mian.gitnex.actions.MilestoneActions;
-import org.mian.gitnex.activities.RepoDetailActivity;
-import org.mian.gitnex.helpers.ClickListener;
+import org.mian.gitnex.databinding.ListMilestonesBinding;
+import org.mian.gitnex.helpers.BadgeHelper;
 import org.mian.gitnex.helpers.Markdown;
 import org.mian.gitnex.helpers.TimeHelper;
-import org.mian.gitnex.helpers.contexts.RepositoryContext;
+import org.mian.gitnex.helpers.Toasty;
 
 /**
- * @author M M Arif
+ * @author mmarif
  */
-public class MilestonesAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
+public class MilestonesAdapter extends RecyclerView.Adapter<MilestonesAdapter.DataHolder> {
 
 	private final Context context;
-	private final RepositoryContext repository;
-	private List<Milestone> dataList;
-	private OnLoadMoreListener loadMoreListener;
-	private boolean isLoading = false, isMoreDataAvailable = true;
+	private List<Milestone> milestonesList;
+	private final boolean canEdit;
+	private final OnMilestoneAction onMenuClick;
+
+	public interface OnMilestoneAction {
+		void run(Milestone milestone);
+	}
 
 	public MilestonesAdapter(
-			Context ctx, List<Milestone> dataListMain, RepositoryContext repository) {
-		this.repository = repository;
+			Context ctx, List<Milestone> list, boolean canEdit, OnMilestoneAction onMenuClick) {
 		this.context = ctx;
-		this.dataList = dataListMain;
+		this.milestonesList = list;
+		this.canEdit = canEdit;
+		this.onMenuClick = onMenuClick;
 	}
 
 	@NonNull @Override
-	public RecyclerView.ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-		LayoutInflater inflater = LayoutInflater.from(context);
-		return new MilestonesAdapter.DataHolder(
-				inflater.inflate(R.layout.list_milestones, parent, false));
+	public DataHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
+		return new DataHolder(
+				ListMilestonesBinding.inflate(LayoutInflater.from(context), parent, false));
 	}
 
 	@Override
-	public void onBindViewHolder(@NonNull RecyclerView.ViewHolder holder, int position) {
-
-		if (position >= getItemCount() - 1
-				&& isMoreDataAvailable
-				&& !isLoading
-				&& loadMoreListener != null) {
-
-			isLoading = true;
-			loadMoreListener.onLoadMore();
-		}
-		((MilestonesAdapter.DataHolder) holder).bindData(dataList.get(position));
-	}
-
-	@Override
-	public int getItemViewType(int position) {
-		return position;
+	public void onBindViewHolder(@NonNull DataHolder holder, int position) {
+		holder.bindData(milestonesList.get(position));
+		holder.binding.getRoot().updateAppearance(position, getItemCount());
 	}
 
 	@Override
 	public int getItemCount() {
-		return dataList.size();
-	}
-
-	private void updateAdapter(int position) {
-		dataList.remove(position);
-		notifyItemRemoved(position);
-		notifyItemRangeChanged(position, dataList.size());
-	}
-
-	public void setMoreDataAvailable(boolean moreDataAvailable) {
-		isMoreDataAvailable = moreDataAvailable;
-		if (!isMoreDataAvailable) {
-			loadMoreListener.onLoadFinished();
-		}
+		return milestonesList.size();
 	}
 
 	@SuppressLint("NotifyDataSetChanged")
-	public void notifyDataChanged() {
+	public void updateList(List<Milestone> newList) {
+		this.milestonesList = newList;
 		notifyDataSetChanged();
-		isLoading = false;
-		loadMoreListener.onLoadFinished();
 	}
 
-	public void setLoadMoreListener(OnLoadMoreListener loadMoreListener) {
-		this.loadMoreListener = loadMoreListener;
-	}
+	public class DataHolder extends RecyclerView.ViewHolder {
+		private final ListMilestonesBinding binding;
+		private Milestone currentMilestone;
 
-	public void updateList(List<Milestone> list) {
-		dataList = list;
-		notifyDataChanged();
-	}
+		DataHolder(ListMilestonesBinding binding) {
+			super(binding.getRoot());
+			this.binding = binding;
 
-	public interface OnLoadMoreListener {
-
-		void onLoadMore();
-
-		void onLoadFinished();
-	}
-
-	class DataHolder extends RecyclerView.ViewHolder {
-
-		private final TextView msTitle;
-		private final TextView msDescription;
-		private final TextView msOpenIssues;
-		private final TextView msClosedIssues;
-		private final TextView msDueDate;
-		private final ProgressBar msProgress;
-		private Milestone milestones;
-
-		DataHolder(View itemView) {
-
-			super(itemView);
-
-			msTitle = itemView.findViewById(R.id.milestoneTitle);
-			msDescription = itemView.findViewById(R.id.milestoneDescription);
-			msOpenIssues = itemView.findViewById(R.id.milestoneIssuesOpen);
-			msClosedIssues = itemView.findViewById(R.id.milestoneIssuesClosed);
-			msDueDate = itemView.findViewById(R.id.milestoneDueDate);
-			msProgress = itemView.findViewById(R.id.milestoneProgress);
-			ImageView milestonesMenu = itemView.findViewById(R.id.milestonesMenu);
-
-			if (!((RepoDetailActivity) itemView.getContext())
-					.repository
-					.getPermissions()
-					.isPush()) {
-				milestonesMenu.setVisibility(View.GONE);
-			}
-			milestonesMenu.setOnClickListener(
+			binding.itemMenu.setVisibility(canEdit ? View.VISIBLE : View.GONE);
+			binding.itemMenu.setOnClickListener(
 					v -> {
-						Context ctx = v.getContext();
-						int milestoneId_ = Integer.parseInt(String.valueOf(milestones.getId()));
-
-						@SuppressLint("InflateParams")
-						View view =
-								LayoutInflater.from(ctx)
-										.inflate(R.layout.bottom_sheet_milestones_in_list, null);
-
-						TextView closeMilestone = view.findViewById(R.id.closeMilestone);
-						TextView openMilestone = view.findViewById(R.id.openMilestone);
-
-						BottomSheetDialog dialog = new BottomSheetDialog(ctx);
-						dialog.setContentView(view);
-						dialog.show();
-
-						if (milestones.getState().equals("open")) {
-
-							closeMilestone.setVisibility(View.VISIBLE);
-							openMilestone.setVisibility(View.GONE);
-						} else {
-
-							closeMilestone.setVisibility(View.GONE);
-							openMilestone.setVisibility(View.VISIBLE);
+						if (onMenuClick != null) {
+							onMenuClick.run(currentMilestone);
 						}
-
-						closeMilestone.setOnClickListener(
-								v12 -> {
-									MilestoneActions.closeMilestone(ctx, milestoneId_, repository);
-									dialog.dismiss();
-									updateAdapter(getBindingAdapterPosition());
-								});
-
-						openMilestone.setOnClickListener(
-								v12 -> {
-									MilestoneActions.openMilestone(ctx, milestoneId_, repository);
-									dialog.dismiss();
-									updateAdapter(getBindingAdapterPosition());
-								});
 					});
 		}
 
 		@SuppressLint("SetTextI18n")
-		void bindData(Milestone dataModel) {
+		void bindData(Milestone milestone) {
+			this.currentMilestone = milestone;
+			Locale locale = Locale.getDefault();
 
-			this.milestones = dataModel;
-			final String locale = context.getResources().getConfiguration().locale.getLanguage();
+			Markdown.render(context, milestone.getTitle(), binding.milestoneTitle);
 
-			Markdown.render(context, dataModel.getTitle(), msTitle);
-
-			if (!dataModel.getDescription().isEmpty()) {
-
+			if (milestone.getDescription() != null && !milestone.getDescription().isEmpty()) {
+				binding.milestoneDescription.setVisibility(View.VISIBLE);
 				Markdown.render(
 						context,
-						EmojiParser.parseToUnicode(dataModel.getDescription()),
-						msDescription);
+						EmojiParser.parseToUnicode(milestone.getDescription()),
+						binding.milestoneDescription);
 			} else {
-
-				msDescription.setText(context.getString(R.string.milestoneNoDescription));
+				binding.milestoneDescription.setVisibility(View.GONE);
 			}
 
-			msOpenIssues.setText(
-					context.getString(
-							R.string.milestoneIssueStatusOpen, dataModel.getOpenIssues()));
-			msClosedIssues.setText(
-					context.getString(
-							R.string.milestoneIssueStatusClosed, dataModel.getClosedIssues()));
+			binding.milestoneIssuesOpen.setText(String.valueOf(milestone.getOpenIssues()));
+			binding.milestoneIssuesClosed.setText(String.valueOf(milestone.getClosedIssues()));
 
-			if ((dataModel.getOpenIssues() + dataModel.getClosedIssues()) > 0) {
+			long total = milestone.getOpenIssues() + milestone.getClosedIssues();
+			int progress = (total > 0) ? (int) (100 * milestone.getClosedIssues() / total) : 0;
 
-				if (dataModel.getOpenIssues() == 0) {
+			binding.milestoneProgress.setProgress(progress, true);
+			binding.progressPercent.setText(progress + "%");
 
-					msProgress.setProgress(100);
-					msProgress.setOnClickListener(
-							new ClickListener(
-									context.getResources()
-											.getString(R.string.milestoneCompletion, 100),
-									context));
-				} else {
+			if (milestone.getDueOn() != null) {
+				binding.dueDateFrame.setVisibility(View.VISIBLE);
 
-					int msCompletion =
-							(int)
-									(100
-											* dataModel.getClosedIssues()
-											/ (dataModel.getOpenIssues()
-													+ dataModel.getClosedIssues()));
-					msProgress.setOnClickListener(
-							new ClickListener(
-									context.getResources()
-											.getString(R.string.milestoneCompletion, msCompletion),
-									context));
-					msProgress.setProgress(msCompletion);
-				}
+				binding.dueDateFrame.setOnClickListener(
+						v ->
+								Toasty.show(
+										context,
+										TimeHelper.getFullDateTime(milestone.getDueOn(), locale)));
 
+				boolean isOverdue =
+						milestone.getDueOn().before(new Date())
+								&& "open".equals(milestone.getState());
+
+				int statusColor =
+						isOverdue
+								? context.getColor(R.color.darkRed)
+								: BadgeHelper.getThemeColor(
+										context,
+										com.google.android.material.R.attr.colorPrimaryFixed);
+
+				binding.milestoneDueDate.setTextColor(statusColor);
+				binding.dateIcon.setImageTintList(ColorStateList.valueOf(statusColor));
+
+				SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd", Locale.getDefault());
+				binding.milestoneDueDate.setText(sdf.format(milestone.getDueOn()));
 			} else {
-
-				msProgress.setProgress(0);
-				msProgress.setOnClickListener(
-						new ClickListener(
-								context.getResources().getString(R.string.milestoneCompletion, 0),
-								context));
-			}
-
-			if (dataModel.getDueOn() != null) {
-
-				DateFormat formatter = new SimpleDateFormat("yyyy-MM-dd", new Locale(locale));
-				Date date = dataModel.getDueOn();
-
-				assert date != null;
-				String dueDate = formatter.format(date);
-
-				if (date.before(new Date())) {
-					msDueDate.setTextColor(
-							ResourcesCompat.getColor(
-									context.getResources(), R.color.darkRed, null));
-				}
-
-				msDueDate.setText(dueDate);
-				msDueDate.setOnClickListener(
-						new ClickListener(
-								TimeHelper.customDateFormatForToastDateFormat(dataModel.getDueOn()),
-								context));
-			} else {
-
-				msDueDate.setText(context.getString(R.string.milestoneNoDueDate));
+				binding.dueDateFrame.setVisibility(View.GONE);
 			}
 		}
 	}

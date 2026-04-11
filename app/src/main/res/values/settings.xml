@@ -61,39 +61,6 @@
         <item>@string/codebergDark</item>
     </string-array>
 
-    <string-array name="appDefaultHomeScreen">
-        <item>@string/home</item>
-        <item>@string/navMyRepos</item>
-        <item>@string/pageTitleStarredRepos</item>
-        <item>@string/navOrg</item>
-        <item>@string/navRepos</item>
-        <item>@string/navProfile</item>
-        <item>@string/pageTitleExplore</item>
-    </string-array>
-
-    <string-array name="appDefaultHomeScreenNew">
-        <item>@string/home</item>
-        <item>@string/navMyRepos</item>
-        <item>@string/pageTitleStarredRepos</item>
-        <item>@string/navOrg</item>
-        <item>@string/navRepos</item>
-        <item>@string/pageTitleExplore</item>
-        <item>@string/pageTitleNotifications</item>
-        <item>@string/navMyIssues</item>
-        <item>@string/navMostVisited</item>
-        <item>@string/navNotes</item>
-        <item>@string/activities</item>
-        <item>@string/navWatchedRepositories</item>
-    </string-array>
-
-    <string-array name="linkHandlerDefaultScreen">
-        <item>@string/none</item>
-        <item>@string/navRepos</item>
-        <item>@string/navOrg</item>
-        <item>@string/pageTitleNotifications</item>
-        <item>@string/pageTitleExplore</item>
-    </string-array>
-
     <string-array name="cacheSizeList">
         <item>@string/cacheSize0</item>
         <item>@string/cacheSize1</item>

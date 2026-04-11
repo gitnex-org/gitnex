@@ -5,7 +5,6 @@ import android.app.Dialog;
 import android.graphics.Rect;
 import android.os.Bundle;
 import android.os.Handler;
-import android.os.Looper;
 import android.view.LayoutInflater;
 import android.view.MotionEvent;
 import android.view.View;
@@ -35,7 +34,6 @@ import org.mian.gitnex.databinding.CustomInsertNoteBinding;
 import org.mian.gitnex.helpers.AlertDialogs;
 import org.mian.gitnex.helpers.Constants;
 import org.mian.gitnex.helpers.Markdown;
-import org.mian.gitnex.helpers.SnackBar;
 import org.mian.gitnex.helpers.Toasty;
 import org.mian.gitnex.helpers.contexts.RepositoryContext;
 import retrofit2.Call;
@@ -43,7 +41,7 @@ import retrofit2.Callback;
 import retrofit2.Response;
 
 /**
- * @author M M Arif
+ * @author mmarif
  */
 public class CreateReleaseActivity extends BaseActivity {
 
@@ -52,11 +50,10 @@ public class CreateReleaseActivity extends BaseActivity {
 	private String selectedBranch;
 	private RepositoryContext repository;
 	private boolean renderMd = false;
-	private MaterialAlertDialogBuilder materialAlertDialogBuilder;
+	private MaterialAlertDialogBuilder materialAlertDialogBuilderNotes;
 	private CustomInsertNoteBinding customInsertNoteBinding;
 	private NotesAdapter adapter;
 	private NotesApi notesApi;
-	private List<Notes> notesList;
 	public AlertDialog dialogNotes;
 
 	@SuppressLint("ClickableViewAccessibility")
@@ -70,7 +67,7 @@ public class CreateReleaseActivity extends BaseActivity {
 
 		repository = RepositoryContext.fromIntent(getIntent());
 
-		materialAlertDialogBuilder =
+		materialAlertDialogBuilderNotes =
 				new MaterialAlertDialogBuilder(ctx, R.style.ThemeOverlay_Material3_Dialog_Alert);
 
 		binding.releaseContent.setOnTouchListener(
@@ -140,58 +137,46 @@ public class CreateReleaseActivity extends BaseActivity {
 	}
 
 	private void showAllNotes() {
-
-		notesList = new ArrayList<>();
+		List<Notes> notesList = new ArrayList<>();
 		notesApi = BaseApi.getInstance(ctx, NotesApi.class);
-
 		customInsertNoteBinding = CustomInsertNoteBinding.inflate(LayoutInflater.from(ctx));
 
-		View view = customInsertNoteBinding.getRoot();
-		materialAlertDialogBuilder.setView(view);
+		materialAlertDialogBuilderNotes.setView(customInsertNoteBinding.getRoot());
 
-		customInsertNoteBinding.recyclerView.setHasFixedSize(true);
 		customInsertNoteBinding.recyclerView.setLayoutManager(new LinearLayoutManager(ctx));
-
 		adapter = new NotesAdapter(ctx, notesList, "insert", "release");
-
-		customInsertNoteBinding.pullToRefresh.setOnRefreshListener(
-				() ->
-						new Handler(Looper.getMainLooper())
-								.postDelayed(
-										() -> {
-											notesList.clear();
-											customInsertNoteBinding.pullToRefresh.setRefreshing(
-													false);
-											customInsertNoteBinding.progressBar.setVisibility(
-													View.VISIBLE);
-											fetchNotes();
-										},
-										250));
+		customInsertNoteBinding.recyclerView.setAdapter(adapter);
 
 		if (notesApi.getCount() > 0) {
 			fetchNotes();
-			dialogNotes = materialAlertDialogBuilder.show();
+			dialogNotes = materialAlertDialogBuilderNotes.show();
 		} else {
-			Toasty.warning(ctx, getResources().getString(R.string.noNotes));
+			Toasty.show(ctx, getString(R.string.noNotes));
 		}
 	}
 
 	private void fetchNotes() {
+		customInsertNoteBinding.expressiveLoader.setVisibility(View.VISIBLE);
 
 		notesApi.fetchAllNotes()
 				.observe(
 						this,
 						allNotes -> {
-							assert allNotes != null;
-							if (!allNotes.isEmpty()) {
+							customInsertNoteBinding.expressiveLoader.setVisibility(View.GONE);
 
-								notesList.clear();
-
-								notesList.addAll(allNotes);
-								adapter.notifyDataChanged();
-								customInsertNoteBinding.recyclerView.setAdapter(adapter);
+							if (allNotes != null && !allNotes.isEmpty()) {
+								adapter.updateList(allNotes);
+								customInsertNoteBinding
+										.layoutEmpty
+										.getRoot()
+										.setVisibility(View.GONE);
+							} else {
+								adapter.updateList(new ArrayList<>());
+								customInsertNoteBinding
+										.layoutEmpty
+										.getRoot()
+										.setVisibility(View.VISIBLE);
 							}
-							customInsertNoteBinding.progressBar.setVisibility(View.GONE);
 						});
 	}
 
@@ -204,14 +189,12 @@ public class CreateReleaseActivity extends BaseActivity {
 						+ Objects.requireNonNull(binding.releaseContent.getText());
 
 		if (tagName.isEmpty()) {
-			SnackBar.error(
-					ctx, findViewById(android.R.id.content), getString(R.string.tagNameErrorEmpty));
+			Toasty.show(ctx, getString(R.string.tagNameErrorEmpty));
 			return;
 		}
 
 		if (selectedBranch == null) {
-			SnackBar.error(
-					ctx, findViewById(android.R.id.content), getString(R.string.selectBranchError));
+			Toasty.show(ctx, getString(R.string.selectBranchError));
 			return;
 		}
 
@@ -234,29 +217,17 @@ public class CreateReleaseActivity extends BaseActivity {
 
 						if (response.code() == 201) {
 
-							RepoDetailActivity.updateFABActions = true;
-							SnackBar.success(
-									ctx,
-									findViewById(android.R.id.content),
-									getString(R.string.tagCreated));
+							// RepoDetailActivity.updateFABActions = true;
+							Toasty.show(ctx, getString(R.string.tagCreated));
 							new Handler().postDelayed(() -> finish(), 3000);
 						} else if (response.code() == 401) {
 							AlertDialogs.authorizationTokenRevokedDialog(ctx);
 						} else if (response.code() == 403) {
-							SnackBar.error(
-									ctx,
-									findViewById(android.R.id.content),
-									getString(R.string.authorizeError));
+							Toasty.show(ctx, getString(R.string.authorizeError));
 						} else if (response.code() == 404) {
-							SnackBar.error(
-									ctx,
-									findViewById(android.R.id.content),
-									getString(R.string.apiNotFound));
+							Toasty.show(ctx, getString(R.string.apiNotFound));
 						} else {
-							SnackBar.error(
-									ctx,
-									findViewById(android.R.id.content),
-									getString(R.string.genericError));
+							Toasty.show(ctx, getString(R.string.genericError));
 						}
 					}
 
@@ -277,20 +248,17 @@ public class CreateReleaseActivity extends BaseActivity {
 		boolean newReleaseDraft = binding.releaseDraft.isChecked();
 
 		if (newReleaseTitle.isEmpty()) {
-			SnackBar.error(
-					ctx, findViewById(android.R.id.content), getString(R.string.titleErrorEmpty));
+			Toasty.show(ctx, getString(R.string.titleErrorEmpty));
 			return;
 		}
 
 		if (newReleaseTagName.isEmpty()) {
-			SnackBar.error(
-					ctx, findViewById(android.R.id.content), getString(R.string.tagNameErrorEmpty));
+			Toasty.show(ctx, getString(R.string.tagNameErrorEmpty));
 			return;
 		}
 
 		if (checkBranch == null) {
-			SnackBar.error(
-					ctx, findViewById(android.R.id.content), getString(R.string.selectBranchError));
+			Toasty.show(ctx, getString(R.string.selectBranchError));
 			return;
 		}
 
@@ -337,33 +305,21 @@ public class CreateReleaseActivity extends BaseActivity {
 
 						if (response.code() == 201) {
 
-							RepoDetailActivity.updateFABActions = true;
-							SnackBar.success(
-									ctx,
-									findViewById(android.R.id.content),
-									getString(R.string.releaseCreatedText));
+							// RepoDetailActivity.updateFABActions = true;
+							Toasty.show(ctx, getString(R.string.releaseCreatedText));
 							new Handler().postDelayed(() -> finish(), 3000);
 						} else if (response.code() == 401) {
 
 							AlertDialogs.authorizationTokenRevokedDialog(ctx);
 						} else if (response.code() == 403) {
 
-							SnackBar.error(
-									ctx,
-									findViewById(android.R.id.content),
-									getString(R.string.authorizeError));
+							Toasty.show(ctx, getString(R.string.authorizeError));
 						} else if (response.code() == 404) {
 
-							SnackBar.error(
-									ctx,
-									findViewById(android.R.id.content),
-									getString(R.string.apiNotFound));
+							Toasty.show(ctx, getString(R.string.apiNotFound));
 						} else {
 
-							SnackBar.error(
-									ctx,
-									findViewById(android.R.id.content),
-									getString(R.string.genericError));
+							Toasty.show(ctx, getString(R.string.genericError));
 						}
 					}
 
@@ -514,7 +470,7 @@ public class CreateReleaseActivity extends BaseActivity {
 					}
 				});
 
-		adapter.clear();
+		// adapter.clear();
 		fetchBranches.run();
 	}
 

@@ -1,141 +1,226 @@
 package org.mian.gitnex.activities;
 
 import android.os.Bundle;
+import android.text.Editable;
+import android.text.TextWatcher;
 import android.view.View;
 import androidx.lifecycle.ViewModelProvider;
-import androidx.recyclerview.widget.GridLayoutManager;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 import java.util.ArrayList;
 import java.util.List;
 import org.gitnex.tea4j.v2.models.User;
-import org.mian.gitnex.R;
-import org.mian.gitnex.adapters.UserGridAdapter;
-import org.mian.gitnex.databinding.ActivityRepoStargazersBinding;
+import org.mian.gitnex.adapters.UsersAdapter;
+import org.mian.gitnex.databinding.ActivityRepoWatchersStargazersBinding;
 import org.mian.gitnex.helpers.Constants;
+import org.mian.gitnex.helpers.EndlessRecyclerViewScrollListener;
+import org.mian.gitnex.helpers.Toasty;
+import org.mian.gitnex.helpers.UIHelper;
 import org.mian.gitnex.helpers.contexts.RepositoryContext;
-import org.mian.gitnex.viewmodels.RepoStargazersViewModel;
+import org.mian.gitnex.viewmodels.UserListViewModel;
 
 /**
- * @author M M Arif
+ * @author mmarif
  */
 public class RepoStargazersActivity extends BaseActivity {
 
-	private View.OnClickListener onClickListener;
-	private UserGridAdapter adapter;
+	private ActivityRepoWatchersStargazersBinding binding;
+	private UsersAdapter adapter;
+	private UserListViewModel viewModel;
 	private RepositoryContext repository;
-	private ActivityRepoStargazersBinding activityRepoStargazersBinding;
-	private RepoStargazersViewModel repoStargazersModel;
-	private List<User> dataList;
-	private int page = 1;
+	private EndlessRecyclerViewScrollListener scrollListener;
 	private int resultLimit;
 
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
-
 		super.onCreate(savedInstanceState);
+		binding = ActivityRepoWatchersStargazersBinding.inflate(getLayoutInflater());
+		setContentView(binding.getRoot());
 
-		activityRepoStargazersBinding = ActivityRepoStargazersBinding.inflate(getLayoutInflater());
-		setContentView(activityRepoStargazersBinding.getRoot());
-
-		setSupportActionBar(activityRepoStargazersBinding.toolbar);
-
-		resultLimit = Constants.getCurrentResultLimit(ctx);
-		repoStargazersModel = new ViewModelProvider(this).get(RepoStargazersViewModel.class);
-
-		dataList = new ArrayList<>();
+		UIHelper.applyEdgeToEdge(this, binding.dockedToolbar, binding.recyclerView, null, null);
 
 		repository = RepositoryContext.fromIntent(getIntent());
-		final String repoOwner = repository.getOwner();
-		final String repoName = repository.getName();
+		resultLimit = Constants.getCurrentResultLimit(ctx);
+		viewModel = new ViewModelProvider(this).get(UserListViewModel.class);
 
-		initCloseListener();
-		activityRepoStargazersBinding.close.setOnClickListener(onClickListener);
+		setupUI();
+		setupSearch();
+		observeViewModel();
 
-		activityRepoStargazersBinding.toolbarTitle.setText(R.string.repoStargazersInMenu);
-
-		fetchDataAsync(repoOwner, repoName);
+		refreshData();
 	}
 
-	private void fetchDataAsync(String repoOwner, String repoName) {
+	private void setupUI() {
+		binding.btnBack.setOnClickListener(v -> finish());
+		binding.btnSearch.setOnClickListener(v -> binding.searchView.show());
 
-		repoStargazersModel
-				.getRepoStargazers(repoOwner, repoName, ctx, page, resultLimit)
+		adapter = new UsersAdapter(ctx, new ArrayList<>());
+
+		LinearLayoutManager layoutManager = new LinearLayoutManager(ctx);
+		binding.recyclerView.setLayoutManager(layoutManager);
+		binding.recyclerView.setAdapter(adapter);
+
+		scrollListener =
+				new EndlessRecyclerViewScrollListener(layoutManager) {
+					@Override
+					public void onLoadMore(int page, int totalItemsCount, RecyclerView view) {
+						if (binding.searchView.isShowing()) return;
+
+						viewModel.fetchUsers(
+								ctx,
+								"stargazers",
+								repository.getOwner(),
+								repository.getName(),
+								null,
+								page,
+								resultLimit,
+								false);
+					}
+				};
+		binding.recyclerView.addOnScrollListener(scrollListener);
+	}
+
+	private void observeViewModel() {
+		viewModel
+				.getUsers()
 				.observe(
-						RepoStargazersActivity.this,
-						mainList -> {
-							adapter = new UserGridAdapter(ctx, mainList);
+						this,
+						list -> {
+							if (list != null) {
+								adapter.updateList(list);
+								if (!Boolean.TRUE.equals(viewModel.getIsLoading().getValue())) {
+									updateUiState();
+								}
+							}
+						});
 
-							adapter.setLoadMoreListener(
-									new UserGridAdapter.OnLoadMoreListener() {
+		viewModel
+				.getIsLoading()
+				.observe(
+						this,
+						loading -> {
+							boolean isLoading = Boolean.TRUE.equals(loading);
+							boolean hasData = adapter.getItemCount() > 0;
 
-										@Override
-										public void onLoadMore() {
+							binding.expressiveLoader.setVisibility(
+									isLoading && !hasData ? View.VISIBLE : View.GONE);
 
-											page += 1;
-											repoStargazersModel.loadMore(
-													repoOwner,
-													repoName,
-													ctx,
-													page,
-													resultLimit,
-													adapter,
-													activityRepoStargazersBinding);
-											activityRepoStargazersBinding.progressBar.setVisibility(
-													View.VISIBLE);
-										}
-
-										@Override
-										public void onLoadFinished() {
-
-											activityRepoStargazersBinding.progressBar.setVisibility(
-													View.GONE);
-										}
-									});
-
-							GridLayoutManager layoutManager = new GridLayoutManager(this, 2);
-							activityRepoStargazersBinding.gridView.setLayoutManager(layoutManager);
-
-							if (adapter.getItemCount() > 0) {
-								activityRepoStargazersBinding.gridView.setAdapter(adapter);
-								activityRepoStargazersBinding.noDataStargazers.setVisibility(
-										View.GONE);
-								dataList.addAll(mainList);
+							if (!isLoading) {
+								updateUiState();
 							} else {
-								adapter.notifyDataChanged();
-								activityRepoStargazersBinding.gridView.setAdapter(adapter);
-								activityRepoStargazersBinding.noDataStargazers.setVisibility(
-										View.VISIBLE);
+								binding.layoutEmpty.getRoot().setVisibility(View.GONE);
+							}
+						});
+
+		if (viewModel.getError() != null) {
+			viewModel
+					.getError()
+					.observe(
+							this,
+							error -> {
+								if (error != null) {
+									Toasty.show(ctx, error);
+									updateUiState();
+								}
+							});
+		}
+	}
+
+	private void refreshData() {
+		scrollListener.resetState();
+		viewModel.resetPagination();
+		viewModel.fetchUsers(
+				ctx,
+				"stargazers",
+				repository.getOwner(),
+				repository.getName(),
+				null,
+				1,
+				resultLimit,
+				true);
+	}
+
+	private void updateUiState() {
+		if (binding.searchView.isShowing()) return;
+
+		boolean isEmpty = adapter.getItemCount() == 0;
+		boolean isLoading = Boolean.TRUE.equals(viewModel.getIsLoading().getValue());
+
+		if (!isLoading && isEmpty) {
+			binding.layoutEmpty.getRoot().setVisibility(View.VISIBLE);
+		} else {
+			binding.layoutEmpty.getRoot().setVisibility(View.GONE);
+		}
+	}
+
+	private void setupSearch() {
+		binding.searchResultsRecycler.setLayoutManager(new LinearLayoutManager(this));
+		binding.searchResultsRecycler.setAdapter(adapter);
+
+		binding.searchView
+				.getEditText()
+				.addTextChangedListener(
+						new TextWatcher() {
+							@Override
+							public void onTextChanged(
+									CharSequence s, int start, int before, int count) {
+								filter(s.toString().trim());
 							}
 
-							activityRepoStargazersBinding.progressBar.setVisibility(View.GONE);
+							@Override
+							public void beforeTextChanged(
+									CharSequence s, int start, int count, int after) {}
+
+							@Override
+							public void afterTextChanged(Editable s) {}
+						});
+
+		binding.searchView.addTransitionListener(
+				(searchView, previousState, newState) -> {
+					if (newState
+							== com.google.android.material.search.SearchView.TransitionState
+									.HIDDEN) {
+						List<User> originalList = viewModel.getUsers().getValue();
+						if (originalList != null) {
+							adapter.updateList(originalList);
+						}
+						binding.recyclerView.scrollToPosition(0);
+					}
+				});
+
+		binding.searchView
+				.getEditText()
+				.setOnEditorActionListener(
+						(v, actionId, event) -> {
+							binding.searchView.hide();
+							return false;
 						});
 	}
 
-	private void initCloseListener() {
+	private void filter(String query) {
+		List<User> originalList = viewModel.getUsers().getValue();
+		if (originalList == null) return;
 
-		onClickListener = view -> finish();
-	}
+		if (query.isEmpty()) {
+			adapter.updateList(originalList);
+			binding.layoutEmpty.getRoot().setVisibility(View.GONE);
+			return;
+		}
 
-	@Override
-	public void onResume() {
-		super.onResume();
-		repository.checkAccountSwitch(this);
-	}
+		List<User> filtered = new ArrayList<>();
+		String lowerCaseQuery = query.toLowerCase();
 
-	private void filter(String text) {
+		for (User user : originalList) {
+			String login = user.getLogin() != null ? user.getLogin().toLowerCase() : "";
+			String name = user.getFullName() != null ? user.getFullName().toLowerCase() : "";
 
-		List<User> arr = new ArrayList<>();
-
-		for (User d : dataList) {
-			if (d == null || d.getLogin() == null || d.getFullName() == null) {
-				continue;
-			}
-			if (d.getLogin().toLowerCase().contains(text)
-					|| d.getFullName().toLowerCase().contains(text)) {
-				arr.add(d);
+			if (login.contains(lowerCaseQuery) || name.contains(lowerCaseQuery)) {
+				filtered.add(user);
 			}
 		}
 
-		adapter.setMoreDataAvailable(false);
-		adapter.updateList(arr);
+		adapter.updateList(filtered);
+
+		binding.layoutEmpty.getRoot().setVisibility(filtered.isEmpty() ? View.VISIBLE : View.GONE);
 	}
 }

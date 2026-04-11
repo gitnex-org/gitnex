@@ -1,0 +1,108 @@
+<?xml version="1.0" encoding="utf-8"?>
+<com.google.android.material.listitem.ListItemLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content">
+
+    <com.google.android.material.listitem.ListItemCardView
+        android:id="@+id/card"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:checkable="false"
+        android:layout_marginVertical="@dimen/dimen1dp"
+        app:strokeWidth="0dp"
+        app:cardBackgroundColor="?attr/materialCardBackgroundColor">
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:padding="@dimen/dimen8dp">
+
+            <com.google.android.material.card.MaterialCardView
+                android:id="@+id/avatarContainer"
+                android:layout_width="@dimen/dimen40dp"
+                android:layout_height="@dimen/dimen40dp"
+                app:cardCornerRadius="@dimen/dimen8dp"
+                app:cardElevation="0dp"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
+                android:backgroundTint="@android:color/transparent"
+                app:strokeWidth="0dp">
+
+                <ImageView
+                    android:id="@+id/userAvatar"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:contentDescription="@string/generalImgContentText"
+                    android:src="@drawable/loader_animated"/>
+
+            </com.google.android.material.card.MaterialCardView>
+
+            <TextView
+                android:id="@+id/userFullName"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="@dimen/dimen12dp"
+                android:layout_marginEnd="@dimen/dimen8dp"
+                android:ellipsize="end"
+                android:maxLines="1"
+                android:textAppearance="@style/TextAppearance.Material3.TitleMedium"
+                android:textColor="?attr/primaryTextColor"
+                android:textStyle="bold"
+                app:layout_constraintTop_toTopOf="@+id/avatarContainer"
+                app:layout_constraintBottom_toTopOf="@+id/userName"
+                app:layout_constraintVertical_chainStyle="packed"
+                app:layout_constraintEnd_toStartOf="@+id/barrier_actions"
+                app:layout_constraintStart_toEndOf="@+id/avatarContainer" />
+
+            <TextView
+                android:id="@+id/userName"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="@dimen/dimen12dp"
+                android:layout_marginEnd="@dimen/dimen8dp"
+                android:alpha=".8"
+                android:ellipsize="end"
+                android:maxLines="1"
+                android:textAppearance="@style/TextAppearance.Material3.BodySmall"
+                android:textColor="?attr/primaryTextColor"
+                app:layout_constraintTop_toBottomOf="@+id/userFullName"
+                app:layout_constraintBottom_toBottomOf="@+id/avatarContainer"
+                app:layout_constraintEnd_toStartOf="@+id/barrier_actions"
+                app:layout_constraintStart_toEndOf="@+id/avatarContainer" />
+
+            <androidx.constraintlayout.widget.Barrier
+                android:id="@+id/barrier_actions"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                app:barrierDirection="start"
+                app:constraint_referenced_ids="addCollaboratorButtonAdd,addCollaboratorButtonRemove" />
+
+            <com.google.android.material.button.MaterialButton
+                android:id="@+id/addCollaboratorButtonAdd"
+                style="@style/Widget.Material3.Button.IconButton"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                app:icon="@drawable/ic_add"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
+
+            <com.google.android.material.button.MaterialButton
+                android:id="@+id/addCollaboratorButtonRemove"
+                style="@style/Widget.Material3.Button.IconButton"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:visibility="gone"
+                app:icon="@drawable/ic_remove"
+                app:iconTint="@color/darkRed"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
+
+    </com.google.android.material.listitem.ListItemCardView>
+
+</com.google.android.material.listitem.ListItemLayout>

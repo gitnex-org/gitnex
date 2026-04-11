@@ -1,141 +1,103 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<com.google.android.material.listitem.ListItemLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools"
-    android:id="@+id/dashboardLayoutCardsFrame"
     android:layout_width="match_parent"
-    android:layout_height="wrap_content"
-    android:paddingTop="@dimen/dimen4dp"
-    android:paddingBottom="@dimen/dimen4dp"
-    android:orientation="vertical">
+    android:layout_height="wrap_content">
 
-    <com.google.android.material.card.MaterialCardView
-        android:id="@+id/cardLayout"
+    <com.google.android.material.listitem.ListItemCardView
+        android:id="@+id/card"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        style="?attr/materialCardViewElevatedStyle"
-        app:cardElevation="@dimen/dimen0dp">
+        android:checkable="false"
+        android:layout_marginVertical="@dimen/dimen1dp"
+        app:strokeWidth="0dp"
+        app:cardBackgroundColor="?attr/materialCardBackgroundColor">
 
-        <LinearLayout
+        <androidx.constraintlayout.widget.ConstraintLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:foreground="?android:attr/selectableItemBackground"
-            android:background="?attr/materialCardBackgroundColor"
-            android:padding="@dimen/dimen12dp"
-            android:orientation="vertical">
+            android:padding="@dimen/dimen8dp">
 
-            <LinearLayout
-                android:id="@+id/info_section"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:orientation="horizontal"
-                tools:ignore="UseCompoundDrawables">
+            <com.google.android.material.card.MaterialCardView
+                android:id="@+id/avatar_container"
+                android:layout_width="@dimen/dimen36dp"
+                android:layout_height="@dimen/dimen36dp"
+                app:cardCornerRadius="@dimen/dimen8dp"
+                app:cardElevation="0dp"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
+                android:backgroundTint="@android:color/transparent"
+                app:strokeWidth="0dp">
 
-                <com.google.android.material.card.MaterialCardView
-                    android:layout_width="@dimen/dimen32dp"
-                    android:layout_height="@dimen/dimen32dp"
-                    style="?attr/materialCardViewElevatedStyle"
-                    android:backgroundTint="@android:color/transparent"
-                    app:cardElevation="@dimen/dimen0dp"
-                    android:layout_marginEnd="@dimen/dimen12dp"
-                    app:cardCornerRadius="@dimen/dimen8dp">
-
-                    <ImageView
-                        android:id="@+id/user_avatar"
-                        android:layout_width="match_parent"
-                        android:layout_height="match_parent"
-                        android:contentDescription="@string/generalImgContentText"
-                        tools:src="@tools:sample/avatars"/>
-
-                </com.google.android.material.card.MaterialCardView>
-
-                <LinearLayout
-                    android:id="@+id/header_detail_section"
+                <ImageView
+                    android:id="@+id/user_avatar"
                     android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:orientation="vertical">
+                    android:layout_height="match_parent"
+                    android:scaleType="centerCrop"
+                    android:contentDescription="@string/generalImgContentText" />
 
-                    <TextView
-                        android:id="@+id/type_details"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:gravity="top|center_vertical"
-                        android:text="@string/newIssueTitle"
-                        android:textAlignment="gravity"
-                        android:textColor="?attr/primaryTextColor"
-                        android:textSize="@dimen/dimen16sp"
-                        tools:text="Id illum odio repellat omnis fuga deserunt aut. Ut est aut similique qui incidunt quia et." />
+            </com.google.android.material.card.MaterialCardView>
 
-                </LinearLayout>
-
-            </LinearLayout>
+            <TextView
+                android:id="@+id/type_details"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="@dimen/dimen12dp"
+                android:textAppearance="@style/TextAppearance.Material3.TitleMedium"
+                android:textColor="?attr/primaryTextColor"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toEndOf="@id/avatar_container"
+                app:layout_constraintTop_toTopOf="@id/avatar_container" />
 
             <LinearLayout
                 android:id="@+id/dash_text_frame"
-                android:layout_width="match_parent"
+                android:layout_width="0dp"
                 android:layout_height="wrap_content"
-                android:gravity="center_vertical"
-                android:orientation="horizontal"
+                android:layout_marginTop="@dimen/dimen8dp"
+                android:orientation="vertical"
                 android:visibility="gone"
-                android:layout_marginTop="@dimen/dimen16dp">
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="@id/type_details"
+                app:layout_constraintTop_toBottomOf="@id/type_details">
 
                 <TextView
                     android:id="@+id/text"
-                    android:layout_width="wrap_content"
+                    android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:gravity="start"
-                    android:textColor="?attr/primaryTextColor"
-                    android:textSize="@dimen/dimen12sp" />
+                    android:textAppearance="@style/TextAppearance.Material3.BodyMedium"
+                    android:alpha=".8"
+                    android:ellipsize="end"
+                    android:maxLines="5"
+                    android:textColor="?attr/primaryTextColor" />
 
             </LinearLayout>
 
-            <LinearLayout
-                android:id="@+id/dash_info_frame"
-                android:layout_width="match_parent"
+            <ImageView
+                android:id="@+id/type_icon"
+                android:layout_width="@dimen/dimen18dp"
+                android:layout_height="@dimen/dimen18dp"
+                android:layout_marginTop="@dimen/dimen12dp"
+                android:contentDescription="@string/generalImgContentText"
+                app:layout_constraintStart_toStartOf="@id/type_details"
+                app:layout_constraintTop_toBottomOf="@id/dash_text_frame"
+                app:srcCompat="@drawable/ic_comment"
+                app:tint="?attr/iconsColor" />
+
+            <TextView
+                android:id="@+id/created_time"
+                android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:gravity="center_vertical"
-                android:orientation="horizontal"
-                android:layout_marginTop="@dimen/dimen16dp">
+                android:layout_marginStart="@dimen/dimen6dp"
+                android:textAppearance="?attr/textAppearanceLabelLarge"
+                android:textColor="?attr/colorOnSurfaceVariant"
+                android:alpha="0.8"
+                app:layout_constraintBottom_toBottomOf="@id/type_icon"
+                app:layout_constraintStart_toEndOf="@id/type_icon"
+                app:layout_constraintTop_toTopOf="@id/type_icon" />
 
-                <TextView
-                    android:id="@+id/created_time"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:gravity="start"
-                    android:textColor="?attr/hintColor"
-                    android:textSize="@dimen/dimen12sp"
-                    tools:text="25.08.2023" />
+        </androidx.constraintlayout.widget.ConstraintLayout>
 
-                <LinearLayout
-                    android:id="@+id/type"
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:layout_gravity="end"
-                    android:layout_marginStart="@dimen/dimen10dp"
-                    android:layout_marginEnd="@dimen/dimen0dp"
-                    android:layout_weight="1"
-                    android:gravity="end"
-                    android:orientation="horizontal"
-                    android:paddingStart="@dimen/dimen4dp"
-                    android:paddingEnd="@dimen/dimen0dp"
-                    tools:ignore="UseCompoundDrawables">
+    </com.google.android.material.listitem.ListItemCardView>
 
-                    <ImageView
-                        android:id="@+id/type_icon"
-                        android:layout_width="@dimen/dimen16dp"
-                        android:layout_height="@dimen/dimen16dp"
-                        android:layout_marginStart="@dimen/dimen2dp"
-                        android:layout_marginEnd="@dimen/dimen4dp"
-                        android:contentDescription="@string/generalImgContentText"
-                        app:srcCompat="@drawable/ic_comment"
-                        app:tint="?attr/iconsColor" />
-
-                </LinearLayout>
-
-            </LinearLayout>
-
-        </LinearLayout>
-
-    </com.google.android.material.card.MaterialCardView>
-
-</LinearLayout>
+</com.google.android.material.listitem.ListItemLayout>

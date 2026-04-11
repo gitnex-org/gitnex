@@ -2,27 +2,24 @@ package org.mian.gitnex.adapters;
 
 import android.annotation.SuppressLint;
 import android.content.Context;
+import android.content.Intent;
 import android.view.LayoutInflater;
-import android.view.View;
 import android.view.ViewGroup;
-import android.widget.LinearLayout;
-import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 import java.util.List;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 import org.mian.gitnex.R;
-import org.mian.gitnex.activities.CommitDetailActivity;
 import org.mian.gitnex.activities.DiffActivity;
-import org.mian.gitnex.fragments.DiffFragment;
+import org.mian.gitnex.databinding.ListDiffFilesBinding;
 import org.mian.gitnex.helpers.FileDiffView;
 import org.mian.gitnex.helpers.contexts.IssueContext;
 
 /**
- * @author M M Arif
+ * @author mmarif
  */
-public class DiffFilesAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
+public class DiffFilesAdapter extends RecyclerView.Adapter<DiffFilesAdapter.FilesHolder> {
 
 	private static final Pattern statisticsPattern = Pattern.compile("(\\d+).*?,.*?(\\d+)");
 
@@ -30,101 +27,90 @@ public class DiffFilesAdapter extends RecyclerView.Adapter<RecyclerView.ViewHold
 	private final IssueContext issue;
 	private final String fragmentType;
 	private List<FileDiffView> fileDiffViews;
+	private final String repoOwner;
+	private final String repoName;
+	private final String sha;
 
 	public DiffFilesAdapter(
 			Context context,
 			List<FileDiffView> fileDiffViews,
 			IssueContext issue,
+			String repoOwner,
+			String repoName,
+			String sha,
 			String fragmentType) {
-
 		this.context = context;
 		this.fileDiffViews = fileDiffViews;
 		this.issue = issue;
+		this.repoOwner = repoOwner;
+		this.repoName = repoName;
+		this.sha = sha;
 		this.fragmentType = fragmentType;
 	}
 
 	@NonNull @Override
-	public RecyclerView.ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-		LayoutInflater inflater = LayoutInflater.from(context);
-		return new DiffFilesAdapter.FilesHolder(
-				inflater.inflate(R.layout.list_diff_files, parent, false));
+	public FilesHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
+		return new FilesHolder(
+				ListDiffFilesBinding.inflate(
+						LayoutInflater.from(parent.getContext()), parent, false));
 	}
 
 	@Override
-	public void onBindViewHolder(@NonNull RecyclerView.ViewHolder holder, int position) {
-
-		((DiffFilesAdapter.FilesHolder) holder).bindData(fileDiffViews.get(position));
-	}
-
-	@Override
-	public int getItemViewType(int position) {
-		return position;
+	public void onBindViewHolder(@NonNull FilesHolder holder, int position) {
+		holder.bind(fileDiffViews.get(position));
+		holder.binding.getRoot().updateAppearance(position, getItemCount());
 	}
 
 	@Override
 	public int getItemCount() {
-		return fileDiffViews.size();
-	}
-
-	public void updateList(List<FileDiffView> list) {
-		fileDiffViews = list;
+		return fileDiffViews != null ? fileDiffViews.size() : 0;
 	}
 
 	@SuppressLint("NotifyDataSetChanged")
-	public void notifyDataChanged() {
+	public void updateList(List<FileDiffView> list) {
+		this.fileDiffViews = list;
 		notifyDataSetChanged();
 	}
 
-	class FilesHolder extends RecyclerView.ViewHolder {
+	public class FilesHolder extends RecyclerView.ViewHolder {
 
-		FileDiffView diffFilesObject;
-		TextView fileName;
-		TextView fileStatistics;
-		LinearLayout main_frame;
+		private final ListDiffFilesBinding binding;
+		private FileDiffView currentItem;
 
-		FilesHolder(View itemView) {
+		FilesHolder(ListDiffFilesBinding binding) {
+			super(binding.getRoot());
+			this.binding = binding;
 
-			super(itemView);
-
-			fileName = itemView.findViewById(R.id.fileName);
-			fileStatistics = itemView.findViewById(R.id.fileStatistics);
-			main_frame = itemView.findViewById(R.id.main_frame);
-
-			main_frame.setOnClickListener(
+			binding.mainFrame.setOnClickListener(
 					v -> {
-						if (fragmentType.equalsIgnoreCase("commit")) {
-							((CommitDetailActivity) context)
-									.getSupportFragmentManager()
-									.beginTransaction()
-									.replace(
-											R.id.fragment_container,
-											DiffFragment.newInstance(diffFilesObject, fragmentType))
-									.commit();
-						} else {
-							((DiffActivity) context)
-									.getSupportFragmentManager()
-									.beginTransaction()
-									.replace(
-											R.id.fragment_container,
-											DiffFragment.newInstance(diffFilesObject, issue))
-									.commit();
+						if (currentItem == null) return;
+
+						Intent intent = new Intent(context, DiffActivity.class);
+						intent.putExtra("owner", repoOwner);
+						intent.putExtra("repo", repoName);
+						intent.putExtra("sha", sha);
+
+						if (issue != null) {
+							intent.putExtra("pr_id", issue.getIssueIndex());
 						}
+
+						intent.putExtra("type", fragmentType);
+						intent.putExtra("file_path", currentItem.getFileName());
+						context.startActivity(intent);
 					});
 		}
 
-		void bindData(FileDiffView fileDiffView) {
-
-			this.diffFilesObject = fileDiffView;
-			fileName.setText(fileDiffView.getFileName());
+		void bind(FileDiffView fileDiffView) {
+			this.currentItem = fileDiffView;
+			binding.fileName.setText(fileDiffView.getFileName());
 
 			Matcher matcher = statisticsPattern.matcher(fileDiffView.getFileInfo());
-
 			if (matcher.find() && matcher.groupCount() == 2) {
-				fileStatistics.setText(
+				binding.fileStatistics.setText(
 						context.getString(
 								R.string.diffStatistics, matcher.group(1), matcher.group(2)));
 			} else {
-				fileStatistics.setText(fileDiffView.getFileInfo());
+				binding.fileStatistics.setText(fileDiffView.getFileInfo());
 			}
 		}
 	}

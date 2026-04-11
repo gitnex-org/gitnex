@@ -3,145 +3,53 @@ package org.mian.gitnex.adapters;
 import android.annotation.SuppressLint;
 import android.content.Context;
 import android.content.Intent;
-import android.graphics.Typeface;
 import android.view.LayoutInflater;
-import android.view.View;
 import android.view.ViewGroup;
-import android.widget.ImageView;
-import android.widget.LinearLayout;
-import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
-import com.amulyakhare.textdrawable.TextDrawable;
-import com.amulyakhare.textdrawable.util.ColorGenerator;
 import com.google.android.material.dialog.MaterialAlertDialogBuilder;
 import java.util.List;
 import org.mian.gitnex.R;
 import org.mian.gitnex.activities.RepoDetailActivity;
-import org.mian.gitnex.database.api.BaseApi;
-import org.mian.gitnex.database.api.RepositoriesApi;
 import org.mian.gitnex.database.models.Repository;
+import org.mian.gitnex.databinding.ListMostVisitedReposBinding;
 import org.mian.gitnex.helpers.AppUtil;
-import org.mian.gitnex.helpers.Toasty;
+import org.mian.gitnex.helpers.AvatarGenerator;
 import org.mian.gitnex.helpers.contexts.RepositoryContext;
 
 /**
- * @author M M Arif
+ * @author mmarif
  */
 public class MostVisitedReposAdapter
 		extends RecyclerView.Adapter<MostVisitedReposAdapter.MostVisitedViewHolder> {
 
 	private List<Repository> mostVisitedReposList;
 	private final Context ctx;
+	private final OnRepoActionListener listener;
 
-	public class MostVisitedViewHolder extends RecyclerView.ViewHolder {
-
-		private Repository repository;
-
-		private final ImageView image;
-		private final TextView repoName;
-		private final TextView orgName;
-		private final TextView mostVisited;
-
-		private MostVisitedViewHolder(View itemView) {
-
-			super(itemView);
-
-			image = itemView.findViewById(R.id.image);
-			repoName = itemView.findViewById(R.id.repo_name);
-			orgName = itemView.findViewById(R.id.org_name);
-			mostVisited = itemView.findViewById(R.id.most_visited);
-			LinearLayout repoInfoEndFrame = itemView.findViewById(R.id.repo_info_end_frame);
-
-			itemView.setOnClickListener(
-					v -> {
-						Context context = v.getContext();
-						RepositoryContext repositoryContext =
-								new RepositoryContext(
-										repository.getRepositoryOwner(),
-										repository.getRepositoryName(),
-										context);
-						Intent intent =
-								repositoryContext.getIntent(context, RepoDetailActivity.class);
-						context.startActivity(intent);
-					});
-
-			repoInfoEndFrame.setOnClickListener(
-					itemDelete -> {
-						MaterialAlertDialogBuilder materialAlertDialogBuilder =
-								new MaterialAlertDialogBuilder(
-										ctx, R.style.ThemeOverlay_Material3_Dialog_Alert);
-
-						materialAlertDialogBuilder
-								.setTitle(ctx.getString(R.string.reset))
-								.setMessage(
-										ctx.getString(
-												R.string.resetCounterDialogMessage,
-												repository.getRepositoryName()))
-								.setPositiveButton(
-										R.string.reset,
-										(dialog, whichButton) -> {
-											int getRepositoryId = repository.getRepositoryId();
-											resetRepositoryCounter(getBindingAdapterPosition());
-
-											RepositoriesApi repositoriesApi =
-													BaseApi.getInstance(ctx, RepositoriesApi.class);
-											assert repositoriesApi != null;
-											repositoriesApi.updateRepositoryMostVisited(
-													0, getRepositoryId);
-										})
-								.setNeutralButton(R.string.cancelButton, null)
-								.show();
-					});
-		}
-	}
-
-	private void resetRepositoryCounter(int position) {
-
-		mostVisitedReposList.remove(position);
-		notifyItemRemoved(position);
-		notifyItemRangeChanged(position, mostVisitedReposList.size());
-		Toasty.success(ctx, ctx.getResources().getString(R.string.resetMostReposCounter));
-	}
-
-	public MostVisitedReposAdapter(Context ctx, List<Repository> reposListMain) {
+	public MostVisitedReposAdapter(
+			Context ctx, List<Repository> reposList, OnRepoActionListener listener) {
 		this.ctx = ctx;
-		this.mostVisitedReposList = reposListMain;
+		this.mostVisitedReposList = reposList;
+		this.listener = listener;
 	}
 
 	@NonNull @Override
 	public MostVisitedViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-		View v =
-				LayoutInflater.from(parent.getContext())
-						.inflate(R.layout.list_most_visited_repos, parent, false);
-		return new MostVisitedViewHolder(v);
+		ListMostVisitedReposBinding binding =
+				ListMostVisitedReposBinding.inflate(
+						LayoutInflater.from(parent.getContext()), parent, false);
+		return new MostVisitedViewHolder(binding);
 	}
 
-	@SuppressLint("DefaultLocale")
 	@Override
 	public void onBindViewHolder(@NonNull MostVisitedViewHolder holder, int position) {
+		holder.bind(mostVisitedReposList.get(position));
+		holder.binding.getRoot().updateAppearance(position, getItemCount());
+	}
 
-		Repository currentItem = mostVisitedReposList.get(position);
-		holder.repository = currentItem;
-
-		ColorGenerator generator = ColorGenerator.Companion.getMATERIAL();
-		int color = generator.getColor(currentItem.getRepositoryOwner());
-		String firstCharacter = String.valueOf(currentItem.getRepositoryOwner().charAt(0));
-		TextDrawable drawable =
-				TextDrawable.builder()
-						.beginConfig()
-						.useFont(Typeface.DEFAULT)
-						.fontSize(28)
-						.toUpperCase()
-						.width(44)
-						.height(44)
-						.endConfig()
-						.buildRoundRect(firstCharacter, color, 12);
-
-		holder.image.setImageDrawable(drawable);
-		holder.orgName.setText(currentItem.getRepositoryOwner());
-		holder.repoName.setText(currentItem.getRepositoryName());
-		holder.mostVisited.setText(AppUtil.numberFormatter(currentItem.getMostVisited()));
+	public interface OnRepoActionListener {
+		void onReset(int position, Repository repository);
 	}
 
 	@Override
@@ -149,19 +57,64 @@ public class MostVisitedReposAdapter
 		return mostVisitedReposList.size();
 	}
 
+	public class MostVisitedViewHolder extends RecyclerView.ViewHolder {
+		private final ListMostVisitedReposBinding binding;
+		private Repository repository;
+
+		private MostVisitedViewHolder(ListMostVisitedReposBinding binding) {
+			super(binding.getRoot());
+			this.binding = binding;
+			setupListeners();
+		}
+
+		private void setupListeners() {
+			binding.getRoot()
+					.setOnClickListener(
+							v -> {
+								RepositoryContext repoCtx =
+										new RepositoryContext(
+												repository.getRepositoryOwner(),
+												repository.getRepositoryName(),
+												ctx);
+								Intent intent = repoCtx.getIntent(ctx, RepoDetailActivity.class);
+								ctx.startActivity(intent);
+							});
+
+			binding.repoInfoEndFrame.setOnClickListener(v -> showResetDialog());
+		}
+
+		void bind(Repository repo) {
+			this.repository = repo;
+			binding.orgName.setText(repo.getRepositoryOwner());
+			binding.repoName.setText(repo.getRepositoryName());
+			binding.mostVisited.setText(AppUtil.numberFormatter(repo.getMostVisited()));
+
+			binding.image.setImageDrawable(
+					AvatarGenerator.getLetterAvatar(ctx, repo.getRepositoryOwner(), 44));
+		}
+
+		private void showResetDialog() {
+			new MaterialAlertDialogBuilder(ctx, R.style.ThemeOverlay_Material3_Dialog_Alert)
+					.setTitle(R.string.reset)
+					.setMessage(
+							ctx.getString(
+									R.string.resetCounterDialogMessage,
+									repository.getRepositoryName()))
+					.setPositiveButton(
+							R.string.reset,
+							(dialog, which) -> {
+								if (listener != null) {
+									listener.onReset(getBindingAdapterPosition(), repository);
+								}
+							})
+					.setNeutralButton(R.string.cancelButton, null)
+					.show();
+		}
+	}
+
 	@SuppressLint("NotifyDataSetChanged")
-	public void notifyDataChanged() {
+	public void updateList(List<Repository> newList) {
+		this.mostVisitedReposList = newList;
 		notifyDataSetChanged();
-	}
-
-	public void updateList(List<Repository> list) {
-
-		mostVisitedReposList = list;
-		notifyDataChanged();
-	}
-
-	public void clearAdapter() {
-		mostVisitedReposList.clear();
-		notifyDataChanged();
 	}
 }

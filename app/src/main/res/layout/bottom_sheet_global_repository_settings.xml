@@ -1,243 +1,58 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout
-    xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:background="?attr/primaryBackgroundColor"
-    android:orientation="vertical"
-    android:padding="@dimen/dimen16dp">
+    android:paddingHorizontal="@dimen/dimen24dp"
+    android:paddingBottom="@dimen/dimen32dp">
 
-    <View
-        android:layout_width="@dimen/dimen32dp"
-        android:layout_height="@dimen/dimen6dp"
-        android:layout_gravity="center_horizontal"
-        android:layout_marginBottom="@dimen/dimen8dp"
-        android:background="@drawable/bottom_sheet_handle"
-        android:backgroundTint="?attr/primaryTextColor" />
-
-    <LinearLayout
-        android:id="@+id/milestonesFilterHeadFrame"
+    <com.google.android.material.bottomsheet.BottomSheetDragHandleView
+        android:id="@+id/drag_handle"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <TextView
+        android:id="@+id/headerTitle"
+        style="@style/TextAppearance.Material3.HeadlineSmall"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/repoSettingsTitle"
+        android:textStyle="bold"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/drag_handle" />
+
+    <com.google.android.material.loadingindicator.LoadingIndicator
+        android:id="@+id/loadingIndicator"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:indicatorSize="@dimen/dimen48dp"
+        app:trackThickness="@dimen/dimen4dp"
+        android:visibility="gone"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/headerTitle"
+        android:layout_marginTop="@dimen/dimen48dp"
+        android:layout_marginBottom="@dimen/dimen48dp"/>
+
+    <LinearLayout
+        android:id="@+id/settingsContainer"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/dimen16dp"
         android:orientation="vertical"
-        android:padding="@dimen/dimen8dp">
+        android:visibility="gone"
+        app:layout_constraintTop_toBottomOf="@id/headerTitle">
 
-        <TextView
-            android:id="@+id/bottomSheetHeader"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:gravity="center"
-            android:text="@string/repoSettingsTitle"
-            android:textColor="?attr/primaryTextColor"
-            android:textSize="@dimen/dimen18sp"/>
-
-        <com.google.android.material.card.MaterialCardView
-            style="?attr/materialCardViewFilledStyle"
-            android:layout_width="@dimen/dimen28dp"
-            android:layout_height="@dimen/dimen4dp"
-            android:layout_gravity="center_horizontal"
-            android:layout_marginTop="@dimen/dimen8dp"
-            android:layout_marginBottom="@dimen/dimen16dp"
-            app:cardCornerRadius="@dimen/dimen24dp"
-            app:cardElevation="@dimen/dimen0dp">
-
-            <View
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:background="?attr/fabColor" />
-
-        </com.google.android.material.card.MaterialCardView>
+        <include android:id="@+id/itemForks" layout="@layout/item_administration_repo_setting_row" />
+        <include android:id="@+id/itemMigrations" layout="@layout/item_administration_repo_setting_row" />
+        <include android:id="@+id/itemHttpGit" layout="@layout/item_administration_repo_setting_row" />
+        <include android:id="@+id/itemLfs" layout="@layout/item_administration_repo_setting_row" />
+        <include android:id="@+id/itemMirrors" layout="@layout/item_administration_repo_setting_row" />
+        <include android:id="@+id/itemTime" layout="@layout/item_administration_repo_setting_row" />
+        <include android:id="@+id/itemStars" layout="@layout/item_administration_repo_setting_row" />
 
     </LinearLayout>
 
-    <!-- Forks -->
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:orientation="horizontal"
-        android:layout_margin="@dimen/dimen12dp"
-        android:gravity="center_vertical">
-
-        <TextView
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:text="@string/forks"
-            android:textColor="?attr/primaryTextColor"
-            android:textSize="@dimen/dimen16sp" />
-
-        <TextView
-            android:id="@+id/forksDisabledValue"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="@string/loading"
-            android:textColor="?attr/primaryTextColor"
-            android:textSize="@dimen/dimen16sp"
-            android:textStyle="bold" />
-
-    </LinearLayout>
-
-    <!-- Migrations -->
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:orientation="horizontal"
-        android:layout_margin="@dimen/dimen12dp"
-        android:gravity="center_vertical">
-
-        <TextView
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:text="@string/migrations"
-            android:textColor="?attr/primaryTextColor"
-            android:textSize="@dimen/dimen16sp" />
-
-        <TextView
-            android:id="@+id/migrationsDisabledValue"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="@string/loading"
-            android:textColor="?attr/primaryTextColor"
-            android:textSize="@dimen/dimen16sp"
-            android:textStyle="bold" />
-
-    </LinearLayout>
-
-    <!-- HTTP Git -->
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:orientation="horizontal"
-        android:layout_margin="@dimen/dimen12dp"
-        android:gravity="center_vertical">
-
-        <TextView
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:text="@string/http_git"
-            android:textColor="?attr/primaryTextColor"
-            android:textSize="@dimen/dimen16sp" />
-
-        <TextView
-            android:id="@+id/httpGitDisabledValue"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="@string/loading"
-            android:textColor="?attr/primaryTextColor"
-            android:textSize="@dimen/dimen16sp"
-            android:textStyle="bold" />
-
-    </LinearLayout>
-
-    <!-- LFS -->
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:orientation="horizontal"
-        android:layout_margin="@dimen/dimen12dp"
-        android:gravity="center_vertical">
-
-        <TextView
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:text="@string/lfs"
-            android:textColor="?attr/primaryTextColor"
-            android:textSize="@dimen/dimen16sp" />
-
-        <TextView
-            android:id="@+id/lfsDisabledValue"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="@string/loading"
-            android:textColor="?attr/primaryTextColor"
-            android:textSize="@dimen/dimen16sp"
-            android:textStyle="bold" />
-
-    </LinearLayout>
-
-    <!-- Mirrors -->
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:orientation="horizontal"
-        android:layout_margin="@dimen/dimen12dp"
-        android:gravity="center_vertical">
-
-        <TextView
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:text="@string/mirrors"
-            android:textColor="?attr/primaryTextColor"
-            android:textSize="@dimen/dimen16sp" />
-
-        <TextView
-            android:id="@+id/mirrorsDisabledValue"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="@string/loading"
-            android:textColor="?attr/primaryTextColor"
-            android:textSize="@dimen/dimen16sp"
-            android:textStyle="bold" />
-
-    </LinearLayout>
-
-    <!-- Time Tracking -->
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:orientation="horizontal"
-        android:layout_margin="@dimen/dimen12dp"
-        android:gravity="center_vertical">
-
-        <TextView
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:text="@string/time_tracking"
-            android:textColor="?attr/primaryTextColor"
-            android:textSize="@dimen/dimen16sp" />
-
-        <TextView
-            android:id="@+id/timeTrackingDisabledValue"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="@string/loading"
-            android:textColor="?attr/primaryTextColor"
-            android:textSize="@dimen/dimen16sp"
-            android:textStyle="bold" />
-
-    </LinearLayout>
-
-    <!-- Stars -->
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:orientation="horizontal"
-        android:layout_margin="@dimen/dimen12dp"
-        android:gravity="center_vertical">
-
-        <TextView
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:text="@string/stars"
-            android:textColor="?attr/primaryTextColor"
-            android:textSize="@dimen/dimen16sp" />
-
-        <TextView
-            android:id="@+id/starsDisabledValue"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="@string/loading"
-            android:textColor="?attr/primaryTextColor"
-            android:textSize="@dimen/dimen16sp"
-            android:textStyle="bold" />
-
-    </LinearLayout>
-
-</LinearLayout>
+</androidx.constraintlayout.widget.ConstraintLayout>

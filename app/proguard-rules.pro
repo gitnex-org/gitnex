@@ -21,3 +21,4 @@
 #-renamesourcefileattribute SourceFile
 -optimizationpasses 30
 -allowaccessmodification
+-keep class org.mian.gitnex.helpers.AvatarGenerator { *; }
