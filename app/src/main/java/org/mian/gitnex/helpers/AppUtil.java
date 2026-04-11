@@ -34,13 +34,10 @@ import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
-import java.net.HttpURLConnection;
-import java.net.URL;
 import java.nio.charset.StandardCharsets;
 import java.text.DecimalFormat;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
-import java.util.Calendar;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
@@ -405,54 +402,6 @@ public class AppUtil {
 		return typedValue.data;
 	}
 
-	public static String customDateFormat(String customDate) {
-
-		String[] parts = customDate.split("-");
-		final String year = parts[0];
-		final String month = parts[1];
-		final String day = parts[2];
-
-		String sMonth;
-		if (Integer.parseInt(month) < 10) {
-			sMonth = "0" + month;
-		} else {
-			sMonth = month;
-		}
-
-		String sDay;
-		if (Integer.parseInt(day) < 10) {
-			sDay = "0" + day;
-		} else {
-			sDay = day;
-		}
-
-		return year + "-" + sMonth + "-" + sDay;
-	}
-
-	public static String customDateCombine(String customDate) {
-
-		final Calendar c = Calendar.getInstance();
-		int mHour = c.get(Calendar.HOUR_OF_DAY);
-		int mMinute = c.get(Calendar.MINUTE);
-		int mSeconds = c.get(Calendar.SECOND);
-
-		String sMin;
-		if ((mMinute) < 10) {
-			sMin = "0" + mMinute;
-		} else {
-			sMin = String.valueOf(mMinute);
-		}
-
-		String sSec;
-		if ((mSeconds) < 10) {
-			sSec = "0" + mSeconds;
-		} else {
-			sSec = String.valueOf(mSeconds);
-		}
-
-		return (customDate + "T" + mHour + ":" + sMin + ":" + sSec + "Z");
-	}
-
 	public static String encodeBase64(String str) {
 
 		String base64Str = str;
@@ -484,10 +433,6 @@ public class AppUtil {
 		return base64Str;
 	}
 
-	public static String getLastCharactersOfWord(String str, int count) {
-		return str.substring(str.length() - count);
-	}
-
 	public static void setMultiVisibility(int visibility, View... views) {
 		for (View view : views) {
 			view.setVisibility(visibility);
@@ -496,10 +441,6 @@ public class AppUtil {
 
 	public static int getPixelsFromDensity(Context context, int dp) {
 		return (int) (context.getResources().getDisplayMetrics().density * dp);
-	}
-
-	public static int getPixelsFromScaledDensity(Context context, int sp) {
-		return (int) (context.getResources().getDisplayMetrics().scaledDensity * sp);
 	}
 
 	public static long getLineCount(String s) {
@@ -705,13 +646,6 @@ public class AppUtil {
 		ArrayList<String> restrictedUsers = new ArrayList<>();
 		restrictedUsers.add("Ghost");
 		return restrictedUsers.contains(str);
-	}
-
-	public int getResponseStatusCode(String u) throws Exception {
-
-		URL url = new URL(u);
-		HttpURLConnection http = (HttpURLConnection) url.openConnection();
-		return (http.getResponseCode());
 	}
 
 	public interface ProgressListener {

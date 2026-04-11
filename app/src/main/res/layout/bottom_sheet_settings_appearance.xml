@@ -131,49 +131,6 @@
 
         </LinearLayout>
 
-        <!-- Counter Badge Frame -->
-        <androidx.constraintlayout.widget.ConstraintLayout
-            android:id="@+id/counterBadgeFrame"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="@dimen/dimen16dp">
-
-            <TextView
-                android:id="@+id/tvCounterBadgeHeader"
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:text="@string/settingsCounterBadges"
-                android:textColor="?attr/primaryTextColor"
-                android:layout_marginTop="@dimen/dimen8dp"
-                android:textSize="@dimen/dimen16sp"
-                android:singleLine="false"
-                android:ellipsize="none"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintEnd_toStartOf="@id/guidelineCounter"
-                app:layout_constraintTop_toTopOf="parent"
-                android:layout_marginEnd="@dimen/dimen12dp" />
-
-            <com.google.android.material.materialswitch.MaterialSwitch
-                android:id="@+id/switchCounterBadge"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:contentDescription="@string/settingsCounterBadges"
-                style="@style/m3SwitchStyle"
-                android:layout_marginStart="@dimen/dimen12dp"
-                app:layout_constraintStart_toEndOf="@id/tvCounterBadgeHeader"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintTop_toTopOf="@id/tvCounterBadgeHeader"
-                app:layout_constraintBottom_toBottomOf="@id/tvCounterBadgeHeader" />
-
-            <androidx.constraintlayout.widget.Guideline
-                android:id="@+id/guidelineCounter"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:orientation="vertical"
-                app:layout_constraintGuide_percent="0.85" />
-
-        </androidx.constraintlayout.widget.ConstraintLayout>
-
         <!-- Labels in List Frame -->
         <androidx.constraintlayout.widget.ConstraintLayout
             android:id="@+id/labelsInListFrame"

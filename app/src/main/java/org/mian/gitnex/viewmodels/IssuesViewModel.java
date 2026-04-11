@@ -32,6 +32,7 @@ public class IssuesViewModel extends ViewModel {
 			new MutableLiveData<>(new ArrayList<>());
 	private final MutableLiveData<Boolean> hasRepoLoadedOnce = new MutableLiveData<>(false);
 	private final IssueFilterState currentFilterState = new IssueFilterState();
+	private final MutableLiveData<Integer> repoTotalCountLiveData = new MutableLiveData<>(-1);
 
 	private int repoTotalCount = -1;
 	private boolean isRepoLastPage = false;
@@ -72,6 +73,10 @@ public class IssuesViewModel extends ViewModel {
 
 	public IssueFilterState getFilterState() {
 		return currentFilterState;
+	}
+
+	public LiveData<Integer> getRepoTotalCount() {
+		return repoTotalCountLiveData;
 	}
 
 	public void resetRepoPagination() {
@@ -151,7 +156,11 @@ public class IssuesViewModel extends ViewModel {
 								if (response.isSuccessful() && response.body() != null) {
 									String totalHeader = response.headers().get("x-total-count");
 									if (totalHeader != null) {
-										repoTotalCount = Integer.parseInt(totalHeader);
+										int count = Integer.parseInt(totalHeader);
+										repoTotalCount = count;
+										repoTotalCountLiveData.setValue(count);
+									} else if (isRefresh) {
+										repoTotalCountLiveData.setValue(0);
 									}
 
 									List<Issue> body = response.body();
@@ -186,6 +195,22 @@ public class IssuesViewModel extends ViewModel {
 								errorMessage.setValue(t.getMessage());
 							}
 						});
+	}
+
+	public void prefetchCounts(Context ctx, String owner, String repo) {
+		fetchRepoIssues(
+				ctx,
+				owner,
+				repo,
+				"open",
+				null,
+				null,
+				Constants.issuesRequestType,
+				null,
+				null,
+				1,
+				1,
+				true);
 	}
 
 	public void fetchPinnedIssues(Context ctx, String owner, String repo) {

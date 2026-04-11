@@ -9,14 +9,12 @@ import android.view.View;
 import android.view.ViewGroup;
 import androidx.activity.OnBackPressedCallback;
 import androidx.annotation.NonNull;
-import androidx.annotation.OptIn;
 import androidx.core.text.HtmlCompat;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.load.engine.DiskCacheStrategy;
 import com.google.android.material.badge.BadgeDrawable;
-import com.google.android.material.badge.BadgeUtils;
 import com.google.android.material.button.MaterialButton;
 import java.util.List;
 import java.util.Objects;
@@ -38,6 +36,7 @@ import org.mian.gitnex.fragments.RepositoriesFragment;
 import org.mian.gitnex.helpers.AlertDialogs;
 import org.mian.gitnex.helpers.AppDatabaseSettings;
 import org.mian.gitnex.helpers.AppUtil;
+import org.mian.gitnex.helpers.BadgeHelper;
 import org.mian.gitnex.helpers.ChangeLog;
 import org.mian.gitnex.helpers.TinyDB;
 import org.mian.gitnex.helpers.Toasty;
@@ -70,6 +69,7 @@ public class MainActivity extends BaseActivity
 	private View detachedSearchBtn;
 	private View detachedSortBtn;
 	private View detachedMarkReadBtn;
+	private BadgeDrawable notificationBadge;
 
 	public interface UserInfoCallback {
 		void onUserInfoLoaded(
@@ -568,12 +568,14 @@ public class MainActivity extends BaseActivity
 							public void onResponse(
 									@NonNull Call<NotificationCount> call,
 									@NonNull Response<NotificationCount> response) {
-								if (response.code() == 200 && response.body() != null) {
+								if (response.isSuccessful() && response.body() != null) {
 									int count = Math.toIntExact(response.body().getNew());
+
 									NotificationsBadge.saveBadgeCount(
 											MainActivity.this,
 											tinyDB.getInt("currentActiveAccountId"),
 											count);
+
 									updateBadgeUI(count);
 								}
 							}
@@ -584,36 +586,12 @@ public class MainActivity extends BaseActivity
 						});
 	}
 
-	private BadgeDrawable notificationBadge;
-
-	@OptIn(markerClass = com.google.android.material.badge.ExperimentalBadgeUtils.class)
 	private void updateBadgeUI(int count) {
 		runOnUiThread(
 				() -> {
-					if (count > 0) {
-						if (notificationBadge == null) {
-							notificationBadge = BadgeDrawable.create(this);
-							notificationBadge.setBackgroundColor(
-									getThemeColor(R.attr.primaryTextColor));
-							notificationBadge.setBadgeTextColor(
-									getThemeColor(R.attr.materialCardBackgroundColor));
-
-							int offset = getResources().getDimensionPixelSize(R.dimen.dimen20dp);
-							notificationBadge.setHorizontalOffset(offset);
-							notificationBadge.setVerticalOffset(offset);
-
-							binding.btnNavNotifications.post(
-									() ->
-											BadgeUtils.attachBadgeDrawable(
-													notificationBadge,
-													binding.btnNavNotifications,
-													null));
-						}
-						notificationBadge.setNumber(count);
-						notificationBadge.setVisible(true);
-					} else if (notificationBadge != null) {
-						notificationBadge.setVisible(false);
-					}
+					notificationBadge =
+							BadgeHelper.updateBadge(
+									this, binding.btnNavNotifications, notificationBadge, count);
 
 					if (activeFragment == notifyFrag || activeFragment == repoFrag) {
 						updateContextualDockActions(
@@ -624,15 +602,11 @@ public class MainActivity extends BaseActivity
 				});
 	}
 
-	private int getThemeColor(int attr) {
-		android.util.TypedValue typedValue = new android.util.TypedValue();
-		getTheme().resolveAttribute(attr, typedValue, true);
-		return typedValue.data;
-	}
-
 	private void loadSavedBadgeCount() {
 		int count = NotificationsBadge.getBadgeCount(this, tinyDB.getInt("currentActiveAccountId"));
-		if (count > 0) updateBadgeUI(count);
+		if (count > 0) {
+			updateBadgeUI(count);
+		}
 	}
 
 	public void giteaVersion() {

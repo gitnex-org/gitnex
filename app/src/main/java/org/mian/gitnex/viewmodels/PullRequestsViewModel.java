@@ -24,6 +24,7 @@ public class PullRequestsViewModel extends ViewModel {
 	private final MutableLiveData<Boolean> isLoading = new MutableLiveData<>(false);
 	private final MutableLiveData<Boolean> hasLoadedOnce = new MutableLiveData<>(false);
 	private final MutableLiveData<String> errorMessage = new MutableLiveData<>();
+	private final MutableLiveData<Integer> repoTotalPrCountLiveData = new MutableLiveData<>(-1);
 
 	private boolean isLastPage = false;
 	private int totalCount = -1;
@@ -42,6 +43,10 @@ public class PullRequestsViewModel extends ViewModel {
 
 	public LiveData<String> getError() {
 		return errorMessage;
+	}
+
+	public LiveData<Integer> getRepoPrTotalCount() {
+		return repoTotalPrCountLiveData;
 	}
 
 	public void resetPagination() {
@@ -77,9 +82,17 @@ public class PullRequestsViewModel extends ViewModel {
 								hasLoadedOnce.setValue(true);
 
 								if (response.isSuccessful() && response.body() != null) {
+									if (isRefresh) {
+										isLastPage = false;
+										totalCount = -1;
+									}
 									String totalHeader = response.headers().get("x-total-count");
 									if (totalHeader != null) {
-										totalCount = Integer.parseInt(totalHeader);
+										int count = Integer.parseInt(totalHeader);
+										totalCount = count;
+										repoTotalPrCountLiveData.setValue(count);
+									} else if (isRefresh) {
+										repoTotalPrCountLiveData.setValue(0);
 									}
 
 									List<PullRequest> body = response.body();
@@ -114,5 +127,9 @@ public class PullRequestsViewModel extends ViewModel {
 								errorMessage.setValue(t.getMessage());
 							}
 						});
+	}
+
+	public void prefetchPrCounts(Context ctx, String owner, String repo) {
+		fetchPullRequests(ctx, owner, repo, "open", 1, 1, true);
 	}
 }

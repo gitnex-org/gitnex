@@ -27,6 +27,7 @@ public class ReleasesViewModel extends ViewModel {
 	private final MutableLiveData<Boolean> hasLoadedOnce = new MutableLiveData<>(false);
 	private final MutableLiveData<Boolean> isTagsLoading = new MutableLiveData<>(false);
 	private final MutableLiveData<Integer> actionResult = new MutableLiveData<>(-1);
+	private final MutableLiveData<Integer> repoReleasesCountLiveData = new MutableLiveData<>(-1);
 
 	private int totalCount = -1;
 	private boolean isLastPage = false;
@@ -57,6 +58,10 @@ public class ReleasesViewModel extends ViewModel {
 		return actionResult;
 	}
 
+	public LiveData<Integer> getReleasesTotalCount() {
+		return repoReleasesCountLiveData;
+	}
+
 	public void resetPagination() {
 		this.isLastPage = false;
 		this.totalCount = -1;
@@ -72,6 +77,10 @@ public class ReleasesViewModel extends ViewModel {
 
 	public void resetActionResult() {
 		actionResult.setValue(-1);
+	}
+
+	public void prefetchCounts(Context ctx, String owner, String repo) {
+		fetchReleases(ctx, owner, repo, 1, 1, true);
 	}
 
 	public void fetchReleases(
@@ -161,6 +170,8 @@ public class ReleasesViewModel extends ViewModel {
 			String totalHeader = response.headers().get("x-total-count");
 			int total = totalHeader != null ? Integer.parseInt(totalHeader) : -1;
 			totalSetter.accept(total);
+
+			repoReleasesCountLiveData.setValue(total);
 
 			List<T> body = response.body();
 			List<T> currentList =

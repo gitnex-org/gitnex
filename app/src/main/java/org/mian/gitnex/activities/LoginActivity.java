@@ -6,22 +6,22 @@ import static org.mian.gitnex.helpers.BackupUtil.getTempDir;
 import static org.mian.gitnex.helpers.BackupUtil.unzip;
 
 import android.app.Activity;
+import android.app.Dialog;
 import android.content.Context;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
-import android.util.TypedValue;
+import android.view.LayoutInflater;
 import android.view.View;
+import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
-import android.widget.Button;
-import android.widget.TextView;
 import androidx.activity.result.ActivityResultLauncher;
 import androidx.activity.result.contract.ActivityResultContracts;
 import androidx.annotation.NonNull;
-import androidx.appcompat.app.AlertDialog;
-import androidx.core.text.HtmlCompat;
+import androidx.annotation.Nullable;
+import com.google.android.material.bottomsheet.BottomSheetDialog;
+import com.google.android.material.bottomsheet.BottomSheetDialogFragment;
 import com.google.android.material.dialog.MaterialAlertDialogBuilder;
-import com.google.android.material.textfield.TextInputEditText;
 import io.mikael.urlbuilder.UrlBuilder;
 import java.io.File;
 import java.io.FileNotFoundException;
@@ -38,6 +38,8 @@ import org.mian.gitnex.database.api.BaseApi;
 import org.mian.gitnex.database.api.UserAccountsApi;
 import org.mian.gitnex.database.models.UserAccount;
 import org.mian.gitnex.databinding.ActivityLoginBinding;
+import org.mian.gitnex.databinding.BottomsheetProxyAuthBinding;
+import org.mian.gitnex.databinding.BottomsheetTokenHelpBinding;
 import org.mian.gitnex.helpers.AppUtil;
 import org.mian.gitnex.helpers.NetworkStatusObserver;
 import org.mian.gitnex.helpers.PathsHelper;
@@ -243,116 +245,134 @@ public class LoginActivity extends BaseActivity {
 	}
 
 	private void showProxyAuthDialog() {
-		View dialogView = getLayoutInflater().inflate(R.layout.custom_dialog_proxy_auth, null);
-
-		TextInputEditText usernameInput = dialogView.findViewById(R.id.proxyUsername);
-		TextInputEditText passwordInput = dialogView.findViewById(R.id.proxyPassword);
-
-		if (proxyAuthUsername != null && !proxyAuthUsername.isEmpty()) {
-			usernameInput.setText(proxyAuthUsername);
-		}
-		if (proxyAuthPassword != null && !proxyAuthPassword.isEmpty()) {
-			passwordInput.setText(proxyAuthPassword);
-		}
-
-		MaterialAlertDialogBuilder dialogBuilder =
-				new MaterialAlertDialogBuilder(this)
-						.setView(dialogView)
-						.setNegativeButton(R.string.clear_proxy_creds, null)
-						.setNeutralButton(R.string.skip_proxy_creds, null)
-						.setPositiveButton(R.string.save_proxy_creds, null);
-
-		AlertDialog dialog = dialogBuilder.create();
-
-		dialog.setOnShowListener(
-				dialogInterface -> {
-					Button positiveButton = dialog.getButton(AlertDialog.BUTTON_POSITIVE);
-					Button negativeButton = dialog.getButton(AlertDialog.BUTTON_NEGATIVE);
-					Button neutralButton = dialog.getButton(AlertDialog.BUTTON_NEUTRAL);
-
-					positiveButton.setOnClickListener(
-							view -> {
-								String enteredUsername =
-										usernameInput.getText() != null
-												? usernameInput.getText().toString().trim()
-												: "";
-								String enteredPassword =
-										passwordInput.getText() != null
-												? passwordInput.getText().toString().trim()
-												: "";
-
-								if (enteredUsername.isEmpty() && enteredPassword.isEmpty()) {
-									proxyAuthUsername = null;
-									proxyAuthPassword = null;
-									Toasty.show(ctx, getString(R.string.proxy_creds_cleared));
-									dialog.dismiss();
-									return;
-								}
-
-								boolean usernameFilled = !enteredUsername.isEmpty();
-								boolean passwordFilled = !enteredPassword.isEmpty();
-
-								if (usernameFilled != passwordFilled) {
-									Toasty.show(ctx, getString(R.string.proxy_creds_required_msg));
-
-									if (usernameFilled) {
-										passwordInput.setText("");
-										passwordInput.requestFocus();
-									} else {
-										usernameInput.setText("");
-										usernameInput.requestFocus();
-									}
-									return;
-								}
-
-								proxyAuthUsername = enteredUsername;
-								proxyAuthPassword = enteredPassword;
-								Toasty.show(ctx, getString(R.string.proxy_creds_saved));
-								dialog.dismiss();
-							});
-
-					negativeButton.setOnClickListener(
-							view -> {
-								proxyAuthUsername = null;
-								proxyAuthPassword = null;
-								Toasty.show(ctx, getString(R.string.proxy_creds_cleared));
-								dialog.dismiss();
-							});
-
-					neutralButton.setOnClickListener(view -> dialog.dismiss());
+		ProxyAuthSheet sheet = ProxyAuthSheet.newInstance(proxyAuthUsername, proxyAuthPassword);
+		sheet.setCallback(
+				(username, password) -> {
+					this.proxyAuthUsername = username;
+					this.proxyAuthPassword = password;
 				});
+		sheet.show(getSupportFragmentManager(), "ProxyAuthSheet");
+	}
 
-		dialog.show();
+	public static class ProxyAuthSheet extends BottomSheetDialogFragment {
+		private BottomsheetProxyAuthBinding binding;
+		private String initialUser, initialPass;
+		private ProxyAuthCallback callback;
+
+		public interface ProxyAuthCallback {
+			void onResult(String username, String password);
+		}
+
+		public static ProxyAuthSheet newInstance(String user, String pass) {
+			ProxyAuthSheet fragment = new ProxyAuthSheet();
+			fragment.initialUser = user;
+			fragment.initialPass = pass;
+			return fragment;
+		}
+
+		public void setCallback(ProxyAuthCallback callback) {
+			this.callback = callback;
+		}
+
+		@Nullable @Override
+		public View onCreateView(
+				@NonNull LayoutInflater inflater,
+				@Nullable ViewGroup container,
+				@Nullable Bundle savedInstanceState) {
+			binding = BottomsheetProxyAuthBinding.inflate(inflater, container, false);
+			return binding.getRoot();
+		}
+
+		@Override
+		public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
+			super.onViewCreated(view, savedInstanceState);
+
+			if (initialUser != null) binding.proxyUsername.setText(initialUser);
+			if (initialPass != null) binding.proxyPassword.setText(initialPass);
+
+			binding.btnSave.setOnClickListener(
+					v -> {
+						String u =
+								binding.proxyUsername.getText() != null
+										? binding.proxyUsername.getText().toString().trim()
+										: "";
+						String p =
+								binding.proxyPassword.getText() != null
+										? binding.proxyPassword.getText().toString().trim()
+										: "";
+
+						if (!u.isEmpty() && !p.isEmpty()) {
+							if (callback != null) callback.onResult(u, p);
+							Toasty.show(getContext(), getString(R.string.proxy_creds_saved));
+							dismiss();
+						} else if (u.isEmpty() && p.isEmpty()) {
+							handleClear();
+						} else {
+							Toasty.show(getContext(), getString(R.string.proxy_creds_required_msg));
+						}
+					});
+
+			binding.btnClear.setOnClickListener(v -> handleClear());
+			binding.btnClose.setOnClickListener(v -> dismiss());
+		}
+
+		@Override
+		public void onStart() {
+			super.onStart();
+			Dialog dialog = getDialog();
+			if (dialog instanceof BottomSheetDialog) {
+				AppUtil.applySheetStyle((BottomSheetDialog) dialog, false);
+			}
+		}
+
+		private void handleClear() {
+			if (callback != null) callback.onResult(null, null);
+			Toasty.show(getContext(), getString(R.string.proxy_creds_cleared));
+			dismiss();
+		}
+
+		@Override
+		public void onDestroyView() {
+			super.onDestroyView();
+			binding = null;
+		}
 	}
 
 	private void showTokenHelpDialog() {
+		TokenHelpSheet sheet = new TokenHelpSheet();
+		sheet.show(getSupportFragmentManager(), "TokenHelpSheet");
+	}
 
-		MaterialAlertDialogBuilder dialogBuilder =
-				new MaterialAlertDialogBuilder(this)
-						.setMessage(
-								HtmlCompat.fromHtml(
-										getString(R.string.where_to_get_token_message),
-										HtmlCompat.FROM_HTML_MODE_LEGACY))
-						.setPositiveButton(R.string.close, null)
-						.setCancelable(true);
+	public static class TokenHelpSheet extends BottomSheetDialogFragment {
+		private BottomsheetTokenHelpBinding binding;
 
-		AlertDialog dialog = dialogBuilder.create();
-		dialog.show();
+		@Nullable @Override
+		public View onCreateView(
+				@NonNull LayoutInflater inflater,
+				@Nullable ViewGroup container,
+				@Nullable Bundle savedInstanceState) {
+			binding = BottomsheetTokenHelpBinding.inflate(inflater, container, false);
+			return binding.getRoot();
+		}
 
-		TextView messageView = dialog.findViewById(android.R.id.message);
-		if (messageView != null) {
-			messageView.setTextSize(TypedValue.COMPLEX_UNIT_SP, 14);
-			int paddingTop =
-					(int)
-							TypedValue.applyDimension(
-									TypedValue.COMPLEX_UNIT_DIP,
-									16,
-									getResources().getDisplayMetrics());
-			messageView.setPadding(
-					messageView.getPaddingLeft(),
-					paddingTop,
-					messageView.getPaddingRight(),
-					messageView.getPaddingBottom());
+		@Override
+		public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
+			super.onViewCreated(view, savedInstanceState);
+		}
+
+		@Override
+		public void onStart() {
+			super.onStart();
+			Dialog dialog = getDialog();
+			if (dialog instanceof BottomSheetDialog) {
+				AppUtil.applySheetStyle((BottomSheetDialog) dialog, true);
+			}
+		}
+
+		@Override
+		public void onDestroyView() {
+			super.onDestroyView();
+			binding = null;
 		}
 	}
 
@@ -677,15 +697,21 @@ public class LoginActivity extends BaseActivity {
 	}
 
 	private void disableProcessButton() {
-
-		activityLoginBinding.loginButton.setText(R.string.processingText);
+		activityLoginBinding.loginButton.setText("");
 		activityLoginBinding.loginButton.setEnabled(false);
+		activityLoginBinding.loadingIndicator.setVisibility(View.VISIBLE);
+
+		activityLoginBinding.setupProxyAuth.setEnabled(false);
+		activityLoginBinding.restoreFromBackup.setEnabled(false);
 	}
 
 	private void enableProcessButton() {
-
 		activityLoginBinding.loginButton.setText(btnText);
 		activityLoginBinding.loginButton.setEnabled(true);
+		activityLoginBinding.loadingIndicator.setVisibility(View.GONE);
+
+		activityLoginBinding.setupProxyAuth.setEnabled(true);
+		activityLoginBinding.restoreFromBackup.setEnabled(true);
 	}
 
 	private void requestRestoreFile() {

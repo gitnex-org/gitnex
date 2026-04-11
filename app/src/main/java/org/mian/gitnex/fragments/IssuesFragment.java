@@ -143,7 +143,15 @@ public class IssuesFragment extends Fragment implements RepoDetailActivity.RepoH
 
 	private void lazyLoad() {
 		isFirstLoad = false;
-		refreshData();
+		List<Issue> currentIssues = viewModel.getRepoIssues().getValue();
+
+		if (currentIssues == null || currentIssues.size() <= 1) {
+			refreshData();
+		} else {
+			binding.expressiveLoader.setVisibility(View.GONE);
+			binding.recyclerView.setVisibility(View.VISIBLE);
+		}
+
 		viewModel.fetchPinnedIssues(requireContext(), repository.getOwner(), repository.getName());
 	}
 

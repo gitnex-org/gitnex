@@ -130,10 +130,6 @@ public class BottomSheetSettingsAppearanceFragment extends BottomSheetDialogFrag
 						.getString(R.string.settingsThemeTimeSelectedHint, darkHour, darkMinute));
 		binding.tvLanguageSelected.setText(
 				lang.get(lang.keySet().toArray(new String[0])[langSelectedChoice]));
-		binding.switchCounterBadge.setChecked(
-				Boolean.parseBoolean(
-						AppDatabaseSettings.getSettingsValue(
-								requireContext(), AppDatabaseSettings.APP_COUNTER_KEY)));
 		binding.switchHideEmailLangInProfile.setChecked(
 				Boolean.parseBoolean(
 						AppDatabaseSettings.getSettingsValue(
@@ -205,19 +201,6 @@ public class BottomSheetSettingsAppearanceFragment extends BottomSheetDialogFrag
 							Toasty.show(requireContext(), getString(R.string.settingsSave));
 						}
 					}
-				});
-
-		binding.counterBadgeFrame.setOnClickListener(
-				v ->
-						binding.switchCounterBadge.setChecked(
-								!binding.switchCounterBadge.isChecked()));
-		binding.switchCounterBadge.setOnCheckedChangeListener(
-				(buttonView, isChecked) -> {
-					AppDatabaseSettings.updateSettingsValue(
-							requireContext(),
-							String.valueOf(isChecked),
-							AppDatabaseSettings.APP_COUNTER_KEY);
-					Toasty.show(requireContext(), getString(R.string.settingsSave));
 				});
 
 		binding.hideEmailLangInProfileFrame.setOnClickListener(

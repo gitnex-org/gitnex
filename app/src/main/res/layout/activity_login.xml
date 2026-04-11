@@ -68,6 +68,7 @@
                     <com.google.android.material.textfield.TextInputLayout
                         android:id="@+id/providerSpinnerLayout"
                         style="@style/Widget.Material3.TextInputLayout.OutlinedBox.ExposedDropdownMenu"
+                        app:shapeAppearance="@style/ShapeAppearance.Material3.Corner.Medium"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:layout_marginTop="@dimen/dimen8dp"
@@ -91,6 +92,7 @@
                     <com.google.android.material.textfield.TextInputLayout
                         android:id="@+id/httpsSpinnerLayout"
                         style="@style/Widget.Material3.TextInputLayout.OutlinedBox.ExposedDropdownMenu"
+                        app:shapeAppearance="@style/ShapeAppearance.Material3.Corner.Medium"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:layout_marginTop="@dimen/dimen8dp"
@@ -125,6 +127,8 @@
                         app:hintTextColor="?attr/hintColor"
                         app:startIconDrawable="@drawable/ic_link"
                         app:startIconTint="?attr/iconsColor"
+                        style="@style/Widget.Material3.TextInputLayout.OutlinedBox"
+                        app:shapeAppearance="@style/ShapeAppearance.Material3.Corner.Medium"
                         app:helperText="@string/instanceHelperText">
 
                         <com.google.android.material.textfield.TextInputEditText
@@ -152,6 +156,8 @@
                         app:endIconTint="?attr/iconsColor"
                         app:hintTextColor="?attr/hintColor"
                         app:startIconDrawable="@drawable/ic_lock"
+                        style="@style/Widget.Material3.TextInputLayout.OutlinedBox"
+                        app:shapeAppearance="@style/ShapeAppearance.Material3.Corner.Medium"
                         app:startIconTint="?attr/iconsColor">
 
                         <com.google.android.material.textfield.TextInputEditText
@@ -182,18 +188,33 @@
                         android:layout_marginTop="@dimen/dimen16dp"
                         android:layout_marginBottom="@dimen/dimen8dp">
 
-                        <com.google.android.material.button.MaterialButton
-                            android:id="@+id/login_button"
-                            style="@style/Widget.Material3.Button"
-                            android:layout_width="0dp"
+                        <FrameLayout
+                            android:id="@+id/login_frame"
+                            android:layout_width="match_parent"
                             android:layout_height="wrap_content"
-                            android:text="@string/btnLogin"
-                            android:textColor="?attr/materialCardBackgroundColor"
-                            android:letterSpacing="0.1"
-                            android:textStyle="bold"
-                            app:layout_constraintEnd_toEndOf="parent"
-                            app:layout_constraintStart_toStartOf="parent"
-                            app:layout_constraintTop_toTopOf="parent" />
+                            app:layout_constraintTop_toTopOf="parent">
+
+                            <com.google.android.material.button.MaterialButton
+                                android:id="@+id/login_button"
+                                style="@style/Widget.Material3.Button"
+                                android:layout_width="match_parent"
+                                android:layout_height="@dimen/dimen56dp"
+                                android:text="@string/btnLogin"
+                                android:textColor="?attr/materialCardBackgroundColor"
+                                android:letterSpacing="0.1"
+                                android:textStyle="bold"
+                                app:cornerRadius="@dimen/dimen32dp" />
+
+                            <com.google.android.material.progressindicator.CircularProgressIndicator
+                                android:id="@+id/loading_indicator"
+                                android:layout_width="@dimen/dimen24dp"
+                                android:layout_height="@dimen/dimen24dp"
+                                android:layout_gravity="center"
+                                android:indeterminate="true"
+                                android:visibility="gone"
+                                app:indicatorSize="@dimen/dimen24dp" />
+
+                        </FrameLayout>
 
                         <com.google.android.material.button.MaterialButton
                             android:id="@+id/setup_proxy_auth"
@@ -208,7 +229,7 @@
                             app:iconTint="?attr/iconsColor"
                             app:layout_constraintEnd_toEndOf="parent"
                             app:layout_constraintStart_toStartOf="parent"
-                            app:layout_constraintTop_toBottomOf="@id/login_button" />
+                            app:layout_constraintTop_toBottomOf="@id/login_frame" />
 
                         <com.google.android.material.button.MaterialButton
                             android:id="@+id/restore_from_backup"

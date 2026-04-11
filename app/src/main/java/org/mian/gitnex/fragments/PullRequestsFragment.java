@@ -61,7 +61,7 @@ public class PullRequestsFragment extends Fragment implements RepoDetailActivity
 			@Nullable ViewGroup container,
 			@Nullable Bundle savedInstanceState) {
 		binding = FragmentPullRequestsBinding.inflate(inflater, container, false);
-		viewModel = new ViewModelProvider(this).get(PullRequestsViewModel.class);
+		viewModel = new ViewModelProvider(requireActivity()).get(PullRequestsViewModel.class);
 
 		repository = RepositoryContext.fromBundle(requireArguments());
 		resultLimit = Constants.getCurrentResultLimit(requireContext());
@@ -154,7 +154,14 @@ public class PullRequestsFragment extends Fragment implements RepoDetailActivity
 
 	private void lazyLoad() {
 		isFirstLoad = false;
-		refreshData();
+		List<PullRequest> currentPrs = viewModel.getPrList().getValue();
+
+		if (currentPrs == null || currentPrs.size() <= 1) {
+			refreshData();
+		} else {
+			binding.expressiveLoader.setVisibility(View.GONE);
+			binding.recyclerView.setVisibility(View.VISIBLE);
+		}
 	}
 
 	private void setupAdapters() {

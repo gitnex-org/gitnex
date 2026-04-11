@@ -24,8 +24,6 @@ public class AppDatabaseSettings {
 	public static String APP_FONT_DEFAULT = "3";
 	public static String APP_LOCALE_KEY = "app_locale";
 	public static String APP_LOCALE_KEY_DEFAULT = "0|sys";
-	public static String APP_COUNTER_KEY = "app_counter_badges";
-	public static String APP_COUNTER_DEFAULT = "true";
 	public static String APP_LABELS_IN_LIST_KEY = "app_labels_in_list";
 	public static String APP_LABELS_IN_LIST_DEFAULT = "false";
 	public static String APP_LINK_HANDLER_KEY = "app_link_handler";
@@ -109,10 +107,6 @@ public class AppDatabaseSettings {
 		if (appSettingsApi.fetchSettingCountByKey(APP_LOCALE_KEY) == 0) {
 			appSettingsApi.insertNewSetting(
 					APP_LOCALE_KEY, APP_LOCALE_KEY_DEFAULT, APP_LOCALE_KEY_DEFAULT);
-		}
-		if (appSettingsApi.fetchSettingCountByKey(APP_COUNTER_KEY) == 0) {
-			appSettingsApi.insertNewSetting(
-					APP_COUNTER_KEY, APP_COUNTER_DEFAULT, APP_COUNTER_DEFAULT);
 		}
 		if (appSettingsApi.fetchSettingCountByKey(APP_LABELS_IN_LIST_KEY) == 0) {
 			appSettingsApi.insertNewSetting(
