@@ -66,7 +66,7 @@ public class BadgeHelper {
 		anchor.setLayoutParams(params);
 	}
 
-	private static int getThemeColor(Context context, int attr) {
+	public static int getThemeColor(Context context, int attr) {
 		TypedValue typedValue = new TypedValue();
 		if (context.getTheme().resolveAttribute(attr, typedValue, true)) {
 			return typedValue.data;

@@ -27,7 +27,7 @@ import org.mian.gitnex.R;
 import org.mian.gitnex.database.api.BaseApi;
 import org.mian.gitnex.database.api.UserAccountsApi;
 import org.mian.gitnex.database.models.UserAccount;
-import org.mian.gitnex.databinding.BottomSheetSettingsBackupRestoreBinding;
+import org.mian.gitnex.databinding.BottomsheetSettingsBackupRestoreBinding;
 import org.mian.gitnex.helpers.AppUtil;
 import org.mian.gitnex.helpers.BackupUtil;
 import org.mian.gitnex.helpers.Toasty;
@@ -37,7 +37,7 @@ import org.mian.gitnex.helpers.Toasty;
  */
 public class BottomSheetSettingsBackupRestoreFragment extends BottomSheetDialogFragment {
 
-	private BottomSheetSettingsBackupRestoreBinding binding;
+	private BottomsheetSettingsBackupRestoreBinding binding;
 	private Context ctx;
 	private final String DATABASE_NAME = "gitnex";
 	private String BACKUP_DATABASE_NAME;
@@ -53,7 +53,7 @@ public class BottomSheetSettingsBackupRestoreFragment extends BottomSheetDialogF
 			@NonNull LayoutInflater inflater,
 			@Nullable ViewGroup container,
 			@Nullable Bundle savedInstanceState) {
-		binding = BottomSheetSettingsBackupRestoreBinding.inflate(inflater, container, false);
+		binding = BottomsheetSettingsBackupRestoreBinding.inflate(inflater, container, false);
 		ctx = requireContext();
 
 		BACKUP_DATABASE_NAME = ctx.getString(R.string.appName) + "-" + LocalDate.now() + ".backup";
@@ -255,6 +255,6 @@ public class BottomSheetSettingsBackupRestoreFragment extends BottomSheetDialogF
 	@Override
 	public void onDestroyView() {
 		super.onDestroyView();
-		binding = null; // Prevent memory leaks
+		binding = null;
 	}
 }

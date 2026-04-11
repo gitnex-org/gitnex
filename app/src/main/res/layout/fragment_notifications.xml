@@ -7,74 +7,40 @@
     android:layout_height="match_parent"
     android:background="?attr/primaryBackgroundColor">
 
-    <LinearLayout
+    <FrameLayout
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:paddingHorizontal="@dimen/dimen12dp"
-        android:orientation="vertical">
+        android:layout_height="wrap_content">
 
-        <com.google.android.material.chip.ChipGroup
-            android:id="@+id/filterChipGroup"
+        <androidx.swiperefreshlayout.widget.SwipeRefreshLayout
+            android:id="@+id/pullToRefresh"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            app:selectionRequired="true"
-            app:singleSelection="true">
+            android:layout_height="match_parent">
 
-            <com.google.android.material.chip.Chip
-                android:id="@+id/unreadChip"
-                style="@style/CustomChipFilter"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:checked="true"
-                android:text="@string/isUnread"
-                app:checkedIconEnabled="true" />
-
-            <com.google.android.material.chip.Chip
-                android:id="@+id/readChip"
-                style="@style/CustomChipFilter"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="@string/isRead"
-                app:checkedIconEnabled="true" />
-
-        </com.google.android.material.chip.ChipGroup>
-
-        <FrameLayout
-            android:layout_width="match_parent"
-            android:layout_height="0dp"
-            android:layout_weight="1">
-
-            <androidx.swiperefreshlayout.widget.SwipeRefreshLayout
-                android:id="@+id/pullToRefresh"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent">
-
-                <androidx.recyclerview.widget.RecyclerView
-                    android:id="@+id/notifications"
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent"
-                    android:clipToPadding="false" />
-
-            </androidx.swiperefreshlayout.widget.SwipeRefreshLayout>
-
-            <com.google.android.material.loadingindicator.LoadingIndicator
-                android:id="@+id/expressive_loader"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_gravity="center"
-                android:visibility="gone"
-                app:indicatorSize="@dimen/dimen48dp"
-                app:trackThickness="@dimen/dimen4dp" />
-
-            <include
-                android:id="@+id/layout_empty"
-                layout="@layout/layout_empty_state"
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/notifications"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:visibility="gone" />
+                android:paddingHorizontal="@dimen/dimen12dp"
+                android:clipToPadding="false" />
 
-        </FrameLayout>
+        </androidx.swiperefreshlayout.widget.SwipeRefreshLayout>
 
-    </LinearLayout>
+        <com.google.android.material.loadingindicator.LoadingIndicator
+            android:id="@+id/expressive_loader"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:visibility="gone"
+            app:indicatorSize="@dimen/dimen48dp"
+            app:trackThickness="@dimen/dimen4dp" />
+
+        <include
+            android:id="@+id/layout_empty"
+            layout="@layout/layout_empty_state"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:visibility="gone" />
+
+    </FrameLayout>
 
 </androidx.coordinatorlayout.widget.CoordinatorLayout>

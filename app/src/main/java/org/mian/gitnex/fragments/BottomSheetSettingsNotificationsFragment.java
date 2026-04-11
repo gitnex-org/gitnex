@@ -10,7 +10,7 @@ import androidx.annotation.Nullable;
 import com.google.android.material.bottomsheet.BottomSheetDialog;
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment;
 import org.mian.gitnex.R;
-import org.mian.gitnex.databinding.BottomSheetSettingsNotificationsBinding;
+import org.mian.gitnex.databinding.BottomsheetSettingsNotificationsBinding;
 import org.mian.gitnex.helpers.AppDatabaseSettings;
 import org.mian.gitnex.helpers.AppUIStateManager;
 import org.mian.gitnex.helpers.AppUtil;
@@ -22,7 +22,7 @@ import org.mian.gitnex.notifications.Notifications;
  */
 public class BottomSheetSettingsNotificationsFragment extends BottomSheetDialogFragment {
 
-	private BottomSheetSettingsNotificationsBinding binding;
+	private BottomsheetSettingsNotificationsBinding binding;
 	private static int pollingDelayListSelectedChoice;
 
 	@Override
@@ -36,7 +36,7 @@ public class BottomSheetSettingsNotificationsFragment extends BottomSheetDialogF
 			@NonNull LayoutInflater inflater,
 			@Nullable ViewGroup container,
 			@Nullable Bundle savedInstanceState) {
-		binding = BottomSheetSettingsNotificationsBinding.inflate(inflater, container, false);
+		binding = BottomsheetSettingsNotificationsBinding.inflate(inflater, container, false);
 
 		// Initialize polling delay
 		pollingDelayListSelectedChoice =
@@ -142,6 +142,6 @@ public class BottomSheetSettingsNotificationsFragment extends BottomSheetDialogF
 	@Override
 	public void onDestroyView() {
 		super.onDestroyView();
-		binding = null; // Prevent memory leaks
+		binding = null;
 	}
 }

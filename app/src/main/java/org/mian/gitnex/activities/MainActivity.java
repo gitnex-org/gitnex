@@ -55,7 +55,6 @@ public class MainActivity extends BaseActivity
 
 	public ActivityMainBinding binding;
 	private TinyDB tinyDB;
-	private boolean noConnection;
 	public static boolean reloadRepos;
 	public static boolean closeActivity;
 	private final Fragment homeFrag = new HomeDashboardFragment();
@@ -63,12 +62,10 @@ public class MainActivity extends BaseActivity
 	private final Fragment notifyFrag = new NotificationsFragment();
 	private Fragment activeFragment = homeFrag;
 	private final FragmentManager fm = getSupportFragmentManager();
-	private boolean showMarkReadAction = false;
 	private View detachedDivider;
 	private View detachedAddBtn;
 	private View detachedSearchBtn;
 	private View detachedSortBtn;
-	private View detachedMarkReadBtn;
 	private BadgeDrawable notificationBadge;
 
 	public interface UserInfoCallback {
@@ -84,8 +81,7 @@ public class MainActivity extends BaseActivity
 
 	@Override
 	public void onUpdateNotificationActionVisibility(boolean visible) {
-		this.showMarkReadAction = visible;
-		if (activeFragment == notifyFrag) {
+		if (activeFragment instanceof NotificationsFragment) {
 			updateContextualDockActions(R.id.btn_nav_notifications);
 		}
 	}
@@ -109,14 +105,13 @@ public class MainActivity extends BaseActivity
 		detachedAddBtn = binding.btnDockNewRepo;
 		detachedSearchBtn = binding.btnDockSearch;
 		detachedSortBtn = binding.btnDockSort;
-		detachedMarkReadBtn = binding.btnDockMarkRead;
 
 		if (handleAccountSetup()) return;
 
 		setupFragments();
 		setupDockListeners();
-
 		loadInitialState(savedInstanceState);
+		handleLaunchIntent(getIntent());
 
 		getOnBackPressedDispatcher()
 				.addCallback(
@@ -163,6 +158,7 @@ public class MainActivity extends BaseActivity
 				if (api != null) {
 					UserAccount targetAccount = api.getAccountById(targetAccountId);
 					if (targetAccount != null && AppUtil.switchToAccount(this, targetAccount)) {
+						intent.removeExtra("switchAccountId");
 						recreate();
 						return;
 					}
@@ -174,9 +170,18 @@ public class MainActivity extends BaseActivity
 		String link = intent.getStringExtra("launchFragmentByLink");
 
 		if ("notifications".equals(launch) || "notification".equals(link)) {
-			switchTab(notifyFrag, R.id.btn_nav_notifications);
-		} else if ("repos".equals(link)) {
-			switchTab(repoFrag, R.id.btn_nav_repos);
+			updateDockUI(R.id.btn_nav_notifications);
+
+			fm.beginTransaction().hide(activeFragment).show(notifyFrag).commitNow();
+
+			activeFragment = notifyFrag;
+
+			if (notifyFrag instanceof NotificationsFragment nf) {
+				nf.forceUnreadFilter();
+			}
+
+			intent.removeExtra("launchFragment");
+			intent.removeExtra("launchFragmentByLink");
 		}
 	}
 
@@ -189,13 +194,6 @@ public class MainActivity extends BaseActivity
 		binding.btnNavRepos.setOnClickListener(v -> switchTab(repoFrag, R.id.btn_nav_repos));
 		binding.btnNavNotifications.setOnClickListener(
 				v -> switchTab(notifyFrag, R.id.btn_nav_notifications));
-
-		binding.btnDockMarkRead.setOnClickListener(
-				v -> {
-					if (activeFragment instanceof NotificationsFragment nf) {
-						nf.markAllAsRead();
-					}
-				});
 
 		binding.btnDockNewRepo.setOnClickListener(
 				v -> {
@@ -215,6 +213,8 @@ public class MainActivity extends BaseActivity
 				v -> {
 					if (activeFragment instanceof RepositoriesFragment rf) {
 						rf.openSortMenu();
+					} else if (activeFragment instanceof NotificationsFragment nf) {
+						nf.openNotificationMenu();
 					}
 				});
 	}
@@ -241,6 +241,9 @@ public class MainActivity extends BaseActivity
 
 	private void switchTab(Fragment target, int btnId) {
 		if (target.isVisible() && activeFragment == target) {
+			if (target instanceof NotificationsFragment nf) {
+				nf.refreshData();
+			}
 			updateDockUI(btnId);
 			return;
 		}
@@ -278,54 +281,54 @@ public class MainActivity extends BaseActivity
 		parent.removeView(detachedAddBtn);
 		parent.removeView(detachedSearchBtn);
 		parent.removeView(detachedSortBtn);
-		parent.removeView(detachedMarkReadBtn);
 
 		int currentCount =
 				NotificationsBadge.getBadgeCount(this, tinyDB.getInt("currentActiveAccountId"));
 		int badgeMargin =
 				(currentCount > 0)
-						? getResources().getDimensionPixelSize(R.dimen.dimen16dp)
-						: getResources().getDimensionPixelSize(R.dimen.dimen4dp);
+						? getResources().getDimensionPixelSize(R.dimen.dimen8dp)
+						: getResources().getDimensionPixelSize(R.dimen.dimen12dp);
 
 		if (activeBtnId == R.id.btn_nav_repos) {
 			parent.addView(detachedDivider);
-
-			ViewGroup.MarginLayoutParams params =
-					(ViewGroup.MarginLayoutParams) detachedDivider.getLayoutParams();
-			params.setMarginStart(badgeMargin);
-			detachedDivider.setLayoutParams(params);
+			setDividerMargin(badgeMargin);
 
 			parent.addView(detachedAddBtn);
 			parent.addView(detachedSearchBtn);
 			parent.addView(detachedSortBtn);
 
 		} else if (activeBtnId == R.id.btn_nav_notifications) {
-			if (showMarkReadAction) {
-				parent.addView(detachedDivider);
-
-				ViewGroup.MarginLayoutParams params =
-						(ViewGroup.MarginLayoutParams) detachedDivider.getLayoutParams();
-				params.setMarginStart(badgeMargin);
-				detachedDivider.setLayoutParams(params);
-
-				parent.addView(detachedMarkReadBtn);
-			}
+			parent.addView(detachedDivider);
+			setDividerMargin(badgeMargin);
+			parent.addView(detachedSortBtn);
 		}
 
 		binding.dockedToolbar.requestLayout();
 	}
 
+	private void setDividerMargin(int margin) {
+		ViewGroup.MarginLayoutParams params =
+				(ViewGroup.MarginLayoutParams) detachedDivider.getLayoutParams();
+		params.setMarginStart(margin);
+		detachedDivider.setLayoutParams(params);
+	}
+
 	private boolean handleAccountSetup() {
 		Intent intent = getIntent();
-		if (intent.hasExtra("switchAccountId")) {
-			UserAccountsApi api = BaseApi.getInstance(this, UserAccountsApi.class);
-			if (api != null
-					&& AppUtil.switchToAccount(
-							this, api.getAccountById(intent.getIntExtra("switchAccountId", 0)))) {
-				recreate();
-				return true;
+		if (intent != null && intent.hasExtra("switchAccountId")) {
+			int targetId = intent.getIntExtra("switchAccountId", -1);
+			int currentId = tinyDB.getInt("currentActiveAccountId", -1);
+
+			if (targetId != -1 && targetId != currentId) {
+				UserAccountsApi api = BaseApi.getInstance(this, UserAccountsApi.class);
+				if (api != null && AppUtil.switchToAccount(this, api.getAccountById(targetId))) {
+					intent.removeExtra("switchAccountId");
+					recreate();
+					return true;
+				}
 			}
 		}
+
 		if (tinyDB.getInt("currentActiveAccountId", -1) <= 0) {
 			AppUtil.logout(this);
 			return true;
@@ -351,7 +354,6 @@ public class MainActivity extends BaseActivity
 								updateGeneralAttachmentSettings();
 							} else {
 								Toasty.show(this, getString(R.string.checkNetConnection));
-								noConnection = true;
 							}
 						},
 						1500);

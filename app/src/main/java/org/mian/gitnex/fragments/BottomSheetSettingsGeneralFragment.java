@@ -10,7 +10,7 @@ import androidx.annotation.Nullable;
 import com.google.android.material.bottomsheet.BottomSheetDialog;
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment;
 import org.mian.gitnex.R;
-import org.mian.gitnex.databinding.BottomSheetSettingsGeneralBinding;
+import org.mian.gitnex.databinding.BottomsheetSettingsGeneralBinding;
 import org.mian.gitnex.helpers.AppDatabaseSettings;
 import org.mian.gitnex.helpers.AppUIStateManager;
 import org.mian.gitnex.helpers.AppUtil;
@@ -21,7 +21,7 @@ import org.mian.gitnex.helpers.Toasty;
  */
 public class BottomSheetSettingsGeneralFragment extends BottomSheetDialogFragment {
 
-	private BottomSheetSettingsGeneralBinding binding;
+	private BottomsheetSettingsGeneralBinding binding;
 	private static int homeScreenSelectedChoice;
 	private static int defaultLinkHandlerScreenSelectedChoice;
 
@@ -36,7 +36,7 @@ public class BottomSheetSettingsGeneralFragment extends BottomSheetDialogFragmen
 			@NonNull LayoutInflater inflater,
 			@Nullable ViewGroup container,
 			@Nullable Bundle savedInstanceState) {
-		binding = BottomSheetSettingsGeneralBinding.inflate(inflater, container, false);
+		binding = BottomsheetSettingsGeneralBinding.inflate(inflater, container, false);
 
 		homeScreenSelectedChoice =
 				Integer.parseInt(

@@ -12,7 +12,7 @@ import com.google.android.material.bottomsheet.BottomSheetDialog;
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment;
 import org.gitnex.tea4j.v2.models.NotificationThread;
 import org.mian.gitnex.R;
-import org.mian.gitnex.databinding.BottomSheetNotificationsBinding;
+import org.mian.gitnex.databinding.BottomsheetNotificationItemMenuBinding;
 import org.mian.gitnex.helpers.AppUtil;
 import org.mian.gitnex.viewmodels.NotificationsViewModel;
 
@@ -24,11 +24,11 @@ public class BottomSheetNotificationsFragment extends BottomSheetDialogFragment 
 
 	private NotificationThread thread;
 	private NotificationsViewModel viewModel;
+	private BottomsheetNotificationItemMenuBinding binding;
 
 	@Override
 	public void onCreate(@Nullable Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
-		setStyle(STYLE_NORMAL, R.style.Custom_BottomSheet);
 	}
 
 	public void onAttach(NotificationThread thread) {
@@ -40,16 +40,22 @@ public class BottomSheetNotificationsFragment extends BottomSheetDialogFragment 
 			@NonNull LayoutInflater inflater,
 			@Nullable ViewGroup container,
 			@Nullable Bundle savedInstanceState) {
-		BottomSheetNotificationsBinding binding =
-				BottomSheetNotificationsBinding.inflate(inflater, container, false);
-
+		binding = BottomsheetNotificationItemMenuBinding.inflate(inflater, container, false);
 		viewModel = new ViewModelProvider(requireActivity()).get(NotificationsViewModel.class);
 
-		setupUI(binding);
+		setupUI();
 
-		binding.markRead.setOnClickListener(v -> updateStatus("read"));
-		binding.markUnread.setOnClickListener(v -> updateStatus("unread"));
-		binding.markPinned.setOnClickListener(v -> updateStatus("pinned"));
+		binding.markRead.setOnClickListener(
+				v -> {
+					String status = thread.isUnread() ? "read" : "unread";
+					updateStatus(status);
+				});
+
+		binding.markPinned.setOnClickListener(
+				v -> {
+					String status = thread.isPinned() ? "unpinned" : "pinned";
+					updateStatus(status);
+				});
 
 		return binding.getRoot();
 	}
@@ -59,26 +65,37 @@ public class BottomSheetNotificationsFragment extends BottomSheetDialogFragment 
 		dismiss();
 	}
 
-	private void setupUI(BottomSheetNotificationsBinding binding) {
+	private void setupUI() {
 		if (thread == null) return;
 
-		if (thread.getSubject() != null && thread.getSubject().getTitle() != null) {
+		if (thread.getSubject() != null) {
 			binding.sheetTitle.setText(thread.getSubject().getTitle());
 		}
 		if (thread.getRepository() != null) {
 			binding.sheetSubtitle.setText(thread.getRepository().getFullName());
-			binding.sheetSubtitle.setVisibility(View.VISIBLE);
-		}
-
-		if (thread.isPinned()) {
-			binding.markPinned.setVisibility(View.GONE);
 		}
 
 		if (thread.isUnread()) {
-			binding.markUnread.setVisibility(View.GONE);
+			binding.readText.setText(R.string.markAsRead);
+			binding.readIcon.setImageResource(R.drawable.ic_unwatch);
 		} else {
-			binding.markRead.setVisibility(View.GONE);
+			binding.readText.setText(R.string.markAsUnread);
+			binding.readIcon.setImageResource(R.drawable.ic_watchers);
 		}
+
+		if (thread.isPinned()) {
+			binding.pinText.setText(R.string.unpin);
+			binding.pinIcon.setImageResource(R.drawable.ic_unpin);
+		} else {
+			binding.pinText.setText(R.string.pinNotification);
+			binding.pinIcon.setImageResource(R.drawable.ic_pin);
+		}
+	}
+
+	@Override
+	public void onDestroyView() {
+		super.onDestroyView();
+		binding = null;
 	}
 
 	@Override

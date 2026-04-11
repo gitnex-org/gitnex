@@ -9,12 +9,14 @@ import android.view.ViewGroup;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 import com.vdurmont.emoji.EmojiParser;
+import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.List;
 import java.util.Locale;
 import org.gitnex.tea4j.v2.models.Milestone;
 import org.mian.gitnex.R;
 import org.mian.gitnex.databinding.ListMilestonesBinding;
+import org.mian.gitnex.helpers.BadgeHelper;
 import org.mian.gitnex.helpers.Markdown;
 import org.mian.gitnex.helpers.TimeHelper;
 import org.mian.gitnex.helpers.Toasty;
@@ -108,8 +110,7 @@ public class MilestonesAdapter extends RecyclerView.Adapter<MilestonesAdapter.Da
 			binding.progressPercent.setText(progress + "%");
 
 			if (milestone.getDueOn() != null) {
-				binding.milestoneDueDate.setText(
-						TimeHelper.getAbsoluteDate(milestone.getDueOn(), locale));
+				binding.dueDateFrame.setVisibility(View.VISIBLE);
 
 				binding.dueDateFrame.setOnClickListener(
 						v ->
@@ -117,13 +118,24 @@ public class MilestonesAdapter extends RecyclerView.Adapter<MilestonesAdapter.Da
 										context,
 										TimeHelper.getFullDateTime(milestone.getDueOn(), locale)));
 
-				if (milestone.getDueOn().before(new Date())) {
-					binding.milestoneDueDate.setTextColor(context.getColor(R.color.darkRed));
-					binding.dateIcon.setImageTintList(
-							ColorStateList.valueOf(context.getColor(R.color.darkRed)));
-				}
+				boolean isOverdue =
+						milestone.getDueOn().before(new Date())
+								&& "open".equals(milestone.getState());
+
+				int statusColor =
+						isOverdue
+								? context.getColor(R.color.darkRed)
+								: BadgeHelper.getThemeColor(
+										context,
+										com.google.android.material.R.attr.colorPrimaryFixed);
+
+				binding.milestoneDueDate.setTextColor(statusColor);
+				binding.dateIcon.setImageTintList(ColorStateList.valueOf(statusColor));
+
+				SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd", Locale.getDefault());
+				binding.milestoneDueDate.setText(sdf.format(milestone.getDueOn()));
 			} else {
-				binding.milestoneDueDate.setText(context.getString(R.string.milestoneNoDueDate));
+				binding.dueDateFrame.setVisibility(View.GONE);
 			}
 		}
 	}

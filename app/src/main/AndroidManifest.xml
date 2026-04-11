@@ -58,10 +58,6 @@
             android:configChanges="orientation|screenSize|smallestScreenSize|density|screenLayout|keyboard|keyboardHidden|navigation"
             android:windowSoftInputMode="adjustResize"/>
         <activity
-            android:name=".activities.CreateMilestoneActivity"
-            android:configChanges="orientation|screenSize|smallestScreenSize|density|screenLayout|keyboard|keyboardHidden|navigation"
-            android:windowSoftInputMode="adjustResize"/>
-        <activity
             android:name=".activities.IssueDetailActivity"
             android:configChanges="orientation|screenSize|smallestScreenSize|density|screenLayout|keyboard|keyboardHidden|navigation"
             android:windowSoftInputMode="adjustResize"/>

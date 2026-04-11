@@ -10,7 +10,7 @@ import androidx.annotation.Nullable;
 import com.google.android.material.bottomsheet.BottomSheetDialog;
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment;
 import org.mian.gitnex.R;
-import org.mian.gitnex.databinding.BottomSheetSettingsCodeEditorBinding;
+import org.mian.gitnex.databinding.BottomsheetSettingsCodeEditorBinding;
 import org.mian.gitnex.helpers.AppDatabaseSettings;
 import org.mian.gitnex.helpers.AppUIStateManager;
 import org.mian.gitnex.helpers.AppUtil;
@@ -21,7 +21,7 @@ import org.mian.gitnex.helpers.Toasty;
  */
 public class BottomSheetSettingsCodeEditorFragment extends BottomSheetDialogFragment {
 
-	private BottomSheetSettingsCodeEditorBinding binding;
+	private BottomsheetSettingsCodeEditorBinding binding;
 	private static int colorSelectedChoice;
 	private static int indentationSelectedChoice;
 	private static int indentationTabsSelectedChoice;
@@ -38,7 +38,7 @@ public class BottomSheetSettingsCodeEditorFragment extends BottomSheetDialogFrag
 			@NonNull LayoutInflater inflater,
 			@Nullable ViewGroup container,
 			@Nullable Bundle savedInstanceState) {
-		binding = BottomSheetSettingsCodeEditorBinding.inflate(inflater, container, false);
+		binding = BottomsheetSettingsCodeEditorBinding.inflate(inflater, container, false);
 
 		indentationList = getResources().getStringArray(R.array.ceIndentation);
 		colorSelectedChoice =

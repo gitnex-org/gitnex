@@ -260,6 +260,6 @@ public class NotificationsWorker extends Worker {
 				context,
 				userAccount.getAccountId(),
 				intent,
-				PendingIntent.FLAG_UPDATE_CURRENT | PendingIntent.FLAG_IMMUTABLE);
+				PendingIntent.FLAG_UPDATE_CURRENT | PendingIntent.FLAG_MUTABLE);
 	}
 }

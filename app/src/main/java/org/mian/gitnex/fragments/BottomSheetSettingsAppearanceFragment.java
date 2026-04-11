@@ -17,7 +17,7 @@ import com.google.android.material.timepicker.MaterialTimePicker;
 import java.util.LinkedHashMap;
 import java.util.Locale;
 import org.mian.gitnex.R;
-import org.mian.gitnex.databinding.BottomSheetSettingsAppearanceBinding;
+import org.mian.gitnex.databinding.BottomsheetSettingsAppearanceBinding;
 import org.mian.gitnex.helpers.AppDatabaseSettings;
 import org.mian.gitnex.helpers.AppUIStateManager;
 import org.mian.gitnex.helpers.AppUtil;
@@ -28,7 +28,7 @@ import org.mian.gitnex.helpers.Toasty;
  */
 public class BottomSheetSettingsAppearanceFragment extends BottomSheetDialogFragment {
 
-	private BottomSheetSettingsAppearanceBinding binding;
+	private BottomsheetSettingsAppearanceBinding binding;
 	private static int customFontSelectedChoice;
 	private static String[] themeList;
 	private static int themeSelectedChoice;
@@ -46,7 +46,7 @@ public class BottomSheetSettingsAppearanceFragment extends BottomSheetDialogFrag
 			@NonNull LayoutInflater inflater,
 			@Nullable ViewGroup container,
 			@Nullable Bundle savedInstanceState) {
-		binding = BottomSheetSettingsAppearanceBinding.inflate(inflater, container, false);
+		binding = BottomsheetSettingsAppearanceBinding.inflate(inflater, container, false);
 
 		lang = new LinkedHashMap<>();
 		lang.put("sys", getString(R.string.settingsLanguageSystem));

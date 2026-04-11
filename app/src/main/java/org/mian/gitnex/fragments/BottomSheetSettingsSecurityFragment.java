@@ -18,7 +18,7 @@ import org.apache.commons.io.FileUtils;
 import org.mian.gitnex.R;
 import org.mian.gitnex.api.clients.ApiRetrofitClient;
 import org.mian.gitnex.clients.RetrofitClient;
-import org.mian.gitnex.databinding.BottomSheetSettingsSecurityBinding;
+import org.mian.gitnex.databinding.BottomsheetSettingsSecurityBinding;
 import org.mian.gitnex.helpers.AppDatabaseSettings;
 import org.mian.gitnex.helpers.AppUIStateManager;
 import org.mian.gitnex.helpers.AppUtil;
@@ -30,7 +30,7 @@ import org.mian.gitnex.helpers.ssl.MemorizingTrustManager;
  */
 public class BottomSheetSettingsSecurityFragment extends BottomSheetDialogFragment {
 
-	private BottomSheetSettingsSecurityBinding binding;
+	private BottomsheetSettingsSecurityBinding binding;
 	private static String[] cacheSizeDataList;
 	private static int cacheSizeDataSelectedChoice;
 	private static String[] cacheSizeImagesList;
@@ -48,7 +48,7 @@ public class BottomSheetSettingsSecurityFragment extends BottomSheetDialogFragme
 			@NonNull LayoutInflater inflater,
 			@Nullable ViewGroup container,
 			@Nullable Bundle savedInstanceState) {
-		binding = BottomSheetSettingsSecurityBinding.inflate(inflater, container, false);
+		binding = BottomsheetSettingsSecurityBinding.inflate(inflater, container, false);
 
 		cacheSizeDataList = getResources().getStringArray(R.array.cacheSizeList);
 		cacheSizeImagesList = getResources().getStringArray(R.array.cacheSizeList);

@@ -19,6 +19,7 @@ import java.util.Objects;
 import org.gitnex.tea4j.v2.models.Repository;
 import org.mian.gitnex.R;
 import org.mian.gitnex.databinding.ActivityRepoDetailBinding;
+import org.mian.gitnex.fragments.BottomSheetCreateMilestone;
 import org.mian.gitnex.fragments.BottomsheetRepoMenu;
 import org.mian.gitnex.fragments.CollaboratorsFragment;
 import org.mian.gitnex.fragments.FilesFragment;
@@ -643,7 +644,8 @@ public class RepoDetailActivity extends BaseActivity
 
 				case "milestonesNew":
 					switchTab("milestones", R.id.btn_nav_milestones);
-					startActivity(repository.getIntent(this, CreateMilestoneActivity.class));
+					BottomSheetCreateMilestone.newInstance(repository, null)
+							.show(getSupportFragmentManager(), "CREATE_MILESTONE");
 					break;
 
 				case "labels":

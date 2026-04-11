@@ -86,7 +86,6 @@
     <string name="repoDescription">Demo description</string>
     <string name="orgName">Demo organization</string>
     <string name="newCreateButtonCopy">Create</string>
-    <string name="newUpdateButtonCopy">Update</string>
     <string name="newRepoTintCopy">Repository Name</string>
     <string name="newRepoDescTintCopy">Repository Description</string>
     <string name="newRepoPrivateCopy">Private</string>
@@ -652,6 +651,7 @@
     <string name="directory">Directory</string>
     <string name="apply">Apply</string>
     <string name="state">State</string>
+    <string name="update">Update</string>
     <!-- generic copy -->
 
     <string name="exploreUsers">Explore users</string>
@@ -1162,6 +1162,7 @@
     <string name="create_issue">Create Issue</string>
     <string name="search_repos">Search Repositories</string>
     <string name="dashboard_search_repos_sub_title">Search within your repositories with filters for more precise results</string>
+    <string name="edit_milestone">Edit Milestone</string>
 
     <string name="time_in_moments">in moments</string>
     <string name="time_in_minute">in %d minute</string>

@@ -11,7 +11,7 @@ import com.google.android.material.bottomsheet.BottomSheetDialog;
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment;
 import org.mian.gitnex.R;
 import org.mian.gitnex.activities.BaseActivity;
-import org.mian.gitnex.databinding.BottomSheetSettingsAboutBinding;
+import org.mian.gitnex.databinding.BottomsheetSettingsAboutBinding;
 import org.mian.gitnex.databinding.ItemSettingsMoreAppsBinding;
 import org.mian.gitnex.helpers.AppUtil;
 
@@ -20,7 +20,7 @@ import org.mian.gitnex.helpers.AppUtil;
  */
 public class BottomSheetSettingsAboutFragment extends BottomSheetDialogFragment {
 
-	private BottomSheetSettingsAboutBinding binding;
+	private BottomsheetSettingsAboutBinding binding;
 
 	@Override
 	public void onCreate(@Nullable Bundle savedInstanceState) {
@@ -33,7 +33,7 @@ public class BottomSheetSettingsAboutFragment extends BottomSheetDialogFragment 
 			@NonNull LayoutInflater inflater,
 			@Nullable ViewGroup container,
 			@Nullable Bundle savedInstanceState) {
-		binding = BottomSheetSettingsAboutBinding.inflate(inflater, container, false);
+		binding = BottomsheetSettingsAboutBinding.inflate(inflater, container, false);
 
 		// Set app version and build
 		binding.appVersionBuild.setText(
@@ -112,6 +112,6 @@ public class BottomSheetSettingsAboutFragment extends BottomSheetDialogFragment 
 	@Override
 	public void onDestroyView() {
 		super.onDestroyView();
-		binding = null; // Prevent memory leaks
+		binding = null;
 	}
 }

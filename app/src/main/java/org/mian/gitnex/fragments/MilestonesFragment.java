@@ -18,7 +18,6 @@ import java.util.ArrayList;
 import java.util.List;
 import org.gitnex.tea4j.v2.models.Milestone;
 import org.mian.gitnex.R;
-import org.mian.gitnex.activities.CreateMilestoneActivity;
 import org.mian.gitnex.activities.RepoDetailActivity;
 import org.mian.gitnex.adapters.MilestonesAdapter;
 import org.mian.gitnex.databinding.BottomsheetMilestonesItemMenuBinding;
@@ -73,7 +72,7 @@ public class MilestonesFragment extends Fragment implements RepoDetailActivity.R
 			@Nullable ViewGroup container,
 			@Nullable Bundle savedInstanceState) {
 		binding = FragmentMilestonesBinding.inflate(inflater, container, false);
-		viewModel = new ViewModelProvider(this).get(MilestonesViewModel.class);
+		viewModel = new ViewModelProvider(requireActivity()).get(MilestonesViewModel.class);
 		resultLimit = Constants.getCurrentResultLimit(requireContext());
 
 		setupRecyclerView();
@@ -122,7 +121,8 @@ public class MilestonesFragment extends Fragment implements RepoDetailActivity.R
 				break;
 
 			case "MILESTONE_ADD_NEW":
-				startActivity(repository.getIntent(getContext(), CreateMilestoneActivity.class));
+				BottomSheetCreateMilestone.newInstance(repository, null)
+						.show(getChildFragmentManager(), "CREATE_MILESTONE");
 				break;
 		}
 	}
@@ -196,7 +196,6 @@ public class MilestonesFragment extends Fragment implements RepoDetailActivity.R
 													dialog.setContentView(sheetB.getRoot());
 
 													sheetB.sheetTitle.setText(milestone.getTitle());
-
 													boolean isOpen =
 															"open".equals(milestone.getState());
 
@@ -213,7 +212,13 @@ public class MilestonesFragment extends Fragment implements RepoDetailActivity.R
 													sheetB.editMenu.setOnClickListener(
 															v -> {
 																dialog.dismiss();
-																// TODO: Open Edit Fragment
+																BottomSheetCreateMilestone
+																		.newInstance(
+																				repository,
+																				milestone)
+																		.show(
+																				getChildFragmentManager(),
+																				"EDIT_MILESTONE");
 															});
 
 													sheetB.deleteMenu.setOnClickListener(
@@ -247,12 +252,14 @@ public class MilestonesFragment extends Fragment implements RepoDetailActivity.R
 						code -> {
 							if (code == -1) return;
 
-							if (code == 200 || code == 204) {
-								int messageRes =
-										(code == 200)
-												? R.string.milestoneStatusUpdate
-												: R.string.milestone_deleted;
+							if (code == 200 || code == 201 || code == 204) {
+								int messageRes;
+								if (code == 201) messageRes = R.string.milestoneCreated;
+								else if (code == 200) messageRes = R.string.milestoneStatusUpdate;
+								else messageRes = R.string.milestone_deleted;
+
 								Toasty.show(requireContext(), messageRes);
+								refreshData();
 
 								new Handler(Looper.getMainLooper())
 										.postDelayed(

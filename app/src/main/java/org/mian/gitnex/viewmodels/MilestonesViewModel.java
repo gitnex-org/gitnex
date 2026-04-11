@@ -5,9 +5,13 @@ import androidx.annotation.NonNull;
 import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MutableLiveData;
 import androidx.lifecycle.ViewModel;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
+import java.util.Locale;
 import java.util.Objects;
+import org.gitnex.tea4j.v2.models.CreateMilestoneOption;
 import org.gitnex.tea4j.v2.models.EditMilestoneOption;
 import org.gitnex.tea4j.v2.models.Milestone;
 import org.mian.gitnex.clients.RetrofitClient;
@@ -192,5 +196,87 @@ public class MilestonesViewModel extends ViewModel {
 								error.setValue(t.getMessage());
 							}
 						});
+	}
+
+	public void createOrUpdateMilestone(
+			Context ctx,
+			String owner,
+			String repo,
+			Milestone existingMilestone,
+			String title,
+			String desc,
+			String dueDateStr) {
+		isLoading.setValue(true);
+
+		Date dueDate = null;
+		if (dueDateStr != null && !dueDateStr.isEmpty()) {
+			try {
+				SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd", Locale.getDefault());
+				dueDate = format.parse(dueDateStr);
+			} catch (Exception ignored) {
+			}
+		}
+
+		if (existingMilestone == null) {
+			CreateMilestoneOption option = new CreateMilestoneOption();
+			option.setTitle(title);
+			option.setDescription(desc);
+			option.setDueOn(dueDate);
+
+			RetrofitClient.getApiInterface(ctx)
+					.issueCreateMilestone(owner, repo, option)
+					.enqueue(
+							new Callback<>() {
+								@Override
+								public void onResponse(
+										@NonNull Call<Milestone> call,
+										@NonNull Response<Milestone> response) {
+									isLoading.setValue(false);
+									if (response.isSuccessful()) {
+										actionResult.setValue(201);
+									} else {
+										error.setValue("Error: " + response.code());
+									}
+								}
+
+								@Override
+								public void onFailure(
+										@NonNull Call<Milestone> call, @NonNull Throwable t) {
+									isLoading.setValue(false);
+									error.setValue(t.getMessage());
+								}
+							});
+		} else {
+			EditMilestoneOption option = new EditMilestoneOption();
+			option.setTitle(title);
+			option.setDescription(desc);
+			option.setDueOn(dueDate);
+			option.setState(existingMilestone.getState());
+
+			RetrofitClient.getApiInterface(ctx)
+					.issueEditMilestone(
+							owner, repo, String.valueOf(existingMilestone.getId()), option)
+					.enqueue(
+							new Callback<>() {
+								@Override
+								public void onResponse(
+										@NonNull Call<Milestone> call,
+										@NonNull Response<Milestone> response) {
+									isLoading.setValue(false);
+									if (response.isSuccessful()) {
+										actionResult.setValue(200);
+									} else {
+										error.setValue("Update failed: " + response.code());
+									}
+								}
+
+								@Override
+								public void onFailure(
+										@NonNull Call<Milestone> call, @NonNull Throwable t) {
+									isLoading.setValue(false);
+									error.setValue(t.getMessage());
+								}
+							});
+		}
 	}
 }

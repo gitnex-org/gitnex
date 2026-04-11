@@ -3,6 +3,8 @@ package org.mian.gitnex.fragments;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
+import android.os.Handler;
+import android.os.Looper;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -13,10 +15,10 @@ import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModelProvider;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 import org.gitnex.tea4j.v2.models.NotificationThread;
-import org.mian.gitnex.R;
 import org.mian.gitnex.activities.IssueDetailActivity;
 import org.mian.gitnex.activities.RepoDetailActivity;
 import org.mian.gitnex.adapters.NotificationsAdapter;
@@ -45,19 +47,32 @@ public class NotificationsFragment extends Fragment
 	private int pageResultLimit;
 	private String currentFilterMode = "unread";
 	private NotificationCountListener notificationCountListener;
+	private boolean isViewCreated = false;
+
+	public void forceUnreadFilter() {
+		this.currentFilterMode = "unread";
+
+		if (viewModel != null) {
+			viewModel.resetPagination();
+		}
+
+		if (adapter != null) {
+			adapter.updateList(new ArrayList<>());
+		}
+
+		new Handler(Looper.getMainLooper())
+				.post(
+						() -> {
+							if (isAdded()) {
+								refreshData();
+							}
+						});
+	}
 
 	public interface NotificationCountListener {
 		void onNotificationsMarkedRead();
 
 		void onUpdateNotificationActionVisibility(boolean visible);
-	}
-
-	@Override
-	public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
-		super.onViewCreated(view, savedInstanceState);
-
-		UIHelper.applyInsets(
-				view, null, binding.notifications, binding.pullToRefresh, binding.mainLayout);
 	}
 
 	@Nullable @Override
@@ -69,28 +84,47 @@ public class NotificationsFragment extends Fragment
 		context = requireContext();
 		pageResultLimit = Constants.getCurrentResultLimit(context);
 
-		if (getActivity() != null
-				&& ((AppCompatActivity) getActivity()).getSupportActionBar() != null) {
-			((AppCompatActivity) getActivity()).getSupportActionBar().hide();
+		if (getActivity() instanceof AppCompatActivity activity
+				&& activity.getSupportActionBar() != null) {
+			activity.getSupportActionBar().hide();
 		}
 
 		viewModel = new ViewModelProvider(requireActivity()).get(NotificationsViewModel.class);
 
 		setupRecyclerView();
-		setupFilters();
 		setupRefreshLayout();
 		observeViewModel();
 
-		viewModel.clearData();
-		refreshData();
-
+		isViewCreated = true;
 		return binding.getRoot();
 	}
 
-	public void markAllAsRead() {
-		List<NotificationThread> list = viewModel.getNotifications().getValue();
-		if (list != null && !list.isEmpty()) {
-			viewModel.markAllAsRead(context);
+	@Override
+	public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
+		super.onViewCreated(view, savedInstanceState);
+		UIHelper.applyInsets(view, null, binding.notifications, binding.pullToRefresh, null);
+	}
+
+	@Override
+	public void onResume() {
+		super.onResume();
+		if (!isHidden()) {
+			refreshDataOnFocus();
+		}
+	}
+
+	@Override
+	public void onHiddenChanged(boolean hidden) {
+		super.onHiddenChanged(hidden);
+		if (!hidden && isViewCreated) {
+			refreshDataOnFocus();
+		}
+	}
+
+	private void refreshDataOnFocus() {
+		refreshData();
+		if (notificationCountListener != null) {
+			notificationCountListener.onNotificationsMarkedRead();
 		}
 	}
 
@@ -120,15 +154,7 @@ public class NotificationsFragment extends Fragment
 						getViewLifecycleOwner(),
 						list -> {
 							adapter.updateList(list);
-							updateUiState();
-						});
-
-		viewModel
-				.getHasLoadedOnce()
-				.observe(
-						getViewLifecycleOwner(),
-						hasLoaded -> {
-							updateUiState();
+							updateUiState(list);
 						});
 
 		viewModel
@@ -142,14 +168,23 @@ public class NotificationsFragment extends Fragment
 						});
 
 		viewModel
+				.getHasLoadedOnce()
+				.observe(
+						getViewLifecycleOwner(),
+						hasLoaded -> {
+							updateUiState(viewModel.getNotifications().getValue());
+						});
+
+		viewModel
 				.getActionSuccess()
 				.observe(
 						getViewLifecycleOwner(),
 						success -> {
-							if (success) {
+							if (success != null && success) {
 								refreshData();
-								if (notificationCountListener != null)
+								if (notificationCountListener != null) {
 									notificationCountListener.onNotificationsMarkedRead();
+								}
 								viewModel.resetActionStatus();
 							}
 						});
@@ -163,33 +198,18 @@ public class NotificationsFragment extends Fragment
 						});
 	}
 
-	private void updateUiState() {
-		List<NotificationThread> list = viewModel.getNotifications().getValue();
-		Boolean hasLoaded = viewModel.getHasLoadedOnce().getValue();
-
+	private void updateUiState(List<NotificationThread> list) {
 		boolean isEmpty = (list == null || list.isEmpty());
+		Boolean hasLoaded = viewModel.getHasLoadedOnce().getValue();
 		boolean loaded = (hasLoaded != null && hasLoaded);
 
 		binding.layoutEmpty.getRoot().setVisibility(loaded && isEmpty ? View.VISIBLE : View.GONE);
+		binding.notifications.setVisibility(isEmpty ? View.GONE : View.VISIBLE);
 
 		boolean canMarkRead = !isEmpty && "unread".equals(currentFilterMode);
-
 		if (notificationCountListener != null) {
 			notificationCountListener.onUpdateNotificationActionVisibility(canMarkRead);
 		}
-	}
-
-	private void setupFilters() {
-		binding.filterChipGroup.setOnCheckedStateChangeListener(
-				(group, checkedIds) -> {
-					if (checkedIds.isEmpty()) return;
-					int checkedId = checkedIds.get(0);
-					String mode = (checkedId == R.id.unreadChip) ? "unread" : "read";
-					if (!mode.equals(currentFilterMode)) {
-						currentFilterMode = mode;
-						refreshData();
-					}
-				});
 	}
 
 	private void setupRefreshLayout() {
@@ -200,12 +220,41 @@ public class NotificationsFragment extends Fragment
 				});
 	}
 
-	private void refreshData() {
+	public void refreshData() {
+		binding.layoutEmpty.getRoot().setVisibility(View.GONE);
 		if (scrollListener != null) {
 			scrollListener.resetState();
 		}
 		viewModel.resetPagination();
 		viewModel.fetchNotifications(context, currentFilterMode, 1, pageResultLimit, true);
+	}
+
+	public void openNotificationMenu() {
+		List<NotificationThread> list = viewModel.getNotifications().getValue();
+		boolean hasData = (list != null && !list.isEmpty());
+
+		BottomSheetNotificationsFilter filterSheet =
+				BottomSheetNotificationsFilter.newInstance(currentFilterMode, hasData);
+
+		filterSheet.setListener(
+				new BottomSheetNotificationsFilter.OnFilterChangedListener() {
+					@Override
+					public void onFilterChanged(String mode) {
+						currentFilterMode = mode;
+						refreshData();
+					}
+
+					@Override
+					public void onMarkAllReadTriggered() {
+						markAllAsRead();
+					}
+				});
+
+		filterSheet.show(getChildFragmentManager(), "notificationFilter");
+	}
+
+	public void markAllAsRead() {
+		viewModel.markAllAsRead(context);
 	}
 
 	@Override
@@ -249,7 +298,15 @@ public class NotificationsFragment extends Fragment
 	@Override
 	public void onAttach(@NonNull Context context) {
 		super.onAttach(context);
-		if (context instanceof NotificationCountListener)
+		if (context instanceof NotificationCountListener) {
 			notificationCountListener = (NotificationCountListener) context;
+		}
+	}
+
+	@Override
+	public void onDestroyView() {
+		super.onDestroyView();
+		isViewCreated = false;
+		binding = null;
 	}
 }
