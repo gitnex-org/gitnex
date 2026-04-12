@@ -652,6 +652,9 @@
     <string name="apply">Apply</string>
     <string name="state">State</string>
     <string name="update">Update</string>
+    <string name="select">Select</string>
+    <string name="collapse">Collapse</string>
+    <string name="fullscreen">Fullscreen</string>
     <!-- generic copy -->
 
     <string name="exploreUsers">Explore users</string>
@@ -1163,6 +1166,11 @@
     <string name="search_repos">Search Repositories</string>
     <string name="dashboard_search_repos_sub_title">Search within your repositories with filters for more precise results</string>
     <string name="edit_milestone">Edit Milestone</string>
+    <string name="add_labels">Tap to add labels</string>
+    <string name="add_milestone">Tap to add milestone</string>
+    <string name="add_assignees">Tap to assign assignees</string>
+    <string name="add_due_date">Tap to add due date</string>
+    <string name="add_attachments">Tap to add attachments</string>
 
     <string name="time_in_moments">in moments</string>
     <string name="time_in_minute">in %d minute</string>

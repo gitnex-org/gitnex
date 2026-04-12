@@ -40,6 +40,15 @@ public class NotesAdapter extends RecyclerView.Adapter<NotesAdapter.NotesViewHol
 	private List<Notes> notesList;
 	private final Context ctx;
 	private final String insert;
+	private OnItemClickListener itemClickListener;
+
+	public interface OnItemClickListener {
+		void onItemClick(Notes note);
+	}
+
+	public void setOnItemClickListener(OnItemClickListener listener) {
+		this.itemClickListener = listener;
+	}
 
 	public NotesAdapter(Context ctx, List<Notes> notesList, String insert, String source) {
 		this.ctx = ctx;
@@ -62,7 +71,11 @@ public class NotesAdapter extends RecyclerView.Adapter<NotesAdapter.NotesViewHol
 			binding.noteCard.setOnClickListener(
 					v -> {
 						if ("insert".equalsIgnoreCase(insert)) {
-							performInsert();
+							if (itemClickListener != null) {
+								itemClickListener.onItemClick(note);
+							} else {
+								performInsert();
+							}
 						} else {
 							Intent intent = new Intent(ctx, CreateNoteActivity.class);
 							intent.putExtra("action", "edit");

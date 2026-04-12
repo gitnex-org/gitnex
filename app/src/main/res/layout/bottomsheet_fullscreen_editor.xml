@@ -1,0 +1,90 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:paddingHorizontal="@dimen/dimen12dp">
+
+    <LinearLayout
+        android:id="@+id/fullscreen_toolbar"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:gravity="end"
+        app:layout_constraintTop_toTopOf="parent">
+
+        <com.google.android.material.button.MaterialButton
+            android:id="@+id/fullscreen_btn_clear"
+            style="@style/Widget.Material3.Button.TextButton"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/clear"
+            app:iconSize="@dimen/dimen20dp"
+            app:icon="@drawable/ic_delete" />
+
+        <com.google.android.material.button.MaterialButton
+            android:id="@+id/fullscreen_btn_notes"
+            style="@style/Widget.Material3.Button.TextButton"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/navNotes"
+            android:visibility="gone"
+            app:iconSize="@dimen/dimen20dp"
+            app:icon="@drawable/ic_file" />
+
+        <com.google.android.material.button.MaterialButton
+            android:id="@+id/fullscreen_btn_markdown"
+            style="@style/Widget.Material3.Button.TextButton"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/strMarkdown"
+            app:iconSize="@dimen/dimen20dp"
+            app:icon="@drawable/ic_markdown" />
+
+        <com.google.android.material.button.MaterialButton
+            android:id="@+id/fullscreen_btn_collapse"
+            style="@style/Widget.Material3.Button.TextButton"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/collapse"
+            app:iconSize="@dimen/dimen20dp"
+            app:icon="@drawable/ic_minimize" />
+
+    </LinearLayout>
+
+    <FrameLayout
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_marginTop="@dimen/dimen8dp"
+        app:layout_constraintTop_toBottomOf="@id/fullscreen_toolbar"
+        app:layout_constraintBottom_toBottomOf="parent">
+
+        <EditText
+            android:id="@+id/fullscreen_editor"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:gravity="top"
+            android:inputType="textMultiLine"
+            android:autofillHints="@string/description"
+            android:hint="@string/description"
+            android:background="@null"
+            android:padding="@dimen/dimen8dp"
+            android:textAppearance="@style/TextAppearance.Material3.BodyMedium" />
+
+        <androidx.core.widget.NestedScrollView
+            android:id="@+id/fullscreen_markdown_scroll"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:visibility="gone">
+
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/fullscreen_markdown_preview"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:padding="@dimen/dimen8dp" />
+
+        </androidx.core.widget.NestedScrollView>
+
+    </FrameLayout>
+
+</androidx.constraintlayout.widget.ConstraintLayout>

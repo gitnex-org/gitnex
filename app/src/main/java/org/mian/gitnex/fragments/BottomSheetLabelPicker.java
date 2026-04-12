@@ -13,8 +13,10 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.google.android.material.bottomsheet.BottomSheetDialog;
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
+import java.util.Map;
 import java.util.Objects;
 import java.util.Set;
 import org.gitnex.tea4j.v2.models.Label;
@@ -35,9 +37,15 @@ public class BottomSheetLabelPicker extends BottomSheetDialogFragment {
 		void onSelected(Set<String> selected);
 	}
 
+	public interface OnLabelsSelectedWithIdsListener {
+		void onSelected(Set<String> selectedLabels, Map<String, Long> labelIds);
+	}
+
 	private BottomsheetIssuesLabelPickerBinding binding;
 	private OnLabelsSelectedListener listener;
+	private OnLabelsSelectedWithIdsListener listenerWithIds;
 	private Set<String> selectedLabels;
+	private final Map<String, Long> labelIdMap = new HashMap<>();
 	private RepositoryContext repository;
 	private LabelsViewModel labelsViewModel;
 	private LabelSelectionAdapter adapter;
@@ -53,6 +61,10 @@ public class BottomSheetLabelPicker extends BottomSheetDialogFragment {
 
 	public void setOnLabelsSelectedListener(OnLabelsSelectedListener l) {
 		this.listener = l;
+	}
+
+	public void setOnLabelsSelectedWithIdsListener(OnLabelsSelectedWithIdsListener l) {
+		this.listenerWithIds = l;
 	}
 
 	@Nullable @Override
@@ -78,7 +90,19 @@ public class BottomSheetLabelPicker extends BottomSheetDialogFragment {
 
 		binding.btnDone.setOnClickListener(
 				v -> {
-					if (listener != null) listener.onSelected(selectedLabels);
+					if (listener != null) {
+						listener.onSelected(selectedLabels);
+					}
+					if (listenerWithIds != null) {
+						Map<String, Long> selectedIds = new HashMap<>();
+						for (String labelName : selectedLabels) {
+							Long id = labelIdMap.get(labelName);
+							if (id != null) {
+								selectedIds.put(labelName, id);
+							}
+						}
+						listenerWithIds.onSelected(selectedLabels, selectedIds);
+					}
 					dismiss();
 				});
 
@@ -124,6 +148,13 @@ public class BottomSheetLabelPicker extends BottomSheetDialogFragment {
 						getViewLifecycleOwner(),
 						list -> {
 							List<Label> data = (list != null) ? list : new ArrayList<>();
+
+							for (Label label : data) {
+								if (label.getName() != null && label.getId() != null) {
+									labelIdMap.put(label.getName(), label.getId());
+								}
+							}
+
 							adapter.updateList(data);
 							if (!data.isEmpty()) {
 								binding.rvLabels.setVisibility(View.VISIBLE);

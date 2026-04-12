@@ -18,7 +18,6 @@ import java.util.ArrayList;
 import java.util.List;
 import org.gitnex.tea4j.v2.models.Issue;
 import org.mian.gitnex.R;
-import org.mian.gitnex.activities.CreateIssueActivity;
 import org.mian.gitnex.activities.RepoDetailActivity;
 import org.mian.gitnex.adapters.IssuesAdapter;
 import org.mian.gitnex.databinding.FragmentIssuesBinding;
@@ -116,11 +115,13 @@ public class IssuesFragment extends Fragment implements RepoDetailActivity.RepoH
 		switch (actionId) {
 			case "ISSUES_SEARCH":
 				BottomSheetIssuesFilter.newInstance(repository)
-						.show(getChildFragmentManager(), "issues_filter");
+						.show(getChildFragmentManager(), "ISSUES_FILTER");
 				break;
 
 			case "ISSUE_CREATE_NEW":
-				startActivity(repository.getIntent(requireContext(), CreateIssueActivity.class));
+				// startActivity(repository.getIntent(requireContext(), CreateIssueActivity.class));
+				BottomSheetCreateIssue.newInstance(repository, null)
+						.show(getChildFragmentManager(), "CREATE_ISSUE");
 				break;
 		}
 	}
