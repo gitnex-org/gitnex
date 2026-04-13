@@ -20,7 +20,6 @@ import java.util.Objects;
 import org.apache.commons.lang3.StringUtils;
 import org.mian.gitnex.R;
 import org.mian.gitnex.activities.BaseActivity;
-import org.mian.gitnex.activities.CreateIssueActivity;
 import org.mian.gitnex.activities.CreateNoteActivity;
 import org.mian.gitnex.activities.CreatePullRequestActivity;
 import org.mian.gitnex.activities.CreateReleaseActivity;
@@ -108,10 +107,7 @@ public class NotesAdapter extends RecyclerView.Adapter<NotesAdapter.NotesViewHol
 			EditText targetField = null;
 			AlertDialog dialogToDismiss = null;
 
-			if (activity instanceof CreateIssueActivity issueAct) {
-				targetField = issueAct.findViewById(R.id.newIssueDescription);
-				dialogToDismiss = issueAct.dialogNotes;
-			} else if (activity instanceof CreateReleaseActivity releaseAct) {
+			if (activity instanceof CreateReleaseActivity releaseAct) {
 				targetField = releaseAct.findViewById(R.id.releaseContent);
 				dialogToDismiss = releaseAct.dialogNotes;
 			} else if (activity instanceof CreatePullRequestActivity prAct) {

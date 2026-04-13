@@ -19,6 +19,7 @@ import java.util.Objects;
 import org.gitnex.tea4j.v2.models.Repository;
 import org.mian.gitnex.R;
 import org.mian.gitnex.databinding.ActivityRepoDetailBinding;
+import org.mian.gitnex.fragments.BottomSheetCreateIssue;
 import org.mian.gitnex.fragments.BottomSheetCreateMilestone;
 import org.mian.gitnex.fragments.BottomsheetRepoMenu;
 import org.mian.gitnex.fragments.CollaboratorsFragment;
@@ -605,7 +606,8 @@ public class RepoDetailActivity extends BaseActivity
 
 				case "issueNew":
 					switchTab("issues", R.id.btn_nav_issues);
-					startActivity(repository.getIntent(this, CreateIssueActivity.class));
+					BottomSheetCreateIssue.newInstance(repository, null)
+							.show(getSupportFragmentManager(), "CREATE_ISSUE");
 					break;
 
 				case "pull":

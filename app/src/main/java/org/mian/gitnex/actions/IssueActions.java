@@ -13,7 +13,6 @@ import org.mian.gitnex.R;
 import org.mian.gitnex.activities.BaseActivity;
 import org.mian.gitnex.activities.IssueDetailActivity;
 import org.mian.gitnex.clients.RetrofitClient;
-import org.mian.gitnex.fragments.IssuesFragment;
 import org.mian.gitnex.helpers.AlertDialogs;
 import org.mian.gitnex.helpers.Toasty;
 import org.mian.gitnex.helpers.contexts.IssueContext;
@@ -101,8 +100,8 @@ public class IssueActions {
 							if (response.code() == 201) {
 
 								if (issue.hasIssue()) {
-									IssuesFragment.resumeIssues =
-											issue.getIssue().getPullRequest() == null;
+									// IssuesFragment.resumeIssues =
+									// issue.getIssue().getPullRequest() == null;
 									//	PullRequestsFragment.resumePullRequests =
 									//		issue.getIssue().getPullRequest() != null;
 								}
@@ -279,7 +278,7 @@ public class IssueActions {
 							if (response.code() == 204) {
 
 								Toasty.show(ctx, ctx.getString(R.string.issue_pinned));
-								IssuesFragment.resumeIssues = true;
+								// IssuesFragment.resumeIssues = true;
 								issue.setPinned(true);
 							}
 						} else if (response.code() == 401) {
@@ -324,7 +323,7 @@ public class IssueActions {
 							if (response.code() == 204) {
 
 								Toasty.show(ctx, ctx.getString(R.string.issue_unpinned));
-								IssuesFragment.resumeIssues = true;
+								// IssuesFragment.resumeIssues = true;
 								issue.setPinned(false);
 								issue.getIssue().setPinOrder(0L);
 							}
@@ -375,8 +374,8 @@ public class IssueActions {
 							actionResult.finish(ActionResult.Status.SUCCESS);
 
 							if (issue.hasIssue()) {
-								IssuesFragment.resumeIssues =
-										issue.getIssue().getPullRequest() == null;
+								// IssuesFragment.resumeIssues =
+								//		issue.getIssue().getPullRequest() == null;
 								// PullRequestsFragment.resumePullRequests =
 								//		issue.getIssue().getPullRequest() != null;
 							}

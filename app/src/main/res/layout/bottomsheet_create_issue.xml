@@ -46,11 +46,12 @@
     <androidx.core.widget.NestedScrollView
         android:id="@+id/scroll_view"
         android:layout_width="match_parent"
-        android:layout_height="@dimen/dimen0dp"
-        android:fillViewport="true"
+        android:layout_height="0dp"
         android:layout_marginTop="@dimen/dimen16dp"
+        android:clipToPadding="false"
         android:paddingHorizontal="@dimen/dimen24dp"
         android:paddingBottom="@dimen/dimen32dp"
+        app:layout_constrainedHeight="true"
         app:layout_constraintTop_toBottomOf="@id/header_layout"
         app:layout_constraintBottom_toBottomOf="parent">
 
@@ -160,8 +161,22 @@
                 android:layout_marginTop="@dimen/dimen16dp" />
 
             <include
+                android:id="@+id/card_assignees"
+                layout="@layout/item_metadata_card"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/dimen16dp" />
+
+            <include
                 android:id="@+id/card_due_date"
                 layout="@layout/item_metadata_card"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/dimen16dp" />
+
+            <include
+                android:id="@+id/card_attachments"
+                layout="@layout/item_metadata_attachment_card"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="@dimen/dimen16dp" />

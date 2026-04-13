@@ -37,6 +37,7 @@
             style="@style/Widget.Material3.Button.TextButton"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:visibility="gone"
             android:text="@string/strMarkdown"
             app:iconSize="@dimen/dimen20dp"
             app:icon="@drawable/ic_markdown" />

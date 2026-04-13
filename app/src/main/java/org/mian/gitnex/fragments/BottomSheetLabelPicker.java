@@ -21,7 +21,7 @@ import java.util.Objects;
 import java.util.Set;
 import org.gitnex.tea4j.v2.models.Label;
 import org.mian.gitnex.adapters.LabelSelectionAdapter;
-import org.mian.gitnex.databinding.BottomsheetIssuesLabelPickerBinding;
+import org.mian.gitnex.databinding.BottomsheetLabelPickerBinding;
 import org.mian.gitnex.helpers.AppUtil;
 import org.mian.gitnex.helpers.Constants;
 import org.mian.gitnex.helpers.EndlessRecyclerViewScrollListener;
@@ -41,7 +41,7 @@ public class BottomSheetLabelPicker extends BottomSheetDialogFragment {
 		void onSelected(Set<String> selectedLabels, Map<String, Long> labelIds);
 	}
 
-	private BottomsheetIssuesLabelPickerBinding binding;
+	private BottomsheetLabelPickerBinding binding;
 	private OnLabelsSelectedListener listener;
 	private OnLabelsSelectedWithIdsListener listenerWithIds;
 	private Set<String> selectedLabels;
@@ -72,7 +72,7 @@ public class BottomSheetLabelPicker extends BottomSheetDialogFragment {
 			@NonNull LayoutInflater inflater,
 			@Nullable ViewGroup container,
 			@Nullable Bundle savedInstanceState) {
-		binding = BottomsheetIssuesLabelPickerBinding.inflate(inflater, container, false);
+		binding = BottomsheetLabelPickerBinding.inflate(inflater, container, false);
 		labelsViewModel = new ViewModelProvider(this).get(LabelsViewModel.class);
 
 		Bundle args = requireArguments();

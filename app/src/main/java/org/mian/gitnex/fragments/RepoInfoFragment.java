@@ -44,6 +44,7 @@ import org.mian.gitnex.helpers.UIHelper;
 import org.mian.gitnex.helpers.contexts.RepositoryContext;
 import org.mian.gitnex.helpers.languagestatistics.LanguageColor;
 import org.mian.gitnex.helpers.languagestatistics.LanguageStatisticsHelper;
+import org.mian.gitnex.viewmodels.CreateIssueViewModel;
 import org.mian.gitnex.viewmodels.RepositoryDetailsViewModel;
 
 /**
@@ -91,12 +92,31 @@ public class RepoInfoFragment extends Fragment {
 		setupStatHeaders();
 		setupClickListeners();
 		setupObservers();
+		observeCreateIssueViewModel();
 
 		Repository repo = repositoryContext.getRepository();
 		setRepoInfo(repo);
 
 		viewModel.loadRepositoryDetails(
 				ctx, repositoryContext.getOwner(), repo.getName(), repo.getDefaultBranch());
+	}
+
+	private void observeCreateIssueViewModel() {
+		CreateIssueViewModel createIssueViewModel =
+				new ViewModelProvider(requireActivity()).get(CreateIssueViewModel.class);
+
+		createIssueViewModel
+				.getCreatedIssue()
+				.observe(
+						getViewLifecycleOwner(),
+						issue -> {
+							if (issue != null) {
+								viewModel.fetchRepository(
+										ctx,
+										repositoryContext.getOwner(),
+										repositoryContext.getName());
+							}
+						});
 	}
 
 	private void setupObservers() {

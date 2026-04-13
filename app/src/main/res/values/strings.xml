@@ -1042,6 +1042,8 @@
     <string name="attachment">Attachment</string>
     <string name="attachments">Attachments</string>
     <string name="attachmentsSaveError">An issue was created but cannot process attachments at this time. Check the server logs for more details.</string>
+    <string name="issueCreatedWithAttachments">Issue created with attachments</string>
+    <string name="attachmentTypeNotSupported">File type .%s may not be supported by the server</string>
 
     <string name="search_matches_found">%1$d matches found</string>
     <string name="search_no_matches">No matches found</string>
@@ -1171,6 +1173,10 @@
     <string name="add_assignees">Tap to assign assignees</string>
     <string name="add_due_date">Tap to add due date</string>
     <string name="add_attachments">Tap to add attachments</string>
+    <string name="no_attachments">No attachments</string>
+    <string name="attachment_limit_count">Maximum %d files allowed</string>
+    <string name="attachment_limit_size">File exceeds %s limit</string>
+    <string name="attachment_limit_total_size">Total size would exceed %s</string>
 
     <string name="time_in_moments">in moments</string>
     <string name="time_in_minute">in %d minute</string>

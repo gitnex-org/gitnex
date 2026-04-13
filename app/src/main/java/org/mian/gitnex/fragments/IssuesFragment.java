@@ -27,6 +27,7 @@ import org.mian.gitnex.helpers.Toasty;
 import org.mian.gitnex.helpers.contexts.RepositoryContext;
 import org.mian.gitnex.models.IssueFilterState;
 import org.mian.gitnex.models.RepositoryMenuItemModel;
+import org.mian.gitnex.viewmodels.CreateIssueViewModel;
 import org.mian.gitnex.viewmodels.IssuesViewModel;
 
 /**
@@ -34,7 +35,6 @@ import org.mian.gitnex.viewmodels.IssuesViewModel;
  */
 public class IssuesFragment extends Fragment implements RepoDetailActivity.RepoHubProvider {
 
-	public static boolean resumeIssues = false;
 	private final String requestType = Constants.issuesRequestType;
 	private FragmentIssuesBinding binding;
 	private IssuesViewModel viewModel;
@@ -81,6 +81,7 @@ public class IssuesFragment extends Fragment implements RepoDetailActivity.RepoH
 		setupAdapters();
 		setupRepoListeners();
 		observeRepoViewModel();
+		observeCreateIssueViewModel();
 
 		return binding.getRoot();
 	}
@@ -119,7 +120,6 @@ public class IssuesFragment extends Fragment implements RepoDetailActivity.RepoH
 				break;
 
 			case "ISSUE_CREATE_NEW":
-				// startActivity(repository.getIntent(requireContext(), CreateIssueActivity.class));
 				BottomSheetCreateIssue.newInstance(repository, null)
 						.show(getChildFragmentManager(), "CREATE_ISSUE");
 				break;
@@ -220,9 +220,7 @@ public class IssuesFragment extends Fragment implements RepoDetailActivity.RepoH
 
 	private void refreshPaddingLogic() {
 		if (binding == null) return;
-
-		int dimen12 = getResources().getDimensionPixelSize(R.dimen.dimen12dp);
-		if (dimen12 == 0) dimen12 = 36;
+		int dimen12 = 36;
 
 		List<Issue> pinnedList = viewModel.getPinnedIssues().getValue();
 		boolean hasPinned = pinnedList != null && !pinnedList.isEmpty();
@@ -233,14 +231,29 @@ public class IssuesFragment extends Fragment implements RepoDetailActivity.RepoH
 		if (hasPinned) {
 			binding.rvPinnedIssues.setPadding(0, systemTopInset, 0, 0);
 			params.topMargin = 0;
-			binding.recyclerView.setPadding(dimen12, 0, dimen12, dimen12);
+			binding.recyclerView.setPadding(dimen12, 0, dimen12, dimen12 + 72);
 		} else {
 			binding.rvPinnedIssues.setPadding(0, 0, 0, 0);
 			params.topMargin = systemTopInset + dimen12;
-			binding.recyclerView.setPadding(dimen12, 0, dimen12, dimen12);
+			binding.recyclerView.setPadding(dimen12, 0, dimen12, dimen12 + 72);
 		}
 
 		binding.recyclerView.setLayoutParams(params);
+	}
+
+	private void observeCreateIssueViewModel() {
+		CreateIssueViewModel createIssueViewModel =
+				new ViewModelProvider(requireActivity()).get(CreateIssueViewModel.class);
+
+		createIssueViewModel
+				.getCreatedIssue()
+				.observe(
+						getViewLifecycleOwner(),
+						issue -> {
+							if (issue != null) {
+								refreshData();
+							}
+						});
 	}
 
 	private void observeRepoViewModel() {

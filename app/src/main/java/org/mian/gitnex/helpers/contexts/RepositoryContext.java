@@ -21,7 +21,7 @@ import org.mian.gitnex.helpers.TinyDB;
 public class RepositoryContext implements Serializable {
 
 	public static final String INTENT_EXTRA = "repository";
-	private final AccountContext account;
+	private AccountContext account;
 	private final String owner;
 	private final String name;
 	private org.gitnex.tea4j.v2.models.Repository repository;
@@ -208,6 +208,14 @@ public class RepositoryContext implements Serializable {
 
 	public void removeRepository() {
 		repository = null;
+	}
+
+	public AccountContext getAccount() {
+		return account;
+	}
+
+	public void setAccount(AccountContext account) {
+		this.account = account;
 	}
 
 	public int saveToDB(Context context) {

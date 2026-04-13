@@ -60,7 +60,6 @@ import org.mian.gitnex.activities.IssueDetailActivity;
 import org.mian.gitnex.activities.ProfileActivity;
 import org.mian.gitnex.clients.RetrofitClient;
 import org.mian.gitnex.databinding.CustomImageViewDialogBinding;
-import org.mian.gitnex.fragments.IssuesFragment;
 import org.mian.gitnex.helpers.AlertDialogs;
 import org.mian.gitnex.helpers.AppDatabaseSettings;
 import org.mian.gitnex.helpers.AppUtil;
@@ -1468,7 +1467,7 @@ public class IssueCommentsAdapter extends RecyclerView.Adapter<RecyclerView.View
 										ctx,
 										ctx.getResources()
 												.getString(R.string.deleteCommentSuccess));
-								IssuesFragment.resumeIssues = true;
+								// IssuesFragment.resumeIssues = true;
 								break;
 							case 401:
 								AlertDialogs.authorizationTokenRevokedDialog(ctx);

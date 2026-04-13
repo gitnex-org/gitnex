@@ -14,6 +14,7 @@ import org.mian.gitnex.R;
 import org.mian.gitnex.databinding.BottomsheetFullscreenEditorBinding;
 import org.mian.gitnex.helpers.AppUtil;
 import org.mian.gitnex.helpers.Markdown;
+import org.mian.gitnex.helpers.MentionHelper;
 import org.mian.gitnex.helpers.contexts.RepositoryContext;
 
 /**
@@ -24,24 +25,28 @@ public class BottomSheetFullScreenEditor extends BottomSheetDialogFragment {
 	private static final String CONTENT = "content";
 	private static final String REPO_CONTEXT = "repo_context";
 	private static final String SHOW_NOTES = "show_notes";
+	private static final String SHOW_MD = "show_md";
 
 	private BottomsheetFullscreenEditorBinding binding;
 	private RepositoryContext repoContext;
 	private boolean isMarkdownMode = false;
 	private boolean showNotes = false;
+	private boolean showMd = false;
 	private EditorListener listener;
+	private MentionHelper mentionHelper;
 
 	public interface EditorListener {
 		void onContentChanged(String newContent);
 	}
 
 	public static BottomSheetFullScreenEditor newInstance(
-			String content, RepositoryContext repoContext, boolean showNotes) {
+			String content, RepositoryContext repoContext, boolean showNotes, boolean showMd) {
 		BottomSheetFullScreenEditor fragment = new BottomSheetFullScreenEditor();
 		Bundle args = new Bundle();
 		args.putString(CONTENT, content);
 		args.putSerializable(REPO_CONTEXT, repoContext);
 		args.putBoolean(SHOW_NOTES, showNotes);
+		args.putBoolean(SHOW_MD, showMd);
 		fragment.setArguments(args);
 		return fragment;
 	}
@@ -52,6 +57,7 @@ public class BottomSheetFullScreenEditor extends BottomSheetDialogFragment {
 		if (getArguments() != null) {
 			repoContext = (RepositoryContext) getArguments().getSerializable(REPO_CONTEXT);
 			showNotes = getArguments().getBoolean(SHOW_NOTES, false);
+			showMd = getArguments().getBoolean(SHOW_MD, false);
 		}
 	}
 
@@ -71,10 +77,14 @@ public class BottomSheetFullScreenEditor extends BottomSheetDialogFragment {
 		String content = getArguments() != null ? getArguments().getString(CONTENT) : "";
 		if (content == null) content = "";
 
+		mentionHelper = new MentionHelper(requireContext(), binding.fullscreenEditor);
+		mentionHelper.setup();
+
 		binding.fullscreenEditor.setText(content);
 		binding.fullscreenEditor.setSelection(content.length());
 
 		binding.fullscreenBtnNotes.setVisibility(showNotes ? View.VISIBLE : View.GONE);
+		binding.fullscreenBtnMarkdown.setVisibility(showMd ? View.VISIBLE : View.GONE);
 
 		binding.fullscreenBtnClear.setOnClickListener(
 				v -> {
@@ -159,5 +169,6 @@ public class BottomSheetFullScreenEditor extends BottomSheetDialogFragment {
 	public void onDestroyView() {
 		super.onDestroyView();
 		binding = null;
+		mentionHelper.dismissPopup();
 	}
 }

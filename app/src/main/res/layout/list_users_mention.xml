@@ -12,7 +12,7 @@
         android:backgroundTint="@android:color/transparent"
         android:layout_gravity="center"
         app:cardElevation="@dimen/dimen0dp"
-        app:cardCornerRadius="@dimen/dimen12dp">
+        app:cardCornerRadius="@dimen/dimen8dp">
 
         <ImageView
             android:id="@+id/avatar"

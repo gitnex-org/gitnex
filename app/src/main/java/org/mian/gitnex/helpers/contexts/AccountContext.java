@@ -62,6 +62,14 @@ public class AccountContext implements Serializable {
 		return getAccount().getMaxResponseItems();
 	}
 
+	public int getMaxAttachmentSize() {
+		return getAccount().getMaxAttachmentsSize();
+	}
+
+	public int getMaxNumberOfAttachments() {
+		return getAccount().getMaxNumberOfAttachments();
+	}
+
 	public User getUserInfo() {
 
 		return userInfo;
