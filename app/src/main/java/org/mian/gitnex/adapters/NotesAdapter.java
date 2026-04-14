@@ -22,7 +22,6 @@ import org.mian.gitnex.R;
 import org.mian.gitnex.activities.BaseActivity;
 import org.mian.gitnex.activities.CreateNoteActivity;
 import org.mian.gitnex.activities.CreatePullRequestActivity;
-import org.mian.gitnex.activities.CreateReleaseActivity;
 import org.mian.gitnex.database.api.BaseApi;
 import org.mian.gitnex.database.api.NotesApi;
 import org.mian.gitnex.database.models.Notes;
@@ -107,10 +106,7 @@ public class NotesAdapter extends RecyclerView.Adapter<NotesAdapter.NotesViewHol
 			EditText targetField = null;
 			AlertDialog dialogToDismiss = null;
 
-			if (activity instanceof CreateReleaseActivity releaseAct) {
-				targetField = releaseAct.findViewById(R.id.releaseContent);
-				dialogToDismiss = releaseAct.dialogNotes;
-			} else if (activity instanceof CreatePullRequestActivity prAct) {
+			if (activity instanceof CreatePullRequestActivity prAct) {
 				targetField = prAct.findViewById(R.id.prBody);
 				dialogToDismiss = prAct.dialogNotes;
 			}

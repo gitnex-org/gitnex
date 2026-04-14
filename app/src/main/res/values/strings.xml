@@ -321,8 +321,6 @@
     <string name="labelMenuContentDesc">Desc</string>
     <string name="labelDeleteText">Label deleted</string>
 
-    <string name="selectBranchError">Select a branch for release</string>
-
     <string name="alertDialogTokenRevokedTitle">Authorization Error</string>
     <string name="alertDialogTokenRevokedMessage">It seems that the Access Token is revoked OR you are not allowed to see these contents.\n\nIn case of revoked Token, please update the account.</string>
     <string name="labelDeleteMessage">Do you really want to delete this label?</string>
@@ -465,7 +463,6 @@
     <!-- edit issue -->
 
     <!-- release -->
-    <string name="createRelease">New Release</string>
     <string name="releaseTagNameText">Tag Name</string>
     <string name="releaseTitleText">Title</string>
     <string name="releaseContentText">Content</string>
@@ -476,6 +473,14 @@
     <string name="releaseCreatedText">New release created</string>
     <string name="deleteReleaseConfirmation">Do you really want to delete this release?</string>
     <string name="releaseDeleted">Release deleted</string>
+    <string name="tagNameConflictError">Tag name already exists</string>
+    <string name="editReleaseSuccessMessage">Release updated successfully</string>
+    <string name="createRelease">Create Release</string>
+    <string name="createTag">Create Tag</string>
+    <string name="editRelease">Edit Release</string>
+    <string name="selectBranchError">Select a branch for release/tag</string>
+    <string name="add_release_branch">Tap to select a branch</string>
+    <string name="create_release_tag">Create Release/Tag</string>
     <!-- release -->
 
     <string name="openWebRepo">Open in Browser</string>
@@ -655,6 +660,7 @@
     <string name="select">Select</string>
     <string name="collapse">Collapse</string>
     <string name="fullscreen">Fullscreen</string>
+    <string name="type">Type</string>
     <!-- generic copy -->
 
     <string name="exploreUsers">Explore users</string>
@@ -908,7 +914,7 @@
     <string name="userAvatar">Avatar</string>
     <string name="tags">Tags</string>
     <string name="releasesTags">Releases/Tags</string>
-    <string name="create_tag">Create Tag Only</string>
+    <string name="create_tag">Tag Only</string>
     <string name="tagCreated">Tag created</string>
     <string name="asRef">Use as reference</string>
     <string name="deleteTagConfirmation">Do you really want to delete this tag?</string>

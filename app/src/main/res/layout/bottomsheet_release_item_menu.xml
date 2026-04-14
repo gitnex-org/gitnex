@@ -48,6 +48,54 @@
                 tools:ignore="UselessParent">
 
                 <com.google.android.material.card.MaterialCardView
+                    android:id="@+id/edit_card"
+                    style="?attr/materialCardViewFilledStyle"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:layout_margin="@dimen/dimen4dp"
+                    app:cardCornerRadius="@dimen/dimen24dp"
+                    app:cardBackgroundColor="?attr/colorPrimarySurface"
+                    app:strokeWidth="0dp">
+
+                    <LinearLayout
+                        android:id="@+id/edit_release"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:background="?attr/selectableItemBackground"
+                        android:clickable="true"
+                        android:focusable="true"
+                        android:gravity="center"
+                        android:orientation="vertical"
+                        android:paddingVertical="@dimen/dimen16dp">
+
+                        <ImageView
+                            android:id="@+id/edit_icon"
+                            android:layout_width="@dimen/dimen24dp"
+                            android:layout_height="@dimen/dimen24dp"
+                            app:srcCompat="@drawable/ic_edit"
+                            app:tint="?attr/colorOnPrimarySurface"
+                            android:contentDescription="@string/menuEditText" />
+
+                        <TextView
+                            android:id="@+id/edit_text"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="@dimen/dimen8dp"
+                            android:fontFamily="sans-serif-medium"
+                            android:gravity="center"
+                            android:text="@string/menuEditText"
+                            android:paddingHorizontal="@dimen/dimen6dp"
+                            android:maxLines="1"
+                            android:ellipsize="end"
+                            android:textColor="?attr/colorOnPrimarySurface"
+                            android:textAppearance="@style/TextAppearance.Material3.BodySmall" />
+
+                    </LinearLayout>
+
+                </com.google.android.material.card.MaterialCardView>
+
+                <com.google.android.material.card.MaterialCardView
                     android:id="@+id/delete_release_card"
                     style="?attr/materialCardViewFilledStyle"
                     android:layout_width="0dp"

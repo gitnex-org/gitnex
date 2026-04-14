@@ -1,5 +1,8 @@
 package org.mian.gitnex.fragments;
 
+import static android.view.View.GONE;
+import static android.view.View.VISIBLE;
+
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.LayoutInflater;
@@ -22,6 +25,7 @@ import org.mian.gitnex.activities.WikiActivity;
 import org.mian.gitnex.adapters.WikiListAdapter;
 import org.mian.gitnex.databinding.BottomsheetWikiItemMenuBinding;
 import org.mian.gitnex.databinding.FragmentWikiBinding;
+import org.mian.gitnex.helpers.AlertDialogs;
 import org.mian.gitnex.helpers.AppUtil;
 import org.mian.gitnex.helpers.Constants;
 import org.mian.gitnex.helpers.EndlessRecyclerViewScrollListener;
@@ -43,6 +47,7 @@ public class WikiFragment extends Fragment implements RepoDetailActivity.RepoHub
 	private RepositoryContext repository;
 	private int resultLimit;
 	private boolean isFirstLoad = true;
+	private String pendingPageName = null;
 
 	public static WikiFragment newInstance(RepositoryContext repository) {
 		WikiFragment fragment = new WikiFragment();
@@ -197,14 +202,73 @@ public class WikiFragment extends Fragment implements RepoDetailActivity.RepoHub
 						err -> {
 							if (err != null) Toasty.show(requireContext(), err);
 						});
+
+		viewModel
+				.getIsLoadingPage()
+				.observe(
+						getViewLifecycleOwner(),
+						isLoading -> {
+							binding.expressiveLoader.setVisibility(VISIBLE);
+						});
+
+		viewModel
+				.getPageContent()
+				.observe(
+						getViewLifecycleOwner(),
+						content -> {
+							if (content != null && pendingPageName != null) {
+								showContentViewer(pendingPageName, content);
+								pendingPageName = null;
+								viewModel.clearPageContent();
+								binding.expressiveLoader.setVisibility(GONE);
+							}
+						});
+
+		viewModel
+				.getPageError()
+				.observe(
+						getViewLifecycleOwner(),
+						error -> {
+							if (error != null && !error.isEmpty()) {
+								if (error.equals("UNAUTHORIZED")) {
+									AlertDialogs.authorizationTokenRevokedDialog(requireContext());
+								} else {
+									Toasty.show(requireContext(), error);
+								}
+								pendingPageName = null;
+								viewModel.clearPageError();
+							}
+						});
 	}
 
 	private void openWiki(WikiPageMetaData wikiPage, String action) {
-		Intent intent = new Intent(requireContext(), WikiActivity.class);
-		intent.putExtra("pageName", wikiPage.getTitle());
-		if (action != null) intent.putExtra("action", action);
-		intent.putExtra(RepositoryContext.INTENT_EXTRA, repository);
-		startActivity(intent);
+		if (action != null && action.equals("edit")) {
+			Intent intent = new Intent(requireContext(), WikiActivity.class);
+			intent.putExtra("pageName", wikiPage.getSubUrl());
+			intent.putExtra("action", action);
+			intent.putExtra(RepositoryContext.INTENT_EXTRA, repository);
+			startActivity(intent);
+		} else {
+			pendingPageName = wikiPage.getTitle();
+			viewModel.fetchWikiPageContent(
+					requireContext(),
+					repository.getOwner(),
+					repository.getName(),
+					wikiPage.getSubUrl());
+		}
+	}
+
+	private void showContentViewer(String title, String content) {
+		BottomSheetContentViewer.newInstance(
+						content,
+						title,
+						repository,
+						BottomSheetContentViewer.Feature.ALLOW_COPY,
+						BottomSheetContentViewer.Feature.ALLOW_SHARE,
+						BottomSheetContentViewer.Feature.MARKDOWN_PREVIEW,
+						BottomSheetContentViewer.Feature.START_IN_MARKDOWN,
+						BottomSheetContentViewer.Feature.SHOW_TITLE)
+				.show(getParentFragmentManager(), "WIKI_VIEWER");
 	}
 
 	private void showDeleteDialog(WikiPageMetaData wikiPage) {
@@ -219,7 +283,7 @@ public class WikiFragment extends Fragment implements RepoDetailActivity.RepoHub
 									requireContext(),
 									repository.getOwner(),
 									repository.getName(),
-									wikiPage.getTitle());
+									wikiPage.getSubUrl());
 						})
 				.setNegativeButton(R.string.cancelButton, null)
 				.show();
@@ -253,14 +317,12 @@ public class WikiFragment extends Fragment implements RepoDetailActivity.RepoHub
 		boolean hasData = adapter != null && adapter.getItemCount() > 0;
 		boolean hasLoadedOnce = Boolean.TRUE.equals(viewModel.getHasLoadedOnce().getValue());
 
-		binding.expressiveLoader.setVisibility(isLoading && !hasData ? View.VISIBLE : View.GONE);
+		binding.expressiveLoader.setVisibility(isLoading && !hasData ? VISIBLE : GONE);
 
 		if (isLoading) {
-			binding.layoutEmpty.getRoot().setVisibility(View.GONE);
+			binding.layoutEmpty.getRoot().setVisibility(GONE);
 		} else {
-			binding.layoutEmpty
-					.getRoot()
-					.setVisibility(!hasData && hasLoadedOnce ? View.VISIBLE : View.GONE);
+			binding.layoutEmpty.getRoot().setVisibility(!hasData && hasLoadedOnce ? VISIBLE : GONE);
 		}
 	}
 

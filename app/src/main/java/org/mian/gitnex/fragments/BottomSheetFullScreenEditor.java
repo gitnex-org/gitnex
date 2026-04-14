@@ -122,8 +122,6 @@ public class BottomSheetFullScreenEditor extends BottomSheetDialogFragment {
 					isMarkdownMode = !isMarkdownMode;
 					binding.fullscreenBtnMarkdown.setIconResource(
 							isMarkdownMode ? R.drawable.ic_edit : R.drawable.ic_markdown);
-					binding.fullscreenBtnMarkdown.setText(
-							isMarkdownMode ? R.string.menuEditText : R.string.strMarkdown);
 					binding.fullscreenBtnMarkdown.setIconSize(52);
 
 					if (isMarkdownMode) {

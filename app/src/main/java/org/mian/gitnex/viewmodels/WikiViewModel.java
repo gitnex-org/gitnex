@@ -7,8 +7,11 @@ import androidx.lifecycle.MutableLiveData;
 import androidx.lifecycle.ViewModel;
 import java.util.ArrayList;
 import java.util.List;
+import org.gitnex.tea4j.v2.models.WikiPage;
 import org.gitnex.tea4j.v2.models.WikiPageMetaData;
+import org.mian.gitnex.R;
 import org.mian.gitnex.clients.RetrofitClient;
+import org.mian.gitnex.helpers.AppUtil;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
@@ -23,6 +26,9 @@ public class WikiViewModel extends ViewModel {
 	private final MutableLiveData<Boolean> hasLoadedOnce = new MutableLiveData<>(false);
 	private final MutableLiveData<String> error = new MutableLiveData<>();
 	private final MutableLiveData<Integer> actionResult = new MutableLiveData<>(-1);
+	private final MutableLiveData<Boolean> isLoadingPage = new MutableLiveData<>(false);
+	private final MutableLiveData<String> pageContent = new MutableLiveData<>();
+	private final MutableLiveData<String> pageError = new MutableLiveData<>();
 
 	private final List<WikiPageMetaData> fullList = new ArrayList<>();
 
@@ -49,12 +55,32 @@ public class WikiViewModel extends ViewModel {
 		return actionResult;
 	}
 
+	public LiveData<Boolean> getIsLoadingPage() {
+		return isLoadingPage;
+	}
+
+	public LiveData<String> getPageContent() {
+		return pageContent;
+	}
+
+	public LiveData<String> getPageError() {
+		return pageError;
+	}
+
 	public void resetPagination() {
 		fullList.clear();
 		isLastPage = false;
 		totalCount = -1;
 		wikiPages.setValue(new ArrayList<>());
 		hasLoadedOnce.setValue(false);
+	}
+
+	public void clearPageContent() {
+		pageContent.setValue(null);
+	}
+
+	public void clearPageError() {
+		pageError.setValue(null);
 	}
 
 	public void fetchWikiPages(
@@ -118,6 +144,50 @@ public class WikiViewModel extends ViewModel {
 								error.setValue(t.getMessage());
 							}
 						});
+	}
+
+	public void fetchWikiPageContent(Context ctx, String owner, String repo, String pageName) {
+		isLoadingPage.setValue(true);
+		pageError.setValue(null);
+
+		Call<WikiPage> call =
+				RetrofitClient.getApiInterface(ctx).repoGetWikiPage(owner, repo, pageName);
+
+		call.enqueue(
+				new Callback<>() {
+					@Override
+					public void onResponse(
+							@NonNull Call<WikiPage> call, @NonNull Response<WikiPage> response) {
+						isLoadingPage.setValue(false);
+
+						if (response.isSuccessful() && response.body() != null) {
+							WikiPage wikiPage = response.body();
+							String decodedContent =
+									AppUtil.decodeBase64(wikiPage.getContentBase64());
+							pageContent.setValue(decodedContent);
+						} else {
+							switch (response.code()) {
+								case 401:
+									pageError.setValue("UNAUTHORIZED");
+									break;
+								case 403:
+									pageError.setValue(ctx.getString(R.string.authorizeError));
+									break;
+								case 404:
+									pageError.setValue(ctx.getString(R.string.apiNotFound));
+									break;
+								default:
+									pageError.setValue(ctx.getString(R.string.genericError));
+							}
+						}
+					}
+
+					@Override
+					public void onFailure(@NonNull Call<WikiPage> call, @NonNull Throwable t) {
+						isLoadingPage.setValue(false);
+						pageError.setValue(t.getMessage());
+					}
+				});
 	}
 
 	public void deleteWikiPage(Context ctx, String owner, String repo, String pageName) {

@@ -21,6 +21,7 @@ import org.mian.gitnex.R;
 import org.mian.gitnex.databinding.ActivityRepoDetailBinding;
 import org.mian.gitnex.fragments.BottomSheetCreateIssue;
 import org.mian.gitnex.fragments.BottomSheetCreateMilestone;
+import org.mian.gitnex.fragments.BottomSheetCreateRelease;
 import org.mian.gitnex.fragments.BottomsheetRepoMenu;
 import org.mian.gitnex.fragments.CollaboratorsFragment;
 import org.mian.gitnex.fragments.FilesFragment;
@@ -625,7 +626,8 @@ public class RepoDetailActivity extends BaseActivity
 
 				case "newRelease":
 					switchTab("releases", R.id.btn_nav_releases);
-					startActivity(repository.getIntent(this, CreateReleaseActivity.class));
+					BottomSheetCreateRelease.newInstance(repository, null)
+							.show(getSupportFragmentManager(), "CREATE_RELEASE");
 					break;
 
 				case "wiki":
