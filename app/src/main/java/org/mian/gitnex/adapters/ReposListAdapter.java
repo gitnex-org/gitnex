@@ -18,6 +18,7 @@ import com.bumptech.glide.load.engine.DiskCacheStrategy;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Locale;
+import org.mian.gitnex.R;
 import org.mian.gitnex.activities.RepoDetailActivity;
 import org.mian.gitnex.databinding.ListRepositoriesBinding;
 import org.mian.gitnex.helpers.AppUtil;
@@ -192,14 +193,15 @@ public class ReposListAdapter extends RecyclerView.Adapter<ReposListAdapter.Repo
 
 		private void loadAvatar(org.gitnex.tea4j.v2.models.Repository repository) {
 			String label =
-					(repository.getFullName() != null)
-							? repository.getFullName()
-							: repository.getName();
+					(repository.getName() != null)
+							? repository.getName()
+							: repository.getFullName();
 			Drawable placeholder = AvatarGenerator.getLetterAvatar(context, label, 44);
 			Glide.with(context)
 					.load(repository.getAvatarUrl())
 					.diskCacheStrategy(DiskCacheStrategy.ALL)
-					.placeholder(placeholder)
+					.placeholder(R.drawable.loader_animated)
+					.error(placeholder)
 					.centerCrop()
 					.into(binding.imageAvatar);
 		}

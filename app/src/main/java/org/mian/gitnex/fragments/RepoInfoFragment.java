@@ -127,7 +127,6 @@ public class RepoInfoFragment extends Fragment {
 						starred -> {
 							binding.statStars.statIcon.setImageResource(
 									starred ? R.drawable.ic_star : R.drawable.ic_star_unfilled);
-							viewModel.updateStarCountLocal(starred);
 						});
 		viewModel
 				.getIsWatched()
@@ -136,7 +135,6 @@ public class RepoInfoFragment extends Fragment {
 						watched -> {
 							binding.statWatchers.statIcon.setImageResource(
 									watched ? R.drawable.ic_unwatch : R.drawable.ic_watchers);
-							viewModel.updateWatchCountLocal(watched);
 						});
 
 		viewModel

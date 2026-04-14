@@ -2,6 +2,7 @@ package org.mian.gitnex.adapters;
 
 import android.annotation.SuppressLint;
 import android.content.Context;
+import android.graphics.drawable.Drawable;
 import android.transition.AutoTransition;
 import android.transition.TransitionManager;
 import android.view.LayoutInflater;
@@ -99,9 +100,18 @@ public class ReleasesAdapter extends RecyclerView.Adapter<ReleasesAdapter.Releas
 				binding.authorName.setText(
 						context.getString(
 								R.string.releasePublishedBy, release.getAuthor().getLogin()));
+
+				String label =
+						(release.getAuthor().getFullName() != null)
+								? release.getAuthor().getFullName()
+								: release.getAuthor().getLogin();
+				Drawable placeholder = AvatarGenerator.getLetterAvatar(context, label, 44);
+
 				Glide.with(context)
 						.load(release.getAuthor().getAvatarUrl())
 						.diskCacheStrategy(DiskCacheStrategy.ALL)
+						.placeholder(R.drawable.loader_animated)
+						.error(placeholder)
 						.centerCrop()
 						.into(binding.authorAvatar);
 			}

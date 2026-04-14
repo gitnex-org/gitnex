@@ -121,7 +121,7 @@ public class BottomsheetRepoMenu extends BottomSheetDialogFragment {
 		coreItems.add(
 				new RepositoryMenuItemModel(
 						"CORE_STAR",
-						isStarred ? R.string.unstar : R.string.stars,
+						isStarred ? R.string.unstar : R.string.starMember,
 						isStarred ? R.drawable.ic_star : R.drawable.ic_star_unfilled,
 						R.attr.colorPrimarySurface,
 						R.attr.colorOnPrimarySurface));
