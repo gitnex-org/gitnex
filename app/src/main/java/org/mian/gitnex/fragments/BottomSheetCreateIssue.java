@@ -33,7 +33,7 @@ import java.util.Objects;
 import java.util.Set;
 import java.util.TimeZone;
 import org.gitnex.tea4j.v2.models.CreateIssueOption;
-import org.gitnex.tea4j.v2.models.Issue;
+import org.gitnex.tea4j.v2.models.EditIssueOption;
 import org.gitnex.tea4j.v2.models.IssueTemplate;
 import org.gitnex.tea4j.v2.models.Label;
 import org.gitnex.tea4j.v2.models.User;
@@ -43,11 +43,13 @@ import org.mian.gitnex.database.api.BaseApi;
 import org.mian.gitnex.database.api.UserAccountsApi;
 import org.mian.gitnex.database.models.UserAccount;
 import org.mian.gitnex.databinding.BottomsheetCreateIssueBinding;
+import org.mian.gitnex.helpers.AlertDialogs;
 import org.mian.gitnex.helpers.AppDatabaseSettings;
 import org.mian.gitnex.helpers.AppUtil;
 import org.mian.gitnex.helpers.TinyDB;
 import org.mian.gitnex.helpers.Toasty;
 import org.mian.gitnex.helpers.attachments.AttachmentManager;
+import org.mian.gitnex.helpers.contexts.IssueContext;
 import org.mian.gitnex.helpers.contexts.RepositoryContext;
 import org.mian.gitnex.viewmodels.AttachmentsViewModel;
 import org.mian.gitnex.viewmodels.CreateIssueViewModel;
@@ -61,7 +63,7 @@ public class BottomSheetCreateIssue extends BottomSheetDialogFragment {
 	private BottomsheetCreateIssueBinding binding;
 	private CreateIssueViewModel viewModel;
 	private RepositoryContext repoContext;
-	private Issue issueToEdit;
+	private IssueContext issueToEdit;
 	private Set<String> selectedLabels = new HashSet<>();
 	private final List<Long> selectedLabelIds = new ArrayList<>();
 	private String selectedMilestone = null;
@@ -74,7 +76,7 @@ public class BottomSheetCreateIssue extends BottomSheetDialogFragment {
 	private Set<String> selectedAssignees = new HashSet<>();
 
 	public static BottomSheetCreateIssue newInstance(
-			RepositoryContext repository, @Nullable Issue issue) {
+			RepositoryContext repository, @Nullable IssueContext issue) {
 		BottomSheetCreateIssue fragment = new BottomSheetCreateIssue();
 		Bundle args = new Bundle();
 		args.putSerializable("repo_context", repository);
@@ -90,7 +92,7 @@ public class BottomSheetCreateIssue extends BottomSheetDialogFragment {
 		super.onCreate(savedInstanceState);
 		if (getArguments() != null) {
 			repoContext = (RepositoryContext) getArguments().getSerializable("repo_context");
-			issueToEdit = (Issue) getArguments().getSerializable("issue_item");
+			issueToEdit = (IssueContext) getArguments().getSerializable("issue_item");
 		}
 	}
 
@@ -105,6 +107,7 @@ public class BottomSheetCreateIssue extends BottomSheetDialogFragment {
 
 		viewModel.clearCreatedIssue();
 		attachmentsViewModel.reset();
+		viewModel.clearUpdatedIssue();
 
 		setupUI();
 		setupListeners();
@@ -157,13 +160,14 @@ public class BottomSheetCreateIssue extends BottomSheetDialogFragment {
 
 		if (issueToEdit != null) {
 			binding.sheetTitle.setText(R.string.editIssue);
-			binding.issueTitle.setText(issueToEdit.getTitle());
-			binding.issueDescription.setText(issueToEdit.getBody());
+			binding.issueTitle.setText(issueToEdit.getIssue().getTitle());
+			binding.issueDescription.setText(issueToEdit.getIssue().getBody());
 			binding.btnCreate.setText(R.string.update);
 
 			if (hasWriteAccess) {
-				if (issueToEdit.getLabels() != null && !issueToEdit.getLabels().isEmpty()) {
-					for (Label label : issueToEdit.getLabels()) {
+				if (issueToEdit.getIssue().getLabels() != null
+						&& !issueToEdit.getIssue().getLabels().isEmpty()) {
+					for (Label label : issueToEdit.getIssue().getLabels()) {
 						selectedLabels.add(label.getName());
 						if (label.getId() != null) {
 							selectedLabelIds.add(label.getId());
@@ -172,21 +176,22 @@ public class BottomSheetCreateIssue extends BottomSheetDialogFragment {
 					updateLabelsDisplay();
 				}
 
-				if (issueToEdit.getMilestone() != null) {
-					selectedMilestone = issueToEdit.getMilestone().getTitle();
-					selectedMilestoneId = issueToEdit.getMilestone().getId();
+				if (issueToEdit.getIssue().getMilestone() != null) {
+					selectedMilestone = issueToEdit.getIssue().getMilestone().getTitle();
+					selectedMilestoneId = issueToEdit.getIssue().getMilestone().getId();
 					updateMilestoneDisplay();
 				}
 
-				if (issueToEdit.getAssignees() != null && !issueToEdit.getAssignees().isEmpty()) {
-					for (User assignee : issueToEdit.getAssignees()) {
+				if (issueToEdit.getIssue().getAssignees() != null
+						&& !issueToEdit.getIssue().getAssignees().isEmpty()) {
+					for (User assignee : issueToEdit.getIssue().getAssignees()) {
 						selectedAssignees.add(assignee.getLogin());
 					}
 					updateAssigneesDisplay();
 				}
 
-				if (issueToEdit.getDueDate() != null) {
-					selectedDueDate = formatDateForDisplay(issueToEdit.getDueDate());
+				if (issueToEdit.getIssue().getDueDate() != null) {
+					selectedDueDate = formatDateForDisplay(issueToEdit.getIssue().getDueDate());
 					updateDueDateDisplay();
 				}
 			}
@@ -272,9 +277,17 @@ public class BottomSheetCreateIssue extends BottomSheetDialogFragment {
 			return;
 		}
 
-		CreateIssueOption createIssueJson = getCreateIssueOption(title, description);
-
-		viewModel.createIssue(requireContext(), repoContext, createIssueJson);
+		if (issueToEdit != null) {
+			EditIssueOption editIssueJson = getEditIssueOption(title, description);
+			viewModel.updateIssue(
+					requireContext(),
+					repoContext,
+					issueToEdit.getIssue().getNumber(),
+					editIssueJson);
+		} else {
+			CreateIssueOption createIssueJson = getCreateIssueOption(title, description);
+			viewModel.createIssue(requireContext(), repoContext, createIssueJson);
+		}
 	}
 
 	@NonNull private CreateIssueOption getCreateIssueOption(String title, String description) {
@@ -300,6 +313,57 @@ public class BottomSheetCreateIssue extends BottomSheetDialogFragment {
 			createIssueJson.setDueDate(dueDate);
 		}
 		return createIssueJson;
+	}
+
+	@NonNull private EditIssueOption getEditIssueOption(String title, String description) {
+		EditIssueOption editIssueJson = new EditIssueOption();
+		editIssueJson.setTitle(title);
+		editIssueJson.setBody(description);
+
+		if (selectedMilestoneId != null) {
+			editIssueJson.setMilestone(selectedMilestoneId);
+		}
+
+		if (!selectedAssignees.isEmpty()) {
+			editIssueJson.setAssignees(new ArrayList<>(selectedAssignees));
+		}
+
+		Date dueDate = getDueDateForApi();
+		if (dueDate != null) {
+			editIssueJson.setDueDate(dueDate);
+		}
+
+		return editIssueJson;
+	}
+
+	private void handleIssueSuccess(long issueNumber) {
+		if (attachmentManager != null && attachmentManager.getAttachmentCount() > 0) {
+			attachmentsViewModel.uploadAttachments(
+					requireContext(), repoContext.getOwner(), repoContext.getName(), issueNumber);
+		} else {
+			String successMsg =
+					getString(
+							issueToEdit != null
+									? R.string.editIssueSuccessMessage
+									: R.string.issueCreated);
+			Toasty.show(requireContext(), successMsg);
+			dismiss();
+		}
+	}
+
+	private boolean hasLabelsChanged() {
+		if (issueToEdit == null || issueToEdit.getIssue().getLabels() == null) {
+			return !selectedLabels.isEmpty();
+		}
+
+		Set<String> originalLabelNames = new HashSet<>();
+		for (Label label : issueToEdit.getIssue().getLabels()) {
+			if (label.getName() != null) {
+				originalLabelNames.add(label.getName());
+			}
+		}
+
+		return !selectedLabels.equals(originalLabelNames);
 	}
 
 	private void loadAttachmentLimits() {
@@ -357,23 +421,7 @@ public class BottomSheetCreateIssue extends BottomSheetDialogFragment {
 						getViewLifecycleOwner(),
 						issue -> {
 							if (issue != null) {
-								if (issueToEdit == null
-										&& attachmentManager != null
-										&& attachmentManager.getAttachmentCount() > 0) {
-									attachmentsViewModel.uploadAttachments(
-											requireContext(),
-											repoContext.getOwner(),
-											repoContext.getName(),
-											issue.getNumber());
-								} else {
-									String successMsg =
-											getString(
-													issueToEdit != null
-															? R.string.editIssueSuccessMessage
-															: R.string.issueCreated);
-									Toasty.show(requireContext(), successMsg);
-									dismiss();
-								}
+								handleIssueSuccess(issue.getNumber());
 							}
 						});
 
@@ -385,6 +433,83 @@ public class BottomSheetCreateIssue extends BottomSheetDialogFragment {
 							if (error != null && !error.isEmpty()) {
 								Toasty.show(requireContext(), error);
 								viewModel.clearCreateError();
+							}
+						});
+
+		viewModel
+				.getIsUpdating()
+				.observe(
+						getViewLifecycleOwner(),
+						isUpdating -> {
+							if (issueToEdit != null) {
+								binding.loadingIndicator.setVisibility(
+										isUpdating ? View.VISIBLE : View.GONE);
+								binding.btnCreate.setEnabled(!isUpdating);
+								binding.btnCreate.setText(
+										isUpdating ? "" : getString(R.string.update));
+							}
+						});
+
+		viewModel
+				.getUpdatedIssue()
+				.observe(
+						getViewLifecycleOwner(),
+						issue -> {
+							if (issue != null && issueToEdit != null) {
+								// Simplified - just check if labels changed
+								if (hasLabelsChanged()) {
+									viewModel.updateIssueLabels(
+											requireContext(),
+											repoContext.getOwner(),
+											repoContext.getName(),
+											issue.getNumber(),
+											selectedLabelIds);
+								} else {
+									handleIssueSuccess(issue.getNumber());
+								}
+							}
+						});
+
+		viewModel
+				.getUpdateError()
+				.observe(
+						getViewLifecycleOwner(),
+						error -> {
+							if (error != null && !error.isEmpty()) {
+								if (error.equals("UNAUTHORIZED")) {
+									AlertDialogs.authorizationTokenRevokedDialog(requireContext());
+								} else {
+									Toasty.show(requireContext(), error);
+								}
+								viewModel.clearUpdateError();
+							}
+						});
+
+		viewModel.getIsUpdatingLabels().observe(getViewLifecycleOwner(), isUpdating -> {});
+
+		viewModel
+				.getLabelsUpdated()
+				.observe(
+						getViewLifecycleOwner(),
+						updated -> {
+							if (updated != null && updated && issueToEdit != null) {
+								handleIssueSuccess(issueToEdit.getIssue().getNumber());
+								viewModel.clearLabelsUpdated();
+							}
+						});
+
+		viewModel
+				.getLabelsUpdateError()
+				.observe(
+						getViewLifecycleOwner(),
+						error -> {
+							if (error != null && !error.isEmpty()) {
+								if (error.equals("UNAUTHORIZED")) {
+									AlertDialogs.authorizationTokenRevokedDialog(requireContext());
+								} else {
+									Toasty.show(requireContext(), error);
+								}
+								viewModel.clearLabelsUpdateError();
 							}
 						});
 
@@ -449,7 +574,12 @@ public class BottomSheetCreateIssue extends BottomSheetDialogFragment {
 						getViewLifecycleOwner(),
 						complete -> {
 							if (complete != null && complete) {
-								Toasty.show(requireContext(), R.string.issueCreatedWithAttachments);
+								String successMsg =
+										getString(
+												issueToEdit != null
+														? R.string.editIssueSuccessMessage
+														: R.string.issueCreatedWithAttachments);
+								Toasty.show(requireContext(), successMsg);
 								dismiss();
 							}
 						});

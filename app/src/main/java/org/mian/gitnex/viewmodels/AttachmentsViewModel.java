@@ -124,7 +124,7 @@ public class AttachmentsViewModel extends ViewModel {
 
 		String finalFileName = fileName;
 		call.enqueue(
-				new Callback<Attachment>() {
+				new Callback<>() {
 					@Override
 					public void onResponse(
 							@NonNull Call<Attachment> call,
