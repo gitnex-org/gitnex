@@ -3,9 +3,9 @@
 agp = "9.1.1"
 
 # Android SDK versions
-compileSdk = "36"
+compileSdk = "37"
 minSdk = "26"
-targetSdk = "36"
+targetSdk = "37"
 versionCode = "1295"
 versionName = "13.0.0-rc1"
 javaVersion = "17"

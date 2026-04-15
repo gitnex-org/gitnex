@@ -945,6 +945,8 @@
     <string name="createWikiPage">Create Wiki Page</string>
     <string name="wikiUpdated">Wiki page updated successfully</string>
     <string name="wikiCreated">Wiki page created successfully</string>
+    <string name="wikiPageAlreadyExists">A wiki page with this title already exists</string>
+    <string name="editWikiPage">Edit Wiki Page</string>
 
     <!-- code editor -->
     <string name="sourcePosition" translatable="false">%1$d:%2$d</string>

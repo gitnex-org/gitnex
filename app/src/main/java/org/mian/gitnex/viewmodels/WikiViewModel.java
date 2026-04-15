@@ -7,6 +7,7 @@ import androidx.lifecycle.MutableLiveData;
 import androidx.lifecycle.ViewModel;
 import java.util.ArrayList;
 import java.util.List;
+import org.gitnex.tea4j.v2.models.CreateWikiPageOptions;
 import org.gitnex.tea4j.v2.models.WikiPage;
 import org.gitnex.tea4j.v2.models.WikiPageMetaData;
 import org.mian.gitnex.R;
@@ -27,8 +28,14 @@ public class WikiViewModel extends ViewModel {
 	private final MutableLiveData<String> error = new MutableLiveData<>();
 	private final MutableLiveData<Integer> actionResult = new MutableLiveData<>(-1);
 	private final MutableLiveData<Boolean> isLoadingPage = new MutableLiveData<>(false);
-	private final MutableLiveData<String> pageContent = new MutableLiveData<>();
+	private final MutableLiveData<WikiPage> pageContent = new MutableLiveData<>();
 	private final MutableLiveData<String> pageError = new MutableLiveData<>();
+	private final MutableLiveData<Boolean> isCreating = new MutableLiveData<>(false);
+	private final MutableLiveData<Boolean> isUpdating = new MutableLiveData<>(false);
+	private final MutableLiveData<WikiPage> createdPage = new MutableLiveData<>();
+	private final MutableLiveData<WikiPage> updatedPage = new MutableLiveData<>();
+	private final MutableLiveData<String> createError = new MutableLiveData<>();
+	private final MutableLiveData<String> updateError = new MutableLiveData<>();
 
 	private final List<WikiPageMetaData> fullList = new ArrayList<>();
 
@@ -59,12 +66,36 @@ public class WikiViewModel extends ViewModel {
 		return isLoadingPage;
 	}
 
-	public LiveData<String> getPageContent() {
+	public LiveData<WikiPage> getPageContent() {
 		return pageContent;
 	}
 
 	public LiveData<String> getPageError() {
 		return pageError;
+	}
+
+	public LiveData<Boolean> getIsCreating() {
+		return isCreating;
+	}
+
+	public LiveData<Boolean> getIsUpdating() {
+		return isUpdating;
+	}
+
+	public LiveData<WikiPage> getCreatedPage() {
+		return createdPage;
+	}
+
+	public LiveData<WikiPage> getUpdatedPage() {
+		return updatedPage;
+	}
+
+	public LiveData<String> getCreateError() {
+		return createError;
+	}
+
+	public LiveData<String> getUpdateError() {
+		return updateError;
 	}
 
 	public void resetPagination() {
@@ -81,6 +112,22 @@ public class WikiViewModel extends ViewModel {
 
 	public void clearPageError() {
 		pageError.setValue(null);
+	}
+
+	public void clearCreatedPage() {
+		createdPage.setValue(null);
+	}
+
+	public void clearUpdatedPage() {
+		updatedPage.setValue(null);
+	}
+
+	public void clearCreateError() {
+		createError.setValue(null);
+	}
+
+	public void clearUpdateError() {
+		updateError.setValue(null);
 	}
 
 	public void fetchWikiPages(
@@ -161,10 +208,7 @@ public class WikiViewModel extends ViewModel {
 						isLoadingPage.setValue(false);
 
 						if (response.isSuccessful() && response.body() != null) {
-							WikiPage wikiPage = response.body();
-							String decodedContent =
-									AppUtil.decodeBase64(wikiPage.getContentBase64());
-							pageContent.setValue(decodedContent);
+							pageContent.setValue(response.body());
 						} else {
 							switch (response.code()) {
 								case 401:
@@ -224,5 +268,93 @@ public class WikiViewModel extends ViewModel {
 
 	public void resetActionResult() {
 		actionResult.setValue(-1);
+	}
+
+	public void createWikiPage(
+			Context ctx, String owner, String repo, String title, String content) {
+		isCreating.setValue(true);
+		createError.setValue(null);
+
+		CreateWikiPageOptions options = new CreateWikiPageOptions();
+		options.setTitle(title);
+		options.setContentBase64(AppUtil.encodeBase64(content));
+
+		Call<WikiPage> call =
+				RetrofitClient.getApiInterface(ctx).repoCreateWikiPage(owner, repo, options);
+
+		call.enqueue(
+				new Callback<>() {
+					@Override
+					public void onResponse(
+							@NonNull Call<WikiPage> call, @NonNull Response<WikiPage> response) {
+						isCreating.setValue(false);
+
+						if (response.isSuccessful() && response.body() != null) {
+							createdPage.setValue(response.body());
+							actionResult.setValue(201);
+						} else {
+							handleCreateUpdateError(response.code(), ctx, true);
+						}
+					}
+
+					@Override
+					public void onFailure(@NonNull Call<WikiPage> call, @NonNull Throwable t) {
+						isCreating.setValue(false);
+						createError.setValue(t.getMessage());
+					}
+				});
+	}
+
+	public void updateWikiPage(
+			Context ctx, String owner, String repo, String pageName, String title, String content) {
+		isUpdating.setValue(true);
+		updateError.setValue(null);
+
+		CreateWikiPageOptions options = new CreateWikiPageOptions();
+		options.setTitle(title);
+		options.setContentBase64(AppUtil.encodeBase64(content));
+
+		Call<WikiPage> call =
+				RetrofitClient.getApiInterface(ctx)
+						.repoEditWikiPage(owner, repo, pageName, options);
+
+		call.enqueue(
+				new Callback<>() {
+					@Override
+					public void onResponse(
+							@NonNull Call<WikiPage> call, @NonNull Response<WikiPage> response) {
+						isUpdating.setValue(false);
+
+						if (response.isSuccessful() && response.body() != null) {
+							updatedPage.setValue(response.body());
+							actionResult.setValue(200);
+						} else {
+							handleCreateUpdateError(response.code(), ctx, false);
+						}
+					}
+
+					@Override
+					public void onFailure(@NonNull Call<WikiPage> call, @NonNull Throwable t) {
+						isUpdating.setValue(false);
+						updateError.setValue(t.getMessage());
+					}
+				});
+	}
+
+	private void handleCreateUpdateError(int code, Context ctx, boolean isCreate) {
+		String errorMsg =
+				switch (code) {
+					case 401 -> "UNAUTHORIZED";
+					case 403 -> ctx.getString(R.string.authorizeError);
+					case 404 -> ctx.getString(R.string.apiNotFound);
+					case 409 -> ctx.getString(R.string.wikiPageAlreadyExists);
+					default -> ctx.getString(R.string.genericError);
+				};
+
+		if (isCreate) {
+			createError.setValue(errorMsg);
+		} else {
+			updateError.setValue(errorMsg);
+		}
 	}
 }

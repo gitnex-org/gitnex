@@ -22,6 +22,7 @@ import org.mian.gitnex.databinding.ActivityRepoDetailBinding;
 import org.mian.gitnex.fragments.BottomSheetCreateIssue;
 import org.mian.gitnex.fragments.BottomSheetCreateMilestone;
 import org.mian.gitnex.fragments.BottomSheetCreateRelease;
+import org.mian.gitnex.fragments.BottomSheetCreateWiki;
 import org.mian.gitnex.fragments.BottomsheetRepoMenu;
 import org.mian.gitnex.fragments.CollaboratorsFragment;
 import org.mian.gitnex.fragments.FilesFragment;
@@ -636,10 +637,8 @@ public class RepoDetailActivity extends BaseActivity
 
 				case "wikiNew":
 					switchTab("wiki", R.id.btn_nav_wiki);
-					Intent intentWiki = repository.getIntent(this, WikiActivity.class);
-					intentWiki.putExtra("action", "add");
-					intentWiki.putExtra(RepositoryContext.INTENT_EXTRA, repository);
-					startActivity(intentWiki);
+					BottomSheetCreateWiki.newInstance(repository, null)
+							.show(getSupportFragmentManager(), "CREATE_WIKI");
 					break;
 
 				case "milestones":

@@ -118,10 +118,6 @@ public class BottomSheetCreateIssue extends BottomSheetDialogFragment {
 		if (issueToEdit == null) {
 			viewModel.fetchIssueTemplates(requireContext(), repoContext);
 		}
-
-		ViewGroup.LayoutParams editTextParams = binding.issueDescription.getLayoutParams();
-		editTextParams.height = (int) (224 * getResources().getDisplayMetrics().density);
-		binding.issueDescription.setLayoutParams(editTextParams);
 	}
 
 	@Nullable @Override

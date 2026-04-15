@@ -76,10 +76,6 @@ public class BottomSheetCreateRelease extends BottomSheetDialogFragment {
 		setupUI();
 		setupListeners();
 		observeViewModel();
-
-		ViewGroup.LayoutParams editTextParams = binding.releaseContent.getLayoutParams();
-		editTextParams.height = (int) (224 * getResources().getDisplayMetrics().density);
-		binding.releaseContent.setLayoutParams(editTextParams);
 	}
 
 	private void setupUI() {

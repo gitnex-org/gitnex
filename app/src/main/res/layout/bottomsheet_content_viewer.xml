@@ -104,7 +104,7 @@
 
             <TextView
                 android:id="@+id/raw_content_text"
-                style="@style/TextAppearance.Material3.BodyLarge"
+                style="@style/TextAppearance.Material3.BodyMedium"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginBottom="@dimen/dimen16dp"
@@ -134,7 +134,7 @@
 
                 <TextView
                     android:id="@+id/markdown_preview_text"
-                    style="@style/TextAppearance.Material3.BodyLarge"
+                    style="@style/TextAppearance.Material3.BodyMedium"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginBottom="@dimen/dimen16dp"

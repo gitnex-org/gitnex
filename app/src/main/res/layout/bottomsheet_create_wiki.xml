@@ -23,7 +23,7 @@
             style="@style/TextAppearance.Material3.HeadlineSmall"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:text="@string/createRelease"
+            android:text="@string/createWikiPage"
             android:textStyle="bold"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toStartOf="@id/btn_close"
@@ -61,79 +61,13 @@
             android:layout_height="wrap_content"
             android:orientation="vertical">
 
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="@dimen/dimen12dp"
-                android:orientation="vertical">
-
-                <TextView
-                    style="@style/TextAppearance.Material3.LabelLarge"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginStart="@dimen/dimen4dp"
-                    android:layout_marginBottom="@dimen/dimen4dp"
-                    android:text="@string/type" />
-
-                <com.google.android.material.button.MaterialButtonToggleGroup
-                    android:id="@+id/create_type_toggle"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    app:checkedButton="@id/btn_create_release"
-                    app:selectionRequired="true"
-                    app:singleSelection="true">
-
-                    <com.google.android.material.button.MaterialButton
-                        android:id="@+id/btn_create_release"
-                        style="?attr/materialButtonOutlinedStyle"
-                        android:layout_width="0dp"
-                        android:layout_height="wrap_content"
-                        android:layout_weight="1"
-                        android:text="@string/release"
-                        app:cornerRadius="0dp" />
-
-                    <com.google.android.material.button.MaterialButton
-                        android:id="@+id/btn_create_tag"
-                        style="?attr/materialButtonOutlinedStyle"
-                        android:layout_width="0dp"
-                        android:layout_height="wrap_content"
-                        android:layout_weight="1"
-                        android:text="@string/create_tag"
-                        app:cornerRadius="0dp" />
-
-                </com.google.android.material.button.MaterialButtonToggleGroup>
-
-            </LinearLayout>
-
             <com.google.android.material.textfield.TextInputLayout
-                android:id="@+id/releaseTagNameLayout"
+                android:id="@+id/wikiTitleLayout"
                 style="@style/Widget.Material3.TextInputLayout.OutlinedBox"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="@dimen/dimen12dp"
-                android:hint="@string/releaseTagNameText"
-                app:counterEnabled="true"
-                app:counterMaxLength="24"
-                app:endIconMode="clear_text"
-                app:endIconTint="?attr/iconsColor"
-                app:shapeAppearance="@style/ShapeAppearance.Material3.Corner.Medium">
-
-                <com.google.android.material.textfield.TextInputEditText
-                    android:id="@+id/releaseTagName"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:imeOptions="actionNext"
-                    android:inputType="text" />
-
-            </com.google.android.material.textfield.TextInputLayout>
-
-            <com.google.android.material.textfield.TextInputLayout
-                android:id="@+id/releaseTitleLayout"
-                style="@style/Widget.Material3.TextInputLayout.OutlinedBox"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="@dimen/dimen12dp"
-                android:hint="@string/releaseTitleText"
+                android:hint="@string/title"
                 app:counterEnabled="true"
                 app:counterMaxLength="255"
                 app:endIconMode="clear_text"
@@ -141,7 +75,7 @@
                 app:shapeAppearance="@style/ShapeAppearance.Material3.Corner.Medium">
 
                 <com.google.android.material.textfield.TextInputEditText
-                    android:id="@+id/releaseTitle"
+                    android:id="@+id/wikiTitle"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:imeOptions="actionNext"
@@ -156,7 +90,7 @@
                 android:layout_marginTop="@dimen/dimen12dp">
 
                 <com.google.android.material.textfield.TextInputLayout
-                    android:id="@+id/releaseContentLayout"
+                    android:id="@+id/wikiContentLayout"
                     style="@style/Widget.Material3.TextInputLayout.OutlinedBox"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
@@ -167,9 +101,9 @@
                     app:shapeAppearance="@style/ShapeAppearance.Material3.Corner.Medium">
 
                     <com.google.android.material.textfield.TextInputEditText
-                        android:id="@+id/releaseContent"
+                        android:id="@+id/wikiContent"
                         android:layout_width="match_parent"
-                        android:layout_height="@dimen/dimen224dp"
+                        android:layout_height="@dimen/dimen380dp"
                         android:gravity="top"
                         android:scrollbars="vertical"
                         android:paddingTop="@dimen/dimen40dp"
@@ -192,29 +126,6 @@
 
             </androidx.constraintlayout.widget.ConstraintLayout>
 
-            <include
-                android:id="@+id/card_branch"
-                layout="@layout/item_metadata_card"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="@dimen/dimen16dp" />
-
-            <com.google.android.material.materialswitch.MaterialSwitch
-                android:id="@+id/switch_prerelease"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="@dimen/dimen16dp"
-                android:text="@string/releaseTypeText"
-                android:visibility="gone" />
-
-            <com.google.android.material.materialswitch.MaterialSwitch
-                android:id="@+id/switch_draft"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="@dimen/dimen8dp"
-                android:text="@string/releaseDraftText"
-                android:visibility="gone" />
-
             <FrameLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -225,7 +136,7 @@
                     style="@style/Widget.Material3.Button"
                     android:layout_width="match_parent"
                     android:layout_height="@dimen/dimen56dp"
-                    android:text="@string/createRelease"
+                    android:text="@string/createWikiPage"
                     app:cornerRadius="@dimen/dimen32dp" />
 
                 <com.google.android.material.progressindicator.CircularProgressIndicator

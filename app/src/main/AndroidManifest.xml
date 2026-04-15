@@ -103,9 +103,6 @@
             android:configChanges="orientation|screenSize|smallestScreenSize|density|screenLayout|keyboard|keyboardHidden|navigation"
             android:windowSoftInputMode="adjustResize"/>
         <activity
-            android:name=".activities.WikiActivity"
-            android:configChanges="orientation|screenSize|smallestScreenSize|density|screenLayout|keyboard|keyboardHidden|navigation"/>
-        <activity
             android:name=".activities.CodeEditorActivity"
             android:configChanges="orientation|screenSize|smallestScreenSize|density|screenLayout|keyboard|keyboardHidden|navigation"
             android:windowSoftInputMode="adjustResize"/>

@@ -3,7 +3,6 @@ package org.mian.gitnex.fragments;
 import static android.view.View.GONE;
 import static android.view.View.VISIBLE;
 
-import android.content.Intent;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -21,7 +20,6 @@ import java.util.List;
 import org.gitnex.tea4j.v2.models.WikiPageMetaData;
 import org.mian.gitnex.R;
 import org.mian.gitnex.activities.RepoDetailActivity;
-import org.mian.gitnex.activities.WikiActivity;
 import org.mian.gitnex.adapters.WikiListAdapter;
 import org.mian.gitnex.databinding.BottomsheetWikiItemMenuBinding;
 import org.mian.gitnex.databinding.FragmentWikiBinding;
@@ -48,6 +46,7 @@ public class WikiFragment extends Fragment implements RepoDetailActivity.RepoHub
 	private int resultLimit;
 	private boolean isFirstLoad = true;
 	private String pendingPageName = null;
+	private boolean isPendingEdit = false;
 
 	public static WikiFragment newInstance(RepositoryContext repository) {
 		WikiFragment fragment = new WikiFragment();
@@ -74,7 +73,7 @@ public class WikiFragment extends Fragment implements RepoDetailActivity.RepoHub
 			@Nullable Bundle savedInstanceState) {
 		binding = FragmentWikiBinding.inflate(inflater, container, false);
 
-		viewModel = new ViewModelProvider(this).get(WikiViewModel.class);
+		viewModel = new ViewModelProvider(requireActivity()).get(WikiViewModel.class);
 		resultLimit = Constants.getCurrentResultLimit(requireContext());
 
 		setupRecyclerView();
@@ -104,10 +103,8 @@ public class WikiFragment extends Fragment implements RepoDetailActivity.RepoHub
 	@Override
 	public void onHubActionSelected(String actionId) {
 		if (actionId.equals("WIKI_ADD_NEW")) {
-			Intent intent = new Intent(getContext(), WikiActivity.class);
-			intent.putExtra("action", "add");
-			intent.putExtra(RepositoryContext.INTENT_EXTRA, repository);
-			startActivity(intent);
+			BottomSheetCreateWiki.newInstance(repository, null)
+					.show(getParentFragmentManager(), "CREATE_WIKI");
 		}
 	}
 
@@ -189,10 +186,18 @@ public class WikiFragment extends Fragment implements RepoDetailActivity.RepoHub
 				.observe(
 						getViewLifecycleOwner(),
 						code -> {
+							if (code == null || code == -1) return;
+
 							if (code == 204) {
 								Toasty.show(requireContext(), R.string.wikiPageDeleted);
-								viewModel.resetActionResult();
+								refreshData();
+							} else if (code == 200 || code == 201) {
+								refreshData();
+							} else {
+								Toasty.show(requireContext(), R.string.genericError);
 							}
+
+							viewModel.resetActionResult();
 						});
 
 		viewModel
@@ -215,9 +220,16 @@ public class WikiFragment extends Fragment implements RepoDetailActivity.RepoHub
 				.getPageContent()
 				.observe(
 						getViewLifecycleOwner(),
-						content -> {
-							if (content != null && pendingPageName != null) {
-								showContentViewer(pendingPageName, content);
+						wikiPage -> {
+							if (wikiPage != null && pendingPageName != null) {
+								if (isPendingEdit) {
+									BottomSheetCreateWiki.newInstance(repository, wikiPage)
+											.show(getParentFragmentManager(), "EDIT_WIKI");
+								} else {
+									String decodedContent =
+											AppUtil.decodeBase64(wikiPage.getContentBase64());
+									showContentViewer(wikiPage.getTitle(), decodedContent);
+								}
 								pendingPageName = null;
 								viewModel.clearPageContent();
 								binding.expressiveLoader.setVisibility(GONE);
@@ -243,13 +255,16 @@ public class WikiFragment extends Fragment implements RepoDetailActivity.RepoHub
 
 	private void openWiki(WikiPageMetaData wikiPage, String action) {
 		if (action != null && action.equals("edit")) {
-			Intent intent = new Intent(requireContext(), WikiActivity.class);
-			intent.putExtra("pageName", wikiPage.getSubUrl());
-			intent.putExtra("action", action);
-			intent.putExtra(RepositoryContext.INTENT_EXTRA, repository);
-			startActivity(intent);
+			pendingPageName = wikiPage.getSubUrl();
+			isPendingEdit = true;
+			viewModel.fetchWikiPageContent(
+					requireContext(),
+					repository.getOwner(),
+					repository.getName(),
+					wikiPage.getSubUrl());
 		} else {
 			pendingPageName = wikiPage.getTitle();
+			isPendingEdit = false;
 			viewModel.fetchWikiPageContent(
 					requireContext(),
 					repository.getOwner(),
