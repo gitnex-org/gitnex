@@ -44,7 +44,6 @@ public class BottomSheetAddCollaborator extends BottomSheetDialogFragment
 	@Override
 	public void onCreate(@Nullable Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
-		setStyle(STYLE_NORMAL, R.style.Custom_BottomSheet);
 		if (getArguments() != null) {
 			repository = RepositoryContext.fromBundle(getArguments());
 		}

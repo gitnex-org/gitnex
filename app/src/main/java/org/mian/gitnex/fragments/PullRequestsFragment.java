@@ -17,7 +17,6 @@ import java.util.ArrayList;
 import java.util.List;
 import org.gitnex.tea4j.v2.models.PullRequest;
 import org.mian.gitnex.R;
-import org.mian.gitnex.activities.CreatePullRequestActivity;
 import org.mian.gitnex.activities.RepoDetailActivity;
 import org.mian.gitnex.adapters.PullRequestsAdapter;
 import org.mian.gitnex.databinding.FragmentPullRequestsBinding;
@@ -130,8 +129,8 @@ public class PullRequestsFragment extends Fragment implements RepoDetailActivity
 				break;
 
 			case "PR_CREATE_NEW":
-				startActivity(
-						repository.getIntent(requireContext(), CreatePullRequestActivity.class));
+				BottomSheetCreatePullRequest.newInstance(repository, null)
+						.show(getParentFragmentManager(), "CREATE_PULL_REQUEST");
 				break;
 		}
 	}
@@ -280,6 +279,22 @@ public class PullRequestsFragment extends Fragment implements RepoDetailActivity
 								binding.expressiveLoader.setVisibility(View.GONE);
 								binding.pullToRefresh.setRefreshing(false);
 							}
+						});
+
+		viewModel
+				.getActionResult()
+				.observe(
+						getViewLifecycleOwner(),
+						code -> {
+							if (code == null || code == -1) return;
+
+							if (code == 200 || code == 201) {
+								refreshData();
+							} else {
+								Toasty.show(requireContext(), R.string.genericError);
+							}
+
+							viewModel.resetActionResult();
 						});
 	}
 

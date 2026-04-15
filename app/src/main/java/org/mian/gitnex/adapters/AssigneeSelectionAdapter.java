@@ -5,10 +5,12 @@ import android.content.Context;
 import android.view.LayoutInflater;
 import android.view.ViewGroup;
 import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 import androidx.recyclerview.widget.RecyclerView;
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.load.engine.DiskCacheStrategy;
 import com.bumptech.glide.request.RequestOptions;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Set;
 import org.gitnex.tea4j.v2.models.User;
@@ -25,16 +27,30 @@ public class AssigneeSelectionAdapter
 	private final List<User> assignees;
 	private final Set<String> selectedAssignees;
 	private final RequestOptions avatarOptions;
+	private final String excludeUser;
+	private final List<User> filteredAssignees = new ArrayList<>();
 
-	public AssigneeSelectionAdapter(List<User> assignees, Set<String> selectedAssignees) {
+	public AssigneeSelectionAdapter(
+			List<User> assignees, Set<String> selectedAssignees, @Nullable String excludeUser) {
 		this.assignees = assignees;
 		this.selectedAssignees = selectedAssignees;
+		this.excludeUser = excludeUser;
 		this.avatarOptions =
 				new RequestOptions()
 						.diskCacheStrategy(DiskCacheStrategy.ALL)
 						.placeholder(R.drawable.loader_animated)
 						.error(R.drawable.ic_person)
 						.centerCrop();
+		filterAssignees();
+	}
+
+	private void filterAssignees() {
+		filteredAssignees.clear();
+		for (User user : assignees) {
+			if (excludeUser == null || !excludeUser.equals(user.getLogin())) {
+				filteredAssignees.add(user);
+			}
+		}
 	}
 
 	@NonNull @Override
@@ -48,7 +64,7 @@ public class AssigneeSelectionAdapter
 	@SuppressLint("SetTextI18n")
 	@Override
 	public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
-		User user = assignees.get(position);
+		User user = filteredAssignees.get(position);
 		Context context = holder.itemView.getContext();
 
 		String fullName = user.getFullName();
@@ -87,13 +103,18 @@ public class AssigneeSelectionAdapter
 
 	@Override
 	public int getItemCount() {
-		return assignees != null ? assignees.size() : 0;
+		return filteredAssignees.size();
+	}
+
+	public boolean isEmpty() {
+		return filteredAssignees.isEmpty();
 	}
 
 	@SuppressLint("NotifyDataSetChanged")
 	public void updateList(List<User> newList) {
 		this.assignees.clear();
 		this.assignees.addAll(newList);
+		filterAssignees();
 		notifyDataSetChanged();
 	}
 

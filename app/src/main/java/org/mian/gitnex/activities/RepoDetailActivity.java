@@ -21,6 +21,7 @@ import org.mian.gitnex.R;
 import org.mian.gitnex.databinding.ActivityRepoDetailBinding;
 import org.mian.gitnex.fragments.BottomSheetCreateIssue;
 import org.mian.gitnex.fragments.BottomSheetCreateMilestone;
+import org.mian.gitnex.fragments.BottomSheetCreatePullRequest;
 import org.mian.gitnex.fragments.BottomSheetCreateRelease;
 import org.mian.gitnex.fragments.BottomSheetCreateWiki;
 import org.mian.gitnex.fragments.BottomsheetRepoMenu;
@@ -618,7 +619,8 @@ public class RepoDetailActivity extends BaseActivity
 
 				case "pullNew":
 					switchTab("prs", R.id.btn_nav_prs);
-					startActivity(repository.getIntent(this, CreatePullRequestActivity.class));
+					BottomSheetCreatePullRequest.newInstance(repository, null)
+							.show(getSupportFragmentManager(), "CREATE_PULL_REQUEST");
 					break;
 
 				case "releases":

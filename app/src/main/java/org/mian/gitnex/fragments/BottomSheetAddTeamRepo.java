@@ -12,7 +12,6 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import com.google.android.material.bottomsheet.BottomSheetDialog;
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment;
 import java.util.ArrayList;
-import org.mian.gitnex.R;
 import org.mian.gitnex.adapters.OrganizationTeamRepositoriesAdapter;
 import org.mian.gitnex.databinding.BottomsheetAddTeamRepoBinding;
 import org.mian.gitnex.helpers.AppUtil;
@@ -42,7 +41,6 @@ public class BottomSheetAddTeamRepo extends BottomSheetDialogFragment {
 	@Override
 	public void onCreate(@Nullable Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
-		setStyle(STYLE_NORMAL, R.style.Custom_BottomSheet);
 		if (getArguments() != null) {
 			teamId = getArguments().getLong("teamId");
 			orgName = getArguments().getString("orgName");

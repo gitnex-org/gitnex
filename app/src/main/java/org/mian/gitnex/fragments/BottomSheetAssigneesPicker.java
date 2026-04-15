@@ -42,14 +42,23 @@ public class BottomSheetAssigneesPicker extends BottomSheetDialogFragment {
 	private AssigneesViewModel assigneesViewModel;
 	private AssigneeSelectionAdapter adapter;
 	private int resultLimit;
+	private String excludeUser = null;
 
 	public static BottomSheetAssigneesPicker newInstance(
-			RepositoryContext repo, List<String> current) {
+			RepositoryContext repo, List<String> current, @Nullable String excludeUser) {
 		BottomSheetAssigneesPicker f = new BottomSheetAssigneesPicker();
 		Bundle b = repo.getBundle();
 		b.putStringArrayList("current_assignees", new ArrayList<>(current));
+		if (excludeUser != null) {
+			b.putString("exclude_user", excludeUser);
+		}
 		f.setArguments(b);
 		return f;
+	}
+
+	public static BottomSheetAssigneesPicker newInstance(
+			RepositoryContext repo, List<String> current) {
+		return newInstance(repo, current, null);
 	}
 
 	public void setOnAssigneesSelectedListener(OnAssigneesSelectedListener l) {
@@ -68,6 +77,7 @@ public class BottomSheetAssigneesPicker extends BottomSheetDialogFragment {
 		repository = RepositoryContext.fromBundle(args);
 		selectedAssignees =
 				new HashSet<>(Objects.requireNonNull(args.getStringArrayList("current_assignees")));
+		excludeUser = args.getString("exclude_user");
 		resultLimit = Constants.getCurrentResultLimit(requireContext());
 
 		setupRecyclerView();
@@ -101,7 +111,7 @@ public class BottomSheetAssigneesPicker extends BottomSheetDialogFragment {
 	private void setupRecyclerView() {
 		LinearLayoutManager layoutManager = new LinearLayoutManager(requireContext());
 		binding.rvAssignees.setLayoutManager(layoutManager);
-		adapter = new AssigneeSelectionAdapter(new ArrayList<>(), selectedAssignees);
+		adapter = new AssigneeSelectionAdapter(new ArrayList<>(), selectedAssignees, excludeUser);
 		binding.rvAssignees.setAdapter(adapter);
 
 		EndlessRecyclerViewScrollListener scrollListener =
@@ -122,9 +132,12 @@ public class BottomSheetAssigneesPicker extends BottomSheetDialogFragment {
 						list -> {
 							List<User> data = (list != null) ? list : new ArrayList<>();
 							adapter.updateList(data);
-							if (!data.isEmpty()) {
+							if (!adapter.isEmpty()) {
 								binding.rvAssignees.setVisibility(View.VISIBLE);
 								binding.layoutEmpty.getRoot().setVisibility(View.GONE);
+							} else {
+								binding.rvAssignees.setVisibility(View.GONE);
+								binding.layoutEmpty.getRoot().setVisibility(View.VISIBLE);
 							}
 						});
 

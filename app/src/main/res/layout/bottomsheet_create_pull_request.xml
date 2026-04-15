@@ -17,7 +17,7 @@
             style="@style/TextAppearance.Material3.HeadlineSmall"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:text="@string/createWikiPage"
+            android:text="@string/create_pr"
             android:textStyle="bold"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toStartOf="@id/btn_close"
@@ -52,11 +52,11 @@
         <LinearLayout
             android:id="@+id/form_container"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
+            android:layout_height="match_parent"
             android:orientation="vertical">
 
             <com.google.android.material.textfield.TextInputLayout
-                android:id="@+id/wikiTitleLayout"
+                android:id="@+id/prTitleLayout"
                 style="@style/Widget.Material3.TextInputLayout.OutlinedBox"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -69,7 +69,7 @@
                 app:shapeAppearance="@style/ShapeAppearance.Material3.Corner.Medium">
 
                 <com.google.android.material.textfield.TextInputEditText
-                    android:id="@+id/wikiTitle"
+                    android:id="@+id/prTitle"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:imeOptions="actionNext"
@@ -84,20 +84,20 @@
                 android:layout_marginTop="@dimen/dimen12dp">
 
                 <com.google.android.material.textfield.TextInputLayout
-                    android:id="@+id/wikiContentLayout"
+                    android:id="@+id/prBodyLayout"
                     style="@style/Widget.Material3.TextInputLayout.OutlinedBox"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:hint="@string/releaseContentText"
+                    android:hint="@string/description"
                     app:endIconMode="clear_text"
                     app:endIconTint="?attr/iconsColor"
                     app:layout_constraintTop_toTopOf="parent"
                     app:shapeAppearance="@style/ShapeAppearance.Material3.Corner.Medium">
 
                     <com.google.android.material.textfield.TextInputEditText
-                        android:id="@+id/wikiContent"
+                        android:id="@+id/prBody"
                         android:layout_width="match_parent"
-                        android:layout_height="@dimen/dimen380dp"
+                        android:layout_height="@dimen/dimen224dp"
                         android:gravity="top"
                         android:scrollbars="vertical"
                         android:paddingTop="@dimen/dimen40dp"
@@ -113,12 +113,77 @@
                     android:layout_marginTop="@dimen/dimen6dp"
                     android:layout_marginEnd="@dimen/dimen8dp"
                     android:text="@string/fullscreen"
-                    app:iconSize="@dimen/dimen20dp"
                     app:icon="@drawable/ic_maximize"
+                    app:iconSize="@dimen/dimen20dp"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintTop_toTopOf="parent" />
 
             </androidx.constraintlayout.widget.ConstraintLayout>
+
+            <include
+                android:id="@+id/card_merge_into"
+                layout="@layout/item_metadata_card"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/dimen16dp" />
+
+            <include
+                android:id="@+id/card_pull_from"
+                layout="@layout/item_metadata_card"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/dimen16dp" />
+
+            <include
+                android:id="@+id/card_milestone"
+                layout="@layout/item_metadata_card"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/dimen16dp" />
+
+            <include
+                android:id="@+id/card_labels"
+                layout="@layout/item_metadata_card"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/dimen16dp" />
+
+            <include
+                android:id="@+id/card_assignees"
+                layout="@layout/item_metadata_card"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/dimen16dp" />
+
+            <include
+                android:id="@+id/card_reviewers"
+                layout="@layout/item_metadata_card"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/dimen16dp" />
+
+            <include
+                android:id="@+id/card_due_date"
+                layout="@layout/item_metadata_card"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/dimen16dp" />
+
+            <include
+                android:id="@+id/card_attachments"
+                layout="@layout/item_metadata_attachment_card"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/dimen16dp" />
+
+            <com.google.android.material.materialswitch.MaterialSwitch
+                android:id="@+id/switch_allow_maintainer_edit"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/dimen16dp"
+                android:checked="true"
+                android:visibility="gone"
+                android:text="@string/allow_maintainer_edit" />
 
             <FrameLayout
                 android:layout_width="match_parent"
@@ -130,7 +195,7 @@
                     style="@style/Widget.Material3.Button"
                     android:layout_width="match_parent"
                     android:layout_height="@dimen/dimen56dp"
-                    android:text="@string/createWikiPage"
+                    android:text="@string/create_pr"
                     app:cornerRadius="@dimen/dimen32dp" />
 
                 <com.google.android.material.progressindicator.CircularProgressIndicator

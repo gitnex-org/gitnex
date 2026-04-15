@@ -480,6 +480,7 @@
     <string name="editRelease">Edit Release</string>
     <string name="selectBranchError">Select a branch for release/tag</string>
     <string name="add_release_branch">Tap to select a branch</string>
+    <string name="add_reviewers">Tap to select reviewers</string>
     <string name="create_release_tag">Create Release/Tag</string>
     <!-- release -->
 
@@ -661,6 +662,7 @@
     <string name="collapse">Collapse</string>
     <string name="fullscreen">Fullscreen</string>
     <string name="type">Type</string>
+    <string name="reviewers">Reviewers</string>
     <!-- generic copy -->
 
     <string name="exploreUsers">Explore users</string>
@@ -708,6 +710,8 @@
     <string name="mergeNotAllowed">Not allowed to merge [Reason: Does not have enough approvals]</string>
     <string name="deleteBranch">Delete Branch</string>
     <string name="switch_branch">Switch Branch</string>
+    <string name="allow_maintainer_edit">Allow maintainers to edit this pr</string>
+    <string name="edit_pr">Edit Pull Request</string>
 
     <string name="waitLoadingDownloadFile">Please wait for the file to load to memory</string>
     <string name="downloadFileSaved">File saved successfully</string>
@@ -1170,7 +1174,7 @@
     <string name="labelColorHex">Hex Color</string>
     <string name="invalid_color">Invalid color code</string>
     <string name="invalid_length">Must be 6 characters</string>
-    <string name="create_pr">Create PR</string>
+    <string name="create_pr">Create Pull Request</string>
     <string name="search_filter">Search &amp; filter</string>
     <string name="create_issue">Create Issue</string>
     <string name="search_repos">Search Repositories</string>
@@ -1184,7 +1188,7 @@
     <string name="no_attachments">No attachments</string>
     <string name="attachment_limit_count">Maximum %d files allowed</string>
     <string name="attachment_limit_size">File exceeds %s limit</string>
-    <string name="attachment_limit_total_size">Total size would exceed %s</string>
+    <string name="cannotAddSelfAsReviewer">You cannot add yourself as a reviewer</string>
 
     <string name="time_in_moments">in moments</string>
     <string name="time_in_minute">in %d minute</string>

@@ -6,9 +6,7 @@ import android.content.Intent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.EditText;
 import androidx.annotation.NonNull;
-import androidx.appcompat.app.AlertDialog;
 import androidx.recyclerview.widget.RecyclerView;
 import com.google.android.material.dialog.MaterialAlertDialogBuilder;
 import com.vdurmont.emoji.EmojiParser;
@@ -19,9 +17,7 @@ import java.util.Locale;
 import java.util.Objects;
 import org.apache.commons.lang3.StringUtils;
 import org.mian.gitnex.R;
-import org.mian.gitnex.activities.BaseActivity;
 import org.mian.gitnex.activities.CreateNoteActivity;
-import org.mian.gitnex.activities.CreatePullRequestActivity;
 import org.mian.gitnex.database.api.BaseApi;
 import org.mian.gitnex.database.api.NotesApi;
 import org.mian.gitnex.database.models.Notes;
@@ -71,8 +67,6 @@ public class NotesAdapter extends RecyclerView.Adapter<NotesAdapter.NotesViewHol
 						if ("insert".equalsIgnoreCase(insert)) {
 							if (itemClickListener != null) {
 								itemClickListener.onItemClick(note);
-							} else {
-								performInsert();
 							}
 						} else {
 							Intent intent = new Intent(ctx, CreateNoteActivity.class);
@@ -97,27 +91,6 @@ public class NotesAdapter extends RecyclerView.Adapter<NotesAdapter.NotesViewHol
 								.setNeutralButton(R.string.cancelButton, null)
 								.show();
 					});
-		}
-
-		private void performInsert() {
-
-			if (!(ctx instanceof BaseActivity activity)) return;
-
-			EditText targetField = null;
-			AlertDialog dialogToDismiss = null;
-
-			if (activity instanceof CreatePullRequestActivity prAct) {
-				targetField = prAct.findViewById(R.id.prBody);
-				dialogToDismiss = prAct.dialogNotes;
-			}
-
-			if (targetField != null) {
-				targetField.append(note.getContent());
-
-				if (dialogToDismiss != null && dialogToDismiss.isShowing()) {
-					dialogToDismiss.dismiss();
-				}
-			}
 		}
 
 		public void bind(Notes note) {

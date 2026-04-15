@@ -40,10 +40,6 @@
             android:name=".activities.AdminGetUsersActivity"
             android:configChanges="orientation|screenSize|smallestScreenSize|density|screenLayout|keyboard|keyboardHidden|navigation"/>
         <activity
-            android:name=".activities.EditIssueActivity"
-            android:configChanges="orientation|screenSize|smallestScreenSize|density|screenLayout|keyboard|keyboardHidden|navigation"
-            android:windowSoftInputMode="adjustResize"/>
-        <activity
             android:name=".activities.OrganizationTeamDetailsActivity"
             android:configChanges="orientation|screenSize|smallestScreenSize|density|screenLayout|keyboard|keyboardHidden|navigation"/>
         <activity
@@ -98,10 +94,6 @@
         <activity
             android:name=".activities.RepositorySettingsActivity"
             android:configChanges="orientation|screenSize|smallestScreenSize|density|screenLayout|keyboard|keyboardHidden|navigation"/>
-        <activity
-            android:name=".activities.CreatePullRequestActivity"
-            android:configChanges="orientation|screenSize|smallestScreenSize|density|screenLayout|keyboard|keyboardHidden|navigation"
-            android:windowSoftInputMode="adjustResize"/>
         <activity
             android:name=".activities.CodeEditorActivity"
             android:configChanges="orientation|screenSize|smallestScreenSize|density|screenLayout|keyboard|keyboardHidden|navigation"
