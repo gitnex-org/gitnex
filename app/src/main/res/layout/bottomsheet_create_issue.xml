@@ -127,7 +127,7 @@
                         android:layout_height="@dimen/dimen224dp"
                         android:gravity="top"
                         android:scrollbars="vertical"
-                        android:paddingTop="@dimen/dimen48dp"
+                        android:paddingTop="@dimen/dimen40dp"
                         android:inputType="textMultiLine" />
 
                 </com.google.android.material.textfield.TextInputLayout>
@@ -137,9 +137,10 @@
                     style="@style/Widget.Material3.Button.TextButton"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_marginTop="@dimen/dimen8dp"
+                    android:layout_marginTop="@dimen/dimen6dp"
                     android:layout_marginEnd="@dimen/dimen8dp"
                     app:icon="@drawable/ic_maximize"
+                    app:iconSize="@dimen/dimen20dp"
                     android:text="@string/fullscreen"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintTop_toTopOf="parent" />
