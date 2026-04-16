@@ -1,208 +1,103 @@
 <?xml version="1.0" encoding="utf-8"?>
 <androidx.coordinatorlayout.widget.CoordinatorLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:fitsSystemWindows="true"
-    android:background="?attr/primaryBackgroundColor"
-    xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto">
+    android:background="?attr/primaryBackgroundColor">
 
-    <LinearLayout
+    <androidx.fragment.app.FragmentContainerView
+        android:id="@+id/repo_actions_container"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:padding="@dimen/dimen8dp"
-        android:orientation="vertical">
+        android:layout_height="match_parent" />
 
-        <com.google.android.material.card.MaterialCardView
-            android:id="@+id/count_card"
-            android:layout_width="match_parent"
-            android:layout_height="@dimen/dimen54dp"
-            android:layout_marginHorizontal="@dimen/dimen4dp"
-            app:cardCornerRadius="@dimen/dimen16dp"
-            app:cardElevation="@dimen/dimen0dp"
-            app:strokeWidth="@dimen/dimen0dp"
-            app:cardBackgroundColor="?attr/materialCardBackgroundColor">
-
-            <TextView
-                android:id="@+id/count"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_gravity="start|center"
-                android:paddingStart="@dimen/dimen20dp"
-                android:paddingEnd="@dimen/dimen20dp"
-                android:text="@string/actions_counts"
-                android:textColor="?attr/primaryTextColor"
-                android:textSize="@dimen/dimen14sp"
-                android:contentDescription="@string/actions_counts" />
-
-        </com.google.android.material.card.MaterialCardView>
-
-    </LinearLayout>
-
-    <LinearLayout
-        android:id="@+id/top_cards_container"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:orientation="horizontal"
-        android:layout_marginTop="@dimen/dimen72dp"
-        android:weightSum="3"
-        android:padding="@dimen/dimen8dp">
-
-        <com.google.android.material.card.MaterialCardView
-            android:id="@+id/runners_card"
-            android:layout_width="0dp"
-            android:layout_height="@dimen/dimen54dp"
-            android:layout_weight="1"
-            android:layout_marginHorizontal="@dimen/dimen4dp"
-            app:cardCornerRadius="@dimen/dimen16dp"
-            app:cardElevation="@dimen/dimen0dp"
-            app:strokeWidth="@dimen/dimen2dp"
-            app:cardBackgroundColor="?attr/materialCardBackgroundColor">
-
-            <TextView
-                android:id="@+id/runners"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_gravity="center"
-                android:padding="@dimen/dimen8dp"
-                android:text="@string/runners"
-                android:textColor="?attr/primaryTextColor"
-                android:textSize="@dimen/dimen14sp"
-                android:gravity="center"
-                android:contentDescription="@string/runners" />
-
-        </com.google.android.material.card.MaterialCardView>
-
-        <com.google.android.material.card.MaterialCardView
-            android:id="@+id/workflows_card"
-            android:layout_width="0dp"
-            android:layout_height="@dimen/dimen54dp"
-            android:layout_weight="1"
-            android:layout_marginHorizontal="@dimen/dimen4dp"
-            app:cardCornerRadius="@dimen/dimen16dp"
-            app:cardElevation="@dimen/dimen0dp"
-            app:strokeWidth="@dimen/dimen0dp"
-            app:cardBackgroundColor="?attr/materialCardBackgroundColor">
-
-            <TextView
-                android:id="@+id/workflows"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_gravity="center"
-                android:padding="@dimen/dimen8dp"
-                android:text="@string/workflows"
-                android:textColor="?attr/primaryTextColor"
-                android:textSize="@dimen/dimen14sp"
-                android:gravity="center"
-                android:contentDescription="@string/workflows" />
-
-        </com.google.android.material.card.MaterialCardView>
-
-        <com.google.android.material.card.MaterialCardView
-            android:id="@+id/variables_card"
-            android:layout_width="0dp"
-            android:layout_height="@dimen/dimen54dp"
-            android:layout_weight="1"
-            android:layout_marginHorizontal="@dimen/dimen4dp"
-            app:cardCornerRadius="@dimen/dimen16dp"
-            app:cardElevation="@dimen/dimen0dp"
-            app:strokeWidth="@dimen/dimen0dp"
-            app:cardBackgroundColor="?attr/materialCardBackgroundColor">
-
-            <TextView
-                android:id="@+id/variables"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_gravity="center"
-                android:padding="@dimen/dimen8dp"
-                android:text="@string/variables"
-                android:textColor="?attr/primaryTextColor"
-                android:textSize="@dimen/dimen14sp"
-                android:gravity="center"
-                android:contentDescription="@string/variables" />
-
-        </com.google.android.material.card.MaterialCardView>
-
-    </LinearLayout>
-
-    <androidx.core.widget.NestedScrollView
-        android:id="@+id/data_scroll_view"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:layout_marginTop="@dimen/dimen144dp"
-        android:layout_marginHorizontal="@dimen/dimen8dp"
-        android:padding="@dimen/dimen6dp"
-        android:background="?attr/primaryBackgroundColor">
-
-        <LinearLayout
-            android:id="@+id/data_container"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:orientation="vertical"
-            android:gravity="center"
-            android:background="?attr/primaryBackgroundColor" />
-
-    </androidx.core.widget.NestedScrollView>
-
-    <androidx.recyclerview.widget.RecyclerView
-        android:id="@+id/runners_recyclerView"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        app:layout_behavior="@string/appbar_scrolling_view_behavior"
-        android:background="?attr/primaryBackgroundColor"
-        android:visibility="gone" />
-
-    <androidx.recyclerview.widget.RecyclerView
-        android:id="@+id/workflows_recyclerView"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        app:layout_behavior="@string/appbar_scrolling_view_behavior"
-        android:background="?attr/primaryBackgroundColor"
-        android:visibility="gone" />
-
-    <androidx.recyclerview.widget.RecyclerView
-        android:id="@+id/variables_recyclerView"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        app:layout_behavior="@string/appbar_scrolling_view_behavior"
-        android:background="?attr/primaryBackgroundColor"
-        android:visibility="gone" />
-
-    <com.google.android.material.bottomappbar.BottomAppBar
-        android:id="@+id/bottom_app_bar"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_gravity="bottom"
-        android:fitsSystemWindows="true"
-        style="@style/Widget.Material3.BottomAppBar"
-        app:backgroundTint="?attr/navigationBarColor"
-        app:navigationIcon="@drawable/ic_arrow_back">
-
-        <RelativeLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content">
-
-            <TextView
-                android:id="@+id/bottom_bar_title_text"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="@string/actions"
-                android:layout_alignParentStart="true"
-                android:textSize="@dimen/dimen20sp" />
-
-        </RelativeLayout>
-
-    </com.google.android.material.bottomappbar.BottomAppBar>
-
-    <com.google.android.material.floatingactionbutton.ExtendedFloatingActionButton
-        android:id="@+id/new_variable"
+    <com.google.android.material.dockedtoolbar.DockedToolbarLayout
+        android:id="@+id/docked_toolbar"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:contentDescription="@string/newCreateButtonCopy"
-        android:textColor="?attr/materialCardBackgroundColor"
-        app:iconTint="?attr/materialCardBackgroundColor"
-        android:backgroundTint="?attr/fabColor"
-        app:layout_anchor="@id/bottom_app_bar"
-        app:icon="@drawable/ic_add" />
+        app:paddingBottomSystemWindowInsets="false"
+        app:paddingLeftSystemWindowInsets="false"
+        app:paddingRightSystemWindowInsets="false"
+        app:paddingTopSystemWindowInsets="false"
+        android:layout_gravity="bottom|center_horizontal"
+        app:shapeAppearanceOverlay="@style/ShapeAppearance.RoundedDock"
+        android:backgroundTint="?attr/colorSurfaceContainerHigh"
+        app:layout_behavior="com.google.android.material.behavior.HideViewOnScrollBehavior">
+
+        <com.google.android.material.overflow.OverflowLinearLayout
+            android:id="@+id/docked_toolbar_child"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:orientation="horizontal">
+
+            <com.google.android.material.button.MaterialButton
+                android:id="@+id/btn_back"
+                style="?attr/materialIconButtonStyle"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                app:icon="@drawable/ic_arrow_back"
+                app:iconGravity="textStart"
+                app:iconPadding="@dimen/dimen0dp"
+                android:backgroundTint="@android:color/transparent"
+                android:layout_gravity="center_horizontal"
+                android:background="?attr/selectableItemBackgroundBorderless"
+                android:layout_marginEnd="@dimen/dimen4dp"
+                android:insetLeft="@dimen/dimen0dp"
+                android:insetRight="@dimen/dimen0dp"
+                android:contentDescription="@string/close" />
+
+            <com.google.android.material.button.MaterialButton
+                android:id="@+id/btn_nav_runners"
+                style="@style/Widget.Material3.Button.IconButton"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                app:icon="@drawable/ic_actions_runner"
+                app:iconTint="?attr/primaryTextColor"
+                android:paddingHorizontal="@dimen/dimen24dp"
+                android:minWidth="0dp" />
+
+            <com.google.android.material.button.MaterialButton
+                android:id="@+id/btn_nav_workflows"
+                style="@style/Widget.Material3.Button.IconButton"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                app:icon="@drawable/ic_actions_workflow"
+                app:iconTint="?attr/primaryTextColor"
+                android:paddingHorizontal="@dimen/dimen24dp"
+                android:minWidth="0dp" />
+
+            <com.google.android.material.button.MaterialButton
+                android:id="@+id/btn_nav_variables"
+                style="@style/Widget.Material3.Button.IconButton"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                app:icon="@drawable/ic_actions_variable"
+                app:iconTint="?attr/primaryTextColor"
+                android:paddingHorizontal="@dimen/dimen24dp"
+                android:minWidth="0dp" />
+
+            <View
+                android:id="@+id/dock_divider"
+                android:layout_width="@dimen/dimen1dp"
+                android:layout_height="@dimen/dimen24dp"
+                android:layout_gravity="center_vertical"
+                android:layout_marginHorizontal="@dimen/dimen4dp"
+                android:background="?attr/colorOutlineVariant"
+                android:visibility="gone" />
+
+            <com.google.android.material.button.MaterialButton
+                android:id="@+id/btn_nav_add"
+                style="@style/Widget.Material3.Button.IconButton"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                app:icon="@drawable/ic_add"
+                app:iconTint="?attr/primaryTextColor"
+                android:paddingHorizontal="@dimen/dimen24dp"
+                android:minWidth="0dp" />
+
+        </com.google.android.material.overflow.OverflowLinearLayout>
+
+    </com.google.android.material.dockedtoolbar.DockedToolbarLayout>
 
 </androidx.coordinatorlayout.widget.CoordinatorLayout>

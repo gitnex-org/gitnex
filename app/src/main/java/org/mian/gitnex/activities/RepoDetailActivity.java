@@ -473,7 +473,7 @@ public class RepoDetailActivity extends BaseActivity
 						repository.getIntent(ctx, RepositorySettingsActivity.class));
 				break;
 			case "CORE_ACTIONS":
-				startActivity(repository.getIntent(ctx, RepositoryActions.class));
+				startActivity(repository.getIntent(ctx, RepositoryActionsActivity.class));
 				break;
 		}
 
