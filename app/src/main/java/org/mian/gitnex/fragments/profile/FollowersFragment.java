@@ -37,6 +37,7 @@ public class FollowersFragment extends Fragment implements ProfileActivity.Profi
 	private String username;
 	private boolean isSearching = false;
 	private boolean isFirstLoad = true;
+	private boolean isViewReady = false;
 	private SearchView searchView;
 
 	public FollowersFragment() {}
@@ -60,8 +61,8 @@ public class FollowersFragment extends Fragment implements ProfileActivity.Profi
 	@Override
 	public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
 		super.onViewCreated(view, savedInstanceState);
-
 		UIHelper.applyInsets(view, null, binding.recyclerView, binding.pullToRefresh, null);
+		isViewReady = true;
 	}
 
 	@Nullable @Override
@@ -85,7 +86,7 @@ public class FollowersFragment extends Fragment implements ProfileActivity.Profi
 	@Override
 	public void onResume() {
 		super.onResume();
-		if (!isHidden() && isFirstLoad) {
+		if (!isHidden() && isFirstLoad && isViewReady) {
 			lazyLoad();
 		}
 	}
@@ -93,7 +94,7 @@ public class FollowersFragment extends Fragment implements ProfileActivity.Profi
 	@Override
 	public void onHiddenChanged(boolean hidden) {
 		super.onHiddenChanged(hidden);
-		if (!hidden && isFirstLoad) {
+		if (!hidden && isFirstLoad && isViewReady) {
 			lazyLoad();
 		}
 	}
@@ -233,6 +234,9 @@ public class FollowersFragment extends Fragment implements ProfileActivity.Profi
 	}
 
 	private void refreshData() {
+		if (scrollListener == null || viewModel == null) {
+			return;
+		}
 		scrollListener.resetState();
 		viewModel.resetPagination();
 		viewModel.fetchUsers(

@@ -26,6 +26,7 @@ public class RepoActionsWorkflowsFragment extends Fragment {
 	private RepositoryActionsViewModel viewModel;
 	private RepoActionsWorkflowsAdapter adapter;
 	private RepositoryContext repository;
+	private boolean isFirstLoad = true;
 
 	public static RepoActionsWorkflowsFragment newInstance(RepositoryContext repository) {
 		RepoActionsWorkflowsFragment fragment = new RepoActionsWorkflowsFragment();
@@ -57,11 +58,30 @@ public class RepoActionsWorkflowsFragment extends Fragment {
 		setupSwipeRefresh();
 		observeViewModel();
 
+		return binding.getRoot();
+	}
+
+	@Override
+	public void onResume() {
+		super.onResume();
+		if (!isHidden() && isFirstLoad) {
+			lazyLoad();
+		}
+	}
+
+	@Override
+	public void onHiddenChanged(boolean hidden) {
+		super.onHiddenChanged(hidden);
+		if (!hidden && isFirstLoad) {
+			lazyLoad();
+		}
+	}
+
+	private void lazyLoad() {
+		isFirstLoad = false;
 		if (Boolean.FALSE.equals(viewModel.getHasLoadedWorkflowsOnce().getValue())) {
 			refreshData();
 		}
-
-		return binding.getRoot();
 	}
 
 	private void setupRecyclerView() {

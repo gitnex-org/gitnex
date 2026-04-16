@@ -3,6 +3,7 @@ package org.mian.gitnex.activities;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.LinearLayout;
+import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 import androidx.lifecycle.ViewModelProvider;
@@ -24,6 +25,14 @@ import org.mian.gitnex.viewmodels.UserProfileViewModel;
  */
 public class ProfileActivity extends BaseActivity {
 
+	private static final String STATE_ACTIVE_TAB = "active_tab";
+	private static final String TAB_DETAILS = "details";
+	private static final String TAB_REPOS = "repos";
+	private static final String TAB_STARRED = "starred";
+	private static final String TAB_ORGS = "orgs";
+	private static final String TAB_FOLLOWERS = "followers";
+	private static final String TAB_FOLLOWING = "following";
+
 	private ActivityProfileBinding binding;
 	private UserProfileViewModel viewModel;
 	private String username;
@@ -31,6 +40,13 @@ public class ProfileActivity extends BaseActivity {
 	private final FragmentManager fm = getSupportFragmentManager();
 	private Fragment detailFrag, repoFrag, starredFrag, orgFrag, followersFrag, followingFrag;
 	private Fragment activeFragment;
+	private String currentActiveTab = TAB_DETAILS;
+
+	@Override
+	protected void onSaveInstanceState(@NonNull Bundle outState) {
+		super.onSaveInstanceState(outState);
+		outState.putString(STATE_ACTIVE_TAB, currentActiveTab);
+	}
 
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
@@ -49,11 +65,19 @@ public class ProfileActivity extends BaseActivity {
 
 		viewModel = new ViewModelProvider(this).get(UserProfileViewModel.class);
 
+		if (savedInstanceState != null) {
+			currentActiveTab = savedInstanceState.getString(STATE_ACTIVE_TAB, TAB_DETAILS);
+		}
+
 		setupFragments();
 		setupDockListeners();
 		observeViewModel();
 
-		initializeDefaultTab();
+		if (savedInstanceState != null) {
+			restoreFromSavedTab();
+		} else {
+			initializeDefaultTab();
+		}
 
 		if (!username.equals(getAccount().getAccount().getUserName())) {
 			viewModel.checkFollowStatus(this, username);
@@ -78,6 +102,51 @@ public class ProfileActivity extends BaseActivity {
 	private void initializeDefaultTab() {
 		updateDockUI(R.id.btn_nav_details);
 		binding.dockScrollView.post(() -> centerDockIcon(binding.btnNavDetails));
+	}
+
+	private void restoreFromSavedTab() {
+		Fragment targetFragment;
+		int activeBtnId =
+				switch (currentActiveTab) {
+					case TAB_REPOS -> {
+						targetFragment = repoFrag;
+						yield R.id.btn_nav_repos;
+					}
+					case TAB_STARRED -> {
+						targetFragment = starredFrag;
+						yield R.id.btn_nav_starred_repos;
+					}
+					case TAB_ORGS -> {
+						targetFragment = orgFrag;
+						yield R.id.btn_nav_organizations;
+					}
+					case TAB_FOLLOWERS -> {
+						targetFragment = followersFrag;
+						yield R.id.btn_nav_followers;
+					}
+					case TAB_FOLLOWING -> {
+						targetFragment = followingFrag;
+						yield R.id.btn_nav_following;
+					}
+					default -> {
+						targetFragment = detailFrag;
+						yield R.id.btn_nav_details;
+					}
+				};
+
+		fm.beginTransaction()
+				.hide(detailFrag)
+				.hide(repoFrag)
+				.hide(starredFrag)
+				.hide(orgFrag)
+				.hide(followersFrag)
+				.hide(followingFrag)
+				.show(targetFragment)
+				.commitNow();
+
+		activeFragment = targetFragment;
+		updateDockUI(activeBtnId);
+		centerDockIcon(findViewById(activeBtnId));
 	}
 
 	private void setupFragments() {
@@ -152,8 +221,22 @@ public class ProfileActivity extends BaseActivity {
 				.commit();
 
 		activeFragment = target;
-		updateDockUI(btnId);
 
+		if (target == detailFrag) {
+			currentActiveTab = TAB_DETAILS;
+		} else if (target == repoFrag) {
+			currentActiveTab = TAB_REPOS;
+		} else if (target == starredFrag) {
+			currentActiveTab = TAB_STARRED;
+		} else if (target == orgFrag) {
+			currentActiveTab = TAB_ORGS;
+		} else if (target == followersFrag) {
+			currentActiveTab = TAB_FOLLOWERS;
+		} else if (target == followingFrag) {
+			currentActiveTab = TAB_FOLLOWING;
+		}
+
+		updateDockUI(btnId);
 		centerDockIcon(findViewById(btnId));
 	}
 

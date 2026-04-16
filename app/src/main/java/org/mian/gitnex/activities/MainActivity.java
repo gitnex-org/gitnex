@@ -53,6 +53,11 @@ import retrofit2.Response;
 public class MainActivity extends BaseActivity
 		implements NotificationsFragment.NotificationCountListener {
 
+	private static final String STATE_ACTIVE_TAB = "active_tab";
+	private static final String TAB_HOME = "home";
+	private static final String TAB_REPOS = "repos";
+	private static final String TAB_NOTIFICATIONS = "notifications";
+
 	public ActivityMainBinding binding;
 	private TinyDB tinyDB;
 	public static boolean reloadRepos;
@@ -61,6 +66,7 @@ public class MainActivity extends BaseActivity
 	private final Fragment repoFrag = new RepositoriesFragment();
 	private final Fragment notifyFrag = new NotificationsFragment();
 	private Fragment activeFragment = homeFrag;
+	private String currentActiveTab = TAB_HOME;
 	private final FragmentManager fm = getSupportFragmentManager();
 	private View detachedDivider;
 	private View detachedAddBtn;
@@ -92,6 +98,12 @@ public class MainActivity extends BaseActivity
 	}
 
 	@Override
+	protected void onSaveInstanceState(@NonNull Bundle outState) {
+		super.onSaveInstanceState(outState);
+		outState.putString(STATE_ACTIVE_TAB, currentActiveTab);
+	}
+
+	@Override
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 
@@ -105,6 +117,10 @@ public class MainActivity extends BaseActivity
 		detachedAddBtn = binding.btnDockNewRepo;
 		detachedSearchBtn = binding.btnDockSearch;
 		detachedSortBtn = binding.btnDockSort;
+
+		if (savedInstanceState != null) {
+			currentActiveTab = savedInstanceState.getString(STATE_ACTIVE_TAB, TAB_HOME);
+		}
 
 		if (handleAccountSetup()) return;
 
@@ -175,6 +191,7 @@ public class MainActivity extends BaseActivity
 			fm.beginTransaction().hide(activeFragment).show(notifyFrag).commitNow();
 
 			activeFragment = notifyFrag;
+			currentActiveTab = TAB_NOTIFICATIONS;
 
 			if (notifyFrag instanceof NotificationsFragment nf) {
 				nf.forceUnreadFilter();
@@ -255,6 +272,15 @@ public class MainActivity extends BaseActivity
 				.commit();
 
 		activeFragment = target;
+
+		if (target == homeFrag) {
+			currentActiveTab = TAB_HOME;
+		} else if (target == repoFrag) {
+			currentActiveTab = TAB_REPOS;
+		} else if (target == notifyFrag) {
+			currentActiveTab = TAB_NOTIFICATIONS;
+		}
+
 		updateDockUI(btnId);
 	}
 
@@ -364,16 +390,37 @@ public class MainActivity extends BaseActivity
 			new ChangeLog(this).showDialog();
 		}
 
-		if (savedInstanceState == null) {
-			String linkHandlerExtra = getIntent().getStringExtra("launchFragmentByLinkHandler");
+		boolean isRestoring = savedInstanceState != null;
 
+		if (isRestoring) {
+			restoreFromSavedTab();
+		} else {
+			String linkHandlerExtra = getIntent().getStringExtra("launchFragmentByLinkHandler");
 			if (linkHandlerExtra != null) {
 				handleDeepLinkNavigation(linkHandlerExtra);
 			} else {
 				handleHomeScreenSettingNavigation();
 			}
-		} else {
-			restoreFragmentState();
+		}
+	}
+
+	private void restoreFromSavedTab() {
+		switch (currentActiveTab) {
+			case TAB_REPOS:
+				fm.beginTransaction().hide(homeFrag).hide(notifyFrag).show(repoFrag).commitNow();
+				activeFragment = repoFrag;
+				updateDockUI(R.id.btn_nav_repos);
+				break;
+			case TAB_NOTIFICATIONS:
+				fm.beginTransaction().hide(homeFrag).hide(repoFrag).show(notifyFrag).commitNow();
+				activeFragment = notifyFrag;
+				updateDockUI(R.id.btn_nav_notifications);
+				break;
+			case TAB_HOME:
+			default:
+				activeFragment = homeFrag;
+				updateDockUI(R.id.btn_nav_home);
+				break;
 		}
 	}
 
@@ -381,13 +428,16 @@ public class MainActivity extends BaseActivity
 		switch (destination) {
 			case "repos":
 				switchTab(repoFrag, R.id.btn_nav_repos);
+				currentActiveTab = TAB_REPOS;
 				break;
 			case "notification":
 				switchTab(notifyFrag, R.id.btn_nav_notifications);
+				currentActiveTab = TAB_NOTIFICATIONS;
 				break;
 			case "home":
 			default:
 				updateDockUI(R.id.btn_nav_home);
+				currentActiveTab = TAB_HOME;
 				break;
 		}
 	}
@@ -405,27 +455,17 @@ public class MainActivity extends BaseActivity
 		switch (val) {
 			case 1:
 				switchTab(repoFrag, R.id.btn_nav_repos);
+				currentActiveTab = TAB_REPOS;
 				break;
 			case 2:
 				switchTab(notifyFrag, R.id.btn_nav_notifications);
+				currentActiveTab = TAB_NOTIFICATIONS;
 				break;
 			case 0:
 			default:
 				updateDockUI(R.id.btn_nav_home);
+				currentActiveTab = TAB_HOME;
 				break;
-		}
-	}
-
-	private void restoreFragmentState() {
-		if (repoFrag != null && repoFrag.isVisible()) {
-			activeFragment = repoFrag;
-			updateDockUI(R.id.btn_nav_repos);
-		} else if (notifyFrag != null && notifyFrag.isVisible()) {
-			activeFragment = notifyFrag;
-			updateDockUI(R.id.btn_nav_notifications);
-		} else {
-			activeFragment = homeFrag;
-			updateDockUI(R.id.btn_nav_home);
 		}
 	}
 

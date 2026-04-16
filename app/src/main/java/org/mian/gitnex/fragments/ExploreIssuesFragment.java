@@ -41,11 +41,13 @@ public class ExploreIssuesFragment extends Fragment
 	private String currentQuery = "";
 	private int resultLimit;
 	private boolean isFirstLoad = true;
+	private boolean isViewReady = false;
 
 	@Override
 	public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
 		super.onViewCreated(view, savedInstanceState);
 		UIHelper.applyInsets(view, null, viewBinding.recyclerView, viewBinding.pullToRefresh, null);
+		isViewReady = true;
 	}
 
 	@Override
@@ -65,7 +67,7 @@ public class ExploreIssuesFragment extends Fragment
 	@Override
 	public void onResume() {
 		super.onResume();
-		if (!isHidden() && isFirstLoad) {
+		if (!isHidden() && isFirstLoad && isViewReady) {
 			lazyLoad();
 		}
 	}
@@ -73,7 +75,7 @@ public class ExploreIssuesFragment extends Fragment
 	@Override
 	public void onHiddenChanged(boolean hidden) {
 		super.onHiddenChanged(hidden);
-		if (!hidden && isFirstLoad) {
+		if (!hidden && isFirstLoad && isViewReady) {
 			lazyLoad();
 		}
 	}
@@ -153,6 +155,7 @@ public class ExploreIssuesFragment extends Fragment
 	private void refreshData(String query) {
 		this.currentQuery = query;
 		if (scrollListener != null) scrollListener.resetState();
+		if (issuesViewModel == null) return;
 		issuesViewModel.resetPagination();
 		viewBinding.expressiveLoader.setVisibility(View.VISIBLE);
 		issuesViewModel.fetchIssues(

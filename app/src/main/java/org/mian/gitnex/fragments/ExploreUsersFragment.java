@@ -41,11 +41,13 @@ public class ExploreUsersFragment extends Fragment
 	private int resultLimit;
 	private String currentQuery = "";
 	private boolean isFirstLoad = true;
+	private boolean isViewReady = false;
 
 	@Override
 	public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
 		super.onViewCreated(view, savedInstanceState);
 		UIHelper.applyInsets(view, null, binding.recyclerView, binding.pullToRefresh, null);
+		isViewReady = true;
 	}
 
 	@Override
@@ -65,7 +67,7 @@ public class ExploreUsersFragment extends Fragment
 	@Override
 	public void onResume() {
 		super.onResume();
-		if (!isHidden() && isFirstLoad) {
+		if (!isHidden() && isFirstLoad && isViewReady) {
 			lazyLoad();
 		}
 	}
@@ -73,7 +75,7 @@ public class ExploreUsersFragment extends Fragment
 	@Override
 	public void onHiddenChanged(boolean hidden) {
 		super.onHiddenChanged(hidden);
-		if (!hidden && isFirstLoad) {
+		if (!hidden && isFirstLoad && isViewReady) {
 			lazyLoad();
 		}
 	}
@@ -149,6 +151,7 @@ public class ExploreUsersFragment extends Fragment
 	private void refreshData(String query) {
 		currentQuery = query;
 		if (scrollListener != null) scrollListener.resetState();
+		if (viewModel == null) return;
 		viewModel.resetPagination();
 		binding.expressiveLoader.setVisibility(View.VISIBLE);
 		viewModel.fetchUsers(requireContext(), "explore", null, null, query, 1, resultLimit, true);

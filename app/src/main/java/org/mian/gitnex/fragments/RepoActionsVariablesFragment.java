@@ -34,6 +34,7 @@ public class RepoActionsVariablesFragment extends Fragment {
 	private RepositoryContext repository;
 	private EndlessRecyclerViewScrollListener scrollListener;
 	private int resultLimit;
+	private boolean isFirstLoad = true;
 
 	public static RepoActionsVariablesFragment newInstance(RepositoryContext repository) {
 		RepoActionsVariablesFragment fragment = new RepoActionsVariablesFragment();
@@ -66,11 +67,30 @@ public class RepoActionsVariablesFragment extends Fragment {
 		setupSwipeRefresh();
 		observeViewModel();
 
+		return binding.getRoot();
+	}
+
+	@Override
+	public void onResume() {
+		super.onResume();
+		if (!isHidden() && isFirstLoad) {
+			lazyLoad();
+		}
+	}
+
+	@Override
+	public void onHiddenChanged(boolean hidden) {
+		super.onHiddenChanged(hidden);
+		if (!hidden && isFirstLoad) {
+			lazyLoad();
+		}
+	}
+
+	private void lazyLoad() {
+		isFirstLoad = false;
 		if (Boolean.FALSE.equals(viewModel.getHasLoadedVariablesOnce().getValue())) {
 			refreshData();
 		}
-
-		return binding.getRoot();
 	}
 
 	private void setupRecyclerView() {

@@ -4,6 +4,7 @@ import android.os.Bundle;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.LinearLayout;
+import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 import com.google.android.material.button.MaterialButton;
@@ -20,6 +21,12 @@ import org.mian.gitnex.helpers.UIHelper;
  */
 public class ExploreActivity extends BaseActivity {
 
+	private static final String STATE_ACTIVE_TAB = "active_tab";
+	private static final String TAB_REPOS = "repos";
+	private static final String TAB_ISSUES = "issues";
+	private static final String TAB_ORGS = "orgs";
+	private static final String TAB_USERS = "users";
+
 	private ActivityExploreBinding binding;
 	private final FragmentManager fm = getSupportFragmentManager();
 	private final Fragment repoFrag = new ExploreRepositoriesFragment();
@@ -27,8 +34,15 @@ public class ExploreActivity extends BaseActivity {
 	private final Fragment orgFrag = new ExplorePublicOrganizationsFragment();
 	private final Fragment userFrag = new ExploreUsersFragment();
 	private Fragment activeFragment = repoFrag;
+	private String currentActiveTab = TAB_REPOS;
 	private View detachedDivider;
 	private MaterialButton detachedSearchBtn;
+
+	@Override
+	protected void onSaveInstanceState(@NonNull Bundle outState) {
+		super.onSaveInstanceState(outState);
+		outState.putString(STATE_ACTIVE_TAB, currentActiveTab);
+	}
 
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
@@ -41,10 +55,18 @@ public class ExploreActivity extends BaseActivity {
 		detachedDivider = binding.dockDivider;
 		detachedSearchBtn = binding.btnDockSearch;
 
+		if (savedInstanceState != null) {
+			currentActiveTab = savedInstanceState.getString(STATE_ACTIVE_TAB, TAB_REPOS);
+		}
+
 		setupFragments();
 		setupDockListeners();
 
-		updateDockUI(R.id.btn_nav_repos);
+		if (savedInstanceState != null) {
+			restoreFromSavedTab();
+		} else {
+			updateDockUI(R.id.btn_nav_repos);
+		}
 	}
 
 	private void setupFragments() {
@@ -83,6 +105,46 @@ public class ExploreActivity extends BaseActivity {
 				});
 	}
 
+	private void restoreFromSavedTab() {
+		switch (currentActiveTab) {
+			case TAB_ISSUES:
+				fm.beginTransaction()
+						.hide(repoFrag)
+						.hide(orgFrag)
+						.hide(userFrag)
+						.show(issueFrag)
+						.commitNow();
+				activeFragment = issueFrag;
+				updateDockUI(R.id.btn_nav_issues);
+				break;
+			case TAB_ORGS:
+				fm.beginTransaction()
+						.hide(repoFrag)
+						.hide(issueFrag)
+						.hide(userFrag)
+						.show(orgFrag)
+						.commitNow();
+				activeFragment = orgFrag;
+				updateDockUI(R.id.btn_nav_organizations);
+				break;
+			case TAB_USERS:
+				fm.beginTransaction()
+						.hide(repoFrag)
+						.hide(issueFrag)
+						.hide(orgFrag)
+						.show(userFrag)
+						.commitNow();
+				activeFragment = userFrag;
+				updateDockUI(R.id.btn_nav_users);
+				break;
+			case TAB_REPOS:
+			default:
+				activeFragment = repoFrag;
+				updateDockUI(R.id.btn_nav_repos);
+				break;
+		}
+	}
+
 	private void switchTab(Fragment target, int btnId) {
 		if (activeFragment == target) return;
 
@@ -93,6 +155,17 @@ public class ExploreActivity extends BaseActivity {
 				.commit();
 
 		activeFragment = target;
+
+		if (target == repoFrag) {
+			currentActiveTab = TAB_REPOS;
+		} else if (target == issueFrag) {
+			currentActiveTab = TAB_ISSUES;
+		} else if (target == orgFrag) {
+			currentActiveTab = TAB_ORGS;
+		} else if (target == userFrag) {
+			currentActiveTab = TAB_USERS;
+		}
+
 		updateDockUI(btnId);
 	}
 
