@@ -62,6 +62,7 @@
     <string name="malformedJson">收到格式錯誤的 JSON。伺服器回應未成功</string>
     <string name="emptyFieldURL">實體 URL 爲必填欄位</string>
     <string name="emptyFieldUsername">使用者名稱爲必填欄位</string>
+    <string name="emptyFieldName">名稱為必填</string>
     <string name="emptyFieldPassword">密碼爲必填欄位</string>
     <string name="protocolEmptyError">協定爲必填欄位</string>
     <string name="instanceHelperText">輸入 URL，不包含 http 或 https。例如： codeberg.org</string>
@@ -85,16 +86,19 @@
     <string name="orgExistsError">組織已存在</string>
     <string name="diffStatistics">新增 %1$s 項，刪除 %2$s 項</string>
     <plurals name="repoStars">
-        <item quantity="other">%1$s 顆星</item>
+        <item quantity="other">星標</item>
     </plurals>
     <plurals name="repoWatchers">
-        <item quantity="other">%1$s 位關注者</item>
+        <item quantity="other">關注者</item>
     </plurals>
     <plurals name="repoForks">
-        <item quantity="other">%1$s 個分支</item>
+        <item quantity="other">分支複本</item>
     </plurals>
     <plurals name="repoPullRequests">
-        <item quantity="other">%1$s 個未完成的拉取請求</item>
+        <item quantity="other">拉取請求</item>
+    </plurals>
+    <plurals name="repoOpenIssues">
+        <item quantity="other">議題</item>
     </plurals>
     <string name="genericApiError">執行個體回傳錯誤。代碼 %d</string>
     <string name="tabTextInfo">詳細資料</string>
@@ -126,7 +130,6 @@
     <string name="releaseDownloadText">下載</string>
     <string name="releasePublishedBy">由 @%1$s 發佈</string>
     <string name="noReleaseBodyContent">發行備註未由發行者提供</string>
-    <string name="newMilestoneTitle">標題</string>
     <string name="newMilestoneDueDate">截止日期</string>
     <string name="milestoneNameErrorEmpty">里程碑標題爲空</string>
     <string name="milestoneDescError">里程碑描述超過最多 255 個字元限制</string>
@@ -142,13 +145,17 @@
     <string name="newIssueTitle">標題</string>
     <string name="newIssueAssigneesListTitle">負責人</string>
     <string name="newIssueDueDateTitle">截止日期</string>
-    <string name="newIssueMilestoneTitle">里程碑</string>
     <string name="newIssueLabelsTitle">標籤</string>
     <string name="issueTitleEmpty">議題標題爲空</string>
     <string name="issueDescriptionEmpty">議題描述爲空</string>
     <string name="issueCreated">成功建立新議題</string>
     <string name="issueCreatedNoMilestone">無里程碑</string>
     <string name="noAssigneesFound">找不到負責人</string>
+    <string name="delete_milestone">&gt;刪除里程碑</string>
+    <string name="milestone_delete_confirm_text">您確定要刪除里程碑 %1$s 嗎？</string>
+    <string name="close_milestone_msg">您即將關閉里程碑 %1$s。請按下「關閉」以繼續。</string>
+    <string name="open_milestone_msg">此操作將重新開啟里程碑 %1$s。請按下「開啟」以繼續。</string>
+    <string name="milestone_deleted">里程碑已刪除</string>
     <!-- settings -->
     <string name="settingsLanguageHeaderText">翻譯</string>
     <string name="settingsLanguageSystem">系統</string>
@@ -180,6 +187,8 @@
     <string name="cacheSizeDataSelectionHeaderText">資料快取大小</string>
     <string name="cacheSizeImagesDialogHeader">圖片快取大小</string>
     <string name="cacheSizeImagesSelectionHeaderText">圖片快取大小</string>
+    <string name="settingsAPIRequestTimeoutHeader">API 請求逾時</string>
+    <string name="settingsAPIRequestTimeoutHintText">等待伺服器回應的最長時間。</string>
     <string name="clearCacheSelectionHeaderText">清除快取</string>
     <string name="clearCacheDialogHeader">清除快取？</string>
     <string name="clearCacheDialogMessage">這將刪除所有快取資料，包括檔案與圖片。\n\n要繼續刪除嗎？</string>
@@ -221,6 +230,8 @@
     <string name="labelNameError">標籤名稱無效</string>
     <string name="labelCreated">標籤已建立</string>
     <string name="labelUpdated">標籤已更新</string>
+    <string name="labelDeleteTitle">刪除標籤</string>
+    <string name="labelDeleteConfirmText">您確定要刪除標籤 %1$s 嗎？</string>
     <string name="labelMenuContentDesc">降冪</string>
     <string name="labelDeleteText">標籤已刪除</string>
     <string name="selectBranchError">選擇分支以發行</string>
@@ -233,11 +244,11 @@
     <string name="teamTitle">團隊名稱</string>
     <string name="teamDescription">團隊描述</string>
     <string name="teamPermissions">權限</string>
-    <string name="teamPermissionNone">• 此團隊成員沒有任何權限。</string>
-    <string name="teamPermissionRead">• 成員可以讀取和推送團隊儲存庫。</string>
-    <string name="teamPermissionWrite">• 成員可以讀取和推送團隊儲存庫。</string>
-    <string name="teamPermissionAdmin">• 成員可以拉取和推送到團隊儲存庫，以及新增協作者。</string>
-    <string name="teamPermissionOwner">• 此團隊成員具有擁有者權限。</string>
+    <string name="teamPermissionNone">此團隊成員沒有任何權限。</string>
+    <string name="teamPermissionRead">此團隊成員可以檢視團隊儲存庫。</string>
+    <string name="teamPermissionWrite">此團隊成員可以檢視並推送至團隊儲存庫。</string>
+    <string name="teamPermissionAdmin">團隊成員可以拉取和推送到團隊儲存庫，並新增協作者。</string>
+    <string name="teamPermissionOwner">此團隊成員具有擁有者權限。</string>
     <string name="teamShowAll">顯示全部</string>
     <string name="orgMember">組織成員</string>
     <string name="orgTeamMembers">組織團隊成員</string>
@@ -307,6 +318,8 @@
     <string name="sshKey">SSH 金鑰</string>
     <string name="sshKeySuccess">新的 SSH 金鑰已成功新增</string>
     <string name="sshKeyError">無效的 SSH 金鑰或 SSH 金鑰已存在</string>
+    <string name="sshKeyDeleteSuccess">SSH 金鑰已成功刪除</string>
+    <string name="deleteSshKeyPopupText">您確定要刪除 %1$s SSH 金鑰嗎？</string>
     <!-- account settings -->
     <!-- single issue section -->
     <string name="singleIssueEditLabels">新增/移除標籤</string>
@@ -340,7 +353,7 @@
     <string name="userPassword">密碼</string>
     <string name="userInvalidFullName">全名無效</string>
     <string name="userInvalidUserName">使用者名稱無效</string>
-    <string name="userInvalidEmail">電子郵件無效</string>
+    <string name="userInvalidEmail">無效的電子郵件</string>
     <string name="userCreatedText">成功新增使用者</string>
     <string name="userExistsError">使用者已存在</string>
     <!-- create user -->
@@ -354,7 +367,6 @@
     <string name="releaseTitleText">標題</string>
     <string name="releaseContentText">內容</string>
     <string name="releaseTypeText">標記為預發行版本</string>
-    <string name="releaseBranchText">選擇分支</string>
     <string name="releaseDraftText">草稿</string>
     <string name="tagNameErrorEmpty">標籤名稱爲空</string>
     <string name="titleErrorEmpty">標題爲空</string>
@@ -369,6 +381,7 @@
     <string name="noDataDescription">未找到描述</string>
     <string name="noDataBio">未找到簡介</string>
     <string name="noDataLocation">未找到位置</string>
+    <string name="noDataLocale">找不到地區設定</string>
     <string name="starMember">加星</string>
     <string name="watcherMember">關注者</string>
     <string name="zipArchiveDownloadReleasesTab">源代碼 (ZIP)</string>
@@ -380,7 +393,7 @@
     <string name="newFileButtonCopy">建立新檔案</string>
     <string name="newFileNameHintMessage">包含資料夾：app/test.md</string>
     <string name="newFileMessageTintCopy">提交訊息</string>
-    <string name="newFileInvalidBranchName">無效的分支名稱，只能包含&#8211;，a&#8211;z，0&#8211;9</string>
+    <string name="newFileInvalidBranchName">分支名稱無效，只能包含 a–z、0–9、連字號 (-)、底線 (_)、正斜線 (/) 及句點 (.)</string>
     <string name="newFileCommitMessageError">提交訊息過長</string>
     <string name="newFileSuccessMessage">已建立新檔案</string>
     <string name="newFileBranches">選擇或建立分支</string>
@@ -503,6 +516,23 @@
     <string name="stars">星標</string>
     <string name="template">模板</string>
     <string name="accounts">帳號</string>
+    <string name="copied">已複製</string>
+    <string name="enabled">已啟用</string>
+    <string name="disabled">已停用</string>
+    <string name="visibility">可見度</string>
+    <string name="limited">受限</string>
+    <string name="clear">清除</string>
+    <string name="updated">已更新</string>
+    <string name="created">已建立</string>
+    <string name="contributions">貢獻</string>
+    <string name="write">寫入</string>
+    <string name="code">程式碼</string>
+    <string name="topics">主題</string>
+    <string name="merged">已合併</string>
+    <string name="milestone">里程碑</string>
+    <string name="directory">目錄</string>
+    <string name="apply">套用</string>
+    <string name="state">狀態</string>
     <!-- generic copy -->
     <string name="exploreUsers">探索使用者</string>
     <string name="exploreIssues">探索議題</string>
@@ -738,7 +768,7 @@
     <string name="followSystemBlack">跟隨系統 (亮色/深黑)</string>
     <string name="dynamicColorsFollowSystem">自動 - 跟隨系統 (亮色/深色)</string>
     <string name="codebergDark">Codeberg（深色）</string>
-    <string name="repoForkOf">分支來源：%s</string>
+    <string name="repoForkOf">此儲存庫是 %s 的分支複本。</string>
     <string name="adoptRepo">採用</string>
     <string name="repoAdopted">已採用儲存庫 %s</string>
     <string name="unadoptedRepos">已取消採用儲存庫</string>
@@ -746,7 +776,7 @@
     <string name="commits">送交</string>
     <!-- wiki -->
     <string name="wiki">維基</string>
-    <string name="wikiAuthor"><![CDATA[<b>%1$s</b> 已更新 %2$s]]></string>
+    <string name="wikiAuthor">%1$s 已更新 %2$s</string>
     <string name="deleteWikiPageMessage">你確定要刪除 %s 嗎？</string>
     <string name="wikiPageDeleted">Wiki 頁面已成功刪除</string>
     <string name="wikiPageNameAndContentError">頁面名稱與頁面內容不能為空</string>
@@ -922,4 +952,58 @@
     <string name="good_evening">晚上好</string>
     <string name="dashboard_most_visited_repos_sub_title">檢視您最常造訪的儲存庫</string>
     <string name="dashboard_notes_sub_title">建立與管理個人備註，並將其附加至議題</string>
+    <string name="dashboard_explore_sub_title">探索公開的儲存庫、議題、組織與使用者</string>
+    <string name="forked_repository">已建立分支複本的儲存庫</string>
+    <string name="mirrored_repository">已鏡像的儲存庫</string>
+    <string name="copied_to_clipboard">已複製到剪貼簿</string>
+    <string name="adminUsersSubtext">管理所有系統帳號與使用者</string>
+    <string name="adminCronSubtext">檢視並執行系統排程維護任務</string>
+    <string name="unadoptedReposSubtext">搜尋並認領磁碟上找到的儲存庫</string>
+    <string name="repoSettingsSubtext">檢視全域儲存庫與 LFS 設定</string>
+    <string name="send_welcome_email">傳送歡迎電子郵件</string>
+    <string name="must_change_password">必須變更密碼</string>
+    <string name="restricted_account">受限帳號</string>
+    <string name="email_username_pw_required">電子郵件、使用者名稱與密碼為必填</string>
+    <string name="choose_image">選擇圖片</string>
+    <string name="userFollowed">您現在已追蹤 %s</string>
+    <string name="userUnFollowed">已停止追蹤 %s</string>
+    <string name="userInvalidWebsite">請輸入有效的網址</string>
+    <string name="update_avatar">更新個人檔案頭像</string>
+    <string name="avatar_preview_hint">這是您新個人檔案圖片的預覽</string>
+    <string name="external_issues">外部議題</string>
+    <string name="external_wiki">外部維基</string>
+    <string name="add_team_member">新增團隊成員</string>
+    <string name="add_team_repo">新增團隊儲存庫</string>
+    <string name="repo_admin_change_team_access">儲存庫管理員可以變更團隊存取權限</string>
+    <string name="select_color">選擇顏色</string>
+    <string name="labelColorHex">十六進位色碼</string>
+    <string name="invalid_color">無效的色碼</string>
+    <string name="invalid_length">必須為 6 個字元</string>
+    <string name="create_pr">建立拉取請求</string>
+    <string name="search_filter">搜尋與篩選</string>
+    <string name="create_issue">建立議題</string>
+    <string name="search_repos">搜尋儲存庫</string>
+    <string name="dashboard_search_repos_sub_title">在您的儲存庫中搜尋並使用篩選器以獲得更精確的結果</string>
+    <string name="time_in_moments">片刻後</string>
+    <string name="time_in_minute">%d 分鐘後</string>
+    <string name="time_in_minutes">%d 分鐘後</string>
+    <string name="time_in_hour">%d 小時後</string>
+    <string name="time_in_hours">%d 小時後</string>
+    <string name="time_in_day">%d 天後</string>
+    <string name="time_in_days">%d 天後</string>
+    <string name="time_in_month">%d 個月後</string>
+    <string name="time_in_months">%d 個月後</string>
+    <string name="time_in_year">%d 年後</string>
+    <string name="time_in_years">%d 年後</string>
+    <string name="time_moments_ago">剛才</string>
+    <string name="time_minute_ago">%d 分鐘前</string>
+    <string name="time_minutes_ago">%d 分鐘前</string>
+    <string name="time_hour_ago">%d 小時前</string>
+    <string name="time_hours_ago">%d 小時前</string>
+    <string name="time_day_ago">%d 天前</string>
+    <string name="time_days_ago">%d 天前</string>
+    <string name="time_month_ago">%d 個月前</string>
+    <string name="time_months_ago">%d 個月前</string>
+    <string name="time_year_ago">%d 年前</string>
+    <string name="time_years_ago">%d 年前</string>
 </resources>
