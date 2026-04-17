@@ -284,13 +284,6 @@
                             android:paddingHorizontal="@dimen/dimen20dp"
                             android:layout_marginTop="@dimen/dimen24dp">
 
-                            <com.google.android.material.divider.MaterialDivider
-                                android:layout_width="match_parent"
-                                android:layout_height="wrap_content"
-                                android:layout_marginBottom="@dimen/dimen16dp"
-                                app:dividerColor="?attr/colorOutlineVariant"
-                                android:alpha="0.5" />
-
                             <include android:id="@+id/layoutCreatedAt" layout="@layout/item_profile_info" />
                             <View android:layout_width="match_parent" android:layout_height="@dimen/dimen12dp" />
 

@@ -144,8 +144,8 @@ public class DetailFragment extends Fragment {
 						getViewLifecycleOwner(),
 						user -> {
 							if (user == null) return;
-							populateUi(user);
 							checkOwnership(user.getLogin());
+							populateUi(user);
 						});
 
 		viewModel.getHeatmapData().observe(getViewLifecycleOwner(), this::displayHeatmap);
@@ -290,7 +290,11 @@ public class DetailFragment extends Fragment {
 					(codes.length >= 2) ? new Locale(codes[0], codes[1]) : Locale.getDefault();
 			langName = userLoc.getDisplayLanguage();
 		}
-		setupInfoItem(binding.layoutLang, R.drawable.ic_language, langName, shouldHide);
+		setupInfoItem(
+				binding.layoutLang,
+				R.drawable.ic_language,
+				shouldHide ? getString(R.string.strPrivate).toUpperCase() : langName,
+				shouldHide);
 
 		setupInfoItem(
 				binding.layoutJoined,

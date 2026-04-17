@@ -21,8 +21,8 @@ import org.mian.gitnex.adapters.AdminCronTasksAdapter;
 import org.mian.gitnex.adapters.AdminUnadoptedReposAdapter;
 import org.mian.gitnex.api.models.settings.RepositoryGlobal;
 import org.mian.gitnex.databinding.ActivityAdministrationBinding;
-import org.mian.gitnex.databinding.BottomSheetGlobalRepositorySettingsBinding;
 import org.mian.gitnex.databinding.BottomsheetAdminCronTasksBinding;
+import org.mian.gitnex.databinding.BottomsheetAdministrationRepositorySettingsBinding;
 import org.mian.gitnex.databinding.ItemAdministrationRepoSettingRowBinding;
 import org.mian.gitnex.helpers.AppUtil;
 import org.mian.gitnex.helpers.Constants;
@@ -185,8 +185,8 @@ public class AdministrationActivity extends BaseActivity {
 
 	private void showRepositorySettings() {
 
-		BottomSheetGlobalRepositorySettingsBinding sheetBinding =
-				BottomSheetGlobalRepositorySettingsBinding.inflate(getLayoutInflater());
+		BottomsheetAdministrationRepositorySettingsBinding sheetBinding =
+			BottomsheetAdministrationRepositorySettingsBinding.inflate(getLayoutInflater());
 
 		BottomSheetDialog dialog = new BottomSheetDialog(this);
 		dialog.setContentView(sheetBinding.getRoot());
@@ -226,7 +226,7 @@ public class AdministrationActivity extends BaseActivity {
 	}
 
 	private void updateSettingsUI(
-			BottomSheetGlobalRepositorySettingsBinding binding, RepositoryGlobal settings) {
+		BottomsheetAdministrationRepositorySettingsBinding binding, RepositoryGlobal settings) {
 		applyStatusStyle(binding.itemForks, !settings.isForksDisabled());
 		applyStatusStyle(binding.itemMigrations, !settings.isMigrationsDisabled());
 		applyStatusStyle(binding.itemHttpGit, !settings.isHttpGitDisabled());

@@ -261,7 +261,7 @@ public class RepositoriesFragment extends Fragment {
 		public View onCreateView(
 				@NonNull LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
 
-			View view = inflater.inflate(R.layout.bottom_sheet_repositories_sort, container, false);
+			View view = inflater.inflate(R.layout.bottomsheet_repositories_sort, container, false);
 			ChipGroup chipGroup = view.findViewById(R.id.sort_chip_group);
 			String[] sorts = {
 				"name",

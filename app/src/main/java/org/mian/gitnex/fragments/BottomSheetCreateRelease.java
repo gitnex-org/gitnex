@@ -83,7 +83,7 @@ public class BottomSheetCreateRelease extends BottomSheetDialogFragment {
 				repoContext.getPermissions() != null && repoContext.getPermissions().isPush();
 
 		binding.cardBranch.cardIcon.setImageResource(R.drawable.ic_branch);
-		binding.cardBranch.tvCardLabel.setText(R.string.pageTitleChooseBranch);
+		binding.cardBranch.tvCardLabel.setText(R.string.branch);
 		binding.cardBranch.getRoot().setVisibility(hasWriteAccess ? View.VISIBLE : View.GONE);
 
 		if (releaseToEdit != null) {

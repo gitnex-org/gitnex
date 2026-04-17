@@ -57,6 +57,11 @@ import org.mian.gitnex.viewmodels.PullRequestsViewModel;
  */
 public class BottomSheetCreatePullRequest extends BottomSheetDialogFragment {
 
+	private static final String ARG_PREFILL_HEAD = "prefill_head";
+	private static final String ARG_PREFILL_BASE = "prefill_base";
+	private static final String ARG_PREFILL_TITLE = "prefill_title";
+	private static final String ARG_PREFILL_BODY = "prefill_body";
+
 	private BottomsheetCreatePullRequestBinding binding;
 	private PullRequestsViewModel viewModel;
 	private RepositoryContext repoContext;
@@ -75,17 +80,33 @@ public class BottomSheetCreatePullRequest extends BottomSheetDialogFragment {
 	private AttachmentManager attachmentManager;
 	private AttachmentsViewModel attachmentsViewModel;
 	protected TinyDB tinyDB;
+	private String prefillTitle;
+	private String prefillBody;
 
 	public static BottomSheetCreatePullRequest newInstance(
-			RepositoryContext repository, @Nullable PullRequest pr) {
+			RepositoryContext repository,
+			@Nullable PullRequest pr,
+			@Nullable String prefillHead,
+			@Nullable String prefillBase,
+			@Nullable String prefillTitle,
+			@Nullable String prefillBody) {
 		BottomSheetCreatePullRequest fragment = new BottomSheetCreatePullRequest();
 		Bundle args = new Bundle();
 		args.putSerializable("repo_context", repository);
 		if (pr != null) {
 			args.putSerializable("pr_item", pr);
 		}
+		if (prefillHead != null) args.putString(ARG_PREFILL_HEAD, prefillHead);
+		if (prefillBase != null) args.putString(ARG_PREFILL_BASE, prefillBase);
+		if (prefillTitle != null) args.putString(ARG_PREFILL_TITLE, prefillTitle);
+		if (prefillBody != null) args.putString(ARG_PREFILL_BODY, prefillBody);
 		fragment.setArguments(args);
 		return fragment;
+	}
+
+	public static BottomSheetCreatePullRequest newInstance(
+			RepositoryContext repository, @Nullable PullRequest pr) {
+		return newInstance(repository, pr, null, null, null, null);
 	}
 
 	@Override
@@ -94,6 +115,11 @@ public class BottomSheetCreatePullRequest extends BottomSheetDialogFragment {
 		if (getArguments() != null) {
 			repoContext = (RepositoryContext) getArguments().getSerializable("repo_context");
 			prToEdit = (PullRequest) getArguments().getSerializable("pr_item");
+
+			selectedPullFrom = getArguments().getString(ARG_PREFILL_HEAD);
+			selectedMergeInto = getArguments().getString(ARG_PREFILL_BASE);
+			prefillTitle = getArguments().getString(ARG_PREFILL_TITLE);
+			prefillBody = getArguments().getString(ARG_PREFILL_BODY);
 		}
 	}
 
@@ -212,6 +238,13 @@ public class BottomSheetCreatePullRequest extends BottomSheetDialogFragment {
 			binding.sheetTitle.setText(R.string.create_pr);
 			binding.btnSubmit.setText(R.string.create_pr);
 			binding.switchAllowMaintainerEdit.setVisibility(View.GONE);
+
+			if (prefillTitle != null && !prefillTitle.isEmpty()) {
+				binding.prTitle.setText(prefillTitle);
+			}
+			if (prefillBody != null && !prefillBody.isEmpty()) {
+				binding.prBody.setText(prefillBody);
+			}
 
 			if (hasWriteAccess) {
 				updateLabelsDisplay();

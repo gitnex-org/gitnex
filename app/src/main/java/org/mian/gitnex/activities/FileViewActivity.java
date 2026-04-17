@@ -31,6 +31,7 @@ import org.mian.gitnex.R;
 import org.mian.gitnex.api.models.contents.RepoGetContentsList;
 import org.mian.gitnex.clients.RetrofitClient;
 import org.mian.gitnex.databinding.ActivityFileViewBinding;
+import org.mian.gitnex.fragments.BottomSheetCreateFile;
 import org.mian.gitnex.fragments.BottomSheetFileViewerFragment;
 import org.mian.gitnex.helpers.AlertDialogs;
 import org.mian.gitnex.helpers.AppUtil;
@@ -42,6 +43,7 @@ import org.mian.gitnex.helpers.Toasty;
 import org.mian.gitnex.helpers.contexts.RepositoryContext;
 import org.mian.gitnex.notifications.Notifications;
 import org.mian.gitnex.structs.BottomSheetListener;
+import org.mian.gitnex.viewmodels.FilesViewModel;
 import retrofit2.Call;
 import retrofit2.Response;
 
@@ -175,31 +177,6 @@ public class FileViewActivity extends BaseActivity implements BottomSheetListene
 					});
 	private boolean renderMd = false;
 	private boolean processable = false;
-	public ActivityResultLauncher<Intent> editFileLauncher =
-			registerForActivityResult(
-					new ActivityResultContracts.StartActivityForResult(),
-					result -> {
-						if (result.getResultCode() == 200) {
-							assert result.getData() != null;
-							if (result.getData().getBooleanExtra("fileModified", false)) {
-								switch (result.getData()
-										.getIntExtra(
-												"fileAction",
-												CreateFileActivity.FILE_ACTION_EDIT)) {
-									case CreateFileActivity.FILE_ACTION_CREATE:
-									case CreateFileActivity.FILE_ACTION_EDIT:
-										getSingleFileContents(
-												repository.getOwner(),
-												repository.getName(),
-												file.getPath(),
-												repository.getBranchRef());
-										break;
-									default:
-										finish();
-								}
-							}
-						}
-					});
 
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
@@ -669,7 +646,7 @@ public class FileViewActivity extends BaseActivity implements BottomSheetListene
 			requestFileDownload();
 		}
 
-		if ("deleteFile".equals(text)) {
+		/*if ("deleteFile".equals(text)) {
 			Intent intent = repository.getIntent(ctx, CreateFileActivity.class);
 			intent.putExtra("fileAction", CreateFileActivity.FILE_ACTION_DELETE);
 			intent.putExtra("filePath", file.getPath());
@@ -692,6 +669,29 @@ public class FileViewActivity extends BaseActivity implements BottomSheetListene
 
 				editFileLauncher.launch(intent);
 
+			} else {
+				Toasty.show(ctx, getString(R.string.fileTypeCannotBeEdited));
+			}
+		}*/
+		if ("deleteFile".equals(text)) {
+			BottomSheetCreateFile.newInstance(
+							repository,
+							FilesViewModel.FileAction.DELETE,
+							file.getPath(),
+							file.getSha(),
+							null)
+					.show(getSupportFragmentManager(), "DELETE_FILE");
+		}
+
+		if ("editFile".equals(text)) {
+			if (!binding.contents.getSourceView().getText().toString().isEmpty()) {
+				BottomSheetCreateFile.newInstance(
+								repository,
+								FilesViewModel.FileAction.EDIT,
+								file.getPath(),
+								file.getSha(),
+								binding.contents.getSourceView().getText().toString())
+						.show(getSupportFragmentManager(), "EDIT_FILE");
 			} else {
 				Toasty.show(ctx, getString(R.string.fileTypeCannotBeEdited));
 			}

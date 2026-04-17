@@ -20,7 +20,6 @@ import java.util.List;
 import java.util.Objects;
 import org.mian.gitnex.R;
 import org.mian.gitnex.activities.CommitsActivity;
-import org.mian.gitnex.activities.CreateFileActivity;
 import org.mian.gitnex.activities.FileViewActivity;
 import org.mian.gitnex.activities.RepoDetailActivity;
 import org.mian.gitnex.adapters.FilesAdapter;
@@ -48,6 +47,7 @@ public class FilesFragment extends Fragment
 	private FilesAdapter filesAdapter;
 	private RepositoryContext repository;
 	private final Path path = new Path();
+	private boolean isFirstLoad = true;
 
 	public static FilesFragment newInstance(RepositoryContext repository) {
 		FilesFragment fragment = new FilesFragment();
@@ -92,6 +92,27 @@ public class FilesFragment extends Fragment
 	}
 
 	@Override
+	public void onResume() {
+		super.onResume();
+		if (!isHidden() && isFirstLoad) {
+			lazyLoad();
+		}
+	}
+
+	@Override
+	public void onHiddenChanged(boolean hidden) {
+		super.onHiddenChanged(hidden);
+		if (!hidden && isFirstLoad) {
+			lazyLoad();
+		}
+	}
+
+	private void lazyLoad() {
+		isFirstLoad = false;
+		refresh();
+	}
+
+	@Override
 	public List<RepositoryMenuItemModel> getRepoHubItems() {
 		List<RepositoryMenuItemModel> items = new ArrayList<>();
 
@@ -123,7 +144,7 @@ public class FilesFragment extends Fragment
 			items.add(
 					new RepositoryMenuItemModel(
 							"FILES_ADD_NEW",
-							R.string.addButton,
+							R.string.pageTitleNewFile,
 							R.drawable.ic_add,
 							R.attr.colorPrimaryContainer,
 							R.attr.colorOnPrimaryContainer));
@@ -148,9 +169,15 @@ public class FilesFragment extends Fragment
 				break;
 
 			case "FILES_ADD_NEW":
-				startActivity(repository.getIntent(getContext(), CreateFileActivity.class));
+				BottomSheetCreateFile.newInstance(
+								repository, FilesViewModel.FileAction.CREATE, null, null, null)
+						.show(getChildFragmentManager(), "CREATE_FILE");
 				break;
 		}
+	}
+
+	public void refreshFromGlobal() {
+		refresh();
 	}
 
 	@Override
@@ -275,11 +302,6 @@ public class FilesFragment extends Fragment
 				repository.getName(),
 				repository.getBranchRef(),
 				path.toString());
-	}
-
-	@Override
-	public void onResume() {
-		super.onResume();
 	}
 
 	@Override

@@ -5,6 +5,8 @@ import android.content.res.ColorStateList;
 import android.graphics.Color;
 import android.graphics.drawable.Drawable;
 import android.os.Bundle;
+import android.transition.AutoTransition;
+import android.transition.TransitionManager;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -337,12 +339,15 @@ public class RepoInfoFragment extends Fragment {
 												repositoryContext.getRepository().getCreatedAt(),
 												locale)));
 
-		binding.layoutWebsite
-				.getRoot()
-				.setOnClickListener(
-						v ->
-								AppUtil.openUrlInBrowser(
-										ctx, repositoryContext.getRepository().getWebsite()));
+		if (!repositoryContext.getRepository().getWebsite().isEmpty()) {
+			binding.layoutWebsite
+					.getRoot()
+					.setOnClickListener(
+							v ->
+									AppUtil.openUrlInBrowser(
+											ctx, repositoryContext.getRepository().getWebsite()));
+		}
+
 		binding.layoutHtmlUrl
 				.getRoot()
 				.setOnClickListener(
@@ -352,13 +357,34 @@ public class RepoInfoFragment extends Fragment {
 										repositoryContext.getRepository().getWebsite(),
 										getString(R.string.copied)));
 
+		binding.layoutSshUrl
+				.getRoot()
+				.setOnClickListener(
+						v ->
+								AppUtil.copyToClipboard(
+										ctx,
+										repositoryContext.getRepository().getSshUrl(),
+										getString(R.string.copied)));
+
 		binding.addTopicChip.setOnClickListener(v -> showAddTopicDialog());
+
 		binding.repoAdditionalButton.setOnClickListener(
 				v -> {
-					boolean isVisible = binding.moreInfoFrame.getVisibility() == View.VISIBLE;
-					binding.moreInfoFrame.setVisibility(isVisible ? View.GONE : View.VISIBLE);
+					boolean isExpanding = binding.moreInfoFrame.getVisibility() == View.GONE;
+
+					TransitionManager.beginDelayedTransition(
+							binding.getRoot(), new AutoTransition());
+
+					binding.moreInfoFrame.setVisibility(isExpanding ? View.VISIBLE : View.GONE);
 					binding.repoAdditionalButton.setIconResource(
-							isVisible ? R.drawable.ic_arrow_down : R.drawable.ic_arrow_up);
+							isExpanding ? R.drawable.ic_arrow_up : R.drawable.ic_arrow_down);
+
+					if (isExpanding) {
+						binding.moreInfoFrame.post(
+								() -> {
+									binding.moreInfoFrame.requestFocus();
+								});
+					}
 				});
 	}
 
@@ -404,7 +430,7 @@ public class RepoInfoFragment extends Fragment {
 		binding.layoutHtmlUrl.infoIcon.setImageResource(R.drawable.ic_link);
 
 		binding.layoutSshUrl.infoText.setText(repo.getSshUrl());
-		binding.layoutSshUrl.infoIcon.setImageResource(R.drawable.ic_code);
+		binding.layoutSshUrl.infoIcon.setImageResource(R.drawable.ic_sh);
 
 		binding.repoIsArchived.setVisibility(repo.isArchived() ? View.VISIBLE : View.GONE);
 

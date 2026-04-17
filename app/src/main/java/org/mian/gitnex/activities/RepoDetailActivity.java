@@ -156,6 +156,10 @@ public class RepoDetailActivity extends BaseActivity
 		IssuesFragment issuesFragment =
 				(IssuesFragment) getSupportFragmentManager().findFragmentByTag(TAG_ISSUES);
 		if (issuesFragment != null) issuesFragment.refreshFromGlobal();
+
+		FilesFragment filesFragment =
+				(FilesFragment) getSupportFragmentManager().findFragmentByTag(TAG_FILES);
+		if (filesFragment != null) filesFragment.refreshFromGlobal();
 	}
 
 	private void setupProviderFlags() {

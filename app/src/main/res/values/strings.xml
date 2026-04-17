@@ -43,6 +43,7 @@
     <string name="default_branch_name" translatable="false">main</string>
     <string name="discover_apps" translatable="false">Discover More Apps</string>
     <string name="dot" translatable="false">•</string>
+    <string name="source_ref_hint" translatable="false">e.g., main, develop, or a commit SHA</string>
 
     <!-- menu items -->
     <string name="navMyRepos">My Repositories</string>
@@ -522,6 +523,8 @@
     <string name="branch_error_repo_locked">Repository is locked</string>
     <string name="create_branch">Create Branch</string>
     <string name="default_branch">Default Branch</string>
+    <string name="commit_message_empty">Commit message cannot be empty</string>
+    <string name="content_empty">File content cannot be empty</string>
 
     <string name="strFilter">Filter</string>
     <string name="strMarkdown">Markdown</string>
@@ -663,6 +666,7 @@
     <string name="fullscreen">Fullscreen</string>
     <string name="type">Type</string>
     <string name="reviewers">Reviewers</string>
+    <string name="change">Change</string>
     <!-- generic copy -->
 
     <string name="exploreUsers">Explore users</string>
@@ -1193,6 +1197,20 @@
     <string name="cannotAddSelfAsReviewer">You cannot add yourself as a reviewer</string>
     <string name="deleteVariableConfirmation">Are you sure you want to delete this variable? This action cannot be undone.</string>
     <string name="variable_deleted">Variable deleted successfully</string>
+    <string name="file_conflict_error">A file with this name already exists</string>
+    <string name="delete_file_info">This will stage the file for deletion in the selected branch.</string>
+    <string name="upload_file">Upload file</string>
+    <string name="binary_file_message">Binary file - will be uploaded as-is</string>
+    <string name="commit_new_file">Commit File</string>
+    <string name="commit_changes">Commit Changes</string>
+    <string name="commit_deletion">Commit Deletion</string>
+    <string name="large_file_warning">This file is large and may take time to upload</string>
+    <string name="file_read_error">Could not read file content</string>
+    <string name="update_filename">Update %s</string>
+    <string name="delete_filename">Delete %s</string>
+    <string name="file_name_empty">File name cannot be empty</string>
+    <string name="select_branch_error">Please select a branch</string>
+    <string name="create_pull_request_with_branch">Create pull request with this branch</string>
 
     <string name="time_in_moments">in moments</string>
     <string name="time_in_minute">in %d minute</string>
