@@ -832,6 +832,7 @@
 
     <string name="repoSettingsTitle">Repository Settings</string>
     <string name="repoSettingsEditProperties">Edit Properties</string>
+    <string name="repoSettingsEditPropertiesHint">Change name, description, visibility and features</string>
     <string name="repoSettingsDelete">Delete Repository</string>
     <string name="repoSettingsDeleteHint">Be careful, this operation CANNOT be undone!</string>
     <string name="repoPropertiesTemplate">Set as Template</string>
@@ -846,14 +847,15 @@
     <string name="repoPropertiesEnableSquash">Enable Squash and Merge</string>
     <string name="repoPropertiesEnableForceMerge">Enable Rebase with Merge Commits (&#8212;&#8212;no-ff)</string>
     <string name="repoPropertiesSaveSuccess">Repository properties updated successfully</string>
-    <string name="repoSettingsDeleteDescription">Things to know before deletion:\n\n- This operation CANNOT be undone.\n- This operation will permanently delete the repository including code, issues, comments, wiki data and collaborator settings.\n\nEnter the repository name as confirmation</string>
+    <string name="repoSettingsDeleteDescription">Things to know before deletion:\n\n- This operation CANNOT be undone.\n- This operation will permanently delete the repository including code, issues, comments, wiki data and collaborator settings.</string>
+    <string name="typeRepoNameToConfirm">Type the repository name to confirm</string>
     <string name="repoSettingsDeleteError">Repository name does not match</string>
     <string name="repoDeletionSuccess">Repository deleted successfully</string>
     <string name="repoSettingsTransferOwnership">Transfer Ownership</string>
     <string name="repoSettingsTransferOwnershipHint">Transfer this repository to a user or to an organization for which you have administrator rights</string>
     <string name="repoSettingsTransferOwnershipDescription">Things to know before transfer:\n\n- You will lose access to the repository if you transfer it to an individual user.\n- You will keep access to the repository if you transfer it to an organization that you (co-)own.\n\nEnter the repository name as confirmation</string>
     <string name="repoTransferText">Perform Transfer</string>
-    <string name="repoTransferOwnerText">New Owner</string>
+    <string name="repoTransferOwnerText">New Owner Username</string>
     <string name="repoTransferSuccess">Repository transferred successfully</string>
     <string name="repoTransferOwnerError">New owner is required</string>
     <string name="repoTransferError">There is a problem with the owner name. Make sure that the new owner exists</string>

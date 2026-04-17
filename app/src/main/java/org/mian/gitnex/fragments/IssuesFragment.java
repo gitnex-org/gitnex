@@ -27,7 +27,6 @@ import org.mian.gitnex.helpers.Toasty;
 import org.mian.gitnex.helpers.contexts.RepositoryContext;
 import org.mian.gitnex.models.IssueFilterState;
 import org.mian.gitnex.models.RepositoryMenuItemModel;
-import org.mian.gitnex.viewmodels.CreateIssueViewModel;
 import org.mian.gitnex.viewmodels.IssuesViewModel;
 
 /**
@@ -81,7 +80,6 @@ public class IssuesFragment extends Fragment implements RepoDetailActivity.RepoH
 		setupAdapters();
 		setupRepoListeners();
 		observeRepoViewModel();
-		observeCreateIssueViewModel();
 
 		return binding.getRoot();
 	}
@@ -154,6 +152,10 @@ public class IssuesFragment extends Fragment implements RepoDetailActivity.RepoH
 		}
 
 		viewModel.fetchPinnedIssues(requireContext(), repository.getOwner(), repository.getName());
+	}
+
+	public void refreshFromGlobal() {
+		refreshData();
 	}
 
 	private void setupAdapters() {
@@ -239,21 +241,6 @@ public class IssuesFragment extends Fragment implements RepoDetailActivity.RepoH
 		}
 
 		binding.recyclerView.setLayoutParams(params);
-	}
-
-	private void observeCreateIssueViewModel() {
-		CreateIssueViewModel createIssueViewModel =
-				new ViewModelProvider(requireActivity()).get(CreateIssueViewModel.class);
-
-		createIssueViewModel
-				.getCreatedIssue()
-				.observe(
-						getViewLifecycleOwner(),
-						issue -> {
-							if (issue != null) {
-								refreshData();
-							}
-						});
 	}
 
 	private void observeRepoViewModel() {

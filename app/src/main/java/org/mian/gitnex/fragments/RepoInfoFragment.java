@@ -119,6 +119,13 @@ public class RepoInfoFragment extends Fragment {
 						});
 	}
 
+	public void refreshFromGlobal() {
+		if (viewModel != null && repositoryContext != null) {
+			viewModel.fetchRepository(
+					ctx, repositoryContext.getOwner(), repositoryContext.getName());
+		}
+	}
+
 	private void setupObservers() {
 		viewModel
 				.getIsStarred()

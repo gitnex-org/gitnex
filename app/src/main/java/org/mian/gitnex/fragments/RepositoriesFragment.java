@@ -82,6 +82,10 @@ public class RepositoriesFragment extends Fragment {
 		return binding.getRoot();
 	}
 
+	public void refreshFromGlobal() {
+		refreshData();
+	}
+
 	private void setupRecyclerView() {
 		adapter = new ReposListAdapter(new ArrayList<>(), requireContext());
 		LinearLayoutManager layoutManager = new LinearLayoutManager(requireContext());

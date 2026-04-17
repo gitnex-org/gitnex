@@ -71,13 +71,13 @@ public class ExploreActivity extends BaseActivity {
 
 	private void setupFragments() {
 		fm.beginTransaction()
-				.add(R.id.explore_container, userFrag, "users")
+				.add(R.id.explore_container, userFrag, TAB_USERS)
 				.hide(userFrag)
-				.add(R.id.explore_container, orgFrag, "orgs")
+				.add(R.id.explore_container, orgFrag, TAB_ORGS)
 				.hide(orgFrag)
-				.add(R.id.explore_container, issueFrag, "issues")
+				.add(R.id.explore_container, issueFrag, TAB_ISSUES)
 				.hide(issueFrag)
-				.add(R.id.explore_container, repoFrag, "repos")
+				.add(R.id.explore_container, repoFrag, TAB_REPOS)
 				.show(repoFrag)
 				.commitNow();
 	}

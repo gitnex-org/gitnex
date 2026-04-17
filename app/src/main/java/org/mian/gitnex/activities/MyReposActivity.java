@@ -154,6 +154,11 @@ public class MyReposActivity extends BaseActivity {
 				});
 	}
 
+	@Override
+	protected void onGlobalRefresh() {
+		refreshData();
+	}
+
 	private void observeViewModel() {
 		viewModel
 				.getRepos()
@@ -200,15 +205,6 @@ public class MyReposActivity extends BaseActivity {
 		}
 		viewModel.resetPagination();
 		viewModel.fetchRepos(this, "myRepos", userLogin, null, 1, resultLimit, currentSort, true);
-	}
-
-	@Override
-	public void onResume() {
-		super.onResume();
-		if (MainActivity.reloadRepos) {
-			refreshData();
-			MainActivity.reloadRepos = false;
-		}
 	}
 
 	public static class SortBottomSheetDialogFragment extends BottomSheetDialogFragment {

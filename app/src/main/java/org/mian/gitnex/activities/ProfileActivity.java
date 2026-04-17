@@ -159,17 +159,17 @@ public class ProfileActivity extends BaseActivity {
 		followingFrag = FollowingFragment.newInstance(username);
 
 		fm.beginTransaction()
-				.add(R.id.user_profile_container, followingFrag, "following")
+				.add(R.id.user_profile_container, followingFrag, TAB_FOLLOWING)
 				.hide(followingFrag)
-				.add(R.id.user_profile_container, followersFrag, "followers")
+				.add(R.id.user_profile_container, followersFrag, TAB_FOLLOWERS)
 				.hide(followersFrag)
-				.add(R.id.user_profile_container, orgFrag, "orgs")
+				.add(R.id.user_profile_container, orgFrag, TAB_ORGS)
 				.hide(orgFrag)
-				.add(R.id.user_profile_container, starredFrag, "stars")
+				.add(R.id.user_profile_container, starredFrag, TAB_STARRED)
 				.hide(starredFrag)
-				.add(R.id.user_profile_container, repoFrag, "repos")
+				.add(R.id.user_profile_container, repoFrag, TAB_REPOS)
 				.hide(repoFrag)
-				.add(R.id.user_profile_container, detailFrag, "detail")
+				.add(R.id.user_profile_container, detailFrag, TAB_DETAILS)
 				.commitNow();
 
 		activeFragment = detailFrag;

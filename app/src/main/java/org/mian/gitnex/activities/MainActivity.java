@@ -144,13 +144,20 @@ public class MainActivity extends BaseActivity
 						});
 	}
 
+	@Override
+	protected void onGlobalRefresh() {
+		RepositoriesFragment fragment =
+				(RepositoriesFragment) getSupportFragmentManager().findFragmentByTag(TAB_REPOS);
+		if (fragment != null) fragment.refreshFromGlobal();
+	}
+
 	private void setupFragments() {
 		fm.beginTransaction()
-				.add(R.id.nav_host_fragment, notifyFrag, "3")
+				.add(R.id.nav_host_fragment, notifyFrag, TAB_NOTIFICATIONS)
 				.hide(notifyFrag)
-				.add(R.id.nav_host_fragment, repoFrag, "2")
+				.add(R.id.nav_host_fragment, repoFrag, TAB_REPOS)
 				.hide(repoFrag)
-				.add(R.id.nav_host_fragment, homeFrag, "1")
+				.add(R.id.nav_host_fragment, homeFrag, TAB_HOME)
 				.hide(homeFrag)
 				.commitNow();
 	}

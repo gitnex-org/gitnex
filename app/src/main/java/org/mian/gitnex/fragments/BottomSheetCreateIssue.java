@@ -38,6 +38,7 @@ import org.gitnex.tea4j.v2.models.IssueTemplate;
 import org.gitnex.tea4j.v2.models.Label;
 import org.gitnex.tea4j.v2.models.User;
 import org.mian.gitnex.R;
+import org.mian.gitnex.activities.BaseActivity;
 import org.mian.gitnex.adapters.CreateAttachmentsAdapter;
 import org.mian.gitnex.database.api.BaseApi;
 import org.mian.gitnex.database.api.UserAccountsApi;
@@ -45,6 +46,7 @@ import org.mian.gitnex.database.models.UserAccount;
 import org.mian.gitnex.databinding.BottomsheetCreateIssueBinding;
 import org.mian.gitnex.helpers.AlertDialogs;
 import org.mian.gitnex.helpers.AppDatabaseSettings;
+import org.mian.gitnex.helpers.AppUIStateManager;
 import org.mian.gitnex.helpers.AppUtil;
 import org.mian.gitnex.helpers.TinyDB;
 import org.mian.gitnex.helpers.Toasty;
@@ -343,6 +345,10 @@ public class BottomSheetCreateIssue extends BottomSheetDialogFragment {
 									? R.string.editIssueSuccessMessage
 									: R.string.issueCreated);
 			Toasty.show(requireContext(), successMsg);
+			AppUIStateManager.refreshData();
+			if (getActivity() instanceof BaseActivity) {
+				((BaseActivity) getActivity()).triggerGlobalRefresh();
+			}
 			dismiss();
 		}
 	}
@@ -452,7 +458,6 @@ public class BottomSheetCreateIssue extends BottomSheetDialogFragment {
 						getViewLifecycleOwner(),
 						issue -> {
 							if (issue != null && issueToEdit != null) {
-								// Simplified - just check if labels changed
 								if (hasLabelsChanged()) {
 									viewModel.updateIssueLabels(
 											requireContext(),

@@ -25,6 +25,9 @@ public abstract class BaseActivity extends AppCompatActivity {
 	protected Context ctx = this;
 	protected Context appCtx;
 	private int localUiVersion = AppUIStateManager.getUiVersion();
+	private int localRefreshVersion = AppUIStateManager.getDataVersion();
+
+	protected void onGlobalRefresh() {}
 
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
@@ -133,6 +136,14 @@ public abstract class BaseActivity extends AppCompatActivity {
 		return ((MainApplication) getApplication()).currentAccount;
 	}
 
+	public void triggerGlobalRefresh() { // direct refresh if in the same activity/frgment
+		int globalDataVersion = AppUIStateManager.getDataVersion();
+		if (globalDataVersion > localRefreshVersion) {
+			localRefreshVersion = globalDataVersion;
+			onGlobalRefresh();
+		}
+	}
+
 	@Override
 	public void onResume() {
 		super.onResume();
@@ -155,6 +166,12 @@ public abstract class BaseActivity extends AppCompatActivity {
 			localUiVersion = AppUIStateManager.getUiVersion();
 			recreate();
 			overridePendingTransition(android.R.anim.fade_in, android.R.anim.fade_out);
+		}
+
+		int globalDataVersion = AppUIStateManager.getDataVersion();
+		if (globalDataVersion > localRefreshVersion) {
+			localRefreshVersion = globalDataVersion;
+			onGlobalRefresh();
 		}
 	}
 }
