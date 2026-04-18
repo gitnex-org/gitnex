@@ -186,7 +186,7 @@ public class AdministrationActivity extends BaseActivity {
 	private void showRepositorySettings() {
 
 		BottomsheetAdministrationRepositorySettingsBinding sheetBinding =
-			BottomsheetAdministrationRepositorySettingsBinding.inflate(getLayoutInflater());
+				BottomsheetAdministrationRepositorySettingsBinding.inflate(getLayoutInflater());
 
 		BottomSheetDialog dialog = new BottomSheetDialog(this);
 		dialog.setContentView(sheetBinding.getRoot());
@@ -226,7 +226,7 @@ public class AdministrationActivity extends BaseActivity {
 	}
 
 	private void updateSettingsUI(
-		BottomsheetAdministrationRepositorySettingsBinding binding, RepositoryGlobal settings) {
+			BottomsheetAdministrationRepositorySettingsBinding binding, RepositoryGlobal settings) {
 		applyStatusStyle(binding.itemForks, !settings.isForksDisabled());
 		applyStatusStyle(binding.itemMigrations, !settings.isMigrationsDisabled());
 		applyStatusStyle(binding.itemHttpGit, !settings.isHttpGitDisabled());

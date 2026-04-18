@@ -278,7 +278,7 @@ public class MyIssuesActivity extends BaseActivity {
 		public View onCreateView(
 				@NonNull LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
 			BottomsheetMyIssuesFilterBinding binding =
-				BottomsheetMyIssuesFilterBinding.inflate(inflater, container, false);
+					BottomsheetMyIssuesFilterBinding.inflate(inflater, container, false);
 			MyIssuesActivity activity = (MyIssuesActivity) requireActivity();
 
 			String currentFilter = activity.getCurrentFilter();

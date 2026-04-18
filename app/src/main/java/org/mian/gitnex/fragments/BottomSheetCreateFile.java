@@ -13,8 +13,10 @@ import androidx.activity.result.ActivityResultLauncher;
 import androidx.activity.result.contract.ActivityResultContracts;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
-import androidx.core.content.ContextCompat;
+import androidx.appcompat.content.res.AppCompatResources;
 import androidx.lifecycle.ViewModelProvider;
+import com.bumptech.glide.Glide;
+import com.bumptech.glide.load.engine.DiskCacheStrategy;
 import com.google.android.material.bottomsheet.BottomSheetDialog;
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment;
 import java.io.IOException;
@@ -26,6 +28,7 @@ import org.mian.gitnex.databinding.BottomsheetCreateFileBinding;
 import org.mian.gitnex.helpers.AlertDialogs;
 import org.mian.gitnex.helpers.AppUIStateManager;
 import org.mian.gitnex.helpers.AppUtil;
+import org.mian.gitnex.helpers.FileIcon;
 import org.mian.gitnex.helpers.Toasty;
 import org.mian.gitnex.helpers.contexts.RepositoryContext;
 import org.mian.gitnex.viewmodels.FilesViewModel;
@@ -158,7 +161,7 @@ public class BottomSheetCreateFile extends BottomSheetDialogFragment {
 				binding.fileName.setText(filePath);
 				binding.fileName.setEnabled(false);
 				binding.contentContainer.setVisibility(View.GONE);
-				binding.btnUploadFile.setVisibility(View.GONE);
+				binding.cardUpload.getRoot().setVisibility(View.GONE);
 				binding.cardDeleteInfo.setVisibility(View.VISIBLE);
 				binding.btnSubmit.setText(R.string.commit_deletion);
 				binding.switchCreatePr.setVisibility(View.GONE);
@@ -181,12 +184,18 @@ public class BottomSheetCreateFile extends BottomSheetDialogFragment {
 		binding.cardBranch.getRoot().setOnClickListener(v -> openBranchPicker());
 		binding.cardBranch.btnClear.setOnClickListener(v -> openCreateBranch());
 
-		binding.btnUploadFile.setOnClickListener(v -> filePickerLauncher.launch("*/*"));
-		binding.btnChangeFile.setOnClickListener(v -> filePickerLauncher.launch("*/*"));
+		binding.cardUpload
+				.getRoot()
+				.setOnClickListener(
+						v -> {
+							if (selectedFileUri == null) {
+								filePickerLauncher.launch("*/*");
+							}
+						});
+		binding.cardUpload.btnClear.setOnClickListener(v -> clearUploadedFile());
 
 		binding.btnExpand.setOnClickListener(v -> openFullScreenEditor());
 		binding.btnEditor.setOnClickListener(v -> openCodeEditor());
-
 		binding.btnSubmit.setOnClickListener(v -> submitAction());
 
 		binding.fileName.addTextChangedListener(
@@ -213,6 +222,22 @@ public class BottomSheetCreateFile extends BottomSheetDialogFragment {
 						}
 					}
 				});
+	}
+
+	private void clearUploadedFile() {
+		selectedFileUri = null;
+		isBinaryFile = false;
+		binding.fileName.setText("");
+		binding.fileContent.setText("");
+		binding.contentContainer.setVisibility(View.VISIBLE);
+		updateUploadCardVisibility();
+	}
+
+	private void updateUploadCardVisibility() {
+		boolean hasFile = selectedFileUri != null;
+		binding.cardUpload.uploadEmptyText.setVisibility(hasFile ? View.GONE : View.VISIBLE);
+		binding.cardUpload.uploadPreviewContainer.setVisibility(hasFile ? View.VISIBLE : View.GONE);
+		binding.cardUpload.btnClear.setVisibility(hasFile ? View.VISIBLE : View.GONE);
 	}
 
 	private void openBranchPicker() {
@@ -290,41 +315,45 @@ public class BottomSheetCreateFile extends BottomSheetDialogFragment {
 			binding.fileName.setText(fileName);
 		}
 
+		binding.cardUpload.uploadFileName.setText(fileName);
+
+		String mimeType = AppUtil.getMimeTypeFromUri(requireContext(), uri);
+		long fileSize = AppUtil.getFileSizeFromUri(requireContext(), uri);
+		String fileSizeStr =
+				android.text.format.Formatter.formatShortFileSize(requireContext(), fileSize);
+		binding.cardUpload.uploadFileInfo.setText(
+				fileSizeStr + (mimeType != null ? " • " + mimeType : ""));
+
 		AppUtil.FileType fileType = AppUtil.getFileTypeFromFileName(fileName);
+		if (fileType == AppUtil.FileType.IMAGE) {
+			Glide.with(requireContext())
+					.load(uri)
+					.diskCacheStrategy(DiskCacheStrategy.ALL)
+					.placeholder(R.drawable.loader_animated)
+					.centerCrop()
+					.into(binding.cardUpload.uploadPreviewImage);
+		} else {
+			binding.cardUpload.uploadPreviewImage.setImageDrawable(
+					AppCompatResources.getDrawable(
+							requireContext(), FileIcon.getIconResource(fileName, "file")));
+		}
+
+		long tenMB = 10 * 1024 * 1024;
+		if (fileSize > tenMB) {
+			binding.cardUpload.uploadFileWarning.setText(R.string.large_file_warning);
+			binding.cardUpload.uploadFileWarning.setVisibility(View.VISIBLE);
+		} else {
+			binding.cardUpload.uploadFileWarning.setVisibility(View.GONE);
+		}
+
+		updateUploadCardVisibility();
+
 		isBinaryFile = fileType != AppUtil.FileType.TEXT;
 
 		if (isBinaryFile) {
 			binding.contentContainer.setVisibility(View.GONE);
-			binding.cardBinaryPreview.setVisibility(View.VISIBLE);
-
-			long binaryFileBytes = AppUtil.getFileSizeFromUri(requireContext(), uri);
-			String binaryFileSize =
-					android.text.format.Formatter.formatShortFileSize(
-							requireContext(), binaryFileBytes);
-
-			binding.binaryFileName.setText(fileName);
-
-			String mimeType = AppUtil.getMimeTypeFromUri(requireContext(), uri);
-			binding.binaryFileInfo.setText(
-					binaryFileSize + " • " + (mimeType != null ? mimeType : ""));
-
-			long tenMB = 10 * 1024 * 1024;
-			if (binaryFileBytes > tenMB) {
-				binding.binaryFileWarning.setText(R.string.large_file_warning);
-				binding.binaryFileWarning.setTextColor(
-						ContextCompat.getColor(requireContext(), R.color.releasePre));
-			}
-
-			int iconRes = getFileIconRes(fileName);
-			binding.binaryFileIcon.setImageResource(iconRes);
-
-			if (fileAction == FilesViewModel.FileAction.CREATE) {
-				binding.commitMessage.setText(getDefaultCommitMessage(fileName));
-			}
 		} else {
 			binding.contentContainer.setVisibility(View.VISIBLE);
-			binding.cardBinaryPreview.setVisibility(View.GONE);
-
 			try {
 				InputStream is = requireContext().getContentResolver().openInputStream(uri);
 				if (is != null) {
@@ -334,24 +363,11 @@ public class BottomSheetCreateFile extends BottomSheetDialogFragment {
 			} catch (IOException e) {
 				Toasty.show(requireContext(), R.string.file_read_error);
 			}
-
-			if (fileAction == FilesViewModel.FileAction.CREATE && fileName != null) {
-				binding.commitMessage.setText(getDefaultCommitMessage(fileName));
-			}
 		}
-	}
 
-	private int getFileIconRes(String fileName) {
-		if (fileName == null) return R.drawable.ic_file;
-
-		AppUtil.FileType fileType = AppUtil.getFileTypeFromFileName(fileName);
-
-		return switch (fileType) {
-			case IMAGE -> R.drawable.ic_image;
-			case AUDIO -> R.drawable.ic_audio;
-			case VIDEO -> R.drawable.ic_video;
-			default -> R.drawable.ic_file;
-		};
+		if (fileAction == FilesViewModel.FileAction.CREATE && fileName != null) {
+			binding.commitMessage.setText(getDefaultCommitMessage(fileName));
+		}
 	}
 
 	private void openCodeEditor() {
@@ -430,14 +446,12 @@ public class BottomSheetCreateFile extends BottomSheetDialogFragment {
 		switch (fileAction) {
 			case CREATE:
 				if (isBinaryFile && selectedFileUri != null) {
-					String base64Content =
-							AppUtil.encodeUriToBase64(requireContext(), selectedFileUri);
-					viewModel.createFile(
+					viewModel.createFileFromUri(
 							requireContext(),
 							repoContext.getOwner(),
 							repoContext.getName(),
 							fileName,
-							base64Content,
+							selectedFileUri,
 							commitMessage,
 							selectedBranch);
 				} else {

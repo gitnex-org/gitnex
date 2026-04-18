@@ -1211,6 +1211,7 @@
     <string name="file_name_empty">File name cannot be empty</string>
     <string name="select_branch_error">Please select a branch</string>
     <string name="create_pull_request_with_branch">Create pull request with this branch</string>
+    <string name="tap_to_upload_file">Tap to select a file</string>
 
     <string name="time_in_moments">in moments</string>
     <string name="time_in_minute">in %d minute</string>

@@ -1,6 +1,7 @@
 package org.mian.gitnex.viewmodels;
 
 import android.content.Context;
+import android.net.Uri;
 import androidx.annotation.NonNull;
 import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MutableLiveData;
@@ -223,6 +224,49 @@ public class FilesViewModel extends ViewModel {
 
 		CreateFileOptions options = new CreateFileOptions();
 		options.setContent(AppUtil.encodeBase64(content));
+		options.setMessage(commitMessage);
+		options.setBranch(branchName);
+
+		Call<FileResponse> call =
+				RetrofitClient.getApiInterface(ctx).repoCreateFile(options, owner, repo, fileName);
+
+		call.enqueue(
+				new Callback<>() {
+					@Override
+					public void onResponse(
+							@NonNull Call<FileResponse> call,
+							@NonNull Response<FileResponse> response) {
+						isProcessing.setValue(false);
+						if (response.code() == 201) {
+							operationSuccess.setValue(true);
+						} else {
+							handleFileOperationError(response.code(), ctx);
+						}
+					}
+
+					@Override
+					public void onFailure(@NonNull Call<FileResponse> call, @NonNull Throwable t) {
+						isProcessing.setValue(false);
+						operationError.setValue(t.getMessage());
+					}
+				});
+	}
+
+	public void createFileFromUri(
+			Context ctx,
+			String owner,
+			String repo,
+			String fileName,
+			Uri fileUri,
+			String commitMessage,
+			String branchName) {
+		isProcessing.setValue(true);
+		operationError.setValue(null);
+
+		String base64Content = AppUtil.encodeUriToBase64(ctx, fileUri);
+
+		CreateFileOptions options = new CreateFileOptions();
+		options.setContent(base64Content);
 		options.setMessage(commitMessage);
 		options.setBranch(branchName);
 
