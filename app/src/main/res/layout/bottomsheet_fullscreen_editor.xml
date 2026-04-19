@@ -4,7 +4,6 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
-    <!-- Header Card -->
     <com.google.android.material.card.MaterialCardView
         android:id="@+id/header_card"
         style="@style/Widget.Material3.CardView.Filled"
@@ -65,15 +64,47 @@
                 android:contentDescription="@string/strMarkdown"
                 android:visibility="gone"
                 app:icon="@drawable/ic_markdown"
-                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toEndOf="@id/fullscreen_btn_notes"
                 app:layout_constraintTop_toTopOf="parent"
                 app:layout_constraintBottom_toBottomOf="parent" />
+
+            <LinearLayout
+                android:id="@+id/editor_info_layout"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:gravity="center_vertical"
+                android:paddingHorizontal="@dimen/dimen12dp"
+                android:visibility="gone"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
+                app:layout_constraintBottom_toBottomOf="parent">
+
+                <TextView
+                    android:id="@+id/editor_file_ext"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textAppearance="?attr/textAppearanceLabelSmall"
+                    android:textColor="?attr/colorOnSurfaceVariant"
+                    android:textAllCaps="true"
+                    android:paddingHorizontal="@dimen/dimen8dp"
+                    android:paddingVertical="@dimen/dimen2dp" />
+
+                <TextView
+                    android:id="@+id/editor_cursor_position"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="@dimen/dimen8dp"
+                    android:textAppearance="?attr/textAppearanceBodySmall"
+                    android:textColor="?attr/colorOnSurfaceVariant"
+                    android:fontFamily="monospace" />
+
+            </LinearLayout>
 
         </androidx.constraintlayout.widget.ConstraintLayout>
 
     </com.google.android.material.card.MaterialCardView>
 
-    <!-- Content Area -->
     <FrameLayout
         android:layout_width="match_parent"
         android:layout_height="0dp"
@@ -82,17 +113,27 @@
         app:layout_constraintTop_toBottomOf="@id/header_card"
         app:layout_constraintBottom_toBottomOf="parent">
 
+        <com.amrdeveloper.codeview.CodeView
+            android:id="@+id/fullscreen_code_view"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:visibility="gone"
+            android:gravity="top|start"
+            android:backgroundTint="@android:color/transparent"
+            android:textSize="@dimen/dimen14sp" />
+
         <EditText
             android:id="@+id/fullscreen_editor"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:gravity="top"
-            android:inputType="textMultiLine"
+            android:inputType="textMultiLine|textNoSuggestions"
             android:autofillHints="@string/description"
             android:hint="@string/description"
             android:background="@null"
             android:padding="@dimen/dimen8dp"
-            android:textAppearance="@style/TextAppearance.Material3.BodyLarge" />
+            android:textAppearance="@style/TextAppearance.Material3.BodyMedium"
+            android:textIsSelectable="true" />
 
         <androidx.core.widget.NestedScrollView
             android:id="@+id/fullscreen_markdown_scroll"

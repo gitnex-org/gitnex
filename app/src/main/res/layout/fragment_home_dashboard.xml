@@ -145,13 +145,13 @@
             android:layout_height="match_parent"
             app:cardBackgroundColor="?attr/materialCardBackgroundColor"
             app:cardElevation="0dp"
-            app:shapeAppearance="@style/ShapeAppearance.TopRounded"
+            app:cardCornerRadius="@dimen/dimen32dp"
             app:strokeWidth="0dp">
 
             <androidx.constraintlayout.widget.ConstraintLayout
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:paddingHorizontal="@dimen/dimen8dp"
+                android:layout_height="match_parent"
+                android:paddingHorizontal="@dimen/dimen12dp"
                 android:paddingVertical="@dimen/dimen20dp">
 
                 <TextView

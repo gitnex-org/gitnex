@@ -6,9 +6,11 @@ import androidx.annotation.NonNull;
 import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MutableLiveData;
 import androidx.lifecycle.ViewModel;
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
+import okhttp3.ResponseBody;
 import org.gitnex.tea4j.v2.models.Branch;
 import org.gitnex.tea4j.v2.models.CreateBranchRepoOption;
 import org.gitnex.tea4j.v2.models.CreateFileOptions;
@@ -49,6 +51,7 @@ public class FilesViewModel extends ViewModel {
 	private final MutableLiveData<Boolean> isBranchesLoading = new MutableLiveData<>(false);
 	private final MutableLiveData<Boolean> isLastPageBranches = new MutableLiveData<>(false);
 	private final MutableLiveData<String> errorMessage = new MutableLiveData<>();
+	private final MutableLiveData<FileContentData> fileContent = new MutableLiveData<>();
 
 	private int currentBranchPage = 1;
 
@@ -100,6 +103,10 @@ public class FilesViewModel extends ViewModel {
 		return createBranchError;
 	}
 
+	public LiveData<FileContentData> getFileContent() {
+		return fileContent;
+	}
+
 	public void clearOperationSuccess() {
 		operationSuccess.setValue(null);
 	}
@@ -114,6 +121,63 @@ public class FilesViewModel extends ViewModel {
 
 	public void clearCreateBranchError() {
 		createBranchError.setValue(null);
+	}
+
+	public void clearFileContent() {
+		fileContent.setValue(null);
+	}
+
+	public static class FileContentData {
+		public final String textContent;
+		public final byte[] binaryContent;
+		public final boolean isBinary;
+
+		public FileContentData(String textContent) {
+			this.textContent = textContent;
+			this.binaryContent = null;
+			this.isBinary = false;
+		}
+
+		public FileContentData(byte[] binaryContent) {
+			this.textContent = null;
+			this.binaryContent = binaryContent;
+			this.isBinary = true;
+		}
+	}
+
+	public void fetchFileContent(
+			Context ctx, String owner, String repo, String path, String ref, boolean isImage) {
+		Call<ResponseBody> call =
+				RetrofitClient.getWebInterface(ctx).getFileContents(owner, repo, ref, path);
+
+		call.enqueue(
+				new Callback<>() {
+					@Override
+					public void onResponse(
+							@NonNull Call<ResponseBody> call,
+							@NonNull Response<ResponseBody> response) {
+						if (response.isSuccessful() && response.body() != null) {
+							try {
+								if (isImage) {
+									byte[] bytes = response.body().bytes();
+									fileContent.setValue(new FileContentData(bytes));
+								} else {
+									String content = response.body().string();
+									fileContent.setValue(new FileContentData(content));
+								}
+							} catch (IOException e) {
+								fileContent.setValue(null);
+							}
+						} else {
+							fileContent.setValue(null);
+						}
+					}
+
+					@Override
+					public void onFailure(@NonNull Call<ResponseBody> call, @NonNull Throwable t) {
+						fileContent.setValue(null);
+					}
+				});
 	}
 
 	public void loadFiles(Context ctx, String owner, String repo, String ref, String path) {

@@ -7,9 +7,6 @@ import android.view.View;
 import android.view.ViewGroup;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
-import androidx.core.graphics.Insets;
-import androidx.core.view.ViewCompat;
-import androidx.core.view.WindowInsetsCompat;
 import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import com.bumptech.glide.Glide;
@@ -43,6 +40,7 @@ import org.mian.gitnex.databinding.ItemCardLargeBinding;
 import org.mian.gitnex.helpers.AppUtil;
 import org.mian.gitnex.helpers.TinyDB;
 import org.mian.gitnex.helpers.Toasty;
+import org.mian.gitnex.helpers.UIHelper;
 import org.mian.gitnex.helpers.UrlHelper;
 
 /**
@@ -58,24 +56,8 @@ public class HomeDashboardFragment extends Fragment {
 	public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
 		super.onViewCreated(view, savedInstanceState);
 
-		ViewCompat.setOnApplyWindowInsetsListener(
-				binding.nestedScrollView,
-				(v, windowInsets) -> {
-					Insets systemBars =
-							windowInsets.getInsets(WindowInsetsCompat.Type.systemBars());
-					v.setPadding(
-							v.getPaddingLeft(),
-							v.getPaddingTop(),
-							v.getPaddingRight(),
-							systemBars.bottom);
-					binding.mainLayout.setPadding(
-							binding.mainLayout.getPaddingLeft(),
-							systemBars.top + (int) getResources().getDimension(R.dimen.dimen20dp),
-							binding.mainLayout.getPaddingRight(),
-							binding.mainLayout.getPaddingBottom());
-
-					return windowInsets;
-				});
+		View dock = requireActivity().findViewById(R.id.docked_toolbar);
+		UIHelper.applyInsets(view, dock, binding.nestedScrollView, null, null);
 	}
 
 	@Override

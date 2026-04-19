@@ -8,7 +8,7 @@
         android:id="@+id/header_layout"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:paddingHorizontal="@dimen/dimen24dp"
+        android:paddingHorizontal="@dimen/dimen12dp"
         android:paddingTop="@dimen/dimen8dp"
         android:clipToPadding="false"
         app:layout_constraintTop_toTopOf="parent">
@@ -76,7 +76,7 @@
             android:layout_gravity="top"
             android:clipToPadding="false"
             android:overScrollMode="never"
-            android:paddingHorizontal="@dimen/dimen24dp"
+            android:paddingHorizontal="@dimen/dimen12dp"
             android:paddingBottom="@dimen/dimen32dp"
             android:visibility="gone" />
 

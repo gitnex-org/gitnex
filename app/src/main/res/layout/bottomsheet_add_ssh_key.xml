@@ -14,7 +14,7 @@
         android:id="@+id/header_layout"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:paddingHorizontal="@dimen/dimen24dp"
+        android:paddingHorizontal="@dimen/dimen12dp"
         app:layout_constraintTop_toBottomOf="@id/drag_handle">
 
         <TextView
@@ -48,7 +48,7 @@
         android:layout_height="wrap_content"
         android:layout_marginTop="@dimen/dimen16dp"
         android:clipToPadding="false"
-        android:paddingHorizontal="@dimen/dimen24dp"
+        android:paddingHorizontal="@dimen/dimen12dp"
         android:paddingBottom="@dimen/dimen32dp"
         app:layout_constrainedHeight="true"
         app:layout_constraintBottom_toBottomOf="parent"
@@ -66,6 +66,8 @@
                 android:layout_height="wrap_content"
                 android:layout_marginTop="@dimen/dimen8dp"
                 android:hint="@string/title"
+                app:endIconMode="clear_text"
+                app:endIconTint="?attr/iconsColor"
                 app:shapeAppearance="@style/ShapeAppearance.Material3.Corner.Medium">
 
                 <com.google.android.material.textfield.TextInputEditText
@@ -74,6 +76,7 @@
                     android:layout_height="wrap_content"
                     android:inputType="text"
                     android:singleLine="true" />
+
             </com.google.android.material.textfield.TextInputLayout>
 
             <com.google.android.material.textfield.TextInputLayout
@@ -83,15 +86,18 @@
                 android:layout_height="wrap_content"
                 android:layout_marginTop="@dimen/dimen12dp"
                 android:hint="@string/sshKey"
+                app:endIconMode="clear_text"
+                app:endIconTint="?attr/iconsColor"
                 app:shapeAppearance="@style/ShapeAppearance.Material3.Corner.Medium">
 
-                <com.google.android.material.textfield.TextInputEditText
+                <org.mian.gitnex.views.AccessibleEditText
                     android:id="@+id/key"
                     android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
+                    android:layout_height="@dimen/dimen224dp"
                     android:gravity="top"
-                    android:inputType="textMultiLine"
-                    android:minLines="3" />
+                    android:scrollbars="vertical"
+                    android:inputType="textMultiLine" />
+
             </com.google.android.material.textfield.TextInputLayout>
 
             <com.google.android.material.materialswitch.MaterialSwitch

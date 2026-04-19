@@ -69,16 +69,17 @@
 
             <ImageView
                 android:id="@+id/iv_chevron"
-                android:layout_width="@dimen/dimen20dp"
-                android:layout_height="@dimen/dimen20dp"
-                android:alpha="0.5"
+                android:layout_width="@dimen/dimen32dp"
+                android:layout_height="@dimen/dimen32dp"
+                android:background="?attr/selectableItemBackgroundBorderless"
                 android:contentDescription="@string/generalImgContentText"
-                android:visibility="gone"
-                app:tint="?attr/colorOnSurfaceVariant"
+                android:padding="@dimen/dimen2dp"
+                android:scaleType="centerInside"
                 app:layout_constraintBottom_toBottomOf="@id/fileName"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintTop_toTopOf="@id/fileName"
-                app:srcCompat="@drawable/ic_chevron_right" />
+                app:srcCompat="@drawable/ic_chevron_right"
+                app:tint="?attr/iconsColor" />
 
         </androidx.constraintlayout.widget.ConstraintLayout>
 

@@ -14,6 +14,7 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 import java.util.ArrayList;
 import org.gitnex.tea4j.v2.models.Team;
+import org.mian.gitnex.R;
 import org.mian.gitnex.activities.OrganizationTeamDetailsActivity;
 import org.mian.gitnex.adapters.UsersAdapter;
 import org.mian.gitnex.databinding.FragmentOrganizationTeamDetailsMembersBinding;
@@ -54,7 +55,8 @@ public class OrganizationTeamDetailsMembersFragment extends Fragment
 	public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
 		super.onViewCreated(view, savedInstanceState);
 
-		UIHelper.applyInsets(view, null, binding.recyclerView, binding.pullToRefresh, null);
+		View dock = requireActivity().findViewById(R.id.docked_toolbar);
+		UIHelper.applyInsets(view, dock, binding.recyclerView, binding.pullToRefresh, null);
 
 		getChildFragmentManager()
 				.setFragmentResultListener(

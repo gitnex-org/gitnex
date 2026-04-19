@@ -8,6 +8,7 @@ import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
 import android.view.LayoutInflater;
+import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
 import androidx.activity.result.ActivityResultLauncher;
@@ -155,6 +156,18 @@ public class BottomSheetCreatePullRequest extends BottomSheetDialogFragment {
 	private void setupUI() {
 		boolean hasWriteAccess =
 				repoContext.getPermissions() != null && repoContext.getPermissions().isPush();
+
+		binding.prBody.setOnTouchListener(
+				(v, event) -> {
+					if (event.getAction() == MotionEvent.ACTION_DOWN) {
+						v.getParent().requestDisallowInterceptTouchEvent(true);
+					} else if (event.getAction() == MotionEvent.ACTION_UP
+							|| event.getAction() == MotionEvent.ACTION_CANCEL) {
+						v.getParent().requestDisallowInterceptTouchEvent(false);
+						v.performClick();
+					}
+					return false;
+				});
 
 		binding.cardMergeInto.cardIcon.setImageResource(R.drawable.ic_branch);
 		binding.cardMergeInto.tvCardLabel.setText(R.string.mergeIntoBranch);

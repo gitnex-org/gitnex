@@ -17,6 +17,7 @@ import com.google.android.material.bottomsheet.BottomSheetDialog;
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment;
 import java.util.ArrayList;
 import java.util.Objects;
+import org.mian.gitnex.R;
 import org.mian.gitnex.activities.ExploreActivity;
 import org.mian.gitnex.adapters.IssuesAdapter;
 import org.mian.gitnex.databinding.BottomsheetExploreIssuesBinding;
@@ -46,7 +47,8 @@ public class ExploreIssuesFragment extends Fragment
 	@Override
 	public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
 		super.onViewCreated(view, savedInstanceState);
-		UIHelper.applyInsets(view, null, viewBinding.recyclerView, viewBinding.pullToRefresh, null);
+		View dock = requireActivity().findViewById(R.id.docked_toolbar);
+		UIHelper.applyInsets(view, dock, viewBinding.recyclerView, viewBinding.pullToRefresh, null);
 		isViewReady = true;
 	}
 

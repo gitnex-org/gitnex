@@ -1,8 +1,9 @@
 package org.mian.gitnex.fragments;
 
 import android.app.Dialog;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.os.Bundle;
-import android.text.Spannable;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -17,6 +18,7 @@ import org.mian.gitnex.R;
 import org.mian.gitnex.databinding.BottomsheetContentViewerBinding;
 import org.mian.gitnex.helpers.AppUtil;
 import org.mian.gitnex.helpers.Markdown;
+import org.mian.gitnex.helpers.Toasty;
 import org.mian.gitnex.helpers.contexts.RepositoryContext;
 
 /**
@@ -25,66 +27,58 @@ import org.mian.gitnex.helpers.contexts.RepositoryContext;
 public class BottomSheetContentViewer extends BottomSheetDialogFragment {
 
 	public enum Feature {
-		MARKDOWN_PREVIEW, // Enable markdown preview toggle
-		START_IN_MARKDOWN, // Start showing Markdown instead of raw content
-		ALLOW_COPY, // Show copy button (always visible by default)
-		ALLOW_SHARE, // Show share button (always visible by default)
-		SYNTAX_HIGHLIGHT, // Use renderWithHighlights for code
-		SHOW_TITLE, // Show title in header
+		MARKDOWN_PREVIEW,
+		START_IN_MARKDOWN,
+		ALLOW_COPY,
+		ALLOW_SHARE,
+		SYNTAX_HIGHLIGHT,
+		SHOW_TITLE,
+		IMAGE_PREVIEW
 	}
-
-	/*
-	Spannable highlighted = SyntaxHighlighter.highlight(code, "java");
-	BottomSheetContentViewer.newInstance(
-		highlighted,
-		"Main.java",
-		repoContext,
-		BottomSheetContentViewer.Feature.SYNTAX_HIGHLIGHT,
-		ContentViewerBottomSheet.Feature.MARKDOWN_PREVIEW,
-		ContentViewerBottomSheet.Feature.SHOW_TITLE
-	).show(fm, "viewer");
-	 */
 
 	private static final String ARG_CONTENT = "content";
 	private static final String ARG_TITLE = "title";
 	private static final String ARG_REPO_CONTEXT = "repo_context";
 	private static final String ARG_FEATURES = "features";
-	private static final String ARG_IS_SPANNABLE = "is_spannable";
+	private static final String ARG_FILE_EXTENSION = "file_extension";
+	private static final String ARG_IS_IMAGE = "is_image";
 
 	private BottomsheetContentViewerBinding binding;
 	private final Set<Feature> enabledFeatures = new HashSet<>();
 	private RepositoryContext repoContext;
 	private String rawContent;
 	private String title;
-	private Spannable spannableContent;
-	private boolean isSpannable = false;
+	private String fileExtension;
+	private byte[] imageBytes;
 	private boolean isMarkdownMode = false;
 
 	public static BottomSheetContentViewer newInstance(
 			String content,
 			@Nullable String title,
 			@Nullable RepositoryContext repoContext,
+			@Nullable String fileExtension,
 			Feature... features) {
 		BottomSheetContentViewer fragment = new BottomSheetContentViewer();
 		Bundle args = new Bundle();
 		args.putString(ARG_CONTENT, content);
-		args.putBoolean(ARG_IS_SPANNABLE, false);
 		if (title != null) args.putString(ARG_TITLE, title);
 		if (repoContext != null) args.putSerializable(ARG_REPO_CONTEXT, repoContext);
+		if (fileExtension != null) args.putString(ARG_FILE_EXTENSION, fileExtension);
+		args.putBoolean(ARG_IS_IMAGE, false);
 		args.putStringArrayList(ARG_FEATURES, featureNamesToList(features));
 		fragment.setArguments(args);
 		return fragment;
 	}
 
 	public static BottomSheetContentViewer newInstance(
-			Spannable spannable,
+			byte[] imageData,
 			@Nullable String title,
 			@Nullable RepositoryContext repoContext,
 			Feature... features) {
 		BottomSheetContentViewer fragment = new BottomSheetContentViewer();
 		Bundle args = new Bundle();
-		args.putCharSequence(ARG_CONTENT, spannable);
-		args.putBoolean(ARG_IS_SPANNABLE, true);
+		args.putByteArray(ARG_CONTENT, imageData);
+		args.putBoolean(ARG_IS_IMAGE, true);
 		if (title != null) args.putString(ARG_TITLE, title);
 		if (repoContext != null) args.putSerializable(ARG_REPO_CONTEXT, repoContext);
 		args.putStringArrayList(ARG_FEATURES, featureNamesToList(features));
@@ -104,16 +98,17 @@ public class BottomSheetContentViewer extends BottomSheetDialogFragment {
 	public void onCreate(@Nullable Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		if (getArguments() != null) {
-			isSpannable = getArguments().getBoolean(ARG_IS_SPANNABLE, false);
+			boolean isImage = getArguments().getBoolean(ARG_IS_IMAGE, false);
 
-			if (isSpannable) {
-				spannableContent = (Spannable) getArguments().getCharSequence(ARG_CONTENT);
+			if (isImage) {
+				imageBytes = getArguments().getByteArray(ARG_CONTENT);
 			} else {
 				rawContent = getArguments().getString(ARG_CONTENT, "");
 			}
 
 			title = getArguments().getString(ARG_TITLE);
 			repoContext = (RepositoryContext) getArguments().getSerializable(ARG_REPO_CONTEXT);
+			fileExtension = getArguments().getString(ARG_FILE_EXTENSION);
 
 			ArrayList<String> featureNames = getArguments().getStringArrayList(ARG_FEATURES);
 			if (featureNames != null) {
@@ -125,7 +120,6 @@ public class BottomSheetContentViewer extends BottomSheetDialogFragment {
 				}
 			}
 		}
-
 		isMarkdownMode = enabledFeatures.contains(Feature.START_IN_MARKDOWN);
 	}
 
@@ -171,48 +165,51 @@ public class BottomSheetContentViewer extends BottomSheetDialogFragment {
 	}
 
 	private void renderContent() {
-		if (isMarkdownMode) {
-			renderMarkdown();
-		} else {
-			renderRaw();
+		if (enabledFeatures.contains(Feature.IMAGE_PREVIEW) && imageBytes != null) {
+			binding.rawContentScroll.setVisibility(View.GONE);
+			binding.syntaxHighlightedCodeScroll.setVisibility(View.GONE);
+			binding.markdownPreviewScroll.setVisibility(View.GONE);
+			binding.photoView.setVisibility(View.VISIBLE);
+
+			Bitmap bitmap = BitmapFactory.decodeByteArray(imageBytes, 0, imageBytes.length);
+			if (bitmap != null) {
+				binding.photoView.setImageBitmap(bitmap);
+			} else {
+				Toasty.show(requireContext(), R.string.image_load_error);
+			}
+			return;
 		}
-	}
 
-	private void renderRaw() {
-		binding.rawContentScroll.setVisibility(View.VISIBLE);
-		binding.markdownPreviewScroll.setVisibility(View.GONE);
-		binding.markdownPreview.setVisibility(View.GONE);
-		binding.markdownPreviewText.setVisibility(View.GONE);
+		String content = rawContent != null ? rawContent : "";
 
-		String content = getContentAsString();
-		binding.rawContentText.setText(content);
-	}
+		if (enabledFeatures.contains(Feature.SYNTAX_HIGHLIGHT)) {
+			binding.rawContentScroll.setVisibility(View.GONE);
+			binding.syntaxHighlightedCodeScroll.setVisibility(View.VISIBLE);
+			binding.markdownPreviewScroll.setVisibility(View.GONE);
+			binding.photoView.setVisibility(View.GONE);
+			binding.syntaxHighlightedCode.setContent(content, fileExtension);
+		} else if (isMarkdownMode) {
+			binding.rawContentScroll.setVisibility(View.GONE);
+			binding.syntaxHighlightedCodeScroll.setVisibility(View.GONE);
+			binding.markdownPreviewScroll.setVisibility(View.VISIBLE);
+			binding.photoView.setVisibility(View.GONE);
 
-	private void renderMarkdown() {
-		binding.rawContentScroll.setVisibility(View.GONE);
-		binding.markdownPreviewScroll.setVisibility(View.VISIBLE);
-
-		String content = getContentAsString();
-		if (content == null) content = "";
-
-		if (enabledFeatures.contains(Feature.SYNTAX_HIGHLIGHT) && spannableContent != null) {
-			binding.markdownPreview.setVisibility(View.VISIBLE);
-			binding.markdownPreviewText.setVisibility(View.GONE);
-			Markdown.renderWithHighlights(
-					requireContext(), spannableContent, binding.markdownPreview, repoContext);
-		} else if (repoContext != null) {
-			binding.markdownPreview.setVisibility(View.VISIBLE);
-			binding.markdownPreviewText.setVisibility(View.GONE);
-			Markdown.render(requireContext(), content, binding.markdownPreview, repoContext);
+			if (repoContext != null) {
+				binding.markdownPreview.setVisibility(View.VISIBLE);
+				binding.markdownPreviewText.setVisibility(View.GONE);
+				Markdown.render(requireContext(), content, binding.markdownPreview, repoContext);
+			} else {
+				binding.markdownPreview.setVisibility(View.GONE);
+				binding.markdownPreviewText.setVisibility(View.VISIBLE);
+				Markdown.render(requireContext(), content, binding.markdownPreviewText);
+			}
 		} else {
-			binding.markdownPreview.setVisibility(View.GONE);
-			binding.markdownPreviewText.setVisibility(View.VISIBLE);
-			Markdown.render(requireContext(), content, binding.markdownPreviewText);
+			binding.rawContentScroll.setVisibility(View.VISIBLE);
+			binding.syntaxHighlightedCodeScroll.setVisibility(View.GONE);
+			binding.markdownPreviewScroll.setVisibility(View.GONE);
+			binding.photoView.setVisibility(View.GONE);
+			binding.rawContentText.setText(content);
 		}
-	}
-
-	private String getContentAsString() {
-		return isSpannable && spannableContent != null ? spannableContent.toString() : rawContent;
 	}
 
 	private void toggleMarkdownMode() {
@@ -227,13 +224,12 @@ public class BottomSheetContentViewer extends BottomSheetDialogFragment {
 	}
 
 	private void copyContent() {
-		String content = getContentAsString();
-		AppUtil.copyToClipboard(requireContext(), content, getString(R.string.copied_to_clipboard));
+		AppUtil.copyToClipboard(
+				requireContext(), rawContent, getString(R.string.copied_to_clipboard));
 	}
 
 	private void shareContent() {
-		String content = getContentAsString();
-		AppUtil.sharingIntent(requireContext(), content);
+		AppUtil.sharingIntent(requireContext(), rawContent);
 	}
 
 	@Override

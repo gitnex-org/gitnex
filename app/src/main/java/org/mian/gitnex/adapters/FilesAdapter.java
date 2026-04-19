@@ -38,6 +38,14 @@ public class FilesAdapter extends RecyclerView.Adapter<FilesAdapter.FilesViewHol
 		this.filesListener = filesListener;
 	}
 
+	public interface FilesAdapterListener {
+		void onClickFile(RepoGetContentsList file);
+
+		void onMenuClick(RepoGetContentsList file);
+
+		void onSearchFilterCompleted(int count);
+	}
+
 	@SuppressLint("NotifyDataSetChanged")
 	public void setFiles(List<RepoGetContentsList> newList) {
 		this.originalFiles.clear();
@@ -104,12 +112,6 @@ public class FilesAdapter extends RecyclerView.Adapter<FilesAdapter.FilesViewHol
 		};
 	}
 
-	public interface FilesAdapterListener {
-		void onClickFile(RepoGetContentsList file);
-
-		void onSearchFilterCompleted(int count);
-	}
-
 	public class FilesViewHolder extends RecyclerView.ViewHolder {
 
 		private final ListFilesBinding binding;
@@ -124,6 +126,8 @@ public class FilesAdapter extends RecyclerView.Adapter<FilesAdapter.FilesViewHol
 			String type = item.getType();
 			boolean isFile = "file".equals(type);
 			boolean isDir = "dir".equals(type);
+			boolean isSymlink = "symlink".equals(type);
+			boolean isClickableFile = isFile || isSymlink;
 			Date committerDate = item.getCompatibleCommitDate();
 			boolean hasDate = committerDate != null;
 
@@ -132,7 +136,7 @@ public class FilesAdapter extends RecyclerView.Adapter<FilesAdapter.FilesViewHol
 					AppCompatResources.getDrawable(
 							context, FileIcon.getIconResource(item.getName(), type)));
 
-			if (isFile) {
+			if (isFile || isSymlink) {
 				binding.fileInfo.setVisibility(View.VISIBLE);
 				binding.fileInfo.setText(
 						FileUtils.byteCountToDisplaySize(Math.toIntExact(item.getSize())));
@@ -141,6 +145,22 @@ public class FilesAdapter extends RecyclerView.Adapter<FilesAdapter.FilesViewHol
 				binding.fileInfo.setText(context.getString(R.string.directory));
 			} else {
 				binding.fileInfo.setVisibility(View.GONE);
+			}
+
+			if (isDir) {
+				binding.ivChevron.setVisibility(View.VISIBLE);
+				binding.ivChevron.setImageResource(R.drawable.ic_chevron_right);
+				binding.ivChevron.setOnClickListener(null);
+				binding.ivChevron.setBackground(null);
+				binding.fileFrame.setOnClickListener(v -> filesListener.onClickFile(item));
+			} else if (isClickableFile) {
+				binding.ivChevron.setVisibility(View.VISIBLE);
+				binding.ivChevron.setImageResource(R.drawable.ic_dotted_menu);
+				binding.fileFrame.setOnClickListener(v -> filesListener.onClickFile(item));
+				binding.ivChevron.setOnClickListener(v -> filesListener.onMenuClick(item));
+			} else {
+				binding.ivChevron.setVisibility(View.GONE);
+				binding.fileFrame.setOnClickListener(v -> filesListener.onClickFile(item));
 			}
 
 			if (hasDate) {
@@ -156,9 +176,6 @@ public class FilesAdapter extends RecyclerView.Adapter<FilesAdapter.FilesViewHol
 			} else {
 				binding.fileDate.setVisibility(View.GONE);
 			}
-
-			binding.ivChevron.setVisibility(isDir ? View.VISIBLE : View.GONE);
-			binding.fileFrame.setOnClickListener(v -> filesListener.onClickFile(item));
 		}
 	}
 }

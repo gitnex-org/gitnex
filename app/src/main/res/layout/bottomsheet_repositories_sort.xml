@@ -4,7 +4,7 @@
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:orientation="vertical"
-    android:paddingHorizontal="@dimen/dimen24dp"
+    android:paddingHorizontal="@dimen/dimen12dp"
     android:paddingBottom="@dimen/dimen32dp">
 
     <com.google.android.material.bottomsheet.BottomSheetDragHandleView

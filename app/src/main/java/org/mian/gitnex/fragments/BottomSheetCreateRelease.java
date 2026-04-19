@@ -3,6 +3,7 @@ package org.mian.gitnex.fragments;
 import android.app.Dialog;
 import android.os.Bundle;
 import android.view.LayoutInflater;
+import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
 import androidx.annotation.NonNull;
@@ -81,6 +82,18 @@ public class BottomSheetCreateRelease extends BottomSheetDialogFragment {
 	private void setupUI() {
 		boolean hasWriteAccess =
 				repoContext.getPermissions() != null && repoContext.getPermissions().isPush();
+
+		binding.releaseContent.setOnTouchListener(
+				(v, event) -> {
+					if (event.getAction() == MotionEvent.ACTION_DOWN) {
+						v.getParent().requestDisallowInterceptTouchEvent(true);
+					} else if (event.getAction() == MotionEvent.ACTION_UP
+							|| event.getAction() == MotionEvent.ACTION_CANCEL) {
+						v.getParent().requestDisallowInterceptTouchEvent(false);
+						v.performClick();
+					}
+					return false;
+				});
 
 		binding.cardBranch.cardIcon.setImageResource(R.drawable.ic_branch);
 		binding.cardBranch.tvCardLabel.setText(R.string.branch);

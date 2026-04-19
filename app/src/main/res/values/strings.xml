@@ -667,6 +667,7 @@
     <string name="type">Type</string>
     <string name="reviewers">Reviewers</string>
     <string name="change">Change</string>
+    <string name="editor">Editor</string>
     <!-- generic copy -->
 
     <string name="exploreUsers">Explore users</string>
@@ -958,10 +959,7 @@
     <string name="wikiPageAlreadyExists">A wiki page with this title already exists</string>
     <string name="editWikiPage">Edit Wiki Page</string>
 
-    <!-- code editor -->
-    <string name="sourcePosition" translatable="false">%1$d:%2$d</string>
     <string name="codeEditor" translatable="false">Code Editor</string>
-    <string name="openInCodeEditor">Open in Code Editor</string>
 
     <!-- notes -->
     <string name="newNote">New Note</string>
@@ -1212,6 +1210,9 @@
     <string name="select_branch_error">Please select a branch</string>
     <string name="create_pull_request_with_branch">Create pull request with this branch</string>
     <string name="tap_to_upload_file">Tap to select a file</string>
+    <string name="plain_text">Plain Text</string>
+    <string name="cursor_position_format">Ln %d, Col %d</string>
+    <string name="image_load_error">Could not load image</string>
 
     <string name="time_in_moments">in moments</string>
     <string name="time_in_minute">in %d minute</string>

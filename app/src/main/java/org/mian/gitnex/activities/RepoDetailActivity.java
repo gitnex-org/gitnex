@@ -18,6 +18,7 @@ import java.util.List;
 import java.util.Objects;
 import org.gitnex.tea4j.v2.models.Repository;
 import org.mian.gitnex.R;
+import org.mian.gitnex.api.models.contents.RepoGetContentsList;
 import org.mian.gitnex.databinding.ActivityRepoDetailBinding;
 import org.mian.gitnex.fragments.BottomSheetCreateIssue;
 import org.mian.gitnex.fragments.BottomSheetCreateMilestone;
@@ -571,9 +572,16 @@ public class RepoDetailActivity extends BaseActivity
 					String branch1 = mainIntent.getStringExtra("branch");
 					repository.setBranchRef(branch1);
 
-					Intent fileIntent = repository.getIntent(this, FileViewActivity.class);
-					fileIntent.putExtra("file", mainIntent.getSerializableExtra("file"));
-					startActivity(fileIntent);
+					RepoGetContentsList file =
+							(RepoGetContentsList) mainIntent.getSerializableExtra("file");
+					if (file != null) {
+						FilesFragment filesFragment =
+								(FilesFragment)
+										getSupportFragmentManager().findFragmentByTag(TAG_FILES);
+						if (filesFragment != null) {
+							filesFragment.openViewerLinkIntent(file);
+						}
+					}
 					break;
 
 				case "dir":

@@ -4,7 +4,6 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
-    <!-- Header Card -->
     <com.google.android.material.card.MaterialCardView
         android:id="@+id/header_card"
         style="@style/Widget.Material3.CardView.Filled"
@@ -66,7 +65,7 @@
                 android:contentDescription="@string/strMarkdown"
                 android:visibility="gone"
                 app:icon="@drawable/ic_markdown"
-                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toEndOf="@id/btn_share"
                 app:layout_constraintTop_toTopOf="parent"
                 app:layout_constraintBottom_toBottomOf="parent" />
 
@@ -75,15 +74,16 @@
                 style="@style/TextAppearance.Material3.TitleSmall"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
-                android:layout_marginHorizontal="@dimen/dimen8dp"
-                android:ellipsize="end"
-                android:gravity="center"
+                android:layout_marginStart="@dimen/dimen8dp"
+                android:layout_marginEnd="@dimen/dimen8dp"
+                android:ellipsize="middle"
+                android:gravity="end"
                 android:maxLines="1"
                 android:textColor="?attr/colorOnSurfaceVariant"
-                app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintEnd_toStartOf="@id/btn_markdown"
-                app:layout_constraintStart_toEndOf="@id/btn_share"
-                app:layout_constraintTop_toTopOf="parent" />
+                app:layout_constraintStart_toEndOf="@id/btn_markdown"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
+                app:layout_constraintBottom_toBottomOf="parent" />
 
         </androidx.constraintlayout.widget.ConstraintLayout>
 
@@ -112,6 +112,28 @@
                 android:textColor="?attr/colorOnSurface" />
 
         </androidx.core.widget.NestedScrollView>
+
+        <androidx.core.widget.NestedScrollView
+            android:id="@+id/syntax_highlighted_code_scroll"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:visibility="gone"
+            android:paddingHorizontal="@dimen/dimen16dp">
+
+            <org.mian.gitnex.views.ZoomableSyntaxHighlightedArea
+                android:id="@+id/syntax_highlighted_code"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:backgroundTint="@android:color/transparent"/>
+
+        </androidx.core.widget.NestedScrollView>
+
+        <com.github.chrisbanes.photoview.PhotoView
+            android:id="@+id/photo_view"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:visibility="gone"
+            android:padding="@dimen/dimen16dp" />
 
         <androidx.core.widget.NestedScrollView
             android:id="@+id/markdown_preview_scroll"

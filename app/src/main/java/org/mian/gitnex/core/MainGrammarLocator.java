@@ -5,99 +5,66 @@ package org.mian.gitnex.core;
  */
 public class MainGrammarLocator {
 
-	public static final String DEFAULT_FALLBACK_LANGUAGE = null; // "clike";
+	public static final String DEFAULT_FALLBACK_LANGUAGE = null;
 
 	public static String fromExtension(String extension) {
-
-		switch (extension.toLowerCase()) {
-			case "b":
-			case "bf":
-				return "brainfuck";
-
-			case "c":
-			case "h":
-			case "hdl":
-				return "c";
-
-			case "clj":
-			case "cljs":
-			case "cljc":
-			case "edn":
-				return "clojure";
-
-			case "cc":
-			case "cpp":
-			case "cxx":
-			case "c++":
-			case "hh":
-			case "hpp":
-			case "hxx":
-			case "h++":
-				return "cpp";
-
-			case "cs":
-			case "csx":
-				return "csharp";
-
-			case "bash":
-			case "sh":
-			case "bsh":
-				return "sh";
-
-			case "d":
-				return "d";
-
-			case "groovy":
-			case "gradle":
-			case "gvy":
-			case "gy":
-			case "gsh":
-				return "groovy";
-
-			case "js":
-			case "cjs":
-			case "mjs":
-				return "javascript";
-
-			case "kt":
-			case "kts":
-			case "ktm":
-				return "kotlin";
-
-			case "md":
-				return "markdown";
-
-			// case "xml":
-			// case "html":
-			// case "htm":
-			case "mathml":
-			case "svg":
-				return "markup";
-
-			case "py":
-			case "pyi":
-			case "pyc":
-			case "pyd":
-			case "pyo":
-			case "pyw":
-			case "pyz":
-				return "python";
-
-			case "scala":
-			case "sc":
-				return "scala";
-
-			case "el":
-			case "lisp":
-				return "lisp";
-
-			case "yaml":
-			case "yml":
-			case "properties": // This extension doesn't correspond to YAML, but it's the next best
-				// option
-				return "yaml";
+		if (extension == null || extension.isEmpty()) {
+			return DEFAULT_FALLBACK_LANGUAGE;
 		}
 
-		return extension;
+		return switch (extension.toLowerCase()) {
+			case "b", "bf" -> "brainfuck";
+
+			case "c", "h", "hdl" -> "c";
+
+			case "clj", "cljs", "cljc", "edn" -> "clojure";
+
+			case "cc", "cpp", "cxx", "c++", "hh", "hpp", "hxx", "h++" -> "cpp";
+
+			case "cs", "csx" -> "csharp";
+
+			case "bash", "sh", "bsh", "zsh" -> "sh";
+
+			case "d" -> "d";
+
+			case "groovy", "gradle", "gvy", "gy", "gsh" -> "groovy";
+
+			case "java", "jav" -> "java";
+
+			case "js", "cjs", "mjs", "jsx" -> "javascript";
+			case "ts", "tsx" -> "typescript";
+
+			case "kt", "kts", "ktm" -> "kotlin";
+
+			case "md", "markdown" -> "markdown";
+
+			case "xml", "html", "htm", "xhtml", "mathml", "svg" -> "markup";
+
+			case "php", "php3", "php4", "php5", "php7", "php8", "phtml" -> "php";
+
+			case "py", "pyi", "pyc", "pyd", "pyo", "pyw", "pyz" -> "python";
+
+			case "rb", "rbw", "rake", "gemspec" -> "ruby";
+
+			case "rs", "rlib" -> "rust";
+
+			case "scala", "sc" -> "scala";
+
+			case "swift" -> "swift";
+
+			case "go" -> "go";
+
+			case "sql" -> "sql";
+
+			case "json" -> "json";
+
+			case "css" -> "css";
+
+			case "el", "lisp", "cl", "lsp" -> "lisp";
+
+			case "yaml", "yml", "properties" -> "yaml";
+
+			default -> extension;
+		};
 	}
 }

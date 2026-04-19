@@ -10,6 +10,7 @@ import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModelProvider;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import java.util.ArrayList;
+import org.mian.gitnex.R;
 import org.mian.gitnex.adapters.RepoActionsWorkflowsAdapter;
 import org.mian.gitnex.databinding.FragmentRepositoryActionsBinding;
 import org.mian.gitnex.helpers.Toasty;
@@ -43,7 +44,8 @@ public class RepoActionsWorkflowsFragment extends Fragment {
 	@Override
 	public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
 		super.onViewCreated(view, savedInstanceState);
-		UIHelper.applyInsets(view, null, binding.recyclerView, binding.pullToRefresh, null);
+		View dock = requireActivity().findViewById(R.id.docked_toolbar);
+		UIHelper.applyInsets(view, dock, binding.recyclerView, binding.pullToRefresh, null);
 	}
 
 	@Nullable @Override

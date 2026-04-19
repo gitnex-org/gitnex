@@ -6,6 +6,7 @@ import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
 import android.view.LayoutInflater;
+import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
 import android.webkit.MimeTypeMap;
@@ -23,7 +24,6 @@ import java.io.IOException;
 import java.io.InputStream;
 import org.mian.gitnex.R;
 import org.mian.gitnex.activities.BaseActivity;
-import org.mian.gitnex.activities.CodeEditorActivity;
 import org.mian.gitnex.databinding.BottomsheetCreateFileBinding;
 import org.mian.gitnex.helpers.AlertDialogs;
 import org.mian.gitnex.helpers.AppUIStateManager;
@@ -141,6 +141,18 @@ public class BottomSheetCreateFile extends BottomSheetDialogFragment {
 
 		updateBranchDisplay();
 
+		binding.fileContent.setOnTouchListener(
+				(v, event) -> {
+					if (event.getAction() == MotionEvent.ACTION_DOWN) {
+						v.getParent().requestDisallowInterceptTouchEvent(true);
+					} else if (event.getAction() == MotionEvent.ACTION_UP
+							|| event.getAction() == MotionEvent.ACTION_CANCEL) {
+						v.getParent().requestDisallowInterceptTouchEvent(false);
+						v.performClick();
+					}
+					return false;
+				});
+
 		switch (fileAction) {
 			case CREATE:
 				binding.sheetTitle.setText(R.string.newFileButtonCopy);
@@ -155,6 +167,7 @@ public class BottomSheetCreateFile extends BottomSheetDialogFragment {
 				}
 				binding.btnSubmit.setText(R.string.commit_changes);
 				binding.switchCreatePr.setVisibility(View.GONE);
+				binding.cardUpload.getRoot().setVisibility(View.GONE);
 				break;
 			case DELETE:
 				binding.sheetTitle.setText(R.string.deleteFile);
@@ -195,7 +208,6 @@ public class BottomSheetCreateFile extends BottomSheetDialogFragment {
 		binding.cardUpload.btnClear.setOnClickListener(v -> clearUploadedFile());
 
 		binding.btnExpand.setOnClickListener(v -> openFullScreenEditor());
-		binding.btnEditor.setOnClickListener(v -> openCodeEditor());
 		binding.btnSubmit.setOnClickListener(v -> submitAction());
 
 		binding.fileName.addTextChangedListener(
@@ -273,11 +285,15 @@ public class BottomSheetCreateFile extends BottomSheetDialogFragment {
 						: "";
 		String fileName =
 				binding.fileName.getText() != null ? binding.fileName.getText().toString() : "";
+		String extension = MimeTypeMap.getFileExtensionFromUrl(fileName);
 
-		boolean isMarkdown = fileName.toLowerCase().endsWith(".md");
+		BottomSheetFullScreenEditor.EditorMode mode =
+				fileName.endsWith(".md")
+						? BottomSheetFullScreenEditor.EditorMode.MARKDOWN
+						: BottomSheetFullScreenEditor.EditorMode.CODE;
 
 		BottomSheetFullScreenEditor editor =
-				BottomSheetFullScreenEditor.newInstance(content, repoContext, true, isMarkdown);
+				BottomSheetFullScreenEditor.newInstance(content, repoContext, mode, extension);
 
 		editor.setEditorListener(
 				newContent -> {
@@ -368,21 +384,6 @@ public class BottomSheetCreateFile extends BottomSheetDialogFragment {
 		if (fileAction == FilesViewModel.FileAction.CREATE && fileName != null) {
 			binding.commitMessage.setText(getDefaultCommitMessage(fileName));
 		}
-	}
-
-	private void openCodeEditor() {
-		String content =
-				binding.fileContent.getText() != null
-						? binding.fileContent.getText().toString()
-						: "";
-		String fileName =
-				binding.fileName.getText() != null ? binding.fileName.getText().toString() : "";
-		String extension = MimeTypeMap.getFileExtensionFromUrl(fileName);
-
-		Intent intent = new Intent(requireContext(), CodeEditorActivity.class);
-		intent.putExtra("fileExtension", extension);
-		intent.putExtra("fileContent", content);
-		codeEditorLauncher.launch(intent);
 	}
 
 	private String getDefaultCommitMessage(String fileName) {

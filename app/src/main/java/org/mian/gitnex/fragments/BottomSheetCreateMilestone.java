@@ -2,6 +2,7 @@ package org.mian.gitnex.fragments;
 
 import android.os.Bundle;
 import android.view.LayoutInflater;
+import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
 import androidx.annotation.NonNull;
@@ -73,6 +74,18 @@ public class BottomSheetCreateMilestone extends BottomSheetDialogFragment {
 	}
 
 	private void setupUI() {
+		binding.milestoneDescription.setOnTouchListener(
+				(v, event) -> {
+					if (event.getAction() == MotionEvent.ACTION_DOWN) {
+						v.getParent().requestDisallowInterceptTouchEvent(true);
+					} else if (event.getAction() == MotionEvent.ACTION_UP
+							|| event.getAction() == MotionEvent.ACTION_CANCEL) {
+						v.getParent().requestDisallowInterceptTouchEvent(false);
+						v.performClick();
+					}
+					return false;
+				});
+
 		if (milestoneToEdit != null) {
 			binding.sheetTitle.setText(R.string.edit_milestone);
 			binding.milestoneTitle.setText(milestoneToEdit.getTitle());

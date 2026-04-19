@@ -89,7 +89,8 @@ public class RepoInfoFragment extends Fragment {
 		locale = getResources().getConfiguration().getLocales().get(0);
 		viewModel = new ViewModelProvider(requireActivity()).get(RepositoryDetailsViewModel.class);
 
-		UIHelper.applyInsets(view, null, null, null, binding.repoInfoLayout);
+		View dock = requireActivity().findViewById(R.id.docked_toolbar);
+		UIHelper.applyInsets(view, dock, binding.scrollContent, null, binding.repoInfoLayout);
 
 		setupStatHeaders();
 		setupClickListeners();
