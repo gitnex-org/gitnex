@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
+    <string name="token_help">Access Token Help</string>
     <!-- menu items -->
     <string name="navMyRepos">Мої репозиторії</string>
     <string name="navStarredRepos">Обрані Репозиторії</string>
@@ -40,7 +41,6 @@
     <string name="repoDescription">Демо опис</string>
     <string name="orgName">Демо організація</string>
     <string name="newCreateButtonCopy">Створити</string>
-    <string name="newUpdateButtonCopy">Оновити</string>
     <string name="newRepoTintCopy">Назва репозиторія</string>
     <string name="newRepoDescTintCopy">Опис репозиторія</string>
     <string name="newRepoPrivateCopy">Приватний</string>
@@ -62,10 +62,14 @@
     <string name="malformedJson">Отримано неправильний JSON. Відповідь сервера не вдала</string>
     <string name="emptyFieldURL">Потрібен URL екземпляра</string>
     <string name="emptyFieldUsername">Ім\'я користувача є обов\'язковим</string>
+    <string name="emptyFieldName">Name is required</string>
     <string name="emptyFieldPassword">Пароль є обов\'язковим</string>
     <string name="protocolEmptyError">Потрібен протокол</string>
     <string name="instanceHelperText">Введіть URL-адресу без http або https. Наприклад: codeberg.org</string>
     <string name="checkNetConnection">Неможливо отримати доступ до мережі, будь ласка, перевірте підключення до Інтернету</string>
+    <string name="network_error">Network error</string>
+    <string name="failed_diff">Failed to load the diff</string>
+    <string name="no_changes_found">No changes found for this file</string>
     <string name="repoNameErrorEmpty">Назва репозиторія порожня</string>
     <string name="repoNameErrorInvalid">Назва репозиторія некоректна. [a&#8211;z A&#8211;Z 0&#8211;9 &#8211; _]</string>
     <string name="repoNameErrorReservedName">Назва репозиторію зарезервовано</string>
@@ -82,28 +86,34 @@
     <string name="orgExistsError">Організація вже існує</string>
     <string name="diffStatistics">%1$s додава(нь)ння та %2$s видале(нь)ння</string>
     <plurals name="repoStars">
-        <item quantity="one">%1$s зірка</item>
-        <item quantity="few">%1$s зірок</item>
-        <item quantity="many">%1$s зірок</item>
-        <item quantity="other">%1$s зірок</item>
+        <item quantity="one">Star</item>
+        <item quantity="few">Stars</item>
+        <item quantity="many">Stars</item>
+        <item quantity="other">Stars</item>
     </plurals>
     <plurals name="repoWatchers">
-        <item quantity="one">%1$s спостерігач</item>
-        <item quantity="few">%1$s спостерігачів</item>
-        <item quantity="many">%1$s спостерігачів</item>
-        <item quantity="other">%1$s спостерігачів</item>
+        <item quantity="one">Watcher</item>
+        <item quantity="few">Watchers</item>
+        <item quantity="many">Watchers</item>
+        <item quantity="other">Watchers</item>
     </plurals>
     <plurals name="repoForks">
-        <item quantity="one">%1$s відгалуження</item>
-        <item quantity="few">%1$s відгалужень</item>
-        <item quantity="many">%1$s відгалужень</item>
-        <item quantity="other">%1$s відгалужень</item>
+        <item quantity="one">Fork</item>
+        <item quantity="few">Forks</item>
+        <item quantity="many">Forks</item>
+        <item quantity="other">Forks</item>
     </plurals>
     <plurals name="repoPullRequests">
-        <item quantity="one">%1$s відкритий запит</item>
-        <item quantity="few">%1$s відкриті запити</item>
-        <item quantity="many">%1$s відкриті запити</item>
-        <item quantity="other">%1$s відкриті запити</item>
+        <item quantity="one">Pull request</item>
+        <item quantity="few">Pull requests</item>
+        <item quantity="many">Pull requests</item>
+        <item quantity="other">Pull requests</item>
+    </plurals>
+    <plurals name="repoOpenIssues">
+        <item quantity="one">Issue</item>
+        <item quantity="few">Issues</item>
+        <item quantity="many">Issues</item>
+        <item quantity="other">Issues</item>
     </plurals>
     <string name="genericApiError">Вузол повернув помилку. Код %d</string>
     <string name="tabTextInfo">Подробиці</string>
@@ -135,7 +145,6 @@
     <string name="releaseDownloadText">Завантажити</string>
     <string name="releasePublishedBy">Опубліковано @%1$s</string>
     <string name="noReleaseBodyContent">Видавець не надає примітки до випуску.</string>
-    <string name="newMilestoneTitle">Назва</string>
     <string name="newMilestoneDueDate">Термін виконання</string>
     <string name="milestoneNameErrorEmpty">Назва етапу порожня</string>
     <string name="milestoneDescError">Довжина опису етапу перевищує 255 символів</string>
@@ -151,13 +160,17 @@
     <string name="newIssueTitle">Назва</string>
     <string name="newIssueAssigneesListTitle">Відповідальні</string>
     <string name="newIssueDueDateTitle">Термін виконання</string>
-    <string name="newIssueMilestoneTitle">Етап</string>
     <string name="newIssueLabelsTitle">Мітки</string>
     <string name="issueTitleEmpty">Назва проблеми порожня</string>
     <string name="issueDescriptionEmpty">Опис проблеми порожній</string>
     <string name="issueCreated">Нову проблему створено успішно</string>
     <string name="issueCreatedNoMilestone">Етап відсутній</string>
     <string name="noAssigneesFound">Уповноважених не знайдено</string>
+    <string name="delete_milestone">&gt;Delete milestone</string>
+    <string name="milestone_delete_confirm_text">Are you sure you want to delete milestone %1$s?</string>
+    <string name="close_milestone_msg">You are about to close milestone %1$s. Press Close to continue.</string>
+    <string name="open_milestone_msg">This action will reopen milestone %1$s. Press Open to continue.</string>
+    <string name="milestone_deleted">Milestone deleted</string>
     <!-- settings -->
     <string name="settingsLanguageHeaderText">Переклад</string>
     <string name="settingsLanguageSystem">Система</string>
@@ -189,6 +202,8 @@
     <string name="cacheSizeDataSelectionHeaderText">Розмір кешу даних</string>
     <string name="cacheSizeImagesDialogHeader">Розмір кешу зображень</string>
     <string name="cacheSizeImagesSelectionHeaderText">Розмір кешу зображень</string>
+    <string name="settingsAPIRequestTimeoutHeader">API Request Timeout</string>
+    <string name="settingsAPIRequestTimeoutHintText">Maximum amount of time to wait for a server response.</string>
     <string name="clearCacheSelectionHeaderText">Очистити кеш</string>
     <string name="clearCacheDialogHeader">Очистити кеш?</string>
     <string name="clearCacheDialogMessage">Буде видалено всі дані кешу, включаючи файли та зображення.\n\nПродовжити видалення?</string>
@@ -230,9 +245,10 @@
     <string name="labelNameError">Назва мітки некоректна</string>
     <string name="labelCreated">Label created</string>
     <string name="labelUpdated">Label updated</string>
+    <string name="labelDeleteTitle">Delete label</string>
+    <string name="labelDeleteConfirmText">Are you sure you want to delete label %1$s?</string>
     <string name="labelMenuContentDesc">Опис</string>
     <string name="labelDeleteText">Мітку видалено</string>
-    <string name="selectBranchError">Select a branch for release</string>
     <string name="alertDialogTokenRevokedTitle">Помилка авторизації</string>
     <string name="alertDialogTokenRevokedMessage">It seems that the Access Token is revoked OR you are not allowed to see these contents.\n\nIn case of revoked Token, please update the account.</string>
     <string name="labelDeleteMessage">Ви дійсно бажаєте видалити цю мітку?</string>
@@ -242,11 +258,11 @@
     <string name="teamTitle">Назва команди</string>
     <string name="teamDescription">Опис команди</string>
     <string name="teamPermissions">Дозволи</string>
-    <string name="teamPermissionNone">• Members of this team do not have any permissions.</string>
-    <string name="teamPermissionRead">• Members of this team can view team repositories.</string>
-    <string name="teamPermissionWrite">• Members of this team can view and push to team repositories.</string>
-    <string name="teamPermissionAdmin">• Team members can push to and pull from team repositories and add collaborators to them.</string>
-    <string name="teamPermissionOwner">• Members of this team have owner permissions.</string>
+    <string name="teamPermissionNone">Members of this team do not have any permissions.</string>
+    <string name="teamPermissionRead">Members of this team can view team repositories.</string>
+    <string name="teamPermissionWrite">Members of this team can view and push to team repositories.</string>
+    <string name="teamPermissionAdmin">Team members can push to and pull from team repositories and add collaborators to them.</string>
+    <string name="teamPermissionOwner">Members of this team have owner permissions.</string>
     <string name="teamShowAll">show all</string>
     <string name="orgMember">Учасники організації</string>
     <string name="orgTeamMembers">Учасники команд організації</string>
@@ -316,6 +332,8 @@
     <string name="sshKey">SSH Key</string>
     <string name="sshKeySuccess">New SSH key added successfully</string>
     <string name="sshKeyError">Invalid SSH key or SSH key already exists</string>
+    <string name="sshKeyDeleteSuccess">SSH key was deleted successfully</string>
+    <string name="deleteSshKeyPopupText">Are you sure you want to delete %1$s SSH key?</string>
     <!-- account settings -->
     <!-- single issue section -->
     <string name="singleIssueEditLabels">Додати / Видалити мітки</string>
@@ -349,7 +367,7 @@
     <string name="userPassword">Пароль</string>
     <string name="userInvalidFullName">Неприпустиме повне ім\'я</string>
     <string name="userInvalidUserName">Некоректне ім’я користувача</string>
-    <string name="userInvalidEmail">Адреса Email некоректна</string>
+    <string name="userInvalidEmail">Invalid email</string>
     <string name="userCreatedText">Успішно додано нового користувача</string>
     <string name="userExistsError">Користувач вже існує</string>
     <!-- create user -->
@@ -358,18 +376,25 @@
     <string name="editIssueSuccessMessage">Проблему оновлено</string>
     <!-- edit issue -->
     <!-- release -->
-    <string name="createRelease">Новий реліз</string>
     <string name="releaseTagNameText">Назва тегу</string>
     <string name="releaseTitleText">Назва</string>
     <string name="releaseContentText">Вміст</string>
     <string name="releaseTypeText">Позначити як пре-реліз</string>
-    <string name="releaseBranchText">Оберіть гілку</string>
     <string name="releaseDraftText">Чернетка</string>
     <string name="tagNameErrorEmpty">Назва тегу порожня</string>
     <string name="titleErrorEmpty">Назва порожня</string>
     <string name="releaseCreatedText">Новий реліз створено</string>
     <string name="deleteReleaseConfirmation">Do you really want to delete this release?</string>
     <string name="releaseDeleted">Release deleted</string>
+    <string name="tagNameConflictError">Tag name already exists</string>
+    <string name="editReleaseSuccessMessage">Release updated successfully</string>
+    <string name="createRelease">Create Release</string>
+    <string name="createTag">Create Tag</string>
+    <string name="editRelease">Edit Release</string>
+    <string name="selectBranchError">Select a branch for release/tag</string>
+    <string name="add_release_branch">Tap to select a branch</string>
+    <string name="add_reviewers">Tap to select reviewers</string>
+    <string name="create_release_tag">Create Release/Tag</string>
     <!-- release -->
     <string name="openWebRepo">Відкрити в браузері</string>
     <string name="repoStargazersInMenu">Зацікавлені</string>
@@ -378,6 +403,7 @@
     <string name="noDataDescription">Не знайдено опис</string>
     <string name="noDataBio">No bio found</string>
     <string name="noDataLocation">Місцезнаходження не знайдено</string>
+    <string name="noDataLocale">No locale found</string>
     <string name="starMember">Зацікавлений</string>
     <string name="watcherMember">Спостерігач</string>
     <string name="zipArchiveDownloadReleasesTab">Вихідний код (ZIP)</string>
@@ -389,7 +415,7 @@
     <string name="newFileButtonCopy">Створити новий файл</string>
     <string name="newFileNameHintMessage">з директорією: app/test.md</string>
     <string name="newFileMessageTintCopy">Повідомлення коміту</string>
-    <string name="newFileInvalidBranchName">Некоректне ім\'я гілки, дозволені символи: &#8211;, a&#8211;z, 0&#8211;9</string>
+    <string name="newFileInvalidBranchName">Invalid branch name, may only contain a–z, 0–9, hyphens (-), underscores (_), forward slashes (/), and periods (.)</string>
     <string name="newFileCommitMessageError">Повідомлення коміту задовге</string>
     <string name="newFileSuccessMessage">Новий файл створено</string>
     <string name="newFileBranches">Select or create a branch</string>
@@ -405,6 +431,8 @@
     <string name="branch_error_repo_locked">Repository is locked</string>
     <string name="create_branch">Create Branch</string>
     <string name="default_branch">Default Branch</string>
+    <string name="commit_message_empty">Commit message cannot be empty</string>
+    <string name="content_empty">File content cannot be empty</string>
     <string name="strFilter">Фільтр</string>
     <string name="strMarkdown">Markdown</string>
     <string name="copyIssueUrl">Скопіювати URL проблеми</string>
@@ -511,6 +539,37 @@
     <string name="mirrors">Mirrors</string>
     <string name="stars">Stars</string>
     <string name="template">Template</string>
+    <string name="accounts">Accounts</string>
+    <string name="copied">Copied</string>
+    <string name="enabled">Enabled</string>
+    <string name="disabled">Disabled</string>
+    <string name="visibility">Visibility</string>
+    <string name="limited">Limited</string>
+    <string name="clear">Clear</string>
+    <string name="updated">Updated</string>
+    <string name="created">Created</string>
+    <string name="contributions">Contributions</string>
+    <string name="write">Write</string>
+    <string name="code">Code</string>
+    <string name="topics">Topics</string>
+    <string name="merged">Merged</string>
+    <string name="milestone">Milestone</string>
+    <string name="directory">Directory</string>
+    <string name="apply">Apply</string>
+    <string name="state">State</string>
+    <string name="update">Update</string>
+    <string name="select">Select</string>
+    <string name="collapse">Collapse</string>
+    <string name="fullscreen">Fullscreen</string>
+    <string name="type">Type</string>
+    <string name="reviewers">Reviewers</string>
+    <string name="change">Change</string>
+    <string name="editor">Editor</string>
+    <string name="mode">Mode</string>
+    <string name="source">Source</string>
+    <string name="collaborative">Collaborative</string>
+    <string name="mirror">Mirror</string>
+    <string name="fork">Fork</string>
     <!-- generic copy -->
     <string name="exploreUsers">Explore users</string>
     <string name="exploreIssues">Explore issues</string>
@@ -553,6 +612,8 @@
     <string name="mergeNotAllowed">Not allowed to merge [Reason: Does not have enough approvals]</string>
     <string name="deleteBranch">Delete Branch</string>
     <string name="switch_branch">Switch Branch</string>
+    <string name="allow_maintainer_edit">Allow maintainers to edit this pr</string>
+    <string name="edit_pr">Edit Pull Request</string>
     <string name="waitLoadingDownloadFile">Зачекайте, поки файл завантажиться</string>
     <string name="downloadFileSaved">Файл успішно збережений</string>
     <string name="excludeFilesInFileViewer">This file type/size is not supported in file viewer. You can download it from the menu.</string>
@@ -565,8 +626,9 @@
     <string name="shareRepository">Поділитися репозиторієм</string>
     <string name="createRepository">Створити репозиторій</string>
     <string name="commitTitle">Commits</string>
-    <string name="commitAuthoredByAndCommittedByWhen"><![CDATA[<b>%1$s</b> authored and <b>%2$s</b> committed %3$s]]></string>
-    <string name="commitCommittedByWhen"><![CDATA[<b>%1$s</b> committed %2$s]]></string>
+    <string name="commitAuthoredByAndCommittedByWhen">%1$s authored and %2$s committed on %3$s</string>
+    <string name="commitCommittedByWhen">%1$s committed on %2$s</string>
+    <string name="commitAuthoredAndCommitted">%1$s authored and committed on %2$s</string>
     <string name="viewCommits">Перегляд змін</string>
     <!-- Memorizing Trust Manager -->
     <string name="mtmNotification">Перевірка сертифіката</string>
@@ -657,6 +719,7 @@
     <string name="isUnread">Unread</string>
     <string name="repoSettingsTitle">Repository Settings</string>
     <string name="repoSettingsEditProperties">Edit Properties</string>
+    <string name="repoSettingsEditPropertiesHint">Change name, description, visibility and features</string>
     <string name="repoSettingsDelete">Delete Repository</string>
     <string name="repoSettingsDeleteHint">Be careful, this operation CANNOT be undone!</string>
     <string name="repoPropertiesTemplate">Set as Template</string>
@@ -671,14 +734,15 @@
     <string name="repoPropertiesEnableSquash">Enable Squash and Merge</string>
     <string name="repoPropertiesEnableForceMerge">Enable Rebase with Merge Commits (&#8212;&#8212;no-ff)</string>
     <string name="repoPropertiesSaveSuccess">Repository properties updated successfully</string>
-    <string name="repoSettingsDeleteDescription">Things to know before deletion:\n\n- This operation CANNOT be undone.\n- This operation will permanently delete the repository including code, issues, comments, wiki data and collaborator settings.\n\nEnter the repository name as confirmation</string>
+    <string name="repoSettingsDeleteDescription">Things to know before deletion:\n\n- This operation CANNOT be undone.\n- This operation will permanently delete the repository including code, issues, comments, wiki data and collaborator settings.</string>
+    <string name="typeRepoNameToConfirm">Type the repository name to confirm</string>
     <string name="repoSettingsDeleteError">Repository name does not match</string>
     <string name="repoDeletionSuccess">Repository deleted successfully</string>
     <string name="repoSettingsTransferOwnership">Transfer Ownership</string>
     <string name="repoSettingsTransferOwnershipHint">Transfer this repository to a user or to an organization for which you have administrator rights</string>
     <string name="repoSettingsTransferOwnershipDescription">Things to know before transfer:\n\n- You will lose access to the repository if you transfer it to an individual user.\n- You will keep access to the repository if you transfer it to an organization that you (co-)own.\n\nEnter the repository name as confirmation</string>
     <string name="repoTransferText">Perform Transfer</string>
-    <string name="repoTransferOwnerText">New Owner</string>
+    <string name="repoTransferOwnerText">New Owner Username</string>
     <string name="repoTransferSuccess">Repository transferred successfully</string>
     <string name="repoTransferOwnerError">New owner is required</string>
     <string name="repoTransferError">There is a problem with the owner name. Make sure that the new owner exists</string>
@@ -734,7 +798,7 @@
     <string name="userAvatar">Avatar</string>
     <string name="tags">Tags</string>
     <string name="releasesTags">Releases/Tags</string>
-    <string name="create_tag">Create Tag Only</string>
+    <string name="create_tag">Tag Only</string>
     <string name="tagCreated">Tag created</string>
     <string name="asRef">Use as reference</string>
     <string name="deleteTagConfirmation">Do you really want to delete this tag?</string>
@@ -747,7 +811,7 @@
     <string name="followSystemBlack">Follow system (Light/Pitch Black)</string>
     <string name="dynamicColorsFollowSystem">Dynamic colors - Follow system (Light/Dark)</string>
     <string name="codebergDark">Codeberg (Dark)</string>
-    <string name="repoForkOf">Fork of: %s</string>
+    <string name="repoForkOf">This repository is fork of %s.</string>
     <string name="adoptRepo">Adopt</string>
     <string name="repoAdopted">Adopted repository %s</string>
     <string name="unadoptedRepos">Unadopted Repositories</string>
@@ -755,15 +819,15 @@
     <string name="commits">Commits</string>
     <!-- wiki -->
     <string name="wiki">Wiki</string>
-    <string name="wikiAuthor"><![CDATA[<b>%1$s</b> updated %2$s]]></string>
+    <string name="wikiAuthor">%1$s updated %2$s</string>
     <string name="deleteWikiPageMessage">Do you really want to delete %s?</string>
     <string name="wikiPageDeleted">Wiki page deleted successfully</string>
     <string name="wikiPageNameAndContentError">Page name and page content can\'t be empty</string>
     <string name="createWikiPage">Create Wiki Page</string>
     <string name="wikiUpdated">Wiki page updated successfully</string>
     <string name="wikiCreated">Wiki page created successfully</string>
-    <!-- code editor -->
-    <string name="openInCodeEditor">Open in Code Editor</string>
+    <string name="wikiPageAlreadyExists">A wiki page with this title already exists</string>
+    <string name="editWikiPage">Edit Wiki Page</string>
     <!-- notes -->
     <string name="newNote">New Note</string>
     <string name="editNote">Edit Note</string>
@@ -816,7 +880,7 @@
     <string name="timelineBranchDeleted">%1$s deleted branch %2$s %3$s</string>
     <string name="timelineTimeTrackingStart">%1$s started working %2$s</string>
     <string name="timelineTimeTrackingStop">%1$s stopped time tracking %2$s</string>
-    <string name="timelineTimeTrackingCancel">%1$s cancelled time tracking %2$s</string>
+    <string name="timelineTimeTrackingCancel">%1$s canceled time tracking %2$s</string>
     <string name="timelineTimeTrackingAddManualTime">%1$s added spent time %2$s %3$s</string>
     <string name="timelineTimeTrackingDeleteManualTime">%1$s deleted spent time %2$s %3$s</string>
     <string name="timelineChangeIssueRef">%1$s added reference %2$s %3$s</string>
@@ -857,6 +921,8 @@
     <string name="attachment">Attachment</string>
     <string name="attachments">Attachments</string>
     <string name="attachmentsSaveError">An issue was created but cannot process attachments at this time. Check the server logs for more details.</string>
+    <string name="issueCreatedWithAttachments">Issue created with attachments</string>
+    <string name="attachmentTypeNotSupported">File type .%s may not be supported by the server</string>
     <string name="search_matches_found">%1$d matches found</string>
     <string name="search_no_matches">No matches found</string>
     <string name="heatmap_contribution">%1$d contributions on %2$s</string>
@@ -924,4 +990,106 @@
     <string name="proxy_creds_required_msg">Please provide both username and password or leave both empty</string>
     <string name="url_prompt_title">Show URL confirmation dialog</string>
     <string name="url_prompt_description">Show a confirmation dialog before opening external links in Markdown rendered contents</string>
+    <string name="gitignore_template">Gitignore Template</string>
+    <string name="no_template">No template</string>
+    <string name="no_license">No license</string>
+    <string name="empty_state_title">Nothing here</string>
+    <string name="empty_state_desc">There is no data to display at the moment.</string>
+    <string name="good_morning">Good morning</string>
+    <string name="good_afternoon">Good afternoon</string>
+    <string name="good_evening">Good evening</string>
+    <string name="dashboard_most_visited_repos_sub_title">View the repositories you visit most often</string>
+    <string name="dashboard_notes_sub_title">Create and manage personal notes, and attach them to issues</string>
+    <string name="dashboard_explore_sub_title">Explore public repositories, issues, organizations, and users</string>
+    <string name="forked_repository">forked repository</string>
+    <string name="mirrored_repository">mirrored repository</string>
+    <string name="copied_to_clipboard">Copied to clipboard</string>
+    <string name="adminUsersSubtext">Manage all system accounts and users</string>
+    <string name="adminCronSubtext">View and execute system scheduled maintenance tasks</string>
+    <string name="unadoptedReposSubtext">Search and claim repositories found on disk</string>
+    <string name="repoSettingsSubtext">View global repository and LFS settings</string>
+    <string name="send_welcome_email">Send welcome email</string>
+    <string name="must_change_password">Must change password</string>
+    <string name="restricted_account">Restricted account</string>
+    <string name="email_username_pw_required">Email, username, and password are required</string>
+    <string name="choose_image">Choose image</string>
+    <string name="userFollowed">You are now following %s</string>
+    <string name="userUnFollowed">Stopped following %s</string>
+    <string name="userInvalidWebsite">Please enter a valid URL</string>
+    <string name="update_avatar">Update profile avatar</string>
+    <string name="avatar_preview_hint">This is a preview of your new profile picture</string>
+    <string name="external_issues">External issues</string>
+    <string name="external_wiki">External wiki</string>
+    <string name="add_team_member">Add Team Member</string>
+    <string name="add_team_repo">Add Team Repository</string>
+    <string name="repo_admin_change_team_access">Repository admin can change team access</string>
+    <string name="select_color">Select Color</string>
+    <string name="labelColorHex">Hex Color</string>
+    <string name="invalid_color">Invalid color code</string>
+    <string name="invalid_length">Must be 6 characters</string>
+    <string name="create_pr">Create Pull Request</string>
+    <string name="search_filter">Search &amp; filter</string>
+    <string name="create_issue">Create Issue</string>
+    <string name="search_repos">Search Repositories</string>
+    <string name="dashboard_search_repos_sub_title">Search within your repositories with filters for more precise results</string>
+    <string name="edit_milestone">Edit Milestone</string>
+    <string name="add_labels">Tap to add labels</string>
+    <string name="add_milestone">Tap to add milestone</string>
+    <string name="add_assignees">Tap to assign assignees</string>
+    <string name="add_due_date">Tap to add due date</string>
+    <string name="add_attachments">Tap to add attachments</string>
+    <string name="no_attachments">No attachments</string>
+    <string name="attachment_limit_count">Maximum %d files allowed</string>
+    <string name="attachment_limit_size">File exceeds %s limit</string>
+    <string name="cannotAddSelfAsReviewer">You cannot add yourself as a reviewer</string>
+    <string name="deleteVariableConfirmation">Are you sure you want to delete this variable? This action cannot be undone.</string>
+    <string name="variable_deleted">Variable deleted successfully</string>
+    <string name="file_conflict_error">A file with this name already exists</string>
+    <string name="delete_file_info">This will stage the file for deletion in the selected branch.</string>
+    <string name="upload_file">Upload file</string>
+    <string name="binary_file_message">Binary file - will be uploaded as-is</string>
+    <string name="commit_new_file">Commit File</string>
+    <string name="commit_changes">Commit Changes</string>
+    <string name="commit_deletion">Commit Deletion</string>
+    <string name="large_file_warning">This file is large and may take time to upload</string>
+    <string name="file_read_error">Could not read file content</string>
+    <string name="update_filename">Update %s</string>
+    <string name="delete_filename">Delete %s</string>
+    <string name="file_name_empty">File name cannot be empty</string>
+    <string name="select_branch_error">Please select a branch</string>
+    <string name="create_pull_request_with_branch">Create pull request with this branch</string>
+    <string name="tap_to_upload_file">Tap to select a file</string>
+    <string name="plain_text">Plain Text</string>
+    <string name="cursor_position_format">Ln %d, Col %d</string>
+    <string name="image_load_error">Could not load image</string>
+    <string name="invalid_user">Invalid user</string>
+    <string name="dashboard_my_prs_sub_title">Browse and manage all your pull requests with search and filters</string>
+    <string name="review_requested">Review requested</string>
+    <string name="reviewed_by_me">Reviewed by me</string>
+    <string name="enter_version">Enter Instance Version</string>
+    <string name="version_required_explanation">Unable to detect server version automatically. Please enter the version manually in the format shown below.</string>
+    <string name="save_and_continue">Save &amp; Continue</string>
+    <string name="invalid_version_format">Invalid version format. Please use format like 1.26.1</string>
+    <string name="time_in_moments">in moments</string>
+    <string name="time_in_minute">in %d minute</string>
+    <string name="time_in_minutes">in %d minutes</string>
+    <string name="time_in_hour">in %d hour</string>
+    <string name="time_in_hours">in %d hours</string>
+    <string name="time_in_day">in %d day</string>
+    <string name="time_in_days">in %d days</string>
+    <string name="time_in_month">in %d month</string>
+    <string name="time_in_months">in %d months</string>
+    <string name="time_in_year">in %d year</string>
+    <string name="time_in_years">in %d years</string>
+    <string name="time_moments_ago">moments ago</string>
+    <string name="time_minute_ago">%d minute ago</string>
+    <string name="time_minutes_ago">%d minutes ago</string>
+    <string name="time_hour_ago">%d hour ago</string>
+    <string name="time_hours_ago">%d hours ago</string>
+    <string name="time_day_ago">%d day ago</string>
+    <string name="time_days_ago">%d days ago</string>
+    <string name="time_month_ago">%d month ago</string>
+    <string name="time_months_ago">%d months ago</string>
+    <string name="time_year_ago">%d year ago</string>
+    <string name="time_years_ago">%d years ago</string>
 </resources>

@@ -1,0 +1,5 @@
+13.0.0-rc2
+
+Release notes will be published with the stable release.
+
+This is a MAJOR release in terms of features and UI changes. The entire UI has been revamped, but it is still a work in progress (WIP).

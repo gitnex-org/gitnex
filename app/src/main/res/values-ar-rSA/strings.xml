@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
+    <string name="token_help">Access Token Help</string>
     <!-- menu items -->
     <string name="navMyRepos">مستودعاتي</string>
     <string name="navStarredRepos">المستودعات المفضلة</string>
@@ -40,7 +41,6 @@
     <string name="repoDescription">مثال عن الوصف</string>
     <string name="orgName">Demo organization</string>
     <string name="newCreateButtonCopy">انشئ</string>
-    <string name="newUpdateButtonCopy">تحديث</string>
     <string name="newRepoTintCopy">اسم المستودع</string>
     <string name="newRepoDescTintCopy">وصف المستودَع</string>
     <string name="newRepoPrivateCopy">خاص</string>
@@ -62,11 +62,15 @@
     <string name="malformedJson">أُستلم JSON غير صحيح. لم تكن استجابة الخادم ناجحة</string>
     <string name="emptyFieldURL">عنوان URL للمثيل مطلوب</string>
     <string name="emptyFieldUsername">اسم المستخدم مطلوب</string>
+    <string name="emptyFieldName">Name is required</string>
     <string name="emptyFieldPassword">كلمة المرور مطلوبة</string>
     <string name="protocolEmptyError">البروتوكول مطلوب</string>
     <string name="instanceHelperText">أدخل العنوان بدون http أو https. مثل:
 Codeberg.org</string>
     <string name="checkNetConnection">لا يمكن الوصول إلى الشبكة، رجاءً تحقق اتصالك بالإنترنت</string>
+    <string name="network_error">Network error</string>
+    <string name="failed_diff">Failed to load the diff</string>
+    <string name="no_changes_found">No changes found for this file</string>
     <string name="repoNameErrorEmpty">اسم المستودع فارغ</string>
     <string name="repoNameErrorInvalid">اسم المستودع غير صالح. [a&#8211;z A&#8211;Z 0&#8211;9 &#8211; _]</string>
     <string name="repoNameErrorReservedName">اسم المستودع محجوز</string>
@@ -83,36 +87,44 @@ Codeberg.org</string>
     <string name="orgExistsError">المنظمة موجودة مسبقاً</string>
     <string name="diffStatistics">%1$s إضافة (إضافات) و %2$s حذف (محذوفات)</string>
     <plurals name="repoStars">
-        <item quantity="zero">%1$s stars</item>
-        <item quantity="one">%1$s star</item>
-        <item quantity="two">%1$s stars</item>
-        <item quantity="few">%1$s stars</item>
-        <item quantity="many">%1$s stars</item>
-        <item quantity="other">%1$s stars</item>
+        <item quantity="zero">Stars</item>
+        <item quantity="one">Star</item>
+        <item quantity="two">Stars</item>
+        <item quantity="few">Stars</item>
+        <item quantity="many">Stars</item>
+        <item quantity="other">Stars</item>
     </plurals>
     <plurals name="repoWatchers">
-        <item quantity="zero">%1$s watchers</item>
-        <item quantity="one">%1$s watcher</item>
-        <item quantity="two">%1$s watchers</item>
-        <item quantity="few">%1$s watchers</item>
-        <item quantity="many">%1$s watchers</item>
-        <item quantity="other">%1$s watchers</item>
+        <item quantity="zero">Watchers</item>
+        <item quantity="one">Watcher</item>
+        <item quantity="two">Watchers</item>
+        <item quantity="few">Watchers</item>
+        <item quantity="many">Watchers</item>
+        <item quantity="other">Watchers</item>
     </plurals>
     <plurals name="repoForks">
-        <item quantity="zero">%1$s forks</item>
-        <item quantity="one">%1$s fork</item>
-        <item quantity="two">%1$s forks</item>
-        <item quantity="few">%1$s forks</item>
-        <item quantity="many">%1$s forks</item>
-        <item quantity="other">%1$s forks</item>
+        <item quantity="zero">Forks</item>
+        <item quantity="one">Fork</item>
+        <item quantity="two">Forks</item>
+        <item quantity="few">Forks</item>
+        <item quantity="many">Forks</item>
+        <item quantity="other">Forks</item>
     </plurals>
     <plurals name="repoPullRequests">
-        <item quantity="zero">%1$s open pull requests</item>
-        <item quantity="one">%1$s open pull request</item>
-        <item quantity="two">%1$s open pull requests</item>
-        <item quantity="few">%1$s open pull requests</item>
-        <item quantity="many">%1$s open pull requests</item>
-        <item quantity="other">%1$s open pull requests</item>
+        <item quantity="zero">Pull requests</item>
+        <item quantity="one">Pull request</item>
+        <item quantity="two">Pull requests</item>
+        <item quantity="few">Pull requests</item>
+        <item quantity="many">Pull requests</item>
+        <item quantity="other">Pull requests</item>
+    </plurals>
+    <plurals name="repoOpenIssues">
+        <item quantity="zero">Issues</item>
+        <item quantity="one">Issue</item>
+        <item quantity="two">Issues</item>
+        <item quantity="few">Issues</item>
+        <item quantity="many">Issues</item>
+        <item quantity="other">Issues</item>
     </plurals>
     <string name="genericApiError">أرجع المثيل خطأ. الرمز %d</string>
     <string name="tabTextInfo">التفاصيل</string>
@@ -144,7 +156,6 @@ Codeberg.org</string>
     <string name="releaseDownloadText">التنزيلات</string>
     <string name="releasePublishedBy">نُشِر بواسطة @%1$s</string>
     <string name="noReleaseBodyContent">لم توفر ملاحظات الإصدار من قبل الناشر.</string>
-    <string name="newMilestoneTitle">العنوان</string>
     <string name="newMilestoneDueDate">تاريخ الإكمال</string>
     <string name="milestoneNameErrorEmpty">اسم المرحلة فارغ</string>
     <string name="milestoneDescError">تجاوز وصف المرحلة عدد الحروف الأقصى 255 حرفاً</string>
@@ -160,13 +171,17 @@ Codeberg.org</string>
     <string name="newIssueTitle">العنوان</string>
     <string name="newIssueAssigneesListTitle">الموكل عليهم</string>
     <string name="newIssueDueDateTitle">تاريخ الإكمال</string>
-    <string name="newIssueMilestoneTitle">المرحلة</string>
     <string name="newIssueLabelsTitle">الأوسمة</string>
     <string name="issueTitleEmpty">اسم القضية فارغ</string>
     <string name="issueDescriptionEmpty">وصف القضية فارغ</string>
     <string name="issueCreated">أُنشئت القضية الجديدة بنجاح</string>
     <string name="issueCreatedNoMilestone">لا يوجد مراحل</string>
     <string name="noAssigneesFound">لا يوجد أشخاص موكلين</string>
+    <string name="delete_milestone">&gt;Delete milestone</string>
+    <string name="milestone_delete_confirm_text">Are you sure you want to delete milestone %1$s?</string>
+    <string name="close_milestone_msg">You are about to close milestone %1$s. Press Close to continue.</string>
+    <string name="open_milestone_msg">This action will reopen milestone %1$s. Press Open to continue.</string>
+    <string name="milestone_deleted">Milestone deleted</string>
     <!-- settings -->
     <string name="settingsLanguageHeaderText">الترجمة</string>
     <string name="settingsLanguageSystem">اِستعمال لغة النظام</string>
@@ -198,6 +213,8 @@ Codeberg.org</string>
     <string name="cacheSizeDataSelectionHeaderText">حجم الذاكرة المؤقتة</string>
     <string name="cacheSizeImagesDialogHeader">حجم الذاكرة المؤقتة للصور</string>
     <string name="cacheSizeImagesSelectionHeaderText">حجم التخزين المؤقت للصور</string>
+    <string name="settingsAPIRequestTimeoutHeader">API Request Timeout</string>
+    <string name="settingsAPIRequestTimeoutHintText">Maximum amount of time to wait for a server response.</string>
     <string name="clearCacheSelectionHeaderText">مسح التخزين المؤقت</string>
     <string name="clearCacheDialogHeader">مسح التخزين المؤقت؟</string>
     <string name="clearCacheDialogMessage">سيحذف هذا كل البيانات المؤقتة متضمنةً الملفات والصور.\n\n هل تريد إكمال الحذف؟</string>
@@ -239,9 +256,10 @@ Codeberg.org</string>
     <string name="labelNameError">اسم الوسم غير صالح</string>
     <string name="labelCreated">أُنشئ الوسم</string>
     <string name="labelUpdated">حُدِّث الوسم</string>
+    <string name="labelDeleteTitle">Delete label</string>
+    <string name="labelDeleteConfirmText">Are you sure you want to delete label %1$s?</string>
     <string name="labelMenuContentDesc">الوصف</string>
     <string name="labelDeleteText">حُذف الوسم</string>
-    <string name="selectBranchError">اختر فرعاً للإصدار</string>
     <string name="alertDialogTokenRevokedTitle">خطأ في المصادقة</string>
     <string name="alertDialogTokenRevokedMessage">It seems that the Access Token is revoked OR you are not allowed to see these contents.\n\nIn case of revoked Token, please update the account.</string>
     <string name="labelDeleteMessage">هل تريد حقاً حذف هذا الوسم؟</string>
@@ -251,11 +269,11 @@ Codeberg.org</string>
     <string name="teamTitle">اسم الفريق</string>
     <string name="teamDescription">وصف الفريق</string>
     <string name="teamPermissions">الصلاحيات</string>
-    <string name="teamPermissionNone">•أعضاء هذا الفريق لا يملكون أي صلاحيات.</string>
-    <string name="teamPermissionRead">•أعضاء هذا الفريق يستطيعون رؤية مستودعات الفريق.</string>
-    <string name="teamPermissionWrite">•أعضاء هذا الفريق يستطيعون رؤية ودفع التحديثات لمستودعات الفريق.</string>
-    <string name="teamPermissionAdmin">• Team members can push to and pull from team repositories and add collaborators to them.</string>
-    <string name="teamPermissionOwner">أعضاء هذا الفريق يملكون صلاحيات المالك.</string>
+    <string name="teamPermissionNone">Members of this team do not have any permissions.</string>
+    <string name="teamPermissionRead">Members of this team can view team repositories.</string>
+    <string name="teamPermissionWrite">Members of this team can view and push to team repositories.</string>
+    <string name="teamPermissionAdmin">Team members can push to and pull from team repositories and add collaborators to them.</string>
+    <string name="teamPermissionOwner">Members of this team have owner permissions.</string>
     <string name="teamShowAll">إظهار الكل</string>
     <string name="orgMember">أعضاء المنظمة</string>
     <string name="orgTeamMembers">أعضاء فريق المنظمة</string>
@@ -325,6 +343,8 @@ Codeberg.org</string>
     <string name="sshKey">SSH Key</string>
     <string name="sshKeySuccess">New SSH key added successfully</string>
     <string name="sshKeyError">Invalid SSH key or SSH key already exists</string>
+    <string name="sshKeyDeleteSuccess">SSH key was deleted successfully</string>
+    <string name="deleteSshKeyPopupText">Are you sure you want to delete %1$s SSH key?</string>
     <!-- account settings -->
     <!-- single issue section -->
     <string name="singleIssueEditLabels">إضافة / حذف الأوسمة</string>
@@ -358,7 +378,7 @@ Codeberg.org</string>
     <string name="userPassword">كلمة المرور</string>
     <string name="userInvalidFullName">الاسم الكامل غير صالح</string>
     <string name="userInvalidUserName">اسم المستخدم غير صحيح</string>
-    <string name="userInvalidEmail">البريد الالكتروني غير صحيح</string>
+    <string name="userInvalidEmail">Invalid email</string>
     <string name="userCreatedText">أُضيف المستخدم الجديد بنجاح</string>
     <string name="userExistsError">المستخدم موجود مسبقاً</string>
     <!-- create user -->
@@ -367,18 +387,25 @@ Codeberg.org</string>
     <string name="editIssueSuccessMessage">حُدِّثت القضية</string>
     <!-- edit issue -->
     <!-- release -->
-    <string name="createRelease">إصدار جديد</string>
     <string name="releaseTagNameText">اسم العلامة</string>
     <string name="releaseTitleText">العنوان</string>
     <string name="releaseContentText">المحتوى</string>
     <string name="releaseTypeText">الوسم كإصدار أولي</string>
-    <string name="releaseBranchText">اِختر فرعًا</string>
     <string name="releaseDraftText">مسودة</string>
     <string name="tagNameErrorEmpty">اسم العلامة فارغ</string>
     <string name="titleErrorEmpty">العنوان فارغ</string>
     <string name="releaseCreatedText">أُنشئ الإصدار الجديد</string>
     <string name="deleteReleaseConfirmation">هل تريد حقاً حذف هذا الإصدار؟</string>
     <string name="releaseDeleted">حُذف الإصدار</string>
+    <string name="tagNameConflictError">Tag name already exists</string>
+    <string name="editReleaseSuccessMessage">Release updated successfully</string>
+    <string name="createRelease">Create Release</string>
+    <string name="createTag">Create Tag</string>
+    <string name="editRelease">Edit Release</string>
+    <string name="selectBranchError">Select a branch for release/tag</string>
+    <string name="add_release_branch">Tap to select a branch</string>
+    <string name="add_reviewers">Tap to select reviewers</string>
+    <string name="create_release_tag">Create Release/Tag</string>
     <!-- release -->
     <string name="openWebRepo">افتح في المتصفح</string>
     <string name="repoStargazersInMenu">المُعجَبون</string>
@@ -387,6 +414,7 @@ Codeberg.org</string>
     <string name="noDataDescription">لم يعثر على وصف</string>
     <string name="noDataBio">No bio found</string>
     <string name="noDataLocation">لم يعثر على موقع جغرافي</string>
+    <string name="noDataLocale">No locale found</string>
     <string name="starMember">إعجاب</string>
     <string name="watcherMember">مشاهد</string>
     <string name="zipArchiveDownloadReleasesTab">الشفرة المصدرية (ZIP)</string>
@@ -398,7 +426,7 @@ Codeberg.org</string>
     <string name="newFileButtonCopy">أنشاء مِلف جديد</string>
     <string name="newFileNameHintMessage">مع المجلد: app/test.md</string>
     <string name="newFileMessageTintCopy">رسالة الإيداع</string>
-    <string name="newFileInvalidBranchName">اسم فرع غير صالح. يجب أن يحوي فقط &#8211;، a&#8211;z، 0&#8211;9</string>
+    <string name="newFileInvalidBranchName">Invalid branch name, may only contain a–z, 0–9, hyphens (-), underscores (_), forward slashes (/), and periods (.)</string>
     <string name="newFileCommitMessageError">رسالة الإيداع طويلة جدا</string>
     <string name="newFileSuccessMessage">أُنشئ مِلف جديد</string>
     <string name="newFileBranches">اِختر أو أنشئ فرعاً</string>
@@ -414,6 +442,8 @@ Codeberg.org</string>
     <string name="branch_error_repo_locked">Repository is locked</string>
     <string name="create_branch">Create Branch</string>
     <string name="default_branch">Default Branch</string>
+    <string name="commit_message_empty">Commit message cannot be empty</string>
+    <string name="content_empty">File content cannot be empty</string>
     <string name="strFilter">التصفية</string>
     <string name="strMarkdown">ماركداون</string>
     <string name="copyIssueUrl">نسخ رابط القضية</string>
@@ -520,6 +550,37 @@ Codeberg.org</string>
     <string name="mirrors">Mirrors</string>
     <string name="stars">Stars</string>
     <string name="template">Template</string>
+    <string name="accounts">Accounts</string>
+    <string name="copied">Copied</string>
+    <string name="enabled">Enabled</string>
+    <string name="disabled">Disabled</string>
+    <string name="visibility">Visibility</string>
+    <string name="limited">Limited</string>
+    <string name="clear">Clear</string>
+    <string name="updated">Updated</string>
+    <string name="created">Created</string>
+    <string name="contributions">Contributions</string>
+    <string name="write">Write</string>
+    <string name="code">Code</string>
+    <string name="topics">Topics</string>
+    <string name="merged">Merged</string>
+    <string name="milestone">Milestone</string>
+    <string name="directory">Directory</string>
+    <string name="apply">Apply</string>
+    <string name="state">State</string>
+    <string name="update">Update</string>
+    <string name="select">Select</string>
+    <string name="collapse">Collapse</string>
+    <string name="fullscreen">Fullscreen</string>
+    <string name="type">Type</string>
+    <string name="reviewers">Reviewers</string>
+    <string name="change">Change</string>
+    <string name="editor">Editor</string>
+    <string name="mode">Mode</string>
+    <string name="source">Source</string>
+    <string name="collaborative">Collaborative</string>
+    <string name="mirror">Mirror</string>
+    <string name="fork">Fork</string>
     <!-- generic copy -->
     <string name="exploreUsers">استكشاف المستخدمين</string>
     <string name="exploreIssues">استكشاف القضايا</string>
@@ -562,6 +623,8 @@ Codeberg.org</string>
     <string name="mergeNotAllowed">غير مسموح بالدمج [السبب: لا يملك ما يكفي من الموافقات]</string>
     <string name="deleteBranch">حذف الفرع</string>
     <string name="switch_branch">Switch Branch</string>
+    <string name="allow_maintainer_edit">Allow maintainers to edit this pr</string>
+    <string name="edit_pr">Edit Pull Request</string>
     <string name="waitLoadingDownloadFile">رجاءً اِنتظر حتى يحمّل الملف للذاكرة</string>
     <string name="downloadFileSaved">حُفِظ المِلف بنجاح</string>
     <string name="excludeFilesInFileViewer">نوع/حجم المِلف غير مدعوم في عارض المِلفات.
@@ -575,8 +638,9 @@ Codeberg.org</string>
     <string name="shareRepository">مشاركة المستودع</string>
     <string name="createRepository">إنشاء مستودع</string>
     <string name="commitTitle">الإيداعات</string>
-    <string name="commitAuthoredByAndCommittedByWhen"><![CDATA[<b>%1$s</b> مصرح به و <b>%2$s</b> أودع %3$s]]></string>
-    <string name="commitCommittedByWhen"><![CDATA[<b>%1$s</b> أودع %2$s]]></string>
+    <string name="commitAuthoredByAndCommittedByWhen">%1$s authored and %2$s committed on %3$s</string>
+    <string name="commitCommittedByWhen">%1$s committed on %2$s</string>
+    <string name="commitAuthoredAndCommitted">%1$s authored and committed on %2$s</string>
     <string name="viewCommits">عرض الإيداعات</string>
     <!-- Memorizing Trust Manager -->
     <string name="mtmNotification">التحقق من الشهادة</string>
@@ -669,6 +733,7 @@ Codeberg.org</string>
     <string name="isUnread">غير مقروء</string>
     <string name="repoSettingsTitle">إعدادات المستودع</string>
     <string name="repoSettingsEditProperties">تعديل الخصائص</string>
+    <string name="repoSettingsEditPropertiesHint">Change name, description, visibility and features</string>
     <string name="repoSettingsDelete">حذف المستودع</string>
     <string name="repoSettingsDeleteHint">كن حذراً، لا يمكن التراجع عن هذه العملية!</string>
     <string name="repoPropertiesTemplate">تعيين كقالب</string>
@@ -683,14 +748,15 @@ Codeberg.org</string>
     <string name="repoPropertiesEnableSquash">تمكين السكواش والدمج</string>
     <string name="repoPropertiesEnableForceMerge">تمكين إعادة التأسيس ودمج الإيداعات (&#8212;&#8212;no-ff)</string>
     <string name="repoPropertiesSaveSuccess">حُدِّثت خصائص المستودع بنجاح</string>
-    <string name="repoSettingsDeleteDescription">أشياء يجب معرفتها قبل الحذف: \n\n- لا يمكن التراجع عن هذه العملية.\n- ستؤدي هذه العملية إلى حذف المستودع نهائيًا بما في ذلك التعليمات البرمجية والمشكلات والتعليقات وبيانات الويكي وإعدادات المتعاون.\n\n أدخل اسم المستودع كتأكيد</string>
+    <string name="repoSettingsDeleteDescription">Things to know before deletion:\n\n- This operation CANNOT be undone.\n- This operation will permanently delete the repository including code, issues, comments, wiki data and collaborator settings.</string>
+    <string name="typeRepoNameToConfirm">Type the repository name to confirm</string>
     <string name="repoSettingsDeleteError">اسم المستودع غير مطابق</string>
     <string name="repoDeletionSuccess">حُذف المستودع بنجاح</string>
     <string name="repoSettingsTransferOwnership">نقل الملكية</string>
     <string name="repoSettingsTransferOwnershipHint">نقل هذا المستودع لمستخدم آخر أو لمنظمة لديك صلاحيات المسؤول بها</string>
     <string name="repoSettingsTransferOwnershipDescription">أشياء يجب معرفتها قبل النقل: \n\n- ستفقد إمكانية الوصول إلى المستودع إذا نقلته إلى مستخدم فردي.\n- ستظل قادرًا على الوصول إلى المستودع إذا نقلته إلى منظمة تملكها أو تشارك فيها.\n\nأدخل اسم المستودع كتأكيد</string>
     <string name="repoTransferText">تنفيذ عملية النقل</string>
-    <string name="repoTransferOwnerText">المالك الجديد</string>
+    <string name="repoTransferOwnerText">New Owner Username</string>
     <string name="repoTransferSuccess">نقلت ملكية المستودع بنجاح</string>
     <string name="repoTransferOwnerError">المالك الجديد مطلوب</string>
     <string name="repoTransferError">هناك خطأٌ في اسم المالك. تحقق أن المالك الجديد موجود</string>
@@ -747,7 +813,7 @@ Codeberg.org</string>
     <string name="userAvatar">الصورة الرمزية</string>
     <string name="tags">العلامات</string>
     <string name="releasesTags">الإصدارات/العلامات</string>
-    <string name="create_tag">إنشاء علامة فقط</string>
+    <string name="create_tag">Tag Only</string>
     <string name="tagCreated">أُنشئت العلامة</string>
     <string name="asRef">الاستعمال كمرجع</string>
     <string name="deleteTagConfirmation">أتريد حقاً حذف هذه العلامة؟</string>
@@ -760,7 +826,7 @@ Codeberg.org</string>
     <string name="followSystemBlack">Follow system (Light/Pitch Black)</string>
     <string name="dynamicColorsFollowSystem">Dynamic colors - Follow system (Light/Dark)</string>
     <string name="codebergDark">Codeberg (Dark)</string>
-    <string name="repoForkOf">Fork of: %s</string>
+    <string name="repoForkOf">This repository is fork of %s.</string>
     <string name="adoptRepo">Adopt</string>
     <string name="repoAdopted">Adopted repository %s</string>
     <string name="unadoptedRepos">Unadopted Repositories</string>
@@ -768,15 +834,15 @@ Codeberg.org</string>
     <string name="commits">Commits</string>
     <!-- wiki -->
     <string name="wiki">Wiki</string>
-    <string name="wikiAuthor"><![CDATA[<b>%1$s</b> updated %2$s]]></string>
+    <string name="wikiAuthor">%1$s updated %2$s</string>
     <string name="deleteWikiPageMessage">Do you really want to delete %s?</string>
     <string name="wikiPageDeleted">Wiki page deleted successfully</string>
     <string name="wikiPageNameAndContentError">Page name and page content can\'t be empty</string>
     <string name="createWikiPage">Create Wiki Page</string>
     <string name="wikiUpdated">Wiki page updated successfully</string>
     <string name="wikiCreated">Wiki page created successfully</string>
-    <!-- code editor -->
-    <string name="openInCodeEditor">Open in Code Editor</string>
+    <string name="wikiPageAlreadyExists">A wiki page with this title already exists</string>
+    <string name="editWikiPage">Edit Wiki Page</string>
     <!-- notes -->
     <string name="newNote">New Note</string>
     <string name="editNote">Edit Note</string>
@@ -872,6 +938,8 @@ Codeberg.org</string>
     <string name="attachment">Attachment</string>
     <string name="attachments">Attachments</string>
     <string name="attachmentsSaveError">An issue was created but cannot process attachments at this time. Check the server logs for more details.</string>
+    <string name="issueCreatedWithAttachments">Issue created with attachments</string>
+    <string name="attachmentTypeNotSupported">File type .%s may not be supported by the server</string>
     <string name="search_matches_found">%1$d matches found</string>
     <string name="search_no_matches">No matches found</string>
     <string name="heatmap_contribution">%1$d contributions on %2$s</string>
@@ -942,4 +1010,103 @@ Codeberg.org</string>
     <string name="gitignore_template">Gitignore Template</string>
     <string name="no_template">No template</string>
     <string name="no_license">No license</string>
+    <string name="empty_state_title">Nothing here</string>
+    <string name="empty_state_desc">There is no data to display at the moment.</string>
+    <string name="good_morning">Good morning</string>
+    <string name="good_afternoon">Good afternoon</string>
+    <string name="good_evening">Good evening</string>
+    <string name="dashboard_most_visited_repos_sub_title">View the repositories you visit most often</string>
+    <string name="dashboard_notes_sub_title">Create and manage personal notes, and attach them to issues</string>
+    <string name="dashboard_explore_sub_title">Explore public repositories, issues, organizations, and users</string>
+    <string name="forked_repository">forked repository</string>
+    <string name="mirrored_repository">mirrored repository</string>
+    <string name="copied_to_clipboard">Copied to clipboard</string>
+    <string name="adminUsersSubtext">Manage all system accounts and users</string>
+    <string name="adminCronSubtext">View and execute system scheduled maintenance tasks</string>
+    <string name="unadoptedReposSubtext">Search and claim repositories found on disk</string>
+    <string name="repoSettingsSubtext">View global repository and LFS settings</string>
+    <string name="send_welcome_email">Send welcome email</string>
+    <string name="must_change_password">Must change password</string>
+    <string name="restricted_account">Restricted account</string>
+    <string name="email_username_pw_required">Email, username, and password are required</string>
+    <string name="choose_image">Choose image</string>
+    <string name="userFollowed">You are now following %s</string>
+    <string name="userUnFollowed">Stopped following %s</string>
+    <string name="userInvalidWebsite">Please enter a valid URL</string>
+    <string name="update_avatar">Update profile avatar</string>
+    <string name="avatar_preview_hint">This is a preview of your new profile picture</string>
+    <string name="external_issues">External issues</string>
+    <string name="external_wiki">External wiki</string>
+    <string name="add_team_member">Add Team Member</string>
+    <string name="add_team_repo">Add Team Repository</string>
+    <string name="repo_admin_change_team_access">Repository admin can change team access</string>
+    <string name="select_color">Select Color</string>
+    <string name="labelColorHex">Hex Color</string>
+    <string name="invalid_color">Invalid color code</string>
+    <string name="invalid_length">Must be 6 characters</string>
+    <string name="create_pr">Create Pull Request</string>
+    <string name="search_filter">Search &amp; filter</string>
+    <string name="create_issue">Create Issue</string>
+    <string name="search_repos">Search Repositories</string>
+    <string name="dashboard_search_repos_sub_title">Search within your repositories with filters for more precise results</string>
+    <string name="edit_milestone">Edit Milestone</string>
+    <string name="add_labels">Tap to add labels</string>
+    <string name="add_milestone">Tap to add milestone</string>
+    <string name="add_assignees">Tap to assign assignees</string>
+    <string name="add_due_date">Tap to add due date</string>
+    <string name="add_attachments">Tap to add attachments</string>
+    <string name="no_attachments">No attachments</string>
+    <string name="attachment_limit_count">Maximum %d files allowed</string>
+    <string name="attachment_limit_size">File exceeds %s limit</string>
+    <string name="cannotAddSelfAsReviewer">You cannot add yourself as a reviewer</string>
+    <string name="deleteVariableConfirmation">Are you sure you want to delete this variable? This action cannot be undone.</string>
+    <string name="variable_deleted">Variable deleted successfully</string>
+    <string name="file_conflict_error">A file with this name already exists</string>
+    <string name="delete_file_info">This will stage the file for deletion in the selected branch.</string>
+    <string name="upload_file">Upload file</string>
+    <string name="binary_file_message">Binary file - will be uploaded as-is</string>
+    <string name="commit_new_file">Commit File</string>
+    <string name="commit_changes">Commit Changes</string>
+    <string name="commit_deletion">Commit Deletion</string>
+    <string name="large_file_warning">This file is large and may take time to upload</string>
+    <string name="file_read_error">Could not read file content</string>
+    <string name="update_filename">Update %s</string>
+    <string name="delete_filename">Delete %s</string>
+    <string name="file_name_empty">File name cannot be empty</string>
+    <string name="select_branch_error">Please select a branch</string>
+    <string name="create_pull_request_with_branch">Create pull request with this branch</string>
+    <string name="tap_to_upload_file">Tap to select a file</string>
+    <string name="plain_text">Plain Text</string>
+    <string name="cursor_position_format">Ln %d, Col %d</string>
+    <string name="image_load_error">Could not load image</string>
+    <string name="invalid_user">Invalid user</string>
+    <string name="dashboard_my_prs_sub_title">Browse and manage all your pull requests with search and filters</string>
+    <string name="review_requested">Review requested</string>
+    <string name="reviewed_by_me">Reviewed by me</string>
+    <string name="enter_version">Enter Instance Version</string>
+    <string name="version_required_explanation">Unable to detect server version automatically. Please enter the version manually in the format shown below.</string>
+    <string name="save_and_continue">Save &amp; Continue</string>
+    <string name="invalid_version_format">Invalid version format. Please use format like 1.26.1</string>
+    <string name="time_in_moments">in moments</string>
+    <string name="time_in_minute">in %d minute</string>
+    <string name="time_in_minutes">in %d minutes</string>
+    <string name="time_in_hour">in %d hour</string>
+    <string name="time_in_hours">in %d hours</string>
+    <string name="time_in_day">in %d day</string>
+    <string name="time_in_days">in %d days</string>
+    <string name="time_in_month">in %d month</string>
+    <string name="time_in_months">in %d months</string>
+    <string name="time_in_year">in %d year</string>
+    <string name="time_in_years">in %d years</string>
+    <string name="time_moments_ago">moments ago</string>
+    <string name="time_minute_ago">%d minute ago</string>
+    <string name="time_minutes_ago">%d minutes ago</string>
+    <string name="time_hour_ago">%d hour ago</string>
+    <string name="time_hours_ago">%d hours ago</string>
+    <string name="time_day_ago">%d day ago</string>
+    <string name="time_days_ago">%d days ago</string>
+    <string name="time_month_ago">%d month ago</string>
+    <string name="time_months_ago">%d months ago</string>
+    <string name="time_year_ago">%d year ago</string>
+    <string name="time_years_ago">%d years ago</string>
 </resources>

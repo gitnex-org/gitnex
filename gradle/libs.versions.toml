@@ -6,8 +6,8 @@ agp = "9.1.1"
 compileSdk = "37"
 minSdk = "26"
 targetSdk = "37"
-versionCode = "1295"
-versionName = "13.0.0-rc1"
+versionCode = "1296"
+versionName = "13.0.0-rc2"
 javaVersion = "17"
 
 # Plugins

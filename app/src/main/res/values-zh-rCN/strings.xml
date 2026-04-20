@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
+    <string name="token_help">Access Token Help</string>
     <!-- menu items -->
     <string name="navMyRepos">我的仓库</string>
     <string name="navStarredRepos">已点赞</string>
@@ -40,7 +41,6 @@
     <string name="repoDescription">演示描述</string>
     <string name="orgName">演示组织</string>
     <string name="newCreateButtonCopy">创建</string>
-    <string name="newUpdateButtonCopy">更新</string>
     <string name="newRepoTintCopy">仓库名称</string>
     <string name="newRepoDescTintCopy">仓库描述</string>
     <string name="newRepoPrivateCopy">私有</string>
@@ -62,10 +62,14 @@
     <string name="malformedJson">收到格式错误的 JSON 。服务器响应不成功</string>
     <string name="emptyFieldURL">未填写 Gitea访问地址</string>
     <string name="emptyFieldUsername">未填写 用户名</string>
+    <string name="emptyFieldName">名称为必填项</string>
     <string name="emptyFieldPassword">未填写 密码</string>
     <string name="protocolEmptyError">协议是必需的</string>
     <string name="instanceHelperText">输入不含 http 或者 https 的 URL。 例如：codeberg.org</string>
     <string name="checkNetConnection">无法连接，请检查您的网络情况</string>
+    <string name="network_error">网络错误</string>
+    <string name="failed_diff">加载差异失败</string>
+    <string name="no_changes_found">此文件未发现更改</string>
     <string name="repoNameErrorEmpty">仓库名称为空</string>
     <string name="repoNameErrorInvalid">仓库名称无效。[a&#8211;z A&#8211;Z 0&#8211;9 &#8211; _]</string>
     <string name="repoNameErrorReservedName">仓库名称已保留</string>
@@ -82,16 +86,19 @@
     <string name="orgExistsError">组织已存在</string>
     <string name="diffStatistics">%1$s 处添加和 %2$s 处删除</string>
     <plurals name="repoStars">
-        <item quantity="other">%1$s 星标</item>
+        <item quantity="other">点赞</item>
     </plurals>
     <plurals name="repoWatchers">
-        <item quantity="other">%1$s watchers</item>
+        <item quantity="other">关注者</item>
     </plurals>
     <plurals name="repoForks">
-        <item quantity="other">%1$s 派生</item>
+        <item quantity="other">派生</item>
     </plurals>
     <plurals name="repoPullRequests">
-        <item quantity="other">%1$s open pull requests</item>
+        <item quantity="other">拉取请求</item>
+    </plurals>
+    <plurals name="repoOpenIssues">
+        <item quantity="other">议题</item>
     </plurals>
     <string name="genericApiError">实例返回了一个错误。代码 %d</string>
     <string name="tabTextInfo">详情</string>
@@ -123,7 +130,6 @@
     <string name="releaseDownloadText">下载</string>
     <string name="releasePublishedBy">由 @%1$s 发布</string>
     <string name="noReleaseBodyContent">发布者没有提供发行日志</string>
-    <string name="newMilestoneTitle">标题</string>
     <string name="newMilestoneDueDate">截止日期</string>
     <string name="milestoneNameErrorEmpty">里程碑标题为空</string>
     <string name="milestoneDescError">里程碑描述超过最大255个字符限制</string>
@@ -139,13 +145,17 @@
     <string name="newIssueTitle">标题</string>
     <string name="newIssueAssigneesListTitle">指派人</string>
     <string name="newIssueDueDateTitle">到期日</string>
-    <string name="newIssueMilestoneTitle">里程碑</string>
     <string name="newIssueLabelsTitle">标签</string>
     <string name="issueTitleEmpty">问题标题为空</string>
     <string name="issueDescriptionEmpty">说明为空</string>
     <string name="issueCreated">新问题创建成功</string>
     <string name="issueCreatedNoMilestone">没有里程碑</string>
     <string name="noAssigneesFound">未找到受让人</string>
+    <string name="delete_milestone">&gt;删除里程碑</string>
+    <string name="milestone_delete_confirm_text">确定要删除里程碑 %1$s 吗？</string>
+    <string name="close_milestone_msg">即将关闭里程碑 %1$s。按“关闭”继续。</string>
+    <string name="open_milestone_msg">此操作将重新打开里程碑 %1$s。按“打开”继续。</string>
+    <string name="milestone_deleted">里程碑已删除</string>
     <!-- settings -->
     <string name="settingsLanguageHeaderText">翻译</string>
     <string name="settingsLanguageSystem">系统</string>
@@ -177,6 +187,8 @@
     <string name="cacheSizeDataSelectionHeaderText">数据缓存大小</string>
     <string name="cacheSizeImagesDialogHeader">图像缓存大小</string>
     <string name="cacheSizeImagesSelectionHeaderText">图像缓存大小</string>
+    <string name="settingsAPIRequestTimeoutHeader">API 请求超时</string>
+    <string name="settingsAPIRequestTimeoutHintText">等待服务器响应的最长时间。</string>
     <string name="clearCacheSelectionHeaderText">清除缓存</string>
     <string name="clearCacheDialogHeader">清除缓存?</string>
     <string name="clearCacheDialogMessage">这将删除所有缓存数据，包括文件和图像。\n\n继续删除？</string>
@@ -218,9 +230,10 @@
     <string name="labelNameError">标签名称无效</string>
     <string name="labelCreated">标签已创建</string>
     <string name="labelUpdated">标签已更新</string>
+    <string name="labelDeleteTitle">删除标签</string>
+    <string name="labelDeleteConfirmText">确定要删除标签 %1$s 吗？</string>
     <string name="labelMenuContentDesc">描述</string>
     <string name="labelDeleteText">标签已删除</string>
-    <string name="selectBranchError">选择用于发行的分支</string>
     <string name="alertDialogTokenRevokedTitle">授权错误</string>
     <string name="alertDialogTokenRevokedMessage">访问令牌似乎已被撤销，或者您无权查看这些内容。\n\n如果令牌已被撤销，请更新账户信息。</string>
     <string name="labelDeleteMessage">您真的想要删除此标签吗？</string>
@@ -230,11 +243,11 @@
     <string name="teamTitle">团队名称</string>
     <string name="teamDescription">团队描述</string>
     <string name="teamPermissions">权限</string>
-    <string name="teamPermissionNone">• 此团队成员没有任何权限。</string>
-    <string name="teamPermissionRead">• 此团队成员可以查看团队存储库。</string>
-    <string name="teamPermissionWrite">• 此团队成员可以查看并推送到团队存储库。</string>
-    <string name="teamPermissionAdmin">• 团队成员可以推送和拉取团队仓库，并为其添加协作者。</string>
-    <string name="teamPermissionOwner">• 此团队成员拥有所有者权限。</string>
+    <string name="teamPermissionNone">此团队成员没有任何权限。</string>
+    <string name="teamPermissionRead">此团队成员可以查看团队仓库。</string>
+    <string name="teamPermissionWrite">此团队成员可以查看并推送到团队仓库。</string>
+    <string name="teamPermissionAdmin">团队成员可以推送到团队仓库、从团队仓库拉取，并为其添加协作者。</string>
+    <string name="teamPermissionOwner">此团队成员拥有所有者权限。</string>
     <string name="teamShowAll">全部显示</string>
     <string name="orgMember">组织成员</string>
     <string name="orgTeamMembers">组织团队成员</string>
@@ -304,6 +317,8 @@
     <string name="sshKey">SSH 密钥</string>
     <string name="sshKeySuccess">新 SSH 密钥添加成功</string>
     <string name="sshKeyError">无效的 SSH 密钥或该 SSH 密钥已经存在</string>
+    <string name="sshKeyDeleteSuccess">SSH 密钥已成功删除</string>
+    <string name="deleteSshKeyPopupText">确定要删除 %1$s SSH 密钥吗？</string>
     <!-- account settings -->
     <!-- single issue section -->
     <string name="singleIssueEditLabels">添加/删除标签</string>
@@ -337,7 +352,7 @@
     <string name="userPassword">密码</string>
     <string name="userInvalidFullName">无效的全名</string>
     <string name="userInvalidUserName">无效的用户名</string>
-    <string name="userInvalidEmail">无效的电子邮件</string>
+    <string name="userInvalidEmail">邮箱无效</string>
     <string name="userCreatedText">新用户添加成功</string>
     <string name="userExistsError">用户已存在</string>
     <!-- create user -->
@@ -346,18 +361,25 @@
     <string name="editIssueSuccessMessage">工单已更新</string>
     <!-- edit issue -->
     <!-- release -->
-    <string name="createRelease">发布新版</string>
     <string name="releaseTagNameText">标签名称</string>
     <string name="releaseTitleText">标题</string>
     <string name="releaseContentText">内容</string>
     <string name="releaseTypeText">标记为预发布</string>
-    <string name="releaseBranchText">选择分支</string>
     <string name="releaseDraftText">草稿</string>
     <string name="tagNameErrorEmpty">标签名称为空</string>
     <string name="titleErrorEmpty">标题为空</string>
     <string name="releaseCreatedText">已创建新版本</string>
     <string name="deleteReleaseConfirmation">您真想删除此发布吗？</string>
     <string name="releaseDeleted">版本发布已删除</string>
+    <string name="tagNameConflictError">Tag name already exists</string>
+    <string name="editReleaseSuccessMessage">Release updated successfully</string>
+    <string name="createRelease">Create Release</string>
+    <string name="createTag">Create Tag</string>
+    <string name="editRelease">Edit Release</string>
+    <string name="selectBranchError">Select a branch for release/tag</string>
+    <string name="add_release_branch">Tap to select a branch</string>
+    <string name="add_reviewers">Tap to select reviewers</string>
+    <string name="create_release_tag">Create Release/Tag</string>
     <!-- release -->
     <string name="openWebRepo">在浏览器中打开</string>
     <string name="repoStargazersInMenu">已收藏</string>
@@ -366,6 +388,7 @@
     <string name="noDataDescription">未找到描述</string>
     <string name="noDataBio">未找到简介</string>
     <string name="noDataLocation">未找到位置</string>
+    <string name="noDataLocale">未找到区域设置</string>
     <string name="starMember">收藏</string>
     <string name="watcherMember">关注</string>
     <string name="zipArchiveDownloadReleasesTab">源代码 (ZIP)</string>
@@ -377,7 +400,7 @@
     <string name="newFileButtonCopy">创建新文件</string>
     <string name="newFileNameHintMessage">使用文件夹：app/test.md</string>
     <string name="newFileMessageTintCopy">提交消息</string>
-    <string name="newFileInvalidBranchName">分支名称无效，只能包含 &#8211;,&#8211;z, 0&#8211;9</string>
+    <string name="newFileInvalidBranchName">分支名称无效，只能包含 a–z、0–9、连字符 (-)、下划线 (_)、正斜杠 (/) 和句点 (.)</string>
     <string name="newFileCommitMessageError">提交消息过长</string>
     <string name="newFileSuccessMessage">新文件已创建</string>
     <string name="newFileBranches">选择或创建一个分支</string>
@@ -393,6 +416,8 @@
     <string name="branch_error_repo_locked">仓库已锁定</string>
     <string name="create_branch">创建分支</string>
     <string name="default_branch">默认分支</string>
+    <string name="commit_message_empty">Commit message cannot be empty</string>
+    <string name="content_empty">File content cannot be empty</string>
     <string name="strFilter">筛选器</string>
     <string name="strMarkdown">Markdown</string>
     <string name="copyIssueUrl">复制问题 URL</string>
@@ -498,7 +523,38 @@
     <string name="lfs">LFS</string>
     <string name="mirrors">镜像</string>
     <string name="stars">星标</string>
-    <string name="template">Template</string>
+    <string name="template">模板</string>
+    <string name="accounts">账号</string>
+    <string name="copied">已复制</string>
+    <string name="enabled">已启用</string>
+    <string name="disabled">已禁用</string>
+    <string name="visibility">可见性</string>
+    <string name="limited">受限</string>
+    <string name="clear">清除</string>
+    <string name="updated">已更新</string>
+    <string name="created">已创建</string>
+    <string name="contributions">贡献</string>
+    <string name="write">写入</string>
+    <string name="code">代码</string>
+    <string name="topics">主题</string>
+    <string name="merged">已合并</string>
+    <string name="milestone">里程碑</string>
+    <string name="directory">目录</string>
+    <string name="apply">应用</string>
+    <string name="state">状态</string>
+    <string name="update">Update</string>
+    <string name="select">Select</string>
+    <string name="collapse">Collapse</string>
+    <string name="fullscreen">Fullscreen</string>
+    <string name="type">Type</string>
+    <string name="reviewers">Reviewers</string>
+    <string name="change">Change</string>
+    <string name="editor">Editor</string>
+    <string name="mode">Mode</string>
+    <string name="source">Source</string>
+    <string name="collaborative">Collaborative</string>
+    <string name="mirror">Mirror</string>
+    <string name="fork">Fork</string>
     <!-- generic copy -->
     <string name="exploreUsers">探索用户</string>
     <string name="exploreIssues">探索问题</string>
@@ -541,6 +597,8 @@
     <string name="mergeNotAllowed">不允许合并 [理由：没有足够多的认可]</string>
     <string name="deleteBranch">删除分支</string>
     <string name="switch_branch">切换分支</string>
+    <string name="allow_maintainer_edit">Allow maintainers to edit this pr</string>
+    <string name="edit_pr">Edit Pull Request</string>
     <string name="waitLoadingDownloadFile">请等待文件加载到内存</string>
     <string name="downloadFileSaved">文件保存成功</string>
     <string name="excludeFilesInFileViewer">文件查看器不支持此文件类型/大小。你可以从菜单下载。</string>
@@ -553,8 +611,9 @@
     <string name="shareRepository">共享存储库</string>
     <string name="createRepository">创建仓库</string>
     <string name="commitTitle">提交</string>
-    <string name="commitAuthoredByAndCommittedByWhen"><![CDATA[<b>%1$s</b> 撰写，<b>%2$s</b>提交了%3$s]]></string>
-    <string name="commitCommittedByWhen"><![CDATA[<b>%1$s</b>提交了 %2$s]]></string>
+    <string name="commitAuthoredByAndCommittedByWhen">%1$s 创作，%2$s 提交于 %3$s</string>
+    <string name="commitCommittedByWhen">%1$s 提交于 %2$s</string>
+    <string name="commitAuthoredAndCommitted">%1$s 由 %2$s 撰写并提交</string>
     <string name="viewCommits">查看提交</string>
     <!-- Memorizing Trust Manager -->
     <string name="mtmNotification">证书验证</string>
@@ -642,6 +701,7 @@
     <string name="isUnread">未读</string>
     <string name="repoSettingsTitle">存储库设置</string>
     <string name="repoSettingsEditProperties">编辑属性</string>
+    <string name="repoSettingsEditPropertiesHint">Change name, description, visibility and features</string>
     <string name="repoSettingsDelete">删除存储库</string>
     <string name="repoSettingsDeleteHint">小心，这个操作无法撤销！</string>
     <string name="repoPropertiesTemplate">设置为模板</string>
@@ -656,14 +716,15 @@
     <string name="repoPropertiesEnableSquash">启用压扁和合并</string>
     <string name="repoPropertiesEnableForceMerge">用合并提交(&#8212;&#8212;no-ff)启用代码变基</string>
     <string name="repoPropertiesSaveSuccess">成功更新存储库属性</string>
-    <string name="repoSettingsDeleteDescription">删除前要知道的事:\n\n - 此操作无法撤消。\n - 此操作将永久删除存储库，包括代码、问题、注释、Wiki 数据和协作者设置。\n\n 输入存储库名称作为确认</string>
+    <string name="repoSettingsDeleteDescription">Things to know before deletion:\n\n- This operation CANNOT be undone.\n- This operation will permanently delete the repository including code, issues, comments, wiki data and collaborator settings.</string>
+    <string name="typeRepoNameToConfirm">Type the repository name to confirm</string>
     <string name="repoSettingsDeleteError">存储库名称不匹配</string>
     <string name="repoDeletionSuccess">成功删除存储库</string>
     <string name="repoSettingsTransferOwnership">转移所有权</string>
     <string name="repoSettingsTransferOwnershipHint">将此存储库转移到用户或您具有管理员权限的组织</string>
     <string name="repoSettingsTransferOwnershipDescription">转移所有权之前需要注意的事项:\n\n- 如果将存储库移交给单个用户，您将失去对该存储库的访问权。\n- 如果您将存储库转移到您和他人(共同)拥有的组织，那么您将保留对该存储库的访问权。\n\n输入存储库名称作为确认</string>
     <string name="repoTransferText">执行移交</string>
-    <string name="repoTransferOwnerText">新所有者</string>
+    <string name="repoTransferOwnerText">New Owner Username</string>
     <string name="repoTransferSuccess">成功移交存储库</string>
     <string name="repoTransferOwnerError">需要新的所有者</string>
     <string name="repoTransferError">所有者名称有问题。确保新所有者存在</string>
@@ -719,7 +780,7 @@
     <string name="userAvatar">头像</string>
     <string name="tags">标签</string>
     <string name="releasesTags">发行/标签</string>
-    <string name="create_tag">仅创建标签</string>
+    <string name="create_tag">Tag Only</string>
     <string name="tagCreated">标签已创建</string>
     <string name="asRef">用作参考</string>
     <string name="deleteTagConfirmation">您真想删除此标签吗？</string>
@@ -732,7 +793,7 @@
     <string name="followSystemBlack">跟随系统 (浅色/漆黑)</string>
     <string name="dynamicColorsFollowSystem">动态颜色 - 跟随系统(浅色/神色)</string>
     <string name="codebergDark">Codeberg (暗色)</string>
-    <string name="repoForkOf">此仓库衍生自：%s</string>
+    <string name="repoForkOf">此仓库是 %s 的派生。</string>
     <string name="adoptRepo">采用</string>
     <string name="repoAdopted">已采用仓库 %s</string>
     <string name="unadoptedRepos">已取消采用仓库</string>
@@ -740,15 +801,15 @@
     <string name="commits">提交</string>
     <!-- wiki -->
     <string name="wiki">维基</string>
-    <string name="wikiAuthor"><![CDATA[<b>%1$s</b> 已更新 %2$s]]></string>
+    <string name="wikiAuthor">%1$s 更新了 %2$s</string>
     <string name="deleteWikiPageMessage">确实要删除 %s 吗？</string>
     <string name="wikiPageDeleted">成功删除了维基页面</string>
     <string name="wikiPageNameAndContentError">页面名臣和页面内容不能为空</string>
     <string name="createWikiPage">创建维基页面</string>
     <string name="wikiUpdated">成功更新了维基页面</string>
     <string name="wikiCreated">成功创建了维基页面</string>
-    <!-- code editor -->
-    <string name="openInCodeEditor">在代码编辑器中打开</string>
+    <string name="wikiPageAlreadyExists">A wiki page with this title already exists</string>
+    <string name="editWikiPage">Edit Wiki Page</string>
     <!-- notes -->
     <string name="newNote">新备注</string>
     <string name="editNote">编辑备注</string>
@@ -788,17 +849,17 @@
     <string name="timelineLocked">%1$s 被锁定为 %2$s 并限定对话至协作者 %3$s</string>
     <string name="timelineUnlocked">%1$s 解锁了此对话 %2$s</string>
     <string name="timelineDependencyAdded">%1$s 添加了新依赖项 #%2$d %3$s</string>
-    <string name="timelineDependencyRemoved">%1$s 删除了依赖项 #%2$d %3$s</string>
+    <string name="timelineDependencyRemoved">%1$s 移除了依赖项 #%2$d %3$s</string>
     <string name="timelineProjectAdded">%1$s 将此添加至项目 %2$s</string>
     <string name="timelineProjectRemoved">%1$s 将此从项目 %2$s 中删除了</string>
-    <string name="timelineDueDateAdded">%1$s 添加了到期日 %2$s %3$s</string>
+    <string name="timelineDueDateAdded">%1$s 添加了截止日期 %2$s %3$s</string>
     <string name="timelineDueDateModified">%1$s 将到期日从 %3$s %4$s 改为 %2$s</string>
     <string name="timelineDueDateRemoved">%1$s 删除了到期日 %2$s %3$s</string>
     <string name="timelineBranchChanged">%1$s 将目标分支从 %2$s 改为了 %3$s %4$s</string>
     <string name="timelineBranchDeleted">%1$s 删除了分支 %2$s %3$s</string>
     <string name="timelineTimeTrackingStart">%1$s 开始追踪 %2$s</string>
     <string name="timelineTimeTrackingStop">%1$s 停止了时间追踪 %2$s</string>
-    <string name="timelineTimeTrackingCancel">%1$s 取消了时间追踪 %2$s</string>
+    <string name="timelineTimeTrackingCancel">%1$s 取消了时间跟踪 %2$s</string>
     <string name="timelineTimeTrackingAddManualTime">%1$s 添加了所花时间 %2$s %3$s</string>
     <string name="timelineTimeTrackingDeleteManualTime">%1$s 删除了所花时间 %2$s %3$s</string>
     <string name="timelineChangeIssueRef">%1$s 添加了参考 %2$s %3$s</string>
@@ -839,6 +900,8 @@
     <string name="attachment">附件</string>
     <string name="attachments">附件</string>
     <string name="attachmentsSaveError">已创建工单，但此时无法处理附件。请检查服务器日志以获得更多详细信息。</string>
+    <string name="issueCreatedWithAttachments">Issue created with attachments</string>
+    <string name="attachmentTypeNotSupported">File type .%s may not be supported by the server</string>
     <string name="search_matches_found">找到 %1$d 个匹配项</string>
     <string name="search_no_matches">找不到匹配项</string>
     <string name="heatmap_contribution">对 %2$s 有 %1$d 个贡献</string>
@@ -893,17 +956,119 @@
     <string name="errorLoadingTopics">加载主题时出错</string>
     <string name="invalidTopicName">无效的主题名称</string>
     <string name="http_git">HTTP Git</string>
-    <string name="proxy_auth_title">Reverse Proxy Credentials</string>
-    <string name="proxy_auth_description">If your Gitea/Forgejo is behind a reverse proxy with HTTP Basic Authentication, enter the credentials here.\n\nGitNex sends these in the \'X-Proxy-Auth: Basic …\' header. Administrators needs to configure the proxy to read from this header.</string>
-    <string name="proxy_username_hint">Proxy Username</string>
-    <string name="proxy_password_hint">Proxy Password</string>
-    <string name="setup_proxy_auth">Setup Proxy Authorization</string>
-    <string name="save_proxy_creds">Save Proxy Credentials</string>
-    <string name="skip_proxy_creds">Skip</string>
-    <string name="clear_proxy_creds">Clear Credentials</string>
-    <string name="proxy_creds_saved">Proxy credentials saved</string>
-    <string name="proxy_creds_cleared">Proxy credentials cleared</string>
-    <string name="proxy_creds_required_msg">Please provide both username and password or leave both empty</string>
-    <string name="url_prompt_title">Show URL confirmation dialog</string>
-    <string name="url_prompt_description">Show a confirmation dialog before opening external links in Markdown rendered contents</string>
+    <string name="proxy_auth_title">反向代理凭据</string>
+    <string name="proxy_auth_description">如果您的 Gitea/Forgejo 位于启用了 HTTP 基本身份验证的反向代理之后，请在此处输入凭据。\n\nGitNex 会在 \'X-Proxy-Auth: Basic …\' 标头中发送这些凭据。管理员需要配置代理以从此标头读取。</string>
+    <string name="proxy_username_hint">代理用户名</string>
+    <string name="proxy_password_hint">代理密码</string>
+    <string name="setup_proxy_auth">设置代理授权</string>
+    <string name="save_proxy_creds">保存代理凭据</string>
+    <string name="skip_proxy_creds">跳过</string>
+    <string name="clear_proxy_creds">清除凭据</string>
+    <string name="proxy_creds_saved">代理凭据已保存</string>
+    <string name="proxy_creds_cleared">代理凭据已清除</string>
+    <string name="proxy_creds_required_msg">请同时提供用户名和密码，或两者都留空</string>
+    <string name="url_prompt_title">显示 URL 确认对话框</string>
+    <string name="url_prompt_description">在 Markdown 渲染内容中打开外部链接前显示确认对话框</string>
+    <string name="gitignore_template">Gitignore 模板</string>
+    <string name="no_template">无模板</string>
+    <string name="no_license">无许可证</string>
+    <string name="empty_state_title">此处无内容</string>
+    <string name="empty_state_desc">当前没有数据可显示。</string>
+    <string name="good_morning">早上好</string>
+    <string name="good_afternoon">下午好</string>
+    <string name="good_evening">晚上好</string>
+    <string name="dashboard_most_visited_repos_sub_title">查看您最常访问的仓库</string>
+    <string name="dashboard_notes_sub_title">创建和管理个人笔记，并将其附加到议题</string>
+    <string name="dashboard_explore_sub_title">探索公共仓库、议题、组织和用户</string>
+    <string name="forked_repository">派生的仓库</string>
+    <string name="mirrored_repository">镜像的仓库</string>
+    <string name="copied_to_clipboard">已复制到剪贴板</string>
+    <string name="adminUsersSubtext">管理系统所有账号和用户</string>
+    <string name="adminCronSubtext">查看和执行系统计划维护任务</string>
+    <string name="unadoptedReposSubtext">搜索并认领在磁盘上找到的仓库</string>
+    <string name="repoSettingsSubtext">查看全局仓库和 LFS 设置</string>
+    <string name="send_welcome_email">发送欢迎邮件</string>
+    <string name="must_change_password">必须更改密码</string>
+    <string name="restricted_account">受限账号</string>
+    <string name="email_username_pw_required">邮箱、用户名和密码为必填项</string>
+    <string name="choose_image">选择图片</string>
+    <string name="userFollowed">您已关注 %s</string>
+    <string name="userUnFollowed">已取消关注 %s</string>
+    <string name="userInvalidWebsite">请输入有效的 URL</string>
+    <string name="update_avatar">更新个人资料头像</string>
+    <string name="avatar_preview_hint">这是您新头像的预览</string>
+    <string name="external_issues">外部议题</string>
+    <string name="external_wiki">外部维基</string>
+    <string name="add_team_member">添加团队成员</string>
+    <string name="add_team_repo">添加团队存储库</string>
+    <string name="repo_admin_change_team_access">仓库管理员可以更改团队访问权限</string>
+    <string name="select_color">选择颜色</string>
+    <string name="labelColorHex">十六进制颜色</string>
+    <string name="invalid_color">无效的颜色代码</string>
+    <string name="invalid_length">必须为 6 个字符</string>
+    <string name="create_pr">Create Pull Request</string>
+    <string name="search_filter">搜索 &amp; 筛选</string>
+    <string name="create_issue">创建议题</string>
+    <string name="search_repos">搜索仓库</string>
+    <string name="dashboard_search_repos_sub_title">在您的仓库内使用筛选器进行搜索以获得更精确的结果</string>
+    <string name="edit_milestone">Edit Milestone</string>
+    <string name="add_labels">Tap to add labels</string>
+    <string name="add_milestone">Tap to add milestone</string>
+    <string name="add_assignees">Tap to assign assignees</string>
+    <string name="add_due_date">Tap to add due date</string>
+    <string name="add_attachments">Tap to add attachments</string>
+    <string name="no_attachments">No attachments</string>
+    <string name="attachment_limit_count">Maximum %d files allowed</string>
+    <string name="attachment_limit_size">File exceeds %s limit</string>
+    <string name="cannotAddSelfAsReviewer">You cannot add yourself as a reviewer</string>
+    <string name="deleteVariableConfirmation">Are you sure you want to delete this variable? This action cannot be undone.</string>
+    <string name="variable_deleted">Variable deleted successfully</string>
+    <string name="file_conflict_error">A file with this name already exists</string>
+    <string name="delete_file_info">This will stage the file for deletion in the selected branch.</string>
+    <string name="upload_file">Upload file</string>
+    <string name="binary_file_message">Binary file - will be uploaded as-is</string>
+    <string name="commit_new_file">Commit File</string>
+    <string name="commit_changes">Commit Changes</string>
+    <string name="commit_deletion">Commit Deletion</string>
+    <string name="large_file_warning">This file is large and may take time to upload</string>
+    <string name="file_read_error">Could not read file content</string>
+    <string name="update_filename">Update %s</string>
+    <string name="delete_filename">Delete %s</string>
+    <string name="file_name_empty">File name cannot be empty</string>
+    <string name="select_branch_error">Please select a branch</string>
+    <string name="create_pull_request_with_branch">Create pull request with this branch</string>
+    <string name="tap_to_upload_file">Tap to select a file</string>
+    <string name="plain_text">Plain Text</string>
+    <string name="cursor_position_format">Ln %d, Col %d</string>
+    <string name="image_load_error">Could not load image</string>
+    <string name="invalid_user">Invalid user</string>
+    <string name="dashboard_my_prs_sub_title">Browse and manage all your pull requests with search and filters</string>
+    <string name="review_requested">Review requested</string>
+    <string name="reviewed_by_me">Reviewed by me</string>
+    <string name="enter_version">Enter Instance Version</string>
+    <string name="version_required_explanation">Unable to detect server version automatically. Please enter the version manually in the format shown below.</string>
+    <string name="save_and_continue">Save &amp; Continue</string>
+    <string name="invalid_version_format">Invalid version format. Please use format like 1.26.1</string>
+    <string name="time_in_moments">片刻后</string>
+    <string name="time_in_minute">%d 分钟后</string>
+    <string name="time_in_minutes">%d 分钟后</string>
+    <string name="time_in_hour">%d 小时后</string>
+    <string name="time_in_hours">%d 小时后</string>
+    <string name="time_in_day">%d 天后</string>
+    <string name="time_in_days">%d 天后</string>
+    <string name="time_in_month">%d 月后</string>
+    <string name="time_in_months">%d 月后</string>
+    <string name="time_in_year">%d 年后</string>
+    <string name="time_in_years">%d 年后</string>
+    <string name="time_moments_ago">片刻前</string>
+    <string name="time_minute_ago">%d 分钟前</string>
+    <string name="time_minutes_ago">%d 分钟前</string>
+    <string name="time_hour_ago">%d 小时前</string>
+    <string name="time_hours_ago">%d 小时前</string>
+    <string name="time_day_ago">%d 天前</string>
+    <string name="time_days_ago">%d 天前</string>
+    <string name="time_month_ago">%d 月前</string>
+    <string name="time_months_ago">%d 月前</string>
+    <string name="time_year_ago">%d 年前</string>
+    <string name="time_years_ago">%d 年前</string>
 </resources>

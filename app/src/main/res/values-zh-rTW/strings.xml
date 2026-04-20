@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
+    <string name="token_help">Access Token Help</string>
     <!-- menu items -->
     <string name="navMyRepos">我的儲存庫</string>
     <string name="navStarredRepos">已加星標的儲存庫</string>
@@ -40,7 +41,6 @@
     <string name="repoDescription">示範描述</string>
     <string name="orgName">示範組織</string>
     <string name="newCreateButtonCopy">建立</string>
-    <string name="newUpdateButtonCopy">更新</string>
     <string name="newRepoTintCopy">儲存庫名稱</string>
     <string name="newRepoDescTintCopy">儲存庫描述</string>
     <string name="newRepoPrivateCopy">不公開</string>
@@ -234,7 +234,6 @@
     <string name="labelDeleteConfirmText">您確定要刪除標籤 %1$s 嗎？</string>
     <string name="labelMenuContentDesc">降冪</string>
     <string name="labelDeleteText">標籤已刪除</string>
-    <string name="selectBranchError">選擇分支以發行</string>
     <string name="alertDialogTokenRevokedTitle">授權錯誤</string>
     <string name="alertDialogTokenRevokedMessage">Access Token 似乎已被撤銷，或您沒有權限查看這些內容。\n\n若權杖已被撤銷，請更新帳戶。</string>
     <string name="labelDeleteMessage">您真的要刪除此標籤嗎？</string>
@@ -362,7 +361,6 @@
     <string name="editIssueSuccessMessage">議題已更新</string>
     <!-- edit issue -->
     <!-- release -->
-    <string name="createRelease">發行新版本</string>
     <string name="releaseTagNameText">標籤名稱</string>
     <string name="releaseTitleText">標題</string>
     <string name="releaseContentText">內容</string>
@@ -373,6 +371,15 @@
     <string name="releaseCreatedText">已建立新發行版本</string>
     <string name="deleteReleaseConfirmation">您真的要刪除此發行版本嗎？</string>
     <string name="releaseDeleted">發行版本已刪除</string>
+    <string name="tagNameConflictError">Tag name already exists</string>
+    <string name="editReleaseSuccessMessage">Release updated successfully</string>
+    <string name="createRelease">Create Release</string>
+    <string name="createTag">Create Tag</string>
+    <string name="editRelease">Edit Release</string>
+    <string name="selectBranchError">Select a branch for release/tag</string>
+    <string name="add_release_branch">Tap to select a branch</string>
+    <string name="add_reviewers">Tap to select reviewers</string>
+    <string name="create_release_tag">Create Release/Tag</string>
     <!-- release -->
     <string name="openWebRepo">在瀏覽器中開啟</string>
     <string name="repoStargazersInMenu">加星者</string>
@@ -409,6 +416,8 @@
     <string name="branch_error_repo_locked">儲存庫已鎖定</string>
     <string name="create_branch">建立分支</string>
     <string name="default_branch">預設分支</string>
+    <string name="commit_message_empty">Commit message cannot be empty</string>
+    <string name="content_empty">File content cannot be empty</string>
     <string name="strFilter">篩選器</string>
     <string name="strMarkdown">Markdown</string>
     <string name="copyIssueUrl">複製問題網址</string>
@@ -533,6 +542,19 @@
     <string name="directory">目錄</string>
     <string name="apply">套用</string>
     <string name="state">狀態</string>
+    <string name="update">Update</string>
+    <string name="select">Select</string>
+    <string name="collapse">Collapse</string>
+    <string name="fullscreen">Fullscreen</string>
+    <string name="type">Type</string>
+    <string name="reviewers">Reviewers</string>
+    <string name="change">Change</string>
+    <string name="editor">Editor</string>
+    <string name="mode">Mode</string>
+    <string name="source">Source</string>
+    <string name="collaborative">Collaborative</string>
+    <string name="mirror">Mirror</string>
+    <string name="fork">Fork</string>
     <!-- generic copy -->
     <string name="exploreUsers">探索使用者</string>
     <string name="exploreIssues">探索議題</string>
@@ -575,6 +597,8 @@
     <string name="mergeNotAllowed">不允許合併【原因：審核數不足】</string>
     <string name="deleteBranch">刪除分支</string>
     <string name="switch_branch">切換分支</string>
+    <string name="allow_maintainer_edit">Allow maintainers to edit this pr</string>
+    <string name="edit_pr">Edit Pull Request</string>
     <string name="waitLoadingDownloadFile">請稍候，正在將檔案載入記憶體</string>
     <string name="downloadFileSaved">檔案儲存成功</string>
     <string name="excludeFilesInFileViewer">此檔案類型或大小在檔案檢視器中不受支援。您可以從選單下載。</string>
@@ -678,6 +702,7 @@
     <string name="isUnread">未讀</string>
     <string name="repoSettingsTitle">儲存庫設定</string>
     <string name="repoSettingsEditProperties">編輯屬性</string>
+    <string name="repoSettingsEditPropertiesHint">Change name, description, visibility and features</string>
     <string name="repoSettingsDelete">刪除儲存庫</string>
     <string name="repoSettingsDeleteHint">請小心，此操作『不可逆』</string>
     <string name="repoPropertiesTemplate">設定爲模板</string>
@@ -692,14 +717,15 @@
     <string name="repoPropertiesEnableSquash">啟用壓縮並合併</string>
     <string name="repoPropertiesEnableForceMerge">啟用重新基底並合併提交（&#8212;&#8212;no-ff）</string>
     <string name="repoPropertiesSaveSuccess">儲存庫屬性已成功更新</string>
-    <string name="repoSettingsDeleteDescription">刪除前須知：\n\n-此操作無法復原。\n此操作將永久刪除此儲存庫，包括程式碼、議題、留言、Wiki 資料及協作者設定。\n\n請輸入儲存庫名稱以確認</string>
+    <string name="repoSettingsDeleteDescription">Things to know before deletion:\n\n- This operation CANNOT be undone.\n- This operation will permanently delete the repository including code, issues, comments, wiki data and collaborator settings.</string>
+    <string name="typeRepoNameToConfirm">Type the repository name to confirm</string>
     <string name="repoSettingsDeleteError">儲存庫名稱不相符</string>
     <string name="repoDeletionSuccess">儲存庫已成功刪除</string>
     <string name="repoSettingsTransferOwnership">轉移擁有權</string>
     <string name="repoSettingsTransferOwnershipHint">將這個儲存庫轉移給您擁有管理權限的使用者或組織。</string>
     <string name="repoSettingsTransferOwnershipDescription">轉移前需注意事項：\n\n- 如果將儲存庫轉移到個人使用者，您將失去對該儲存庫的存取權。\n- 如果將儲存庫轉移到您（共同）擁有的組織，您將保留對該儲存庫的存取權。\n\n請輸入儲存庫名稱以確認</string>
     <string name="repoTransferText">執行轉移</string>
-    <string name="repoTransferOwnerText">新擁有者</string>
+    <string name="repoTransferOwnerText">New Owner Username</string>
     <string name="repoTransferSuccess">儲存庫已成功轉移</string>
     <string name="repoTransferOwnerError">需要新擁有者</string>
     <string name="repoTransferError">擁有者名稱有問題。請確認新擁有者是否存在</string>
@@ -755,7 +781,7 @@
     <string name="userAvatar">頭像</string>
     <string name="tags">標記</string>
     <string name="releasesTags">發行版/標記</string>
-    <string name="create_tag">僅建立標籤</string>
+    <string name="create_tag">Tag Only</string>
     <string name="tagCreated">標籤已建立</string>
     <string name="asRef">作為參考使用</string>
     <string name="deleteTagConfirmation">您確定要刪除此標籤嗎？</string>
@@ -783,8 +809,8 @@
     <string name="createWikiPage">建立維基頁面</string>
     <string name="wikiUpdated">Wiki 頁面已成功更新</string>
     <string name="wikiCreated">Wiki 頁面已成功建立</string>
-    <!-- code editor -->
-    <string name="openInCodeEditor">以程式碼編輯器打開</string>
+    <string name="wikiPageAlreadyExists">A wiki page with this title already exists</string>
+    <string name="editWikiPage">Edit Wiki Page</string>
     <!-- notes -->
     <string name="newNote">新增備註</string>
     <string name="editNote">編輯備註</string>
@@ -875,6 +901,8 @@
     <string name="attachment">附件</string>
     <string name="attachments">附件</string>
     <string name="attachmentsSaveError">已建立議題，但目前無法處理附件。請檢查伺服器日誌以取得更多詳細資訊。</string>
+    <string name="issueCreatedWithAttachments">Issue created with attachments</string>
+    <string name="attachmentTypeNotSupported">File type .%s may not be supported by the server</string>
     <string name="search_matches_found">找到 %1$d 個符合項目</string>
     <string name="search_no_matches">未找到符合項目</string>
     <string name="heatmap_contribution">在 %2$s 有 %1$d 項貢獻</string>
@@ -979,11 +1007,49 @@
     <string name="labelColorHex">十六進位色碼</string>
     <string name="invalid_color">無效的色碼</string>
     <string name="invalid_length">必須為 6 個字元</string>
-    <string name="create_pr">建立拉取請求</string>
+    <string name="create_pr">Create Pull Request</string>
     <string name="search_filter">搜尋與篩選</string>
     <string name="create_issue">建立議題</string>
     <string name="search_repos">搜尋儲存庫</string>
     <string name="dashboard_search_repos_sub_title">在您的儲存庫中搜尋並使用篩選器以獲得更精確的結果</string>
+    <string name="edit_milestone">Edit Milestone</string>
+    <string name="add_labels">Tap to add labels</string>
+    <string name="add_milestone">Tap to add milestone</string>
+    <string name="add_assignees">Tap to assign assignees</string>
+    <string name="add_due_date">Tap to add due date</string>
+    <string name="add_attachments">Tap to add attachments</string>
+    <string name="no_attachments">No attachments</string>
+    <string name="attachment_limit_count">Maximum %d files allowed</string>
+    <string name="attachment_limit_size">File exceeds %s limit</string>
+    <string name="cannotAddSelfAsReviewer">You cannot add yourself as a reviewer</string>
+    <string name="deleteVariableConfirmation">Are you sure you want to delete this variable? This action cannot be undone.</string>
+    <string name="variable_deleted">Variable deleted successfully</string>
+    <string name="file_conflict_error">A file with this name already exists</string>
+    <string name="delete_file_info">This will stage the file for deletion in the selected branch.</string>
+    <string name="upload_file">Upload file</string>
+    <string name="binary_file_message">Binary file - will be uploaded as-is</string>
+    <string name="commit_new_file">Commit File</string>
+    <string name="commit_changes">Commit Changes</string>
+    <string name="commit_deletion">Commit Deletion</string>
+    <string name="large_file_warning">This file is large and may take time to upload</string>
+    <string name="file_read_error">Could not read file content</string>
+    <string name="update_filename">Update %s</string>
+    <string name="delete_filename">Delete %s</string>
+    <string name="file_name_empty">File name cannot be empty</string>
+    <string name="select_branch_error">Please select a branch</string>
+    <string name="create_pull_request_with_branch">Create pull request with this branch</string>
+    <string name="tap_to_upload_file">Tap to select a file</string>
+    <string name="plain_text">Plain Text</string>
+    <string name="cursor_position_format">Ln %d, Col %d</string>
+    <string name="image_load_error">Could not load image</string>
+    <string name="invalid_user">Invalid user</string>
+    <string name="dashboard_my_prs_sub_title">Browse and manage all your pull requests with search and filters</string>
+    <string name="review_requested">Review requested</string>
+    <string name="reviewed_by_me">Reviewed by me</string>
+    <string name="enter_version">Enter Instance Version</string>
+    <string name="version_required_explanation">Unable to detect server version automatically. Please enter the version manually in the format shown below.</string>
+    <string name="save_and_continue">Save &amp; Continue</string>
+    <string name="invalid_version_format">Invalid version format. Please use format like 1.26.1</string>
     <string name="time_in_moments">片刻後</string>
     <string name="time_in_minute">%d 分鐘後</string>
     <string name="time_in_minutes">%d 分鐘後</string>
