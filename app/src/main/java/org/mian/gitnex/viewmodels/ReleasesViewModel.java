@@ -8,8 +8,12 @@ import androidx.lifecycle.ViewModel;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
+import org.gitnex.tea4j.v2.models.CreateReleaseOption;
+import org.gitnex.tea4j.v2.models.CreateTagOption;
+import org.gitnex.tea4j.v2.models.EditReleaseOption;
 import org.gitnex.tea4j.v2.models.Release;
 import org.gitnex.tea4j.v2.models.Tag;
+import org.mian.gitnex.R;
 import org.mian.gitnex.clients.RetrofitClient;
 import retrofit2.Call;
 import retrofit2.Callback;
@@ -28,6 +32,15 @@ public class ReleasesViewModel extends ViewModel {
 	private final MutableLiveData<Boolean> isTagsLoading = new MutableLiveData<>(false);
 	private final MutableLiveData<Integer> actionResult = new MutableLiveData<>(-1);
 	private final MutableLiveData<Integer> repoReleasesCountLiveData = new MutableLiveData<>(-1);
+	private final MutableLiveData<Boolean> isCreatingRelease = new MutableLiveData<>(false);
+	private final MutableLiveData<Boolean> isCreatingTag = new MutableLiveData<>(false);
+	private final MutableLiveData<Boolean> isUpdatingRelease = new MutableLiveData<>(false);
+	private final MutableLiveData<Release> createdRelease = new MutableLiveData<>();
+	private final MutableLiveData<Tag> createdTag = new MutableLiveData<>();
+	private final MutableLiveData<Release> updatedRelease = new MutableLiveData<>();
+	private final MutableLiveData<String> createReleaseError = new MutableLiveData<>();
+	private final MutableLiveData<String> createTagError = new MutableLiveData<>();
+	private final MutableLiveData<String> updateReleaseError = new MutableLiveData<>();
 
 	private int totalCount = -1;
 	private boolean isLastPage = false;
@@ -62,6 +75,42 @@ public class ReleasesViewModel extends ViewModel {
 		return repoReleasesCountLiveData;
 	}
 
+	public LiveData<Boolean> getIsCreatingRelease() {
+		return isCreatingRelease;
+	}
+
+	public LiveData<Boolean> getIsCreatingTag() {
+		return isCreatingTag;
+	}
+
+	public LiveData<Boolean> getIsUpdatingRelease() {
+		return isUpdatingRelease;
+	}
+
+	public LiveData<Release> getCreatedRelease() {
+		return createdRelease;
+	}
+
+	public LiveData<Tag> getCreatedTag() {
+		return createdTag;
+	}
+
+	public LiveData<Release> getUpdatedRelease() {
+		return updatedRelease;
+	}
+
+	public LiveData<String> getCreateReleaseError() {
+		return createReleaseError;
+	}
+
+	public LiveData<String> getCreateTagError() {
+		return createTagError;
+	}
+
+	public LiveData<String> getUpdateReleaseError() {
+		return updateReleaseError;
+	}
+
 	public void resetPagination() {
 		this.isLastPage = false;
 		this.totalCount = -1;
@@ -73,6 +122,30 @@ public class ReleasesViewModel extends ViewModel {
 		this.isTagsLastPage = false;
 		this.tagsTotalCount = -1;
 		this.tags.setValue(null);
+	}
+
+	public void clearCreatedRelease() {
+		createdRelease.setValue(null);
+	}
+
+	public void clearCreatedTag() {
+		createdTag.setValue(null);
+	}
+
+	public void clearUpdatedRelease() {
+		updatedRelease.setValue(null);
+	}
+
+	public void clearCreateReleaseError() {
+		createReleaseError.setValue(null);
+	}
+
+	public void clearCreateTagError() {
+		createTagError.setValue(null);
+	}
+
+	public void clearUpdateReleaseError() {
+		updateReleaseError.setValue(null);
 	}
 
 	public void resetActionResult() {
@@ -265,5 +338,125 @@ public class ReleasesViewModel extends ViewModel {
 								errorMessage.setValue(t.getMessage());
 							}
 						});
+	}
+
+	public void createRelease(
+			Context ctx, String owner, String repo, CreateReleaseOption releaseData) {
+		isCreatingRelease.setValue(true);
+
+		Call<Release> call =
+				RetrofitClient.getApiInterface(ctx).repoCreateRelease(owner, repo, releaseData);
+
+		call.enqueue(
+				new Callback<>() {
+					@Override
+					public void onResponse(
+							@NonNull Call<Release> call, @NonNull Response<Release> response) {
+						isCreatingRelease.setValue(false);
+						if (response.isSuccessful() && response.body() != null) {
+							createdRelease.setValue(response.body());
+							actionResult.setValue(201);
+						} else if (response.code() == 401) {
+							createReleaseError.setValue("UNAUTHORIZED");
+						} else if (response.code() == 403) {
+							createReleaseError.setValue(ctx.getString(R.string.authorizeError));
+						} else if (response.code() == 404) {
+							createReleaseError.setValue(ctx.getString(R.string.apiNotFound));
+						} else if (response.code() == 409) {
+							createReleaseError.setValue(
+									ctx.getString(R.string.tagNameConflictError));
+						} else {
+							createReleaseError.setValue(ctx.getString(R.string.genericError));
+						}
+					}
+
+					@Override
+					public void onFailure(@NonNull Call<Release> call, @NonNull Throwable t) {
+						isCreatingRelease.setValue(false);
+						createReleaseError.setValue(t.getMessage());
+					}
+				});
+	}
+
+	public void createTag(Context ctx, String owner, String repo, CreateTagOption tagData) {
+		isCreatingTag.setValue(true);
+
+		Call<Tag> call = RetrofitClient.getApiInterface(ctx).repoCreateTag(owner, repo, tagData);
+
+		call.enqueue(
+				new Callback<>() {
+					@Override
+					public void onResponse(
+							@NonNull Call<Tag> call, @NonNull Response<Tag> response) {
+						isCreatingTag.setValue(false);
+						if (response.isSuccessful() && response.body() != null) {
+							createdTag.setValue(response.body());
+							actionResult.setValue(201);
+						} else if (response.code() == 401) {
+							createTagError.setValue("UNAUTHORIZED");
+						} else if (response.code() == 403) {
+							createTagError.setValue(ctx.getString(R.string.authorizeError));
+						} else if (response.code() == 404) {
+							createTagError.setValue(ctx.getString(R.string.apiNotFound));
+						} else if (response.code() == 409) {
+							createTagError.setValue(ctx.getString(R.string.tagNameConflictError));
+						} else {
+							createTagError.setValue(ctx.getString(R.string.genericError));
+						}
+					}
+
+					@Override
+					public void onFailure(@NonNull Call<Tag> call, @NonNull Throwable t) {
+						isCreatingTag.setValue(false);
+						createTagError.setValue(t.getMessage());
+					}
+				});
+	}
+
+	public void updateRelease(
+			Context ctx,
+			String owner,
+			String repo,
+			long releaseId,
+			String name,
+			String body,
+			boolean prerelease) {
+		isUpdatingRelease.setValue(true);
+
+		EditReleaseOption editData = new EditReleaseOption();
+		editData.setName(name);
+		editData.setBody(body);
+		editData.setPrerelease(prerelease);
+
+		Call<Release> call =
+				RetrofitClient.getApiInterface(ctx)
+						.repoEditRelease(owner, repo, releaseId, editData);
+
+		call.enqueue(
+				new Callback<Release>() {
+					@Override
+					public void onResponse(
+							@NonNull Call<Release> call, @NonNull Response<Release> response) {
+						isUpdatingRelease.setValue(false);
+						if (response.isSuccessful() && response.body() != null) {
+							updatedRelease.setValue(response.body());
+							actionResult.setValue(200);
+						} else if (response.code() == 401) {
+							updateReleaseError.setValue("UNAUTHORIZED");
+						} else if (response.code() == 403) {
+							updateReleaseError.setValue(ctx.getString(R.string.authorizeError));
+						} else if (response.code() == 404) {
+							updateReleaseError.setValue(ctx.getString(R.string.apiNotFound));
+						} else {
+							updateReleaseError.setValue(ctx.getString(R.string.genericError));
+						}
+					}
+
+					@Override
+					public void onFailure(@NonNull Call<Release> call, @NonNull Throwable t) {
+						isUpdatingRelease.setValue(false);
+						updateReleaseError.setValue(t.getMessage());
+					}
+				});
 	}
 }

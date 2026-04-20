@@ -25,7 +25,9 @@ public class AvatarGenerator {
 			label = "?";
 		}
 
-		String firstChar = String.valueOf(label.trim().charAt(0)).toUpperCase();
+		String trimmed = label.trim();
+		String firstChar = extractFirstValidChar(trimmed);
+
 		int color = getColorForString(label);
 
 		float density = context.getResources().getDisplayMetrics().density;
@@ -40,7 +42,6 @@ public class AvatarGenerator {
 		canvas.drawRoundRect(0, 0, sizePx, sizePx, cornerRadius, cornerRadius, bgPaint);
 
 		Paint textPaint = new Paint(Paint.ANTI_ALIAS_FLAG);
-
 		textPaint.setColor(ColorInverter.getContrastColor(color));
 		textPaint.setTextSize(sizePx * 0.55f);
 		textPaint.setTextAlign(Paint.Align.CENTER);
@@ -108,5 +109,27 @@ public class AvatarGenerator {
 	private static int getColorForString(String key) {
 		int hash = Math.abs(key.hashCode());
 		return MATERIAL_COLORS[hash % MATERIAL_COLORS.length];
+	}
+
+	private static String extractFirstValidChar(String text) {
+		if (text == null || text.isEmpty()) {
+			return "?";
+		}
+
+		for (int i = 0; i < text.length(); i++) {
+			char c = text.charAt(i);
+			if ((c >= 'a' && c <= 'z') || (c >= 'A' && c <= 'Z')) {
+				return String.valueOf(c).toUpperCase();
+			}
+		}
+
+		for (int i = 0; i < text.length(); i++) {
+			char c = text.charAt(i);
+			if (c >= '0' && c <= '9') {
+				return String.valueOf(c);
+			}
+		}
+
+		return String.valueOf(text.charAt(0)).toUpperCase();
 	}
 }

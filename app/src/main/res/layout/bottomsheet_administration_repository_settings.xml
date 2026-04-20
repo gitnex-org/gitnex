@@ -1,0 +1,58 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:paddingHorizontal="@dimen/dimen16dp"
+    android:paddingBottom="@dimen/dimen32dp">
+
+    <com.google.android.material.bottomsheet.BottomSheetDragHandleView
+        android:id="@+id/drag_handle"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <TextView
+        android:id="@+id/headerTitle"
+        style="@style/TextAppearance.Material3.HeadlineSmall"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/repoSettingsTitle"
+        android:textStyle="bold"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/drag_handle" />
+
+    <com.google.android.material.loadingindicator.LoadingIndicator
+        android:id="@+id/loadingIndicator"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:indicatorSize="@dimen/dimen48dp"
+        app:trackThickness="@dimen/dimen4dp"
+        android:visibility="gone"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/headerTitle"
+        android:layout_marginTop="@dimen/dimen48dp"
+        android:layout_marginBottom="@dimen/dimen48dp"/>
+
+    <LinearLayout
+        android:id="@+id/settingsContainer"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/dimen16dp"
+        android:orientation="vertical"
+        android:visibility="gone"
+        app:layout_constraintTop_toBottomOf="@id/headerTitle">
+
+        <include android:id="@+id/itemForks" layout="@layout/item_administration_repo_setting_row" />
+        <include android:id="@+id/itemMigrations" layout="@layout/item_administration_repo_setting_row" />
+        <include android:id="@+id/itemHttpGit" layout="@layout/item_administration_repo_setting_row" />
+        <include android:id="@+id/itemLfs" layout="@layout/item_administration_repo_setting_row" />
+        <include android:id="@+id/itemMirrors" layout="@layout/item_administration_repo_setting_row" />
+        <include android:id="@+id/itemTime" layout="@layout/item_administration_repo_setting_row" />
+        <include android:id="@+id/itemStars" layout="@layout/item_administration_repo_setting_row" />
+
+    </LinearLayout>
+
+</androidx.constraintlayout.widget.ConstraintLayout>

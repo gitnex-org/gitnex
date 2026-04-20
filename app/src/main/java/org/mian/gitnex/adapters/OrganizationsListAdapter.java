@@ -3,6 +3,7 @@ package org.mian.gitnex.adapters;
 import android.annotation.SuppressLint;
 import android.content.Context;
 import android.content.Intent;
+import android.graphics.drawable.Drawable;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -19,6 +20,7 @@ import org.gitnex.tea4j.v2.models.Organization;
 import org.mian.gitnex.R;
 import org.mian.gitnex.activities.OrganizationDetailActivity;
 import org.mian.gitnex.databinding.ListOrganizationsBinding;
+import org.mian.gitnex.helpers.AvatarGenerator;
 import org.mian.gitnex.helpers.Markdown;
 
 /**
@@ -127,10 +129,14 @@ public class OrganizationsListAdapter
 		void bind(Organization org) {
 			binding.orgName.setText(org.getUsername());
 
+			String label = (org.getName() != null) ? org.getName() : org.getFullName();
+			Drawable placeholder = AvatarGenerator.getLetterAvatar(context, label, 44);
+
 			Glide.with(context)
 					.load(org.getAvatarUrl())
 					.diskCacheStrategy(DiskCacheStrategy.ALL)
 					.placeholder(R.drawable.loader_animated)
+					.error(placeholder)
 					.centerCrop()
 					.into(binding.imageAvatar);
 

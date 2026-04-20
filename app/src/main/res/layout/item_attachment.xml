@@ -1,0 +1,74 @@
+<com.google.android.material.card.MaterialCardView
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    style="@style/Widget.Material3.CardView.Filled"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_marginTop="@dimen/dimen8dp"
+    app:cardBackgroundColor="?attr/colorSurfaceContainerLow"
+    app:cardElevation="@dimen/dimen0dp"
+    app:shapeAppearance="@style/ShapeAppearance.Material3.Corner.Medium"
+    app:strokeWidth="@dimen/dimen0dp">
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:padding="@dimen/dimen12dp">
+
+        <com.google.android.material.imageview.ShapeableImageView
+            android:id="@+id/attachment_preview"
+            android:layout_width="@dimen/dimen36dp"
+            android:layout_height="@dimen/dimen36dp"
+            android:contentDescription="@string/attachment"
+            android:scaleType="centerCrop"
+            android:src="@drawable/ic_file"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:shapeAppearance="@style/ShapeAppearance.Material3.Corner.ExtraSmall" />
+
+        <com.google.android.material.button.MaterialButton
+            android:id="@+id/attachment_remove_btn"
+            style="@style/Widget.Material3.Button.IconButton"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:contentDescription="@string/removeButton"
+            app:icon="@drawable/ic_close"
+            app:iconSize="@dimen/dimen18dp"
+            app:iconTint="?attr/iconsColor"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintBottom_toBottomOf="parent" />
+
+        <TextView
+            android:id="@+id/attachment_file_name"
+            style="@style/TextAppearance.Material3.BodyLarge"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="@dimen/dimen12dp"
+            android:layout_marginEnd="@dimen/dimen8dp"
+            android:ellipsize="middle"
+            android:maxLines="1"
+            app:layout_constraintEnd_toStartOf="@id/attachment_remove_btn"
+            app:layout_constraintStart_toEndOf="@id/attachment_preview"
+            app:layout_constraintTop_toTopOf="@id/attachment_preview" />
+
+        <TextView
+            android:id="@+id/attachment_file_info"
+            style="@style/TextAppearance.Material3.BodySmall"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="@dimen/dimen12dp"
+            android:layout_marginEnd="@dimen/dimen8dp"
+            android:layout_marginTop="@dimen/dimen4dp"
+            android:alpha="0.7"
+            android:ellipsize="end"
+            android:maxLines="1"
+            android:textColor="?attr/colorOnSurfaceVariant"
+            app:layout_constraintEnd_toStartOf="@id/attachment_remove_btn"
+            app:layout_constraintStart_toEndOf="@id/attachment_preview"
+            app:layout_constraintTop_toBottomOf="@id/attachment_file_name" />
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+</com.google.android.material.card.MaterialCardView>

@@ -24,6 +24,7 @@ import org.mian.gitnex.activities.IssueDetailActivity;
 import org.mian.gitnex.activities.ProfileActivity;
 import org.mian.gitnex.activities.RepoDetailActivity;
 import org.mian.gitnex.databinding.ListPrBinding;
+import org.mian.gitnex.fragments.BottomSheetCreatePullRequest;
 import org.mian.gitnex.helpers.AppDatabaseSettings;
 import org.mian.gitnex.helpers.AppUtil;
 import org.mian.gitnex.helpers.AvatarGenerator;
@@ -31,6 +32,7 @@ import org.mian.gitnex.helpers.Markdown;
 import org.mian.gitnex.helpers.TimeHelper;
 import org.mian.gitnex.helpers.Toasty;
 import org.mian.gitnex.helpers.contexts.IssueContext;
+import org.mian.gitnex.helpers.contexts.RepositoryContext;
 
 /**
  * @author mmarif
@@ -145,6 +147,20 @@ public class PullRequestsAdapter
 			} else {
 				binding.mergedBadge.setVisibility(View.GONE);
 			}
+
+			// TEMPORARY: remove later once PR edit is implemented
+			binding.prNumber.setOnClickListener(
+					v -> {
+						if (context instanceof RepoDetailActivity) {
+							RepositoryContext repository =
+									((RepoDetailActivity) context).repository;
+							BottomSheetCreatePullRequest.newInstance(repository, pr)
+									.show(
+											((RepoDetailActivity) context)
+													.getSupportFragmentManager(),
+											"EDIT_PULL_REQUEST");
+						}
+					});
 
 			binding.userName.setText(pr.getUser().getLogin());
 			binding.repoFullName.setText(pr.getBase().getRepo().getFullName());

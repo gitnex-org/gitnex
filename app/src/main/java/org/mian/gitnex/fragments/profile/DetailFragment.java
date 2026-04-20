@@ -59,6 +59,7 @@ public class DetailFragment extends Fragment {
 	private static Uri avatarUri = null;
 	private BottomSheetDialog editSheet;
 	private boolean isFirstLoad = true;
+	private boolean isViewReady = false;
 
 	public DetailFragment() {}
 
@@ -73,8 +74,9 @@ public class DetailFragment extends Fragment {
 	@Override
 	public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
 		super.onViewCreated(view, savedInstanceState);
-
-		UIHelper.applyInsets(view, null, binding.detailScrollView, null, null);
+		View dock = requireActivity().findViewById(R.id.docked_toolbar);
+		UIHelper.applyInsets(view, dock, binding.detailScrollView, null, null);
+		isViewReady = true;
 	}
 
 	@Override
@@ -97,7 +99,7 @@ public class DetailFragment extends Fragment {
 	@Override
 	public void onResume() {
 		super.onResume();
-		if (!isHidden() && isFirstLoad) {
+		if (!isHidden() && isFirstLoad && isViewReady) {
 			lazyLoad();
 		}
 	}
@@ -105,7 +107,7 @@ public class DetailFragment extends Fragment {
 	@Override
 	public void onHiddenChanged(boolean hidden) {
 		super.onHiddenChanged(hidden);
-		if (!hidden && isFirstLoad) {
+		if (!hidden && isFirstLoad && isViewReady) {
 			lazyLoad();
 		}
 	}
@@ -143,8 +145,8 @@ public class DetailFragment extends Fragment {
 						getViewLifecycleOwner(),
 						user -> {
 							if (user == null) return;
-							populateUi(user);
 							checkOwnership(user.getLogin());
+							populateUi(user);
 						});
 
 		viewModel.getHeatmapData().observe(getViewLifecycleOwner(), this::displayHeatmap);
@@ -289,7 +291,11 @@ public class DetailFragment extends Fragment {
 					(codes.length >= 2) ? new Locale(codes[0], codes[1]) : Locale.getDefault();
 			langName = userLoc.getDisplayLanguage();
 		}
-		setupInfoItem(binding.layoutLang, R.drawable.ic_language, langName, shouldHide);
+		setupInfoItem(
+				binding.layoutLang,
+				R.drawable.ic_language,
+				shouldHide ? getString(R.string.strPrivate).toUpperCase() : langName,
+				shouldHide);
 
 		setupInfoItem(
 				binding.layoutJoined,

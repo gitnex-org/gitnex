@@ -2,6 +2,7 @@ package org.mian.gitnex.adapters;
 
 import android.annotation.SuppressLint;
 import android.content.Context;
+import android.graphics.drawable.Drawable;
 import android.transition.AutoTransition;
 import android.transition.TransitionManager;
 import android.view.LayoutInflater;
@@ -18,7 +19,6 @@ import java.util.Locale;
 import org.gitnex.tea4j.v2.models.Release;
 import org.mian.gitnex.R;
 import org.mian.gitnex.databinding.ListReleasesBinding;
-import org.mian.gitnex.fragments.ReleasesFragment;
 import org.mian.gitnex.helpers.AvatarGenerator;
 import org.mian.gitnex.helpers.Markdown;
 import org.mian.gitnex.helpers.TimeHelper;
@@ -32,13 +32,19 @@ public class ReleasesAdapter extends RecyclerView.Adapter<ReleasesAdapter.Releas
 	private final Context context;
 	private List<Release> releasesList;
 	private final boolean canDelete;
-	private final ReleasesFragment.OnReleaseItemClickListener listener;
+	private final OnReleaseItemClickListener listener;
+
+	public interface OnReleaseItemClickListener {
+		void onMenuClick(Release release, int position);
+
+		void onDownload(String url);
+	}
 
 	public ReleasesAdapter(
 			Context context,
 			List<Release> releases,
 			boolean canDelete,
-			ReleasesFragment.OnReleaseItemClickListener listener) {
+			OnReleaseItemClickListener listener) {
 		this.context = context;
 		this.releasesList = releases;
 		this.canDelete = canDelete;
@@ -70,14 +76,6 @@ public class ReleasesAdapter extends RecyclerView.Adapter<ReleasesAdapter.Releas
 		notifyDataSetChanged();
 	}
 
-	public void removeItem(int position) {
-		if (position >= 0 && position < releasesList.size()) {
-			releasesList.remove(position);
-			notifyItemRemoved(position);
-			notifyItemRangeChanged(position, releasesList.size());
-		}
-	}
-
 	public class ReleasesViewHolder extends RecyclerView.ViewHolder {
 		private final ListReleasesBinding binding;
 
@@ -99,9 +97,18 @@ public class ReleasesAdapter extends RecyclerView.Adapter<ReleasesAdapter.Releas
 				binding.authorName.setText(
 						context.getString(
 								R.string.releasePublishedBy, release.getAuthor().getLogin()));
+
+				String label =
+						(release.getAuthor().getFullName() != null)
+								? release.getAuthor().getFullName()
+								: release.getAuthor().getLogin();
+				Drawable placeholder = AvatarGenerator.getLetterAvatar(context, label, 44);
+
 				Glide.with(context)
 						.load(release.getAuthor().getAvatarUrl())
 						.diskCacheStrategy(DiskCacheStrategy.ALL)
+						.placeholder(R.drawable.loader_animated)
+						.error(placeholder)
 						.centerCrop()
 						.into(binding.authorAvatar);
 			}
@@ -127,7 +134,7 @@ public class ReleasesAdapter extends RecyclerView.Adapter<ReleasesAdapter.Releas
 			if (release.getAssets() != null && !release.getAssets().isEmpty()) {
 				binding.downloadList.setVisibility(View.VISIBLE);
 				ReleasesDownloadsAdapter downloadsAdapter =
-						new ReleasesDownloadsAdapter(release.getAssets(), listener);
+						new ReleasesDownloadsAdapter(release.getAssets(), listener::onDownload);
 
 				binding.downloadList.setLayoutManager(new LinearLayoutManager(context));
 				binding.downloadList.setAdapter(downloadsAdapter);
@@ -138,7 +145,7 @@ public class ReleasesAdapter extends RecyclerView.Adapter<ReleasesAdapter.Releas
 
 			binding.itemMenu.setVisibility(canDelete ? View.VISIBLE : View.GONE);
 			binding.itemMenu.setOnClickListener(
-					v -> listener.onDelete(release, getBindingAdapterPosition()));
+					v -> listener.onMenuClick(release, getBindingAdapterPosition()));
 
 			binding.btnAssets.setOnClickListener(
 					v -> {

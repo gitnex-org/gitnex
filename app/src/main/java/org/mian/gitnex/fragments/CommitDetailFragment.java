@@ -63,8 +63,8 @@ public class CommitDetailFragment extends Fragment {
 	@Override
 	public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
 		super.onViewCreated(view, savedInstanceState);
-
-		UIHelper.applyInsets(view, null, binding.diffFiles, null, binding.contentScrollView);
+		View dock = requireActivity().findViewById(R.id.docked_toolbar);
+		UIHelper.applyInsets(view, dock, binding.diffFiles, null, binding.contentScrollView);
 	}
 
 	@Nullable @Override

@@ -7,9 +7,6 @@ import android.view.View;
 import android.view.ViewGroup;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
-import androidx.core.graphics.Insets;
-import androidx.core.view.ViewCompat;
-import androidx.core.view.WindowInsetsCompat;
 import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import com.bumptech.glide.Glide;
@@ -26,11 +23,13 @@ import org.mian.gitnex.activities.LoginActivity;
 import org.mian.gitnex.activities.MainActivity;
 import org.mian.gitnex.activities.MostVisitedReposActivity;
 import org.mian.gitnex.activities.MyIssuesActivity;
+import org.mian.gitnex.activities.MyPullRequestsActivity;
 import org.mian.gitnex.activities.MyReposActivity;
 import org.mian.gitnex.activities.NotesActivity;
 import org.mian.gitnex.activities.OrganizationsActivity;
 import org.mian.gitnex.activities.ProfileActivity;
 import org.mian.gitnex.activities.StarredReposActivity;
+import org.mian.gitnex.activities.UserRepositoriesActivity;
 import org.mian.gitnex.activities.WatchedReposActivity;
 import org.mian.gitnex.adapters.UserAccountsAdapter;
 import org.mian.gitnex.database.api.BaseApi;
@@ -42,7 +41,7 @@ import org.mian.gitnex.databinding.ItemCardFullBinding;
 import org.mian.gitnex.databinding.ItemCardLargeBinding;
 import org.mian.gitnex.helpers.AppUtil;
 import org.mian.gitnex.helpers.TinyDB;
-import org.mian.gitnex.helpers.Toasty;
+import org.mian.gitnex.helpers.UIHelper;
 import org.mian.gitnex.helpers.UrlHelper;
 
 /**
@@ -53,29 +52,14 @@ public class HomeDashboardFragment extends Fragment {
 	private FragmentHomeDashboardBinding binding;
 	private String username;
 	private TinyDB tinyDB;
+	private long uid;
 
 	@Override
 	public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
 		super.onViewCreated(view, savedInstanceState);
 
-		ViewCompat.setOnApplyWindowInsetsListener(
-				binding.nestedScrollView,
-				(v, windowInsets) -> {
-					Insets systemBars =
-							windowInsets.getInsets(WindowInsetsCompat.Type.systemBars());
-					v.setPadding(
-							v.getPaddingLeft(),
-							v.getPaddingTop(),
-							v.getPaddingRight(),
-							systemBars.bottom);
-					binding.mainLayout.setPadding(
-							binding.mainLayout.getPaddingLeft(),
-							systemBars.top + (int) getResources().getDimension(R.dimen.dimen20dp),
-							binding.mainLayout.getPaddingRight(),
-							binding.mainLayout.getPaddingBottom());
-
-					return windowInsets;
-				});
+		View dock = requireActivity().findViewById(R.id.docked_toolbar);
+		UIHelper.applyInsets(view, dock, binding.nestedScrollView, null, null);
 	}
 
 	@Override
@@ -105,8 +89,10 @@ public class HomeDashboardFragment extends Fragment {
 								boolean isAdmin,
 								String serverVersion,
 								long followers,
-								long following) {
+								long following,
+								long uid) {
 							if (!isAdded()) return;
+							HomeDashboardFragment.this.uid = uid;
 							HomeDashboardFragment.this.username = username;
 							binding.userFollowers.setText(String.valueOf(followers));
 							binding.userFollowing.setText(String.valueOf(following));
@@ -222,11 +208,22 @@ public class HomeDashboardFragment extends Fragment {
 							Intent intent = new Intent(requireContext(), ActivitiesActivity.class);
 							startActivity(intent);
 						});
+		binding.myPullRequests
+				.getRoot()
+				.setOnClickListener(
+						v -> {
+							Intent intent =
+									new Intent(requireContext(), MyPullRequestsActivity.class);
+							startActivity(intent);
+						});
 		binding.searchReposCard
 				.getRoot()
 				.setOnClickListener(
 						v -> {
-							Toasty.show(requireContext(), "WIP");
+							Intent intent =
+									new Intent(requireContext(), UserRepositoriesActivity.class);
+							intent.putExtra("uid", uid);
+							startActivity(intent);
 						});
 		binding.exploreCard
 				.getRoot()
@@ -314,6 +311,11 @@ public class HomeDashboardFragment extends Fragment {
 				null,
 				R.drawable.ic_tool);
 
+		updateFullCard(
+				binding.myPullRequests,
+				R.string.tabPullRequests,
+				getString(R.string.dashboard_my_prs_sub_title),
+				R.drawable.ic_pull_request);
 		updateFullCard(
 				binding.searchReposCard,
 				R.string.search_repos,

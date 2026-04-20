@@ -59,6 +59,11 @@ public class WatchedReposActivity extends BaseActivity {
 		refreshData();
 	}
 
+	@Override
+	protected void onGlobalRefresh() {
+		refreshData();
+	}
+
 	private void setupUI() {
 		binding.dockedToolbarChild.removeView(binding.btnMore);
 		binding.btnBack.setOnClickListener(v -> finish());

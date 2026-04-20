@@ -154,6 +154,11 @@ public class MyReposActivity extends BaseActivity {
 				});
 	}
 
+	@Override
+	protected void onGlobalRefresh() {
+		refreshData();
+	}
+
 	private void observeViewModel() {
 		viewModel
 				.getRepos()
@@ -202,15 +207,6 @@ public class MyReposActivity extends BaseActivity {
 		viewModel.fetchRepos(this, "myRepos", userLogin, null, 1, resultLimit, currentSort, true);
 	}
 
-	@Override
-	public void onResume() {
-		super.onResume();
-		if (MainActivity.reloadRepos) {
-			refreshData();
-			MainActivity.reloadRepos = false;
-		}
-	}
-
 	public static class SortBottomSheetDialogFragment extends BottomSheetDialogFragment {
 		private SortListener sortListener;
 
@@ -225,7 +221,7 @@ public class MyReposActivity extends BaseActivity {
 		@Override
 		public View onCreateView(
 				@NonNull LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-			View view = inflater.inflate(R.layout.bottom_sheet_repositories_sort, container, false);
+			View view = inflater.inflate(R.layout.bottomsheet_repositories_sort, container, false);
 			ChipGroup chipGroup = view.findViewById(R.id.sort_chip_group);
 
 			String[] sorts = {

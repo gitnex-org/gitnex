@@ -57,8 +57,9 @@ public class AccountSettingsEmailsFragment extends Fragment {
 	@Override
 	public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
 		super.onViewCreated(view, savedInstanceState);
+		View dock = requireActivity().findViewById(R.id.docked_toolbar);
 		UIHelper.applyInsets(
-				binding.getRoot(), null, binding.recyclerView, binding.pullToRefresh, null);
+				binding.getRoot(), dock, binding.recyclerView, binding.pullToRefresh, null);
 	}
 
 	private void setupRecyclerView() {

@@ -17,6 +17,7 @@ import com.google.android.material.bottomsheet.BottomSheetDialog;
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment;
 import java.util.ArrayList;
 import java.util.Objects;
+import org.mian.gitnex.R;
 import org.mian.gitnex.activities.ExploreActivity;
 import org.mian.gitnex.adapters.IssuesAdapter;
 import org.mian.gitnex.databinding.BottomsheetExploreIssuesBinding;
@@ -41,11 +42,14 @@ public class ExploreIssuesFragment extends Fragment
 	private String currentQuery = "";
 	private int resultLimit;
 	private boolean isFirstLoad = true;
+	private boolean isViewReady = false;
 
 	@Override
 	public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
 		super.onViewCreated(view, savedInstanceState);
-		UIHelper.applyInsets(view, null, viewBinding.recyclerView, viewBinding.pullToRefresh, null);
+		View dock = requireActivity().findViewById(R.id.docked_toolbar);
+		UIHelper.applyInsets(view, dock, viewBinding.recyclerView, viewBinding.pullToRefresh, null);
+		isViewReady = true;
 	}
 
 	@Override
@@ -65,7 +69,7 @@ public class ExploreIssuesFragment extends Fragment
 	@Override
 	public void onResume() {
 		super.onResume();
-		if (!isHidden() && isFirstLoad) {
+		if (!isHidden() && isFirstLoad && isViewReady) {
 			lazyLoad();
 		}
 	}
@@ -73,7 +77,7 @@ public class ExploreIssuesFragment extends Fragment
 	@Override
 	public void onHiddenChanged(boolean hidden) {
 		super.onHiddenChanged(hidden);
-		if (!hidden && isFirstLoad) {
+		if (!hidden && isFirstLoad && isViewReady) {
 			lazyLoad();
 		}
 	}
@@ -153,6 +157,7 @@ public class ExploreIssuesFragment extends Fragment
 	private void refreshData(String query) {
 		this.currentQuery = query;
 		if (scrollListener != null) scrollListener.resetState();
+		if (issuesViewModel == null) return;
 		issuesViewModel.resetPagination();
 		viewBinding.expressiveLoader.setVisibility(View.VISIBLE);
 		issuesViewModel.fetchIssues(
@@ -271,6 +276,20 @@ public class ExploreIssuesFragment extends Fragment
 							.toString()
 							.trim();
 			sheetBinding.btnApply.setEnabled(!query.isEmpty());
+		}
+
+		@Override
+		public void onStart() {
+			super.onStart();
+			if (getDialog() instanceof BottomSheetDialog) {
+				AppUtil.applySheetStyle((BottomSheetDialog) getDialog(), true);
+			}
+		}
+
+		@Override
+		public void onDestroyView() {
+			super.onDestroyView();
+			sheetBinding = null;
 		}
 	}
 }

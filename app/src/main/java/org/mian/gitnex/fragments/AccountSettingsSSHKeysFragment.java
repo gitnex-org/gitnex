@@ -2,6 +2,7 @@ package org.mian.gitnex.fragments;
 
 import android.os.Bundle;
 import android.view.LayoutInflater;
+import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
 import androidx.annotation.NonNull;
@@ -58,8 +59,9 @@ public class AccountSettingsSSHKeysFragment extends Fragment {
 	@Override
 	public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
 		super.onViewCreated(view, savedInstanceState);
+		View dock = requireActivity().findViewById(R.id.docked_toolbar);
 		UIHelper.applyInsets(
-				binding.getRoot(), null, binding.recyclerView, binding.pullToRefresh, null);
+				binding.getRoot(), dock, binding.recyclerView, binding.pullToRefresh, null);
 	}
 
 	private void setupRecyclerView() {
@@ -160,6 +162,18 @@ public class AccountSettingsSSHKeysFragment extends Fragment {
 
 		bottomSheetAddKey = new BottomSheetDialog(requireContext());
 		bottomSheetAddKey.setContentView(sheetBinding.getRoot());
+
+		sheetBinding.key.setOnTouchListener(
+				(v, event) -> {
+					if (event.getAction() == MotionEvent.ACTION_DOWN) {
+						v.getParent().requestDisallowInterceptTouchEvent(true);
+					} else if (event.getAction() == MotionEvent.ACTION_UP
+							|| event.getAction() == MotionEvent.ACTION_CANCEL) {
+						v.getParent().requestDisallowInterceptTouchEvent(false);
+						v.performClick();
+					}
+					return false;
+				});
 
 		AppUtil.applySheetStyle(bottomSheetAddKey, false);
 

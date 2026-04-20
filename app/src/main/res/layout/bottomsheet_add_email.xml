@@ -14,7 +14,7 @@
         android:id="@+id/header_layout"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:paddingHorizontal="@dimen/dimen24dp"
+        android:paddingHorizontal="@dimen/dimen16dp"
         app:layout_constraintTop_toBottomOf="@id/drag_handle">
 
         <TextView
@@ -48,7 +48,7 @@
         android:layout_height="wrap_content"
         android:layout_marginTop="@dimen/dimen16dp"
         android:clipToPadding="false"
-        android:paddingHorizontal="@dimen/dimen24dp"
+        android:paddingHorizontal="@dimen/dimen16dp"
         android:paddingBottom="@dimen/dimen32dp"
         app:layout_constrainedHeight="true"
         app:layout_constraintBottom_toBottomOf="parent"
@@ -67,6 +67,7 @@
                 android:layout_marginTop="@dimen/dimen8dp"
                 android:hint="@string/accountEmailTitle"
                 app:endIconMode="clear_text"
+                app:endIconTint="?attr/iconsColor"
                 app:shapeAppearance="@style/ShapeAppearance.Material3.Corner.Medium">
 
                 <com.google.android.material.textfield.TextInputEditText

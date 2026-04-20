@@ -15,7 +15,6 @@ import org.mian.gitnex.R;
 import org.mian.gitnex.actions.IssueActions;
 import org.mian.gitnex.actions.PullRequestActions;
 import org.mian.gitnex.activities.BaseActivity;
-import org.mian.gitnex.activities.EditIssueActivity;
 import org.mian.gitnex.activities.IssueDetailActivity;
 import org.mian.gitnex.activities.MergePullRequestActivity;
 import org.mian.gitnex.activities.PullRequestDiffActivity;
@@ -176,9 +175,11 @@ public class BottomSheetSingleIssueFragment extends BottomSheetDialogFragment {
 
 		binding.editIssue.setOnClickListener(
 				v15 -> {
-					((IssueDetailActivity) requireActivity())
-							.editIssueLauncher.launch(
-									issue.getIntent(ctx, EditIssueActivity.class));
+					BottomSheetCreateIssue.newInstance(issue.getRepository(), issue)
+							.show(getParentFragmentManager(), "EDIT_ISSUE");
+					// ((IssueDetailActivity) requireActivity())
+					//	.editIssueLauncher.launch(
+					//			issue.getIntent(ctx, EditIssueActivity.class));
 					dismiss();
 				});
 

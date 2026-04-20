@@ -11,6 +11,7 @@ import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModelProvider;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import java.util.ArrayList;
+import org.mian.gitnex.R;
 import org.mian.gitnex.adapters.DiffFilesAdapter;
 import org.mian.gitnex.databinding.FragmentDiffFilesBinding;
 import org.mian.gitnex.helpers.Toasty;
@@ -38,8 +39,8 @@ public class DiffFilesFragment extends Fragment {
 	@Override
 	public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
 		super.onViewCreated(view, savedInstanceState);
-
-		UIHelper.applyInsets(view, null, binding.diffFiles, null, binding.toolbarTitle);
+		View dock = requireActivity().findViewById(R.id.docked_toolbar);
+		UIHelper.applyInsets(view, dock, binding.diffFiles, null, binding.toolbarTitle);
 	}
 
 	@Override

@@ -8,6 +8,7 @@
     android:background="?attr/primaryBackgroundColor">
 
     <androidx.core.widget.NestedScrollView
+        android:id="@+id/scroll_content"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:fillViewport="true"
@@ -139,13 +140,14 @@
                 android:layout_weight="1"
                 app:cardBackgroundColor="?attr/materialCardBackgroundColor"
                 app:cardElevation="@dimen/dimen0dp"
-                app:shapeAppearance="@style/ShapeAppearance.TopRounded"
+                app:cardCornerRadius="@dimen/dimen32dp"
                 app:strokeWidth="@dimen/dimen0dp">
 
                 <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:paddingTop="@dimen/dimen32dp"
+                    android:paddingBottom="@dimen/dimen20dp"
                     android:orientation="vertical">
 
                     <LinearLayout
@@ -283,13 +285,6 @@
                             android:orientation="vertical"
                             android:paddingHorizontal="@dimen/dimen20dp"
                             android:layout_marginTop="@dimen/dimen24dp">
-
-                            <com.google.android.material.divider.MaterialDivider
-                                android:layout_width="match_parent"
-                                android:layout_height="wrap_content"
-                                android:layout_marginBottom="@dimen/dimen16dp"
-                                app:dividerColor="?attr/colorOutlineVariant"
-                                android:alpha="0.5" />
 
                             <include android:id="@+id/layoutCreatedAt" layout="@layout/item_profile_info" />
                             <View android:layout_width="match_parent" android:layout_height="@dimen/dimen12dp" />

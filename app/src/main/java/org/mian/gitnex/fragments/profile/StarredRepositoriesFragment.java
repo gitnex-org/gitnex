@@ -14,6 +14,7 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 import com.google.android.material.search.SearchView;
 import java.util.ArrayList;
+import org.mian.gitnex.R;
 import org.mian.gitnex.activities.ProfileActivity;
 import org.mian.gitnex.adapters.ReposListAdapter;
 import org.mian.gitnex.databinding.FragmentRepositoriesBinding;
@@ -38,6 +39,7 @@ public class StarredRepositoriesFragment extends Fragment
 	private int resultLimit;
 	private boolean isSearching = false;
 	private boolean isFirstLoad = true;
+	private boolean isViewReady = false;
 	private SearchView searchView;
 
 	public StarredRepositoriesFragment() {}
@@ -61,8 +63,9 @@ public class StarredRepositoriesFragment extends Fragment
 	@Override
 	public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
 		super.onViewCreated(view, savedInstanceState);
-
-		UIHelper.applyInsets(view, null, binding.recyclerView, binding.pullToRefresh, null);
+		View dock = requireActivity().findViewById(R.id.docked_toolbar);
+		UIHelper.applyInsets(view, dock, binding.recyclerView, binding.pullToRefresh, null);
+		isViewReady = true;
 	}
 
 	@Override
@@ -83,7 +86,7 @@ public class StarredRepositoriesFragment extends Fragment
 	@Override
 	public void onResume() {
 		super.onResume();
-		if (!isHidden() && isFirstLoad) {
+		if (!isHidden() && isFirstLoad && isViewReady) { // ADD isViewReady check
 			lazyLoad();
 		}
 	}
@@ -91,7 +94,7 @@ public class StarredRepositoriesFragment extends Fragment
 	@Override
 	public void onHiddenChanged(boolean hidden) {
 		super.onHiddenChanged(hidden);
-		if (!hidden && isFirstLoad) {
+		if (!hidden && isFirstLoad && isViewReady) { // ADD isViewReady check
 			lazyLoad();
 		}
 	}
@@ -223,7 +226,10 @@ public class StarredRepositoriesFragment extends Fragment
 	}
 
 	private void refreshData() {
-		if (scrollListener != null) scrollListener.resetState();
+		if (scrollListener == null || viewModel == null) {
+			return;
+		}
+		scrollListener.resetState();
 		viewModel.resetPagination();
 		if (username != null) {
 			viewModel.fetchRepos(

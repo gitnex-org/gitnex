@@ -13,14 +13,16 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.google.android.material.bottomsheet.BottomSheetDialog;
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
+import java.util.Map;
 import java.util.Objects;
 import java.util.Set;
 import org.gitnex.tea4j.v2.models.Milestone;
 import org.mian.gitnex.R;
 import org.mian.gitnex.adapters.MilestoneSelectionAdapter;
-import org.mian.gitnex.databinding.BottomsheetIssuesLabelPickerBinding;
+import org.mian.gitnex.databinding.BottomsheetLabelPickerBinding;
 import org.mian.gitnex.helpers.AppUtil;
 import org.mian.gitnex.helpers.Constants;
 import org.mian.gitnex.helpers.EndlessRecyclerViewScrollListener;
@@ -36,9 +38,15 @@ public class BottomSheetMilestonePicker extends BottomSheetDialogFragment {
 		void onSelected(Set<String> selected);
 	}
 
-	private BottomsheetIssuesLabelPickerBinding binding;
+	public interface OnMilestonesSelectedWithIdsListener {
+		void onSelected(Set<String> selectedMilestones, Map<String, Long> milestoneIds);
+	}
+
+	private BottomsheetLabelPickerBinding binding;
 	private OnMilestonesSelectedListener listener;
+	private OnMilestonesSelectedWithIdsListener listenerWithIds;
 	private Set<String> selectedMilestones;
+	private final Map<String, Long> milestoneIdMap = new HashMap<>();
 	private RepositoryContext repository;
 	private MilestonesViewModel viewModel;
 	private MilestoneSelectionAdapter adapter;
@@ -57,12 +65,16 @@ public class BottomSheetMilestonePicker extends BottomSheetDialogFragment {
 		this.listener = l;
 	}
 
+	public void setOnMilestonesSelectedWithIdsListener(OnMilestonesSelectedWithIdsListener l) {
+		this.listenerWithIds = l;
+	}
+
 	@Nullable @Override
 	public View onCreateView(
 			@NonNull LayoutInflater inflater,
 			@Nullable ViewGroup container,
 			@Nullable Bundle savedInstanceState) {
-		binding = BottomsheetIssuesLabelPickerBinding.inflate(inflater, container, false);
+		binding = BottomsheetLabelPickerBinding.inflate(inflater, container, false);
 		viewModel = new ViewModelProvider(this).get(MilestonesViewModel.class);
 
 		Bundle args = requireArguments();
@@ -85,6 +97,16 @@ public class BottomSheetMilestonePicker extends BottomSheetDialogFragment {
 				v -> {
 					if (listener != null) {
 						listener.onSelected(selectedMilestones);
+					}
+					if (listenerWithIds != null) {
+						Map<String, Long> selectedIds = new HashMap<>();
+						for (String milestoneName : selectedMilestones) {
+							Long id = milestoneIdMap.get(milestoneName);
+							if (id != null) {
+								selectedIds.put(milestoneName, id);
+							}
+						}
+						listenerWithIds.onSelected(selectedMilestones, selectedIds);
 					}
 					dismiss();
 				});
@@ -126,6 +148,13 @@ public class BottomSheetMilestonePicker extends BottomSheetDialogFragment {
 						getViewLifecycleOwner(),
 						list -> {
 							List<Milestone> data = (list != null) ? list : new ArrayList<>();
+
+							for (Milestone milestone : data) {
+								if (milestone.getTitle() != null && milestone.getId() != null) {
+									milestoneIdMap.put(milestone.getTitle(), milestone.getId());
+								}
+							}
+
 							adapter.updateList(data);
 							if (!data.isEmpty()) {
 								binding.rvLabels.setVisibility(View.VISIBLE);

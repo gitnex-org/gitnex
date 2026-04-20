@@ -19,7 +19,7 @@ import java.util.List;
 import org.gitnex.tea4j.v2.models.Issue;
 import org.mian.gitnex.adapters.IssuesAdapter;
 import org.mian.gitnex.databinding.ActivityMyIssuesBinding;
-import org.mian.gitnex.databinding.BottomSheetMyIssuesFilterBinding;
+import org.mian.gitnex.databinding.BottomsheetMyIssuesFilterBinding;
 import org.mian.gitnex.helpers.Constants;
 import org.mian.gitnex.helpers.EndlessRecyclerViewScrollListener;
 import org.mian.gitnex.helpers.TinyDB;
@@ -277,8 +277,8 @@ public class MyIssuesActivity extends BaseActivity {
 		@Override
 		public View onCreateView(
 				@NonNull LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-			BottomSheetMyIssuesFilterBinding binding =
-					BottomSheetMyIssuesFilterBinding.inflate(inflater, container, false);
+			BottomsheetMyIssuesFilterBinding binding =
+					BottomsheetMyIssuesFilterBinding.inflate(inflater, container, false);
 			MyIssuesActivity activity = (MyIssuesActivity) requireActivity();
 
 			String currentFilter = activity.getCurrentFilter();

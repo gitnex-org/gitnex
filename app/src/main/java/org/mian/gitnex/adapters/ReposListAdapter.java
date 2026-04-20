@@ -18,6 +18,8 @@ import com.bumptech.glide.load.engine.DiskCacheStrategy;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Locale;
+import org.gitnex.tea4j.v2.models.Repository;
+import org.mian.gitnex.R;
 import org.mian.gitnex.activities.RepoDetailActivity;
 import org.mian.gitnex.databinding.ListRepositoriesBinding;
 import org.mian.gitnex.helpers.AppUtil;
@@ -34,18 +36,18 @@ public class ReposListAdapter extends RecyclerView.Adapter<ReposListAdapter.Repo
 		implements Filterable {
 
 	private final Context context;
-	private List<org.gitnex.tea4j.v2.models.Repository> reposList;
-	private List<org.gitnex.tea4j.v2.models.Repository> reposListFull;
+	private List<Repository> reposList;
+	private List<Repository> reposListFull;
 	public boolean isUserOrg = false;
 
-	public ReposListAdapter(List<org.gitnex.tea4j.v2.models.Repository> list, Context ctx) {
+	public ReposListAdapter(List<Repository> list, Context ctx) {
 		this.context = ctx;
 		this.reposList = list;
 		this.reposListFull = new ArrayList<>(list);
 	}
 
 	@SuppressLint("NotifyDataSetChanged")
-	public void updateList(List<org.gitnex.tea4j.v2.models.Repository> newList) {
+	public void updateList(List<Repository> newList) {
 		this.reposList = newList;
 		this.reposListFull = new ArrayList<>(newList);
 		notifyDataSetChanged();
@@ -74,12 +76,12 @@ public class ReposListAdapter extends RecyclerView.Adapter<ReposListAdapter.Repo
 		return new Filter() {
 			@Override
 			protected FilterResults performFiltering(CharSequence constraint) {
-				List<org.gitnex.tea4j.v2.models.Repository> filtered = new ArrayList<>();
+				List<Repository> filtered = new ArrayList<>();
 				if (constraint == null || constraint.length() == 0) {
 					filtered.addAll(reposListFull);
 				} else {
 					String pattern = constraint.toString().toLowerCase().trim();
-					for (org.gitnex.tea4j.v2.models.Repository item : reposListFull) {
+					for (Repository item : reposListFull) {
 						if (item.getFullName().toLowerCase().contains(pattern)
 								|| (item.getDescription() != null
 										&& item.getDescription().toLowerCase().contains(pattern))) {
@@ -98,8 +100,8 @@ public class ReposListAdapter extends RecyclerView.Adapter<ReposListAdapter.Repo
 				if (results.values instanceof List<?>) {
 					reposList = new ArrayList<>();
 					for (Object item : (List<?>) results.values) {
-						if (item instanceof org.gitnex.tea4j.v2.models.Repository) {
-							reposList.add((org.gitnex.tea4j.v2.models.Repository) item);
+						if (item instanceof Repository) {
+							reposList.add((Repository) item);
 						}
 					}
 				}
@@ -112,7 +114,7 @@ public class ReposListAdapter extends RecyclerView.Adapter<ReposListAdapter.Repo
 		private final ListRepositoriesBinding binding;
 		private final ReposListAdapter adapter;
 		private final Context context;
-		private org.gitnex.tea4j.v2.models.Repository repo;
+		private Repository repo;
 
 		ReposHolder(ListRepositoriesBinding binding, ReposListAdapter adapter) {
 			super(binding.getRoot());
@@ -136,7 +138,7 @@ public class ReposListAdapter extends RecyclerView.Adapter<ReposListAdapter.Repo
 		}
 
 		@SuppressLint("SetTextI18n")
-		void bindData(org.gitnex.tea4j.v2.models.Repository repository) {
+		void bindData(Repository repository) {
 			this.repo = repository;
 
 			binding.repoOpenIssues.setText(String.valueOf(repo.getOpenIssuesCount()));
@@ -190,16 +192,17 @@ public class ReposListAdapter extends RecyclerView.Adapter<ReposListAdapter.Repo
 			loadAvatar(repo);
 		}
 
-		private void loadAvatar(org.gitnex.tea4j.v2.models.Repository repository) {
+		private void loadAvatar(Repository repository) {
 			String label =
-					(repository.getFullName() != null)
-							? repository.getFullName()
-							: repository.getName();
+					(repository.getName() != null)
+							? repository.getName()
+							: repository.getFullName();
 			Drawable placeholder = AvatarGenerator.getLetterAvatar(context, label, 44);
 			Glide.with(context)
 					.load(repository.getAvatarUrl())
 					.diskCacheStrategy(DiskCacheStrategy.ALL)
-					.placeholder(placeholder)
+					.placeholder(R.drawable.loader_animated)
+					.error(placeholder)
 					.centerCrop()
 					.into(binding.imageAvatar);
 		}

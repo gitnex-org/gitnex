@@ -15,7 +15,7 @@
         android:id="@+id/header_layout"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:paddingHorizontal="@dimen/dimen24dp"
+        android:paddingHorizontal="@dimen/dimen16dp"
         app:layout_constraintTop_toBottomOf="@id/drag_handle">
 
         <TextView
@@ -49,7 +49,7 @@
         android:layout_height="wrap_content"
         android:layout_marginTop="@dimen/dimen16dp"
         android:clipToPadding="false"
-        android:paddingHorizontal="@dimen/dimen24dp"
+        android:paddingHorizontal="@dimen/dimen16dp"
         android:paddingBottom="@dimen/dimen32dp"
         app:layout_constrainedHeight="true"
         app:layout_constraintBottom_toBottomOf="parent"
@@ -62,7 +62,7 @@
 
             <TextView
                 android:id="@+id/bottom_sheet_header_text"
-                style="@style/TextAppearance.Material3.BodyMedium"
+                style="@style/TextAppearance.Material3.BodyLarge"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginBottom="@dimen/dimen16dp"
@@ -87,9 +87,7 @@
                     android:layout_height="wrap_content"
                     android:imeOptions="actionNext"
                     android:inputType="text"
-                    android:singleLine="true"
-                    android:textColor="?attr/inputTextColor"
-                    android:textSize="@dimen/dimen16sp" />
+                    android:singleLine="true" />
 
             </com.google.android.material.textfield.TextInputLayout>
 
@@ -112,9 +110,7 @@
                     android:gravity="top|start"
                     android:inputType="textCapSentences|textMultiLine"
                     android:minHeight="@dimen/dimen100dp"
-                    android:scrollbars="vertical"
-                    android:textColor="?attr/inputTextColor"
-                    android:textSize="@dimen/dimen16sp" />
+                    android:scrollbars="vertical" />
 
             </com.google.android.material.textfield.TextInputLayout>
 
@@ -136,10 +132,8 @@
                     android:layout_height="wrap_content"
                     android:gravity="top|start"
                     android:inputType="textCapSentences|textMultiLine"
-                    android:minHeight="@dimen/dimen80dp"
-                    android:scrollbars="vertical"
-                    android:textColor="?attr/inputTextColor"
-                    android:textSize="@dimen/dimen16sp" />
+                    android:minHeight="@dimen/dimen100dp"
+                    android:scrollbars="vertical" />
 
             </com.google.android.material.textfield.TextInputLayout>
 

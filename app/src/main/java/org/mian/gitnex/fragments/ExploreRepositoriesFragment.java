@@ -47,6 +47,7 @@ public class ExploreRepositoriesFragment extends Fragment
 	private boolean onlyArchived = false;
 	private String currentSort = "updated";
 	private boolean isFirstLoad = true;
+	private boolean isViewReady = false;
 
 	@Override
 	public View onCreateView(
@@ -65,13 +66,15 @@ public class ExploreRepositoriesFragment extends Fragment
 	@Override
 	public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
 		super.onViewCreated(view, savedInstanceState);
-		UIHelper.applyInsets(view, null, viewBinding.recyclerView, viewBinding.pullToRefresh, null);
+		View dock = requireActivity().findViewById(R.id.docked_toolbar);
+		UIHelper.applyInsets(view, dock, viewBinding.recyclerView, viewBinding.pullToRefresh, null);
+		isViewReady = true;
 	}
 
 	@Override
 	public void onResume() {
 		super.onResume();
-		if (!isHidden() && isFirstLoad) {
+		if (!isHidden() && isFirstLoad && isViewReady) {
 			lazyLoad();
 		}
 	}
@@ -79,7 +82,7 @@ public class ExploreRepositoriesFragment extends Fragment
 	@Override
 	public void onHiddenChanged(boolean hidden) {
 		super.onHiddenChanged(hidden);
-		if (!hidden && isFirstLoad) {
+		if (!hidden && isFirstLoad && isViewReady) {
 			lazyLoad();
 		}
 	}
@@ -104,16 +107,25 @@ public class ExploreRepositoriesFragment extends Fragment
 				new EndlessRecyclerViewScrollListener(layoutManager) {
 					@Override
 					public void onLoadMore(int page, int totalItemsCount, RecyclerView view) {
-						viewModel.searchExploreRepos(
+						viewModel.searchRepos(
 								requireContext(),
 								searchQuery,
 								includeTopic,
 								includeDescription,
+								null,
+								null,
+								null,
+								null,
+								null,
+								null,
 								includeTemplate,
 								onlyArchived,
+								null,
+								null,
+								currentSort,
+								"desc",
 								page,
 								resultLimit,
-								currentSort,
 								false);
 					}
 				};
@@ -168,22 +180,32 @@ public class ExploreRepositoriesFragment extends Fragment
 
 	private void refreshData() {
 		if (scrollListener != null) scrollListener.resetState();
+		if (viewModel == null) return;
 		viewModel.resetPagination();
 
 		adapter.updateList(new ArrayList<>());
 		viewBinding.recyclerView.setVisibility(View.GONE);
 		viewBinding.expressiveLoader.setVisibility(View.VISIBLE);
 
-		viewModel.searchExploreRepos(
+		viewModel.searchRepos(
 				requireContext(),
 				searchQuery,
 				includeTopic,
 				includeDescription,
+				null,
+				null,
+				null,
+				null,
+				null,
+				null,
 				includeTemplate,
 				onlyArchived,
+				null,
+				null,
+				currentSort,
+				"desc",
 				1,
 				resultLimit,
-				currentSort,
 				true);
 	}
 
@@ -382,6 +404,20 @@ public class ExploreRepositoriesFragment extends Fragment
 					String sort);
 
 			void onReset();
+		}
+
+		@Override
+		public void onStart() {
+			super.onStart();
+			if (getDialog() instanceof BottomSheetDialog) {
+				AppUtil.applySheetStyle((BottomSheetDialog) getDialog(), true);
+			}
+		}
+
+		@Override
+		public void onDestroyView() {
+			super.onDestroyView();
+			sheet = null;
 		}
 	}
 }

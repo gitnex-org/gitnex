@@ -4,20 +4,14 @@
     android:layout_width="match_parent"
     android:layout_height="wrap_content">
 
-    <com.google.android.material.bottomsheet.BottomSheetDragHandleView
-        android:id="@+id/drag_handle"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        app:layout_constraintTop_toTopOf="parent" />
-
     <androidx.constraintlayout.widget.ConstraintLayout
         android:id="@+id/header_layout"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:paddingHorizontal="@dimen/dimen24dp"
+        android:paddingHorizontal="@dimen/dimen16dp"
         android:paddingTop="@dimen/dimen8dp"
         android:clipToPadding="false"
-        app:layout_constraintTop_toBottomOf="@id/drag_handle">
+        app:layout_constraintTop_toTopOf="parent">
 
         <TextView
             android:id="@+id/sheet_title"
@@ -82,7 +76,7 @@
             android:layout_gravity="top"
             android:clipToPadding="false"
             android:overScrollMode="never"
-            android:paddingHorizontal="@dimen/dimen24dp"
+            android:paddingHorizontal="@dimen/dimen12dp"
             android:paddingBottom="@dimen/dimen32dp"
             android:visibility="gone" />
 

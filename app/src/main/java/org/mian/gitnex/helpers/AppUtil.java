@@ -4,6 +4,7 @@ import android.app.Activity;
 import android.content.ActivityNotFoundException;
 import android.content.ClipData;
 import android.content.ClipboardManager;
+import android.content.ContentResolver;
 import android.content.Context;
 import android.content.Intent;
 import android.content.pm.ActivityInfo;
@@ -11,16 +12,19 @@ import android.content.pm.PackageInfo;
 import android.content.pm.PackageManager;
 import android.content.pm.ResolveInfo;
 import android.content.res.Configuration;
+import android.database.Cursor;
 import android.graphics.Bitmap;
 import android.graphics.Color;
 import android.graphics.Typeface;
 import android.net.Uri;
 import android.os.Build;
+import android.provider.OpenableColumns;
 import android.util.Base64;
 import android.util.TypedValue;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.inputmethod.InputMethodManager;
+import android.webkit.MimeTypeMap;
 import androidx.annotation.AttrRes;
 import androidx.annotation.ColorInt;
 import androidx.annotation.NonNull;
@@ -217,6 +221,27 @@ public class AppUtil {
 
 	// AppUtil should not be instantiated.
 	private AppUtil() {}
+
+	public static FileType getFileTypeFromFileName(String fileName) {
+		if (fileName == null || fileName.isEmpty()) {
+			return FileType.UNKNOWN;
+		}
+
+		String ext = MimeTypeMap.getFileExtensionFromUrl(fileName).toLowerCase();
+		if (ext.isEmpty()) {
+			return FileType.UNKNOWN;
+		}
+
+		for (Map.Entry<String[], FileType> entry : extensions.entrySet()) {
+			for (String validExt : entry.getKey()) {
+				if (validExt.equalsIgnoreCase(ext)) {
+					return entry.getValue();
+				}
+			}
+		}
+
+		return FileType.UNKNOWN;
+	}
 
 	public static void logout(Context ctx) {
 		TinyDB tinyDB = TinyDB.getInstance(ctx);
@@ -748,5 +773,90 @@ public class AppUtil {
 				(0.299 * Color.red(color) + 0.587 * Color.green(color) + 0.114 * Color.blue(color))
 						/ 255;
 		return luminance > 0.5;
+	}
+
+	public static String getMimeTypeFromUri(Context context, Uri uri) {
+		if (uri == null) return null;
+
+		if (ContentResolver.SCHEME_CONTENT.equals(uri.getScheme())) {
+			return context.getContentResolver().getType(uri);
+		} else {
+			String fileExtension = MimeTypeMap.getFileExtensionFromUrl(uri.toString());
+			return MimeTypeMap.getSingleton().getMimeTypeFromExtension(fileExtension.toLowerCase());
+		}
+	}
+
+	public static String getFileNameFromUri(Context context, Uri uri) {
+		if (uri == null) return null;
+
+		String fileName = null;
+		if (ContentResolver.SCHEME_CONTENT.equals(uri.getScheme())) {
+			try (Cursor cursor = context.getContentResolver().query(uri, null, null, null, null)) {
+				if (cursor != null && cursor.moveToFirst()) {
+					int nameIndex = cursor.getColumnIndex(OpenableColumns.DISPLAY_NAME);
+					if (nameIndex != -1) {
+						fileName = cursor.getString(nameIndex);
+					}
+				}
+			}
+		}
+		if (fileName == null) {
+			fileName = uri.getPath();
+			int cut = fileName != null ? fileName.lastIndexOf('/') : -1;
+			if (cut != -1) {
+				fileName = fileName.substring(cut + 1);
+			}
+		}
+		return fileName;
+	}
+
+	public static long getFileSizeFromUri(Context context, Uri uri) {
+		if (uri == null) return 0;
+
+		long size = 0;
+		if (ContentResolver.SCHEME_CONTENT.equals(uri.getScheme())) {
+			try (Cursor cursor = context.getContentResolver().query(uri, null, null, null, null)) {
+				if (cursor != null && cursor.moveToFirst()) {
+					int sizeIndex = cursor.getColumnIndex(OpenableColumns.SIZE);
+					if (sizeIndex != -1) {
+						size = cursor.getLong(sizeIndex);
+					}
+				}
+			}
+		}
+		return size;
+	}
+
+	public static String readInputStream(InputStream is) throws IOException {
+		ByteArrayOutputStream baos = new ByteArrayOutputStream();
+		byte[] buffer = new byte[4096];
+		int len;
+		while ((len = is.read(buffer)) != -1) {
+			baos.write(buffer, 0, len);
+		}
+		is.close();
+		return baos.toString(StandardCharsets.UTF_8.name());
+	}
+
+	public static String encodeUriToBase64(Context context, Uri uri) {
+		if (uri == null) return "";
+
+		try {
+			InputStream is = context.getContentResolver().openInputStream(uri);
+			if (is == null) return "";
+
+			ByteArrayOutputStream baos = new ByteArrayOutputStream();
+			byte[] buffer = new byte[4096];
+			int len;
+			while ((len = is.read(buffer)) != -1) {
+				baos.write(buffer, 0, len);
+			}
+			is.close();
+
+			return android.util.Base64.encodeToString(
+					baos.toByteArray(), android.util.Base64.NO_WRAP);
+		} catch (IOException e) {
+			return "";
+		}
 	}
 }

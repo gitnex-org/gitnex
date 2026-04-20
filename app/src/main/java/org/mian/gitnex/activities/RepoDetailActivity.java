@@ -18,8 +18,13 @@ import java.util.List;
 import java.util.Objects;
 import org.gitnex.tea4j.v2.models.Repository;
 import org.mian.gitnex.R;
+import org.mian.gitnex.api.models.contents.RepoGetContentsList;
 import org.mian.gitnex.databinding.ActivityRepoDetailBinding;
+import org.mian.gitnex.fragments.BottomSheetCreateIssue;
 import org.mian.gitnex.fragments.BottomSheetCreateMilestone;
+import org.mian.gitnex.fragments.BottomSheetCreatePullRequest;
+import org.mian.gitnex.fragments.BottomSheetCreateRelease;
+import org.mian.gitnex.fragments.BottomSheetCreateWiki;
 import org.mian.gitnex.fragments.BottomsheetRepoMenu;
 import org.mian.gitnex.fragments.CollaboratorsFragment;
 import org.mian.gitnex.fragments.FilesFragment;
@@ -48,20 +53,20 @@ import org.mian.gitnex.viewmodels.RepositoryDetailsViewModel;
 public class RepoDetailActivity extends BaseActivity
 		implements BottomsheetRepoMenu.OnRepoMenuItemListener {
 
+	private static final String TAG_INFO = "info";
+	private static final String TAG_FILES = "files";
+	private static final String TAG_ISSUES = "issues";
+	private static final String TAG_PRS = "prs";
+	private static final String TAG_RELEASES = "releases";
+	private static final String TAG_WIKI = "wiki";
+	private static final String TAG_MILESTONES = "milestones";
+	private static final String TAG_LABELS = "labels";
+	private static final String TAG_COLLAB = "collab";
+
 	private ActivityRepoDetailBinding binding;
 	public RepositoryContext repository;
 	private RepositoryDetailsViewModel viewModel;
 	private final FragmentManager fm = getSupportFragmentManager();
-	private Fragment infoFrag;
-	public Fragment filesFrag;
-	public Fragment issuesFrag;
-	public Fragment prFrag;
-	private Fragment releaseFrag;
-	private Fragment wikiFrag;
-	private Fragment milestoneFrag;
-	private Fragment labelFrag;
-	private Fragment collabFrag;
-	private Fragment activeFragment;
 	private boolean isStarred = false;
 	private boolean isWatched = false;
 	private boolean isGiteaRepoActionsVisible = false;
@@ -70,6 +75,24 @@ public class RepoDetailActivity extends BaseActivity
 	private BadgeDrawable issuesBadge;
 	private BadgeDrawable prBadge;
 	private BadgeDrawable releaseBadge;
+
+	private final String[] fragmentTags = {
+		TAG_INFO,
+		TAG_FILES,
+		TAG_ISSUES,
+		TAG_PRS,
+		TAG_RELEASES,
+		TAG_WIKI,
+		TAG_MILESTONES,
+		TAG_LABELS,
+		TAG_COLLAB
+	};
+
+	private final int[] buttonIds = {
+		R.id.btn_nav_details, R.id.btn_nav_files, R.id.btn_nav_issues,
+		R.id.btn_nav_prs, R.id.btn_nav_releases, R.id.btn_nav_wiki,
+		R.id.btn_nav_milestones, R.id.btn_nav_labels, R.id.btn_nav_collaborators
+	};
 
 	@Override
 	protected void onSaveInstanceState(@NonNull Bundle outState) {
@@ -123,6 +146,21 @@ public class RepoDetailActivity extends BaseActivity
 							String actionId = bundle.getString("repo_hub_item_id");
 							if (actionId != null) handleHubAction(actionId);
 						});
+	}
+
+	@Override
+	protected void onGlobalRefresh() {
+		RepoInfoFragment repoInfoFragment =
+				(RepoInfoFragment) getSupportFragmentManager().findFragmentByTag(TAG_INFO);
+		if (repoInfoFragment != null) repoInfoFragment.refreshFromGlobal();
+
+		IssuesFragment issuesFragment =
+				(IssuesFragment) getSupportFragmentManager().findFragmentByTag(TAG_ISSUES);
+		if (issuesFragment != null) issuesFragment.refreshFromGlobal();
+
+		FilesFragment filesFragment =
+				(FilesFragment) getSupportFragmentManager().findFragmentByTag(TAG_FILES);
+		if (filesFragment != null) filesFragment.refreshFromGlobal();
 	}
 
 	private void setupProviderFlags() {
@@ -192,7 +230,7 @@ public class RepoDetailActivity extends BaseActivity
 						this,
 						repo -> {
 							if (repo != null) {
-								if (fm.findFragmentByTag("info") == null) {
+								if (fm.findFragmentByTag(TAG_INFO) == null) {
 									completeInitialization(repo);
 								}
 							}
@@ -258,7 +296,7 @@ public class RepoDetailActivity extends BaseActivity
 			this.adminStatus = Boolean.TRUE.equals(repo.getPermissions().isAdmin());
 		}
 
-		if (fm.findFragmentByTag("info") == null) {
+		if (fm.findFragmentByTag(TAG_INFO) == null) {
 			setupFragments();
 			Intent intent = getIntent();
 			if (intent.hasExtra("goToSection")) {
@@ -285,84 +323,48 @@ public class RepoDetailActivity extends BaseActivity
 	}
 
 	private void setupFragments() {
-		infoFrag = fm.findFragmentByTag("info");
-		filesFrag = fm.findFragmentByTag("files");
-		issuesFrag = fm.findFragmentByTag("issues");
-		prFrag = fm.findFragmentByTag("prs");
-		releaseFrag = fm.findFragmentByTag("releases");
-		wikiFrag = fm.findFragmentByTag("wiki");
-		milestoneFrag = fm.findFragmentByTag("milestones");
-		labelFrag = fm.findFragmentByTag("labels");
-		collabFrag = fm.findFragmentByTag("collab");
+		Fragment infoFrag = fm.findFragmentByTag(TAG_INFO);
 
 		if (infoFrag == null) {
 			infoFrag = RepoInfoFragment.newInstance(repository);
-			filesFrag = FilesFragment.newInstance(repository);
-			issuesFrag = IssuesFragment.newInstance(repository);
-			prFrag = PullRequestsFragment.newInstance(repository);
-			releaseFrag = ReleasesFragment.newInstance(repository);
-			wikiFrag = WikiFragment.newInstance(repository);
-			milestoneFrag = MilestonesFragment.newInstance(repository);
-			labelFrag = LabelsFragment.newInstance(repository);
-			collabFrag = CollaboratorsFragment.newInstance(repository);
+			Fragment filesFrag = FilesFragment.newInstance(repository);
+			Fragment issuesFrag = IssuesFragment.newInstance(repository);
+			Fragment prFrag = PullRequestsFragment.newInstance(repository);
+			Fragment releaseFrag = ReleasesFragment.newInstance(repository);
+			Fragment wikiFrag = WikiFragment.newInstance(repository);
+			Fragment milestoneFrag = MilestonesFragment.newInstance(repository);
+			Fragment labelFrag = LabelsFragment.newInstance(repository);
+			Fragment collabFrag = CollaboratorsFragment.newInstance(repository);
 
 			fm.beginTransaction()
-					.add(R.id.repo_details_container, collabFrag, "collab")
+					.add(R.id.repo_details_container, collabFrag, TAG_COLLAB)
 					.hide(collabFrag)
-					.add(R.id.repo_details_container, labelFrag, "labels")
+					.add(R.id.repo_details_container, labelFrag, TAG_LABELS)
 					.hide(labelFrag)
-					.add(R.id.repo_details_container, milestoneFrag, "milestones")
+					.add(R.id.repo_details_container, milestoneFrag, TAG_MILESTONES)
 					.hide(milestoneFrag)
-					.add(R.id.repo_details_container, wikiFrag, "wiki")
+					.add(R.id.repo_details_container, wikiFrag, TAG_WIKI)
 					.hide(wikiFrag)
-					.add(R.id.repo_details_container, releaseFrag, "releases")
+					.add(R.id.repo_details_container, releaseFrag, TAG_RELEASES)
 					.hide(releaseFrag)
-					.add(R.id.repo_details_container, prFrag, "prs")
+					.add(R.id.repo_details_container, prFrag, TAG_PRS)
 					.hide(prFrag)
-					.add(R.id.repo_details_container, issuesFrag, "issues")
+					.add(R.id.repo_details_container, issuesFrag, TAG_ISSUES)
 					.hide(issuesFrag)
-					.add(R.id.repo_details_container, filesFrag, "files")
+					.add(R.id.repo_details_container, filesFrag, TAG_FILES)
 					.hide(filesFrag)
-					.add(R.id.repo_details_container, infoFrag, "info")
+					.add(R.id.repo_details_container, infoFrag, TAG_INFO)
 					.commitNow();
-
-			activeFragment = infoFrag;
 		} else {
 			restoreState();
 		}
 	}
 
 	private void restoreState() {
-		infoFrag = fm.findFragmentByTag("info");
-		filesFrag = fm.findFragmentByTag("files");
-		issuesFrag = fm.findFragmentByTag("issues");
-		prFrag = fm.findFragmentByTag("prs");
-		releaseFrag = fm.findFragmentByTag("releases");
-		wikiFrag = fm.findFragmentByTag("wiki");
-		milestoneFrag = fm.findFragmentByTag("milestones");
-		labelFrag = fm.findFragmentByTag("labels");
-		collabFrag = fm.findFragmentByTag("collab");
-
-		String[] tags = {
-			"info", "files", "issues", "prs", "releases", "wiki", "milestones", "labels", "collab"
-		};
-		int[] ids = {
-			R.id.btn_nav_details,
-			R.id.btn_nav_files,
-			R.id.btn_nav_issues,
-			R.id.btn_nav_prs,
-			R.id.btn_nav_releases,
-			R.id.btn_nav_wiki,
-			R.id.btn_nav_milestones,
-			R.id.btn_nav_labels,
-			R.id.btn_nav_collaborators
-		};
-
-		for (int i = 0; i < tags.length; i++) {
-			Fragment f = fm.findFragmentByTag(tags[i]);
+		for (int i = 0; i < fragmentTags.length; i++) {
+			Fragment f = fm.findFragmentByTag(fragmentTags[i]);
 			if (f != null && !f.isHidden()) {
-				activeFragment = f;
-				final int activeId = ids[i];
+				final int activeId = buttonIds[i];
 				binding.dockScrollView.post(
 						() -> {
 							updateDockUI(activeId);
@@ -386,18 +388,18 @@ public class RepoDetailActivity extends BaseActivity
 			prepareNavButton(btn);
 		}
 
-		binding.btnNavDetails.setOnClickListener(v -> switchTab("info", R.id.btn_nav_details));
-		binding.btnNavFiles.setOnClickListener(v -> switchTab("files", R.id.btn_nav_files));
-		binding.btnNavIssues.setOnClickListener(v -> switchTab("issues", R.id.btn_nav_issues));
-		binding.btnNavPrs.setOnClickListener(v -> switchTab("prs", R.id.btn_nav_prs));
+		binding.btnNavDetails.setOnClickListener(v -> switchTab(TAG_INFO, R.id.btn_nav_details));
+		binding.btnNavFiles.setOnClickListener(v -> switchTab(TAG_FILES, R.id.btn_nav_files));
+		binding.btnNavIssues.setOnClickListener(v -> switchTab(TAG_ISSUES, R.id.btn_nav_issues));
+		binding.btnNavPrs.setOnClickListener(v -> switchTab(TAG_PRS, R.id.btn_nav_prs));
 		binding.btnNavReleases.setOnClickListener(
-				v -> switchTab("releases", R.id.btn_nav_releases));
-		binding.btnNavWiki.setOnClickListener(v -> switchTab("wiki", R.id.btn_nav_wiki));
+				v -> switchTab(TAG_RELEASES, R.id.btn_nav_releases));
+		binding.btnNavWiki.setOnClickListener(v -> switchTab(TAG_WIKI, R.id.btn_nav_wiki));
 		binding.btnNavMilestones.setOnClickListener(
-				v -> switchTab("milestones", R.id.btn_nav_milestones));
-		binding.btnNavLabels.setOnClickListener(v -> switchTab("labels", R.id.btn_nav_labels));
+				v -> switchTab(TAG_MILESTONES, R.id.btn_nav_milestones));
+		binding.btnNavLabels.setOnClickListener(v -> switchTab(TAG_LABELS, R.id.btn_nav_labels));
 		binding.btnNavCollaborators.setOnClickListener(
-				v -> switchTab("collab", R.id.btn_nav_collaborators));
+				v -> switchTab(TAG_COLLAB, R.id.btn_nav_collaborators));
 
 		binding.btnDockMenu.setOnClickListener(
 				v -> {
@@ -469,7 +471,7 @@ public class RepoDetailActivity extends BaseActivity
 						repository.getIntent(ctx, RepositorySettingsActivity.class));
 				break;
 			case "CORE_ACTIONS":
-				startActivity(repository.getIntent(ctx, RepositoryActions.class));
+				startActivity(repository.getIntent(ctx, RepositoryActionsActivity.class));
 				break;
 		}
 
@@ -566,23 +568,30 @@ public class RepoDetailActivity extends BaseActivity
 
 			switch (Objects.requireNonNull(goToSectionType)) {
 				case "file":
-					switchTab("files", R.id.btn_nav_files);
+					switchTab(TAG_FILES, R.id.btn_nav_files);
 					String branch1 = mainIntent.getStringExtra("branch");
 					repository.setBranchRef(branch1);
 
-					Intent fileIntent = repository.getIntent(this, FileViewActivity.class);
-					fileIntent.putExtra("file", mainIntent.getSerializableExtra("file"));
-					startActivity(fileIntent);
+					RepoGetContentsList file =
+							(RepoGetContentsList) mainIntent.getSerializableExtra("file");
+					if (file != null) {
+						FilesFragment filesFragment =
+								(FilesFragment)
+										getSupportFragmentManager().findFragmentByTag(TAG_FILES);
+						if (filesFragment != null) {
+							filesFragment.openViewerLinkIntent(file);
+						}
+					}
 					break;
 
 				case "dir":
-					switchTab("files", R.id.btn_nav_files);
+					switchTab(TAG_FILES, R.id.btn_nav_files);
 					String branch2 = mainIntent.getStringExtra("branch");
 					repository.setBranchRef(branch2);
 					break;
 
 				case "commitsList":
-					switchTab("files", R.id.btn_nav_files);
+					switchTab(TAG_FILES, R.id.btn_nav_files);
 					String branch = mainIntent.getStringExtra("branchName");
 					repository.setBranchRef(branch);
 
@@ -591,7 +600,7 @@ public class RepoDetailActivity extends BaseActivity
 					break;
 
 				case "commit":
-					switchTab("info", R.id.btn_nav_details);
+					switchTab(TAG_INFO, R.id.btn_nav_details);
 					String sha = mainIntent.getStringExtra("sha");
 
 					Intent commitIntent = repository.getIntent(this, CommitDetailActivity.class);
@@ -600,56 +609,57 @@ public class RepoDetailActivity extends BaseActivity
 					break;
 
 				case "issue":
-					switchTab("issues", R.id.btn_nav_issues);
+					switchTab(TAG_ISSUES, R.id.btn_nav_issues);
 					break;
 
 				case "issueNew":
-					switchTab("issues", R.id.btn_nav_issues);
-					startActivity(repository.getIntent(this, CreateIssueActivity.class));
+					switchTab(TAG_ISSUES, R.id.btn_nav_issues);
+					BottomSheetCreateIssue.newInstance(repository, null)
+							.show(getSupportFragmentManager(), "CREATE_ISSUE");
 					break;
 
 				case "pull":
-					switchTab("prs", R.id.btn_nav_prs);
+					switchTab(TAG_PRS, R.id.btn_nav_prs);
 					break;
 
 				case "pullNew":
-					switchTab("prs", R.id.btn_nav_prs);
-					startActivity(repository.getIntent(this, CreatePullRequestActivity.class));
+					switchTab(TAG_PRS, R.id.btn_nav_prs);
+					BottomSheetCreatePullRequest.newInstance(repository, null)
+							.show(getSupportFragmentManager(), "CREATE_PULL_REQUEST");
 					break;
 
 				case "releases":
-					switchTab("releases", R.id.btn_nav_releases);
+					switchTab(TAG_RELEASES, R.id.btn_nav_releases);
 					break;
 
 				case "newRelease":
-					switchTab("releases", R.id.btn_nav_releases);
-					startActivity(repository.getIntent(this, CreateReleaseActivity.class));
+					switchTab(TAG_RELEASES, R.id.btn_nav_releases);
+					BottomSheetCreateRelease.newInstance(repository, null)
+							.show(getSupportFragmentManager(), "CREATE_RELEASE");
 					break;
 
 				case "wiki":
-					switchTab("wiki", R.id.btn_nav_wiki);
+					switchTab(TAG_WIKI, R.id.btn_nav_wiki);
 					break;
 
 				case "wikiNew":
-					switchTab("wiki", R.id.btn_nav_wiki);
-					Intent intentWiki = repository.getIntent(this, WikiActivity.class);
-					intentWiki.putExtra("action", "add");
-					intentWiki.putExtra(RepositoryContext.INTENT_EXTRA, repository);
-					startActivity(intentWiki);
+					switchTab(TAG_WIKI, R.id.btn_nav_wiki);
+					BottomSheetCreateWiki.newInstance(repository, null)
+							.show(getSupportFragmentManager(), "CREATE_WIKI");
 					break;
 
 				case "milestones":
-					switchTab("milestones", R.id.btn_nav_milestones);
+					switchTab(TAG_MILESTONES, R.id.btn_nav_milestones);
 					break;
 
 				case "milestonesNew":
-					switchTab("milestones", R.id.btn_nav_milestones);
+					switchTab(TAG_MILESTONES, R.id.btn_nav_milestones);
 					BottomSheetCreateMilestone.newInstance(repository, null)
 							.show(getSupportFragmentManager(), "CREATE_MILESTONE");
 					break;
 
 				case "labels":
-					switchTab("labels", R.id.btn_nav_labels);
+					switchTab(TAG_LABELS, R.id.btn_nav_labels);
 					break;
 
 				case "settings":

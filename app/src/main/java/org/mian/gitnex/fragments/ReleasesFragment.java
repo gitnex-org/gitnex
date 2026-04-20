@@ -39,7 +39,6 @@ import org.gitnex.tea4j.v2.models.Release;
 import org.gitnex.tea4j.v2.models.Tag;
 import org.mian.gitnex.R;
 import org.mian.gitnex.activities.BaseActivity;
-import org.mian.gitnex.activities.CreateReleaseActivity;
 import org.mian.gitnex.activities.RepoDetailActivity;
 import org.mian.gitnex.adapters.ReleasesAdapter;
 import org.mian.gitnex.adapters.TagsAdapter;
@@ -93,7 +92,8 @@ public class ReleasesFragment extends Fragment implements RepoDetailActivity.Rep
 	@Override
 	public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
 		super.onViewCreated(view, savedInstanceState);
-		UIHelper.applyInsets(view, null, binding.recyclerView, binding.pullToRefresh, null);
+		View dock = requireActivity().findViewById(R.id.docked_toolbar);
+		UIHelper.applyInsets(view, dock, binding.recyclerView, binding.pullToRefresh, null);
 	}
 
 	@Override
@@ -108,7 +108,7 @@ public class ReleasesFragment extends Fragment implements RepoDetailActivity.Rep
 			@Nullable ViewGroup container,
 			@Nullable Bundle savedInstanceState) {
 		binding = FragmentReleasesBinding.inflate(inflater, container, false);
-		viewModel = new ViewModelProvider(this).get(ReleasesViewModel.class);
+		viewModel = new ViewModelProvider(requireActivity()).get(ReleasesViewModel.class);
 
 		resultLimit = Constants.getCurrentResultLimit(requireContext());
 
@@ -138,7 +138,7 @@ public class ReleasesFragment extends Fragment implements RepoDetailActivity.Rep
 			items.add(
 					new RepositoryMenuItemModel(
 							"RELEASE_CREATE_NEW",
-							R.string.createRelease,
+							R.string.create_release_tag,
 							R.drawable.ic_add,
 							R.attr.colorPrimaryContainer,
 							R.attr.colorOnPrimaryContainer));
@@ -156,7 +156,8 @@ public class ReleasesFragment extends Fragment implements RepoDetailActivity.Rep
 				break;
 
 			case "RELEASE_CREATE_NEW":
-				startActivity(repository.getIntent(requireContext(), CreateReleaseActivity.class));
+				BottomSheetCreateRelease.newInstance(repository, null)
+						.show(getChildFragmentManager(), "CREATE_RELEASE");
 				break;
 		}
 	}
@@ -295,14 +296,17 @@ public class ReleasesFragment extends Fragment implements RepoDetailActivity.Rep
 				.observe(
 						getViewLifecycleOwner(),
 						code -> {
-							if (code == -1) return;
+							if (code == null || code == -1) return;
+
 							if (code == 204) {
 								int messageRes =
 										repository.isReleasesViewTypeIsTag()
 												? R.string.tagDeleted
 												: R.string.releaseDeleted;
-
 								Toasty.show(requireContext(), messageRes);
+								refreshData();
+							} else if (code == 200 || code == 201) {
+								refreshData();
 							} else {
 								Toasty.show(requireContext(), R.string.genericError);
 							}
@@ -334,10 +338,9 @@ public class ReleasesFragment extends Fragment implements RepoDetailActivity.Rep
 							requireContext(),
 							list,
 							canDelete,
-							new OnReleaseItemClickListener() {
+							new ReleasesAdapter.OnReleaseItemClickListener() {
 								@Override
-								public void onDelete(Object item, int position) {
-									Release release = (Release) item;
+								public void onMenuClick(Release release, int position) {
 									showReleaseOptionsBottomSheet(release, position);
 								}
 
@@ -380,6 +383,13 @@ public class ReleasesFragment extends Fragment implements RepoDetailActivity.Rep
 													position))
 							.setNegativeButton(R.string.cancelButton, null)
 							.show();
+				});
+
+		menuBinding.editRelease.setOnClickListener(
+				v -> {
+					dialog.dismiss();
+					BottomSheetCreateRelease.newInstance(repository, release)
+							.show(getParentFragmentManager(), "EDIT_RELEASE");
 				});
 
 		dialog.show();

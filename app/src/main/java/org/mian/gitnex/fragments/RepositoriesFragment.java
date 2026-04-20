@@ -47,7 +47,8 @@ public class RepositoriesFragment extends Fragment {
 	public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
 		super.onViewCreated(view, savedInstanceState);
 
-		UIHelper.applyInsets(view, null, binding.recyclerView, binding.pullToRefresh, null);
+		View dock = requireActivity().findViewById(R.id.docked_toolbar);
+		UIHelper.applyInsets(view, dock, binding.recyclerView, binding.pullToRefresh, null);
 
 		getChildFragmentManager()
 				.setFragmentResultListener(
@@ -80,6 +81,10 @@ public class RepositoriesFragment extends Fragment {
 
 		refreshData();
 		return binding.getRoot();
+	}
+
+	public void refreshFromGlobal() {
+		refreshData();
 	}
 
 	private void setupRecyclerView() {
@@ -257,7 +262,7 @@ public class RepositoriesFragment extends Fragment {
 		public View onCreateView(
 				@NonNull LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
 
-			View view = inflater.inflate(R.layout.bottom_sheet_repositories_sort, container, false);
+			View view = inflater.inflate(R.layout.bottomsheet_repositories_sort, container, false);
 			ChipGroup chipGroup = view.findViewById(R.id.sort_chip_group);
 			String[] sorts = {
 				"name",

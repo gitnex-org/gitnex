@@ -10,7 +10,7 @@ import androidx.recyclerview.widget.RecyclerView;
 import java.util.List;
 import java.util.Set;
 import org.gitnex.tea4j.v2.models.Label;
-import org.mian.gitnex.databinding.ListItemSelectionLabelBinding;
+import org.mian.gitnex.databinding.ItemSelectionLabelBinding;
 import org.mian.gitnex.helpers.AvatarGenerator;
 
 /**
@@ -28,8 +28,8 @@ public class LabelSelectionAdapter extends RecyclerView.Adapter<LabelSelectionAd
 
 	@NonNull @Override
 	public ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-		ListItemSelectionLabelBinding binding =
-				ListItemSelectionLabelBinding.inflate(
+		ItemSelectionLabelBinding binding =
+				ItemSelectionLabelBinding.inflate(
 						LayoutInflater.from(parent.getContext()), parent, false);
 		return new ViewHolder(binding);
 	}
@@ -75,9 +75,9 @@ public class LabelSelectionAdapter extends RecyclerView.Adapter<LabelSelectionAd
 	}
 
 	public static class ViewHolder extends RecyclerView.ViewHolder {
-		final ListItemSelectionLabelBinding binding;
+		final ItemSelectionLabelBinding binding;
 
-		public ViewHolder(ListItemSelectionLabelBinding binding) {
+		public ViewHolder(ItemSelectionLabelBinding binding) {
 			super(binding.getRoot());
 			this.binding = binding;
 		}

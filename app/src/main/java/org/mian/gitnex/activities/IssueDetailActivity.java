@@ -91,7 +91,6 @@ import org.mian.gitnex.databinding.CustomAssigneesSelectionDialogBinding;
 import org.mian.gitnex.databinding.CustomImageViewDialogBinding;
 import org.mian.gitnex.databinding.CustomLabelsSelectionDialogBinding;
 import org.mian.gitnex.fragments.BottomSheetSingleIssueFragment;
-import org.mian.gitnex.fragments.IssuesFragment;
 import org.mian.gitnex.helpers.AlertDialogs;
 import org.mian.gitnex.helpers.AppDatabaseSettings;
 import org.mian.gitnex.helpers.AppUtil;
@@ -838,7 +837,7 @@ public class IssueDetailActivity extends BaseActivity
 															issueIndex,
 															currentLabelsIds),
 											1000);
-							IssuesFragment.resumeIssues = true;
+							// IssuesFragment.resumeIssues = true;
 						} else if (response.code() == 401) {
 
 							AlertDialogs.authorizationTokenRevokedDialog(ctx);
@@ -1762,8 +1761,8 @@ public class IssueDetailActivity extends BaseActivity
 							assert response.body() != null;
 
 							if (issue.hasIssue()) {
-								IssuesFragment.resumeIssues =
-										issue.getIssue().getPullRequest() == null;
+								// IssuesFragment.resumeIssues =
+								//	issue.getIssue().getPullRequest() == null;
 								// PullRequestsFragment.resumePullRequests =
 								//		issue.getIssue().getPullRequest() != null;
 							}

@@ -19,6 +19,7 @@ import androidx.activity.result.ActivityResultLauncher;
 import androidx.activity.result.contract.ActivityResultContracts;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.fragment.app.Fragment;
 import com.google.android.material.bottomsheet.BottomSheetDialog;
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment;
 import com.google.android.material.dialog.MaterialAlertDialogBuilder;
@@ -38,6 +39,7 @@ import org.mian.gitnex.database.api.BaseApi;
 import org.mian.gitnex.database.api.UserAccountsApi;
 import org.mian.gitnex.database.models.UserAccount;
 import org.mian.gitnex.databinding.ActivityLoginBinding;
+import org.mian.gitnex.databinding.BottomsheetManualVersionBinding;
 import org.mian.gitnex.databinding.BottomsheetProxyAuthBinding;
 import org.mian.gitnex.databinding.BottomsheetTokenHelpBinding;
 import org.mian.gitnex.helpers.AppUtil;
@@ -68,6 +70,7 @@ public class LoginActivity extends BaseActivity {
 	private String selectedProvider = "gitea";
 	private String proxyAuthUsername = null;
 	private String proxyAuthPassword = null;
+	private String manualVersion = null;
 
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
@@ -495,84 +498,81 @@ public class LoginActivity extends BaseActivity {
 
 		callVersion.enqueue(
 				new Callback<>() {
-
 					@Override
 					public void onResponse(
 							@NonNull final Call<ServerVersion> callVersion,
 							@NonNull retrofit2.Response<ServerVersion> responseVersion) {
-
 						if (responseVersion.code() == 200) {
-
 							ServerVersion version = responseVersion.body();
-							assert version != null;
 
-							if (!Version.valid(version.getVersion())) {
-
-								Toasty.show(ctx, getString(R.string.versionUnknown));
-								enableProcessButton();
-								return;
-							}
-
-							giteaVersion = new Version(version.getVersion());
-							if (selectedProvider.equals("infer")) {
-								selectedProvider = AppUtil.inferProvider(version.getVersion());
-							}
-
-							if (giteaVersion.less(getString(R.string.versionLow))) {
-
-								MaterialAlertDialogBuilder materialAlertDialogBuilder =
-										new MaterialAlertDialogBuilder(ctx)
-												.setTitle(
-														getString(
-																R.string.versionAlertDialogHeader))
-												.setMessage(
-														getResources()
-																.getString(
-																		R.string
-																				.versionUnsupportedOld,
-																		version.getVersion()))
-												.setNeutralButton(
-														getString(R.string.cancelButton),
-														(dialog, which) -> {
-															dialog.dismiss();
-															enableProcessButton();
-														})
-												.setPositiveButton(
-														getString(R.string.textContinue),
-														(dialog, which) -> {
-															dialog.dismiss();
-															login(loginToken);
-														});
-
-								materialAlertDialogBuilder.create().show();
-							} else if (giteaVersion.lessOrEqual(getString(R.string.versionHigh))) {
-
-								login(loginToken);
+							if (version != null && Version.valid(version.getVersion())) {
+								giteaVersion = new Version(version.getVersion());
+								manualVersion = null;
+								proceedWithLogin(loginToken);
 							} else {
-
-								Toasty.show(ctx, getString(R.string.versionUnsupportedNew));
-								login(loginToken);
+								showManualVersionSheet(loginToken);
 							}
-
 						} else if (responseVersion.code() == 403) {
-
-							login(loginToken);
+							giteaVersion = new Version("1.26.1");
+							manualVersion = null;
+							proceedWithLogin(loginToken);
+						} else {
+							showManualVersionSheet(loginToken);
 						}
-					}
-
-					private void login(String loginToken) {
-
-						setupUsingExistingToken(loginToken);
 					}
 
 					@Override
 					public void onFailure(
 							@NonNull Call<ServerVersion> callVersion, @NonNull Throwable t) {
-
-						Toasty.show(ctx, getString(R.string.genericServerResponseError));
-						enableProcessButton();
+						showManualVersionSheet(loginToken);
 					}
 				});
+	}
+
+	private void showManualVersionSheet(String loginToken) {
+		ManualVersionSheet sheet = ManualVersionSheet.newInstance("1.26.1");
+		sheet.setCallback(
+				version -> {
+					manualVersion = version;
+					giteaVersion = new Version(version);
+					proceedWithLogin(loginToken);
+				});
+		sheet.show(getSupportFragmentManager(), "MANUAL_VERSION");
+	}
+
+	private void proceedWithLogin(String loginToken) {
+		if (selectedProvider.equals("infer")) {
+			selectedProvider = AppUtil.inferProvider(giteaVersion.toString());
+		}
+
+		if (giteaVersion.less(getString(R.string.versionLow))) {
+			new MaterialAlertDialogBuilder(ctx)
+					.setTitle(getString(R.string.versionAlertDialogHeader))
+					.setMessage(
+							getResources()
+									.getString(
+											R.string.versionUnsupportedOld,
+											giteaVersion.toString()))
+					.setNeutralButton(
+							getString(R.string.cancelButton),
+							(dialog, which) -> {
+								dialog.dismiss();
+								enableProcessButton();
+							})
+					.setPositiveButton(
+							getString(R.string.textContinue),
+							(dialog, which) -> {
+								dialog.dismiss();
+								setupUsingExistingToken(loginToken);
+							})
+					.create()
+					.show();
+		} else if (giteaVersion.lessOrEqual(getString(R.string.versionHigh))) {
+			setupUsingExistingToken(loginToken);
+		} else {
+			Toasty.show(ctx, getString(R.string.versionUnsupportedNew));
+			setupUsingExistingToken(loginToken);
+		}
 	}
 
 	private void setupUsingExistingToken(final String loginToken) {
@@ -600,7 +600,6 @@ public class LoginActivity extends BaseActivity {
 							case 200:
 								assert userDetails != null;
 
-								// insert new account to db if does not exist
 								String accountName = userDetails.getLogin() + "@" + instanceUrl;
 								UserAccountsApi userAccountsApi =
 										BaseApi.getInstance(ctx, UserAccountsApi.class);
@@ -609,18 +608,21 @@ public class LoginActivity extends BaseActivity {
 										userAccountsApi.userAccountExists(accountName);
 								UserAccount account;
 								if (!userAccountExists) {
+									String versionToSave =
+											manualVersion != null
+													? manualVersion
+													: giteaVersion.toString();
 									long accountId =
 											userAccountsApi.createNewAccount(
 													accountName,
 													instanceUrl.toString(),
 													userDetails.getLogin(),
 													loginToken,
-													giteaVersion.toString(),
+													versionToSave,
 													maxResponseItems,
 													defaultPagingNumber,
 													selectedProvider);
 
-									// Save or clear proxy credentials
 									userAccountsApi.updateProxyAuthCredentials(
 											(int) accountId,
 											(proxyAuthUsername != null
@@ -672,15 +674,34 @@ public class LoginActivity extends BaseActivity {
 
 								AppUtil.switchToAccount(LoginActivity.this, account);
 
+								Fragment sheet =
+										getSupportFragmentManager()
+												.findFragmentByTag("MANUAL_VERSION");
+								if (sheet instanceof ManualVersionSheet) {
+									((ManualVersionSheet) sheet).dismiss();
+								}
+
 								enableProcessButton();
 								startActivity(new Intent(LoginActivity.this, MainActivity.class));
 								finish();
 								break;
 							case 401:
+								Fragment sheet401 =
+										getSupportFragmentManager()
+												.findFragmentByTag("MANUAL_VERSION");
+								if (sheet401 instanceof ManualVersionSheet) {
+									((ManualVersionSheet) sheet401).dismiss();
+								}
 								Toasty.show(ctx, getString(R.string.unauthorizedApiError));
 								enableProcessButton();
 								break;
 							default:
+								Fragment sheetDefault =
+										getSupportFragmentManager()
+												.findFragmentByTag("MANUAL_VERSION");
+								if (sheetDefault instanceof ManualVersionSheet) {
+									((ManualVersionSheet) sheetDefault).dismiss();
+								}
 								Toasty.show(
 										ctx, getString(R.string.genericApiError, response.code()));
 								enableProcessButton();
@@ -690,6 +711,11 @@ public class LoginActivity extends BaseActivity {
 					@Override
 					public void onFailure(@NonNull Call<User> call, @NonNull Throwable t) {
 
+						Fragment sheet =
+								getSupportFragmentManager().findFragmentByTag("MANUAL_VERSION");
+						if (sheet instanceof ManualVersionSheet) {
+							((ManualVersionSheet) sheet).dismiss();
+						}
 						Toasty.show(ctx, getString(R.string.genericServerResponseError));
 						enableProcessButton();
 					}
@@ -780,6 +806,89 @@ public class LoginActivity extends BaseActivity {
 
 		restoreDatabaseThread.setDaemon(false);
 		restoreDatabaseThread.start();
+	}
+
+	public static class ManualVersionSheet extends BottomSheetDialogFragment {
+
+		private BottomsheetManualVersionBinding binding;
+		private VersionCallback callback;
+		private String suggestedVersion;
+
+		public interface VersionCallback {
+			void onVersionEntered(String version);
+		}
+
+		public static ManualVersionSheet newInstance(String suggestedVersion) {
+			ManualVersionSheet fragment = new ManualVersionSheet();
+			Bundle args = new Bundle();
+			args.putString("suggestedVersion", suggestedVersion);
+			fragment.setArguments(args);
+			return fragment;
+		}
+
+		public void setCallback(VersionCallback callback) {
+			this.callback = callback;
+		}
+
+		@Override
+		public void onCreate(@Nullable Bundle savedInstanceState) {
+			super.onCreate(savedInstanceState);
+			if (getArguments() != null) {
+				suggestedVersion = getArguments().getString("suggestedVersion", "1.25.4");
+			}
+		}
+
+		@Nullable @Override
+		public View onCreateView(
+				@NonNull LayoutInflater inflater,
+				@Nullable ViewGroup container,
+				@Nullable Bundle savedInstanceState) {
+			binding = BottomsheetManualVersionBinding.inflate(inflater, container, false);
+			return binding.getRoot();
+		}
+
+		@Override
+		public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
+			super.onViewCreated(view, savedInstanceState);
+
+			binding.versionInput.setText(suggestedVersion);
+
+			binding.btnClose.setOnClickListener(v -> dismiss());
+
+			binding.btnSave.setOnClickListener(
+					v -> {
+						String version =
+								binding.versionInput.getText() != null
+										? binding.versionInput.getText().toString().trim()
+										: "";
+
+						if (Version.valid(version)) {
+							binding.btnSave.setEnabled(false);
+							binding.btnSave.setText("");
+							binding.loadingIndicator.setVisibility(View.VISIBLE);
+
+							if (callback != null) {
+								callback.onVersionEntered(version);
+							}
+						} else {
+							Toasty.show(requireContext(), R.string.invalid_version_format);
+						}
+					});
+		}
+
+		@Override
+		public void onStart() {
+			super.onStart();
+			if (getDialog() instanceof BottomSheetDialog) {
+				AppUtil.applySheetStyle((BottomSheetDialog) getDialog(), false);
+			}
+		}
+
+		@Override
+		public void onDestroyView() {
+			super.onDestroyView();
+			binding = null;
+		}
 	}
 
 	public void restoreDatabaseFile(Context context, String tempDir, String nameOfFileToRestore)

@@ -43,7 +43,6 @@ public class BottomSheetAddTeamMember extends BottomSheetDialogFragment {
 	@Override
 	public void onCreate(@Nullable Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
-		setStyle(STYLE_NORMAL, R.style.Custom_BottomSheet);
 	}
 
 	@Nullable @Override
@@ -73,6 +72,8 @@ public class BottomSheetAddTeamMember extends BottomSheetDialogFragment {
 		if (teamId != -1) {
 			viewModel.loadCurrentMembers(requireContext(), teamId);
 		}
+
+		binding.sheetTitle.setText(R.string.add_team_member);
 
 		setupRecyclerView();
 		setupListeners();

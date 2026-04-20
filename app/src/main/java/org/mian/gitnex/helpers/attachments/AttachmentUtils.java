@@ -9,6 +9,7 @@ import java.io.File;
 import java.io.FileOutputStream;
 import java.io.InputStream;
 import java.io.OutputStream;
+import java.util.Locale;
 import java.util.Objects;
 
 /**
@@ -58,5 +59,28 @@ public class AttachmentUtils {
 		} catch (Exception ex) {
 			Log.e("AttachmentUtils", Objects.requireNonNull(ex.getMessage()));
 		}
+	}
+
+	public static long getFileSize(Context ctx, Uri uri) {
+		Cursor cursor = ctx.getContentResolver().query(uri, null, null, null, null);
+		if (cursor != null) {
+			int sizeIndex = cursor.getColumnIndex(OpenableColumns.SIZE);
+			cursor.moveToFirst();
+			long size = cursor.getLong(sizeIndex);
+			cursor.close();
+			return size;
+		}
+		return 0;
+	}
+
+	public static String formatFileSize(long size) {
+		if (size <= 0) return "0 B";
+		final String[] units = new String[] {"B", "KB", "MB", "GB", "TB"};
+		int digitGroups = (int) (Math.log10(size) / Math.log10(1024));
+		return String.format(
+				Locale.getDefault(),
+				"%.1f %s",
+				size / Math.pow(1024, digitGroups),
+				units[digitGroups]);
 	}
 }

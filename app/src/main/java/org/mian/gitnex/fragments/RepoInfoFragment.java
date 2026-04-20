@@ -5,6 +5,8 @@ import android.content.res.ColorStateList;
 import android.graphics.Color;
 import android.graphics.drawable.Drawable;
 import android.os.Bundle;
+import android.transition.AutoTransition;
+import android.transition.TransitionManager;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -44,6 +46,7 @@ import org.mian.gitnex.helpers.UIHelper;
 import org.mian.gitnex.helpers.contexts.RepositoryContext;
 import org.mian.gitnex.helpers.languagestatistics.LanguageColor;
 import org.mian.gitnex.helpers.languagestatistics.LanguageStatisticsHelper;
+import org.mian.gitnex.viewmodels.CreateIssueViewModel;
 import org.mian.gitnex.viewmodels.RepositoryDetailsViewModel;
 
 /**
@@ -86,17 +89,44 @@ public class RepoInfoFragment extends Fragment {
 		locale = getResources().getConfiguration().getLocales().get(0);
 		viewModel = new ViewModelProvider(requireActivity()).get(RepositoryDetailsViewModel.class);
 
-		UIHelper.applyInsets(view, null, null, null, binding.repoInfoLayout);
+		View dock = requireActivity().findViewById(R.id.docked_toolbar);
+		UIHelper.applyInsets(view, dock, binding.scrollContent, null, binding.repoInfoLayout);
 
 		setupStatHeaders();
 		setupClickListeners();
 		setupObservers();
+		observeCreateIssueViewModel();
 
 		Repository repo = repositoryContext.getRepository();
 		setRepoInfo(repo);
 
 		viewModel.loadRepositoryDetails(
 				ctx, repositoryContext.getOwner(), repo.getName(), repo.getDefaultBranch());
+	}
+
+	private void observeCreateIssueViewModel() {
+		CreateIssueViewModel createIssueViewModel =
+				new ViewModelProvider(requireActivity()).get(CreateIssueViewModel.class);
+
+		createIssueViewModel
+				.getCreatedIssue()
+				.observe(
+						getViewLifecycleOwner(),
+						issue -> {
+							if (issue != null) {
+								viewModel.fetchRepository(
+										ctx,
+										repositoryContext.getOwner(),
+										repositoryContext.getName());
+							}
+						});
+	}
+
+	public void refreshFromGlobal() {
+		if (viewModel != null && repositoryContext != null) {
+			viewModel.fetchRepository(
+					ctx, repositoryContext.getOwner(), repositoryContext.getName());
+		}
 	}
 
 	private void setupObservers() {
@@ -107,7 +137,6 @@ public class RepoInfoFragment extends Fragment {
 						starred -> {
 							binding.statStars.statIcon.setImageResource(
 									starred ? R.drawable.ic_star : R.drawable.ic_star_unfilled);
-							viewModel.updateStarCountLocal(starred);
 						});
 		viewModel
 				.getIsWatched()
@@ -116,7 +145,6 @@ public class RepoInfoFragment extends Fragment {
 						watched -> {
 							binding.statWatchers.statIcon.setImageResource(
 									watched ? R.drawable.ic_unwatch : R.drawable.ic_watchers);
-							viewModel.updateWatchCountLocal(watched);
 						});
 
 		viewModel
@@ -312,12 +340,15 @@ public class RepoInfoFragment extends Fragment {
 												repositoryContext.getRepository().getCreatedAt(),
 												locale)));
 
-		binding.layoutWebsite
-				.getRoot()
-				.setOnClickListener(
-						v ->
-								AppUtil.openUrlInBrowser(
-										ctx, repositoryContext.getRepository().getWebsite()));
+		if (!repositoryContext.getRepository().getWebsite().isEmpty()) {
+			binding.layoutWebsite
+					.getRoot()
+					.setOnClickListener(
+							v ->
+									AppUtil.openUrlInBrowser(
+											ctx, repositoryContext.getRepository().getWebsite()));
+		}
+
 		binding.layoutHtmlUrl
 				.getRoot()
 				.setOnClickListener(
@@ -327,13 +358,34 @@ public class RepoInfoFragment extends Fragment {
 										repositoryContext.getRepository().getWebsite(),
 										getString(R.string.copied)));
 
+		binding.layoutSshUrl
+				.getRoot()
+				.setOnClickListener(
+						v ->
+								AppUtil.copyToClipboard(
+										ctx,
+										repositoryContext.getRepository().getSshUrl(),
+										getString(R.string.copied)));
+
 		binding.addTopicChip.setOnClickListener(v -> showAddTopicDialog());
+
 		binding.repoAdditionalButton.setOnClickListener(
 				v -> {
-					boolean isVisible = binding.moreInfoFrame.getVisibility() == View.VISIBLE;
-					binding.moreInfoFrame.setVisibility(isVisible ? View.GONE : View.VISIBLE);
+					boolean isExpanding = binding.moreInfoFrame.getVisibility() == View.GONE;
+
+					TransitionManager.beginDelayedTransition(
+							binding.getRoot(), new AutoTransition());
+
+					binding.moreInfoFrame.setVisibility(isExpanding ? View.VISIBLE : View.GONE);
 					binding.repoAdditionalButton.setIconResource(
-							isVisible ? R.drawable.ic_arrow_down : R.drawable.ic_arrow_up);
+							isExpanding ? R.drawable.ic_arrow_up : R.drawable.ic_arrow_down);
+
+					if (isExpanding) {
+						binding.moreInfoFrame.post(
+								() -> {
+									binding.moreInfoFrame.requestFocus();
+								});
+					}
 				});
 	}
 
@@ -379,7 +431,7 @@ public class RepoInfoFragment extends Fragment {
 		binding.layoutHtmlUrl.infoIcon.setImageResource(R.drawable.ic_link);
 
 		binding.layoutSshUrl.infoText.setText(repo.getSshUrl());
-		binding.layoutSshUrl.infoIcon.setImageResource(R.drawable.ic_code);
+		binding.layoutSshUrl.infoIcon.setImageResource(R.drawable.ic_sh);
 
 		binding.repoIsArchived.setVisibility(repo.isArchived() ? View.VISIBLE : View.GONE);
 

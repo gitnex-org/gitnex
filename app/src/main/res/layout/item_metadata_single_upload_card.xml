@@ -1,0 +1,132 @@
+<?xml version="1.0" encoding="utf-8"?>
+<com.google.android.material.card.MaterialCardView
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    style="@style/Widget.Material3.CardView.Elevated"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:clickable="true"
+    android:focusable="true"
+    app:cardBackgroundColor="?attr/materialCardBackgroundColor"
+    app:cardElevation="@dimen/dimen0dp"
+    app:shapeAppearance="@style/ShapeAppearance.Material3.Corner.Medium"
+    app:strokeWidth="0dp">
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:padding="@dimen/dimen16dp">
+
+        <ImageView
+            android:id="@+id/upload_icon"
+            android:layout_width="@dimen/dimen18dp"
+            android:layout_height="@dimen/dimen18dp"
+            android:contentDescription="@string/generalImgContentText"
+            android:src="@drawable/ic_attachment"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:tint="?attr/iconsColor" />
+
+        <TextView
+            android:id="@+id/upload_label"
+            style="@style/TextAppearance.Material3.LabelLarge"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="@dimen/dimen12dp"
+            android:text="@string/upload_file"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toEndOf="@id/upload_icon"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <TextView
+            android:id="@+id/upload_empty_text"
+            style="@style/TextAppearance.Material3.BodyMedium"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/dimen12dp"
+            android:text="@string/tap_to_upload_file"
+            android:textColor="?attr/colorOnSurfaceVariant"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/upload_icon" />
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:id="@+id/upload_preview_container"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/dimen12dp"
+            android:visibility="gone"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/upload_icon">
+
+            <com.google.android.material.imageview.ShapeableImageView
+                android:id="@+id/upload_preview_image"
+                android:layout_width="@dimen/dimen36dp"
+                android:layout_height="@dimen/dimen36dp"
+                android:scaleType="centerCrop"
+                android:src="@drawable/ic_file"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:shapeAppearance="@style/ShapeAppearance.Material3.Corner.ExtraSmall" />
+
+            <TextView
+                android:id="@+id/upload_file_name"
+                style="@style/TextAppearance.Material3.BodyLarge"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="@dimen/dimen12dp"
+                android:layout_marginEnd="@dimen/dimen8dp"
+                android:ellipsize="middle"
+                android:maxLines="1"
+                app:layout_constraintEnd_toStartOf="@id/btn_clear"
+                app:layout_constraintStart_toEndOf="@id/upload_preview_image"
+                app:layout_constraintTop_toTopOf="@id/upload_preview_image" />
+
+            <com.google.android.material.button.MaterialButton
+                android:id="@+id/btn_clear"
+                style="@style/Widget.Material3.Button.IconButton"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:contentDescription="@string/clear"
+                app:icon="@drawable/ic_close"
+                app:iconSize="@dimen/dimen18dp"
+                app:iconTint="?attr/iconsColor"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintTop_toTopOf="@id/upload_file_name"
+                app:layout_constraintBottom_toBottomOf="@id/upload_file_name" />
+
+            <TextView
+                android:id="@+id/upload_file_info"
+                style="@style/TextAppearance.Material3.BodySmall"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="@dimen/dimen12dp"
+                android:layout_marginTop="@dimen/dimen4dp"
+                android:maxLines="1"
+                android:ellipsize="middle"
+                android:alpha="0.7"
+                android:textColor="?attr/colorOnSurfaceVariant"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toEndOf="@id/upload_preview_image"
+                app:layout_constraintTop_toBottomOf="@id/upload_file_name" />
+
+            <TextView
+                android:id="@+id/upload_file_warning"
+                style="@style/TextAppearance.Material3.BodySmall"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="@dimen/dimen12dp"
+                android:layout_marginTop="@dimen/dimen4dp"
+                android:textColor="?attr/colorError"
+                android:visibility="gone"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toEndOf="@id/upload_preview_image"
+                app:layout_constraintTop_toBottomOf="@id/upload_file_info" />
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+</com.google.android.material.card.MaterialCardView>

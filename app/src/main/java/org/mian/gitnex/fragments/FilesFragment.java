@@ -1,5 +1,8 @@
 package org.mian.gitnex.fragments;
 
+import android.app.Activity;
+import android.app.NotificationManager;
+import android.content.Context;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
@@ -9,33 +12,44 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import androidx.activity.OnBackPressedCallback;
+import androidx.activity.result.ActivityResultLauncher;
+import androidx.activity.result.contract.ActivityResultContracts;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.core.app.NotificationCompat;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModelProvider;
 import androidx.recyclerview.widget.LinearLayoutManager;
+import com.google.android.material.bottomsheet.BottomSheetDialog;
 import com.google.android.material.search.SearchView;
+import java.io.IOException;
+import java.io.OutputStream;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
+import okhttp3.ResponseBody;
+import org.apache.commons.io.FilenameUtils;
 import org.mian.gitnex.R;
 import org.mian.gitnex.activities.CommitsActivity;
-import org.mian.gitnex.activities.CreateFileActivity;
-import org.mian.gitnex.activities.FileViewActivity;
 import org.mian.gitnex.activities.RepoDetailActivity;
 import org.mian.gitnex.adapters.FilesAdapter;
 import org.mian.gitnex.api.models.contents.RepoGetContentsList;
+import org.mian.gitnex.clients.RetrofitClient;
 import org.mian.gitnex.database.api.BaseApi;
 import org.mian.gitnex.database.api.UserAccountsApi;
 import org.mian.gitnex.database.models.UserAccount;
+import org.mian.gitnex.databinding.BottomsheetFileItemMenuBinding;
 import org.mian.gitnex.databinding.FragmentFilesBinding;
 import org.mian.gitnex.helpers.AppUtil;
+import org.mian.gitnex.helpers.Constants;
 import org.mian.gitnex.helpers.Path;
 import org.mian.gitnex.helpers.Toasty;
 import org.mian.gitnex.helpers.UIHelper;
 import org.mian.gitnex.helpers.contexts.RepositoryContext;
 import org.mian.gitnex.models.RepositoryMenuItemModel;
+import org.mian.gitnex.notifications.Notifications;
 import org.mian.gitnex.viewmodels.FilesViewModel;
+import retrofit2.Call;
 
 /**
  * @author mmarif
@@ -48,6 +62,10 @@ public class FilesFragment extends Fragment
 	private FilesAdapter filesAdapter;
 	private RepositoryContext repository;
 	private final Path path = new Path();
+	private boolean isFirstLoad = true;
+	private String pendingAction = null;
+	private RepoGetContentsList pendingFile = null;
+	private RepoGetContentsList pendingDownloadFile;
 
 	public static FilesFragment newInstance(RepositoryContext repository) {
 		FilesFragment fragment = new FilesFragment();
@@ -58,7 +76,8 @@ public class FilesFragment extends Fragment
 	@Override
 	public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
 		super.onViewCreated(view, savedInstanceState);
-		UIHelper.applyInsets(view, null, binding.recyclerView, binding.pullToRefresh, null);
+		View dock = requireActivity().findViewById(R.id.docked_toolbar);
+		UIHelper.applyInsets(view, dock, binding.recyclerView, binding.pullToRefresh, null);
 	}
 
 	@Override
@@ -79,6 +98,7 @@ public class FilesFragment extends Fragment
 		setupListeners();
 		setupBackNavigation();
 		observeViewModel();
+		observeFileContent();
 
 		String dir = requireActivity().getIntent().getStringExtra("dir");
 		if (dir != null && path.size() == 0) {
@@ -89,6 +109,27 @@ public class FilesFragment extends Fragment
 
 		refresh();
 		return binding.getRoot();
+	}
+
+	@Override
+	public void onResume() {
+		super.onResume();
+		if (!isHidden() && isFirstLoad) {
+			lazyLoad();
+		}
+	}
+
+	@Override
+	public void onHiddenChanged(boolean hidden) {
+		super.onHiddenChanged(hidden);
+		if (!hidden && isFirstLoad) {
+			lazyLoad();
+		}
+	}
+
+	private void lazyLoad() {
+		isFirstLoad = false;
+		refresh();
 	}
 
 	@Override
@@ -123,7 +164,7 @@ public class FilesFragment extends Fragment
 			items.add(
 					new RepositoryMenuItemModel(
 							"FILES_ADD_NEW",
-							R.string.addButton,
+							R.string.pageTitleNewFile,
 							R.drawable.ic_add,
 							R.attr.colorPrimaryContainer,
 							R.attr.colorOnPrimaryContainer));
@@ -148,9 +189,20 @@ public class FilesFragment extends Fragment
 				break;
 
 			case "FILES_ADD_NEW":
-				startActivity(repository.getIntent(getContext(), CreateFileActivity.class));
+				BottomSheetCreateFile.newInstance(
+								repository, FilesViewModel.FileAction.CREATE, null, null, null)
+						.show(getChildFragmentManager(), "CREATE_FILE");
 				break;
 		}
+	}
+
+	public void refreshFromGlobal() {
+		refresh();
+	}
+
+	@Override
+	public void onMenuClick(RepoGetContentsList file) {
+		showFileOptionsBottomSheet(file);
 	}
 
 	@Override
@@ -277,9 +329,59 @@ public class FilesFragment extends Fragment
 				path.toString());
 	}
 
-	@Override
-	public void onResume() {
-		super.onResume();
+	private void observeFileContent() {
+		viewModel
+				.getFileContent()
+				.observe(
+						getViewLifecycleOwner(),
+						data -> {
+							if (data != null && pendingFile != null) {
+								String action = pendingAction;
+								RepoGetContentsList file = pendingFile;
+
+								viewModel.clearFileContent();
+								pendingAction = null;
+								pendingFile = null;
+
+								binding.expressiveLoader.setVisibility(View.GONE);
+
+								if ("view".equals(action)) {
+									openViewer(file, data);
+								} else if ("edit".equals(action)) {
+									if (!data.isBinary && data.textContent != null) {
+										BottomSheetCreateFile.newInstance(
+														repository,
+														FilesViewModel.FileAction.EDIT,
+														file.getPath(),
+														file.getSha(),
+														data.textContent)
+												.show(getChildFragmentManager(), "EDIT_FILE");
+									}
+								}
+							}
+						});
+
+		viewModel
+				.getErrorMessage()
+				.observe(
+						getViewLifecycleOwner(),
+						error -> {
+							if (error != null && pendingFile != null) {
+								binding.expressiveLoader.setVisibility(View.GONE);
+								pendingAction = null;
+								pendingFile = null;
+							}
+						});
+	}
+
+	private boolean isBinaryFileType(AppUtil.FileType fileType) {
+		return fileType != AppUtil.FileType.TEXT
+				&& fileType != AppUtil.FileType.IMAGE
+				&& fileType != AppUtil.FileType.UNKNOWN;
+	}
+
+	private boolean isEditableFileType(AppUtil.FileType fileType) {
+		return fileType == AppUtil.FileType.TEXT;
 	}
 
 	@Override
@@ -291,14 +393,190 @@ public class FilesFragment extends Fragment
 				break;
 			case "file":
 			case "symlink":
-				Intent intent = repository.getIntent(getContext(), FileViewActivity.class);
-				intent.putExtra("file", file);
-				startActivity(intent);
+				openFileViewer(file);
 				break;
 			case "submodule":
 				handleSubmodule(file);
 				break;
 		}
+	}
+
+	public void openFileViewer(RepoGetContentsList file) {
+		String fileExtension = FilenameUtils.getExtension(file.getName());
+		AppUtil.FileType fileType = AppUtil.getFileType(fileExtension);
+
+		if (isBinaryFileType(fileType)) {
+			showFileOptionsBottomSheet(file);
+			return;
+		}
+
+		pendingAction = "view";
+		pendingFile = file;
+		binding.expressiveLoader.setVisibility(View.VISIBLE);
+		boolean isImage = fileType == AppUtil.FileType.IMAGE;
+		viewModel.fetchFileContent(
+				requireContext(),
+				repository.getOwner(),
+				repository.getName(),
+				file.getPath(),
+				repository.getBranchRef(),
+				isImage);
+	}
+
+	private void openFileForEdit(RepoGetContentsList file) {
+		String fileExtension = FilenameUtils.getExtension(file.getName());
+		AppUtil.FileType fileType = AppUtil.getFileType(fileExtension);
+
+		if (!isEditableFileType(fileType)) {
+			Toasty.show(requireContext(), R.string.fileTypeCannotBeEdited);
+			return;
+		}
+
+		pendingAction = "edit";
+		pendingFile = file;
+		binding.expressiveLoader.setVisibility(View.VISIBLE);
+		viewModel.fetchFileContent(
+				requireContext(),
+				repository.getOwner(),
+				repository.getName(),
+				file.getPath(),
+				repository.getBranchRef(),
+				false);
+	}
+
+	public void openViewerLinkIntent(RepoGetContentsList file) {
+		openFileViewer(file);
+	}
+
+	private void openViewer(RepoGetContentsList file, FilesViewModel.FileContentData data) {
+		String fileExtension = FilenameUtils.getExtension(file.getName());
+		String fileName = file.getName();
+		AppUtil.FileType fileType = AppUtil.getFileType(fileExtension);
+
+		binding.expressiveLoader.setVisibility(View.GONE);
+
+		if (fileType == AppUtil.FileType.IMAGE && data.binaryContent != null) {
+			BottomSheetContentViewer.newInstance(
+							data.binaryContent,
+							fileName,
+							repository,
+							BottomSheetContentViewer.Feature.IMAGE_PREVIEW,
+							BottomSheetContentViewer.Feature.SHOW_TITLE,
+							BottomSheetContentViewer.Feature.ALLOW_SHARE)
+					.show(getChildFragmentManager(), "FILE_VIEWER");
+			return;
+		}
+
+		String content = data.textContent != null ? data.textContent : "";
+
+		if (fileExtension.equalsIgnoreCase("md")) {
+			BottomSheetContentViewer.newInstance(
+							content,
+							fileName,
+							repository,
+							fileExtension,
+							BottomSheetContentViewer.Feature.MARKDOWN_PREVIEW,
+							BottomSheetContentViewer.Feature.START_IN_MARKDOWN,
+							BottomSheetContentViewer.Feature.SHOW_TITLE,
+							BottomSheetContentViewer.Feature.ALLOW_COPY,
+							BottomSheetContentViewer.Feature.ALLOW_SHARE)
+					.show(getChildFragmentManager(), "FILE_VIEWER");
+			return;
+		}
+
+		if (fileType == AppUtil.FileType.TEXT) {
+			BottomSheetContentViewer.newInstance(
+							content,
+							fileName,
+							repository,
+							fileExtension,
+							BottomSheetContentViewer.Feature.SYNTAX_HIGHLIGHT,
+							BottomSheetContentViewer.Feature.SHOW_TITLE,
+							BottomSheetContentViewer.Feature.ALLOW_COPY,
+							BottomSheetContentViewer.Feature.ALLOW_SHARE)
+					.show(getChildFragmentManager(), "FILE_VIEWER");
+			return;
+		}
+
+		BottomSheetContentViewer.newInstance(
+						content,
+						fileName,
+						repository,
+						null,
+						BottomSheetContentViewer.Feature.SHOW_TITLE,
+						BottomSheetContentViewer.Feature.ALLOW_COPY,
+						BottomSheetContentViewer.Feature.ALLOW_SHARE)
+				.show(getChildFragmentManager(), "FILE_VIEWER");
+	}
+
+	private void showFileOptionsBottomSheet(RepoGetContentsList file) {
+		BottomsheetFileItemMenuBinding sheetBinding =
+				BottomsheetFileItemMenuBinding.inflate(getLayoutInflater());
+		BottomSheetDialog dialog = new BottomSheetDialog(requireContext());
+		dialog.setContentView(sheetBinding.getRoot());
+		AppUtil.applySheetStyle(dialog, true);
+
+		sheetBinding.fileName.setText(file.getName());
+
+		String fileExtension = FilenameUtils.getExtension(file.getName());
+		AppUtil.FileType fileType = AppUtil.getFileType(fileExtension);
+		boolean canEdit =
+				repository.getPermissions().isPush()
+						&& !repository.getRepository().isArchived()
+						&& isEditableFileType(fileType);
+
+		sheetBinding.editFileCard.setVisibility(canEdit ? View.VISIBLE : View.GONE);
+		sheetBinding.deleteFileCard.setVisibility(
+				repository.getPermissions().isPush() && !repository.getRepository().isArchived()
+						? View.VISIBLE
+						: View.GONE);
+
+		sheetBinding.editFile.setOnClickListener(
+				v -> {
+					dialog.dismiss();
+					openFileForEdit(file);
+				});
+
+		sheetBinding.deleteFile.setOnClickListener(
+				v -> {
+					dialog.dismiss();
+					BottomSheetCreateFile.newInstance(
+									repository,
+									FilesViewModel.FileAction.DELETE,
+									file.getPath(),
+									file.getSha(),
+									null)
+							.show(getChildFragmentManager(), "DELETE_FILE");
+				});
+
+		sheetBinding.downloadFile.setOnClickListener(
+				v -> {
+					dialog.dismiss();
+					requestFileDownload(file);
+				});
+
+		sheetBinding.shareFile.setOnClickListener(
+				v -> {
+					dialog.dismiss();
+					AppUtil.sharingIntent(requireContext(), file.getHtmlUrl());
+				});
+
+		sheetBinding.copyUrl.setOnClickListener(
+				v -> {
+					dialog.dismiss();
+					AppUtil.copyToClipboard(
+							requireContext(),
+							file.getHtmlUrl(),
+							getString(R.string.copied_to_clipboard));
+				});
+
+		sheetBinding.openBrowser.setOnClickListener(
+				v -> {
+					dialog.dismiss();
+					AppUtil.openUrlInBrowser(requireContext(), file.getHtmlUrl());
+				});
+
+		dialog.show();
 	}
 
 	private void handleSubmodule(RepoGetContentsList file) {
@@ -367,6 +645,127 @@ public class FilesFragment extends Fragment
 				});
 
 		picker.show(getChildFragmentManager(), "branch_picker");
+	}
+
+	private void requestFileDownload(RepoGetContentsList file) {
+		pendingDownloadFile = file;
+		Intent intent = new Intent(Intent.ACTION_CREATE_DOCUMENT);
+		intent.addCategory(Intent.CATEGORY_OPENABLE);
+		intent.putExtra(Intent.EXTRA_TITLE, file.getName());
+		intent.setType("*/*");
+		downloadLauncher.launch(intent);
+	}
+
+	private final ActivityResultLauncher<Intent> downloadLauncher =
+			registerForActivityResult(
+					new ActivityResultContracts.StartActivityForResult(),
+					result -> {
+						if (result.getResultCode() == Activity.RESULT_OK
+								&& result.getData() != null) {
+							Uri targetUri = result.getData().getData();
+							if (targetUri != null && pendingDownloadFile != null) {
+								downloadFileToUri(pendingDownloadFile, targetUri);
+								pendingDownloadFile = null;
+							}
+						}
+					});
+
+	private void downloadFileToUri(RepoGetContentsList file, Uri targetUri) {
+		NotificationManager notificationManager =
+				(NotificationManager)
+						requireContext().getSystemService(Context.NOTIFICATION_SERVICE);
+		int notificationId = Notifications.uniqueNotificationId(requireContext());
+
+		NotificationCompat.Builder builder =
+				new NotificationCompat.Builder(
+								requireContext(), Constants.downloadNotificationChannelId)
+						.setContentTitle(getString(R.string.fileViewerNotificationTitleStarted))
+						.setContentText(
+								getString(
+										R.string.fileViewerNotificationDescriptionStarted,
+										file.getName()))
+						.setSmallIcon(R.drawable.gitnex_transparent)
+						.setPriority(NotificationCompat.PRIORITY_LOW)
+						.setOngoing(true)
+						.setProgress(100, 0, false);
+
+		notificationManager.notify(notificationId, builder.build());
+
+		new Thread(
+						() -> {
+							try {
+								Call<ResponseBody> call =
+										RetrofitClient.getWebInterface(requireContext())
+												.getFileContents(
+														repository.getOwner(),
+														repository.getName(),
+														repository.getBranchRef(),
+														file.getPath());
+
+								retrofit2.Response<ResponseBody> response = call.execute();
+
+								if (response.isSuccessful() && response.body() != null) {
+									try (OutputStream os =
+											requireContext()
+													.getContentResolver()
+													.openOutputStream(targetUri)) {
+										AppUtil.copyProgress(
+												response.body().byteStream(),
+												os,
+												file.getSize(),
+												progress -> {
+													builder.setProgress(100, progress, false);
+													notificationManager.notify(
+															notificationId, builder.build());
+												});
+
+										builder.setContentTitle(
+														getString(
+																R.string
+																		.fileViewerNotificationTitleFinished))
+												.setContentText(
+														getString(
+																R.string
+																		.fileViewerNotificationDescriptionFinished,
+																file.getName()))
+												.setOngoing(false)
+												.setProgress(0, 0, false);
+										notificationManager.notify(notificationId, builder.build());
+
+										requireActivity()
+												.runOnUiThread(
+														() ->
+																Toasty.show(
+																		requireContext(),
+																		R.string
+																				.downloadFileSaved));
+									}
+								} else {
+									throw new IOException("Download failed: " + response.code());
+								}
+							} catch (Exception e) {
+								builder.setContentTitle(
+												getString(
+														R.string.fileViewerNotificationTitleFailed))
+										.setContentText(
+												getString(
+														R.string
+																.fileViewerNotificationDescriptionFailed,
+														file.getName()))
+										.setOngoing(false)
+										.setProgress(0, 0, false);
+								notificationManager.notify(notificationId, builder.build());
+
+								requireActivity()
+										.runOnUiThread(
+												() ->
+														Toasty.show(
+																requireContext(),
+																R.string
+																		.fileViewerNotificationTitleFailed));
+							}
+						})
+				.start();
 	}
 
 	@Override

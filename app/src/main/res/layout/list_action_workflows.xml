@@ -1,53 +1,94 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout android:layout_width="match_parent"
-    android:layout_height="wrap_content"
+<com.google.android.material.listitem.ListItemLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    android:orientation="vertical"
-    android:padding="@dimen/dimen8dp"
-    xmlns:android="http://schemas.android.com/apk/res/android">
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content">
 
-    <com.google.android.material.card.MaterialCardView
+    <com.google.android.material.listitem.ListItemCardView
         android:id="@+id/card"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        app:cardBackgroundColor="?attr/primaryBackgroundColor"
-        style="?attr/materialCardViewFilledStyle">
+        android:checkable="false"
+        android:layout_marginVertical="@dimen/dimen1dp"
+        app:strokeWidth="0dp"
+        app:cardBackgroundColor="?attr/materialCardBackgroundColor">
 
-        <LinearLayout
+        <androidx.constraintlayout.widget.ConstraintLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:background="?attr/materialCardBackgroundColor"
-            android:padding="@dimen/dimen16dp"
-            android:orientation="vertical">
+            android:padding="@dimen/dimen8dp">
+
+            <View
+                android:id="@+id/status_indicator"
+                android:layout_width="@dimen/dimen14dp"
+                android:layout_height="@dimen/dimen14dp"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
 
             <TextView
                 android:id="@+id/workflow_name"
-                android:layout_width="wrap_content"
+                style="@style/TextAppearance.Material3.TitleMedium"
+                android:layout_width="0dp"
                 android:layout_height="wrap_content"
-                android:textColor="?attr/primaryTextColor"
-                android:textSize="@dimen/dimen16sp"
-                android:textIsSelectable="true" />
+                android:layout_marginStart="@dimen/dimen12dp"
+                android:layout_marginEnd="@dimen/dimen8dp"
+                android:textColor="?attr/colorOnSurface"
+                android:maxLines="1"
+                android:ellipsize="end"
+                app:layout_constraintStart_toEndOf="@id/status_indicator"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintTop_toTopOf="@id/status_indicator"
+                app:layout_constraintBottom_toBottomOf="@id/status_indicator" />
+
+            <LinearLayout
+                android:id="@+id/path_container"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/dimen8dp"
+                android:layout_marginBottom="@dimen/dimen8dp"
+                android:orientation="horizontal"
+                android:gravity="center_vertical"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/workflow_name"
+                tools:ignore="UseCompoundDrawables">
+
+                <ImageView
+                    android:layout_width="@dimen/dimen16dp"
+                    android:layout_height="@dimen/dimen16dp"
+                    android:contentDescription="@string/generalImgContentText"
+                    android:src="@drawable/ic_file"
+                    app:tint="?attr/iconsColor" />
+
+                <TextView
+                    android:id="@+id/workflow_path"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="@dimen/dimen6dp"
+                    android:layout_weight="1"
+                    android:textAppearance="?attr/textAppearanceBodySmall"
+                    android:textColor="?attr/colorOnSurfaceVariant"
+                    android:fontFamily="monospace"
+                    android:maxLines="1"
+                    android:ellipsize="middle" />
+
+            </LinearLayout>
 
             <TextView
-                android:id="@+id/workflow_path"
+                android:id="@+id/workflow_last_run"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:textColor="?attr/primaryTextColor"
-                android:textIsSelectable="true"
-                android:layout_marginTop="@dimen/dimen8dp"
-                android:textSize="@dimen/dimen14sp" />
+                android:layout_marginTop="@dimen/dimen12dp"
+                android:textAppearance="?attr/textAppearanceLabelSmall"
+                android:textColor="?attr/colorOnSurfaceVariant"
+                android:alpha=".8"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/path_container" />
 
-            <TextView
-                android:id="@+id/workflow_state"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:textColor="?attr/primaryTextColor"
-                android:textIsSelectable="true"
-                android:layout_marginTop="@dimen/dimen8dp"
-                android:textSize="@dimen/dimen14sp" />
+        </androidx.constraintlayout.widget.ConstraintLayout>
 
-        </LinearLayout>
+    </com.google.android.material.listitem.ListItemCardView>
 
-    </com.google.android.material.card.MaterialCardView>
-
-</LinearLayout>
+</com.google.android.material.listitem.ListItemLayout>

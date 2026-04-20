@@ -94,6 +94,9 @@ public class RepositoryDetailsViewModel extends ViewModel {
 		return localWatchCount;
 	}
 
+	private Boolean previousStarredState = null;
+	private Boolean previousWatchedState = null;
+
 	public void loadRepositoryDetails(Context ctx, String owner, String name, String branch) {
 		isLoading.setValue(true);
 		fetchRepoLanguages(ctx, owner, name);
@@ -287,20 +290,6 @@ public class RepositoryDetailsViewModel extends ViewModel {
 		if (localWatchCount.getValue() == null) localWatchCount.setValue(watchers);
 	}
 
-	public void updateStarCountLocal(boolean isStarred) {
-		Long current = localStarCount.getValue();
-		if (current != null) {
-			localStarCount.setValue(isStarred ? current + 1 : Math.max(0, current - 1));
-		}
-	}
-
-	public void updateWatchCountLocal(boolean isWatched) {
-		Long current = localWatchCount.getValue();
-		if (current != null) {
-			localWatchCount.setValue(isWatched ? current + 1 : Math.max(0, current - 1));
-		}
-	}
-
 	public void checkRepoStatus(Context ctx, String owner, String name) {
 		RetrofitClient.getApiInterface(ctx)
 				.userCurrentCheckStarring(owner, name)
@@ -309,7 +298,9 @@ public class RepositoryDetailsViewModel extends ViewModel {
 							@Override
 							public void onResponse(
 									@NonNull Call<Void> call, @NonNull Response<Void> response) {
-								isStarred.setValue(response.code() == 204);
+								boolean starred = response.code() == 204;
+								previousStarredState = starred;
+								isStarred.setValue(starred);
 							}
 
 							@Override
@@ -325,8 +316,11 @@ public class RepositoryDetailsViewModel extends ViewModel {
 									@NonNull Call<WatchInfo> call,
 									@NonNull Response<WatchInfo> response) {
 								if (response.isSuccessful() && response.body() != null) {
-									isWatched.setValue(response.body().isSubscribed());
+									boolean watched = response.body().isSubscribed();
+									previousWatchedState = watched;
+									isWatched.setValue(watched);
 								} else {
+									previousWatchedState = false;
 									isWatched.setValue(false);
 								}
 							}
@@ -355,7 +349,13 @@ public class RepositoryDetailsViewModel extends ViewModel {
 							@NonNull Call<Void> call, @NonNull Response<Void> response) {
 						isActionLoading.setValue(false);
 						if (response.isSuccessful() && response.code() == 204) {
-							isStarred.setValue(!currentStatus);
+							boolean newStatus = !currentStatus;
+							if (previousStarredState != null && previousStarredState != newStatus) {
+								updateStarCountLocal(newStatus);
+							}
+
+							previousStarredState = newStatus;
+							isStarred.setValue(newStatus);
 							actionSuccessEvent.setValue(
 									currentStatus
 											? R.string.unStarRepositorySuccess
@@ -388,7 +388,15 @@ public class RepositoryDetailsViewModel extends ViewModel {
 										@NonNull Response<Void> response) {
 									isActionLoading.setValue(false);
 									if (response.code() == 204) {
-										isWatched.setValue(false);
+										boolean newStatus = false;
+
+										if (previousWatchedState != null
+												&& previousWatchedState != newStatus) {
+											updateWatchCountLocal(newStatus);
+										}
+
+										previousWatchedState = newStatus;
+										isWatched.setValue(newStatus);
 										actionSuccessEvent.setValue(
 												R.string.unWatchRepositorySuccess);
 									} else {
@@ -415,7 +423,15 @@ public class RepositoryDetailsViewModel extends ViewModel {
 										@NonNull Response<WatchInfo> response) {
 									isActionLoading.setValue(false);
 									if (response.isSuccessful() && response.code() == 200) {
-										isWatched.setValue(true);
+										boolean newStatus = true;
+
+										if (previousWatchedState != null
+												&& previousWatchedState != newStatus) {
+											updateWatchCountLocal(newStatus);
+										}
+
+										previousWatchedState = newStatus;
+										isWatched.setValue(newStatus);
 										actionSuccessEvent.setValue(
 												R.string.watchRepositorySuccess);
 									} else {
@@ -431,6 +447,20 @@ public class RepositoryDetailsViewModel extends ViewModel {
 											ctx.getString(R.string.genericServerResponseError));
 								}
 							});
+		}
+	}
+
+	private void updateStarCountLocal(boolean isNowStarred) {
+		Long current = localStarCount.getValue();
+		if (current != null) {
+			localStarCount.setValue(isNowStarred ? current + 1 : Math.max(0, current - 1));
+		}
+	}
+
+	private void updateWatchCountLocal(boolean isNowWatched) {
+		Long current = localWatchCount.getValue();
+		if (current != null) {
+			localWatchCount.setValue(isNowWatched ? current + 1 : Math.max(0, current - 1));
 		}
 	}
 

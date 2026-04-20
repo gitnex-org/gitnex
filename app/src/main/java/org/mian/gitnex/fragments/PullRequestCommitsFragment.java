@@ -51,8 +51,8 @@ public class PullRequestCommitsFragment extends Fragment {
 	@Override
 	public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
 		super.onViewCreated(view, savedInstanceState);
-
-		UIHelper.applyInsets(view, null, binding.recyclerView, null, null);
+		View dock = requireActivity().findViewById(R.id.docked_toolbar);
+		UIHelper.applyInsets(view, dock, binding.recyclerView, null, null);
 	}
 
 	@Override

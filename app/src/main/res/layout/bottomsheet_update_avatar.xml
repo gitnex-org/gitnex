@@ -14,7 +14,7 @@
         android:id="@+id/header_layout"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginHorizontal="@dimen/dimen24dp"
+        android:layout_marginHorizontal="@dimen/dimen16dp"
         app:layout_constraintTop_toBottomOf="@id/drag_handle">
 
         <TextView
@@ -45,7 +45,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         app:layout_constrainedHeight="true"
-        android:paddingHorizontal="@dimen/dimen24dp"
+        android:paddingHorizontal="@dimen/dimen16dp"
         android:paddingBottom="@dimen/dimen32dp"
         android:layout_marginTop="@dimen/dimen16dp"
         android:clipToPadding="false"

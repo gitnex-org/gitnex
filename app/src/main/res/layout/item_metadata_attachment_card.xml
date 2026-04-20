@@ -1,0 +1,91 @@
+<com.google.android.material.card.MaterialCardView android:id="@+id/card_attachments"
+    style="@style/Widget.Material3.CardView.Elevated"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_marginTop="@dimen/dimen16dp"
+    app:cardBackgroundColor="?attr/materialCardBackgroundColor"
+    app:cardElevation="@dimen/dimen0dp"
+    app:shapeAppearance="@style/ShapeAppearance.Material3.Corner.Medium"
+    app:strokeWidth="@dimen/dimen0dp"
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:paddingHorizontal="@dimen/dimen16dp">
+
+        <ImageView
+            android:id="@+id/attachment_header_icon"
+            android:layout_width="@dimen/dimen20dp"
+            android:layout_height="@dimen/dimen20dp"
+            android:contentDescription="@string/attachments"
+            android:src="@drawable/ic_attachment"
+            android:layout_marginTop="@dimen/dimen16dp"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintBottom_toBottomOf="@id/attachment_header_title"
+            app:tint="?attr/iconsColor" />
+
+        <TextView
+            android:id="@+id/attachment_header_title"
+            style="@style/TextAppearance.Material3.LabelLarge"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="@dimen/dimen12dp"
+            android:layout_marginTop="@dimen/dimen16dp"
+            android:text="@string/attachments"
+            app:layout_constraintStart_toEndOf="@id/attachment_header_icon"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <TextView
+            android:id="@+id/attachment_count"
+            style="@style/TextAppearance.Material3.LabelMedium"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="@dimen/dimen4dp"
+            android:layout_marginTop="@dimen/dimen16dp"
+            android:textColor="?attr/colorOnSurfaceVariant"
+            app:layout_constraintStart_toEndOf="@id/attachment_header_title"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintBottom_toBottomOf="@id/attachment_header_title" />
+
+        <com.google.android.material.button.MaterialButton
+            android:id="@+id/btn_add_attachment"
+            style="@style/Widget.Material3.Button.TextButton"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/dimen16dp"
+            android:text="@string/addButton"
+            android:textAllCaps="false"
+            app:iconSize="@dimen/dimen20dp"
+            app:icon="@drawable/ic_add"
+            app:iconGravity="textStart"
+            app:iconPadding="@dimen/dimen0dp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintBottom_toBottomOf="@id/attachment_header_title" />
+
+        <TextView
+            android:id="@+id/attachment_empty_state"
+            style="@style/TextAppearance.Material3.BodyMedium"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:paddingVertical="@dimen/dimen16dp"
+            android:gravity="center"
+            android:text="@string/no_attachments"
+            android:textColor="?attr/colorOnSurfaceVariant"
+            app:layout_constraintTop_toBottomOf="@id/attachment_header_icon" />
+
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/attachments_recycler_view"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:paddingVertical="@dimen/dimen12dp"
+            android:nestedScrollingEnabled="false"
+            android:visibility="gone"
+            app:layout_constraintTop_toBottomOf="@id/attachment_header_icon" />
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+</com.google.android.material.card.MaterialCardView>

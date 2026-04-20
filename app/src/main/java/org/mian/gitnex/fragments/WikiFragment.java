@@ -1,6 +1,8 @@
 package org.mian.gitnex.fragments;
 
-import android.content.Intent;
+import static android.view.View.GONE;
+import static android.view.View.VISIBLE;
+
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -18,10 +20,10 @@ import java.util.List;
 import org.gitnex.tea4j.v2.models.WikiPageMetaData;
 import org.mian.gitnex.R;
 import org.mian.gitnex.activities.RepoDetailActivity;
-import org.mian.gitnex.activities.WikiActivity;
 import org.mian.gitnex.adapters.WikiListAdapter;
 import org.mian.gitnex.databinding.BottomsheetWikiItemMenuBinding;
 import org.mian.gitnex.databinding.FragmentWikiBinding;
+import org.mian.gitnex.helpers.AlertDialogs;
 import org.mian.gitnex.helpers.AppUtil;
 import org.mian.gitnex.helpers.Constants;
 import org.mian.gitnex.helpers.EndlessRecyclerViewScrollListener;
@@ -43,6 +45,8 @@ public class WikiFragment extends Fragment implements RepoDetailActivity.RepoHub
 	private RepositoryContext repository;
 	private int resultLimit;
 	private boolean isFirstLoad = true;
+	private String pendingPageName = null;
+	private boolean isPendingEdit = false;
 
 	public static WikiFragment newInstance(RepositoryContext repository) {
 		WikiFragment fragment = new WikiFragment();
@@ -53,7 +57,8 @@ public class WikiFragment extends Fragment implements RepoDetailActivity.RepoHub
 	@Override
 	public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
 		super.onViewCreated(view, savedInstanceState);
-		UIHelper.applyInsets(view, null, binding.recyclerView, binding.pullToRefresh, null);
+		View dock = requireActivity().findViewById(R.id.docked_toolbar);
+		UIHelper.applyInsets(view, dock, binding.recyclerView, binding.pullToRefresh, null);
 	}
 
 	@Override
@@ -69,7 +74,7 @@ public class WikiFragment extends Fragment implements RepoDetailActivity.RepoHub
 			@Nullable Bundle savedInstanceState) {
 		binding = FragmentWikiBinding.inflate(inflater, container, false);
 
-		viewModel = new ViewModelProvider(this).get(WikiViewModel.class);
+		viewModel = new ViewModelProvider(requireActivity()).get(WikiViewModel.class);
 		resultLimit = Constants.getCurrentResultLimit(requireContext());
 
 		setupRecyclerView();
@@ -99,10 +104,8 @@ public class WikiFragment extends Fragment implements RepoDetailActivity.RepoHub
 	@Override
 	public void onHubActionSelected(String actionId) {
 		if (actionId.equals("WIKI_ADD_NEW")) {
-			Intent intent = new Intent(getContext(), WikiActivity.class);
-			intent.putExtra("action", "add");
-			intent.putExtra(RepositoryContext.INTENT_EXTRA, repository);
-			startActivity(intent);
+			BottomSheetCreateWiki.newInstance(repository, null)
+					.show(getParentFragmentManager(), "CREATE_WIKI");
 		}
 	}
 
@@ -184,10 +187,18 @@ public class WikiFragment extends Fragment implements RepoDetailActivity.RepoHub
 				.observe(
 						getViewLifecycleOwner(),
 						code -> {
+							if (code == null || code == -1) return;
+
 							if (code == 204) {
 								Toasty.show(requireContext(), R.string.wikiPageDeleted);
-								viewModel.resetActionResult();
+								refreshData();
+							} else if (code == 200 || code == 201) {
+								refreshData();
+							} else {
+								Toasty.show(requireContext(), R.string.genericError);
 							}
+
+							viewModel.resetActionResult();
 						});
 
 		viewModel
@@ -197,14 +208,84 @@ public class WikiFragment extends Fragment implements RepoDetailActivity.RepoHub
 						err -> {
 							if (err != null) Toasty.show(requireContext(), err);
 						});
+
+		viewModel
+				.getIsLoadingPage()
+				.observe(
+						getViewLifecycleOwner(),
+						isLoading -> {
+							binding.expressiveLoader.setVisibility(VISIBLE);
+						});
+
+		viewModel
+				.getPageContent()
+				.observe(
+						getViewLifecycleOwner(),
+						wikiPage -> {
+							if (wikiPage != null && pendingPageName != null) {
+								if (isPendingEdit) {
+									BottomSheetCreateWiki.newInstance(repository, wikiPage)
+											.show(getParentFragmentManager(), "EDIT_WIKI");
+								} else {
+									String decodedContent =
+											AppUtil.decodeBase64(wikiPage.getContentBase64());
+									showContentViewer(wikiPage.getTitle(), decodedContent);
+								}
+								pendingPageName = null;
+								viewModel.clearPageContent();
+								binding.expressiveLoader.setVisibility(GONE);
+							}
+						});
+
+		viewModel
+				.getPageError()
+				.observe(
+						getViewLifecycleOwner(),
+						error -> {
+							if (error != null && !error.isEmpty()) {
+								if (error.equals("UNAUTHORIZED")) {
+									AlertDialogs.authorizationTokenRevokedDialog(requireContext());
+								} else {
+									Toasty.show(requireContext(), error);
+								}
+								pendingPageName = null;
+								viewModel.clearPageError();
+							}
+						});
 	}
 
 	private void openWiki(WikiPageMetaData wikiPage, String action) {
-		Intent intent = new Intent(requireContext(), WikiActivity.class);
-		intent.putExtra("pageName", wikiPage.getTitle());
-		if (action != null) intent.putExtra("action", action);
-		intent.putExtra(RepositoryContext.INTENT_EXTRA, repository);
-		startActivity(intent);
+		if (action != null && action.equals("edit")) {
+			pendingPageName = wikiPage.getSubUrl();
+			isPendingEdit = true;
+			viewModel.fetchWikiPageContent(
+					requireContext(),
+					repository.getOwner(),
+					repository.getName(),
+					wikiPage.getSubUrl());
+		} else {
+			pendingPageName = wikiPage.getTitle();
+			isPendingEdit = false;
+			viewModel.fetchWikiPageContent(
+					requireContext(),
+					repository.getOwner(),
+					repository.getName(),
+					wikiPage.getSubUrl());
+		}
+	}
+
+	private void showContentViewer(String title, String content) {
+		BottomSheetContentViewer.newInstance(
+						content,
+						title,
+						repository,
+						null,
+						BottomSheetContentViewer.Feature.ALLOW_COPY,
+						BottomSheetContentViewer.Feature.ALLOW_SHARE,
+						BottomSheetContentViewer.Feature.MARKDOWN_PREVIEW,
+						BottomSheetContentViewer.Feature.START_IN_MARKDOWN,
+						BottomSheetContentViewer.Feature.SHOW_TITLE)
+				.show(getParentFragmentManager(), "WIKI_VIEWER");
 	}
 
 	private void showDeleteDialog(WikiPageMetaData wikiPage) {
@@ -219,7 +300,7 @@ public class WikiFragment extends Fragment implements RepoDetailActivity.RepoHub
 									requireContext(),
 									repository.getOwner(),
 									repository.getName(),
-									wikiPage.getTitle());
+									wikiPage.getSubUrl());
 						})
 				.setNegativeButton(R.string.cancelButton, null)
 				.show();
@@ -253,14 +334,12 @@ public class WikiFragment extends Fragment implements RepoDetailActivity.RepoHub
 		boolean hasData = adapter != null && adapter.getItemCount() > 0;
 		boolean hasLoadedOnce = Boolean.TRUE.equals(viewModel.getHasLoadedOnce().getValue());
 
-		binding.expressiveLoader.setVisibility(isLoading && !hasData ? View.VISIBLE : View.GONE);
+		binding.expressiveLoader.setVisibility(isLoading && !hasData ? VISIBLE : GONE);
 
 		if (isLoading) {
-			binding.layoutEmpty.getRoot().setVisibility(View.GONE);
+			binding.layoutEmpty.getRoot().setVisibility(GONE);
 		} else {
-			binding.layoutEmpty
-					.getRoot()
-					.setVisibility(!hasData && hasLoadedOnce ? View.VISIBLE : View.GONE);
+			binding.layoutEmpty.getRoot().setVisibility(!hasData && hasLoadedOnce ? VISIBLE : GONE);
 		}
 	}
 

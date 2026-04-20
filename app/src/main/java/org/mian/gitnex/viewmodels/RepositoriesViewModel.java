@@ -48,6 +48,8 @@ public class RepositoriesViewModel extends ViewModel {
 	private final MutableLiveData<String> errorAction = new MutableLiveData<>();
 	private final MutableLiveData<List<String>> issueLabels =
 			new MutableLiveData<>(new ArrayList<>());
+	private final MutableLiveData<List<Repository>> searchResults =
+			new MutableLiveData<>(new ArrayList<>());
 
 	private int totalCount = -1;
 	private boolean isLastPage = false;
@@ -102,6 +104,10 @@ public class RepositoriesViewModel extends ViewModel {
 
 	public LiveData<List<String>> getIssueLabels() {
 		return issueLabels;
+	}
+
+	public LiveData<List<Repository>> getSearchResults() {
+		return searchResults;
 	}
 
 	public void fetchRepos(
@@ -211,17 +217,26 @@ public class RepositoriesViewModel extends ViewModel {
 		}
 	}
 
-	public void searchExploreRepos(
+	public void searchRepos(
 			Context ctx,
 			String query,
-			boolean includeTopic,
-			boolean includeDesc,
-			boolean includeTemplate,
-			boolean onlyArchived,
+			Boolean includeTopic,
+			Boolean includeDesc,
+			Long uid,
+			Long priorityOwnerId,
+			Long teamId,
+			Long starredBy,
+			Boolean includePrivate,
+			Boolean isPrivate,
+			Boolean includeTemplate,
+			Boolean onlyArchived,
+			String mode,
+			Boolean exclusive,
+			String currentSort,
+			String order,
 			int page,
 			int limit,
-			String currentSort,
-			boolean isRefresh) {
+			Boolean isRefresh) {
 
 		if (Boolean.TRUE.equals(isLoading.getValue())) return;
 		if (!isRefresh && isLastPage) return;
@@ -234,18 +249,18 @@ public class RepositoriesViewModel extends ViewModel {
 								query,
 								includeTopic,
 								includeDesc,
-								null,
-								null,
-								null,
-								null,
-								true,
-								null,
+								uid,
+								priorityOwnerId,
+								teamId,
+								starredBy,
+								includePrivate,
+								isPrivate,
 								includeTemplate,
 								onlyArchived,
-								null,
-								null,
+								mode,
+								exclusive,
 								currentSort,
-								"desc",
+								order,
 								page,
 								limit);
 
@@ -271,22 +286,29 @@ public class RepositoriesViewModel extends ViewModel {
 	private void handleSearchResponse(
 			Response<SearchResults> response, boolean isRefresh, int limit) {
 		isLoading.setValue(false);
+
 		if (response.isSuccessful() && response.body() != null) {
-			List<Repository> newRepos = response.body().getData();
+			SearchResults results = response.body();
+			List<Repository> repos =
+					results.getData() != null ? results.getData() : new ArrayList<>();
+
+			String totalHeader = response.headers().get("x-total-count");
+			if (totalHeader != null) {
+				totalCount = Integer.parseInt(totalHeader);
+			}
 
 			List<Repository> currentList =
 					isRefresh
 							? new ArrayList<>()
-							: new ArrayList<>(Objects.requireNonNull(repos.getValue()));
+							: new ArrayList<>(Objects.requireNonNull(searchResults.getValue()));
+			currentList.addAll(repos);
+			searchResults.setValue(currentList);
 
-			currentList.addAll(newRepos);
-			repos.setValue(currentList);
-
-			if (newRepos.size() < limit) {
-				isLastPage = true;
-			}
+			isLastPage =
+					repos.size() < limit || (totalCount != -1 && currentList.size() >= totalCount);
 		} else {
-			errorMessage.setValue("Error: " + response.code());
+			if (isRefresh) searchResults.setValue(new ArrayList<>());
+			errorMessage.setValue("API error: " + response.code());
 		}
 	}
 

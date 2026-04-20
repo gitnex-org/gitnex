@@ -2,6 +2,7 @@ package org.mian.gitnex.helpers;
 
 import android.content.Context;
 import android.text.Editable;
+import android.text.Layout;
 import android.text.TextWatcher;
 import android.util.Log;
 import android.view.Gravity;
@@ -77,6 +78,13 @@ public class MentionHelper {
 		mentionPopup.setBackgroundDrawable(
 				ContextCompat.getDrawable(context, R.drawable.shape_round_corners));
 		mentionPopup.setElevation(8f);
+
+		editText.setOnScrollChangeListener(
+				(v, scrollX, scrollY, oldScrollX, oldScrollY) -> {
+					if (mentionPopup.isShowing()) {
+						dismissPopup();
+					}
+				});
 	}
 
 	public void setup() {
@@ -201,22 +209,55 @@ public class MentionHelper {
 	}
 
 	private void showMentionPopup() {
-
 		int[] location = new int[2];
 		editText.getLocationOnScreen(location);
-		int x = location[0];
-		int y = location[1] - 24;
 
-		int popupWidth = editText.getWidth();
-		int popupHeight = calculatePopupHeight();
+		int cursorPos = editText.getSelectionStart();
+		Layout layout = editText.getLayout();
 
-		if (mentionPopup.isShowing()) {
-			mentionPopup.dismiss();
+		if (layout != null && cursorPos >= 0) {
+			int line = layout.getLineForOffset(cursorPos);
+			int lineTop = layout.getLineTop(line);
+			int lineBottom = layout.getLineBottom(line);
+
+			int cursorY = location[1] + lineBottom + editText.getPaddingTop();
+			int screenHeight = context.getResources().getDisplayMetrics().heightPixels;
+			int popupHeight = calculatePopupHeight();
+
+			int popupY;
+			if (cursorY + popupHeight > screenHeight - 100) {
+				popupY = location[1] + lineTop + editText.getPaddingTop() - popupHeight;
+			} else {
+				popupY = cursorY;
+			}
+
+			int popupWidth =
+					editText.getWidth() - editText.getPaddingLeft() - editText.getPaddingRight();
+			int popupX = location[0] + editText.getPaddingLeft();
+
+			if (mentionPopup.isShowing()) {
+				mentionPopup.dismiss();
+			}
+
+			mentionPopup.setWidth(popupWidth);
+			mentionPopup.setHeight(popupHeight);
+			mentionPopup.showAtLocation(editText, Gravity.NO_GRAVITY, popupX, popupY);
+		} else {
+			int x = location[0] + editText.getPaddingLeft();
+			int y = location[1] - 24;
+
+			int popupWidth =
+					editText.getWidth() - editText.getPaddingLeft() - editText.getPaddingRight();
+			int popupHeight = calculatePopupHeight();
+
+			if (mentionPopup.isShowing()) {
+				mentionPopup.dismiss();
+			}
+
+			mentionPopup.setWidth(popupWidth);
+			mentionPopup.setHeight(popupHeight);
+			mentionPopup.showAtLocation(editText, Gravity.NO_GRAVITY, x, y - popupHeight);
 		}
-
-		mentionPopup.setWidth(popupWidth);
-		mentionPopup.setHeight(popupHeight);
-		mentionPopup.showAtLocation(editText, Gravity.NO_GRAVITY, x, y - popupHeight);
 	}
 
 	private int calculatePopupHeight() {

@@ -36,7 +36,7 @@
             android:ellipsize="end"
             android:gravity="center"
             android:maxLines="1"
-            android:paddingHorizontal="@dimen/dimen6dp" />
+            android:paddingHorizontal="@dimen/dimen8dp" />
 
     </LinearLayout>
 
