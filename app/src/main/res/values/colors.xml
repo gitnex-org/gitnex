@@ -30,6 +30,7 @@
     <color name="warningColor">#dbb109</color>
     <color name="colorSecondaryContainer">#2A322E</color>
     <color name="cardBackground">#1e2221</color>
+    <color name="reaction_selected_overlay">#334CAF50</color>
 
     <color name="lightThemeDiffRemovedColor">#FCEDED</color>
     <color name="lightThemeDiffAddedColor">#EAF8ED</color>

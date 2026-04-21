@@ -30,7 +30,6 @@ import org.mian.gitnex.helpers.AvatarGenerator;
 import org.mian.gitnex.helpers.Markdown;
 import org.mian.gitnex.helpers.TimeHelper;
 import org.mian.gitnex.helpers.Toasty;
-import org.mian.gitnex.helpers.contexts.RepositoryContext;
 
 /**
  * @author mmarif
@@ -39,13 +38,19 @@ public class MyPullRequestsAdapter extends RecyclerView.Adapter<MyPullRequestsAd
 
 	private final Context context;
 	private List<Issue> prList;
-	private final RepositoryContext repositoryContext;
+	private OnPrClickListener clickListener;
 
-	public MyPullRequestsAdapter(
-			Context context, List<Issue> prList, RepositoryContext repositoryContext) {
+	public interface OnPrClickListener {
+		void onPrClick(Issue issue);
+	}
+
+	public void setOnPrClickListener(OnPrClickListener listener) {
+		this.clickListener = listener;
+	}
+
+	public MyPullRequestsAdapter(Context context, List<Issue> prList) {
 		this.context = context;
 		this.prList = prList;
-		this.repositoryContext = repositoryContext;
 	}
 
 	@NonNull @Override
@@ -81,13 +86,10 @@ public class MyPullRequestsAdapter extends RecyclerView.Adapter<MyPullRequestsAd
 
 			View.OnClickListener openPr =
 					v -> {
-						if (issue != null && issue.getPullRequest() != null) {
-							// IssueContext issueContext = new IssueContext(issue,
-							// repositoryContext);
-							// Intent intent = issueContext.getIntent(context,
-							// IssueDetailActivity.class);
-							// context.startActivity(intent);
-							Toasty.show(context, "WIP");
+						if (clickListener != null
+								&& issue != null
+								&& issue.getRepository() != null) {
+							clickListener.onPrClick(issue);
 						}
 					};
 

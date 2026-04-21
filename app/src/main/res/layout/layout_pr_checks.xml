@@ -1,0 +1,76 @@
+<?xml version="1.0" encoding="utf-8"?>
+<com.google.android.material.card.MaterialCardView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    style="@style/Widget.Material3.CardView.Elevated"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_marginHorizontal="@dimen/dimen16dp"
+    android:layout_marginTop="@dimen/dimen16dp"
+    app:cardBackgroundColor="?attr/materialCardBackgroundColor"
+    app:cardElevation="@dimen/dimen0dp"
+    app:shapeAppearance="@style/ShapeAppearance.Material3.Corner.Large"
+    app:strokeWidth="@dimen/dimen0dp">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:padding="@dimen/dimen16dp"
+        android:orientation="vertical">
+
+        <LinearLayout
+            android:id="@+id/checksHeader"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="?attr/selectableItemBackground"
+            android:clickable="true"
+            android:focusable="true"
+            android:gravity="center_vertical"
+            android:orientation="horizontal"
+            android:padding="@dimen/dimen16dp">
+
+            <TextView
+                android:id="@+id/checksSummary"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:textAppearance="?attr/textAppearanceBodyLarge"
+                android:textColor="?attr/colorOnSurface"
+                tools:text="✅ 3/3 checks passed" />
+
+            <ImageView
+                android:id="@+id/checksExpandIcon"
+                android:layout_width="@dimen/dimen20dp"
+                android:layout_height="@dimen/dimen20dp"
+                android:contentDescription="@string/generalImgContentText"
+                android:src="@drawable/ic_chevron_down"
+                app:tint="?attr/colorOnSurfaceVariant" />
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:id="@+id/checksContent"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:paddingHorizontal="@dimen/dimen16dp"
+            android:paddingBottom="@dimen/dimen16dp"
+            android:visibility="gone">
+
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/dimen1dp"
+                android:layout_marginBottom="@dimen/dimen12dp"
+                android:background="?attr/colorOutlineVariant" />
+
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/checksList"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:nestedScrollingEnabled="false" />
+
+        </LinearLayout>
+
+    </LinearLayout>
+
+</com.google.android.material.card.MaterialCardView>

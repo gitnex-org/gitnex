@@ -1,5 +1,6 @@
 package org.mian.gitnex.activities;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -19,7 +20,6 @@ import org.mian.gitnex.helpers.Constants;
 import org.mian.gitnex.helpers.EndlessRecyclerViewScrollListener;
 import org.mian.gitnex.helpers.Toasty;
 import org.mian.gitnex.helpers.UIHelper;
-import org.mian.gitnex.helpers.contexts.RepositoryContext;
 import org.mian.gitnex.viewmodels.PullRequestsViewModel;
 
 /**
@@ -62,9 +62,15 @@ public class MyPullRequestsActivity extends BaseActivity {
 		binding.btnBack.setOnClickListener(v -> finish());
 		binding.btnSearch.setOnClickListener(v -> showFilterBottomSheet());
 
-		adapter =
-				new MyPullRequestsAdapter(
-						this, new ArrayList<>(), new RepositoryContext(null, null, this));
+		adapter = new MyPullRequestsAdapter(this, new ArrayList<>());
+		adapter.setOnPrClickListener(
+				issue -> {
+					Intent intent = new Intent(this, PullRequestDetailsActivity.class);
+					intent.putExtra("source", "my_prs_activity");
+					intent.putExtra("prIssue", issue);
+					startActivity(intent);
+				});
+
 		LinearLayoutManager layoutManager = new LinearLayoutManager(this);
 		binding.recyclerView.setLayoutManager(layoutManager);
 		binding.recyclerView.setAdapter(adapter);

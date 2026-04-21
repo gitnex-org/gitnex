@@ -1,5 +1,6 @@
 package org.mian.gitnex.fragments;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.text.Editable;
 import android.text.TextWatcher;
@@ -17,6 +18,7 @@ import java.util.ArrayList;
 import java.util.List;
 import org.gitnex.tea4j.v2.models.PullRequest;
 import org.mian.gitnex.R;
+import org.mian.gitnex.activities.PullRequestDetailsActivity;
 import org.mian.gitnex.activities.RepoDetailActivity;
 import org.mian.gitnex.adapters.PullRequestsAdapter;
 import org.mian.gitnex.databinding.FragmentPullRequestsBinding;
@@ -166,6 +168,14 @@ public class PullRequestsFragment extends Fragment implements RepoDetailActivity
 
 	private void setupAdapters() {
 		adapter = new PullRequestsAdapter(requireContext(), new ArrayList<>());
+		adapter.setOnPrClickListener(
+				pullRequest -> {
+					Intent intent = new Intent(requireContext(), PullRequestDetailsActivity.class);
+					intent.putExtra("source", "pr_repo_fragment");
+					intent.putExtra("prObject", pullRequest);
+					startActivity(intent);
+				});
+
 		LinearLayoutManager layoutManager = new LinearLayoutManager(requireContext());
 		binding.recyclerView.setLayoutManager(layoutManager);
 		binding.recyclerView.setHasFixedSize(true);

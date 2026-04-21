@@ -153,6 +153,10 @@
             android:name=".activities.MyPullRequestsActivity"
             android:configChanges="orientation|screenSize|smallestScreenSize|density|screenLayout|keyboard|keyboardHidden|navigation"
             android:windowSoftInputMode="adjustResize"/>
+        <activity
+            android:name=".activities.PullRequestDetailsActivity"
+            android:configChanges="orientation|screenSize|smallestScreenSize|density|screenLayout|keyboard|keyboardHidden|navigation"
+            android:windowSoftInputMode="adjustResize"/>
 
         <meta-data
             android:name="com.samsung.android.keepalive.density"

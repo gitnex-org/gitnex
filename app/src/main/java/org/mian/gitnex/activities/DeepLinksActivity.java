@@ -369,6 +369,7 @@ public class DeepLinksActivity extends BaseActivity {
 		Call<PullRequest> call =
 				RetrofitClient.getApiInterface(ctx)
 						.repoGetPullRequest(repoOwner, repoName, (long) index);
+
 		call.enqueue(
 				new Callback<>() {
 					@Override
@@ -376,15 +377,18 @@ public class DeepLinksActivity extends BaseActivity {
 							@NonNull Call<PullRequest> call,
 							@NonNull Response<PullRequest> response) {
 						if (response.isSuccessful() && response.body() != null) {
-							PullRequest prInfo = response.body();
-							issueIntent.putExtra("openedFromLink", "true");
 							IssueContext issue =
 									new IssueContext(
-											prInfo,
+											response.body(),
 											new RepositoryContext(repoOwner, repoName, ctx));
 							issue.getRepository().saveToDB(ctx);
-							issueIntent.putExtra(IssueContext.INTENT_EXTRA, issue);
-							startActivity(issueIntent);
+
+							Intent intent = new Intent(ctx, PullRequestDetailsActivity.class);
+							intent.putExtra("owner", repoOwner);
+							intent.putExtra("repo", repoName);
+							intent.putExtra("prNumber", index);
+							intent.putExtra("openedFromLink", true);
+							startActivity(intent);
 							finish();
 						} else {
 							startActivity(mainIntent);

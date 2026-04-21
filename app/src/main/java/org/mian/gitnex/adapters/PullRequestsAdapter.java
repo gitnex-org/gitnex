@@ -20,19 +20,14 @@ import java.util.List;
 import java.util.Locale;
 import org.gitnex.tea4j.v2.models.PullRequest;
 import org.mian.gitnex.R;
-import org.mian.gitnex.activities.IssueDetailActivity;
 import org.mian.gitnex.activities.ProfileActivity;
-import org.mian.gitnex.activities.RepoDetailActivity;
 import org.mian.gitnex.databinding.ListPrBinding;
-import org.mian.gitnex.fragments.BottomSheetCreatePullRequest;
 import org.mian.gitnex.helpers.AppDatabaseSettings;
 import org.mian.gitnex.helpers.AppUtil;
 import org.mian.gitnex.helpers.AvatarGenerator;
 import org.mian.gitnex.helpers.Markdown;
 import org.mian.gitnex.helpers.TimeHelper;
 import org.mian.gitnex.helpers.Toasty;
-import org.mian.gitnex.helpers.contexts.IssueContext;
-import org.mian.gitnex.helpers.contexts.RepositoryContext;
 
 /**
  * @author mmarif
@@ -42,6 +37,15 @@ public class PullRequestsAdapter
 
 	private final Context context;
 	private List<PullRequest> prList;
+	private OnPrClickListener clickListener;
+
+	public interface OnPrClickListener {
+		void onPrClick(PullRequest pullRequest);
+	}
+
+	public void setOnPrClickListener(OnPrClickListener listener) {
+		this.clickListener = listener;
+	}
 
 	public PullRequestsAdapter(Context context, List<PullRequest> prListMain) {
 		this.context = context;
@@ -85,13 +89,11 @@ public class PullRequestsAdapter
 
 			View.OnClickListener openPr =
 					v -> {
-						if (context instanceof RepoDetailActivity) {
-							Intent intent =
-									new IssueContext(
-													prObject,
-													((RepoDetailActivity) context).repository)
-											.getIntent(context, IssueDetailActivity.class);
-							context.startActivity(intent);
+						if (clickListener != null
+								&& prObject != null
+								&& prObject.getBase() != null
+								&& prObject.getBase().getRepo() != null) {
+							clickListener.onPrClick(prObject);
 						}
 					};
 
@@ -147,20 +149,6 @@ public class PullRequestsAdapter
 			} else {
 				binding.mergedBadge.setVisibility(View.GONE);
 			}
-
-			// TEMPORARY: remove later once PR edit is implemented
-			binding.prNumber.setOnClickListener(
-					v -> {
-						if (context instanceof RepoDetailActivity) {
-							RepositoryContext repository =
-									((RepoDetailActivity) context).repository;
-							BottomSheetCreatePullRequest.newInstance(repository, pr)
-									.show(
-											((RepoDetailActivity) context)
-													.getSupportFragmentManager(),
-											"EDIT_PULL_REQUEST");
-						}
-					});
 
 			binding.userName.setText(pr.getUser().getLogin());
 			binding.repoFullName.setText(pr.getBase().getRepo().getFullName());

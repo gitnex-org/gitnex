@@ -147,7 +147,7 @@ public class LoginActivity extends BaseActivity {
 			activityLoginBinding.restoreFromBackup.setVisibility(View.VISIBLE);
 		}
 
-		activityLoginBinding.setupProxyAuth.setOnClickListener(view -> showProxyAuthDialog());
+		activityLoginBinding.setupProxyAuth.setOnClickListener(view -> showProxyAuthSheet());
 
 		NetworkStatusObserver networkStatusObserver = NetworkStatusObserver.getInstance(ctx);
 
@@ -203,7 +203,7 @@ public class LoginActivity extends BaseActivity {
 			disableProcessButton();
 		}
 
-		activityLoginBinding.tokenHelper.setOnClickListener(token -> showTokenHelpDialog());
+		activityLoginBinding.tokenHelper.setOnClickListener(token -> showTokenHelpSheet());
 
 		networkStatusObserver.registerNetworkStatusListener(
 				hasNetworkConnection ->
@@ -247,7 +247,7 @@ public class LoginActivity extends BaseActivity {
 				});
 	}
 
-	private void showProxyAuthDialog() {
+	private void showProxyAuthSheet() {
 		ProxyAuthSheet sheet = ProxyAuthSheet.newInstance(proxyAuthUsername, proxyAuthPassword);
 		sheet.setCallback(
 				(username, password) -> {
@@ -341,7 +341,7 @@ public class LoginActivity extends BaseActivity {
 		}
 	}
 
-	private void showTokenHelpDialog() {
+	private void showTokenHelpSheet() {
 		TokenHelpSheet sheet = new TokenHelpSheet();
 		sheet.show(getSupportFragmentManager(), "TokenHelpSheet");
 	}

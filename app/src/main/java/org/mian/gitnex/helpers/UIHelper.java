@@ -2,7 +2,6 @@ package org.mian.gitnex.helpers;
 
 import android.content.Context;
 import android.view.View;
-import android.view.ViewTreeObserver;
 import androidx.activity.ComponentActivity;
 import androidx.activity.EdgeToEdge;
 import androidx.coordinatorlayout.widget.CoordinatorLayout;
@@ -49,9 +48,10 @@ public class UIHelper {
 
 		final Context context = rootView.getContext();
 		final int extraMargin = (int) context.getResources().getDimension(DIMEN_EXTRA_MARGIN);
-		final int baseBottomPadding =
-				(int) context.getResources().getDimension(DIMEN_DOCK_CLEARANCE);
 		final int pullDistance = (int) context.getResources().getDimension(DIMEN_PULL_DISTANCE);
+
+		final int staticBottomClearance =
+				(int) (72 * context.getResources().getDisplayMetrics().density);
 
 		ViewCompat.setOnApplyWindowInsetsListener(
 				rootView,
@@ -66,6 +66,8 @@ public class UIHelper {
 									? (systemBars.top + extraMargin)
 									: (scrollableView != null ? scrollableView.getPaddingTop() : 0);
 
+					int bottomP = systemBars.bottom + staticBottomClearance;
+
 					if (headerView != null) {
 						headerView.setPadding(
 								headerView.getPaddingLeft(),
@@ -75,96 +77,26 @@ public class UIHelper {
 					}
 
 					if (scrollableView != null) {
-						if (scrollableView
-								instanceof
-								androidx.core.widget.NestedScrollView nsv) { // NestedScrollView
-							runWhenMeasured(
-									dockedToolbar,
-									() ->
-											nsv.post(
-													() -> {
-														if (nsv.getChildCount() > 0) {
-															View child = nsv.getChildAt(0);
+						if (scrollableView instanceof android.view.ViewGroup group) {
+							group.setClipToPadding(false);
+						}
 
-															int dockHeight =
-																	(dockedToolbar != null)
-																			? dockedToolbar
-																					.getHeight()
-																			: 0;
-
-															int dynamicBottom =
-																	systemBars.bottom
-																			+ baseBottomPadding
-																			+ dockHeight;
-
-															nsv.setPadding(
-																	nsv.getPaddingLeft(),
-																	topP,
-																	nsv.getPaddingRight(),
-																	0);
-
-															nsv.setClipToPadding(false);
-
-															child.setPadding(
-																	child.getPaddingLeft(),
-																	child.getPaddingTop(),
-																	child.getPaddingRight(),
-																	dynamicBottom);
-														}
-													}));
-
-						} else if (scrollableView
-								instanceof
-								androidx.recyclerview.widget.RecyclerView rv) { // RecyclerView
-							runWhenMeasured(
-									dockedToolbar,
-									() ->
-											rv.post(
-													() -> {
-														boolean canScroll =
-																rv.canScrollVertically(1);
-
-														int dynamicBottom =
-																systemBars.bottom
-																		+ baseBottomPadding
-																		+ (canScroll
-																				? 0
-																				: getDockHeight(
-																						dockedToolbar));
-
-														rv.setPadding(
-																rv.getPaddingLeft(),
-																topP,
-																rv.getPaddingRight(),
-																dynamicBottom);
-
-														rv.setClipToPadding(false);
-													}));
-
-						} else { // Fallback
-							runWhenMeasured(
-									dockedToolbar,
-									() ->
-											scrollableView.post(
-													() -> {
-														boolean canScroll =
-																scrollableView.canScrollVertically(
-																		1);
-
-														int dynamicBottom =
-																systemBars.bottom
-																		+ baseBottomPadding
-																		+ (canScroll
-																				? 0
-																				: getDockHeight(
-																						dockedToolbar));
-
-														scrollableView.setPadding(
-																scrollableView.getPaddingLeft(),
-																topP,
-																scrollableView.getPaddingRight(),
-																dynamicBottom);
-													}));
+						if (scrollableView instanceof androidx.core.widget.NestedScrollView nsv) {
+							nsv.setPadding(nsv.getPaddingLeft(), topP, nsv.getPaddingRight(), 0);
+							if (nsv.getChildCount() > 0) {
+								View child = nsv.getChildAt(0);
+								child.setPadding(
+										child.getPaddingLeft(),
+										child.getPaddingTop(),
+										child.getPaddingRight(),
+										bottomP);
+							}
+						} else {
+							scrollableView.setPadding(
+									scrollableView.getPaddingLeft(),
+									topP,
+									scrollableView.getPaddingRight(),
+									bottomP);
 						}
 					}
 
@@ -184,39 +116,5 @@ public class UIHelper {
 
 					return windowInsets;
 				});
-	}
-
-	private static int getDockHeight(View dockedToolbar) {
-		if (dockedToolbar == null) return 0;
-
-		int height = dockedToolbar.getHeight();
-		if (height == 0 && dockedToolbar.getLayoutParams() != null) {
-			height = dockedToolbar.getLayoutParams().height;
-		}
-		return Math.max(height, 0);
-	}
-
-	private static void runWhenMeasured(View view, Runnable action) {
-		if (view == null) {
-			action.run();
-			return;
-		}
-
-		if (view.getHeight() > 0) {
-			action.run();
-		} else {
-			view.getViewTreeObserver()
-					.addOnGlobalLayoutListener(
-							new ViewTreeObserver.OnGlobalLayoutListener() {
-								@Override
-								public void onGlobalLayout() {
-									if (view.getHeight() > 0) {
-										view.getViewTreeObserver()
-												.removeOnGlobalLayoutListener(this);
-										action.run();
-									}
-								}
-							});
-		}
 	}
 }

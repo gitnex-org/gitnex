@@ -3,6 +3,7 @@
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:id="@+id/main_frame"
+    android:background="?attr/primaryBackgroundColor"
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
@@ -45,6 +46,15 @@
 
                 </com.google.android.material.card.MaterialCardView>
 
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/appName"
+                    android:layout_marginStart="@dimen/dimen6dp"
+                    android:layout_gravity="bottom"
+                    android:textStyle="bold"
+                    android:textAppearance="@style/TextAppearance.Material3.HeadlineMedium" />
+
             </LinearLayout>
 
             <!-- Form card -->
@@ -56,6 +66,7 @@
                 app:cardCornerRadius="@dimen/dimen32dp"
                 app:cardElevation="@dimen/dimen0dp"
                 app:strokeWidth="@dimen/dimen0dp"
+                app:cardBackgroundColor="?attr/materialCardBackgroundColor"
                 app:layout_constraintTop_toBottomOf="@id/top_row"
                 app:layout_constraintBottom_toBottomOf="parent">
 
@@ -63,7 +74,8 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:orientation="vertical"
-                    android:padding="@dimen/dimen28dp">
+                    android:paddingVertical="@dimen/dimen20dp"
+                    android:paddingHorizontal="@dimen/dimen16dp">
 
                     <com.google.android.material.textfield.TextInputLayout
                         android:id="@+id/providerSpinnerLayout"

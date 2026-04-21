@@ -155,7 +155,9 @@ public class BottomSheetCreatePullRequest extends BottomSheetDialogFragment {
 
 	private void setupUI() {
 		boolean hasWriteAccess =
-				repoContext.getPermissions() != null && repoContext.getPermissions().isPush();
+				repoContext.getPermissions() != null
+						&& repoContext.getPermissions().isPush() != null
+						&& repoContext.getPermissions().isPush();
 
 		binding.prBody.setOnTouchListener(
 				(v, event) -> {
@@ -287,7 +289,9 @@ public class BottomSheetCreatePullRequest extends BottomSheetDialogFragment {
 		binding.btnSubmit.setOnClickListener(v -> submitAction());
 
 		boolean hasWriteAccess =
-				repoContext.getPermissions() != null && repoContext.getPermissions().isPush();
+				repoContext.getPermissions() != null
+						&& repoContext.getPermissions().isPush() != null
+						&& repoContext.getPermissions().isPush();
 
 		binding.cardMergeInto.getRoot().setOnClickListener(v -> openBranchPicker("merge"));
 		binding.cardMergeInto.btnClear.setOnClickListener(

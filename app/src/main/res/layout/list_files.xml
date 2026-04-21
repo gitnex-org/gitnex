@@ -18,9 +18,8 @@
             android:id="@+id/fileFrame"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:padding="@dimen/dimen8dp">
+            android:padding="@dimen/dimen4dp">
 
-            <!-- TOP ROW: Size + Date as header -->
             <TextView
                 android:id="@+id/fileInfo"
                 style="@style/TextAppearance.Material3.LabelLarge"
