@@ -224,13 +224,10 @@ public class IssueDetailActivity extends BaseActivity
 								NotificationCompat.Builder builder =
 										new NotificationCompat.Builder(ctx, ctx.getPackageName())
 												.setContentTitle(
-														getString(
-																R.string
-																		.fileViewerNotificationTitleStarted))
+														getString(R.string.download_started_title))
 												.setContentText(
 														getString(
-																R.string
-																		.fileViewerNotificationDescriptionStarted,
+																R.string.download_started_desc,
 																filename))
 												.setSmallIcon(R.drawable.gitnex_transparent)
 												.setPriority(NotificationCompat.PRIORITY_LOW)
@@ -266,11 +263,11 @@ public class IssueDetailActivity extends BaseActivity
 																.setContentTitle(
 																		getString(
 																				R.string
-																						.fileViewerNotificationTitleFinished))
+																						.download_complete_title))
 																.setContentText(
 																		getString(
 																				R.string
-																						.fileViewerNotificationDescriptionFinished,
+																						.download_complete_desc,
 																				filename));
 
 														AppUtil.copyProgress(
@@ -291,11 +288,11 @@ public class IssueDetailActivity extends BaseActivity
 																.setContentTitle(
 																		getString(
 																				R.string
-																						.fileViewerNotificationTitleFailed))
+																						.download_failed_title))
 																.setContentText(
 																		getString(
 																				R.string
-																						.fileViewerNotificationDescriptionFailed,
+																						.download_failed_desc,
 																				filename));
 
 													} finally {

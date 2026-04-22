@@ -1,9 +1,13 @@
 package org.mian.gitnex.activities;
 
 import android.annotation.SuppressLint;
+import android.app.Activity;
+import android.app.NotificationManager;
+import android.content.Context;
 import android.content.Intent;
 import android.graphics.Color;
 import android.graphics.Typeface;
+import android.net.Uri;
 import android.os.Bundle;
 import android.text.Spannable;
 import android.text.SpannableStringBuilder;
@@ -12,19 +16,29 @@ import android.text.style.StyleSpan;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
+import androidx.activity.result.ActivityResultLauncher;
+import androidx.activity.result.contract.ActivityResultContracts;
 import androidx.annotation.Nullable;
+import androidx.core.app.NotificationCompat;
 import androidx.lifecycle.ViewModelProvider;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.load.engine.DiskCacheStrategy;
+import com.google.android.material.card.MaterialCardView;
 import com.google.android.material.chip.ChipGroup;
 import com.google.android.material.imageview.ShapeableImageView;
 import com.google.android.material.shape.CornerFamily;
+import java.io.IOException;
+import java.io.OutputStream;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Date;
 import java.util.List;
 import java.util.Locale;
+import okhttp3.ResponseBody;
+import org.apache.commons.io.FilenameUtils;
+import org.gitnex.tea4j.v2.models.Attachment;
 import org.gitnex.tea4j.v2.models.CommitStatus;
 import org.gitnex.tea4j.v2.models.Issue;
 import org.gitnex.tea4j.v2.models.Label;
@@ -33,22 +47,30 @@ import org.gitnex.tea4j.v2.models.Repository;
 import org.gitnex.tea4j.v2.models.User;
 import org.mian.gitnex.R;
 import org.mian.gitnex.adapters.CommitStatusesAdapter;
+import org.mian.gitnex.clients.RetrofitClient;
 import org.mian.gitnex.databinding.ActivityPullRequestDetailsBinding;
 import org.mian.gitnex.databinding.ItemPrMetaRowBinding;
 import org.mian.gitnex.databinding.LayoutPrHeaderBinding;
+import org.mian.gitnex.fragments.BottomSheetContentViewer;
 import org.mian.gitnex.fragments.BottomSheetCreatePullRequest;
 import org.mian.gitnex.helpers.AppUtil;
 import org.mian.gitnex.helpers.AvatarGenerator;
+import org.mian.gitnex.helpers.Constants;
+import org.mian.gitnex.helpers.FileIcon;
 import org.mian.gitnex.helpers.Markdown;
 import org.mian.gitnex.helpers.TimeHelper;
 import org.mian.gitnex.helpers.Toasty;
 import org.mian.gitnex.helpers.UIHelper;
 import org.mian.gitnex.helpers.contexts.RepositoryContext;
+import org.mian.gitnex.notifications.Notifications;
+import org.mian.gitnex.viewmodels.AttachmentsViewModel;
 import org.mian.gitnex.viewmodels.CommitStatusesViewModel;
 import org.mian.gitnex.viewmodels.PullRequestDetailsViewModel;
 import org.mian.gitnex.viewmodels.ReactionsViewModel;
 import org.mian.gitnex.views.reactions.ReactionUsersBottomSheet;
 import org.mian.gitnex.views.reactions.ReactionsManager;
+import retrofit2.Call;
+import retrofit2.Response;
 
 /**
  * @author mmarif
@@ -59,6 +81,8 @@ public class PullRequestDetailsActivity extends BaseActivity {
 	private PullRequestDetailsViewModel viewModel;
 	private ReactionsViewModel reactionsViewModel;
 	private CommitStatusesViewModel statusesViewModel;
+	private AttachmentsViewModel attachmentsViewModel;
+	private Attachment pendingAttachment;
 	private ReactionsManager reactionsManager;
 	private String owner;
 	private String repo;
@@ -77,6 +101,7 @@ public class PullRequestDetailsActivity extends BaseActivity {
 		viewModel = new ViewModelProvider(this).get(PullRequestDetailsViewModel.class);
 		reactionsViewModel = new ViewModelProvider(this).get(ReactionsViewModel.class);
 		statusesViewModel = new ViewModelProvider(this).get(CommitStatusesViewModel.class);
+		attachmentsViewModel = new ViewModelProvider(this).get(AttachmentsViewModel.class);
 
 		UIHelper.applyEdgeToEdge(
 				this,
@@ -120,6 +145,7 @@ public class PullRequestDetailsActivity extends BaseActivity {
 		observeViewModel();
 		observeReactionsViewModel();
 		observeStatusesViewModel();
+		observeAttachmentsViewModel();
 		fetchPullRequestData();
 		fetchReactionSettings();
 	}
@@ -444,6 +470,8 @@ public class PullRequestDetailsActivity extends BaseActivity {
 				pr.getBody(),
 				binding.descriptionCard.descriptionContent,
 				new RepositoryContext(owner, repo, this));
+
+		fetchAttachments(pr.getNumber());
 	}
 
 	private void setupMetaRow(ItemPrMetaRowBinding row, int iconRes, String text) {
@@ -614,6 +642,231 @@ public class PullRequestDetailsActivity extends BaseActivity {
 			fetchStatuses(pr.getHead().getSha());
 		} else {
 			binding.checksCard.getRoot().setVisibility(View.GONE);
+		}
+	}
+
+	private void observeAttachmentsViewModel() {
+		attachmentsViewModel
+				.getAttachments()
+				.observe(
+						this,
+						attachments -> {
+							if (attachments != null && !attachments.isEmpty()) {
+								displayAttachments(attachments);
+							} else {
+								binding.descriptionCard.attachmentsContainer.setVisibility(
+										View.GONE);
+							}
+						});
+
+		attachmentsViewModel.getIsLoadingAttachments().observe(this, loading -> {});
+
+		attachmentsViewModel
+				.getFetchError()
+				.observe(
+						this,
+						error -> {
+							if (error != null) {
+								binding.descriptionCard.attachmentsContainer.setVisibility(
+										View.GONE);
+								attachmentsViewModel.clearFetchError();
+							}
+						});
+	}
+
+	private void fetchAttachments(long prNumber) {
+		attachmentsViewModel.fetchIssueAttachments(this, owner, repo, prNumber);
+	}
+
+	private void downloadAttachment(Attachment attachment) {
+		Intent intent = new Intent(Intent.ACTION_CREATE_DOCUMENT);
+		intent.addCategory(Intent.CATEGORY_OPENABLE);
+		intent.putExtra(Intent.EXTRA_TITLE, attachment.getName());
+		intent.setType("*/*");
+
+		pendingAttachment = attachment;
+		downloadAttachmentLauncher.launch(intent);
+	}
+
+	private final ActivityResultLauncher<Intent> downloadAttachmentLauncher =
+			registerForActivityResult(
+					new ActivityResultContracts.StartActivityForResult(),
+					result -> {
+						if (result.getResultCode() == Activity.RESULT_OK
+								&& result.getData() != null) {
+							Uri targetUri = result.getData().getData();
+							if (targetUri != null && pendingAttachment != null) {
+								downloadAttachmentToUri(pendingAttachment, targetUri);
+								pendingAttachment = null;
+							}
+						}
+					});
+
+	private void downloadAttachmentToUri(Attachment attachment, Uri targetUri) {
+		String fileName = attachment.getName();
+		String fileUuid = attachment.getUuid();
+		long fileSize = attachment.getSize();
+
+		NotificationCompat.Builder builder =
+				new NotificationCompat.Builder(this, Constants.downloadNotificationChannelId)
+						.setContentTitle(getString(R.string.download_started_title))
+						.setContentText(getString(R.string.download_started_desc, fileName))
+						.setSmallIcon(R.drawable.gitnex_transparent)
+						.setPriority(NotificationCompat.PRIORITY_LOW)
+						.setProgress(100, 0, false)
+						.setOngoing(true);
+
+		int notificationId = Notifications.uniqueNotificationId(this);
+		NotificationManager notificationManager =
+				(NotificationManager) getSystemService(Context.NOTIFICATION_SERVICE);
+		notificationManager.notify(notificationId, builder.build());
+
+		new Thread(
+						() -> {
+							try {
+								Call<ResponseBody> call =
+										RetrofitClient.getWebInterface(this)
+												.getAttachment(fileUuid);
+
+								Response<ResponseBody> response = call.execute();
+
+								if (response.isSuccessful() && response.body() != null) {
+									try (OutputStream os =
+											getContentResolver().openOutputStream(targetUri)) {
+										AppUtil.copyProgress(
+												response.body().byteStream(),
+												os,
+												fileSize,
+												progress -> {
+													builder.setProgress(100, progress, false);
+													notificationManager.notify(
+															notificationId, builder.build());
+												});
+
+										builder.setContentTitle(
+														getString(R.string.download_complete_title))
+												.setContentText(
+														getString(
+																R.string.download_complete_desc,
+																fileName))
+												.setOngoing(false)
+												.setProgress(0, 0, false);
+										notificationManager.notify(notificationId, builder.build());
+
+										runOnUiThread(
+												() ->
+														Toasty.show(
+																this, R.string.downloadFileSaved));
+									}
+								} else {
+									throw new IOException("Download failed: " + response.code());
+								}
+							} catch (Exception e) {
+								builder.setContentTitle(getString(R.string.download_failed_title))
+										.setContentText(
+												getString(R.string.download_failed_desc, fileName))
+										.setOngoing(false)
+										.setProgress(0, 0, false);
+								notificationManager.notify(notificationId, builder.build());
+
+								runOnUiThread(
+										() -> Toasty.show(this, R.string.download_failed_title));
+							}
+						})
+				.start();
+	}
+
+	private void openAttachmentPreview(Attachment attachment) {
+		String fileUuid = attachment.getUuid();
+		String fileName = attachment.getName();
+
+		new Thread(
+						() -> {
+							try {
+								Call<ResponseBody> call =
+										RetrofitClient.getWebInterface(this)
+												.getAttachment(fileUuid);
+
+								Response<ResponseBody> response = call.execute();
+
+								if (response.isSuccessful() && response.body() != null) {
+									byte[] imageBytes = response.body().bytes();
+
+									runOnUiThread(
+											() -> {
+												BottomSheetContentViewer.newInstance(
+																imageBytes,
+																fileName,
+																repositoryContext,
+																BottomSheetContentViewer.Feature
+																		.IMAGE_PREVIEW,
+																BottomSheetContentViewer.Feature
+																		.SHOW_TITLE,
+																BottomSheetContentViewer.Feature
+																		.ALLOW_SHARE)
+														.show(
+																getSupportFragmentManager(),
+																"ATTACHMENT_PREVIEW");
+											});
+								} else {
+									runOnUiThread(
+											() -> Toasty.show(this, R.string.image_load_error));
+								}
+							} catch (Exception e) {
+								runOnUiThread(() -> Toasty.show(this, R.string.image_load_error));
+							}
+						})
+				.start();
+	}
+
+	private View createAttachmentView(Attachment attachment) {
+		MaterialCardView card = new MaterialCardView(this);
+		int size = (int) (36 * getResources().getDisplayMetrics().density);
+		LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(size, size);
+		params.setMargins(0, 0, (int) (8 * getResources().getDisplayMetrics().density), 0);
+		card.setLayoutParams(params);
+		card.setRadius(16);
+		card.setStrokeWidth(0);
+
+		ImageView icon = new ImageView(this);
+		int iconSize = (int) (36 * getResources().getDisplayMetrics().density);
+		LinearLayout.LayoutParams iconParams = new LinearLayout.LayoutParams(iconSize, iconSize);
+		icon.setLayoutParams(iconParams);
+		icon.setScaleType(ImageView.ScaleType.CENTER_CROP);
+
+		String extension = FilenameUtils.getExtension(attachment.getName()).toLowerCase();
+		boolean isImage =
+				Arrays.asList("bmp", "gif", "jpg", "jpeg", "png", "webp", "heic", "heif")
+						.contains(extension);
+
+		if (isImage) {
+			String thumbnailUrl = attachment.getBrowserDownloadUrl();
+
+			Glide.with(this)
+					.load(thumbnailUrl)
+					.diskCacheStrategy(DiskCacheStrategy.ALL)
+					.placeholder(R.drawable.loader_animated)
+					.error(R.drawable.ic_image)
+					.centerCrop()
+					.into(icon);
+
+			card.setOnClickListener(v -> openAttachmentPreview(attachment));
+		} else {
+			icon.setImageResource(FileIcon.getIconResource(attachment.getName(), "file"));
+			card.setOnClickListener(v -> downloadAttachment(attachment));
+		}
+
+		card.addView(icon);
+		return card;
+	}
+
+	private void displayAttachments(List<Attachment> attachments) {
+		binding.descriptionCard.attachmentsContainer.removeAllViews();
+		binding.descriptionCard.attachmentsContainer.setVisibility(View.VISIBLE);
+
+		for (Attachment attachment : attachments) {
+			View attachmentView = createAttachmentView(attachment);
+			binding.descriptionCard.attachmentsContainer.addView(attachmentView);
 		}
 	}
 

@@ -519,10 +519,10 @@ public class ReleasesFragment extends Fragment implements RepoDetailActivity.Rep
 			NotificationCompat.Builder builder =
 					new NotificationCompat.Builder(
 									requireContext(), Constants.downloadNotificationChannelId)
-							.setContentTitle(getString(R.string.fileViewerNotificationTitleStarted))
+							.setContentTitle(getString(R.string.download_started_title))
 							.setContentText(
 									getString(
-											R.string.fileViewerNotificationDescriptionStarted,
+											R.string.download_started_desc,
 											Uri.parse(currentDownloadUrl).getLastPathSegment()))
 							.setSmallIcon(R.drawable.gitnex_transparent)
 							.setPriority(NotificationCompat.PRIORITY_LOW)
@@ -552,13 +552,10 @@ public class ReleasesFragment extends Fragment implements RepoDetailActivity.Rep
 								@Override
 								public void onFailure(@NonNull Call call, @NonNull IOException e) {
 									builder.setContentTitle(
-													getString(
-															R.string
-																	.fileViewerNotificationTitleFailed))
+													getString(R.string.download_failed_title))
 											.setContentText(
 													getString(
-															R.string
-																	.fileViewerNotificationDescriptionFailed,
+															R.string.download_failed_desc,
 															Uri.parse(currentDownloadUrl)
 																	.getLastPathSegment()))
 											.setOngoing(false);
@@ -584,13 +581,10 @@ public class ReleasesFragment extends Fragment implements RepoDetailActivity.Rep
 												0,
 												p -> {});
 										builder.setContentTitle(
-														getString(
-																R.string
-																		.fileViewerNotificationTitleFinished))
+														getString(R.string.download_complete_title))
 												.setContentText(
 														getString(
-																R.string
-																		.fileViewerNotificationDescriptionFinished,
+																R.string.download_complete_desc,
 																Uri.parse(currentDownloadUrl)
 																		.getLastPathSegment()))
 												.setOngoing(false);

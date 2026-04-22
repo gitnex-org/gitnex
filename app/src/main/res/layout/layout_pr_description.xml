@@ -48,12 +48,12 @@
             android:id="@+id/attachmentsContainer"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginTop="@dimen/dimen12dp"
+            android:layout_marginTop="@dimen/dimen16dp"
             android:visibility="gone"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@id/descriptionContent"
-            android:orientation="vertical" />
+            android:orientation="horizontal" />
 
    </androidx.constraintlayout.widget.ConstraintLayout>
 
