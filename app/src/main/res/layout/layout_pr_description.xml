@@ -1,43 +1,60 @@
 <?xml version="1.0" encoding="utf-8"?>
-<com.google.android.material.card.MaterialCardView xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
-    style="@style/Widget.Material3.CardView.Elevated"
+<com.google.android.material.card.MaterialCardView style="@style/Widget.Material3.CardView.Elevated"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:layout_marginHorizontal="@dimen/dimen16dp"
-    android:layout_marginTop="@dimen/dimen16dp"
+    android:layout_marginHorizontal="@dimen/dimen12dp"
     app:cardBackgroundColor="?attr/materialCardBackgroundColor"
-    app:cardElevation="@dimen/dimen0dp"
-    app:shapeAppearance="@style/ShapeAppearance.Material3.Corner.Large"
-    app:strokeWidth="@dimen/dimen0dp">
+    app:cardCornerRadius="@dimen/dimen24dp"
+    app:cardElevation="0dp"
+    app:strokeWidth="0dp"
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
 
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:orientation="vertical"
-        android:padding="@dimen/dimen16dp">
+   <androidx.constraintlayout.widget.ConstraintLayout
+       android:layout_width="match_parent"
+       android:layout_height="wrap_content"
+       android:padding="@dimen/dimen20dp">
+
+        <View
+            android:id="@+id/desc_accent"
+            android:layout_width="@dimen/dimen4dp"
+            android:layout_height="0dp"
+            android:background="?attr/iconsColor"
+            app:layout_constraintBottom_toBottomOf="@+id/desc_title"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="@+id/desc_title" />
 
         <TextView
+            android:id="@+id/desc_title"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginBottom="@dimen/dimen8dp"
+            android:layout_marginStart="@dimen/dimen12dp"
             android:text="@string/description"
-            android:textAppearance="?attr/textAppearanceLabelLarge"
-            android:textColor="?attr/colorPrimary" />
+            android:textAppearance="?attr/textAppearanceBodyLarge"
+            android:textColor="?attr/colorOnSurface"
+            app:layout_constraintStart_toEndOf="@id/desc_accent"
+            app:layout_constraintTop_toTopOf="parent" />
 
         <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/descriptionContent"
-            android:layout_width="match_parent"
+            android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:nestedScrollingEnabled="false" />
+            android:layout_marginTop="@dimen/dimen16dp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/desc_title" />
 
         <LinearLayout
             android:id="@+id/attachmentsContainer"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="@dimen/dimen12dp"
+            android:visibility="gone"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/descriptionContent"
             android:orientation="vertical" />
 
-    </LinearLayout>
+   </androidx.constraintlayout.widget.ConstraintLayout>
 
 </com.google.android.material.card.MaterialCardView>

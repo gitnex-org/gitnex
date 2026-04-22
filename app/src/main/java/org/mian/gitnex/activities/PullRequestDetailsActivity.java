@@ -14,6 +14,7 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import androidx.annotation.Nullable;
 import androidx.lifecycle.ViewModelProvider;
+import androidx.recyclerview.widget.LinearLayoutManager;
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.load.engine.DiskCacheStrategy;
 import com.google.android.material.chip.ChipGroup;
@@ -24,12 +25,14 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 import java.util.Locale;
+import org.gitnex.tea4j.v2.models.CommitStatus;
 import org.gitnex.tea4j.v2.models.Issue;
 import org.gitnex.tea4j.v2.models.Label;
 import org.gitnex.tea4j.v2.models.PullRequest;
 import org.gitnex.tea4j.v2.models.Repository;
 import org.gitnex.tea4j.v2.models.User;
 import org.mian.gitnex.R;
+import org.mian.gitnex.adapters.CommitStatusesAdapter;
 import org.mian.gitnex.databinding.ActivityPullRequestDetailsBinding;
 import org.mian.gitnex.databinding.ItemPrMetaRowBinding;
 import org.mian.gitnex.databinding.LayoutPrHeaderBinding;
@@ -41,6 +44,7 @@ import org.mian.gitnex.helpers.TimeHelper;
 import org.mian.gitnex.helpers.Toasty;
 import org.mian.gitnex.helpers.UIHelper;
 import org.mian.gitnex.helpers.contexts.RepositoryContext;
+import org.mian.gitnex.viewmodels.CommitStatusesViewModel;
 import org.mian.gitnex.viewmodels.PullRequestDetailsViewModel;
 import org.mian.gitnex.viewmodels.ReactionsViewModel;
 import org.mian.gitnex.views.reactions.ReactionUsersBottomSheet;
@@ -54,6 +58,7 @@ public class PullRequestDetailsActivity extends BaseActivity {
 	private ActivityPullRequestDetailsBinding binding;
 	private PullRequestDetailsViewModel viewModel;
 	private ReactionsViewModel reactionsViewModel;
+	private CommitStatusesViewModel statusesViewModel;
 	private ReactionsManager reactionsManager;
 	private String owner;
 	private String repo;
@@ -71,6 +76,7 @@ public class PullRequestDetailsActivity extends BaseActivity {
 
 		viewModel = new ViewModelProvider(this).get(PullRequestDetailsViewModel.class);
 		reactionsViewModel = new ViewModelProvider(this).get(ReactionsViewModel.class);
+		statusesViewModel = new ViewModelProvider(this).get(CommitStatusesViewModel.class);
 
 		UIHelper.applyEdgeToEdge(
 				this,
@@ -113,6 +119,7 @@ public class PullRequestDetailsActivity extends BaseActivity {
 		setupListeners();
 		observeViewModel();
 		observeReactionsViewModel();
+		observeStatusesViewModel();
 		fetchPullRequestData();
 		fetchReactionSettings();
 	}
@@ -439,11 +446,6 @@ public class PullRequestDetailsActivity extends BaseActivity {
 				new RepositoryContext(owner, repo, this));
 	}
 
-	private void populateChecks(PullRequest pr) {
-		// TODO: Fetch and populate CI checks status
-		binding.checksCard.getRoot().setVisibility(View.GONE);
-	}
-
 	private void setupMetaRow(ItemPrMetaRowBinding row, int iconRes, String text) {
 		row.metaIcon.setImageResource(iconRes);
 		row.metaText.setText(text);
@@ -542,6 +544,77 @@ public class PullRequestDetailsActivity extends BaseActivity {
 								reactionsViewModel.clearError();
 							}
 						});
+	}
+
+	private void observeStatusesViewModel() {
+		statusesViewModel
+				.getStatuses()
+				.observe(
+						this,
+						statuses -> {
+							if (statuses != null && !statuses.isEmpty()) {
+								binding.checksCard.getRoot().setVisibility(View.VISIBLE);
+								setupChecksList(statuses);
+							} else {
+								binding.checksCard.getRoot().setVisibility(View.GONE);
+							}
+						});
+
+		statusesViewModel
+				.getHasStatuses()
+				.observe(
+						this,
+						hasStatuses -> {
+							if (!hasStatuses) {
+								binding.checksCard.getRoot().setVisibility(View.GONE);
+							}
+						});
+
+		statusesViewModel.getIsLoading().observe(this, loading -> {});
+
+		statusesViewModel
+				.getError()
+				.observe(
+						this,
+						error -> {
+							if (error != null) {
+								binding.checksCard.getRoot().setVisibility(View.GONE);
+								statusesViewModel.clearError();
+							}
+						});
+	}
+
+	private void fetchStatuses(String sha) {
+		if (owner != null && repo != null && sha != null) {
+			statusesViewModel.fetchStatuses(this, owner, repo, sha);
+		}
+	}
+
+	private void setupChecksList(List<CommitStatus> statuses) {
+		binding.checksCard.checksList.setLayoutManager(new LinearLayoutManager(this));
+		binding.checksCard.checksList.setAdapter(new CommitStatusesAdapter(statuses));
+
+		long successCount =
+				statuses.stream()
+						.filter(s -> "success".equalsIgnoreCase(s.getStatus().toString()))
+						.count();
+		long totalCount = statuses.size();
+
+		String summary;
+		if (successCount == totalCount) {
+			summary = getString(R.string.checks_all_passed, totalCount);
+		} else {
+			summary = getString(R.string.checks_summary, successCount, totalCount);
+		}
+		binding.checksCard.checksSummary.setText(summary);
+	}
+
+	private void populateChecks(PullRequest pr) {
+		if (pr.getHead() != null && pr.getHead().getSha() != null) {
+			fetchStatuses(pr.getHead().getSha());
+		} else {
+			binding.checksCard.getRoot().setVisibility(View.GONE);
+		}
 	}
 
 	private String formatDate(Date date) {

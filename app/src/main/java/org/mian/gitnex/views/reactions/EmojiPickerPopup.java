@@ -35,15 +35,25 @@ public class EmojiPickerPopup extends PopupWindow {
 				PopupEmojiPickerBinding.inflate(LayoutInflater.from(context));
 		setContentView(binding.getRoot());
 
-		int columns = 4;
 		int itemCount = allowedReactions.size();
+		int columns = (itemCount <= 10) ? 5 : 6;
 		int rows = (int) Math.ceil((double) itemCount / columns);
 
-		int itemSize = (int) (48 * context.getResources().getDisplayMetrics().density);
-		int gridPadding = (int) (8 * context.getResources().getDisplayMetrics().density);
+		float density = context.getResources().getDisplayMetrics().density;
+		int itemSlotSize = (int) (48 * density);
+		int gridPadding = (int) (8 * density);
 
-		int width = columns * itemSize + (gridPadding * 2);
-		int height = rows * itemSize + (gridPadding * 2);
+		int maxRowsToShow = 3;
+		int displayRows = Math.min(rows, maxRowsToShow);
+
+		int width = (columns * itemSlotSize) + (gridPadding * 2);
+		int height = (displayRows * itemSlotSize) + (gridPadding * 2);
+
+		if (rows > maxRowsToShow) {
+			binding.emojiGrid.setOverScrollMode(View.OVER_SCROLL_IF_CONTENT_SCROLLS);
+		} else {
+			binding.emojiGrid.setOverScrollMode(View.OVER_SCROLL_NEVER);
+		}
 
 		setWidth(width);
 		setHeight(height);
@@ -55,6 +65,8 @@ public class EmojiPickerPopup extends PopupWindow {
 
 		binding.emojiGrid.setLayoutManager(new GridLayoutManager(context, columns));
 		binding.emojiGrid.setPadding(gridPadding, gridPadding, gridPadding, gridPadding);
+
+		binding.emojiGrid.setOverScrollMode(View.OVER_SCROLL_NEVER);
 
 		EmojiPickerAdapter adapter =
 				new EmojiPickerAdapter(context, allowedReactions, new ArrayList<>());

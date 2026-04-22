@@ -7,7 +7,7 @@
     android:background="?attr/materialCardBackgroundColor"
     android:paddingHorizontal="@dimen/dimen16dp"
     android:paddingTop="@dimen/dimen24dp"
-    android:paddingBottom="@dimen/dimen24dp">
+    android:paddingBottom="@dimen/dimen12dp">
 
     <ImageView
         android:id="@+id/status_badge_img"
@@ -152,15 +152,11 @@
 
         <com.google.android.material.button.MaterialButton
             android:id="@+id/add_reaction_button"
-            style="@style/Widget.Material3.Button.TextButton"
+            style="@style/Widget.Material3.Button.IconButton"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="@string/addButton"
-            android:textAllCaps="false"
             app:icon="@drawable/ic_emoji_add"
-            app:iconGravity="textStart"
-            app:iconPadding="@dimen/dimen4dp"
-            app:iconSize="@dimen/dimen18dp" />
+            app:iconSize="@dimen/dimen24dp" />
 
     </LinearLayout>
 

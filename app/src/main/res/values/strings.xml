@@ -1229,6 +1229,8 @@
     <string name="invalid_version_format">Invalid version format. Please use format like 1.26.1</string>
     <string name="invalid_pr">Invalid pull request</string>
     <string name="reactions_by">%s Reactions</string>
+    <string name="checks_all_passed">✅ All %d checks passed</string>
+    <string name="checks_summary">%d/%d checks passed</string>
 
     <string name="time_in_moments">in moments</string>
     <string name="time_in_minute">in %d minute</string>
