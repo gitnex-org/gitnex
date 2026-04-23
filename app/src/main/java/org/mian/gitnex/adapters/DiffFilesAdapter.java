@@ -14,7 +14,6 @@ import org.mian.gitnex.R;
 import org.mian.gitnex.activities.DiffActivity;
 import org.mian.gitnex.databinding.ListDiffFilesBinding;
 import org.mian.gitnex.helpers.FileDiffView;
-import org.mian.gitnex.helpers.contexts.IssueContext;
 
 /**
  * @author mmarif
@@ -24,7 +23,6 @@ public class DiffFilesAdapter extends RecyclerView.Adapter<DiffFilesAdapter.File
 	private static final Pattern statisticsPattern = Pattern.compile("(\\d+).*?,.*?(\\d+)");
 
 	private final Context context;
-	private final IssueContext issue;
 	private final String fragmentType;
 	private List<FileDiffView> fileDiffViews;
 	private final String repoOwner;
@@ -34,14 +32,12 @@ public class DiffFilesAdapter extends RecyclerView.Adapter<DiffFilesAdapter.File
 	public DiffFilesAdapter(
 			Context context,
 			List<FileDiffView> fileDiffViews,
-			IssueContext issue,
 			String repoOwner,
 			String repoName,
 			String sha,
 			String fragmentType) {
 		this.context = context;
 		this.fileDiffViews = fileDiffViews;
-		this.issue = issue;
 		this.repoOwner = repoOwner;
 		this.repoName = repoName;
 		this.sha = sha;
@@ -89,10 +85,6 @@ public class DiffFilesAdapter extends RecyclerView.Adapter<DiffFilesAdapter.File
 						intent.putExtra("owner", repoOwner);
 						intent.putExtra("repo", repoName);
 						intent.putExtra("sha", sha);
-
-						if (issue != null) {
-							intent.putExtra("pr_id", issue.getIssueIndex());
-						}
 
 						intent.putExtra("type", fragmentType);
 						intent.putExtra("file_path", currentItem.getFileName());

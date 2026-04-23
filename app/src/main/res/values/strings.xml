@@ -1230,6 +1230,19 @@
     <string name="download_failed_title">Download Failed</string>
     <string name="download_failed_desc">Failed to download %s</string>
 
+
+    <string name="timeline_added_label">%s added the %s label • %s</string>
+    <string name="timeline_added_milestone">%s added this to the %s milestone • %s</string>
+    <string name="timeline_removed_milestone">%s removed this from the milestone %s • %s</string>
+    <string name="timeline_assigned">%s assigned %s • %s</string>
+    <string name="timeline_review_requested">%s requested review from %s • %s</string>
+    <string name="timeline_changed_title">%s changed the title from "%s" to "%s" • %s</string>
+    <string name="timeline_closed">%s closed this • %s</string>
+    <string name="timeline_reopened">%s reopened this • %s</string>
+    <string name="timeline_pushed_commits">%s pushed %d commits • %s</string>
+    <string name="timeline_unassigned">%s unassigned %s • %s</string>
+    <string name="comment_edited">Comment updated successfully</string>
+
     <string name="time_in_moments">in moments</string>
     <string name="time_in_minute">in %d minute</string>
     <string name="time_in_minutes">in %d minutes</string>

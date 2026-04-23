@@ -31,8 +31,6 @@ public class CommitsAdapter extends RecyclerView.Adapter<CommitsAdapter.CommitsH
 	private List<Commit> commitsList;
 	private final OnCommitClickListener listener;
 	private boolean isLoading = false;
-	private boolean isMoreDataAvailable = true;
-	private Runnable loadMoreListener;
 
 	public interface OnCommitClickListener {
 		void onCommitClick(Commit commit);
@@ -58,12 +56,8 @@ public class CommitsAdapter extends RecyclerView.Adapter<CommitsAdapter.CommitsH
 
 		Commit commit = commitsList.get(position);
 
-		if (position >= getItemCount() - 1
-				&& isMoreDataAvailable
-				&& !isLoading
-				&& loadMoreListener != null) {
+		if (position >= getItemCount() - 1 && !isLoading) {
 			isLoading = true;
-			loadMoreListener.run();
 		}
 
 		holder.bindData(commit, context, listener);
@@ -73,14 +67,6 @@ public class CommitsAdapter extends RecyclerView.Adapter<CommitsAdapter.CommitsH
 	@Override
 	public int getItemCount() {
 		return commitsList.size();
-	}
-
-	public void setMoreDataAvailable(boolean available) {
-		this.isMoreDataAvailable = available;
-	}
-
-	public void setLoadMoreListener(Runnable listener) {
-		this.loadMoreListener = listener;
 	}
 
 	@SuppressLint("NotifyDataSetChanged")

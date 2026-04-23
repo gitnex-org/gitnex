@@ -4,7 +4,7 @@
     android:layout_height="wrap_content"
     android:layout_marginHorizontal="@dimen/dimen12dp"
     app:cardBackgroundColor="?attr/materialCardBackgroundColor"
-    app:cardCornerRadius="@dimen/dimen24dp"
+    app:cardCornerRadius="@dimen/dimen20dp"
     app:cardElevation="0dp"
     app:strokeWidth="0dp"
     android:layout_marginTop="@dimen/dimen16dp"

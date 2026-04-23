@@ -73,7 +73,6 @@ public class DiffFilesFragment extends Fragment {
 				new DiffFilesAdapter(
 						ctx,
 						new ArrayList<>(),
-						issue,
 						issue.getRepository().getOwner(),
 						issue.getRepository().getName(),
 						null,

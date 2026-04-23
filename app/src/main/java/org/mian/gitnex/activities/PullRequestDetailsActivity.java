@@ -13,7 +13,9 @@ import android.text.Spannable;
 import android.text.SpannableStringBuilder;
 import android.text.style.ForegroundColorSpan;
 import android.text.style.StyleSpan;
+import android.view.Gravity;
 import android.view.View;
+import android.widget.FrameLayout;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import androidx.activity.result.ActivityResultLauncher;
@@ -22,9 +24,9 @@ import androidx.annotation.Nullable;
 import androidx.core.app.NotificationCompat;
 import androidx.lifecycle.ViewModelProvider;
 import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.load.engine.DiskCacheStrategy;
-import com.google.android.material.card.MaterialCardView;
 import com.google.android.material.chip.ChipGroup;
 import com.google.android.material.imageview.ShapeableImageView;
 import com.google.android.material.shape.CornerFamily;
@@ -47,26 +49,32 @@ import org.gitnex.tea4j.v2.models.Repository;
 import org.gitnex.tea4j.v2.models.User;
 import org.mian.gitnex.R;
 import org.mian.gitnex.adapters.CommitStatusesAdapter;
+import org.mian.gitnex.adapters.TimelineAdapter;
 import org.mian.gitnex.clients.RetrofitClient;
 import org.mian.gitnex.databinding.ActivityPullRequestDetailsBinding;
 import org.mian.gitnex.databinding.ItemPrMetaRowBinding;
 import org.mian.gitnex.databinding.LayoutPrHeaderBinding;
 import org.mian.gitnex.fragments.BottomSheetContentViewer;
 import org.mian.gitnex.fragments.BottomSheetCreatePullRequest;
+import org.mian.gitnex.helpers.AlertDialogs;
 import org.mian.gitnex.helpers.AppUtil;
 import org.mian.gitnex.helpers.AvatarGenerator;
 import org.mian.gitnex.helpers.Constants;
+import org.mian.gitnex.helpers.EndlessRecyclerViewScrollListener;
 import org.mian.gitnex.helpers.FileIcon;
 import org.mian.gitnex.helpers.Markdown;
 import org.mian.gitnex.helpers.TimeHelper;
 import org.mian.gitnex.helpers.Toasty;
 import org.mian.gitnex.helpers.UIHelper;
 import org.mian.gitnex.helpers.contexts.RepositoryContext;
+import org.mian.gitnex.models.TimelineItem;
 import org.mian.gitnex.notifications.Notifications;
 import org.mian.gitnex.viewmodels.AttachmentsViewModel;
 import org.mian.gitnex.viewmodels.CommitStatusesViewModel;
 import org.mian.gitnex.viewmodels.PullRequestDetailsViewModel;
 import org.mian.gitnex.viewmodels.ReactionsViewModel;
+import org.mian.gitnex.viewmodels.TimelineViewModel;
+import org.mian.gitnex.views.reactions.EmojiPickerPopup;
 import org.mian.gitnex.views.reactions.ReactionUsersBottomSheet;
 import org.mian.gitnex.views.reactions.ReactionsManager;
 import retrofit2.Call;
@@ -82,13 +90,17 @@ public class PullRequestDetailsActivity extends BaseActivity {
 	private ReactionsViewModel reactionsViewModel;
 	private CommitStatusesViewModel statusesViewModel;
 	private AttachmentsViewModel attachmentsViewModel;
+	private TimelineViewModel timelineViewModel;
 	private Attachment pendingAttachment;
 	private ReactionsManager reactionsManager;
+	private TimelineAdapter timelineAdapter;
 	private String owner;
 	private String repo;
 	private long prNumber;
 	private boolean isDataLoaded = false;
 	private RepositoryContext repositoryContext;
+	private int resultLimit;
+	private EndlessRecyclerViewScrollListener timelineScrollListener;
 
 	@Override
 	public void onCreate(@Nullable Bundle savedInstanceState) {
@@ -96,12 +108,15 @@ public class PullRequestDetailsActivity extends BaseActivity {
 		binding = ActivityPullRequestDetailsBinding.inflate(getLayoutInflater());
 		setContentView(binding.getRoot());
 
+		resultLimit = Constants.getCurrentResultLimit(this);
+
 		repositoryContext = new RepositoryContext(owner, repo, this);
 
 		viewModel = new ViewModelProvider(this).get(PullRequestDetailsViewModel.class);
 		reactionsViewModel = new ViewModelProvider(this).get(ReactionsViewModel.class);
 		statusesViewModel = new ViewModelProvider(this).get(CommitStatusesViewModel.class);
 		attachmentsViewModel = new ViewModelProvider(this).get(AttachmentsViewModel.class);
+		timelineViewModel = new ViewModelProvider(this).get(TimelineViewModel.class);
 
 		UIHelper.applyEdgeToEdge(
 				this,
@@ -148,6 +163,9 @@ public class PullRequestDetailsActivity extends BaseActivity {
 		observeAttachmentsViewModel();
 		fetchPullRequestData();
 		fetchReactionSettings();
+
+		setupTimeline();
+		observeTimelineViewModel();
 	}
 
 	private void hideAllContent() {
@@ -193,7 +211,305 @@ public class PullRequestDetailsActivity extends BaseActivity {
 					// TODO: Open global menu bottom sheet
 				});
 
-		binding.pullToRefresh.setOnRefreshListener(this::fetchPullRequestData);
+		binding.pullToRefresh.setOnRefreshListener(
+				() -> {
+					binding.pullToRefresh.setRefreshing(false);
+					fetchPullRequestData();
+					refreshTimeline();
+				});
+	}
+
+	private void setupTimeline() {
+		timelineViewModel.fetchReactionSettings(this);
+
+		String currentUser = getAccount().getAccount().getUserName();
+
+		timelineAdapter =
+				new TimelineAdapter(
+						this,
+						owner,
+						repo,
+						currentUser,
+						new TimelineAdapter.OnTimelineItemClickListener() {
+							@Override
+							public void onCommentMenuClick(TimelineItem comment, View anchor) {
+								showCommentMenu(comment, anchor);
+							}
+
+							@Override
+							public void onCommentReactionClick(
+									TimelineItem comment, String content, boolean isUserReaction) {
+								if (isUserReaction) {
+									timelineViewModel.removeCommentReaction(
+											PullRequestDetailsActivity.this,
+											comment.getId(),
+											content);
+								} else {
+									timelineViewModel.addCommentReaction(
+											PullRequestDetailsActivity.this,
+											comment.getId(),
+											content);
+								}
+							}
+
+							@Override
+							public void onCommentAddReactionClick(
+									TimelineItem comment, View anchor) {
+								showCommentEmojiPicker(comment, anchor);
+							}
+
+							@Override
+							public void onCommentReactionLongClick(
+									TimelineItem comment, String content, List<User> users) {
+								ReactionUsersBottomSheet.newInstance(content, users)
+										.show(getSupportFragmentManager(), "REACTION_USERS");
+							}
+
+							@Override
+							public void onAttachmentClick(Attachment attachment) {
+								String extension =
+										FilenameUtils.getExtension(attachment.getName())
+												.toLowerCase();
+								boolean isImage =
+										Arrays.asList(
+														"bmp", "gif", "jpg", "jpeg", "png", "webp",
+														"heic", "heif")
+												.contains(extension);
+								if (isImage) {
+									openAttachmentPreview(attachment);
+								} else {
+									downloadAttachment(attachment);
+								}
+							}
+
+							@Override
+							public void onCommitClick(String sha) {
+								Intent intent =
+										new Intent(
+												PullRequestDetailsActivity.this,
+												CommitDetailActivity.class);
+								intent.putExtra("sha", sha);
+								intent.putExtra("owner", owner);
+								intent.putExtra("repo", repo);
+								startActivity(intent);
+							}
+
+							@Override
+							public void onUserClick(String username) {
+								Intent intent =
+										new Intent(
+												PullRequestDetailsActivity.this,
+												ProfileActivity.class);
+								intent.putExtra("username", username);
+								startActivity(intent);
+							}
+						});
+
+		timelineViewModel
+				.getAllowedReactions()
+				.observe(
+						this,
+						allowed -> {
+							if (allowed != null) {
+								timelineAdapter.setAllowedReactions(allowed);
+							}
+						});
+
+		LinearLayoutManager layoutManager = new LinearLayoutManager(this);
+		binding.timelineSection.timelineRecyclerView.setLayoutManager(layoutManager);
+		binding.timelineSection.timelineRecyclerView.setAdapter(timelineAdapter);
+		binding.timelineSection.timelineRecyclerView.setNestedScrollingEnabled(false);
+
+		timelineScrollListener =
+				new EndlessRecyclerViewScrollListener(layoutManager) {
+					@Override
+					public void onLoadMore(int page, int totalItemsCount, RecyclerView view) {
+						timelineViewModel.fetchTimeline(
+								PullRequestDetailsActivity.this, page, resultLimit, false);
+					}
+				};
+		binding.timelineSection.timelineRecyclerView.addOnScrollListener(timelineScrollListener);
+	}
+
+	private void observeTimelineViewModel() {
+		timelineViewModel.init(owner, repo, prNumber);
+
+		timelineViewModel
+				.getTimeline()
+				.observe(
+						this,
+						timeline -> {
+							if (timeline != null) {
+								timelineAdapter.setItems(timeline);
+								updateTimelineVisibility(!timeline.isEmpty());
+							}
+						});
+
+		timelineViewModel.getIsLoading().observe(this, loading -> {});
+
+		timelineViewModel
+				.getIsRefreshing()
+				.observe(
+						this,
+						refreshing -> {
+							if (refreshing != null && !refreshing) {
+								binding.pullToRefresh.setRefreshing(false);
+							}
+						});
+
+		timelineViewModel
+				.getError()
+				.observe(
+						this,
+						error -> {
+							if (error != null) {
+								Toasty.show(this, error);
+								timelineViewModel.clearError();
+							}
+						});
+
+		timelineViewModel
+				.getSubmittedComment()
+				.observe(
+						this,
+						comment -> {
+							if (comment != null) {
+								Toasty.show(this, R.string.commentSuccess);
+								refreshTimeline();
+								timelineViewModel.clearSubmittedComment();
+							}
+						});
+
+		timelineViewModel
+				.getEditedComment()
+				.observe(
+						this,
+						comment -> {
+							if (comment != null) {
+								Toasty.show(this, R.string.comment_edited);
+								refreshTimeline();
+								timelineViewModel.clearEditedComment();
+							}
+						});
+
+		timelineViewModel
+				.getCommentDeleted()
+				.observe(
+						this,
+						deleted -> {
+							if (deleted != null && deleted) {
+								Toasty.show(this, R.string.deleteCommentSuccess);
+								refreshTimeline();
+								timelineViewModel.clearCommentDeleted();
+							}
+						});
+
+		timelineViewModel
+				.getCommentReactionsUpdate()
+				.observe(
+						this,
+						pair -> {
+							if (pair != null && timelineAdapter != null) {
+								timelineAdapter.updateCommentReactions(pair.first, pair.second);
+							}
+						});
+
+		timelineViewModel
+				.getIsSubmitting()
+				.observe(
+						this,
+						isSubmitting -> {
+							// Disable/enable submit button
+						});
+
+		timelineViewModel
+				.getIsDeleting()
+				.observe(
+						this,
+						isDeleting -> {
+							// Show/hide delete progress
+						});
+
+		timelineViewModel
+				.getActionError()
+				.observe(
+						this,
+						error -> {
+							if (error != null) {
+								if ("UNAUTHORIZED".equals(error)) {
+									AlertDialogs.authorizationTokenRevokedDialog(this);
+								} else {
+									Toasty.show(this, error);
+								}
+								timelineViewModel.clearActionError();
+							}
+						});
+	}
+
+	private void fetchTimeline() {
+		if (owner != null && repo != null && prNumber > 0) {
+			timelineViewModel.fetchTimeline(this, 1, resultLimit, true);
+		}
+	}
+
+	private void refreshTimeline() {
+		if (timelineScrollListener != null) {
+			timelineScrollListener.resetState();
+		}
+		timelineViewModel.resetPagination();
+		fetchTimeline();
+	}
+
+	private void updateTimelineVisibility(boolean hasItems) {
+		binding.timelineSection.getRoot().setVisibility(hasItems ? View.VISIBLE : View.GONE);
+	}
+
+	private void showCommentEmojiPicker(TimelineItem comment, View anchor) {
+		List<String> allowed = reactionsViewModel.getAllowedReactions().getValue();
+
+		if (allowed != null && !allowed.isEmpty()) {
+			EmojiPickerPopup popup = new EmojiPickerPopup(this, allowed);
+			popup.setOnEmojiSelectedListener(
+					content -> {
+						timelineViewModel.addCommentReaction(
+								PullRequestDetailsActivity.this, comment.getId(), content);
+					});
+			popup.show(anchor);
+		} else {
+			reactionsViewModel.fetchReactionSettings(this);
+			reactionsViewModel
+					.getAllowedReactions()
+					.observe(
+							this,
+							new androidx.lifecycle.Observer<>() {
+								@Override
+								public void onChanged(List<String> allowedList) {
+									if (allowedList != null && !allowedList.isEmpty()) {
+										reactionsViewModel
+												.getAllowedReactions()
+												.removeObserver(this);
+
+										EmojiPickerPopup popup =
+												new EmojiPickerPopup(
+														PullRequestDetailsActivity.this,
+														allowedList);
+										popup.setOnEmojiSelectedListener(
+												content -> {
+													timelineViewModel.addCommentReaction(
+															PullRequestDetailsActivity.this,
+															comment.getId(),
+															content);
+												});
+										popup.show(anchor);
+									}
+								}
+							});
+		}
+	}
+
+	private void showCommentMenu(TimelineItem comment, View anchor) {
+		// TODO: Implement comment menu (edit, delete, quote, copy, share)
+		Toasty.show(this, "Comment menu coming soon");
 	}
 
 	private void observeViewModel() {
@@ -243,8 +559,8 @@ public class PullRequestDetailsActivity extends BaseActivity {
 		populateHeader(pr);
 		populateDescription(pr);
 		populateChecks(pr);
-		// populateTimeline(pr);
 		fetchReactions();
+		fetchTimeline();
 	}
 
 	private void updateRepositoryContext(PullRequest pr) {
@@ -820,44 +1136,62 @@ public class PullRequestDetailsActivity extends BaseActivity {
 	}
 
 	private View createAttachmentView(Attachment attachment) {
-		MaterialCardView card = new MaterialCardView(this);
-		int size = (int) (36 * getResources().getDisplayMetrics().density);
-		LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(size, size);
-		params.setMargins(0, 0, (int) (8 * getResources().getDisplayMetrics().density), 0);
-		card.setLayoutParams(params);
-		card.setRadius(16);
-		card.setStrokeWidth(0);
-
-		ImageView icon = new ImageView(this);
-		int iconSize = (int) (36 * getResources().getDisplayMetrics().density);
-		LinearLayout.LayoutParams iconParams = new LinearLayout.LayoutParams(iconSize, iconSize);
-		icon.setLayoutParams(iconParams);
-		icon.setScaleType(ImageView.ScaleType.CENTER_CROP);
-
 		String extension = FilenameUtils.getExtension(attachment.getName()).toLowerCase();
 		boolean isImage =
 				Arrays.asList("bmp", "gif", "jpg", "jpeg", "png", "webp", "heic", "heif")
 						.contains(extension);
 
+		int size = (int) (32 * getResources().getDisplayMetrics().density);
+		LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(size, size);
+		params.setMargins(0, 0, (int) (12 * getResources().getDisplayMetrics().density), 0);
+
 		if (isImage) {
-			String thumbnailUrl = attachment.getBrowserDownloadUrl();
+			com.google.android.material.imageview.ShapeableImageView imageView =
+					new com.google.android.material.imageview.ShapeableImageView(this);
+			imageView.setLayoutParams(params);
+			imageView.setScaleType(ImageView.ScaleType.CENTER_CROP);
+
+			float cornerSize = getResources().getDimension(R.dimen.dimen8dp);
+			imageView.setShapeAppearanceModel(
+					imageView.getShapeAppearanceModel().toBuilder()
+							.setAllCorners(CornerFamily.ROUNDED, cornerSize)
+							.build());
 
 			Glide.with(this)
-					.load(thumbnailUrl)
+					.load(attachment.getBrowserDownloadUrl())
 					.diskCacheStrategy(DiskCacheStrategy.ALL)
 					.placeholder(R.drawable.loader_animated)
 					.error(R.drawable.ic_image)
 					.centerCrop()
-					.into(icon);
+					.into(imageView);
 
-			card.setOnClickListener(v -> openAttachmentPreview(attachment));
+			imageView.setOnClickListener(v -> openAttachmentPreview(attachment));
+			return imageView;
+
 		} else {
-			icon.setImageResource(FileIcon.getIconResource(attachment.getName(), "file"));
-			card.setOnClickListener(v -> downloadAttachment(attachment));
-		}
+			com.google.android.material.card.MaterialCardView card =
+					new com.google.android.material.card.MaterialCardView(this);
+			card.setLayoutParams(params);
+			card.setRadius(12);
+			card.setStrokeWidth(0);
+			card.setClickable(false);
+			card.setFocusable(false);
+			card.setCardBackgroundColor(android.graphics.Color.TRANSPARENT);
 
-		card.addView(icon);
-		return card;
+			ImageView icon = new ImageView(this);
+			int iconSize = (int) (36 * getResources().getDisplayMetrics().density);
+			FrameLayout.LayoutParams iconParams = new FrameLayout.LayoutParams(iconSize, iconSize);
+			iconParams.gravity = Gravity.CENTER;
+			icon.setLayoutParams(iconParams);
+			icon.setImageResource(FileIcon.getIconResource(attachment.getName(), "file"));
+
+			icon.setClickable(true);
+			icon.setFocusable(true);
+			icon.setOnClickListener(v -> downloadAttachment(attachment));
+
+			card.addView(icon);
+			return card;
+		}
 	}
 
 	private void displayAttachments(List<Attachment> attachments) {
@@ -879,5 +1213,6 @@ public class PullRequestDetailsActivity extends BaseActivity {
 	@Override
 	protected void onGlobalRefresh() {
 		fetchPullRequestData();
+		refreshTimeline();
 	}
 }

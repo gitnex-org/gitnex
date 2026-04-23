@@ -183,6 +183,8 @@ public class CommitsActivity extends BaseActivity {
 
 	private void navigateToCommitDetail(Commit commit) {
 		Intent intent = repository.getIntent(this, CommitDetailActivity.class);
+		intent.putExtra("owner", repository.getOwner());
+		intent.putExtra("repo", repository.getName());
 		intent.putExtra("sha", commit.getSha());
 		startActivity(intent);
 	}

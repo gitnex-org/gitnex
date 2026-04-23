@@ -15,7 +15,7 @@
         android:layout_height="@dimen/dimen18dp"
         android:alpha="0.8"
         android:contentDescription="@string/generalImgContentText"
-        app:tint="?attr/colorOnSurfaceVariant" />
+        app:tint="?attr/iconsColor" />
 
     <LinearLayout
         android:id="@+id/avatar_container"
