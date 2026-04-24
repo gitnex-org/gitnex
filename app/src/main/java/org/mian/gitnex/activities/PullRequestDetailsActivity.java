@@ -6,6 +6,7 @@ import android.app.NotificationManager;
 import android.content.Context;
 import android.content.Intent;
 import android.graphics.Color;
+import android.graphics.Rect;
 import android.graphics.Typeface;
 import android.net.Uri;
 import android.os.Bundle;
@@ -15,6 +16,7 @@ import android.text.style.ForegroundColorSpan;
 import android.text.style.StyleSpan;
 import android.view.Gravity;
 import android.view.View;
+import android.view.ViewGroup;
 import android.widget.FrameLayout;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
@@ -28,6 +30,7 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.load.engine.DiskCacheStrategy;
 import com.google.android.material.chip.ChipGroup;
+import com.google.android.material.dialog.MaterialAlertDialogBuilder;
 import com.google.android.material.imageview.ShapeableImageView;
 import com.google.android.material.shape.CornerFamily;
 import java.io.IOException;
@@ -54,6 +57,7 @@ import org.mian.gitnex.clients.RetrofitClient;
 import org.mian.gitnex.databinding.ActivityPullRequestDetailsBinding;
 import org.mian.gitnex.databinding.ItemPrMetaRowBinding;
 import org.mian.gitnex.databinding.LayoutPrHeaderBinding;
+import org.mian.gitnex.fragments.BottomSheetCommentMenu;
 import org.mian.gitnex.fragments.BottomSheetContentViewer;
 import org.mian.gitnex.fragments.BottomSheetCreatePullRequest;
 import org.mian.gitnex.helpers.AlertDialogs;
@@ -101,6 +105,8 @@ public class PullRequestDetailsActivity extends BaseActivity {
 	private RepositoryContext repositoryContext;
 	private int resultLimit;
 	private EndlessRecyclerViewScrollListener timelineScrollListener;
+	private long editingCommentId = -1;
+	private boolean isEditing = false;
 
 	@Override
 	public void onCreate(@Nullable Bundle savedInstanceState) {
@@ -164,6 +170,8 @@ public class PullRequestDetailsActivity extends BaseActivity {
 		fetchPullRequestData();
 		fetchReactionSettings();
 
+		setupCommentBox();
+
 		setupTimeline();
 		observeTimelineViewModel();
 	}
@@ -219,6 +227,135 @@ public class PullRequestDetailsActivity extends BaseActivity {
 				});
 	}
 
+	private void setupCommentBox() {
+		binding.btnReply.setOnClickListener(
+				v -> {
+					if (binding.commentReply.getRoot().getVisibility() == View.GONE) {
+						showReplyBox();
+					} else {
+						hideReplyBox();
+					}
+				});
+
+		binding.commentReply.btnCloseReply.setOnClickListener(
+				v -> {
+					binding.commentReply.etQuickComment.setText("");
+					clearCommentBox();
+					AppUtil.hideKeyboard(this);
+					hideReplyBox();
+				});
+
+		binding.commentReply.btnQuickSend.setOnClickListener(
+				v -> {
+					String body = binding.commentReply.etQuickComment.getText().toString().trim();
+					if (body.isEmpty()) return;
+
+					if (isEditing) {
+						timelineViewModel.editComment(this, editingCommentId, body);
+					} else {
+						timelineViewModel.addComment(this, body);
+					}
+				});
+
+		binding.commentReply.etQuickComment.setOnFocusChangeListener(
+				(v, hasFocus) -> {
+					if (hasFocus) {
+						AppUtil.showKeyboard(this, binding.commentReply.etQuickComment);
+					}
+				});
+
+		binding.getRoot()
+				.getViewTreeObserver()
+				.addOnGlobalLayoutListener(
+						() -> {
+							Rect r = new Rect();
+							binding.getRoot().getWindowVisibleDisplayFrame(r);
+							int screenHeight = binding.getRoot().getRootView().getHeight();
+							int keypadHeight = screenHeight - r.bottom;
+
+							ViewGroup.MarginLayoutParams params =
+									(ViewGroup.MarginLayoutParams)
+											binding.commentReply.getRoot().getLayoutParams();
+							if (keypadHeight > screenHeight * 0.15) {
+								params.bottomMargin = keypadHeight;
+							} else {
+								params.bottomMargin =
+										(int) (36 * getResources().getDisplayMetrics().density);
+							}
+							binding.commentReply.getRoot().setLayoutParams(params);
+						});
+	}
+
+	private void toggleCommentSectionSpace(boolean expand) {
+		float density = getResources().getDisplayMetrics().density;
+		int targetHeight = expand ? (int) (190 * density) : 0;
+
+		android.animation.ValueAnimator animator =
+				android.animation.ValueAnimator.ofInt(
+						binding.scrollSpacer.getLayoutParams().height, targetHeight);
+
+		animator.setDuration(300);
+		animator.addUpdateListener(
+				animation -> {
+					binding.scrollSpacer.getLayoutParams().height =
+							(int) animation.getAnimatedValue();
+					binding.scrollSpacer.requestLayout();
+				});
+		animator.start();
+	}
+
+	private void showReplyBox() {
+		binding.commentReply.getRoot().setVisibility(View.VISIBLE);
+
+		toggleCommentSectionSpace(true);
+
+		binding.commentReply.getRoot().setAlpha(0f);
+		binding.commentReply.getRoot().setTranslationY(100f);
+		binding.commentReply
+				.getRoot()
+				.animate()
+				.alpha(1f)
+				.translationY(0f)
+				.setDuration(300)
+				.setInterpolator(new android.view.animation.DecelerateInterpolator())
+				.withEndAction(
+						() -> {
+							binding.commentReply.etQuickComment.requestFocus();
+						})
+				.start();
+	}
+
+	private void hideReplyBox() {
+		toggleCommentSectionSpace(false);
+
+		binding.commentReply
+				.getRoot()
+				.animate()
+				.alpha(0f)
+				.translationY(100f)
+				.setDuration(250)
+				.withEndAction(() -> binding.commentReply.getRoot().setVisibility(View.GONE))
+				.start();
+	}
+
+	public void startEditComment(long commentId, String currentBody) {
+		editingCommentId = commentId;
+		isEditing = true;
+		binding.commentReply.etQuickComment.setText(currentBody);
+		binding.commentReply.btnQuickSend.setIconResource(R.drawable.ic_edit);
+		binding.commentReply.btnExpandEditor.setVisibility(View.GONE);
+		showReplyBox();
+	}
+
+	private void clearCommentBox() {
+		binding.commentReply.etQuickComment.setText("");
+		binding.commentReply.etQuickComment.setHint(R.string.commentButtonText);
+		binding.commentReply.btnQuickSend.setIconResource(R.drawable.ic_send);
+		binding.commentReply.btnExpandEditor.setVisibility(View.VISIBLE);
+		editingCommentId = -1;
+		isEditing = false;
+	}
+
 	private void setupTimeline() {
 		timelineViewModel.fetchReactionSettings(this);
 
@@ -233,7 +370,7 @@ public class PullRequestDetailsActivity extends BaseActivity {
 						new TimelineAdapter.OnTimelineItemClickListener() {
 							@Override
 							public void onCommentMenuClick(TimelineItem comment, View anchor) {
-								showCommentMenu(comment, anchor);
+								showCommentMenu(comment);
 							}
 
 							@Override
@@ -331,8 +468,63 @@ public class PullRequestDetailsActivity extends BaseActivity {
 		binding.timelineSection.timelineRecyclerView.addOnScrollListener(timelineScrollListener);
 	}
 
+	private void scrollTimelineToBottom() {
+		binding.scrollView.post(
+				() -> {
+					binding.scrollView.smoothScrollTo(
+							0, binding.scrollView.getChildAt(0).getHeight());
+				});
+	}
+
 	private void observeTimelineViewModel() {
 		timelineViewModel.init(owner, repo, prNumber);
+
+		timelineViewModel
+				.getSubmittedComment()
+				.observe(
+						this,
+						comment -> {
+							if (comment != null) {
+								Toasty.show(this, R.string.commentSuccess);
+								clearCommentBox();
+								AppUtil.hideKeyboard(this);
+								hideReplyBox();
+								refreshTimeline();
+								scrollTimelineToBottom();
+								timelineViewModel.clearSubmittedComment();
+								binding.timelineSection.timelineRecyclerView.postDelayed(
+										this::scrollTimelineToBottom, 800);
+							}
+						});
+
+		timelineViewModel
+				.getEditedComment()
+				.observe(
+						this,
+						comment -> {
+							if (comment != null) {
+								Toasty.show(this, R.string.editCommentUpdatedText);
+								clearCommentBox();
+								AppUtil.hideKeyboard(this);
+								hideReplyBox();
+								refreshTimeline();
+								timelineViewModel.clearEditedComment();
+							}
+						});
+
+		timelineViewModel
+				.getIsSubmitting()
+				.observe(
+						this,
+						isSubmitting -> {
+							if (isSubmitting != null && isSubmitting) {
+								binding.commentReply.btnQuickSend.setVisibility(View.GONE);
+								binding.commentReply.commentLoader.setVisibility(View.VISIBLE);
+							} else {
+								binding.commentReply.commentLoader.setVisibility(View.GONE);
+								binding.commentReply.btnQuickSend.setVisibility(View.VISIBLE);
+							}
+						});
 
 		timelineViewModel
 				.getTimeline()
@@ -386,7 +578,7 @@ public class PullRequestDetailsActivity extends BaseActivity {
 						this,
 						comment -> {
 							if (comment != null) {
-								Toasty.show(this, R.string.comment_edited);
+								Toasty.show(this, R.string.editCommentUpdatedText);
 								refreshTimeline();
 								timelineViewModel.clearEditedComment();
 							}
@@ -414,21 +606,7 @@ public class PullRequestDetailsActivity extends BaseActivity {
 							}
 						});
 
-		timelineViewModel
-				.getIsSubmitting()
-				.observe(
-						this,
-						isSubmitting -> {
-							// Disable/enable submit button
-						});
-
-		timelineViewModel
-				.getIsDeleting()
-				.observe(
-						this,
-						isDeleting -> {
-							// Show/hide delete progress
-						});
+		timelineViewModel.getIsDeleting().observe(this, isDeleting -> {});
 
 		timelineViewModel
 				.getActionError()
@@ -507,9 +685,68 @@ public class PullRequestDetailsActivity extends BaseActivity {
 		}
 	}
 
-	private void showCommentMenu(TimelineItem comment, View anchor) {
-		// TODO: Implement comment menu (edit, delete, quote, copy, share)
-		Toasty.show(this, "Comment menu coming soon");
+	private void showCommentMenu(TimelineItem comment) {
+		String currentUser = getAccount().getAccount().getUserName();
+		String commentAuthor = comment.getUser() != null ? comment.getUser().getLogin() : "";
+
+		BottomSheetCommentMenu sheet =
+				BottomSheetCommentMenu.newInstance(
+						comment.getId(),
+						comment.getBody(),
+						comment.getHtmlUrl(),
+						commentAuthor,
+						currentUser);
+
+		sheet.setCommentMenuListener(
+				new BottomSheetCommentMenu.CommentMenuListener() {
+					@Override
+					public void onEditComment(long commentId, String body) {
+						startEditComment(commentId, body);
+					}
+
+					@Override
+					public void onDeleteComment(long commentId) {
+						new MaterialAlertDialogBuilder(PullRequestDetailsActivity.this)
+								.setTitle(R.string.delete_comment_title)
+								.setMessage(R.string.delete_comment_message)
+								.setPositiveButton(
+										R.string.menuDeleteText,
+										(dialog, which) -> {
+											timelineViewModel.deleteComment(
+													PullRequestDetailsActivity.this, commentId);
+										})
+								.setNegativeButton(R.string.cancelButton, null)
+								.show();
+					}
+
+					@Override
+					public void onQuoteReply(long commentId, String body) {
+						String quoted = "> " + body.replace("\n", "\n> ") + "\n\n";
+						binding.commentReply.etQuickComment.setText(quoted);
+						binding.commentReply.etQuickComment.setSelection(quoted.length());
+						showReplyBox();
+					}
+
+					@Override
+					public void onCopyUrl(String url) {
+						AppUtil.copyToClipboard(
+								PullRequestDetailsActivity.this,
+								url,
+								getString(R.string.copied_to_clipboard));
+					}
+
+					@Override
+					public void onShareComment(String body, String url) {
+						AppUtil.sharingIntent(PullRequestDetailsActivity.this, body + "\n\n" + url);
+					}
+
+					@Override
+					public void onOpenInBrowser(String url) {
+						AppUtil.openUrlInBrowser(PullRequestDetailsActivity.this, url);
+					}
+				});
+
+		sheet.show(getSupportFragmentManager(), "COMMENT_MENU");
 	}
 
 	private void observeViewModel() {

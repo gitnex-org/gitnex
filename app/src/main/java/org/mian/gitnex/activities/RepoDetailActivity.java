@@ -161,6 +161,10 @@ public class RepoDetailActivity extends BaseActivity
 		FilesFragment filesFragment =
 				(FilesFragment) getSupportFragmentManager().findFragmentByTag(TAG_FILES);
 		if (filesFragment != null) filesFragment.refreshFromGlobal();
+
+		PullRequestsFragment pullRequestsFragment =
+				(PullRequestsFragment) getSupportFragmentManager().findFragmentByTag(TAG_PRS);
+		if (pullRequestsFragment != null) pullRequestsFragment.refreshFromGlobal();
 	}
 
 	private void setupProviderFlags() {
@@ -605,6 +609,8 @@ public class RepoDetailActivity extends BaseActivity
 
 					Intent commitIntent = repository.getIntent(this, CommitDetailActivity.class);
 					commitIntent.putExtra("sha", sha);
+					commitIntent.putExtra("owner", repository.getOwner());
+					commitIntent.putExtra("repo", repository.getName());
 					startActivity(commitIntent);
 					break;
 

@@ -284,4 +284,9 @@ public class MyPullRequestsActivity extends BaseActivity {
 			binding = null;
 		}
 	}
+
+	@Override
+	protected void onGlobalRefresh() {
+		refreshData();
+	}
 }

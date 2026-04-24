@@ -388,7 +388,14 @@ public class TimelineAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
 			switch (type.toLowerCase()) {
 				case "label":
 					iconRes = R.drawable.ic_tag;
-					if (item.getLabel() != null) {
+					if (item.getBody().isEmpty()) {
+						text =
+								context.getString(
+										R.string.timeline_removed_label,
+										username,
+										item.getLabel().getName(),
+										timeAgo);
+					} else {
 						text =
 								context.getString(
 										R.string.timeline_added_label,

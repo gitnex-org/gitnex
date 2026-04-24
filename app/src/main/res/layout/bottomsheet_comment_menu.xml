@@ -1,0 +1,338 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content">
+
+    <com.google.android.material.bottomsheet.BottomSheetDragHandleView
+        android:id="@+id/drag_handle"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <TextView
+        android:id="@+id/sheet_title"
+        style="@style/TextAppearance.Material3.HeadlineSmall"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginHorizontal="@dimen/dimen16dp"
+        android:text="@string/commentButtonText"
+        android:textStyle="bold"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/drag_handle" />
+
+    <androidx.core.widget.NestedScrollView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:paddingHorizontal="@dimen/dimen16dp"
+        android:layout_marginTop="@dimen/dimen16dp"
+        android:paddingBottom="@dimen/dimen32dp"
+        android:clipToPadding="false"
+        app:layout_constrainedHeight="true"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/sheet_title">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:weightSum="3">
+
+                <com.google.android.material.card.MaterialCardView
+                    android:id="@+id/edit_comment_card"
+                    style="?attr/materialCardViewFilledStyle"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:layout_margin="@dimen/dimen4dp"
+                    app:cardCornerRadius="@dimen/dimen24dp"
+                    app:cardBackgroundColor="?attr/colorPrimarySurface"
+                    app:strokeWidth="0dp">
+
+                    <LinearLayout
+                        android:id="@+id/edit_comment"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:background="?attr/selectableItemBackground"
+                        android:clickable="true"
+                        android:focusable="true"
+                        android:gravity="center"
+                        android:orientation="vertical"
+                        android:paddingVertical="@dimen/dimen16dp">
+
+                        <ImageView
+                            android:layout_width="@dimen/dimen24dp"
+                            android:layout_height="@dimen/dimen24dp"
+                            android:contentDescription="@string/menuEditText"
+                            android:src="@drawable/ic_edit"
+                            app:tint="?attr/colorOnPrimarySurface" />
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="@dimen/dimen8dp"
+                            android:ellipsize="end"
+                            android:fontFamily="sans-serif-medium"
+                            android:gravity="center"
+                            android:maxLines="1"
+                            android:paddingHorizontal="@dimen/dimen6dp"
+                            android:text="@string/menuEditText"
+                            android:textAppearance="@style/TextAppearance.Material3.BodySmall"
+                            android:textColor="?attr/colorOnPrimarySurface" />
+
+                    </LinearLayout>
+
+                </com.google.android.material.card.MaterialCardView>
+
+                <com.google.android.material.card.MaterialCardView
+                    android:id="@+id/quote_reply_card"
+                    style="?attr/materialCardViewFilledStyle"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:layout_margin="@dimen/dimen4dp"
+                    app:cardCornerRadius="@dimen/dimen24dp"
+                    app:cardBackgroundColor="?attr/colorPrimarySurface"
+                    app:strokeWidth="0dp">
+
+                    <LinearLayout
+                        android:id="@+id/quote_reply"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:background="?attr/selectableItemBackground"
+                        android:clickable="true"
+                        android:focusable="true"
+                        android:gravity="center"
+                        android:orientation="vertical"
+                        android:paddingVertical="@dimen/dimen16dp">
+
+                        <ImageView
+                            android:layout_width="@dimen/dimen24dp"
+                            android:layout_height="@dimen/dimen24dp"
+                            android:contentDescription="@string/menuQuoteText"
+                            android:src="@drawable/ic_comment"
+                            app:tint="?attr/colorOnPrimarySurface" />
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="@dimen/dimen8dp"
+                            android:ellipsize="end"
+                            android:fontFamily="sans-serif-medium"
+                            android:gravity="center"
+                            android:maxLines="1"
+                            android:paddingHorizontal="@dimen/dimen6dp"
+                            android:text="@string/menuQuoteText"
+                            android:textAppearance="@style/TextAppearance.Material3.BodySmall"
+                            android:textColor="?attr/colorOnPrimarySurface" />
+
+                    </LinearLayout>
+
+                </com.google.android.material.card.MaterialCardView>
+
+                <com.google.android.material.card.MaterialCardView
+                    android:id="@+id/delete_comment_card"
+                    style="?attr/materialCardViewFilledStyle"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:layout_margin="@dimen/dimen4dp"
+                    app:cardCornerRadius="@dimen/dimen24dp"
+                    app:cardBackgroundColor="?attr/colorErrorContainer"
+                    app:strokeWidth="0dp">
+
+                    <LinearLayout
+                        android:id="@+id/delete_comment"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:background="?attr/selectableItemBackground"
+                        android:clickable="true"
+                        android:focusable="true"
+                        android:gravity="center"
+                        android:orientation="vertical"
+                        android:paddingVertical="@dimen/dimen16dp">
+
+                        <ImageView
+                            android:layout_width="@dimen/dimen24dp"
+                            android:layout_height="@dimen/dimen24dp"
+                            android:contentDescription="@string/menuDeleteText"
+                            android:src="@drawable/ic_delete"
+                            app:tint="?attr/colorOnErrorContainer" />
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="@dimen/dimen8dp"
+                            android:ellipsize="end"
+                            android:fontFamily="sans-serif-medium"
+                            android:gravity="center"
+                            android:maxLines="1"
+                            android:paddingHorizontal="@dimen/dimen6dp"
+                            android:text="@string/menuDeleteText"
+                            android:textAppearance="@style/TextAppearance.Material3.BodySmall"
+                            android:textColor="?attr/colorOnErrorContainer" />
+
+                    </LinearLayout>
+
+                </com.google.android.material.card.MaterialCardView>
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/dimen8dp"
+                android:orientation="horizontal"
+                android:weightSum="3">
+
+                <com.google.android.material.card.MaterialCardView
+                    android:id="@+id/copy_url_card"
+                    style="?attr/materialCardViewFilledStyle"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:layout_margin="@dimen/dimen4dp"
+                    app:cardCornerRadius="@dimen/dimen24dp"
+                    app:cardBackgroundColor="?attr/colorPrimarySurface"
+                    app:strokeWidth="0dp">
+
+                    <LinearLayout
+                        android:id="@+id/copy_url"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:background="?attr/selectableItemBackground"
+                        android:clickable="true"
+                        android:focusable="true"
+                        android:gravity="center"
+                        android:orientation="vertical"
+                        android:paddingVertical="@dimen/dimen16dp">
+
+                        <ImageView
+                            android:layout_width="@dimen/dimen24dp"
+                            android:layout_height="@dimen/dimen24dp"
+                            android:contentDescription="@string/genericCopyUrl"
+                            android:src="@drawable/ic_copy"
+                            app:tint="?attr/colorOnPrimarySurface" />
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="@dimen/dimen8dp"
+                            android:ellipsize="end"
+                            android:fontFamily="sans-serif-medium"
+                            android:gravity="center"
+                            android:maxLines="1"
+                            android:paddingHorizontal="@dimen/dimen6dp"
+                            android:text="@string/genericCopyUrl"
+                            android:textAppearance="@style/TextAppearance.Material3.BodySmall"
+                            android:textColor="?attr/colorOnPrimarySurface" />
+
+                    </LinearLayout>
+
+                </com.google.android.material.card.MaterialCardView>
+
+                <com.google.android.material.card.MaterialCardView
+                    android:id="@+id/share_comment_card"
+                    style="?attr/materialCardViewFilledStyle"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:layout_margin="@dimen/dimen4dp"
+                    app:cardCornerRadius="@dimen/dimen24dp"
+                    app:cardBackgroundColor="?attr/colorPrimarySurface"
+                    app:strokeWidth="0dp">
+
+                    <LinearLayout
+                        android:id="@+id/share_comment"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:background="?attr/selectableItemBackground"
+                        android:clickable="true"
+                        android:focusable="true"
+                        android:gravity="center"
+                        android:orientation="vertical"
+                        android:paddingVertical="@dimen/dimen16dp">
+
+                        <ImageView
+                            android:layout_width="@dimen/dimen24dp"
+                            android:layout_height="@dimen/dimen24dp"
+                            android:contentDescription="@string/share"
+                            android:src="@drawable/ic_share"
+                            app:tint="?attr/colorOnPrimarySurface" />
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="@dimen/dimen8dp"
+                            android:ellipsize="end"
+                            android:fontFamily="sans-serif-medium"
+                            android:gravity="center"
+                            android:maxLines="1"
+                            android:paddingHorizontal="@dimen/dimen6dp"
+                            android:text="@string/share"
+                            android:textAppearance="@style/TextAppearance.Material3.BodySmall"
+                            android:textColor="?attr/colorOnPrimarySurface" />
+
+                    </LinearLayout>
+
+                </com.google.android.material.card.MaterialCardView>
+
+                <com.google.android.material.card.MaterialCardView
+                    android:id="@+id/open_browser_card"
+                    style="?attr/materialCardViewFilledStyle"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:layout_margin="@dimen/dimen4dp"
+                    app:cardCornerRadius="@dimen/dimen24dp"
+                    app:cardBackgroundColor="?attr/colorPrimarySurface"
+                    app:strokeWidth="0dp">
+
+                    <LinearLayout
+                        android:id="@+id/open_browser"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:background="?attr/selectableItemBackground"
+                        android:clickable="true"
+                        android:focusable="true"
+                        android:gravity="center"
+                        android:orientation="vertical"
+                        android:paddingVertical="@dimen/dimen16dp">
+
+                        <ImageView
+                            android:layout_width="@dimen/dimen24dp"
+                            android:layout_height="@dimen/dimen24dp"
+                            android:contentDescription="@string/openInBrowser"
+                            android:src="@drawable/ic_browser"
+                            app:tint="?attr/colorOnPrimarySurface" />
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="@dimen/dimen8dp"
+                            android:ellipsize="end"
+                            android:fontFamily="sans-serif-medium"
+                            android:gravity="center"
+                            android:maxLines="1"
+                            android:paddingHorizontal="@dimen/dimen6dp"
+                            android:text="@string/openInBrowser"
+                            android:textAppearance="@style/TextAppearance.Material3.BodySmall"
+                            android:textColor="?attr/colorOnPrimarySurface" />
+
+                    </LinearLayout>
+
+                </com.google.android.material.card.MaterialCardView>
+
+            </LinearLayout>
+
+        </LinearLayout>
+
+    </androidx.core.widget.NestedScrollView>
+
+</androidx.constraintlayout.widget.ConstraintLayout>

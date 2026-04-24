@@ -768,6 +768,15 @@ public class AppUtil {
 		}
 	}
 
+	public static void showKeyboard(Activity activity, View view) {
+		if (activity != null && view != null) {
+			view.requestFocus();
+			InputMethodManager imm =
+					(InputMethodManager) activity.getSystemService(Context.INPUT_METHOD_SERVICE);
+			imm.showSoftInput(view, InputMethodManager.SHOW_IMPLICIT);
+		}
+	}
+
 	public static boolean isLightColor(int color) {
 		double luminance =
 				(0.299 * Color.red(color) + 0.587 * Color.green(color) + 0.114 * Color.blue(color))

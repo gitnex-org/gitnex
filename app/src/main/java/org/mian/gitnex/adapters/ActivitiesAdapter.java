@@ -12,6 +12,7 @@ import android.view.ViewGroup;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 import androidx.annotation.NonNull;
+import androidx.core.content.ContextCompat;
 import androidx.core.graphics.ColorUtils;
 import androidx.recyclerview.widget.RecyclerView;
 import com.bumptech.glide.Glide;
@@ -42,9 +43,7 @@ public class ActivitiesAdapter extends RecyclerView.Adapter<ActivitiesAdapter.Da
 
 	private final Context context;
 	private List<Activity> activityList;
-	private OnLoadMoreListener loadMoreListener;
 	private boolean isLoading = false;
-	private boolean isMoreDataAvailable = true;
 	public boolean isUserOrg = false;
 
 	public ActivitiesAdapter(List<Activity> dataList, Context ctx) {
@@ -61,12 +60,8 @@ public class ActivitiesAdapter extends RecyclerView.Adapter<ActivitiesAdapter.Da
 
 	@Override
 	public void onBindViewHolder(@NonNull DashboardHolder holder, int position) {
-		if (position >= getItemCount() - 1
-				&& isMoreDataAvailable
-				&& !isLoading
-				&& loadMoreListener != null) {
+		if (position >= getItemCount() - 1 && !isLoading) {
 			isLoading = true;
-			loadMoreListener.onLoadMore();
 		}
 		holder.bindData(activityList.get(position));
 		holder.binding.getRoot().updateAppearance(position, getItemCount());
@@ -82,23 +77,6 @@ public class ActivitiesAdapter extends RecyclerView.Adapter<ActivitiesAdapter.Da
 		this.activityList = list;
 		this.isLoading = false;
 		notifyDataSetChanged();
-	}
-
-	public void setMoreDataAvailable(boolean moreDataAvailable) {
-		this.isMoreDataAvailable = moreDataAvailable;
-		if (!isMoreDataAvailable && loadMoreListener != null) {
-			loadMoreListener.onLoadFinished();
-		}
-	}
-
-	public void setLoadMoreListener(OnLoadMoreListener loadMoreListener) {
-		this.loadMoreListener = loadMoreListener;
-	}
-
-	public interface OnLoadMoreListener {
-		void onLoadMore();
-
-		void onLoadFinished();
 	}
 
 	public class DashboardHolder extends RecyclerView.ViewHolder {
@@ -387,8 +365,7 @@ public class ActivitiesAdapter extends RecyclerView.Adapter<ActivitiesAdapter.Da
 				binding.dashTextFrame.setVisibility(View.VISIBLE);
 				binding.dashTextFrame.setOrientation(LinearLayout.VERTICAL);
 
-				int currentTextColor = binding.typeDetails.getCurrentTextColor();
-				int alphaColor = ColorUtils.setAlphaComponent(currentTextColor, 179);
+				int commitTextColor = ContextCompat.getColor(context, R.color.lightBlue);
 
 				for (int i = 0; i < Math.min(commitsArray.length(), 10); i++) {
 					JSONObject commitItem = commitsArray.getJSONObject(i);
@@ -400,7 +377,7 @@ public class ActivitiesAdapter extends RecyclerView.Adapter<ActivitiesAdapter.Da
 					SpannableStringBuilder shaBuilder =
 							new SpannableStringBuilder(displaySha + " " + message);
 					shaBuilder.setSpan(
-							new ForegroundColorSpan(alphaColor),
+							new ForegroundColorSpan(commitTextColor),
 							0,
 							displaySha.length(),
 							Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);

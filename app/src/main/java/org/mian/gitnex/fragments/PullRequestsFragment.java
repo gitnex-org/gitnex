@@ -166,6 +166,10 @@ public class PullRequestsFragment extends Fragment implements RepoDetailActivity
 		}
 	}
 
+	public void refreshFromGlobal() {
+		refreshData();
+	}
+
 	private void setupAdapters() {
 		adapter = new PullRequestsAdapter(requireContext(), new ArrayList<>());
 		adapter.setOnPrClickListener(

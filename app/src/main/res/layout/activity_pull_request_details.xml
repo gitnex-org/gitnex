@@ -51,11 +51,26 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content" />
 
+                <View
+                    android:id="@+id/scroll_spacer"
+                    android:layout_width="match_parent"
+                    android:layout_height="0dp" />
+
             </LinearLayout>
 
         </androidx.core.widget.NestedScrollView>
 
     </androidx.swiperefreshlayout.widget.SwipeRefreshLayout>
+
+    <include
+        android:id="@+id/comment_reply"
+        layout="@layout/layout_comment_reply"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_gravity="bottom"
+        android:layout_marginHorizontal="@dimen/dimen12dp"
+        android:layout_marginBottom="@dimen/dimen36dp"
+        android:visibility="gone" />
 
     <com.google.android.material.loadingindicator.LoadingIndicator
         android:id="@+id/expressive_loader"
@@ -98,6 +113,20 @@
                 android:insetRight="@dimen/dimen0dp"
                 android:layout_marginEnd="@dimen/dimen4dp"
                 app:icon="@drawable/ic_arrow_back"
+                app:iconGravity="textStart"
+                app:iconPadding="@dimen/dimen0dp" />
+
+            <com.google.android.material.button.MaterialButton
+                android:id="@+id/btn_reply"
+                style="?attr/materialIconButtonStyle"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:backgroundTint="@android:color/transparent"
+                android:contentDescription="@string/commentButtonText"
+                android:insetLeft="@dimen/dimen0dp"
+                android:insetRight="@dimen/dimen0dp"
+                android:layout_marginEnd="@dimen/dimen4dp"
+                app:icon="@drawable/ic_comment"
                 app:iconGravity="textStart"
                 app:iconPadding="@dimen/dimen0dp" />
 
