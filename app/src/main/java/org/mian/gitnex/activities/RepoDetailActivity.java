@@ -70,6 +70,7 @@ public class RepoDetailActivity extends BaseActivity
 	private boolean isStarred = false;
 	private boolean isWatched = false;
 	private boolean isGiteaRepoActionsVisible = false;
+	private boolean hasActions = false;
 	private boolean adminStatus = false;
 	private int activeTabId = R.id.btn_nav_details;
 	private BadgeDrawable issuesBadge;
@@ -126,7 +127,6 @@ public class RepoDetailActivity extends BaseActivity
 
 		UIHelper.applyEdgeToEdge(this, binding.dockedToolbar, null, null, null);
 
-		setupProviderFlags();
 		observeViewModel();
 		setupDockListeners();
 
@@ -146,6 +146,8 @@ public class RepoDetailActivity extends BaseActivity
 							String actionId = bundle.getString("repo_hub_item_id");
 							if (actionId != null) handleHubAction(actionId);
 						});
+
+		setupProviderFlags();
 	}
 
 	@Override
@@ -175,7 +177,7 @@ public class RepoDetailActivity extends BaseActivity
 			Version currentVersion =
 					Version.valid(serverVersion) ? new Version(serverVersion) : new Version("0.0");
 			isGiteaRepoActionsVisible =
-					"gitea".equals(provider) && !currentVersion.less(minVersion);
+					"gitea".equals(provider) && !currentVersion.less(minVersion) && hasActions;
 		}
 	}
 
@@ -300,6 +302,8 @@ public class RepoDetailActivity extends BaseActivity
 			this.adminStatus = Boolean.TRUE.equals(repo.getPermissions().isAdmin());
 		}
 
+		applyRepositoryFeatures(repo);
+
 		if (fm.findFragmentByTag(TAG_INFO) == null) {
 			setupFragments();
 			Intent intent = getIntent();
@@ -377,6 +381,20 @@ public class RepoDetailActivity extends BaseActivity
 				break;
 			}
 		}
+	}
+
+	private void applyRepositoryFeatures(Repository repo) {
+		binding.btnNavFiles.setVisibility(repo.isHasCode() ? View.VISIBLE : View.GONE);
+		binding.btnNavIssues.setVisibility(repo.isHasIssues() ? View.VISIBLE : View.GONE);
+		binding.btnNavPrs.setVisibility(repo.isHasPullRequests() ? View.VISIBLE : View.GONE);
+		binding.btnNavReleases.setVisibility(repo.isHasReleases() ? View.VISIBLE : View.GONE);
+		binding.btnNavWiki.setVisibility(repo.isHasWiki() ? View.VISIBLE : View.GONE);
+		binding.btnNavMilestones.setVisibility(
+				repo.isHasIssues() || repo.isHasPullRequests() ? View.VISIBLE : View.GONE);
+		binding.btnNavLabels.setVisibility(
+				repo.isHasIssues() || repo.isHasPullRequests() ? View.VISIBLE : View.GONE);
+		binding.btnNavCollaborators.setVisibility(!repo.isInternal() ? View.VISIBLE : View.GONE);
+		hasActions = repo.isHasActions();
 	}
 
 	private void setupDockListeners() {

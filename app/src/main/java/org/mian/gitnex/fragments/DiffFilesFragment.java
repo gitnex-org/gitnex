@@ -1,6 +1,7 @@
 package org.mian.gitnex.fragments;
 
 import android.content.Context;
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -16,7 +17,6 @@ import org.mian.gitnex.adapters.DiffFilesAdapter;
 import org.mian.gitnex.databinding.FragmentDiffFilesBinding;
 import org.mian.gitnex.helpers.Toasty;
 import org.mian.gitnex.helpers.UIHelper;
-import org.mian.gitnex.helpers.contexts.IssueContext;
 import org.mian.gitnex.viewmodels.PullRequestDiffViewModel;
 
 /**
@@ -29,6 +29,9 @@ public class DiffFilesFragment extends Fragment {
 	private PullRequestDiffViewModel viewModel;
 	private DiffFilesAdapter adapter;
 	private Context ctx;
+	private String owner;
+	private String repo;
+	private long prNumber;
 
 	public DiffFilesFragment() {}
 
@@ -49,34 +52,25 @@ public class DiffFilesFragment extends Fragment {
 		binding = FragmentDiffFilesBinding.inflate(inflater, container, false);
 		ctx = requireContext();
 
+		Intent intent = requireActivity().getIntent();
+		owner = intent.getStringExtra("owner");
+		repo = intent.getStringExtra("repo");
+		prNumber = intent.getLongExtra("prNumber", -1);
+
 		viewModel = new ViewModelProvider(requireActivity()).get(PullRequestDiffViewModel.class);
 
 		setupRecyclerView();
 		observeViewModel();
 
-		IssueContext issue = IssueContext.fromIntent(requireActivity().getIntent());
 		if (viewModel.getFiles().getValue() == null || viewModel.getFiles().getValue().isEmpty()) {
-			viewModel.fetchPRFiles(
-					ctx,
-					issue.getRepository().getOwner(),
-					issue.getRepository().getName(),
-					issue.getIssueIndex(),
-					getResources());
+			viewModel.fetchPRFiles(ctx, owner, repo, prNumber, getResources());
 		}
 
 		return binding.getRoot();
 	}
 
 	private void setupRecyclerView() {
-		IssueContext issue = IssueContext.fromIntent(requireActivity().getIntent());
-		adapter =
-				new DiffFilesAdapter(
-						ctx,
-						new ArrayList<>(),
-						issue.getRepository().getOwner(),
-						issue.getRepository().getName(),
-						null,
-						"pull");
+		adapter = new DiffFilesAdapter(ctx, new ArrayList<>(), owner, repo, null, "pull", prNumber);
 
 		binding.diffFiles.setHasFixedSize(true);
 		binding.diffFiles.setLayoutManager(new LinearLayoutManager(ctx));

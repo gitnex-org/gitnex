@@ -94,7 +94,7 @@ public class CommitDetailFragment extends Fragment {
 	private void setupRecyclerView() {
 		adapter =
 				new DiffFilesAdapter(
-						requireContext(), fileDiffViews, repoOwner, repoName, sha, "commit");
+						requireContext(), fileDiffViews, repoOwner, repoName, sha, "commit", -1);
 		binding.diffFiles.setHasFixedSize(true);
 		binding.diffFiles.setLayoutManager(new LinearLayoutManager(requireContext()));
 		binding.diffFiles.setAdapter(adapter);

@@ -1,5 +1,6 @@
 package org.mian.gitnex.adapters;
 
+import android.annotation.SuppressLint;
 import android.view.LayoutInflater;
 import android.view.ViewGroup;
 import androidx.annotation.NonNull;
@@ -65,6 +66,17 @@ public class TrackedTimeAdapter
 						deleteClickListener.onDeleteClick(time, position);
 					}
 				});
+
+		holder.binding.getRoot().updateAppearance(position, getItemCount());
+	}
+
+	@SuppressLint("NotifyDataSetChanged")
+	public void updateList(List<TrackedTime> list) {
+		trackedTimeList.clear();
+		if (list != null) {
+			trackedTimeList.addAll(list);
+		}
+		notifyDataSetChanged();
 	}
 
 	@Override

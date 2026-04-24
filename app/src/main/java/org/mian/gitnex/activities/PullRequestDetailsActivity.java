@@ -60,6 +60,9 @@ import org.mian.gitnex.databinding.LayoutPrHeaderBinding;
 import org.mian.gitnex.fragments.BottomSheetCommentMenu;
 import org.mian.gitnex.fragments.BottomSheetContentViewer;
 import org.mian.gitnex.fragments.BottomSheetCreatePullRequest;
+import org.mian.gitnex.fragments.BottomSheetDependencies;
+import org.mian.gitnex.fragments.BottomSheetPrMenu;
+import org.mian.gitnex.fragments.BottomSheetTrackedTime;
 import org.mian.gitnex.helpers.AlertDialogs;
 import org.mian.gitnex.helpers.AppUtil;
 import org.mian.gitnex.helpers.AvatarGenerator;
@@ -216,7 +219,68 @@ public class PullRequestDetailsActivity extends BaseActivity {
 
 		binding.btnMenu.setOnClickListener(
 				v -> {
-					// TODO: Open global menu bottom sheet
+					PullRequest pr = viewModel.getPrData().getValue();
+					if (pr == null) return;
+
+					BottomSheetPrMenu sheet = BottomSheetPrMenu.newInstance(pr);
+
+					sheet.setPrMenuListener(
+							new BottomSheetPrMenu.PrMenuListener() {
+								@Override
+								public void onFiles() {
+									Intent intent =
+											new Intent(
+													PullRequestDetailsActivity.this,
+													PullRequestDiffActivity.class);
+									intent.putExtra("owner", owner);
+									intent.putExtra("repo", repo);
+									intent.putExtra("prNumber", prNumber);
+									startActivity(intent);
+								}
+
+								@Override
+								public void onPrActions() {
+									// Open PR Actions sub-sheet
+								}
+
+								@Override
+								public void onDependencies() {
+									BottomSheetDependencies sheet =
+											BottomSheetDependencies.newInstance(
+													owner, repo, prNumber);
+									sheet.show(getSupportFragmentManager(), "DEPENDENCIES");
+								}
+
+								@Override
+								public void onTrackedTime() {
+									BottomSheetTrackedTime sheet =
+											BottomSheetTrackedTime.newInstance(
+													owner, repo, prNumber);
+									sheet.show(getSupportFragmentManager(), "TRACKED_TIME");
+								}
+
+								@Override
+								public void onCopyUrl() {
+									AppUtil.copyToClipboard(
+											PullRequestDetailsActivity.this,
+											pr.getHtmlUrl(),
+											getString(R.string.copied_to_clipboard));
+								}
+
+								@Override
+								public void onShare() {
+									AppUtil.sharingIntent(
+											PullRequestDetailsActivity.this, pr.getHtmlUrl());
+								}
+
+								@Override
+								public void onOpenInBrowser() {
+									AppUtil.openUrlInBrowser(
+											PullRequestDetailsActivity.this, pr.getHtmlUrl());
+								}
+							});
+
+					sheet.show(getSupportFragmentManager(), "PR_MENU");
 				});
 
 		binding.pullToRefresh.setOnRefreshListener(
@@ -493,7 +557,7 @@ public class PullRequestDetailsActivity extends BaseActivity {
 								scrollTimelineToBottom();
 								timelineViewModel.clearSubmittedComment();
 								binding.timelineSection.timelineRecyclerView.postDelayed(
-										this::scrollTimelineToBottom, 800);
+										this::scrollTimelineToBottom, 1500);
 							}
 						});
 

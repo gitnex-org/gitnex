@@ -246,18 +246,18 @@ public class BottomSheetSingleIssueFragment extends BottomSheetDialogFragment {
 
 		binding.manageDependencies.setOnClickListener(
 				v -> {
-					BottomSheetIssueDependenciesFragment dependenciesSheet =
-							BottomSheetIssueDependenciesFragment.newInstance(issue);
-					dependenciesSheet.show(
-							getParentFragmentManager(), "issueDependenciesBottomSheet");
+					// BottomSheetDependencies dependenciesSheet =
+					//		BottomSheetDependencies.newInstance(issue);
+					// dependenciesSheet.show(
+					//		getParentFragmentManager(), "issueDependenciesBottomSheet");
 					dismiss();
 				});
 
 		binding.trackedTime.setOnClickListener(
 				v -> {
-					BottomSheetTrackedTimeFragment trackedTimeSheet =
-							BottomSheetTrackedTimeFragment.newInstance(issue);
-					trackedTimeSheet.show(getParentFragmentManager(), "trackedTimeBottomSheet");
+					// BottomSheetTrackedTime trackedTimeSheet =
+					//		BottomSheetTrackedTime.newInstance(issue);
+					// trackedTimeSheet.show(getParentFragmentManager(), "trackedTimeBottomSheet");
 					dismiss();
 				});
 

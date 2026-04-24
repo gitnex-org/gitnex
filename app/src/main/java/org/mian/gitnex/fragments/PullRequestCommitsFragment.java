@@ -26,7 +26,6 @@ import org.mian.gitnex.helpers.Constants;
 import org.mian.gitnex.helpers.EndlessRecyclerViewScrollListener;
 import org.mian.gitnex.helpers.Toasty;
 import org.mian.gitnex.helpers.UIHelper;
-import org.mian.gitnex.helpers.contexts.IssueContext;
 import org.mian.gitnex.viewmodels.PullRequestDiffViewModel;
 
 /**
@@ -38,9 +37,11 @@ public class PullRequestCommitsFragment extends Fragment {
 	private FragmentPullRequestCommitsBinding binding;
 	private PullRequestDiffViewModel viewModel;
 	private CommitsAdapter adapter;
-	private IssueContext issue;
 	private int resultLimit;
 	private Context ctx;
+	private String owner;
+	private String repo;
+	private long prNumber;
 
 	public PullRequestCommitsFragment() {}
 
@@ -60,8 +61,12 @@ public class PullRequestCommitsFragment extends Fragment {
 			@NonNull LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
 		binding = FragmentPullRequestCommitsBinding.inflate(inflater, container, false);
 		ctx = requireContext();
-		issue = IssueContext.fromIntent(requireActivity().getIntent());
 		resultLimit = Constants.getCurrentResultLimit(ctx);
+
+		Intent intent = requireActivity().getIntent();
+		owner = intent.getStringExtra("owner");
+		repo = intent.getStringExtra("repo");
+		prNumber = intent.getLongExtra("prNumber", -1);
 
 		viewModel = new ViewModelProvider(requireActivity()).get(PullRequestDiffViewModel.class);
 
@@ -127,10 +132,10 @@ public class PullRequestCommitsFragment extends Fragment {
 						ctx,
 						new ArrayList<>(),
 						commit -> {
-							Intent intent =
-									issue.getRepository()
-											.getIntent(ctx, CommitDetailActivity.class);
+							Intent intent = new Intent(ctx, CommitDetailActivity.class);
 							intent.putExtra("sha", commit.getSha());
+							intent.putExtra("owner", owner);
+							intent.putExtra("repo", repo);
 							startActivity(intent);
 						});
 
@@ -142,25 +147,13 @@ public class PullRequestCommitsFragment extends Fragment {
 				new EndlessRecyclerViewScrollListener(layoutManager) {
 					@Override
 					public void onLoadMore(int page, int totalItemsCount, RecyclerView view) {
-						viewModel.fetchPRCommits(
-								ctx,
-								issue.getRepository().getOwner(),
-								issue.getRepository().getName(),
-								issue.getIssueIndex(),
-								resultLimit,
-								false);
+						viewModel.fetchPRCommits(ctx, owner, repo, prNumber, resultLimit, false);
 					}
 				});
 	}
 
 	private void refreshData() {
-		viewModel.fetchPRCommits(
-				ctx,
-				issue.getRepository().getOwner(),
-				issue.getRepository().getName(),
-				issue.getIssueIndex(),
-				resultLimit,
-				true);
+		viewModel.fetchPRCommits(ctx, owner, repo, prNumber, resultLimit, true);
 	}
 
 	private void setupSearch() {

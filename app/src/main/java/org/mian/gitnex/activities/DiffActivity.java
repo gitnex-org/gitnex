@@ -27,7 +27,7 @@ public class DiffActivity extends BaseActivity {
 	private DiffAdapter adapter;
 	private final List<String> diffLines = new ArrayList<>();
 	private String owner, repo, sha, filePath, type;
-	private int prId;
+	private long prNumber;
 
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
@@ -42,7 +42,7 @@ public class DiffActivity extends BaseActivity {
 		repo = getIntent().getStringExtra("repo");
 		sha = getIntent().getStringExtra("sha");
 		filePath = getIntent().getStringExtra("file_path");
-		prId = getIntent().getIntExtra("pr_id", 0);
+		prNumber = getIntent().getLongExtra("prNumber", -1);
 
 		setupUI();
 		loadData();
@@ -64,7 +64,7 @@ public class DiffActivity extends BaseActivity {
 		if ("pull".equalsIgnoreCase(type)) {
 			call =
 					RetrofitClient.getApiInterface(this)
-							.repoDownloadPullDiffOrPatch(owner, repo, (long) prId, "diff", false);
+							.repoDownloadPullDiffOrPatch(owner, repo, prNumber, "diff", false);
 		} else {
 			call =
 					RetrofitClient.getApiInterface(this)

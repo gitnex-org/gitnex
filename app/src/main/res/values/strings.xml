@@ -699,7 +699,7 @@
     <string name="fileDiffViewHeader">%1$s Files Changed</string>
     <string name="fileDiffViewHeaderSingle">%1$s File Changed</string>
     <string name="updatePullRequestText">Update Pull Request</string>
-    <string name="openFileDiffText">Show Changed Files</string>
+    <string name="openFileDiffText">Files &amp; Commits</string>
     <string name="mergePullRequestText">Merge Pull Request</string>
     <string name="deleteBranchSuccess">Branch deleted successfully</string>
     <string name="deleteBranchError">Could not delete branch</string>
@@ -1229,6 +1229,9 @@
     <string name="download_complete_desc">%s downloaded successfully</string>
     <string name="download_failed_title">Download Failed</string>
     <string name="download_failed_desc">Failed to download %s</string>
+    <string name="pr_actions">Pull Request Actions</string>
+    <string name="delete_comment_title">Delete Comment</string>
+    <string name="delete_comment_message">Are you sure you want to delete this comment?</string>
 
 
     <string name="timeline_added_label">%s added the %s label • %s</string>
@@ -1242,8 +1245,6 @@
     <string name="timeline_pushed_commits">%s pushed %d commits • %s</string>
     <string name="timeline_unassigned">%s unassigned %s • %s</string>
     <string name="timeline_removed_label">%s removed the %s label • %s</string>
-    <string name="delete_comment_title">Delete Comment</string>
-    <string name="delete_comment_message">Are you sure you want to delete this comment?</string>
 
     <string name="time_in_moments">in moments</string>
     <string name="time_in_minute">in %d minute</string>

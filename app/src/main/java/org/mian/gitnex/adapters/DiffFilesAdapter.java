@@ -28,6 +28,7 @@ public class DiffFilesAdapter extends RecyclerView.Adapter<DiffFilesAdapter.File
 	private final String repoOwner;
 	private final String repoName;
 	private final String sha;
+	private final long prNumber;
 
 	public DiffFilesAdapter(
 			Context context,
@@ -35,13 +36,15 @@ public class DiffFilesAdapter extends RecyclerView.Adapter<DiffFilesAdapter.File
 			String repoOwner,
 			String repoName,
 			String sha,
-			String fragmentType) {
+			String fragmentType,
+			long prNumber) {
 		this.context = context;
 		this.fileDiffViews = fileDiffViews;
 		this.repoOwner = repoOwner;
 		this.repoName = repoName;
 		this.sha = sha;
 		this.fragmentType = fragmentType;
+		this.prNumber = prNumber;
 	}
 
 	@NonNull @Override
@@ -85,6 +88,7 @@ public class DiffFilesAdapter extends RecyclerView.Adapter<DiffFilesAdapter.File
 						intent.putExtra("owner", repoOwner);
 						intent.putExtra("repo", repoName);
 						intent.putExtra("sha", sha);
+						intent.putExtra("prNumber", prNumber);
 
 						intent.putExtra("type", fragmentType);
 						intent.putExtra("file_path", currentItem.getFileName());
