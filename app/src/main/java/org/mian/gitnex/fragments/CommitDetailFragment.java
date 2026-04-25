@@ -30,11 +30,11 @@ import org.mian.gitnex.adapters.CommitStatusesAdapter;
 import org.mian.gitnex.adapters.DiffFilesAdapter;
 import org.mian.gitnex.clients.RetrofitClient;
 import org.mian.gitnex.databinding.FragmentCommitDetailsBinding;
-import org.mian.gitnex.helpers.AlertDialogs;
 import org.mian.gitnex.helpers.FileDiffView;
 import org.mian.gitnex.helpers.ParseDiff;
 import org.mian.gitnex.helpers.TimeHelper;
 import org.mian.gitnex.helpers.Toasty;
+import org.mian.gitnex.helpers.TokenAuthorizationDialog;
 import org.mian.gitnex.helpers.UIHelper;
 import retrofit2.Call;
 import retrofit2.Callback;
@@ -371,7 +371,7 @@ public class CommitDetailFragment extends Fragment {
 
 	private void handleErrorCodes(int code) {
 		switch (code) {
-			case 401 -> AlertDialogs.authorizationTokenRevokedDialog(requireContext());
+			case 401 -> TokenAuthorizationDialog.authorizationTokenRevokedDialog(requireContext());
 			case 403 -> Toasty.show(requireContext(), getString(R.string.authorizeError));
 			case 404 -> Toasty.show(requireContext(), getString(R.string.apiNotFound));
 			default -> showGenericError();

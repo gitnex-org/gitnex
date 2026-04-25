@@ -384,7 +384,9 @@ public class RepoDetailActivity extends BaseActivity
 	}
 
 	private void applyRepositoryFeatures(Repository repo) {
-		binding.btnNavFiles.setVisibility(repo.isHasCode() ? View.VISIBLE : View.GONE);
+		if (repo.isHasCode() != null) {
+			binding.btnNavFiles.setVisibility(repo.isHasCode() ? View.VISIBLE : View.GONE);
+		}
 		binding.btnNavIssues.setVisibility(repo.isHasIssues() ? View.VISIBLE : View.GONE);
 		binding.btnNavPrs.setVisibility(repo.isHasPullRequests() ? View.VISIBLE : View.GONE);
 		binding.btnNavReleases.setVisibility(repo.isHasReleases() ? View.VISIBLE : View.GONE);
@@ -394,7 +396,9 @@ public class RepoDetailActivity extends BaseActivity
 		binding.btnNavLabels.setVisibility(
 				repo.isHasIssues() || repo.isHasPullRequests() ? View.VISIBLE : View.GONE);
 		binding.btnNavCollaborators.setVisibility(!repo.isInternal() ? View.VISIBLE : View.GONE);
-		hasActions = repo.isHasActions();
+		if (repo.isHasActions() != null) {
+			hasActions = repo.isHasActions();
+		}
 	}
 
 	private void setupDockListeners() {

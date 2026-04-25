@@ -25,11 +25,11 @@ import java.io.InputStream;
 import org.mian.gitnex.R;
 import org.mian.gitnex.activities.BaseActivity;
 import org.mian.gitnex.databinding.BottomsheetCreateFileBinding;
-import org.mian.gitnex.helpers.AlertDialogs;
 import org.mian.gitnex.helpers.AppUIStateManager;
 import org.mian.gitnex.helpers.AppUtil;
 import org.mian.gitnex.helpers.FileIcon;
 import org.mian.gitnex.helpers.Toasty;
+import org.mian.gitnex.helpers.TokenAuthorizationDialog;
 import org.mian.gitnex.helpers.contexts.RepositoryContext;
 import org.mian.gitnex.viewmodels.FilesViewModel;
 
@@ -559,7 +559,8 @@ public class BottomSheetCreateFile extends BottomSheetDialogFragment {
 								pendingPrTitle = null;
 
 								if (error.equals("UNAUTHORIZED")) {
-									AlertDialogs.authorizationTokenRevokedDialog(requireContext());
+									TokenAuthorizationDialog.authorizationTokenRevokedDialog(
+											requireContext());
 								} else {
 									Toasty.show(requireContext(), error);
 								}

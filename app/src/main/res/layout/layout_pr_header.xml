@@ -19,6 +19,20 @@
         tools:src="@tools:sample/avatars" />
 
     <ImageView
+        android:id="@+id/prStateIcon"
+        android:layout_width="@dimen/dimen16dp"
+        android:layout_height="@dimen/dimen16dp"
+        android:layout_marginStart="@dimen/dimen8dp"
+        android:contentDescription="@string/generalImgContentText"
+        android:visibility="gone"
+        app:layout_constraintBottom_toBottomOf="@id/status_badge_img"
+        app:layout_constraintStart_toEndOf="@id/status_badge_img"
+        app:layout_constraintTop_toTopOf="@id/status_badge_img"
+        app:srcCompat="@drawable/ic_draft"
+        app:tint="?attr/iconsColor"
+        tools:visibility="visible" />
+
+    <ImageView
         android:id="@+id/btn_edit"
         android:layout_width="@dimen/dimen28dp"
         android:layout_height="@dimen/dimen28dp"

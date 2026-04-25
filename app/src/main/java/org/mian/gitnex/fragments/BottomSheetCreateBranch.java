@@ -12,9 +12,9 @@ import com.google.android.material.bottomsheet.BottomSheetDialog;
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment;
 import org.mian.gitnex.R;
 import org.mian.gitnex.databinding.BottomsheetCreateBranchBinding;
-import org.mian.gitnex.helpers.AlertDialogs;
 import org.mian.gitnex.helpers.AppUtil;
 import org.mian.gitnex.helpers.Toasty;
+import org.mian.gitnex.helpers.TokenAuthorizationDialog;
 import org.mian.gitnex.viewmodels.FilesViewModel;
 
 /**
@@ -153,7 +153,8 @@ public class BottomSheetCreateBranch extends BottomSheetDialogFragment {
 						error -> {
 							if (error != null && !error.isEmpty()) {
 								if (error.equals("UNAUTHORIZED")) {
-									AlertDialogs.authorizationTokenRevokedDialog(requireContext());
+									TokenAuthorizationDialog.authorizationTokenRevokedDialog(
+											requireContext());
 								} else {
 									Toasty.show(requireContext(), error);
 								}

@@ -13,13 +13,10 @@ import com.google.android.material.bottomsheet.BottomSheetDialogFragment;
 import java.util.Objects;
 import org.mian.gitnex.R;
 import org.mian.gitnex.actions.IssueActions;
-import org.mian.gitnex.actions.PullRequestActions;
 import org.mian.gitnex.activities.BaseActivity;
 import org.mian.gitnex.activities.IssueDetailActivity;
-import org.mian.gitnex.activities.MergePullRequestActivity;
 import org.mian.gitnex.activities.PullRequestDiffActivity;
 import org.mian.gitnex.databinding.BottomSheetSingleIssueBinding;
-import org.mian.gitnex.helpers.AlertDialogs;
 import org.mian.gitnex.helpers.AppUtil;
 import org.mian.gitnex.helpers.contexts.IssueContext;
 import org.mian.gitnex.structs.BottomSheetListener;
@@ -134,36 +131,36 @@ public class BottomSheetSingleIssueFragment extends BottomSheetDialogFragment {
 		binding.updatePullRequest.setOnClickListener(
 				v -> {
 					if (((BaseActivity) requireActivity()).getAccount().requiresVersion("1.16.0")) {
-						AlertDialogs.selectPullUpdateStrategy(
-								requireContext(),
-								issue.getRepository().getOwner(),
-								issue.getRepository().getName(),
-								String.valueOf(issue.getIssueIndex()));
+						/*AlertDialogs.selectPullUpdateStrategy(
+						requireContext(),
+						issue.getRepository().getOwner(),
+						issue.getRepository().getName(),
+						String.valueOf(issue.getIssueIndex()));*/
 					} else {
-						PullRequestActions.updatePr(
-								requireContext(),
-								issue.getRepository().getOwner(),
-								issue.getRepository().getName(),
-								String.valueOf(issue.getIssueIndex()),
-								null);
+						/*PullRequestActions.updatePr(
+						requireContext(),
+						issue.getRepository().getOwner(),
+						issue.getRepository().getName(),
+						String.valueOf(issue.getIssueIndex()),
+						null);*/
 					}
 					dismiss();
 				});
 
 		binding.mergePullRequest.setOnClickListener(
 				v13 -> {
-					startActivity(issue.getIntent(ctx, MergePullRequestActivity.class));
+					// startActivity(issue.getIntent(ctx, MergePullRequestActivity.class));
 					dismiss();
 				});
 
 		binding.deletePrHeadBranch.setOnClickListener(
 				v -> {
-					PullRequestActions.deleteHeadBranch(
-							ctx,
-							issue.getRepository().getOwner(),
-							issue.getRepository().getName(),
-							issue.getPullRequest().getHead().getRef(),
-							true);
+					/*PullRequestActions.deleteHeadBranch(
+					ctx,
+					issue.getRepository().getOwner(),
+					issue.getRepository().getName(),
+					issue.getPullRequest().getHead().getRef(),
+					true);*/
 					dismiss();
 				});
 

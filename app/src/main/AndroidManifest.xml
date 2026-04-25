@@ -17,9 +17,6 @@
         android:supportsRtl="true"
         android:exported="true">
         <activity
-            android:name=".activities.MergePullRequestActivity"
-            android:configChanges="orientation|screenSize|smallestScreenSize|density|screenLayout|keyboard|keyboardHidden|navigation"/>
-        <activity
             android:name=".activities.RepoWatchersActivity"
             android:configChanges="orientation|screenSize|smallestScreenSize|density|screenLayout|keyboard|keyboardHidden|navigation"
             android:theme="@style/AppTheme.NoActionBar"/>

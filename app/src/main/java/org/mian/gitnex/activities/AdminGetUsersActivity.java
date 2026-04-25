@@ -19,11 +19,11 @@ import org.mian.gitnex.R;
 import org.mian.gitnex.adapters.AdminGetUsersAdapter;
 import org.mian.gitnex.databinding.ActivityAdminGetUsersBinding;
 import org.mian.gitnex.databinding.BottomsheetAdminAddUserBinding;
-import org.mian.gitnex.helpers.AlertDialogs;
 import org.mian.gitnex.helpers.AppUtil;
 import org.mian.gitnex.helpers.Constants;
 import org.mian.gitnex.helpers.EndlessRecyclerViewScrollListener;
 import org.mian.gitnex.helpers.Toasty;
+import org.mian.gitnex.helpers.TokenAuthorizationDialog;
 import org.mian.gitnex.helpers.UIHelper;
 import org.mian.gitnex.viewmodels.AdministrationViewModel;
 
@@ -240,7 +240,7 @@ public class AdminGetUsersActivity extends BaseActivity {
 			viewModel.resetUsersPagination();
 			viewModel.fetchUsers(this, 1, resultLimit, true);
 		} else if (code == 401) {
-			AlertDialogs.authorizationTokenRevokedDialog(this);
+			TokenAuthorizationDialog.authorizationTokenRevokedDialog(this);
 		} else if (code == 422) {
 			Toasty.show(this, getString(R.string.userExistsError));
 		} else if (code != 400) {

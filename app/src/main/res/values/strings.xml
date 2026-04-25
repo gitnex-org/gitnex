@@ -707,7 +707,7 @@
     <string name="mergePullRequestButtonText">Merge</string>
     <string name="deleteBranchAfterMerge">Delete branch after merge</string>
     <string name="mergeNoteText">Merge may fail if you are not authorized to merge this Pull Request.</string>
-    <string name="mergeInfoDisabledMessage">Disabled Merge button means that there are conflicts OR other things to fix before Merge</string>
+    <string name="mergeInfoDisabledMessage">Merge is not possible at this time. There are conflicts, WIP or other things to fix before Merge.</string>
     <string name="deleteBranchForkInfo">This branch belongs to a forked repository</string>
     <string name="mergeCommentText">Merge comment</string>
     <string name="mergePRSuccessMsg">Pull Request was merged successfully</string>
@@ -762,10 +762,10 @@
     <string name="alreadyUnsubscribed">You have already Unsubscribed</string>
     <string name="unSubscriptionError">Un-Subscription failed</string>
 
-    <string name="issue_pinned">Issue pinned successfully</string>
-    <string name="issue_unpinned">Issue unpinned successfully</string>
-    <string name="pinning_failed">Pinning issue failed</string>
-    <string name="unpinning_failed">Unpinning issue failed</string>
+    <string name="issue_pinned">Pinned successfully</string>
+    <string name="issue_unpinned">Unpinned successfully</string>
+    <string name="pinning_failed">Pinning failed</string>
+    <string name="unpinning_failed">Unpinning failed</string>
 
     <string name="closeMilestone">Close Milestone</string>
     <string name="openMilestone">Open Milestone</string>
@@ -1232,6 +1232,13 @@
     <string name="pr_actions">Pull Request Actions</string>
     <string name="delete_comment_title">Delete Comment</string>
     <string name="delete_comment_message">Are you sure you want to delete this comment?</string>
+    <string name="update_branch">Update Branch</string>
+    <string name="merge_when_checks_succeed">Merge when all checks pass</string>
+    <string name="delete_branch_unavailable">Branch unavailable</string>
+    <string name="branchAlreadyDeleted">Branch already deleted</string>
+    <string name="noPermission">No permission</string>
+    <string name="prMustBeClosed">PR must be closed</string>
+    <string name="updatePrNothingToUpdate">Nothing to update - branch is already up to date</string>
 
 
     <string name="timeline_added_label">%s added the %s label • %s</string>

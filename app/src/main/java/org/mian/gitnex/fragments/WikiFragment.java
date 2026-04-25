@@ -23,11 +23,11 @@ import org.mian.gitnex.activities.RepoDetailActivity;
 import org.mian.gitnex.adapters.WikiListAdapter;
 import org.mian.gitnex.databinding.BottomsheetWikiItemMenuBinding;
 import org.mian.gitnex.databinding.FragmentWikiBinding;
-import org.mian.gitnex.helpers.AlertDialogs;
 import org.mian.gitnex.helpers.AppUtil;
 import org.mian.gitnex.helpers.Constants;
 import org.mian.gitnex.helpers.EndlessRecyclerViewScrollListener;
 import org.mian.gitnex.helpers.Toasty;
+import org.mian.gitnex.helpers.TokenAuthorizationDialog;
 import org.mian.gitnex.helpers.UIHelper;
 import org.mian.gitnex.helpers.contexts.RepositoryContext;
 import org.mian.gitnex.models.RepositoryMenuItemModel;
@@ -244,7 +244,8 @@ public class WikiFragment extends Fragment implements RepoDetailActivity.RepoHub
 						error -> {
 							if (error != null && !error.isEmpty()) {
 								if (error.equals("UNAUTHORIZED")) {
-									AlertDialogs.authorizationTokenRevokedDialog(requireContext());
+									TokenAuthorizationDialog.authorizationTokenRevokedDialog(
+											requireContext());
 								} else {
 									Toasty.show(requireContext(), error);
 								}

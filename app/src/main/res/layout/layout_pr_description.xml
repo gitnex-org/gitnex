@@ -1,60 +1,50 @@
 <?xml version="1.0" encoding="utf-8"?>
-<com.google.android.material.card.MaterialCardView style="@style/Widget.Material3.CardView.Elevated"
+<androidx.constraintlayout.widget.ConstraintLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:layout_marginHorizontal="@dimen/dimen12dp"
-    app:cardBackgroundColor="?attr/materialCardBackgroundColor"
-    app:cardCornerRadius="@dimen/dimen20dp"
-    app:cardElevation="0dp"
-    app:strokeWidth="0dp"
-    xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto">
+    android:paddingVertical="@dimen/dimen20dp"
+    android:paddingHorizontal="@dimen/dimen16dp">
 
-   <androidx.constraintlayout.widget.ConstraintLayout
-       android:layout_width="match_parent"
-       android:layout_height="wrap_content"
-       android:padding="@dimen/dimen20dp">
+    <View
+        android:id="@+id/desc_accent"
+        android:layout_width="@dimen/dimen4dp"
+        android:layout_height="0dp"
+        android:background="?attr/iconsColor"
+        app:layout_constraintBottom_toBottomOf="@+id/desc_title"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="@+id/desc_title" />
 
-        <View
-            android:id="@+id/desc_accent"
-            android:layout_width="@dimen/dimen4dp"
-            android:layout_height="0dp"
-            android:background="?attr/iconsColor"
-            app:layout_constraintBottom_toBottomOf="@+id/desc_title"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="@+id/desc_title" />
+    <TextView
+        android:id="@+id/desc_title"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="@dimen/dimen12dp"
+        android:text="@string/description"
+        android:textAppearance="?attr/textAppearanceBodyLarge"
+        android:textColor="?attr/primaryTextColor"
+        app:layout_constraintStart_toEndOf="@id/desc_accent"
+        app:layout_constraintTop_toTopOf="parent" />
 
-        <TextView
-            android:id="@+id/desc_title"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="@dimen/dimen12dp"
-            android:text="@string/description"
-            android:textAppearance="?attr/textAppearanceBodyLarge"
-            android:textColor="?attr/primaryTextColor"
-            app:layout_constraintStart_toEndOf="@id/desc_accent"
-            app:layout_constraintTop_toTopOf="parent" />
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/descriptionContent"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/dimen16dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/desc_title" />
 
-        <androidx.recyclerview.widget.RecyclerView
-            android:id="@+id/descriptionContent"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="@dimen/dimen16dp"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/desc_title" />
+    <LinearLayout
+        android:id="@+id/attachmentsContainer"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/dimen16dp"
+        android:visibility="gone"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/descriptionContent"
+        android:orientation="horizontal" />
 
-        <LinearLayout
-            android:id="@+id/attachmentsContainer"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="@dimen/dimen16dp"
-            android:visibility="gone"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/descriptionContent"
-            android:orientation="horizontal" />
-
-   </androidx.constraintlayout.widget.ConstraintLayout>
-
-</com.google.android.material.card.MaterialCardView>
+</androidx.constraintlayout.widget.ConstraintLayout>

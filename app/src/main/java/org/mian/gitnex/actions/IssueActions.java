@@ -13,8 +13,8 @@ import org.mian.gitnex.R;
 import org.mian.gitnex.activities.BaseActivity;
 import org.mian.gitnex.activities.IssueDetailActivity;
 import org.mian.gitnex.clients.RetrofitClient;
-import org.mian.gitnex.helpers.AlertDialogs;
 import org.mian.gitnex.helpers.Toasty;
+import org.mian.gitnex.helpers.TokenAuthorizationDialog;
 import org.mian.gitnex.helpers.contexts.IssueContext;
 import retrofit2.Call;
 import retrofit2.Callback;
@@ -56,7 +56,7 @@ public class IssueActions {
 
 							case 401:
 								actionResult.finish(ActionResult.Status.FAILED, response);
-								AlertDialogs.authorizationTokenRevokedDialog(context);
+								TokenAuthorizationDialog.authorizationTokenRevokedDialog(context);
 								break;
 
 							default:
@@ -138,7 +138,7 @@ public class IssueActions {
 							}
 						} else if (response.code() == 401) {
 
-							AlertDialogs.authorizationTokenRevokedDialog(ctx);
+							TokenAuthorizationDialog.authorizationTokenRevokedDialog(ctx);
 						} else if (response.code() == 403) {
 
 							Toasty.show(ctx, ctx.getString(R.string.authorizeError));
@@ -191,7 +191,7 @@ public class IssueActions {
 							}
 						} else if (response.code() == 401) {
 
-							AlertDialogs.authorizationTokenRevokedDialog(ctx);
+							TokenAuthorizationDialog.authorizationTokenRevokedDialog(ctx);
 						} else {
 
 							Toasty.show(ctx, ctx.getString(R.string.subscriptionError));
@@ -238,7 +238,7 @@ public class IssueActions {
 							}
 						} else if (response.code() == 401) {
 
-							AlertDialogs.authorizationTokenRevokedDialog(ctx);
+							TokenAuthorizationDialog.authorizationTokenRevokedDialog(ctx);
 						} else {
 
 							Toasty.show(ctx, ctx.getString(R.string.unSubscriptionError));
@@ -283,7 +283,7 @@ public class IssueActions {
 							}
 						} else if (response.code() == 401) {
 
-							AlertDialogs.authorizationTokenRevokedDialog(ctx);
+							TokenAuthorizationDialog.authorizationTokenRevokedDialog(ctx);
 						} else {
 
 							Toasty.show(ctx, ctx.getString(R.string.pinning_failed));
@@ -329,7 +329,7 @@ public class IssueActions {
 							}
 						} else if (response.code() == 401) {
 
-							AlertDialogs.authorizationTokenRevokedDialog(ctx);
+							TokenAuthorizationDialog.authorizationTokenRevokedDialog(ctx);
 						} else {
 
 							Toasty.show(ctx, ctx.getString(R.string.unpinning_failed));
@@ -381,7 +381,7 @@ public class IssueActions {
 							}
 						} else if (response.code() == 401) {
 
-							AlertDialogs.authorizationTokenRevokedDialog(context);
+							TokenAuthorizationDialog.authorizationTokenRevokedDialog(context);
 
 						} else {
 

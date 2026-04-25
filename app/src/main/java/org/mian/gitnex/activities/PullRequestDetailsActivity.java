@@ -61,9 +61,9 @@ import org.mian.gitnex.fragments.BottomSheetCommentMenu;
 import org.mian.gitnex.fragments.BottomSheetContentViewer;
 import org.mian.gitnex.fragments.BottomSheetCreatePullRequest;
 import org.mian.gitnex.fragments.BottomSheetDependencies;
+import org.mian.gitnex.fragments.BottomSheetPrActions;
 import org.mian.gitnex.fragments.BottomSheetPrMenu;
 import org.mian.gitnex.fragments.BottomSheetTrackedTime;
-import org.mian.gitnex.helpers.AlertDialogs;
 import org.mian.gitnex.helpers.AppUtil;
 import org.mian.gitnex.helpers.AvatarGenerator;
 import org.mian.gitnex.helpers.Constants;
@@ -72,12 +72,14 @@ import org.mian.gitnex.helpers.FileIcon;
 import org.mian.gitnex.helpers.Markdown;
 import org.mian.gitnex.helpers.TimeHelper;
 import org.mian.gitnex.helpers.Toasty;
+import org.mian.gitnex.helpers.TokenAuthorizationDialog;
 import org.mian.gitnex.helpers.UIHelper;
 import org.mian.gitnex.helpers.contexts.RepositoryContext;
 import org.mian.gitnex.models.TimelineItem;
 import org.mian.gitnex.notifications.Notifications;
 import org.mian.gitnex.viewmodels.AttachmentsViewModel;
 import org.mian.gitnex.viewmodels.CommitStatusesViewModel;
+import org.mian.gitnex.viewmodels.IssueActionsViewModel;
 import org.mian.gitnex.viewmodels.PullRequestDetailsViewModel;
 import org.mian.gitnex.viewmodels.ReactionsViewModel;
 import org.mian.gitnex.viewmodels.TimelineViewModel;
@@ -98,6 +100,7 @@ public class PullRequestDetailsActivity extends BaseActivity {
 	private CommitStatusesViewModel statusesViewModel;
 	private AttachmentsViewModel attachmentsViewModel;
 	private TimelineViewModel timelineViewModel;
+	private IssueActionsViewModel issueActionsViewModel;
 	private Attachment pendingAttachment;
 	private ReactionsManager reactionsManager;
 	private TimelineAdapter timelineAdapter;
@@ -126,6 +129,7 @@ public class PullRequestDetailsActivity extends BaseActivity {
 		statusesViewModel = new ViewModelProvider(this).get(CommitStatusesViewModel.class);
 		attachmentsViewModel = new ViewModelProvider(this).get(AttachmentsViewModel.class);
 		timelineViewModel = new ViewModelProvider(this).get(TimelineViewModel.class);
+		issueActionsViewModel = new ViewModelProvider(this).get(IssueActionsViewModel.class);
 
 		UIHelper.applyEdgeToEdge(
 				this,
@@ -177,6 +181,16 @@ public class PullRequestDetailsActivity extends BaseActivity {
 
 		setupTimeline();
 		observeTimelineViewModel();
+	}
+
+	private boolean isDraftOrWip(PullRequest pr) {
+		String title = pr.getTitle().toLowerCase().trim();
+		return title.startsWith("[wip]")
+				|| title.startsWith("wip:")
+				|| title.startsWith("draft:")
+				|| title.startsWith("(draft)")
+				|| title.startsWith("[draft]")
+				|| pr.isDraft();
 	}
 
 	private void hideAllContent() {
@@ -240,7 +254,18 @@ public class PullRequestDetailsActivity extends BaseActivity {
 
 								@Override
 								public void onPrActions() {
-									// Open PR Actions sub-sheet
+									PullRequest pr = viewModel.getPrData().getValue();
+									if (pr == null) return;
+
+									boolean isPinned =
+											pr.getPinOrder() != null && pr.getPinOrder() > 0;
+									issueActionsViewModel.checkSubscription(
+											PullRequestDetailsActivity.this, owner, repo, prNumber);
+
+									BottomSheetPrActions sheet =
+											BottomSheetPrActions.newInstance(
+													owner, repo, prNumber, pr, isPinned);
+									sheet.show(getSupportFragmentManager(), "PR_ACTIONS");
 								}
 
 								@Override
@@ -679,7 +704,7 @@ public class PullRequestDetailsActivity extends BaseActivity {
 						error -> {
 							if (error != null) {
 								if ("UNAUTHORIZED".equals(error)) {
-									AlertDialogs.authorizationTokenRevokedDialog(this);
+									TokenAuthorizationDialog.authorizationTokenRevokedDialog(this);
 								} else {
 									Toasty.show(this, error);
 								}
@@ -884,6 +909,11 @@ public class PullRequestDetailsActivity extends BaseActivity {
 		setAssignees(header, pr);
 		setDueDate(header, pr);
 		setReviewers(header, pr);
+		if (isDraftOrWip(pr)) {
+			binding.headerSection.prStateIcon.setVisibility(View.VISIBLE);
+			binding.headerSection.prStateIcon.setOnClickListener(
+					v -> Toasty.show(ctx, R.string.releaseDraftText));
+		}
 	}
 
 	private void setStatusBadge(LayoutPrHeaderBinding header, PullRequest pr) {
@@ -1078,6 +1108,7 @@ public class PullRequestDetailsActivity extends BaseActivity {
 	private void populateDescription(PullRequest pr) {
 		if (pr.getBody() == null || pr.getBody().isEmpty()) {
 			binding.descriptionCard.getRoot().setVisibility(View.GONE);
+			binding.headerDescDivider.setVisibility(View.GONE);
 			return;
 		}
 

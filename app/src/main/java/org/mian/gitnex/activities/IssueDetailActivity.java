@@ -91,7 +91,6 @@ import org.mian.gitnex.databinding.CustomAssigneesSelectionDialogBinding;
 import org.mian.gitnex.databinding.CustomImageViewDialogBinding;
 import org.mian.gitnex.databinding.CustomLabelsSelectionDialogBinding;
 import org.mian.gitnex.fragments.BottomSheetSingleIssueFragment;
-import org.mian.gitnex.helpers.AlertDialogs;
 import org.mian.gitnex.helpers.AppDatabaseSettings;
 import org.mian.gitnex.helpers.AppUtil;
 import org.mian.gitnex.helpers.AvatarGenerator;
@@ -101,6 +100,7 @@ import org.mian.gitnex.helpers.MentionHelper;
 import org.mian.gitnex.helpers.TimeHelper;
 import org.mian.gitnex.helpers.TinyDB;
 import org.mian.gitnex.helpers.Toasty;
+import org.mian.gitnex.helpers.TokenAuthorizationDialog;
 import org.mian.gitnex.helpers.attachments.AttachmentUtils;
 import org.mian.gitnex.helpers.attachments.AttachmentsModel;
 import org.mian.gitnex.helpers.contexts.IssueContext;
@@ -622,7 +622,7 @@ public class IssueDetailActivity extends BaseActivity
 						}
 						if (response2.code() == 401) {
 
-							AlertDialogs.authorizationTokenRevokedDialog(ctx);
+							TokenAuthorizationDialog.authorizationTokenRevokedDialog(ctx);
 						}
 					}
 
@@ -772,7 +772,7 @@ public class IssueDetailActivity extends BaseActivity
 											1000);
 						} else if (response2.code() == 401) {
 
-							AlertDialogs.authorizationTokenRevokedDialog(ctx);
+							TokenAuthorizationDialog.authorizationTokenRevokedDialog(ctx);
 						} else if (response2.code() == 403) {
 
 							Toasty.show(ctx, ctx.getString(R.string.authorizeError));
@@ -837,7 +837,7 @@ public class IssueDetailActivity extends BaseActivity
 							// IssuesFragment.resumeIssues = true;
 						} else if (response.code() == 401) {
 
-							AlertDialogs.authorizationTokenRevokedDialog(ctx);
+							TokenAuthorizationDialog.authorizationTokenRevokedDialog(ctx);
 						} else if (response.code() == 403) {
 
 							Toasty.show(ctx, ctx.getString(R.string.authorizeError));
@@ -1032,7 +1032,7 @@ public class IssueDetailActivity extends BaseActivity
 							checkAndInitWithIssue();
 						} else if (response.code() == 401) {
 
-							AlertDialogs.authorizationTokenRevokedDialog(ctx);
+							TokenAuthorizationDialog.authorizationTokenRevokedDialog(ctx);
 						} else if (response.code() == 404) {
 
 							Toasty.show(ctx, getResources().getString(R.string.noDataFound));
@@ -1793,7 +1793,7 @@ public class IssueDetailActivity extends BaseActivity
 
 						} else if (response.code() == 401) {
 
-							AlertDialogs.authorizationTokenRevokedDialog(ctx);
+							TokenAuthorizationDialog.authorizationTokenRevokedDialog(ctx);
 
 						} else {
 

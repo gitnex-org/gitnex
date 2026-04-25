@@ -45,12 +45,12 @@ import org.mian.gitnex.database.api.BaseApi;
 import org.mian.gitnex.database.api.UserAccountsApi;
 import org.mian.gitnex.database.models.UserAccount;
 import org.mian.gitnex.databinding.BottomsheetCreateIssueBinding;
-import org.mian.gitnex.helpers.AlertDialogs;
 import org.mian.gitnex.helpers.AppDatabaseSettings;
 import org.mian.gitnex.helpers.AppUIStateManager;
 import org.mian.gitnex.helpers.AppUtil;
 import org.mian.gitnex.helpers.TinyDB;
 import org.mian.gitnex.helpers.Toasty;
+import org.mian.gitnex.helpers.TokenAuthorizationDialog;
 import org.mian.gitnex.helpers.attachments.AttachmentManager;
 import org.mian.gitnex.helpers.contexts.IssueContext;
 import org.mian.gitnex.helpers.contexts.RepositoryContext;
@@ -491,7 +491,8 @@ public class BottomSheetCreateIssue extends BottomSheetDialogFragment {
 						error -> {
 							if (error != null && !error.isEmpty()) {
 								if (error.equals("UNAUTHORIZED")) {
-									AlertDialogs.authorizationTokenRevokedDialog(requireContext());
+									TokenAuthorizationDialog.authorizationTokenRevokedDialog(
+											requireContext());
 								} else {
 									Toasty.show(requireContext(), error);
 								}
@@ -519,7 +520,8 @@ public class BottomSheetCreateIssue extends BottomSheetDialogFragment {
 						error -> {
 							if (error != null && !error.isEmpty()) {
 								if (error.equals("UNAUTHORIZED")) {
-									AlertDialogs.authorizationTokenRevokedDialog(requireContext());
+									TokenAuthorizationDialog.authorizationTokenRevokedDialog(
+											requireContext());
 								} else {
 									Toasty.show(requireContext(), error);
 								}

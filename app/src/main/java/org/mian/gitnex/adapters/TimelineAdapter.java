@@ -467,7 +467,10 @@ public class TimelineAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
 					break;
 				case "close":
 				case "reopen":
-					iconRes = R.drawable.ic_issue_closed;
+					iconRes =
+							type.equals("close")
+									? R.drawable.ic_issue_closed
+									: R.drawable.ic_refresh;
 					text =
 							context.getString(
 									type.equals("close")
@@ -495,6 +498,7 @@ public class TimelineAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
 				case "lock" -> "locked the conversation";
 				case "unlock" -> "unlocked the conversation";
 				case "pin" -> "pinned this";
+				case "unpin" -> "unpinned this";
 				case "merge_pull" -> "merged this";
 				case "review" -> "left a review";
 				case "dismiss_review" -> "dismissed a review";

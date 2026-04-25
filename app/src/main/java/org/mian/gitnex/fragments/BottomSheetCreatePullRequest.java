@@ -44,12 +44,12 @@ import org.mian.gitnex.database.api.BaseApi;
 import org.mian.gitnex.database.api.UserAccountsApi;
 import org.mian.gitnex.database.models.UserAccount;
 import org.mian.gitnex.databinding.BottomsheetCreatePullRequestBinding;
-import org.mian.gitnex.helpers.AlertDialogs;
 import org.mian.gitnex.helpers.AppDatabaseSettings;
 import org.mian.gitnex.helpers.AppUIStateManager;
 import org.mian.gitnex.helpers.AppUtil;
 import org.mian.gitnex.helpers.TinyDB;
 import org.mian.gitnex.helpers.Toasty;
+import org.mian.gitnex.helpers.TokenAuthorizationDialog;
 import org.mian.gitnex.helpers.attachments.AttachmentManager;
 import org.mian.gitnex.helpers.contexts.RepositoryContext;
 import org.mian.gitnex.viewmodels.AttachmentsViewModel;
@@ -574,7 +574,7 @@ public class BottomSheetCreatePullRequest extends BottomSheetDialogFragment {
 
 	private void handleError(String error) {
 		if (error.equals("UNAUTHORIZED")) {
-			AlertDialogs.authorizationTokenRevokedDialog(requireContext());
+			TokenAuthorizationDialog.authorizationTokenRevokedDialog(requireContext());
 		} else {
 			Toasty.show(requireContext(), error);
 		}

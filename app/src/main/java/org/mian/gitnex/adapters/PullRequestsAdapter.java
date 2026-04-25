@@ -115,7 +115,6 @@ public class PullRequestsAdapter
 
 			if (isDraftOrWip(pr)) {
 				binding.prStateIcon.setVisibility(View.VISIBLE);
-				binding.prStateIcon.setImageResource(R.drawable.ic_draft);
 				binding.prStateIcon.setOnClickListener(
 						v -> {
 							Toasty.show(
