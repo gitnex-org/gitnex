@@ -674,6 +674,7 @@
     <string name="collaborative">Collaborative</string>
     <string name="mirror">Mirror</string>
     <string name="fork">Fork</string>
+    <string name="lock">Lock</string>
     <!-- generic copy -->
 
     <string name="exploreUsers">Explore users</string>
@@ -1239,6 +1240,9 @@
     <string name="noPermission">No permission</string>
     <string name="prMustBeClosed">PR must be closed</string>
     <string name="updatePrNothingToUpdate">Nothing to update - branch is already up to date</string>
+    <string name="invalid_issue">Invalid issue</string>
+    <string name="timeline_empty">Timeline is empty</string>
+    <string name="issue_locked_cannot_comment">Issue is locked for comments</string>
 
 
     <string name="timeline_added_label">%s added the %s label • %s</string>

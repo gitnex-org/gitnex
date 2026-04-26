@@ -1,14 +1,14 @@
 <?xml version="1.0" encoding="utf-8"?>
-<com.google.android.material.card.MaterialCardView
-    xmlns:android="http://schemas.android.com/apk/res/android"
+<com.google.android.material.card.MaterialCardView xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    android:id="@+id/hub_card"
+    android:id="@+id/menu_card"
     style="?attr/materialCardViewFilledStyle"
     android:layout_width="0dp"
     android:layout_height="wrap_content"
     android:layout_columnWeight="1"
-    android:layout_margin="@dimen/dimen4dp"
+    android:layout_margin="4dp"
     app:cardCornerRadius="@dimen/dimen24dp"
+    app:cardBackgroundColor="?attr/colorPrimarySurface"
     app:strokeWidth="0dp">
 
     <LinearLayout
@@ -20,13 +20,14 @@
         android:paddingVertical="@dimen/dimen16dp">
 
         <ImageView
-            android:id="@+id/hub_icon"
+            android:id="@+id/menu_icon"
             android:layout_width="@dimen/dimen22dp"
             android:layout_height="@dimen/dimen22dp"
-            android:contentDescription="@null" />
+            app:tint="?attr/colorOnPrimarySurface"
+            android:contentDescription="@string/generalImgContentText" />
 
         <TextView
-            android:id="@+id/hub_text"
+            android:id="@+id/menu_text"
             style="@style/TextAppearance.Material3.BodySmall"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
@@ -34,6 +35,7 @@
             android:ellipsize="end"
             android:gravity="center"
             android:maxLines="1"
+            android:textColor="?attr/colorOnPrimarySurface"
             android:paddingHorizontal="@dimen/dimen8dp" />
 
     </LinearLayout>

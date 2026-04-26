@@ -198,13 +198,13 @@ public class TimelineViewModel extends ViewModel {
 							List<TimelineItem> items = convertToTimelineItems(response.body());
 							fetchEmbeddedData(ctx, items, isRefresh);
 						} else {
+							if (response.body() == null) {
+								error.setValue(ctx.getString(R.string.timeline_empty));
+							}
 							if (response.code() == 404 && isRefresh) {
 								timeline.setValue(new ArrayList<>());
 							}
 							isLastPage = true;
-							if (response.code() != 404) {
-								error.setValue(ctx.getString(R.string.genericError));
-							}
 						}
 					}
 
@@ -435,29 +435,6 @@ public class TimelineViewModel extends ViewModel {
 						Log.e("TimelineVM", "Failed to refresh reactions", t);
 					}
 				});
-	}
-
-	private void updateCommentReactions(long commentId, String content, boolean isAdd) {
-		List<TimelineItem> current = timeline.getValue();
-		if (current == null) return;
-
-		for (TimelineItem item : current) {
-			if (item.getId() == commentId) {
-				List<Reaction> reactions = item.getReactions();
-				if (reactions == null) reactions = new ArrayList<>();
-
-				if (isAdd) {
-					Reaction newReaction = new Reaction();
-					newReaction.setContent(content);
-					reactions.add(newReaction);
-				} else {
-					reactions.removeIf(r -> content.equals(r.getContent()));
-				}
-				item.setReactions(reactions);
-				break;
-			}
-		}
-		timeline.setValue(current);
 	}
 
 	public void addComment(Context ctx, String body) {

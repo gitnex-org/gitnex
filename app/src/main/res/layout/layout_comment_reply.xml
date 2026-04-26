@@ -53,6 +53,7 @@
             android:layout_marginStart="@dimen/dimen4dp"
             app:icon="@drawable/ic_maximize"
             app:iconTint="?attr/iconsColor"
+            android:visibility="gone"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintStart_toEndOf="@id/btn_close_reply"
             app:layout_constraintTop_toBottomOf="@id/et_quick_comment" />

@@ -27,13 +27,13 @@ import org.json.JSONObject;
 import org.mian.gitnex.R;
 import org.mian.gitnex.activities.IssueDetailActivity;
 import org.mian.gitnex.activities.ProfileActivity;
+import org.mian.gitnex.activities.PullRequestDetailsActivity;
 import org.mian.gitnex.activities.RepoDetailActivity;
 import org.mian.gitnex.databinding.ListActivitiesBinding;
 import org.mian.gitnex.helpers.AppUtil;
 import org.mian.gitnex.helpers.Markdown;
 import org.mian.gitnex.helpers.TimeHelper;
 import org.mian.gitnex.helpers.Toasty;
-import org.mian.gitnex.helpers.contexts.IssueContext;
 import org.mian.gitnex.helpers.contexts.RepositoryContext;
 
 /**
@@ -435,13 +435,27 @@ public class ActivitiesAdapter extends RecyclerView.Adapter<ActivitiesAdapter.Da
 				try {
 					String[] parts = activity.getRepo().getFullName().split("/");
 					RepositoryContext repo = new RepositoryContext(parts[0], parts[1], context);
-					IssueContext issueCtx =
-							new IssueContext(repo, Integer.parseInt(data.id), "open");
-					Intent intent = issueCtx.getIntent(context, IssueDetailActivity.class);
+
+					boolean isPr = opType.contains("pull");
+					Intent intent =
+							new Intent(
+									context,
+									isPr
+											? PullRequestDetailsActivity.class
+											: IssueDetailActivity.class);
+
+					intent.putExtra("owner", parts[0]);
+					intent.putExtra("repo", parts[1]);
+					intent.putExtra(isPr ? "prNumber" : "issueNumber", Integer.parseInt(data.id));
 					intent.putExtra("openedFromLink", "true");
+
+					if (!isPr) {
+						intent.putExtra("fetchIssueObject", true);
+					}
 					if (activity.getCommentId() > 0) {
 						intent.putExtra("commentId", String.valueOf(activity.getCommentId()));
 					}
+
 					repo.saveToDB(context);
 					context.startActivity(intent);
 				} catch (Exception ignored) {

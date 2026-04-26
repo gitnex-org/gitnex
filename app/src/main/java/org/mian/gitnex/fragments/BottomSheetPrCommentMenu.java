@@ -8,15 +8,15 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import com.google.android.material.bottomsheet.BottomSheetDialog;
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment;
-import org.mian.gitnex.databinding.BottomsheetCommentMenuBinding;
+import org.mian.gitnex.databinding.BottomsheetPrCommentMenuBinding;
 import org.mian.gitnex.helpers.AppUtil;
 
 /**
  * @author mmarif
  */
-public class BottomSheetCommentMenu extends BottomSheetDialogFragment {
+public class BottomSheetPrCommentMenu extends BottomSheetDialogFragment {
 
-	private BottomsheetCommentMenuBinding binding;
+	private BottomsheetPrCommentMenuBinding binding;
 	private long commentId;
 	private String commentBody;
 	private String htmlUrl;
@@ -38,9 +38,9 @@ public class BottomSheetCommentMenu extends BottomSheetDialogFragment {
 		void onOpenInBrowser(String url);
 	}
 
-	public static BottomSheetCommentMenu newInstance(
+	public static BottomSheetPrCommentMenu newInstance(
 			long commentId, String body, String htmlUrl, String commentAuthor, String currentUser) {
-		BottomSheetCommentMenu sheet = new BottomSheetCommentMenu();
+		BottomSheetPrCommentMenu sheet = new BottomSheetPrCommentMenu();
 		Bundle args = new Bundle();
 		args.putLong("comment_id", commentId);
 		args.putString("comment_body", body);
@@ -56,7 +56,7 @@ public class BottomSheetCommentMenu extends BottomSheetDialogFragment {
 			@NonNull LayoutInflater inflater,
 			@Nullable ViewGroup container,
 			@Nullable Bundle savedInstanceState) {
-		binding = BottomsheetCommentMenuBinding.inflate(inflater, container, false);
+		binding = BottomsheetPrCommentMenuBinding.inflate(inflater, container, false);
 		return binding.getRoot();
 	}
 

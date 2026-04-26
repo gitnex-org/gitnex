@@ -155,6 +155,8 @@ public class IssuesAdapter extends RecyclerView.Adapter<IssuesAdapter.IssuesHold
 						new IssueContext(issue, finalRepo)
 								.getIntent(context, IssueDetailActivity.class);
 
+				detailIntent.putExtra("source", "issue_repo_fragment");
+				detailIntent.putExtra("issueObject", issue);
 				if (!(context instanceof RepoDetailActivity)) {
 					detailIntent.putExtra("openedFromLink", "true");
 				}

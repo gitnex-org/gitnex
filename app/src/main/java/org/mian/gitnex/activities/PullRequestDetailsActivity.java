@@ -57,13 +57,14 @@ import org.mian.gitnex.clients.RetrofitClient;
 import org.mian.gitnex.databinding.ActivityPullRequestDetailsBinding;
 import org.mian.gitnex.databinding.ItemPrMetaRowBinding;
 import org.mian.gitnex.databinding.LayoutPrHeaderBinding;
-import org.mian.gitnex.fragments.BottomSheetCommentMenu;
 import org.mian.gitnex.fragments.BottomSheetContentViewer;
 import org.mian.gitnex.fragments.BottomSheetCreatePullRequest;
 import org.mian.gitnex.fragments.BottomSheetDependencies;
 import org.mian.gitnex.fragments.BottomSheetPrActions;
+import org.mian.gitnex.fragments.BottomSheetPrCommentMenu;
 import org.mian.gitnex.fragments.BottomSheetPrMenu;
 import org.mian.gitnex.fragments.BottomSheetTrackedTime;
+import org.mian.gitnex.helpers.AppUIStateManager;
 import org.mian.gitnex.helpers.AppUtil;
 import org.mian.gitnex.helpers.AvatarGenerator;
 import org.mian.gitnex.helpers.Constants;
@@ -141,7 +142,14 @@ public class PullRequestDetailsActivity extends BaseActivity {
 		Intent intent = getIntent();
 		String source = intent.getStringExtra("source");
 
-		if ("pr_repo_fragment".equals(source)) {
+		if (intent.hasExtra("owner")
+				&& intent.hasExtra("repo")
+				&& intent.hasExtra("prNumber")
+				&& source == null) {
+			owner = intent.getStringExtra("owner");
+			repo = intent.getStringExtra("repo");
+			prNumber = intent.getIntExtra("prNumber", -1);
+		} else if ("pr_repo_fragment".equals(source)) {
 			PullRequest pr = (PullRequest) intent.getSerializableExtra("prObject");
 			if (pr != null && pr.getBase() != null && pr.getBase().getRepo() != null) {
 				owner = pr.getBase().getRepo().getOwner().getLogin();
@@ -581,6 +589,7 @@ public class PullRequestDetailsActivity extends BaseActivity {
 								refreshTimeline();
 								scrollTimelineToBottom();
 								timelineViewModel.clearSubmittedComment();
+								triggerParentRefresh();
 								binding.timelineSection.timelineRecyclerView.postDelayed(
 										this::scrollTimelineToBottom, 1500);
 							}
@@ -650,30 +659,6 @@ public class PullRequestDetailsActivity extends BaseActivity {
 						});
 
 		timelineViewModel
-				.getSubmittedComment()
-				.observe(
-						this,
-						comment -> {
-							if (comment != null) {
-								Toasty.show(this, R.string.commentSuccess);
-								refreshTimeline();
-								timelineViewModel.clearSubmittedComment();
-							}
-						});
-
-		timelineViewModel
-				.getEditedComment()
-				.observe(
-						this,
-						comment -> {
-							if (comment != null) {
-								Toasty.show(this, R.string.editCommentUpdatedText);
-								refreshTimeline();
-								timelineViewModel.clearEditedComment();
-							}
-						});
-
-		timelineViewModel
 				.getCommentDeleted()
 				.observe(
 						this,
@@ -682,6 +667,7 @@ public class PullRequestDetailsActivity extends BaseActivity {
 								Toasty.show(this, R.string.deleteCommentSuccess);
 								refreshTimeline();
 								timelineViewModel.clearCommentDeleted();
+								triggerParentRefresh();
 							}
 						});
 
@@ -778,8 +764,8 @@ public class PullRequestDetailsActivity extends BaseActivity {
 		String currentUser = getAccount().getAccount().getUserName();
 		String commentAuthor = comment.getUser() != null ? comment.getUser().getLogin() : "";
 
-		BottomSheetCommentMenu sheet =
-				BottomSheetCommentMenu.newInstance(
+		BottomSheetPrCommentMenu sheet =
+				BottomSheetPrCommentMenu.newInstance(
 						comment.getId(),
 						comment.getBody(),
 						comment.getHtmlUrl(),
@@ -787,7 +773,7 @@ public class PullRequestDetailsActivity extends BaseActivity {
 						currentUser);
 
 		sheet.setCommentMenuListener(
-				new BottomSheetCommentMenu.CommentMenuListener() {
+				new BottomSheetPrCommentMenu.CommentMenuListener() {
 					@Override
 					public void onEditComment(long commentId, String body) {
 						startEditComment(commentId, body);
@@ -1534,6 +1520,11 @@ public class PullRequestDetailsActivity extends BaseActivity {
 			View attachmentView = createAttachmentView(attachment);
 			binding.descriptionCard.attachmentsContainer.addView(attachmentView);
 		}
+	}
+
+	private void triggerParentRefresh() {
+		AppUIStateManager.refreshData();
+		triggerGlobalRefresh();
 	}
 
 	private String formatDate(Date date) {

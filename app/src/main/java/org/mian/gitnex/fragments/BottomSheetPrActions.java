@@ -477,10 +477,10 @@ public class BottomSheetPrActions extends BottomSheetDialogFragment {
 						getViewLifecycleOwner(),
 						subscribed -> {
 							if (subscribed != null && subscribed) {
-								binding.subscribeIcon.setImageResource(R.drawable.ic_unwatch);
+								binding.subscribeIcon.setImageResource(R.drawable.ic_unsubscribe);
 								binding.subscribeText.setText(R.string.singleIssueUnSubscribe);
 							} else {
-								binding.subscribeIcon.setImageResource(R.drawable.ic_watchers);
+								binding.subscribeIcon.setImageResource(R.drawable.ic_notifications);
 								binding.subscribeText.setText(R.string.singleIssueSubscribe);
 							}
 						});
