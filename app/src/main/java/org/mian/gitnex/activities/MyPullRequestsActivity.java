@@ -65,7 +65,7 @@ public class MyPullRequestsActivity extends BaseActivity {
 		adapter = new MyPullRequestsAdapter(this, new ArrayList<>());
 		adapter.setOnPrClickListener(
 				issue -> {
-					Intent intent = new Intent(this, PullRequestDetailsActivity.class);
+					Intent intent = new Intent(this, PullRequestDetailActivity.class);
 					intent.putExtra("source", "my_prs_activity");
 					intent.putExtra("prIssue", issue);
 					startActivity(intent);

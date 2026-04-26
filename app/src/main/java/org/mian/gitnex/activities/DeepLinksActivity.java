@@ -383,7 +383,7 @@ public class DeepLinksActivity extends BaseActivity {
 											new RepositoryContext(repoOwner, repoName, ctx));
 							issue.getRepository().saveToDB(ctx);
 
-							Intent intent = new Intent(ctx, PullRequestDetailsActivity.class);
+							Intent intent = new Intent(ctx, PullRequestDetailActivity.class);
 							intent.putExtra("owner", repoOwner);
 							intent.putExtra("repo", repoName);
 							intent.putExtra("prNumber", index);

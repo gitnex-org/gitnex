@@ -18,7 +18,7 @@ import org.mian.gitnex.helpers.UIHelper;
 /**
  * @author mmarif
  */
-public class OrganizationTeamDetailsActivity extends BaseActivity {
+public class OrganizationTeamDetailActivity extends BaseActivity {
 
 	private ActivityOrgTeamDetailsBinding binding;
 	private Team team;

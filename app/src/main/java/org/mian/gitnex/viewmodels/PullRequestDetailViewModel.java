@@ -17,7 +17,7 @@ import retrofit2.Response;
 /**
  * @author mmarif
  */
-public class PullRequestDetailsViewModel extends ViewModel {
+public class PullRequestDetailViewModel extends ViewModel {
 
 	private final MutableLiveData<PullRequest> prData = new MutableLiveData<>();
 	private final MutableLiveData<Boolean> isLoading = new MutableLiveData<>(false);

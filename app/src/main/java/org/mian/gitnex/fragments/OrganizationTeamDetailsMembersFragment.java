@@ -15,7 +15,7 @@ import androidx.recyclerview.widget.RecyclerView;
 import java.util.ArrayList;
 import org.gitnex.tea4j.v2.models.Team;
 import org.mian.gitnex.R;
-import org.mian.gitnex.activities.OrganizationTeamDetailsActivity;
+import org.mian.gitnex.activities.OrganizationTeamDetailActivity;
 import org.mian.gitnex.adapters.UsersAdapter;
 import org.mian.gitnex.databinding.FragmentOrganizationTeamDetailsMembersBinding;
 import org.mian.gitnex.helpers.Constants;
@@ -29,7 +29,7 @@ import org.mian.gitnex.viewmodels.UserListViewModel;
  * @author mmarif
  */
 public class OrganizationTeamDetailsMembersFragment extends Fragment
-		implements OrganizationTeamDetailsActivity.OrgActionInterface {
+		implements OrganizationTeamDetailActivity.OrgActionInterface {
 
 	private FragmentOrganizationTeamDetailsMembersBinding binding;
 	private UserListViewModel viewModel;

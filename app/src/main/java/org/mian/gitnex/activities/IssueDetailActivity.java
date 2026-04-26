@@ -237,14 +237,18 @@ public class IssueDetailActivity extends BaseActivity
 					List<GenericMenuItemModel> items = new ArrayList<>();
 
 					if (!isArchived && (canPush || isAdmin)) {
-						items.add(
-								new GenericMenuItemModel(
-										"dependencies",
-										R.string.dependencies,
-										R.drawable.ic_dependencies,
-										R.attr.colorPrimarySurface,
-										R.attr.colorOnPrimarySurface));
-						if (repository.getInternalTracker().isEnableIssueDependencies()) {
+						if (repository.getInternalTracker() != null
+								&& repository.getInternalTracker().isEnableIssueDependencies()) {
+							items.add(
+									new GenericMenuItemModel(
+											"dependencies",
+											R.string.dependencies,
+											R.drawable.ic_dependencies,
+											R.attr.colorPrimarySurface,
+											R.attr.colorOnPrimarySurface));
+						}
+						if (repository.getInternalTracker() != null
+								&& repository.getInternalTracker().isEnableTimeTracker()) {
 							items.add(
 									new GenericMenuItemModel(
 											"tracked_time",
@@ -979,6 +983,19 @@ public class IssueDetailActivity extends BaseActivity
 								isDataLoaded = true;
 								showContent();
 								populateUI(issue);
+								Repository repository = repositoryContext.getRepository();
+								if (repository != null
+										&& issue.isIsLocked() != null
+										&& issue.isIsLocked()) {
+									boolean isAdmin =
+											repository.getPermissions() != null
+													&& Boolean.TRUE.equals(
+															repository.getPermissions().isAdmin());
+									if (!isAdmin) {
+										binding.btnReply.setEnabled(false);
+										binding.btnReply.setAlpha(0.4f);
+									}
+								}
 							}
 						});
 
@@ -1021,22 +1038,6 @@ public class IssueDetailActivity extends BaseActivity
 	private void fetchIssueData() {
 		viewModel.fetchIssue(this, owner, repo, issueNumber);
 		viewModel.fetchRepository(this, owner, repo);
-
-		Issue issue = viewModel.getIssueData().getValue();
-		Repository repository = repositoryContext.getRepository();
-
-		if (issue != null
-				&& repository != null
-				&& issue.isIsLocked() != null
-				&& issue.isIsLocked()) {
-			boolean isAdmin =
-					repository.getPermissions() != null
-							&& Boolean.TRUE.equals(repository.getPermissions().isAdmin());
-			if (!isAdmin) {
-				binding.btnReply.setEnabled(false);
-				binding.btnReply.setAlpha(0.4f);
-			}
-		}
 	}
 
 	private void populateUI(Issue issue) {

@@ -18,7 +18,7 @@ import java.util.ArrayList;
 import java.util.List;
 import org.gitnex.tea4j.v2.models.PullRequest;
 import org.mian.gitnex.R;
-import org.mian.gitnex.activities.PullRequestDetailsActivity;
+import org.mian.gitnex.activities.PullRequestDetailActivity;
 import org.mian.gitnex.activities.RepoDetailActivity;
 import org.mian.gitnex.adapters.PullRequestsAdapter;
 import org.mian.gitnex.databinding.FragmentPullRequestsBinding;
@@ -174,7 +174,7 @@ public class PullRequestsFragment extends Fragment implements RepoDetailActivity
 		adapter = new PullRequestsAdapter(requireContext(), new ArrayList<>());
 		adapter.setOnPrClickListener(
 				pullRequest -> {
-					Intent intent = new Intent(requireContext(), PullRequestDetailsActivity.class);
+					Intent intent = new Intent(requireContext(), PullRequestDetailActivity.class);
 					intent.putExtra("source", "pr_repo_fragment");
 					intent.putExtra("prObject", pullRequest);
 					startActivity(intent);

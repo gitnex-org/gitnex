@@ -1243,6 +1243,7 @@
     <string name="invalid_issue">Invalid issue</string>
     <string name="timeline_empty">Timeline is empty</string>
     <string name="issue_locked_cannot_comment">Issue is locked for comments</string>
+    <string name="pr_locked_cannot_comment">Pull request is locked for comments</string>
 
 
     <string name="timeline_added_label">%s added the %s label • %s</string>

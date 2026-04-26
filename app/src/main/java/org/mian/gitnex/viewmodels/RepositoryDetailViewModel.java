@@ -25,7 +25,7 @@ import retrofit2.Response;
 /**
  * @author mmarif
  */
-public class RepositoryDetailsViewModel extends ViewModel {
+public class RepositoryDetailViewModel extends ViewModel {
 
 	private final MutableLiveData<Repository> repoData = new MutableLiveData<>();
 	private final MutableLiveData<List<String>> topicsData = new MutableLiveData<>();

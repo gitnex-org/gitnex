@@ -45,7 +45,7 @@ import org.mian.gitnex.models.RepositoryMenuItemModel;
 import org.mian.gitnex.viewmodels.IssuesViewModel;
 import org.mian.gitnex.viewmodels.PullRequestsViewModel;
 import org.mian.gitnex.viewmodels.ReleasesViewModel;
-import org.mian.gitnex.viewmodels.RepositoryDetailsViewModel;
+import org.mian.gitnex.viewmodels.RepositoryDetailViewModel;
 
 /**
  * @author mmarif
@@ -65,7 +65,7 @@ public class RepoDetailActivity extends BaseActivity
 
 	private ActivityRepoDetailBinding binding;
 	public RepositoryContext repository;
-	private RepositoryDetailsViewModel viewModel;
+	private RepositoryDetailViewModel viewModel;
 	private final FragmentManager fm = getSupportFragmentManager();
 	private boolean isStarred = false;
 	private boolean isWatched = false;
@@ -122,7 +122,7 @@ public class RepoDetailActivity extends BaseActivity
 		binding = ActivityRepoDetailBinding.inflate(getLayoutInflater());
 		setContentView(binding.getRoot());
 
-		viewModel = new ViewModelProvider(this).get(RepositoryDetailsViewModel.class);
+		viewModel = new ViewModelProvider(this).get(RepositoryDetailViewModel.class);
 		repository = RepositoryContext.fromIntent(getIntent());
 
 		UIHelper.applyEdgeToEdge(this, binding.dockedToolbar, null, null, null);

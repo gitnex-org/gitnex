@@ -60,9 +60,8 @@ import org.mian.gitnex.databinding.LayoutPrHeaderBinding;
 import org.mian.gitnex.fragments.BottomSheetContentViewer;
 import org.mian.gitnex.fragments.BottomSheetCreatePullRequest;
 import org.mian.gitnex.fragments.BottomSheetDependencies;
+import org.mian.gitnex.fragments.BottomSheetGenericMenu;
 import org.mian.gitnex.fragments.BottomSheetPrActions;
-import org.mian.gitnex.fragments.BottomSheetPrCommentMenu;
-import org.mian.gitnex.fragments.BottomSheetPrMenu;
 import org.mian.gitnex.fragments.BottomSheetTrackedTime;
 import org.mian.gitnex.helpers.AppUIStateManager;
 import org.mian.gitnex.helpers.AppUtil;
@@ -76,12 +75,13 @@ import org.mian.gitnex.helpers.Toasty;
 import org.mian.gitnex.helpers.TokenAuthorizationDialog;
 import org.mian.gitnex.helpers.UIHelper;
 import org.mian.gitnex.helpers.contexts.RepositoryContext;
+import org.mian.gitnex.models.GenericMenuItemModel;
 import org.mian.gitnex.models.TimelineItem;
 import org.mian.gitnex.notifications.Notifications;
 import org.mian.gitnex.viewmodels.AttachmentsViewModel;
 import org.mian.gitnex.viewmodels.CommitStatusesViewModel;
 import org.mian.gitnex.viewmodels.IssueActionsViewModel;
-import org.mian.gitnex.viewmodels.PullRequestDetailsViewModel;
+import org.mian.gitnex.viewmodels.PullRequestDetailViewModel;
 import org.mian.gitnex.viewmodels.ReactionsViewModel;
 import org.mian.gitnex.viewmodels.TimelineViewModel;
 import org.mian.gitnex.views.reactions.EmojiPickerPopup;
@@ -93,10 +93,11 @@ import retrofit2.Response;
 /**
  * @author mmarif
  */
-public class PullRequestDetailsActivity extends BaseActivity {
+public class PullRequestDetailActivity extends BaseActivity
+		implements BottomSheetGenericMenu.OnMenuItemClickListener {
 
 	private ActivityPullRequestDetailsBinding binding;
-	private PullRequestDetailsViewModel viewModel;
+	private PullRequestDetailViewModel viewModel;
 	private ReactionsViewModel reactionsViewModel;
 	private CommitStatusesViewModel statusesViewModel;
 	private AttachmentsViewModel attachmentsViewModel;
@@ -114,6 +115,7 @@ public class PullRequestDetailsActivity extends BaseActivity {
 	private EndlessRecyclerViewScrollListener timelineScrollListener;
 	private long editingCommentId = -1;
 	private boolean isEditing = false;
+	private TimelineItem currentCommentForMenu;
 
 	@Override
 	public void onCreate(@Nullable Bundle savedInstanceState) {
@@ -125,7 +127,7 @@ public class PullRequestDetailsActivity extends BaseActivity {
 
 		repositoryContext = new RepositoryContext(owner, repo, this);
 
-		viewModel = new ViewModelProvider(this).get(PullRequestDetailsViewModel.class);
+		viewModel = new ViewModelProvider(this).get(PullRequestDetailViewModel.class);
 		reactionsViewModel = new ViewModelProvider(this).get(ReactionsViewModel.class);
 		statusesViewModel = new ViewModelProvider(this).get(CommitStatusesViewModel.class);
 		attachmentsViewModel = new ViewModelProvider(this).get(AttachmentsViewModel.class);
@@ -184,6 +186,7 @@ public class PullRequestDetailsActivity extends BaseActivity {
 		observeAttachmentsViewModel();
 		fetchPullRequestData();
 		fetchReactionSettings();
+		observeIssueActions();
 
 		setupCommentBox();
 
@@ -244,76 +247,139 @@ public class PullRequestDetailsActivity extends BaseActivity {
 					PullRequest pr = viewModel.getPrData().getValue();
 					if (pr == null) return;
 
-					BottomSheetPrMenu sheet = BottomSheetPrMenu.newInstance(pr);
+					Repository repository = pr.getBase() != null ? pr.getBase().getRepo() : null;
+					if (repository == null) return;
 
-					sheet.setPrMenuListener(
-							new BottomSheetPrMenu.PrMenuListener() {
-								@Override
-								public void onFiles() {
-									Intent intent =
-											new Intent(
-													PullRequestDetailsActivity.this,
-													PullRequestDiffActivity.class);
-									intent.putExtra("owner", owner);
-									intent.putExtra("repo", repo);
-									intent.putExtra("prNumber", prNumber);
-									startActivity(intent);
-								}
+					String state = pr.getState();
+					boolean isMerged = Boolean.TRUE.equals(pr.isMerged());
+					boolean isClosed = "closed".equalsIgnoreCase(state);
+					boolean isOpen = "open".equalsIgnoreCase(state);
+					boolean isAdmin =
+							repository.getPermissions() != null
+									&& Boolean.TRUE.equals(repository.getPermissions().isAdmin());
+					boolean canPush =
+							repository.getPermissions() != null
+									&& Boolean.TRUE.equals(repository.getPermissions().isPush());
+					boolean canPushToHead =
+							pr.getHead() != null
+									&& pr.getHead().getRepo() != null
+									&& Boolean.TRUE.equals(
+											pr.getHead().getRepo().getPermissions().isPush());
+					boolean isPinned = pr.getPinOrder() != null && pr.getPinOrder() > 0;
+					boolean isArchived = repository.isArchived();
 
-								@Override
-								public void onPrActions() {
-									PullRequest pr = viewModel.getPrData().getValue();
-									if (pr == null) return;
+					issueActionsViewModel.checkSubscription(this, owner, repo, prNumber);
 
-									boolean isPinned =
-											pr.getPinOrder() != null && pr.getPinOrder() > 0;
-									issueActionsViewModel.checkSubscription(
-											PullRequestDetailsActivity.this, owner, repo, prNumber);
+					List<GenericMenuItemModel> items = new ArrayList<>();
 
-									BottomSheetPrActions sheet =
-											BottomSheetPrActions.newInstance(
-													owner, repo, prNumber, pr, isPinned);
-									sheet.show(getSupportFragmentManager(), "PR_ACTIONS");
-								}
+					items.add(
+							new GenericMenuItemModel(
+									"files",
+									R.string.openFileDiffText,
+									R.drawable.ic_file,
+									R.attr.colorPrimarySurface,
+									R.attr.colorOnPrimarySurface));
+					items.add(
+							new GenericMenuItemModel(
+									"pr_actions",
+									R.string.actions,
+									R.drawable.ic_settings,
+									R.attr.colorPrimarySurface,
+									R.attr.colorOnPrimarySurface));
 
-								@Override
-								public void onDependencies() {
-									BottomSheetDependencies sheet =
-											BottomSheetDependencies.newInstance(
-													owner, repo, prNumber);
-									sheet.show(getSupportFragmentManager(), "DEPENDENCIES");
-								}
+					if (!isArchived && !isMerged && (canPush || isAdmin)) {
+						items.add(
+								new GenericMenuItemModel(
+										"pr_state",
+										isOpen ? R.string.close : R.string.reopen,
+										isOpen ? R.drawable.ic_issue_closed : R.drawable.ic_refresh,
+										R.attr.colorErrorContainer,
+										R.attr.colorOnErrorContainer));
+					}
 
-								@Override
-								public void onTrackedTime() {
-									BottomSheetTrackedTime sheet =
-											BottomSheetTrackedTime.newInstance(
-													owner, repo, prNumber);
-									sheet.show(getSupportFragmentManager(), "TRACKED_TIME");
-								}
+					if ((isClosed || isMerged) && canPushToHead) {
+						items.add(
+								new GenericMenuItemModel(
+										"pr_delete_branch",
+										R.string.deleteBranch,
+										R.drawable.ic_branch,
+										R.attr.colorPrimarySurface,
+										R.attr.colorOnPrimarySurface));
+					}
 
-								@Override
-								public void onCopyUrl() {
-									AppUtil.copyToClipboard(
-											PullRequestDetailsActivity.this,
-											pr.getHtmlUrl(),
-											getString(R.string.copied_to_clipboard));
-								}
+					if (isAdmin && !isArchived) {
+						items.add(
+								new GenericMenuItemModel(
+										"pr_pin",
+										isPinned ? R.string.unpin : R.string.pin,
+										isPinned ? R.drawable.ic_unpin : R.drawable.ic_pin,
+										R.attr.colorPrimarySurface,
+										R.attr.colorOnPrimarySurface));
+					}
 
-								@Override
-								public void onShare() {
-									AppUtil.sharingIntent(
-											PullRequestDetailsActivity.this, pr.getHtmlUrl());
-								}
+					if (!isArchived) {
+						Boolean subscribed = issueActionsViewModel.getIsSubscribed().getValue();
+						boolean isSubscribed = subscribed != null && subscribed;
+						items.add(
+								new GenericMenuItemModel(
+										"pr_subscribe",
+										isSubscribed
+												? R.string.singleIssueUnSubscribe
+												: R.string.singleIssueSubscribe,
+										isSubscribed
+												? R.drawable.ic_unsubscribe
+												: R.drawable.ic_notifications,
+										R.attr.colorPrimarySurface,
+										R.attr.colorOnPrimarySurface));
+					}
 
-								@Override
-								public void onOpenInBrowser() {
-									AppUtil.openUrlInBrowser(
-											PullRequestDetailsActivity.this, pr.getHtmlUrl());
-								}
-							});
+					if (repository.getInternalTracker() != null
+							&& repository.getInternalTracker().isEnableIssueDependencies()) {
+						items.add(
+								new GenericMenuItemModel(
+										"dependencies",
+										R.string.dependencies,
+										R.drawable.ic_dependencies,
+										R.attr.colorPrimarySurface,
+										R.attr.colorOnPrimarySurface));
+					}
+					if (repository.getInternalTracker() != null
+							&& repository.getInternalTracker().isEnableTimeTracker()) {
+						items.add(
+								new GenericMenuItemModel(
+										"tracked_time",
+										R.string.tracked_time,
+										R.drawable.ic_clock,
+										R.attr.colorPrimarySurface,
+										R.attr.colorOnPrimarySurface));
+					}
+					items.add(
+							new GenericMenuItemModel(
+									"copy_url",
+									R.string.genericCopyUrl,
+									R.drawable.ic_copy,
+									R.attr.colorPrimarySurface,
+									R.attr.colorOnPrimarySurface));
+					items.add(
+							new GenericMenuItemModel(
+									"share",
+									R.string.share,
+									R.drawable.ic_share,
+									R.attr.colorPrimarySurface,
+									R.attr.colorOnPrimarySurface));
+					items.add(
+							new GenericMenuItemModel(
+									"browser",
+									R.string.openInBrowser,
+									R.drawable.ic_browser,
+									R.attr.colorPrimarySurface,
+									R.attr.colorOnPrimarySurface));
 
-					sheet.show(getSupportFragmentManager(), "PR_MENU");
+					BottomSheetGenericMenu.newInstance(
+									getString(R.string.pullRequest),
+									pr.getTitle() + " #" + pr.getNumber(),
+									items)
+							.show(getSupportFragmentManager(), "PR_MENU");
 				});
 
 		binding.pullToRefresh.setOnRefreshListener(
@@ -402,8 +468,22 @@ public class PullRequestDetailsActivity extends BaseActivity {
 	}
 
 	private void showReplyBox() {
-		binding.commentReply.getRoot().setVisibility(View.VISIBLE);
+		if (!isEditing) {
+			PullRequest pr = viewModel.getPrData().getValue();
+			if (pr != null && pr.isIsLocked() != null && pr.isIsLocked()) {
+				Repository repo = pr.getBase() != null ? pr.getBase().getRepo() : null;
+				boolean isAdmin =
+						repo != null
+								&& repo.getPermissions() != null
+								&& Boolean.TRUE.equals(repo.getPermissions().isAdmin());
+				if (!isAdmin) {
+					Toasty.show(this, R.string.pr_locked_cannot_comment);
+					return;
+				}
+			}
+		}
 
+		binding.commentReply.getRoot().setVisibility(View.VISIBLE);
 		toggleCommentSectionSpace(true);
 
 		binding.commentReply.getRoot().setAlpha(0f);
@@ -475,12 +555,12 @@ public class PullRequestDetailsActivity extends BaseActivity {
 									TimelineItem comment, String content, boolean isUserReaction) {
 								if (isUserReaction) {
 									timelineViewModel.removeCommentReaction(
-											PullRequestDetailsActivity.this,
+											PullRequestDetailActivity.this,
 											comment.getId(),
 											content);
 								} else {
 									timelineViewModel.addCommentReaction(
-											PullRequestDetailsActivity.this,
+											PullRequestDetailActivity.this,
 											comment.getId(),
 											content);
 								}
@@ -520,7 +600,7 @@ public class PullRequestDetailsActivity extends BaseActivity {
 							public void onCommitClick(String sha) {
 								Intent intent =
 										new Intent(
-												PullRequestDetailsActivity.this,
+												PullRequestDetailActivity.this,
 												CommitDetailActivity.class);
 								intent.putExtra("sha", sha);
 								intent.putExtra("owner", owner);
@@ -532,7 +612,7 @@ public class PullRequestDetailsActivity extends BaseActivity {
 							public void onUserClick(String username) {
 								Intent intent =
 										new Intent(
-												PullRequestDetailsActivity.this,
+												PullRequestDetailActivity.this,
 												ProfileActivity.class);
 								intent.putExtra("username", username);
 								startActivity(intent);
@@ -559,7 +639,7 @@ public class PullRequestDetailsActivity extends BaseActivity {
 					@Override
 					public void onLoadMore(int page, int totalItemsCount, RecyclerView view) {
 						timelineViewModel.fetchTimeline(
-								PullRequestDetailsActivity.this, page, resultLimit, false);
+								PullRequestDetailActivity.this, page, resultLimit, false);
 					}
 				};
 		binding.timelineSection.timelineRecyclerView.addOnScrollListener(timelineScrollListener);
@@ -725,7 +805,7 @@ public class PullRequestDetailsActivity extends BaseActivity {
 			popup.setOnEmojiSelectedListener(
 					content -> {
 						timelineViewModel.addCommentReaction(
-								PullRequestDetailsActivity.this, comment.getId(), content);
+								PullRequestDetailActivity.this, comment.getId(), content);
 					});
 			popup.show(anchor);
 		} else {
@@ -744,12 +824,12 @@ public class PullRequestDetailsActivity extends BaseActivity {
 
 										EmojiPickerPopup popup =
 												new EmojiPickerPopup(
-														PullRequestDetailsActivity.this,
+														PullRequestDetailActivity.this,
 														allowedList);
 										popup.setOnEmojiSelectedListener(
 												content -> {
 													timelineViewModel.addCommentReaction(
-															PullRequestDetailsActivity.this,
+															PullRequestDetailActivity.this,
 															comment.getId(),
 															content);
 												});
@@ -760,68 +840,196 @@ public class PullRequestDetailsActivity extends BaseActivity {
 		}
 	}
 
+	private void observeIssueActions() {
+		issueActionsViewModel
+				.getActionMessage()
+				.observe(
+						this,
+						msg -> {
+							if (msg != null) {
+								Toasty.show(this, msg);
+								issueActionsViewModel.clearActionMessage();
+								triggerParentRefresh();
+							}
+						});
+
+		issueActionsViewModel
+				.getActionError()
+				.observe(
+						this,
+						error -> {
+							if (error != null) {
+								if ("UNAUTHORIZED".equals(error)) {
+									TokenAuthorizationDialog.authorizationTokenRevokedDialog(this);
+								} else {
+									Toasty.show(this, error);
+								}
+								issueActionsViewModel.clearActionError();
+							}
+						});
+
+		issueActionsViewModel.getIsSubscribed().observe(this, subscribed -> {});
+	}
+
 	private void showCommentMenu(TimelineItem comment) {
+		this.currentCommentForMenu = comment;
 		String currentUser = getAccount().getAccount().getUserName();
 		String commentAuthor = comment.getUser() != null ? comment.getUser().getLogin() : "";
+		boolean isAuthor = currentUser != null && currentUser.equalsIgnoreCase(commentAuthor);
 
-		BottomSheetPrCommentMenu sheet =
-				BottomSheetPrCommentMenu.newInstance(
-						comment.getId(),
-						comment.getBody(),
-						comment.getHtmlUrl(),
-						commentAuthor,
-						currentUser);
+		List<GenericMenuItemModel> items = new ArrayList<>();
 
-		sheet.setCommentMenuListener(
-				new BottomSheetPrCommentMenu.CommentMenuListener() {
-					@Override
-					public void onEditComment(long commentId, String body) {
-						startEditComment(commentId, body);
-					}
+		if (isAuthor) {
+			items.add(
+					new GenericMenuItemModel(
+							"comment_edit",
+							R.string.menuEditText,
+							R.drawable.ic_edit,
+							R.attr.colorPrimarySurface,
+							R.attr.colorOnPrimarySurface));
+			items.add(
+					new GenericMenuItemModel(
+							"comment_delete",
+							R.string.menuDeleteText,
+							R.drawable.ic_delete,
+							R.attr.colorErrorContainer,
+							R.attr.colorOnErrorContainer));
+		}
 
-					@Override
-					public void onDeleteComment(long commentId) {
-						new MaterialAlertDialogBuilder(PullRequestDetailsActivity.this)
-								.setTitle(R.string.delete_comment_title)
-								.setMessage(R.string.delete_comment_message)
-								.setPositiveButton(
-										R.string.menuDeleteText,
-										(dialog, which) -> {
-											timelineViewModel.deleteComment(
-													PullRequestDetailsActivity.this, commentId);
-										})
-								.setNegativeButton(R.string.cancelButton, null)
-								.show();
-					}
+		items.add(
+				new GenericMenuItemModel(
+						"comment_quote_reply",
+						R.string.menuQuoteText,
+						R.drawable.ic_comment,
+						R.attr.colorPrimarySurface,
+						R.attr.colorOnPrimarySurface));
+		items.add(
+				new GenericMenuItemModel(
+						"comment_copy_url",
+						R.string.genericCopyUrl,
+						R.drawable.ic_copy,
+						R.attr.colorPrimarySurface,
+						R.attr.colorOnPrimarySurface));
+		items.add(
+				new GenericMenuItemModel(
+						"comment_share",
+						R.string.share,
+						R.drawable.ic_share,
+						R.attr.colorPrimarySurface,
+						R.attr.colorOnPrimarySurface));
+		items.add(
+				new GenericMenuItemModel(
+						"comment_browser",
+						R.string.openInBrowser,
+						R.drawable.ic_browser,
+						R.attr.colorPrimarySurface,
+						R.attr.colorOnPrimarySurface));
 
-					@Override
-					public void onQuoteReply(long commentId, String body) {
-						String quoted = "> " + body.replace("\n", "\n> ") + "\n\n";
-						binding.commentReply.etQuickComment.setText(quoted);
-						binding.commentReply.etQuickComment.setSelection(quoted.length());
-						showReplyBox();
-					}
+		BottomSheetGenericMenu.newInstance(
+						getString(R.string.commentButtonText),
+						"#issuecomment-" + comment.getId(),
+						items)
+				.show(getSupportFragmentManager(), "COMMENT_MENU");
+	}
 
-					@Override
-					public void onCopyUrl(String url) {
-						AppUtil.copyToClipboard(
-								PullRequestDetailsActivity.this,
-								url,
-								getString(R.string.copied_to_clipboard));
-					}
-
-					@Override
-					public void onShareComment(String body, String url) {
-						AppUtil.sharingIntent(PullRequestDetailsActivity.this, body + "\n\n" + url);
-					}
-
-					@Override
-					public void onOpenInBrowser(String url) {
-						AppUtil.openUrlInBrowser(PullRequestDetailsActivity.this, url);
-					}
-				});
-
-		sheet.show(getSupportFragmentManager(), "COMMENT_MENU");
+	@Override
+	public void onMenuItemClick(String id) {
+		PullRequest pr = viewModel.getPrData().getValue();
+		switch (id) {
+			case "files":
+				Intent filesIntent =
+						new Intent(PullRequestDetailActivity.this, PullRequestDiffActivity.class);
+				filesIntent.putExtra("owner", owner);
+				filesIntent.putExtra("repo", repo);
+				filesIntent.putExtra("prNumber", prNumber);
+				startActivity(filesIntent);
+				break;
+			case "pr_actions":
+				if (pr == null) return;
+				BottomSheetPrActions.newInstance(owner, repo, prNumber, pr)
+						.show(getSupportFragmentManager(), "PR_ACTIONS");
+				break;
+			case "dependencies":
+				BottomSheetDependencies.newInstance(owner, repo, prNumber)
+						.show(getSupportFragmentManager(), "DEPENDENCIES");
+				break;
+			case "tracked_time":
+				BottomSheetTrackedTime.newInstance(owner, repo, prNumber)
+						.show(getSupportFragmentManager(), "TRACKED_TIME");
+				break;
+			case "pr_state":
+				if (pr != null)
+					issueActionsViewModel.toggleState(
+							this, owner, repo, prNumber, pr.getState(), true);
+				break;
+			case "pr_delete_branch":
+				if (pr != null && pr.getHead() != null) {
+					viewModel.deleteHeadBranch(this, owner, repo, pr.getHead().getRef(), prNumber);
+				}
+				break;
+			case "pr_pin":
+				if (pr != null) {
+					boolean pinned = pr.getPinOrder() != null && pr.getPinOrder() > 0;
+					issueActionsViewModel.togglePin(this, owner, repo, prNumber, pinned);
+				}
+				break;
+			case "pr_subscribe":
+				String currentUser = getAccount().getAccount().getUserName();
+				Boolean subscribed = issueActionsViewModel.getIsSubscribed().getValue();
+				issueActionsViewModel.toggleSubscribe(
+						this, owner, repo, prNumber, currentUser, subscribed != null && subscribed);
+				break;
+			case "copy_url":
+				if (pr != null)
+					AppUtil.copyToClipboard(
+							this, pr.getHtmlUrl(), getString(R.string.copied_to_clipboard));
+				break;
+			case "share":
+				if (pr != null) AppUtil.sharingIntent(this, pr.getHtmlUrl());
+				break;
+			case "browser":
+				if (pr != null) AppUtil.openUrlInBrowser(this, pr.getHtmlUrl());
+				break;
+			case "comment_edit":
+				startEditComment(currentCommentForMenu.getId(), currentCommentForMenu.getBody());
+				break;
+			case "comment_delete":
+				new MaterialAlertDialogBuilder(this)
+						.setTitle(R.string.delete_comment_title)
+						.setMessage(R.string.delete_comment_message)
+						.setPositiveButton(
+								R.string.menuDeleteText,
+								(dialog, which) -> {
+									timelineViewModel.deleteComment(
+											this, currentCommentForMenu.getId());
+								})
+						.setNegativeButton(R.string.cancelButton, null)
+						.show();
+				break;
+			case "comment_quote_reply":
+				String quoted =
+						"> " + currentCommentForMenu.getBody().replace("\n", "\n> ") + "\n\n";
+				binding.commentReply.etQuickComment.setText(quoted);
+				binding.commentReply.etQuickComment.setSelection(quoted.length());
+				showReplyBox();
+				break;
+			case "comment_copy_url":
+				AppUtil.copyToClipboard(
+						this,
+						currentCommentForMenu.getHtmlUrl(),
+						getString(R.string.copied_to_clipboard));
+				break;
+			case "comment_share":
+				AppUtil.sharingIntent(
+						this,
+						currentCommentForMenu.getBody()
+								+ "\n\n"
+								+ currentCommentForMenu.getHtmlUrl());
+				break;
+			case "comment_browser":
+				AppUtil.openUrlInBrowser(this, currentCommentForMenu.getHtmlUrl());
+				break;
+		}
 	}
 
 	private void observeViewModel() {
@@ -847,6 +1055,19 @@ public class PullRequestDetailsActivity extends BaseActivity {
 								isDataLoaded = true;
 								showContent();
 								populateUI(pr);
+								if (pr.isIsLocked() != null && pr.isIsLocked()) {
+									Repository repo =
+											pr.getBase() != null ? pr.getBase().getRepo() : null;
+									boolean isAdmin =
+											repo != null
+													&& repo.getPermissions() != null
+													&& Boolean.TRUE.equals(
+															repo.getPermissions().isAdmin());
+									if (!isAdmin) {
+										binding.btnReply.setEnabled(false);
+										binding.btnReply.setAlpha(0.4f);
+									}
+								}
 							}
 						});
 
@@ -886,6 +1107,13 @@ public class PullRequestDetailsActivity extends BaseActivity {
 		LayoutPrHeaderBinding header = binding.headerSection;
 
 		setStatusBadge(header, pr);
+		if (pr.isIsLocked() != null && pr.isIsLocked()) {
+			binding.headerSection.lockedIcon.setVisibility(View.VISIBLE);
+			header.lockedIcon.setOnClickListener(
+					lock -> Toasty.show(this, R.string.pr_locked_cannot_comment));
+		} else {
+			binding.headerSection.lockedIcon.setVisibility(View.GONE);
+		}
 		setEditButtonVisibility(header, pr);
 		setTitle(header, pr.getTitle(), pr.getNumber());
 		setAuthor(header, pr);
@@ -1128,13 +1356,13 @@ public class PullRequestDetailsActivity extends BaseActivity {
 							@Override
 							public void onAddReaction(String content) {
 								reactionsViewModel.addReaction(
-										PullRequestDetailsActivity.this, content);
+										PullRequestDetailActivity.this, content);
 							}
 
 							@Override
 							public void onRemoveReaction(String content) {
 								reactionsViewModel.removeReaction(
-										PullRequestDetailsActivity.this, content);
+										PullRequestDetailActivity.this, content);
 							}
 
 							@Override

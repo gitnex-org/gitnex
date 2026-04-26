@@ -27,7 +27,7 @@ import org.json.JSONObject;
 import org.mian.gitnex.R;
 import org.mian.gitnex.activities.IssueDetailActivity;
 import org.mian.gitnex.activities.ProfileActivity;
-import org.mian.gitnex.activities.PullRequestDetailsActivity;
+import org.mian.gitnex.activities.PullRequestDetailActivity;
 import org.mian.gitnex.activities.RepoDetailActivity;
 import org.mian.gitnex.databinding.ListActivitiesBinding;
 import org.mian.gitnex.helpers.AppUtil;
@@ -441,7 +441,7 @@ public class ActivitiesAdapter extends RecyclerView.Adapter<ActivitiesAdapter.Da
 							new Intent(
 									context,
 									isPr
-											? PullRequestDetailsActivity.class
+											? PullRequestDetailActivity.class
 											: IssueDetailActivity.class);
 
 					intent.putExtra("owner", parts[0]);

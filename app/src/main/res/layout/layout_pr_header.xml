@@ -33,6 +33,19 @@
         tools:visibility="visible" />
 
     <ImageView
+        android:id="@+id/locked_icon"
+        android:layout_width="@dimen/dimen16dp"
+        android:layout_height="@dimen/dimen16dp"
+        android:layout_marginStart="@dimen/dimen8dp"
+        android:contentDescription="@string/lock"
+        android:visibility="gone"
+        app:layout_constraintBottom_toBottomOf="@id/status_badge_img"
+        app:layout_constraintStart_toEndOf="@id/prStateIcon"
+        app:layout_constraintTop_toTopOf="@id/status_badge_img"
+        app:srcCompat="@drawable/ic_lock"
+        app:tint="?attr/iconsColor" />
+
+    <ImageView
         android:id="@+id/btn_edit"
         android:layout_width="@dimen/dimen28dp"
         android:layout_height="@dimen/dimen28dp"

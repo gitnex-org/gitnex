@@ -47,7 +47,7 @@ import org.mian.gitnex.helpers.contexts.RepositoryContext;
 import org.mian.gitnex.helpers.languagestatistics.LanguageColor;
 import org.mian.gitnex.helpers.languagestatistics.LanguageStatisticsHelper;
 import org.mian.gitnex.viewmodels.CreateIssueViewModel;
-import org.mian.gitnex.viewmodels.RepositoryDetailsViewModel;
+import org.mian.gitnex.viewmodels.RepositoryDetailViewModel;
 
 /**
  * @author mmarif
@@ -57,7 +57,7 @@ public class RepoInfoFragment extends Fragment {
 	private Context ctx;
 	private FragmentRepoInfoBinding binding;
 	private RepositoryContext repositoryContext;
-	private RepositoryDetailsViewModel viewModel;
+	private RepositoryDetailViewModel viewModel;
 	private boolean isAdmin;
 	private Locale locale;
 
@@ -87,7 +87,7 @@ public class RepoInfoFragment extends Fragment {
 		super.onViewCreated(view, savedInstanceState);
 		ctx = requireContext();
 		locale = getResources().getConfiguration().getLocales().get(0);
-		viewModel = new ViewModelProvider(requireActivity()).get(RepositoryDetailsViewModel.class);
+		viewModel = new ViewModelProvider(requireActivity()).get(RepositoryDetailViewModel.class);
 
 		View dock = requireActivity().findViewById(R.id.docked_toolbar);
 		UIHelper.applyInsets(view, dock, binding.scrollContent, null, binding.repoInfoLayout);

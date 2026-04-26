@@ -15,7 +15,7 @@ import androidx.recyclerview.widget.RecyclerView;
 import java.util.ArrayList;
 import org.gitnex.tea4j.v2.models.Team;
 import org.mian.gitnex.R;
-import org.mian.gitnex.activities.OrganizationTeamDetailsActivity;
+import org.mian.gitnex.activities.OrganizationTeamDetailActivity;
 import org.mian.gitnex.adapters.ReposListAdapter;
 import org.mian.gitnex.databinding.FragmentRepositoriesBinding;
 import org.mian.gitnex.helpers.Constants;
@@ -27,7 +27,7 @@ import org.mian.gitnex.viewmodels.RepositoriesViewModel;
  * @author mmarif
  */
 public class OrganizationTeamDetailsReposFragment extends Fragment
-		implements OrganizationTeamDetailsActivity.OrgActionInterface {
+		implements OrganizationTeamDetailActivity.OrgActionInterface {
 
 	private FragmentRepositoriesBinding binding;
 	private RepositoriesViewModel viewModel;
