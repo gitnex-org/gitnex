@@ -29,6 +29,7 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.load.engine.DiskCacheStrategy;
+import com.google.android.material.card.MaterialCardView;
 import com.google.android.material.chip.ChipGroup;
 import com.google.android.material.dialog.MaterialAlertDialogBuilder;
 import com.google.android.material.imageview.ShapeableImageView;
@@ -1686,14 +1687,15 @@ public class PullRequestDetailActivity extends BaseActivity
 		boolean isImage =
 				Arrays.asList("bmp", "gif", "jpg", "jpeg", "png", "webp", "heic", "heif")
 						.contains(extension);
+		AppUtil.FileType fileType = AppUtil.getFileTypeFromFileName(attachment.getName());
+		boolean isViewable = isImage || fileType == AppUtil.FileType.TEXT;
 
-		int size = (int) (32 * getResources().getDisplayMetrics().density);
+		int size = (int) (30 * getResources().getDisplayMetrics().density);
 		LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(size, size);
-		params.setMargins(0, 0, (int) (12 * getResources().getDisplayMetrics().density), 0);
+		params.setMargins(0, 0, (int) (16 * getResources().getDisplayMetrics().density), 0);
 
 		if (isImage) {
-			com.google.android.material.imageview.ShapeableImageView imageView =
-					new com.google.android.material.imageview.ShapeableImageView(this);
+			ShapeableImageView imageView = new ShapeableImageView(this);
 			imageView.setLayoutParams(params);
 			imageView.setScaleType(ImageView.ScaleType.CENTER_CROP);
 
@@ -1712,20 +1714,23 @@ public class PullRequestDetailActivity extends BaseActivity
 					.into(imageView);
 
 			imageView.setOnClickListener(v -> openAttachmentPreview(attachment));
+			imageView.setOnLongClickListener(
+					v -> {
+						downloadAttachment(attachment);
+						return true;
+					});
 			return imageView;
-
 		} else {
-			com.google.android.material.card.MaterialCardView card =
-					new com.google.android.material.card.MaterialCardView(this);
+			MaterialCardView card = new MaterialCardView(this);
 			card.setLayoutParams(params);
-			card.setRadius(12);
+			card.setRadius(0);
 			card.setStrokeWidth(0);
 			card.setClickable(false);
 			card.setFocusable(false);
 			card.setCardBackgroundColor(android.graphics.Color.TRANSPARENT);
 
 			ImageView icon = new ImageView(this);
-			int iconSize = (int) (36 * getResources().getDisplayMetrics().density);
+			int iconSize = (int) (30 * getResources().getDisplayMetrics().density);
 			FrameLayout.LayoutParams iconParams = new FrameLayout.LayoutParams(iconSize, iconSize);
 			iconParams.gravity = Gravity.CENTER;
 			icon.setLayoutParams(iconParams);
@@ -1733,11 +1738,90 @@ public class PullRequestDetailActivity extends BaseActivity
 
 			icon.setClickable(true);
 			icon.setFocusable(true);
-			icon.setOnClickListener(v -> downloadAttachment(attachment));
+
+			if (isViewable) {
+				icon.setOnClickListener(v -> openFileViewer(attachment));
+				icon.setOnLongClickListener(
+						v -> {
+							downloadAttachment(attachment);
+							return true;
+						});
+			} else {
+				icon.setOnClickListener(v -> downloadAttachment(attachment));
+			}
 
 			card.addView(icon);
 			return card;
 		}
+	}
+
+	private void openFileViewer(Attachment attachment) {
+		String fileUuid = attachment.getUuid();
+		String fileName = attachment.getName();
+		String extension = FilenameUtils.getExtension(fileName).toLowerCase();
+		boolean isMarkdown = "md".equals(extension) || "markdown".equals(extension);
+
+		new Thread(
+						() -> {
+							try {
+								Call<ResponseBody> call =
+										RetrofitClient.getWebInterface(this)
+												.getAttachment(fileUuid);
+								Response<ResponseBody> response = call.execute();
+
+								if (response.isSuccessful() && response.body() != null) {
+									String content = response.body().string();
+
+									runOnUiThread(
+											() -> {
+												BottomSheetContentViewer.Feature[] features;
+												if (isMarkdown) {
+													features =
+															new BottomSheetContentViewer.Feature[] {
+																BottomSheetContentViewer.Feature
+																		.MARKDOWN_PREVIEW,
+																BottomSheetContentViewer.Feature
+																		.START_IN_MARKDOWN,
+																BottomSheetContentViewer.Feature
+																		.SHOW_TITLE,
+																BottomSheetContentViewer.Feature
+																		.ALLOW_COPY,
+																BottomSheetContentViewer.Feature
+																		.ALLOW_SHARE
+															};
+												} else {
+													features =
+															new BottomSheetContentViewer.Feature[] {
+																BottomSheetContentViewer.Feature
+																		.SYNTAX_HIGHLIGHT,
+																BottomSheetContentViewer.Feature
+																		.SHOW_TITLE,
+																BottomSheetContentViewer.Feature
+																		.ALLOW_COPY,
+																BottomSheetContentViewer.Feature
+																		.ALLOW_SHARE
+															};
+												}
+
+												BottomSheetContentViewer.newInstance(
+																content,
+																fileName,
+																repositoryContext,
+																extension,
+																features)
+														.show(
+																getSupportFragmentManager(),
+																"FILE_VIEWER");
+											});
+								} else {
+									runOnUiThread(
+											() -> Toasty.show(this, R.string.image_load_error));
+								}
+							} catch (Exception e) {
+								runOnUiThread(() -> Toasty.show(this, R.string.image_load_error));
+							}
+						})
+				.start();
 	}
 
 	private void displayAttachments(List<Attachment> attachments) {
