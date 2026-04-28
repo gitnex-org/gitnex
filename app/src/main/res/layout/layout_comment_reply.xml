@@ -1,0 +1,116 @@
+<com.google.android.material.card.MaterialCardView xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/comment_box_container"
+    style="@style/Widget.Material3.CardView.Elevated"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_gravity="bottom"
+    app:cardCornerRadius="@dimen/dimen20dp"
+    app:cardBackgroundColor="?attr/colorSurfaceContainerHigh"
+    app:strokeWidth="1dp"
+    app:strokeColor="?attr/colorOutlineVariant"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:padding="@dimen/dimen8dp">
+
+        <EditText
+            android:id="@+id/et_quick_comment"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:paddingTop="@dimen/dimen4dp"
+            android:layout_marginHorizontal="@dimen/dimen12dp"
+            android:autofillHints="@string/commentButtonText"
+            android:background="@android:color/transparent"
+            android:hint="@string/commentButtonText"
+            android:inputType="textMultiLine|textCapSentences"
+            android:gravity="top|start"
+            android:maxLines="8"
+            android:minHeight="@dimen/dimen144dp"
+            android:textAppearance="?attr/textAppearanceBodyMedium"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <com.google.android.material.button.MaterialButton
+            android:id="@+id/btn_close_reply"
+            style="?attr/materialIconButtonStyle"
+            android:layout_width="@dimen/dimen48dp"
+            android:layout_height="@dimen/dimen48dp"
+            app:icon="@drawable/ic_close"
+            app:iconTint="?attr/colorError"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/et_quick_comment" />
+
+        <com.google.android.material.button.MaterialButton
+            android:id="@+id/btn_expand_editor"
+            style="?attr/materialIconButtonStyle"
+            android:layout_width="@dimen/dimen48dp"
+            android:layout_height="@dimen/dimen48dp"
+            android:layout_marginStart="@dimen/dimen4dp"
+            app:icon="@drawable/ic_maximize"
+            app:iconTint="?attr/iconsColor"
+            android:visibility="gone"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintStart_toEndOf="@id/btn_close_reply"
+            app:layout_constraintTop_toBottomOf="@id/et_quick_comment" />
+
+        <LinearLayout
+            android:id="@+id/attachment_indicator"
+            android:layout_width="wrap_content"
+            android:layout_height="@dimen/dimen48dp"
+            android:layout_marginStart="@dimen/dimen8dp"
+            android:gravity="center_vertical"
+            android:orientation="horizontal"
+            android:visibility="gone"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintStart_toEndOf="@id/btn_expand_editor"
+            app:layout_constraintTop_toBottomOf="@id/et_quick_comment"
+            tools:ignore="UseCompoundDrawables">
+
+            <ImageView
+                android:layout_width="@dimen/dimen22dp"
+                android:layout_height="@dimen/dimen22dp"
+                android:contentDescription="@string/generalImgContentText"
+                android:src="@drawable/ic_attachment"
+                app:tint="?attr/iconsColor" />
+
+            <TextView
+                android:id="@+id/attachment_count"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="@dimen/dimen6dp"
+                android:text="@string/ceIndentationTabsWidth2"
+                android:textColor="?attr/primaryTextColor"
+                android:textSize="@dimen/dimen16sp" />
+
+        </LinearLayout>
+
+        <com.google.android.material.button.MaterialButton
+            android:id="@+id/btn_quick_send"
+            style="?attr/materialIconButtonStyle"
+            android:layout_width="@dimen/dimen48dp"
+            android:layout_height="@dimen/dimen48dp"
+            app:icon="@drawable/ic_send"
+            app:iconTint="?attr/colorPrimary"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/et_quick_comment" />
+
+        <com.google.android.material.progressindicator.CircularProgressIndicator
+            android:id="@+id/comment_loader"
+            android:layout_width="@dimen/dimen24dp"
+            android:layout_height="@dimen/dimen24dp"
+            android:indeterminate="true"
+            android:visibility="gone"
+            app:indicatorSize="@dimen/dimen24dp"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/et_quick_comment" />
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+</com.google.android.material.card.MaterialCardView>

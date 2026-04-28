@@ -52,6 +52,7 @@ public class RepositoriesViewModel extends ViewModel {
 			new MutableLiveData<>(new ArrayList<>());
 
 	private int totalCount = -1;
+	private int totalSearchCount = -1;
 	private boolean isLastPage = false;
 	private int loadCount = 0;
 	private static final int TOTAL_LOADS = 3;
@@ -292,9 +293,11 @@ public class RepositoriesViewModel extends ViewModel {
 			List<Repository> repos =
 					results.getData() != null ? results.getData() : new ArrayList<>();
 
-			String totalHeader = response.headers().get("x-total-count");
-			if (totalHeader != null) {
-				totalCount = Integer.parseInt(totalHeader);
+			String totalSearchHeader = response.headers().get("x-total-count");
+			if (totalSearchHeader != null) {
+				totalSearchCount = Integer.parseInt(totalSearchHeader);
+			} else {
+				totalSearchCount = -1;
 			}
 
 			List<Repository> currentList =
@@ -305,7 +308,8 @@ public class RepositoriesViewModel extends ViewModel {
 			searchResults.setValue(currentList);
 
 			isLastPage =
-					repos.size() < limit || (totalCount != -1 && currentList.size() >= totalCount);
+					repos.size() < limit
+							|| (totalSearchCount != -1 && currentList.size() >= totalSearchCount);
 		} else {
 			if (isRefresh) searchResults.setValue(new ArrayList<>());
 			errorMessage.setValue("API error: " + response.code());
@@ -315,7 +319,9 @@ public class RepositoriesViewModel extends ViewModel {
 	public void resetPagination() {
 		this.isLastPage = false;
 		this.totalCount = -1;
+		this.totalSearchCount = -1;
 		this.hasLoadedOnce.setValue(false);
+		searchResults.setValue(new ArrayList<>());
 	}
 
 	public void loadSetupData(Context ctx, String loginUid) {

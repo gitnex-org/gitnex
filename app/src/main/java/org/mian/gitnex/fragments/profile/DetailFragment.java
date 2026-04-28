@@ -37,12 +37,12 @@ import org.mian.gitnex.databinding.BottomsheetEditProfileBinding;
 import org.mian.gitnex.databinding.BottomsheetUpdateAvatarBinding;
 import org.mian.gitnex.databinding.FragmentProfileDetailBinding;
 import org.mian.gitnex.databinding.ItemProfileInfoBinding;
-import org.mian.gitnex.helpers.AlertDialogs;
 import org.mian.gitnex.helpers.AppDatabaseSettings;
 import org.mian.gitnex.helpers.AppUtil;
 import org.mian.gitnex.helpers.Markdown;
 import org.mian.gitnex.helpers.TimeHelper;
 import org.mian.gitnex.helpers.Toasty;
+import org.mian.gitnex.helpers.TokenAuthorizationDialog;
 import org.mian.gitnex.helpers.UIHelper;
 import org.mian.gitnex.viewmodels.UserProfileViewModel;
 
@@ -232,7 +232,8 @@ public class DetailFragment extends Fragment {
 						error -> {
 							if (error == null) return;
 							if (error.equals("AUTH_REVOKED")) {
-								AlertDialogs.authorizationTokenRevokedDialog(requireContext());
+								TokenAuthorizationDialog.authorizationTokenRevokedDialog(
+										requireContext());
 							} else {
 								Toasty.show(requireContext(), error);
 							}

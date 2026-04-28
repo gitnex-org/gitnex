@@ -11,18 +11,18 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent" />
 
-   <com.google.android.material.dockedtoolbar.DockedToolbarLayout
-       android:id="@+id/docked_toolbar"
-       android:layout_width="wrap_content"
-       android:layout_height="wrap_content"
-       app:paddingBottomSystemWindowInsets="false"
-       app:paddingLeftSystemWindowInsets="false"
-       app:paddingRightSystemWindowInsets="false"
-       app:paddingTopSystemWindowInsets="false"
-       android:layout_gravity="bottom|center_horizontal"
-       app:shapeAppearanceOverlay="@style/ShapeAppearance.RoundedDock"
-       app:layout_behavior="com.google.android.material.behavior.HideViewOnScrollBehavior"
-       android:backgroundTint="?attr/colorSurfaceContainerHigh">
+    <com.google.android.material.dockedtoolbar.DockedToolbarLayout
+        android:id="@+id/docked_toolbar"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:paddingBottomSystemWindowInsets="false"
+        app:paddingLeftSystemWindowInsets="false"
+        app:paddingRightSystemWindowInsets="false"
+        app:paddingTopSystemWindowInsets="false"
+        android:layout_gravity="bottom|center_horizontal"
+        app:shapeAppearanceOverlay="@style/ShapeAppearance.RoundedDock"
+        app:layout_behavior="com.google.android.material.behavior.HideViewOnScrollBehavior"
+        android:backgroundTint="?attr/colorSurfaceContainerHigh">
 
         <LinearLayout
             android:layout_width="wrap_content"

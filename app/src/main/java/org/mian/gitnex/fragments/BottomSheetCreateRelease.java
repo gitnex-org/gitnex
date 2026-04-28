@@ -17,9 +17,9 @@ import org.gitnex.tea4j.v2.models.CreateTagOption;
 import org.gitnex.tea4j.v2.models.Release;
 import org.mian.gitnex.R;
 import org.mian.gitnex.databinding.BottomsheetCreateReleaseBinding;
-import org.mian.gitnex.helpers.AlertDialogs;
 import org.mian.gitnex.helpers.AppUtil;
 import org.mian.gitnex.helpers.Toasty;
+import org.mian.gitnex.helpers.TokenAuthorizationDialog;
 import org.mian.gitnex.helpers.contexts.RepositoryContext;
 import org.mian.gitnex.viewmodels.ReleasesViewModel;
 
@@ -444,7 +444,7 @@ public class BottomSheetCreateRelease extends BottomSheetDialogFragment {
 
 	private void handleError(String error) {
 		if (error.equals("UNAUTHORIZED")) {
-			AlertDialogs.authorizationTokenRevokedDialog(requireContext());
+			TokenAuthorizationDialog.authorizationTokenRevokedDialog(requireContext());
 		} else if (error.equals(getString(R.string.tagNameConflictError))) {
 			Toasty.show(requireContext(), R.string.tagNameConflictError);
 		} else {

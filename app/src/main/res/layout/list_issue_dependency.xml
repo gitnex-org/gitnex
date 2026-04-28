@@ -1,25 +1,27 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<com.google.android.material.listitem.ListItemLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="wrap_content"
-    android:paddingBottom="@dimen/dimen4dp"
-    android:orientation="horizontal">
+    android:layout_height="wrap_content">
 
-    <com.google.android.material.card.MaterialCardView
-        android:id="@+id/card_view"
+    <com.google.android.material.listitem.ListItemCardView
+        android:id="@+id/card"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        style="?attr/materialCardViewElevatedStyle"
-        app:cardElevation="@dimen/dimen0dp">
+        android:checkable="false"
+        android:layout_marginVertical="@dimen/dimen1dp"
+        app:strokeWidth="0dp"
+        app:cardBackgroundColor="?attr/materialCardBackgroundColor">
 
         <LinearLayout
+            android:id="@+id/layout_frame"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:foreground="?android:attr/selectableItemBackground"
-            android:background="?attr/materialCardBackgroundColor"
-            android:padding="@dimen/dimen12dp"
-            android:orientation="horizontal">
+            android:padding="@dimen/dimen8dp"
+            android:orientation="horizontal"
+            tools:ignore="UseCompoundDrawables">
 
             <TextView
                 android:id="@+id/dependencyTitle"
@@ -40,10 +42,10 @@
                 android:contentDescription="@string/menuDeleteText"
                 android:layout_gravity="center_vertical"
                 android:visibility="gone"
-                app:tint="?attr/colorOnSurfaceVariant" />
+                app:tint="?attr/colorError" />
 
         </LinearLayout>
 
-    </com.google.android.material.card.MaterialCardView>
+    </com.google.android.material.listitem.ListItemCardView>
 
-</LinearLayout>
+</com.google.android.material.listitem.ListItemLayout>

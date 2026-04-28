@@ -1,0 +1,192 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:background="?attr/materialCardBackgroundColor"
+    android:paddingHorizontal="@dimen/dimen16dp"
+    android:paddingTop="@dimen/dimen24dp"
+    android:paddingBottom="@dimen/dimen12dp">
+
+    <ImageView
+        android:id="@+id/status_badge_img"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:contentDescription="@string/generalImgContentText"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        tools:src="@tools:sample/avatars" />
+
+    <ImageView
+        android:id="@+id/prStateIcon"
+        android:layout_width="@dimen/dimen16dp"
+        android:layout_height="@dimen/dimen16dp"
+        android:layout_marginStart="@dimen/dimen8dp"
+        android:contentDescription="@string/generalImgContentText"
+        android:visibility="gone"
+        app:layout_constraintBottom_toBottomOf="@id/status_badge_img"
+        app:layout_constraintStart_toEndOf="@id/status_badge_img"
+        app:layout_constraintTop_toTopOf="@id/status_badge_img"
+        app:srcCompat="@drawable/ic_draft"
+        app:tint="?attr/iconsColor"
+        tools:visibility="visible" />
+
+    <ImageView
+        android:id="@+id/locked_icon"
+        android:layout_width="@dimen/dimen16dp"
+        android:layout_height="@dimen/dimen16dp"
+        android:layout_marginStart="@dimen/dimen8dp"
+        android:contentDescription="@string/lock"
+        android:visibility="gone"
+        app:layout_constraintBottom_toBottomOf="@id/status_badge_img"
+        app:layout_constraintStart_toEndOf="@id/prStateIcon"
+        app:layout_constraintTop_toTopOf="@id/status_badge_img"
+        app:srcCompat="@drawable/ic_lock"
+        app:tint="?attr/iconsColor" />
+
+    <ImageView
+        android:id="@+id/btn_edit"
+        android:layout_width="@dimen/dimen28dp"
+        android:layout_height="@dimen/dimen28dp"
+        android:background="?attr/selectableItemBackgroundBorderless"
+        android:contentDescription="@string/edit_pr"
+        android:padding="@dimen/dimen4dp"
+        android:src="@drawable/ic_edit"
+        android:scaleType="centerInside"
+        app:layout_constraintBottom_toBottomOf="@id/status_badge_img"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="@id/status_badge_img"
+        app:tint="?attr/iconsColor" />
+
+    <TextView
+        android:id="@+id/pr_title"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/dimen16dp"
+        android:textAppearance="?attr/textAppearanceHeadlineSmall"
+        android:textColor="?attr/colorOnSurface"
+        android:textStyle="bold"
+        app:layout_constraintTop_toBottomOf="@id/status_badge_img"
+        tools:text="Update README and fix typos across multiple files #42" />
+
+    <LinearLayout
+        android:id="@+id/author_row"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/dimen8dp"
+        android:gravity="center_vertical"
+        android:orientation="horizontal"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/pr_title"
+        tools:ignore="UseCompoundDrawables">
+
+        <com.google.android.material.imageview.ShapeableImageView
+            android:id="@+id/author_avatar"
+            android:layout_width="@dimen/dimen22dp"
+            android:layout_height="@dimen/dimen22dp"
+            app:strokeWidth="@dimen/dimen0dp"
+            android:background="?attr/primaryBackgroundColor"
+            android:scaleType="centerCrop"
+            app:shapeAppearanceOverlay="@style/ShapeAppearance.Material3.Corner.ExtraSmall" />
+
+        <TextView
+            android:id="@+id/author_and_time"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="@dimen/dimen8dp"
+            android:textAppearance="?attr/textAppearanceBodyMedium"
+            android:textColor="?attr/colorOnSurfaceVariant"
+            tools:text="mian opened 2 days ago" />
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:id="@+id/branch_row"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/dimen16dp"
+        android:gravity="center_vertical"
+        android:orientation="horizontal"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/author_row"
+        tools:ignore="UseCompoundDrawables">
+
+        <ImageView
+            android:layout_width="@dimen/dimen16dp"
+            android:layout_height="@dimen/dimen16dp"
+            android:contentDescription="@string/generalImgContentText"
+            android:src="@drawable/ic_branch"
+            app:tint="?attr/colorPrimary" />
+
+        <TextView
+            android:id="@+id/branch_info"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="@dimen/dimen8dp"
+            android:fontFamily="monospace"
+            android:textAppearance="?attr/textAppearanceBodySmall"
+            android:textColor="?attr/colorOnSurfaceVariant"
+            tools:text="main ← feature/update-readme" />
+
+    </LinearLayout>
+
+    <com.google.android.material.chip.ChipGroup
+        android:id="@+id/labels_chip_group"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/dimen16dp"
+        app:chipSpacingHorizontal="@dimen/dimen6dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/branch_row" />
+
+    <LinearLayout
+        android:id="@+id/meta_container"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/dimen16dp"
+        android:orientation="vertical"
+        app:layout_constraintTop_toBottomOf="@id/labels_chip_group">
+
+        <include android:id="@+id/row_milestone" layout="@layout/item_pr_meta_row" />
+        <include android:id="@+id/row_assignees" layout="@layout/item_pr_meta_row" />
+        <include android:id="@+id/row_due_date" layout="@layout/item_pr_meta_row" />
+        <include android:id="@+id/row_reviewers" layout="@layout/item_pr_meta_row" />
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:id="@+id/reactions_container"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/dimen16dp"
+        android:orientation="horizontal"
+        android:gravity="center_vertical"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/meta_container">
+
+        <com.google.android.material.chip.ChipGroup
+            android:id="@+id/reactions_chip_group"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            app:chipSpacingVertical="@dimen/dimen0dp"
+            app:chipSpacingHorizontal="@dimen/dimen6dp" />
+
+        <ImageView
+            android:id="@+id/add_reaction_button"
+            android:layout_width="@dimen/dimen32dp"
+            android:layout_height="@dimen/dimen32dp"
+            android:background="?attr/selectableItemBackgroundBorderless"
+            android:contentDescription="@string/generalImgContentText"
+            android:padding="@dimen/dimen6dp"
+            android:src="@drawable/ic_emoji_add"
+            app:tint="?attr/iconsColor" />
+
+    </LinearLayout>
+
+</androidx.constraintlayout.widget.ConstraintLayout>

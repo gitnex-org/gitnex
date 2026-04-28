@@ -134,7 +134,7 @@ public class ExploreRepositoriesFragment extends Fragment
 
 	private void observeViewModel() {
 		viewModel
-				.getRepos()
+				.getSearchResults()
 				.observe(
 						getViewLifecycleOwner(),
 						list -> {

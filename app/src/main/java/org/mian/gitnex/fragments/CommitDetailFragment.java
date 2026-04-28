@@ -30,14 +30,12 @@ import org.mian.gitnex.adapters.CommitStatusesAdapter;
 import org.mian.gitnex.adapters.DiffFilesAdapter;
 import org.mian.gitnex.clients.RetrofitClient;
 import org.mian.gitnex.databinding.FragmentCommitDetailsBinding;
-import org.mian.gitnex.helpers.AlertDialogs;
 import org.mian.gitnex.helpers.FileDiffView;
 import org.mian.gitnex.helpers.ParseDiff;
 import org.mian.gitnex.helpers.TimeHelper;
 import org.mian.gitnex.helpers.Toasty;
+import org.mian.gitnex.helpers.TokenAuthorizationDialog;
 import org.mian.gitnex.helpers.UIHelper;
-import org.mian.gitnex.helpers.contexts.IssueContext;
-import org.mian.gitnex.helpers.contexts.RepositoryContext;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
@@ -74,10 +72,8 @@ public class CommitDetailFragment extends Fragment {
 			@Nullable Bundle savedInstanceState) {
 		binding = FragmentCommitDetailsBinding.inflate(inflater, container, false);
 
-		IssueContext issue = IssueContext.fromIntent(requireActivity().getIntent());
-		RepositoryContext repository = RepositoryContext.fromIntent(requireActivity().getIntent());
-		repoOwner = repository.getOwner();
-		repoName = repository.getName();
+		repoOwner = requireActivity().getIntent().getStringExtra("owner");
+		repoName = requireActivity().getIntent().getStringExtra("repo");
 		sha = requireActivity().getIntent().getStringExtra("sha");
 
 		if (sha != null) {
@@ -85,7 +81,7 @@ public class CommitDetailFragment extends Fragment {
 			binding.toolbarTitle.setText(shortSha);
 		}
 
-		setupRecyclerView(issue);
+		setupRecyclerView();
 		setupListeners();
 
 		getCommit();
@@ -95,10 +91,10 @@ public class CommitDetailFragment extends Fragment {
 		return binding.getRoot();
 	}
 
-	private void setupRecyclerView(IssueContext issue) {
+	private void setupRecyclerView() {
 		adapter =
 				new DiffFilesAdapter(
-						requireContext(), fileDiffViews, issue, repoOwner, repoName, sha, "commit");
+						requireContext(), fileDiffViews, repoOwner, repoName, sha, "commit", -1);
 		binding.diffFiles.setHasFixedSize(true);
 		binding.diffFiles.setLayoutManager(new LinearLayoutManager(requireContext()));
 		binding.diffFiles.setAdapter(adapter);
@@ -375,7 +371,7 @@ public class CommitDetailFragment extends Fragment {
 
 	private void handleErrorCodes(int code) {
 		switch (code) {
-			case 401 -> AlertDialogs.authorizationTokenRevokedDialog(requireContext());
+			case 401 -> TokenAuthorizationDialog.authorizationTokenRevokedDialog(requireContext());
 			case 403 -> Toasty.show(requireContext(), getString(R.string.authorizeError));
 			case 404 -> Toasty.show(requireContext(), getString(R.string.apiNotFound));
 			default -> showGenericError();

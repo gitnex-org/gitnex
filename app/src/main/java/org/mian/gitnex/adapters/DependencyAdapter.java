@@ -1,10 +1,12 @@
 package org.mian.gitnex.adapters;
 
+import android.annotation.SuppressLint;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
+import java.util.ArrayList;
 import java.util.List;
 import org.gitnex.tea4j.v2.models.Issue;
 import org.mian.gitnex.databinding.ListIssueDependencyBinding;
@@ -15,17 +17,27 @@ import org.mian.gitnex.databinding.ListIssueDependencyBinding;
 public class DependencyAdapter
 		extends RecyclerView.Adapter<DependencyAdapter.DependencyViewHolder> {
 
-	private final List<Issue> dependenciesList;
+	private List<Issue> dependenciesList;
 	private final boolean showDeleteIcon;
 	private OnItemClickListener itemClickListener;
 
 	public DependencyAdapter(List<Issue> dependenciesList, boolean showDeleteIcon) {
-		this.dependenciesList = dependenciesList;
+		this.dependenciesList = dependenciesList != null ? dependenciesList : new ArrayList<>();
 		this.showDeleteIcon = showDeleteIcon;
 	}
 
 	public void setOnItemClickListener(OnItemClickListener listener) {
 		this.itemClickListener = listener;
+	}
+
+	@SuppressLint("NotifyDataSetChanged")
+	public void updateList(List<Issue> list) {
+		this.dependenciesList = list != null ? list : new ArrayList<>();
+		notifyDataSetChanged();
+	}
+
+	public List<Issue> getItems() {
+		return dependenciesList;
 	}
 
 	@NonNull @Override
@@ -38,7 +50,6 @@ public class DependencyAdapter
 
 	@Override
 	public void onBindViewHolder(@NonNull DependencyViewHolder holder, int position) {
-
 		Issue issue = dependenciesList.get(position);
 		holder.binding.dependencyTitle.setText(issue.getTitle());
 		holder.binding.deleteDependency.setVisibility(showDeleteIcon ? View.VISIBLE : View.GONE);
@@ -47,18 +58,22 @@ public class DependencyAdapter
 			holder.binding.deleteDependency.setOnClickListener(
 					v -> {
 						if (itemClickListener != null) {
-							itemClickListener.onItemClick(issue, position);
+							itemClickListener.onItemClick(
+									issue, holder.getBindingAdapterPosition());
 						}
 					});
-			holder.binding.cardView.setOnClickListener(null);
+			holder.binding.layoutFrame.setOnClickListener(null);
 		} else {
-			holder.binding.cardView.setOnClickListener(
+			holder.binding.layoutFrame.setOnClickListener(
 					v -> {
 						if (itemClickListener != null) {
-							itemClickListener.onItemClick(issue, position);
+							itemClickListener.onItemClick(
+									issue, holder.getBindingAdapterPosition());
 						}
 					});
 		}
+
+		holder.binding.getRoot().updateAppearance(position, getItemCount());
 	}
 
 	@Override

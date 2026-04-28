@@ -18,7 +18,7 @@ import java.util.Map;
 import org.gitnex.tea4j.v2.models.OrganizationPermissions;
 import org.gitnex.tea4j.v2.models.Team;
 import org.gitnex.tea4j.v2.models.User;
-import org.mian.gitnex.activities.OrganizationTeamDetailsActivity;
+import org.mian.gitnex.activities.OrganizationTeamDetailActivity;
 import org.mian.gitnex.databinding.ListOrganizationTeamsBinding;
 import org.mian.gitnex.viewmodels.OrganizationsViewModel;
 
@@ -96,7 +96,7 @@ public class OrganizationTeamsAdapter
 			itemView.setOnClickListener(
 					v -> {
 						Team team = teamList.get(getAbsoluteAdapterPosition());
-						Intent intent = new Intent(context, OrganizationTeamDetailsActivity.class);
+						Intent intent = new Intent(context, OrganizationTeamDetailActivity.class);
 						intent.putExtra("team", team);
 						intent.putExtra("orgName", orgName);
 						context.startActivity(intent);

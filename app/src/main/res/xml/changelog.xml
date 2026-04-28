@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <changelog>
 
-     <release version="13.0.0-rc2" versioncode="1296">
+     <release version="13.0.0-rc3" versioncode="1297">
         <type name="🎉 Features 🎉">
             <change>Release notes will be updated with a stable release!</change>
         </type>

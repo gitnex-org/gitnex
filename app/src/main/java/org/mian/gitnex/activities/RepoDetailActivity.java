@@ -45,7 +45,7 @@ import org.mian.gitnex.models.RepositoryMenuItemModel;
 import org.mian.gitnex.viewmodels.IssuesViewModel;
 import org.mian.gitnex.viewmodels.PullRequestsViewModel;
 import org.mian.gitnex.viewmodels.ReleasesViewModel;
-import org.mian.gitnex.viewmodels.RepositoryDetailsViewModel;
+import org.mian.gitnex.viewmodels.RepositoryDetailViewModel;
 
 /**
  * @author mmarif
@@ -65,11 +65,12 @@ public class RepoDetailActivity extends BaseActivity
 
 	private ActivityRepoDetailBinding binding;
 	public RepositoryContext repository;
-	private RepositoryDetailsViewModel viewModel;
+	private RepositoryDetailViewModel viewModel;
 	private final FragmentManager fm = getSupportFragmentManager();
 	private boolean isStarred = false;
 	private boolean isWatched = false;
 	private boolean isGiteaRepoActionsVisible = false;
+	private boolean hasActions = false;
 	private boolean adminStatus = false;
 	private int activeTabId = R.id.btn_nav_details;
 	private BadgeDrawable issuesBadge;
@@ -121,12 +122,11 @@ public class RepoDetailActivity extends BaseActivity
 		binding = ActivityRepoDetailBinding.inflate(getLayoutInflater());
 		setContentView(binding.getRoot());
 
-		viewModel = new ViewModelProvider(this).get(RepositoryDetailsViewModel.class);
+		viewModel = new ViewModelProvider(this).get(RepositoryDetailViewModel.class);
 		repository = RepositoryContext.fromIntent(getIntent());
 
 		UIHelper.applyEdgeToEdge(this, binding.dockedToolbar, null, null, null);
 
-		setupProviderFlags();
 		observeViewModel();
 		setupDockListeners();
 
@@ -146,6 +146,8 @@ public class RepoDetailActivity extends BaseActivity
 							String actionId = bundle.getString("repo_hub_item_id");
 							if (actionId != null) handleHubAction(actionId);
 						});
+
+		setupProviderFlags();
 	}
 
 	@Override
@@ -161,6 +163,10 @@ public class RepoDetailActivity extends BaseActivity
 		FilesFragment filesFragment =
 				(FilesFragment) getSupportFragmentManager().findFragmentByTag(TAG_FILES);
 		if (filesFragment != null) filesFragment.refreshFromGlobal();
+
+		PullRequestsFragment pullRequestsFragment =
+				(PullRequestsFragment) getSupportFragmentManager().findFragmentByTag(TAG_PRS);
+		if (pullRequestsFragment != null) pullRequestsFragment.refreshFromGlobal();
 	}
 
 	private void setupProviderFlags() {
@@ -171,7 +177,7 @@ public class RepoDetailActivity extends BaseActivity
 			Version currentVersion =
 					Version.valid(serverVersion) ? new Version(serverVersion) : new Version("0.0");
 			isGiteaRepoActionsVisible =
-					"gitea".equals(provider) && !currentVersion.less(minVersion);
+					"gitea".equals(provider) && !currentVersion.less(minVersion) && hasActions;
 		}
 	}
 
@@ -296,6 +302,8 @@ public class RepoDetailActivity extends BaseActivity
 			this.adminStatus = Boolean.TRUE.equals(repo.getPermissions().isAdmin());
 		}
 
+		applyRepositoryFeatures(repo);
+
 		if (fm.findFragmentByTag(TAG_INFO) == null) {
 			setupFragments();
 			Intent intent = getIntent();
@@ -372,6 +380,24 @@ public class RepoDetailActivity extends BaseActivity
 						});
 				break;
 			}
+		}
+	}
+
+	private void applyRepositoryFeatures(Repository repo) {
+		if (repo.isHasCode() != null) {
+			binding.btnNavFiles.setVisibility(repo.isHasCode() ? View.VISIBLE : View.GONE);
+		}
+		binding.btnNavIssues.setVisibility(repo.isHasIssues() ? View.VISIBLE : View.GONE);
+		binding.btnNavPrs.setVisibility(repo.isHasPullRequests() ? View.VISIBLE : View.GONE);
+		binding.btnNavReleases.setVisibility(repo.isHasReleases() ? View.VISIBLE : View.GONE);
+		binding.btnNavWiki.setVisibility(repo.isHasWiki() ? View.VISIBLE : View.GONE);
+		binding.btnNavMilestones.setVisibility(
+				repo.isHasIssues() || repo.isHasPullRequests() ? View.VISIBLE : View.GONE);
+		binding.btnNavLabels.setVisibility(
+				repo.isHasIssues() || repo.isHasPullRequests() ? View.VISIBLE : View.GONE);
+		binding.btnNavCollaborators.setVisibility(!repo.isInternal() ? View.VISIBLE : View.GONE);
+		if (repo.isHasActions() != null) {
+			hasActions = repo.isHasActions();
 		}
 	}
 
@@ -605,6 +631,8 @@ public class RepoDetailActivity extends BaseActivity
 
 					Intent commitIntent = repository.getIntent(this, CommitDetailActivity.class);
 					commitIntent.putExtra("sha", sha);
+					commitIntent.putExtra("owner", repository.getOwner());
+					commitIntent.putExtra("repo", repository.getName());
 					startActivity(commitIntent);
 					break;
 

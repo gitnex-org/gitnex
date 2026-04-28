@@ -38,16 +38,18 @@ import org.gitnex.tea4j.v2.models.Label;
 import org.gitnex.tea4j.v2.models.PullRequest;
 import org.gitnex.tea4j.v2.models.User;
 import org.mian.gitnex.R;
+import org.mian.gitnex.activities.BaseActivity;
 import org.mian.gitnex.adapters.CreateAttachmentsAdapter;
 import org.mian.gitnex.database.api.BaseApi;
 import org.mian.gitnex.database.api.UserAccountsApi;
 import org.mian.gitnex.database.models.UserAccount;
 import org.mian.gitnex.databinding.BottomsheetCreatePullRequestBinding;
-import org.mian.gitnex.helpers.AlertDialogs;
 import org.mian.gitnex.helpers.AppDatabaseSettings;
+import org.mian.gitnex.helpers.AppUIStateManager;
 import org.mian.gitnex.helpers.AppUtil;
 import org.mian.gitnex.helpers.TinyDB;
 import org.mian.gitnex.helpers.Toasty;
+import org.mian.gitnex.helpers.TokenAuthorizationDialog;
 import org.mian.gitnex.helpers.attachments.AttachmentManager;
 import org.mian.gitnex.helpers.contexts.RepositoryContext;
 import org.mian.gitnex.viewmodels.AttachmentsViewModel;
@@ -155,7 +157,9 @@ public class BottomSheetCreatePullRequest extends BottomSheetDialogFragment {
 
 	private void setupUI() {
 		boolean hasWriteAccess =
-				repoContext.getPermissions() != null && repoContext.getPermissions().isPush();
+				repoContext.getPermissions() != null
+						&& repoContext.getPermissions().isPush() != null
+						&& repoContext.getPermissions().isPush();
 
 		binding.prBody.setOnTouchListener(
 				(v, event) -> {
@@ -287,7 +291,9 @@ public class BottomSheetCreatePullRequest extends BottomSheetDialogFragment {
 		binding.btnSubmit.setOnClickListener(v -> submitAction());
 
 		boolean hasWriteAccess =
-				repoContext.getPermissions() != null && repoContext.getPermissions().isPush();
+				repoContext.getPermissions() != null
+						&& repoContext.getPermissions().isPush() != null
+						&& repoContext.getPermissions().isPush();
 
 		binding.cardMergeInto.getRoot().setOnClickListener(v -> openBranchPicker("merge"));
 		binding.cardMergeInto.btnClear.setOnClickListener(
@@ -568,7 +574,7 @@ public class BottomSheetCreatePullRequest extends BottomSheetDialogFragment {
 
 	private void handleError(String error) {
 		if (error.equals("UNAUTHORIZED")) {
-			AlertDialogs.authorizationTokenRevokedDialog(requireContext());
+			TokenAuthorizationDialog.authorizationTokenRevokedDialog(requireContext());
 		} else {
 			Toasty.show(requireContext(), error);
 		}
@@ -955,6 +961,10 @@ public class BottomSheetCreatePullRequest extends BottomSheetDialogFragment {
 					getString(
 							prToEdit != null ? R.string.updatePrSuccess : R.string.prCreateSuccess);
 			Toasty.show(requireContext(), successMsg);
+			AppUIStateManager.refreshData();
+			if (getActivity() instanceof BaseActivity) {
+				((BaseActivity) getActivity()).triggerGlobalRefresh();
+			}
 			dismiss();
 		}
 	}

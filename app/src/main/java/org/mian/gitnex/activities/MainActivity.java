@@ -33,13 +33,13 @@ import org.mian.gitnex.databinding.FragmentHomeDashboardBinding;
 import org.mian.gitnex.fragments.HomeDashboardFragment;
 import org.mian.gitnex.fragments.NotificationsFragment;
 import org.mian.gitnex.fragments.RepositoriesFragment;
-import org.mian.gitnex.helpers.AlertDialogs;
 import org.mian.gitnex.helpers.AppDatabaseSettings;
 import org.mian.gitnex.helpers.AppUtil;
 import org.mian.gitnex.helpers.BadgeHelper;
 import org.mian.gitnex.helpers.ChangeLog;
 import org.mian.gitnex.helpers.TinyDB;
 import org.mian.gitnex.helpers.Toasty;
+import org.mian.gitnex.helpers.TokenAuthorizationDialog;
 import org.mian.gitnex.helpers.UIHelper;
 import org.mian.gitnex.notifications.Notifications;
 import org.mian.gitnex.notifications.NotificationsBadge;
@@ -518,7 +518,8 @@ public class MainActivity extends BaseActivity
 									userDetails.getId(),
 									callback);
 						} else if (response.code() == 401) {
-							AlertDialogs.authorizationTokenRevokedDialog(MainActivity.this);
+							TokenAuthorizationDialog.authorizationTokenRevokedDialog(
+									MainActivity.this);
 						}
 					}
 

@@ -679,11 +679,8 @@ public class FilesFragment extends Fragment
 		NotificationCompat.Builder builder =
 				new NotificationCompat.Builder(
 								requireContext(), Constants.downloadNotificationChannelId)
-						.setContentTitle(getString(R.string.fileViewerNotificationTitleStarted))
-						.setContentText(
-								getString(
-										R.string.fileViewerNotificationDescriptionStarted,
-										file.getName()))
+						.setContentTitle(getString(R.string.download_started_title))
+						.setContentText(getString(R.string.download_started_desc, file.getName()))
 						.setSmallIcon(R.drawable.gitnex_transparent)
 						.setPriority(NotificationCompat.PRIORITY_LOW)
 						.setOngoing(true)
@@ -720,13 +717,10 @@ public class FilesFragment extends Fragment
 												});
 
 										builder.setContentTitle(
-														getString(
-																R.string
-																		.fileViewerNotificationTitleFinished))
+														getString(R.string.download_complete_title))
 												.setContentText(
 														getString(
-																R.string
-																		.fileViewerNotificationDescriptionFinished,
+																R.string.download_complete_desc,
 																file.getName()))
 												.setOngoing(false)
 												.setProgress(0, 0, false);
@@ -744,13 +738,10 @@ public class FilesFragment extends Fragment
 									throw new IOException("Download failed: " + response.code());
 								}
 							} catch (Exception e) {
-								builder.setContentTitle(
-												getString(
-														R.string.fileViewerNotificationTitleFailed))
+								builder.setContentTitle(getString(R.string.download_failed_title))
 										.setContentText(
 												getString(
-														R.string
-																.fileViewerNotificationDescriptionFailed,
+														R.string.download_failed_desc,
 														file.getName()))
 										.setOngoing(false)
 										.setProgress(0, 0, false);
@@ -761,8 +752,7 @@ public class FilesFragment extends Fragment
 												() ->
 														Toasty.show(
 																requireContext(),
-																R.string
-																		.fileViewerNotificationTitleFailed));
+																R.string.download_failed_title));
 							}
 						})
 				.start();

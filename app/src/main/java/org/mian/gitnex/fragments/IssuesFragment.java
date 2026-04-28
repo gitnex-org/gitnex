@@ -24,6 +24,7 @@ import org.mian.gitnex.databinding.FragmentIssuesBinding;
 import org.mian.gitnex.helpers.Constants;
 import org.mian.gitnex.helpers.EndlessRecyclerViewScrollListener;
 import org.mian.gitnex.helpers.Toasty;
+import org.mian.gitnex.helpers.UIHelper;
 import org.mian.gitnex.helpers.contexts.RepositoryContext;
 import org.mian.gitnex.models.IssueFilterState;
 import org.mian.gitnex.models.RepositoryMenuItemModel;
@@ -60,7 +61,6 @@ public class IssuesFragment extends Fragment implements RepoDetailActivity.RepoH
 					Insets systemBars = insets.getInsets(WindowInsetsCompat.Type.systemBars());
 					systemTopInset = systemBars.top;
 					refreshPaddingLogic();
-
 					return insets;
 				});
 	}
@@ -221,26 +221,33 @@ public class IssuesFragment extends Fragment implements RepoDetailActivity.RepoH
 	}
 
 	private void refreshPaddingLogic() {
-		if (binding == null) return;
-		int dimen12 = 36;
+		if (binding == null || getView() == null) return;
+
+		int dimen12 = (int) (12 * getResources().getDisplayMetrics().density);
+		int bottomClearance = (int) (72 * getResources().getDisplayMetrics().density);
 
 		List<Issue> pinnedList = viewModel.getPinnedIssues().getValue();
 		boolean hasPinned = pinnedList != null && !pinnedList.isEmpty();
 
-		ViewGroup.MarginLayoutParams params =
-				(ViewGroup.MarginLayoutParams) binding.recyclerView.getLayoutParams();
-
 		if (hasPinned) {
-			binding.rvPinnedIssues.setPadding(0, systemTopInset, 0, 0);
-			params.topMargin = 0;
-			binding.recyclerView.setPadding(dimen12, 0, dimen12, dimen12 + 72);
-		} else {
-			binding.rvPinnedIssues.setPadding(0, 0, 0, 0);
-			params.topMargin = systemTopInset + dimen12;
-			binding.recyclerView.setPadding(dimen12, 0, dimen12, dimen12 + 72);
-		}
+			ViewCompat.setOnApplyWindowInsetsListener(binding.recyclerView, null);
+			ViewCompat.setOnApplyWindowInsetsListener(binding.pullToRefresh, null);
 
-		binding.recyclerView.setLayoutParams(params);
+			binding.rvPinnedIssues.setPadding(0, systemTopInset, 0, 0);
+			binding.rvPinnedIssues.setClipToPadding(false);
+
+			ViewGroup.MarginLayoutParams params =
+					(ViewGroup.MarginLayoutParams) binding.recyclerView.getLayoutParams();
+			params.topMargin = 0;
+			binding.recyclerView.setLayoutParams(params);
+			binding.recyclerView.setPadding(dimen12, 0, dimen12, bottomClearance);
+			binding.recyclerView.setClipToPadding(false);
+
+		} else {
+			View dock = requireActivity().findViewById(R.id.docked_toolbar);
+			UIHelper.applyInsets(
+					getView(), dock, binding.recyclerView, binding.pullToRefresh, null);
+		}
 	}
 
 	private void observeRepoViewModel() {

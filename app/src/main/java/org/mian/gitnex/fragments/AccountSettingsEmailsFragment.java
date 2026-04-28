@@ -19,11 +19,11 @@ import org.mian.gitnex.R;
 import org.mian.gitnex.adapters.AccountSettingsEmailsAdapter;
 import org.mian.gitnex.databinding.BottomsheetAddEmailBinding;
 import org.mian.gitnex.databinding.FragmentAccountSettingsEmailsBinding;
-import org.mian.gitnex.helpers.AlertDialogs;
 import org.mian.gitnex.helpers.AppUtil;
 import org.mian.gitnex.helpers.Constants;
 import org.mian.gitnex.helpers.EndlessRecyclerViewScrollListener;
 import org.mian.gitnex.helpers.Toasty;
+import org.mian.gitnex.helpers.TokenAuthorizationDialog;
 import org.mian.gitnex.helpers.UIHelper;
 import org.mian.gitnex.viewmodels.AccountSettingsViewModel;
 
@@ -206,7 +206,7 @@ public class AccountSettingsEmailsFragment extends Fragment {
 			Toasty.show(requireContext(), getString(R.string.emailAddedText));
 			refreshData();
 		} else if (code == 401) {
-			AlertDialogs.authorizationTokenRevokedDialog(requireContext());
+			TokenAuthorizationDialog.authorizationTokenRevokedDialog(requireContext());
 		} else if (code == 422) {
 			Toasty.show(requireContext(), getString(R.string.emailErrorInUse));
 		} else {

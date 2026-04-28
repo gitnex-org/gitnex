@@ -22,9 +22,9 @@ import org.mian.gitnex.activities.OrganizationDetailActivity;
 import org.mian.gitnex.adapters.OrganizationTeamsAdapter;
 import org.mian.gitnex.databinding.BottomsheetOrgCreateTeamBinding;
 import org.mian.gitnex.databinding.FragmentOrganizationTeamsBinding;
-import org.mian.gitnex.helpers.AlertDialogs;
 import org.mian.gitnex.helpers.AppUtil;
 import org.mian.gitnex.helpers.Toasty;
+import org.mian.gitnex.helpers.TokenAuthorizationDialog;
 import org.mian.gitnex.helpers.UIHelper;
 import org.mian.gitnex.viewmodels.OrganizationsViewModel;
 
@@ -347,7 +347,8 @@ public class OrganizationTeamsFragment extends Fragment
 							} else if (code == 404) {
 								Toasty.show(requireContext(), getString(R.string.apiNotFound));
 							} else if (code == 401) {
-								AlertDialogs.authorizationTokenRevokedDialog(requireContext());
+								TokenAuthorizationDialog.authorizationTokenRevokedDialog(
+										requireContext());
 							} else {
 								Toasty.show(requireContext(), getString(R.string.genericError));
 							}

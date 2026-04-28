@@ -40,6 +40,11 @@ android {
     }
 
     buildTypes {
+        debug {
+            applicationIdSuffix = ".debug"
+            debuggable = true
+        }
+
         release {
             minifyEnabled false
             shrinkResources = false
