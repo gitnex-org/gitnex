@@ -62,6 +62,7 @@
                 android:layout_marginTop="@dimen/dimen8dp"
                 android:hint="@string/newRepoTintCopy"
                 app:endIconMode="clear_text"
+                app:endIconTint="?attr/iconsColor"
                 app:shapeAppearance="@style/ShapeAppearance.Material3.Corner.Medium">
 
                 <com.google.android.material.textfield.TextInputEditText
@@ -80,6 +81,7 @@
                 android:layout_marginTop="@dimen/dimen16dp"
                 android:hint="@string/websiteText"
                 app:endIconMode="clear_text"
+                app:endIconTint="?attr/iconsColor"
                 app:shapeAppearance="@style/ShapeAppearance.Material3.Corner.Medium">
 
                 <com.google.android.material.textfield.TextInputEditText
@@ -98,6 +100,7 @@
                 android:layout_marginTop="@dimen/dimen16dp"
                 android:hint="@string/newRepoDescTintCopy"
                 app:endIconMode="clear_text"
+                app:endIconTint="?attr/iconsColor"
                 app:shapeAppearance="@style/ShapeAppearance.Material3.Corner.Medium">
 
                 <com.google.android.material.textfield.TextInputEditText

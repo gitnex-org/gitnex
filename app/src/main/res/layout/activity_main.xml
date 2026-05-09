@@ -9,11 +9,8 @@
 
     <androidx.fragment.app.FragmentContainerView
         android:id="@+id/nav_host_fragment"
-        android:name="androidx.navigation.fragment.NavHostFragment"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        app:navGraph="@navigation/nav_graph"
-        app:defaultNavHost="true" />
+        android:layout_height="match_parent" />
 
     <com.google.android.material.dockedtoolbar.DockedToolbarLayout
         android:id="@+id/docked_toolbar"
@@ -25,7 +22,7 @@
         app:paddingTopSystemWindowInsets="false"
         android:layout_gravity="bottom|center_horizontal"
         app:shapeAppearanceOverlay="@style/ShapeAppearance.RoundedDock"
-        android:backgroundTint="?attr/colorSurfaceContainerHigh"
+        android:backgroundTint="?attr/colorSurfaceContainerHighest"
         app:layout_behavior="com.google.android.material.behavior.HideViewOnScrollBehavior">
 
         <com.google.android.material.overflow.OverflowLinearLayout
@@ -33,8 +30,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="center_vertical"
-            android:orientation="horizontal"
-            android:paddingHorizontal="@dimen/dimen4dp">
+            android:orientation="horizontal">
 
             <com.google.android.material.button.MaterialButton
                 android:id="@+id/btn_nav_home"
@@ -42,8 +38,6 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 app:icon="@drawable/ic_home"
-                app:iconTint="?attr/primaryTextColor"
-                android:paddingHorizontal="@dimen/dimen24dp"
                 android:minWidth="0dp" />
 
             <com.google.android.material.button.MaterialButton
@@ -52,8 +46,6 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 app:icon="@drawable/ic_repo"
-                app:iconTint="?attr/primaryTextColor"
-                android:paddingHorizontal="@dimen/dimen24dp"
                 android:minWidth="0dp" />
 
             <com.google.android.material.button.MaterialButton
@@ -62,8 +54,6 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 app:icon="@drawable/ic_notifications"
-                app:iconTint="?attr/primaryTextColor"
-                android:paddingHorizontal="@dimen/dimen24dp"
                 android:minWidth="0dp" />
 
             <View
@@ -77,36 +67,29 @@
 
             <com.google.android.material.button.MaterialButton
                 android:id="@+id/btn_dock_new_repo"
-                style="?attr/materialIconButtonStyle"
+                style="@style/Widget.Material3.Button.IconButton"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 app:icon="@drawable/ic_add"
-                android:layout_gravity="center_vertical"
-                android:layout_marginStart="@dimen/dimen4dp"
-                android:backgroundTint="@android:color/transparent"
-                android:visibility="gone"
-                android:contentDescription="@string/addButton" />
+                android:minWidth="0dp"
+                android:layout_marginStart="@dimen/dimen4dp" />
 
             <com.google.android.material.button.MaterialButton
                 android:id="@+id/btn_dock_search"
-                style="?attr/materialIconButtonStyle"
+                style="@style/Widget.Material3.Button.IconButton"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 app:icon="@drawable/ic_search"
-                android:layout_gravity="center_vertical"
-                android:backgroundTint="@android:color/transparent"
-                android:visibility="gone"
+                android:minWidth="0dp"
                 android:contentDescription="@string/search" />
 
             <com.google.android.material.button.MaterialButton
                 android:id="@+id/btn_dock_sort"
-                style="?attr/materialIconButtonStyle"
+                style="@style/Widget.Material3.Button.IconButton"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 app:icon="@drawable/ic_dotted_menu"
-                android:layout_gravity="center_vertical"
-                android:backgroundTint="@android:color/transparent"
-                android:visibility="gone"
+                android:minWidth="0dp"
                 android:contentDescription="@string/sort" />
 
         </com.google.android.material.overflow.OverflowLinearLayout>

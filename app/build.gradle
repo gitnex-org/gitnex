@@ -109,7 +109,6 @@ dependencies {
     implementation libs.androidx.work
     implementation libs.androidx.biometric
     implementation libs.androidx.browser
-    implementation libs.androidx.flexbox
 
     // Testing
     testImplementation libs.junit

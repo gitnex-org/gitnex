@@ -76,6 +76,7 @@
                 android:hint="@string/newRepoTintCopy"
                 app:helperText="@string/typeRepoNameToConfirm"
                 app:endIconMode="clear_text"
+                app:endIconTint="?attr/iconsColor"
                 app:shapeAppearance="@style/ShapeAppearance.Material3.Corner.Medium">
 
                 <com.google.android.material.textfield.TextInputEditText
@@ -94,6 +95,7 @@
                 android:layout_marginTop="@dimen/dimen8dp"
                 android:hint="@string/repoTransferOwnerText"
                 app:endIconMode="clear_text"
+                app:endIconTint="?attr/iconsColor"
                 app:shapeAppearance="@style/ShapeAppearance.Material3.Corner.Medium">
 
                 <com.google.android.material.textfield.TextInputEditText

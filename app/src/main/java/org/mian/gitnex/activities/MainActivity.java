@@ -12,6 +12,7 @@ import androidx.annotation.NonNull;
 import androidx.core.text.HtmlCompat;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
+import androidx.fragment.app.FragmentTransaction;
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.load.engine.DiskCacheStrategy;
 import com.google.android.material.badge.BadgeDrawable;
@@ -62,12 +63,12 @@ public class MainActivity extends BaseActivity
 	private TinyDB tinyDB;
 	public static boolean reloadRepos;
 	public static boolean closeActivity;
-	private final Fragment homeFrag = new HomeDashboardFragment();
-	private final Fragment repoFrag = new RepositoriesFragment();
-	private final Fragment notifyFrag = new NotificationsFragment();
-	private Fragment activeFragment = homeFrag;
+	private Fragment homeFrag;
+	private Fragment repoFrag;
+	private Fragment notifyFrag;
+	private Fragment activeFragment;
 	private String currentActiveTab = TAB_HOME;
-	private final FragmentManager fm = getSupportFragmentManager();
+	private FragmentManager fm;
 	private View detachedDivider;
 	private View detachedAddBtn;
 	private View detachedSearchBtn;
@@ -108,6 +109,8 @@ public class MainActivity extends BaseActivity
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 
+		fm = getSupportFragmentManager();
+
 		binding = ActivityMainBinding.inflate(getLayoutInflater());
 		setContentView(binding.getRoot());
 		tinyDB = TinyDB.getInstance(this);
@@ -118,6 +121,10 @@ public class MainActivity extends BaseActivity
 		detachedAddBtn = binding.btnDockNewRepo;
 		detachedSearchBtn = binding.btnDockSearch;
 		detachedSortBtn = binding.btnDockSort;
+
+		homeFrag = fm.findFragmentByTag(TAB_HOME);
+		repoFrag = fm.findFragmentByTag(TAB_REPOS);
+		notifyFrag = fm.findFragmentByTag(TAB_NOTIFICATIONS);
 
 		if (savedInstanceState != null) {
 			currentActiveTab = savedInstanceState.getString(STATE_ACTIVE_TAB, TAB_HOME);
@@ -153,14 +160,28 @@ public class MainActivity extends BaseActivity
 	}
 
 	private void setupFragments() {
-		fm.beginTransaction()
-				.add(R.id.nav_host_fragment, notifyFrag, TAB_NOTIFICATIONS)
-				.hide(notifyFrag)
-				.add(R.id.nav_host_fragment, repoFrag, TAB_REPOS)
-				.hide(repoFrag)
-				.add(R.id.nav_host_fragment, homeFrag, TAB_HOME)
-				.hide(homeFrag)
-				.commitNow();
+		FragmentTransaction ft = fm.beginTransaction();
+
+		if (homeFrag == null) {
+			homeFrag = new HomeDashboardFragment();
+			ft.add(R.id.nav_host_fragment, homeFrag, TAB_HOME);
+		}
+		if (repoFrag == null) {
+			repoFrag = new RepositoriesFragment();
+			ft.add(R.id.nav_host_fragment, repoFrag, TAB_REPOS);
+			ft.hide(repoFrag);
+		}
+		if (notifyFrag == null) {
+			notifyFrag = new NotificationsFragment();
+			ft.add(R.id.nav_host_fragment, notifyFrag, TAB_NOTIFICATIONS);
+			ft.hide(notifyFrag);
+		}
+
+		ft.commitNow();
+
+		if (activeFragment == null) {
+			activeFragment = homeFrag;
+		}
 	}
 
 	@Override

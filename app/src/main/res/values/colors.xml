@@ -10,7 +10,7 @@
     <color name="blurColor">#41818181</color>
     <color name="btnBackground">#009486</color>
     <color name="btnTextColor">#ffffff</color>
-    <color name="inputBackground">#1d1d1d</color>
+    <color name="inputBackground">#121212</color>
     <color name="inputSelected">#3A3A3A</color>
     <color name="toastBackground">#1d1d1d</color>
     <color name="releasePre">#f2711c</color>
@@ -29,7 +29,7 @@
     <color name="lightYellow">#efd34a</color>
     <color name="warningColor">#dbb109</color>
     <color name="colorSecondaryContainer">#2A322E</color>
-    <color name="cardBackground">#1e2221</color>
+    <color name="cardBackground">#1C2120</color>
     <color name="reaction_selected_overlay">#334CAF50</color>
 
     <color name="lightThemeDiffRemovedColor">#FCEDED</color>
@@ -42,7 +42,7 @@
     <color name="lightThemeInputTextColor">#212121</color>
     <color name="lightThemeDividerColor">#dbdbdb</color>
     <color name="lightThemeColorSecondaryContainer">#D9E1DF</color>
-    <color name="lightThemeCardBackground">#ffffff</color>
+    <color name="lightThemeCardBackground">#FFFDFC</color>
 
     <color name="retroThemeDiffRemovedColor">#fad6d6</color>
     <color name="retroThemeDiffAddedColor">#d0f7d9</color>
@@ -55,7 +55,7 @@
     <color name="retroThemeDividerColor">#dbdbdb</color>
     <color name="retroThemeColorPrimary">#6200EE</color>
     <color name="retroThemeColorSecondary">#03DAC6</color>
-    <color name="retroThemeCardBackground">#ffffff</color>
+    <color name="retroThemeCardBackground">#FFFDFC</color>
 
     <color name="iconPrMergedColor">#a333c8</color>
     <color name="iconIssuePrClosedColor">#db2828</color>

@@ -136,7 +136,6 @@ public class RepositoryActionsActivity extends BaseActivity {
 		prepareNavButton(binding.btnNavRunners);
 		prepareNavButton(binding.btnNavWorkflows);
 		prepareNavButton(binding.btnNavVariables);
-		prepareNavButton(binding.btnBack);
 
 		binding.btnBack.setOnClickListener(v -> finish());
 

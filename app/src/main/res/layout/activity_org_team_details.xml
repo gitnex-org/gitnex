@@ -22,7 +22,7 @@
         app:paddingTopSystemWindowInsets="false"
         android:layout_gravity="bottom|center_horizontal"
         app:shapeAppearanceOverlay="@style/ShapeAppearance.RoundedDock"
-        android:backgroundTint="?attr/colorSurfaceContainerHigh"
+        android:backgroundTint="?attr/colorSurfaceContainerHighest"
         app:layout_behavior="com.google.android.material.behavior.HideViewOnScrollBehavior">
 
         <com.google.android.material.overflow.OverflowLinearLayout
@@ -30,43 +30,35 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="center_vertical"
-            android:orientation="horizontal"
-            android:paddingHorizontal="@dimen/dimen4dp">
+            android:orientation="horizontal">
 
             <com.google.android.material.button.MaterialButton
                 android:id="@+id/btn_back"
-                style="?attr/materialIconButtonStyle"
+                style="@style/Widget.Material3.Button.IconButton"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                app:icon="@drawable/ic_arrow_back"
-                android:layout_gravity="center_vertical"
-                android:backgroundTint="@android:color/transparent"
-                android:insetLeft="0dp"
-                android:insetRight="0dp" />
+                app:icon="@drawable/ic_arrow_back" />
 
             <com.google.android.material.button.MaterialButton
                 android:id="@+id/btn_nav_repos"
                 style="@style/Widget.Material3.Button.IconButton"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                app:icon="@drawable/ic_repo"
-                app:iconTint="?attr/primaryTextColor" />
+                app:icon="@drawable/ic_repo" />
 
             <com.google.android.material.button.MaterialButton
                 android:id="@+id/btn_nav_members"
                 style="@style/Widget.Material3.Button.IconButton"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                app:icon="@drawable/ic_person"
-                app:iconTint="?attr/primaryTextColor" />
+                app:icon="@drawable/ic_person" />
 
             <com.google.android.material.button.MaterialButton
                 android:id="@+id/btn_nav_permissions"
                 style="@style/Widget.Material3.Button.IconButton"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                app:icon="@drawable/ic_lock"
-                app:iconTint="?attr/primaryTextColor" />
+                app:icon="@drawable/ic_lock" />
 
             <View
                 android:id="@+id/dock_divider"
@@ -78,25 +70,18 @@
 
             <com.google.android.material.button.MaterialButton
                 android:id="@+id/btn_dock_add"
-                style="?attr/materialIconButtonStyle"
+                style="@style/Widget.Material3.Button.IconButton"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 app:icon="@drawable/ic_add"
-                android:layout_gravity="center_vertical"
-                android:layout_marginStart="@dimen/dimen4dp"
-                android:backgroundTint="@android:color/transparent"
-                android:visibility="gone"
                 android:contentDescription="@string/addButton" />
 
             <com.google.android.material.button.MaterialButton
                 android:id="@+id/btn_dock_search"
-                style="?attr/materialIconButtonStyle"
+                style="@style/Widget.Material3.Button.IconButton"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 app:icon="@drawable/ic_search"
-                android:layout_gravity="center_vertical"
-                android:backgroundTint="@android:color/transparent"
-                android:visibility="gone"
                 android:contentDescription="@string/search" />
 
         </com.google.android.material.overflow.OverflowLinearLayout>

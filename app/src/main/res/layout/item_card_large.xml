@@ -28,8 +28,7 @@
             android:layout_height="wrap_content"
             android:layout_marginTop="@dimen/dimen16dp"
             android:textAppearance="@style/TextAppearance.Material3.TitleSmall.Emphasized"
-            android:textStyle="bold"
-            android:textColor="?attr/colorOnSurface" />
+            android:textStyle="bold" />
 
         <TextView
             android:id="@+id/tileSubtitle"
@@ -37,6 +36,7 @@
             android:layout_height="wrap_content"
             android:layout_marginTop="@dimen/dimen4dp"
             android:alpha=".7"
+            android:textColor="?android:attr/textColorSecondary"
             android:textAppearance="@style/TextAppearance.Material3.BodySmall" />
 
     </LinearLayout>

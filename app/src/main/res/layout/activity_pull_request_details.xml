@@ -14,7 +14,6 @@
             android:id="@+id/scrollView"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:background="?attr/primaryBackgroundColor"
             android:clipToPadding="false">
 
             <LinearLayout
@@ -110,7 +109,7 @@
         android:layout_gravity="bottom|center_horizontal"
         android:layout_marginBottom="@dimen/dimen32dp"
         app:shapeAppearanceOverlay="@style/ShapeAppearance.RoundedDock"
-        android:backgroundTint="?attr/colorSurfaceContainerHigh"
+        android:backgroundTint="?attr/colorSurfaceContainerHighest"
         app:layout_behavior="com.google.android.material.behavior.HideViewOnScrollBehavior">
 
         <com.google.android.material.overflow.OverflowLinearLayout
@@ -122,32 +121,19 @@
 
             <com.google.android.material.button.MaterialButton
                 android:id="@+id/btn_back"
-                style="?attr/materialIconButtonStyle"
+                style="@style/Widget.Material3.Button.IconButton"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:background="?attr/selectableItemBackgroundBorderless"
-                android:backgroundTint="@android:color/transparent"
                 android:contentDescription="@string/close"
-                android:insetLeft="@dimen/dimen0dp"
-                android:insetRight="@dimen/dimen0dp"
-                android:layout_marginEnd="@dimen/dimen4dp"
-                app:icon="@drawable/ic_arrow_back"
-                app:iconGravity="textStart"
-                app:iconPadding="@dimen/dimen0dp" />
+                app:icon="@drawable/ic_arrow_back" />
 
             <com.google.android.material.button.MaterialButton
                 android:id="@+id/btn_reply"
-                style="?attr/materialIconButtonStyle"
+                style="@style/Widget.Material3.Button.IconButton"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:backgroundTint="@android:color/transparent"
                 android:contentDescription="@string/commentButtonText"
-                android:insetLeft="@dimen/dimen0dp"
-                android:insetRight="@dimen/dimen0dp"
-                android:layout_marginEnd="@dimen/dimen4dp"
-                app:icon="@drawable/ic_comment"
-                app:iconGravity="textStart"
-                app:iconPadding="@dimen/dimen0dp" />
+                app:icon="@drawable/ic_comment" />
 
             <View
                 android:layout_width="@dimen/dimen1dp"
@@ -158,17 +144,11 @@
 
             <com.google.android.material.button.MaterialButton
                 android:id="@+id/btn_menu"
-                style="?attr/materialIconButtonStyle"
+                style="@style/Widget.Material3.Button.IconButton"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:background="?attr/selectableItemBackgroundBorderless"
-                android:backgroundTint="@android:color/transparent"
                 android:contentDescription="@string/menuContentDesc"
-                android:insetLeft="@dimen/dimen0dp"
-                android:insetRight="@dimen/dimen0dp"
-                app:icon="@drawable/ic_dotted_menu"
-                app:iconGravity="textStart"
-                app:iconPadding="@dimen/dimen0dp" />
+                app:icon="@drawable/ic_dotted_menu" />
 
         </com.google.android.material.overflow.OverflowLinearLayout>
 
