@@ -288,6 +288,25 @@ public class FilesFragment extends Fragment
 						getViewLifecycleOwner(),
 						list -> {
 							binding.pullToRefresh.setRefreshing(false);
+							filesAdapter.setPathData(
+									repository.getName(),
+									path.segments(),
+									new FilesAdapter.PathNavigationListener() {
+										@Override
+										public void onNavigateToPath(String clickedPath) {
+											path.clear();
+											for (String s : clickedPath.split("/")) {
+												path.addWithoutEncoding(s);
+											}
+											refresh();
+										}
+
+										@Override
+										public void onNavigateToRoot() {
+											path.clear();
+											refresh();
+										}
+									});
 							filesAdapter.setFiles(list);
 
 							boolean isEmpty = list.isEmpty();
