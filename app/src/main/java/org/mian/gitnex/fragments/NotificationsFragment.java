@@ -21,6 +21,7 @@ import java.util.List;
 import org.gitnex.tea4j.v2.models.NotificationThread;
 import org.mian.gitnex.R;
 import org.mian.gitnex.activities.IssueDetailActivity;
+import org.mian.gitnex.activities.PullRequestDetailActivity;
 import org.mian.gitnex.activities.RepoDetailActivity;
 import org.mian.gitnex.adapters.NotificationsAdapter;
 import org.mian.gitnex.databinding.FragmentNotificationsBinding;
@@ -28,7 +29,6 @@ import org.mian.gitnex.helpers.Constants;
 import org.mian.gitnex.helpers.EndlessRecyclerViewScrollListener;
 import org.mian.gitnex.helpers.Toasty;
 import org.mian.gitnex.helpers.UIHelper;
-import org.mian.gitnex.helpers.contexts.IssueContext;
 import org.mian.gitnex.helpers.contexts.RepositoryContext;
 import org.mian.gitnex.viewmodels.NotificationsViewModel;
 
@@ -281,11 +281,25 @@ public class NotificationsFragment extends Fragment
 						thread.getRepository().getName(),
 						context);
 		repo.saveToDB(context);
+
 		String url = thread.getSubject().getUrl();
 		int id = Integer.parseInt(url.substring(url.lastIndexOf("/") + 1));
-		Intent intent =
-				new IssueContext(repo, id, thread.getSubject().getType())
-						.getIntent(context, IssueDetailActivity.class);
+
+		String issueType = thread.getSubject().getType();
+
+		Intent intent;
+		if ("Pull".equalsIgnoreCase(issueType)) {
+			intent = new Intent(context, PullRequestDetailActivity.class);
+			intent.putExtra("owner", thread.getRepository().getOwner().getLogin());
+			intent.putExtra("repo", thread.getRepository().getName());
+			intent.putExtra("prNumber", id);
+		} else {
+			intent = new Intent(context, IssueDetailActivity.class);
+			intent.putExtra("owner", thread.getRepository().getOwner().getLogin());
+			intent.putExtra("repo", thread.getRepository().getName());
+			intent.putExtra("issueNumber", id);
+			intent.putExtra("fetchIssueObject", true);
+		}
 		intent.putExtra("openedFromLink", "true");
 		startActivity(intent);
 	}

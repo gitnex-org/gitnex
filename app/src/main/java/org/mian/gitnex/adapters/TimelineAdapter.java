@@ -50,8 +50,6 @@ public class TimelineAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
 	private static final int TYPE_PUSH = 2;
 
 	private final Context context;
-	private final String owner;
-	private final String repo;
 	private final String currentUser;
 	private final RepositoryContext repositoryContext;
 	private List<TimelineItem> items = new ArrayList<>();
@@ -67,9 +65,8 @@ public class TimelineAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
 
 		void onCommentReactionClick(TimelineItem comment, String content, boolean isUserReaction);
 
-		void onCommentAddReactionClick(TimelineItem comment, View anchor);
-
-		void onCommentReactionLongClick(TimelineItem comment, String content, List<User> users);
+		void onCommentReactionLongClick(
+				TimelineItem comment, String content, String displayEmoji, List<User> users);
 
 		void onAttachmentClick(Attachment attachment);
 
@@ -85,8 +82,6 @@ public class TimelineAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
 			String currentUser,
 			OnTimelineItemClickListener listener) {
 		this.context = context;
-		this.owner = owner;
-		this.repo = repo;
 		this.currentUser = currentUser;
 		this.clickListener = listener;
 		this.repositoryContext = new RepositoryContext(owner, repo, context);
@@ -260,7 +255,10 @@ public class TimelineAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
 											String emoji, String content, List<User> users) {
 										if (clickListener != null) {
 											clickListener.onCommentReactionLongClick(
-													comment, content, users);
+													comment,
+													content,
+													reactionsManager.getDisplayEmoji(content),
+													users);
 										}
 									}
 

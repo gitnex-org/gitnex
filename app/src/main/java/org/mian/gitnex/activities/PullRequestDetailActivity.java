@@ -85,7 +85,6 @@ import org.mian.gitnex.viewmodels.IssueActionsViewModel;
 import org.mian.gitnex.viewmodels.PullRequestDetailViewModel;
 import org.mian.gitnex.viewmodels.ReactionsViewModel;
 import org.mian.gitnex.viewmodels.TimelineViewModel;
-import org.mian.gitnex.views.reactions.EmojiPickerPopup;
 import org.mian.gitnex.views.reactions.ReactionUsersBottomSheet;
 import org.mian.gitnex.views.reactions.ReactionsManager;
 import retrofit2.Call;
@@ -193,6 +192,7 @@ public class PullRequestDetailActivity extends BaseActivity
 
 		setupTimeline();
 		observeTimelineViewModel();
+		observeCombinedLoading();
 	}
 
 	private boolean isDraftOrWip(PullRequest pr) {
@@ -568,15 +568,12 @@ public class PullRequestDetailActivity extends BaseActivity
 							}
 
 							@Override
-							public void onCommentAddReactionClick(
-									TimelineItem comment, View anchor) {
-								showCommentEmojiPicker(comment, anchor);
-							}
-
-							@Override
 							public void onCommentReactionLongClick(
-									TimelineItem comment, String content, List<User> users) {
-								ReactionUsersBottomSheet.newInstance(content, users)
+									TimelineItem comment,
+									String content,
+									String emoji,
+									List<User> users) {
+								ReactionUsersBottomSheet.newInstance(emoji, users)
 										.show(getSupportFragmentManager(), "REACTION_USERS");
 							}
 
@@ -716,8 +713,6 @@ public class PullRequestDetailActivity extends BaseActivity
 							}
 						});
 
-		timelineViewModel.getIsLoading().observe(this, loading -> {});
-
 		timelineViewModel
 				.getIsRefreshing()
 				.observe(
@@ -780,6 +775,32 @@ public class PullRequestDetailActivity extends BaseActivity
 						});
 	}
 
+	private void observeCombinedLoading() {
+		viewModel
+				.getIsLoading()
+				.observe(
+						this,
+						loading -> {
+							if (loading != null && loading) {
+								binding.expressiveLoader.setVisibility(View.VISIBLE);
+							}
+						});
+
+		timelineViewModel
+				.getIsLoading()
+				.observe(
+						this,
+						isTimelineLoading -> {
+							if (isTimelineLoading != null && !isTimelineLoading) {
+								Boolean isIssueLoading = viewModel.getIsLoading().getValue();
+								if (isIssueLoading == null || !isIssueLoading) {
+									binding.expressiveLoader.setVisibility(View.GONE);
+									binding.pullToRefresh.setRefreshing(false);
+								}
+							}
+						});
+	}
+
 	private void fetchTimeline() {
 		if (owner != null && repo != null && prNumber > 0) {
 			timelineViewModel.fetchTimeline(this, 1, resultLimit, true);
@@ -796,49 +817,6 @@ public class PullRequestDetailActivity extends BaseActivity
 
 	private void updateTimelineVisibility(boolean hasItems) {
 		binding.timelineSection.getRoot().setVisibility(hasItems ? View.VISIBLE : View.GONE);
-	}
-
-	private void showCommentEmojiPicker(TimelineItem comment, View anchor) {
-		List<String> allowed = reactionsViewModel.getAllowedReactions().getValue();
-
-		if (allowed != null && !allowed.isEmpty()) {
-			EmojiPickerPopup popup = new EmojiPickerPopup(this, allowed);
-			popup.setOnEmojiSelectedListener(
-					content -> {
-						timelineViewModel.addCommentReaction(
-								PullRequestDetailActivity.this, comment.getId(), content);
-					});
-			popup.show(anchor);
-		} else {
-			reactionsViewModel.fetchReactionSettings(this);
-			reactionsViewModel
-					.getAllowedReactions()
-					.observe(
-							this,
-							new androidx.lifecycle.Observer<>() {
-								@Override
-								public void onChanged(List<String> allowedList) {
-									if (allowedList != null && !allowedList.isEmpty()) {
-										reactionsViewModel
-												.getAllowedReactions()
-												.removeObserver(this);
-
-										EmojiPickerPopup popup =
-												new EmojiPickerPopup(
-														PullRequestDetailActivity.this,
-														allowedList);
-										popup.setOnEmojiSelectedListener(
-												content -> {
-													timelineViewModel.addCommentReaction(
-															PullRequestDetailActivity.this,
-															comment.getId(),
-															content);
-												});
-										popup.show(anchor);
-									}
-								}
-							});
-		}
 	}
 
 	private void observeIssueActions() {
@@ -1034,19 +1012,6 @@ public class PullRequestDetailActivity extends BaseActivity
 	}
 
 	private void observeViewModel() {
-		viewModel
-				.getIsLoading()
-				.observe(
-						this,
-						loading -> {
-							if (loading) {
-								binding.expressiveLoader.setVisibility(View.VISIBLE);
-							} else {
-								binding.expressiveLoader.setVisibility(View.GONE);
-								binding.pullToRefresh.setRefreshing(false);
-							}
-						});
-
 		viewModel
 				.getPrData()
 				.observe(

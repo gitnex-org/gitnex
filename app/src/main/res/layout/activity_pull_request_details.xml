@@ -5,6 +5,15 @@
     android:layout_height="match_parent"
     android:background="?attr/primaryBackgroundColor">
 
+    <com.google.android.material.loadingindicator.LoadingIndicator
+        android:id="@+id/expressive_loader"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:elevation="@dimen/dimen4dp"
+        app:indicatorSize="@dimen/dimen48dp"
+        app:trackThickness="@dimen/dimen4dp" />
+
     <androidx.swiperefreshlayout.widget.SwipeRefreshLayout
         android:id="@+id/pullToRefresh"
         android:layout_width="match_parent"
@@ -89,14 +98,6 @@
         android:layout_marginHorizontal="@dimen/dimen12dp"
         android:layout_marginBottom="@dimen/dimen36dp"
         android:visibility="gone" />
-
-    <com.google.android.material.loadingindicator.LoadingIndicator
-        android:id="@+id/expressive_loader"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_gravity="center"
-        app:indicatorSize="@dimen/dimen48dp"
-        app:trackThickness="@dimen/dimen4dp" />
 
     <com.google.android.material.dockedtoolbar.DockedToolbarLayout
         android:id="@+id/docked_toolbar"
