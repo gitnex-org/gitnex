@@ -6,7 +6,6 @@ import android.view.ViewGroup;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 import java.util.List;
-import org.apache.commons.lang3.StringUtils;
 import org.gitnex.tea4j.v2.models.Cron;
 import org.mian.gitnex.databinding.ListAdminCronTasksBinding;
 
@@ -44,12 +43,14 @@ public class AdminCronTasksAdapter extends RecyclerView.Adapter<AdminCronTasksAd
 		return new ViewHolder(binding);
 	}
 
+	@SuppressLint("SetTextI18n")
 	@Override
 	public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
 		Cron task = tasks.get(position);
-		String cleanName = StringUtils.capitalize(task.getName().replace("_", " "));
+		String cleanName = task.getName().replace("_", " ");
 
-		holder.binding.taskName.setText(cleanName);
+		holder.binding.taskName.setText(
+				cleanName.substring(0, 1).toUpperCase() + cleanName.substring(1));
 		holder.binding.runTask.setOnClickListener(v -> listener.onRunTask(task.getName()));
 		holder.binding.getRoot().setOnClickListener(v -> listener.onShowDetails(task));
 

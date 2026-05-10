@@ -96,21 +96,9 @@ GitNex supports self-signed certificates. You can read more [here](https://codeb
 
 Thank you to all the open source libraries, contributors, and donors who make GitNex possible.
 
-#### Open Source Libraries
+#### Libraries
 
-- [square/retrofit](https://github.com/square/retrofit)
-- [google/gson](https://github.com/google/gson)
-- [square/okhttp](https://github.com/square/okhttp)
-- [bumptech/glide](https://github.com/bumptech/glide)
-- [noties/Markwon](https://github.com/noties/Markwon)
-- [vdurmont/emoji-java](https://github.com/vdurmont/emoji-java)
-- [Baseflow/PhotoView](https://github.com/Baseflow/PhotoView)
-- [apache/commons](https://github.com/apache/commons-io)
-- [ge0rg/MemorizingTrustManager](https://github.com/ge0rg/MemorizingTrustManager)
-- [mikaelhg/urlbuilder](https://github.com/mikaelhg/urlbuilder)
-- [ACRA/acra](https://github.com/ACRA/acra)
-- [chrisvest/stormpot](https://github.com/chrisvest/stormpot)
-- [AmrDeveloper/CodeView](https://github.com/AmrDeveloper/CodeView)
+Check out the [libraries file](https://codeberg.org/gitnex/GitNex/src/branch/main/gradle/libs.versions.toml) for a complete list of libraries used by GitNex.
 
 #### Icon Sets
 

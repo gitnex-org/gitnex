@@ -11,7 +11,6 @@ import android.widget.TextView;
 import androidx.annotation.NonNull;
 import java.util.ArrayList;
 import java.util.List;
-import org.apache.commons.lang3.StringUtils;
 import org.gitnex.tea4j.v2.models.ContentsResponse;
 import org.gitnex.tea4j.v2.models.Organization;
 import org.gitnex.tea4j.v2.models.PullRequest;
@@ -232,7 +231,7 @@ public class DeepLinksActivity extends BaseActivity {
 	}
 
 	private void handleIssues(String owner, String repo, String last) {
-		if (last != null && !last.contains("issues") && StringUtils.isNumeric(last)) {
+		if (last != null && !last.contains("issues") && last.matches("\\d+")) {
 			issueIntent.putExtra("issueNumber", last);
 			issueIntent.putExtra("openedFromLink", "true");
 
@@ -261,7 +260,7 @@ public class DeepLinksActivity extends BaseActivity {
 		String repo = segments.get(1);
 		String last = segments.get(segments.size() - 1);
 
-		if (last != null && !last.contains("pulls") && StringUtils.isNumeric(last)) {
+		if (last != null && !last.contains("pulls") && last.matches("\\d+")) {
 			delayedTask(
 					() -> {
 						String[] urlSplitted = data.toString().split("#");

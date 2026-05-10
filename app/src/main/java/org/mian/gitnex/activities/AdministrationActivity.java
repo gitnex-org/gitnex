@@ -14,7 +14,6 @@ import com.google.android.material.bottomsheet.BottomSheetDialog;
 import com.google.android.material.dialog.MaterialAlertDialogBuilder;
 import java.util.ArrayList;
 import java.util.Locale;
-import org.apache.commons.lang3.StringUtils;
 import org.gitnex.tea4j.v2.models.Cron;
 import org.mian.gitnex.R;
 import org.mian.gitnex.adapters.AdminCronTasksAdapter;
@@ -176,8 +175,9 @@ public class AdministrationActivity extends BaseActivity {
 		lastRunContent.setText(lastRun);
 		execTimeContent.setText(String.valueOf(task.getExecTimes()));
 
+		String name = task.getName().replace("_", " ");
 		new MaterialAlertDialogBuilder(this)
-				.setTitle(StringUtils.capitalize(task.getName().replace("_", " ")))
+				.setTitle(name.substring(0, 1).toUpperCase() + name.substring(1))
 				.setView(view)
 				.setPositiveButton(R.string.close, null)
 				.show();
