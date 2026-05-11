@@ -120,7 +120,6 @@
                         android:layout_width="match_parent"
                         android:layout_height="@dimen/dimen224dp"
                         android:gravity="top"
-                        android:scrollbars="vertical"
                         android:paddingTop="@dimen/dimen40dp"
                         android:inputType="textMultiLine" />
 

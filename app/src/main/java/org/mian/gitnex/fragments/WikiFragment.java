@@ -92,7 +92,7 @@ public class WikiFragment extends Fragment implements RepoDetailActivity.RepoHub
 			items.add(
 					new RepositoryMenuItemModel(
 							"WIKI_ADD_NEW",
-							R.string.addButton,
+							R.string.createWikiPage,
 							R.drawable.ic_add,
 							R.attr.colorPrimaryContainer,
 							R.attr.colorOnPrimaryContainer));

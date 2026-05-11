@@ -38,6 +38,7 @@
     <string name="discover_apps" translatable="false">Discover More Apps</string>
     <string name="source_ref_hint" translatable="false">e.g., main, develop, or a commit SHA</string>
     <string name="version_format_hint" translatable="false">e.g., 1.26.1 (Gitea) or 15.0.0 (Forgejo)</string>
+    <string name="cursor_position_format" translatable="false">Ln %d, Col %d</string>
 
     <string name="navMyRepos">My Repositories</string>
     <string name="navStarredRepos">Starred Repositories</string>
@@ -680,7 +681,6 @@
     <string name="select_branch_error">Please select a branch</string>
     <string name="create_pull_request_with_branch">Create pull request with this branch</string>
     <string name="tap_to_upload_file">Tap to select a file</string>
-    <string name="cursor_position_format">Ln %d, Col %d</string>
     <string name="image_load_error">Could not load image</string>
     <string name="invalid_user">Invalid user</string>
     <string name="dashboard_my_prs_sub_title">Browse and manage all your pull requests with search and filters</string>

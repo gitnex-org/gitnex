@@ -22,26 +22,21 @@
         android:layout_gravity="bottom|center_horizontal"
         app:shapeAppearanceOverlay="@style/ShapeAppearance.RoundedDock"
         app:layout_behavior="com.google.android.material.behavior.HideViewOnScrollBehavior"
-        android:backgroundTint="?attr/colorSurfaceContainerHigh">
+        android:backgroundTint="?attr/colorSurfaceContainerHighest">
 
         <LinearLayout
             android:layout_width="wrap_content"
             android:layout_height="match_parent"
             android:gravity="center_vertical"
-            android:paddingHorizontal="@dimen/dimen8dp"
             android:layout_gravity="center_vertical"
             android:orientation="horizontal">
 
             <com.google.android.material.button.MaterialButton
                 android:id="@+id/btn_back"
-                style="?attr/materialIconButtonStyle"
+                style="@style/Widget.Material3.Button.IconButton"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_gravity="center_vertical"
-                app:icon="@drawable/ic_arrow_back"
-                android:backgroundTint="@android:color/transparent"
-                android:insetLeft="0dp"
-                android:insetRight="0dp" />
+                app:icon="@drawable/ic_arrow_back" />
 
             <HorizontalScrollView
                 android:id="@+id/dock_scroll_view"
@@ -63,7 +58,6 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         style="@style/Widget.Material3.Button.IconButton"
-                        app:iconTint="?attr/primaryTextColor"
                         app:icon="@drawable/ic_organization" />
 
                     <com.google.android.material.button.MaterialButton
@@ -71,15 +65,13 @@
                         style="@style/Widget.Material3.Button.IconButton"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        app:icon="@drawable/ic_repo"
-                        app:iconTint="?attr/primaryTextColor" />
+                        app:icon="@drawable/ic_repo" />
 
                     <com.google.android.material.button.MaterialButton
                         android:id="@+id/btn_nav_labels"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         style="@style/Widget.Material3.Button.IconButton"
-                        app:iconTint="?attr/primaryTextColor"
                         app:icon="@drawable/ic_label" />
 
                     <com.google.android.material.button.MaterialButton
@@ -87,7 +79,6 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         style="@style/Widget.Material3.Button.IconButton"
-                        app:iconTint="?attr/primaryTextColor"
                         app:icon="@drawable/ic_followers" />
 
                     <com.google.android.material.button.MaterialButton
@@ -95,7 +86,6 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         style="@style/Widget.Material3.Button.IconButton"
-                        app:iconTint="?attr/primaryTextColor"
                         app:icon="@drawable/ic_person" />
 
                 </LinearLayout>
@@ -111,38 +101,26 @@
 
             <com.google.android.material.button.MaterialButton
                 android:id="@+id/btn_dock_add"
-                style="?attr/materialIconButtonStyle"
-                android:layout_width="@dimen/dimen48dp"
-                android:layout_height="@dimen/dimen48dp"
+                style="@style/Widget.Material3.Button.IconButton"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
                 app:icon="@drawable/ic_add"
-                android:backgroundTint="@android:color/transparent"
-                android:layout_marginStart="@dimen/dimen8dp"
-                android:visibility="gone"
-                android:insetLeft="0dp"
-                android:insetRight="0dp" />
+                android:visibility="gone" />
 
             <com.google.android.material.button.MaterialButton
                 android:id="@+id/btn_dock_search"
-                style="?attr/materialIconButtonStyle"
-                android:layout_width="@dimen/dimen48dp"
-                android:layout_height="@dimen/dimen48dp"
+                style="@style/Widget.Material3.Button.IconButton"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
                 app:icon="@drawable/ic_search"
-                android:visibility="gone"
-                android:backgroundTint="@android:color/transparent"
-                android:layout_marginStart="@dimen/dimen8dp"
-                android:insetLeft="0dp"
-                android:insetRight="0dp" />
+                android:visibility="gone" />
 
             <com.google.android.material.button.MaterialButton
                 android:id="@+id/btn_dock_menu"
-                style="?attr/materialIconButtonStyle"
-                android:layout_width="@dimen/dimen48dp"
-                android:layout_height="@dimen/dimen48dp"
-                app:icon="@drawable/ic_dotted_menu"
-                android:backgroundTint="@android:color/transparent"
-                android:layout_marginStart="@dimen/dimen8dp"
-                android:insetLeft="0dp"
-                android:insetRight="0dp" />
+                style="@style/Widget.Material3.Button.IconButton"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                app:icon="@drawable/ic_dotted_menu" />
 
         </LinearLayout>
 

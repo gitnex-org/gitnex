@@ -56,7 +56,6 @@ public class AccountSettingsActivity extends BaseActivity {
 	private void setupDockListeners() {
 		prepareNavButton(binding.btnNavEmails);
 		prepareNavButton(binding.btnNavSshKeys);
-		prepareNavButton(binding.btnBack);
 
 		binding.btnBack.setOnClickListener(v -> finish());
 

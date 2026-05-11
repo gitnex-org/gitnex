@@ -186,8 +186,6 @@ public class TimelineViewModel extends ViewModel {
 					public void onResponse(
 							@NonNull Call<List<TimelineComment>> call,
 							@NonNull Response<List<TimelineComment>> response) {
-						isLoading.setValue(false);
-						isRefreshing.setValue(false);
 
 						if (response.isSuccessful() && response.body() != null) {
 							String totalHeader = response.headers().get("x-total-count");
@@ -205,6 +203,8 @@ public class TimelineViewModel extends ViewModel {
 								timeline.setValue(new ArrayList<>());
 							}
 							isLastPage = true;
+							isLoading.setValue(false);
+							isRefreshing.setValue(false);
 						}
 					}
 
@@ -276,6 +276,8 @@ public class TimelineViewModel extends ViewModel {
 			timeline.setValue(currentList);
 			isLastPage =
 					items.size() < 20 || (totalCount != -1 && currentList.size() >= totalCount);
+			isLoading.setValue(false);
+			isRefreshing.setValue(false);
 			return;
 		}
 

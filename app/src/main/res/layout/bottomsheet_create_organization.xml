@@ -65,6 +65,8 @@
                 android:layout_height="wrap_content"
                 android:layout_marginTop="@dimen/dimen8dp"
                 android:hint="@string/userUserName"
+                app:endIconTint="?attr/iconsColor"
+                app:endIconMode="clear_text"
                 app:shapeAppearance="@style/ShapeAppearance.Material3.Corner.Medium">
 
                 <com.google.android.material.textfield.TextInputEditText
@@ -83,6 +85,8 @@
                 android:layout_height="wrap_content"
                 android:layout_marginTop="@dimen/dimen12dp"
                 android:hint="@string/userFullNameText"
+                app:endIconTint="?attr/iconsColor"
+                app:endIconMode="clear_text"
                 app:shapeAppearance="@style/ShapeAppearance.Material3.Corner.Medium">
 
                 <com.google.android.material.textfield.TextInputEditText
@@ -101,6 +105,8 @@
                 android:layout_height="wrap_content"
                 android:layout_marginTop="@dimen/dimen12dp"
                 android:hint="@string/userEmail"
+                app:endIconTint="?attr/iconsColor"
+                app:endIconMode="clear_text"
                 app:shapeAppearance="@style/ShapeAppearance.Material3.Corner.Medium">
 
                 <com.google.android.material.textfield.TextInputEditText
@@ -121,14 +127,16 @@
                 android:hint="@string/newOrgDescTintCopy"
                 app:counterEnabled="true"
                 app:counterMaxLength="255"
+                app:endIconTint="?attr/iconsColor"
+                app:endIconMode="clear_text"
                 app:shapeAppearance="@style/ShapeAppearance.Material3.Corner.Medium">
 
                 <org.mian.gitnex.views.AccessibleEditText
                     android:id="@+id/orgDescription"
                     android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:inputType="textMultiLine"
-                    android:maxLines="3" />
+                    android:layout_height="@dimen/dimen120dp"
+                    android:gravity="top|start"
+                    android:inputType="textMultiLine" />
 
             </com.google.android.material.textfield.TextInputLayout>
 
@@ -147,6 +155,8 @@
                     android:layout_marginEnd="@dimen/dimen4dp"
                     android:layout_weight="1"
                     android:hint="@string/locationText"
+                    app:endIconTint="?attr/iconsColor"
+                    app:endIconMode="clear_text"
                     app:shapeAppearance="@style/ShapeAppearance.Material3.Corner.Medium">
 
                     <com.google.android.material.textfield.TextInputEditText
@@ -165,6 +175,8 @@
                     android:layout_marginStart="@dimen/dimen4dp"
                     android:layout_weight="1"
                     android:hint="@string/websiteText"
+                    app:endIconTint="?attr/iconsColor"
+                    app:endIconMode="clear_text"
                     app:shapeAppearance="@style/ShapeAppearance.Material3.Corner.Medium">
 
                     <com.google.android.material.textfield.TextInputEditText

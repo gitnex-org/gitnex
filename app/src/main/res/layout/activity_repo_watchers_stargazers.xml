@@ -41,7 +41,7 @@
         app:paddingTopSystemWindowInsets="false"
         android:layout_gravity="bottom|center_horizontal"
         app:shapeAppearanceOverlay="@style/ShapeAppearance.RoundedDock"
-        android:backgroundTint="?attr/colorSurfaceContainerHigh"
+        android:backgroundTint="?attr/colorSurfaceContainerHighest"
         app:layout_behavior="com.google.android.material.behavior.HideViewOnScrollBehavior">
 
         <com.google.android.material.overflow.OverflowLinearLayout
@@ -53,34 +53,18 @@
 
             <com.google.android.material.button.MaterialButton
                 android:id="@+id/btn_back"
-                style="?attr/materialIconButtonStyle"
+                style="@style/Widget.Material3.Button.IconButton"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 app:icon="@drawable/ic_arrow_back"
-                app:iconGravity="textStart"
-                app:iconPadding="@dimen/dimen0dp"
-                android:layout_gravity="center_horizontal"
-                android:backgroundTint="@android:color/transparent"
-                android:background="?attr/selectableItemBackgroundBorderless"
-                android:layout_marginEnd="@dimen/dimen8dp"
-                android:insetLeft="@dimen/dimen0dp"
-                android:insetRight="@dimen/dimen0dp"
                 android:contentDescription="@string/close" />
 
             <com.google.android.material.button.MaterialButton
                 android:id="@+id/btn_search"
-                style="?attr/materialIconButtonStyle"
+                style="@style/Widget.Material3.Button.IconButton"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 app:icon="@drawable/ic_search"
-                app:iconGravity="textStart"
-                app:iconPadding="@dimen/dimen0dp"
-                android:backgroundTint="@android:color/transparent"
-                android:background="?attr/selectableItemBackgroundBorderless"
-                android:layout_gravity="center_horizontal"
-                android:layout_marginEnd="@dimen/dimen4dp"
-                android:insetLeft="@dimen/dimen0dp"
-                android:insetRight="@dimen/dimen0dp"
                 android:contentDescription="@string/search" />
 
         </com.google.android.material.overflow.OverflowLinearLayout>
@@ -93,7 +77,7 @@
         android:layout_height="match_parent"
         android:hint="@string/search"
         app:navigationIcon="@drawable/ic_arrow_back"
-        app:backgroundTint="?attr/primaryBackgroundColor">
+        app:backgroundTint="?attr/colorSurface">
 
         <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/search_results_recycler"

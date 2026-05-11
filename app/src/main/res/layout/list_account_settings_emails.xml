@@ -70,8 +70,8 @@
 
                 <ImageView
                     android:id="@+id/deleteEmail"
-                    android:layout_width="@dimen/dimen24dp"
-                    android:layout_height="@dimen/dimen24dp"
+                    android:layout_width="@dimen/dimen20dp"
+                    android:layout_height="@dimen/dimen20dp"
                     android:contentDescription="@string/generalImgContentText"
                     app:srcCompat="@drawable/ic_delete"
                     app:tint="?attr/colorError" />

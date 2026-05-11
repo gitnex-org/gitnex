@@ -13,7 +13,6 @@ Licensed under the GPLv3 License. Please refer to the LICENSE file for the full 
 [<img alt='Get it on F-Droid' src='https://codeberg.org/gitnex/GitNex/raw/branch/main/assets/fdroid.png' height="80"/>](https://f-droid.org/en/packages/org.mian.gitnex/)
 [<img alt='Get it on Google Play' src='https://codeberg.org/gitnex/GitNex/raw/branch/main/assets/google-play.png' height="80"/>](https://play.google.com/store/apps/details?id=org.mian.gitnex.pro)
 [<img alt='Download builds and releases' src='https://codeberg.org/gitnex/GitNex/raw/branch/main/assets/apk-badge.png' height="82"/>](https://cloud.swatian.com/s/WS4k3seXnmfQppo)
-[<img alt='Get it on OpenAPK' src='https://codeberg.org/gitnex/GitNex/raw/branch/main/assets/openapk.png' height="82"/>](https://www.openapk.net/gitnex-for-forgejo-and-gitea/org.mian.gitnex/)
 [<img alt='Get it on IzzyOnDroid' src='https://codeberg.org/gitnex/GitNex/raw/branch/main/assets/IzzyOnDroid.png' height="82"/>](https://apt.izzysoft.de/fdroid/index/apk/org.mian.gitnex)
 
 ## Note About Forgejo and Gitea Version
@@ -97,26 +96,13 @@ GitNex supports self-signed certificates. You can read more [here](https://codeb
 
 Thank you to all the open source libraries, contributors, and donors who make GitNex possible.
 
-#### Open Source Libraries
+#### Libraries
 
-- [square/retrofit](https://github.com/square/retrofit)
-- [google/gson](https://github.com/google/gson)
-- [square/okhttp](https://github.com/square/okhttp)
-- [bumptech/glide](https://github.com/bumptech/glide)
-- [noties/Markwon](https://github.com/noties/Markwon)
-- [vdurmont/emoji-java](https://github.com/vdurmont/emoji-java)
-- [Baseflow/PhotoView](https://github.com/Baseflow/PhotoView)
-- [apache/commons](https://github.com/apache/commons-io)
-- [ge0rg/MemorizingTrustManager](https://github.com/ge0rg/MemorizingTrustManager)
-- [mikaelhg/urlbuilder](https://github.com/mikaelhg/urlbuilder)
-- [ACRA/acra](https://github.com/ACRA/acra)
-- [chrisvest/stormpot](https://github.com/chrisvest/stormpot)
-- [AmrDeveloper/CodeView](https://github.com/AmrDeveloper/CodeView)
+Check out the [libraries file](https://codeberg.org/gitnex/GitNex/src/branch/main/gradle/libs.versions.toml) for a complete list of libraries used by GitNex.
 
 #### Icon Sets
 
 - [lucide-icons/lucide](https://github.com/lucide-icons/lucide)
-- [primer/octicons](https://github.com/primer/octicons)
 - [google/material-design-icons](https://github.com/google/material-design-icons)
 - [tabler/tabler-icons](https://github.com/tabler/tabler-icons)
 
@@ -126,6 +112,5 @@ Follow on social media:
 
 - [@mmarif@mastodon.social](https://mastodon.social/@mmarif)
 - [mmarif.bsky.social](https://bsky.app/profile/mmarif.bsky.social)
-- [X profile](https://x.com/mmarif08)
 
 *All trademarks and logos are the properties of their respective owners.*

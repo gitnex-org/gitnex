@@ -3,6 +3,7 @@ package org.mian.gitnex.fragments;
 import android.app.Dialog;
 import android.os.Bundle;
 import android.view.LayoutInflater;
+import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
@@ -74,6 +75,19 @@ public class BottomSheetCreateRepo extends BottomSheetDialogFragment {
 
 	private void setupListeners() {
 		binding.btnClose.setOnClickListener(v -> dismiss());
+
+		binding.newRepoDescription.setOnTouchListener(
+				(v, event) -> {
+					if (event.getAction() == MotionEvent.ACTION_DOWN) {
+						v.getParent().requestDisallowInterceptTouchEvent(true);
+					} else if (event.getAction() == MotionEvent.ACTION_UP
+							|| event.getAction() == MotionEvent.ACTION_CANCEL) {
+						v.getParent().requestDisallowInterceptTouchEvent(false);
+						v.performClick();
+					}
+					return false;
+				});
+
 		binding.btnCreate.setOnClickListener(
 				v -> {
 					String name =

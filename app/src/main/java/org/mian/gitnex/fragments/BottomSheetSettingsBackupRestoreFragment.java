@@ -42,12 +42,6 @@ public class BottomSheetSettingsBackupRestoreFragment extends BottomSheetDialogF
 	private final String DATABASE_NAME = "gitnex";
 	private String BACKUP_DATABASE_NAME;
 
-	@Override
-	public void onCreate(@Nullable Bundle savedInstanceState) {
-		super.onCreate(savedInstanceState);
-		setStyle(STYLE_NORMAL, R.style.Custom_BottomSheet);
-	}
-
 	@Nullable @Override
 	public View onCreateView(
 			@NonNull LayoutInflater inflater,

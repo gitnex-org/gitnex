@@ -37,12 +37,6 @@ public class BottomSheetSettingsSecurityFragment extends BottomSheetDialogFragme
 	private static int cacheSizeImagesSelectedChoice;
 	private static int[] requestTimeoutDataList;
 
-	@Override
-	public void onCreate(@Nullable Bundle savedInstanceState) {
-		super.onCreate(savedInstanceState);
-		setStyle(STYLE_NORMAL, R.style.Custom_BottomSheet);
-	}
-
 	@Nullable @Override
 	public View onCreateView(
 			@NonNull LayoutInflater inflater,

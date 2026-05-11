@@ -73,8 +73,11 @@
                 android:layout_height="wrap_content"
                 android:layout_marginBottom="@dimen/dimen16dp"
                 android:hint="@string/proxy_username_hint"
+                app:endIconMode="clear_text"
+                app:endIconTint="?attr/iconsColor"
                 app:shapeAppearance="@style/ShapeAppearance.Material3.Corner.Medium"
-                app:startIconDrawable="@drawable/ic_person">
+                app:startIconDrawable="@drawable/ic_person"
+                app:startIconTint="?attr/iconsColor">
 
                 <com.google.android.material.textfield.TextInputEditText
                     android:id="@+id/proxyUsername"
@@ -93,8 +96,10 @@
                 android:layout_marginBottom="@dimen/dimen24dp"
                 android:hint="@string/proxy_password_hint"
                 app:endIconMode="password_toggle"
+                app:endIconTint="?attr/iconsColor"
                 app:shapeAppearance="@style/ShapeAppearance.Material3.Corner.Medium"
-                app:startIconDrawable="@drawable/ic_lock">
+                app:startIconDrawable="@drawable/ic_lock"
+                app:startIconTint="?attr/iconsColor">
 
                 <com.google.android.material.textfield.TextInputEditText
                     android:id="@+id/proxyPassword"

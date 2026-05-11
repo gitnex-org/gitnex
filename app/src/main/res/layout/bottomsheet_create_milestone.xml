@@ -66,6 +66,8 @@
                 android:layout_height="wrap_content"
                 android:layout_marginTop="@dimen/dimen8dp"
                 android:hint="@string/title"
+                app:endIconTint="?attr/iconsColor"
+                app:endIconMode="clear_text"
                 app:shapeAppearance="@style/ShapeAppearance.Material3.Corner.Medium">
 
                 <com.google.android.material.textfield.TextInputEditText
@@ -108,14 +110,15 @@
                 android:hint="@string/description"
                 app:counterEnabled="true"
                 app:counterMaxLength="255"
+                app:endIconTint="?attr/iconsColor"
+                app:endIconMode="clear_text"
                 app:shapeAppearance="@style/ShapeAppearance.Material3.Corner.Medium">
 
                 <org.mian.gitnex.views.AccessibleEditText
                     android:id="@+id/milestoneDescription"
                     android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:gravity="top"
-                    android:minHeight="@dimen/dimen120dp"
+                    android:layout_height="@dimen/dimen120dp"
+                    android:gravity="top|start"
                     android:inputType="textMultiLine" />
 
             </com.google.android.material.textfield.TextInputLayout>

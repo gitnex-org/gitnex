@@ -3,6 +3,7 @@ package org.mian.gitnex.fragments;
 import android.app.Dialog;
 import android.os.Bundle;
 import android.view.LayoutInflater;
+import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
 import androidx.annotation.NonNull;
@@ -60,6 +61,30 @@ public class BottomSheetCreateActionVariable extends BottomSheetDialogFragment {
 
 		viewModel.clearVariableCreated();
 		viewModel.clearCreateVariableError();
+
+		binding.variableValue.setOnTouchListener(
+				(v, event) -> {
+					if (event.getAction() == MotionEvent.ACTION_DOWN) {
+						v.getParent().requestDisallowInterceptTouchEvent(true);
+					} else if (event.getAction() == MotionEvent.ACTION_UP
+							|| event.getAction() == MotionEvent.ACTION_CANCEL) {
+						v.getParent().requestDisallowInterceptTouchEvent(false);
+						v.performClick();
+					}
+					return false;
+				});
+
+		binding.variableDescription.setOnTouchListener(
+				(v, event) -> {
+					if (event.getAction() == MotionEvent.ACTION_DOWN) {
+						v.getParent().requestDisallowInterceptTouchEvent(true);
+					} else if (event.getAction() == MotionEvent.ACTION_UP
+							|| event.getAction() == MotionEvent.ACTION_CANCEL) {
+						v.getParent().requestDisallowInterceptTouchEvent(false);
+						v.performClick();
+					}
+					return false;
+				});
 
 		setupListeners();
 		observeViewModel();

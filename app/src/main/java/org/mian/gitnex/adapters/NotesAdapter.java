@@ -15,7 +15,6 @@ import java.util.Date;
 import java.util.List;
 import java.util.Locale;
 import java.util.Objects;
-import org.apache.commons.lang3.StringUtils;
 import org.mian.gitnex.R;
 import org.mian.gitnex.activities.CreateNoteActivity;
 import org.mian.gitnex.database.api.BaseApi;
@@ -96,11 +95,14 @@ public class NotesAdapter extends RecyclerView.Adapter<NotesAdapter.NotesViewHol
 		public void bind(Notes note) {
 			this.note = note;
 
+			String content = note.getContent();
 			Markdown.render(
 					ctx,
 					EmojiParser.parseToUnicode(
 							Objects.requireNonNull(
-									StringUtils.substring(note.getContent(), 0, 140))),
+									content != null && content.length() > 140
+											? content.substring(0, 140)
+											: content)),
 					binding.noteContent);
 
 			long timestamp = (note.getModified() != null) ? note.getModified() : note.getDatetime();

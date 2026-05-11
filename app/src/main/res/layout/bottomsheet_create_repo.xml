@@ -87,6 +87,7 @@
                 android:layout_height="wrap_content"
                 android:layout_marginTop="@dimen/dimen12dp"
                 android:hint="@string/newRepoTintCopy"
+                app:endIconTint="?attr/iconsColor"
                 app:endIconMode="clear_text"
                 app:shapeAppearance="@style/ShapeAppearance.Material3.Corner.Medium">
 
@@ -105,6 +106,8 @@
                 android:layout_height="wrap_content"
                 android:layout_marginTop="@dimen/dimen12dp"
                 android:hint="@string/default_branch"
+                app:endIconTint="?attr/iconsColor"
+                app:endIconMode="clear_text"
                 app:shapeAppearance="@style/ShapeAppearance.Material3.Corner.Medium">
 
                 <com.google.android.material.textfield.TextInputEditText
@@ -143,15 +146,16 @@
                 android:hint="@string/newRepoDescTintCopy"
                 app:counterEnabled="true"
                 app:counterMaxLength="255"
+                app:endIconTint="?attr/iconsColor"
+                app:endIconMode="clear_text"
                 app:shapeAppearance="@style/ShapeAppearance.Material3.Corner.Medium">
 
-                <com.google.android.material.textfield.TextInputEditText
+                <org.mian.gitnex.views.AccessibleEditText
                     android:id="@+id/newRepoDescription"
                     android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
+                    android:layout_height="@dimen/dimen120dp"
                     android:gravity="top|start"
-                    android:inputType="textMultiLine"
-                    android:minLines="3" />
+                    android:inputType="textMultiLine" />
 
             </com.google.android.material.textfield.TextInputLayout>
 

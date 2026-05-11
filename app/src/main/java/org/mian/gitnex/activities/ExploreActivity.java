@@ -87,7 +87,6 @@ public class ExploreActivity extends BaseActivity {
 		prepareNavButton(binding.btnNavIssues);
 		prepareNavButton(binding.btnNavOrganizations);
 		prepareNavButton(binding.btnNavUsers);
-		prepareNavButton(binding.btnBack);
 
 		binding.btnBack.setOnClickListener(v -> finish());
 

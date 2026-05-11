@@ -25,12 +25,6 @@ public class BottomSheetSettingsNotificationsFragment extends BottomSheetDialogF
 	private BottomsheetSettingsNotificationsBinding binding;
 	private static int pollingDelayListSelectedChoice;
 
-	@Override
-	public void onCreate(@Nullable Bundle savedInstanceState) {
-		super.onCreate(savedInstanceState);
-		setStyle(STYLE_NORMAL, R.style.Custom_BottomSheet);
-	}
-
 	@Nullable @Override
 	public View onCreateView(
 			@NonNull LayoutInflater inflater,

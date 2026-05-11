@@ -98,7 +98,7 @@ public class LabelsFragment extends Fragment implements RepoDetailActivity.RepoH
 			items.add(
 					new RepositoryMenuItemModel(
 							"LABEL_ADD_NEW",
-							R.string.addButton,
+							R.string.pageTitleCreateLabel,
 							R.drawable.ic_add,
 							R.attr.colorPrimaryContainer,
 							R.attr.colorOnPrimaryContainer));

@@ -4,6 +4,7 @@ import android.os.Bundle;
 import android.text.Editable;
 import android.text.TextWatcher;
 import android.view.LayoutInflater;
+import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
 import androidx.annotation.NonNull;
@@ -234,6 +235,18 @@ public class OrganizationTeamsFragment extends Fragment
 		bottomSheetDialog.setContentView(sheetBinding.getRoot());
 
 		AppUtil.applySheetStyle(bottomSheetDialog, false);
+
+		sheetBinding.teamDesc.setOnTouchListener(
+				(v, event) -> {
+					if (event.getAction() == MotionEvent.ACTION_DOWN) {
+						v.getParent().requestDisallowInterceptTouchEvent(true);
+					} else if (event.getAction() == MotionEvent.ACTION_UP
+							|| event.getAction() == MotionEvent.ACTION_CANCEL) {
+						v.getParent().requestDisallowInterceptTouchEvent(false);
+						v.performClick();
+					}
+					return false;
+				});
 
 		sheetBinding.btnCreate.setOnClickListener(
 				v -> {

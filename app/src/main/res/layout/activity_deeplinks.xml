@@ -6,7 +6,7 @@
     android:layout_height="match_parent"
     android:paddingTop="@dimen/dimen56dp"
     android:paddingBottom="@dimen/dimen16dp"
-    android:background="?attr/materialCardBackgroundColor">
+    android:background="?attr/primaryBackgroundColor">
 
     <com.google.android.material.loadingindicator.LoadingIndicator
         android:id="@+id/progressBar"

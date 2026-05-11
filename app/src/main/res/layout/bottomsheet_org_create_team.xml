@@ -65,6 +65,8 @@
                 android:layout_height="wrap_content"
                 android:layout_marginTop="@dimen/dimen8dp"
                 android:hint="@string/newTeamTitle"
+                app:endIconTint="?attr/iconsColor"
+                app:endIconMode="clear_text"
                 app:shapeAppearance="@style/ShapeAppearance.Material3.Corner.Medium">
 
                 <com.google.android.material.textfield.TextInputEditText
@@ -83,14 +85,16 @@
                 android:layout_height="wrap_content"
                 android:layout_marginTop="@dimen/dimen12dp"
                 android:hint="@string/description"
+                app:endIconTint="?attr/iconsColor"
+                app:endIconMode="clear_text"
                 app:shapeAppearance="@style/ShapeAppearance.Material3.Corner.Medium">
 
-                <com.google.android.material.textfield.TextInputEditText
+                <org.mian.gitnex.views.AccessibleEditText
                     android:id="@+id/teamDesc"
                     android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:inputType="text"
-                    android:singleLine="true" />
+                    android:layout_height="@dimen/dimen120dp"
+                    android:gravity="top|start"
+                    android:inputType="textMultiLine" />
 
             </com.google.android.material.textfield.TextInputLayout>
 

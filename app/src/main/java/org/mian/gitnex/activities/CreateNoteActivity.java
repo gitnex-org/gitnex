@@ -36,7 +36,7 @@ public class CreateNoteActivity extends BaseActivity {
 		binding = ActivityCreateNoteBinding.inflate(getLayoutInflater());
 		setContentView(binding.getRoot());
 
-		UIHelper.applyEdgeToEdge(this, binding.dockedToolbar, null, null, null);
+		UIHelper.applyEdgeToEdge(this, binding.dockedToolbar, binding.scrollView, null, null);
 
 		notesApi = BaseApi.getInstance(ctx, NotesApi.class);
 		action =

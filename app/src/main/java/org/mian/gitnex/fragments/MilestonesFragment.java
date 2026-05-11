@@ -104,7 +104,7 @@ public class MilestonesFragment extends Fragment implements RepoDetailActivity.R
 			items.add(
 					new RepositoryMenuItemModel(
 							"MILESTONE_ADD_NEW",
-							R.string.addButton,
+							R.string.pageTitleCreateMilestone,
 							R.drawable.ic_add,
 							R.attr.colorPrimaryContainer,
 							R.attr.colorOnPrimaryContainer));
