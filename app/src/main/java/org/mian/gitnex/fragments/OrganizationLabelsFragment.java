@@ -336,4 +336,10 @@ public class OrganizationLabelsFragment extends Fragment
 		OrganizationPermissions perms = orgViewModel.getPermissions().getValue();
 		return perms != null && (perms.isIsOwner() || perms.isIsAdmin());
 	}
+
+	@Override
+	public void onDestroyView() {
+		super.onDestroyView();
+		binding = null;
+	}
 }

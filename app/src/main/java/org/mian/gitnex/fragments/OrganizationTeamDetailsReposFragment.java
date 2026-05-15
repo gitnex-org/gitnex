@@ -227,4 +227,10 @@ public class OrganizationTeamDetailsReposFragment extends Fragment
 	public boolean canAdd() {
 		return !isSearching;
 	}
+
+	@Override
+	public void onDestroyView() {
+		super.onDestroyView();
+		binding = null;
+	}
 }

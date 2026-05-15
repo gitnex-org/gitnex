@@ -24,7 +24,7 @@
         android:layout_marginTop="@dimen/dimen4dp"
         android:textAppearance="?attr/textAppearanceBodySmall"
         android:textColor="?attr/primaryTextColor"
-        android:layout_gravity="center_horizontal"
+        android:layout_gravity="center_horizontal|center_vertical"
         android:alpha="0.8" />
 
 </LinearLayout>

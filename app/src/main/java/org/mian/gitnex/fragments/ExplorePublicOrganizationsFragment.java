@@ -141,4 +141,10 @@ public class ExplorePublicOrganizationsFragment extends Fragment {
 		if (viewModel == null) return;
 		viewModel.fetchAllPublicOrgs(requireContext(), 1, resultLimit, true);
 	}
+
+	@Override
+	public void onDestroyView() {
+		super.onDestroyView();
+		binding = null;
+	}
 }

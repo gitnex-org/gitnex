@@ -628,4 +628,10 @@ public class RepoInfoFragment extends Fragment {
 
 		dialog.show();
 	}
+
+	@Override
+	public void onDestroyView() {
+		super.onDestroyView();
+		binding = null;
+	}
 }

@@ -624,7 +624,6 @@
     <string name="select_branch_error">請選擇一個分支</string>
     <string name="create_pull_request_with_branch">使用此分支建立拉取請求</string>
     <string name="tap_to_upload_file">點擊以選擇檔案</string>
-    <string name="cursor_position_format">第 %d 行，第 %d 欄</string>
     <string name="image_load_error">無法載入圖片</string>
     <string name="invalid_user">無效的使用者</string>
     <string name="dashboard_my_prs_sub_title">透過搜尋和篩選來瀏覽與管理您所有的拉取請求</string>

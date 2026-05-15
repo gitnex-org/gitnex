@@ -157,4 +157,10 @@ public class BottomSheetColorPicker extends BottomSheetDialogFragment {
 			AppUtil.applySheetStyle((BottomSheetDialog) dialog, true);
 		}
 	}
+
+	@Override
+	public void onDestroyView() {
+		super.onDestroyView();
+		binding = null;
+	}
 }

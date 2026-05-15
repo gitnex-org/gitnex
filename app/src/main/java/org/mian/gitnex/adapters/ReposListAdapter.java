@@ -3,8 +3,6 @@ package org.mian.gitnex.adapters;
 import android.annotation.SuppressLint;
 import android.content.Context;
 import android.content.Intent;
-import android.content.res.ColorStateList;
-import android.graphics.Color;
 import android.graphics.drawable.Drawable;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -150,23 +148,24 @@ public class ReposListAdapter extends RecyclerView.Adapter<ReposListAdapter.Repo
 			if (nameParts.length > 1) binding.repoName.setText(nameParts[1]);
 
 			binding.repoIsArchivedFrame.setVisibility(repo.isArchived() ? View.VISIBLE : View.GONE);
+			binding.repoIsArchivedFrame.setImageDrawable(
+					AvatarGenerator.getLabelDrawable(
+							context,
+							context.getResources().getString(R.string.archivedRepository),
+							context.getResources()
+									.getColor(R.color.alert_important_border, context.getTheme()),
+							18));
+
 			binding.repoIsPrivate.setVisibility(repo.isPrivate() ? View.VISIBLE : View.GONE);
 			binding.repoStars.setText(AppUtil.numberFormatter(repo.getStarsCount()));
 
 			if (repo.getLanguage() != null && !repo.getLanguage().trim().isEmpty()) {
 				binding.repoLanguageFrame.setVisibility(View.VISIBLE);
-				binding.repoStars2.setText(repo.getLanguage());
-
 				int colorRes = LanguageColor.languageColor(repo.getLanguage());
 				int bgColor = context.getColor(colorRes);
 
-				binding.repoLanguageFrame.setCardBackgroundColor(ColorStateList.valueOf(bgColor));
-
-				if (AppUtil.isLightColor(bgColor)) {
-					binding.repoStars2.setTextColor(Color.BLACK);
-				} else {
-					binding.repoStars2.setTextColor(Color.WHITE);
-				}
+				binding.repoLanguageFrame.setImageDrawable(
+						AvatarGenerator.getLabelDrawable(context, repo.getLanguage(), bgColor, 20));
 			} else {
 				binding.repoLanguageFrame.setVisibility(View.GONE);
 			}

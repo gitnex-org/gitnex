@@ -19,25 +19,15 @@
             android:layout_height="wrap_content"
             android:padding="@dimen/dimen8dp">
 
-            <com.google.android.material.card.MaterialCardView
-                android:id="@+id/avatar_frame"
+            <com.google.android.material.imageview.ShapeableImageView
+                android:id="@+id/image"
                 android:layout_width="@dimen/dimen36dp"
                 android:layout_height="@dimen/dimen36dp"
                 android:layout_marginTop="@dimen/dimen12dp"
-                android:backgroundTint="@android:color/transparent"
-                app:cardCornerRadius="@dimen/dimen8dp"
-                app:cardElevation="0dp"
-                app:strokeWidth="0dp"
+                android:src="@drawable/ic_loader"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="parent">
-
-                <ImageView
-                    android:id="@+id/image"
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent"
-                    android:contentDescription="@string/repoContentAvatar" />
-
-            </com.google.android.material.card.MaterialCardView>
+                app:layout_constraintTop_toTopOf="parent"
+                app:shapeAppearanceOverlay="@style/ShapeAppearance.Material3.Corner.Small" />
 
             <TextView
                 android:id="@+id/org_name"
@@ -49,8 +39,8 @@
                 android:textAppearance="?attr/textAppearanceLabelLarge"
                 android:textColor="?attr/primaryTextColor"
                 app:layout_constraintEnd_toStartOf="@id/repo_info_end_frame"
-                app:layout_constraintStart_toEndOf="@id/avatar_frame"
-                app:layout_constraintTop_toTopOf="@id/avatar_frame"
+                app:layout_constraintStart_toEndOf="@id/image"
+                app:layout_constraintTop_toTopOf="@id/image"
                 tools:text="Organization Name" />
 
             <TextView
@@ -69,8 +59,8 @@
 
             <LinearLayout
                 android:id="@+id/repo_info_end_frame"
-                android:layout_width="@dimen/dimen40dp"
-                android:layout_height="@dimen/dimen40dp"
+                android:layout_width="@dimen/dimen32dp"
+                android:layout_height="@dimen/dimen32dp"
                 android:background="?attr/selectableItemBackgroundBorderless"
                 android:gravity="center"
                 app:layout_constraintBottom_toBottomOf="@id/repo_name"
@@ -81,10 +71,9 @@
                     android:id="@+id/reset_counter"
                     android:layout_width="@dimen/dimen20dp"
                     android:layout_height="@dimen/dimen20dp"
-                    android:alpha="0.6"
                     android:contentDescription="@string/generalImgContentText"
                     app:srcCompat="@drawable/ic_delete"
-                    app:tint="?attr/iconsColor" />
+                    app:tint="?attr/colorError" />
 
             </LinearLayout>
 
@@ -92,7 +81,7 @@
                 android:id="@+id/most_visited"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="@dimen/dimen12dp"
+                android:layout_marginTop="@dimen/dimen8dp"
                 android:gravity="center_vertical"
                 android:paddingHorizontal="@dimen/dimen8dp"
                 android:paddingVertical="@dimen/dimen2dp"
@@ -103,7 +92,7 @@
                 app:drawableStartCompat="@drawable/ic_trending"
                 app:drawableTint="?attr/colorPrimary"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@id/avatar_frame" />
+                app:layout_constraintTop_toBottomOf="@id/image" />
 
         </androidx.constraintlayout.widget.ConstraintLayout>
 

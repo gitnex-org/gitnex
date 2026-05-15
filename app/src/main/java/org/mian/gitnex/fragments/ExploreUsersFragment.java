@@ -288,4 +288,10 @@ public class ExploreUsersFragment extends Fragment
 			sheetBinding = null;
 		}
 	}
+
+	@Override
+	public void onDestroyView() {
+		super.onDestroyView();
+		binding = null;
+	}
 }

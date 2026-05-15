@@ -119,4 +119,10 @@ public class BottomSheetAddTeamRepo extends BottomSheetDialogFragment {
 			AppUtil.applyFullScreenSheetStyle((BottomSheetDialog) dialog, true);
 		}
 	}
+
+	@Override
+	public void onDestroyView() {
+		super.onDestroyView();
+		binding = null;
+	}
 }

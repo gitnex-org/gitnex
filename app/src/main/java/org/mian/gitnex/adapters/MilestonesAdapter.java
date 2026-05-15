@@ -126,8 +126,7 @@ public class MilestonesAdapter extends RecyclerView.Adapter<MilestonesAdapter.Da
 						isOverdue
 								? context.getColor(R.color.darkRed)
 								: BadgeHelper.getThemeColor(
-										context,
-										com.google.android.material.R.attr.colorPrimaryFixed);
+										context, com.google.android.material.R.attr.colorOnSurface);
 
 				binding.milestoneDueDate.setTextColor(statusColor);
 				binding.dateIcon.setImageTintList(ColorStateList.valueOf(statusColor));

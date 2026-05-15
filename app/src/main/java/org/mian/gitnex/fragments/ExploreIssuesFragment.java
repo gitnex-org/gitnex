@@ -292,4 +292,10 @@ public class ExploreIssuesFragment extends Fragment
 			sheetBinding = null;
 		}
 	}
+
+	@Override
+	public void onDestroyView() {
+		super.onDestroyView();
+		viewBinding = null;
+	}
 }
