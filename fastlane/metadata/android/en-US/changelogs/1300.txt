@@ -1,0 +1,7 @@
+13.0.0
+
+This release features a completely new UI for GitNex, with everything right at your fingertips. It is a whole new experience this time.
+
+The list of features and improvements is long, so it is advised to check the release notes.
+
+Release Notes: https://codeberg.org/gitnex/GitNex/releases

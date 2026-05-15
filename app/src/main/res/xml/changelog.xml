@@ -1,15 +1,48 @@
 <?xml version="1.0" encoding="utf-8"?>
 <changelog>
 
-     <release version="13.0.0-rc4" versioncode="1298">
+     <release version="13.0.0" versioncode="1300">
         <type name="🎉 Features 🎉">
-            <change>Release notes will be updated with a stable release!</change>
+            <change>Revamped the app UI from the ground up (M3 expressive)</change>
+            <change>Added .gitignore support when creating a new repository</change>
+            <change>Added ability to delete an SSH key from your account</change>
+            <change>Added ability to list all user repositories with remote search and filters</change>
+            <change>Added seamless remote search across explore repositories, issues, and users</change>
+            <change>Added a new way to create an organization team</change>
+            <change>Added a new way to create an organization or repository label with preview</change>
+            <change>Enhanced organization creation with a new look</change>
+            <change>Added custom timeout for API calls (change in Settings → Security)</change>
+            <change>Added a new custom color picker</change>
+            <change>Added ability to edit or delete a milestone</change>
+            <change>Added ability to edit a release</change>
+            <change>Added ability to delete an action (CI) variable</change>
+            <change>Added ability to create a pull request when adding a new file</change>
+            <change>Added ability to upload any kind of file when creating a file</change>
+            <change>Added ability to list all pull requests with search and filters</change>
+            <change>Added ability to manually define Gitea/Forgejo version if the API does not return a valid version</change>
+            <change>Added a new reaction style for issues, PRs, and comments</change>
+            <change>Added ability to hide tabs if they are disabled for a repository</change>
+            <change>Added ability to render all emojis from the server for reactions</change>
+            <change>Long press each emoji to see the list of users who reacted</change>
         </type>
         <type name="v🚀 Improvements 🚀">
-            <change>Release notes will be updated with a stable release!</change>
+            <change>Show add/delete topic buttons to admins only</change>
+            <change>Improved notifications badge count</change>
+            <change>Sync licenses with the API for a repository</change>
+            <change>Use absolute date and time where necessary</change>
+            <change>Improved activities UI with more information</change>
+            <change>Copy SSH key to clipboard</change>
+            <change>Improved login screen UI</change>
+            <change>Added more options to create system users for system admins</change>
+            <change>Added additional filter/sort features in explore repositories</change>
+            <change>Translation updates</change>
         </type>
         <type name="🐛 Bug Fixes 🐛">
-            <change>Release notes will be updated with a stable release!</change>
+            <change>Fixed deep linking</change>
+            <change>Fixed comments regex</change>
+            <change>Fixed URI in update account screen</change>
+            <change>Fixed default branch name translation</change>
+            <change>Fixed home screen selection</change>
         </type>
     </release>
 
