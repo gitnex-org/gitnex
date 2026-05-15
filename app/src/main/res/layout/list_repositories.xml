@@ -2,7 +2,6 @@
 <com.google.android.material.listitem.ListItemLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="wrap_content">
 
@@ -42,8 +41,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginStart="@dimen/dimen4dp"
-                    android:textAppearance="?attr/textAppearanceLabelMedium"
-                    tools:text="12"/>
+                    android:textAppearance="?attr/textAppearanceLabelMedium" />
 
                 <ImageView
                     android:layout_width="@dimen/dimen14dp"
@@ -58,8 +56,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginStart="@dimen/dimen4dp"
-                    android:textAppearance="?attr/textAppearanceLabelMedium"
-                    tools:text="5"/>
+                    android:textAppearance="?attr/textAppearanceLabelMedium" />
 
             </LinearLayout>
 
@@ -73,63 +70,37 @@
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintTop_toTopOf="parent" />
 
-            <com.google.android.material.card.MaterialCardView
-                android:id="@+id/avatarFrame"
+            <com.google.android.material.imageview.ShapeableImageView
+                android:id="@+id/imageAvatar"
                 android:layout_width="@dimen/dimen36dp"
                 android:layout_height="@dimen/dimen36dp"
                 android:layout_marginTop="@dimen/dimen12dp"
-                android:backgroundTint="@android:color/transparent"
-                app:cardCornerRadius="@dimen/dimen8dp"
-                app:cardElevation="0dp"
-                app:strokeWidth="0dp"
+                android:src="@drawable/ic_loader"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@id/topStatsRow">
-
-                <ImageView
-                    android:id="@+id/imageAvatar"
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent"
-                    android:contentDescription="@string/generalImgContentText" />
-
-            </com.google.android.material.card.MaterialCardView>
+                app:layout_constraintTop_toBottomOf="@id/topStatsRow"
+                app:shapeAppearanceOverlay="@style/ShapeAppearance.Material3.Corner.Small" />
 
             <TextView
                 android:id="@+id/orgName"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="@dimen/dimen10dp"
-                android:alpha="0.7"
+                android:alpha="0.8"
                 android:textAppearance="?attr/textAppearanceTitleMedium"
-                app:layout_constraintBottom_toBottomOf="@id/avatarFrame"
-                app:layout_constraintStart_toEndOf="@id/avatarFrame"
-                app:layout_constraintTop_toTopOf="@id/avatarFrame" />
+                app:layout_constraintBottom_toBottomOf="@id/imageAvatar"
+                app:layout_constraintStart_toEndOf="@id/imageAvatar"
+                app:layout_constraintTop_toTopOf="@id/imageAvatar" />
 
-            <com.google.android.material.card.MaterialCardView
+            <ImageView
                 android:id="@+id/repo_is_archived_frame"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginStart="@dimen/dimen8dp"
                 android:visibility="gone"
-                app:cardBackgroundColor="?attr/colorSurfaceContainerLow"
-                app:cardCornerRadius="@dimen/dimen4dp"
-                app:cardElevation="0dp"
-                app:strokeWidth="0dp"
+                android:layout_marginStart="@dimen/dimen8dp"
+                android:contentDescription="@string/generalImgContentText"
                 app:layout_constraintBottom_toBottomOf="@id/orgName"
                 app:layout_constraintStart_toEndOf="@id/orgName"
-                app:layout_constraintTop_toTopOf="@id/orgName"
-                tools:visibility="visible">
-
-                <TextView
-                    android:id="@+id/repo_is_archived"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:paddingHorizontal="@dimen/dimen6dp"
-                    android:paddingVertical="@dimen/dimen2dp"
-                    android:text="@string/archivedRepository"
-                    android:textAppearance="?attr/textAppearanceLabelSmall"
-                    android:textColor="?attr/hintColor" />
-
-            </com.google.android.material.card.MaterialCardView>
+                app:layout_constraintTop_toTopOf="@id/orgName" />
 
             <TextView
                 android:id="@+id/repoName"
@@ -140,8 +111,7 @@
                 android:textStyle="bold"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@id/avatarFrame"
-                tools:text="GitNex" />
+                app:layout_constraintTop_toBottomOf="@id/imageAvatar" />
 
             <TextView
                 android:id="@+id/repoDescription"
@@ -154,8 +124,7 @@
                 android:textAppearance="?attr/textAppearanceBodyMedium"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@id/repoName"
-                tools:text="The best Gitea client for Android." />
+                app:layout_constraintTop_toBottomOf="@id/repoName" />
 
             <LinearLayout
                 android:id="@+id/metaLayout"
@@ -168,29 +137,13 @@
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@id/repoDescription">
 
-                <com.google.android.material.card.MaterialCardView
+                <ImageView
                     android:id="@+id/repo_language_frame"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_marginEnd="@dimen/dimen12dp"
                     android:visibility="gone"
-                    app:cardCornerRadius="@dimen/dimen4dp"
-                    app:cardElevation="0dp"
-                    app:strokeWidth="0dp"
-                    tools:visibility="visible">
-
-                    <TextView
-                        android:id="@+id/repoStars2"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:gravity="center"
-                        android:paddingHorizontal="@dimen/dimen8dp"
-                        android:paddingVertical="@dimen/dimen2dp"
-                        android:textAppearance="?attr/textAppearanceLabelMedium"
-                        android:textStyle="bold"
-                        tools:text="Java" />
-
-                </com.google.android.material.card.MaterialCardView>
+                    android:layout_marginEnd="@dimen/dimen12dp"
+                    android:contentDescription="@string/generalImgContentText" />
 
                 <ImageView
                     android:id="@+id/starIcon"
@@ -206,8 +159,7 @@
                     android:layout_height="wrap_content"
                     android:layout_marginStart="@dimen/dimen4dp"
                     android:layout_marginEnd="@dimen/dimen16dp"
-                    android:textAppearance="?attr/textAppearanceLabelMedium"
-                    tools:text="1.2k" />
+                    android:textAppearance="?attr/textAppearanceLabelMedium" />
 
                 <View
                     android:layout_width="0dp"
@@ -221,8 +173,7 @@
                     android:contentDescription="@string/generalImgContentText"
                     android:visibility="gone"
                     app:srcCompat="@drawable/ic_lock"
-                    app:tint="?attr/iconsColor"
-                    tools:visibility="visible" />
+                    app:tint="?attr/iconsColor" />
 
             </LinearLayout>
 

@@ -13,6 +13,7 @@ import com.bumptech.glide.Glide;
 import com.bumptech.glide.load.engine.DiskCacheStrategy;
 import java.util.List;
 import java.util.Locale;
+import org.mian.gitnex.R;
 import org.mian.gitnex.activities.RepoDetailActivity;
 import org.mian.gitnex.databinding.ListRepositoriesBinding;
 import org.mian.gitnex.helpers.AppUtil;
@@ -20,6 +21,7 @@ import org.mian.gitnex.helpers.AvatarGenerator;
 import org.mian.gitnex.helpers.TimeHelper;
 import org.mian.gitnex.helpers.Toasty;
 import org.mian.gitnex.helpers.contexts.RepositoryContext;
+import org.mian.gitnex.helpers.languagestatistics.LanguageColor;
 
 /**
  * @author mmarif
@@ -123,13 +125,25 @@ public class ExploreRepositoriesAdapter
 
 			binding.repoIsArchivedFrame.setVisibility(
 					repositories.isArchived() ? View.VISIBLE : View.GONE);
+			binding.repoIsArchivedFrame.setImageDrawable(
+					AvatarGenerator.getLabelDrawable(
+							context,
+							context.getResources().getString(R.string.archivedRepository),
+							context.getResources()
+									.getColor(R.color.alert_important_border, context.getTheme()),
+							18));
 
 			binding.repoStars.setText(AppUtil.numberFormatter(repositories.getStarsCount()));
 
 			if (repositories.getLanguage() != null
 					&& !repositories.getLanguage().trim().isEmpty()) {
 				binding.repoLanguageFrame.setVisibility(View.VISIBLE);
-				binding.repoStars2.setText(repositories.getLanguage());
+				int colorRes = LanguageColor.languageColor(repositories.getLanguage());
+				int bgColor = context.getColor(colorRes);
+
+				binding.repoLanguageFrame.setImageDrawable(
+						AvatarGenerator.getLabelDrawable(
+								context, repositories.getLanguage(), bgColor, 20));
 			} else {
 				binding.repoLanguageFrame.setVisibility(View.GONE);
 			}

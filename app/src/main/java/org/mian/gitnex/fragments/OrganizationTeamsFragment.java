@@ -370,4 +370,10 @@ public class OrganizationTeamsFragment extends Fragment
 		viewModel.createTeam(requireContext(), orgName, options);
 		viewModel.resetCreateTeamResult();
 	}
+
+	@Override
+	public void onDestroyView() {
+		super.onDestroyView();
+		binding = null;
+	}
 }

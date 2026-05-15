@@ -235,4 +235,10 @@ public class OrganizationMembersFragment extends Fragment
 		OrganizationPermissions perms = orgViewModel.getPermissions().getValue();
 		return perms != null && perms.isIsOwner();
 	}
+
+	@Override
+	public void onDestroyView() {
+		super.onDestroyView();
+		binding = null;
+	}
 }

@@ -94,7 +94,7 @@
         android:layout_height="match_parent"
         android:hint="@string/search"
         app:navigationIcon="@drawable/ic_arrow_back"
-        app:backgroundTint="?attr/colorSurface">
+        app:backgroundTint="?attr/primaryBackgroundColor">
 
         <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/search_results_recycler"

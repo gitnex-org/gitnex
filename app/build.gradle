@@ -127,6 +127,8 @@ dependencies {
     implementation libs.urlbuilder
     implementation libs.stormpot
     implementation libs.codeview
+    implementation libs.android.gif.drawable
+    implementation libs.android.svg
 
     // Markwon bundle
     implementation libs.bundles.markwon

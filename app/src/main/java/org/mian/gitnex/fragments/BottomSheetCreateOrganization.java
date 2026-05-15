@@ -138,4 +138,10 @@ public class BottomSheetCreateOrganization extends BottomSheetDialogFragment {
 			AppUtil.applySheetStyle((BottomSheetDialog) dialog, false);
 		}
 	}
+
+	@Override
+	public void onDestroyView() {
+		super.onDestroyView();
+		binding = null;
+	}
 }

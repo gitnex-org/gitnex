@@ -94,4 +94,10 @@ public class OrganizationInfoFragment extends Fragment {
 		item.infoText.setText(isEmpty ? "—" : value);
 		item.getRoot().setAlpha(isEmpty ? 0.6f : 1.0f);
 	}
+
+	@Override
+	public void onDestroyView() {
+		super.onDestroyView();
+		binding = null;
+	}
 }

@@ -247,4 +247,10 @@ public class OrganizationTeamDetailsMembersFragment extends Fragment
 				BottomSheetAddTeamMember.newInstance(team.getId());
 		addMemberSheet.show(getChildFragmentManager(), "AddTeamMemberBottomSheet");
 	}
+
+	@Override
+	public void onDestroyView() {
+		super.onDestroyView();
+		binding = null;
+	}
 }

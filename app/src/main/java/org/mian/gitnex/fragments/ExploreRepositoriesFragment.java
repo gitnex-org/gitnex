@@ -420,4 +420,10 @@ public class ExploreRepositoriesFragment extends Fragment
 			sheet = null;
 		}
 	}
+
+	@Override
+	public void onDestroyView() {
+		super.onDestroyView();
+		viewBinding = null;
+	}
 }

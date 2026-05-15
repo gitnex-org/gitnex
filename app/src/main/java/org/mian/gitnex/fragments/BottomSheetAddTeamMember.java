@@ -166,4 +166,10 @@ public class BottomSheetAddTeamMember extends BottomSheetDialogFragment {
 			AppUtil.applyFullScreenSheetStyle((BottomSheetDialog) dialog, false);
 		}
 	}
+
+	@Override
+	public void onDestroyView() {
+		super.onDestroyView();
+		binding = null;
+	}
 }

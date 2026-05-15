@@ -264,4 +264,10 @@ public class OrganizationRepositoriesFragment extends Fragment
 		OrganizationPermissions perms = orgViewModel.getPermissions().getValue();
 		return perms != null && (perms.isIsOwner() || perms.isCanCreateRepository());
 	}
+
+	@Override
+	public void onDestroyView() {
+		super.onDestroyView();
+		binding = null;
+	}
 }
