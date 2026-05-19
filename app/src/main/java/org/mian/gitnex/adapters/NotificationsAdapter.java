@@ -13,8 +13,8 @@ import androidx.annotation.NonNull;
 import androidx.core.graphics.ColorUtils;
 import androidx.recyclerview.widget.RecyclerView;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
+import org.gitnex.tea4j.v2.models.NotificationSubject;
 import org.gitnex.tea4j.v2.models.NotificationThread;
 import org.mian.gitnex.R;
 import org.mian.gitnex.databinding.ListNotificationsBinding;
@@ -97,9 +97,10 @@ public class NotificationsAdapter
 		private void setupSubject(NotificationThread thread) {
 			String url = thread.getSubject().getUrl();
 			String subjectText = thread.getSubject().getTitle();
-			String type = thread.getSubject().getType().toLowerCase();
+			NotificationSubject.TypeEnum type = thread.getSubject().getType();
 
-			if (Arrays.asList("pull", "issue").contains(type)) {
+			if (type == NotificationSubject.TypeEnum.PULL
+					|| type == NotificationSubject.TypeEnum.ISSUE) {
 				String id = url.substring(url.lastIndexOf("/") + 1);
 				String idPrefix = context.getString(R.string.hash) + id + " ";
 
@@ -121,7 +122,7 @@ public class NotificationsAdapter
 		}
 
 		private void setupRepository(NotificationThread thread) {
-			if (thread.getSubject().getType().equalsIgnoreCase("repository")) {
+			if (thread.getSubject().getType() == NotificationSubject.TypeEnum.REPOSITORY) {
 				binding.repository.setVisibility(View.GONE);
 			} else {
 				binding.repository.setVisibility(View.VISIBLE);
@@ -130,20 +131,23 @@ public class NotificationsAdapter
 		}
 
 		private void setupIcon(NotificationThread thread) {
+			NotificationSubject.TypeEnum type = thread.getSubject().getType();
+
 			int iconRes =
-					switch (thread.getSubject().getType().toLowerCase()) {
-						case "pull" -> R.drawable.ic_pull_request;
-						case "issue" -> R.drawable.ic_issue;
-						case "commit" -> R.drawable.ic_commit;
-						case "repository" -> R.drawable.ic_repo;
-						default -> R.drawable.ic_question;
+					switch (type) {
+						case PULL -> R.drawable.ic_pull_request;
+						case ISSUE -> R.drawable.ic_issue;
+						case COMMIT -> R.drawable.ic_commit;
+						case REPOSITORY -> R.drawable.ic_repo;
 					};
 			binding.type.setImageResource(iconRes);
 
+			NotificationSubject.StateEnum state = thread.getSubject().getState();
+
 			int tintColor =
-					switch (thread.getSubject().getState().toLowerCase()) {
-						case "closed" -> context.getColor(R.color.iconIssuePrClosedColor);
-						case "merged" -> context.getColor(R.color.iconPrMergedColor);
+					switch (state) {
+						case CLOSED -> context.getColor(R.color.iconIssuePrClosedColor);
+						case MERGED -> context.getColor(R.color.iconPrMergedColor);
 						default -> AppUtil.getColorFromAttribute(context, R.attr.iconsColor);
 					};
 			binding.type.setImageTintList(ColorStateList.valueOf(tintColor));

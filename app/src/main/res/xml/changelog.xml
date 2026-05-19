@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <changelog>
 
-     <release version="13.0.0" versioncode="1300">
+     <release version="13.0.1" versioncode="1301">
         <type name="🎉 Features 🎉">
             <change>Revamped the app UI from the ground up (M3 expressive)</change>
             <change>Added .gitignore support when creating a new repository</change>

@@ -135,7 +135,7 @@ public class PullRequestsAdapter
 								mergedColor,
 								16));
 
-			} else if (pr.getState().equalsIgnoreCase("closed")) {
+			} else if (pr.getState() == PullRequest.StateEnum.CLOSED) {
 				binding.mergedBadge.setVisibility(View.VISIBLE);
 				int closedColor = ContextCompat.getColor(context, R.color.colorRed);
 				binding.mergedBadge.setImageDrawable(

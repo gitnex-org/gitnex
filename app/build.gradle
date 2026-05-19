@@ -129,6 +129,10 @@ dependencies {
     implementation libs.codeview
     implementation libs.android.gif.drawable
     implementation libs.android.svg
+    implementation libs.emoji.java
+    implementation(libs.tea4j) {
+        exclude group: 'org.apache.oltu.oauth2', module: 'org.apache.oltu.oauth2.common'
+    }
 
     // Markwon bundle
     implementation libs.bundles.markwon
