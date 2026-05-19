@@ -137,7 +137,11 @@ public class MilestonesViewModel extends ViewModel {
 	}
 
 	public void toggleMilestoneState(
-			Context ctx, String owner, String repo, Milestone milestone, String newState) {
+			Context ctx,
+			String owner,
+			String repo,
+			Milestone milestone,
+			EditMilestoneOption.StateEnum newState) {
 		EditMilestoneOption body = new EditMilestoneOption();
 		body.setState(newState);
 
@@ -251,7 +255,14 @@ public class MilestonesViewModel extends ViewModel {
 			option.setTitle(title);
 			option.setDescription(desc);
 			option.setDueOn(dueDate);
-			option.setState(existingMilestone.getState());
+			if (existingMilestone.getState() != null) {
+				EditMilestoneOption.StateEnum editState =
+						switch (existingMilestone.getState()) {
+							case OPEN -> EditMilestoneOption.StateEnum.OPEN;
+							case CLOSED -> EditMilestoneOption.StateEnum.CLOSED;
+						};
+				option.setState(editState);
+			}
 
 			RetrofitClient.getApiInterface(ctx)
 					.issueEditMilestone(

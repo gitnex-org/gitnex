@@ -251,10 +251,10 @@ public class PullRequestDetailActivity extends BaseActivity
 					Repository repository = pr.getBase() != null ? pr.getBase().getRepo() : null;
 					if (repository == null) return;
 
-					String state = pr.getState();
+					PullRequest.StateEnum state = pr.getState();
 					boolean isMerged = Boolean.TRUE.equals(pr.isMerged());
-					boolean isClosed = "closed".equalsIgnoreCase(state);
-					boolean isOpen = "open".equalsIgnoreCase(state);
+					boolean isClosed = state == PullRequest.StateEnum.CLOSED;
+					boolean isOpen = state == PullRequest.StateEnum.OPEN;
 					boolean isAdmin =
 							repository.getPermissions() != null
 									&& Boolean.TRUE.equals(repository.getPermissions().isAdmin());
@@ -939,7 +939,7 @@ public class PullRequestDetailActivity extends BaseActivity
 			case "pr_state":
 				if (pr != null)
 					issueActionsViewModel.toggleState(
-							this, owner, repo, prNumber, pr.getState(), true);
+							this, owner, repo, prNumber, pr.getState().toString(), true);
 				break;
 			case "pr_delete_branch":
 				if (pr != null && pr.getHead() != null) {
@@ -1097,11 +1097,11 @@ public class PullRequestDetailActivity extends BaseActivity
 	}
 
 	private void setStatusBadge(LayoutPrHeaderBinding header, PullRequest pr) {
-		String state = pr.getState();
+		PullRequest.StateEnum state = pr.getState();
 		int statusColor;
 		String statusText;
 
-		if ("open".equalsIgnoreCase(state)) {
+		if (state == PullRequest.StateEnum.OPEN) {
 			statusColor = getColor(R.color.colorDarkGreen);
 			statusText = getString(R.string.isOpen).toUpperCase();
 		} else if (Boolean.TRUE.equals(pr.isMerged())) {
@@ -1125,7 +1125,7 @@ public class PullRequestDetailActivity extends BaseActivity
 			canEdit = Boolean.TRUE.equals(pr.getBase().getRepo().getPermissions().isPush());
 		}
 
-		boolean isOpen = "open".equalsIgnoreCase(pr.getState());
+		boolean isOpen = pr.getState() == PullRequest.StateEnum.OPEN;
 		boolean isMerged = Boolean.TRUE.equals(pr.isMerged());
 
 		header.btnEdit.setVisibility(canEdit && isOpen && !isMerged ? View.VISIBLE : View.GONE);

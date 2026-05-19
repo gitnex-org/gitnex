@@ -83,7 +83,7 @@ public class BottomSheetPrActions extends BottomSheetDialogFragment {
 	private void setupMergeSection() {
 		Repository repository =
 				pullRequest.getBase() != null ? pullRequest.getBase().getRepo() : null;
-		boolean isOpen = "open".equalsIgnoreCase(pullRequest.getState());
+		boolean isOpen = pullRequest.getState() == PullRequest.StateEnum.OPEN;
 
 		if (repository == null || !isOpen) {
 			hideMergeSection();
@@ -207,7 +207,7 @@ public class BottomSheetPrActions extends BottomSheetDialogFragment {
 	private void setupUpdateSection() {
 		Repository repository =
 				pullRequest.getBase() != null ? pullRequest.getBase().getRepo() : null;
-		boolean isOpen = "open".equalsIgnoreCase(pullRequest.getState());
+		boolean isOpen = pullRequest.getState() == PullRequest.StateEnum.OPEN;
 		boolean canUpdate =
 				repository != null
 						&& isOpen

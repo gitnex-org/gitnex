@@ -129,7 +129,7 @@ public class MyPullRequestsAdapter extends RecyclerView.Adapter<MyPullRequestsAd
 									context.getString(R.string.merged).toUpperCase(),
 									mergedColor,
 									16));
-				} else if ("closed".equalsIgnoreCase(issue.getState())) {
+				} else if (issue.getState() == Issue.StateEnum.CLOSED) {
 					binding.mergedBadge.setVisibility(View.VISIBLE);
 					int closedColor = ContextCompat.getColor(context, R.color.colorRed);
 					binding.mergedBadge.setImageDrawable(

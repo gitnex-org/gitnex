@@ -199,7 +199,7 @@ public class IssuesAdapter extends RecyclerView.Adapter<IssuesAdapter.IssuesHold
 
 			if (type.equalsIgnoreCase("pinned")) {
 				int strokeColorRes =
-						issue.getState().equalsIgnoreCase("open")
+						(issue.getState() == Issue.StateEnum.OPEN)
 								? R.color.darkGreen
 								: R.color.iconIssuePrClosedColor;
 

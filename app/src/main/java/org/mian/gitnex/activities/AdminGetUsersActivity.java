@@ -209,10 +209,14 @@ public class AdminGetUsersActivity extends BaseActivity {
 						return;
 					}
 
-					String visibility = "public";
+					CreateUserOption.VisibilityEnum visibility =
+							CreateUserOption.VisibilityEnum.PUBLIC;
 					int checkedId = sheetBinding.visibilityGroup.getCheckedChipId();
-					if (checkedId == R.id.chipLimited) visibility = "limited";
-					else if (checkedId == R.id.chipPrivate) visibility = "private";
+					if (checkedId == R.id.chipLimited) {
+						visibility = CreateUserOption.VisibilityEnum.LIMITED;
+					} else if (checkedId == R.id.chipPrivate) {
+						visibility = CreateUserOption.VisibilityEnum.PRIVATE;
+					}
 
 					CreateUserOption option = new CreateUserOption();
 					if (!fullName.isEmpty()) option.setFullName(fullName);
