@@ -230,7 +230,7 @@ public class IssueDetailActivity extends BaseActivity
 							repository.getPermissions() != null
 									&& Boolean.TRUE.equals(repository.getPermissions().isPush());
 					boolean isArchived = repository.isArchived();
-					boolean isOpen = "open".equalsIgnoreCase(issue.getState());
+					boolean isOpen = issue.getState() == Issue.StateEnum.OPEN;
 					boolean isPinned = issue.getPinOrder() != null && issue.getPinOrder() > 0;
 
 					issueActionsViewModel.checkSubscription(this, owner, repo, issueNumber);
@@ -363,7 +363,7 @@ public class IssueDetailActivity extends BaseActivity
 				break;
 			case "state":
 				issueActionsViewModel.toggleState(
-						this, owner, repo, issueNumber, issue.getState(), false);
+						this, owner, repo, issueNumber, issue.getState().toString(), false);
 				break;
 			case "copy_url":
 				AppUtil.copyToClipboard(
@@ -1036,11 +1036,10 @@ public class IssueDetailActivity extends BaseActivity
 	}
 
 	private void setStatusBadge(LayoutIssueHeaderBinding header, Issue issue) {
-		String state = issue.getState();
 		int statusColor;
 		String statusText;
 
-		if ("open".equalsIgnoreCase(state)) {
+		if (issue.getState() == Issue.StateEnum.OPEN) {
 			statusColor = getColor(R.color.colorDarkGreen);
 			statusText = getString(R.string.isOpen).toUpperCase();
 		} else {

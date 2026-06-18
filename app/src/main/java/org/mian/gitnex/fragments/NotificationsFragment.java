@@ -16,8 +16,8 @@ import androidx.lifecycle.ViewModelProvider;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
+import org.gitnex.tea4j.v2.models.NotificationSubject;
 import org.gitnex.tea4j.v2.models.NotificationThread;
 import org.mian.gitnex.R;
 import org.mian.gitnex.activities.IssueDetailActivity;
@@ -265,16 +265,19 @@ public class NotificationsFragment extends Fragment
 			viewModel.markThreadAsRead(context, thread.getId());
 		}
 
-		String type = thread.getSubject().getType().toLowerCase();
-		if (Arrays.asList("pull", "issue").contains(type)) {
-			handleIssuePrNavigation(thread);
-		} else if (type.equalsIgnoreCase("repository")) {
+		NotificationSubject.TypeEnum type = thread.getSubject().getType();
+
+		if (type == NotificationSubject.TypeEnum.PULL
+				|| type == NotificationSubject.TypeEnum.ISSUE) {
+			handleIssuePrNavigation(thread, type);
+		} else if (type == NotificationSubject.TypeEnum.REPOSITORY) {
 			RepositoryContext repoContext = new RepositoryContext(thread.getRepository(), context);
 			startActivity(repoContext.getIntent(context, RepoDetailActivity.class));
 		}
 	}
 
-	private void handleIssuePrNavigation(NotificationThread thread) {
+	private void handleIssuePrNavigation(
+			NotificationThread thread, NotificationSubject.TypeEnum type) {
 		RepositoryContext repo =
 				new RepositoryContext(
 						thread.getRepository().getOwner().getLogin(),
@@ -285,10 +288,8 @@ public class NotificationsFragment extends Fragment
 		String url = thread.getSubject().getUrl();
 		int id = Integer.parseInt(url.substring(url.lastIndexOf("/") + 1));
 
-		String issueType = thread.getSubject().getType();
-
 		Intent intent;
-		if ("Pull".equalsIgnoreCase(issueType)) {
+		if (type == NotificationSubject.TypeEnum.PULL) {
 			intent = new Intent(context, PullRequestDetailActivity.class);
 			intent.putExtra("owner", thread.getRepository().getOwner().getLogin());
 			intent.putExtra("repo", thread.getRepository().getName());
@@ -300,6 +301,7 @@ public class NotificationsFragment extends Fragment
 			intent.putExtra("issueNumber", id);
 			intent.putExtra("fetchIssueObject", true);
 		}
+
 		intent.putExtra("openedFromLink", "true");
 		startActivity(intent);
 	}

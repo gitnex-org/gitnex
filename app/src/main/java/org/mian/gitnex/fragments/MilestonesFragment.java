@@ -16,6 +16,7 @@ import com.google.android.material.bottomsheet.BottomSheetDialog;
 import com.google.android.material.dialog.MaterialAlertDialogBuilder;
 import java.util.ArrayList;
 import java.util.List;
+import org.gitnex.tea4j.v2.models.EditMilestoneOption;
 import org.gitnex.tea4j.v2.models.Milestone;
 import org.mian.gitnex.R;
 import org.mian.gitnex.activities.RepoDetailActivity;
@@ -198,7 +199,8 @@ public class MilestonesFragment extends Fragment implements RepoDetailActivity.R
 
 													sheetB.sheetTitle.setText(milestone.getTitle());
 													boolean isOpen =
-															"open".equals(milestone.getState());
+															milestone.getState()
+																	== Milestone.StateEnum.OPEN;
 
 													if (isOpen) {
 														sheetB.closeIcon.setImageResource(
@@ -301,7 +303,7 @@ public class MilestonesFragment extends Fragment implements RepoDetailActivity.R
 	}
 
 	private void showCloseConfirmation(Milestone milestone) {
-		boolean isOpen = "open".equals(milestone.getState());
+		boolean isOpen = milestone.getState() == Milestone.StateEnum.OPEN;
 		int titleRes = isOpen ? R.string.closeMilestone : R.string.openMilestone;
 		int msgRes = isOpen ? R.string.close_milestone_msg : R.string.open_milestone_msg;
 
@@ -311,7 +313,11 @@ public class MilestonesFragment extends Fragment implements RepoDetailActivity.R
 				.setPositiveButton(
 						isOpen ? R.string.close : R.string.isOpen,
 						(dialog, which) -> {
-							String newState = isOpen ? "closed" : "open";
+							EditMilestoneOption.StateEnum newState =
+									isOpen
+											? EditMilestoneOption.StateEnum.CLOSED
+											: EditMilestoneOption.StateEnum.OPEN;
+
 							viewModel.toggleMilestoneState(
 									requireContext(),
 									repository.getOwner(),
