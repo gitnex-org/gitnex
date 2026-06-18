@@ -7,10 +7,8 @@ import android.content.ClipboardManager;
 import android.content.ContentResolver;
 import android.content.Context;
 import android.content.Intent;
-import android.content.pm.ActivityInfo;
 import android.content.pm.PackageInfo;
 import android.content.pm.PackageManager;
-import android.content.pm.ResolveInfo;
 import android.content.res.Configuration;
 import android.database.Cursor;
 import android.graphics.Bitmap;
@@ -44,7 +42,6 @@ import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
-import java.util.List;
 import java.util.Locale;
 import java.util.Map;
 import java.util.Objects;
@@ -515,61 +512,13 @@ public class AppUtil {
 		ctx.startActivity(Intent.createChooser(sharingIntent, url));
 	}
 
-	private static Intent wrapBrowserIntent(Context context, Intent intent) {
-
-		final PackageManager pm = context.getPackageManager();
-		final List<ResolveInfo> activities =
-				pm.queryIntentActivities(
-						new Intent(intent)
-								.setData(
-										Objects.requireNonNull(intent.getData())
-												.buildUpon()
-												.authority("example.com")
-												.scheme("https")
-												.build()),
-						PackageManager.MATCH_ALL);
-		final ArrayList<Intent> chooserIntents = new ArrayList<>();
-		final String ourPackageName = context.getPackageName();
-
-		activities.sort(new ResolveInfo.DisplayNameComparator(pm));
-
-		for (ResolveInfo resInfo : activities) {
-			ActivityInfo info = resInfo.activityInfo;
-			if (!info.enabled || !info.exported) {
-				continue;
-			}
-			if (info.packageName.equals(ourPackageName)) {
-				continue;
-			}
-
-			Intent targetIntent = new Intent(intent);
-			targetIntent.setPackage(info.packageName);
-			targetIntent.setDataAndType(intent.getData(), intent.getType());
-			chooserIntents.add(targetIntent);
-		}
-
-		if (chooserIntents.isEmpty()) {
-			return null;
-		}
-
-		final Intent lastIntent = chooserIntents.remove(chooserIntents.size() - 1);
-		if (chooserIntents.isEmpty()) {
-			return lastIntent;
-		}
-
-		Intent chooserIntent = Intent.createChooser(lastIntent, null);
-		String extraName = Intent.EXTRA_ALTERNATE_INTENTS;
-		chooserIntent.putExtra(extraName, chooserIntents.toArray(new Intent[0]));
-		return chooserIntent;
-	}
-
 	public static void openUrlInBrowser(Context context, String url) {
+		Intent intent;
 
-		Intent i;
 		if (Boolean.parseBoolean(
 				AppDatabaseSettings.getSettingsValue(
 						context, AppDatabaseSettings.APP_CUSTOM_BROWSER_KEY))) {
-			i =
+			intent =
 					new CustomTabsIntent.Builder()
 							.setDefaultColorSchemeParams(
 									new CustomTabColorSchemeParams.Builder()
@@ -583,19 +532,21 @@ public class AppUtil {
 											.build())
 							.build()
 							.intent;
-			i.setData(Uri.parse(url));
+			intent.setData(Uri.parse(url));
 		} else {
-			i = new Intent(Intent.ACTION_VIEW, Uri.parse(url));
-			i.addCategory(Intent.CATEGORY_BROWSABLE);
+			intent = new Intent(Intent.ACTION_VIEW, Uri.parse(url));
+			intent.addCategory(Intent.CATEGORY_BROWSABLE);
 		}
+
 		try {
-			Intent browserIntent = wrapBrowserIntent(context, i);
-			if (browserIntent == null) {
-				Toasty.show(context, context.getString(R.string.genericError));
-			}
-			context.startActivity(browserIntent);
+			context.startActivity(intent);
 		} catch (ActivityNotFoundException e) {
-			Toasty.show(context, context.getString(R.string.browserOpenFailed));
+			try {
+				Intent chooserIntent = Intent.createChooser(intent, null);
+				context.startActivity(chooserIntent);
+			} catch (Exception ex) {
+				Toasty.show(context, context.getString(R.string.browserOpenFailed));
+			}
 		} catch (Exception e) {
 			Toasty.show(context, context.getString(R.string.genericError));
 		}
