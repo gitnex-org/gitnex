@@ -338,6 +338,7 @@ public class ReleasesFragment extends Fragment implements RepoDetailActivity.Rep
 							requireContext(),
 							list,
 							canDelete,
+							repository,
 							new ReleasesAdapter.OnReleaseItemClickListener() {
 								@Override
 								public void onMenuClick(Release release, int position) {

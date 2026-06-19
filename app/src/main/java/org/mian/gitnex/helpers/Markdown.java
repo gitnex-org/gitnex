@@ -58,16 +58,17 @@ import org.commonmark.parser.PostProcessor;
 import org.mian.gitnex.R;
 import org.mian.gitnex.activities.BaseActivity;
 import org.mian.gitnex.activities.CommitDetailActivity;
-import org.mian.gitnex.activities.IssueDetailActivity;
 import org.mian.gitnex.activities.ProfileActivity;
 import org.mian.gitnex.core.MainGrammarLocator;
+import org.mian.gitnex.fragments.BottomSheetContentViewer;
 import org.mian.gitnex.helpers.codeeditor.markwon.MarkwonHighlighter;
 import org.mian.gitnex.helpers.codeeditor.theme.Theme;
-import org.mian.gitnex.helpers.contexts.IssueContext;
 import org.mian.gitnex.helpers.contexts.RepositoryContext;
 import org.mian.gitnex.helpers.markdown.AlertPlugin;
 import org.mian.gitnex.helpers.markdown.AutoLinkPlugin;
+import org.mian.gitnex.helpers.markdown.ImageRendererPlugin;
 import org.mian.gitnex.helpers.markdown.UrlPromptPlugin;
+import org.mian.gitnex.viewmodels.IssueOrPRCheckerViewModel;
 import stormpot.Allocator;
 import stormpot.BlazePool;
 import stormpot.Config;
@@ -395,15 +396,51 @@ public class Markdown {
 
 		private LinkPostProcessor linkPostProcessor;
 
+		private ImageRendererPlugin imagePlugin;
+
 		public RecyclerViewRenderer(Slot slot) {
 
 			this.slot = slot;
+		}
+
+		private void downloadAndShowImage(Context context, String imageUrl) {
+			executorService.execute(
+					() -> {
+						try {
+							OkHttpClient client = imagePlugin.getOkHttpClient();
+							okhttp3.Request request =
+									new okhttp3.Request.Builder().url(imageUrl).build();
+							okhttp3.Response response = client.newCall(request).execute();
+							byte[] imageBytes = response.body().bytes();
+							((BaseActivity) context)
+									.runOnUiThread(
+											() -> {
+												BottomSheetContentViewer viewer =
+														BottomSheetContentViewer.newInstance(
+																imageBytes,
+																null,
+																repository,
+																BottomSheetContentViewer.Feature
+																		.IMAGE_PREVIEW);
+												viewer.show(
+														((BaseActivity) context)
+																.getSupportFragmentManager(),
+														"image_viewer");
+											});
+						} catch (Exception e) {
+							((BaseActivity) context)
+									.runOnUiThread(
+											() -> Toasty.show(context, R.string.image_load_error));
+						}
+					});
 		}
 
 		private void setup() {
 
 			Objects.requireNonNull(context);
 			Objects.requireNonNull(repository);
+
+			imagePlugin = ImageRendererPlugin.create(context, repository);
 
 			if (linkPostProcessor == null) {
 				linkPostProcessor =
@@ -433,24 +470,7 @@ public class Markdown {
 							.usePlugin(StrikethroughPlugin.create())
 							.usePlugin(GlideImagesPlugin.create(context))
 							.usePlugin(ImagesPlugin.create())
-							.usePlugin(
-									new AbstractMarkwonPlugin() {
-										@Override
-										public void configure(@NonNull Registry registry) {
-											registry.require(
-													ImagesPlugin.class,
-													imagesPlugin ->
-															imagesPlugin.addSchemeHandler(
-																	OkHttpNetworkSchemeHandler
-																			.create(
-																					new OkHttpClient())));
-										}
-									})
-							.usePlugin(
-									MarkwonHighlighter.create(
-											context,
-											Theme.getDefaultTheme(context),
-											MainGrammarLocator.DEFAULT_FALLBACK_LANGUAGE))
+							.usePlugin(imagePlugin)
 							.usePlugin(
 									new AbstractMarkwonPlugin() {
 
@@ -517,6 +537,14 @@ public class Markdown {
 													(view, link) -> {
 														RepositoryContext repoLocal =
 																linkPostProcessor.repository;
+
+														if (link.matches(
+																"(?i).*\\.(png|jpg|jpeg|gif|svg|webp|bmp)(\\?.*)?$")) {
+															downloadAndShowImage(
+																	view.getContext(), link);
+															return;
+														}
+
 														if (link.startsWith("gitnexuser://")) {
 															Intent i =
 																	new Intent(
@@ -527,45 +555,37 @@ public class Markdown {
 															view.getContext().startActivity(i);
 														} else if (link.startsWith(
 																"gitnexissue://")) {
-															link = link.substring(14);
+															String fullLink = link.substring(14);
 															String index;
-															if (link.contains("/")) {
-																index = link.split("#")[1];
-															} else {
-																index = link.substring(1);
-															}
 															String[] repo;
-															if (link.contains("/")) {
-																repo =
-																		link.split("#")[0].split(
-																				"/");
+															boolean openedFromLink =
+																	fullLink.contains("/");
+
+															if (openedFromLink) {
+																String[] parts =
+																		fullLink.split("#");
+																repo = parts[0].split("/");
+																index = parts[1];
 															} else {
+																index = fullLink.substring(1);
 																repo =
 																		new String[] {
 																			repoLocal.getOwner(),
 																			repoLocal.getName()
 																		};
 															}
-															Intent i =
-																	new IssueContext(
-																					new RepositoryContext(
-																							repo[0],
-																							repo[1],
-																							context),
-																					Integer
-																							.parseInt(
-																									index),
-																					null)
-																			.getIntent(
-																					context,
-																					IssueDetailActivity
-																							.class);
 
-															if (link.contains("/")) {
-																i.putExtra(
-																		"openedFromLink", "true");
-															}
-															view.getContext().startActivity(i);
+															int number = Integer.parseInt(index);
+															RepositoryContext refRepo =
+																	new RepositoryContext(
+																			repo[0], repo[1],
+																			context);
+
+															IssueOrPRCheckerViewModel.checkAndOpen(
+																	view.getContext(),
+																	refRepo,
+																	number,
+																	openedFromLink);
 														} else if (link.startsWith(
 																"gitnexcommit://")) {
 															link = link.substring(15);
@@ -713,6 +733,8 @@ public class Markdown {
 				setup();
 			}
 
+			markdown = imagePlugin.preProcessMarkdown(markdown);
+
 			setupAdapter();
 
 			RecyclerView localReference = recyclerView;
@@ -730,6 +752,7 @@ public class Markdown {
 										// separate ScrollViews
 									}
 								});
+						localReference.setItemViewCacheSize(20);
 
 						if (spannable != null) {
 							TextView tempTextView = new TextView(context);

@@ -23,6 +23,7 @@ import org.mian.gitnex.helpers.AvatarGenerator;
 import org.mian.gitnex.helpers.Markdown;
 import org.mian.gitnex.helpers.TimeHelper;
 import org.mian.gitnex.helpers.Toasty;
+import org.mian.gitnex.helpers.contexts.RepositoryContext;
 
 /**
  * @author mmarif
@@ -32,6 +33,7 @@ public class ReleasesAdapter extends RecyclerView.Adapter<ReleasesAdapter.Releas
 	private final Context context;
 	private List<Release> releasesList;
 	private final boolean canDelete;
+	private final RepositoryContext repositoryContext;
 	private final OnReleaseItemClickListener listener;
 
 	public interface OnReleaseItemClickListener {
@@ -44,10 +46,12 @@ public class ReleasesAdapter extends RecyclerView.Adapter<ReleasesAdapter.Releas
 			Context context,
 			List<Release> releases,
 			boolean canDelete,
+			RepositoryContext repositoryContext,
 			OnReleaseItemClickListener listener) {
 		this.context = context;
 		this.releasesList = releases;
 		this.canDelete = canDelete;
+		this.repositoryContext = repositoryContext;
 		this.listener = listener;
 	}
 
@@ -126,9 +130,10 @@ public class ReleasesAdapter extends RecyclerView.Adapter<ReleasesAdapter.Releas
 			}
 
 			if (release.getBody() != null && !release.getBody().isEmpty()) {
-				Markdown.render(context, release.getBody(), binding.releaseBodyContent);
+				Markdown.render(
+						context, release.getBody(), binding.releaseBodyContent, repositoryContext);
 			} else {
-				binding.releaseBodyContent.setText(R.string.noReleaseBodyContent);
+				binding.releaseBodyContent.setVisibility(View.GONE);
 			}
 
 			if (release.getAssets() != null && !release.getAssets().isEmpty()) {
