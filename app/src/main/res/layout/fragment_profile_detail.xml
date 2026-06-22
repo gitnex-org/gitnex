@@ -79,35 +79,57 @@
 
                     <com.google.android.material.button.MaterialButton
                         android:id="@+id/update_profile"
-                        style="@style/Widget.Material3.Button.TonalButton"
+                        style="@style/Widget.Material3.Button.IconButton.Filled.Tonal"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="@string/editSettings"
                         android:visibility="gone"
                         app:icon="@drawable/ic_edit"
-                        app:layout_constraintEnd_toEndOf="parent"
+                        app:iconSize="@dimen/dimen20dp"
+                        app:iconTint="?attr/iconsColor"
+                        app:layout_constraintEnd_toStartOf="@id/follow_user"
+                        app:layout_constraintHorizontal_chainStyle="packed"
                         app:layout_constraintTop_toTopOf="parent" />
 
                     <com.google.android.material.button.MaterialButton
                         android:id="@+id/follow_user"
-                        style="@style/Widget.Material3.Button.IconButton.Filled"
+                        style="@style/Widget.Material3.Button.IconButton.Filled.Tonal"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="@string/userFollow"
-                        app:iconPadding="@dimen/dimen8dp"
                         android:visibility="gone"
                         app:icon="@drawable/ic_person_add"
+                        app:iconTint="?attr/iconsColor"
+                        app:layout_constraintEnd_toStartOf="@id/btnBookmarkProfile"
+                        app:layout_constraintTop_toTopOf="parent" />
+
+                    <com.google.android.material.button.MaterialButton
+                        android:id="@+id/btnBookmarkProfile"
+                        style="@style/Widget.Material3.Button.IconButton.Filled.Tonal"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:contentDescription="@string/bookmark_add"
+                        app:icon="@drawable/ic_bookmark_add"
+                        app:iconTint="?attr/iconsColor"
+                        app:layout_constraintEnd_toStartOf="@id/btnShareProfile"
+                        app:layout_constraintTop_toTopOf="parent" />
+
+                    <com.google.android.material.button.MaterialButton
+                        android:id="@+id/btnShareProfile"
+                        style="@style/Widget.Material3.Button.IconButton.Filled.Tonal"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:contentDescription="@string/share"
+                        app:icon="@drawable/ic_share"
+                        app:iconTint="?attr/iconsColor"
                         app:layout_constraintEnd_toEndOf="parent"
-                        app:layout_constraintTop_toBottomOf="@id/update_profile" />
+                        app:layout_constraintTop_toTopOf="parent" />
 
                     <TextView
                         android:id="@+id/userFullName"
-                        android:layout_width="0dp"
+                        android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:layout_marginTop="@dimen/dimen16dp"
                         android:textAppearance="?attr/textAppearanceHeadlineMedium"
                         android:textStyle="bold"
-                        app:layout_constraintEnd_toEndOf="parent"
                         app:layout_constraintStart_toStartOf="parent"
                         app:layout_constraintTop_toBottomOf="@id/userAvatar" />
 
@@ -125,6 +147,7 @@
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:layout_marginTop="@dimen/dimen12dp"
+                        android:autoLink="all"
                         android:textAppearance="?attr/textAppearanceBodyLarge"
                         app:layout_constraintTop_toBottomOf="@id/userLogin" />
 

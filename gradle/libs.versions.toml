@@ -11,7 +11,7 @@ versionName = "14.0.0-dev"
 javaVersion = "17"
 
 # Plugins
-spotless = "8.6.0"
+spotless = "8.7.0"
 
 # AndroidX
 appcompat = "1.7.1"
@@ -42,13 +42,13 @@ commons-io = "2.22.0"
 photoview = "2.3.0"
 acra = "5.13.1"
 urlbuilder = "2.0.9"
-#noinspection NewerVersionAvailable
-stormpot = "2.4.2"
 codeview = "1.3.9"
 android-svg = "1.4"
 android-gif-drawable = "1.2.31"
 emoji-java = "v5.1.2"
 tea4j-autodeploy = "5792207076"
+#noinspection NewerVersionAvailable
+stormpot = "2.4.2"
 
 # Desugaring
 desugar_jdk_libs = "2.1.5"

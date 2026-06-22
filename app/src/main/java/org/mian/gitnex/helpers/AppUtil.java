@@ -79,7 +79,9 @@ public class AppUtil {
 
 	static {
 		extensions.put(
-				new String[] {"jpg", "jpeg", "gif", "png", "ico", "tif", "tiff", "bmp"},
+				new String[] {
+					"jpg", "jpeg", "gif", "png", "ico", "tif", "tiff", "bmp", "svg", "svgz", "webp"
+				},
 				FileType.IMAGE);
 		extensions.put(
 				new String[] {

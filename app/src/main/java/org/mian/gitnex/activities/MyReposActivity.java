@@ -19,8 +19,8 @@ import java.util.List;
 import org.gitnex.tea4j.v2.models.Repository;
 import org.mian.gitnex.R;
 import org.mian.gitnex.adapters.ReposListAdapter;
+import org.mian.gitnex.bottomsheets.CreateRepositoryBottomSheet;
 import org.mian.gitnex.databinding.ActivityRepositoriesBinding;
-import org.mian.gitnex.fragments.BottomSheetCreateRepo;
 import org.mian.gitnex.helpers.Constants;
 import org.mian.gitnex.helpers.EndlessRecyclerViewScrollListener;
 import org.mian.gitnex.helpers.Toasty;
@@ -80,7 +80,7 @@ public class MyReposActivity extends BaseActivity {
 		binding.btnSearch.setOnClickListener(v -> binding.searchView.show());
 		binding.btnNewRepository.setOnClickListener(
 				v ->
-						BottomSheetCreateRepo.newInstance(null, false)
+						CreateRepositoryBottomSheet.newInstance(null, false)
 								.show(getSupportFragmentManager(), "create_repo"));
 
 		binding.btnMore.setOnClickListener(

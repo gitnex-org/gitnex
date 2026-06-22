@@ -10,6 +10,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
+import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.core.content.ContextCompat;
 import androidx.recyclerview.widget.RecyclerView;
@@ -25,6 +26,8 @@ import org.mian.gitnex.databinding.ListPrBinding;
 import org.mian.gitnex.helpers.AppDatabaseSettings;
 import org.mian.gitnex.helpers.AppUtil;
 import org.mian.gitnex.helpers.AvatarGenerator;
+import org.mian.gitnex.helpers.ColorInverter;
+import org.mian.gitnex.helpers.LabelStylingHelper;
 import org.mian.gitnex.helpers.Markdown;
 import org.mian.gitnex.helpers.TimeHelper;
 import org.mian.gitnex.helpers.Toasty;
@@ -232,16 +235,45 @@ public class PullRequestsAdapter
 			LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(-2, -2);
 			params.setMargins(0, 0, 15, 0);
 
-			for (org.gitnex.tea4j.v2.models.Label label : pr.getLabels()) {
-				ImageView iv = new ImageView(context);
-				iv.setLayoutParams(params);
-				int color = Color.parseColor("#" + label.getColor());
+			LabelStylingHelper stylingHelper = LabelStylingHelper.getInstance(context);
 
+			for (org.gitnex.tea4j.v2.models.Label label : pr.getLabels()) {
 				if (showText) {
-					iv.setImageDrawable(
-							AvatarGenerator.getLabelDrawable(context, label.getName(), color, 20));
-					binding.frameLabels.addView(iv);
+					String labelText = label.getName();
+					String colorHex = "#" + label.getColor();
+					boolean exclusive = label.isExclusive();
+					int color = Color.parseColor(colorHex);
+					int contrast = ColorInverter.getContrastColor(color);
+					String contrastHex = String.format("#%06X", contrast);
+
+					if (LabelStylingHelper.isScopedLabel(labelText, exclusive)) {
+						LinearLayout container = new LinearLayout(context);
+						container.setOrientation(LinearLayout.HORIZONTAL);
+						container.setGravity(android.view.Gravity.CENTER_VERTICAL);
+						container.setLayoutParams(params);
+
+						TextView keyView = new TextView(context);
+						TextView valueView = new TextView(context);
+
+						stylingHelper.styleScopedLabel(
+								labelText, colorHex, contrastHex, keyView, valueView, 11, 3, 8);
+
+						container.addView(keyView);
+						container.addView(valueView);
+						binding.frameLabels.addView(container);
+					} else {
+						TextView labelView = new TextView(context);
+						labelView.setLayoutParams(params);
+
+						stylingHelper.styleRegularLabel(
+								labelText, colorHex, contrastHex, labelView, 11, 3, 8);
+
+						binding.frameLabels.addView(labelView);
+					}
 				} else {
+					ImageView iv = new ImageView(context);
+					iv.setLayoutParams(params);
+					int color = Color.parseColor("#" + label.getColor());
 					iv.setImageDrawable(AvatarGenerator.getCircleColorDrawable(context, color, 14));
 					binding.frameLabelsDots.addView(iv);
 				}

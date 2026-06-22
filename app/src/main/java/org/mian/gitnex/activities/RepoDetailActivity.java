@@ -19,13 +19,14 @@ import java.util.Objects;
 import org.gitnex.tea4j.v2.models.Repository;
 import org.mian.gitnex.R;
 import org.mian.gitnex.api.models.contents.RepoGetContentsList;
+import org.mian.gitnex.bottomsheets.CreateFileBottomSheet;
+import org.mian.gitnex.bottomsheets.CreateIssueBottomSheet;
+import org.mian.gitnex.bottomsheets.CreateMilestoneBottomSheet;
+import org.mian.gitnex.bottomsheets.CreatePullRequestBottomSheet;
+import org.mian.gitnex.bottomsheets.CreateReleaseBottomSheet;
+import org.mian.gitnex.bottomsheets.CreateWikiBottomSheet;
+import org.mian.gitnex.bottomsheets.RepoMenuBottomSheet;
 import org.mian.gitnex.databinding.ActivityRepoDetailBinding;
-import org.mian.gitnex.fragments.BottomSheetCreateIssue;
-import org.mian.gitnex.fragments.BottomSheetCreateMilestone;
-import org.mian.gitnex.fragments.BottomSheetCreatePullRequest;
-import org.mian.gitnex.fragments.BottomSheetCreateRelease;
-import org.mian.gitnex.fragments.BottomSheetCreateWiki;
-import org.mian.gitnex.fragments.BottomsheetRepoMenu;
 import org.mian.gitnex.fragments.CollaboratorsFragment;
 import org.mian.gitnex.fragments.FilesFragment;
 import org.mian.gitnex.fragments.IssuesFragment;
@@ -37,11 +38,13 @@ import org.mian.gitnex.fragments.RepoInfoFragment;
 import org.mian.gitnex.fragments.WikiFragment;
 import org.mian.gitnex.helpers.AppUtil;
 import org.mian.gitnex.helpers.BadgeHelper;
+import org.mian.gitnex.helpers.BookmarkHelper;
 import org.mian.gitnex.helpers.Toasty;
 import org.mian.gitnex.helpers.UIHelper;
 import org.mian.gitnex.helpers.Version;
 import org.mian.gitnex.helpers.contexts.RepositoryContext;
 import org.mian.gitnex.models.RepositoryMenuItemModel;
+import org.mian.gitnex.viewmodels.FilesViewModel;
 import org.mian.gitnex.viewmodels.IssuesViewModel;
 import org.mian.gitnex.viewmodels.PullRequestsViewModel;
 import org.mian.gitnex.viewmodels.ReleasesViewModel;
@@ -51,7 +54,7 @@ import org.mian.gitnex.viewmodels.RepositoryDetailViewModel;
  * @author mmarif
  */
 public class RepoDetailActivity extends BaseActivity
-		implements BottomsheetRepoMenu.OnRepoMenuItemListener {
+		implements RepoMenuBottomSheet.OnRepoMenuItemListener {
 
 	private static final String TAG_INFO = "info";
 	private static final String TAG_FILES = "files";
@@ -76,6 +79,7 @@ public class RepoDetailActivity extends BaseActivity
 	private BadgeDrawable issuesBadge;
 	private BadgeDrawable prBadge;
 	private BadgeDrawable releaseBadge;
+	private boolean isBookmarked = false;
 
 	private final String[] fragmentTags = {
 		TAG_INFO,
@@ -429,6 +433,15 @@ public class RepoDetailActivity extends BaseActivity
 
 		binding.btnDockMenu.setOnClickListener(
 				v -> {
+					isBookmarked =
+							BookmarkHelper.isBookmarked(
+									this,
+									"repo",
+									repository.getOwner(),
+									repository.getName(),
+									null,
+									null);
+
 					List<RepositoryMenuItemModel> items = new ArrayList<>();
 					Fragment currentVisible = null;
 					for (Fragment f : fm.getFragments()) {
@@ -442,14 +455,15 @@ public class RepoDetailActivity extends BaseActivity
 						items = provider.getRepoHubItems();
 					}
 
-					BottomsheetRepoMenu sheet =
-							BottomsheetRepoMenu.newInstance(
+					RepoMenuBottomSheet sheet =
+							RepoMenuBottomSheet.newInstance(
 									items,
 									repository,
 									isStarred,
 									isWatched,
 									isGiteaRepoActionsVisible,
-									adminStatus);
+									adminStatus,
+									isBookmarked);
 					sheet.show(getSupportFragmentManager(), "repo_universal_hub");
 				});
 
@@ -491,6 +505,27 @@ public class RepoDetailActivity extends BaseActivity
 				break;
 			case "CORE_BROWSER":
 				AppUtil.openUrlInBrowser(this, repository.getRepository().getHtmlUrl());
+				break;
+			case "CORE_BOOKMARK":
+				Repository repo = repository.getRepository();
+				BookmarkHelper.toggleBookmark(
+						this,
+						"repo",
+						repository.getOwner(),
+						repository.getName(),
+						null,
+						null,
+						null,
+						repo.getFullName(),
+						repo.getHtmlUrl());
+				isBookmarked =
+						BookmarkHelper.isBookmarked(
+								this,
+								"repo",
+								repository.getOwner(),
+								repository.getName(),
+								null,
+								null);
 				break;
 			case "CORE_SETTINGS":
 				settingsLauncher.launch(
@@ -616,6 +651,13 @@ public class RepoDetailActivity extends BaseActivity
 					repository.setBranchRef(branch2);
 					break;
 
+				case "fileNew":
+					switchTab(TAG_FILES, R.id.btn_nav_files);
+					CreateFileBottomSheet.newInstance(
+									repository, FilesViewModel.FileAction.CREATE, null, null, null)
+							.show(getSupportFragmentManager(), "CREATE_FILE");
+					break;
+
 				case "commitsList":
 					switchTab(TAG_FILES, R.id.btn_nav_files);
 					String branch = mainIntent.getStringExtra("branchName");
@@ -642,7 +684,7 @@ public class RepoDetailActivity extends BaseActivity
 
 				case "issueNew":
 					switchTab(TAG_ISSUES, R.id.btn_nav_issues);
-					BottomSheetCreateIssue.newInstance(repository, null)
+					CreateIssueBottomSheet.newInstance(repository, null)
 							.show(getSupportFragmentManager(), "CREATE_ISSUE");
 					break;
 
@@ -652,27 +694,39 @@ public class RepoDetailActivity extends BaseActivity
 
 				case "pullNew":
 					switchTab(TAG_PRS, R.id.btn_nav_prs);
-					BottomSheetCreatePullRequest.newInstance(repository, null)
+					CreatePullRequestBottomSheet.newInstance(repository, null)
 							.show(getSupportFragmentManager(), "CREATE_PULL_REQUEST");
 					break;
 
 				case "releases":
 					switchTab(TAG_RELEASES, R.id.btn_nav_releases);
+					if (mainIntent.getBooleanExtra("showTags", false)) {
+						repository.setReleasesViewTypeIsTag(true);
+					}
 					break;
 
 				case "newRelease":
 					switchTab(TAG_RELEASES, R.id.btn_nav_releases);
-					BottomSheetCreateRelease.newInstance(repository, null)
+					CreateReleaseBottomSheet.newInstance(repository, null)
 							.show(getSupportFragmentManager(), "CREATE_RELEASE");
 					break;
 
 				case "wiki":
 					switchTab(TAG_WIKI, R.id.btn_nav_wiki);
+					String wikiPage = mainIntent.getStringExtra("wikiPageName");
+					if (wikiPage != null) {
+						WikiFragment wikiFragment =
+								(WikiFragment)
+										getSupportFragmentManager().findFragmentByTag(TAG_WIKI);
+						if (wikiFragment != null) {
+							wikiFragment.openWikiPageByName(wikiPage);
+						}
+					}
 					break;
 
 				case "wikiNew":
 					switchTab(TAG_WIKI, R.id.btn_nav_wiki);
-					BottomSheetCreateWiki.newInstance(repository, null)
+					CreateWikiBottomSheet.newInstance(repository, null)
 							.show(getSupportFragmentManager(), "CREATE_WIKI");
 					break;
 
@@ -682,7 +736,7 @@ public class RepoDetailActivity extends BaseActivity
 
 				case "milestonesNew":
 					switchTab(TAG_MILESTONES, R.id.btn_nav_milestones);
-					BottomSheetCreateMilestone.newInstance(repository, null)
+					CreateMilestoneBottomSheet.newInstance(repository, null)
 							.show(getSupportFragmentManager(), "CREATE_MILESTONE");
 					break;
 

@@ -20,12 +20,13 @@ import androidx.core.app.NotificationCompat;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModelProvider;
 import androidx.recyclerview.widget.LinearLayoutManager;
-import com.google.android.material.bottomsheet.BottomSheetDialog;
 import com.google.android.material.search.SearchView;
 import java.io.IOException;
 import java.io.OutputStream;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.Objects;
 import okhttp3.ResponseBody;
 import org.apache.commons.io.FilenameUtils;
@@ -34,18 +35,24 @@ import org.mian.gitnex.activities.CommitsActivity;
 import org.mian.gitnex.activities.RepoDetailActivity;
 import org.mian.gitnex.adapters.FilesAdapter;
 import org.mian.gitnex.api.models.contents.RepoGetContentsList;
+import org.mian.gitnex.bottomsheets.BranchPickerBottomSheet;
+import org.mian.gitnex.bottomsheets.ContentViewerBottomSheet;
+import org.mian.gitnex.bottomsheets.CreateFileBottomSheet;
+import org.mian.gitnex.bottomsheets.GenericMenuBottomSheet;
 import org.mian.gitnex.clients.RetrofitClient;
 import org.mian.gitnex.database.api.BaseApi;
 import org.mian.gitnex.database.api.UserAccountsApi;
 import org.mian.gitnex.database.models.UserAccount;
-import org.mian.gitnex.databinding.BottomsheetFileItemMenuBinding;
 import org.mian.gitnex.databinding.FragmentFilesBinding;
 import org.mian.gitnex.helpers.AppUtil;
+import org.mian.gitnex.helpers.BookmarkHelper;
 import org.mian.gitnex.helpers.Constants;
 import org.mian.gitnex.helpers.Path;
 import org.mian.gitnex.helpers.Toasty;
 import org.mian.gitnex.helpers.UIHelper;
+import org.mian.gitnex.helpers.UrlHelper;
 import org.mian.gitnex.helpers.contexts.RepositoryContext;
+import org.mian.gitnex.models.GenericMenuItemModel;
 import org.mian.gitnex.models.RepositoryMenuItemModel;
 import org.mian.gitnex.notifications.Notifications;
 import org.mian.gitnex.viewmodels.FilesViewModel;
@@ -136,6 +143,15 @@ public class FilesFragment extends Fragment
 	public List<RepositoryMenuItemModel> getRepoHubItems() {
 		List<RepositoryMenuItemModel> items = new ArrayList<>();
 
+		boolean isBookmarked =
+				BookmarkHelper.isBookmarked(
+						requireContext(),
+						"repo",
+						repository.getOwner(),
+						repository.getName(),
+						"files",
+						null);
+
 		items.add(
 				new RepositoryMenuItemModel(
 						"FILES_COMMITS",
@@ -169,6 +185,22 @@ public class FilesFragment extends Fragment
 							R.attr.colorPrimaryContainer,
 							R.attr.colorOnPrimaryContainer));
 		}
+		items.add(
+				new RepositoryMenuItemModel(
+						"BOOKMARK_TAB",
+						isBookmarked ? R.string.bookmark_remove : R.string.bookmark_add,
+						isBookmarked ? R.drawable.ic_bookmark_remove : R.drawable.ic_bookmark_add,
+						isBookmarked ? R.attr.colorErrorContainer : R.attr.colorPrimarySurface,
+						isBookmarked
+								? R.attr.colorOnErrorContainer
+								: R.attr.colorOnPrimarySurface));
+		items.add(
+				new RepositoryMenuItemModel(
+						"CONTEXT_SHARE",
+						R.string.share_location,
+						R.drawable.ic_share,
+						R.attr.colorPrimarySurface,
+						R.attr.colorOnPrimarySurface));
 
 		return items;
 	}
@@ -189,9 +221,39 @@ public class FilesFragment extends Fragment
 				break;
 
 			case "FILES_ADD_NEW":
-				BottomSheetCreateFile.newInstance(
+				CreateFileBottomSheet.newInstance(
 								repository, FilesViewModel.FileAction.CREATE, null, null, null)
 						.show(getChildFragmentManager(), "CREATE_FILE");
+				break;
+			case "BOOKMARK_TAB":
+				BookmarkHelper.toggleBookmark(
+						requireContext(),
+						"repo",
+						repository.getOwner(),
+						repository.getName(),
+						"files",
+						null,
+						repository.getBranchRef(),
+						getString(R.string.tabTextFiles),
+						UrlHelper.buildCurrentContextUrl(
+								requireContext(),
+								repository.getOwner(),
+								repository.getName(),
+								"src",
+								"branch",
+								repository.getBranchRef()));
+				break;
+			case "CONTEXT_SHARE":
+				String url =
+						UrlHelper.buildCurrentContextUrl(
+								requireContext(),
+								repository.getOwner(),
+								repository.getName(),
+								"src",
+								"branch",
+								repository.getBranchRef(),
+								path.toString());
+				AppUtil.sharingIntent(requireContext(), url);
 				break;
 		}
 	}
@@ -368,7 +430,7 @@ public class FilesFragment extends Fragment
 									openViewer(file, data);
 								} else if ("edit".equals(action)) {
 									if (!data.isBinary && data.textContent != null) {
-										BottomSheetCreateFile.newInstance(
+										CreateFileBottomSheet.newInstance(
 														repository,
 														FilesViewModel.FileAction.EDIT,
 														file.getPath(),
@@ -400,7 +462,13 @@ public class FilesFragment extends Fragment
 	}
 
 	private boolean isEditableFileType(AppUtil.FileType fileType) {
-		return fileType == AppUtil.FileType.TEXT;
+		return fileType != AppUtil.FileType.IMAGE
+				&& fileType != AppUtil.FileType.AUDIO
+				&& fileType != AppUtil.FileType.VIDEO
+				&& fileType != AppUtil.FileType.EXECUTABLE
+				&& fileType != AppUtil.FileType.FONT
+				&& fileType != AppUtil.FileType.KEYSTORE
+				&& fileType != AppUtil.FileType.DOCUMENT;
 	}
 
 	@Override
@@ -474,14 +542,19 @@ public class FilesFragment extends Fragment
 
 		binding.expressiveLoader.setVisibility(View.GONE);
 
+		Map<String, String> metadata = new HashMap<>();
+		if (file.getHtmlUrl() != null) {
+			metadata.put("URL", file.getHtmlUrl());
+		}
+
 		if (fileType == AppUtil.FileType.IMAGE && data.binaryContent != null) {
-			BottomSheetContentViewer.newInstance(
+			ContentViewerBottomSheet.newInstance(
 							data.binaryContent,
 							fileName,
 							repository,
-							BottomSheetContentViewer.Feature.IMAGE_PREVIEW,
-							BottomSheetContentViewer.Feature.SHOW_TITLE,
-							BottomSheetContentViewer.Feature.ALLOW_SHARE)
+							ContentViewerBottomSheet.Feature.IMAGE_PREVIEW,
+							ContentViewerBottomSheet.Feature.SHOW_TITLE,
+							ContentViewerBottomSheet.Feature.ALLOW_SHARE)
 					.show(getChildFragmentManager(), "FILE_VIEWER");
 			return;
 		}
@@ -489,113 +562,158 @@ public class FilesFragment extends Fragment
 		String content = data.textContent != null ? data.textContent : "";
 
 		if (fileExtension.equalsIgnoreCase("md")) {
-			BottomSheetContentViewer.newInstance(
+			ContentViewerBottomSheet.newInstance(
 							content,
 							fileName,
 							repository,
 							fileExtension,
-							BottomSheetContentViewer.Feature.MARKDOWN_PREVIEW,
-							BottomSheetContentViewer.Feature.START_IN_MARKDOWN,
-							BottomSheetContentViewer.Feature.SHOW_TITLE,
-							BottomSheetContentViewer.Feature.ALLOW_COPY,
-							BottomSheetContentViewer.Feature.ALLOW_SHARE)
+							metadata,
+							ContentViewerBottomSheet.Feature.MARKDOWN_PREVIEW,
+							ContentViewerBottomSheet.Feature.START_IN_MARKDOWN,
+							ContentViewerBottomSheet.Feature.SHOW_TITLE,
+							ContentViewerBottomSheet.Feature.ALLOW_COPY,
+							ContentViewerBottomSheet.Feature.ALLOW_SHARE)
 					.show(getChildFragmentManager(), "FILE_VIEWER");
 			return;
 		}
 
 		if (fileType == AppUtil.FileType.TEXT) {
-			BottomSheetContentViewer.newInstance(
+			ContentViewerBottomSheet.newInstance(
 							content,
 							fileName,
 							repository,
 							fileExtension,
-							BottomSheetContentViewer.Feature.SYNTAX_HIGHLIGHT,
-							BottomSheetContentViewer.Feature.SHOW_TITLE,
-							BottomSheetContentViewer.Feature.ALLOW_COPY,
-							BottomSheetContentViewer.Feature.ALLOW_SHARE)
+							metadata,
+							ContentViewerBottomSheet.Feature.SYNTAX_HIGHLIGHT,
+							ContentViewerBottomSheet.Feature.SHOW_TITLE,
+							ContentViewerBottomSheet.Feature.ALLOW_COPY,
+							ContentViewerBottomSheet.Feature.ALLOW_SHARE)
 					.show(getChildFragmentManager(), "FILE_VIEWER");
 			return;
 		}
 
-		BottomSheetContentViewer.newInstance(
+		ContentViewerBottomSheet.newInstance(
 						content,
 						fileName,
 						repository,
 						null,
-						BottomSheetContentViewer.Feature.SHOW_TITLE,
-						BottomSheetContentViewer.Feature.ALLOW_COPY,
-						BottomSheetContentViewer.Feature.ALLOW_SHARE)
+						metadata,
+						ContentViewerBottomSheet.Feature.SHOW_TITLE,
+						ContentViewerBottomSheet.Feature.ALLOW_COPY,
+						ContentViewerBottomSheet.Feature.ALLOW_SHARE)
 				.show(getChildFragmentManager(), "FILE_VIEWER");
 	}
 
 	private void showFileOptionsBottomSheet(RepoGetContentsList file) {
-		BottomsheetFileItemMenuBinding sheetBinding =
-				BottomsheetFileItemMenuBinding.inflate(getLayoutInflater());
-		BottomSheetDialog dialog = new BottomSheetDialog(requireContext());
-		dialog.setContentView(sheetBinding.getRoot());
-		AppUtil.applySheetStyle(dialog, true);
-
-		sheetBinding.fileName.setText(file.getName());
-
 		String fileExtension = FilenameUtils.getExtension(file.getName());
 		AppUtil.FileType fileType = AppUtil.getFileType(fileExtension);
 		boolean canEdit =
 				repository.getPermissions().isPush()
 						&& !repository.getRepository().isArchived()
 						&& isEditableFileType(fileType);
+		boolean canDelete =
+				repository.getPermissions().isPush() && !repository.getRepository().isArchived();
 
-		sheetBinding.editFileCard.setVisibility(canEdit ? View.VISIBLE : View.GONE);
-		sheetBinding.deleteFileCard.setVisibility(
-				repository.getPermissions().isPush() && !repository.getRepository().isArchived()
-						? View.VISIBLE
-						: View.GONE);
+		List<GenericMenuItemModel> items = new ArrayList<>();
 
-		sheetBinding.editFile.setOnClickListener(
-				v -> {
-					dialog.dismiss();
-					openFileForEdit(file);
+		if (canEdit) {
+			items.add(
+					new GenericMenuItemModel(
+							"FILE_EDIT",
+							R.string.editFile,
+							R.drawable.ic_edit,
+							R.attr.colorPrimarySurface,
+							R.attr.colorOnPrimarySurface));
+		}
+
+		if (canDelete) {
+			items.add(
+					new GenericMenuItemModel(
+							"FILE_DELETE",
+							R.string.menuDeleteText,
+							R.drawable.ic_delete,
+							R.attr.colorErrorContainer,
+							R.attr.colorOnErrorContainer));
+		}
+
+		items.add(
+				new GenericMenuItemModel(
+						"FILE_DOWNLOAD",
+						R.string.download,
+						R.drawable.ic_download,
+						R.attr.colorPrimarySurface,
+						R.attr.colorOnPrimarySurface));
+
+		items.add(
+				new GenericMenuItemModel(
+						"FILE_SHARE_URL",
+						R.string.share_location,
+						R.drawable.ic_share,
+						R.attr.colorPrimarySurface,
+						R.attr.colorOnPrimarySurface));
+
+		items.add(
+				new GenericMenuItemModel(
+						"FILE_COPY_URL",
+						R.string.genericCopyUrl,
+						R.drawable.ic_copy,
+						R.attr.colorPrimarySurface,
+						R.attr.colorOnPrimarySurface));
+
+		items.add(
+				new GenericMenuItemModel(
+						"FILE_OPEN_BROWSER",
+						R.string.openInBrowser,
+						R.drawable.ic_browser,
+						R.attr.colorPrimarySurface,
+						R.attr.colorOnPrimarySurface));
+
+		GenericMenuBottomSheet sheet =
+				GenericMenuBottomSheet.newInstance(file.getName(), null, items);
+
+		sheet.setOnMenuItemClickListener(
+				id -> {
+					switch (id) {
+						case "FILE_EDIT":
+							openFileForEdit(file);
+							break;
+						case "FILE_DELETE":
+							CreateFileBottomSheet.newInstance(
+											repository,
+											FilesViewModel.FileAction.DELETE,
+											file.getPath(),
+											file.getSha(),
+											null)
+									.show(getChildFragmentManager(), "DELETE_FILE");
+							break;
+						case "FILE_DOWNLOAD":
+							requestFileDownload(file);
+							break;
+						case "FILE_SHARE_URL":
+							String shareUrl =
+									UrlHelper.buildCurrentContextUrl(
+											requireContext(),
+											repository.getOwner(),
+											repository.getName(),
+											"src",
+											"branch",
+											repository.getBranchRef(),
+											file.getPath());
+							AppUtil.sharingIntent(requireContext(), shareUrl);
+							break;
+						case "FILE_COPY_URL":
+							AppUtil.copyToClipboard(
+									requireContext(),
+									file.getHtmlUrl(),
+									getString(R.string.copied_to_clipboard));
+							break;
+						case "FILE_OPEN_BROWSER":
+							AppUtil.openUrlInBrowser(requireContext(), file.getHtmlUrl());
+							break;
+					}
 				});
 
-		sheetBinding.deleteFile.setOnClickListener(
-				v -> {
-					dialog.dismiss();
-					BottomSheetCreateFile.newInstance(
-									repository,
-									FilesViewModel.FileAction.DELETE,
-									file.getPath(),
-									file.getSha(),
-									null)
-							.show(getChildFragmentManager(), "DELETE_FILE");
-				});
-
-		sheetBinding.downloadFile.setOnClickListener(
-				v -> {
-					dialog.dismiss();
-					requestFileDownload(file);
-				});
-
-		sheetBinding.shareFile.setOnClickListener(
-				v -> {
-					dialog.dismiss();
-					AppUtil.sharingIntent(requireContext(), file.getHtmlUrl());
-				});
-
-		sheetBinding.copyUrl.setOnClickListener(
-				v -> {
-					dialog.dismiss();
-					AppUtil.copyToClipboard(
-							requireContext(),
-							file.getHtmlUrl(),
-							getString(R.string.copied_to_clipboard));
-				});
-
-		sheetBinding.openBrowser.setOnClickListener(
-				v -> {
-					dialog.dismiss();
-					AppUtil.openUrlInBrowser(requireContext(), file.getHtmlUrl());
-				});
-
-		dialog.show();
+		sheet.show(getChildFragmentManager(), "FILE_MENU");
 	}
 
 	private void handleSubmodule(RepoGetContentsList file) {
@@ -652,8 +770,8 @@ public class FilesFragment extends Fragment
 	}
 
 	private void chooseBranch() {
-		BottomsheetBranchPicker picker =
-				BottomsheetBranchPicker.newInstance(
+		BranchPickerBottomSheet picker =
+				BranchPickerBottomSheet.newInstance(
 						repository.getOwner(), repository.getName(), repository.getBranchRef());
 
 		picker.setOnBranchSelectedListener(

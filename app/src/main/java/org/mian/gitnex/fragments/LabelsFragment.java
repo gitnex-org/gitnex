@@ -17,15 +17,22 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.google.android.material.dialog.MaterialAlertDialogBuilder;
 import java.util.ArrayList;
 import java.util.List;
+import org.gitnex.tea4j.v2.models.Label;
 import org.mian.gitnex.R;
 import org.mian.gitnex.activities.RepoDetailActivity;
 import org.mian.gitnex.adapters.LabelsAdapter;
+import org.mian.gitnex.bottomsheets.CreateLabelBottomSheet;
+import org.mian.gitnex.bottomsheets.GenericMenuBottomSheet;
 import org.mian.gitnex.databinding.FragmentLabelsBinding;
+import org.mian.gitnex.helpers.AppUtil;
+import org.mian.gitnex.helpers.BookmarkHelper;
 import org.mian.gitnex.helpers.Constants;
 import org.mian.gitnex.helpers.EndlessRecyclerViewScrollListener;
 import org.mian.gitnex.helpers.Toasty;
 import org.mian.gitnex.helpers.UIHelper;
+import org.mian.gitnex.helpers.UrlHelper;
 import org.mian.gitnex.helpers.contexts.RepositoryContext;
+import org.mian.gitnex.models.GenericMenuItemModel;
 import org.mian.gitnex.models.RepositoryMenuItemModel;
 import org.mian.gitnex.viewmodels.LabelsViewModel;
 
@@ -86,6 +93,15 @@ public class LabelsFragment extends Fragment implements RepoDetailActivity.RepoH
 	public List<RepositoryMenuItemModel> getRepoHubItems() {
 		List<RepositoryMenuItemModel> items = new ArrayList<>();
 
+		boolean isBookmarked =
+				BookmarkHelper.isBookmarked(
+						requireContext(),
+						"repo",
+						repository.getOwner(),
+						repository.getName(),
+						"labels",
+						null);
+
 		items.add(
 				new RepositoryMenuItemModel(
 						"LABEL_SEARCH",
@@ -103,20 +119,63 @@ public class LabelsFragment extends Fragment implements RepoDetailActivity.RepoH
 							R.attr.colorPrimaryContainer,
 							R.attr.colorOnPrimaryContainer));
 		}
+		items.add(
+				new RepositoryMenuItemModel(
+						"BOOKMARK_TAB",
+						isBookmarked ? R.string.bookmark_remove : R.string.bookmark_add,
+						isBookmarked ? R.drawable.ic_bookmark_remove : R.drawable.ic_bookmark_add,
+						isBookmarked ? R.attr.colorErrorContainer : R.attr.colorPrimarySurface,
+						isBookmarked
+								? R.attr.colorOnErrorContainer
+								: R.attr.colorOnPrimarySurface));
+		items.add(
+				new RepositoryMenuItemModel(
+						"CONTEXT_SHARE",
+						R.string.share_location,
+						R.drawable.ic_share,
+						R.attr.colorPrimarySurface,
+						R.attr.colorOnPrimarySurface));
 
 		return items;
 	}
 
 	@Override
 	public void onHubActionSelected(String actionId) {
-		if (actionId.equals("LABEL_ADD_NEW")) {
-			BottomSheetCreateLabelFragment sheet =
-					BottomSheetCreateLabelFragment.newInstance(
-							"repo", repository.getOwner(), repository.getName(), null);
-			sheet.show(getChildFragmentManager(), "CreateLabelSheet");
-		}
-		if (actionId.equals("LABEL_SEARCH")) {
-			binding.searchView.show();
+		switch (actionId) {
+			case "LABEL_ADD_NEW":
+				CreateLabelBottomSheet sheet =
+						CreateLabelBottomSheet.newInstance(
+								"repo", repository.getOwner(), repository.getName(), null);
+				sheet.show(getChildFragmentManager(), "CreateLabelSheet");
+				break;
+			case "LABEL_SEARCH":
+				binding.searchView.show();
+				break;
+			case "BOOKMARK_TAB":
+				BookmarkHelper.toggleBookmark(
+						requireContext(),
+						"repo",
+						repository.getOwner(),
+						repository.getName(),
+						"labels",
+						null,
+						null,
+						getString(R.string.newIssueLabelsTitle),
+						UrlHelper.buildCurrentContextUrl(
+								requireContext(),
+								repository.getOwner(),
+								repository.getName(),
+								"labels"));
+				break;
+			case "CONTEXT_SHARE":
+				String url =
+						UrlHelper.buildCurrentContextUrl(
+								requireContext(),
+								repository.getOwner(),
+								repository.getName(),
+								"labels");
+				AppUtil.sharingIntent(requireContext(), url);
+				break;
 		}
 	}
 
@@ -180,40 +239,7 @@ public class LabelsFragment extends Fragment implements RepoDetailActivity.RepoH
 												requireContext(),
 												list,
 												canEdit,
-												label -> {
-													BottomSheetCreateLabelFragment.newInstance(
-																	type,
-																	repository.getOwner(),
-																	repository.getName(),
-																	label)
-															.show(
-																	getChildFragmentManager(),
-																	"EditLabel");
-												},
-												label -> {
-													new MaterialAlertDialogBuilder(requireContext())
-															.setTitle(R.string.labelDeleteTitle)
-															.setMessage(
-																	getString(
-																			R.string
-																					.labelDeleteConfirmText,
-																			label.getName()))
-															.setPositiveButton(
-																	R.string.menuDeleteText,
-																	(d, w) -> {
-																		viewModel.deleteLabel(
-																				requireContext(),
-																				type,
-																				repository
-																						.getOwner(),
-																				repository
-																						.getName(),
-																				label.getId());
-																	})
-															.setNegativeButton(
-																	R.string.cancelButton, null)
-															.show();
-												});
+												this::showLabelMenu);
 								binding.recyclerView.setAdapter(adapter);
 								binding.searchResultsRecycler.setAdapter(adapter);
 							} else {
@@ -262,6 +288,64 @@ public class LabelsFragment extends Fragment implements RepoDetailActivity.RepoH
 												100);
 							}
 						});
+	}
+
+	private void showLabelMenu(Label label) {
+		List<GenericMenuItemModel> items = new ArrayList<>();
+
+		items.add(
+				new GenericMenuItemModel(
+						"LABEL_EDIT",
+						R.string.menuEditText,
+						R.drawable.ic_edit,
+						R.attr.colorPrimaryContainer,
+						R.attr.colorOnPrimaryContainer));
+
+		items.add(
+				new GenericMenuItemModel(
+						"LABEL_DELETE",
+						R.string.menuDeleteText,
+						R.drawable.ic_delete,
+						R.attr.colorErrorContainer,
+						R.attr.colorOnErrorContainer));
+
+		GenericMenuBottomSheet sheet =
+				GenericMenuBottomSheet.newInstance(label.getName(), null, items);
+
+		sheet.setOnMenuItemClickListener(
+				id -> {
+					switch (id) {
+						case "LABEL_EDIT":
+							CreateLabelBottomSheet.newInstance(
+											type,
+											repository.getOwner(),
+											repository.getName(),
+											label)
+									.show(getChildFragmentManager(), "EditLabel");
+							break;
+						case "LABEL_DELETE":
+							new MaterialAlertDialogBuilder(requireContext())
+									.setTitle(R.string.labelDeleteTitle)
+									.setMessage(
+											getString(
+													R.string.labelDeleteConfirmText,
+													label.getName()))
+									.setPositiveButton(
+											R.string.menuDeleteText,
+											(d, w) ->
+													viewModel.deleteLabel(
+															requireContext(),
+															type,
+															repository.getOwner(),
+															repository.getName(),
+															label.getId()))
+									.setNegativeButton(R.string.cancelButton, null)
+									.show();
+							break;
+					}
+				});
+
+		sheet.show(getChildFragmentManager(), "LABEL_MENU");
 	}
 
 	private void updateUiVisibility(boolean isLoading) {

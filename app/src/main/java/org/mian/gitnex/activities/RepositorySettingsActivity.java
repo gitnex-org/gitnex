@@ -8,12 +8,12 @@ import androidx.lifecycle.ViewModelProvider;
 import com.google.android.material.bottomsheet.BottomSheetDialog;
 import java.util.Objects;
 import org.mian.gitnex.R;
+import org.mian.gitnex.bottomsheets.RepositoryPropertiesBottomSheet;
 import org.mian.gitnex.database.api.BaseApi;
 import org.mian.gitnex.database.api.RepositoriesApi;
 import org.mian.gitnex.databinding.ActivityRepositorySettingsBinding;
 import org.mian.gitnex.databinding.BottomsheetRepoDeleteBinding;
 import org.mian.gitnex.databinding.BottomsheetRepoTransferBinding;
-import org.mian.gitnex.fragments.BottomSheetRepoProperties;
 import org.mian.gitnex.helpers.AppUtil;
 import org.mian.gitnex.helpers.Toasty;
 import org.mian.gitnex.helpers.UIHelper;
@@ -146,7 +146,7 @@ public class RepositorySettingsActivity extends BaseActivity {
 	}
 
 	private void showRepoPropertiesBottomSheet() {
-		BottomSheetRepoProperties.newInstance(repository.getOwner(), repository.getName())
+		RepositoryPropertiesBottomSheet.newInstance(repository.getOwner(), repository.getName())
 				.show(getSupportFragmentManager(), "REPO_PROPERTIES");
 	}
 

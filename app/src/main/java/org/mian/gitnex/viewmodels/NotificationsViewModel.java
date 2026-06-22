@@ -139,7 +139,7 @@ public class NotificationsViewModel extends ViewModel {
 
 	public void markAllAsRead(Context context) {
 		RetrofitClient.getApiInterface(context)
-				.notifyReadList(null, "false", Arrays.asList("unread", "pinned"), "read")
+				.notifyReadList(null, "false", List.of("unread"), "read")
 				.enqueue(
 						new Callback<>() {
 							@Override

@@ -7,19 +7,22 @@ import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentTransaction;
 import androidx.lifecycle.ViewModelProvider;
-import com.google.android.material.bottomsheet.BottomSheetDialog;
 import com.google.android.material.button.MaterialButton;
-import io.mikael.urlbuilder.UrlBuilder;
+import java.util.ArrayList;
+import java.util.List;
 import org.mian.gitnex.R;
+import org.mian.gitnex.bottomsheets.GenericMenuBottomSheet;
 import org.mian.gitnex.databinding.ActivityOrgDetailBinding;
-import org.mian.gitnex.databinding.BottomsheetOrganizationMenuBinding;
 import org.mian.gitnex.fragments.OrganizationInfoFragment;
 import org.mian.gitnex.fragments.OrganizationLabelsFragment;
 import org.mian.gitnex.fragments.OrganizationMembersFragment;
 import org.mian.gitnex.fragments.OrganizationRepositoriesFragment;
 import org.mian.gitnex.fragments.OrganizationTeamsFragment;
 import org.mian.gitnex.helpers.AppUtil;
+import org.mian.gitnex.helpers.BookmarkHelper;
 import org.mian.gitnex.helpers.UIHelper;
+import org.mian.gitnex.helpers.UrlHelper;
+import org.mian.gitnex.models.GenericMenuItemModel;
 import org.mian.gitnex.viewmodels.OrganizationsViewModel;
 
 /**
@@ -239,42 +242,66 @@ public class OrganizationDetailActivity extends BaseActivity {
 	}
 
 	private void showOrganizationBottomSheet() {
-		BottomSheetDialog bottomSheetDialog = new BottomSheetDialog(this);
-		BottomsheetOrganizationMenuBinding sheetBinding =
-				BottomsheetOrganizationMenuBinding.inflate(getLayoutInflater());
-		bottomSheetDialog.setContentView(sheetBinding.getRoot());
+		String url = UrlHelper.buildCurrentContextUrl(this, orgName, null);
+		boolean isBookmarked = BookmarkHelper.isBookmarked(this, "org", orgName, null, null, null);
 
-		AppUtil.applySheetStyle(bottomSheetDialog, true);
+		List<GenericMenuItemModel> items = new ArrayList<>();
 
-		if (orgName != null && !orgName.isEmpty()) {
-			sheetBinding.sheetTitle.setText(orgName);
-		}
+		items.add(
+				new GenericMenuItemModel(
+						"ORG_BOOKMARK",
+						isBookmarked ? R.string.bookmark_remove : R.string.bookmark_add,
+						isBookmarked ? R.drawable.ic_bookmark_remove : R.drawable.ic_bookmark_add,
+						isBookmarked ? R.attr.colorErrorContainer : R.attr.colorPrimarySurface,
+						isBookmarked
+								? R.attr.colorOnErrorContainer
+								: R.attr.colorOnPrimarySurface));
 
-		String baseUrl =
-				UrlBuilder.fromString(getAccount().getAccount().getInstanceUrl())
-						.withPath("/")
-						.toString();
+		items.add(
+				new GenericMenuItemModel(
+						"ORG_SHARE",
+						R.string.share,
+						R.drawable.ic_share,
+						R.attr.colorPrimarySurface,
+						R.attr.colorOnPrimarySurface));
 
-		String url = baseUrl.endsWith("/") ? baseUrl + orgName : baseUrl + "/" + orgName;
+		items.add(
+				new GenericMenuItemModel(
+						"ORG_COPY_URL",
+						R.string.genericCopyUrl,
+						R.drawable.ic_copy,
+						R.attr.colorPrimarySurface,
+						R.attr.colorOnPrimarySurface));
 
-		sheetBinding.copyOrgUrl.setOnClickListener(
-				v -> {
-					AppUtil.copyToClipboard(this, url, getString(R.string.genericCopyUrl));
-					bottomSheetDialog.dismiss();
+		items.add(
+				new GenericMenuItemModel(
+						"ORG_BROWSER",
+						R.string.openInBrowser,
+						R.drawable.ic_browser,
+						R.attr.colorPrimarySurface,
+						R.attr.colorOnPrimarySurface));
+
+		GenericMenuBottomSheet sheet = GenericMenuBottomSheet.newInstance(orgName, null, items);
+
+		sheet.setOnMenuItemClickListener(
+				id -> {
+					switch (id) {
+						case "ORG_BOOKMARK":
+							BookmarkHelper.toggleBookmark(
+									this, "org", orgName, null, null, null, null, orgName, url);
+							break;
+						case "ORG_SHARE":
+							AppUtil.sharingIntent(this, url);
+							break;
+						case "ORG_COPY_URL":
+							AppUtil.copyToClipboard(this, url, getString(R.string.genericCopyUrl));
+							break;
+						case "ORG_BROWSER":
+							AppUtil.openUrlInBrowser(this, url);
+							break;
+					}
 				});
 
-		sheetBinding.share.setOnClickListener(
-				v -> {
-					AppUtil.sharingIntent(this, url);
-					bottomSheetDialog.dismiss();
-				});
-
-		sheetBinding.openInBrowser.setOnClickListener(
-				v -> {
-					AppUtil.openUrlInBrowser(this, url);
-					bottomSheetDialog.dismiss();
-				});
-
-		bottomSheetDialog.show();
+		sheet.show(getSupportFragmentManager(), "ORG_MENU");
 	}
 }

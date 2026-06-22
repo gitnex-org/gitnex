@@ -18,6 +18,7 @@ import org.mian.gitnex.activities.AccountSettingsActivity;
 import org.mian.gitnex.activities.ActivitiesActivity;
 import org.mian.gitnex.activities.AdministrationActivity;
 import org.mian.gitnex.activities.AppSettingsActivity;
+import org.mian.gitnex.activities.BookmarksActivity;
 import org.mian.gitnex.activities.ExploreActivity;
 import org.mian.gitnex.activities.LoginActivity;
 import org.mian.gitnex.activities.MainActivity;
@@ -216,6 +217,13 @@ public class HomeDashboardFragment extends Fragment {
 									new Intent(requireContext(), MyPullRequestsActivity.class);
 							startActivity(intent);
 						});
+		binding.bookmarksCard
+				.getRoot()
+				.setOnClickListener(
+						v -> {
+							Intent intent = new Intent(requireContext(), BookmarksActivity.class);
+							startActivity(intent);
+						});
 		binding.searchReposCard
 				.getRoot()
 				.setOnClickListener(
@@ -316,6 +324,11 @@ public class HomeDashboardFragment extends Fragment {
 				R.string.tabPullRequests,
 				getString(R.string.dashboard_my_prs_sub_title),
 				R.drawable.ic_pull_request);
+		updateFullCard(
+				binding.bookmarksCard,
+				R.string.bookmarks,
+				getString(R.string.dashboard_bookmarks_sub_title),
+				R.drawable.ic_bookmarks);
 		updateFullCard(
 				binding.searchReposCard,
 				R.string.search_repos,

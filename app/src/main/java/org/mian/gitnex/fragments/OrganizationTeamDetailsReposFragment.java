@@ -17,6 +17,7 @@ import org.gitnex.tea4j.v2.models.Team;
 import org.mian.gitnex.R;
 import org.mian.gitnex.activities.OrganizationTeamDetailActivity;
 import org.mian.gitnex.adapters.ReposListAdapter;
+import org.mian.gitnex.bottomsheets.AddTeamRepoBottomSheet;
 import org.mian.gitnex.databinding.FragmentRepositoriesBinding;
 import org.mian.gitnex.helpers.Constants;
 import org.mian.gitnex.helpers.EndlessRecyclerViewScrollListener;
@@ -219,7 +220,7 @@ public class OrganizationTeamDetailsReposFragment extends Fragment
 
 	@Override
 	public void onAddRequested() {
-		BottomSheetAddTeamRepo sheet = BottomSheetAddTeamRepo.newInstance(team.getId(), orgName);
+		AddTeamRepoBottomSheet sheet = AddTeamRepoBottomSheet.newInstance(team.getId(), orgName);
 		sheet.show(getChildFragmentManager(), "AddTeamRepoSheet");
 	}
 

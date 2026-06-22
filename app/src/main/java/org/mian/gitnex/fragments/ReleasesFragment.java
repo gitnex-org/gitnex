@@ -18,7 +18,6 @@ import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModelProvider;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
-import com.google.android.material.bottomsheet.BottomSheetDialog;
 import com.google.android.material.dialog.MaterialAlertDialogBuilder;
 import java.io.IOException;
 import java.io.OutputStream;
@@ -42,15 +41,19 @@ import org.mian.gitnex.activities.BaseActivity;
 import org.mian.gitnex.activities.RepoDetailActivity;
 import org.mian.gitnex.adapters.ReleasesAdapter;
 import org.mian.gitnex.adapters.TagsAdapter;
-import org.mian.gitnex.databinding.BottomsheetReleaseItemMenuBinding;
+import org.mian.gitnex.bottomsheets.CreateReleaseBottomSheet;
+import org.mian.gitnex.bottomsheets.GenericMenuBottomSheet;
 import org.mian.gitnex.databinding.FragmentReleasesBinding;
 import org.mian.gitnex.helpers.AppUtil;
+import org.mian.gitnex.helpers.BookmarkHelper;
 import org.mian.gitnex.helpers.Constants;
 import org.mian.gitnex.helpers.EndlessRecyclerViewScrollListener;
 import org.mian.gitnex.helpers.Toasty;
 import org.mian.gitnex.helpers.UIHelper;
+import org.mian.gitnex.helpers.UrlHelper;
 import org.mian.gitnex.helpers.contexts.RepositoryContext;
 import org.mian.gitnex.helpers.ssl.MemorizingTrustManager;
+import org.mian.gitnex.models.GenericMenuItemModel;
 import org.mian.gitnex.models.RepositoryMenuItemModel;
 import org.mian.gitnex.notifications.Notifications;
 import org.mian.gitnex.structs.FragmentRefreshListener;
@@ -124,6 +127,17 @@ public class ReleasesFragment extends Fragment implements RepoDetailActivity.Rep
 		List<RepositoryMenuItemModel> items = new ArrayList<>();
 
 		boolean isShowingTags = repository.isReleasesViewTypeIsTag();
+		String releaseAction = isShowingTags ? "tags" : "releases";
+
+		boolean isBookmarked =
+				BookmarkHelper.isBookmarked(
+						requireContext(),
+						"repo",
+						repository.getOwner(),
+						repository.getName(),
+						releaseAction,
+						null);
+
 		items.add(
 				new RepositoryMenuItemModel(
 						"RELEASE_VIEW_TOGGLE",
@@ -143,6 +157,22 @@ public class ReleasesFragment extends Fragment implements RepoDetailActivity.Rep
 							R.attr.colorPrimaryContainer,
 							R.attr.colorOnPrimaryContainer));
 		}
+		items.add(
+				new RepositoryMenuItemModel(
+						"BOOKMARK_TAB",
+						isBookmarked ? R.string.bookmark_remove : R.string.bookmark_add,
+						isBookmarked ? R.drawable.ic_bookmark_remove : R.drawable.ic_bookmark_add,
+						isBookmarked ? R.attr.colorErrorContainer : R.attr.colorPrimarySurface,
+						isBookmarked
+								? R.attr.colorOnErrorContainer
+								: R.attr.colorOnPrimarySurface));
+		items.add(
+				new RepositoryMenuItemModel(
+						"CONTEXT_SHARE",
+						R.string.share_location,
+						R.drawable.ic_share,
+						R.attr.colorPrimarySurface,
+						R.attr.colorOnPrimarySurface));
 
 		return items;
 	}
@@ -156,8 +186,38 @@ public class ReleasesFragment extends Fragment implements RepoDetailActivity.Rep
 				break;
 
 			case "RELEASE_CREATE_NEW":
-				BottomSheetCreateRelease.newInstance(repository, null)
+				CreateReleaseBottomSheet.newInstance(repository, null)
 						.show(getChildFragmentManager(), "CREATE_RELEASE");
+				break;
+			case "BOOKMARK_TAB":
+				String action = repository.isReleasesViewTypeIsTag() ? "tags" : "releases";
+				String title =
+						repository.isReleasesViewTypeIsTag()
+								? getString(R.string.tags)
+								: getString(R.string.tabTextReleases);
+				BookmarkHelper.toggleBookmark(
+						requireContext(),
+						"repo",
+						repository.getOwner(),
+						repository.getName(),
+						action,
+						null,
+						null,
+						title,
+						UrlHelper.buildCurrentContextUrl(
+								requireContext(),
+								repository.getOwner(),
+								repository.getName(),
+								"releases"));
+				break;
+			case "CONTEXT_SHARE":
+				String url =
+						UrlHelper.buildCurrentContextUrl(
+								requireContext(),
+								repository.getOwner(),
+								repository.getName(),
+								"releases");
+				AppUtil.sharingIntent(requireContext(), url);
 				break;
 		}
 	}
@@ -358,42 +418,73 @@ public class ReleasesFragment extends Fragment implements RepoDetailActivity.Rep
 	}
 
 	private void showReleaseOptionsBottomSheet(Release release, int position) {
-		BottomsheetReleaseItemMenuBinding menuBinding =
-				BottomsheetReleaseItemMenuBinding.inflate(getLayoutInflater());
-		BottomSheetDialog dialog = new BottomSheetDialog(requireContext());
-		dialog.setContentView(menuBinding.getRoot());
+		List<GenericMenuItemModel> items = new ArrayList<>();
 
-		AppUtil.applySheetStyle(dialog, true);
+		items.add(
+				new GenericMenuItemModel(
+						"RELEASE_EDIT",
+						R.string.editRelease,
+						R.drawable.ic_edit,
+						R.attr.colorPrimarySurface,
+						R.attr.colorOnPrimarySurface));
+		items.add(
+				new GenericMenuItemModel(
+						"RELEASE_DELETE",
+						R.string.menuDeleteText,
+						R.drawable.ic_delete,
+						R.attr.colorErrorContainer,
+						R.attr.colorOnErrorContainer));
+		items.add(
+				new GenericMenuItemModel(
+						"RELEASE_SHARE",
+						R.string.share_location,
+						R.drawable.ic_share,
+						R.attr.colorPrimarySurface,
+						R.attr.colorOnPrimarySurface));
 
-		menuBinding.sheetTitle.setText(release.getName());
+		GenericMenuBottomSheet sheet =
+				GenericMenuBottomSheet.newInstance(release.getName(), null, items);
 
-		menuBinding.deleteRelease.setOnClickListener(
-				v -> {
-					dialog.dismiss();
-					new MaterialAlertDialogBuilder(requireContext())
-							.setTitle(getString(R.string.deleteGenericTitle, release.getName()))
-							.setMessage(R.string.deleteReleaseConfirmation)
-							.setPositiveButton(
-									R.string.menuDeleteText,
-									(d, w) ->
-											viewModel.deleteRelease(
-													requireContext(),
-													repository.getOwner(),
-													repository.getName(),
-													release.getId(),
-													position))
-							.setNegativeButton(R.string.cancelButton, null)
-							.show();
+		sheet.setOnMenuItemClickListener(
+				id -> {
+					switch (id) {
+						case "RELEASE_SHARE":
+							String url =
+									UrlHelper.buildCurrentContextUrl(
+											requireContext(),
+											repository.getOwner(),
+											repository.getName(),
+											"releases",
+											"tag",
+											release.getTagName());
+							AppUtil.sharingIntent(requireContext(), url);
+							break;
+						case "RELEASE_EDIT":
+							CreateReleaseBottomSheet.newInstance(repository, release)
+									.show(getParentFragmentManager(), "EDIT_RELEASE");
+							break;
+						case "RELEASE_DELETE":
+							new MaterialAlertDialogBuilder(requireContext())
+									.setTitle(
+											getString(
+													R.string.deleteGenericTitle, release.getName()))
+									.setMessage(R.string.deleteReleaseConfirmation)
+									.setPositiveButton(
+											R.string.menuDeleteText,
+											(d, w) ->
+													viewModel.deleteRelease(
+															requireContext(),
+															repository.getOwner(),
+															repository.getName(),
+															release.getId(),
+															position))
+									.setNegativeButton(R.string.cancelButton, null)
+									.show();
+							break;
+					}
 				});
 
-		menuBinding.editRelease.setOnClickListener(
-				v -> {
-					dialog.dismiss();
-					BottomSheetCreateRelease.newInstance(repository, release)
-							.show(getParentFragmentManager(), "EDIT_RELEASE");
-				});
-
-		dialog.show();
+		sheet.show(getChildFragmentManager(), "RELEASE_MENU");
 	}
 
 	private void handleTagsView(List<Tag> list) {

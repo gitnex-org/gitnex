@@ -39,11 +39,13 @@ import org.mian.gitnex.databinding.FragmentProfileDetailBinding;
 import org.mian.gitnex.databinding.ItemProfileInfoBinding;
 import org.mian.gitnex.helpers.AppDatabaseSettings;
 import org.mian.gitnex.helpers.AppUtil;
+import org.mian.gitnex.helpers.BookmarkHelper;
 import org.mian.gitnex.helpers.Markdown;
 import org.mian.gitnex.helpers.TimeHelper;
 import org.mian.gitnex.helpers.Toasty;
 import org.mian.gitnex.helpers.TokenAuthorizationDialog;
 import org.mian.gitnex.helpers.UIHelper;
+import org.mian.gitnex.helpers.UrlHelper;
 import org.mian.gitnex.viewmodels.UserProfileViewModel;
 
 /**
@@ -136,6 +138,37 @@ public class DetailFragment extends Fragment {
 		binding.updateAvatar.setOnClickListener(v -> openFilePicker());
 		binding.followUser.setOnClickListener(
 				v -> viewModel.toggleFollow(requireContext(), username));
+
+		binding.btnShareProfile.setOnClickListener(
+				v -> {
+					String shareUrl =
+							UrlHelper.buildCurrentContextUrl(requireContext(), username, null);
+					AppUtil.sharingIntent(requireContext(), shareUrl);
+				});
+
+		binding.btnBookmarkProfile.setOnClickListener(
+				v -> {
+					User user = viewModel.getUserProfile().getValue();
+					if (user == null) return;
+
+					String title =
+							(user.getFullName() == null || user.getFullName().isEmpty())
+									? user.getLogin()
+									: user.getFullName();
+
+					BookmarkHelper.toggleBookmark(
+							requireContext(),
+							"profile",
+							user.getLogin(),
+							null,
+							null,
+							null,
+							null,
+							title,
+							null);
+
+					checkAndUpdateBookmarkStatus(user.getLogin());
+				});
 	}
 
 	private void observeViewModel() {
@@ -147,6 +180,7 @@ public class DetailFragment extends Fragment {
 							if (user == null) return;
 							checkOwnership(user.getLogin());
 							populateUi(user);
+							checkAndUpdateBookmarkStatus(user.getLogin());
 						});
 
 		viewModel.getHeatmapData().observe(getViewLifecycleOwner(), this::displayHeatmap);
@@ -242,7 +276,6 @@ public class DetailFragment extends Fragment {
 	}
 
 	private void updateFollowButtonUI(boolean isFollowing) {
-		binding.followUser.setText(isFollowing ? R.string.unfollowUser : R.string.userFollow);
 		binding.followUser.setIconResource(
 				isFollowing ? R.drawable.ic_person_remove : R.drawable.ic_person_add);
 	}
@@ -493,5 +526,31 @@ public class DetailFragment extends Fragment {
 		sheetBinding.btnClose.setOnClickListener(v -> editSheet.dismiss());
 		sheetBinding.save.setOnClickListener(v -> updateProfileData(sheetBinding));
 		editSheet.show();
+	}
+
+	private void checkAndUpdateBookmarkStatus(String owner) {
+		boolean isBookmarked =
+				BookmarkHelper.isBookmarked(requireContext(), "profile", owner, null, null, null);
+		updateBookmarkUi(isBookmarked);
+	}
+
+	private void updateBookmarkUi(boolean bookmarked) {
+		if (bookmarked) {
+			binding.btnBookmarkProfile.setIconResource(R.drawable.ic_bookmark_remove);
+			binding.btnBookmarkProfile.setContentDescription(getString(R.string.bookmark_remove));
+			int colorError =
+					com.google.android.material.color.MaterialColors.getColor(
+							binding.btnBookmarkProfile, android.R.attr.colorError);
+			binding.btnBookmarkProfile.setIconTint(
+					android.content.res.ColorStateList.valueOf(colorError));
+		} else {
+			binding.btnBookmarkProfile.setIconResource(R.drawable.ic_bookmark_add);
+			binding.btnBookmarkProfile.setContentDescription(getString(R.string.bookmark_add));
+			int colorControlNormal =
+					com.google.android.material.color.MaterialColors.getColor(
+							binding.btnBookmarkProfile, R.attr.iconsColor);
+			binding.btnBookmarkProfile.setIconTint(
+					android.content.res.ColorStateList.valueOf(colorControlNormal));
+		}
 	}
 }

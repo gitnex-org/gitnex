@@ -9,8 +9,8 @@ import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 import com.google.android.material.button.MaterialButton;
 import org.mian.gitnex.R;
+import org.mian.gitnex.bottomsheets.CreateActionVariableBottomSheet;
 import org.mian.gitnex.databinding.ActivityRepositoryActionsBinding;
-import org.mian.gitnex.fragments.BottomSheetCreateActionVariable;
 import org.mian.gitnex.fragments.RepoActionsRunnersFragment;
 import org.mian.gitnex.fragments.RepoActionsVariablesFragment;
 import org.mian.gitnex.fragments.RepoActionsWorkflowsFragment;
@@ -224,7 +224,7 @@ public class RepositoryActionsActivity extends BaseActivity {
 	}
 
 	private void showCreateVariableBottomSheet() {
-		BottomSheetCreateActionVariable.newInstance(
+		CreateActionVariableBottomSheet.newInstance(
 						repositoryContext.getOwner(), repositoryContext.getName())
 				.show(getSupportFragmentManager(), "CREATE_VARIABLE");
 	}

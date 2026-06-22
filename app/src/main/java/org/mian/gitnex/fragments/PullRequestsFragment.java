@@ -21,11 +21,15 @@ import org.mian.gitnex.R;
 import org.mian.gitnex.activities.PullRequestDetailActivity;
 import org.mian.gitnex.activities.RepoDetailActivity;
 import org.mian.gitnex.adapters.PullRequestsAdapter;
+import org.mian.gitnex.bottomsheets.CreatePullRequestBottomSheet;
 import org.mian.gitnex.databinding.FragmentPullRequestsBinding;
+import org.mian.gitnex.helpers.AppUtil;
+import org.mian.gitnex.helpers.BookmarkHelper;
 import org.mian.gitnex.helpers.Constants;
 import org.mian.gitnex.helpers.EndlessRecyclerViewScrollListener;
 import org.mian.gitnex.helpers.Toasty;
 import org.mian.gitnex.helpers.UIHelper;
+import org.mian.gitnex.helpers.UrlHelper;
 import org.mian.gitnex.helpers.contexts.RepositoryContext;
 import org.mian.gitnex.models.RepositoryMenuItemModel;
 import org.mian.gitnex.viewmodels.PullRequestsViewModel;
@@ -79,6 +83,15 @@ public class PullRequestsFragment extends Fragment implements RepoDetailActivity
 	public List<RepositoryMenuItemModel> getRepoHubItems() {
 		List<RepositoryMenuItemModel> items = new ArrayList<>();
 
+		boolean isBookmarked =
+				BookmarkHelper.isBookmarked(
+						requireContext(),
+						"repo",
+						repository.getOwner(),
+						repository.getName(),
+						"pulls",
+						null);
+
 		items.add(
 				new RepositoryMenuItemModel(
 						"PR_SEARCH",
@@ -111,6 +124,22 @@ public class PullRequestsFragment extends Fragment implements RepoDetailActivity
 							R.attr.colorPrimaryContainer,
 							R.attr.colorOnPrimaryContainer));
 		}
+		items.add(
+				new RepositoryMenuItemModel(
+						"BOOKMARK_TAB",
+						isBookmarked ? R.string.bookmark_remove : R.string.bookmark_add,
+						isBookmarked ? R.drawable.ic_bookmark_remove : R.drawable.ic_bookmark_add,
+						isBookmarked ? R.attr.colorErrorContainer : R.attr.colorPrimarySurface,
+						isBookmarked
+								? R.attr.colorOnErrorContainer
+								: R.attr.colorOnPrimarySurface));
+		items.add(
+				new RepositoryMenuItemModel(
+						"CONTEXT_SHARE",
+						R.string.share_location,
+						R.drawable.ic_share,
+						R.attr.colorPrimarySurface,
+						R.attr.colorOnPrimarySurface));
 
 		return items;
 	}
@@ -132,8 +161,33 @@ public class PullRequestsFragment extends Fragment implements RepoDetailActivity
 				break;
 
 			case "PR_CREATE_NEW":
-				BottomSheetCreatePullRequest.newInstance(repository, null)
+				CreatePullRequestBottomSheet.newInstance(repository, null)
 						.show(getParentFragmentManager(), "CREATE_PULL_REQUEST");
+				break;
+			case "BOOKMARK_TAB":
+				BookmarkHelper.toggleBookmark(
+						requireContext(),
+						"repo",
+						repository.getOwner(),
+						repository.getName(),
+						"pulls",
+						null,
+						null,
+						getString(R.string.pageTitleIssues),
+						UrlHelper.buildCurrentContextUrl(
+								requireContext(),
+								repository.getOwner(),
+								repository.getName(),
+								"pulls"));
+				break;
+			case "CONTEXT_SHARE":
+				String url =
+						UrlHelper.buildCurrentContextUrl(
+								requireContext(),
+								repository.getOwner(),
+								repository.getName(),
+								"pulls");
+				AppUtil.sharingIntent(requireContext(), url);
 				break;
 		}
 	}

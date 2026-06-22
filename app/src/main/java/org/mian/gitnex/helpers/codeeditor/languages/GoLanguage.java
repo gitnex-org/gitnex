@@ -131,7 +131,6 @@ public class GoLanguage extends Language {
 			case ATTRIBUTE -> PATTERN_ATTRIBUTE;
 			case OPERATION -> PATTERN_OPERATION;
 			case TODO_COMMENT -> PATTERN_TODO_COMMENT;
-			// TODO supported by Go 1.18
 			default -> null;
 		};
 	}

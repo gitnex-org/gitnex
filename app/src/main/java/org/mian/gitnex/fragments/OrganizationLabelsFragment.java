@@ -15,15 +15,21 @@ import androidx.lifecycle.ViewModelProvider;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 import com.google.android.material.dialog.MaterialAlertDialogBuilder;
+import java.util.ArrayList;
+import java.util.List;
+import org.gitnex.tea4j.v2.models.Label;
 import org.gitnex.tea4j.v2.models.OrganizationPermissions;
 import org.mian.gitnex.R;
 import org.mian.gitnex.activities.OrganizationDetailActivity;
 import org.mian.gitnex.adapters.LabelsAdapter;
+import org.mian.gitnex.bottomsheets.CreateLabelBottomSheet;
+import org.mian.gitnex.bottomsheets.GenericMenuBottomSheet;
 import org.mian.gitnex.databinding.FragmentLabelsBinding;
 import org.mian.gitnex.helpers.Constants;
 import org.mian.gitnex.helpers.EndlessRecyclerViewScrollListener;
 import org.mian.gitnex.helpers.Toasty;
 import org.mian.gitnex.helpers.UIHelper;
+import org.mian.gitnex.models.GenericMenuItemModel;
 import org.mian.gitnex.viewmodels.LabelsViewModel;
 import org.mian.gitnex.viewmodels.OrganizationsViewModel;
 
@@ -147,35 +153,7 @@ public class OrganizationLabelsFragment extends Fragment
 												requireContext(),
 												list,
 												canEdit,
-												label -> {
-													BottomSheetCreateLabelFragment.newInstance(
-																	type, orgName, null, label)
-															.show(
-																	getChildFragmentManager(),
-																	"EditLabel");
-												},
-												label -> {
-													new MaterialAlertDialogBuilder(requireContext())
-															.setTitle(R.string.labelDeleteTitle)
-															.setMessage(
-																	getString(
-																			R.string
-																					.labelDeleteConfirmText,
-																			label.getName()))
-															.setPositiveButton(
-																	R.string.menuDeleteText,
-																	(d, w) -> {
-																		viewModel.deleteLabel(
-																				requireContext(),
-																				type,
-																				orgName,
-																				null,
-																				label.getId());
-																	})
-															.setNegativeButton(
-																	R.string.cancelButton, null)
-															.show();
-												});
+												this::showLabelMenu);
 								binding.recyclerView.setAdapter(adapter);
 								binding.searchResultsRecycler.setAdapter(adapter);
 							} else {
@@ -234,6 +212,60 @@ public class OrganizationLabelsFragment extends Fragment
 						error -> {
 							if (error != null) Toasty.show(requireContext(), error);
 						});
+	}
+
+	private void showLabelMenu(Label label) {
+		List<GenericMenuItemModel> items = new ArrayList<>();
+
+		items.add(
+				new GenericMenuItemModel(
+						"LABEL_EDIT",
+						R.string.menuEditText,
+						R.drawable.ic_edit,
+						R.attr.colorPrimaryContainer,
+						R.attr.colorOnPrimaryContainer));
+
+		items.add(
+				new GenericMenuItemModel(
+						"LABEL_DELETE",
+						R.string.menuDeleteText,
+						R.drawable.ic_delete,
+						R.attr.colorErrorContainer,
+						R.attr.colorOnErrorContainer));
+
+		GenericMenuBottomSheet sheet =
+				GenericMenuBottomSheet.newInstance(label.getName(), null, items);
+
+		sheet.setOnMenuItemClickListener(
+				id -> {
+					switch (id) {
+						case "LABEL_EDIT":
+							CreateLabelBottomSheet.newInstance(type, orgName, null, label)
+									.show(getChildFragmentManager(), "EditLabel");
+							break;
+						case "LABEL_DELETE":
+							new MaterialAlertDialogBuilder(requireContext())
+									.setTitle(R.string.labelDeleteTitle)
+									.setMessage(
+											getString(
+													R.string.labelDeleteConfirmText,
+													label.getName()))
+									.setPositiveButton(
+											R.string.menuDeleteText,
+											(d, w) ->
+													viewModel.deleteLabel(
+															requireContext(),
+															type,
+															orgName,
+															null,
+															label.getId()))
+									.setNegativeButton(R.string.cancelButton, null)
+									.show();
+							break;
+					}
+				});
+
+		sheet.show(getChildFragmentManager(), "LABEL_MENU");
 	}
 
 	private void updateUiVisibility(boolean isLoading) {
@@ -326,8 +358,7 @@ public class OrganizationLabelsFragment extends Fragment
 
 	@Override
 	public void onAddRequested() {
-		BottomSheetCreateLabelFragment sheet =
-				BottomSheetCreateLabelFragment.newInstance("org", orgName, "", null);
+		CreateLabelBottomSheet sheet = CreateLabelBottomSheet.newInstance("org", orgName, "", null);
 		sheet.show(getChildFragmentManager(), "CreateLabelSheet");
 	}
 

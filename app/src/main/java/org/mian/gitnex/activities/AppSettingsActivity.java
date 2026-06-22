@@ -8,15 +8,15 @@ import android.view.View;
 import androidx.activity.OnBackPressedCallback;
 import androidx.annotation.Nullable;
 import org.mian.gitnex.R;
+import org.mian.gitnex.bottomsheets.SettingsAboutBottomSheet;
+import org.mian.gitnex.bottomsheets.SettingsAppearanceBottomSheet;
+import org.mian.gitnex.bottomsheets.SettingsBackupRestoreBottomSheet;
+import org.mian.gitnex.bottomsheets.SettingsCodeEditorBottomSheet;
+import org.mian.gitnex.bottomsheets.SettingsGeneralBottomSheet;
+import org.mian.gitnex.bottomsheets.SettingsNotificationsBottomSheet;
+import org.mian.gitnex.bottomsheets.SettingsSecurityBottomSheet;
 import org.mian.gitnex.databinding.ActivityAppSettingsBinding;
 import org.mian.gitnex.databinding.ItemSettingsRowBinding;
-import org.mian.gitnex.fragments.BottomSheetSettingsAboutFragment;
-import org.mian.gitnex.fragments.BottomSheetSettingsAppearanceFragment;
-import org.mian.gitnex.fragments.BottomSheetSettingsBackupRestoreFragment;
-import org.mian.gitnex.fragments.BottomSheetSettingsCodeEditorFragment;
-import org.mian.gitnex.fragments.BottomSheetSettingsGeneralFragment;
-import org.mian.gitnex.fragments.BottomSheetSettingsNotificationsFragment;
-import org.mian.gitnex.fragments.BottomSheetSettingsSecurityFragment;
 import org.mian.gitnex.helpers.UIHelper;
 
 /**
@@ -60,7 +60,7 @@ public class AppSettingsActivity extends BaseActivity {
 				.getRoot()
 				.setOnClickListener(
 						v ->
-								new BottomSheetSettingsGeneralFragment()
+								new SettingsGeneralBottomSheet()
 										.show(getSupportFragmentManager(), "General"));
 
 		// appearance row
@@ -74,7 +74,7 @@ public class AppSettingsActivity extends BaseActivity {
 				.getRoot()
 				.setOnClickListener(
 						v ->
-								new BottomSheetSettingsAppearanceFragment()
+								new SettingsAppearanceBottomSheet()
 										.show(getSupportFragmentManager(), "Appearance"));
 
 		// code editor row
@@ -88,7 +88,7 @@ public class AppSettingsActivity extends BaseActivity {
 				.getRoot()
 				.setOnClickListener(
 						v ->
-								new BottomSheetSettingsCodeEditorFragment()
+								new SettingsCodeEditorBottomSheet()
 										.show(getSupportFragmentManager(), "CodeEditor"));
 
 		// security row
@@ -102,7 +102,7 @@ public class AppSettingsActivity extends BaseActivity {
 				.getRoot()
 				.setOnClickListener(
 						v ->
-								new BottomSheetSettingsSecurityFragment()
+								new SettingsSecurityBottomSheet()
 										.show(getSupportFragmentManager(), "Security"));
 
 		// notifications row
@@ -116,7 +116,7 @@ public class AppSettingsActivity extends BaseActivity {
 				.getRoot()
 				.setOnClickListener(
 						v ->
-								new BottomSheetSettingsNotificationsFragment()
+								new SettingsNotificationsBottomSheet()
 										.show(getSupportFragmentManager(), "Notifications"));
 
 		// backup row
@@ -130,7 +130,7 @@ public class AppSettingsActivity extends BaseActivity {
 				.getRoot()
 				.setOnClickListener(
 						v ->
-								new BottomSheetSettingsBackupRestoreFragment()
+								new SettingsBackupRestoreBottomSheet()
 										.show(getSupportFragmentManager(), "Backup"));
 
 		// about row
@@ -144,7 +144,7 @@ public class AppSettingsActivity extends BaseActivity {
 				.getRoot()
 				.setOnClickListener(
 						v ->
-								new BottomSheetSettingsAboutFragment()
+								new SettingsAboutBottomSheet()
 										.show(getSupportFragmentManager(), "About"));
 
 		// rate GitNex row

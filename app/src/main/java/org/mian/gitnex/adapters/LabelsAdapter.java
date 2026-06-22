@@ -2,7 +2,6 @@ package org.mian.gitnex.adapters;
 
 import android.annotation.SuppressLint;
 import android.content.Context;
-import android.content.res.ColorStateList;
 import android.graphics.Color;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -10,15 +9,13 @@ import android.view.ViewGroup;
 import android.widget.Filter;
 import android.widget.Filterable;
 import androidx.annotation.NonNull;
-import androidx.core.widget.ImageViewCompat;
 import androidx.recyclerview.widget.RecyclerView;
-import com.google.android.material.bottomsheet.BottomSheetDialog;
 import java.util.ArrayList;
 import java.util.List;
 import org.gitnex.tea4j.v2.models.Label;
-import org.mian.gitnex.databinding.BottomsheetLabelsItemMenuBinding;
 import org.mian.gitnex.databinding.ListLabelsBinding;
 import org.mian.gitnex.helpers.ColorInverter;
+import org.mian.gitnex.helpers.LabelStylingHelper;
 
 /**
  * @author mmarif
@@ -30,25 +27,19 @@ public class LabelsAdapter extends RecyclerView.Adapter<LabelsAdapter.DataHolder
 	private List<Label> labelsList;
 	private List<Label> labelsListFull;
 	private boolean canEdit;
-	private final OnLabelAction onEdit;
-	private final OnLabelAction onDelete;
+	private final OnLabelMenuClickListener onMenuClick;
 
-	public interface OnLabelAction {
-		void run(Label label);
+	public interface OnLabelMenuClickListener {
+		void onMenuClick(Label label);
 	}
 
 	public LabelsAdapter(
-			Context ctx,
-			List<Label> list,
-			boolean canEdit,
-			OnLabelAction onEdit,
-			OnLabelAction onDelete) {
+			Context ctx, List<Label> list, boolean canEdit, OnLabelMenuClickListener onMenuClick) {
 		this.context = ctx;
 		this.labelsList = list;
 		this.labelsListFull = new ArrayList<>(list);
 		this.canEdit = canEdit;
-		this.onEdit = onEdit;
-		this.onDelete = onDelete;
+		this.onMenuClick = onMenuClick;
 	}
 
 	@NonNull @Override
@@ -119,38 +110,44 @@ public class LabelsAdapter extends RecyclerView.Adapter<LabelsAdapter.DataHolder
 			binding.itemMenu.setVisibility(canEdit ? View.VISIBLE : View.GONE);
 			binding.itemMenu.setOnClickListener(
 					v -> {
-						BottomsheetLabelsItemMenuBinding sheetB =
-								BottomsheetLabelsItemMenuBinding.inflate(
-										LayoutInflater.from(context));
-						BottomSheetDialog dialog = new BottomSheetDialog(context);
-						dialog.setContentView(sheetB.getRoot());
-						sheetB.sheetTitle.setText(currentLabel.getName());
-
-						sheetB.labelMenuEdit.setOnClickListener(
-								v1 -> {
-									onEdit.run(currentLabel);
-									dialog.dismiss();
-								});
-
-						sheetB.labelMenuDelete.setOnClickListener(
-								v1 -> {
-									onDelete.run(currentLabel);
-									dialog.dismiss();
-								});
-						dialog.show();
+						if (onMenuClick != null) {
+							onMenuClick.onMenuClick(currentLabel);
+						}
 					});
 		}
 
 		void bindData(Label label) {
 			this.currentLabel = label;
-
+			String labelText = label.getName();
+			String labelColor = "#" + label.getColor();
+			boolean exclusive = label.isExclusive();
 			int color = Color.parseColor("#" + label.getColor());
 			int contrast = ColorInverter.getContrastColor(color);
 
-			binding.labelView.setCardBackgroundColor(color);
-			binding.labelName.setText(label.getName());
-			binding.labelName.setTextColor(contrast);
-			ImageViewCompat.setImageTintList(binding.labelIcon, ColorStateList.valueOf(contrast));
+			if (LabelStylingHelper.isScopedLabel(labelText, exclusive)) {
+				binding.labelValue.setVisibility(View.VISIBLE);
+				LabelStylingHelper.getInstance(context)
+						.styleScopedLabel(
+								labelText,
+								labelColor,
+								String.format("#%06X", contrast),
+								binding.labelName,
+								binding.labelValue,
+								13,
+								6,
+								12);
+			} else {
+				binding.labelValue.setVisibility(View.GONE);
+				LabelStylingHelper.getInstance(context)
+						.styleRegularLabel(
+								labelText,
+								labelColor,
+								String.format("#%06X", contrast),
+								binding.labelName,
+								13,
+								6,
+								12);
+			}
 
 			if (label.getDescription() != null && !label.getDescription().isEmpty()) {
 				binding.labelDescription.setVisibility(View.VISIBLE);

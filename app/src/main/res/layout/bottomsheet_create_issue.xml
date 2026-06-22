@@ -25,6 +25,18 @@
             app:layout_constraintTop_toTopOf="parent" />
 
         <com.google.android.material.button.MaterialButton
+            android:id="@+id/btn_bookmark"
+            style="@style/Widget.Material3Expressive.Button.IconButton.Tonal"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginEnd="@dimen/dimen8dp"
+            android:contentDescription="@string/bookmark_add"
+            app:icon="@drawable/ic_bookmark_add"
+            app:layout_constraintBottom_toBottomOf="@id/sheet_title"
+            app:layout_constraintEnd_toStartOf="@id/btn_close"
+            app:layout_constraintTop_toTopOf="@id/sheet_title" />
+
+        <com.google.android.material.button.MaterialButton
             android:id="@+id/btn_close"
             style="@style/Widget.Material3Expressive.Button.IconButton.Tonal"
             android:layout_width="wrap_content"

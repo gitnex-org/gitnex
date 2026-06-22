@@ -1,7 +1,10 @@
 package org.mian.gitnex.helpers;
 
+import android.content.Context;
 import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 import java.net.URI;
+import org.mian.gitnex.activities.BaseActivity;
 
 /**
  * @author mmarif
@@ -69,5 +72,29 @@ public class UrlHelper {
 		}
 
 		return url + path;
+	}
+
+	public static String buildCurrentContextUrl(
+			Context context, @Nullable String owner, @Nullable String repo, String... paths) {
+		String instanceUrl = ((BaseActivity) context).getAccount().getAccount().getInstanceUrl();
+		String base = instanceUrl.replace("api/v1/", "");
+
+		if (base.endsWith("/")) {
+			base = base.substring(0, base.length() - 1);
+		}
+
+		if (owner != null && !owner.isEmpty()) {
+			base = base + "/" + owner;
+			if (repo != null && !repo.isEmpty()) {
+				base = base + "/" + repo;
+			}
+		}
+
+		for (String path : paths) {
+			if (path != null && !path.isEmpty()) {
+				base = base + "/" + path;
+			}
+		}
+		return base;
 	}
 }

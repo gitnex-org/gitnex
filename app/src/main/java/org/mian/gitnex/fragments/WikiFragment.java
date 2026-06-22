@@ -13,23 +13,29 @@ import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModelProvider;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
-import com.google.android.material.bottomsheet.BottomSheetDialog;
 import com.google.android.material.dialog.MaterialAlertDialogBuilder;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import org.gitnex.tea4j.v2.models.WikiPageMetaData;
 import org.mian.gitnex.R;
 import org.mian.gitnex.activities.RepoDetailActivity;
 import org.mian.gitnex.adapters.WikiListAdapter;
-import org.mian.gitnex.databinding.BottomsheetWikiItemMenuBinding;
+import org.mian.gitnex.bottomsheets.ContentViewerBottomSheet;
+import org.mian.gitnex.bottomsheets.CreateWikiBottomSheet;
+import org.mian.gitnex.bottomsheets.GenericMenuBottomSheet;
 import org.mian.gitnex.databinding.FragmentWikiBinding;
 import org.mian.gitnex.helpers.AppUtil;
+import org.mian.gitnex.helpers.BookmarkHelper;
 import org.mian.gitnex.helpers.Constants;
 import org.mian.gitnex.helpers.EndlessRecyclerViewScrollListener;
 import org.mian.gitnex.helpers.Toasty;
 import org.mian.gitnex.helpers.TokenAuthorizationDialog;
 import org.mian.gitnex.helpers.UIHelper;
+import org.mian.gitnex.helpers.UrlHelper;
 import org.mian.gitnex.helpers.contexts.RepositoryContext;
+import org.mian.gitnex.models.GenericMenuItemModel;
 import org.mian.gitnex.models.RepositoryMenuItemModel;
 import org.mian.gitnex.viewmodels.WikiViewModel;
 
@@ -88,6 +94,15 @@ public class WikiFragment extends Fragment implements RepoDetailActivity.RepoHub
 	public List<RepositoryMenuItemModel> getRepoHubItems() {
 		List<RepositoryMenuItemModel> items = new ArrayList<>();
 
+		boolean isBookmarked =
+				BookmarkHelper.isBookmarked(
+						requireContext(),
+						"repo",
+						repository.getOwner(),
+						repository.getName(),
+						"wiki",
+						null);
+
 		if (repository.getPermissions().isAdmin() && !repository.getRepository().isArchived()) {
 			items.add(
 					new RepositoryMenuItemModel(
@@ -97,15 +112,58 @@ public class WikiFragment extends Fragment implements RepoDetailActivity.RepoHub
 							R.attr.colorPrimaryContainer,
 							R.attr.colorOnPrimaryContainer));
 		}
+		items.add(
+				new RepositoryMenuItemModel(
+						"BOOKMARK_TAB",
+						isBookmarked ? R.string.bookmark_remove : R.string.bookmark_add,
+						isBookmarked ? R.drawable.ic_bookmark_remove : R.drawable.ic_bookmark_add,
+						isBookmarked ? R.attr.colorErrorContainer : R.attr.colorPrimarySurface,
+						isBookmarked
+								? R.attr.colorOnErrorContainer
+								: R.attr.colorOnPrimarySurface));
+		items.add(
+				new RepositoryMenuItemModel(
+						"CONTEXT_SHARE",
+						R.string.share_location,
+						R.drawable.ic_share,
+						R.attr.colorPrimarySurface,
+						R.attr.colorOnPrimarySurface));
 
 		return items;
 	}
 
 	@Override
 	public void onHubActionSelected(String actionId) {
-		if (actionId.equals("WIKI_ADD_NEW")) {
-			BottomSheetCreateWiki.newInstance(repository, null)
-					.show(getParentFragmentManager(), "CREATE_WIKI");
+		switch (actionId) {
+			case "WIKI_ADD_NEW":
+				CreateWikiBottomSheet.newInstance(repository, null)
+						.show(getParentFragmentManager(), "CREATE_WIKI");
+				break;
+			case "BOOKMARK_TAB":
+				BookmarkHelper.toggleBookmark(
+						requireContext(),
+						"repo",
+						repository.getOwner(),
+						repository.getName(),
+						"wiki",
+						null,
+						null,
+						getString(R.string.wiki),
+						UrlHelper.buildCurrentContextUrl(
+								requireContext(),
+								repository.getOwner(),
+								repository.getName(),
+								"wiki"));
+				break;
+			case "CONTEXT_SHARE":
+				String url =
+						UrlHelper.buildCurrentContextUrl(
+								requireContext(),
+								repository.getOwner(),
+								repository.getName(),
+								"wiki");
+				AppUtil.sharingIntent(requireContext(), url);
+				break;
 		}
 	}
 
@@ -224,12 +282,15 @@ public class WikiFragment extends Fragment implements RepoDetailActivity.RepoHub
 						wikiPage -> {
 							if (wikiPage != null && pendingPageName != null) {
 								if (isPendingEdit) {
-									BottomSheetCreateWiki.newInstance(repository, wikiPage)
+									CreateWikiBottomSheet.newInstance(repository, wikiPage)
 											.show(getParentFragmentManager(), "EDIT_WIKI");
 								} else {
 									String decodedContent =
 											AppUtil.decodeBase64(wikiPage.getContentBase64());
-									showContentViewer(wikiPage.getTitle(), decodedContent);
+									showContentViewer(
+											wikiPage.getTitle(),
+											decodedContent,
+											wikiPage.getHtmlUrl());
 								}
 								pendingPageName = null;
 								viewModel.clearPageContent();
@@ -275,17 +336,22 @@ public class WikiFragment extends Fragment implements RepoDetailActivity.RepoHub
 		}
 	}
 
-	private void showContentViewer(String title, String content) {
-		BottomSheetContentViewer.newInstance(
+	private void showContentViewer(String title, String content, String url) {
+		Map<String, String> metadata = new HashMap<>();
+		if (url != null) {
+			metadata.put("URL", url);
+		}
+		ContentViewerBottomSheet.newInstance(
 						content,
 						title,
 						repository,
 						null,
-						BottomSheetContentViewer.Feature.ALLOW_COPY,
-						BottomSheetContentViewer.Feature.ALLOW_SHARE,
-						BottomSheetContentViewer.Feature.MARKDOWN_PREVIEW,
-						BottomSheetContentViewer.Feature.START_IN_MARKDOWN,
-						BottomSheetContentViewer.Feature.SHOW_TITLE)
+						metadata,
+						ContentViewerBottomSheet.Feature.ALLOW_COPY,
+						ContentViewerBottomSheet.Feature.ALLOW_SHARE,
+						ContentViewerBottomSheet.Feature.MARKDOWN_PREVIEW,
+						ContentViewerBottomSheet.Feature.START_IN_MARKDOWN,
+						ContentViewerBottomSheet.Feature.SHOW_TITLE)
 				.show(getParentFragmentManager(), "WIKI_VIEWER");
 	}
 
@@ -308,27 +374,103 @@ public class WikiFragment extends Fragment implements RepoDetailActivity.RepoHub
 	}
 
 	private void showWikiMenu(WikiPageMetaData wikiPage) {
-		BottomsheetWikiItemMenuBinding sheetB =
-				BottomsheetWikiItemMenuBinding.inflate(getLayoutInflater());
-		BottomSheetDialog dialog = new BottomSheetDialog(requireContext());
-		dialog.setContentView(sheetB.getRoot());
+		List<GenericMenuItemModel> items = new ArrayList<>();
 
-		AppUtil.applySheetStyle(dialog, true);
+		boolean isPageBookmarked =
+				BookmarkHelper.isBookmarked(
+						requireContext(),
+						"repo",
+						repository.getOwner(),
+						repository.getName(),
+						"wiki_page",
+						wikiPage.getSubUrl());
 
-		sheetB.sheetTitle.setText(wikiPage.getTitle());
+		items.add(
+				new GenericMenuItemModel(
+						"WIKI_EDIT",
+						R.string.editWikiPage,
+						R.drawable.ic_edit,
+						R.attr.colorPrimaryContainer,
+						R.attr.colorOnPrimaryContainer));
 
-		sheetB.editWiki.setOnClickListener(
-				v1 -> {
-					openWiki(wikiPage, "edit");
-					dialog.dismiss();
+		items.add(
+				new GenericMenuItemModel(
+						"WIKI_DELETE",
+						R.string.menuDeleteText,
+						R.drawable.ic_delete,
+						R.attr.colorErrorContainer,
+						R.attr.colorOnErrorContainer));
+
+		items.add(
+				new GenericMenuItemModel(
+						"WIKI_BOOKMARK",
+						isPageBookmarked ? R.string.bookmark_remove : R.string.bookmark_add,
+						isPageBookmarked
+								? R.drawable.ic_bookmark_remove
+								: R.drawable.ic_bookmark_add,
+						isPageBookmarked ? R.attr.colorErrorContainer : R.attr.colorPrimarySurface,
+						isPageBookmarked
+								? R.attr.colorOnErrorContainer
+								: R.attr.colorOnPrimarySurface));
+
+		items.add(
+				new GenericMenuItemModel(
+						"WIKI_SHARE",
+						R.string.share_location,
+						R.drawable.ic_share,
+						R.attr.colorPrimarySurface,
+						R.attr.colorOnPrimarySurface));
+
+		GenericMenuBottomSheet sheet =
+				GenericMenuBottomSheet.newInstance(wikiPage.getTitle(), null, items);
+
+		sheet.setOnMenuItemClickListener(
+				id -> {
+					switch (id) {
+						case "WIKI_EDIT":
+							openWiki(wikiPage, "edit");
+							break;
+						case "WIKI_DELETE":
+							showDeleteDialog(wikiPage);
+							break;
+						case "WIKI_BOOKMARK":
+							BookmarkHelper.toggleBookmark(
+									requireContext(),
+									"repo",
+									repository.getOwner(),
+									repository.getName(),
+									"wiki_page",
+									wikiPage.getSubUrl(),
+									null,
+									wikiPage.getTitle(),
+									UrlHelper.buildCurrentContextUrl(
+											requireContext(),
+											repository.getOwner(),
+											repository.getName(),
+											"wiki",
+											wikiPage.getSubUrl()));
+							break;
+						case "WIKI_SHARE":
+							String shareUrl =
+									UrlHelper.buildCurrentContextUrl(
+											requireContext(),
+											repository.getOwner(),
+											repository.getName(),
+											"wiki",
+											wikiPage.getSubUrl());
+							AppUtil.sharingIntent(requireContext(), shareUrl);
+							break;
+					}
 				});
 
-		sheetB.deleteWiki.setOnClickListener(
-				v1 -> {
-					showDeleteDialog(wikiPage);
-					dialog.dismiss();
-				});
-		dialog.show();
+		sheet.show(getChildFragmentManager(), "WIKI_MENU");
+	}
+
+	public void openWikiPageByName(String pageName) {
+		pendingPageName = pageName;
+		isPendingEdit = false;
+		viewModel.fetchWikiPageContent(
+				requireContext(), repository.getOwner(), repository.getName(), pageName);
 	}
 
 	private void updateUiVisibility(boolean isLoading) {

@@ -21,6 +21,7 @@
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginStart="@dimen/dimen16dp"
+        android:autoLink="all"
         android:textAppearance="?attr/textAppearanceBodyMedium"
         android:textColor="?attr/primaryTextColor"
         app:layout_constraintBottom_toBottomOf="@id/info_icon"

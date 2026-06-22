@@ -24,6 +24,8 @@ import org.mian.gitnex.activities.IssueDetailActivity;
 import org.mian.gitnex.activities.PullRequestDetailActivity;
 import org.mian.gitnex.activities.RepoDetailActivity;
 import org.mian.gitnex.adapters.NotificationsAdapter;
+import org.mian.gitnex.bottomsheets.NotificationsFilterBottomSheet;
+import org.mian.gitnex.bottomsheets.NotificationsFragmentBottomSheet;
 import org.mian.gitnex.databinding.FragmentNotificationsBinding;
 import org.mian.gitnex.helpers.Constants;
 import org.mian.gitnex.helpers.EndlessRecyclerViewScrollListener;
@@ -235,11 +237,11 @@ public class NotificationsFragment extends Fragment
 		List<NotificationThread> list = viewModel.getNotifications().getValue();
 		boolean hasData = (list != null && !list.isEmpty());
 
-		BottomSheetNotificationsFilter filterSheet =
-				BottomSheetNotificationsFilter.newInstance(currentFilterMode, hasData);
+		NotificationsFilterBottomSheet filterSheet =
+				NotificationsFilterBottomSheet.newInstance(currentFilterMode, hasData);
 
 		filterSheet.setListener(
-				new BottomSheetNotificationsFilter.OnFilterChangedListener() {
+				new NotificationsFilterBottomSheet.OnFilterChangedListener() {
 					@Override
 					public void onFilterChanged(String mode) {
 						currentFilterMode = mode;
@@ -308,7 +310,7 @@ public class NotificationsFragment extends Fragment
 
 	@Override
 	public void onMoreClicked(NotificationThread thread) {
-		BottomSheetNotificationsFragment bottomSheet = new BottomSheetNotificationsFragment();
+		NotificationsFragmentBottomSheet bottomSheet = new NotificationsFragmentBottomSheet();
 		bottomSheet.onAttach(thread);
 		bottomSheet.show(getChildFragmentManager(), "notificationsBottomSheet");
 	}

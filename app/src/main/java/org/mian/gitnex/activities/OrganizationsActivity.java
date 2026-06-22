@@ -11,8 +11,8 @@ import java.util.ArrayList;
 import java.util.List;
 import org.gitnex.tea4j.v2.models.Organization;
 import org.mian.gitnex.adapters.OrganizationsListAdapter;
+import org.mian.gitnex.bottomsheets.CreateOrganizationBottomSheet;
 import org.mian.gitnex.databinding.ActivityOrganizationsBinding;
-import org.mian.gitnex.fragments.BottomSheetCreateOrganization;
 import org.mian.gitnex.helpers.Constants;
 import org.mian.gitnex.helpers.EndlessRecyclerViewScrollListener;
 import org.mian.gitnex.helpers.Toasty;
@@ -55,7 +55,7 @@ public class OrganizationsActivity extends BaseActivity {
 		binding.btnBack.setOnClickListener(v -> finish());
 		binding.btnNewOrg.setOnClickListener(
 				v ->
-						BottomSheetCreateOrganization.newInstance()
+						CreateOrganizationBottomSheet.newInstance()
 								.show(getSupportFragmentManager(), "create_org"));
 		binding.btnSearch.setOnClickListener(v -> binding.searchView.show());
 	}

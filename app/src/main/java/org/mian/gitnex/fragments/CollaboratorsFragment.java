@@ -15,11 +15,14 @@ import java.util.List;
 import org.mian.gitnex.R;
 import org.mian.gitnex.activities.RepoDetailActivity;
 import org.mian.gitnex.adapters.CollaboratorsAdapter;
+import org.mian.gitnex.bottomsheets.AddCollaboratorBottomSheet;
 import org.mian.gitnex.databinding.FragmentCollaboratorsBinding;
+import org.mian.gitnex.helpers.AppUtil;
 import org.mian.gitnex.helpers.Constants;
 import org.mian.gitnex.helpers.EndlessRecyclerViewScrollListener;
 import org.mian.gitnex.helpers.Toasty;
 import org.mian.gitnex.helpers.UIHelper;
+import org.mian.gitnex.helpers.UrlHelper;
 import org.mian.gitnex.helpers.contexts.RepositoryContext;
 import org.mian.gitnex.models.RepositoryMenuItemModel;
 import org.mian.gitnex.viewmodels.CollaboratorsViewModel;
@@ -85,6 +88,13 @@ public class CollaboratorsFragment extends Fragment implements RepoDetailActivit
 							R.attr.colorPrimaryContainer,
 							R.attr.colorOnPrimaryContainer));
 		}
+		items.add(
+				new RepositoryMenuItemModel(
+						"CONTEXT_SHARE",
+						R.string.share_location,
+						R.drawable.ic_share,
+						R.attr.colorPrimarySurface,
+						R.attr.colorOnPrimarySurface));
 
 		return items;
 	}
@@ -92,8 +102,24 @@ public class CollaboratorsFragment extends Fragment implements RepoDetailActivit
 	@Override
 	public void onHubActionSelected(String actionId) {
 		if (actionId.equals("COLLABORATOR_ADD_NEW")) {
-			BottomSheetAddCollaborator.newInstance(repository)
+			AddCollaboratorBottomSheet.newInstance(repository)
 					.show(getChildFragmentManager(), "AddCollaborator");
+		}
+		switch (actionId) {
+			case "COLLABORATOR_ADD_NEW":
+				AddCollaboratorBottomSheet.newInstance(repository)
+						.show(getChildFragmentManager(), "AddCollaborator");
+				break;
+			case "CONTEXT_SHARE":
+				String url =
+						UrlHelper.buildCurrentContextUrl(
+								requireContext(),
+								repository.getOwner(),
+								repository.getName(),
+								"settings",
+								"collaboration");
+				AppUtil.sharingIntent(requireContext(), url);
+				break;
 		}
 	}
 

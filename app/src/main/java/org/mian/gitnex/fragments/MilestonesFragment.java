@@ -12,7 +12,6 @@ import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModelProvider;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
-import com.google.android.material.bottomsheet.BottomSheetDialog;
 import com.google.android.material.dialog.MaterialAlertDialogBuilder;
 import java.util.ArrayList;
 import java.util.List;
@@ -21,13 +20,18 @@ import org.gitnex.tea4j.v2.models.Milestone;
 import org.mian.gitnex.R;
 import org.mian.gitnex.activities.RepoDetailActivity;
 import org.mian.gitnex.adapters.MilestonesAdapter;
-import org.mian.gitnex.databinding.BottomsheetMilestonesItemMenuBinding;
+import org.mian.gitnex.bottomsheets.CreateMilestoneBottomSheet;
+import org.mian.gitnex.bottomsheets.GenericMenuBottomSheet;
 import org.mian.gitnex.databinding.FragmentMilestonesBinding;
+import org.mian.gitnex.helpers.AppUtil;
+import org.mian.gitnex.helpers.BookmarkHelper;
 import org.mian.gitnex.helpers.Constants;
 import org.mian.gitnex.helpers.EndlessRecyclerViewScrollListener;
 import org.mian.gitnex.helpers.Toasty;
 import org.mian.gitnex.helpers.UIHelper;
+import org.mian.gitnex.helpers.UrlHelper;
 import org.mian.gitnex.helpers.contexts.RepositoryContext;
+import org.mian.gitnex.models.GenericMenuItemModel;
 import org.mian.gitnex.models.RepositoryMenuItemModel;
 import org.mian.gitnex.viewmodels.MilestonesViewModel;
 
@@ -88,7 +92,16 @@ public class MilestonesFragment extends Fragment implements RepoDetailActivity.R
 	public List<RepositoryMenuItemModel> getRepoHubItems() {
 		List<RepositoryMenuItemModel> items = new ArrayList<>();
 
+		boolean isBookmarked =
+				BookmarkHelper.isBookmarked(
+						requireContext(),
+						"repo",
+						repository.getOwner(),
+						repository.getName(),
+						"milestones",
+						null);
 		boolean isCurrentlyOpen = "open".equals(currentState);
+
 		items.add(
 				new RepositoryMenuItemModel(
 						"MILESTONE_FILTER_TOGGLE",
@@ -110,6 +123,22 @@ public class MilestonesFragment extends Fragment implements RepoDetailActivity.R
 							R.attr.colorPrimaryContainer,
 							R.attr.colorOnPrimaryContainer));
 		}
+		items.add(
+				new RepositoryMenuItemModel(
+						"BOOKMARK_TAB",
+						isBookmarked ? R.string.bookmark_remove : R.string.bookmark_add,
+						isBookmarked ? R.drawable.ic_bookmark_remove : R.drawable.ic_bookmark_add,
+						isBookmarked ? R.attr.colorErrorContainer : R.attr.colorPrimarySurface,
+						isBookmarked
+								? R.attr.colorOnErrorContainer
+								: R.attr.colorOnPrimarySurface));
+		items.add(
+				new RepositoryMenuItemModel(
+						"CONTEXT_SHARE",
+						R.string.share_location,
+						R.drawable.ic_share,
+						R.attr.colorPrimarySurface,
+						R.attr.colorOnPrimarySurface));
 
 		return items;
 	}
@@ -121,10 +150,34 @@ public class MilestonesFragment extends Fragment implements RepoDetailActivity.R
 				currentState = currentState.equals("open") ? "closed" : "open";
 				refreshData();
 				break;
-
 			case "MILESTONE_ADD_NEW":
-				BottomSheetCreateMilestone.newInstance(repository, null)
+				CreateMilestoneBottomSheet.newInstance(repository, null)
 						.show(getChildFragmentManager(), "CREATE_MILESTONE");
+				break;
+			case "BOOKMARK_TAB":
+				BookmarkHelper.toggleBookmark(
+						requireContext(),
+						"repo",
+						repository.getOwner(),
+						repository.getName(),
+						"milestones",
+						null,
+						null,
+						getString(R.string.milestones),
+						UrlHelper.buildCurrentContextUrl(
+								requireContext(),
+								repository.getOwner(),
+								repository.getName(),
+								"milestones"));
+				break;
+			case "CONTEXT_SHARE":
+				String url =
+						UrlHelper.buildCurrentContextUrl(
+								requireContext(),
+								repository.getOwner(),
+								repository.getName(),
+								"milestones");
+				AppUtil.sharingIntent(requireContext(), url);
 				break;
 		}
 	}
@@ -189,55 +242,7 @@ public class MilestonesFragment extends Fragment implements RepoDetailActivity.R
 												requireContext(),
 												list,
 												canEdit,
-												milestone -> {
-													BottomsheetMilestonesItemMenuBinding sheetB =
-															BottomsheetMilestonesItemMenuBinding
-																	.inflate(getLayoutInflater());
-													BottomSheetDialog dialog =
-															new BottomSheetDialog(requireContext());
-													dialog.setContentView(sheetB.getRoot());
-
-													sheetB.sheetTitle.setText(milestone.getTitle());
-													boolean isOpen =
-															milestone.getState()
-																	== Milestone.StateEnum.OPEN;
-
-													if (isOpen) {
-														sheetB.closeIcon.setImageResource(
-																R.drawable.ic_close);
-														sheetB.closeText.setText(R.string.close);
-													} else {
-														sheetB.closeIcon.setImageResource(
-																R.drawable.ic_refresh);
-														sheetB.closeText.setText(R.string.isOpen);
-													}
-
-													sheetB.editMenu.setOnClickListener(
-															v -> {
-																dialog.dismiss();
-																BottomSheetCreateMilestone
-																		.newInstance(
-																				repository,
-																				milestone)
-																		.show(
-																				getChildFragmentManager(),
-																				"EDIT_MILESTONE");
-															});
-
-													sheetB.deleteMenu.setOnClickListener(
-															v -> {
-																dialog.dismiss();
-																showDeleteConfirmation(milestone);
-															});
-
-													sheetB.closeMenu.setOnClickListener(
-															v -> {
-																dialog.dismiss();
-																showCloseConfirmation(milestone);
-															});
-
-													dialog.show();
-												});
+												this::showMilestoneMenu);
 								binding.recyclerView.setAdapter(adapter);
 							} else {
 								adapter.updateList(list);
@@ -282,6 +287,85 @@ public class MilestonesFragment extends Fragment implements RepoDetailActivity.R
 						err -> {
 							if (err != null) Toasty.show(requireContext(), err);
 						});
+	}
+
+	private void showMilestoneMenu(Milestone milestone) {
+		List<GenericMenuItemModel> items = new ArrayList<>();
+
+		boolean isOpen = milestone.getState() == Milestone.StateEnum.OPEN;
+
+		if (isOpen) {
+			items.add(
+					new GenericMenuItemModel(
+							"MILESTONE_CLOSE",
+							R.string.close,
+							R.drawable.ic_close,
+							R.attr.colorErrorContainer,
+							R.attr.colorOnErrorContainer));
+		} else {
+			items.add(
+					new GenericMenuItemModel(
+							"MILESTONE_REOPEN",
+							R.string.isOpen,
+							R.drawable.ic_refresh,
+							R.attr.colorPrimarySurface,
+							R.attr.colorOnPrimarySurface));
+		}
+
+		items.add(
+				new GenericMenuItemModel(
+						"MILESTONE_EDIT",
+						R.string.edit_milestone,
+						R.drawable.ic_edit,
+						R.attr.colorPrimarySurface,
+						R.attr.colorOnPrimarySurface));
+
+		items.add(
+				new GenericMenuItemModel(
+						"MILESTONE_DELETE",
+						R.string.menuDeleteText,
+						R.drawable.ic_delete,
+						R.attr.colorErrorContainer,
+						R.attr.colorOnErrorContainer));
+
+		items.add(
+				new GenericMenuItemModel(
+						"MILESTONE_SHARE",
+						R.string.share_location,
+						R.drawable.ic_share,
+						R.attr.colorPrimarySurface,
+						R.attr.colorOnPrimarySurface));
+
+		GenericMenuBottomSheet sheet =
+				GenericMenuBottomSheet.newInstance(milestone.getTitle(), null, items);
+
+		sheet.setOnMenuItemClickListener(
+				id -> {
+					switch (id) {
+						case "MILESTONE_CLOSE", "MILESTONE_REOPEN":
+							showCloseConfirmation(milestone);
+							break;
+						case "MILESTONE_EDIT":
+							CreateMilestoneBottomSheet.newInstance(repository, milestone)
+									.show(getChildFragmentManager(), "EDIT_MILESTONE");
+							break;
+						case "MILESTONE_DELETE":
+							showDeleteConfirmation(milestone);
+							break;
+						case "MILESTONE_SHARE":
+							String shareUrl =
+									UrlHelper.buildCurrentContextUrl(
+											requireContext(),
+											repository.getOwner(),
+											repository.getName(),
+											"milestone",
+											String.valueOf(milestone.getId()));
+							AppUtil.sharingIntent(requireContext(), shareUrl);
+							break;
+					}
+				});
+
+		sheet.show(getChildFragmentManager(), "MILESTONE_MENU");
 	}
 
 	private void showDeleteConfirmation(Milestone milestone) {

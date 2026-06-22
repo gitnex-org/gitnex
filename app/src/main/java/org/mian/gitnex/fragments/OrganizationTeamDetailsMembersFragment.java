@@ -17,6 +17,7 @@ import org.gitnex.tea4j.v2.models.Team;
 import org.mian.gitnex.R;
 import org.mian.gitnex.activities.OrganizationTeamDetailActivity;
 import org.mian.gitnex.adapters.UsersAdapter;
+import org.mian.gitnex.bottomsheets.AddTeamMemberBottomSheet;
 import org.mian.gitnex.databinding.FragmentOrganizationTeamDetailsMembersBinding;
 import org.mian.gitnex.helpers.Constants;
 import org.mian.gitnex.helpers.EndlessRecyclerViewScrollListener;
@@ -243,8 +244,8 @@ public class OrganizationTeamDetailsMembersFragment extends Fragment
 
 	private void openAddMemberSheet() {
 		if (team == null) return;
-		BottomSheetAddTeamMember addMemberSheet =
-				BottomSheetAddTeamMember.newInstance(team.getId());
+		AddTeamMemberBottomSheet addMemberSheet =
+				AddTeamMemberBottomSheet.newInstance(team.getId());
 		addMemberSheet.show(getChildFragmentManager(), "AddTeamMemberBottomSheet");
 	}
 

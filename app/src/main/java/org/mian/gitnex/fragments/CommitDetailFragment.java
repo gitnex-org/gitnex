@@ -1,8 +1,5 @@
 package org.mian.gitnex.fragments;
 
-import android.content.ClipData;
-import android.content.ClipboardManager;
-import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.LayoutInflater;
@@ -28,14 +25,18 @@ import org.mian.gitnex.activities.BaseActivity;
 import org.mian.gitnex.activities.ProfileActivity;
 import org.mian.gitnex.adapters.CommitStatusesAdapter;
 import org.mian.gitnex.adapters.DiffFilesAdapter;
+import org.mian.gitnex.bottomsheets.GenericMenuBottomSheet;
 import org.mian.gitnex.clients.RetrofitClient;
 import org.mian.gitnex.databinding.FragmentCommitDetailsBinding;
+import org.mian.gitnex.helpers.AppUtil;
 import org.mian.gitnex.helpers.FileDiffView;
 import org.mian.gitnex.helpers.ParseDiff;
 import org.mian.gitnex.helpers.TimeHelper;
 import org.mian.gitnex.helpers.Toasty;
 import org.mian.gitnex.helpers.TokenAuthorizationDialog;
 import org.mian.gitnex.helpers.UIHelper;
+import org.mian.gitnex.helpers.UrlHelper;
+import org.mian.gitnex.models.GenericMenuItemModel;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
@@ -76,11 +77,6 @@ public class CommitDetailFragment extends Fragment {
 		repoName = requireActivity().getIntent().getStringExtra("repo");
 		sha = requireActivity().getIntent().getStringExtra("sha");
 
-		if (sha != null) {
-			String shortSha = sha.substring(0, Math.min(sha.length(), 10));
-			binding.toolbarTitle.setText(shortSha);
-		}
-
 		setupRecyclerView();
 		setupListeners();
 
@@ -115,10 +111,54 @@ public class CommitDetailFragment extends Fragment {
 					}
 				});
 
-		binding.toolbarTitle.setOnLongClickListener(
+		binding.btnDockMenu.setOnClickListener(
 				v -> {
-					copyToClipboard(sha);
-					return true;
+					String shortSha = sha.substring(0, Math.min(sha.length(), 10));
+
+					List<GenericMenuItemModel> items = new ArrayList<>();
+
+					items.add(
+							new GenericMenuItemModel(
+									"COMMIT_SHARE",
+									R.string.share_location,
+									R.drawable.ic_share,
+									R.attr.colorPrimarySurface,
+									R.attr.colorOnPrimarySurface));
+
+					items.add(
+							new GenericMenuItemModel(
+									"COMMIT_COPY_SHA",
+									R.string.copySha,
+									R.drawable.ic_copy,
+									R.attr.colorPrimarySurface,
+									R.attr.colorOnPrimarySurface));
+
+					GenericMenuBottomSheet sheet =
+							GenericMenuBottomSheet.newInstance(shortSha, null, items);
+
+					sheet.setOnMenuItemClickListener(
+							id -> {
+								switch (id) {
+									case "COMMIT_SHARE":
+										String shareUrl =
+												UrlHelper.buildCurrentContextUrl(
+														requireContext(),
+														repoOwner,
+														repoName,
+														"commit",
+														sha);
+										AppUtil.sharingIntent(requireContext(), shareUrl);
+										break;
+									case "COMMIT_COPY_SHA":
+										AppUtil.copyToClipboard(
+												requireContext(),
+												sha,
+												getString(R.string.copyShaToastMsg));
+										break;
+								}
+							});
+
+					sheet.show(getChildFragmentManager(), "COMMIT_MENU");
 				});
 	}
 
@@ -239,7 +279,10 @@ public class CommitDetailFragment extends Fragment {
 		}
 
 		binding.commitSha.setText(sha.substring(0, Math.min(sha.length(), 10)));
-		binding.commitSha.setOnClickListener(v -> copyToClipboard(sha));
+		binding.commitSha.setOnClickListener(
+				v ->
+						AppUtil.copyToClipboard(
+								requireContext(), sha, getString(R.string.copyShaToastMsg)));
 	}
 
 	private void getStatuses() {
@@ -356,16 +399,6 @@ public class CommitDetailFragment extends Fragment {
 			binding.contentScrollView.setAlpha(0f);
 			binding.contentScrollView.animate().alpha(1f).setDuration(300).start();
 			binding.dockedToolbar.setVisibility(View.VISIBLE);
-		}
-	}
-
-	private void copyToClipboard(String text) {
-		ClipboardManager clipboard =
-				(ClipboardManager) requireContext().getSystemService(Context.CLIPBOARD_SERVICE);
-		ClipData clip = ClipData.newPlainText("commitSha", text);
-		if (clipboard != null) {
-			clipboard.setPrimaryClip(clip);
-			Toasty.show(requireContext(), getString(R.string.copyShaToastMsg));
 		}
 	}
 

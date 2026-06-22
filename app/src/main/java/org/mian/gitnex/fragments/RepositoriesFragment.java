@@ -19,6 +19,7 @@ import java.util.ArrayList;
 import org.mian.gitnex.R;
 import org.mian.gitnex.activities.MainActivity;
 import org.mian.gitnex.adapters.ReposListAdapter;
+import org.mian.gitnex.bottomsheets.CreateRepositoryBottomSheet;
 import org.mian.gitnex.databinding.FragmentRepositoriesBinding;
 import org.mian.gitnex.helpers.Constants;
 import org.mian.gitnex.helpers.EndlessRecyclerViewScrollListener;
@@ -242,7 +243,7 @@ public class RepositoriesFragment extends Fragment {
 	}
 
 	public void createNewRepo() {
-		BottomSheetCreateRepo.newInstance(null, false)
+		CreateRepositoryBottomSheet.newInstance(null, false)
 				.show(getChildFragmentManager(), "create_repo");
 	}
 

@@ -88,15 +88,47 @@
 
     </LinearLayout>
 
-    <com.google.android.material.chip.ChipGroup
-        android:id="@+id/labels_chip_group"
+    <LinearLayout
+        android:id="@+id/labels_container"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
+        android:orientation="vertical"
         android:layout_marginTop="@dimen/dimen16dp"
-        app:chipSpacingHorizontal="@dimen/dimen6dp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/author_row" />
+        app:layout_constraintTop_toBottomOf="@id/author_row">
+
+        <HorizontalScrollView
+            android:id="@+id/labelsScrollViewWithText"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:scrollbars="none"
+            android:visibility="gone">
+
+            <LinearLayout
+                android:id="@+id/frameLabels"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal" />
+
+        </HorizontalScrollView>
+
+        <HorizontalScrollView
+            android:id="@+id/labelsScrollViewDots"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:scrollbars="none"
+            android:visibility="gone">
+
+            <LinearLayout
+                android:id="@+id/frameLabelsDots"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal" />
+
+        </HorizontalScrollView>
+
+    </LinearLayout>
 
     <LinearLayout
         android:id="@+id/meta_container"
@@ -104,7 +136,7 @@
         android:layout_height="wrap_content"
         android:layout_marginTop="@dimen/dimen16dp"
         android:orientation="vertical"
-        app:layout_constraintTop_toBottomOf="@id/labels_chip_group">
+        app:layout_constraintTop_toBottomOf="@id/labels_container">
 
         <include android:id="@+id/row_milestone" layout="@layout/item_pr_meta_row" />
         <include android:id="@+id/row_assignees" layout="@layout/item_pr_meta_row" />

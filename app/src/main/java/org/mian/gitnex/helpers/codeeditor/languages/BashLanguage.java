@@ -13,24 +13,12 @@ import java.util.regex.Pattern;
  */
 public class BashLanguage extends Language {
 
-	private static final Pattern PATTERN_BUILTINS = Pattern.compile("[,:;[->]{}()]");
-	private static final Pattern PATTERN_SINGLE_LINE_COMMENT = Pattern.compile("//[^\\n]*");
-	private static final Pattern PATTERN_MULTI_LINE_COMMENT =
-			Pattern.compile("/\\*[^*]*\\*+(?:[^/*][^*]*\\*+)*/");
-	private static final Pattern PATTERN_ATTRIBUTE = Pattern.compile("\\.[a-zA-Z0-9_]+");
-	private static final Pattern PATTERN_OPERATION =
-			Pattern.compile(
-					":|==|>|<|!=|>=|<=|->|=|>|<|%|-|-=|%=|\\+|\\-|\\-=|\\+=|\\^|\\&|\\|::|\\?|\\*");
-	private static final Pattern PATTERN_GENERIC = Pattern.compile("<[a-zA-Z0-9,<>]+>");
-	private static final Pattern PATTERN_TODO_COMMENT =
-			Pattern.compile("//\\s?(TODO|todo)\\s[^\n]*");
+	private static final Pattern PATTERN_SINGLE_LINE_COMMENT = Pattern.compile("#[^\\n]*");
 	private static final Pattern PATTERN_NUMBERS = Pattern.compile("\\b(\\d*[.]?\\d+)\\b");
-	private static final Pattern PATTERN_CHAR = Pattern.compile("['](.*?)[']");
 	private static final Pattern PATTERN_STRING = Pattern.compile("[\"](.*?)[\"]");
-	private static final Pattern PATTERN_HEX = Pattern.compile("0x[0-9a-fA-F]+");
 
 	public static String getCommentStart() {
-		return "//";
+		return "#";
 	}
 
 	public static String getCommentEnd() {
@@ -41,17 +29,9 @@ public class BashLanguage extends Language {
 	public Pattern getPattern(LanguageElement element) {
 		return switch (element) {
 			case KEYWORD -> Pattern.compile("\\b(" + String.join("|", getKeywords()) + ")\\b");
-			case BUILTIN -> PATTERN_BUILTINS;
 			case NUMBER -> PATTERN_NUMBERS;
-			case CHAR -> PATTERN_CHAR;
 			case STRING -> PATTERN_STRING;
-			case HEX -> PATTERN_HEX;
 			case SINGLE_LINE_COMMENT -> PATTERN_SINGLE_LINE_COMMENT;
-			case MULTI_LINE_COMMENT -> PATTERN_MULTI_LINE_COMMENT;
-			case ATTRIBUTE -> PATTERN_ATTRIBUTE;
-			case OPERATION -> PATTERN_OPERATION;
-			case TODO_COMMENT -> PATTERN_TODO_COMMENT;
-			case GENERIC -> PATTERN_GENERIC;
 			default -> null;
 		};
 	}
@@ -59,82 +39,66 @@ public class BashLanguage extends Language {
 	@Override
 	public String[] getKeywords() {
 		return new String[] {
-			"BASH_VERSION",
-			"BASH",
-			"PWD",
-			"OSTYPE",
-			"HOME",
-			"LANG",
-			"HOSTNAME",
-			"PATH",
-			"COLUMNS",
-			"USER",
-			"then",
-			"set",
-			"env",
-			"printenv",
-			"for",
-			"register",
-			"typedef",
-			"class",
-			"return",
-			"union",
-			"const",
-			"goto",
-			"short",
-			"unsigned",
-			"continue",
 			"if",
+			"then",
+			"else",
+			"elif",
 			"fi",
-			"signed",
-			"virtual",
-			"default",
-			"inline",
-			"sizeof",
-			"delete",
-			"int",
-			"static",
-			"do",
-			"long",
+			"case",
+			"esac",
+			"for",
 			"while",
-			"echo",
-			"alias",
-			"ps",
-			"ax",
-			"grep",
+			"until",
 			"do",
 			"done",
+			"in",
+			"function",
+			"select",
+			"time",
+			"coproc",
+			"declare",
+			"typeset",
+			"local",
+			"readonly",
+			"export",
+			"unset",
+			"alias",
+			"unalias",
+			"source",
 			"exit",
-			"read"
+			"return",
+			"break",
+			"continue",
+			"trap",
+			"eval",
+			"exec",
+			"echo",
+			"printf",
+			"read",
+			"test",
+			"shift",
 		};
 	}
 
 	@Override
 	public List<Code> getCodeList() {
 		List<Code> codeList = new ArrayList<>();
-		String[] keywords = getKeywords();
-		for (String keyword : keywords) {
-			codeList.add(new Keyword(keyword));
-		}
+		for (String keyword : getKeywords()) codeList.add(new Keyword(keyword));
 		return codeList;
 	}
 
 	@Override
 	public String getName() {
-		return "sh";
+		return "Bash";
 	}
 
 	@Override
 	public Set<Character> getIndentationStarts() {
-		Set<Character> characterSet = new HashSet<>();
-		characterSet.add('{');
-		return characterSet;
+		return new HashSet<>();
 	}
 
 	@Override
 	public Set<Character> getIndentationEnds() {
-		Set<Character> characterSet = new HashSet<>();
-		characterSet.add('}');
-		return characterSet;
+		return new HashSet<>();
 	}
 }

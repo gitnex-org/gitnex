@@ -20,6 +20,7 @@ import android.view.ViewGroup;
 import android.widget.FrameLayout;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
+import android.widget.TextView;
 import androidx.activity.result.ActivityResultLauncher;
 import androidx.activity.result.contract.ActivityResultContracts;
 import androidx.annotation.Nullable;
@@ -30,7 +31,6 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.load.engine.DiskCacheStrategy;
 import com.google.android.material.card.MaterialCardView;
-import com.google.android.material.chip.ChipGroup;
 import com.google.android.material.dialog.MaterialAlertDialogBuilder;
 import com.google.android.material.imageview.ShapeableImageView;
 import com.google.android.material.shape.CornerFamily;
@@ -40,8 +40,10 @@ import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Date;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Locale;
+import java.util.Map;
 import okhttp3.ResponseBody;
 import org.apache.commons.io.FilenameUtils;
 import org.gitnex.tea4j.v2.models.Attachment;
@@ -54,22 +56,26 @@ import org.gitnex.tea4j.v2.models.User;
 import org.mian.gitnex.R;
 import org.mian.gitnex.adapters.CommitStatusesAdapter;
 import org.mian.gitnex.adapters.TimelineAdapter;
+import org.mian.gitnex.bottomsheets.ContentViewerBottomSheet;
+import org.mian.gitnex.bottomsheets.CreatePullRequestBottomSheet;
+import org.mian.gitnex.bottomsheets.DependenciesBottomSheet;
+import org.mian.gitnex.bottomsheets.GenericMenuBottomSheet;
+import org.mian.gitnex.bottomsheets.PrActionsBottomSheet;
+import org.mian.gitnex.bottomsheets.TrackedTimeBottomSheet;
 import org.mian.gitnex.clients.RetrofitClient;
 import org.mian.gitnex.databinding.ActivityPullRequestDetailsBinding;
 import org.mian.gitnex.databinding.ItemPrMetaRowBinding;
 import org.mian.gitnex.databinding.LayoutPrHeaderBinding;
-import org.mian.gitnex.fragments.BottomSheetContentViewer;
-import org.mian.gitnex.fragments.BottomSheetCreatePullRequest;
-import org.mian.gitnex.fragments.BottomSheetDependencies;
-import org.mian.gitnex.fragments.BottomSheetGenericMenu;
-import org.mian.gitnex.fragments.BottomSheetPrActions;
-import org.mian.gitnex.fragments.BottomSheetTrackedTime;
+import org.mian.gitnex.helpers.AppDatabaseSettings;
 import org.mian.gitnex.helpers.AppUIStateManager;
 import org.mian.gitnex.helpers.AppUtil;
 import org.mian.gitnex.helpers.AvatarGenerator;
+import org.mian.gitnex.helpers.BookmarkHelper;
+import org.mian.gitnex.helpers.ColorInverter;
 import org.mian.gitnex.helpers.Constants;
 import org.mian.gitnex.helpers.EndlessRecyclerViewScrollListener;
 import org.mian.gitnex.helpers.FileIcon;
+import org.mian.gitnex.helpers.LabelStylingHelper;
 import org.mian.gitnex.helpers.Markdown;
 import org.mian.gitnex.helpers.TimeHelper;
 import org.mian.gitnex.helpers.Toasty;
@@ -94,7 +100,7 @@ import retrofit2.Response;
  * @author mmarif
  */
 public class PullRequestDetailActivity extends BaseActivity
-		implements BottomSheetGenericMenu.OnMenuItemClickListener {
+		implements GenericMenuBottomSheet.OnMenuItemClickListener {
 
 	private ActivityPullRequestDetailsBinding binding;
 	private PullRequestDetailViewModel viewModel;
@@ -227,7 +233,7 @@ public class PullRequestDetailActivity extends BaseActivity
 				v -> {
 					if (isDataLoaded && viewModel.getPrData().getValue() != null) {
 						PullRequest pr = viewModel.getPrData().getValue();
-						BottomSheetCreatePullRequest.newInstance(repositoryContext, pr)
+						CreatePullRequestBottomSheet.newInstance(repositoryContext, pr)
 								.show(getSupportFragmentManager(), "EDIT_PULL_REQUEST");
 					}
 				});
@@ -270,6 +276,10 @@ public class PullRequestDetailActivity extends BaseActivity
 					boolean isArchived = repository.isArchived();
 
 					issueActionsViewModel.checkSubscription(this, owner, repo, prNumber);
+
+					boolean isBookmarked =
+							BookmarkHelper.isBookmarked(
+									this, "pr", owner, repo, null, String.valueOf(prNumber));
 
 					List<GenericMenuItemModel> items = new ArrayList<>();
 
@@ -356,6 +366,19 @@ public class PullRequestDetailActivity extends BaseActivity
 					}
 					items.add(
 							new GenericMenuItemModel(
+									"bookmark",
+									isBookmarked ? R.string.bookmark_remove : R.string.bookmark_add,
+									isBookmarked
+											? R.drawable.ic_bookmark_remove
+											: R.drawable.ic_bookmark_add,
+									isBookmarked
+											? R.attr.colorErrorContainer
+											: R.attr.colorPrimarySurface,
+									isBookmarked
+											? R.attr.colorOnErrorContainer
+											: R.attr.colorOnPrimarySurface));
+					items.add(
+							new GenericMenuItemModel(
 									"copy_url",
 									R.string.genericCopyUrl,
 									R.drawable.ic_copy,
@@ -376,7 +399,7 @@ public class PullRequestDetailActivity extends BaseActivity
 									R.attr.colorPrimarySurface,
 									R.attr.colorOnPrimarySurface));
 
-					BottomSheetGenericMenu.newInstance(
+					GenericMenuBottomSheet.newInstance(
 									getString(R.string.pullRequest),
 									pr.getTitle() + " #" + pr.getNumber(),
 									items)
@@ -904,7 +927,7 @@ public class PullRequestDetailActivity extends BaseActivity
 						R.attr.colorPrimarySurface,
 						R.attr.colorOnPrimarySurface));
 
-		BottomSheetGenericMenu.newInstance(
+		GenericMenuBottomSheet.newInstance(
 						getString(R.string.commentButtonText),
 						"#issuecomment-" + comment.getId(),
 						items)
@@ -925,15 +948,15 @@ public class PullRequestDetailActivity extends BaseActivity
 				break;
 			case "pr_actions":
 				if (pr == null) return;
-				BottomSheetPrActions.newInstance(owner, repo, prNumber, pr)
+				PrActionsBottomSheet.newInstance(owner, repo, prNumber, pr)
 						.show(getSupportFragmentManager(), "PR_ACTIONS");
 				break;
 			case "dependencies":
-				BottomSheetDependencies.newInstance(owner, repo, prNumber)
+				DependenciesBottomSheet.newInstance(owner, repo, prNumber)
 						.show(getSupportFragmentManager(), "DEPENDENCIES");
 				break;
 			case "tracked_time":
-				BottomSheetTrackedTime.newInstance(owner, repo, prNumber)
+				TrackedTimeBottomSheet.newInstance(owner, repo, prNumber)
 						.show(getSupportFragmentManager(), "TRACKED_TIME");
 				break;
 			case "pr_state":
@@ -957,6 +980,19 @@ public class PullRequestDetailActivity extends BaseActivity
 				Boolean subscribed = issueActionsViewModel.getIsSubscribed().getValue();
 				issueActionsViewModel.toggleSubscribe(
 						this, owner, repo, prNumber, currentUser, subscribed != null && subscribed);
+				break;
+			case "bookmark":
+				if (pr == null) return;
+				BookmarkHelper.toggleBookmark(
+						this,
+						"pr",
+						owner,
+						repo,
+						null,
+						String.valueOf(prNumber),
+						null,
+						pr.getTitle(),
+						pr.getHtmlUrl());
 				break;
 			case "copy_url":
 				if (pr != null)
@@ -1034,6 +1070,14 @@ public class PullRequestDetailActivity extends BaseActivity
 										binding.btnReply.setAlpha(0.4f);
 									}
 								}
+								BookmarkHelper.updateBookmarkTitle(
+										this,
+										"pr",
+										owner,
+										repo,
+										null,
+										String.valueOf(prNumber),
+										pr.getTitle());
 							}
 						});
 
@@ -1192,20 +1236,67 @@ public class PullRequestDetailActivity extends BaseActivity
 	}
 
 	private void setLabels(LayoutPrHeaderBinding header, List<Label> labels) {
+		header.frameLabels.removeAllViews();
+		header.frameLabelsDots.removeAllViews();
+
 		if (labels == null || labels.isEmpty()) {
-			header.labelsChipGroup.setVisibility(View.GONE);
+			header.labelsScrollViewWithText.setVisibility(View.GONE);
+			header.labelsScrollViewDots.setVisibility(View.GONE);
 			return;
 		}
 
-		header.labelsChipGroup.setVisibility(View.VISIBLE);
-		header.labelsChipGroup.removeAllViews();
+		boolean showText =
+				Boolean.parseBoolean(
+						AppDatabaseSettings.getSettingsValue(
+								this, AppDatabaseSettings.APP_LABELS_IN_LIST_KEY));
+		header.labelsScrollViewWithText.setVisibility(showText ? View.VISIBLE : View.GONE);
+		header.labelsScrollViewDots.setVisibility(showText ? View.GONE : View.VISIBLE);
 
-		for (Label label : labels) {
-			int color = Color.parseColor("#" + label.getColor());
-			ImageView iv = new ImageView(this);
-			iv.setImageDrawable(AvatarGenerator.getLabelDrawable(this, label.getName(), color, 22));
-			iv.setLayoutParams(new ChipGroup.LayoutParams(-2, -2));
-			header.labelsChipGroup.addView(iv);
+		LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(-2, -2);
+		params.setMargins(0, 0, 15, 0);
+
+		LabelStylingHelper stylingHelper = LabelStylingHelper.getInstance(this);
+
+		for (org.gitnex.tea4j.v2.models.Label label : labels) {
+			if (showText) {
+				String labelText = label.getName();
+				String colorHex = "#" + label.getColor();
+				boolean exclusive = label.isExclusive();
+				int color = Color.parseColor(colorHex);
+				int contrast = ColorInverter.getContrastColor(color);
+				String contrastHex = String.format("#%06X", contrast);
+
+				if (LabelStylingHelper.isScopedLabel(labelText, exclusive)) {
+					LinearLayout container = new LinearLayout(this);
+					container.setOrientation(LinearLayout.HORIZONTAL);
+					container.setGravity(android.view.Gravity.CENTER_VERTICAL);
+					container.setLayoutParams(params);
+
+					TextView keyView = new TextView(this);
+					TextView valueView = new TextView(this);
+
+					stylingHelper.styleScopedLabel(
+							labelText, colorHex, contrastHex, keyView, valueView, 12, 5, 11);
+
+					container.addView(keyView);
+					container.addView(valueView);
+					header.frameLabels.addView(container);
+				} else {
+					TextView labelView = new TextView(this);
+					labelView.setLayoutParams(params);
+
+					stylingHelper.styleRegularLabel(
+							labelText, colorHex, contrastHex, labelView, 12, 5, 11);
+
+					header.frameLabels.addView(labelView);
+				}
+			} else {
+				ImageView iv = new ImageView(this);
+				iv.setLayoutParams(params);
+				int color = Color.parseColor("#" + label.getColor());
+				iv.setImageDrawable(AvatarGenerator.getCircleColorDrawable(this, color, 14));
+				header.frameLabelsDots.addView(iv);
+			}
 		}
 	}
 
@@ -1622,15 +1713,15 @@ public class PullRequestDetailActivity extends BaseActivity
 
 									runOnUiThread(
 											() -> {
-												BottomSheetContentViewer.newInstance(
+												ContentViewerBottomSheet.newInstance(
 																imageBytes,
 																fileName,
 																repositoryContext,
-																BottomSheetContentViewer.Feature
+																ContentViewerBottomSheet.Feature
 																		.IMAGE_PREVIEW,
-																BottomSheetContentViewer.Feature
+																ContentViewerBottomSheet.Feature
 																		.SHOW_TITLE,
-																BottomSheetContentViewer.Feature
+																ContentViewerBottomSheet.Feature
 																		.ALLOW_SHARE)
 														.show(
 																getSupportFragmentManager(),
@@ -1739,40 +1830,47 @@ public class PullRequestDetailActivity extends BaseActivity
 
 									runOnUiThread(
 											() -> {
-												BottomSheetContentViewer.Feature[] features;
+												ContentViewerBottomSheet.Feature[] features;
 												if (isMarkdown) {
 													features =
-															new BottomSheetContentViewer.Feature[] {
-																BottomSheetContentViewer.Feature
+															new ContentViewerBottomSheet.Feature[] {
+																ContentViewerBottomSheet.Feature
 																		.MARKDOWN_PREVIEW,
-																BottomSheetContentViewer.Feature
+																ContentViewerBottomSheet.Feature
 																		.START_IN_MARKDOWN,
-																BottomSheetContentViewer.Feature
+																ContentViewerBottomSheet.Feature
 																		.SHOW_TITLE,
-																BottomSheetContentViewer.Feature
+																ContentViewerBottomSheet.Feature
 																		.ALLOW_COPY,
-																BottomSheetContentViewer.Feature
+																ContentViewerBottomSheet.Feature
 																		.ALLOW_SHARE
 															};
 												} else {
 													features =
-															new BottomSheetContentViewer.Feature[] {
-																BottomSheetContentViewer.Feature
+															new ContentViewerBottomSheet.Feature[] {
+																ContentViewerBottomSheet.Feature
 																		.SYNTAX_HIGHLIGHT,
-																BottomSheetContentViewer.Feature
+																ContentViewerBottomSheet.Feature
 																		.SHOW_TITLE,
-																BottomSheetContentViewer.Feature
+																ContentViewerBottomSheet.Feature
 																		.ALLOW_COPY,
-																BottomSheetContentViewer.Feature
+																ContentViewerBottomSheet.Feature
 																		.ALLOW_SHARE
 															};
 												}
 
-												BottomSheetContentViewer.newInstance(
+												Map<String, String> metadata = new HashMap<>();
+												if (repositoryContext != null) {
+													metadata.put(
+															"URL",
+															attachment.getBrowserDownloadUrl());
+												}
+												ContentViewerBottomSheet.newInstance(
 																content,
 																fileName,
 																repositoryContext,
 																extension,
+																metadata,
 																features)
 														.show(
 																getSupportFragmentManager(),

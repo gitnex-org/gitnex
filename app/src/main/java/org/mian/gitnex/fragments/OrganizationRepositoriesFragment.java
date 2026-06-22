@@ -17,6 +17,7 @@ import org.gitnex.tea4j.v2.models.OrganizationPermissions;
 import org.mian.gitnex.R;
 import org.mian.gitnex.activities.OrganizationDetailActivity;
 import org.mian.gitnex.adapters.ReposListAdapter;
+import org.mian.gitnex.bottomsheets.CreateRepositoryBottomSheet;
 import org.mian.gitnex.databinding.FragmentRepositoriesBinding;
 import org.mian.gitnex.helpers.Constants;
 import org.mian.gitnex.helpers.EndlessRecyclerViewScrollListener;
@@ -255,7 +256,7 @@ public class OrganizationRepositoriesFragment extends Fragment
 
 	@Override
 	public void onAddRequested() {
-		BottomSheetCreateRepo.newInstance(orgName, true)
+		CreateRepositoryBottomSheet.newInstance(orgName, true)
 				.show(getChildFragmentManager(), "create_repo");
 	}
 

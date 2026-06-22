@@ -20,11 +20,16 @@ import org.gitnex.tea4j.v2.models.Issue;
 import org.mian.gitnex.R;
 import org.mian.gitnex.activities.RepoDetailActivity;
 import org.mian.gitnex.adapters.IssuesAdapter;
+import org.mian.gitnex.bottomsheets.CreateIssueBottomSheet;
+import org.mian.gitnex.bottomsheets.IssuesFilterBottomSheet;
 import org.mian.gitnex.databinding.FragmentIssuesBinding;
+import org.mian.gitnex.helpers.AppUtil;
+import org.mian.gitnex.helpers.BookmarkHelper;
 import org.mian.gitnex.helpers.Constants;
 import org.mian.gitnex.helpers.EndlessRecyclerViewScrollListener;
 import org.mian.gitnex.helpers.Toasty;
 import org.mian.gitnex.helpers.UIHelper;
+import org.mian.gitnex.helpers.UrlHelper;
 import org.mian.gitnex.helpers.contexts.RepositoryContext;
 import org.mian.gitnex.models.IssueFilterState;
 import org.mian.gitnex.models.RepositoryMenuItemModel;
@@ -88,6 +93,15 @@ public class IssuesFragment extends Fragment implements RepoDetailActivity.RepoH
 	public List<RepositoryMenuItemModel> getRepoHubItems() {
 		List<RepositoryMenuItemModel> items = new ArrayList<>();
 
+		boolean isBookmarked =
+				BookmarkHelper.isBookmarked(
+						requireContext(),
+						"repo",
+						repository.getOwner(),
+						repository.getName(),
+						"issues",
+						null);
+
 		items.add(
 				new RepositoryMenuItemModel(
 						"ISSUES_SEARCH",
@@ -106,6 +120,24 @@ public class IssuesFragment extends Fragment implements RepoDetailActivity.RepoH
 							R.attr.colorOnPrimaryContainer));
 		}
 
+		items.add(
+				new RepositoryMenuItemModel(
+						"BOOKMARK_TAB",
+						isBookmarked ? R.string.bookmark_remove : R.string.bookmark_tab,
+						isBookmarked ? R.drawable.ic_bookmark_remove : R.drawable.ic_bookmark_add,
+						isBookmarked ? R.attr.colorErrorContainer : R.attr.colorPrimarySurface,
+						isBookmarked
+								? R.attr.colorOnErrorContainer
+								: R.attr.colorOnPrimarySurface));
+
+		items.add(
+				new RepositoryMenuItemModel(
+						"CONTEXT_SHARE",
+						R.string.share_location,
+						R.drawable.ic_share,
+						R.attr.colorPrimarySurface,
+						R.attr.colorOnPrimarySurface));
+
 		return items;
 	}
 
@@ -113,13 +145,38 @@ public class IssuesFragment extends Fragment implements RepoDetailActivity.RepoH
 	public void onHubActionSelected(String actionId) {
 		switch (actionId) {
 			case "ISSUES_SEARCH":
-				BottomSheetIssuesFilter.newInstance(repository)
+				IssuesFilterBottomSheet.newInstance(repository)
 						.show(getChildFragmentManager(), "ISSUES_FILTER");
 				break;
 
 			case "ISSUE_CREATE_NEW":
-				BottomSheetCreateIssue.newInstance(repository, null)
+				CreateIssueBottomSheet.newInstance(repository, null)
 						.show(getChildFragmentManager(), "CREATE_ISSUE");
+				break;
+			case "BOOKMARK_TAB":
+				BookmarkHelper.toggleBookmark(
+						requireContext(),
+						"repo",
+						repository.getOwner(),
+						repository.getName(),
+						"issues",
+						null,
+						null,
+						getString(R.string.pageTitleIssues),
+						UrlHelper.buildCurrentContextUrl(
+								requireContext(),
+								repository.getOwner(),
+								repository.getName(),
+								"issues"));
+				break;
+			case "CONTEXT_SHARE":
+				String url =
+						UrlHelper.buildCurrentContextUrl(
+								requireContext(),
+								repository.getOwner(),
+								repository.getName(),
+								"issues");
+				AppUtil.sharingIntent(requireContext(), url);
 				break;
 		}
 	}

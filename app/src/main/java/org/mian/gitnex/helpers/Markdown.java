@@ -59,8 +59,8 @@ import org.mian.gitnex.R;
 import org.mian.gitnex.activities.BaseActivity;
 import org.mian.gitnex.activities.CommitDetailActivity;
 import org.mian.gitnex.activities.ProfileActivity;
+import org.mian.gitnex.bottomsheets.ContentViewerBottomSheet;
 import org.mian.gitnex.core.MainGrammarLocator;
-import org.mian.gitnex.fragments.BottomSheetContentViewer;
 import org.mian.gitnex.helpers.codeeditor.markwon.MarkwonHighlighter;
 import org.mian.gitnex.helpers.codeeditor.theme.Theme;
 import org.mian.gitnex.helpers.contexts.RepositoryContext;
@@ -415,12 +415,12 @@ public class Markdown {
 							((BaseActivity) context)
 									.runOnUiThread(
 											() -> {
-												BottomSheetContentViewer viewer =
-														BottomSheetContentViewer.newInstance(
+												ContentViewerBottomSheet viewer =
+														ContentViewerBottomSheet.newInstance(
 																imageBytes,
 																null,
 																repository,
-																BottomSheetContentViewer.Feature
+																ContentViewerBottomSheet.Feature
 																		.IMAGE_PREVIEW);
 												viewer.show(
 														((BaseActivity) context)

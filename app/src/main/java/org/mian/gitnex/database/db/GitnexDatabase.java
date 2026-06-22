@@ -8,10 +8,12 @@ import androidx.room.RoomDatabase;
 import androidx.room.migration.Migration;
 import androidx.sqlite.db.SupportSQLiteDatabase;
 import org.mian.gitnex.database.dao.AppSettingsDao;
+import org.mian.gitnex.database.dao.BookmarksDao;
 import org.mian.gitnex.database.dao.NotesDao;
 import org.mian.gitnex.database.dao.RepositoriesDao;
 import org.mian.gitnex.database.dao.UserAccountsDao;
 import org.mian.gitnex.database.models.AppSettings;
+import org.mian.gitnex.database.models.Bookmark;
 import org.mian.gitnex.database.models.Notes;
 import org.mian.gitnex.database.models.Repository;
 import org.mian.gitnex.database.models.UserAccount;
@@ -20,8 +22,14 @@ import org.mian.gitnex.database.models.UserAccount;
  * @author mmarif
  */
 @Database(
-		entities = {Repository.class, UserAccount.class, Notes.class, AppSettings.class},
-		version = 12,
+		entities = {
+			Repository.class,
+			UserAccount.class,
+			Notes.class,
+			AppSettings.class,
+			Bookmark.class
+		},
+		version = 13,
 		exportSchema = false)
 public abstract class GitnexDatabase extends RoomDatabase {
 
@@ -130,6 +138,27 @@ public abstract class GitnexDatabase extends RoomDatabase {
 				}
 			};
 
+	private static final Migration MIGRATION_12_13 =
+			new Migration(12, 13) {
+				@Override
+				public void migrate(@NonNull SupportSQLiteDatabase database) {
+					database.execSQL(
+							"CREATE TABLE IF NOT EXISTS 'bookmarks' ("
+									+ "'bookmarkId' INTEGER NOT NULL, "
+									+ "'accountId' INTEGER NOT NULL, "
+									+ "'type' TEXT NOT NULL, "
+									+ "'bookmarkAction' TEXT, "
+									+ "'owner' TEXT, "
+									+ "'repo' TEXT, "
+									+ "'identifier' TEXT, "
+									+ "'branch' TEXT, "
+									+ "'title' TEXT NOT NULL, "
+									+ "'url' TEXT, "
+									+ "'createdAt' INTEGER NOT NULL, "
+									+ "PRIMARY KEY('bookmarkId'))");
+				}
+			};
+
 	private static volatile GitnexDatabase gitnexDatabase;
 
 	public static GitnexDatabase getDatabaseInstance(Context context) {
@@ -153,7 +182,8 @@ public abstract class GitnexDatabase extends RoomDatabase {
 											MIGRATION_8_9,
 											MIGRATION_9_10,
 											MIGRATION_10_11,
-											MIGRATION_11_12)
+											MIGRATION_11_12,
+											MIGRATION_12_13)
 									.build();
 				}
 			}
@@ -169,4 +199,6 @@ public abstract class GitnexDatabase extends RoomDatabase {
 	public abstract NotesDao notesDao();
 
 	public abstract AppSettingsDao appSettingsDao();
+
+	public abstract BookmarksDao bookmarksDao();
 }
