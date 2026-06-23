@@ -33,6 +33,7 @@
                 android:layout_marginHorizontal="@dimen/dimen24dp"/>
 
             <include android:id="@+id/rowAbout" layout="@layout/item_settings_row" />
+            <include android:id="@+id/rowDiscoverApps" layout="@layout/item_settings_row" />
             <include android:id="@+id/rowRateApp" layout="@layout/item_settings_row" />
 
         </LinearLayout>

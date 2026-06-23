@@ -191,11 +191,26 @@ public class LoginActivity extends BaseActivity {
 		activityLoginBinding.providerSpinner.setSelection(0);
 		activityLoginBinding.providerSpinner.setText(adapterProviders.getItem(0), false);
 		activityLoginBinding.providerSpinner.setOnItemClickListener(
-				(parent, view, position, id) ->
-						selectedProvider =
-								position == 0
-										? "gitea"
-										: position == 1 || position == 2 ? "forgejo" : "infer");
+				(parent, view, position, id) -> {
+					selectedProvider =
+							position == 0
+									? "gitea"
+									: position == 1 || position == 2 ? "forgejo" : "infer";
+
+					if (position == 2) {
+						String currentText =
+								activityLoginBinding.instanceUrl.getText() != null
+										? activityLoginBinding
+												.instanceUrl
+												.getText()
+												.toString()
+												.trim()
+										: "";
+						if (currentText.isEmpty()) {
+							activityLoginBinding.instanceUrl.setText(R.string.codeberg_url);
+						}
+					}
+				});
 
 		if (AppUtil.hasNetworkConnection(ctx)) {
 			enableProcessButton();

@@ -1,7 +1,10 @@
 package org.mian.gitnex.helpers;
 
 import android.content.Context;
+import android.os.Build;
+import android.util.TypedValue;
 import android.view.View;
+import android.view.WindowInsetsController;
 import androidx.activity.ComponentActivity;
 import androidx.activity.EdgeToEdge;
 import androidx.coordinatorlayout.widget.CoordinatorLayout;
@@ -18,7 +21,6 @@ public class UIHelper {
 
 	private static final int DIMEN_EXTRA_MARGIN =
 			R.dimen.dimen12dp; // Top/Bottom spacing (fragments)
-	private static final int DIMEN_DOCK_CLEARANCE = R.dimen.dimen12dp; // RV padding for bottom
 	private static final int DIMEN_PULL_DISTANCE = R.dimen.dimen48dp; // SwipeRefresh
 
 	// For activities - call in onCreate
@@ -30,6 +32,20 @@ public class UIHelper {
 			View headerView) {
 
 		EdgeToEdge.enable(activity);
+
+		TypedValue typedValue = new TypedValue();
+		activity.getTheme().resolveAttribute(R.attr.isDark, typedValue, true);
+		boolean isDark = typedValue.data != 0;
+
+		if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.R) {
+			WindowInsetsController controller = activity.getWindow().getInsetsController();
+			if (controller != null) {
+				controller.setSystemBarsAppearance(
+						isDark ? 0 : WindowInsetsController.APPEARANCE_LIGHT_STATUS_BARS,
+						WindowInsetsController.APPEARANCE_LIGHT_STATUS_BARS);
+			}
+		}
+
 		applyInsets(
 				activity.findViewById(android.R.id.content),
 				dockedToolbar,
