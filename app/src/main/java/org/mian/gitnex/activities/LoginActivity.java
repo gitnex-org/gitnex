@@ -34,6 +34,7 @@ import org.gitnex.tea4j.v2.models.GeneralAPISettings;
 import org.gitnex.tea4j.v2.models.ServerVersion;
 import org.gitnex.tea4j.v2.models.User;
 import org.mian.gitnex.R;
+import org.mian.gitnex.bottomsheets.AndroidPermissionsBottomSheet;
 import org.mian.gitnex.clients.RetrofitClient;
 import org.mian.gitnex.database.api.BaseApi;
 import org.mian.gitnex.database.api.UserAccountsApi;
@@ -45,6 +46,7 @@ import org.mian.gitnex.databinding.BottomsheetTokenHelpBinding;
 import org.mian.gitnex.helpers.AppUtil;
 import org.mian.gitnex.helpers.NetworkStatusObserver;
 import org.mian.gitnex.helpers.PathsHelper;
+import org.mian.gitnex.helpers.PermissionHelper;
 import org.mian.gitnex.helpers.Toasty;
 import org.mian.gitnex.helpers.UIHelper;
 import org.mian.gitnex.helpers.UrlHelper;
@@ -191,11 +193,26 @@ public class LoginActivity extends BaseActivity {
 		activityLoginBinding.providerSpinner.setSelection(0);
 		activityLoginBinding.providerSpinner.setText(adapterProviders.getItem(0), false);
 		activityLoginBinding.providerSpinner.setOnItemClickListener(
-				(parent, view, position, id) ->
-						selectedProvider =
-								position == 0
-										? "gitea"
-										: position == 1 || position == 2 ? "forgejo" : "infer");
+				(parent, view, position, id) -> {
+					selectedProvider =
+							position == 0
+									? "gitea"
+									: position == 1 || position == 2 ? "forgejo" : "infer";
+
+					if (position == 2) {
+						String currentText =
+								activityLoginBinding.instanceUrl.getText() != null
+										? activityLoginBinding
+												.instanceUrl
+												.getText()
+												.toString()
+												.trim()
+										: "";
+						if (currentText.isEmpty()) {
+							activityLoginBinding.instanceUrl.setText(R.string.codeberg_url);
+						}
+					}
+				});
 
 		if (AppUtil.hasNetworkConnection(ctx)) {
 			enableProcessButton();
@@ -204,6 +221,30 @@ public class LoginActivity extends BaseActivity {
 		}
 
 		activityLoginBinding.tokenHelper.setOnClickListener(token -> showTokenHelpSheet());
+
+		activityLoginBinding.grantLocalNetworkPermission.setVisibility(
+				PermissionHelper.isBelowApiLevel(37)
+								|| PermissionHelper.isGranted(
+										ctx, "android.permission.ACCESS_LOCAL_NETWORK", 37)
+						? View.GONE
+						: View.VISIBLE);
+
+		activityLoginBinding.grantLocalNetworkPermission.setOnClickListener(
+				v -> {
+					AndroidPermissionsBottomSheet sheet =
+							AndroidPermissionsBottomSheet.newInstance(
+									"local_network_permission",
+									"android.permission.ACCESS_LOCAL_NETWORK",
+									37);
+					sheet.setOnPermissionResultListener(
+							granted -> {
+								if (granted) {
+									activityLoginBinding.grantLocalNetworkPermission.setVisibility(
+											View.GONE);
+								}
+							});
+					sheet.show(getSupportFragmentManager(), "AndroidPermissionsBottomSheet");
+				});
 
 		networkStatusObserver.registerNetworkStatusListener(
 				hasNetworkConnection ->

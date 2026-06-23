@@ -230,11 +230,50 @@
 
             </LinearLayout>
 
+            <LinearLayout
+                android:id="@+id/localNetworkPermissionFrame"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/dimen24dp"
+                android:orientation="vertical"
+                android:visibility="gone">
+
+                <TextView
+                    android:id="@+id/localNetworkPermissionHeader"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/localNetworkPermissionTitle"
+                    android:textColor="?attr/primaryTextColor"
+                    android:textSize="@dimen/dimen16sp" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="@dimen/dimen4dp"
+                    android:text="@string/localNetworkPermissionDescription"
+                    android:textColor="?attr/hintColor"
+                    android:textSize="@dimen/dimen12sp" />
+
+                <com.google.android.material.button.MaterialButton
+                    android:id="@+id/openLocalNetworkPermissionSettings"
+                    style="@style/Widget.Material3.Button"
+                    android:layout_width="match_parent"
+                    android:layout_height="@dimen/dimen56dp"
+                    android:layout_marginTop="@dimen/dimen12dp"
+                    android:text="@string/openSettings"
+                    android:backgroundTint="?attr/iconsColor"
+                    android:textColor="?attr/materialCardBackgroundColor"
+                    app:icon="@drawable/ic_settings"
+                    app:iconGravity="textStart"
+                    app:iconTint="?attr/materialCardBackgroundColor" />
+
+            </LinearLayout>
+
             <com.google.android.material.button.MaterialButton
                 android:id="@+id/clearCacheButton"
                 style="@style/Widget.Material3.Button"
                 android:layout_width="match_parent"
-                android:layout_height="@dimen/dimen54dp"
+                android:layout_height="@dimen/dimen56dp"
                 android:layout_marginTop="@dimen/dimen24dp"
                 android:backgroundTint="?attr/iconsColor"
                 android:text="@string/clearCacheSelectionHeaderText"
@@ -244,7 +283,7 @@
                 android:id="@+id/deleteCertsButton"
                 style="@style/Widget.Material3.Button"
                 android:layout_width="match_parent"
-                android:layout_height="@dimen/dimen54dp"
+                android:layout_height="@dimen/dimen56dp"
                 android:layout_marginTop="@dimen/dimen16dp"
                 android:backgroundTint="?attr/iconsColor"
                 android:text="@string/settingsCertsSelectorHeader"

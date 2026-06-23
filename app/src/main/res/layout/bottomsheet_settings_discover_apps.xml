@@ -1,0 +1,219 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content">
+
+    <com.google.android.material.bottomsheet.BottomSheetDragHandleView
+        android:id="@+id/drag_handle"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <androidx.core.widget.NestedScrollView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:clipToPadding="false"
+        android:paddingHorizontal="@dimen/dimen16dp"
+        android:paddingBottom="@dimen/dimen32dp"
+        app:layout_constrainedHeight="true"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/drag_handle">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/discover_apps"
+                android:textAppearance="@style/TextAppearance.Material3.HeadlineSmall"
+                android:textStyle="bold" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/dimen2dp"
+                android:alpha="0.7"
+                android:text="@string/discover_apps_hint"
+                android:textAppearance="@style/TextAppearance.Material3.BodyMedium"
+                android:textColor="?attr/primaryTextColor" />
+
+            <com.google.android.material.card.MaterialCardView
+                android:id="@+id/labnex_card"
+                style="?attr/materialCardViewFilledStyle"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/dimen28dp"
+                android:clickable="true"
+                android:focusable="true"
+                app:cardBackgroundColor="?attr/materialCardBackgroundColor"
+                app:cardCornerRadius="@dimen/dimen20dp"
+                app:strokeWidth="0dp">
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:gravity="center_vertical"
+                    android:orientation="horizontal"
+                    android:padding="@dimen/dimen16dp">
+
+                    <ImageView
+                        android:id="@+id/app_labnex_icon"
+                        android:layout_width="@dimen/dimen40dp"
+                        android:layout_height="@dimen/dimen40dp"
+                        android:contentDescription="@string/generalImgContentText"
+                        android:src="@drawable/app_labnex" />
+
+                    <LinearLayout
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="@dimen/dimen16dp"
+                        android:layout_weight="1"
+                        android:orientation="vertical">
+
+                        <TextView
+                            android:id="@+id/app_labnex_title"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="@string/labnex_app"
+                            android:textAppearance="@style/TextAppearance.Material3.TitleSmall"
+                            android:textStyle="bold" />
+
+                        <TextView
+                            android:id="@+id/app_labnex_subtitle"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="@dimen/dimen2dp"
+                            android:alpha="0.7"
+                            android:text="@string/labnex_app_hint"
+                            android:textAppearance="@style/TextAppearance.Material3.BodySmall"
+                            android:textColor="?attr/primaryTextColor" />
+
+                    </LinearLayout>
+
+                </LinearLayout>
+
+            </com.google.android.material.card.MaterialCardView>
+
+            <com.google.android.material.card.MaterialCardView
+                android:id="@+id/oceannex_card"
+                style="?attr/materialCardViewFilledStyle"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/dimen12dp"
+                android:clickable="true"
+                android:focusable="true"
+                app:cardBackgroundColor="?attr/materialCardBackgroundColor"
+                app:cardCornerRadius="@dimen/dimen20dp"
+                app:strokeWidth="0dp">
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:gravity="center_vertical"
+                    android:orientation="horizontal"
+                    android:padding="@dimen/dimen16dp">
+
+                    <ImageView
+                        android:id="@+id/app_oceannex_icon"
+                        android:layout_width="@dimen/dimen40dp"
+                        android:layout_height="@dimen/dimen40dp"
+                        android:contentDescription="@string/generalImgContentText"
+                        android:src="@drawable/app_oceannex" />
+
+                    <LinearLayout
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="@dimen/dimen16dp"
+                        android:layout_weight="1"
+                        android:orientation="vertical">
+
+                        <TextView
+                            android:id="@+id/app_oceannex_title"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="@string/oceannex_app"
+                            android:textAppearance="@style/TextAppearance.Material3.TitleSmall"
+                            android:textStyle="bold" />
+
+                        <TextView
+                            android:id="@+id/app_oceannex_subtitle"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="@dimen/dimen2dp"
+                            android:alpha="0.7"
+                            android:text="@string/oceannex_app_hint"
+                            android:textAppearance="@style/TextAppearance.Material3.BodySmall"
+                            android:textColor="?attr/primaryTextColor" />
+
+                    </LinearLayout>
+
+                </LinearLayout>
+
+            </com.google.android.material.card.MaterialCardView>
+
+            <com.google.android.material.card.MaterialCardView
+                android:id="@+id/nexnode_card"
+                style="?attr/materialCardViewFilledStyle"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/dimen12dp"
+                android:clickable="true"
+                android:focusable="true"
+                app:cardBackgroundColor="?attr/materialCardBackgroundColor"
+                app:cardCornerRadius="@dimen/dimen20dp"
+                app:strokeWidth="0dp">
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:gravity="center_vertical"
+                    android:orientation="horizontal"
+                    android:padding="@dimen/dimen16dp">
+
+                    <ImageView
+                        android:id="@+id/app_nexnode_icon"
+                        android:layout_width="@dimen/dimen40dp"
+                        android:layout_height="@dimen/dimen40dp"
+                        android:contentDescription="@string/generalImgContentText"
+                        android:src="@drawable/app_nexnode" />
+
+                    <LinearLayout
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="@dimen/dimen16dp"
+                        android:layout_weight="1"
+                        android:orientation="vertical">
+
+                        <TextView
+                            android:id="@+id/app_nexnode_title"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="@string/nexnode_app"
+                            android:textAppearance="@style/TextAppearance.Material3.TitleSmall"
+                            android:textStyle="bold" />
+
+                        <TextView
+                            android:id="@+id/app_nexnode_subtitle"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="@dimen/dimen2dp"
+                            android:alpha="0.7"
+                            android:text="@string/nexnode_app_hint"
+                            android:textAppearance="@style/TextAppearance.Material3.BodySmall"
+                            android:textColor="?attr/primaryTextColor" />
+
+                    </LinearLayout>
+
+                </LinearLayout>
+
+            </com.google.android.material.card.MaterialCardView>
+
+        </LinearLayout>
+
+    </androidx.core.widget.NestedScrollView>
+
+</androidx.constraintlayout.widget.ConstraintLayout>

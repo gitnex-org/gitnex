@@ -36,6 +36,14 @@
     <string name="na" translatable="false">N/A</string>
     <string name="default_branch_name" translatable="false">main</string>
     <string name="discover_apps" translatable="false">Discover More Apps</string>
+    <string name="discover_apps_hint" translatable="false">Tools designed to simplify your workflow</string>
+    <string name="labnex_app" translatable="false">LabNex for GitLab</string>
+    <string name="labnex_app_hint" translatable="false">GitLab in Your Pocket. Modern and Fast.</string>
+    <string name="oceannex_app" translatable="false">OceanNex for DigitalOcean</string>
+    <string name="oceannex_app_hint" translatable="false">Your infrastructure, right in your pocket.</string>
+    <string name="nexnode_app" translatable="false">NexNode for Linode</string>
+    <string name="nexnode_app_hint" translatable="false">Manage Your Linode Cloud with NexNode.</string>
+    <string name="codeberg_url" translatable="false">codeberg.org</string>
     <string name="source_ref_hint" translatable="false">e.g., main, develop, or a commit SHA</string>
     <string name="version_format_hint" translatable="false">e.g., 1.26.1 (Gitea) or 15.0.0 (Forgejo)</string>
     <string name="cursor_position_format" translatable="false">Ln %d, Col %d</string>
@@ -760,6 +768,13 @@
     <string name="bookmark_tab">Bookmark tab</string>
     <string name="repository_section">Repository section</string>
     <string name="wiki_page">Wiki page</string>
+    <string name="localNetworkPermissionTitle">Local Network Permission</string>
+    <string name="localNetworkPermissionDescription">Android 17+ requires this permission to connect to local network. Without it, connections to servers on your local network may fail.</string>
+    <string name="grantPermission">Grant permission</string>
+    <string name="openSettings">Open settings</string>
+    <string name="permissionGranted">Permission granted</string>
+    <string name="permissionRequired">Permission required</string>
+    <string name="permissionRequiredDescription">This permission is needed for certain features to work properly.</string>
 
     <!-- generic copy -->
     <string name="all">All</string>

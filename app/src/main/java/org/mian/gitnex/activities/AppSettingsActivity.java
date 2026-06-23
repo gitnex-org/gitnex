@@ -12,6 +12,7 @@ import org.mian.gitnex.bottomsheets.SettingsAboutBottomSheet;
 import org.mian.gitnex.bottomsheets.SettingsAppearanceBottomSheet;
 import org.mian.gitnex.bottomsheets.SettingsBackupRestoreBottomSheet;
 import org.mian.gitnex.bottomsheets.SettingsCodeEditorBottomSheet;
+import org.mian.gitnex.bottomsheets.SettingsDiscoverAppsBottomSheet;
 import org.mian.gitnex.bottomsheets.SettingsGeneralBottomSheet;
 import org.mian.gitnex.bottomsheets.SettingsNotificationsBottomSheet;
 import org.mian.gitnex.bottomsheets.SettingsSecurityBottomSheet;
@@ -146,6 +147,20 @@ public class AppSettingsActivity extends BaseActivity {
 						v ->
 								new SettingsAboutBottomSheet()
 										.show(getSupportFragmentManager(), "About"));
+
+		// discover apps row
+		setupRow(
+				binding.rowDiscoverApps,
+				R.drawable.ic_release,
+				R.string.discover_apps,
+				R.string.discover_apps_hint,
+				true);
+		binding.rowDiscoverApps
+				.getRoot()
+				.setOnClickListener(
+						v ->
+								new SettingsDiscoverAppsBottomSheet()
+										.show(getSupportFragmentManager(), "DISCOVER_APPS"));
 
 		// rate GitNex row
 		setupRow(

@@ -2,7 +2,10 @@ package org.mian.gitnex.bottomsheets;
 
 import android.app.Dialog;
 import android.content.Context;
+import android.content.Intent;
+import android.net.Uri;
 import android.os.Bundle;
+import android.provider.Settings;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -22,6 +25,7 @@ import org.mian.gitnex.databinding.BottomsheetSettingsSecurityBinding;
 import org.mian.gitnex.helpers.AppDatabaseSettings;
 import org.mian.gitnex.helpers.AppUIStateManager;
 import org.mian.gitnex.helpers.AppUtil;
+import org.mian.gitnex.helpers.PermissionHelper;
 import org.mian.gitnex.helpers.Toasty;
 import org.mian.gitnex.helpers.ssl.MemorizingTrustManager;
 
@@ -188,6 +192,16 @@ public class SettingsSecurityBottomSheet extends BottomSheetDialogFragment {
 						ApiRetrofitClient.clearInterfaces();
 					}
 				});
+
+		if (!PermissionHelper.isBelowApiLevel(37)) {
+			binding.localNetworkPermissionFrame.setVisibility(View.VISIBLE);
+			binding.openLocalNetworkPermissionSettings.setOnClickListener(
+					v -> {
+						Intent intent = new Intent(Settings.ACTION_APPLICATION_DETAILS_SETTINGS);
+						intent.setData(Uri.parse("package:" + requireContext().getPackageName()));
+						startActivity(intent);
+					});
+		}
 
 		binding.clearCacheButton.setOnClickListener(
 				v -> {

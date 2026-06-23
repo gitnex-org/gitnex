@@ -12,7 +12,6 @@ import com.google.android.material.bottomsheet.BottomSheetDialogFragment;
 import org.mian.gitnex.R;
 import org.mian.gitnex.activities.BaseActivity;
 import org.mian.gitnex.databinding.BottomsheetSettingsAboutBinding;
-import org.mian.gitnex.databinding.ItemSettingsMoreAppsBinding;
 import org.mian.gitnex.helpers.AppUtil;
 
 /**
@@ -66,32 +65,11 @@ public class SettingsAboutBottomSheet extends BottomSheetDialogFragment {
 					dismiss();
 				});
 
-		setupMiniApp(binding.appLabNex, "LabNex", R.drawable.app_labnex, "https://labnex.app");
-		setupMiniApp(
-				binding.appOceanNex,
-				"OceanNex",
-				R.drawable.app_oceannex,
-				"https://oceannex.swatian.com");
-		setupMiniApp(
-				binding.appNexNode,
-				"NexNode",
-				R.drawable.app_nexnode,
-				"https://nexnode.swatian.com");
-
 		if (AppUtil.isPro(requireContext())) {
 			binding.donationLinkPatreon.setVisibility(View.GONE);
 		}
 
 		return binding.getRoot();
-	}
-
-	private void setupMiniApp(
-			ItemSettingsMoreAppsBinding itemBinding, String name, int iconRes, String url) {
-		itemBinding.appName.setText(name);
-		itemBinding.appIcon.setImageResource(iconRes);
-		itemBinding
-				.getRoot()
-				.setOnClickListener(v -> AppUtil.openUrlInBrowser(requireContext(), url));
 	}
 
 	@Override
