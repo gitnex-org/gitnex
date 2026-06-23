@@ -259,6 +259,19 @@
 
                     </androidx.constraintlayout.widget.ConstraintLayout>
 
+                    <com.google.android.material.button.MaterialButton
+                        android:id="@+id/grantLocalNetworkPermission"
+                        style="@style/Widget.Material3.Button.TonalButton"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="@dimen/dimen8dp"
+                        android:text="@string/localNetworkPermissionTitle"
+                        android:textColor="?attr/inputTextColor"
+                        android:visibility="gone"
+                        app:icon="@drawable/ic_network"
+                        app:iconGravity="textStart"
+                        app:iconTint="?attr/iconsColor" />
+
                     <TextView
                         android:id="@+id/appVersion"
                         android:layout_width="match_parent"
