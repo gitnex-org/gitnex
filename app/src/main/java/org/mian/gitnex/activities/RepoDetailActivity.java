@@ -73,6 +73,7 @@ public class RepoDetailActivity extends BaseActivity
 	private boolean isStarred = false;
 	private boolean isWatched = false;
 	private boolean isGiteaRepoActionsVisible = false;
+	private boolean isForgejoRepositoryActionsVisible = false;
 	private boolean hasActions = false;
 	private boolean adminStatus = false;
 	private int activeTabId = R.id.btn_nav_details;
@@ -177,11 +178,18 @@ public class RepoDetailActivity extends BaseActivity
 		String provider = getAccount().getAccount().getProvider();
 		if (provider != null) {
 			String serverVersion = getAccount().getAccount().getServerVersion();
-			Version minVersion = new Version("1.24");
 			Version currentVersion =
 					Version.valid(serverVersion) ? new Version(serverVersion) : new Version("0.0");
+
+			Version giteaMinVersion = new Version("1.24");
+			Version forgejoMinVersion = new Version("15.0");
+
 			isGiteaRepoActionsVisible =
-					"gitea".equals(provider) && !currentVersion.less(minVersion) && hasActions;
+					"gitea".equals(provider) && !currentVersion.less(giteaMinVersion) && hasActions;
+			isForgejoRepositoryActionsVisible =
+					"forgejo".equals(provider)
+							&& !currentVersion.less(forgejoMinVersion)
+							&& hasActions;
 		}
 	}
 
@@ -462,6 +470,7 @@ public class RepoDetailActivity extends BaseActivity
 									isStarred,
 									isWatched,
 									isGiteaRepoActionsVisible,
+									isForgejoRepositoryActionsVisible,
 									adminStatus,
 									isBookmarked);
 					sheet.show(getSupportFragmentManager(), "repo_universal_hub");
@@ -533,6 +542,9 @@ public class RepoDetailActivity extends BaseActivity
 				break;
 			case "CORE_ACTIONS":
 				startActivity(repository.getIntent(ctx, RepositoryActionsActivity.class));
+				break;
+			case "CORE_FORGEJO_ACTIONS":
+				startActivity(repository.getIntent(ctx, RepositoryForgejoActionsActivity.class));
 				break;
 		}
 

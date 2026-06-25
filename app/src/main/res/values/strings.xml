@@ -420,7 +420,7 @@
     <string name="addNewAccount">New Account</string>
     <string name="addNewAccountText">Add Account</string>
     <string name="update_account">Update Account</string>
-    <string name="switchAccountSuccess">Switched to account : %1$s@%2$s</string>
+    <string name="switchAccountSuccess">Switched to account @%1$s %2$s</string>
     <string name="pageTitleNotifications">Notifications</string>
     <string name="notificationsPollingHeaderText">Notifications Polling Delay</string>
     <string name="pollingDelay15Minutes">15 Minutes</string>
@@ -777,6 +777,7 @@
     <string name="permissionRequiredDescription">This permission is needed for certain features to work properly.</string>
 
     <!-- generic copy -->
+    <string name="tasks">Tasks</string>
     <string name="all">All</string>
     <string name="profile">Profile</string>
     <string name="repository">Repository</string>

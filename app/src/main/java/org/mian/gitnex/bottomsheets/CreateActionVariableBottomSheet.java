@@ -12,10 +12,13 @@ import androidx.lifecycle.ViewModelProvider;
 import com.google.android.material.bottomsheet.BottomSheetDialog;
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment;
 import org.mian.gitnex.R;
+import org.mian.gitnex.activities.BaseActivity;
 import org.mian.gitnex.databinding.BottomsheetCreateRepoActionVariableBinding;
+import org.mian.gitnex.helpers.AppUIStateManager;
 import org.mian.gitnex.helpers.AppUtil;
 import org.mian.gitnex.helpers.Toasty;
 import org.mian.gitnex.viewmodels.RepositoryActionsViewModel;
+import org.mian.gitnex.viewmodels.RepositoryForgejoActionsViewModel;
 
 /**
  * @author mmarif
@@ -23,15 +26,19 @@ import org.mian.gitnex.viewmodels.RepositoryActionsViewModel;
 public class CreateActionVariableBottomSheet extends BottomSheetDialogFragment {
 
 	private BottomsheetCreateRepoActionVariableBinding binding;
-	private RepositoryActionsViewModel viewModel;
+	private RepositoryActionsViewModel giteaViewModel;
+	private RepositoryForgejoActionsViewModel forgejoViewModel;
 	private String owner;
 	private String repo;
+	private boolean isForgejo;
 
-	public static CreateActionVariableBottomSheet newInstance(String owner, String repo) {
+	public static CreateActionVariableBottomSheet newInstance(
+			String owner, String repo, boolean isForgejo) {
 		CreateActionVariableBottomSheet fragment = new CreateActionVariableBottomSheet();
 		Bundle args = new Bundle();
 		args.putString("owner", owner);
 		args.putString("repo", repo);
+		args.putBoolean("isForgejo", isForgejo);
 		fragment.setArguments(args);
 		return fragment;
 	}
@@ -42,6 +49,7 @@ public class CreateActionVariableBottomSheet extends BottomSheetDialogFragment {
 		if (getArguments() != null) {
 			owner = getArguments().getString("owner");
 			repo = getArguments().getString("repo");
+			isForgejo = getArguments().getBoolean("isForgejo", false);
 		}
 	}
 
@@ -57,10 +65,24 @@ public class CreateActionVariableBottomSheet extends BottomSheetDialogFragment {
 	@Override
 	public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
 		super.onViewCreated(view, savedInstanceState);
-		viewModel = new ViewModelProvider(requireActivity()).get(RepositoryActionsViewModel.class);
 
-		viewModel.clearVariableCreated();
-		viewModel.clearCreateVariableError();
+		if (isForgejo) {
+			forgejoViewModel =
+					new ViewModelProvider(requireActivity())
+							.get(RepositoryForgejoActionsViewModel.class);
+			forgejoViewModel.clearVariableCreated();
+			forgejoViewModel.clearCreateVariableError();
+			binding.variableDescriptionLayout.setVisibility(View.GONE);
+		} else {
+			giteaViewModel =
+					new ViewModelProvider(requireActivity()).get(RepositoryActionsViewModel.class);
+			giteaViewModel.clearVariableCreated();
+			giteaViewModel.clearCreateVariableError();
+		}
+
+		if (isForgejo) {
+			binding.variableDescriptionLayout.setVisibility(View.GONE);
+		}
 
 		binding.variableValue.setOnTouchListener(
 				(v, event) -> {
@@ -122,42 +144,85 @@ public class CreateActionVariableBottomSheet extends BottomSheetDialogFragment {
 			return;
 		}
 
-		viewModel.createVariable(requireContext(), owner, repo, name, value, description);
+		if (isForgejo) {
+			forgejoViewModel.createVariable(requireContext(), owner, repo, name, value);
+		} else {
+			giteaViewModel.createVariable(requireContext(), owner, repo, name, value, description);
+		}
 	}
 
 	private void observeViewModel() {
-		viewModel
-				.getIsCreatingVariable()
-				.observe(
-						getViewLifecycleOwner(),
-						isCreating -> {
-							binding.createButton.setEnabled(!isCreating);
-							binding.createButton.setText(
-									isCreating ? "" : getString(R.string.newCreateButtonCopy));
-						});
+		if (isForgejo) {
+			forgejoViewModel
+					.getIsCreatingVariable()
+					.observe(
+							getViewLifecycleOwner(),
+							isCreating -> {
+								binding.createButton.setEnabled(!isCreating);
+								binding.createButton.setText(
+										isCreating ? "" : getString(R.string.newCreateButtonCopy));
+							});
 
-		viewModel
-				.getVariableCreated()
-				.observe(
-						getViewLifecycleOwner(),
-						created -> {
-							if (created != null && created) {
-								Toasty.show(requireContext(), R.string.variable_create_success);
-								viewModel.resetVariablesPagination();
-								dismiss();
-							}
-						});
+			forgejoViewModel
+					.getVariableCreated()
+					.observe(
+							getViewLifecycleOwner(),
+							created -> {
+								if (created != null && created) {
+									AppUIStateManager.refreshData();
+									if (getActivity() instanceof BaseActivity) {
+										((BaseActivity) getActivity()).triggerGlobalRefresh();
+									}
+									Toasty.show(requireContext(), R.string.variable_create_success);
+									forgejoViewModel.resetVariablesPagination();
+									dismiss();
+								}
+							});
 
-		viewModel
-				.getCreateVariableError()
-				.observe(
-						getViewLifecycleOwner(),
-						error -> {
-							if (error != null && !error.isEmpty()) {
-								Toasty.show(requireContext(), error);
-								viewModel.clearCreateVariableError();
-							}
-						});
+			forgejoViewModel
+					.getCreateVariableError()
+					.observe(
+							getViewLifecycleOwner(),
+							error -> {
+								if (error != null && !error.isEmpty()) {
+									Toasty.show(requireContext(), error);
+									forgejoViewModel.clearCreateVariableError();
+								}
+							});
+		} else {
+			giteaViewModel
+					.getIsCreatingVariable()
+					.observe(
+							getViewLifecycleOwner(),
+							isCreating -> {
+								binding.createButton.setEnabled(!isCreating);
+								binding.createButton.setText(
+										isCreating ? "" : getString(R.string.newCreateButtonCopy));
+							});
+
+			giteaViewModel
+					.getVariableCreated()
+					.observe(
+							getViewLifecycleOwner(),
+							created -> {
+								if (created != null && created) {
+									Toasty.show(requireContext(), R.string.variable_create_success);
+									giteaViewModel.resetVariablesPagination();
+									dismiss();
+								}
+							});
+
+			giteaViewModel
+					.getCreateVariableError()
+					.observe(
+							getViewLifecycleOwner(),
+							error -> {
+								if (error != null && !error.isEmpty()) {
+									Toasty.show(requireContext(), error);
+									giteaViewModel.clearCreateVariableError();
+								}
+							});
+		}
 	}
 
 	@Override
