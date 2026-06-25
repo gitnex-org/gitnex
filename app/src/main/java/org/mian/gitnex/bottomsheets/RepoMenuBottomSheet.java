@@ -33,7 +33,11 @@ public class RepoMenuBottomSheet extends BottomSheetDialogFragment {
 	private List<RepositoryMenuItemModel> contextualItems;
 	private RepositoryContext repositoryContext;
 	private OnRepoMenuItemListener listener;
-	private boolean isStarred, isWatched, isGiteaRepoActionsVisible, adminStatus;
+	private boolean isStarred,
+			isWatched,
+			isGiteaRepoActionsVisible,
+			adminStatus,
+			isForgejoRepositoryActionsVisible;
 	private boolean isBookmarked = false;
 
 	public interface OnRepoMenuItemListener {
@@ -46,6 +50,7 @@ public class RepoMenuBottomSheet extends BottomSheetDialogFragment {
 			boolean starred,
 			boolean watched,
 			boolean giteaActions,
+			boolean forgejoActions,
 			boolean admin,
 			boolean isBookmarked) {
 		RepoMenuBottomSheet sheet = new RepoMenuBottomSheet();
@@ -55,6 +60,7 @@ public class RepoMenuBottomSheet extends BottomSheetDialogFragment {
 		args.putBoolean("is_starred", starred);
 		args.putBoolean("is_watched", watched);
 		args.putBoolean("is_gitea_actions", giteaActions);
+		args.putBoolean("is_forgejo_actions", forgejoActions);
 		args.putBoolean("admin_status", admin);
 		args.putBoolean("is_bookmarked", isBookmarked);
 		sheet.setArguments(args);
@@ -85,6 +91,7 @@ public class RepoMenuBottomSheet extends BottomSheetDialogFragment {
 			isWatched = args.getBoolean("is_watched");
 			isBookmarked = args.getBoolean("is_bookmarked");
 			isGiteaRepoActionsVisible = args.getBoolean("is_gitea_actions");
+			isForgejoRepositoryActionsVisible = args.getBoolean("is_forgejo_actions");
 			adminStatus = args.getBoolean("admin_status");
 			Bundle repoBundle = args.getBundle("repo_bundle");
 			if (repoBundle != null) {
@@ -116,6 +123,16 @@ public class RepoMenuBottomSheet extends BottomSheetDialogFragment {
 			coreItems.add(
 					new RepositoryMenuItemModel(
 							"CORE_ACTIONS",
+							R.string.actions,
+							R.drawable.ic_actions,
+							R.attr.colorTertiaryContainer,
+							R.attr.colorOnTertiaryContainer));
+		}
+
+		if (isForgejoRepositoryActionsVisible && adminStatus) {
+			coreItems.add(
+					new RepositoryMenuItemModel(
+							"CORE_FORGEJO_ACTIONS",
 							R.string.actions,
 							R.drawable.ic_actions,
 							R.attr.colorTertiaryContainer,

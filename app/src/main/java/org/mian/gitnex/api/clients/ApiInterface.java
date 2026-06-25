@@ -1,14 +1,20 @@
 package org.mian.gitnex.api.clients;
 
 import java.util.List;
+import java.util.Map;
 import org.mian.gitnex.api.models.contents.RepoGetContentsList;
+import org.mian.gitnex.api.models.forgejo.actions.ForgejoRunner;
+import org.mian.gitnex.api.models.forgejo.actions.ForgejoTasksResponse;
+import org.mian.gitnex.api.models.forgejo.actions.ForgejoVariable;
 import org.mian.gitnex.api.models.license.License;
 import org.mian.gitnex.api.models.settings.RepositoryGlobal;
 import org.mian.gitnex.api.models.topics.Topics;
 import org.mian.gitnex.api.models.users.UserSearchResponse;
 import retrofit2.Call;
+import retrofit2.http.Body;
 import retrofit2.http.DELETE;
 import retrofit2.http.GET;
+import retrofit2.http.POST;
 import retrofit2.http.PUT;
 import retrofit2.http.Path;
 import retrofit2.http.Query;
@@ -60,4 +66,36 @@ public interface ApiInterface {
 			@Query("sort") String sort,
 			@Query("page") Integer page,
 			@Query("limit") Integer limit);
+
+	@GET("repos/{owner}/{repo}/actions/runners")
+	Call<List<ForgejoRunner>> getForgejoRunners(
+			@Path("owner") String owner,
+			@Path("repo") String repo,
+			@Query("page") int page,
+			@Query("limit") int limit);
+
+	@GET("repos/{owner}/{repo}/actions/tasks")
+	Call<ForgejoTasksResponse> getForgejoTasks(
+			@Path("owner") String owner,
+			@Path("repo") String repo,
+			@Query("page") int page,
+			@Query("limit") int limit);
+
+	@GET("repos/{owner}/{repo}/actions/variables")
+	Call<List<ForgejoVariable>> getForgejoVariables(
+			@Path("owner") String owner,
+			@Path("repo") String repo,
+			@Query("page") int page,
+			@Query("limit") int limit);
+
+	@POST("repos/{owner}/{repo}/actions/variables/{name}")
+	Call<Void> createForgejoVariable(
+			@Path("owner") String owner,
+			@Path("repo") String repo,
+			@Path("name") String name,
+			@Body Map<String, String> body);
+
+	@DELETE("repos/{owner}/{repo}/actions/variables/{name}")
+	Call<Void> deleteForgejoVariable(
+			@Path("owner") String owner, @Path("repo") String repo, @Path("name") String name);
 }

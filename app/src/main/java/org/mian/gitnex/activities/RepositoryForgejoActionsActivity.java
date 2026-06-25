@@ -11,27 +11,25 @@ import com.google.android.material.button.MaterialButton;
 import org.mian.gitnex.R;
 import org.mian.gitnex.bottomsheets.CreateActionVariableBottomSheet;
 import org.mian.gitnex.databinding.ActivityRepositoryActionsBinding;
-import org.mian.gitnex.fragments.RepoActionsRunnersFragment;
-import org.mian.gitnex.fragments.RepoActionsVariablesFragment;
-import org.mian.gitnex.fragments.RepoActionsWorkflowsFragment;
+import org.mian.gitnex.fragments.RepositoryForgejoActionsRunnersFragment;
+import org.mian.gitnex.fragments.RepositoryForgejoActionsTasksFragment;
+import org.mian.gitnex.fragments.RepositoryForgejoActionsVariablesFragment;
 import org.mian.gitnex.helpers.UIHelper;
 import org.mian.gitnex.helpers.contexts.RepositoryContext;
 
 /**
  * @author mmarif
  */
-public class RepositoryActionsActivity extends BaseActivity {
+public class RepositoryForgejoActionsActivity extends BaseActivity {
 
 	private static final String STATE_ACTIVE_TAB = "active_tab";
 	private static final String TAB_RUNNERS = "runners";
-	private static final String TAB_WORKFLOWS = "workflows";
+	private static final String TAB_TASKS = "tasks";
 	private static final String TAB_VARIABLES = "variables";
 
 	private ActivityRepositoryActionsBinding binding;
 	private final FragmentManager fm = getSupportFragmentManager();
-	private Fragment runnersFrag;
-	private Fragment workflowsFrag;
-	private Fragment variablesFrag;
+	private Fragment runnersFrag, tasksFrag, variablesFrag;
 	private Fragment activeFragment;
 	private RepositoryContext repositoryContext;
 
@@ -49,6 +47,9 @@ public class RepositoryActionsActivity extends BaseActivity {
 
 		UIHelper.applyEdgeToEdge(this, binding.dockedToolbar, null, null, null);
 
+		binding.btnNavWorkflows.setContentDescription(getString(R.string.tasks));
+		binding.btnNavWorkflows.setTooltipText(getString(R.string.tasks));
+
 		detachedDivider = binding.dockDivider;
 		detachedAddBtn = binding.btnNavAdd;
 
@@ -59,7 +60,6 @@ public class RepositoryActionsActivity extends BaseActivity {
 		findOrCreateFragments();
 		setupFragments();
 		setupDockListeners();
-
 		restoreActiveTab();
 	}
 
@@ -69,32 +69,38 @@ public class RepositoryActionsActivity extends BaseActivity {
 		outState.putString(STATE_ACTIVE_TAB, currentActiveTab);
 	}
 
+	@Override
+	protected void onGlobalRefresh() {
+		RepositoryForgejoActionsVariablesFragment fragmentVariables =
+				(RepositoryForgejoActionsVariablesFragment)
+						getSupportFragmentManager().findFragmentByTag(TAB_VARIABLES);
+		if (fragmentVariables != null) fragmentVariables.refreshFromGlobal();
+	}
+
 	private void findOrCreateFragments() {
 		runnersFrag = fm.findFragmentByTag(TAB_RUNNERS);
-		workflowsFrag = fm.findFragmentByTag(TAB_WORKFLOWS);
+		tasksFrag = fm.findFragmentByTag(TAB_TASKS);
 		variablesFrag = fm.findFragmentByTag(TAB_VARIABLES);
 
-		if (runnersFrag == null) runnersFrag = new RepoActionsRunnersFragment();
-		if (workflowsFrag == null) workflowsFrag = new RepoActionsWorkflowsFragment();
-		if (variablesFrag == null) variablesFrag = new RepoActionsVariablesFragment();
+		if (runnersFrag == null) runnersFrag = new RepositoryForgejoActionsRunnersFragment();
+		if (tasksFrag == null) tasksFrag = new RepositoryForgejoActionsTasksFragment();
+		if (variablesFrag == null) variablesFrag = new RepositoryForgejoActionsVariablesFragment();
 
 		activeFragment = runnersFrag;
 	}
 
 	private void setupFragments() {
 		runnersFrag.setArguments(repositoryContext.getBundle());
-		workflowsFrag.setArguments(repositoryContext.getBundle());
+		tasksFrag.setArguments(repositoryContext.getBundle());
 		variablesFrag.setArguments(repositoryContext.getBundle());
 
-		if (runnersFrag.isAdded() && workflowsFrag.isAdded() && variablesFrag.isAdded()) {
-			return;
-		}
+		if (runnersFrag.isAdded() && tasksFrag.isAdded() && variablesFrag.isAdded()) return;
 
 		fm.beginTransaction()
 				.add(R.id.repo_actions_container, variablesFrag, TAB_VARIABLES)
 				.hide(variablesFrag)
-				.add(R.id.repo_actions_container, workflowsFrag, TAB_WORKFLOWS)
-				.hide(workflowsFrag)
+				.add(R.id.repo_actions_container, tasksFrag, TAB_TASKS)
+				.hide(tasksFrag)
 				.add(R.id.repo_actions_container, runnersFrag, TAB_RUNNERS)
 				.commitNow();
 	}
@@ -103,8 +109,8 @@ public class RepositoryActionsActivity extends BaseActivity {
 		Fragment targetFragment;
 		int activeBtnId =
 				switch (currentActiveTab) {
-					case TAB_WORKFLOWS -> {
-						targetFragment = workflowsFrag;
+					case TAB_TASKS -> {
+						targetFragment = tasksFrag;
 						yield R.id.btn_nav_workflows;
 					}
 					case TAB_VARIABLES -> {
@@ -117,15 +123,9 @@ public class RepositoryActionsActivity extends BaseActivity {
 					}
 				};
 
-		if (runnersFrag != targetFragment) {
-			fm.beginTransaction().hide(runnersFrag).commitNow();
-		}
-		if (workflowsFrag != targetFragment) {
-			fm.beginTransaction().hide(workflowsFrag).commitNow();
-		}
-		if (variablesFrag != targetFragment) {
-			fm.beginTransaction().hide(variablesFrag).commitNow();
-		}
+		if (runnersFrag != targetFragment) fm.beginTransaction().hide(runnersFrag).commitNow();
+		if (tasksFrag != targetFragment) fm.beginTransaction().hide(tasksFrag).commitNow();
+		if (variablesFrag != targetFragment) fm.beginTransaction().hide(variablesFrag).commitNow();
 
 		fm.beginTransaction().show(targetFragment).commitNow();
 		activeFragment = targetFragment;
@@ -142,13 +142,13 @@ public class RepositoryActionsActivity extends BaseActivity {
 		binding.btnNavRunners.setOnClickListener(
 				v -> switchTab(runnersFrag, R.id.btn_nav_runners, TAB_RUNNERS));
 		binding.btnNavWorkflows.setOnClickListener(
-				v -> switchTab(workflowsFrag, R.id.btn_nav_workflows, TAB_WORKFLOWS));
+				v -> switchTab(tasksFrag, R.id.btn_nav_workflows, TAB_TASKS));
 		binding.btnNavVariables.setOnClickListener(
 				v -> switchTab(variablesFrag, R.id.btn_nav_variables, TAB_VARIABLES));
 
 		detachedAddBtn.setOnClickListener(
 				v -> {
-					if (activeFragment instanceof RepoActionsVariablesFragment) {
+					if (activeFragment instanceof RepositoryForgejoActionsVariablesFragment) {
 						showCreateVariableBottomSheet();
 					}
 				});
@@ -173,25 +173,19 @@ public class RepositoryActionsActivity extends BaseActivity {
 		resetPill(binding.btnNavWorkflows);
 		resetPill(binding.btnNavVariables);
 
-		if (activeBtnId == R.id.btn_nav_runners) {
-			activatePill(binding.btnNavRunners);
-		} else if (activeBtnId == R.id.btn_nav_workflows) {
-			activatePill(binding.btnNavWorkflows);
-		} else if (activeBtnId == R.id.btn_nav_variables) {
-			activatePill(binding.btnNavVariables);
-		}
+		if (activeBtnId == R.id.btn_nav_runners) activatePill(binding.btnNavRunners);
+		else if (activeBtnId == R.id.btn_nav_workflows) activatePill(binding.btnNavWorkflows);
+		else if (activeBtnId == R.id.btn_nav_variables) activatePill(binding.btnNavVariables);
 
 		updateContextualDockActions();
 	}
 
 	private void updateContextualDockActions() {
 		ViewGroup parent = binding.dockedToolbarChild;
-
 		parent.removeView(detachedDivider);
 		parent.removeView(detachedAddBtn);
 
-		boolean showAdd = activeFragment instanceof RepoActionsVariablesFragment;
-
+		boolean showAdd = activeFragment instanceof RepositoryForgejoActionsVariablesFragment;
 		if (showAdd) {
 			parent.addView(detachedDivider);
 			detachedDivider.setVisibility(View.VISIBLE);
@@ -225,7 +219,7 @@ public class RepositoryActionsActivity extends BaseActivity {
 
 	private void showCreateVariableBottomSheet() {
 		CreateActionVariableBottomSheet.newInstance(
-						repositoryContext.getOwner(), repositoryContext.getName(), false)
+						repositoryContext.getOwner(), repositoryContext.getName(), true)
 				.show(getSupportFragmentManager(), "CREATE_VARIABLE");
 	}
 }
