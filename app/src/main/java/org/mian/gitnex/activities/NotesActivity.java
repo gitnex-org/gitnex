@@ -153,10 +153,7 @@ public class NotesActivity extends BaseActivity {
 						(dialog, which) -> {
 							notesApi.deleteAllNotes();
 							fetchDataAsync();
-							Toasty.show(
-									this,
-									getResources()
-											.getQuantityString(R.plurals.noteDeleteMessage, 2));
+							Toasty.show(this, getString(R.string.notes_deleted_all));
 						})
 				.setNeutralButton(R.string.cancelButton, null)
 				.show();

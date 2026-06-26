@@ -62,26 +62,6 @@
     <string name="orgCreated">සංවිධානය සාර්ථකව නිර්මාණය කරන ලදී</string>
     <string name="orgExistsError">සංවිධානය දැනටමත් පවතී</string>
     <string name="diffStatistics">%1$s එකතු කිරීම්(ය) සහ %2$s මකාදැමීම්(ය)</string>
-    <plurals name="repoStars">
-        <item quantity="one">Star</item>
-        <item quantity="other">Stars</item>
-    </plurals>
-    <plurals name="repoWatchers">
-        <item quantity="one">Watcher</item>
-        <item quantity="other">Watchers</item>
-    </plurals>
-    <plurals name="repoForks">
-        <item quantity="one">Fork</item>
-        <item quantity="other">Forks</item>
-    </plurals>
-    <plurals name="repoPullRequests">
-        <item quantity="one">Pull request</item>
-        <item quantity="other">Pull requests</item>
-    </plurals>
-    <plurals name="repoOpenIssues">
-        <item quantity="one">Issue</item>
-        <item quantity="other">Issues</item>
-    </plurals>
     <string name="genericApiError">උදාහරණය දෝෂයක් ලබා දී ඇත. කේතය %d</string>
     <string name="tabTextFiles">ගොනු</string>
     <string name="tabTextReleases">නිකුතු</string>
@@ -258,7 +238,6 @@
     <string name="noDataWebsite">වෙබ් අඩවියක් හමු නොවීය</string>
     <string name="noDataDescription">විස්තරයක් හමු නොවීය</string>
     <string name="noDataBio">No bio found</string>
-    <string name="starMember">තරුව</string>
     <string name="zipArchiveDownloadReleasesTab">මූලාශ්ර කේතය (ZIP)</string>
     <string name="tarArchiveDownloadReleasesTab">මූලාශ්ර කේතය (TAR.GZ)</string>
     <string name="newFileNameTintCopy">ගොනුවේ නම</string>
@@ -285,6 +264,7 @@
     <string name="strMarkdown">සලකුණු කිරීම</string>
     <string name="copyIssueUrlToastMsg">URL එක පසුරු පුවරුවට පිටපත් කරන ලදී</string>
     <string name="copyShaToastMsg">SHA පසුරු පුවරුවට පිටපත් කරන ලදී</string>
+    <string name="copySha">Copy SHA</string>
     <string name="fileTypeCannotBeEdited">මෙම වර්ගයේ ගොනු සංස්කරණය කළ නොහැක</string>
     <string name="starRepositorySuccess">ගබඩාව තරු ලකුණු කළ ලැයිස්තුවට එක් කරන ලදී</string>
     <string name="unStarRepositorySuccess">ගබඩාව තරු ලකුණු කළ ලැයිස්තුවෙන් ඉවත් කරන ලදී</string>
@@ -469,15 +449,13 @@
     <string name="wikiUpdated">විකි පිටුව සාර්ථකව යාවත්කාලීන කරන ලදී</string>
     <string name="wikiCreated">විකි පිටුව සාර්ථකව නිර්මාණය කරන ලදී</string>
     <string name="wikiPageAlreadyExists">A wiki page with this title already exists</string>
-    <string name="editWikiPage">Edit Wiki Page</string>
+    <string name="editWikiPage">Edit wiki</string>
     <string name="newNoteContentHint">Start taking your notes here</string>
     <string name="noteDateTime">Created %1$s</string>
     <string name="noteTimeModified">Updated %s</string>
     <string name="noteDeleteDialogMessage">Do you really want to delete this note?</string>
-    <plurals name="noteDeleteMessage">
-        <item quantity="one">Note deleted successfully</item>
-        <item quantity="other">Notes deleted successfully</item>
-    </plurals>
+    <string name="note_deleted_single">Note deleted successfully</string>
+    <string name="notes_deleted_all">All notes deleted successfully</string>
     <string name="notesAllDeletionMessage">This will delete all of your notes. This action cannot be undone.</string>
     <string name="noNotes">No notes found</string>
     <string name="commitStatuses">Statuses</string>
@@ -605,7 +583,7 @@
     <string name="create_issue">Create Issue</string>
     <string name="search_repos">Search Repositories</string>
     <string name="dashboard_search_repos_sub_title">Search within your repositories with filters for more precise results</string>
-    <string name="edit_milestone">Edit Milestone</string>
+    <string name="edit_milestone">Edit milestone</string>
     <string name="add_labels">Tap to add labels</string>
     <string name="add_milestone">Tap to add milestone</string>
     <string name="add_assignees">Tap to assign assignees</string>
@@ -691,7 +669,38 @@
     <string name="time_months_ago">%d months ago</string>
     <string name="time_year_ago">%d year ago</string>
     <string name="time_years_ago">%d years ago</string>
+    <string name="label_exclusive_hint">Name the label scope/item to make it mutually exclusive with other scope/ labels.</string>
+    <string name="copy_content">Copy content</string>
+    <string name="share_url">Share URL</string>
+    <string name="share_content">Share content</string>
+    <string name="choose_what_to_share">Choose what to share</string>
+    <string name="choose_what_to_copy">Choose what to copy</string>
+    <string name="share_location">Share location</string>
+    <string name="bookmark_added">Bookmark added</string>
+    <string name="bookmark_removed">Bookmark removed</string>
+    <string name="dashboard_bookmarks_sub_title">Quick access to your saved repos, issues, PRs, create actions and more</string>
+    <string name="deleteAllBookmarks">Delete all bookmarks?</string>
+    <string name="deleteAllBookmarksConfirm">This will remove all your saved bookmarks for the current account. This action cannot be undone.</string>
+    <string name="bookmark_remove">Remove bookmark</string>
+    <string name="bookmark_add">Add to bookmark</string>
+    <string name="bookmark_tab">Bookmark tab</string>
+    <string name="repository_section">Repository section</string>
+    <string name="wiki_page">Wiki page</string>
+    <string name="localNetworkPermissionTitle">Local Network Permission</string>
+    <string name="localNetworkPermissionDescription">Android 17+ requires this permission to connect to local network. Without it, connections to servers on your local network may fail.</string>
+    <string name="grantPermission">Grant permission</string>
+    <string name="openSettings">Open settings</string>
+    <string name="permissionGranted">Permission granted</string>
+    <string name="permissionRequired">Permission required</string>
+    <string name="permissionRequiredDescription">This permission is needed for certain features to work properly.</string>
     <!-- generic copy -->
+    <string name="tasks">Tasks</string>
+    <string name="all">All</string>
+    <string name="profile">Profile</string>
+    <string name="repository">Repository</string>
+    <string name="milestones">Milestones</string>
+    <string name="bookmarks">Bookmarks</string>
+    <string name="exclusive">Exclusive</string>
     <string name="doneButton">කළා</string>
     <string name="cancelButton">අවලංගු කරන්න</string>
     <string name="genericError">යම් දෙයක් වැරදී ඇත, කරුණාකර නැවත උත්සාහ කරන්න</string>
@@ -720,6 +729,8 @@
     <string name="collaborator">සහයෝගිතාකරු</string>
     <string name="unstar">තරුව ඉවත් කරන්න</string>
     <string name="watch">නරඹන්න</string>
+    <string name="watcher">Watcher</string>
+    <string name="watchers">Watchers</string>
     <string name="unwatch">බලන්න එපා</string>
     <string name="share">බෙදාගන්න</string>
     <string name="organization">ආයතනය</string>
@@ -758,6 +769,7 @@
     <string name="migrations">Migrations</string>
     <string name="lfs">LFS</string>
     <string name="mirrors">Mirrors</string>
+    <string name="star">Star</string>
     <string name="stars">Stars</string>
     <string name="template">Template</string>
     <string name="accounts">Accounts</string>

@@ -62,26 +62,6 @@
     <string name="orgCreated">Organisation erfolgreich erstellt!</string>
     <string name="orgExistsError">Organisation existiert bereits</string>
     <string name="diffStatistics">%1$s Ergänzung(en) und %2$s Löschung(en)</string>
-    <plurals name="repoStars">
-        <item quantity="one">Stern</item>
-        <item quantity="other">Sterne</item>
-    </plurals>
-    <plurals name="repoWatchers">
-        <item quantity="one">Beobachter</item>
-        <item quantity="other">Beobachter</item>
-    </plurals>
-    <plurals name="repoForks">
-        <item quantity="one">Fork</item>
-        <item quantity="other">Forks</item>
-    </plurals>
-    <plurals name="repoPullRequests">
-        <item quantity="one">Pull-Request</item>
-        <item quantity="other">Pull-Requests</item>
-    </plurals>
-    <plurals name="repoOpenIssues">
-        <item quantity="one">Issue</item>
-        <item quantity="other">Issues</item>
-    </plurals>
     <string name="genericApiError">Die Instanz hat einen Fehler zurückgegeben. Code %d</string>
     <string name="tabTextFiles">Dateien</string>
     <string name="tabTextReleases">Releases</string>
@@ -258,7 +238,6 @@
     <string name="noDataWebsite">Keine Webseite gefunden</string>
     <string name="noDataDescription">Keine Beschreibung gefunden</string>
     <string name="noDataBio">Keine Biographie gefunden</string>
-    <string name="starMember">Favorisieren</string>
     <string name="zipArchiveDownloadReleasesTab">Quellcode (ZIP-Archiv)</string>
     <string name="tarArchiveDownloadReleasesTab">Quellcode (TAR.GZ-Archiv)</string>
     <string name="newFileNameTintCopy">Dateiname</string>
@@ -285,6 +264,7 @@
     <string name="strMarkdown">Markdown</string>
     <string name="copyIssueUrlToastMsg">URL in Zwischenablage kopiert</string>
     <string name="copyShaToastMsg">SHA in Zwischenablage kopiert</string>
+    <string name="copySha">Copy SHA</string>
     <string name="fileTypeCannotBeEdited">Dateien dieses Typs können nicht editiert werden</string>
     <string name="starRepositorySuccess">Repository zur Favoriten hinzugefügt</string>
     <string name="unStarRepositorySuccess">Repository von Favoriten entfernt</string>
@@ -474,10 +454,8 @@
     <string name="noteDateTime">Erstellt %1$s</string>
     <string name="noteTimeModified">%s aktualisiert</string>
     <string name="noteDeleteDialogMessage">Möchten Sie diese Notiz wirklich löschen?</string>
-    <plurals name="noteDeleteMessage">
-        <item quantity="one">Notiz erfolgreich gelöscht</item>
-        <item quantity="other">Notizen erfolgreich gelöscht</item>
-    </plurals>
+    <string name="note_deleted_single">Note deleted successfully</string>
+    <string name="notes_deleted_all">All notes deleted successfully</string>
     <string name="notesAllDeletionMessage">Das wird alle deine Notizen entfernen. Dieser Vorgang kann nicht rückgängig gemacht werden.</string>
     <string name="noNotes">Keine Notizen gefunden</string>
     <string name="commitStatuses">Status</string>
@@ -691,7 +669,38 @@
     <string name="time_months_ago">vor %d Monaten</string>
     <string name="time_year_ago">vor %d Jahr</string>
     <string name="time_years_ago">vor %d Jahren</string>
+    <string name="label_exclusive_hint">Name the label scope/item to make it mutually exclusive with other scope/ labels.</string>
+    <string name="copy_content">Copy content</string>
+    <string name="share_url">Share URL</string>
+    <string name="share_content">Share content</string>
+    <string name="choose_what_to_share">Choose what to share</string>
+    <string name="choose_what_to_copy">Choose what to copy</string>
+    <string name="share_location">Share location</string>
+    <string name="bookmark_added">Bookmark added</string>
+    <string name="bookmark_removed">Bookmark removed</string>
+    <string name="dashboard_bookmarks_sub_title">Quick access to your saved repos, issues, PRs, create actions and more</string>
+    <string name="deleteAllBookmarks">Delete all bookmarks?</string>
+    <string name="deleteAllBookmarksConfirm">This will remove all your saved bookmarks for the current account. This action cannot be undone.</string>
+    <string name="bookmark_remove">Remove bookmark</string>
+    <string name="bookmark_add">Add to bookmark</string>
+    <string name="bookmark_tab">Bookmark tab</string>
+    <string name="repository_section">Repository section</string>
+    <string name="wiki_page">Wiki page</string>
+    <string name="localNetworkPermissionTitle">Local Network Permission</string>
+    <string name="localNetworkPermissionDescription">Android 17+ requires this permission to connect to local network. Without it, connections to servers on your local network may fail.</string>
+    <string name="grantPermission">Grant permission</string>
+    <string name="openSettings">Open settings</string>
+    <string name="permissionGranted">Permission granted</string>
+    <string name="permissionRequired">Permission required</string>
+    <string name="permissionRequiredDescription">This permission is needed for certain features to work properly.</string>
     <!-- generic copy -->
+    <string name="tasks">Tasks</string>
+    <string name="all">All</string>
+    <string name="profile">Profile</string>
+    <string name="repository">Repository</string>
+    <string name="milestones">Milestones</string>
+    <string name="bookmarks">Bookmarks</string>
+    <string name="exclusive">Exclusive</string>
     <string name="doneButton">Fertig</string>
     <string name="cancelButton">Abbrechen</string>
     <string name="genericError">Etwas ist schiefgelaufen. Bitte versuche es noch einmal.</string>
@@ -720,6 +729,8 @@
     <string name="collaborator">Mitarbeiter</string>
     <string name="unstar">Nicht favorisieren</string>
     <string name="watch">Beobachten</string>
+    <string name="watcher">Watcher</string>
+    <string name="watchers">Watchers</string>
     <string name="unwatch">Nicht beobachten</string>
     <string name="share">Teilen</string>
     <string name="organization">Organisation</string>
@@ -758,6 +769,7 @@
     <string name="migrations">Migrationen</string>
     <string name="lfs">LFS</string>
     <string name="mirrors">Mirrors</string>
+    <string name="star">Star</string>
     <string name="stars">Favoriten</string>
     <string name="template">Vorlage</string>
     <string name="accounts">Konten</string>

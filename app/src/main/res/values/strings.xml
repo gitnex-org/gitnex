@@ -111,26 +111,6 @@
     <string name="orgCreated">Organization created successfully</string>
     <string name="orgExistsError">Organization already exists</string>
     <string name="diffStatistics">%1$s addition(s) and %2$s deletion(s)</string>
-    <plurals name="repoStars">
-        <item quantity="one">Star</item>
-        <item quantity="other">Stars</item>
-    </plurals>
-    <plurals name="repoWatchers">
-        <item quantity="one">Watcher</item>
-        <item quantity="other">Watchers</item>
-    </plurals>
-    <plurals name="repoForks">
-        <item quantity="one">Fork</item>
-        <item quantity="other">Forks</item>
-    </plurals>
-    <plurals name="repoPullRequests">
-        <item quantity="one">Pull request</item>
-        <item quantity="other">Pull requests</item>
-    </plurals>
-    <plurals name="repoOpenIssues">
-        <item quantity="one">Issue</item>
-        <item quantity="other">Issues</item>
-    </plurals>
     <string name="genericApiError">Instance has returned an error. Code %d</string>
     <string name="tabTextFiles">Files</string>
     <string name="tabTextReleases">Releases</string>
@@ -314,7 +294,6 @@
     <string name="noDataWebsite">No website found</string>
     <string name="noDataDescription">No description found</string>
     <string name="noDataBio">No bio found</string>
-    <string name="starMember">Star</string>
     <string name="zipArchiveDownloadReleasesTab">Source code (ZIP)</string>
     <string name="tarArchiveDownloadReleasesTab">Source code (TAR.GZ)</string>
     <string name="newFileNameTintCopy">File Name</string>
@@ -438,8 +417,9 @@
     <string name="mainNotificationChannelDescription">This is the main notification channel of GitNex.</string>
     <string name="notificationExtraInfo" translatable="false">- %s (%s)</string>
     <plurals name="youHaveNewNotifications">
-        <item quantity="one">You have %s new notification</item>
-        <item quantity="other">You have %s new notifications</item>
+        <item quantity="one">You have %d new notification</item>
+        <item quantity="few">You have %d new notifications</item>
+        <item quantity="other">You have %d new notifications</item>
     </plurals>
     <string name="openAppSettings">To receive notifications, you must enable notifications for GitNex. Tap Open to access your phone settings and enable notifications.</string>
     <string name="isRead">Read</string>
@@ -534,10 +514,8 @@
     <string name="noteDateTime">Created %1$s</string>
     <string name="noteTimeModified">Updated %s</string>
     <string name="noteDeleteDialogMessage">Do you really want to delete this note?</string>
-    <plurals name="noteDeleteMessage">
-        <item quantity="one">Note deleted successfully</item>
-        <item quantity="other">Notes deleted successfully</item>
-    </plurals>
+    <string name="note_deleted_single">Note deleted successfully</string>
+    <string name="notes_deleted_all">All notes deleted successfully</string>
     <string name="notesAllDeletionMessage">This will delete all of your notes. This action cannot be undone.</string>
     <string name="noNotes">No notes found</string>
     <string name="commitStatuses">Statuses</string>
@@ -815,6 +793,8 @@
     <string name="collaborator">Collaborator</string>
     <string name="unstar">Unstar</string>
     <string name="watch">Watch</string>
+    <string name="watcher">Watcher</string>
+    <string name="watchers">Watchers</string>
     <string name="unwatch">Unwatch</string>
     <string name="share">Share</string>
     <string name="organization">Organization</string>
@@ -853,6 +833,7 @@
     <string name="migrations">Migrations</string>
     <string name="lfs">LFS</string>
     <string name="mirrors">Mirrors</string>
+    <string name="star">Star</string>
     <string name="stars">Stars</string>
     <string name="template">Template</string>
     <string name="accounts">Accounts</string>

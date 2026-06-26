@@ -62,21 +62,6 @@
     <string name="orgCreated">組織創建成功</string>
     <string name="orgExistsError">組織已存在</string>
     <string name="diffStatistics">新增 %1$s 項，刪除 %2$s 項</string>
-    <plurals name="repoStars">
-        <item quantity="other">星標</item>
-    </plurals>
-    <plurals name="repoWatchers">
-        <item quantity="other">關注者</item>
-    </plurals>
-    <plurals name="repoForks">
-        <item quantity="other">分支複本</item>
-    </plurals>
-    <plurals name="repoPullRequests">
-        <item quantity="other">拉取請求</item>
-    </plurals>
-    <plurals name="repoOpenIssues">
-        <item quantity="other">議題</item>
-    </plurals>
     <string name="genericApiError">執行個體回傳錯誤。代碼 %d</string>
     <string name="tabTextFiles">檔案</string>
     <string name="tabTextReleases">版本發行</string>
@@ -253,7 +238,6 @@
     <string name="noDataWebsite">未找到網站</string>
     <string name="noDataDescription">未找到描述</string>
     <string name="noDataBio">未找到簡介</string>
-    <string name="starMember">加星</string>
     <string name="zipArchiveDownloadReleasesTab">源代碼 (ZIP)</string>
     <string name="tarArchiveDownloadReleasesTab">源代碼 (TAR.GZ)</string>
     <string name="newFileNameTintCopy">檔案名稱</string>
@@ -280,6 +264,7 @@
     <string name="strMarkdown">Markdown</string>
     <string name="copyIssueUrlToastMsg">網址已複製到剪貼板</string>
     <string name="copyShaToastMsg">SHA 已複製到剪貼簿</string>
+    <string name="copySha">Copy SHA</string>
     <string name="fileTypeCannotBeEdited">此類型的檔案無法編輯</string>
     <string name="starRepositorySuccess">儲存庫已新增至加星清單</string>
     <string name="unStarRepositorySuccess">儲存庫已從加星清單移除</string>
@@ -469,9 +454,8 @@
     <string name="noteDateTime">已建立 %1$s</string>
     <string name="noteTimeModified">已更新 %s</string>
     <string name="noteDeleteDialogMessage">你確定要刪除此備註嗎？</string>
-    <plurals name="noteDeleteMessage">
-        <item quantity="other">備註已成功刪除</item>
-    </plurals>
+    <string name="note_deleted_single">Note deleted successfully</string>
+    <string name="notes_deleted_all">All notes deleted successfully</string>
     <string name="notesAllDeletionMessage">將刪除你的所有備註，該操作無法復原。</string>
     <string name="noNotes">找不到備註</string>
     <string name="commitStatuses">狀態</string>
@@ -685,7 +669,38 @@
     <string name="time_months_ago">%d 個月前</string>
     <string name="time_year_ago">%d 年前</string>
     <string name="time_years_ago">%d 年前</string>
+    <string name="label_exclusive_hint">Name the label scope/item to make it mutually exclusive with other scope/ labels.</string>
+    <string name="copy_content">Copy content</string>
+    <string name="share_url">Share URL</string>
+    <string name="share_content">Share content</string>
+    <string name="choose_what_to_share">Choose what to share</string>
+    <string name="choose_what_to_copy">Choose what to copy</string>
+    <string name="share_location">Share location</string>
+    <string name="bookmark_added">Bookmark added</string>
+    <string name="bookmark_removed">Bookmark removed</string>
+    <string name="dashboard_bookmarks_sub_title">Quick access to your saved repos, issues, PRs, create actions and more</string>
+    <string name="deleteAllBookmarks">Delete all bookmarks?</string>
+    <string name="deleteAllBookmarksConfirm">This will remove all your saved bookmarks for the current account. This action cannot be undone.</string>
+    <string name="bookmark_remove">Remove bookmark</string>
+    <string name="bookmark_add">Add to bookmark</string>
+    <string name="bookmark_tab">Bookmark tab</string>
+    <string name="repository_section">Repository section</string>
+    <string name="wiki_page">Wiki page</string>
+    <string name="localNetworkPermissionTitle">Local Network Permission</string>
+    <string name="localNetworkPermissionDescription">Android 17+ requires this permission to connect to local network. Without it, connections to servers on your local network may fail.</string>
+    <string name="grantPermission">Grant permission</string>
+    <string name="openSettings">Open settings</string>
+    <string name="permissionGranted">Permission granted</string>
+    <string name="permissionRequired">Permission required</string>
+    <string name="permissionRequiredDescription">This permission is needed for certain features to work properly.</string>
     <!-- generic copy -->
+    <string name="tasks">Tasks</string>
+    <string name="all">All</string>
+    <string name="profile">Profile</string>
+    <string name="repository">Repository</string>
+    <string name="milestones">Milestones</string>
+    <string name="bookmarks">Bookmarks</string>
+    <string name="exclusive">Exclusive</string>
     <string name="doneButton">已完成</string>
     <string name="cancelButton">取消</string>
     <string name="genericError">發生錯誤，請重試</string>
@@ -714,6 +729,8 @@
     <string name="collaborator">協作者</string>
     <string name="unstar">取消加星</string>
     <string name="watch">關注</string>
+    <string name="watcher">Watcher</string>
+    <string name="watchers">Watchers</string>
     <string name="unwatch">取消關注</string>
     <string name="share">分享</string>
     <string name="organization">組織</string>
@@ -752,6 +769,7 @@
     <string name="migrations">遷移</string>
     <string name="lfs">LFS</string>
     <string name="mirrors">鏡像</string>
+    <string name="star">Star</string>
     <string name="stars">星標</string>
     <string name="template">模板</string>
     <string name="accounts">帳號</string>

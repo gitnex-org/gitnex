@@ -165,13 +165,15 @@ public class UserAccountsAdapter
 						if (response.isSuccessful() && response.body() != null) {
 							long count = response.body().getNew();
 							if (count > 0) {
+								int notificationCount = (int) count;
 								String toastMsg =
 										context.getResources()
 												.getQuantityString(
 														R.plurals.youHaveNewNotifications,
-														(int) count,
-														(int) count);
-								new Handler()
+														notificationCount,
+														notificationCount);
+
+								new Handler(android.os.Looper.getMainLooper())
 										.postDelayed(() -> Toasty.show(context, toastMsg), 5000);
 							}
 						}

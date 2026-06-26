@@ -62,36 +62,6 @@
     <string name="orgCreated">Организация успешно создана!</string>
     <string name="orgExistsError">Организация уже существует</string>
     <string name="diffStatistics">%1$s добавлен(о) и %2$s удален(о)</string>
-    <plurals name="repoStars">
-        <item quantity="one">Star</item>
-        <item quantity="few">Stars</item>
-        <item quantity="many">Stars</item>
-        <item quantity="other">Stars</item>
-    </plurals>
-    <plurals name="repoWatchers">
-        <item quantity="one">Watcher</item>
-        <item quantity="few">Watchers</item>
-        <item quantity="many">Watchers</item>
-        <item quantity="other">Watchers</item>
-    </plurals>
-    <plurals name="repoForks">
-        <item quantity="one">Fork</item>
-        <item quantity="few">Forks</item>
-        <item quantity="many">Forks</item>
-        <item quantity="other">Forks</item>
-    </plurals>
-    <plurals name="repoPullRequests">
-        <item quantity="one">Pull request</item>
-        <item quantity="few">Pull requests</item>
-        <item quantity="many">Pull requests</item>
-        <item quantity="other">Pull requests</item>
-    </plurals>
-    <plurals name="repoOpenIssues">
-        <item quantity="one">Issue</item>
-        <item quantity="few">Issues</item>
-        <item quantity="many">Issues</item>
-        <item quantity="other">Issues</item>
-    </plurals>
     <string name="genericApiError">Экземпляр вернул ошибку. Код %d</string>
     <string name="tabTextFiles">Файлы</string>
     <string name="tabTextReleases">Релизы</string>
@@ -268,7 +238,6 @@
     <string name="noDataWebsite">Веб-сайт не найден</string>
     <string name="noDataDescription">Описание не найдено</string>
     <string name="noDataBio">Биография не найдена</string>
-    <string name="starMember">В избранное</string>
     <string name="zipArchiveDownloadReleasesTab">Исходный код (ZIP)</string>
     <string name="tarArchiveDownloadReleasesTab">Исходный код (TAR.GZ)</string>
     <string name="newFileNameTintCopy">Имя файла</string>
@@ -295,6 +264,7 @@
     <string name="strMarkdown">Markdown</string>
     <string name="copyIssueUrlToastMsg">URL скопирован в буфер обмена</string>
     <string name="copyShaToastMsg">SHA скопирован в буфер обмена</string>
+    <string name="copySha">Copy SHA</string>
     <string name="fileTypeCannotBeEdited">Файлы этого типа нельзя редактировать</string>
     <string name="starRepositorySuccess">Репозиторий добавлен в список избранного</string>
     <string name="unStarRepositorySuccess">Репозиторий удален из списка избранного</string>
@@ -390,7 +360,7 @@
     <string name="mainNotificationChannelDescription">Это основной канал уведомлений GitNex.</string>
     <plurals name="youHaveNewNotifications">
         <item quantity="one">У вас %s новое уведомление</item>
-        <item quantity="few">You have %s new notifications</item>
+        <item quantity="few">You have %d new notifications</item>
         <item quantity="many">У вас %s новых уведомлений</item>
         <item quantity="other">У вас %s новых уведомлений</item>
     </plurals>
@@ -481,17 +451,13 @@
     <string name="wikiUpdated">Страница вики успешно обновлена</string>
     <string name="wikiCreated">Страница вики успешно создана</string>
     <string name="wikiPageAlreadyExists">A wiki page with this title already exists</string>
-    <string name="editWikiPage">Edit Wiki Page</string>
+    <string name="editWikiPage">Edit wiki</string>
     <string name="newNoteContentHint">Начните делать заметки здесь</string>
     <string name="noteDateTime">Создано %1$s</string>
     <string name="noteTimeModified">Обновлено %s</string>
     <string name="noteDeleteDialogMessage">Вы действительно хотите удалить заметку?</string>
-    <plurals name="noteDeleteMessage">
-        <item quantity="one">Заметка успешно удалена</item>
-        <item quantity="few">Заметки успешно удалены</item>
-        <item quantity="many">Заметки успешно удалены</item>
-        <item quantity="other">Заметки успешно удалены</item>
-    </plurals>
+    <string name="note_deleted_single">Note deleted successfully</string>
+    <string name="notes_deleted_all">All notes deleted successfully</string>
     <string name="notesAllDeletionMessage">Это удалит все ваши заметки. Его нельзя отменить.</string>
     <string name="noNotes">Заметок нет</string>
     <string name="commitStatuses">Статусы</string>
@@ -619,7 +585,7 @@
     <string name="create_issue">Create Issue</string>
     <string name="search_repos">Search Repositories</string>
     <string name="dashboard_search_repos_sub_title">Search within your repositories with filters for more precise results</string>
-    <string name="edit_milestone">Edit Milestone</string>
+    <string name="edit_milestone">Edit milestone</string>
     <string name="add_labels">Tap to add labels</string>
     <string name="add_milestone">Tap to add milestone</string>
     <string name="add_assignees">Tap to assign assignees</string>
@@ -705,7 +671,38 @@
     <string name="time_months_ago">%d months ago</string>
     <string name="time_year_ago">%d year ago</string>
     <string name="time_years_ago">%d years ago</string>
+    <string name="label_exclusive_hint">Name the label scope/item to make it mutually exclusive with other scope/ labels.</string>
+    <string name="copy_content">Copy content</string>
+    <string name="share_url">Share URL</string>
+    <string name="share_content">Share content</string>
+    <string name="choose_what_to_share">Choose what to share</string>
+    <string name="choose_what_to_copy">Choose what to copy</string>
+    <string name="share_location">Share location</string>
+    <string name="bookmark_added">Bookmark added</string>
+    <string name="bookmark_removed">Bookmark removed</string>
+    <string name="dashboard_bookmarks_sub_title">Quick access to your saved repos, issues, PRs, create actions and more</string>
+    <string name="deleteAllBookmarks">Delete all bookmarks?</string>
+    <string name="deleteAllBookmarksConfirm">This will remove all your saved bookmarks for the current account. This action cannot be undone.</string>
+    <string name="bookmark_remove">Remove bookmark</string>
+    <string name="bookmark_add">Add to bookmark</string>
+    <string name="bookmark_tab">Bookmark tab</string>
+    <string name="repository_section">Repository section</string>
+    <string name="wiki_page">Wiki page</string>
+    <string name="localNetworkPermissionTitle">Local Network Permission</string>
+    <string name="localNetworkPermissionDescription">Android 17+ requires this permission to connect to local network. Without it, connections to servers on your local network may fail.</string>
+    <string name="grantPermission">Grant permission</string>
+    <string name="openSettings">Open settings</string>
+    <string name="permissionGranted">Permission granted</string>
+    <string name="permissionRequired">Permission required</string>
+    <string name="permissionRequiredDescription">This permission is needed for certain features to work properly.</string>
     <!-- generic copy -->
+    <string name="tasks">Tasks</string>
+    <string name="all">All</string>
+    <string name="profile">Profile</string>
+    <string name="repository">Repository</string>
+    <string name="milestones">Milestones</string>
+    <string name="bookmarks">Bookmarks</string>
+    <string name="exclusive">Exclusive</string>
     <string name="doneButton">Готово</string>
     <string name="cancelButton">Закрыть</string>
     <string name="genericError">Что-то пошло не так. Пожалуйста, попытайтесь еще раз.</string>
@@ -734,6 +731,8 @@
     <string name="collaborator">Участник</string>
     <string name="unstar">Снять отметку \"избранное\"</string>
     <string name="watch">Отслеживать</string>
+    <string name="watcher">Watcher</string>
+    <string name="watchers">Watchers</string>
     <string name="unwatch">Не отслеживать</string>
     <string name="share">Поделиться</string>
     <string name="organization">Организация</string>
@@ -772,6 +771,7 @@
     <string name="migrations">Миграции</string>
     <string name="lfs">LFS</string>
     <string name="mirrors">Зеркала</string>
+    <string name="star">Star</string>
     <string name="stars">Звёзды</string>
     <string name="template">Template</string>
     <string name="accounts">Accounts</string>

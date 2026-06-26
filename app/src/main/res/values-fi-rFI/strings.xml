@@ -62,26 +62,6 @@
     <string name="orgCreated">Organisaatio luotu</string>
     <string name="orgExistsError">Organisaatio on jo olemassa</string>
     <string name="diffStatistics">%1$s lisäys(tä) ja %2$s poisto(a)</string>
-    <plurals name="repoStars">
-        <item quantity="one">Star</item>
-        <item quantity="other">Stars</item>
-    </plurals>
-    <plurals name="repoWatchers">
-        <item quantity="one">Watcher</item>
-        <item quantity="other">Watchers</item>
-    </plurals>
-    <plurals name="repoForks">
-        <item quantity="one">Fork</item>
-        <item quantity="other">Forks</item>
-    </plurals>
-    <plurals name="repoPullRequests">
-        <item quantity="one">Pull request</item>
-        <item quantity="other">Pull requests</item>
-    </plurals>
-    <plurals name="repoOpenIssues">
-        <item quantity="one">Issue</item>
-        <item quantity="other">Issues</item>
-    </plurals>
     <string name="genericApiError">Instanssi palautti virheen. Koodi %d</string>
     <string name="tabTextFiles">Tiedostot</string>
     <string name="tabTextReleases">Julkaisut</string>
@@ -258,7 +238,6 @@
     <string name="noDataWebsite">Sivustoa ei löytynyt</string>
     <string name="noDataDescription">Kuvausta ei löytynyt</string>
     <string name="noDataBio">Elämäkertaa ei löytynyt</string>
-    <string name="starMember">Tähti</string>
     <string name="zipArchiveDownloadReleasesTab">Lähdekoodi (ZIP)</string>
     <string name="tarArchiveDownloadReleasesTab">Lähdekoodi (TAR.GZ)</string>
     <string name="newFileNameTintCopy">Tiedoston nimi</string>
@@ -285,6 +264,7 @@
     <string name="strMarkdown">Markdown</string>
     <string name="copyIssueUrlToastMsg">URL-osoite kopioitu leikepöydälle</string>
     <string name="copyShaToastMsg">SHA kopioitu leikepöydälle</string>
+    <string name="copySha">Copy SHA</string>
     <string name="fileTypeCannotBeEdited">Tätä tyyppiä olevia tiedostoja ei voi muokata</string>
     <string name="starRepositorySuccess">Tietovarasto lisätty tähtilistaan</string>
     <string name="unStarRepositorySuccess">Tietovarasto poistettu tähtilistalta</string>
@@ -469,15 +449,13 @@
     <string name="wikiUpdated">Wikisivu päivitetty</string>
     <string name="wikiCreated">Wikisivu luotu</string>
     <string name="wikiPageAlreadyExists">A wiki page with this title already exists</string>
-    <string name="editWikiPage">Edit Wiki Page</string>
+    <string name="editWikiPage">Edit wiki</string>
     <string name="newNoteContentHint">Aloita muistiinpanojen tekeminen tänne</string>
     <string name="noteDateTime">Luotu %1$s</string>
     <string name="noteTimeModified">Päivitetty %s</string>
     <string name="noteDeleteDialogMessage">Halutako varmasti poistaa tämän muistiinpanon?</string>
-    <plurals name="noteDeleteMessage">
-        <item quantity="one">Muistiinpano poistettu onnistuneesti</item>
-        <item quantity="other">Muistiinpanot poistettu onnistuneesti</item>
-    </plurals>
+    <string name="note_deleted_single">Note deleted successfully</string>
+    <string name="notes_deleted_all">All notes deleted successfully</string>
     <string name="notesAllDeletionMessage">Tämä poistaa kaikki muistiinpanosi. Tätä ei voi perua.</string>
     <string name="noNotes">Muistiinpanoja ei löytynyt</string>
     <string name="commitStatuses">Tilat</string>
@@ -605,7 +583,7 @@
     <string name="create_issue">Create Issue</string>
     <string name="search_repos">Search Repositories</string>
     <string name="dashboard_search_repos_sub_title">Search within your repositories with filters for more precise results</string>
-    <string name="edit_milestone">Edit Milestone</string>
+    <string name="edit_milestone">Edit milestone</string>
     <string name="add_labels">Tap to add labels</string>
     <string name="add_milestone">Tap to add milestone</string>
     <string name="add_assignees">Tap to assign assignees</string>
@@ -691,7 +669,38 @@
     <string name="time_months_ago">%d months ago</string>
     <string name="time_year_ago">%d year ago</string>
     <string name="time_years_ago">%d years ago</string>
+    <string name="label_exclusive_hint">Name the label scope/item to make it mutually exclusive with other scope/ labels.</string>
+    <string name="copy_content">Copy content</string>
+    <string name="share_url">Share URL</string>
+    <string name="share_content">Share content</string>
+    <string name="choose_what_to_share">Choose what to share</string>
+    <string name="choose_what_to_copy">Choose what to copy</string>
+    <string name="share_location">Share location</string>
+    <string name="bookmark_added">Bookmark added</string>
+    <string name="bookmark_removed">Bookmark removed</string>
+    <string name="dashboard_bookmarks_sub_title">Quick access to your saved repos, issues, PRs, create actions and more</string>
+    <string name="deleteAllBookmarks">Delete all bookmarks?</string>
+    <string name="deleteAllBookmarksConfirm">This will remove all your saved bookmarks for the current account. This action cannot be undone.</string>
+    <string name="bookmark_remove">Remove bookmark</string>
+    <string name="bookmark_add">Add to bookmark</string>
+    <string name="bookmark_tab">Bookmark tab</string>
+    <string name="repository_section">Repository section</string>
+    <string name="wiki_page">Wiki page</string>
+    <string name="localNetworkPermissionTitle">Local Network Permission</string>
+    <string name="localNetworkPermissionDescription">Android 17+ requires this permission to connect to local network. Without it, connections to servers on your local network may fail.</string>
+    <string name="grantPermission">Grant permission</string>
+    <string name="openSettings">Open settings</string>
+    <string name="permissionGranted">Permission granted</string>
+    <string name="permissionRequired">Permission required</string>
+    <string name="permissionRequiredDescription">This permission is needed for certain features to work properly.</string>
     <!-- generic copy -->
+    <string name="tasks">Tasks</string>
+    <string name="all">All</string>
+    <string name="profile">Profile</string>
+    <string name="repository">Repository</string>
+    <string name="milestones">Milestones</string>
+    <string name="bookmarks">Bookmarks</string>
+    <string name="exclusive">Exclusive</string>
     <string name="doneButton">Valmis</string>
     <string name="cancelButton">Peruuta</string>
     <string name="genericError">Jokin meni pieleen, yritä uudelleen</string>
@@ -720,6 +729,8 @@
     <string name="collaborator">Avustaja</string>
     <string name="unstar">Poista tähti</string>
     <string name="watch">Seuraa</string>
+    <string name="watcher">Watcher</string>
+    <string name="watchers">Watchers</string>
     <string name="unwatch">Lopeta seuraaminen</string>
     <string name="share">Jaa</string>
     <string name="organization">Organisaatio</string>
@@ -758,6 +769,7 @@
     <string name="migrations">Migraatiot</string>
     <string name="lfs">LFS</string>
     <string name="mirrors">Peilit</string>
+    <string name="star">Star</string>
     <string name="stars">Tähdet</string>
     <string name="template">Template</string>
     <string name="accounts">Accounts</string>

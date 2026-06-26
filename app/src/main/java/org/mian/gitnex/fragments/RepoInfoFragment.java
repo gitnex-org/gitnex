@@ -466,24 +466,24 @@ public class RepoInfoFragment extends Fragment {
 		int prs = Math.toIntExact(repo.getOpenPrCounter());
 		int issues = Math.toIntExact(repo.getOpenIssuesCount());
 
-		binding.statStars.statLabel.setText(
-				getResources().getQuantityString(R.plurals.repoStars, stars));
+		int starLabelRes = (stars == 1) ? R.string.star : R.string.stars;
+		binding.statStars.statLabel.setText(ctx.getString(starLabelRes));
 		binding.statStars.statCount.setText(AppUtil.numberFormatter(stars));
 
-		binding.statForks.statLabel.setText(
-				getResources().getQuantityString(R.plurals.repoForks, forks));
+		int forkLabelRes = (forks == 1) ? R.string.fork : R.string.forks;
+		binding.statForks.statLabel.setText(ctx.getString(forkLabelRes));
 		binding.statForks.statCount.setText(AppUtil.numberFormatter(forks));
 
-		binding.statWatchers.statLabel.setText(
-				getResources().getQuantityString(R.plurals.repoWatchers, watchers));
+		int watcherLabelRes = (watchers == 1) ? R.string.watcher : R.string.watchers;
+		binding.statWatchers.statLabel.setText(ctx.getString(watcherLabelRes));
 		binding.statWatchers.statCount.setText(AppUtil.numberFormatter(watchers));
 
-		binding.statPRs.statLabel.setText(
-				getResources().getQuantityString(R.plurals.repoPullRequests, prs));
+		int prLabelRes = (prs == 1) ? R.string.pullRequest : R.string.tabPullRequests;
+		binding.statPRs.statLabel.setText(ctx.getString(prLabelRes));
 		binding.statPRs.statCount.setText(AppUtil.numberFormatter(prs));
 
-		binding.statIssues.statLabel.setText(
-				getResources().getQuantityString(R.plurals.repoOpenIssues, issues));
+		int issueLabelRes = (issues == 1) ? R.string.issue : R.string.pageTitleIssues;
+		binding.statIssues.statLabel.setText(ctx.getString(issueLabelRes));
 		binding.statIssues.statCount.setText(AppUtil.numberFormatter(issues));
 	}
 

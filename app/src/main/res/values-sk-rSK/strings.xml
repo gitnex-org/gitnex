@@ -62,36 +62,6 @@
     <string name="orgCreated">Organization created successfully</string>
     <string name="orgExistsError">Organization already exists</string>
     <string name="diffStatistics">%1$s addition(s) and %2$s deletion(s)</string>
-    <plurals name="repoStars">
-        <item quantity="one">Star</item>
-        <item quantity="few">Stars</item>
-        <item quantity="many">Stars</item>
-        <item quantity="other">Stars</item>
-    </plurals>
-    <plurals name="repoWatchers">
-        <item quantity="one">Watcher</item>
-        <item quantity="few">Watchers</item>
-        <item quantity="many">Watchers</item>
-        <item quantity="other">Watchers</item>
-    </plurals>
-    <plurals name="repoForks">
-        <item quantity="one">Fork</item>
-        <item quantity="few">Forks</item>
-        <item quantity="many">Forks</item>
-        <item quantity="other">Forks</item>
-    </plurals>
-    <plurals name="repoPullRequests">
-        <item quantity="one">Pull request</item>
-        <item quantity="few">Pull requests</item>
-        <item quantity="many">Pull requests</item>
-        <item quantity="other">Pull requests</item>
-    </plurals>
-    <plurals name="repoOpenIssues">
-        <item quantity="one">Issue</item>
-        <item quantity="few">Issues</item>
-        <item quantity="many">Issues</item>
-        <item quantity="other">Issues</item>
-    </plurals>
     <string name="genericApiError">Instance has returned an error. Code %d</string>
     <string name="tabTextFiles">Súbory</string>
     <string name="tabTextReleases">Vydania</string>
@@ -268,7 +238,6 @@
     <string name="noDataWebsite">No website found</string>
     <string name="noDataDescription">No description found</string>
     <string name="noDataBio">No bio found</string>
-    <string name="starMember">Star</string>
     <string name="zipArchiveDownloadReleasesTab">Source code (ZIP)</string>
     <string name="tarArchiveDownloadReleasesTab">Source code (TAR.GZ)</string>
     <string name="newFileNameTintCopy">File Name</string>
@@ -295,6 +264,7 @@
     <string name="strMarkdown">Markdown</string>
     <string name="copyIssueUrlToastMsg">URL copied to clipboard</string>
     <string name="copyShaToastMsg">SHA copied to clipboard</string>
+    <string name="copySha">Copy SHA</string>
     <string name="fileTypeCannotBeEdited">Files of this type cannot be edited</string>
     <string name="starRepositorySuccess">Repository added to starred list</string>
     <string name="unStarRepositorySuccess">Repository removed from starred list</string>
@@ -327,7 +297,7 @@
     <string name="edit_pr">Edit Pull Request</string>
     <string name="downloadFileSaved">File saved successfully</string>
     <string name="deleteFile">Delete This File</string>
-    <string name="editFile">Edit This File</string>
+    <string name="editFile">Edit file</string>
     <string name="deleteFileMessage">File is set for deletion by branch %1$s</string>
     <string name="editFileMessage">File is modified by branch %1$s</string>
     <string name="commitAuthoredByAndCommittedByWhen">%1$s authored and %2$s committed on %3$s</string>
@@ -372,7 +342,7 @@
     <string name="addNewAccount">New Account</string>
     <string name="addNewAccountText">Add Account</string>
     <string name="update_account">Update Account</string>
-    <string name="switchAccountSuccess">Switched to account : %1$s@%2$s</string>
+    <string name="switchAccountSuccess">Switched to account @%1$s %2$s</string>
     <string name="pageTitleNotifications">Notifications</string>
     <string name="notificationsPollingHeaderText">Notifications Polling Delay</string>
     <string name="pollingDelay15Minutes">15 Minutes</string>
@@ -389,10 +359,10 @@
     <string name="mainNotificationChannelName">Notifications</string>
     <string name="mainNotificationChannelDescription">This is the main notification channel of GitNex.</string>
     <plurals name="youHaveNewNotifications">
-        <item quantity="one">You have %s new notification</item>
-        <item quantity="few">You have %s new notifications</item>
-        <item quantity="many">You have %s new notifications</item>
-        <item quantity="other">You have %s new notifications</item>
+        <item quantity="one">You have %d new notification</item>
+        <item quantity="few">You have %d new notifications</item>
+        <item quantity="many">You have %d new notifications</item>
+        <item quantity="other">You have %d new notifications</item>
     </plurals>
     <string name="openAppSettings">To receive notifications, you must enable notifications for GitNex. Tap Open to access your phone settings and enable notifications.</string>
     <string name="isRead">Read</string>
@@ -481,17 +451,13 @@
     <string name="wikiUpdated">Wiki page updated successfully</string>
     <string name="wikiCreated">Wiki page created successfully</string>
     <string name="wikiPageAlreadyExists">A wiki page with this title already exists</string>
-    <string name="editWikiPage">Edit Wiki Page</string>
+    <string name="editWikiPage">Edit wiki</string>
     <string name="newNoteContentHint">Start taking your notes here</string>
     <string name="noteDateTime">Created %1$s</string>
     <string name="noteTimeModified">Updated %s</string>
     <string name="noteDeleteDialogMessage">Do you really want to delete this note?</string>
-    <plurals name="noteDeleteMessage">
-        <item quantity="one">Note deleted successfully</item>
-        <item quantity="few">Notes deleted successfully</item>
-        <item quantity="many">Notes deleted successfully</item>
-        <item quantity="other">Notes deleted successfully</item>
-    </plurals>
+    <string name="note_deleted_single">Note deleted successfully</string>
+    <string name="notes_deleted_all">All notes deleted successfully</string>
     <string name="notesAllDeletionMessage">This will delete all of your notes. This action cannot be undone.</string>
     <string name="noNotes">No notes found</string>
     <string name="commitStatuses">Statuses</string>
@@ -619,7 +585,7 @@
     <string name="create_issue">Create Issue</string>
     <string name="search_repos">Search Repositories</string>
     <string name="dashboard_search_repos_sub_title">Search within your repositories with filters for more precise results</string>
-    <string name="edit_milestone">Edit Milestone</string>
+    <string name="edit_milestone">Edit milestone</string>
     <string name="add_labels">Tap to add labels</string>
     <string name="add_milestone">Tap to add milestone</string>
     <string name="add_assignees">Tap to assign assignees</string>
@@ -705,7 +671,38 @@
     <string name="time_months_ago">%d months ago</string>
     <string name="time_year_ago">%d year ago</string>
     <string name="time_years_ago">%d years ago</string>
+    <string name="label_exclusive_hint">Name the label scope/item to make it mutually exclusive with other scope/ labels.</string>
+    <string name="copy_content">Copy content</string>
+    <string name="share_url">Share URL</string>
+    <string name="share_content">Share content</string>
+    <string name="choose_what_to_share">Choose what to share</string>
+    <string name="choose_what_to_copy">Choose what to copy</string>
+    <string name="share_location">Share location</string>
+    <string name="bookmark_added">Bookmark added</string>
+    <string name="bookmark_removed">Bookmark removed</string>
+    <string name="dashboard_bookmarks_sub_title">Quick access to your saved repos, issues, PRs, create actions and more</string>
+    <string name="deleteAllBookmarks">Delete all bookmarks?</string>
+    <string name="deleteAllBookmarksConfirm">This will remove all your saved bookmarks for the current account. This action cannot be undone.</string>
+    <string name="bookmark_remove">Remove bookmark</string>
+    <string name="bookmark_add">Add to bookmark</string>
+    <string name="bookmark_tab">Bookmark tab</string>
+    <string name="repository_section">Repository section</string>
+    <string name="wiki_page">Wiki page</string>
+    <string name="localNetworkPermissionTitle">Local Network Permission</string>
+    <string name="localNetworkPermissionDescription">Android 17+ requires this permission to connect to local network. Without it, connections to servers on your local network may fail.</string>
+    <string name="grantPermission">Grant permission</string>
+    <string name="openSettings">Open settings</string>
+    <string name="permissionGranted">Permission granted</string>
+    <string name="permissionRequired">Permission required</string>
+    <string name="permissionRequiredDescription">This permission is needed for certain features to work properly.</string>
     <!-- generic copy -->
+    <string name="tasks">Tasks</string>
+    <string name="all">All</string>
+    <string name="profile">Profile</string>
+    <string name="repository">Repository</string>
+    <string name="milestones">Milestones</string>
+    <string name="bookmarks">Bookmarks</string>
+    <string name="exclusive">Exclusive</string>
     <string name="doneButton">Done</string>
     <string name="cancelButton">Cancel</string>
     <string name="genericError">Something went wrong, please try again</string>
@@ -734,6 +731,8 @@
     <string name="collaborator">Collaborator</string>
     <string name="unstar">Unstar</string>
     <string name="watch">Watch</string>
+    <string name="watcher">Watcher</string>
+    <string name="watchers">Watchers</string>
     <string name="unwatch">Unwatch</string>
     <string name="share">Share</string>
     <string name="organization">Organization</string>
@@ -772,6 +771,7 @@
     <string name="migrations">Migrations</string>
     <string name="lfs">LFS</string>
     <string name="mirrors">Mirrors</string>
+    <string name="star">Star</string>
     <string name="stars">Stars</string>
     <string name="template">Template</string>
     <string name="accounts">Accounts</string>

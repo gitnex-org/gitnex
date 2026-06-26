@@ -62,21 +62,6 @@
     <string name="orgCreated">組織が正常に作成されました</string>
     <string name="orgExistsError">組織はすでに存在します</string>
     <string name="diffStatistics">%1$s の追加と %2$s の削除</string>
-    <plurals name="repoStars">
-        <item quantity="other">Stars</item>
-    </plurals>
-    <plurals name="repoWatchers">
-        <item quantity="other">Watchers</item>
-    </plurals>
-    <plurals name="repoForks">
-        <item quantity="other">Forks</item>
-    </plurals>
-    <plurals name="repoPullRequests">
-        <item quantity="other">Pull requests</item>
-    </plurals>
-    <plurals name="repoOpenIssues">
-        <item quantity="other">Issues</item>
-    </plurals>
     <string name="genericApiError">インスタンスがエラーを返しました。コード %d</string>
     <string name="tabTextFiles">ファイル</string>
     <string name="tabTextReleases">リリース</string>
@@ -253,7 +238,6 @@
     <string name="noDataWebsite">Webサイトが見つかりません</string>
     <string name="noDataDescription">説明が見つかりません</string>
     <string name="noDataBio">No bio found</string>
-    <string name="starMember">星</string>
     <string name="zipArchiveDownloadReleasesTab">ソースコード(ZIP)</string>
     <string name="tarArchiveDownloadReleasesTab">ソースコード(TAR.GZ)</string>
     <string name="newFileNameTintCopy">ファイル名</string>
@@ -280,6 +264,7 @@
     <string name="strMarkdown">Markdown 形式</string>
     <string name="copyIssueUrlToastMsg">URLがクリップボードにコピーされました</string>
     <string name="copyShaToastMsg">ハッシュ値がクリップボードにコピーされました</string>
+    <string name="copySha">Copy SHA</string>
     <string name="fileTypeCannotBeEdited">このタイプのファイルは編集できません</string>
     <string name="starRepositorySuccess">リポジトリがスター付きリストに追加されました</string>
     <string name="unStarRepositorySuccess">スター付きリストからリポジトリが削除されました</string>
@@ -463,14 +448,13 @@
     <string name="wikiUpdated">Wikiページが正常に更新されました</string>
     <string name="wikiCreated">Wikiページが正常に作成されました</string>
     <string name="wikiPageAlreadyExists">A wiki page with this title already exists</string>
-    <string name="editWikiPage">Edit Wiki Page</string>
+    <string name="editWikiPage">Edit wiki</string>
     <string name="newNoteContentHint">ここからノートを取り始める</string>
     <string name="noteDateTime">%1$s を作成しました</string>
     <string name="noteTimeModified">%sを更新しました</string>
     <string name="noteDeleteDialogMessage">本当にこのノートを削除しますか？</string>
-    <plurals name="noteDeleteMessage">
-        <item quantity="other">ノートは正常に削除されました</item>
-    </plurals>
+    <string name="note_deleted_single">Note deleted successfully</string>
+    <string name="notes_deleted_all">All notes deleted successfully</string>
     <string name="notesAllDeletionMessage">すべてのノートが削除されます。この操作は元に戻せません。</string>
     <string name="noNotes">ノートが見つかりません</string>
     <string name="commitStatuses">投稿</string>
@@ -598,7 +582,7 @@
     <string name="create_issue">Create Issue</string>
     <string name="search_repos">Search Repositories</string>
     <string name="dashboard_search_repos_sub_title">Search within your repositories with filters for more precise results</string>
-    <string name="edit_milestone">Edit Milestone</string>
+    <string name="edit_milestone">Edit milestone</string>
     <string name="add_labels">Tap to add labels</string>
     <string name="add_milestone">Tap to add milestone</string>
     <string name="add_assignees">Tap to assign assignees</string>
@@ -684,7 +668,38 @@
     <string name="time_months_ago">%d months ago</string>
     <string name="time_year_ago">%d year ago</string>
     <string name="time_years_ago">%d years ago</string>
+    <string name="label_exclusive_hint">Name the label scope/item to make it mutually exclusive with other scope/ labels.</string>
+    <string name="copy_content">Copy content</string>
+    <string name="share_url">Share URL</string>
+    <string name="share_content">Share content</string>
+    <string name="choose_what_to_share">Choose what to share</string>
+    <string name="choose_what_to_copy">Choose what to copy</string>
+    <string name="share_location">Share location</string>
+    <string name="bookmark_added">Bookmark added</string>
+    <string name="bookmark_removed">Bookmark removed</string>
+    <string name="dashboard_bookmarks_sub_title">Quick access to your saved repos, issues, PRs, create actions and more</string>
+    <string name="deleteAllBookmarks">Delete all bookmarks?</string>
+    <string name="deleteAllBookmarksConfirm">This will remove all your saved bookmarks for the current account. This action cannot be undone.</string>
+    <string name="bookmark_remove">Remove bookmark</string>
+    <string name="bookmark_add">Add to bookmark</string>
+    <string name="bookmark_tab">Bookmark tab</string>
+    <string name="repository_section">Repository section</string>
+    <string name="wiki_page">Wiki page</string>
+    <string name="localNetworkPermissionTitle">Local Network Permission</string>
+    <string name="localNetworkPermissionDescription">Android 17+ requires this permission to connect to local network. Without it, connections to servers on your local network may fail.</string>
+    <string name="grantPermission">Grant permission</string>
+    <string name="openSettings">Open settings</string>
+    <string name="permissionGranted">Permission granted</string>
+    <string name="permissionRequired">Permission required</string>
+    <string name="permissionRequiredDescription">This permission is needed for certain features to work properly.</string>
     <!-- generic copy -->
+    <string name="tasks">Tasks</string>
+    <string name="all">All</string>
+    <string name="profile">Profile</string>
+    <string name="repository">Repository</string>
+    <string name="milestones">Milestones</string>
+    <string name="bookmarks">Bookmarks</string>
+    <string name="exclusive">Exclusive</string>
     <string name="doneButton">完了</string>
     <string name="cancelButton">キャンセル</string>
     <string name="genericError">何か問題が発生しました。もう一度試してください</string>
@@ -713,6 +728,8 @@
     <string name="collaborator">協力者</string>
     <string name="unstar">スター解除</string>
     <string name="watch">ウォッチ</string>
+    <string name="watcher">Watcher</string>
+    <string name="watchers">Watchers</string>
     <string name="unwatch">ウォッチ解除</string>
     <string name="share">共有</string>
     <string name="organization">組織</string>
@@ -751,6 +768,7 @@
     <string name="migrations">移行</string>
     <string name="lfs">LFS</string>
     <string name="mirrors">ミラー</string>
+    <string name="star">Star</string>
     <string name="stars">スター数</string>
     <string name="template">テンプレート</string>
     <string name="accounts">Accounts</string>

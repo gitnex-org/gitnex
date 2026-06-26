@@ -1,15 +1,32 @@
 <?xml version="1.0" encoding="utf-8"?>
 <changelog>
 
-     <release version="14.0.0-dev" versioncode="1390">
-        <type name="🎉 Features 🎉">
-            <change>Under development</change>
+     <release version="14.0.0" versioncode="1400">
+        <type name="🎉 Features">
+            <change>New language support in code editor and syntax highlighting</change>
+            <change>Open linked images in the app's content viewer from Markdown files</change>
+            <change>Render images and alerts in release descriptions</change>
+            <change>Exclusive labels support</change>
+            <change>Bookmarks (app-only feature) - bookmark repositories, issues, PRs, repository tabs, profiles, and organizations for quick access</change>
+            <change>Extend copy and share options to URL and content in the content viewer</change>
+            <change>Render SVG files in the content viewer</change>
+            <change>Context-aware sharing across repositories, organizations, and profiles</change>
+            <change>Android 17+ local network access permissions</change>
+            <change>Forgejo actions (runners, tasks, variables; create and delete variables)</change>
         </type>
-        <type name="v🚀 Improvements 🚀">
-            <change>Under development</change>
+        <type name="v🚀 Improvements">
+            <change>Color icon for server</change>
+            <change>Better handling of relative paths for images rendered in Markdown</change>
+            <change>Improved image loading in Markdown</change>
+            <change>Handle links in user profiles (email, website)</change>
+            <change>Improved pinned issues layout for UX consistency</change>
+            <change>Share commit link</change>
         </type>
-        <type name="🐛 Bug Fixes 🐛">
-            <change>Under development</change>
+        <type name="🐛 Bug Fixes">
+            <change>Fixed "open in browser" jumping to the wrong browser</change>
+            <change>Fixed issue and PR reference opening in issue and PR detail screens</change>
+            <change>Fixed editing of non-extension files</change>
+            <change>Theme fixes for Android status bar</change>
         </type>
     </release>
 

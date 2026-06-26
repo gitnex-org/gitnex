@@ -1,0 +1,14 @@
+14.0.0
+
+🎉 Features
+- New language support in code editor and syntax highlighting
+- Open linked images in the app's content viewer from Markdown files
+- Render images and alerts in release descriptions
+- Exclusive labels support
+- Bookmarks (app-only feature)
+- Render SVG files in the content viewer
+- Context-aware sharing
+- Android 17+ local network access permissions
+- Forgejo actions
+
+https://codeberg.org/gitnex/GitNex/releases

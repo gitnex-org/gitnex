@@ -129,7 +129,7 @@ public class NotesAdapter extends RecyclerView.Adapter<NotesAdapter.NotesViewHol
 			notesList.remove(position);
 			notifyItemRemoved(position);
 			notifyItemRangeChanged(position, notesList.size());
-			Toasty.show(ctx, ctx.getResources().getQuantityString(R.plurals.noteDeleteMessage, 1));
+			Toasty.show(ctx, ctx.getString(R.string.note_deleted_single));
 		}
 	}
 

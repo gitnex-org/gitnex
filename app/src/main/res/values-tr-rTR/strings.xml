@@ -62,26 +62,6 @@
     <string name="orgCreated">Organizasyon başarıyla oluşturuldu</string>
     <string name="orgExistsError">Organizasyon zaten mevcut</string>
     <string name="diffStatistics">%1$s ekleme ve %2$s silme</string>
-    <plurals name="repoStars">
-        <item quantity="one">Star</item>
-        <item quantity="other">Stars</item>
-    </plurals>
-    <plurals name="repoWatchers">
-        <item quantity="one">Watcher</item>
-        <item quantity="other">Watchers</item>
-    </plurals>
-    <plurals name="repoForks">
-        <item quantity="one">Fork</item>
-        <item quantity="other">Forks</item>
-    </plurals>
-    <plurals name="repoPullRequests">
-        <item quantity="one">Pull request</item>
-        <item quantity="other">Pull requests</item>
-    </plurals>
-    <plurals name="repoOpenIssues">
-        <item quantity="one">Issue</item>
-        <item quantity="other">Issues</item>
-    </plurals>
     <string name="genericApiError">Sunucu bir hata döndürdü. Kod %d</string>
     <string name="tabTextFiles">Dosyalar</string>
     <string name="tabTextReleases">Sürümler</string>
@@ -258,7 +238,6 @@
     <string name="noDataWebsite">Web sitesi bulunamadı</string>
     <string name="noDataDescription">Açıklama bulunamadı</string>
     <string name="noDataBio">Biyografi bulunamadı</string>
-    <string name="starMember">Yıldızla</string>
     <string name="zipArchiveDownloadReleasesTab">Kaynak kodu (ZIP)</string>
     <string name="tarArchiveDownloadReleasesTab">Kaynak kodu (TAR.GZ)</string>
     <string name="newFileNameTintCopy">Dosya Adı</string>
@@ -285,6 +264,7 @@
     <string name="strMarkdown">Markdown</string>
     <string name="copyIssueUrlToastMsg">URL panoya kopyalandı</string>
     <string name="copyShaToastMsg">SHA panoya kopyalandı</string>
+    <string name="copySha">Copy SHA</string>
     <string name="fileTypeCannotBeEdited">Bu türdeki dosyalar düzenlenemez</string>
     <string name="starRepositorySuccess">Depo yıldızlılar listesine eklendi</string>
     <string name="unStarRepositorySuccess">Depo yıldızlılar listesinden çıkarıldı</string>
@@ -469,15 +449,13 @@
     <string name="wikiUpdated">Wiki sayfası başarıyla güncellendi</string>
     <string name="wikiCreated">Wiki sayfası başarıyla oluşturuldu</string>
     <string name="wikiPageAlreadyExists">A wiki page with this title already exists</string>
-    <string name="editWikiPage">Edit Wiki Page</string>
+    <string name="editWikiPage">Edit wiki</string>
     <string name="newNoteContentHint">Notlarınızı buraya almaya başlayın</string>
     <string name="noteDateTime">Oluşturuldu: %1$s</string>
     <string name="noteTimeModified">Güncellendi: %s</string>
     <string name="noteDeleteDialogMessage">Bu notu gerçekten silmek istiyor musunuz?</string>
-    <plurals name="noteDeleteMessage">
-        <item quantity="one">Not başarıyla silindi</item>
-        <item quantity="other">Notlar başarıyla silindi</item>
-    </plurals>
+    <string name="note_deleted_single">Note deleted successfully</string>
+    <string name="notes_deleted_all">All notes deleted successfully</string>
     <string name="notesAllDeletionMessage">Bu, tüm notlarınızı silecektir. Bu işlem geri alınamaz.</string>
     <string name="noNotes">Not bulunamadı</string>
     <string name="commitStatuses">Durumlar</string>
@@ -605,7 +583,7 @@
     <string name="create_issue">Create Issue</string>
     <string name="search_repos">Search Repositories</string>
     <string name="dashboard_search_repos_sub_title">Search within your repositories with filters for more precise results</string>
-    <string name="edit_milestone">Edit Milestone</string>
+    <string name="edit_milestone">Edit milestone</string>
     <string name="add_labels">Tap to add labels</string>
     <string name="add_milestone">Tap to add milestone</string>
     <string name="add_assignees">Tap to assign assignees</string>
@@ -691,7 +669,38 @@
     <string name="time_months_ago">%d months ago</string>
     <string name="time_year_ago">%d year ago</string>
     <string name="time_years_ago">%d years ago</string>
+    <string name="label_exclusive_hint">Name the label scope/item to make it mutually exclusive with other scope/ labels.</string>
+    <string name="copy_content">Copy content</string>
+    <string name="share_url">Share URL</string>
+    <string name="share_content">Share content</string>
+    <string name="choose_what_to_share">Choose what to share</string>
+    <string name="choose_what_to_copy">Choose what to copy</string>
+    <string name="share_location">Share location</string>
+    <string name="bookmark_added">Bookmark added</string>
+    <string name="bookmark_removed">Bookmark removed</string>
+    <string name="dashboard_bookmarks_sub_title">Quick access to your saved repos, issues, PRs, create actions and more</string>
+    <string name="deleteAllBookmarks">Delete all bookmarks?</string>
+    <string name="deleteAllBookmarksConfirm">This will remove all your saved bookmarks for the current account. This action cannot be undone.</string>
+    <string name="bookmark_remove">Remove bookmark</string>
+    <string name="bookmark_add">Add to bookmark</string>
+    <string name="bookmark_tab">Bookmark tab</string>
+    <string name="repository_section">Repository section</string>
+    <string name="wiki_page">Wiki page</string>
+    <string name="localNetworkPermissionTitle">Local Network Permission</string>
+    <string name="localNetworkPermissionDescription">Android 17+ requires this permission to connect to local network. Without it, connections to servers on your local network may fail.</string>
+    <string name="grantPermission">Grant permission</string>
+    <string name="openSettings">Open settings</string>
+    <string name="permissionGranted">Permission granted</string>
+    <string name="permissionRequired">Permission required</string>
+    <string name="permissionRequiredDescription">This permission is needed for certain features to work properly.</string>
     <!-- generic copy -->
+    <string name="tasks">Tasks</string>
+    <string name="all">All</string>
+    <string name="profile">Profile</string>
+    <string name="repository">Repository</string>
+    <string name="milestones">Milestones</string>
+    <string name="bookmarks">Bookmarks</string>
+    <string name="exclusive">Exclusive</string>
     <string name="doneButton">Bitti</string>
     <string name="cancelButton">İptal</string>
     <string name="genericError">Bir şeyler ters gitti, lütfen tekrar deneyin</string>
@@ -720,6 +729,8 @@
     <string name="collaborator">Ortak Çalışan</string>
     <string name="unstar">Yıldızı Kaldır</string>
     <string name="watch">İzle</string>
+    <string name="watcher">Watcher</string>
+    <string name="watchers">Watchers</string>
     <string name="unwatch">İzlemeyi Bırak</string>
     <string name="share">Paylaş</string>
     <string name="organization">Organizasyon</string>
@@ -758,6 +769,7 @@
     <string name="migrations">Geçişler (Migrations)</string>
     <string name="lfs">LFS</string>
     <string name="mirrors">Yansıtmalar (Mirrors)</string>
+    <string name="star">Star</string>
     <string name="stars">Yıldızlar</string>
     <string name="template">Şablon</string>
     <string name="accounts">Accounts</string>
