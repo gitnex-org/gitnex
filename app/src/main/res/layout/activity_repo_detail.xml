@@ -68,6 +68,13 @@
                         app:icon="@drawable/ic_document" />
 
                     <com.google.android.material.button.MaterialButton
+                        android:id="@+id/btn_nav_commits"
+                        style="@style/Widget.Material3.Button.IconButton"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        app:icon="@drawable/ic_commit" />
+
+                    <com.google.android.material.button.MaterialButton
                         android:id="@+id/btn_nav_issues"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"

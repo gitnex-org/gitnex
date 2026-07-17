@@ -1,0 +1,71 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.coordinatorlayout.widget.CoordinatorLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:background="?attr/primaryBackgroundColor"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <FrameLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <androidx.swiperefreshlayout.widget.SwipeRefreshLayout
+            android:id="@+id/pullToRefresh"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+
+            <androidx.core.widget.NestedScrollView
+                android:id="@+id/commitsScroll"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:fillViewport="true">
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical">
+
+                    <TextView
+                        android:id="@+id/branchLabel"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginHorizontal="@dimen/dimen12dp"
+                        android:layout_marginTop="@dimen/dimen8dp"
+                        android:layout_marginBottom="@dimen/dimen4dp"
+                        android:textAppearance="?attr/textAppearanceLabelLarge"
+                        android:textColor="?attr/colorPrimary"
+                        android:singleLine="true"
+                        android:ellipsize="middle" />
+
+                    <androidx.recyclerview.widget.RecyclerView
+                        android:id="@+id/recyclerView"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:paddingHorizontal="@dimen/dimen12dp"
+                        android:paddingBottom="@dimen/dimen12dp"
+                        android:clipToPadding="false"
+                        android:nestedScrollingEnabled="false" />
+
+                </LinearLayout>
+
+            </androidx.core.widget.NestedScrollView>
+
+        </androidx.swiperefreshlayout.widget.SwipeRefreshLayout>
+
+    </FrameLayout>
+
+    <com.google.android.material.loadingindicator.LoadingIndicator
+        android:id="@+id/expressive_loader"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        app:indicatorSize="@dimen/dimen48dp"
+        app:trackThickness="@dimen/dimen4dp" />
+
+    <include
+        android:id="@+id/layout_empty"
+        layout="@layout/layout_empty_state"
+        android:visibility="gone" />
+
+</androidx.coordinatorlayout.widget.CoordinatorLayout>

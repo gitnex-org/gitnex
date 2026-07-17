@@ -28,6 +28,7 @@ import org.mian.gitnex.bottomsheets.CreateWikiBottomSheet;
 import org.mian.gitnex.bottomsheets.RepoMenuBottomSheet;
 import org.mian.gitnex.databinding.ActivityRepoDetailBinding;
 import org.mian.gitnex.fragments.CollaboratorsFragment;
+import org.mian.gitnex.fragments.CommitsFragment;
 import org.mian.gitnex.fragments.FilesFragment;
 import org.mian.gitnex.fragments.IssuesFragment;
 import org.mian.gitnex.fragments.LabelsFragment;
@@ -65,6 +66,7 @@ public class RepoDetailActivity extends BaseActivity
 	private static final String TAG_MILESTONES = "milestones";
 	private static final String TAG_LABELS = "labels";
 	private static final String TAG_COLLAB = "collab";
+	private static final String TAG_COMMITS = "commits";
 
 	private ActivityRepoDetailBinding binding;
 	public RepositoryContext repository;
@@ -85,6 +87,7 @@ public class RepoDetailActivity extends BaseActivity
 	private final String[] fragmentTags = {
 		TAG_INFO,
 		TAG_FILES,
+		TAG_COMMITS,
 		TAG_ISSUES,
 		TAG_PRS,
 		TAG_RELEASES,
@@ -95,9 +98,10 @@ public class RepoDetailActivity extends BaseActivity
 	};
 
 	private final int[] buttonIds = {
-		R.id.btn_nav_details, R.id.btn_nav_files, R.id.btn_nav_issues,
-		R.id.btn_nav_prs, R.id.btn_nav_releases, R.id.btn_nav_wiki,
-		R.id.btn_nav_milestones, R.id.btn_nav_labels, R.id.btn_nav_collaborators
+		R.id.btn_nav_details, R.id.btn_nav_files, R.id.btn_nav_commits,
+		R.id.btn_nav_issues, R.id.btn_nav_prs, R.id.btn_nav_releases,
+		R.id.btn_nav_wiki, R.id.btn_nav_milestones, R.id.btn_nav_labels,
+		R.id.btn_nav_collaborators
 	};
 
 	@Override
@@ -168,6 +172,10 @@ public class RepoDetailActivity extends BaseActivity
 		FilesFragment filesFragment =
 				(FilesFragment) getSupportFragmentManager().findFragmentByTag(TAG_FILES);
 		if (filesFragment != null) filesFragment.refreshFromGlobal();
+
+		CommitsFragment commitsFragment =
+				(CommitsFragment) getSupportFragmentManager().findFragmentByTag(TAG_COMMITS);
+		if (commitsFragment != null) commitsFragment.refreshFromGlobal();
 
 		PullRequestsFragment pullRequestsFragment =
 				(PullRequestsFragment) getSupportFragmentManager().findFragmentByTag(TAG_PRS);
@@ -348,6 +356,7 @@ public class RepoDetailActivity extends BaseActivity
 		if (infoFrag == null) {
 			infoFrag = RepoInfoFragment.newInstance(repository);
 			Fragment filesFrag = FilesFragment.newInstance(repository);
+			Fragment commitsFrag = CommitsFragment.newInstance(repository);
 			Fragment issuesFrag = IssuesFragment.newInstance(repository);
 			Fragment prFrag = PullRequestsFragment.newInstance(repository);
 			Fragment releaseFrag = ReleasesFragment.newInstance(repository);
@@ -371,6 +380,8 @@ public class RepoDetailActivity extends BaseActivity
 					.hide(prFrag)
 					.add(R.id.repo_details_container, issuesFrag, TAG_ISSUES)
 					.hide(issuesFrag)
+					.add(R.id.repo_details_container, commitsFrag, TAG_COMMITS)
+					.hide(commitsFrag)
 					.add(R.id.repo_details_container, filesFrag, TAG_FILES)
 					.hide(filesFrag)
 					.add(R.id.repo_details_container, infoFrag, TAG_INFO)
@@ -398,6 +409,7 @@ public class RepoDetailActivity extends BaseActivity
 	private void applyRepositoryFeatures(Repository repo) {
 		if (repo.isHasCode() != null) {
 			binding.btnNavFiles.setVisibility(repo.isHasCode() ? View.VISIBLE : View.GONE);
+			binding.btnNavCommits.setVisibility(repo.isHasCode() ? View.VISIBLE : View.GONE);
 		}
 		binding.btnNavIssues.setVisibility(repo.isHasIssues() ? View.VISIBLE : View.GONE);
 		binding.btnNavPrs.setVisibility(repo.isHasPullRequests() ? View.VISIBLE : View.GONE);
@@ -417,9 +429,10 @@ public class RepoDetailActivity extends BaseActivity
 		binding.btnBack.setOnClickListener(v -> finish());
 
 		MaterialButton[] navButtons = {
-			binding.btnNavDetails, binding.btnNavFiles, binding.btnNavIssues,
-			binding.btnNavPrs, binding.btnNavReleases, binding.btnNavWiki,
-			binding.btnNavMilestones, binding.btnNavLabels, binding.btnNavCollaborators
+			binding.btnNavDetails, binding.btnNavFiles, binding.btnNavCommits,
+			binding.btnNavIssues, binding.btnNavPrs, binding.btnNavReleases,
+			binding.btnNavWiki, binding.btnNavMilestones, binding.btnNavLabels,
+			binding.btnNavCollaborators
 		};
 
 		for (MaterialButton btn : navButtons) {
@@ -428,6 +441,8 @@ public class RepoDetailActivity extends BaseActivity
 
 		binding.btnNavDetails.setOnClickListener(v -> switchTab(TAG_INFO, R.id.btn_nav_details));
 		binding.btnNavFiles.setOnClickListener(v -> switchTab(TAG_FILES, R.id.btn_nav_files));
+		binding.btnNavCommits.setOnClickListener(
+				v -> switchTab(TAG_COMMITS, R.id.btn_nav_commits));
 		binding.btnNavIssues.setOnClickListener(v -> switchTab(TAG_ISSUES, R.id.btn_nav_issues));
 		binding.btnNavPrs.setOnClickListener(v -> switchTab(TAG_PRS, R.id.btn_nav_prs));
 		binding.btnNavReleases.setOnClickListener(
@@ -589,9 +604,10 @@ public class RepoDetailActivity extends BaseActivity
 
 	private void updateDockUI(int activeBtnId) {
 		int[] allButtons = {
-			R.id.btn_nav_details, R.id.btn_nav_files, R.id.btn_nav_issues,
-			R.id.btn_nav_prs, R.id.btn_nav_releases, R.id.btn_nav_wiki,
-			R.id.btn_nav_milestones, R.id.btn_nav_labels, R.id.btn_nav_collaborators
+			R.id.btn_nav_details, R.id.btn_nav_files, R.id.btn_nav_commits,
+			R.id.btn_nav_issues, R.id.btn_nav_prs, R.id.btn_nav_releases,
+			R.id.btn_nav_wiki, R.id.btn_nav_milestones, R.id.btn_nav_labels,
+			R.id.btn_nav_collaborators
 		};
 
 		for (int id : allButtons) {
