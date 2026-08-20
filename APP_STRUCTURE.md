@@ -1,3 +1,6 @@
+# App Structure
+
+```tree
 .
 ├── app
 │   ├── src
@@ -1004,5 +1007,6 @@
 ├── local.properties
 ├── README.md
 └── settings.gradle
+```
 
 108 directories, 898 files

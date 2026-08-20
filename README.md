@@ -1,4 +1,8 @@
-[![License: GPL v3](https://codeberg.org/gitnex/GitNex/raw/branch/main/assets/license.svg)](https://spdx.org/licenses/GPL-3.0-only.html) [![Pipeline status](https://ci.codeberg.org/api/badges/gitnex/GitNex/status.svg)](https://ci.codeberg.org/gitnex/GitNex) [![Release](https://img.shields.io/badge/dynamic/json.svg?label=release&url=https://codeberg.org/api/v1/repos/gitnex/GitNex/releases&query=$[0].tag_name)](https://codeberg.org/gitnex/GitNex/releases) [![Crowdin](https://badges.crowdin.net/gitnex/localized.svg)](https://crowdin.com/project/gitnex) [![Join the Discord chat at https://discord.gg/FbSS4rf](https://img.shields.io/discord/632219664587685908.svg)](https://discord.gg/FbSS4rf)
+[![License: GPL v3](https://codeberg.org/gitnex/GitNex/raw/branch/main/assets/license.svg)](https://spdx.org/licenses/GPL-3.0-only.html)
+[![Pipeline status](https://ci.codeberg.org/api/badges/gitnex/GitNex/status.svg)](https://ci.codeberg.org/gitnex/GitNex)
+[![Release](https://img.shields.io/badge/dynamic/json.svg?label=release&url=https://codeberg.org/api/v1/repos/gitnex/GitNex/releases&query=$[0].tag_name)](https://codeberg.org/gitnex/GitNex/releases)
+[![Crowdin](https://badges.crowdin.net/gitnex/localized.svg)](https://crowdin.com/project/gitnex)
+[![Join the Discord chat at https://discord.gg/FbSS4rf](https://img.shields.io/discord/632219664587685908.svg)](https://discord.gg/FbSS4rf)
 
 [<img alt="Become a Patreon" src="https://codeberg.org/gitnex/GitNex/raw/branch/main/assets/patreon.png" height="80"/>](https://www.patreon.com/mmarif)
 
@@ -6,11 +10,12 @@
 
 GitNex is a FOSS Android client (available both as gratis & paid) for the Git repository management tools Forgejo and Gitea.
 
-Licensed under the GPLv3 License. Please refer to the LICENSE file for the full text of the license. **No trackers are used**, and the source code is available here for anyone to audit.
+Licensed under the GPLv3 License. Please refer to the LICENSE file for the full text of the license. **No trackers are used**, and the source code is
+available here for anyone to audit.
 
 ## Downloads
 
-[<img alt='Get it on F-Droid' src='https://codeberg.org/gitnex/GitNex/raw/branch/main/assets/fdroid.png' height="80"/>](https://f-droid.org/en/packages/org.mian.gitnex/)
+[<img alt='Get it on F-Droid' src='https://codeberg.org/gitnex/GitNex/raw/branch/main/assets/fdroid.png' height="80"/>](https://f-droid.org/en/packages/org.mian.gitnex)
 [<img alt='Get it on Google Play' src='https://codeberg.org/gitnex/GitNex/raw/branch/main/assets/google-play.png' height="80"/>](https://play.google.com/store/apps/details?id=org.mian.gitnex.pro)
 [<img alt='Download builds and releases' src='https://codeberg.org/gitnex/GitNex/raw/branch/main/assets/apk-badge.png' height="82"/>](https://cloud.swatian.com/s/WS4k3seXnmfQppo)
 [<img alt='Get it on IzzyOnDroid' src='https://codeberg.org/gitnex/GitNex/raw/branch/main/assets/IzzyOnDroid.png' height="82"/>](https://apt.izzysoft.de/fdroid/index/apk/org.mian.gitnex)
@@ -41,23 +46,26 @@ For the best experience, please ensure that you are using the latest stable rele
 
 ## Contributing
 
-We welcome contributions! For information regarding contribution guidelines, please click [here](https://codeberg.org/gitnex/GitNex/wiki/Contributing).
+We welcome contributions! For information regarding contribution guidelines, please
+[read the wiki](https://codeberg.org/gitnex/GitNex/wiki/Contributing).
 
 ## Translation
 
-We use [Crowdin](https://crowdin.com/project/gitnex) for translations. If you can, please help improve the translation for your language. If your language is not listed, please request to add it to the project [here](https://codeberg.org/gitnex/GitNex/issues).
+We use [Crowdin](https://crowdin.com/project/gitnex) for translations. If you can, please help improve the translation for your language. If your
+language is not listed, please request to add it to the project [here](https://codeberg.org/gitnex/GitNex/issues).
 
-**Translation Portal: https://crowdin.com/project/GitNex**
+**Translation Portal: <https://crowdin.com/project/GitNex>**
 
 ## Screenshots
 
-[<img src="https://codeberg.org/gitnex/GitNex/raw/branch/main/fastlane/metadata/android/en-US/images/phoneScreenshots/001.png" alt="001.png" width="200"/>](https://codeberg.org/gitnex/GitNex/raw/branch/main/fastlane/metadata/android/en-US/images/phoneScreenshots/001.png) | [<img src="https://codeberg.org/gitnex/GitNex/raw/branch/main/fastlane/metadata/android/en-US/images/phoneScreenshots/002.png" alt="002.png" width="200"/>](https://codeberg.org/gitnex/GitNex/raw/branch/main/fastlane/metadata/android/en-US/images/phoneScreenshots/002.png) | [<img src="https://codeberg.org/gitnex/GitNex/raw/branch/main/fastlane/metadata/android/en-US/images/phoneScreenshots/003.png" alt="003.png" width="200"/>](https://codeberg.org/gitnex/GitNex/raw/branch/main/fastlane/metadata/android/en-US/images/phoneScreenshots/003.png) | [<img src="https://codeberg.org/gitnex/GitNex/raw/branch/main/fastlane/metadata/android/en-US/images/phoneScreenshots/004.png" alt="004.png" width="200"/>](https://codeberg.org/gitnex/GitNex/raw/branch/main/fastlane/metadata/android/en-US/images/phoneScreenshots/004.png)
----|---|---|---
-[<img src="https://codeberg.org/gitnex/GitNex/raw/branch/main/fastlane/metadata/android/en-US/images/phoneScreenshots/005.png" alt="005.png" width="200"/>](https://codeberg.org/gitnex/GitNex/raw/branch/main/fastlane/metadata/android/en-US/images/phoneScreenshots/005.png) | [<img src="https://codeberg.org/gitnex/GitNex/raw/branch/main/fastlane/metadata/android/en-US/images/phoneScreenshots/006.png" alt="006.png" width="200"/>](https://codeberg.org/gitnex/GitNex/raw/branch/main/fastlane/metadata/android/en-US/images/phoneScreenshots/006.png) | [<img src="https://codeberg.org/gitnex/GitNex/raw/branch/main/fastlane/metadata/android/en-US/images/phoneScreenshots/007.png" alt="007.png" width="200"/>](https://codeberg.org/gitnex/GitNex/raw/branch/main/fastlane/metadata/android/en-US/images/phoneScreenshots/007.png) | [<img src="https://codeberg.org/gitnex/GitNex/raw/branch/main/fastlane/metadata/android/en-US/images/phoneScreenshots/008.png" alt="008.png" width="200"/>](https://codeberg.org/gitnex/GitNex/raw/branch/main/fastlane/metadata/android/en-US/images/phoneScreenshots/008.png)
+| [<img src="https://codeberg.org/gitnex/GitNex/raw/branch/main/fastlane/metadata/android/en-US/images/phoneScreenshots/001.png" alt="001.png" width="200"/>](https://codeberg.org/gitnex/GitNex/raw/branch/main/fastlane/metadata/android/en-US/images/phoneScreenshots/001.png) | [<img src="https://codeberg.org/gitnex/GitNex/raw/branch/main/fastlane/metadata/android/en-US/images/phoneScreenshots/002.png" alt="002.png" width="200"/>](https://codeberg.org/gitnex/GitNex/raw/branch/main/fastlane/metadata/android/en-US/images/phoneScreenshots/002.png) | [<img src="https://codeberg.org/gitnex/GitNex/raw/branch/main/fastlane/metadata/android/en-US/images/phoneScreenshots/003.png" alt="003.png" width="200"/>](https://codeberg.org/gitnex/GitNex/raw/branch/main/fastlane/metadata/android/en-US/images/phoneScreenshots/003.png) | [<img src="https://codeberg.org/gitnex/GitNex/raw/branch/main/fastlane/metadata/android/en-US/images/phoneScreenshots/004.png" alt="004.png" width="200"/>](https://codeberg.org/gitnex/GitNex/raw/branch/main/fastlane/metadata/android/en-US/images/phoneScreenshots/004.png) |
+| ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| [<img src="https://codeberg.org/gitnex/GitNex/raw/branch/main/fastlane/metadata/android/en-US/images/phoneScreenshots/005.png" alt="005.png" width="200"/>](https://codeberg.org/gitnex/GitNex/raw/branch/main/fastlane/metadata/android/en-US/images/phoneScreenshots/005.png) | [<img src="https://codeberg.org/gitnex/GitNex/raw/branch/main/fastlane/metadata/android/en-US/images/phoneScreenshots/006.png" alt="006.png" width="200"/>](https://codeberg.org/gitnex/GitNex/raw/branch/main/fastlane/metadata/android/en-US/images/phoneScreenshots/006.png) | [<img src="https://codeberg.org/gitnex/GitNex/raw/branch/main/fastlane/metadata/android/en-US/images/phoneScreenshots/007.png" alt="007.png" width="200"/>](https://codeberg.org/gitnex/GitNex/raw/branch/main/fastlane/metadata/android/en-US/images/phoneScreenshots/007.png) | [<img src="https://codeberg.org/gitnex/GitNex/raw/branch/main/fastlane/metadata/android/en-US/images/phoneScreenshots/008.png" alt="008.png" width="200"/>](https://codeberg.org/gitnex/GitNex/raw/branch/main/fastlane/metadata/android/en-US/images/phoneScreenshots/008.png) |
 
 ## Add a Custom URL Scheme
 
-Starting with version 11.0.0, GitNex supports a custom URL scheme. This feature allows you to seamlessly open links directly in GitNex for issues, pull requests, commits, profiles, and repositories by using third-party apps like [URL Check](https://github.com/TrianguloY/URLCheck).
+Starting with version 11.0.0, GitNex supports a custom URL scheme. This feature allows you to seamlessly open links directly in GitNex for issues,
+pull requests, commits, profiles, and repositories by using third-party apps like [URL Check](https://github.com/TrianguloY/URLCheck).
 
 ### How to Configure URL Check
 
@@ -68,7 +76,8 @@ Starting with version 11.0.0, GitNex supports a custom URL scheme. This feature 
 5. Save your changes.
 
 JSON Configuration:
-```
+
+```json
 "GitNex": {
   "regex": "^https?://(?:[a-z0-9-]+\\.)*?(codeberg\\.org|gitea\\.com|.*\\.gitea\\.io)(/.*)",
   "replacement": "gitnex://$1$2"
@@ -78,11 +87,11 @@ JSON Configuration:
 ## HTTP Basic Auth
 
 GitNex from version **12.0.0** supports HTTP Basic Authentication for servers behind reverse proxies (nginx, Apache).  
-[Read the Wiki](https://codeberg.org/gitnex/GitNex/wiki/HTTP-Basic-Auth-for-Reverse-Proxies)
+[Wiki](https://codeberg.org/gitnex/GitNex/wiki/HTTP-Basic-Auth-for-Reverse-Proxies)
 
 ## Self-signed certificates
 
-GitNex supports self-signed certificates. You can read more [here](https://codeberg.org/gitnex/GitNex/wiki/FAQ#does-gitnex-support-self-signed-certificates).
+GitNex supports self-signed certificates. [Wiki](https://codeberg.org/gitnex/GitNex/wiki/FAQ#does-gitnex-support-self-signed-certificates).
 
 ## Links
 
@@ -98,7 +107,8 @@ Thank you to all the open source libraries, contributors, and donors who make Gi
 
 #### Libraries
 
-Check out the [libraries file](https://codeberg.org/gitnex/GitNex/src/branch/main/gradle/libs.versions.toml) for a complete list of libraries used by GitNex.
+Check out the [libraries file](https://codeberg.org/gitnex/GitNex/src/branch/main/gradle/libs.versions.toml) for a complete list of libraries used by
+GitNex.
 
 #### Icon Sets
 
@@ -113,4 +123,4 @@ Follow on social media:
 - [@mmarif@mastodon.social](https://mastodon.social/@mmarif)
 - [mmarif.bsky.social](https://bsky.app/profile/mmarif.bsky.social)
 
-*All trademarks and logos are the properties of their respective owners.*
+_All trademarks and logos are the properties of their respective owners._
